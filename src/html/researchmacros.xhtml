@@ -1,0 +1,94 @@
+<html xmlns:stu="stu">
+	<metal:macro metal:define-macro="details">
+		<div style="width: 610px;">
+			<table class="tcal">
+				<tr>
+					<td rowspan="2">PIC</td>
+					<td>
+						<span tal:content="structure THIS/getSelectedResearch/getDescriptionFormatted">DESCRIPTION</span>
+						<br />
+						<br />
+						<div tal:condition="THIS/getSelectedResearch/getUpperPlanetlimit">
+							<span i18n:translate="">Anzahl Kolonien auf Planeten:</span> +${THIS/getSelectedResearch/getUpperPlanetlimit}
+						</div>
+						<div tal:condition="THIS/getSelectedResearch/getUpperMoonlimit">
+							<span i18n:translate="">Anzahl Kolonien auf Monden:</span> +${THIS/getSelectedResearch/getUpperMoonlimit}
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="tcal">
+							<tr>
+								<td class="darkbg" i18n:translate="">Punkte</td>
+								<td tal:condition="THIS/getSelectedResearch/getGoodId" class="darkbg" i18n:translate="">Benötigte Ware / Effekt</td>
+							</tr>
+							<tr>
+								<td tal:content="THIS/getSelectedResearch/getPoints">POINTS</td>
+								<td tal:condition="THIS/getSelectedResearch/getGoodId">
+									<img src="gfx/goods/${THIS/getSelectedResearch/getGoodId}.gif" /> <span tal:replace="THIS/getSelectedResearch/getGood/getName"></span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<div tal:condition="not:THIS/getSelectedResearch/getResearchState">
+				<br />
+				<div class="fabutton_blue">
+					<a href="research.php?B_DO_RESEARCH=1&id=${THIS/getSelectedResearch/getId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_blue">Erforschen</a>
+				</div>
+				<div tal:condition="USER/getCurrentResearch" class="negative" style="text-align: center;">
+					Achtung! Die gerade laufende Forschung wird abgebrochen!
+				</div>
+			</div>
+			<div tal:condition="THIS/getSelectedResearch/getResearchState">
+				<tal:block tal:condition="not:THIS/getSelectedResearch/getResearchState/isResearchFinished">
+					<br />
+					<div style="width: 100%; text-align: center">
+						<img style="width: 12px; height: 12px;" src="${GFX}/buttons/menu_forsch1.gif" title="Forschung" />
+						<span tal:replace="structure php:renderResearchStatusBar(THIS.getSelectedResearch().getPoints()-THIS.getSelectedResearch().getResearchState().getActive(),THIS.getSelectedResearch().getPoints())">STATUSBAR</span>
+						Status:<span tal:replace="THIS/getSelectedResearch/getDonePoints">COUNT</span>/<span tal:replace="THIS/getSelectedResearch/getPoints">MAXCOUNT</span>
+					</div>
+					<div class="fabutton_red">
+						<a href="research.php?B_CANCEL_CURRENT_RESEARCH=1&sstr=${THIS/getSessionString}" class="fabutton fabutton_red">Forschung abbrechen</a>
+					</div>
+				</tal:block>
+			</div>
+			<div tal:condition="THIS/getSelectedResearch/hasExcludes">
+				<br />
+				<table class="tcal">
+					<tr>
+						<th>Folgende Forschungen sind nach dieser Forschung nicht mehr möglich</th>
+					</tr>
+					<tr>
+						<td>
+							<div style="float: left; width: 200px;" tal:repeat="data THIS/getSelectedResearch/getExcludes">
+								<div class="divbody" style="text-align: center;">
+									<span tal:content="data/getResearchDependOn/getName" style="font-weight: bold;">NAME</span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div tal:condition="THIS/getSelectedResearch/hasPositiveDependencies">
+				<br />
+				<table class="tcal">
+					<tr>
+						<th>Folgende Forschungen werden durch diese Forschung ermöglicht</th>
+					</tr>
+					<tr>
+						<td>
+							<div style="float: left; width: 200px;" tal:repeat="data THIS/getSelectedResearch/getPositiveDependencies">
+								<div class="divbody" style="text-align: center;">
+									<span tal:content="data/getResearch/getName" style="font-weight: bold;">NAME</span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</metal:macro>
+</html>

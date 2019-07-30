@@ -1,0 +1,13 @@
+###  Copyright 2011 Daniel Jakob All Rights Reserved
+###  This software is the proprietary information of Daniel Jakob
+###  Use is subject to license terms
+
+class=BuildingsUpgradesCost
+table=stu_buildings_upgrades_cost
+key=id
+
+attribute=buildings_upgrades_cost:int
+attribute=good_id:int
+attribute=amount:int
+
+verbatim

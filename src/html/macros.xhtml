@@ -1,0 +1,208 @@
+<html xmlns:stu="stu">
+<tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqHandle">
+	<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2');" onmouseout="cp('${handle}','buttons/msg1');" onclick="closePopup();openPmWindow(${id});"><img src="${GFX}/buttons/msg1.gif" tal:attributes="name handle" title="Nachricht senden" /></a>
+</tal:block>
+<tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqHandle">
+	<a href="userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2');"  onmouseout="cp('${handle}','buttons/info1');"><img src="${GFX}/buttons/info1.gif" tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
+</tal:block>
+<tal:block metal:define-macro="ignoretext">
+	<span style="color: #c37700;">Sieder wird ignoriert</span>
+</tal:block>
+<tal:block metal:define-macro="ignorebutton">
+	<span id="runtime" tal:attributes="id div">
+		<input type="button" class="button" value="Siedler ignorieren" onclick="ignoreUser('${div}',${userid})" />
+	</span>
+</tal:block>
+<tal:block metal:define-macro="contactbutton">
+	<span id="runtime" tal:attributes="id div">
+		<tal:block metal:use-macro="html/commmacros.xhtml/clmodeselector" />
+		<input type="button" class="button" value="Kontakt hinzufügen" onclick="addUserContact('${div}',${userid})" />
+	</span>
+</tal:block>
+<metal:block metal:define-macro="goodentry">
+	<stu:goodentry tal:attributes="name good/getName; goodid good/getGoodId; count good/getCount" />
+</metal:block>
+<metal:block metal:define-macro="mapeditor_fieldselector">
+	<table class="use" tal:define="field THIS/getSelectedField">
+		<tr>
+			<td style="vertical-align: top">
+				<div>
+					<a href="javascript:void(0)" onclick="selectBorderType('${field/getId}','${field/getCX}','${field/getCY}','0')">Keine Grenze</a>	
+				</div>
+				<div tal:repeat="data THIS/getPossibleBordertypes">
+					<a href="javascript:void(0)" tal:content="data/getDescription" onclick="selectBorderType('${field/getId}','${field/getCX}','${field/getCY}','${data/getId}','${data/getColor}')">BORDER</a>	
+				</div>
+			</td>
+		</tr>
+	</table>
+</metal:block>
+<metal:block metal:define-macro="mapeditor_system_fieldselector">
+	<table class="use" tal:define="field THIS/getSelectedSystemField">
+		<tr>
+			<td style="vertical-align: top;">
+				<div tal:repeat="data THIS/getPossibleFieldTypes/row_0">
+					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+				</div>
+			</td>
+			<td style="vertical-align: top;">
+				<div tal:repeat="data THIS/getPossibleFieldTypes/row_1">
+					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+				</div>
+			</td>
+			<td style="vertical-align: top;">
+				<div tal:repeat="data THIS/getPossibleFieldTypes/row_2">
+					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+				</div>
+			</td>
+			<td style="vertical-align: top;">
+				<div tal:repeat="data THIS/getPossibleFieldTypes/row_3">
+					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+				</div>
+			</td>
+			<td style="vertical-align: top;">
+				<div tal:repeat="data THIS/getPossibleFieldTypes/row_4">
+					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+				</div>
+			</td>
+			<td style="vertical-align: top;">
+				<div tal:repeat="data THIS/getPossibleFieldTypes/row_5">
+					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+				</div>
+			</td>
+		</tr>
+	</table>
+
+</metal:block>
+<metal:block metal:define-macro="userbox">
+	<div class="divbody userbox">
+		<div style="float: left; width: 50px;">
+			<metal:macro metal:use-macro="userprofile_link" tal:define="user data" />
+		</div>
+		<div style="float: left; width: 250px; margin-left: 5px;">
+			<div class="darkbg">
+				 <span tal:replace="structure bbcode:data/getName">NAME</span>
+			</div>
+			<a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}" tal:condition="data/isInAlliance" tal:content="structure bbcode:data/getAlliance/getName">NAME</a>
+			<br />
+			Spielt seit: ${data/getCreationDateDisplay}
+		</div>
+		<div style="float: left; width: 15px; text-align: right;">
+			<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getId" />	
+			<metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id data/getId" />	
+			<img src="${GFX}/rassen/${data/getFaction}s.gif" />
+		</div>
+	</div>
+</metal:block>
+<metal:macro metal:define-macro="userprofile_link">
+	<a href="userprofile.php?uid=${user/getId}">
+		<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="title user/getNameWithoutMarkup;src user/getFullAvatarPath" />
+	</a>
+</metal:macro>
+<metal:block metal:define-macro="show_buddylist">
+	<div style="width: 330px;">
+		<tal:block tal:repeat="data THIS/getFriendsOnline">
+			<metal:block metal:use-macro="userbox" />
+		</tal:block>
+	</div>
+</metal:block>
+<metal:block metal:define-macro="crew_details">
+	<div style="width: 300px">
+		<table class="tcal">
+			<tr>
+				<td class="darkbg">
+					<strong>Name</strong>
+				</td>
+				<td>
+					<div id="crewname" onclick="$('crewname_edit').show();$('crewname').hide();" style="cursor: pointer;" title="Umbenennen" tal:content="THIS/getCrew/getName">NAME</div>
+					<div id="crewname_edit" style="display: none;">
+						<input type="text" style="width: 200px;" id="crewname_value" tal:attributes="value THIS/getCrew/getName" /> <input class="button" type="button" onclick="saveCrewName(${THIS/getCrew/getId});" value="OK" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="darkbg">
+					<strong>Position</strong>
+				</td>
+				<td tal:content="THIS/getCrew/getTypeDescription">FUNCTION</td>
+			</tr>
+			<tr>
+				<td class="darkbg">
+					<strong>Rasse</strong>
+				</td>
+				<td tal:content="THIS/getCrew/getRace/getDescription">RACE</td>
+			</tr>
+		</table>
+	</div>
+</metal:block>
+<metal:block metal:define-macro="starmap">
+	<div style="float: left">
+		<table cellpadding="0" cellspacing="0">
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>
+					<div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationUp" onclick="showMapBy('${THIS/getNavigationUp/x}','${THIS/getNavigationUp/y}');">
+						<img src="${GFX}/buttons/b_up1.gif" name="aup" />
+					</div>
+				</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					<div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationLeft" onclick="showMapBy('${THIS/getNavigationLeft/x}','${THIS/getNavigationLeft/y}');">
+						<img src="${GFX}/buttons/b_from1.gif" name="aleft" />
+					</div>
+				</td>
+				<td style="width: 30px;">&nbsp;</td>
+				<td>
+					<table class="use">
+						<tr>
+							<th>x|y</th>
+							<th tal:repeat="head THIS/getHeadRow" tal:content="head">..</th>
+						</tr>
+						<tr tal:repeat="yrow THIS/getMapData">
+							<th tal:content="yrow/getRow">y</th>
+							<td tal:repeat="data yrow/getFields" class="lss" style="runtime" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj" style="cursor: auto ! important;">&nbsp;</div></td>
+						</tr>
+					</table>
+				</td>
+				<td style="width: 30px;">&nbsp;</td>
+				<td>
+					<div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationRight" onclick="showMapBy('${THIS/getNavigationRight/x}','${THIS/getNavigationRight/y}');">
+						<img src="${GFX}/buttons/b_to1.gif" name="aright" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>
+					<div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationBottom" onclick="showMapBy('${THIS/getNavigationDown/x}','${THIS/getNavigationDown/y}');">
+						<img src="${GFX}/buttons/b_down1.gif" name="adown" />
+					</div>
+				</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+</metal:block>
+<metal:block metal:define-macro="crewimage">
+	<img phptal:cache="1d per crew/getId" src="${GFX}/crew/${crew/getRace/getDefine}/${crew/getGenderShort}/1_${crew/getType}.png" />
+</metal:block>
+<metal:macro metal:define-macro="render_contactoptions" tal:define="handle THIS/getUniqHandle">
+	<!-- userId is needed -->
+	<tal:block tal:define="contact USER/getContact/${userid}">
+		<tal:block tal:condition="contact">
+			<span tal:attributes="id handle">
+				<metal:macro tal:define="div handle" metal:use-macro="html/commmacros.xhtml/clmodeview" />
+			</span>
+		</tal:block>
+		<tal:block tal:condition="not:contact" tal:define="divname string:selector_${handle};div handle" metal:use-macro="html/macros.xhtml/contactbutton" />
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="userlist_pictures">
+	<img onclick="goToUrl('userprofile.php?uid=${user/getId}')" class="action" tal:repeat="user userlist" tal:attributes="src user/getFullAvatarPath; title user/getNameWithoutMarkup" height="40" width="40" style="margin: 5px" />
+</metal:macro>
+</html>

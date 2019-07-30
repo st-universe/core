@@ -1,0 +1,53 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<metal:macro metal:define-macro="ulnav">
+			<table class="use">
+				<tr>
+					<td tal:repeat="item THIS/getUserListNavigation">
+						<a href="?SHOW_SETTLERLIST=1&mark=${item/mark}&order=${THIS/getUserListOrder}&way=${THIS/getUserListWay}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+					</td>
+				</tr>
+			</table>	
+		</metal:macro>
+		<metal:macro metal:use-macro="ulnav" />
+		<br />
+		<table class="tcal">
+			<tr>
+				<th style="width: 20px;">
+					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=fac&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=fac&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
+				</th>
+				<th style="width: 50px;">
+					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=id&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
+					ID
+					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=id&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
+				</th>
+				<th style="width: 650px;">Name</th>
+				<th>
+					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=alliance&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
+					Allianz
+					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=alliance&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
+				</th>
+				<th style="width: 50px;"></th>
+			</tr>
+			<tr tal:repeat="data THIS/getUserList" class="runtime" tal:attributes="class string:row${repeat/data/odd}">
+				<td style="text-align: center;"><img src="${GFX}/rassen/${data/getFaction}s.gif" /></td>
+				<td tal:content="data/getId">ID</td>
+				<td>
+					<a href="userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
+				</td>
+				<td tal:condition="data/isInAlliance"><a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}" tal:content="structure bbcode:data/getAlliance/getName">ALLIANCE</a></td>
+				<td tal:condition="not:data/isInAlliance">&nbsp;</td>
+				<td tal:define="id data/getId" style="text-align: center;">
+					<metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
+					<metal:macro metal:use-macro="html/macros.xhtml/pmwindow" />
+				</td>
+			</tr>
+		</table>
+		<br />
+		<metal:macro metal:use-macro="ulnav" />
+	</tal:block>
+</tal:block>
+</html>

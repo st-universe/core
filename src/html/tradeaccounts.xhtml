@@ -1,0 +1,75 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+        <stu:box tal:condition="not:THIS/getAccounts" title="Meldung" i18n:attributes="title">
+            <span i18n:translate="">Keine Warenkonten vorhanden</span>
+        </stu:box>
+		<tal:block tal:repeat="data THIS/getAccounts">
+			<table class="tcal">
+				<tr>
+					<th colspan="5" tal:content="structure data/getShip/getName">POST</th>
+				</tr>
+				<tr tal:define="ship data/getShip">
+					<td rowspan="5">
+						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+					</td>
+					<td rowspan="5" style="width: 30%;">
+						<div style="font-weight: bold">
+							Waren lagernd	
+						</div>
+						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorageByCurrentUser/getStorage">
+							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})" style="display: block; padding: 4px;" class="tradebutton">
+								<img src="${GFX}/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getCount">COUNT</span>
+							</a>
+						</div>
+					</td>
+					<td rowspan="5" style="width: 30%;">
+						<div style="font-weight: bold;">
+							Waren in Angeboten
+						</div>
+						<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorageByCurrentUser">
+							<a href="javascript:void(0);" onclick="showTradeOfferByGood(${data/getId},${stor/getGoodId})" style="display: block; padding: 4px;" class="tradebutton">
+								<img src="${GFX}/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getCount">COUNT</span>
+							</a>
+						</div>
+					</td>
+					<td class="darkbg" style="clear: both; width: 200px;">Standort</td>
+					<td style="width: 200px;">${ship/getCX}|${ship/getCY}</td>
+				</tr>
+				<tr>
+					<td class="darkbg">Handelsnetz</td>
+					<td>
+						<img src="${GFX}/rassen/${data/getTradeNetwork}s.gif" />
+						<a href="javascript:void(0);" onclick="openShoutbox(${data/getTradeNetwork})">Schwarzes Brett</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="darkbg">Transferkapazität</td>
+					<td>
+						<span tal:replace="data/getFreeTransferCapacity">TRANSFERSUM</span>
+						(<span tal:content="data/getTransferCapacity">CAPACITY</span> pro Tag)
+					</td>
+				</tr>
+				<tr>
+					<td class="darkbg">Lagerraum</td>
+					<td>
+						<span tal:condition="data/currentUserIsOverStorage" class="negative" tal:content="data/getStorageByCurrentUser/getStorageSum">STORAGESUM</span>
+						<span tal:condition="not:data/currentUserIsOverStorage" class="positive" tal:content="data/getStorageByCurrentUser/getStorageSum">STORAGESUM</span>
+						(<span tal:content="data/getStorage">STORAGE</span> pro Siedler)
+					</td>
+				</tr>
+				<tr>
+					<td class="darkbg">Ausgestellte Lizenzen</td>
+					<td>
+						<span tal:content="data/getLicenceCount">LIZENZEN</span>
+						(<a href="javascript:void(0)" onclick="showTradeLicenceList(this,${data/getId});">Liste anzeigen</a>)
+					</td>
+				</tr>
+			</table>
+			<br />
+		</tal:block> 
+	</metal:macro>
+</metal:macro>
+</html>

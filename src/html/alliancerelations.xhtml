@@ -1,0 +1,66 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<div class="divhead">Abkommen erstellen</div>
+		<div class="divbody">
+			<form action="alliance.php" method="post">
+				<input type="hidden" name="SHOW_RELATIONS" value="1" />
+				<select name="oid">
+					<option tal:repeat="data THIS/getAllianceList" tal:content="data/getNameWithoutMarkup" value="runtime" tal:attributes="value data/getId">NAME</option>
+				</select>
+				<select name="type">
+					<option value="runtime" tal:attributes="value php:ALLIANCE_RELATION_WAR">Krieg</option>
+					<option value="runtime" tal:attributes="value php:ALLIANCE_RELATION_FRIENDS">Freundschaft</option>
+					<option value="runtime" tal:attributes="value php:ALLIANCE_RELATION_ALLIED">Bündnis</option>
+				</select>
+				<input type="submit" value="Erstellen" name="B_NEW_RELATION" />
+			</form>
+		</div>
+		<br />
+		<table class="tcal">
+			<tr>
+				<th>Beziehungen</th>
+			</tr>
+			<tr>
+				<td class="darkbg">Allianz</td>
+				<td class="darkbg">Abkommen</td>
+				<td class="darkbg">Zeitpunkt</td>
+				<td class="darkbg">Aktionen</td>
+			</tr>
+			<tr tal:condition="not:THIS/getRelations">
+				<td colspan="4">Keine Beziehungen vorhanden</td>
+			</tr>
+			<tr tal:condition="THIS/getRelations" tal:repeat="data THIS/getRelations" tal:attributes="class string:row${repeat/data/odd}">
+				<form method="post" action="alliance.php">
+					<input type="hidden" name="SHOW_RELATIONS" value="1" />
+					<input type="hidden" name="oid" value="runtime" tal:attributes="value data/getOpponent/getId" />
+					<td>
+						<a href="?SHOW_ALLIANCE=1&id=${data/getOpponent/getId}" tal:content="structure bbcode:data/getOpponent/getName">NAME</a>
+					</td>
+					<td>
+						<span tal:content="data/getTypeDescription">TYPE</span>
+						<span tal:condition="not:data/isPending">
+							<span tal:condition="not:php:data.getType() EQ ALLIANCE_RELATION_WAR"> (<a href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al=${data/getId}&sstr=${THIS/getSessionString}">lösen</a>)</span>
+						</span>
+					</td>
+					<td tal:content="data/getDateDisplay">DATE</td>
+					<td tal:condition="not:data/isPending">
+						<a class="linkbutton" tal:condition="data/isWar" href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al=${data/getId}&sstr=${THIS/getSessionString}">Frieden vorschlagen</a>
+						<tal:block tal:condition="not:data/isWar">
+							<select name="type">
+								<option tal:repeat="rels data/getPossibleTypes" tal:content="rels/name" tal:attributes="value rels/value" value="runtime">TYPE</option>
+							</select>
+							<input type="submit" value="Anbieten" name="B_NEW_RELATION" />
+						</tal:block>
+					</td>
+					<td tal:condition="data/isPending">
+						<a tal:condition="data/offerIsSend" href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Zurückziehen</a>
+						<a tal:condition="not:data/offerIsSend" href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Annehmen</a>
+					</td>
+				</form>
+			</tr>
+		</table>
+	</tal:block>
+</tal:block>
+</html>

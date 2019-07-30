@@ -1,0 +1,98 @@
+<html xmlns:stu="stu">
+	<metal:macro metal:define-macro="shiprump">
+		<table class="tcal" tal:condition="not:RUMP/getIsNpc">
+			<tr>
+				<th colspan="2" i18n:translate="">Rumpfdetails</th>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Kategorie</td>
+				<td tal:content="RUMP/getCategory/getName">CATEGORY</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Modullevel</td>
+				<td tal:content="RUMP/getModuleLevel">MODULELEVEL</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Flugkosten</td>
+				<td tal:content="RUMP/getFlightEcost">FLIGHTECOST</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Lagerraum</td>
+				<td tal:content="RUMP/getStorage">STORAGE</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Energiewaffensalven</td>
+				<td tal:content="RUMP/getPhaserVolleys">PHASERVOLLEYS</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Torpedosalven</td>
+				<td tal:content="RUMP/getTorpedoVolleys">TORPVOLLEYS</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Torpedolagerraum</td>
+				<td tal:content="RUMP/getBaseTorpedoStorage">TORPCOUNT</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Sensorreichweite</td>
+				<td tal:content="RUMP/getBaseSensorRange">SENSORRANGE</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Punkte</td>
+				<td tal:content="RUMP/getCategory/getPoints">POINTS</td>
+			</tr>
+			<tr>
+				<td class="darkbg" i18n:translate="">Baukosten</td>
+				<td>
+					<div>
+						<img src="${GFX}/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> ${RUMP/getEpsCost}
+					</div>
+					<div tal:repeat="data RUMP/getBuildingCosts">
+						<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" /> ${data/getCount}
+					</div>
+				</td>
+			</tr>
+		</table>
+	</metal:macro>
+	<metal:macro metal:define-macro="regioninfo">
+		<table class="tcal">
+			<tr>
+				<th colspan="3">Auswirkungen der Kartenfelder</th>
+			</tr>
+			<tr tal:repeat="data REGION/getMapFieldTypes">
+				<td style="width: 30px">
+					<img src="${GFX}/map/${data/getType}.gif" tal:attributes="title data/getName" />
+				</td>
+				<td style="text-align: center; vertical-align: middle;">
+					<img src="${GFX}/buttons/e_trans2.gif" title="Flugkosten" /> ${data/getEpsCost}
+				</td>
+				<td style="vertical-align: middle;">
+					Schaden: ${data/getSpecialDamage}
+				</td>
+			</tr>
+		</table>
+	</metal:macro>
+	<metal:macro metal:define-macro="starsystem">
+		<div style="display: table-cell">
+			<table class="use" tal:define="map SYSTEM/getFieldsMapped">
+				<tr>
+					<th></th>
+					<th class="cen" tal:repeat="field map/xaxis" tal:content="field">CX</th>
+				</tr>
+				<tr tal:repeat="yaxis map/fields">
+					<th tal:content="repeat/yaxis/key">CY</th>
+					<td tal:repeat="xaxis yaxis" class="lss">
+						<img src="${GFX}/map/${xaxis/getFieldType/getType}.gif" />
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div style="width: 200px; padding-left: 5px;display: table-cell; width: 150px; vertical-align:top;">
+			<div class="divhead" style="width: 200px;" tal:content="SYSTEM/getName">NAME</div>
+			<div class="divbody">
+				<img src="gfx/map/${SYSTEM/getType}.gif" /><br />
+				<span i18n:translate="">Typ</span>: ${SYSTEM/getSystemType/getDescription}<br />
+				<span i18n:translate="">Koordinaten</span>: ${SYSTEM/getCX}|${SYSTEM/getCY}<br />
+			</div>
+		</div>
+	</metal:macro>
+</html>

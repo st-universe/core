@@ -1,0 +1,52 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table class="tcal">
+			<tr>
+				<th></th>
+				<th i18n:translate="">Mitglied</th>
+				<th i18n:translate="">Kolonien</th>
+				<th i18n:translate="">Schiffe</th>
+				<th i18n:translate="">Zuletzt online</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tr tal:repeat="data THIS/getAlliance/getMembers">
+				<td style="width: 36px;" tal:define="id data/getUserId">
+					<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+					<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
+				</td>
+				<td>
+					<img src="${GFX}/rassen/${data/getUser/getFaction}s.gif" />
+					<span tal:content="structure bbcode:data/getUser/getName">NAME</span>
+				</td>
+				<td>
+					<img src="${GFX}/planets/${col/getColonyClass}.gif" title="runtime" tal:attributes="title col/getNameWithoutMarkup" tal:repeat="col data/getUser/getOwnColonies" />
+				</td>
+				<td>
+					fill me
+				</td>
+				<td tal:content="data/getUser/getLastActionDisplay">LASTACTION</td>
+				<td style="width: 200px; text-align: center;" tal:condition="not:php:data.getUserId() EQ THIS.getUser().getId()">
+					<tal:block tal:condition="not:data/isFounder">
+						<a href="javascript:void(0);" class="linkbutton" onclick="toggleVisible('promote${data/getUserId}');" i18n:translate="">Befördern</a>
+						<div id="promote${data/getUserId}" style="border-top: 1px solid #262323; margin-top: 10px; padding-top: 10px; display: none;">
+							<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_DIPLOMATIC}&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Außenminister</a><br /><br />
+							<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_SUCCESSOR}&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Vize-Präsident</a>
+							<tal:block tal:condition="THIS/getAlliance/currentUserIsFounder">
+								<br /><br />
+								<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_FOUNDER}&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Präsident</a>
+							</tal:block>
+						</div>
+					</tal:block>
+				</td>
+				<td style="width: 200px;" tal:condition="php:data.getUserId() EQ THIS.getUser().getId()"></td>
+				<td style="text-align: center;">
+					<a tal:condition="not:data/isFounder" href="alliance.php?B_KICK_USER=1&SHOW_MANAGEMENT=1&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton">Rauswerfen</a>
+				</td>
+			</tr>
+		</table>
+	</tal:block>
+</tal:block>
+</html>

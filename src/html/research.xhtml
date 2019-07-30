@@ -1,0 +1,49 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table class="tcal">
+			<tr>
+				<th class="left" i18n:translate="">Bezeichnung</th>
+				<th style="width: 80px;" i18n:translate="">Benötigt</th>
+				<th style="width: 150px;" i18n:translate="">Status</th>
+			</tr>
+			<tr tal:repeat="data THIS/getResearchList" tal:attributes="class string:row${repeat/data/odd}">
+				<td style="vertical-align: middle;">
+					<a href="javascript:void(0);" onclick="showResearchDetails(${data/getId});" tal:content="data/getName">NAME</a>
+				</td>
+				<td class="center">
+					<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
+					<span tal:content="data/getPoints">POINTS</span>
+				</td>
+				<td tal:condition="data/getResearchState" style="vertical-align: middle;">
+					<img style="width: 12px; height: 12px;" src="${GFX}/buttons/menu_forsch1.gif" title="Forschung" />
+					<span tal:condition="data/getResearchState/isResearchInProgress" tal:replace="structure php:renderResearchStatusBar(data.getDonePoints(),data.getPoints())">PROGRESS</span>
+				</td>
+				<td tal:condition="not:data/getResearchState" style="vertical-align: middle;" class="center">
+					Erforschbar
+				</td>
+			</tr>
+		</table>
+		<div tal:condition="THIS/getFinishedResearchList">
+			<br />
+			<table class="tcal">
+				<tr>
+					<th colspan="2">Abgeschlossene Forschungen</th>
+				</tr>
+				<tal:block tal:repeat="data THIS/getFinishedResearchList">
+					<tr tal:attributes="class string:row${repeat/data/odd}" tal:condition="not:data/getResearch/isStartResearch">
+						<td>
+							<a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearchId});" tal:content="data/getResearch/getName">NAME</a>
+						</td>
+						<td style="width: 150px;">
+							Erforscht am ${data/getFinishedDateFormatted}	
+						</td>
+					</tr>
+				</tal:block>
+			</table>
+		</div>
+	</metal:macro>
+</metal:macro>
+</html>

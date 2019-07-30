@@ -1,0 +1,14 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<div style="width: 250px; display: table-cell; padding-right: 5px;" tal:condition="THIS/getDatabaseEntry/hasType">
+				<metal:macro metal:use-macro="html/databasemacros.xhtml/${THIS/getDatabaseEntry/getTypeObject/getMacro}" />
+			</div>
+			<div tal:condition="THIS/getDatabaseEntry/getData" style="display: table-cell; vertical-align: top;">
+				<div class="divhead" tal:content="THIS/getDatabaseEntry/getDescription">DESCRIPTION</div>
+				<div class="divbody" tal:content="structure THIS/getDatabaseEntry/getDataFormatted">DATA</div>
+			</div>
+	</tal:block>
+</tal:block>
+</html>

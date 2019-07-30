@@ -1,0 +1,34 @@
+{
+  "name": "usox/stuniverse3",
+  "autoload": {
+    "classmap": [
+      "src/control",
+      "src/class",
+      "src/lib",
+      "src/admin"
+    ]
+  },
+  "require": {
+    "ext-dom": "*",
+    "ext-mysqli": "*",
+    "ext-xsl": "*",
+    "php": "^7.3",
+    "friendsofphp/php-cs-fixer": "^2.15",
+    "hassankhan/config": "^2.0",
+    "scn/phptal": "^3.0",
+    "zendframework/zend-mail": "^2",
+    "zendframework/zend-validator": "^2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.3",
+    "mockery/mockery": "^1.1"
+  },
+  "config": {
+    "platform": {
+      "php": "7.3"
+    }
+  },
+  "scripts": {
+    "tests": "@php vendor/bin/phpunit tests"
+  }
+}

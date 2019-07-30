@@ -1,0 +1,77 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<metal:macro metal:use-macro="category_starsystems" tal:condition="THIS/getCategory/isCategoryStarSystems" />
+		<metal:macro metal:use-macro="category_tradeposts" tal:condition="THIS/getCategory/isCategoryTradePosts" />
+		<table class="use" tal:condition="THIS/getCategory/displayDefaultList">
+			<tr>
+				<th>Beschreibung</th>
+				<th>Entdeckung</th>
+			</tr>
+			<tr tal:repeat="data THIS/getCategory/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+				<tal:block tal:condition="data/isDiscoveredByCurrentUser">
+					<td>
+						<a href="?SHOW_ENTRY=1&cat=${THIS/getCategory/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+					</td>
+					<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
+				</tal:block>
+				<tal:block tal:condition="not:data/isDiscoveredByCurrentUser">
+					<td>???</td>
+					<td>---</td>
+				</tal:block>
+			</tr>
+		</table>
+	</tal:block>
+</tal:block>
+<metal:macro metal:define-macro="category_starsystems">
+	<table class="use">
+		<tr>
+			<th i18n:translate="">System</th>
+			<th i18n:translate="">Koordinaten</th>
+			<th i18n:translate="">Entdeckung</th>
+		</tr>
+		<tr tal:repeat="data THIS/getCategory/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+			<tal:block tal:condition="data/isDiscoveredByCurrentUser">
+				<td>
+					<a href="?SHOW_ENTRY=1&cat=${THIS/getCategory/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+				</td>
+				<td>
+					<span tal:replace="data/getObject/getCX">CX</span>|<span tal:replace="data/getObject/getCY">CY</span>
+				</td>
+				<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
+			</tal:block>
+			<tal:block tal:condition="not:data/isDiscoveredByCurrentUser">
+				<td>???</td>
+				<td>???</td>
+				<td>---</td>
+			</tal:block>
+		</tr>
+	</table>
+</metal:macro>
+<metal:macro metal:define-macro="category_tradeposts">
+	<table class="use">
+		<tr>
+			<th i18n:translate="">Handelsposten</th>
+			<th i18n:translate="">Koordinaten</th>
+			<th i18n:translate="">Entdeckung</th>
+		</tr>
+		<tr tal:repeat="data THIS/getCategory/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+			<tal:block tal:condition="data/isDiscoveredByCurrentUser">
+				<td>
+					<a href="?SHOW_ENTRY=1&cat=${THIS/getCategory/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+				</td>
+				<td>
+					<span tal:replace="data/getObject/getCX">CX</span>|<span tal:replace="data/getObject/getCY">CY</span>
+				</td>
+				<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
+			</tal:block>
+			<tal:block tal:condition="not:data/isDiscoveredByCurrentUser">
+				<td>???</td>
+				<td>???</td>
+				<td>---</td>
+			</tal:block>
+		</tr>
+	</table>
+</metal:macro>
+</html>

@@ -1,0 +1,64 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<div style="width: 300px; float: left;">
+			<div class="divhead">Schiffe</div>
+			<div class="divbody">
+				<div tal:repeat="data THIS/getShipRumplist">
+					<a href="?SHOW_CATEGORY=1&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
+				</div>
+				<br />
+				<div tal:repeat="data THIS/getRPGShiplist">
+					<a href="?SHOW_CATEGORY=2&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
+				</div>
+			</div>
+		</div>
+		<div style="width: 300px; margin-left: 5px; float: left;">
+			<div class="divhead">Karte</div>
+			<div class="divbody">
+				<div tal:repeat="data THIS/getMaplist">
+					<a href="?SHOW_CATEGORY=4&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
+				</div>
+			</div>
+		</div>
+		<div style="width: 300px; margin-left: 5px; float: left;">
+			<div class="divhead">Wichtige Orte</div>
+			<div class="divbody">
+				<div tal:repeat="data THIS/getPlaceslist">
+					<a href="?SHOW_CATEGORY=3&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
+				</div>
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+		<br />
+		<div style="width: 300px; float: left;">
+			<div class="divhead">Sonstiges</div>
+			<div class="divbody">
+				<a href="?SHOW_SETTLERLIST=1">Siedlerliste</a><br />
+				<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a>
+			</div>
+		</div>
+	</tal:block>
+</tal:block>
+<metal:macro metal:define-macro="top_research_user">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<table class="tcal">
+				<tr>
+					<th i18n:translate="">Siedler</th>
+					<th i18n:translate="">Punkte</th>
+				</tr>
+				<tr tal:repeat="entry THIS/getTopResearchUser" tal:attributes="class string:row${repeat/entry/odd}">
+					<td>
+						<metal:macro metal:use-macro="html/macros.xhtml/userprofile" tal:define="id entry/getUserId" />
+						<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
+					</td>
+					<td tal:content="entry/getPoints">POINTS</td>
+				</tr>
+			</table>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+</html>

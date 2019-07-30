@@ -1,0 +1,24 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table class="tcal">
+			<tr>
+				<th>0|0</th>
+				<th tal:repeat="data THIS/getXHeadRow" tal:content="php:data*MAPFIELDS_PER_SECTION">Y</th>
+			</tr>
+			<tr tal:repeat="rowy THIS/getMapSections">
+				<th style="width: 30px;" tal:content="php:repeat.rowy.number*MAPFIELDS_PER_SECTION">Y</th>
+				<td tal:repeat="data rowy">
+					<a href="?SHOW_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}" tal:content="data">sec</a>
+				</td>
+			</tr>
+		</table>
+		<div tal:condition="THIS/isDebugMode">
+			<br />
+			<a href="?SHOW_EDITOR=1">Karteneditor</a>
+			<a href="?SHOW_OVERALL=1" target="_blank">Gesamtansicht</a>
+		</div>
+	</metal:macro>
+</metal:macro>
+</html>

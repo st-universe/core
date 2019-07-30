@@ -1,0 +1,60 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<form action="comm.php" method="post">
+			<input type="hidden" name="WRITE_KN" value="1" />
+			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+			<tal:block tal:condition="not:THIS/getKNPosting/isNew">
+				<input type="hidden" name="knid" value="runtime" tal:attributes="value THIS/getKNPosting/getId" />
+			</tal:block>
+			<table class="tcal">
+				<tr>
+					<td>
+						<tal:block tal:condition="THIS/getKNPosting/isNew">
+							<div id="writekntitle" class="selected" style="cursor: pointer; float: left; width: 100px; padding: 5px;" onclick="switchToTitleInput();">Titel</div>
+							<div id="writeknplot" style="cursor: pointer; float: left; width: 100px; padding: 5px;" onclick="switchToPlotSelector();">Plot</div>
+						</tal:block>
+						<tal:block tal:condition="not:THIS/getKNPosting/isNew">
+							<div id="writekntitle" tal:condition="not:THIS/getKNPosting/hasPlot" class="selected" style="float: left; width: 100px; padding: 5px;">Titel</div>
+							<div id="writeknplot" tal:condition="THIS/getKNPosting/hasPlot" class="selected" style="float: left; width: 100px; padding: 5px;">Plot</div>
+						</tal:block>
+						<br style="clear: both;" />
+						<div tal:condition="not:THIS/getKNPosting/hasPlot" id="writekntitleinput" style="clear: both; margin: 5px;">
+							<input type="text" name="title" style="width: 100%;" tal:attributes="value THIS/getKNPosting/getTitleDecodedRaw" />
+						</div>
+						<div id="writeknplotselect" style="display: none; margin: 5px;" tal:condition="THIS/getKNPosting/isNew">
+							<metal:macro metal:use-macro="plotselect" />
+						</div>
+						<div id="writeknplotselect" tal:condition="THIS/getKNPosting/hasPlot" style="margin: 5px;">
+							<metal:macro metal:use-macro="plotselect" />
+						</div>
+						<metal:macro metal:define-macro="plotselect">
+							<select name="plotid" style="width: 500px;">
+								<option value="0">------------------------------</option>
+								<tal:block tal:repeat="plot THIS/getActiveRPGPlots">
+									<option value="runtime" tal:attributes="value plot/getId;selected php:THIS.getKNPosting().getPlotId()==plot.getId()" tal:content="plot/getTitleDecodedRaw"></option>
+								</tal:block>
+							</select>
+						</metal:macro>
+					</td>
+				</tr>
+				<tr>
+					<th>Text</th>
+				</tr>
+				<tr>
+					<td><stu:textarea name="text" style="width: 100%; height: 300px;" tal:content="THIS/getKNPosting/getTextDecodedRaw"></stu:textarea></td>
+				</tr>
+				<tr>
+					<td>
+						<input tal:condition="THIS/getKNPosting/isNew" type="submit" name="B_WRITE_KN" value="Hinzufügen" />
+						<input tal:condition="not:THIS/getKNPosting/isNew" type="submit" name="B_EDIT_KN" value="Editieren" />
+						<input value="1" tal:condition="THIS/getKNPosting/isNew" type="checkbox" name="markposting" tal:attributes="checked THIS/getKNPosting/getSetKNMark" /> <span i18n:translate="">Lesezeichen bei diesem Beitrag setzen</span>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</metal:macro>
+</metal:macro>
+</html>

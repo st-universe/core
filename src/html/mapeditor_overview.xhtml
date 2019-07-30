@@ -1,0 +1,17 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table class="tcal">
+			<tr>
+				<th tal:attributes="colspan THIS/getEditorCols">Sektoren</th>
+			</tr>
+			<tr tal:repeat="rowy THIS/getMapSections">
+				<td tal:repeat="data rowy">
+					<a href="?EDIT_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}" tal:content="data">sec</a>
+				</td>
+			</tr>
+		</table>
+	</metal:macro>
+</metal:macro>
+</html>

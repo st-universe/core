@@ -1,0 +1,48 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table class="tcal" tal:condition="THIS/getBoards">
+			<tr>
+				<th>Forum</th>
+				<th>Themen</th>
+				<th>Beiträge</th>
+				<th>Letzter Beitrag</th>
+				<th style="width: 30px;" tal:condition="THIS/getAlliance/currentUserMayEdit"></th>
+			</tr>
+			<tr tal:repeat="board THIS/getBoards" tal:attributes="class string:row${repeat/board/odd}">
+				<td>
+					<a href="alliance.php?SHOW_BOARD=1&bid=${board/getId}" tal:content="structure board/getName">
+						NAME
+					</a>
+				</td>
+				<td tal:content="board/getTopicCount">TOPICS</td>
+				<td tal:content="board/getPostCount">POSTINGS</td>
+				<td tal:condition="board/getLatestPost">
+					<a href="?SHOW_TOPIC=1&bid=${board/getId}&tid=${board/getLatestPost/getTopicId}" tal:content="structure board/getLatestPost/getTopic/getName">NAME</a><br />
+					<span tal:replace="board/getLatestPost/getDateDisplay">DATE</span> von:<br />
+					<span tal:replace="structure bbcode:board/getLatestPost/getUser/getName">NAME</span>
+				</td>
+				<td tal:condition="not:board/getLatestPost">-</td>
+				<td style="text-align: center;" tal:condition="THIS/getAlliance/currentUserMayEdit" tal:define="handle THIS/getUniqHandle">
+					<a href="javascript:void(0)" onclick="openBoardSettings(this,${board/getId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
+						<img src="${GFX}/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
+					</a>
+				</td>
+			</tr>
+		</table>
+		<br />
+		<form action="alliance.php" method="post">
+			<input type="hidden" name="SHOW_BOARD" value="1" />
+			<table class="use" tal:condition="THIS/getAlliance/currentUserMayEdit">
+				<tr>
+					<th>Forum erstellen</th>
+				</tr>
+				<td>
+					Name <input type="text" size="20" name="board" /> <input type="submit" class="button" value="Erstellen" name="B_ADD_BOARD" />
+				</td>
+			</table>
+		</form>
+	</tal:block>
+</tal:block>
+</html>

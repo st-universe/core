@@ -1,0 +1,155 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+        <tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<form action="options.php" method="post">
+			<table class="tcal">
+				<tr>
+					<th colspan="2">Siedlername</th>
+				</tr>
+				<tr>
+					<td style="width: 50%;">
+						<input type="text" style="width: 75%;" name="uname" tal:attributes="value USER/getName" value="runtime" class="text" maxlength="255" />
+						<input type="submit" name="B_CHANGE_NAME" value="ändern" class="button" />
+					</td>
+					<td style="width: 50%;">Vorschau: <span tal:replace="structure bbcode:USER/getName">NAME</span></td>
+				</tr>
+					<tr>
+					<td colspan="2">Dein Spielername ist im Spiel an allen Ecken zu finden. Beachte deshalb bei der Wahl des Namens bitte die <a href="http://wiki.stuniverse.de/index.php/Regeln" target="_blank">Regeln</a><br />
+					Du kannst BB-Code ([b][/b], [i][/i], [color][/color]) verwenden um Deinen Namen zu designen.</td>
+				</tr>
+			</table>
+		</form>
+		<br />
+		<form action="options.php" method="post">
+			<table class="tcal">
+				<tr>
+					<th colspan="2">Passwort</th>
+				</tr>
+				<tr>
+					<td style="width: 200px;">Aktuelles Passwort eingeben</td>
+					<td><input type="password" style="width: 150px;" name="oldpass" class="text" /></td>
+				</tr>
+				<tr>
+					<td>Neues Passwort eingeben</td>
+					<td><input type="password" style="width: 150px;" name="pass" class="text" /></td>
+				</tr>
+				<tr>
+					<td>Neues Passwort wiederholen</td>
+					<td><input type="password" style="width: 150px;" name="pass2" class="text" /> <input type="submit" name="B_CHANGE_PASSWORD" value="ändern" class="button" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">Das Passwort muss aus mindestens 6 Zeichen bestehen. Bitte gib Dein Passwort niemals an andere Personen weiter.</td>
+				</tr>
+			</table>
+		</form>
+		<br />
+		<form action="options.php" method="post">
+			<table class="tcal">
+				<tr>
+					<th>E-Mailadresse</th>
+				</tr>
+				<tr>
+					<td><input type="text" style="width: 250px;" name="email" class="text" value="${THIS/getUser/getEmail}" /> <input type="submit" name="B_CHANGE_EMAIL" value="ändern" class="button" /></td>
+				</tr>
+				<tr>
+					<td>Beachte bitte, dass diese Adresse gültig ist und benutze keine Wegwerf E-Mailadressen. Nachrichten und Löschbestätigungen können Dir sonst unter Umständen nicht zugestellt werden.</td>
+				</tr>
+			</table>
+		</form>
+		<br />
+		<form action="options.php" method="post" enctype="multipart/form-data">
+			<table class="tcal">
+				<tr>
+					<th colspan="2">Avatar</th>
+				</tr>
+				<tr>
+					<td rowspan="3" style="vertical-align: top; width: 160px;">
+						<img tal:condition="USER/getAvatar" src="runtime" tal:attributes="src USER/getFullAvatarPath" />
+						<img tal:condition="not:USER/getAvatar" src="${GFX}/rassen/${USER/getFaction}kn.png" />
+					</td>
+					<td><input type="file" class="button" name="avatar" /> <input type="submit" name="B_CHANGE_AVATAR" value="Hochladen" class="button" /></td>
+				</tr>
+				<tr>
+					<td style="height: 125px; vertical-align: top;">Hier kannst Du einen Avatar hochladen der in Deinem Profil angezeigt wird. Dieses Bild sollte 150x150 Pixel groß sein und im PNG-Format vorliegen.</td>
+				</tr>
+			</table>
+		</form>
+		<br />
+		<form action="options.php" method="post">
+			<table class="tcal">
+				<tr>
+					<th>Siedlerbeschreibung</th>
+				</tr>
+				<tr>
+					<td><stu:textarea name="description" style="width: 100%; height: 200px;" tal:content="USER/getDescriptionDecodedRaw"></stu:textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" value="ändern" name="B_CHANGE_DESCRIPTION" class="button" /></td>
+				</tr>
+			</table>
+		</form>
+		<br />
+		<form action="options.php" method="post">
+			<table class="tcal">
+				<th colspan="2">Accounteinstellungen</th>
+				<tr>
+					<td>
+						<input type="checkbox" name="email_not" value="1" tal:attributes="checked THIS/getUser/getEmailNotification" />
+					</td>
+					<td>
+						Emailbenachrichtigung bei privaten Nachrichten
+					</td>
+					<td>
+						<input type="checkbox" name="save_login" value="1" tal:attributes="checked THIS/getUser/getSaveLogin" />
+					</td>
+					<td>
+						Login nicht speichern (Ideal an fremden Computern)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" name="storage_not" value="1" tal:attributes="checked THIS/getUser/getStorageNotification" />
+					</td>
+					<td>
+						Nachricht bei vollen Lagern zum Tick
+					</td>
+					<td>
+						<input type="checkbox" name="show_online" value="1" tal:attributes="checked THIS/getUser/getShowOnlineState" />
+					</td>
+					<td>
+						Online Status öffentlich
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<input type="submit" class="button" value="Einstellungen ändern" name="B_CHANGE_SETTINGS" />
+					</td>
+				</tr>
+			</table>
+		</form>
+		<br />
+		<form action="options.php" method="post">
+		<input type="hidden" name="cb" value="setOptions" />
+		<input type="hidden" name="delmark" value="1" />
+		<table class="tcal">
+		<tr>
+			<td style="width: 100px;"><input type="submit" class="button" value="Accountlöschung" /></td>
+			<td>Um eine Löschung durchzuführen muss diese bestätigt werden. Dies geschieht via eines Links in einer Email</td>
+		</tr>
+		</table>
+		</form>
+		<br />
+		<form action="options.php" method="post">
+		<input type="hidden" name="cb" value="setOptions" />
+		<input type="hidden" name="vacation" value="1" />
+		<table class="tcal">
+		<tr>
+			<td style="width: 100px;"><input type="submit" class="button" value="Urlaubsmodus" /></td>
+			<td>Noch  mal aktivierbar. <a href="http://wiki.stuniverse.de/index.php/Urlaubsmodus" target="_blank">Wiki-Artikel zum Urlaubsmodus</a></td>
+		</tr>
+		</table>
+		</form>
+	</tal:block>
+</tal:block>
+</html>

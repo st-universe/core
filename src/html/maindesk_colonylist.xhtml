@@ -1,0 +1,24 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+	<table class="tcal">
+	<tr>
+		<th i18n:translate="">Planet für die Erste Kolonie wählen</th>
+	</tr>
+		<tr>
+			<td class="colonylist">
+				<div onclick="goToUrl('maindesk.php?SHOW_COLONYLIST=1&B_FIRST_COLONY=1&id=${colony/getId}')" tal:repeat="colony THIS/getFreeColonyList" tal:attributes="class string:row${repeat/colony/odd} divbody" style="cursor: pointer; display: block; float: left; width: 300px;">
+					<div style="display: table-cell;">
+						<img src="${GFX}/planets/${colony/getColonyClass}.gif" />
+					</div>
+					<div style="vertical-align: middle; display: table-cell;">
+						${colony/getSystem/getName}-<span i18n:translate="">System</span>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</tal:block>
+</tal:block>
+</html>

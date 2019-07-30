@@ -1,0 +1,70 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<form action="comm.php" method="post" name="newpm">
+			<input type="hidden" name="WRITE_PM" value="1" />
+			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+			<div style="float: left; width: 75%;">
+				<table class="tcal">
+					<tr>
+						<th>Empfänger</th>
+					</tr>
+					<tr>
+						<td tal:condition="not:THIS/getReply">
+							Siedler-ID <input type="text" name="recipient" style="width: 50px;" tal:attributes="value THIS/getPM/getRecipientId" />
+							<select name="recid" onchange="updateRecipient();">
+								<option value="0">------------------</option>
+								<option tal:repeat="contact THIS/getFullContactlist" tal:attributes="value contact/getRecipient/getId" tal:content="contact/getRecipient/getNameWithoutMarkup">NAME</option>
+							</select>	
+						</td>
+						<td tal:condition="THIS/getReply">
+							<input type="hidden" name="recipient" value="runtime" tal:attributes="value THIS/getReply/getSender/getId" />
+							<span tal:replace="structure bbcode:THIS/getReply/getSender/getName">NAME</span> (<span tal:replace="THIS/getReply/getSender/getId">ID</span>)
+						</td>
+					</tr>
+					<tr>
+						<th>Text</th>
+					</tr>
+					<tr>
+						<td><stu:textarea name="text" style="width: 100%; height: 300px;" tal:content="THIS/getPM/getTextDecodedRaw"></stu:textarea></td>
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" name="B_WRITE_PM" value="Absenden" />
+						</td>
+					</tr>
+				</table>
+				<div tal:condition="THIS/hasCorrespondence">
+					<br />
+					<div class="divhead" i18n:translate="">Korrespondenz</div>
+					<div tal:repeat="post THIS/getCorrespondence">
+						<table class="tcal">
+							<tr>
+								<td>
+									<img src="${GFX}/rassen/${post/getSender/getFaction}s.gif" />
+									<span i18n:translate="">Von:</span>
+									<span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
+								</td>
+								<td tal:content="post/getDateFormatted" style="width: 120px; text-align: center;">DATE</td>
+							</tr>
+						</table>
+						<table class="tcal">
+							<tr>
+								<td colspan="2" style="vertical-align: top;">
+									<span tal:content="structure post/getTextParsed">TEXT</span>
+								</td>
+							</tr>
+						</table>
+						<br />
+					</div>
+				</div>
+			</div>
+			<div style="float: left; width: 24%; margin-left: 1%">
+				<metal:macro metal:use-macro="html/commmacros.xhtml/pmsidebar" tal:define="markcat php:FALSE" />
+			</div>
+		</form>
+	</metal:macro>
+</metal:macro>
+</html>

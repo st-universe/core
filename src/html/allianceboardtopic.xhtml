@@ -1,0 +1,50 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<a href="?SHOW_NEW_POST=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}" class="linkbutton">Antwort erstellen</a>
+		<br />
+		<br />
+		<metal:macro metal:use-macro="html/alliancemacros.xhtml/topicnavigation" />
+		<br />
+		<div tal:repeat="post THIS/getTopicPostings">
+			<table tal:attributes="class string:tcal row${repeat/post/odd}">
+				<tr>
+					<td>
+						<img src="${GFX}/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
+					</td>
+					<td style="width: 100px;" tal:condition="THIS/getAlliance/currentUserIsBoardModerator">
+						<stu:imagelink image="x" href="?B_DEL_POSTING=1&bid=${THIS/getTopic/getBoardId}&tid=${post/getTopicId}&pid=${post/getId}&sstr=${THIS/getSessionString}" title="Löschen" i18n:attributes="title" />
+					</td>
+					<th tal:content="post/getDateDisplay" style="width: 120px;">DATE</th>
+				</tr>
+			</table>
+			<table class="tcal">
+				<tr>
+					<td style="width: 150px; text-align: center; vertical-align: top;">
+						<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
+						<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
+						<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
+					</td>
+					<td style="vertical-align: top;">
+						<span tal:content="structure post/getTextParsed">TEXT</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" tal:attributes="class string:row${repeat/post/odd}">
+						<div tal:define="id post/getUserId">
+							<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
+							<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+						</div>
+					</td>
+				</tr>
+			</table>
+			<br />
+		</div>	
+		<br />
+		<metal:macro metal:use-macro="html/alliancemacros.xhtml/topicnavigation" />
+		<br />
+		<a href="?SHOW_NEW_POST=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}" class="linkbutton">Antwort erstellen</a>
+	</tal:block>
+</tal:block>
+</html>

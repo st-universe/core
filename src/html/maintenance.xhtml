@@ -1,0 +1,20 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table class="use" style="width: 600px">
+			<tr>
+				<th>Wartung</th>
+			</tr>
+			<tr>
+				<td>Im Moment ist der Wartungsmodus aktiv. Dies kann folgende Gründe haben:<br /><br />
+					<ul style="list-style-type: none;">
+						<li>- Der nächtliche Wartungsmodus wurde ausgelöst (5 Uhr). Dieser dauert etwa 5 Minuten</li>
+						<li>- Das Spiel wurde von den Admins in den Wartungsmodus gestellt. Informationen dazu gibt es im Forum oder im Chat.</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+	</metal:macro>
+</metal:macro>
+</html>

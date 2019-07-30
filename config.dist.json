@@ -1,0 +1,18 @@
+{
+  "db": {
+    "host": "change.me",
+    "port": 3306,
+    "user": "change",
+    "pass": "me",
+    "database": "change_me"
+  },
+  "debug": {
+    "loglevel": 7
+  },
+  "game": {
+    "version": "3.0.0",
+    "registration": {
+      "magic_word": "changeme"
+    }
+  }
+}

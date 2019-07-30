@@ -1,0 +1,128 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<table style="width: 100%;" cellpadding="0" cellspacing="0">
+			<tr>
+				<td style="vertical-align: top;">
+					<div style="width: 100%;">
+						<tal:block tal:condition="THIS/displayFirstColonyDialogue">
+							<stu:box title="Die Erste Kolonie" i18n:attributes="title">
+								<div i18n:translate="">
+									Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
+								</div>
+								<div i18n:translate="">
+									Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
+								</div><br />
+								- <a href="?SHOW_COLONYLIST=1" i18n:translate="">Kolonie gründen</a>
+							</stu:box>
+							<br />
+						</tal:block>
+						<table class="tcal" tal:define="posts THIS/getNewKNPostings">
+							<tr>
+								<th colspan="2">
+									<a href="comm.php?SHOW_KN=1" i18n:translate="">
+										Neue KN-Beiträge (<span i18n:name="postcount" tal:replace="THIS/getNewKNPostingCount" />)
+									</a>
+								</th>
+							</tr>
+							<tr tal:condition="not:posts">
+								<td style="padding: 5px;">Keine</td>
+							</tr>
+							<tal:block tal:condition="posts" tal:repeat="data posts">
+								<tr>
+									<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
+										<a href="userprofile.php?uid=${data/getUserId}">
+											<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="src data/getUser/getFullAvatarPath" />
+										</a>
+									</td>
+									<td>
+										<span tal:condition="data/hasPlot" i18n:translate="">Plot:</span>
+										<span tal:condition="not:data/hasPlot" i18n:translate="">Titel:</span>
+										<a href="comm.php?SHOW_KN=1&mark=0" tal:content="structure data/getTitleDecoded">TITLE</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:data/getUser/getName" /></span>
+										-
+										<span tal:content="data/getDateDisplay">DATE</span>
+										-
+										<span tal:replace="data/getCommentcount">COMMENTS</span> <span i18n:translate="">Kommentare</span>
+									</td>
+								</tr>
+							</tal:block>
+						</table>
+						<tal:block tal:condition="THIS/getUser/isInAlliance">
+							<br />
+							<table class="tcal">
+								<tr>
+									<th colspan="3">
+										<a href="alliance.php?SHOW_BOARDS=1">Allianzforum</a>
+									</th>
+								</tr>
+								<tr tal:condition="not:THIS/getLatestAllianceBoardTopics">
+									<td colspan="3">Keine Beiträge vorhanden</td>
+								</tr>
+								<tal:block tal:repeat="data THIS/getLatestAllianceBoardTopics">
+									<tr>
+										<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
+											<a href="userprofile.php?uid=${data/getLatestPost/getUserId}">
+												<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="src data/getLatestPost/getUser/getFullAvatarPath" />
+											</a>
+										</td>
+										<td>
+											<span i18n:translate="">Thema:</span>
+											<a href="alliance.php?SHOW_TOPIC=1&bid=${data/getBoardId}&tid=${data/getId}" tal:content="structure bbcode:data/getName">
+												NAME
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:data/getLatestPost/getUser/getName" /></span>
+											-
+											<span tal:content="data/getLastPostDateDisplay">DATE</span>
+										</td>
+									</tr>
+								</tal:block>
+							</table>
+						</tal:block>
+					</div>
+					<br />
+                    <stu:box title="Letzte Ereignisse" i18n:attributes="title">
+                        <div tal:condition="not:THIS/getRecentHistory" i18n:translate="">Keine</div>
+                        <div class="list" tal:condition="THIS/getRecentHistory" tal:repeat="item THIS/getRecentHistory">
+                            <div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT</div>
+                            <div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
+                        </div>
+                    </stu:box>
+				</td>
+				<td style="vertical-align: top; width: 360px;">
+					<div style="margin-left: 10px; width: 350px;">
+						<stu:box title="Profilbesucher" i18n:attributes="title">
+							<div style="width: 100%; text-align: center;" tal:condition="not:THIS/getRecentProfileVisitors">
+								Keine Besucher
+							</div>
+							<a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}" tal:repeat="data THIS/getRecentProfileVisitors"><img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55" height="55" tal:attributes="src data/getUser/getFullAvatarPath;title data/getUser/getNameWithoutMarkup"/></a>
+						</stu:box>
+						<br />
+						<stu:box title="Zufällige Spieler (online)">
+							<div style="width: 100%; text-align: center;" i18n:translate="" tal:condition="not:THIS/getRandomOnlineUsers">
+								Kein Siedler online
+							</div>
+							<div tal:condition="THIS/getRandomOnlineUsers">
+								<metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures" tal:define="userlist THIS/getRandomOnlineUsers" />
+							</div>
+						</stu:box>
+					</div>
+					<br />
+					<div style="width: 360px">
+						<metal:macro metal:use-macro="html/colonymacros.xhtml/ship_buildprogress" tal:condition="THIS/getShipBuildProgress" />
+					</div>
+				</td>
+			</tr>
+		</table>	
+	</tal:block>
+</tal:block>
+</html>

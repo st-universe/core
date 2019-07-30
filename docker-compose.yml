@@ -1,0 +1,21 @@
+version: '3'
+services:
+  stu3-db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: studb
+      MYSQL_DATABASE: stu_db
+      MYSQL_USER: stu
+      MYSQL_PASSWORD: stu
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      static-network:
+        ipv4_address: 172.31.128.2
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16
+

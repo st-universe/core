@@ -1,0 +1,1174 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-21 12:42+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Sammi <sammi@geekmail.de>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Bookmarks: -1,327,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+msgid "Einzelschiffe"
+msgstr "Single vessels"
+
+msgid "Kolonie"
+msgstr "Yer homeports, matey"
+
+msgid "Zufriedenheit"
+msgstr "yer crews likin'"
+
+msgid "Loyalität"
+msgstr "loyalty"
+
+msgid "Umweltkontrollen"
+msgstr "pollution contolling facility"
+
+msgid "Zerschmetterte Opposition"
+msgstr "crrrushed enemies"
+
+msgid "Umweltverschmutzung"
+msgstr "pollution"
+
+msgid "Opposition"
+msgstr "yer enemys in port"
+
+#, php-format
+msgid "Es sind %d Arbeitslose ausgewandert"
+msgstr "%d layabouts have walked the plank"
+
+msgid "Es sind alle Arbeitslosen ausgewandert"
+msgstr "All layabouts are gone to davy jones locker"
+
+#, php-format
+msgid "Es wurden %d %s hergestellt"
+msgstr "%d've been crafted %s times."
+
+msgid "Tarnung"
+msgstr ""
+
+msgid "Hülle"
+msgstr "hull"
+
+msgid "Schilde"
+msgstr "layer o' scallops"
+
+msgid "EPS-Leitungen"
+msgstr "tube o'rum"
+
+msgid "Antrieb"
+msgstr "mainsail"
+
+msgid "Reaktor"
+msgstr "rum distillery"
+
+msgid "Computer"
+msgstr "device o' thinkin'"
+
+msgid "Energiewaffe"
+msgstr "powder gun"
+
+msgid "Torpedobank"
+msgstr "vessel's main cannon"
+
+msgid "Spezial"
+msgstr "speciale"
+
+msgid "Sensoren"
+msgstr "spyglass"
+
+msgid "Auf der Kolonie "
+msgstr "o' yer port"
+
+msgid "-- Das Schiff wurde kampfunfähig gemacht"
+msgstr "Thar vessel be no longer shipshape for fightin'"
+
+msgid "Trümmer"
+msgstr "Floatsam"
+
+msgid "Energiesystem"
+msgstr "System o' rum"
+
+msgid "Impulsantrieb"
+msgstr "Sails o' impulse"
+
+msgid "Warpkern"
+msgstr "Warrrpcorrre"
+
+msgid "Das Bild darf maximal 600 Pixel breit sein"
+msgstr "Yer portrait may only be 600 Tokens wide"
+
+msgid "Das Bild darf maximal 150 Pixel hoch sein"
+msgstr "Yer portrait may only be 150 Tokens high"
+
+msgid "Das Bild wurde gelöscht"
+msgstr "Yer Portrait has been tossed over board!"
+
+msgid "Zur Allianz Homepage"
+msgstr "To the other fleet's home port"
+
+msgid "Unbesetzt"
+msgstr "Nuthin'!"
+
+msgid "Das Thema wurde gelöscht"
+msgstr "The topic is tossed over board"
+
+msgid "Der Beitrag wurde gelöscht"
+msgstr "The talkin' is tossed over board"
+
+msgid "Das Thema wurde als wichtig markiert"
+msgstr "The topic is signed by the black spot"
+
+msgid "Das Thema ist nicht mehr wichtig"
+msgstr "The black spot is no longer on thar topic"
+
+msgid "Orbitalmanagement"
+msgstr "Workin' in space"
+
+msgid " / Orbitalmanagement"
+msgstr "Workin' in space"
+
+msgid "Das Gebäude auf diesem Feld ist noch nicht fertig"
+msgstr "Thar buildin's are not ready"
+
+msgid "Keine Energie vorhanden"
+msgstr "The rum is all gone!"
+
+#, php-format
+msgid "Die %s hat die Schilde aktiviert"
+msgstr "The %s's layer o' scallops is alive"
+
+#, php-format
+msgid "Der Lagerraum der %s ist voll"
+msgstr "No more room in the %s's hold"
+
+msgid "Keine Waren zum Beamen vorhanden"
+msgstr "No plunder to be sent"
+
+msgid "Es wurde keine Waren zum Beamen ausgewählt"
+msgstr "Ya didn't tell us what plunder ta send!"
+
+#, php-format
+msgid "Die Kolonie %s hat folgende Waren zur %s transferiert"
+msgstr "The port %s sendin' followin' plunder to %s"
+
+#, php-format
+msgid "%s ist nicht beambar"
+msgstr "Cannae take %s aboard"
+
+#, php-format
+msgid "%d %s (Energieverbrauch: %d)"
+msgstr "%d %s (Needin' rum: %d)"
+
+#, php-format
+msgid "Die Kolonie %s hat folgende Waren von der %s transferiert"
+msgstr "The port %s is sendin' the followin' plunder to %s"
+
+msgid "Es wurden keine Schiffe ausgewählt"
+msgstr "No vessels selected, Cap'n"
+
+#, php-format
+msgid "%s: Batterie um %d Einheiten aufgeladen"
+msgstr "%s: Spare rum has been filled with %d bottles"
+
+#, php-format
+msgid "%s: Nicht genügend Crew vorhanden (%d benötigt)"
+msgstr "%s: Not seadogs aboard yer ship, cap'n - ye need %d hands"
+
+#, php-format
+msgid "%s: Die Crew wurde hochgebeamt"
+msgstr ""
+
+#, php-format
+msgid "%s: Die Crew wurde runtergebeamt"
+msgstr ""
+
+#, php-format
+msgid "Der Warpkern der %s wurde um %d Einheiten aufgeladen"
+msgstr "The warrpcore's o' the %s has been loadin' by %d bottles o' rum"
+
+#, php-format
+msgid "Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen"
+msgstr "Port %s in waters %s has been loadin' the warrrpcore o' the %s by %d bottles o' rum"
+
+#, php-format
+msgid "%s: Es wird Deuterium und Antimaterie zum Aufladen des Warpkerns benötigt"
+msgstr ""
+
+#, php-format
+msgid "%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden"
+msgstr "%s: Cap'n there are no more cannonballs o' type %s in this port"
+
+#, php-format
+msgid "%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert"
+msgstr "%s: %d cannonballs o' type %s have been hauled back"
+
+#, php-format
+msgid "%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert"
+msgstr "%s: Thar been %d cannonballs o' type %s hauled aboard"
+
+msgid " / Schiffbau"
+msgstr "buildin' vessels"
+
+msgid "Schiffbau"
+msgstr "buildin' vessels"
+
+msgid "Schiffbau nach Bauplan"
+msgstr "buildin' vessels by drawin'"
+
+msgid "Die Werft ist nicht aktiviert"
+msgstr ""
+
+msgid "In dieser Werft wird bereits ein Schiff gebaut"
+msgstr ""
+
+#, php-format
+msgid "Es wurde kein Modul des Typs %s ausgewählt"
+msgstr "Ye have not selected any module o' type %s"
+
+#, php-format
+msgid "Es wird 1 %s benötigt"
+msgstr "Yar be needin' 1 %s"
+
+msgid "Bauplan "
+msgstr "scribblin'"
+
+msgid "Lege neuen Bauplan an: "
+msgstr "Scribble new drawin'"
+
+msgid "Benutze verfügbaren Bauplan: "
+msgstr "Use old drawin'"
+
+#, php-format
+msgid "Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s"
+msgstr ""
+
+#, php-format
+msgid "Es wird %d Energie benötigt - Vorhanden ist nur %d"
+msgstr "Needin' %d rum - thar is only %d bottles left"
+
+#, php-format
+msgid "Es wird %d %s benötigt"
+msgstr "Ye need %d %s"
+
+#, php-format
+msgid "Es wird %d %s benötigt - Vorhanden ist nur %d"
+msgstr "Ye need %d %s - thar is only %d"
+
+#, php-format
+msgid "%s-Klasse wurde gebaut"
+msgstr "Ship of class %s is built"
+
+msgid "Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden"
+msgstr "There must be only one vessel to sail sail to unchartered beaches"
+
+msgid "Es ist für den Start des Schiffes nicht genügend Crew vorhanden"
+msgstr "Thar is not enough rum left to celebrate the launching o' this vessel"
+
+msgid "Im Moment sind nur 10 Schiffe pro Siedler erlaubt"
+msgstr "Ye cannae have more than 10 vessels at the moment"
+
+#, php-format
+msgid "Neuer Datenbankeintrag: %s-System"
+msgstr "New logbook entry: Seas of %s"
+
+#, php-format
+msgid "Neuer Datenbankeintrag: %s"
+msgstr "New logbook entry: %s"
+
+msgid "Das Schiff wurde gestartet"
+msgstr "Yer vessel has left port"
+
+msgid "Kein Lagerraum verfügbar"
+msgstr "The hold's be full, matey!"
+
+#, php-format
+msgid "Die %s ist gelandet"
+msgstr "%s has entered the port"
+
+#, php-format
+msgid "Zur Herstellung von %s wird %s benötigt"
+msgstr "Ye'r needin' %2$s for craftin' of %1$s"
+
+#, php-format
+msgid "Zur Herstellung von %s wird %d %s benötigt"
+msgstr "Yer needin' %d %2$s for craftin' of %1$s"
+
+msgid "Es wurden keine Module hergestellt"
+msgstr "Thar been crafted no modules"
+
+msgid "Es wurden folgende Module zur Warteschlange hinzugefügt"
+msgstr "Followin' modules are sent to production"
+
+#, php-format
+msgid "Es wurden %d Torpedos des Typs %s hergestellt"
+msgstr "Ye have crafted %d cannonballs o' type %s"
+
+msgid "Es wurden keine Torpedos hergestellt"
+msgstr "Ye have not crafted any cannonballs"
+
+msgid "Es befindet sich keine aktivierte Akademie auf diesen Planeten"
+msgstr "Thar is no Seadog training port here"
+
+msgid "Derzeit kann keine weitere Crew ausgebildet werden"
+msgstr "Ye canna train more seadogs right now"
+
+#, php-format
+msgid "Es werden %d Crew ausgebildet"
+msgstr "Ye are training %d seadogs"
+
+msgid "Soziales"
+msgstr "Drink! Feck! Arse! Gurlz!"
+
+msgid "Industrie"
+msgstr "Workin' yar arse off"
+
+msgid "Infrastruktur"
+msgstr "Even more workin', Cap'n"
+
+msgid "Dieser Beitrag kann nicht gelöscht werden"
+msgstr "This scribblin' cannae be tossed aboard"
+
+msgid "Dieser Siedler kann nicht hinzugefügt werden"
+msgstr "Cannae add this sailor"
+
+msgid "Der Siedler betrachtet Dich von nun an als Feind"
+msgstr "This sailor says yer're scallywag"
+
+msgid "Kommentar wurde editiert"
+msgstr "Blabberin' be edited"
+
+msgid "Kommentare für Posting "
+msgstr "talkin's fer chatter"
+
+msgid "Die ausgewählten Notizen wurden gelöscht"
+msgstr "Selected scribbin's have been tossed aboard"
+
+msgid "Benutzername nicht gefunden"
+msgstr "Pirate's name not found"
+
+msgid "Das Passwort ist falsch"
+msgstr "Yer secret code is bilge, landlubber"
+
+msgid "Login bestätigen"
+msgstr "Login shipshape! Set sails!"
+
+msgid "Die "
+msgstr "The"
+
+msgid ": Die Schilde sind nicht aufgeladen"
+msgstr "layer o' scallops is no more"
+
+msgid ": Abgedockt"
+msgstr "We be don' docked!"
+
+msgid ": Keine Torpedos geladen"
+msgstr "No cannonballs aboard"
+
+msgid ": Nicht genügend Energie vorhanden"
+msgstr "Not enough rum"
+
+msgid "Flottenbefehl ausgeführt: Deaktivierung der Torpedobänke"
+msgstr "Aye Cap'n: Cannons withdrawn on all vessels"
+
+msgid ": Schilde deaktiviert"
+msgstr "layer o' scallops cleaned"
+
+msgid "Flottenbefehl ausgeführt: Deaktivierung der Tarnung"
+msgstr "Aye Cap'n: Fog deactivated on all vessels"
+
+msgid ": Nicht genügend Energie zum Abdocken vorhanden"
+msgstr "Not enough rum to leave port"
+
+msgid ": Traktorstrahl aufgrund von Energiemangel deaktiviert"
+msgstr "Grapplin' hook withdrawn - yer rum is all gone"
+
+msgid "Flottenbefehl ausgeführt: Deaktivierung des Warpantriebs"
+msgstr "Aye Cap'n: Warrrpdrrrive is deactivated"
+
+msgid "Flottenbefehl ausgeführt: Alarmstufe Grün"
+msgstr "Aye Cap'n: Shore leave"
+
+msgid "Flottenbefehl ausgeführt: Alarmstufe Gelb"
+msgstr "Aye Cap'n: Hoistin' the colours"
+
+msgid "Flottenbefehl ausgeführt: Alarmstufe Rot"
+msgstr "Aye Aye Cap'n: No Quarters"
+
+msgid "Neuer Datenbankeintrag: "
+msgstr "New entry in logbook"
+
+msgid "Der Traktorstrahl ist aktiviert"
+msgstr "Graplin' hook is in use"
+
+#, php-format
+msgid "Es sind maximal %d Schiffspunkte pro Flotte möglich"
+msgstr "The vessel cannae join the fleet. Ye can use %d shippoints at a max"
+
+#, php-format
+msgid "Die %s ist der Flotte %s beigetreten"
+msgstr "The %s has joined the fleet %s"
+
+msgid "Die Ersatzbatterie ist leer"
+msgstr "Spare rum is all gone"
+
+msgid "Die Tarnung ist aktiviert"
+msgstr "Yer have sent the fog"
+
+msgid "Der Warpantrieb ist aktiviert"
+msgstr "Yer have switched on the warrrpdrrive"
+
+#, php-format
+msgid "Die %s befindet sich im Warp"
+msgstr "The %s is sailin' at warrrp"
+
+msgid "Es wurde keine Energiemenge angegeben"
+msgstr "Ye haven't told us how much rum, cap'n"
+
+#, php-format
+msgid "Der Energiespeicher der %s ist voll"
+msgstr "Ye cannae take more rum cap'n - the %s is fully loaded"
+
+#, php-format
+msgid "Es wurde %d Energie zur %s transferiert"
+msgstr "Ye have sent %d bottles o' rum to the %s"
+
+#, php-format
+msgid "Die %s hat folgende Waren zur %s transferiert"
+msgstr "The %s sent these treasures to %s"
+
+msgid "Die Schilde sind aktiviert"
+msgstr "The layer o' scallops is alive"
+
+#, php-format
+msgid "Die %s hat folgende Waren von der %s transferiert"
+msgstr "The %s received followin' plunder from the %s"
+
+#, php-format
+msgid "Der Lagerraum der Kolonie %s ist voll"
+msgstr "No more storage room in thar port %s"
+
+#, php-format
+msgid "Die %s hat folgende Waren zur Kolonie %s transferiert"
+msgstr "The %s sendin' the plunder to the port %s"
+
+#, php-format
+msgid "Die %s hat folgende Waren von der Kolonie %s transferiert"
+msgstr "The %s receivin' followin' plunder to the port %s"
+
+msgid "Ziel kann nicht erfasst werden"
+msgstr "We cannae lock on target, Cap'n!"
+
+msgid "Das Schiff ist kampfunfähig"
+msgstr "Thar vessel is not shipshape for fightin'"
+
+#, php-format
+msgid "Kampf in Sektor %d|%d"
+msgstr "Battle in waters %d|%d"
+
+msgid "Angriff durchgeführt"
+msgstr "Cannon blown"
+
+msgid "Kolonie gründen"
+msgstr "land on new beaches"
+
+msgid "Flottenbefehl ausgeführt: Andocken an "
+msgstr "Aye Cap'n: Landin' in port"
+
+msgid "Es sind alle Dockplätze belegt"
+msgstr "Thar is no pier free for yer vessel"
+
+msgid ": Das Schiff ist getarnt"
+msgstr "Thar vessel is in the fog"
+
+msgid "Flottenbefehl ausgeführt: Abdocken von "
+msgstr "Aye Cap'n: Sailin' from port"
+
+msgid "Dein Warenkonto an diesem Posten ist voll"
+msgstr "Yer hold in thar harbour is full"
+
+msgid "Keine Waren zum Transferieren vorhanden"
+msgstr "There is no plunder to be sent"
+
+msgid "Es wurde keine Waren zum Transferieren ausgewählt"
+msgstr "There is no plunder selected for sendin'"
+
+msgid "Es wurden folgende Waren ins Warenkonto transferiert"
+msgstr "The plunder is sent to the harbour's hold"
+
+#, php-format
+msgid "Der Handel mit %s ist in diesem Handelsnetzwerk verboten"
+msgstr "Ye cannae trade with %s in this port - there is a bounty on yer head"
+
+#, php-format
+msgid "%d %s"
+msgstr "%d %s"
+
+msgid "Es wurden folgende Waren vom Warenkonto transferiert"
+msgstr "The plunder is been sent from yer hold"
+
+msgid "Flottenbefehl ausgeführt: Aufladung des Warpkerns"
+msgstr "Aye Cap'n: Warrrpcore loaded"
+
+#, php-format
+msgid "%s: Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt"
+msgstr "%s: Ye need at least 1 Deuterium and 1 Antimatter to fill the warrpcore with rum"
+
+#, php-format
+msgid "%s: Der Warpkern wurde um %d Einheiten aufgeladen"
+msgstr "%s: The warrrpcore has been loaded with %d bottles o' rum"
+
+msgid "Der Warpkern ist bereits vollständig geladen"
+msgstr "The warrrpcorrre is completely loaded"
+
+#, fuzzy
+msgid "Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt"
+msgstr "Ye need at least 1 Deuterium and 1 Antimatter to fill the warrpcore with rum"
+
+#, php-format
+msgid "Der Warpkern wurde um %d Einheiten aufgeladen"
+msgstr "The warrrpcore has been loaded with %d bottles o' rum"
+
+msgid "Es können keine weiteren Monde besiedeln werden"
+msgstr "Ye cannae have more small ports"
+
+msgid "Es können keine weiteren Planeten besiedeln werden"
+msgstr "Ye cannae have more large ports"
+
+msgid "Keine Rettungskapseln vorhanden"
+msgstr "Thar are no more life boats left"
+
+#, php-format
+msgid "Zum Bergen der Rettungskapseln wird %d Energie benötigt"
+msgstr "Ye need %d rum to haul the life boat aboard"
+
+#, php-format
+msgid "Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen."
+msgstr ""
+
+msgid "Die Rettungskapseln wurden geborgen"
+msgstr "The life boats have been hauled aboard"
+
+msgid "Es wird 1 Energie benötigt"
+msgstr "Ye need 1 drop o' rum"
+
+#, php-format
+msgid "Es wird %d Energie benötigt"
+msgstr "Ye need %d bottles o' rum"
+
+msgid "Es wird 1 Crewmitglied benötigt"
+msgstr "Ye need 1 seadog fer fer that"
+
+#, php-format
+msgid "Es werden %d Crewmitglieder benötigt"
+msgstr "Ye need %d seadogs fer that"
+
+#, php-format
+msgid "Die %s hat nicht genug Energie für den Flug"
+msgstr "The %s has not enough rum left to set course"
+
+#, php-format
+msgid "Die Flotte fliegt in Sektor %d|%d ein"
+msgstr "Yer Fleet has sailed into waters %d|%d"
+
+msgid "Dieses Schiff verfügt über keinen Warpantrieb"
+msgstr "This vessel has no warrpdrrive"
+
+#, php-format
+msgid "Die %s hat nicht genug Energie für den Flug (%d benötigt)"
+msgstr "The %s has not enough rum left to sail on (ye need %d)"
+
+#, php-format
+msgid "Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"
+msgstr "The %s cannae activate the warrrpdrrrive - there is no more rum left"
+
+msgid "Das Flaggschiff hat nicht genügend Energie für den Weiterflug"
+msgstr "yer flagship has no more rum left"
+
+msgid "Das nächste Feld kann nicht passiert werden"
+msgstr "Ye cannae fly beyond 'ere - the sea is too rough"
+
+msgid "Schwarzes Brett"
+msgstr "Blackboarrrd"
+
+msgid "Normal"
+msgstr ""
+
+msgid "Crewman"
+msgstr "Scrawny seadog"
+
+msgid "Freund"
+msgstr "matey"
+
+msgid "Feind"
+msgstr "scallywag"
+
+msgid "Neutral"
+msgstr "drab"
+
+msgid "(${points}/${maxpoints} Punkte)"
+msgstr "(${points}/${maxpoints} Pieces o' eight)"
+
+msgid "6 zufällige Siedler"
+msgstr "6 random sailorrrs"
+
+msgid "Abschicken"
+msgstr "send bottle message"
+
+msgid "Absenden"
+msgstr "Sendin'"
+
+msgid "Akademie"
+msgstr "Seadog training port"
+
+msgid "Aktivieren"
+msgstr "Activatin'"
+
+msgid "Alarmstufe"
+msgstr "Seadog's attention"
+
+msgid "Als Unwichtig markieren"
+msgstr "Remove the black spot"
+
+msgid "Als Wichtig markieren"
+msgstr "Put the black spot on the markin"
+
+msgid "An:"
+msgstr "To:"
+
+msgid "Angehalten"
+msgstr ""
+
+msgid "Anzahl"
+msgstr "Count'"
+
+msgid "Anzahl Kolonien auf Monden:"
+msgstr "How many small ports:"
+
+msgid "Anzahl Kolonien auf Planeten:"
+msgstr "How many large ports:"
+
+msgid "Anzahl löschen"
+msgstr "toss number overboard"
+
+msgid "Ausbilden"
+msgstr "Train seadogs"
+
+msgid "Ausbildung"
+msgstr ""
+
+msgid "Ausführen"
+msgstr "Execute orders"
+
+msgid "Ausweichchance"
+msgstr "chance o' evade"
+
+msgid "Ausweichchance (eff.):"
+msgstr "chance o' evade (eff.)"
+
+msgid "Auswirkungen"
+msgstr "Effects"
+
+msgid "Basisschaden (abstrakt)"
+msgstr ""
+
+msgid "Basisschaden:"
+msgstr "base weapon's damage"
+
+msgid "Batterie"
+msgstr "Bottle o' rum"
+
+msgid "Baubar"
+msgstr "constrrructable"
+
+msgid "Bauen"
+msgstr "buildin'"
+
+msgid "Baufauftrag"
+msgstr ""
+
+msgid "Baukosten"
+msgstr "buildin' costs"
+
+msgid "Baupläne"
+msgstr "drawin's"
+
+msgid "Baustatus"
+msgstr "constrrruction status"
+
+msgid "Bauzeit"
+msgstr "constrrruction time"
+
+msgid "Beitrag löschen"
+msgstr "toss scribblin' overboard"
+
+msgid "Benötigt"
+msgstr "Needin'"
+
+msgid "Benötigte Crew: ${crewcount}(100%)"
+msgstr ""
+
+msgid "Benötigte Crew: ${crewcount}(110%)"
+msgstr ""
+
+msgid "Benötigte Crew: ${crewcount}(120%)"
+msgstr ""
+
+msgid "Benötigte Ware / Effekt"
+msgstr "Needin' this Plunder/Effect"
+
+msgid "Bestätigen"
+msgstr "say Aye"
+
+msgid "Bevölkerung"
+msgstr "Landlubbers and wenches"
+
+msgid "Beziehungen zu anderen Allianzen"
+msgstr "Treaties with other fleets"
+
+msgid "Crew"
+msgstr "Seadogs"
+
+msgid "Crewausbildung"
+msgstr "Seadog training"
+
+msgid "Crewbedarf"
+msgstr "Demand o' seadogs"
+
+msgid "Crewbedarf &gt; 120% - Nicht baubar"
+msgstr ""
+
+msgid "Crewberechnung dieser Kolonie"
+msgstr ""
+
+msgid "Deaktivieren"
+msgstr "Shuttid off"
+
+msgid "Demontieren"
+msgstr "Plunder"
+
+msgid "Details"
+msgstr "details"
+
+msgid "Details schließen"
+msgstr "Avast!"
+
+msgid "Du besitzt derzeit keine Kolonien"
+msgstr "Ye don't not have no ports to sail to"
+
+msgid "Du besitzt derzeit keine Schiffe"
+msgstr "Ye don't not have no vessels"
+
+msgid "Effekte"
+msgstr "Effects"
+
+msgid "Energie"
+msgstr "Rum"
+
+msgid "Energiekosten"
+msgstr "Usin' o' rum"
+
+msgid "Energiespeicher"
+msgstr "Boxes o'rum"
+
+msgid "Energiewaffensalven"
+msgstr "Powder gun shots"
+
+msgid "Entdeckung"
+msgstr "Discovery"
+
+msgid "Ersatzbatterie"
+msgstr "Spare rum"
+
+msgid "Ersatzbatterie:"
+msgstr "Secret bottle o' rum:"
+
+msgid "Es können keine Torpedos gebaut werden"
+msgstr "Avast! Ye cannae mould no cannonballs"
+
+msgid "Fertigstellung"
+msgstr "Completion"
+
+msgid "Flotte: Alarmstufe Gelb"
+msgstr "Fleet: Hoist the colours!"
+
+msgid "Flotte: Alarmstufe Grün"
+msgstr "Fleet: Shore leave!"
+
+msgid "Flotte: Alarmstufe Rot"
+msgstr "Fleet: No quarters!"
+
+msgid "Fluchtversuch"
+msgstr "attemptin' to flee (cowards!)"
+
+msgid "Flugkosten"
+msgstr "Rum costs"
+
+msgid "Freie Bevölkerung"
+msgstr ""
+
+msgid "Gespeicherte Baupläne"
+msgstr "boxed drawin's"
+
+msgid "Gleichzeitig Ausbildbar"
+msgstr ""
+
+msgid "Globale Crewübersicht"
+msgstr ""
+
+msgid "Handelsposten"
+msgstr "pirate's cove"
+
+msgid "Hangar"
+msgstr "Pier"
+
+msgid "Herstellen"
+msgstr "Constrrructin'"
+
+msgid "Herstellung"
+msgstr "Makin'"
+
+msgid "Hochbeamen"
+msgstr ""
+
+msgid "Hüllenstärke"
+msgstr "hull strength"
+
+msgid "Im Einsatz"
+msgstr "Bein' buccaneering"
+
+msgid "In Ausbildung"
+msgstr ""
+
+msgid "In Bau"
+msgstr "In constrrruction"
+
+msgid "In Rettungskapseln"
+msgstr ""
+
+msgid "In dem Trümmerfeld befinden sich ${escapepods} Rettungskapseln"
+msgstr "Thar are ${escapepods} life boads in this wreckage"
+
+msgid "Informationen"
+msgstr "Recorrrds"
+
+msgid "Integrität"
+msgstr "Integrrrity"
+
+msgid "Jäger bauen"
+msgstr "buildin' boat"
+
+msgid "Kampflog"
+msgstr "ships' log"
+
+msgid "Kampflog einsehen"
+msgstr "show ships' log"
+
+msgid "Kategorie"
+msgstr "category"
+
+msgid "Kein Siedler online"
+msgstr "No sailor in sight"
+
+msgid "Keine Allianzen vorhanden"
+msgstr "Thar are no fleets"
+
+msgid "Keine Angebote vorhanden"
+msgstr "Thar is no offering"
+
+msgid "Keine Auswahl"
+msgstr ""
+
+msgid "Keine Beiträge vorhanden"
+msgstr "Thar is no chatter"
+
+msgid "Keine Einträge vorhanden"
+msgstr "There is no entry"
+
+msgid "Keine baubaren Rümpfe vorhanden"
+msgstr "There is no constructable vessel available"
+
+msgid "Keine startbaren Schiffe vorhanden"
+msgstr "Ye don't not have no vessels ready to sail"
+
+msgid "Klasse"
+msgstr "class"
+
+msgid "Kolonisierbare Felder"
+msgstr "Where to land yer ship"
+
+msgid "Kommentar"
+msgstr "Blabberin'"
+
+msgid "Kommentare"
+msgstr "Blabberin's"
+
+msgid "Koordinaten"
+msgstr "directions on map"
+
+msgid "Korrespondenz"
+msgstr "long talkin' to yer mateys"
+
+msgid "Lager"
+msgstr "hold"
+
+msgid "Lagerraum"
+msgstr "hold"
+
+msgid "Landen"
+msgstr "Enterin' port"
+
+msgid "Lesezeichen bei diesem Beitrag setzen"
+msgstr "Set yer marker on thar talkin'"
+
+msgid "Löschen"
+msgstr "Let it walk tha plank"
+
+msgid "Max."
+msgstr "max"
+
+msgid "Meldung"
+msgstr "Ahoy!"
+
+msgid "Module"
+msgstr "Modules"
+
+msgid "Modulherstellung"
+msgstr "Construction o' modules"
+
+msgid "Modullevel"
+msgstr "Level o' module"
+
+msgid "Modus"
+msgstr "Modus"
+
+msgid "Mondlimit"
+msgstr "limit o'moon"
+
+msgid "Nachricht schreiben"
+msgstr "ink bottle o' message"
+
+msgid "Name"
+msgstr "Yer pirate's name"
+
+msgid "Name ändern"
+msgstr "change yer name"
+
+msgid "Neuer Bauplan"
+msgstr "New drawin'"
+
+msgid "Noch Ausbildbar"
+msgstr "Seadogs to be trained"
+
+msgid "Ok"
+msgstr "Aye"
+
+msgid "Planet für die Erste Kolonie wählen"
+msgstr "Choose yer first port, matey"
+
+msgid "Planetenlimit"
+msgstr "limit o' ports"
+
+msgid "Punkte"
+msgstr "Pieces o' eight"
+
+msgid "Reaktorleistung"
+msgstr "Rum distillery output"
+
+msgid "Reaktorleistung:"
+msgstr "Rum distillery output"
+
+msgid "Rettungskapseln"
+msgstr "life boats"
+
+msgid "Rettungskapseln bergen"
+msgstr "haul life boats aboard"
+
+msgid "Rolle"
+msgstr ""
+
+msgid "Rumpf"
+msgstr "hulk"
+
+msgid "Rumpfdetails"
+msgstr "hulk details"
+
+msgid "Runterbeamen"
+msgstr ""
+
+msgid "Schiff bauen"
+msgstr "Constrruct vessel"
+
+msgid "Schiff hinzufügen"
+msgstr "foist vessel to yer fleet"
+
+msgid "Schiff starten"
+msgstr "Weigh anchor"
+
+msgid "Schiffe in Bau"
+msgstr "vessels in construction"
+
+msgid "Schildkapazität"
+msgstr "capacity for layer o' scallops"
+
+msgid "Schildregeneration:"
+msgstr "layer o' scallops buildup"
+
+msgid "Sektor"
+msgstr "waters"
+
+msgid "Sensoren aktivieren"
+msgstr "Send seadog to crow's nest"
+
+msgid "Sensorreichtweite:"
+msgstr "range o' crow's nest:"
+
+msgid "Sensorreichweite"
+msgstr "range o' crow's nest"
+
+msgid "Spielversion"
+msgstr "Grog's vintage"
+
+msgid "Standort"
+msgstr "X o' the map"
+
+msgid "System"
+msgstr "sea"
+
+msgid "Systeme"
+msgstr ""
+
+msgid "Systemstatus"
+msgstr "status o' systems"
+
+msgid "Systemzustand"
+msgstr "status o' systems"
+
+msgid "Torpedoherstellung"
+msgstr "Torpedo mouldin'"
+
+msgid "Torpedokapazität"
+msgstr "capacity o' cannonballs in weapons locker"
+
+msgid "Torpedolagerraum"
+msgstr "hold o' cannonballs"
+
+msgid "Torpedos"
+msgstr "Cannonballs"
+
+msgid "Torpedos herstellen"
+msgstr "mould cannonballs"
+
+msgid "Torpedosalven"
+msgstr "cannon salvos"
+
+msgid "Torpedoschaden"
+msgstr ""
+
+msgid "Torpedotyp"
+msgstr "cannonball type"
+
+msgid "Trefferchance"
+msgstr "chance to hit"
+
+msgid "Trefferchance (eff.):"
+msgstr "chance to hit (eff.)"
+
+msgid "Typ"
+msgstr "type"
+
+msgid "Verfügbare Module"
+msgstr "Modules in yer hold"
+
+msgid "Versorgung"
+msgstr ""
+
+msgid "Von:"
+msgstr "From:"
+
+msgid "Waren auf dem Schiff"
+msgstr "Plunder on vessel"
+
+msgid "Waren im Konto"
+msgstr "Plunder in account"
+
+msgid "Warpkernladung"
+msgstr "Warrpcore loadin'"
+
+msgid "Wichtig"
+msgstr "imporrrrtant"
+
+msgid "Zusammenfassung"
+msgstr "Sayin' in few words"
+
+msgid "auf"
+msgstr "on"
+
+msgid "bestätigen"
+msgstr "say Aye"
+
+msgid "löschen"
+msgstr "toss overboard"
+
+msgid "speichern"
+msgstr "belay"
+
+#~ msgid "Die Schiffe wurden versorgt"
+#~ msgstr "Yer vessels are supplied"
+
+#~ msgid "%s: Das Schiff wurde bemannt"
+#~ msgstr "The vessel %s is manned"
+
+#~ msgid "Das Schiff der "
+#~ msgstr "The vessel o'"
+
+#~ msgid "Die für dieses Schiff notwendige Crew übersteigt das Crewlimit"
+#~ msgstr "Ye don't not ne'er have enough seadogs for yer vessel"
+
+#~ msgid "Der Siedler hat %d Deiner Crewmitglieder von einem Trümmerfeld geborgen."
+#~ msgstr "Yer fellow pirate has captured %d o' yer seadogs o' a wreckage"
+
+#~ msgid "Es werden %d Crewmitglieder bemötigt"
+#~ msgstr "Ye need %d seadogs fer that"
+
+#~ msgid "Basisschaden"
+#~ msgstr "base weapon's damage"
+
+#~ msgid "Bemannen"
+#~ msgstr "Enter ship"
+
+#~ msgid "Besatzung"
+#~ msgstr "seadogs"
+
+#~ msgid "Crewberechnung"
+#~ msgstr "Seadogs countin'"
+
+#~ msgid "Crewübersicht"
+#~ msgstr "Seadog's manifest"
+
+#~ msgid "Derzeit werden ausgebildet:"
+#~ msgstr "Today trainin':"
+
+#~ msgid "Durch diese Kolonie erzeugte Crew"
+#~ msgstr "possible seadogs in this port"
+
+#~ msgid "Genutzte Crew"
+#~ msgstr "workin' seadogs"
+
+#~ msgid "Globales Crewlimit"
+#~ msgstr "seadog limit o' all yer fleet"
+
+#~ msgid "Klassifizierung"
+#~ msgstr "classification"
+
+#~ msgid "Pro Tick maximal ausbildbar:"
+#~ msgstr "trainable seadogs per day:"
+
+#~ msgid "Verfügbare Crew"
+#~ msgstr "Seadogs on deck"
+
+#~ msgid "Verfügbare freie Bevölkerung:"
+#~ msgstr "Landlubbers to be trained:"

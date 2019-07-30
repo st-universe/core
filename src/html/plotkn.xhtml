@@ -1,0 +1,42 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<metal:macro metal:use-macro="html/commmacros.xhtml/plotknnavigation" />
+		<br />
+		<div tal:repeat="post THIS/getPlotPostings">
+			<table class="tcal">
+				<tr>
+					<th colspan="2" tal:content="structure post/getTitleDecoded">TITLE</th>
+				</tr>
+				<tr>
+					<td>
+						<img src="${GFX}/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
+					</td>
+					<th tal:content="post/getDateDisplay" style="width: 120px;">DATE</th>
+				</tr>
+			</table>
+			<table class="tcal">
+				<tr>
+					<td style="width: 150px; text-align: center; vertical-align: top;">
+						<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
+						<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
+						<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
+					</td>
+					<td style="vertical-align: top;">
+						<span tal:content="structure post/getTextParsed">TEXT</span>
+						<tal:block tal:condition="post/hasEdit">
+							<br /><br /><br />
+							<span class="knedit">Letzte Bearbeitung: ${post/getEditDateFormatted}</span>
+						</tal:block>
+					</td>
+				</tr>
+			</table>
+			<br />
+		</div>	
+		<br />
+		<metal:macro metal:use-macro="html/commmacros.xhtml/plotknnavigation" />
+	</metal:macro>
+</metal:macro>
+</html>

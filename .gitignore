@@ -1,0 +1,16 @@
+*.table.php
+data/Makefile
+admin/webalizer/*
+admin/backup/*
+html/avatare/alliance/*
+html/avatare/user/*
+astar/**/*
+astar/*
+inc/generated/*
+*.po~
+docu/de/_build/*
+tags
+version_3.0.0
+vendor
+config.json
+*.sql

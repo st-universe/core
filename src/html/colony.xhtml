@@ -1,0 +1,11 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/colonymacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+        <div id="colonymenu">
+            <metal:macro metal:use-macro="html/colonymacros.xhtml/${THIS/getSelectedColonyMenu}" />
+        </div>
+	</metal:macro>
+</metal:macro>
+</html>

@@ -1,0 +1,39 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<div style="width: 150px;" tal:condition="not:THIS/getUser/isInAlliance">
+			<div class="divhead">Aktionen</div>
+			<div class="divbody" style="padding: 10px;">
+				<a href="?CREATE_ALLIANCE=1" class="linkbutton">Allianz gründen</a>
+			</div>
+			<br />
+		</div>
+		<tal:block tal:condition="not:THIS/getAllianceList">
+			<div class="divhead" i18n:translate="">Meldung</div>
+			<div class="divbody" i18n:translate="">Keine Allianzen vorhanden</div>
+		</tal:block>
+		<table class="tcal" tal:condition="THIS/getAllianceList">
+			<tr>
+				<th style="width: 80%;">Allianzen</th>
+				<th>Mitglieder</th>
+				<th>Typ</th>
+				<th>Bewerbung</th>
+			</tr>
+			<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data THIS/getAllianceList">
+				<td class="runtime" tal:attributes="class data/getCSSClass">
+					<a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
+				</td>
+				<td class="runtime" tal:content="data/getMemberCount">COUNT</td>
+				<td class="runtime">
+					<img src="${GFX}/rassen/${data/getFactionId}s.gif" tal:condition="data/getFactionId" />
+				</td>
+				<td>
+					<span tal:condition="data/getAcceptApplications">Ja</span>
+					<span tal:condition="not:data/getAcceptApplications">Nein</span>
+				</td>
+			</tr>
+		</table>
+	</tal:block>
+</tal:block>
+</html>
