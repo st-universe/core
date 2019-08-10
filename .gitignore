@@ -6,7 +6,6 @@ html/avatare/alliance/*
 html/avatare/user/*
 astar/**/*
 astar/*
-inc/generated/*
 *.po~
 docu/de/_build/*
 tags
