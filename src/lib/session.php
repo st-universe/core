@@ -351,5 +351,3 @@ function &currentUser() {
 	}
 	return $currentUser;
 }
-
-?>

@@ -1,7 +1,5 @@
 <?php
-require_once('inc/config.inc.php');
-require_once('control/db.class.php');
-require_once('class/basetable.class.php');
+require_once __DIR__.'/../../inc/config.inc.php';
 
 	function draw($arr) {
 		$p = rand(1,100);
@@ -740,7 +738,7 @@ require_once('class/basetable.class.php');
 		
 		
 		// HALLO WOLV, HIER DER INTERESSANTE TEIL
-		// Einfügen in die DB
+		// Einfï¿½gen in die DB
 		
 		require_once("class/starsystem.class.php");
 		require_once("class/colony.class.php");

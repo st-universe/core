@@ -44,7 +44,7 @@ class BuildingCostData extends BaseTable {
 	}
 
 	function getHalfCount() {
-		return floor($this->getCount()/2);
+		return floor($this->getAmount()/2);
 	}
 
 	public function setTempCount($val) {

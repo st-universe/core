@@ -385,5 +385,3 @@ class ShipSingleAttackCycle extends ShipAttackCycle {
 	}
 
 }
-
-?>

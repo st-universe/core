@@ -1,8 +1,5 @@
 <?php
 
-use PhpTal\Php\TalesInternal;
-use PhpTal\TalesRegistry;
-
 class TalPage {
 	
 	private $template = NULL;
@@ -69,4 +66,3 @@ class TalPage {
 		return str_replace("&gt;",">",$data);
 	}
 }
-?>
