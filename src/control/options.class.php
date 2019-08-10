@@ -170,7 +170,7 @@ class options extends gameapp {
 		mail($this->getUser()->email,"Star Trek Universe Accountlöschung","Hallo ".strip_tags($this->getUsername())."\n\n
 		Du bekommst diese eMail um die Löschung Deines Accounts zu bestätigen. Fall Du die Löschung nicht ausgelöst hast, ignoriere diese eMail.\n
 		Andernfalls klicke auf folgenden Link um die Löschung Deines Accounts zu bestätigen\n\n
-		http://www.stuniverse.de/delaccount.php\n\n
+		https://stu.wolvnet.de/delaccount.php\n\n
 		Beste Grüße\n\n
 		Das Star Trek Universe Team","From: Star Trek Universe <automailer@stuniverse.de>
 Content-Type: text/plain; charset=UTF-8;");

@@ -280,14 +280,14 @@ Das Star Trek Universe Team\n
 		$text .= "Bitte ändere das Passwort und auch Deinen Siedlernamen gleich nach Deinem Login.\n\r";
 		$text .= "Und nun wünschen wir Dir viel Spaß!\n\r\n\r";
 		$text .= "Das STU-Team\r\n\r\n";
-		$text .= "www.stuniverse.de";
+		$text .= "https://stu.wolvnet.de";
 
 		$header = "MIME-Version: 1.0\r\n";
 		$header .= "Content-type: text/plain; charset=utf-8\r\n";
 		$header .= "To: ".$obj->getEmail()." <".$obj->getEmail().">\r\n";
 		$header .= "From: Star Trek Universe <automailer@stuniverse.de>\r\n";
 
-                mail($obj->getEmail(),"Star Trek Universe Anmeldung",$text,$header);
+		mail($obj->getEmail(),"Star Trek Universe Anmeldung",$text,$header);
 	}
 
 	/**
