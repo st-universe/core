@@ -51,7 +51,7 @@ dev-stop-db:force
 	docker-compose stop
 
 version_link:force
-	ln -s . version_3.0.0
+	ln -s . dev
 
 force:
 force:

@@ -9,7 +9,6 @@ astar/*
 *.po~
 docu/de/_build/*
 tags
-version_3.0.0
 vendor
 config.json
 *.sql
