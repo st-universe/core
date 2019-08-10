@@ -93,7 +93,6 @@ class gameapp extends session {
 	}
 
 	public function getGameState() {
-		return CONFIG_GAMESTATE_VALUE_MAINTENANCE;
 		return $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue();
 	}
 
