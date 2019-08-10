@@ -10,6 +10,7 @@
     "loglevel": 7
   },
   "game": {
+    "base_url": "https://change.me",
     "version": "VERSIONSTRING",
     "registration": {
       "magic_word": "changeme"

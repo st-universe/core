@@ -1,5 +1,7 @@
 <?php
 
+use Zend\Mail\Transport\Sendmail;
+
 class indexapp extends gameapp {
 
 	private $default_tpl = "html/index.xhtml";
@@ -34,6 +36,9 @@ class indexapp extends gameapp {
 	}
 
 	protected function sendPassword() {
+		// @todo inject by constructor
+		global $config;
+
 		$this->setView('SHOW_LOST_PASSWORD');
 		$email_address = (string) request::indString('emailaddress');
 		if (strlen($email_address) == 0) {
@@ -50,17 +55,22 @@ class indexapp extends gameapp {
 		$mail->addTo($user->getEmail());
 		$mail->setSubject(_('Star Trek Universe - Password vergessen'));
 		$mail->setFrom('automailer@stuniverse.de');
-		$mail->setBody(sprintf("Hallo.\n\n
+		$mail->setBody(
+			sprintf("Hallo.\n\n
 Du bekommst diese eMail, da Du in Star Trek Universe ein neues Password angefordert hast. Solltest Du das nicht getan
 haben, so ignoriere die eMail einfach.\n\n
 Klicke auf folgenden Link um Dir ein neues Password zu setzen:\n
 %s/?SHOW_RESET_PASSWORD=1&TOKEN=%s\n\n
 Das Strek Trek Universe Team\n
-%s",MAINSITE,$token,MAINSITE));
+%s",
+				$config->get('game.base_url'),
+				$token,
+				$config->get('game.base_url'),
+			)
+		);
 		try {
-			$transport = new \Zend\Mail\Transport\Sendmail();
-			$transport->send((string) $mail);
-			$mail->send();
+			$transport = new Sendmail();
+			$transport->send($mail);
 		} catch (\Zend\Mail\Exception\RuntimeException $e) {
 			$this->addInformation(_('Die eMail konnte nicht verschickt werden'));
 			return;
@@ -69,6 +79,9 @@ Das Strek Trek Universe Team\n
 	}
 
 	protected function resetPassword() {
+		// @todo inject by constructor
+	    global $config;
+
 		$token = (string) request::indString('TOKEN');
 		$user = User::getByPasswordResetToken($token);
 		if ($user === FALSE) {
@@ -81,15 +94,26 @@ Das Strek Trek Universe Team\n
 		$this->setView('SHOW_LOST_PASSWORD');
 		$this->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
 
-		$mail = new Zend_Mail;
+		$mail = new Zend\Mail\Message();
 		$mail->addTo($user->getEmail());
 		$mail->setSubject(_('Star Trek Universe - Neues Passwort'));
 		$mail->setFrom('automailer@stuniverse.de');
-		$mail->setBodyText(sprintf("Hallo.\n\n
+		$mail->setBody(
+			sprintf("Hallo.\n\n
 Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
 Das Star Trek Universe Team\n
-%s",$password,MAINSITE));
-		$mail->send();
+%s",
+				$password,
+				$config->get('game.base_path'),
+			)
+		);
+		try {
+			$transport = new Sendmail();
+			$transport->send($mail);
+		} catch (\Zend\Mail\Exception\RuntimeException $e) {
+			$this->addInformation(_('Die eMail konnte nicht verschickt werden'));
+			return;
+		}
 	}
 
 	protected function showResetPassword() {

@@ -32,7 +32,7 @@ class LoginException extends STUException  {
 			header('HTTP/1.0 400');
 			exit;
 		}
-		header('Location: '.MAINSITE);
+		header('Location: /');
 		exit;
 	}
 
