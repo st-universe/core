@@ -13,3 +13,4 @@ vendor
 config.json
 src/gfx
 src/version_*
+src/html/avatare
