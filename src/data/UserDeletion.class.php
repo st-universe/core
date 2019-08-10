@@ -6,7 +6,7 @@ class UserDeletion {
 
 	/**
 	 */
-	function __construct(User $user) { #{{{
+	function __construct(UserData $user) { #{{{
 		$this->user = $user;
 	} # }}}
 
@@ -79,7 +79,7 @@ class UserDeletion {
 	/**
 	 */
 	public function handleKnPostings() { #{{{
-		foreach(KnPosting::getBy('WHERE user_id='.$this->getUser()->getId()) as $key => $obj) {
+		foreach(KNPosting::getBy('WHERE user_id='.$this->getUser()->getId()) as $key => $obj) {
 			$obj->deleteAuthor();
 		}
 	} # }}}

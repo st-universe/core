@@ -5,7 +5,8 @@
       "src/control",
       "src/class",
       "src/lib",
-      "src/admin"
+      "src/admin",
+      "src/data"
     ]
   },
   "require": {
