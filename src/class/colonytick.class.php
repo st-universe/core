@@ -183,7 +183,7 @@ class ColonyTick {
 				if (!$this->getColony()->getStorage()->offsetExists(GoodData::NAHRUNG) && $obj->getProduction() < 1) {
 					$this->proceedEmigration(TRUE);
 					$emigrated = 1;
-				} elseif (($foodm=$this->getColony()->getStorage()->offsetGet(GoodData::NAHRUNG)->getCount()+$obj->getProduction()) < 0) {
+				} elseif (($foodm=$this->getColony()->getStorage()->offsetGet(GoodData::NAHRUNG)->getAmount()+$obj->getProduction()) < 0) {
 					$this->proceedEmigration(TRUE,abs($foodm));
 					$emigrated = 1;
 				}
