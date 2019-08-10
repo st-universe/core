@@ -10,6 +10,8 @@ services:
       MYSQL_USER: stu
       MYSQL_PASSWORD: stu
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - "52000:3306"
     networks:
       static-network:
         ipv4_address: 172.31.128.2
