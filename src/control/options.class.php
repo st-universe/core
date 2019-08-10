@@ -55,7 +55,7 @@ class options extends gameapp {
 			$this->addInformation("Es wurde kein neues Passwort eingegeben");
 			return;
 		}
-		if (!ereg("^[a-zA-Z0-9]{6,20}$",$newpass)) {
+		if (!preg_match("/[a-zA-Z0-9]{6,20}/", $newpass)) {
 			$this->addInformation('Das Passwort darf nur aus Zahlen und Buchstaben bestehen und muss zwischen 6 und 20 Zeichen lang sein');
 			return;
 		}
