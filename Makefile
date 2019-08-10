@@ -51,7 +51,7 @@ dev-stop-db:force
 	docker-compose stop
 
 version_link:force
-	ln -s . dev
+	cd src && ln -s . version_dev
 
 force:
 force:
