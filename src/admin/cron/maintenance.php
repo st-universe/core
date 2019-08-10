@@ -1,4 +1,5 @@
 <?php
-include_once("inc/config.inc.php");
+require_once __DIR__.'/../../inc/config.inc.php';
 
-Maintenance::handle();
+$maintenance = new \Maintenance();
+$maintenance->handle();

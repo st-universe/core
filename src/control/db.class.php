@@ -72,10 +72,11 @@ class db {
 
 	public function optimize() {
 		global $dbd;
-		$result = mysqli_listtables($dbd['database'],$this->dblink);
-		for ($i=0;$i<mysqli_num_rows($result);$i++) {
-			$this->query("OPTIMIZE TABLE ".mysqli_tablename($result,$i));	
-		}
+		$result = array_column(mysqli_fetch_all($this->dblink->query('SHOW TABLES')),0);
+
+		foreach ($result as $table_name) {
+            $this->query("OPTIMIZE TABLE ".$table_name);
+        }
 	}
 
 	public function backup() {

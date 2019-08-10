@@ -5,7 +5,7 @@ include_once(__DIR__.'/../../inc/config.inc.php');
 class Mapcycle {
 
 	static public function handle() {
-		$fieldcount = Mapfield::countInstances(); 
+		$fieldcount = MapField::countInstances('WHERE 1=1');
 		$list = User::getListBy("WHERE maptype=".MAPTYPE_INSERT);
 		foreach ($list as $key => $user) {
 			if (DB()->query("SELECT COUNT(*) FROM stu_user_map WHERE user_id=".$user->getId()) >= $fieldcount) {

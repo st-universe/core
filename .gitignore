@@ -11,5 +11,5 @@ docu/de/_build/*
 tags
 vendor
 config.json
-src/gfx/*
+src/gfx
 src/version_*

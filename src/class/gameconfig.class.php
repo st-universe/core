@@ -22,7 +22,7 @@ class GameConfigData extends BaseTable {
 	}
 
 	public function setValue($value) {
-		$this->setFieldValue('value',$value.'getValue');
+		$this->setFieldValue('value',$value, 'getValue');
 	}
 }
 
@@ -42,11 +42,11 @@ class GameConfig extends GameConfigData {
 	}
 
 	static public function getObjectByOption($option) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE option=".intval($option)." LIMIT 1",4);	
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE `option`=".intval($option)." LIMIT 1",4);
 		if ($result == 0) {
-			throw new ObjectNotFoundException($configId);
+			throw new ObjectNotFoundException($option);
 		}
-		parent::__construct($result);
+		return new GameConfig($result['id']);
 	}
 }
 ?>

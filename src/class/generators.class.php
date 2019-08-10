@@ -51,9 +51,6 @@ class Generators {
 			if (!is_file(GENERATOR_DIR.$entry)) {
 				continue;
 			}
-			if (strpos($entry,".swp")) {
-				continue;
-			}
 			include_once(GENERATOR_DIR.$entry);
 		}
 	}

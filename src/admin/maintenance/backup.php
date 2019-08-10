@@ -2,6 +2,7 @@
 class Backup {
 
 	static public function handle() {
+		return;
 		self::cleanup();
 		DB()->backup();
 	}

@@ -37,16 +37,16 @@ $config = new Config(
 define("APP_PATH", $global_path);
 define("GFX_PATH","gfx");
 // Generator dirs
-define("GENERATOR_DIR",APP_PATH."/admin/generators/");
-define("GENERATED_DIR",APP_PATH."/inc/generated/");
+define("GENERATOR_DIR",APP_PATH."/src/admin/generators/");
+define("GENERATED_DIR",APP_PATH."/src/inc/generated/");
 
 set_include_path(get_include_path() . PATH_SEPARATOR . APP_PATH);
 
 // Maintenance
-define("MAINTENANCE_DIR",APP_PATH."/admin/maintenance/");
+define("MAINTENANCE_DIR",APP_PATH."/src/admin/maintenance/");
 
 // Backup
-define("BACKUP_DIR",APP_PATH."/admin/backup/");
+define("BACKUP_DIR",APP_PATH."/src/admin/backup/");
 define("BACKUP_PURGE",2592000);
 
 define('DEBUG_MODE',TRUE);
