@@ -1,5 +1,12 @@
 <?php
+
+use Stu\Control\ColonyListController;
+
 @session_start();
 require_once 'inc/config.inc.php';
 
-$app = new colonylist();
+DB()->beginTransaction();
+
+$controller = $container->get(ColonyListController::class);
+
+DB()->commitTransaction();

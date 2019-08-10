@@ -1,7 +1,12 @@
 <?php
+
+use Stu\Control\ColonyController;
+
 @session_start();
-require_once 'inc/config.inc.php';
+require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
-$app = new colonyapp;
+
+$controller = $container->get(ColonyController::class);
+
 DB()->commitTransaction();

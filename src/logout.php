@@ -1,9 +1,14 @@
 <?php
+
+use Stu\Control\LogoutController;
+
 @session_start();
 
-require_once('inc/config.inc.php');
+require_once __DIR__.'/inc/config.inc.php';
 
-$tpl = '';
+DB()->beginTransaction();
 
-$app = new gameapp($tpl, 'Logout');
-$app->logout();
+$controller = $container->get(LogoutController::class);
+$controller->logout();
+
+DB()->commitTransaction();

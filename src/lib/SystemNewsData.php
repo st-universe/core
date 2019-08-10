@@ -49,7 +49,7 @@ class SystemNewsData
 
     function getDateDisplay()
     {
-        return date("d.m.Y", $this->getDate());
+        return date("d.m.Y", (int) $this->getDate());
     }
 
     private $links = null;

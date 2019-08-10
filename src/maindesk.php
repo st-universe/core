@@ -1,6 +1,13 @@
 <?php
+
+use Stu\Control\MaindeskController;
+
 @session_start();
 
-require_once('inc/config.inc.php');
+require_once __DIR__.'/inc/config.inc.php';
 
-$app = new maindesk;
+DB()->beginTransaction();
+
+$controller = $container->get(MaindeskController::class);
+
+DB()->commitTransaction();

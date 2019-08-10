@@ -1,5 +1,13 @@
 <?php
+
+use Stu\Control\ShipController;
+
 @session_start();
 
-require_once('inc/config.inc.php');
-$app = new shipapp;
+require_once __DIR__.'/inc/config.inc.php';
+
+DB()->beginTransaction();
+
+$controller = $container->get(ShipController::class);
+
+DB()->commitTransaction();

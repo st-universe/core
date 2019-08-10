@@ -1,10 +1,12 @@
 <?php
 
+use Stu\Control\AdminController;
+
 @session_start();
-require_once 'inc/config.inc.php';
+require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
-new AdminApp;
-DB()->commitTransaction();
 
-?>
+$controller = $container->get(AdminController::class);
+
+DB()->commitTransaction();

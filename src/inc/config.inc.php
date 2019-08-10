@@ -5,6 +5,11 @@ use Noodlehaus\Config;
 require_once __DIR__.'/../../vendor/autoload.php';
 
 /**
+ * @var \Psr\Container\ContainerInterface $container
+ */
+$container = require_once __DIR__.'/../Config/bootstrap.php';
+
+/**
  */
 function isCommandLineCall() { #{{{
 	if (!$_SERVER['SERVER_NAME']) {

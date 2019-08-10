@@ -1,5 +1,12 @@
 <?php
-@session_start();
-require_once 'inc/config.inc.php';
 
-$app = new commapp;
+use Stu\Control\CommController;
+
+@session_start();
+require_once __DIR__.'/inc/config.inc.php';
+
+DB()->beginTransaction();
+
+$controller = $container->get(CommController::class);
+
+DB()->commitTransaction();
