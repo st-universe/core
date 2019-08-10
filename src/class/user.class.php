@@ -666,7 +666,6 @@ class User extends UserData {
 		$user->setLogin('wolverine');
 		$user->setUser('Wolverine');
 		$user->setEmail('wolverine@stuniverse.de');
-		$user->setPassword('b2eb67fafefa037ef67cc17d77ebbb7a21ad3bd0');
 		$user->setFaction(FACTION_FEDERATION);
 		$user->setActive(self::USER_ACTIVE);
 		$user->insertToDb();
