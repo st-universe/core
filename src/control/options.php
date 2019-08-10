@@ -1,6 +1,6 @@
 <?php
 
-class options extends gameapp {
+final class options extends gameapp {
 
 	private $default_tpl = "html/options.xhtml";
 
@@ -193,4 +193,3 @@ Content-Type: text/plain; charset=UTF-8;");
 	}
 
 }
-?>

@@ -736,14 +736,6 @@ require_once __DIR__.'/../../inc/config.inc.php';
 				
 		$fields[width] = $syswidth;
 		
-		
-		// HALLO WOLV, HIER DER INTERESSANTE TEIL
-		// Einf�gen in die DB
-		
-		require_once("class/starsystem.class.php");
-		require_once("class/colony.class.php");
-		require_once("class/systemmap.class.php");
-
 		$datasystem = new StarSystemData;
 		
 		$datasystem->setType($id);

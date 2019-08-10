@@ -1,5 +1,6 @@
 <?php
-class starmapapp extends gameapp {
+
+final class starmapapp extends gameapp {
 
 	const FIELDS_PER_SECTION = 20;
 
@@ -553,81 +554,3 @@ class starmapapp extends gameapp {
 			     "y" => request::getInt('y'));
 	}
 }
-
-class UserYRow extends YRow {
-
-	function __construct($cury,$minx,$maxx,$systemId=0) {
-		parent::__construct($cury,$minx,$maxx,$systemId);
-	}
-
-	function getFields() {
-		if ($this->fields === NULL) {
-			$this->fields = MapField::getUserFieldsByRange($this->minx,$this->maxx,$this->row);
-		}
-		return $this->fields;
-	}
-
-	function getSystemFields() {
-		if ($this->fields === NULL) {
-			for ($i=$this->minx;$i<=$this->maxx;$i++) {
-				$this->fields[] = SystemMap::getUserFieldByCoords($this->systemId,$i,$this->row);
-			}
-		}
-		return $this->fields;
-	}
-}
-
-class YRow {
-
-	protected $row = NULL;
-	protected $minx = NULL;
-	protected $maxx = NULL;
-	protected $systemId = NULL;
-
-	function __construct($cury,$minx,$maxx,$systemId=0) {
-		$this->row = $cury;
-		$this->minx = $minx;
-		$this->maxx = $maxx;
-		$this->systemId = $systemId;
-	}
-
-	protected $fields = NULL;
-
-	function getFields() {
-		if ($this->fields === NULL) {
-			for ($i=$this->minx;$i<=$this->maxx;$i++) {
-				$this->fields[] = MapField::getFieldByCoords($i,$this->row);
-			}
-		}
-		return $this->fields;
-	}
-
-	function getSystemFields() {
-		if ($this->fields === NULL) {
-			for ($i=$this->minx;$i<=$this->maxx;$i++) {
-				$this->fields[] = SystemMap::getFieldByCoords($this->systemId,$i,$this->row);
-			}
-		}
-		return $this->fields;
-	}
-
-	function getRow() {
-		return $this->row;
-	}
-}
-
-function &getBorderType(&$type) {
-	static $borderTypes = array();
-	if (!array_key_exists($type,$borderTypes)) {
-		$borderTypes[$type] = new BorderTypes($type);
-	}
-	return $borderTypes[$type];
-}
-function &getMapType(&$type) {
-	static $mapTypes = array();
-	if (!array_key_exists($type,$mapTypes)) {
-		$mapTypes[$type] = new MapFieldType($type);
-	}
-	return $mapTypes[$type];
-}
-?>

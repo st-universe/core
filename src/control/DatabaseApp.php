@@ -1,5 +1,6 @@
 <?php
-class DatabaseApp extends gameapp {
+
+final class DatabaseApp extends gameapp {
 
 	private $default_tpl = "html/database.xhtml";
 
@@ -77,17 +78,17 @@ class DatabaseApp extends gameapp {
 
 	/**
 	 */
-	protected function showTopResearchUser() { #{{{
+	protected function showTopResearchUser() {
 		$this->addNavigationPart(new Tuple("database.php?SHOW_TOP_DISCOVER=1",_('Die 10 besten Entdecker')));
 		$this->setPageTitle(_('/ Datenbank / Die 10 besten Entdecker'));
 		$this->showAjaxMacro('html/database.xhtml/top_research_user');
-	} # }}}
+	}
 
 	private $top_research_user = NULL;
 
 	/**
 	 */
-	public function getTopResearchUser() { #{{{
+	public function getTopResearchUser() {
 		if ($this->top_research_user === NULL) {
 			$this->top_research_user = array();
 			$result = DB()->query('SELECT a.user_id,SUM(c.points) as points FROM stu_database_user as a LEFT JOIN stu_database_entrys as b ON b.id=a.database_id LEFT JOIN stu_database_categories as c ON c.id=b.category_id GROUP BY a.user_id ORDER BY points DESC LIMIT 10');
@@ -96,7 +97,7 @@ class DatabaseApp extends gameapp {
 			}
 		}
 		return $this->top_research_user;
-	} # }}}
+	}
 
 	function getCategoryId() {
 		return request::getIntFatal('cat');
@@ -195,57 +196,3 @@ class DatabaseApp extends gameapp {
                 return $this->ulnav;
         }
 }
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @access public
- */
-abstract class DatabaseTopList { #{{{
-
-	private $user_id = NULL;
-
-	/**
-	 */
-	function __construct($user_id) { #{{{
-		$this->user_id = $user_id;
-	} # }}}
-
-	/**
-	 */
-	public function getUserId() { #{{{
-		return $this->user_id;
-	} # }}}
-
-	/**
-	 */
-	public function getUser() { #{{{
-		return ResourceCache()->getUser($this->getUserId());
-	} # }}}
-
-		
-} #}}}
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @access public
- */
-class DatabaseTopListDiscover extends DatabaseTopList { #{{{
-
-	private $points = NULL;
-
-	/**
-	 */
-	function __construct($entry) { #{{{
-		parent::__construct($entry['user_id']);
-		$this->points = $entry['points'];
-	} # }}}
-
-	/**
-	 */
-	function getPoints() { #{{{
-		return $this->points;
-	} # }}}
-
-} #}}}
-
-?>

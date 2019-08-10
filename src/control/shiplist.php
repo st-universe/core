@@ -1,6 +1,6 @@
 <?php
 
-class shiplist extends gameapp {
+final class shiplist extends gameapp {
 
 	private $default_tpl = "html/shiplist.xhtml";
 	private $singleships = NULL;
@@ -189,8 +189,7 @@ class shiplist extends gameapp {
 
 	/**
 	 */
-	public function getMaxFleetPoints() { #{{{
+	public function getMaxFleetPoints() {
 		return POINTS_PER_FLEET;
-	} # }}}
+	}
 }
-?>

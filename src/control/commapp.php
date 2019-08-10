@@ -1,6 +1,6 @@
 <?php
 
-class commapp extends gameapp {
+final class commapp extends gameapp {
 
 	private $default_tpl = "html/comm.xhtml";
 
@@ -483,7 +483,7 @@ class commapp extends gameapp {
 
 	/**
 	 */
-	protected function delKNPosting() { #{{{
+	protected function delKNPosting() {
 		$this->currentposting = new KNPosting(request::getIntFatal('knid'));
 		if ($this->getKNPosting()->getUserId() != currentUser()->getId()) {
 			new ObjectNotFoundException();
@@ -495,7 +495,7 @@ class commapp extends gameapp {
 		KnComment::truncate('WHERE post_id='.$this->getKNPosting()->getId());
 		$this->getKNPosting()->deleteFromDatabase();
 		$this->addInformation(_("Der Beitrag wurde gelöscht"));
-	} # }}}
+	}
 
 	function setKNMark() {
 		$id = request::getIntFatal('markid');
@@ -706,7 +706,7 @@ class commapp extends gameapp {
 
 	/**
 	 */
-	protected function editContactComment() { #{{{
+	protected function editContactComment() {
 		$contactid = request::postIntFatal('edit_contact');
 		$contact = Contactlist::getById($contactid);
 		if (!$contact || !$contact->isOwnContact()) {
@@ -717,7 +717,7 @@ class commapp extends gameapp {
 		$contact->setComment($value);
 		$contact->save();
 		$this->addInformation(_("Kommentar wurde editiert"));
-	} # }}}
+	}
 
 
 	function createRPGPlot() {
@@ -821,18 +821,18 @@ class commapp extends gameapp {
 
 	/**
 	 */
-	protected function showKnComments() { #{{{
+	protected function showKnComments() {
 		if ($this->currentposting === NULL) {
 			$this->currentposting = new KNPosting(request::getIntFatal('posting'));
 		}
 		$this->setPageTitle(_("Kommentare für Posting ").$this->getKNPosting()->getId());
 		$this->setTemplateFile('html/ajaxwindow.xhtml');
 		$this->setAjaxMacro('html/commmacros.xhtml/kncomments');
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function postComment() { #{{{
+	protected function postComment() {
 		$this->setView("SHOW_KN_COMMENTS");
 		$this->currentposting = new KNPosting(request::getIntFatal('posting'));
 		$comment = strip_tags(request::getString('comment'));
@@ -845,18 +845,18 @@ class commapp extends gameapp {
 		$obj->setPostId($this->getKNPosting()->getId());
 		$obj->setText(encodeString(tidyString($comment)));
 		$obj->save();
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function deleteComment() { #{{{
+	protected function deleteComment() {
 		$this->setView("SHOW_KN_COMMENTS");
 		$obj = new KnComment(request::getIntFatal('comment'));
 		if ($obj->getPosting()->currentUserMayDeleteComment()) {
 			$obj->deleteFromDatabase();
 		}
 		$this->currentposting = $obj->getPosting();
-	} # }}}
+	}
 
 	public function getKNStart() {
 		$mark = $this->getKNPostingCount();
@@ -1036,15 +1036,15 @@ class commapp extends gameapp {
 
 	/**
 	 */
-	public function hasCorrespondence() { #{{{
+	public function hasCorrespondence() {
 		return count($this->getCorrespondence()) > 0;
-	} # }}}
+	}
 
 	private $correspondence = NULL;
 
 	/**
 	 */
-	public function getCorrespondence() { #{{{
+	public function getCorrespondence() {
 		if ($this->correspondence === NULL) {
 			if (!$this->getReply()) {
 				return array();
@@ -1052,7 +1052,6 @@ class commapp extends gameapp {
 			$this->correspondence = PM::getObjectsBy('WHERE ((send_user='.$this->getReply()->getSenderId().' AND recip_user='.$this->getReply()->getRecipientId().') OR (recip_user='.$this->getReply()->getSenderId().' AND send_user='.$this->getReply()->getRecipientId().')) AND cat_id IN ('.PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN,$this->getReply()->getRecipientId())->getId().','.PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN,$this->getReply()->getSenderId())->getId().') ORDER BY date DESC LIMIT 10');
 		}
 		return $this->correspondence;
-	} # }}}
+	}
 
 }
-?>

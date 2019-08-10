@@ -1,5 +1,6 @@
 <?php
-class maindesk extends gameapp {
+
+final class maindesk extends gameapp {
 
 	private $default_tpl = "html/maindesk.xhtml";
 
@@ -50,18 +51,18 @@ class maindesk extends gameapp {
 
 	/**
 	 */
-	public function getNewKNPostings() { #{{{
+	public function getNewKNPostings() {
 		if ($this->knpostings === NULL) {
 			$this->knpostings = KNPosting::getBy("WHERE id>".currentUser()->getKnMark()." LIMIT 3");
 		}
 		return $this->knpostings;
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getNewKNPostingCount() { #{{{
+	public function getNewKNPostingCount() {
 		return KnPosting::countInstances('id>'.currentUser()->getKnMark());
-	} # }}}
+	}
 
 	
 	private $colonyList = NULL;
@@ -129,20 +130,19 @@ class maindesk extends gameapp {
 	
 	/**
 	 */
-	protected function showColonyListAjax() { #{{{
+	protected function showColonyListAjax() {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/sitemacros.xhtml/colonylist');
-	} # }}}
+	}
 
 	private $shipqueue = NULL;
 
 	/**
 	 */
-	public function getShipBuildProgress() { #{{{
+	public function getShipBuildProgress() {
 		if ($this->shipqueue === NULL) {
 			$this->shipqueue = ColonyShipQueue::getByUserId(currentUser()->getId());
 		}
 		return $this->shipqueue;
-	} # }}}
+	}
 }
-?>

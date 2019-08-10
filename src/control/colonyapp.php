@@ -1,6 +1,6 @@
 <?php
 
-class colonyapp extends gameapp {
+final class colonyapp extends gameapp {
 
 	private $default_tpl = "html/colony.xhtml";
 
@@ -103,7 +103,7 @@ class colonyapp extends gameapp {
 
 	/**
 	 */
-	protected function showShipRepair() { #{{{
+	protected function showShipRepair() {
 		$this->setFieldByRequest();
 		if ($this->getColony()->hasShipyard()) {
 			$this->addNavigationPart(new Tuple("?id=".$this->getColony()->getId(),$this->getColony()->getNameWithoutMarkup()));
@@ -111,11 +111,11 @@ class colonyapp extends gameapp {
 			$this->setPagetitle("Kolonie: ".$this->getColony()->getNameWithoutMarkup()._(' / Schiffreparatur'));
 			$this->setTemplateFile('html/colony_shiprepair.xhtml');
 		}
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getShiplistRepairable() { #{{{
+	public function getShiplistRepairable() {
 		$ret = array();
 		foreach ($this->getColony()->getOrbitShipList() as $fleet) {
 			foreach ($fleet['ships'] as $ship_id => $ship) {
@@ -131,22 +131,22 @@ class colonyapp extends gameapp {
 			}
 		}
 		return $ret;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function showModuleFab() { #{{{
+	protected function showModuleFab() {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/colonymacros.xhtml/cm_modulefab');
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function showModuleCancel() { #{{{
+	protected function showModuleCancel() {
 		$this->getTemplate()->setVar('MODULE',ResourceCache()->getObject('module',request::postIntFatal('module')));
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/colonymacros.xhtml/queue_count');
-	} # }}}
+	}
 
 	protected function scrollBuildMenu() {
 		$menu = $this->getGivenBuildMenuRow();
@@ -172,9 +172,9 @@ class colonyapp extends gameapp {
 
 	/**
 	 */
-	private function hasSpecialBuilding($function) { #{{{
+	private function hasSpecialBuilding($function) {
 		return count(Colfields::getFieldsByBuildingFunction($this->getColony()->getId(),$function)) > 0;
-	} # }}}
+	}
 
 
 	protected function switchColonyMenu() {
@@ -291,29 +291,29 @@ class colonyapp extends gameapp {
 
 	/**
 	 */
-	protected function showFighterShipyard() { #{{{
+	protected function showFighterShipyard() {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/colonymacros.xhtml/cm_fighter_shipyard');
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function showTorpedoFab() { #{{{
+	protected function showTorpedoFab() {
 		$this->showAjaxMacro('html/colonymacros.xhtml/cm_torpedo_fab');
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function showAcademy() { #{{{
+	protected function showAcademy() {
 		$this->showAjaxMacro('html/colonymacros.xhtml/cm_academy');
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function showAirfield() { #{{{
+	protected function showAirfield() {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/colonymacros.xhtml/cm_airfield');
-	} # }}}
+	}
 
 	protected function showBuildplans() {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
@@ -679,15 +679,15 @@ class colonyapp extends gameapp {
 
 	/**
 	 */
-	public function hasEffects() { #{{{
+	public function hasEffects() {
 		return count($this->getEffects()) > 0;
-	} # }}}
+	}
 
 	private $effects = NULL;
 
 	/**
 	 */
-	public function getEffects() { #{{{
+	public function getEffects() {
 		if ($this->effects === NULL) {
 			$goods = Good::getList('type='.GOOD_TYPE_EFFECT);
 			$prod = $this->getColony()->getProduction();
@@ -702,7 +702,7 @@ class colonyapp extends gameapp {
 			$this->effects = $ret;
 		}
 		return $this->effects;
-	} # }}}
+	}
 
 
 	public function getColonyStorageDisplay() {
@@ -1347,56 +1347,56 @@ class colonyapp extends gameapp {
 
 	/**
 	 */
-	public function getBuildableRumps() { #{{{
+	public function getBuildableRumps() {
 		if ($this->rumplist === NULL) {
 			$this->rumplist = ShipRump::getBuildableRumpsByUser(currentUser()->getId());
 		}
 		return $this->rumplist;
-	} # }}}
+	}
 
 	private $rumplist_function = NULL;
 
 	/**
 	 */
-	public function getBuildableRumpsByBuildingFunction() { #{{{
+	public function getBuildableRumpsByBuildingFunction() {
 		if ($this->rumplist_function === NULL) {
 			$func_id = Request::getIntFatal('func');
 			$function = new BuildingFunctions($func_id);
 			$this->rumplist_function = ShipRump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),$function->getFunction());
 		}
 		return $this->rumplist_function;
-	} # }}}
+	}
 
 	private $selected_buildingfunction;
 
 	/**
 	 */
-	public function getSelectedBuildingFunction() { #{{{
+	public function getSelectedBuildingFunction() {
 		if ($this->selected_buildingfunction === NULL) {
 			$this->selected_buildingfunction = new BuildingFunctions(Request::getIntFatal('func'));
 		}
 		return $this->selected_buildingfunction;
-	} # }}}
+	}
 
 
 	private $buildplanList = NULL;
 
 	/**
 	 */
-	public function getBuildplans() { #{{{
+	public function getBuildplans() {
 		if ($this->buildplanList === NULL) {
 			$this->buildplanList = ShipBuildplans::getBuildplansByUserAndFunction(currentUser()->getId(),$this->getSelectedBuildingFunction()->getFunction());
 		}
 		return $this->buildplanList;
-	} # }}}
+	}
 
 	/**
 	 */
-	private function showModuleSelectScreen() { #{{{
+	private function showModuleSelectScreen() {
 		$this->setPagetitle("Kolonie: ".$this->getColony()->getNameWithoutMarkup()._(' / Schiffbau'));
 		$this->setTemplateFile('html/modulescreen.xhtml');
 		$this->getSelectedRump()->enforceBuildableByUser(currentUser()->getId());
-	} # }}}
+	}
 
 
 	protected function showModuleScreen() {
@@ -1407,7 +1407,7 @@ class colonyapp extends gameapp {
 
 	/**
 	 */
-	protected function showModuleScreenBuildplan() { #{{{
+	protected function showModuleScreenBuildplan() {
 		$planId = request::getIntFatal('planid');
 		$plan = new ShipBuildPlans($planId);
 		if (!$plan->ownedByCurrentUser()) {
@@ -1419,30 +1419,30 @@ class colonyapp extends gameapp {
 		$this->addNavigationPart(new Tuple("?id=".$this->getColony()->getId(),$this->getColony()->getNameWithoutMarkup()));
 		$this->addNavigationPart(new Tuple("?id=".$this->getColony()->getId().'&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid='.$this->getSelectedBuildplan()->getId(),_('Schiffbau nach Bauplan').': '.$this->getSelectedBuildplan()->getName()));
 		$this->showModuleSelectScreen();
-	} # }}}
+	}
 
 	private $selectedRump = NULL;
 
 	/**
 	 */
-	public function getSelectedRump() { #{{{
+	public function getSelectedRump() {
 		if ($this->selectedRump === NULL) {
 			$this->selectedRump = new ShipRump(Request::indInt('rump'));
 		}
 		return $this->selectedRump;
-	} # }}}
+	}
 
 	private $selectedBuildplan = FALSE;
 
 	/**
 	 */
-	public function getSelectedBuildplan() { #{{{
+	public function getSelectedBuildplan() {
 		return $this->selectedBuildplan;
-	} # }}}
+	}
 
 	/**
 	 */
-	private function loadModuleScreenTabs($buildplan=FALSE) { #{{{
+	private function loadModuleScreenTabs($buildplan=FALSE) {
 		$tabs = new ModuleScreenTabWrapper;
 		for ($i=1;$i<=MODULE_TYPE_COUNT;$i++) {
 			if ($buildplan) {
@@ -1451,22 +1451,22 @@ class colonyapp extends gameapp {
 			$tabs->register(new ModuleScreenTab($i,$this->getColony(),$this->getSelectedRump(),$buildplan));
 		}
 		$this->moduleScreenTabs = $tabs;
-	} # }}}
+	}
 
 	private $moduleScreenTabs = NULL;
 
 	/**
 	 */
-	public function getModuleScreenTabs() { #{{{
+	public function getModuleScreenTabs() {
 		if ($this->moduleScreenTabs === NULL) {
 			$this->loadModuleScreenTabs();
 		}
 		return $this->moduleScreenTabs;
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getModuleSelectors() { #{{{
+	public function getModuleSelectors() {
 		$retv = array();
 		for ($i=1;$i<=MODULE_TYPE_COUNT;$i++) {
 			if ($i == MODULE_TYPE_SPECIAL) {
@@ -1476,11 +1476,11 @@ class colonyapp extends gameapp {
 			}
 		}
 		return $retv;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function buildShip() { #{{{
+	protected function buildShip() {
 		$building_functions = RumpBuildingFunction::getByRumpId($this->getSelectedRump()->getId());
 		$buildung_function = FALSE;
 		foreach ($building_functions as $bfunc) {
@@ -1592,33 +1592,33 @@ class colonyapp extends gameapp {
 		DB()->commitTransaction();
 
 		$this->addInformation(sprintf(_('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),$this->getSelectedRump()->getName(),date("d.m.Y H:i",(time()+$buildtime))));
-	} # }}}
+	}
 
 	private $shipqueue = NULL;
 
 	/**
 	 */
-	public function getShipBuildProgress() { #{{{
+	public function getShipBuildProgress() {
 		if ($this->shipqueue === NULL) {
 			$this->shipqueue = ColonyShipQueue::getByColonyId($this->getColony()->getId());
 		}
 		return $this->shipqueue;
-	} # }}}
+	}
 
 	private $ship_repair_progress;
 
 	/**
 	 */
-	public function getShipRepairProgress() { #{{{
+	public function getShipRepairProgress() {
 		if ($this->ship_repair_progress === NULL) {
 			$this->ship_repair_progress = ColonyShipRepair::getByColonyField($this->getColony()->getId(),$this->getField()->getFieldId());
 		}
 		return $this->ship_repair_progress;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function deleteBuildplan() { #{{{
+	protected function deleteBuildplan() {
 		$planid = request::getIntFatal('planid');
 		$plan = new ShipBuildplans($planid);
 		$plan->delete();
@@ -1627,25 +1627,25 @@ class colonyapp extends gameapp {
 		$this->getTemplate()->setRef('currentColony',$this->getColony());
 		$this->getTemplate()->setVar('FUNC',$this->getSelectedBuildingFunction());
 		$this->setAjaxMacro('html/colonymacros.xhtml/cm_buildplans');
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getModuleSlots() { #{{{
+	public function getModuleSlots() {
 		return range(1,MODULE_TYPE_COUNT);
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getBuildMenu() { #{{{
+	public function getBuildMenu() {
 		return new BuildMenuWrapper;
-	} # }}}
+	}
 
 	private $selectedColonyMenu = NULL;
 
 	/**
 	 */
-	public function getSelectedColonyMenu() { #{{{
+	public function getSelectedColonyMenu() {
 		switch ($this->selectedColonyMenu) {
 		case MENU_OPTION:
 			return 'cm_misc';
@@ -1662,71 +1662,71 @@ class colonyapp extends gameapp {
 		default:
 			return 'cm_management';
 		}
-	} # }}}
+	}
 
 	/**
 	 */
-	public function setSelectedColonyMenu($value) { #{{{
+	public function setSelectedColonyMenu($value) {
 		$this->selectedColonyMenu = $value;
-	} # }}}
+	}
 
 	private $available_airfield_rumps = NULL;
 	
 	/**
 	 */
-	public function getAvailableAirfieldRumps() { #{{{
+	public function getAvailableAirfieldRumps() {
 		if ($this->available_airfield_rumps === NULL) {
 			$this->available_airfield_rumps = ShipRump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),BUILDING_FUNCTION_AIRFIELD);
 		}
 		return $this->available_airfield_rumps;
-	} # }}}
+	}
 
 	private $available_fighter_shipyard_rumps = NULL;
 
 	/**
 	 */
-	public function getAvailableFighterShipyardRumps() { #{{{
+	public function getAvailableFighterShipyardRumps() {
 		if ($this->available_fighter_shipyard_rumps === NULL) {
 			$this->available_fighter_shipyard_rumps = ShipRump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),BUILDING_FUNCTION_FIGHTER_SHIPYARD);
 		}
 		return $this->available_fighter_shipyard_rumps;
-	} # }}}
+	}
 
 	private $startable_airfield_rumps = NULL;
 
 	/**
 	 */
-	public function getStartableAirfieldRumps() { #{{{
+	public function getStartableAirfieldRumps() {
 		if ($this->startable_airfield_rumps === NULL) {
 			$this->startable_airfield_rumps = ShipRump::getBy('WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id='.currentUser()->getId().')
 					AND good_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id='.$this->getColony()->getId().') GROUP BY id');
 		}
 		return $this->startable_airfield_rumps;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function buildAirfieldRump() { #{{{
+	protected function buildAirfieldRump() {
 		$rump_id = request::postInt('buildrump');
 		if (!array_key_exists($rump_id,$this->getAvailableAirfieldRumps())) {
 			return;
 		}
 		$this->buildShipRump($rump_id);
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function buildFighterShipyardRump() { #{{{
+	protected function buildFighterShipyardRump() {
 		$rump_id = request::postInt('buildrump');
 		if (!array_key_exists($rump_id,$this->getAvailableFighterShipyardRumps())) {
 			return;
 		}
 		$this->buildShipRump($rump_id);
-	} # }}}
+	}
 
 	/**
 	 */
-	private function buildShipRump($rump_id) { #{{{
+	private function buildShipRump($rump_id) {
 		$rump = ResourceCache()->getObject('rump',$rump_id);
 		DB()->beginTransaction();
 		if ($rump->getEpsCost() > $this->getColony()->getEps()) {
@@ -1752,11 +1752,11 @@ class colonyapp extends gameapp {
 		$this->getColony()->save();
 		DB()->commitTransaction();
 		$this->addInformation(sprintf(_('%s-Klasse wurde gebaut'),$rump->getName()));
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function startAirfieldShip() { #{{{
+	protected function startAirfieldShip() {
 		if (!isAdmin(currentUser()->getId())) {
 			$this->addInformation('Geht grad ned ... aber bald!');
 			return;
@@ -1830,19 +1830,19 @@ class colonyapp extends gameapp {
 		}
 		$this->addInformation(_('Das Schiff wurde gestartet'));
 		DB()->commitTransaction();
-	} # }}}
+	}
 
 	/**
 	 */
-	private function rollbackTransaction() { #{{{
+	private function rollbackTransaction() {
 		DB()->rollbackTransaction();
 		$this->getColony()->clearCache();
 		$this->colony = NULL;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function landShip() { #{{{
+	protected function landShip() {
 		$ship = ResourceCache()->getObject('ship',request::getIntFatal('shipid'));
 		if (!$ship->ownedByCurrentUser() || !$ship->canLandOnCurrentColony()) {
 			return;
@@ -1865,11 +1865,11 @@ class colonyapp extends gameapp {
 		$this->addInformation(sprintf(_('Die %s ist gelandet'),$ship->getName()));
 		$ship->remove();
 		DB()->commitTransaction();
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function createModules() { #{{{
+	protected function createModules() {
 		$modules = request::postArrayFatal('module');
 		$func = request::postIntFatal('func');
 		if (count(Colfields::getFieldsByBuildingFunction($this->getColony()->getId(),$func)) == 0) {
@@ -1925,11 +1925,11 @@ class colonyapp extends gameapp {
 		foreach ($prod as $msg) {
 			$this->addInformation($msg);
 		}
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function cancelModuleCreation() { #{{{
+	protected function cancelModuleCreation() {
 		$this->setView('SHOW_MODULE_CANCEL');
 		$module_id = request::postIntFatal('module');
 		$function = request::postIntFatal('func');
@@ -1974,20 +1974,20 @@ class colonyapp extends gameapp {
 		}
 		$this->getColony()->save();
 		DB()->commitTransaction();
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getBuildableTorpedoTypes() { #{{{
+	public function getBuildableTorpedoTypes() {
 		if ($this->buildable_torpedo_types === NULL) {
 			$this->buildable_torpedo_types = TorpedoType::getBuildableTorpedoTypesByUser(currentUser()->getId());
 		}
 		return $this->buildable_torpedo_types;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function buildTorpedos() { #{{{
+	protected function buildTorpedos() {
 		$torps = request::postArray('torps');
 		$torpedo_types = $this->getBuildableTorpedoTypes();
 		$storage = $this->getColony()->getStorage();
@@ -2031,11 +2031,11 @@ class colonyapp extends gameapp {
 			$this->addInformation(_('Es wurden keine Torpedos hergestellt'));
 		}
 		DB()->commitTransaction();
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getTrainableCrewCountPerTick() { #{{{
+	public function getTrainableCrewCountPerTick() {
 		$count = currentUser()->getTrainableCrewCountMax()-currentUser()->getInTrainingCrewCount();
 		if ($count > currentUser()->getCrewLeftCount()) {
 			$count = currentUser()->getCrewLeftCount();
@@ -2047,11 +2047,11 @@ class colonyapp extends gameapp {
 			return $this->getColony()->getWorkless();
 		}
 		return $count;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function trainCrew() { #{{{
+	protected function trainCrew() {
 		$count = request::postStringFatal('crewcount');
 		if ($count == INDICATOR_MAX) {
 			$count = $this->getTrainableCrewCountPerTick();
@@ -2086,11 +2086,11 @@ class colonyapp extends gameapp {
 		$this->getColony()->save();
 		DB()->commitTransaction();
 		$this->addInformation(sprintf(_('Es werden %d Crew ausgebildet'),$count));
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function repairShip() { #{{{
+	protected function repairShip() {
 		$this->setFieldByRequest();
 		$this->setView("SHOW_SHIP_REPAIR");
 		// XXX TBD
@@ -2126,87 +2126,6 @@ class colonyapp extends gameapp {
 		}
 		$ticks = ceil(($ship->getMaxHuell()-$ship->getHuell())/$ship->getRepairRate());
 		$this->addInformation(sprintf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'),$ticks));
-	} # }}}
-
-}
-
-class ColonyMenu {
-
-	private $selectedColonyMenu;
-
-	/**
-	 */
-	function __construct($selectedColonyMenu) { #{{{
-		$this->selectedColonyMenu = $selectedColonyMenu;
-	} # }}}
-
-	private function getMenuType() {
-		return intval(request::getInt('menu'));
-	}
-
-	public function __get($value) {
-		if ($this->selectedColonyMenu == $value) {
-			return 'selected';
-		}
-		if ($this->getMenuType() == $value) {
-			return "selected";
-		}
-		if ($value == MENU_INFO && $this->getMenuType() == 0 && $this->selectedColonyMenu === NULL) {
-			return 'selected';
-		}
-		return FALSE;
 	}
 
 }
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class BuildMenuWrapper { #{{{
-
-	/**
-	 */
-	function __get($id) { #{{{
-		return new BuildMenu($id);
-	} # }}}
-
-} #}}}
-
-define('BUILDMENU_SOCIAL',1);
-define('BUILDMENU_INDUSTRY',2);
-define('BUILDMENU_INFRASTRUCTURE',3);
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class BuildMenu { #{{{
-
-	private $menuId = 0;
-
-	/**
-	 */
-	function __construct($menuId) { #{{{
-		$this->menuId = $menuId;
-	} # }}}
-
-	/**
-	 */
-	public function getName() { #{{{
-		switch($this->menuId) {
-			case BUILDMENU_SOCIAL:
-				return _('Soziales');
-			case BUILDMENU_INDUSTRY:
-				return _('Industrie');
-			case BUILDMENU_INFRASTRUCTURE;
-				return _('Infrastruktur');
-		}
-	} # }}}
-
-	
-} #}}}
-
-?>

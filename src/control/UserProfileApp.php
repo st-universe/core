@@ -1,5 +1,6 @@
 <?php
-class UserProfileApp extends gameapp {
+
+final class UserProfileApp extends gameapp {
 
 	private $default_tpl = "html/userprofile.xhtml";
 
@@ -40,4 +41,3 @@ class UserProfileApp extends gameapp {
 		return $this->plots;
 	}
 }
-?>

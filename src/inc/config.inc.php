@@ -378,6 +378,10 @@ define("MODULE_TYPE_SPECIAL",9);
 
 define("GAME_VERSION", $config->get('game.version'));
 
+define('BUILDMENU_SOCIAL',1);
+define('BUILDMENU_INDUSTRY',2);
+define('BUILDMENU_INFRASTRUCTURE',3);
+
 ini_set('date.timezone', 'Europe/Berlin');
 
 function debug_notice($text) {

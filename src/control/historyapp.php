@@ -1,5 +1,6 @@
 <?php
-class historyapp extends gameapp {
+
+final class historyapp extends gameapp {
 
 	private $default_tpl = "html/history.xhtml";
 
@@ -57,4 +58,3 @@ class historyapp extends gameapp {
 	}
 
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 
-class CrewApp extends gameapp {
+final class CrewApp extends gameapp {
 
 	private $default_tpl = "";
 
@@ -44,4 +44,3 @@ class CrewApp extends gameapp {
 		$this->setAjaxMacro('html/macros.xhtml/crew_details');
 	}
 }
-?>

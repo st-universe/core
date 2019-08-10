@@ -1,6 +1,6 @@
 <?php
 
-class colonylist extends gameapp {
+final class colonylist extends gameapp {
 
 	private $default_tpl = "html/colonylist.xhtml";
 
@@ -69,4 +69,3 @@ class colonylist extends gameapp {
 	}
 
 }
-?>

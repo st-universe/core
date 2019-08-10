@@ -1,6 +1,6 @@
 <?php
 
-class NotesApp extends gameapp {
+final class NotesApp extends gameapp {
 
 	private $default_tpl = "html/notes.xhtml";
 
@@ -74,7 +74,7 @@ class NotesApp extends gameapp {
 
 	/**
 	 */
-	protected function deleteNotes() { #{{{
+	protected function deleteNotes() {
 		$notes = request::postArray('delnotes');
 		foreach ($notes as $key => $note) {
 			$obj = new Notes(intval($note));
@@ -85,7 +85,6 @@ class NotesApp extends gameapp {
 			$obj->deleteFromDatabase();
 		}
 		$this->addInformation(_("Die ausgewählten Notizen wurden gelöscht"));
-	} # }}}
+	}
 
 }
-?>

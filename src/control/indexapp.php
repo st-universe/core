@@ -2,7 +2,7 @@
 
 use Zend\Mail\Transport\Sendmail;
 
-class indexapp extends gameapp {
+final class indexapp extends gameapp {
 
 	private $default_tpl = "html/index.xhtml";
 
@@ -175,9 +175,9 @@ Das Star Trek Universe Team\n
 
 	/**
 	 */
-	public function isRegistrationPossible() { #{{{
+	public function isRegistrationPossible() {
 		return TRUE;
-	} # }}}
+	}
 
 	function checkRegistrationVar() {
 		$var = Request::getString('var');
@@ -292,22 +292,22 @@ Das Star Trek Universe Team\n
 
 	/**
 	 */
-	protected function loginUser() { #{{{
-	} # }}}
+	protected function loginUser() {
+	}
 
 	/**
 	 */
-	public function hasLoginError() { #{{{
+	public function hasLoginError() {
 		return $this->getSessionVar('loginerror');
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getLoginError() { #{{{
+	public function getLoginError() {
 		$error = $this->getSessionVar('loginerror');
 		$this->removeSessionVar('loginerror');
 		return $error;
-	} # }}}
+	}
 
 	public function getGameStateTextual() {
 		switch ($this->getGameState()) {
@@ -320,76 +320,3 @@ Das Star Trek Universe Team\n
 		}
 	}
 }
-
-class SystemNews extends SystemNewsData {
-	
-	static function getListBy($sql) {
-		$ret = array();
-		$result = DB()->query("SELECT * FROM stu_news ".$sql);
-		while ($data = mysqli_fetch_assoc($result)) {
-			$ret[] = new SystemNewsData($data);
-		}
-		return $ret;
-	}
-
-}
-
-class SystemNewsData {
-
-	private $data = array();
-
-	function __construct(&$data = array()) {
-		$this->data = $data;
-	}
-
-	function getId() {
-		return $this->data['id'];
-	}
-
-	function getSubject() {
-		return $this->data['subject'];
-	}
-
-	function getSubjectDecoded() {
-		return decodeString(stripslashes($this->getSubject()));
-	}
-
-	function getText() {
-		return $this->data['text'];
-	}
-
-	function getTextDecoded() {
-		return nl2br(decodeString(stripslashes($this->getText())));
-	}
-
-	function getDate() {
-		return $this->data['date'];
-	}
-
-	function getRefs() {
-		return $this->data['refs'];
-	}
-
-	function getDateDisplay() {
-		return date("d.m.Y",$this->getDate());
-	}
-
-	private $links = NULL;
-
-	function getLinks() {
-		if ($this->links === NULL) {
-			$this->links = $this->parseLinks();
-		}
-		return $this->links;
-	}
-
-	function parseLinks() {
-		$lines = explode("\n",$this->getRefs());
-		if (count($lines) == 0) {
-			return FALSE;
-		}
-		return $lines;
-	}
-
-}
-?>

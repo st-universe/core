@@ -1,5 +1,6 @@
 <?php
-class gameapp extends session {
+
+abstract class gameapp extends session {
 
 	private $tpl_file = NULL;
 	private $gameInformations = array();
@@ -107,10 +108,10 @@ class gameapp extends session {
 
 	/**
 	 */
-	protected function showAjaxMacro($macro) { #{{{
+	protected function showAjaxMacro($macro) {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro($macro);
-	} # }}}
+	}
 
 	function getAjaxMacro() {
 		return $this->ajaxMacro;
@@ -145,9 +146,9 @@ class gameapp extends session {
 
 	/**
 	 */
-	protected function sendInformation($recipient_id,$sender_id=USER_NOONE,$category_id=PM_SPECIAL_MAIN) { #{{{
+	protected function sendInformation($recipient_id,$sender_id=USER_NOONE,$category_id=PM_SPECIAL_MAIN) {
 		PM::sendPM($sender_id,$recipient_id,join('<br />',$this->getInformation()),$category_id);	
-	} # }}}
+	}
 
 	function hasInformation() {
 		return count($this->getInformation()) > 0;
@@ -303,74 +304,74 @@ class gameapp extends session {
 
 	/**
 	 */
-	public function isDebugMode() { #{{{
+	public function isDebugMode() {
 		return isDebugMode();
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getJavascriptPath() { #{{{
+	public function getJavascriptPath() {
 		return 'version_'.$this->getGameVersion();
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getPlanetColonyLimit() { #{{{
+	public function getPlanetColonyLimit() {
 		return DB()->query('SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id='.currentUser()->getId().' ANd aktiv=0)',1);
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getMoonColonyLimit() { #{{{
+	public function getMoonColonyLimit() {
 		return DB()->query('SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id='.currentUser()->getId().' ANd aktiv=0)',1);
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getPlanetColonyCount() { #{{{
+	public function getPlanetColonyCount() {
 		return Colony::countInstances('WHERE user_id='.currentUser()->getId().' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
-	} # }}}
+	}
 
 	/**
 	 */
-	public function getMoonColonyCount() { #{{{
+	public function getMoonColonyCount() {
 		return Colony::countInstances('WHERE user_id='.currentUser()->getId().' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
-	} # }}}
+	}
 
 	/**
 	 */
-	public function isAdmin() { #{{{
+	public function isAdmin() {
 		return currentUser()->isAdmin();
-	} # }}}
+	}
 
 	/**
 	 */
-	function getRecentHistory() { #{{{
+	function getRecentHistory() {
 		if ($this->recent_history === NULL) {
 			$this->recent_history = HistoryEntry::getListBy('ORDER BY id DESC LIMIT 10');
 		}
 		return $this->recent_history;
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function checkDatabaseItem($database_entry_id) { #{{{
+	protected function checkDatabaseItem($database_entry_id) {
 		if ($database_entry_id > 0 && !DatabaseUser::checkEntry($database_entry_id,currentUser()->getId())) {
 			$this->addAchievement(databaseScan($database_entry_id,currentUser()->getId()));
 		}
-	} # }}}
+	}
 
 	private $achievements = array();
 
 	/**
 	 */
-	protected function addAchievement($text) { #{{{
+	protected function addAchievement($text) {
 		$this->achievements[] = $text;
-	} # }}}
+	}
 
 	/**
 	 */
-	function getAchievements() { #{{{
+	function getAchievements() {
 		return $this->achievements;
-	} # }}}
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-class Tradeapp extends gameapp {
+final class Tradeapp extends gameapp {
 
 	private $default_tpl = "html/trade.xhtml";
 
@@ -197,8 +197,8 @@ class Tradeapp extends gameapp {
 		if ($amount < 1 || $amount > 99) {
 			$amount = 1;
 		}
-		if ($amount * $gcount > $this->getSelectedStorage()->getCount()) {
-			$amount = floor($this->getselectedStorage()->getCount()/$gcount);
+		if ($amount * $gcount > $this->getSelectedStorage()->getAmount()) {
+			$amount = floor($this->getselectedStorage()->getAmount()/$gcount);
 		}
 		if ($amount < 1) {
 			return;
@@ -214,7 +214,7 @@ class Tradeapp extends gameapp {
 		$offer->setOfferCount($amount);
 		$offer->save();
 
-		if ($this->getSelectedStorage()->getCount() <= $amount*$gcount) {
+		if ($this->getSelectedStorage()->getAmount() <= $amount*$gcount) {
 			$this->getSelectedStorage()->deleteFromDatabase();
 		} else {
 			$this->getSelectedStorage()->lowerCount($amount*$gcount);
@@ -230,7 +230,7 @@ class Tradeapp extends gameapp {
 			return;
 		}
 		$storage = TradeStorage::getStorageByGood($this->getSelectedOffer()->getTradePostId(),currentUser()->getId(),$this->getSelectedOffer()->getWantedGoodId());
-		if (!$storage || $storage->getCount() < $this->getSelectedOffer()->getWantedGoodCount()) {
+		if (!$storage || $storage->getAmount() < $this->getSelectedOffer()->getWantedGoodCount()) {
 			$this->addInformation('Es befindet sich nicht genügend '.$this->getSelectedOffer()->getWantedGoodObject()->getName().' auf diesem Handelsposten');
 			return;
 		}
@@ -239,8 +239,8 @@ class Tradeapp extends gameapp {
 			$this->addInformation('Dein Warenkonto auf diesem Handelsposten ist voll');
 			return;
 		}
-		if ($amount*$this->getSelectedOffer()->getWantedGoodCount() > $storage->getCount()) {
-			$amount = floor($storage->getCount()/$this->getSelectedOffer()->getWantedGoodCount());
+		if ($amount*$this->getSelectedOffer()->getWantedGoodCount() > $storage->getAmount()) {
+			$amount = floor($storage->getAmount()/$this->getSelectedOffer()->getWantedGoodCount());
 		}
 		if ($amount*$this->getSelectedOffer()->getOfferedGoodCount()-$amount*$this->getSelectedOffer()->getWantedGoodCount() > $storage->getTradePost()->getStorage()-$wrap->getStorageSum()) {
 			$amount = floor(($storage->getTradePost()->getStorage()-$wrap->getStorageSum())/($this->getSelectedOffer()->getOfferedGoodCount()-$this->getSelectedOffer()->getWantedGoodCount()));
@@ -276,8 +276,8 @@ class Tradeapp extends gameapp {
 		$target = Request::postIntFatal('target');
 
 		$this->tradepost = $this->getSelectedStorage()->getTradePost();
-		if ($this->getSelectedStorage()->getCount() < $count) {
-			$count = $this->getSelectedStorage()->getCount();
+		if ($this->getSelectedStorage()->getAmount() < $count) {
+			$count = $this->getSelectedStorage()->getAmount();
 		}
 		if ($count < 1) {
 			return;
@@ -326,18 +326,18 @@ class Tradeapp extends gameapp {
 
 	/**
 	 */
-	protected function showShoutboxList() { #{{{
+	protected function showShoutboxList() {
 		if (!TradeLicences::hasLicenceInNetwork(currentUser()->getId(),request::getIntFatal('network'))) {
 			throw new AccessViolation;
 		}
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/trademacros.xhtml/shoutbox_entries');
 		$this->getTemplate()->setRef('SHOUTBOX',TradeShoutbox::getByTradeNetworkId(request::getIntFatal('network')));
-	} # }}}
+	}
 
 	/**
 	 */
-	protected function addShoutboxEntry() { #{{{
+	protected function addShoutboxEntry() {
 		$msg = request::postString('shoutboxentry');
 		$tradeNetworkId = request::postIntFatal('network');
 		if (!TradeLicences::hasLicenceInNetwork(currentUser()->getId(),$tradeNetworkId)) {
@@ -356,7 +356,6 @@ class Tradeapp extends gameapp {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/trademacros.xhtml/shoutbox_entries');
 		$this->getTemplate()->setRef('SHOUTBOX',TradeShoutbox::getByTradeNetworkId(request::postIntFatal('network')));
-	} # }}}
+	}
 
 }
-?>

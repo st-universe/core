@@ -307,7 +307,6 @@ function printBackTrace() {
 /**
  */
 function createCrewman($userId) { #{{{
-	require_once('class/crew.class.php');
 	$crew = new CrewData;
 	// XXX: For testing purposes
 	$crew->setGender(rand(CREW_GENDER_MALE,CREW_GENDER_FEMALE));
@@ -388,6 +387,21 @@ function &DB() {
         $DB = new db;
     }
     return $DB;
+}
+
+function &getBorderType(&$type) {
+    static $borderTypes = array();
+    if (!array_key_exists($type,$borderTypes)) {
+        $borderTypes[$type] = new BorderTypes($type);
+    }
+    return $borderTypes[$type];
+}
+function &getMapType(&$type) {
+    static $mapTypes = array();
+    if (!array_key_exists($type,$mapTypes)) {
+        $mapTypes[$type] = new MapFieldType($type);
+    }
+    return $mapTypes[$type];
 }
 
 TalesRegistry::registerPrefix(

@@ -1,5 +1,6 @@
 <?php
-class AllianceApp extends gameapp {
+
+final class AllianceApp extends gameapp {
 
 	private $default_tpl = "html/alliancelist.xhtml";
 
@@ -533,7 +534,7 @@ class AllianceApp extends gameapp {
 
 	/**
 	 */
-	protected function deleteAvatar() { #{{{
+	protected function deleteAvatar() {
 		if (!$this->getAlliance()->currentUserMayEdit()) {
 			new AccessViolation;
 		}
@@ -544,7 +545,7 @@ class AllianceApp extends gameapp {
 			$this->getAlliance()->save();
 		}
 		$this->addInformation(_('Das Bild wurde gelöscht'));
-	} # }}}
+	}
 
 	private $boards = NULL;
 
@@ -844,15 +845,13 @@ class AllianceApp extends gameapp {
 		$this->addInformation("Das Abkommen wurde aufgelöst");
 	}
 
-	/**
-	 */
-	private function sendMessageToOpponent($relation,$text) { #{{{
+	private function sendMessageToOpponent($relation,$text) {
 		if ($relation->getAllianceId() == $this->getAlliance()->getId()) {
 			$relation->getOpponent()->sendMessage($text);
 			return;
 		}
 		$relation->getAlliance()->sendMessage($text);
-	} # }}}
+	}
 
 	private $realrelations = NULL;
 
@@ -872,9 +871,7 @@ class AllianceApp extends gameapp {
 
 	private $replacementVars = NULL;
 
-	/**
-	 */
-	private function getReplacementVars() { #{{{
+	private function getReplacementVars() {
 		if ($this->replacementVars === NULL) {
 			$this->replacementVars = array();
 			$this->replacementVars['$ALLIANCE_HOMEPAGE_LINK'] = '<a href="'.$this->getAlliance()->getHomepageDisplay().'" target="_blank">'._('Zur Allianz Homepage').'</a>';
@@ -884,25 +881,19 @@ class AllianceApp extends gameapp {
 			$this->replacementVars['$ALLIANCE_FOREIGNMINISTER'] = ($this->getAlliance()->getDiplomatic() ? $this->getAlliance()->getDiplomatic()->getUser()->getName() : _('Unbesetzt'));
 		}		
 		return $this->replacementVars;
-	} # }}}
+	}
 
-	/**
-	 */
-	public function renderAllianceDescription() { #{{{
+	public function renderAllianceDescription() {
 		return str_replace(array_keys($this->getReplacementVars()),array_values($this->getReplacementVars()),$this->getAlliance()->getDescription());
-	} # }}}
+	}
 
-	/**
-	 */
-	private function getPageMark() { #{{{
+	private function getPageMark() {
 		return request::getInt('mark');
-	} # }}}
+	}
 
 	private $topic_nav = NULL;
 
-	/**
-	 */
-	public function getTopicNavigation() { #{{{
+	public function getTopicNavigation() {
 		if ($this->topic_nav === NULL) {
 			$mark = $this->getPageMark();
 			if ($mark%ALLIANCEBOARDLIMITER != 0 || $mark < 0) {
@@ -929,17 +920,13 @@ class AllianceApp extends gameapp {
 			$this->topic_nav = &$ret;
 		}
 		return $this->topic_nav;
-	} # }}}
+	}
 
-	/**
-	 */
-	public function getTopicPostings() { #{{{
+	public function getTopicPostings() {
 		return $this->getTopic()->getPostings($this->getPageMark());
-	} # }}}
+	}
 
-	/**
-	 */
-	protected function deletePosting() { #{{{
+	protected function deletePosting() {
 		if (!$this->getAlliance()->currentUserIsBoardModerator()) {
 			new AccessViolation;
 		}
@@ -953,11 +940,9 @@ class AllianceApp extends gameapp {
 		$this->setView('SHOW_TOPIC');
 		$post->deleteFromDatabase();
 		$this->addInformation(_('Der Beitrag wurde gelöscht'));
-	} # }}}
+	}
 
-	/**
-	 */
-	protected function setSticky() { #{{{
+	protected function setSticky() {
 		if (!$this->getAlliance()->currentUserIsBoardModerator()) {
 			new AccessViolation;
 		}
@@ -966,11 +951,9 @@ class AllianceApp extends gameapp {
 		$topic->save();
 
 		$this->addInformation(_('Das Thema wurde als wichtig markiert'));
-	} # }}}
+	}
 
-	/**
-	 */
-	protected function unsetSticky() { #{{{
+	protected function unsetSticky() {
 		if (!$this->getAlliance()->currentUserIsBoardModerator()) {
 			new AccessViolation;
 		}
@@ -979,6 +962,5 @@ class AllianceApp extends gameapp {
 		$topic->save();
 
 		$this->addInformation(_('Das Thema ist nicht mehr wichtig'));
-	} # }}}
+	}
 }
-?>

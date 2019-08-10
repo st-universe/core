@@ -1,22 +1,10 @@
 <?php
 
-/*
- *
- * Copyright 2011 Daniel Jakob All Rights Reserved
- * This software is the proprietary information of Daniel Jakob
- * Use is subject to license terms
- *
- */
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @access public
- */
-class AdminApp extends gameapp { #{{{
+final class AdminApp extends gameapp {
 	
 	private $default_tpl = "html/admin.xhtml";
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct($this->default_tpl,"/ Admin");
 		if (!currentUser()->isAdmin()) {
 			throw new AccessViolation;
@@ -28,13 +16,9 @@ class AdminApp extends gameapp { #{{{
 		$this->render($this);
 	}
 
-	/**
-	 */
-	protected function createBuildPlan() { #{{{
+	protected function createBuildPlan() {
 		$this->setTemplateFile('html/ajaxempty.xhtml');
 		$this->setAjaxMacro('html/adminmacros.xhtml/createbuildplan');
-	} # }}}
+	}
 
-	
-} #}}}
-?>
+}

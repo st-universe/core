@@ -1,6 +1,6 @@
 <?php
 
-class ResearchApp extends gameapp {
+final class ResearchApp extends gameapp {
 
 	private $default_tpl = "html/research.xhtml";
 
@@ -113,4 +113,3 @@ class ResearchApp extends gameapp {
 		return $this->finishedResearchList;
 	}
 }
-?>
