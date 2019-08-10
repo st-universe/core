@@ -10,7 +10,7 @@
     "loglevel": 7
   },
   "game": {
-    "version": "3.0.0",
+    "version": "VERSIONSTRING",
     "registration": {
       "magic_word": "changeme"
     }
