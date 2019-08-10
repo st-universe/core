@@ -415,7 +415,7 @@ class AllianceApp extends gameapp {
 		}
 		$this->getAlliance()->delete();
 		currentUser()->setAllianceId(0);
-		$this->setView(SHOW_LIST);
+		$this->setView('SHOW_LIST');
 		$this->addInformation("Die Allianz wurde gelöscht");
 	}
 
@@ -441,7 +441,7 @@ class AllianceApp extends gameapp {
 			PM::sendPM(currentUser()->getId(),$this->getAlliance()->getSuccessor()->getUserId(),$text);
 		}
 
-		$this->setView(SHOW_LIST);
+		$this->setView('SHOW_LIST');
 		$this->addInformation("Du hast die Allianz verlassen");
 	}
 
