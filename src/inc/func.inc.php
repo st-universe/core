@@ -213,15 +213,15 @@ function &getGoodName($goodId) {
 function calculateCosts(&$costs,&$storage,&$place) {
 	foreach ($costs as $key => $obj) {
 		if (!array_key_exists($key,$storage)) {
-			return "Es werden ".$obj->getCount()." ".getGoodName($obj->getGoodsId())." benötigt - Es ist jedoch keines vorhanden";
+			return "Es werden ".$obj->getAmount()." ".getGoodName($obj->getGoodsId())." benötigt - Es ist jedoch keines vorhanden";
 		}
-		if ($obj->getCount() > $storage[$key]->getCount()) {
-			return "Es werden ".$obj->getCount()." ".getGoodName($obj->getGoodsId())." benötigt - Vorhanden sind nur ".$storage[$key]->getCount();
+		if ($obj->getAmount() > $storage[$key]->getAmount()) {
+			return "Es werden ".$obj->getAmount()." ".getGoodName($obj->getGoodsId())." benötigt - Vorhanden sind nur ".$storage[$key]->getAmount();
 		}
 	}
 	reset($costs);
 	foreach ($costs as $key => $obj) {
-		$place->lowerStorage($obj->getGoodsId(),$obj->getCount());
+		$place->lowerStorage($obj->getGoodsId(),$obj->getAmount());
 	}
 	$place->resetStorage();
 	return FALSE;
