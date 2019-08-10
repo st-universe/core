@@ -309,7 +309,7 @@ class AllianceData extends BaseTable {
 			$obj->getUser()->save();
 		}
 		if ($this->getAvatar()) {
-			@unlink(AVATAR_ALLIANCE_PATH.$this->getAvatar().".png");
+			@unlink(APP_PATH.'/src/'.AVATAR_ALLIANCE_PATH.$this->getAvatar().".png");
 		}
 		$this->deleteFromDatabase();
 	} # }}}

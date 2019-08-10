@@ -94,13 +94,13 @@ class options extends gameapp {
 			return;
 		}
 		if ($this->getSessionVar('propic') != "") {
-			@unlink(AVATAR_USER_PATH.$this->getSessionVar('propic').".png");
+			@unlink(AVATAR_USER_PATH_INTERNAL.$this->getSessionVar('propic').".png");
 		}
 		$imageName = md5(currentUser()->getId()."_".time());
 		$img = imagecreatefrompng($file['tmp_name']);
 		$newImage = imagecreatetruecolor(150,150);
 		imagecopy($newImage,$img,0,0,0,0,150,150);
-		imagepng($newImage,AVATAR_USER_PATH.$imageName.".png");
+		imagepng($newImage,AVATAR_USER_PATH_INTERNAL.$imageName.".png");
 		currentUser()->setAvatar($imageName);
 		currentUser()->save();
 		$this->addInformation("Das Bild wurde erfolgreich hochgeladen");

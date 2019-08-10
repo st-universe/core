@@ -11,6 +11,8 @@
   },
   "require": {
     "ext-dom": "*",
+    "ext-gd": "*",
+    "ext-gettext": "*",
     "ext-mysqli": "*",
     "ext-xsl": "*",
     "php": "^7.3",

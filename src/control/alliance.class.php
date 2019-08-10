@@ -511,7 +511,7 @@ class AllianceApp extends gameapp {
 			return;
 		}
 		if ($this->getAlliance()->getAvatar()) {
-			@unlink(AVATAR_ALLIANCE_PATH.$this->getAlliance()->getAvatar().".png");
+			@unlink(AVATAR_ALLIANCE_PATH_INTERNAL.$this->getAlliance()->getAvatar().".png");
 		}
 		$imageName = md5($this->getAlliance()->getId()."_".time());
 		$img = imagecreatefrompng($file['tmp_name']);
@@ -525,7 +525,7 @@ class AllianceApp extends gameapp {
 		}
 		$newImage = imagecreatetruecolor(imagesx($img),imagesy($img));
 		imagecopy($newImage,$img,0,0,0,0,imagesx($img),imagesy($img));
-		imagepng($newImage,AVATAR_ALLIANCE_PATH.$imageName.".png");
+		imagepng($newImage,AVATAR_ALLIANCE_PATH_INTERNAL.$imageName.".png");
 		$this->getAlliance()->setAvatar($imageName);
 		$this->getAlliance()->save();
 		$this->addInformation("Das Bild wurde erfolgreich hochgeladen");
@@ -539,7 +539,7 @@ class AllianceApp extends gameapp {
 		}
 		$this->setView('EDIT_ALLIANCE');
 		if ($this->getAlliance()->getAvatar()) {
-			@unlink(AVATAR_ALLIANCE_PATH.$this->getAlliance()->getAvatar().".png");
+			@unlink(AVATAR_ALLIANCE_PATH_INTERNAL.$this->getAlliance()->getAvatar().".png");
 			$this->getAlliance()->setAvatar('');
 			$this->getAlliance()->save();
 		}

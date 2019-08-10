@@ -74,6 +74,8 @@ define('USER_IDLE_TIME',120960000);
 
 define("AVATAR_USER_PATH", "/html/avatare/user/");
 define("AVATAR_ALLIANCE_PATH", "/html/avatare/alliance/");
+define("AVATAR_USER_PATH_INTERNAL", APP_PATH.'/src/'.AVATAR_USER_PATH);
+define("AVATAR_ALLIANCE_PATH_INTERNAL", APP_PATH.'/src/'.AVATAR_ALLIANCE_PATH);
 
 define("BUILDMENU_SCROLLOFFSET",6);
 define("SHUTTLE_COLCENTRAL",81010100);
