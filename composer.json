@@ -15,7 +15,9 @@
     "php": "^7.3",
     "friendsofphp/php-cs-fixer": "^2.15",
     "hassankhan/config": "^2.0",
+    "mnsami/composer-custom-directory-installer": "1.1.*",
     "scn/phptal": "^3.0",
+    "usox/stu3-assets": "dev-master",
     "zendframework/zend-mail": "^2",
     "zendframework/zend-validator": "^2"
   },
@@ -30,5 +32,18 @@
   },
   "scripts": {
     "tests": "@php vendor/bin/phpunit tests"
-  }
+  },
+  "extra": {
+    "installer-paths": {
+      "./src/gfx": [
+        "usox/stu3-assets"
+      ]
+    }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:usox/stu3-assets.git"
+    }
+  ]
 }

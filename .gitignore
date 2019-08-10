@@ -13,3 +13,4 @@ version_3.0.0
 vendor
 config.json
 *.sql
+src/gfx/*
