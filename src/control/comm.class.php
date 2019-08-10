@@ -684,17 +684,17 @@ class commapp extends gameapp {
 		}
 		if ($mode != $contact->getMode() && $mode == Contactlist::CONTACT_ENEMY) {
 			PM::sendPM(currentUser()->getId(),$contact->getRecipientId(),_("Der Siedler betrachtet Dich von nun an als Feind"));
-			$obj = ContactList::hasContact($contact->getRecipientId(),currentUser()->getId());
+			$obj = Contactlist::hasContact($contact->getRecipientId(),currentUser()->getId());
 			if ($obj) {
 				if (!$obj->isEnemy()) {
-					$obj->setMode(ContactList::CONTACT_ENEMY);
+					$obj->setMode(Contactlist::CONTACT_ENEMY);
 					$obj->save();
 				}
 			} else {
-				$obj = new ContactListData;
+				$obj = new ContactlistData();
 				$obj->setUserId($contact->getRecipientId());
 				$obj->setRecipientId(currentUser()->getId());
-				$obj->setMode(ContactList::CONTACT_ENEMY);
+				$obj->setMode(Contactlist::CONTACT_ENEMY);
 				$obj->setDate(time());
 				$obj->save();
 			}

@@ -201,7 +201,7 @@ class Contactlist extends ContactlistData {
 		if ($result == 0) {
 			return FALSE;
 		}
-		return new ContactListData($result);
+		return new ContactlistData($result);
 	} # }}}
 
 }

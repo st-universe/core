@@ -4,7 +4,7 @@ class ContactlistWrapper { #{{{
 	/**
 	 */
 	public function __get($userId) { #{{{
-		return ContactList::hasContact(currentUser()->getId(),$userId);
+		return Contactlist::hasContact(currentUser()->getId(),$userId);
 	} # }}}
 
 } #}}}

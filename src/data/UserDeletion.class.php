@@ -73,7 +73,7 @@ class UserDeletion {
 	/**
 	 */
 	public function handleIgnoreList() { #{{{
-		ContactList::truncate('WHERE user_id='.$this->getUser()->getId());
+		Contactlist::truncate('WHERE user_id='.$this->getUser()->getId());
 	} # }}}
 
 	/**

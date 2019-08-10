@@ -356,7 +356,7 @@ class UserData extends BaseTable {
 				return TRUE;
 			}
 		}
-		if (ContactList::isFriendlyContact($this->getId(),$userId)) {
+		if (Contactlist::isFriendlyContact($this->getId(),$userId)) {
 			return TRUE;
 		}
 		return FALSE;
@@ -372,7 +372,7 @@ class UserData extends BaseTable {
 				return TRUE;
 			}
 		}
-		if (ContactList::isHostileContact($this->getId(),$userId)) {
+		if (Contactlist::isHostileContact($this->getId(),$userId)) {
 			return TRUE;
 		}
 		return FALSE;
