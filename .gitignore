@@ -11,6 +11,5 @@ docu/de/_build/*
 tags
 vendor
 config.json
-*.sql
 src/gfx/*
 src/version_*

@@ -97,7 +97,7 @@ class maindesk extends gameapp {
 		// Database entries for planettype
 		$this->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
 		DB()->commitTransaction();
-	        $this->redirectTo(MAINSITE."/colony.php?id=".$colony->getId());
+	        $this->redirectTo('./colony.php?id='.$colony->getId());
         }
 
 	private $randomOnlineUser = NULL;
