@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use DI\ContainerBuilder;
+use Noodlehaus\Config;
+use Noodlehaus\ConfigInterface;
 use Stu\Control\HistoryController;
 use Stu\Control\AllianceController;
 use Stu\Control\ColonyController;
@@ -23,6 +25,8 @@ use Stu\Control\ShiplistController;
 use Stu\Control\StarmapController;
 use Stu\Control\TradeController;
 use Stu\Control\UserProfileController;
+use Stu\Lib\Db;
+use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
 use function DI\create;
 use function DI\get;
@@ -31,6 +35,19 @@ use Stu\Control\AdminController;
 $builder = new ContainerBuilder();
 
 $builder->addDefinitions([
+    ConfigInterface::class => function (): ConfigInterface {
+        $path = __DIR__.'/../../';
+        return new Config(
+            [
+                sprintf('%s/config.dist.json', $path),
+                sprintf('?%s/config.json', $path),
+            ]
+        );
+    },
+    DbInterface::class => create(Db::class)
+        ->constructor(
+            get(ConfigInterface::class)
+        ),
     Session::class => create(Session::class),
 ]);
 
@@ -73,5 +90,9 @@ $builder->addDefinitions([
         ->constructor(get(Session::class)),
     UserProfileController::class => create(UserProfileController::class)
         ->constructor(get(Session::class)),
+]);
+
+$builder->addDefinitions([
+    'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',
 ]);
 return $builder->build();

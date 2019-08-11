@@ -1,6 +1,5 @@
 *.table.php
 data/Makefile
-admin/webalizer/*
 admin/backup/*
 html/avatare/alliance/*
 html/avatare/user/*
@@ -14,3 +13,4 @@ config.json
 src/gfx
 src/version_*
 src/html/avatare
+backup

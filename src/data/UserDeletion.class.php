@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Module\Maintenance\IdleUserDeletion;
+
 class UserDeletion {
 
 	private $user = NULL;
@@ -139,7 +141,7 @@ class UserDeletion {
 	 */
 	static function handle($userlist) { #{{{
 		foreach ($userlist as $key => $user) {
-			$handler = new UserDeletion($user);
+			$handler = new IdleUserDeletion($user);
 			$handler->handleAlliance();
 			$handler->handleBuildplans();
 			$handler->handleColonies();

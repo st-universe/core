@@ -2,6 +2,7 @@
 
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
+use Stu\Lib\Db;
 
 function dbSafe(&$string) {
 	return addslashes(str_replace("\"","",$string));
@@ -384,7 +385,8 @@ function jsquote($str) { #{{{
 function &DB() {
     static $DB = NULL;
     if ($DB === NULL) {
-        $DB = new db;
+        global $container;
+        return $container->get(\Stu\Lib\DbInterface::class);
     }
     return $DB;
 }

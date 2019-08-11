@@ -32,12 +32,7 @@ function isAdmin($user_id) { #{{{
 
 $global_path = __DIR__.'/../../';
 
-$config = new Config(
-    [
-        sprintf('%s/config.dist.json', $global_path),
-        sprintf('?%s/config.json', $global_path),
-    ]
-);
+$config = $container->get(\Noodlehaus\ConfigInterface::class);
 
 define("APP_PATH", $global_path);
 define("GFX_PATH","gfx");
@@ -49,10 +44,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . APP_PATH);
 
 // Maintenance
 define("MAINTENANCE_DIR",APP_PATH."/src/admin/maintenance/");
-
-// Backup
-define("BACKUP_DIR",APP_PATH."/src/admin/backup/");
-define("BACKUP_PURGE",2592000);
 
 define('DEBUG_MODE', $config->get('debug.debug_mode'));
 

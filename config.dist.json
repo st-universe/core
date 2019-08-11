@@ -4,7 +4,9 @@
     "port": 3306,
     "user": "change",
     "pass": "me",
-    "database": "change_me"
+    "database": "change_me",
+    "backup_dir": "change/me",
+    "backup_cycle_time": 2592000
   },
   "debug": {
     "debug_mode": false,

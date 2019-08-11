@@ -1,20 +1,32 @@
 <?php
 
-class Maintenance {
+use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 
-	private function startMaintenance() {
+final class Maintenance {
+
+    /**
+     * @var MaintenanceHandlerInterface[]
+     */
+    private $handler_list;
+
+    public function __construct(
+        array $handler_list
+    )
+    {
+        $this->handler_list = $handler_list;
+    }
+
+    private function startMaintenance() {
 		GameConfig::getObjectByOption(CONFIG_GAMESTATE)->setValue(CONFIG_GAMESTATE_VALUE_MAINTENANCE);
 	}
 
 	public function handle() {
         $this->startMaintenance();
-		$files = dir(MAINTENANCE_DIR);
-		while (FALSE !== ($entry = $files->read())) {
-			if (!is_file(MAINTENANCE_DIR.$entry)) {
-				continue;
-			}
-			include_once(MAINTENANCE_DIR.$entry);
-		}
+
+        foreach ($this->handler_list as $handler) {
+            $handler->handle();
+        }
+
         $this->finishMaintenance();
 	}
 
