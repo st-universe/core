@@ -176,7 +176,7 @@ abstract class GameController
         return count($this->getInformation()) > 0;
     }
 
-    private function render()
+    protected function render()
     {
         if (!$this->getViewOverride() && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();

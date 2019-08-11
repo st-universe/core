@@ -26,7 +26,6 @@ final class IndexController extends GameController
     {
         $this->session = $session;
         parent::__construct($session, $this->default_tpl, "Star Trek Universe");
-        $session->checkLoginCookie();
         $this->addCallback('B_CHECK_REGVAR', 'checkRegistrationVar');
         $this->addCallback('B_SEND_REGISTRATION', 'registerUser');
         $this->addCallback('B_LOGIN', 'loginUser');
@@ -41,13 +40,19 @@ final class IndexController extends GameController
         $this->addView('SHOW_RESET_PASSWORD', 'showResetPassword');
     }
 
-    private function render($page): void
+    protected function render(): void
     {
         $tpl = $this->getTemplate();
         $tpl->setVar('THIS', $this);
         $tpl->parse();
     }
 
+    public function main(bool $session_check = true): void
+    {
+        $this->session->checkLoginCookie();
+
+        parent::main($session_check);
+    }
 
     private $systemNews = null;
 
