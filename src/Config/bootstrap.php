@@ -23,29 +23,55 @@ use Stu\Control\ShiplistController;
 use Stu\Control\StarmapController;
 use Stu\Control\TradeController;
 use Stu\Control\UserProfileController;
+use Stu\Lib\Session;
 use function DI\create;
+use function DI\get;
 use Stu\Control\AdminController;
 
 $builder = new ContainerBuilder();
+
 $builder->addDefinitions([
-    AdminController::class => create(AdminController::class),
-    AllianceController::class => create(AllianceController::class),
-    ColonyController::class => create(ColonyController::class),
-    ColonyListController::class => create(ColonyListController::class),
-    CommController::class => create(CommController::class),
-    CrewController::class => create(CrewController::class),
-    DatabaseController::class => create(DatabaseController::class),
-    HistoryController::class => create(HistoryController::class),
-    IndexController::class => create(IndexController::class),
-    LogoutController::class => create(LogoutController::class),
-    MaindeskController::class => create(MaindeskController::class),
-    NotesController::class => create(NotesController::class),
-    OptionsController::class => create(OptionsController::class),
-    ResearchController::class => create(ResearchController::class),
-    ShipController::class => create(ShipController::class),
-    ShiplistController::class => create(ShiplistController::class),
-    StarmapController::class => create(StarmapController::class),
-    TradeController::class => create(TradeController::class),
-    UserProfileController::class => create(UserProfileController::class),
+    Session::class => create(Session::class),
+]);
+
+$builder->addDefinitions([
+    AdminController::class => create(AdminController::class)
+        ->constructor(get(Session::class)),
+    AllianceController::class => create(AllianceController::class)
+        ->constructor(get(Session::class)),
+    ColonyController::class => create(ColonyController::class)
+        ->constructor(get(Session::class)),
+    ColonyListController::class => create(ColonyListController::class)
+        ->constructor(get(Session::class)),
+    CommController::class => create(CommController::class)
+        ->constructor(get(Session::class)),
+    CrewController::class => create(CrewController::class)
+        ->constructor(get(Session::class)),
+    DatabaseController::class => create(DatabaseController::class)
+        ->constructor(get(Session::class)),
+    HistoryController::class => create(HistoryController::class)
+        ->constructor(get(Session::class)),
+    IndexController::class => create(IndexController::class)
+        ->constructor(get(Session::class)),
+    LogoutController::class => create(LogoutController::class)
+        ->constructor(get(Session::class)),
+    MaindeskController::class => create(MaindeskController::class)
+        ->constructor(get(Session::class)),
+    NotesController::class => create(NotesController::class)
+        ->constructor(get(Session::class)),
+    OptionsController::class => create(OptionsController::class)
+        ->constructor(get(Session::class)),
+    ResearchController::class => create(ResearchController::class)
+        ->constructor(get(Session::class)),
+    ShipController::class => create(ShipController::class)
+        ->constructor(get(Session::class)),
+    ShiplistController::class => create(ShiplistController::class)
+        ->constructor(get(Session::class)),
+    StarmapController::class => create(StarmapController::class)
+        ->constructor(get(Session::class)),
+    TradeController::class => create(TradeController::class)
+        ->constructor(get(Session::class)),
+    UserProfileController::class => create(UserProfileController::class)
+        ->constructor(get(Session::class)),
 ]);
 return $builder->build();

@@ -6,6 +6,7 @@ use Faction;
 use InvalidParamException;
 use request;
 use ResearchUserData;
+use Stu\Lib\Session;
 use SystemNews;
 use User;
 use UserData;
@@ -17,11 +18,15 @@ final class IndexController extends GameController
 
     private $default_tpl = "html/index.xhtml";
 
-    function __construct()
+    private $session;
+
+    function __construct(
+        Session $session
+    )
     {
-        $this->setLoginCheck(false);
-        parent::__construct($this->default_tpl, "Star Trek Universe");
-        $this->checkLoginCookie();
+        $this->session = $session;
+        parent::__construct($session, $this->default_tpl, "Star Trek Universe");
+        $session->checkLoginCookie();
         $this->addCallback('B_CHECK_REGVAR', 'checkRegistrationVar');
         $this->addCallback('B_SEND_REGISTRATION', 'registerUser');
         $this->addCallback('B_LOGIN', 'loginUser');
@@ -328,15 +333,15 @@ Das Star Trek Universe Team\n
      */
     public function hasLoginError()
     {
-        return $this->getSessionVar('loginerror');
+        return $this->session->getSessionVar('loginerror');
     }
 
     /**
      */
     public function getLoginError()
     {
-        $error = $this->getSessionVar('loginerror');
-        $this->removeSessionVar('loginerror');
+        $error = $this->session->getSessionVar('loginerror');
+        $this->session->removeSessionVar('loginerror');
         return $error;
     }
 

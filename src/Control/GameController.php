@@ -11,13 +11,14 @@ use InvalidCallbackException;
 use PM;
 use PMCategory;
 use request;
-use session;
+use Stu\Lib\Session;
 use TalPage;
 use Tuple;
 use User;
 
-abstract class GameController extends session
+abstract class GameController
 {
+    private $session;
 
     private $tpl_file = null;
     private $gameInformations = array();
@@ -29,15 +30,16 @@ abstract class GameController extends session
     private $view = null;
     private $ajaxMacro = null;
 
-    function __construct(&$tpl_file, $pagetitle)
+    function __construct(
+        Session $session,
+        &$tpl_file,
+        $pagetitle
+    )
     {
         $this->startBenchmark();
-        parent::__construct();
-
-        $this->addCallBack('B_VERIFY_LOGIN', 'verifyLoginCaptcha');
-
-        $this->setPagetitle($pagetitle);
+        $this->pagetitle = $pagetitle;
         $this->setTemplateFile($tpl_file);
+        $this->session = $session;
     }
 
     function getTemplate()
@@ -60,7 +62,7 @@ abstract class GameController extends session
                 throw new InvalidCallbackException;
             }
             if ($session === true && !request::isPost()) {
-                if (!$this->sessionIsSafe()) {
+                if (!$this->session->sessionIsSafe()) {
                     return;
                 }
             }
@@ -194,6 +196,8 @@ abstract class GameController extends session
 
     function render(&$page)
     {
+        $this->session->createSession();
+
         if (!$this->getViewOverride() && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
@@ -204,8 +208,14 @@ abstract class GameController extends session
         $tpl->parse();
     }
 
+    public function getUser() {
+        return $this->session->getUser();
+    }
+
     function renderIndexSite(&$page)
     {
+        $this->session->createSession(false);
+
         $tpl = &$this->getTemplate();
         $tpl->setVar("THIS", $page);
         $tpl->parse();
@@ -451,5 +461,10 @@ abstract class GameController extends session
     function getAchievements()
     {
         return $this->achievements;
+    }
+
+    public function getSessionString(): string
+    {
+        return $this->session->getSessionString();
     }
 }

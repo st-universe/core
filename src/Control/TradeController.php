@@ -6,6 +6,7 @@ use AccessViolation;
 use Good;
 use PM;
 use request;
+use Stu\Lib\Session;
 use TradeLicences;
 use TradeOffer;
 use TradeOfferData;
@@ -22,9 +23,11 @@ final class TradeController extends GameController
 
     private $default_tpl = "html/trade.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Handel");
+        parent::__construct($session, $this->default_tpl, "/ Handel");
         $this->addNavigationPart(new Tuple("trade.php", "Handel"));
 
         $this->addCallBack("B_CANCEL_OFFER", "cancelOffer", true);

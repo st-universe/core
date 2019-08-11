@@ -18,6 +18,7 @@ use Exception;
 use HistoryEntry;
 use PM;
 use request;
+use Stu\Lib\Session;
 use Tuple;
 use User;
 
@@ -26,9 +27,14 @@ final class AllianceController extends GameController
 
     private $default_tpl = "html/alliancelist.xhtml";
 
-    function __construct()
+    private $session;
+
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Allianzschirm");
+        $this->session = $session;
+        parent::__construct($session, $this->default_tpl, "/ Allianzschirm");
         $this->addNavigationPart(new Tuple("alliance.php?SHOW_LIST=1", "Allianzliste"));
         if ($this->getAllianceId()) {
             $this->addNavigationPart(new Tuple("alliance.php?ALLIANCE_DETAILS=1&id=" . $this->getAlliance()->getId(),
@@ -507,7 +513,7 @@ final class AllianceController extends GameController
         AllianceJobs::delByUser(currentUser()->getId());
         currentUser()->setAllianceId(0);
         currentUser()->save();
-        $this->setSessionVar('allys_id', 0);
+        $this->session->setSessionVar('allys_id', 0);
 
         $text = "Der Siedler " . currentUser()->getNameWithoutMarkup() . " hat die Allianz verlassen";
         PM::sendPM(currentUser()->getId(), $this->getAlliance()->getFounder()->getUserId(), $text);

@@ -4,6 +4,7 @@ namespace Stu\Control;
 
 use request;
 use RPGPlotMember;
+use Stu\Lib\Session;
 use Tuple;
 use User;
 use UserProfileVisitors;
@@ -13,9 +14,11 @@ final class UserProfileController extends GameController
 
     private $default_tpl = "html/userprofile.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Siedlerprofil");
+        parent::__construct($session, $this->default_tpl, "/ Siedlerprofil");
         $this->addNavigationPart(new Tuple("userprofile.php?uid=" . $this->getProfile()->getId(), "Siedlerprofil"));
 
         $this->registerProfileView();

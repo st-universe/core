@@ -5,15 +5,18 @@ namespace Stu\Control;
 use AccessViolation;
 use Crew;
 use request;
+use Stu\Lib\Session;
 
 final class CrewController extends GameController
 {
 
     private $default_tpl = "";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "Crewinfo");
+        parent::__construct($session, $this->default_tpl, "Crewinfo");
 
         $this->addCallback('B_CHANGE_NAME', 'changeName');
 

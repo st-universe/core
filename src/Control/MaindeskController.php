@@ -10,6 +10,7 @@ use ContactlistData;
 use InvalidParamException;
 use KNPosting;
 use request;
+use Stu\Lib\Session;
 use Tuple;
 use User;
 use UserProfileVisitors;
@@ -19,9 +20,14 @@ final class MaindeskController extends GameController
 
     private $default_tpl = "html/maindesk.xhtml";
 
-    function __construct()
+    private $session;
+
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Maindesk");
+        $this->session = $session;
+        parent::__construct($session, $this->default_tpl, "/ Maindesk");
         $this->addNavigationPart(new Tuple("maindesk.php", "Maindesk"));
 
         $this->addCallBack("B_FIRST_COLONY", "getFirstColony");
@@ -43,7 +49,7 @@ final class MaindeskController extends GameController
 
     function getLogintimeFormatted()
     {
-        return date("d.m.Y H:i", $this->getSessionVar('logintime'));
+        return date("d.m.Y H:i", $this->session->getSessionVar('logintime'));
     }
 
     function getLastactionFormatted()

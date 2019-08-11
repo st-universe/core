@@ -404,6 +404,16 @@ function &getMapType(&$type) {
     return $mapTypes[$type];
 }
 
+function currentUser() {
+	static $currentUser = NULL;
+	if ($currentUser === NULL) {
+		global $_SESSION;
+		$currentUser = \User::getById($_SESSION['uid']);
+	}
+	return $currentUser;
+}
+
+
 TalesRegistry::registerPrefix(
     'bbcode',
     function($src, $nothrow): string {

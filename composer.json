@@ -3,7 +3,7 @@
   "autoload": {
     "classmap": [
       "src/class",
-      "src/lib",
+      "src/Lib",
       "src/admin",
       "src/data"
     ],

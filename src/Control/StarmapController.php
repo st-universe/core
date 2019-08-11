@@ -8,6 +8,7 @@ use MapFieldType;
 use request;
 use StarSystem;
 use StarSystemData;
+use Stu\Lib\Session;
 use SystemMap;
 use Tuple;
 use UserYRow;
@@ -20,9 +21,11 @@ final class StarmapController extends GameController
 
     private $default_tpl = "html/starmap.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Sternenkarte");
+        parent::__construct($session, $this->default_tpl, "/ Sternenkarte");
         $this->addNavigationPart(new Tuple("starmap.php", "Sternenkarte"));
 
         $this->addCallback('B_EDIT_FIELD', 'editField');

@@ -10,6 +10,7 @@ use MapRegion;
 use request;
 use ShipRump;
 use StarSystem;
+use Stu\Lib\Session;
 use Tuple;
 use User;
 
@@ -18,9 +19,11 @@ final class DatabaseController extends GameController
 
     private $default_tpl = "html/database.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Datenbank");
+        parent::__construct($session, $this->default_tpl, "/ Datenbank");
         $this->addNavigationPart(new Tuple("database.php", "Datenbank"));
 
         $this->addCallBack('B_CANCEL_CONTRACT', 'cancelContract', true);

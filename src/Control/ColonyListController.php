@@ -8,6 +8,7 @@ use ColonyShipQueue;
 use ColStorage;
 use FieldTerraforming;
 use request;
+use Stu\Lib\Session;
 use Tuple;
 use UserColony;
 
@@ -16,9 +17,11 @@ final class ColonyListController extends GameController
 
     private $default_tpl = "html/colonylist.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Kolonien");
+        parent::__construct($session, $this->default_tpl, "/ Kolonien");
 
         $this->addCallBack('B_GIVEUP_COLONY', 'giveupColony', true);
 

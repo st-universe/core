@@ -3,6 +3,7 @@
 namespace Stu\Control;
 
 use request;
+use Stu\Lib\Session;
 use Tuple;
 use User;
 
@@ -11,9 +12,14 @@ final class OptionsController extends GameController
 
     private $default_tpl = "html/options.xhtml";
 
-    function __construct()
+    private $session;
+
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Optionen");
+        $this->session = $session;
+        parent::__construct($session, $this->default_tpl, "/ Optionen");
         $this->addNavigationPart(new Tuple("options.php", "Optionen"));
 
         $this->addCallBack("B_CHANGE_NAME", "changeUserName");
@@ -44,7 +50,7 @@ final class OptionsController extends GameController
         }
         currentUser()->setUser($value);
         currentUser()->save();
-        $this->setSessionVar("username", currentUser()->getName());
+        $this->session->setSessionVar("username", currentUser()->getName());
         $this->addInformation("Dein Name wurde geändert");
     }
 
@@ -105,8 +111,8 @@ final class OptionsController extends GameController
             $this->addInformation('Die Datei ist leer');
             return;
         }
-        if ($this->getSessionVar('propic') != "") {
-            @unlink(AVATAR_USER_PATH_INTERNAL . $this->getSessionVar('propic') . ".png");
+        if ($this->session->getSessionVar('propic') != "") {
+            @unlink(AVATAR_USER_PATH_INTERNAL . $this->session->getSessionVar('propic') . ".png");
         }
         $imageName = md5(currentUser()->getId() . "_" . time());
         $img = imagecreatefrompng($file['tmp_name']);

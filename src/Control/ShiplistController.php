@@ -9,6 +9,7 @@ use FleetData;
 use request;
 use Ship;
 use ShipCrewData;
+use Stu\Lib\Session;
 use Tuple;
 
 final class ShiplistController extends GameController
@@ -17,9 +18,11 @@ final class ShiplistController extends GameController
     private $default_tpl = "html/shiplist.xhtml";
     private $singleships = null;
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Schiffe");
+        parent::__construct($session, $this->default_tpl, "/ Schiffe");
         $this->addCallback("B_NEW_FLEET", "createFleet");
         $this->addCallback("B_DELETE_FLEET", "deleteFleet", true);
         $this->addCallback("B_LEAVE_FLEET", "leaveFleet", true);

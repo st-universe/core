@@ -56,9 +56,6 @@ define("BACKUP_PURGE",2592000);
 
 define('DEBUG_MODE', $config->get('debug.debug_mode'));
 
-define('RECAPTCHA_PUBLIC_KEY', '');
-define('RECAPTCHA_PRIVATE_KEY', '');
-
 define('SHIELD_REGENERATION_TIME',900);
 
 define('SHIP_CATEGORY_DEBRISFIELD',7);

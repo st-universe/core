@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Control;
 
+use Stu\Lib\Session;
+
 final class LogoutController extends GameController
 {
 
     private $default_tpl = '';
 
-    function __construct()
+    private $session;
+
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, 'Logout');
+        $this->session = $session;
+        parent::__construct($session, $this->default_tpl, 'Logout');
+    }
+
+    public function logout(): void {
+        $this->session->createSession();
+
+        $this->session->logout();
     }
 }

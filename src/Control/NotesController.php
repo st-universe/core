@@ -5,6 +5,7 @@ namespace Stu\Control;
 use Notes;
 use NotesData;
 use request;
+use Stu\Lib\Session;
 use Tuple;
 
 final class NotesController extends GameController
@@ -12,9 +13,11 @@ final class NotesController extends GameController
 
     private $default_tpl = "html/notes.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Notizen");
+        parent::__construct($session, $this->default_tpl, "/ Notizen");
         $this->addNavigationPart(new Tuple("notes.php", "Notizen"));
 
         $this->addCallback('B_SAVE_NOTE', 'saveNote', true);

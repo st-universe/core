@@ -35,6 +35,7 @@ use ShipBuildplans;
 use ShipBuildplansData;
 use ShipCrew;
 use ShipRump;
+use Stu\Lib\Session;
 use Terraforming;
 use TorpedoType;
 use Tuple;
@@ -45,9 +46,11 @@ final class ColonyController extends GameController
 
     private $default_tpl = "html/colony.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Kolonien");
+        parent::__construct($session, $this->default_tpl, "/ Kolonien");
         $this->addNavigationPart(new Tuple("colonylist.php", "Kolonien"));
 
         $this->getTemplate()->setVar('currentColony', $this->getColony());

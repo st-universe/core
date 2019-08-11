@@ -23,6 +23,7 @@ use ShipAttackCycle;
 use ShipCrew;
 use ShipMover;
 use ShipSingleAttackCycle;
+use Stu\Lib\Session;
 use SystemActivationWrapper;
 use TradeLicencesData;
 use TradeStorage;
@@ -36,9 +37,14 @@ final class ShipController extends GameController
     private $default_tpl = "html/ship.xhtml";
     public $destroyed_ships = array();
 
-    function __construct()
+    private $session;
+
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Schiffe");
+        $this->session = $session;
+        parent::__construct($session, $this->default_tpl, "/ Schiffe");
         $this->addNavigationPart(new Tuple("shiplist.php", "Schiffe"));
         $this->addCallBack("B_ACTIVATE_CLOAK", "activateCloak", true);
         $this->addCallBack("B_DEACTIVATE_CLOAK", "deActivateCloak", true);
@@ -883,7 +889,7 @@ final class ShipController extends GameController
             $obj = new Ship($data['id']);
             if (!array_key_exists($obj->getFleetId(), $ret)) {
                 $ret[$obj->getFleetId()]['fleet'] = new Fleet($obj->getFleetId());
-                if ($this->hasSessionValue('hiddenfleets', $obj->getFleetId())) {
+                if ($this->session->hasSessionValue('hiddenfleets', $obj->getFleetId())) {
                     $ret[$obj->getFleetId()]['fleethide'] = true;
                 } else {
                     $ret[$obj->getFleetId()]['fleethide'] = false;
@@ -1672,14 +1678,14 @@ final class ShipController extends GameController
         $time = microtime();
         $str = sha1($time * $this->getShip()->getId());
         $str = substr($str, 18, 6);
-        $this->setSessionVar('sz_code', $str);
+        $this->session->setSessionVar('sz_code', $str);
         return $str;
     }
 
     protected function selfDestruct()
     {
         $code = request::postString('destructioncode');
-        if ($code != $this->getSessionVar('sz_code')) {
+        if ($code != $this->session->getSessionVar('sz_code')) {
             return;
         }
         $this->getShip()->selfDestroy();
@@ -2271,7 +2277,7 @@ final class ShipController extends GameController
     protected function hideFleet()
     {
         $fleetId = request::getIntFatal('fleet');
-        $this->storeSessionData('hiddenfleets', $fleetId);
+        $this->session->storeSessionData('hiddenfleets', $fleetId);
         $this->showNoop();
     }
 
@@ -2279,7 +2285,7 @@ final class ShipController extends GameController
     {
         $this->setView('SHOW_NOOP');
         $fleetId = request::getIntFatal('fleet');
-        $this->deleteSessionData('hiddenfleets', $fleetId);
+        $this->session->deleteSessionData('hiddenfleets', $fleetId);
         $this->showNoop();
     }
 

@@ -8,6 +8,7 @@ use Research;
 use ResearchDependency;
 use ResearchUser;
 use ResearchUserData;
+use Stu\Lib\Session;
 use Tuple;
 
 final class ResearchController extends GameController
@@ -15,9 +16,11 @@ final class ResearchController extends GameController
 
     private $default_tpl = "html/research.xhtml";
 
-    function __construct()
+    function __construct(
+        Session $session
+    )
     {
-        parent::__construct($this->default_tpl, "/ Forschung");
+        parent::__construct($session, $this->default_tpl, "/ Forschung");
         $this->addNavigationPart(new Tuple("research.php", "Forschung"));
 
         $this->addCallback('B_DO_RESEARCH', 'doResearch', true);
