@@ -30,7 +30,19 @@ abstract class GameController
     private $view = null;
     private $ajaxMacro = null;
 
-    function __construct(
+    private $execjs = array();
+
+    private $currentRound = null;
+
+    private $pmnavlet = null;
+
+    private $achievements = array();
+
+    private $playercount = null;
+
+    private $onlinePlayercount = null;
+
+    public function __construct(
         Session $session,
         &$tpl_file,
         $pagetitle
@@ -42,7 +54,7 @@ abstract class GameController
         $this->setTemplateFile($tpl_file);
     }
 
-    function getTemplate()
+    protected function getTemplate()
     {
         if ($this->template === null) {
             $this->template = new TalPage($this->tpl_file);
@@ -50,20 +62,14 @@ abstract class GameController
         return $this->template;
     }
 
-    private $callback = null;
-
-    private $callback_func;
-
     private $callbacks = [];
 
-    function addCallBack($cb, $func, $session = false)
+    protected function addCallBack($cb, $func, $session = false)
     {
         $this->callbacks[$cb] = [$func, $session];
     }
 
     private $viewOverride = false;
-
-    private $view_func;
 
     private $views = [];
 
@@ -72,17 +78,12 @@ abstract class GameController
         $this->views[$view] = [$func, $override];
     }
 
-    private function getViewOverride()
-    {
-        return $this->viewOverride;
-    }
-
-    function getView()
+    protected function getView()
     {
         return $this->view;
     }
 
-    function setView($view)
+    protected function setView($view)
     {
         request::setVar($view, 1);
     }
@@ -107,38 +108,36 @@ abstract class GameController
         return $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue();
     }
 
-    function setTemplateFile($tpl)
+    protected function setTemplateFile($tpl)
     {
         $this->tpl_file = &$tpl;
         $this->getTemplate()->setTemplate($tpl);
     }
 
-    function setAjaxMacro($macro)
+    protected function setAjaxMacro($macro)
     {
         $this->ajaxMacro = $macro;
     }
 
-    /**
-     */
     protected function showAjaxMacro($macro)
     {
         $this->setTemplateFile('html/ajaxempty.xhtml');
         $this->setAjaxMacro($macro);
     }
 
-    function getAjaxMacro()
+    public function getAjaxMacro()
     {
         return $this->ajaxMacro;
     }
 
-    function startBenchmark()
+    private function startBenchmark()
     {
         $this->benchmarkTimer = microtime();
     }
 
-    function getMemoryUsage()
+    public function getMemoryUsage()
     {
-        return round((memory_get_usage() / 1024) / 1024, 3);
+        return round((memory_get_peak_usage() / 1024) / 1024, 3);
     }
 
     protected function addInformation($msg, $override = false)
@@ -164,21 +163,19 @@ abstract class GameController
         return $this->gameInformations;
     }
 
-    /**
-     */
     protected function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN)
     {
         PM::sendPM($sender_id, $recipient_id, join('<br />', $this->getInformation()), $category_id);
     }
 
-    function hasInformation()
+    public function hasInformation()
     {
         return count($this->getInformation()) > 0;
     }
 
     protected function render()
     {
-        if (!$this->getViewOverride() && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
+        if (!$this->viewOverride && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
         $tpl = $this->getTemplate();
@@ -192,7 +189,7 @@ abstract class GameController
         return $this->session->getUser();
     }
 
-    function getBenchmark()
+    public function getBenchmark()
     {
         $start = explode(' ', $this->benchmarkTimer);
         $s_timer = $start[1] + $start[0];
@@ -201,9 +198,7 @@ abstract class GameController
         return round($e_timer - $s_timer, 6);;
     }
 
-    private $playercount = null;
-
-    function getPlayerCount()
+    public function getPlayerCount()
     {
         if ($this->playercount === null) {
             $this->playercount = DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100", 1);
@@ -211,9 +206,7 @@ abstract class GameController
         return $this->playercount;
     }
 
-    private $onlinePlayercount = null;
-
-    function getOnlinePlayerCount()
+    public function getOnlinePlayerCount()
     {
         if ($this->onlinePlayercount === null) {
             $this->onlinePlayercount = DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300",
@@ -222,12 +215,7 @@ abstract class GameController
         return $this->onlinePlayercount;
     }
 
-    function parseBBC(&$var)
-    {
-        return BBCode()->parse($var);
-    }
-
-    function getUserName()
+    public function getUserName()
     {
         return BBCode()->parse($this->getUser()->user);
     }
@@ -247,7 +235,7 @@ abstract class GameController
         return $this->getGameConfig()[$value];
     }
 
-    function getUniqHandle()
+    public function getUniqHandle()
     {
         $this->handleId++;
         return "hdl" . $this->handleId;
@@ -258,87 +246,81 @@ abstract class GameController
         $this->siteNavigation[] = $part;
     }
 
-    function getNavigation()
+    public function getNavigation()
     {
         return $this->siteNavigation;
     }
 
-    function getPageTitle()
+    public function getPageTitle()
     {
         return $this->pagetitle;
     }
 
-    function setPageTitle($title)
+    protected function setPageTitle($title)
     {
         $this->pagetitle = $title;
     }
 
-    function getQueryCount()
+    public function getQueryCount()
     {
         return DB()->getQueryCount();
     }
 
-    function getDebugNotices()
+    public function getDebugNotices()
     {
         return get_debug_error()->getDebugNotices();
     }
 
-    private $execjs = array();
-
-    function hasExecuteJS()
+    public function hasExecuteJS()
     {
         return count($this->execjs);
     }
 
-    function getExecuteJS()
+    public function getExecuteJS()
     {
         return $this->execjs;
     }
 
-    function addExecuteJS($value)
+    protected function addExecuteJS($value)
     {
         $this->execjs[] = $value;
     }
 
-    function showNoop()
+    protected function showNoop()
     {
         exit;
     }
 
-    function getGameVersion()
+    public function getGameVersion()
     {
         return GAME_VERSION;
     }
 
-    function redirectTo($href)
+    protected function redirectTo($href)
     {
         header('Location: ' . $href);
         exit;
     }
 
-    function getFriendsOnline()
+    public function getFriendsOnline()
     {
         return User::getListBy("WHERE lastaction>" . (time() - USER_ONLINE_PERIOD) . " AND (id IN (SELECT user_id FROM stu_contactlist WHERE mode=1 AND recipient=" . currentUser()->getId() . ")
 				      OR id IN (SELECT id FROM stu_user WHERE allys_id>0 AND allys_id=" . currentUser()->getAllianceId() . ")) AND id!=" . currentUser()->getId() . " GROUP BY id ORDER BY RAND() LIMIT 10");
     }
 
-    function getFriendsOnlineCount()
+    public function getFriendsOnlineCount()
     {
         return User::countInstances("WHERE lastaction>" . (time() - USER_ONLINE_PERIOD) . " AND (id IN (SELECT user_id FROM stu_contactlist WHERE mode=1 AND recipient=" . currentUser()->getId() . ")
 				      OR id IN (SELECT id FROM stu_user WHERE allys_id>0 AND allys_id=" . currentUser()->getAllianceId() . ")) AND id!=" . currentUser()->getId());
     }
 
-    private $currentRound = null;
-
-    function getCurrentRound()
+    public function getCurrentRound()
     {
         if ($this->currentRound === null) {
             $this->currentRound = GameTurn::getCurrentTurn();
         }
         return $this->currentRound;
     }
-
-    private $pmnavlet = null;
 
     public function getNewPMNavlet()
     {
@@ -348,60 +330,48 @@ abstract class GameController
         return $this->pmnavlet;
     }
 
-    /**
-     */
     public function isDebugMode()
     {
         return isDebugMode();
     }
 
-    /**
-     */
     public function getJavascriptPath()
     {
         return 'version_' . $this->getGameVersion();
     }
 
-    /**
-     */
     public function getPlanetColonyLimit()
     {
-        return DB()->query('SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . currentUser()->getId() . ' ANd aktiv=0)',
-            1);
+        return DB()->query(
+            'SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . currentUser()->getId() . ' ANd aktiv=0)',
+            1
+        );
     }
 
-    /**
-     */
     public function getMoonColonyLimit()
     {
-        return DB()->query('SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . currentUser()->getId() . ' ANd aktiv=0)',
-            1);
+        return DB()->query(
+            'SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . currentUser()->getId() . ' ANd aktiv=0)',
+            1
+        );
     }
 
-    /**
-     */
     public function getPlanetColonyCount()
     {
         return Colony::countInstances('WHERE user_id=' . currentUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
     }
 
-    /**
-     */
     public function getMoonColonyCount()
     {
         return Colony::countInstances('WHERE user_id=' . currentUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
     }
 
-    /**
-     */
     public function isAdmin()
     {
         return currentUser()->isAdmin();
     }
 
-    /**
-     */
-    function getRecentHistory()
+    public function getRecentHistory()
     {
         if ($this->recent_history === null) {
             $this->recent_history = HistoryEntry::getListBy('ORDER BY id DESC LIMIT 10');
@@ -409,8 +379,6 @@ abstract class GameController
         return $this->recent_history;
     }
 
-    /**
-     */
     protected function checkDatabaseItem($database_entry_id)
     {
         if ($database_entry_id > 0 && !DatabaseUser::checkEntry($database_entry_id, currentUser()->getId())) {
@@ -418,18 +386,12 @@ abstract class GameController
         }
     }
 
-    private $achievements = array();
-
-    /**
-     */
     protected function addAchievement($text)
     {
         $this->achievements[] = $text;
     }
 
-    /**
-     */
-    function getAchievements()
+    public function getAchievements()
     {
         return $this->achievements;
     }
