@@ -32,8 +32,6 @@ final class DatabaseController extends GameController
         $this->addView("SHOW_ENTRY", "showEntry");
         $this->addView("SHOW_SETTLERLIST", "showUserList");
         $this->addView("SHOW_TOP_DISCOVER", "showTopResearchUser");
-
-        $this->render($this);
     }
 
     private $rumplist = null;

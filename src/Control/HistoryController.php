@@ -28,8 +28,6 @@ final class HistoryController extends GameController
     {
         parent::__construct($session, $this->default_tpl, "/ Ereignisse");
         $this->addNavigationPart(new Tuple("history.php", _('Ereignisse')));
-
-        $this->render($this);
     }
 
     function getHistoryType()

@@ -129,7 +129,6 @@ final class ColonyController extends GameController
         if (!$this->getView()) {
             $this->showColony();
         }
-        $this->render($this);
     }
 
     private $colony = null;

@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$controller = $container->get(NotesController::class);
+$container->get(NotesController::class)->main();
 
 DB()->commitTransaction();

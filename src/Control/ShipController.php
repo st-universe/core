@@ -141,7 +141,6 @@ final class ShipController extends GameController
         if (!$this->getView()) {
             $this->showShip();
         }
-        $this->render($this);
     }
 
     private $ship = null;

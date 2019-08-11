@@ -28,8 +28,6 @@ final class OptionsController extends GameController
         $this->addCallBack("B_CHANGE_AVATAR", "changeAvatar");
         $this->addCallBack("B_CHANGE_DESCRIPTION", "changeDescription");
         $this->addCallBack("B_CHANGE_SETTINGS", "changeSettings");
-
-        $this->render($this);
     }
 
     function changeUsername()

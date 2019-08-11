@@ -25,8 +25,6 @@ final class NotesController extends GameController
         $this->addCallback('B_DELETE_NOTES', 'deleteNotes');
 
         $this->addView('SHOW_NOTE', 'showNote');
-
-        $this->render($this);
     }
 
     private $notes = null;

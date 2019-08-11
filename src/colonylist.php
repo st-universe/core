@@ -7,6 +7,6 @@ require_once 'inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$controller = $container->get(ColonyListController::class);
+$container->get(ColonyListController::class)->main();
 
 DB()->commitTransaction();

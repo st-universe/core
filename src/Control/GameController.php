@@ -36,10 +36,10 @@ abstract class GameController
         $pagetitle
     )
     {
+        $this->session = $session;
         $this->startBenchmark();
         $this->pagetitle = $pagetitle;
         $this->setTemplateFile($tpl_file);
-        $this->session = $session;
     }
 
     function getTemplate()
@@ -52,42 +52,24 @@ abstract class GameController
 
     private $callback = null;
 
+    private $callback_func;
+
+    private $callbacks = [];
+
     function addCallBack($cb, $func, $session = false)
     {
-        if ($this->callback !== null) {
-            return;
-        }
-        if (request::indString($cb)) {
-            if (!method_exists($this, $func)) {
-                throw new InvalidCallbackException;
-            }
-            if ($session === true && !request::isPost()) {
-                if (!$this->session->sessionIsSafe()) {
-                    return;
-                }
-            }
-            $this->callback = $cb;
-            $this->$func();
-            return;
-        }
+        $this->callbacks[$cb] = [$func, $session];
     }
 
     private $viewOverride = false;
 
+    private $view_func;
+
+    private $views = [];
+
     protected function addView($view, $func, $override = false)
     {
-        if ($this->getView() !== null) {
-            return;
-        }
-        $this->viewOverride = $override;
-        if (request::indString($view)) {
-            if (!method_exists($this, $func)) {
-                throw new \Exception('Invalid view');
-            }
-            $this->$func();
-            $this->view = $view;
-            return;
-        }
+        $this->views[$view] = [$func, $override];
     }
 
     private function getViewOverride()
@@ -194,15 +176,13 @@ abstract class GameController
         return count($this->getInformation()) > 0;
     }
 
-    function render(&$page)
+    private function render()
     {
-        $this->session->createSession();
-
         if (!$this->getViewOverride() && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
-        $tpl =& $this->getTemplate();
-        $tpl->setRef("THIS", $page);
+        $tpl = $this->getTemplate();
+        $tpl->setRef("THIS", $this);
         $tpl->setVar("GFX", GFX_PATH);
         $tpl->setRef("USER", currentUser());
         $tpl->parse();
@@ -210,15 +190,6 @@ abstract class GameController
 
     public function getUser() {
         return $this->session->getUser();
-    }
-
-    function renderIndexSite(&$page)
-    {
-        $this->session->createSession(false);
-
-        $tpl = &$this->getTemplate();
-        $tpl->setVar("THIS", $page);
-        $tpl->parse();
     }
 
     function getBenchmark()
@@ -466,5 +437,50 @@ abstract class GameController
     public function getSessionString(): string
     {
         return $this->session->getSessionString();
+    }
+
+    public function main(bool $session_check = true): void
+    {
+        $this->session->createSession($session_check);
+
+        $this->executeCallback();
+        $this->executeView();
+
+        $this->render();
+    }
+
+    private function executeCallback(): void
+    {
+        foreach ($this->callbacks as $key => $config) {
+            if (request::indString($key)) {
+                list($callable, $session_check) = $config;
+                if (!method_exists($this, $callable)) {
+                    throw new InvalidCallbackException;
+                }
+                if ($session_check === true && !request::isPost()) {
+                    if (!$this->session->sessionIsSafe()) {
+                        return;
+                    }
+                }
+                call_user_func_array([$this, $callable], []);
+                return;
+            }
+        }
+    }
+
+    private function executeView()
+    {
+        foreach ($this->views as $key => $config) {
+            list($callable, $override) = $config;
+
+            $this->viewOverride = $override;
+            if (request::indString($key)) {
+                if (!method_exists($this, $callable)) {
+                    throw new \Exception('Invalid view');
+                }
+                call_user_func_array([$this, $callable], []);
+                return;
+            }
+        }
     }
 }

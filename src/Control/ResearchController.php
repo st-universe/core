@@ -27,8 +27,6 @@ final class ResearchController extends GameController
         $this->addCallback('B_CANCEL_CURRENT_RESEARCH', 'cancelResearch', true);
 
         $this->addView("SHOW_RESEARCH", "showResearch");
-
-        $this->render($this);
     }
 
     protected function doResearch()

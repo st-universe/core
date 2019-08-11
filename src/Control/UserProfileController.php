@@ -22,8 +22,6 @@ final class UserProfileController extends GameController
         $this->addNavigationPart(new Tuple("userprofile.php?uid=" . $this->getProfile()->getId(), "Siedlerprofil"));
 
         $this->registerProfileView();
-
-        $this->render($this);
     }
 
     private $profile = null;

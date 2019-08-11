@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$controller = $container->get(ShipController::class);
+$container->get(ShipController::class)->main();
 
 DB()->commitTransaction();

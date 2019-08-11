@@ -21,8 +21,6 @@ final class CrewController extends GameController
         $this->addCallback('B_CHANGE_NAME', 'changeName');
 
         $this->addView('SHOW_CREW_DETAILS', 'showCrewDetails');
-
-        $this->render($this);
     }
 
     private $crew = null;

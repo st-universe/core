@@ -32,7 +32,6 @@ final class ShiplistController extends GameController
         $this->addCallback("B_NOT_OWNER", "displayNotOwner", true);
         $this->addCallback("B_GET_GALAXY_CLASS", "getGalaxyClass");
         $this->addNavigationPart(new Tuple("shiplist.php", "Schiffe"));
-        $this->render($this);
     }
 
     function hasShips()

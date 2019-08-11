@@ -7,6 +7,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$controller = $container->get(CommController::class);
+$container->get(CommController::class)->main();
 
 DB()->commitTransaction();

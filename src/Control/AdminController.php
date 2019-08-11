@@ -22,8 +22,6 @@ final class AdminController extends GameController
         $this->addNavigationPart(new Tuple("admin.php", 'Admin'));
 
         $this->addView('CREATE_BUILDPLAN', 'createBuildPlan');
-
-        $this->render($this);
     }
 
     protected function createBuildPlan()

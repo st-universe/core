@@ -35,8 +35,6 @@ final class MaindeskController extends GameController
         $this->addView("SHOW_COLONYLIST", "showColonyList");
         $this->addView("SHOW_BUDDYLIST", "showBuddylist");
         $this->addView('SHOW_COLONYLIST_AJAX', 'showColonyListAjax');
-
-        $this->render($this);
     }
 
     function displayFirstColonyDialogue()

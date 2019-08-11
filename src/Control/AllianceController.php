@@ -88,8 +88,6 @@ final class AllianceController extends GameController
         if (currentUser()->getAllianceId() > 0 && !$this->getView()) {
             $this->showAllianceDetails();
         }
-
-        $this->render($this);
     }
 
     private $alliancelist = null;

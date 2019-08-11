@@ -39,9 +39,15 @@ final class IndexController extends GameController
         $this->addView("SHOW_REGISTRATION_END", "showRegistrationEnd");
         $this->addView('SHOW_LOST_PASSWORD', 'showLostPassword');
         $this->addView('SHOW_RESET_PASSWORD', 'showResetPassword');
-
-        $this->renderIndexSite($this);
     }
+
+    private function render($page): void
+    {
+        $tpl = $this->getTemplate();
+        $tpl->setVar('THIS', $this);
+        $tpl->parse();
+    }
+
 
     private $systemNews = null;
 

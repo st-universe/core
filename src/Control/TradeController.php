@@ -47,8 +47,6 @@ final class TradeController extends GameController
         $this->addView('SHOW_LICENCE_LIST', 'showTradeLicenceList');
         $this->addView('SHOW_SHOUTBOX', 'showShoutbox');
         $this->addView('SHOW_SHOUTBOX_LIST', 'showShoutboxList');
-
-        $this->render($this);
     }
 
     private $offerList = null;

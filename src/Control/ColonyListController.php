@@ -26,7 +26,6 @@ final class ColonyListController extends GameController
         $this->addCallBack('B_GIVEUP_COLONY', 'giveupColony', true);
 
         $this->addNavigationPart(new Tuple("colonylist.php", "Kolonien"));
-        $this->render($this);
     }
 
     function hasColonies()

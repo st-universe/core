@@ -89,8 +89,6 @@ final class CommController extends GameController
         $this->addView("SHOW_KN_COMMENTLIST", "showKnCommentList");
 
         $this->addView("SHOW_NOOP", "showNoop");
-
-        $this->render($this);
     }
 
     function showPlotKN()

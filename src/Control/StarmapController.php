@@ -41,8 +41,6 @@ final class StarmapController extends GameController
         $this->addView("SHOW_SYSTEM_EDITFIELD", "showSystemEditField");
         $this->addView("SHOW_SYSTEM", "showSystem");
         $this->addView('SHOW_STARMAP_POSITION', 'showStarmapByPosition');
-
-        $this->render($this);
     }
 
     private function setEditMode()
