@@ -86,7 +86,7 @@ class ShipCrew extends ShipCrewData {
 
 	/**
 	 */
-	static function createByRumpCategory(Ship $ship) { #{{{
+	static function createByRumpCategory(ShipData $ship) { #{{{
 		for ($i=CREW_TYPE_FIRST;$i<=CREW_TYPE_LAST;$i++) {
 			$j = 1;
 			if ($i == CREW_TYPE_CREWMAN) {

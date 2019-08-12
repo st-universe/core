@@ -394,7 +394,7 @@ function &DB() {
 function &getBorderType(&$type) {
     static $borderTypes = array();
     if (!array_key_exists($type,$borderTypes)) {
-        $borderTypes[$type] = new BorderTypes($type);
+        $borderTypes[$type] = new Bordertypes($type);
     }
     return $borderTypes[$type];
 }

@@ -116,7 +116,7 @@ class ShipBuildplansData extends BaseTable {
 	 */
 	public function getModules() { #{{{
 		if ($this->modules === NULL) {
-			$this->modules = BuildplanModules::getByBuildplan($this->getId());
+			$this->modules = BuildPlanModules::getByBuildplan($this->getId());
 		}
 		return $this->modules;
 	} # }}}

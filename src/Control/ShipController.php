@@ -2409,7 +2409,7 @@ final class ShipController extends GameController
     public function canColonizeCurrentColony()
     { #{{{
         $colony = $this->getShip()->getCurrentColony();
-        if ($colony->getPlanetType()->getResearchId() > 0 && !currentUser()->hasResearch($colony->getPlanetType()->getResearchId())) {
+        if ($colony->getPlanetType()->getResearchId() > 0 && !currentUser()->hasResearched($colony->getPlanetType()->getResearchId())) {
             return false;
         }
         return $this->getShip()->getCurrentColony()->isFree() && $this->getShip()->getRump()->canColonize();

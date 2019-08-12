@@ -574,15 +574,15 @@
 				<tr>
 					<td>
 						<tal:block tal:repeat="good currentShip/getStorage">
-							<tal:block tal:condition="good/getCount">
+							<tal:block tal:condition="good/getAmount">
 								<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-									<img src="${GFX}/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getCount}
+									<img src="${GFX}/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
 								</div>
 								<tal:block tal:condition="repeat/good/odd">
 									<div tal:condition="repeat/good/last" style="float: left; width: 50%;"> </div>
 								</tal:block>
 								<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-									<img src="${GFX}/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getCount}
+									<img src="${GFX}/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
 								</div>
 								<br tal:condition="repeat/good/odd" style="clear: both;" />
 							</tal:block>

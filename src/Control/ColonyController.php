@@ -958,8 +958,8 @@ final class ColonyController extends GameController
             if ($target->getStorageSum() >= $target->getMaxStorage()) {
                 break;
             }
-            if ($count > $good->getCount()) {
-                $count = $good->getCount();
+            if ($count > $good->getAmount()) {
+                $count = $good->getAmount();
             }
             if (ceil($count / $good->getGood()->getTransferCount()) > $this->getColony()->getEps()) {
                 $count = $this->getColony()->getEps() * $good->getGood()->getTransferCount();

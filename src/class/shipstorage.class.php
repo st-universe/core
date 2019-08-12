@@ -26,7 +26,7 @@ class ShipStorageData extends BaseTable {
 	}
 
 	public function setCount($value) {
-		$this->setFieldValue('count',$value,'getCount');
+		$this->setFieldValue('count',$value,'getAmount');
 	}
 
 	public function getGood() {
@@ -34,11 +34,11 @@ class ShipStorageData extends BaseTable {
 	}
 
 	public function lowerCount($count) {
-		$this->setCount($this->getCount()-$count);
+		$this->setCount($this->getAmount()-$count);
 	}
 
 	public function upperCount($count) {
-		$this->setCount($this->getCount()+$count);
+		$this->setCount($this->getAmount()+$count);
 	}
 
 	public function getShipId() {

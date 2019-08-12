@@ -96,7 +96,7 @@ class ResourceCacher {
 				$newobj = "Colony";
 				break;
 			case "rump":
-				$newobj = "ShipRump";
+				$newobj = "Shiprump";
 				break;
 			case CACHE_FLEET:
 				$newobj = "Fleet";
