@@ -56,11 +56,9 @@ class ShipRumpCostsData extends BaseTable { #{{{
 		$this->setFieldValue('count',$value,'getCount');
 	} # }}}
 
-	/**
-	 */
-	public function getCount() { # {{{
+	public function getAmount() {
 		return $this->data['count'];
-	} # }}}
+	}
 
 	/**
 	 */

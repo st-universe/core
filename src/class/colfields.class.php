@@ -354,11 +354,11 @@ class Colfields extends ColfieldData {
 
 	static public function getFieldsByBuildingFunction($colonyId,$func,$active=FALSE) {
 		if (is_array($func)) {
-			$qry = 'function IN ('.join(',',$func).')';
+			$qry = '`function` IN ('.join(',',$func).')';
 		} else {
-			$qry = 'function='.$func;
+			$qry = '`function`='.$func;
 		}
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE colonies_id=".intval($colonyId)." AND aktiv".($active ? '=1' : '<2')." AND buildings_id IN (SELECT buildings_id FROM stu_buildings_functions WHERE function=".intval($func).")");
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE colonies_id=".intval($colonyId)." AND aktiv".($active ? '=1' : '<2')." AND buildings_id IN (SELECT buildings_id FROM stu_buildings_functions WHERE `function`=".intval($func).")");
 		return self::_getList($result,'ColFieldData');
 	}
 

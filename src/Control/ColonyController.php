@@ -34,7 +34,7 @@ use Ship;
 use ShipBuildplans;
 use ShipBuildplansData;
 use ShipCrew;
-use ShipRump;
+use Shiprump;
 use Stu\Lib\Session;
 use Terraforming;
 use TorpedoType;
@@ -1502,7 +1502,7 @@ final class ColonyController extends GameController
     public function getBuildableRumps()
     {
         if ($this->rumplist === null) {
-            $this->rumplist = ShipRump::getBuildableRumpsByUser(currentUser()->getId());
+            $this->rumplist = Shiprump::getBuildableRumpsByUser(currentUser()->getId());
         }
         return $this->rumplist;
     }
@@ -1516,7 +1516,7 @@ final class ColonyController extends GameController
         if ($this->rumplist_function === null) {
             $func_id = request::getIntFatal('func');
             $function = new BuildingFunctions($func_id);
-            $this->rumplist_function = ShipRump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),
+            $this->rumplist_function = Shiprump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),
                 $function->getFunction());
         }
         return $this->rumplist_function;
@@ -1593,7 +1593,7 @@ final class ColonyController extends GameController
     public function getSelectedRump()
     {
         if ($this->selectedRump === null) {
-            $this->selectedRump = new ShipRump(request::indInt('rump'));
+            $this->selectedRump = new Shiprump(request::indInt('rump'));
         }
         return $this->selectedRump;
     }
@@ -1861,7 +1861,7 @@ final class ColonyController extends GameController
     public function getAvailableAirfieldRumps()
     {
         if ($this->available_airfield_rumps === null) {
-            $this->available_airfield_rumps = ShipRump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),
+            $this->available_airfield_rumps = Shiprump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),
                 BUILDING_FUNCTION_AIRFIELD);
         }
         return $this->available_airfield_rumps;
@@ -1874,7 +1874,7 @@ final class ColonyController extends GameController
     public function getAvailableFighterShipyardRumps()
     {
         if ($this->available_fighter_shipyard_rumps === null) {
-            $this->available_fighter_shipyard_rumps = ShipRump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),
+            $this->available_fighter_shipyard_rumps = Shiprump::getBuildableRumpsByBuildingFunction(currentUser()->getId(),
                 BUILDING_FUNCTION_FIGHTER_SHIPYARD);
         }
         return $this->available_fighter_shipyard_rumps;
@@ -1887,7 +1887,7 @@ final class ColonyController extends GameController
     public function getStartableAirfieldRumps()
     {
         if ($this->startable_airfield_rumps === null) {
-            $this->startable_airfield_rumps = ShipRump::getBy('WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id=' . currentUser()->getId() . ')
+            $this->startable_airfield_rumps = Shiprump::getBy('WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id=' . currentUser()->getId() . ')
 					AND good_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=' . $this->getColony()->getId() . ') GROUP BY id');
         }
         return $this->startable_airfield_rumps;
@@ -1929,18 +1929,18 @@ final class ColonyController extends GameController
         $storage = &$this->getColony()->getStorage();
         foreach ($rump->getBuildingCosts() as $key => $cost) {
             if (!array_key_exists($cost->getGoodId(), $storage)) {
-                $this->addInformation(sprintf(_('Es wird %d %s benötigt'), $cost->getCount(),
+                $this->addInformation(sprintf(_('Es wird %d %s benötigt'), $cost->getAmount(),
                     $cost->getGood()->getName()));
                 $this->rollbackTransaction();
                 return;
             }
-            if ($storage[$cost->getGoodId()]->getCount() < $cost->getCount()) {
-                $this->addInformation(sprintf(_('Es wird %d %s benötigt - Vorhanden ist nur %d'), $cost->getCount(),
-                    $cost->getGood()->getName(), $storage[$cost->getGoodId()]->getCount()));
+            if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
+                $this->addInformation(sprintf(_('Es wird %d %s benötigt - Vorhanden ist nur %d'), $cost->getAmount(),
+                    $cost->getGood()->getName(), $storage[$cost->getGoodId()]->getAmount()));
                 $this->rollbackTransaction();
                 return;
             }
-            $this->getColony()->lowerStorage($cost->getGoodId(), $cost->getCount());
+            $this->getColony()->lowerStorage($cost->getGoodId(), $cost->getAmount());
         }
         $this->getColony()->lowerEps($rump->getEpsCost());
         $this->getColony()->upperStorage($rump->getGoodId(), 1);
