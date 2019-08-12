@@ -113,7 +113,7 @@ class ColonyTick {
 					continue;
 				}
 				if ($this->getColony()->getStorage()->offsetExists($pro->getGoodsId())) {
-					if ($this->getColony()->getStorage()->offsetGet($pro->getGoodsId())->getCount() + $pro->getProduction() >= 0) {
+					if ($this->getColony()->getStorage()->offsetGet($pro->getGoodsId())->getAmount() + $pro->getProduction() >= 0) {
 						continue;
 					}
 				}
