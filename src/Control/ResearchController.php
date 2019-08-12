@@ -8,7 +8,7 @@ use Research;
 use ResearchDependency;
 use ResearchUser;
 use ResearchUserData;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 
 final class ResearchController extends GameController
@@ -16,8 +16,8 @@ final class ResearchController extends GameController
 
     private $default_tpl = "html/research.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Forschung");

@@ -7,6 +7,7 @@ use Good;
 use PM;
 use request;
 use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use TradeLicences;
 use TradeOffer;
 use TradeOfferData;
@@ -23,8 +24,8 @@ final class TradeController extends GameController
 
     private $default_tpl = "html/trade.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Handel");

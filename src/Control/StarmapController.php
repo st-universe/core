@@ -8,7 +8,7 @@ use MapFieldType;
 use request;
 use StarSystem;
 use StarSystemData;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use SystemMap;
 use Tuple;
 use UserYRow;
@@ -21,8 +21,8 @@ final class StarmapController extends GameController
 
     private $default_tpl = "html/starmap.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Sternenkarte");

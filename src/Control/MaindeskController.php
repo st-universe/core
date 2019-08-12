@@ -10,7 +10,7 @@ use ContactlistData;
 use InvalidParamException;
 use KNPosting;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 use User;
 use UserProfileVisitors;
@@ -22,8 +22,8 @@ final class MaindeskController extends GameController
 
     private $session;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         $this->session = $session;

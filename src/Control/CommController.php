@@ -20,7 +20,7 @@ use RPGPlot;
 use RPGPlotData;
 use RPGPlotMember;
 use RPGPlotMemberData;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 use User;
 
@@ -29,8 +29,8 @@ final class CommController extends GameController
 
     private $default_tpl = "html/comm.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Kommunikationsnetzwerk");

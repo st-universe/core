@@ -6,7 +6,7 @@ use Faction;
 use InvalidParamException;
 use request;
 use ResearchUserData;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use SystemNews;
 use User;
 use UserData;
@@ -20,8 +20,8 @@ final class IndexController extends GameController
 
     private $session;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         $this->session = $session;

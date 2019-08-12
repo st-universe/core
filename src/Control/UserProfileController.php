@@ -4,7 +4,7 @@ namespace Stu\Control;
 
 use request;
 use RPGPlotMember;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 use User;
 use UserProfileVisitors;
@@ -14,8 +14,8 @@ final class UserProfileController extends GameController
 
     private $default_tpl = "html/userprofile.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Siedlerprofil");

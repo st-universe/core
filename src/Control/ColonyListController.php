@@ -8,7 +8,7 @@ use ColonyShipQueue;
 use ColStorage;
 use FieldTerraforming;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 use UserColony;
 
@@ -17,8 +17,8 @@ final class ColonyListController extends GameController
 
     private $default_tpl = "html/colonylist.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Kolonien");

@@ -35,7 +35,7 @@ use ShipBuildplans;
 use ShipBuildplansData;
 use ShipCrew;
 use Shiprump;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Terraforming;
 use TorpedoType;
 use Tuple;
@@ -46,8 +46,8 @@ final class ColonyController extends GameController
 
     private $default_tpl = "html/colony.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Kolonien");

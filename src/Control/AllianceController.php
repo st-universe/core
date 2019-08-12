@@ -18,7 +18,7 @@ use Exception;
 use HistoryEntry;
 use PM;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 use User;
 
@@ -29,8 +29,8 @@ final class AllianceController extends GameController
 
     private $session;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         $this->session = $session;

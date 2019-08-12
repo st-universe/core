@@ -10,7 +10,7 @@ use MapRegion;
 use request;
 use ShipRump;
 use StarSystem;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 use User;
 
@@ -19,8 +19,8 @@ final class DatabaseController extends GameController
 
     private $default_tpl = "html/database.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Datenbank");

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Control;
 
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 
 final class LogoutController extends GameController
 {
@@ -13,8 +13,8 @@ final class LogoutController extends GameController
 
     private $session;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         $this->session = $session;

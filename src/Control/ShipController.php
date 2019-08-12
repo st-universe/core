@@ -23,7 +23,7 @@ use ShipAttackCycle;
 use ShipCrew;
 use ShipMover;
 use ShipSingleAttackCycle;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use SystemActivationWrapper;
 use TradeLicencesData;
 use TradeStorage;
@@ -39,8 +39,8 @@ final class ShipController extends GameController
 
     private $session;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         $this->session = $session;

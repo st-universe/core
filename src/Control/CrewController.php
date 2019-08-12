@@ -5,15 +5,15 @@ namespace Stu\Control;
 use AccessViolation;
 use Crew;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 
 final class CrewController extends GameController
 {
 
     private $default_tpl = "";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "Crewinfo");

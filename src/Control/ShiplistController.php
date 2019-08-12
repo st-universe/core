@@ -9,7 +9,7 @@ use FleetData;
 use request;
 use Ship;
 use ShipCrewData;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 
 final class ShiplistController extends GameController
@@ -18,8 +18,8 @@ final class ShiplistController extends GameController
     private $default_tpl = "html/shiplist.xhtml";
     private $singleships = null;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Schiffe");

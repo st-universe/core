@@ -7,14 +7,21 @@ use request;
 use User;
 use UserData;
 
-final class Session
+final class Session implements SessionInterface
 {
-
-    private $session;
 
     private $user;
 
     private $sessionIsSafe;
+
+    private $db;
+
+    public function __construct(
+        DbInterface $db
+    )
+    {
+        $this->db = $db;
+    }
 
     public function createSession(bool $session_check = true): void
     {
@@ -25,8 +32,7 @@ final class Session
         if (!$this->isLoggedIn() && !$this->hasLoginVars() && $session_check) {
             throw new LoginException("Session abgelaufen");
         }
-        $sess = $this->getSession();
-        if (!$this->hasLoginVars() && $session_check && (!$sess['uid'] || !$sess['login'])) {
+        if (!$this->hasLoginVars() && $session_check && (!$_SESSION['uid'] || !$_SESSION['login'])) {
             $this->logout();
             return;
         }
@@ -50,8 +56,7 @@ final class Session
 
     private function isLoggedIn()
     {
-        $sess = $this->getSession();
-        if (!$sess['uid'] || !$sess['login'] || $sess['login'] == 0) {
+        if (!$_SESSION['uid'] || !$_SESSION['login'] || $_SESSION['login'] == 0) {
             return false;
         }
         return true;
@@ -63,15 +68,6 @@ final class Session
             return true;
         }
         return false;
-    }
-
-    private function getSession()
-    {
-        if ($this->session === null) {
-            global $_SESSION;
-            $this->session = &$_SESSION;
-        }
-        return $this->session;
     }
 
     /**
@@ -88,8 +84,7 @@ final class Session
      */
     public function getSessionVar($var)
     {
-        $sess = &$this->getSession();
-        return $sess[$var];
+        return $_SESSION[$var];
     }
 
     /**
@@ -97,7 +92,6 @@ final class Session
      */
     public function removeSessionVar($var)
     {
-        global $_SESSION;
         unset($_SESSION[$var]);
     }
 
@@ -111,8 +105,7 @@ final class Session
 
     private function getUid()
     {
-        $sess = $this->getSession();
-        return $sess['uid'];
+        return $_SESSION['uid'];
     }
 
     /**
@@ -138,10 +131,10 @@ final class Session
             $result->save();
         }
         if ($result->getActive() == 4) {
-            new LoginException("Gesperrt");
+            throw new LoginException("Gesperrt");
         }
         if ($result->getDeletionMark() == 2) {
-            new LoginException("Löschung");
+            throw new LoginException("Löschung");
         }
         if ($result->getVacationMode() == 1) {
             $result->setVacationMode(0);
@@ -161,7 +154,7 @@ final class Session
         }
 
         // Login verzeichnen
-        DB()->query("INSERT INTO stu_user_iptable (user_id,ip,session,agent,start) VALUES ('" . $result->getId() . "','" . getenv("REMOTE_ADDR") . "','" . session_id() . "','" . getenv("HTTP_USER_AGENT") . "',NOW())");
+        $this->db->query("INSERT INTO stu_user_iptable (user_id,ip,session,agent,start) VALUES ('" . $result->getId() . "','" . getenv("REMOTE_ADDR") . "','" . session_id() . "','" . dbSafe(getenv("HTTP_USER_AGENT")) . "',NOW())");
     }
 
     private function destroySession()
@@ -202,13 +195,13 @@ final class Session
             return false;
         }
         if ($result->getActive() == 0) {
-            new LoginException("Aktivierung");
+            throw new LoginException("Aktivierung");
         }
         if ($result->getActive() == 4) {
-            new LoginException("Gesperrt");
+            throw new LoginException("Gesperrt");
         }
         if ($result->getDeletionMark() == 2) {
-            new LoginException("Löschung");
+            throw new LoginException("Löschung");
         }
         if ($result->getVacationMode() == 1) {
             $result->setVacationMode(0);
@@ -224,7 +217,7 @@ final class Session
         session_start();
 
         // Login verzeichnen
-        DB()->query("INSERT INTO stu_user_iptable (user_id,ip,session,agent,start) VALUES ('" . $result->getId() . "','" . getenv("REMOTE_ADDR") . "','" . session_id() . "','" . getenv("HTTP_USER_AGENT") . "',NOW())");
+        $this->db->query("INSERT INTO stu_user_iptable (user_id,ip,session,agent,start) VALUES ('" . $result->getId() . "','" . getenv("REMOTE_ADDR") . "','" . session_id() . "','" . dbsafe(getenv("HTTP_USER_AGENT")) . "',NOW())");
     }
 
     private function chklogin()
@@ -232,9 +225,9 @@ final class Session
         if (!$this->isLoggedIn()) {
             new LoginException("Not logged in");
         }
-        DB()->query("UPDATE stu_user SET lastaction='" . time() . "' WHERE id=" . $this->getUid() . " LIMIT 1");
-        DB()->query("UPDATE stu_user_iptable SET end=NOW() WHERE session='" . session_id() . "' LIMIT 1");
-        $data = DB()->query("SELECT * FROM stu_user WHERE id=" . $this->getUid() . " LIMIT 1", 4);
+        $this->db->query("UPDATE stu_user SET lastaction='" . time() . "' WHERE id=" . $this->getUid() . " LIMIT 1");
+        $this->db->query("UPDATE stu_user_iptable SET end=NOW() WHERE session='" . session_id() . "' LIMIT 1");
+        $data = $this->db->query("SELECT * FROM stu_user WHERE id=" . $this->getUid() . " LIMIT 1", 4);
         if ($data == 0) {
             $this->logout();
         }
@@ -258,7 +251,7 @@ final class Session
 
     private function checkSessionString(&$string)
     {
-        $result = DB()->query("DELETE FROM stu_session_strings WHERE user_id=" . $this->getUid() . " AND sess_string='" . dbsafe($string) . "'",
+        $result = $this->db->query("DELETE FROM stu_session_strings WHERE user_id=" . $this->getUid() . " AND sess_string='" . dbsafe($string) . "'",
             6);
         if ($result == 0) {
             return false;
@@ -268,7 +261,7 @@ final class Session
 
     private function truncateSessionStrings()
     {
-        DB()->query("DELETE FROM stu_session_strings WHERE UNIX_TIMESTAMP(date)<" . (time() - 3600) . " OR user_id=" . currentUser()->getId());
+        $this->db->query("DELETE FROM stu_session_strings WHERE UNIX_TIMESTAMP(date)<" . (time() - 3600) . " OR user_id=" . currentUser()->getId());
     }
 
     private function generateSessionString()
@@ -283,7 +276,7 @@ final class Session
     public function getSessionString()
     {
         $string = $this->generateSessionString();
-        DB()->query("INSERT INTO stu_session_strings (sess_string,user_id,date) VALUES ('" . $string . "','" . currentUser()->getId() . "',NOW())");
+        $this->db->query("INSERT INTO stu_session_strings (sess_string,user_id,date) VALUES ('" . $string . "','" . currentUser()->getId() . "',NOW())");
         return $string;
     }
 

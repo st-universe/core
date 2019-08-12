@@ -4,7 +4,7 @@ namespace Stu\Control;
 
 use HistoryEntry;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 
 final class HistoryController extends GameController
@@ -22,8 +22,8 @@ final class HistoryController extends GameController
     const MAX_LIMIT = 1000;
     const LIMIT = 50;
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Ereignisse");

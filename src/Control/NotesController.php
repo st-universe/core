@@ -5,7 +5,7 @@ namespace Stu\Control;
 use Notes;
 use NotesData;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use Tuple;
 
 final class NotesController extends GameController
@@ -13,8 +13,8 @@ final class NotesController extends GameController
 
     private $default_tpl = "html/notes.xhtml";
 
-    function __construct(
-        Session $session
+    public function __construct(
+        SessionInterface $session
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Notizen");

@@ -28,6 +28,8 @@ use Stu\Control\UserProfileController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
+use function DI\autowire;
 use function DI\create;
 use function DI\get;
 use Stu\Control\AdminController;
@@ -48,48 +50,29 @@ $builder->addDefinitions([
         ->constructor(
             get(ConfigInterface::class)
         ),
-    Session::class => create(Session::class),
+    SessionInterface::class => autowire(Session::class),
 ]);
 
 $builder->addDefinitions([
-    AdminController::class => create(AdminController::class)
-        ->constructor(get(Session::class)),
-    AllianceController::class => create(AllianceController::class)
-        ->constructor(get(Session::class)),
-    ColonyController::class => create(ColonyController::class)
-        ->constructor(get(Session::class)),
-    ColonyListController::class => create(ColonyListController::class)
-        ->constructor(get(Session::class)),
-    CommController::class => create(CommController::class)
-        ->constructor(get(Session::class)),
-    CrewController::class => create(CrewController::class)
-        ->constructor(get(Session::class)),
-    DatabaseController::class => create(DatabaseController::class)
-        ->constructor(get(Session::class)),
-    HistoryController::class => create(HistoryController::class)
-        ->constructor(get(Session::class)),
-    IndexController::class => create(IndexController::class)
-        ->constructor(get(Session::class)),
-    LogoutController::class => create(LogoutController::class)
-        ->constructor(get(Session::class)),
-    MaindeskController::class => create(MaindeskController::class)
-        ->constructor(get(Session::class)),
-    NotesController::class => create(NotesController::class)
-        ->constructor(get(Session::class)),
-    OptionsController::class => create(OptionsController::class)
-        ->constructor(get(Session::class)),
-    ResearchController::class => create(ResearchController::class)
-        ->constructor(get(Session::class)),
-    ShipController::class => create(ShipController::class)
-        ->constructor(get(Session::class)),
-    ShiplistController::class => create(ShiplistController::class)
-        ->constructor(get(Session::class)),
-    StarmapController::class => create(StarmapController::class)
-        ->constructor(get(Session::class)),
-    TradeController::class => create(TradeController::class)
-        ->constructor(get(Session::class)),
-    UserProfileController::class => create(UserProfileController::class)
-        ->constructor(get(Session::class)),
+    AdminController::class => autowire(AdminController::class),
+    AllianceController::class => autowire(AllianceController::class),
+    ColonyController::class => autowire(ColonyController::class),
+    ColonyListController::class => autowire(ColonyListController::class),
+    CommController::class => autowire(CommController::class),
+    CrewController::class => autowire(CrewController::class),
+    DatabaseController::class => autowire(DatabaseController::class),
+    HistoryController::class => autowire(HistoryController::class),
+    IndexController::class => autowire(IndexController::class),
+    LogoutController::class => autowire(LogoutController::class),
+    MaindeskController::class => autowire(MaindeskController::class),
+    NotesController::class => autowire(NotesController::class),
+    OptionsController::class => autowire(OptionsController::class),
+    ResearchController::class => autowire(ResearchController::class),
+    ShipController::class => autowire(ShipController::class),
+    ShiplistController::class => autowire(ShiplistController::class),
+    StarmapController::class => autowire(StarmapController::class),
+    TradeController::class => autowire(TradeController::class),
+    UserProfileController::class => autowire(UserProfileController::class),
 ]);
 
 $builder->addDefinitions([

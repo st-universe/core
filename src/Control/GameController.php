@@ -11,7 +11,7 @@ use InvalidCallbackException;
 use PM;
 use PMCategory;
 use request;
-use Stu\Lib\Session;
+use Stu\Lib\SessionInterface;
 use TalPage;
 use Tuple;
 use User;
@@ -43,7 +43,7 @@ abstract class GameController
     private $onlinePlayercount = null;
 
     public function __construct(
-        Session $session,
+        SessionInterface $session,
         &$tpl_file,
         $pagetitle
     )
