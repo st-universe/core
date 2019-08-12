@@ -10,7 +10,7 @@ composer
 - Repository forken
 - Source Code auschecken und folgende Befehle ausfuehren
 - config.dist.json nach config.json kopieren und anpassen
-- make int
+- make init
 - make dev-create-db
 - make generators
 - make dev-serve
