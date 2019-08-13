@@ -156,7 +156,7 @@ class TradePostData extends BaseTable {
 			return;
 		}
 		$stor = &$data[$goodId];
-		if ($stor->getCount() <= $count) {
+		if ($stor->getAmount() <= $count) {
 			$stor->deleteFromDatabase();
 			return;
 		}
