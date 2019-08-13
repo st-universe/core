@@ -2259,8 +2259,8 @@ final class ShipController extends GameController
                 $this->addInformation($curGoods[$value]->getGood()->getName() . ' ist in diesem Handelsnetzwerk illegal und kann nicht gehandelt werden');
                 continue;
             }
-            if ($count > $curGoods[$value]->getCount()) {
-                $count = $curGoods[$value]->getCount();
+            if ($count > $curGoods[$value]->getAmount()) {
+                $count = $curGoods[$value]->getAmount();
             }
             if ($this->getShip()->getStorageSum() + $count > $this->getShip()->getMaxStorage()) {
                 $count = $this->getShip()->getMaxStorage() - $this->getShip()->getStorageSum();
