@@ -1364,7 +1364,7 @@ final class ShipController extends GameController
                 continue;
             }
             if ($count == "m") {
-                $count = $good->getCount();
+                $count = $good->getAmount();
             } else {
                 $count = intval($count);
             }
@@ -1374,8 +1374,8 @@ final class ShipController extends GameController
             if ($target->getStorageSum() >= $target->getMaxStorage()) {
                 break;
             }
-            if ($count > $good->getCount()) {
-                $count = $good->getCount();
+            if ($count > $good->getAmount()) {
+                $count = $good->getAmount();
             }
             if (ceil($count / $good->getGood()->getTransferCount()) > $this->getShip()->getEps()) {
                 $count = $this->getShip()->getEps() * $good->getGood()->getTransferCount();
@@ -1459,7 +1459,7 @@ final class ShipController extends GameController
                 continue;
             }
             if ($count == "m") {
-                $count = $good->getCount();
+                $count = $good->getAmount();
             } else {
                 $count = intval($count);
             }
@@ -1469,8 +1469,8 @@ final class ShipController extends GameController
             if ($this->getShip()->getStorageSum() >= $this->getShip()->getMaxStorage()) {
                 break;
             }
-            if ($count > $good->getCount()) {
-                $count = $good->getCount();
+            if ($count > $good->getAmount()) {
+                $count = $good->getAmount();
             }
             if (ceil($count / $good->getGood()->getTransferCount()) > $this->getShip()->getEps()) {
                 $count = $this->getShip()->getEps() * $good->getGood()->getTransferCount();
