@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.16, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.27, for Linux (x86_64)
 --
 -- Host: localhost    Database: stu_db
 -- ------------------------------------------------------
--- Server version	8.0.16
+-- Server version	5.7.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8mb4 ;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `stu_alliance_boards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_alliance_boards` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `alliance_id` int(10) NOT NULL,
@@ -45,7 +45,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_alliance_posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_alliance_posts` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `topic_id` int(10) NOT NULL,
@@ -78,7 +78,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_alliance_topics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_alliance_topics` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `board_id` int(10) NOT NULL,
@@ -106,7 +106,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_alliances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_alliances` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -135,7 +135,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_alliances_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_alliances_jobs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alliance_id` int(10) NOT NULL,
@@ -163,7 +163,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_alliances_relations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_alliances_relations` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` tinyint(1) NOT NULL,
@@ -193,7 +193,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -205,13 +205,13 @@ CREATE TABLE `stu_buildings` (
   `bev_use` int(3) NOT NULL DEFAULT '0',
   `integrity` smallint(4) NOT NULL DEFAULT '0',
   `research_id` int(10) NOT NULL DEFAULT '0',
-  `view` enum('1') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1',
+  `view` enum('1') CHARACTER SET utf8 DEFAULT '1',
   `schilde` smallint(3) NOT NULL DEFAULT '0',
   `buildtime` int(10) NOT NULL DEFAULT '500',
   `blimit` tinyint(2) NOT NULL DEFAULT '0',
   `bclimit` tinyint(1) NOT NULL DEFAULT '0',
-  `is_activateable` enum('1') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1',
-  `needs_rbf` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `is_activateable` enum('1') CHARACTER SET utf8 DEFAULT '1',
+  `needs_rbf` enum('0','1') CHARACTER SET utf8 NOT NULL DEFAULT '0',
   `bm_col` smallint(1) NOT NULL DEFAULT '0',
   `is_base` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -237,7 +237,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_cost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_cost` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `buildings_id` int(10) NOT NULL DEFAULT '0',
@@ -266,7 +266,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_field_alternative`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_field_alternative` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `fieldtype` int(5) NOT NULL,
@@ -293,7 +293,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_functions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_functions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `buildings_id` int(10) NOT NULL,
@@ -320,7 +320,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_goods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_goods` (
   `buildings_id` int(10) NOT NULL DEFAULT '0',
   `goods_id` int(5) NOT NULL DEFAULT '0',
@@ -347,7 +347,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_specials`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_specials` (
   `special_id` smallint(3) NOT NULL,
   `building_count` tinyint(2) NOT NULL,
@@ -373,7 +373,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_upgrades`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_upgrades` (
   `id` bigint(12) NOT NULL AUTO_INCREMENT,
   `upgrade_from` int(10) NOT NULL,
@@ -405,7 +405,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildings_upgrades_cost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildings_upgrades_cost` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `buildings_upgrades_id` bigint(12) NOT NULL,
@@ -432,7 +432,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildplans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildplans` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(4) NOT NULL DEFAULT '0',
@@ -464,7 +464,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildplans_hangar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildplans_hangar` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(10) NOT NULL,
@@ -491,7 +491,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_buildplans_modules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_buildplans_modules` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `buildplan_id` int(10) NOT NULL,
@@ -517,7 +517,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `colonies_classes_id` int(10) NOT NULL DEFAULT '0',
@@ -526,7 +526,7 @@ CREATE TABLE `stu_colonies` (
   `sy` tinyint(3) NOT NULL DEFAULT '0',
   `systems_id` int(4) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL DEFAULT '',
-  `planet_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `planet_name` varchar(30) CHARACTER SET utf8 NOT NULL,
   `bev_work` int(3) NOT NULL DEFAULT '0',
   `bev_free` int(3) NOT NULL DEFAULT '0',
   `bev_max` int(3) NOT NULL DEFAULT '0',
@@ -536,7 +536,7 @@ CREATE TABLE `stu_colonies` (
   `max_storage` int(5) NOT NULL DEFAULT '0',
   `schilde` int(4) NOT NULL DEFAULT '0',
   `max_schilde` int(4) NOT NULL DEFAULT '0',
-  `schilde_status` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `schilde_status` enum('0','1') CHARACTER SET utf8 NOT NULL DEFAULT '0',
   `mask` text,
   `database_id` int(10) NOT NULL,
   `populationlimit` smallint(4) NOT NULL,
@@ -564,7 +564,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_classes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_classes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -595,7 +595,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_fielddata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_fielddata` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `colonies_id` int(6) NOT NULL DEFAULT '0',
@@ -632,7 +632,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_fieldtypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_fieldtypes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `field_id` int(10) NOT NULL,
@@ -661,7 +661,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_shipqueue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_shipqueue` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `colony_id` int(10) NOT NULL,
@@ -694,7 +694,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_shiprepair`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_shiprepair` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `colony_id` int(10) NOT NULL,
@@ -719,7 +719,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_storage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_storage` (
   `id` int(15) NOT NULL AUTO_INCREMENT,
   `colonies_id` int(12) NOT NULL DEFAULT '0',
@@ -747,7 +747,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_colonies_terraforming`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_colonies_terraforming` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `colonies_id` int(10) NOT NULL,
@@ -777,7 +777,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_contactlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_contactlist` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(12) NOT NULL DEFAULT '0',
@@ -807,7 +807,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_crew`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_crew` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` tinyint(2) NOT NULL,
@@ -836,7 +836,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_crew_race`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_crew_race` (
   `id` int(6) NOT NULL AUTO_INCREMENT,
   `faction_id` int(10) NOT NULL,
@@ -867,7 +867,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_crew_training`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_crew_training` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -893,7 +893,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_database_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_database_categories` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -920,7 +920,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_database_entrys`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_database_entrys` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -931,7 +931,7 @@ CREATE TABLE `stu_database_entrys` (
   `object_id` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6703281 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -940,7 +940,6 @@ CREATE TABLE `stu_database_entrys` (
 
 LOCK TABLES `stu_database_entrys` WRITE;
 /*!40000 ALTER TABLE `stu_database_entrys` DISABLE KEYS */;
-INSERT INTO `stu_database_entrys` VALUES (1101001,'Raider','',1,1,1101,1101),(1102001,'Dhelan','',1,1,1102,1102),(1103001,'NuQ\'duj','',1,1,1103,1103),(1201001,'Peregrine','',1,1,1201,1201),(1203001,'K\'Pak','',1,1,1203,1203),(1302001,'V\'Rela','',1,1,1302,1302),(1401001,'Danube','',1,1,1401,1401),(1402001,'Atarra','',1,1,1402,1402),(1403001,'K\'toch','',1,1,1403,1403),(1491001,'Venture','',1,1,1491,1491),(1501001,'Icarus','',1,1,1501,1501),(1502001,'T\'Liss','',1,1,1502,1502),(1503001,'Unnamed KliFigCol','',1,1,1503,1503),(2101001,'Saber','',1,1,2101,2101),(2202001,'Falcon','',1,1,2202,2202),(2203001,'Unnamed KliFriPls','',1,1,2203,2203),(2301001,'Aegian','',1,1,2301,2301),(2302001,'Ocala','',1,1,2302,2302),(2303001,'Unnamed KliFriTrp','',1,1,2303,2303),(3101001,'Miranda','',1,1,3101,3101),(3102001,'Shrike','',1,1,3102,3102),(3103001,'K\'Vort\'cha','',1,1,3103,3103),(3201001,'Defiant','',1,1,3201,3201),(3203001,'B\'Rel','',1,1,3203,3203),(3302001,'Rhien','',1,1,3302,3302),(3401001,'Nova','',1,1,3401,3401),(3402001,'Talon','',1,1,3402,3402),(3403001,'Unnamed KliEscRes','',1,1,3403,3403),(3491001,'Oberth','',1,1,3491,3491),(4101001,'Norway','',1,1,4101,4101),(4102001,'Eagle','',1,1,4102,4102),(4203001,'K\'t\'inga','',1,1,4203,4203),(4301001,'Steamrunner','',1,1,4301,4301),(4302001,'Hawk','',1,1,4302,4302),(4303001,'Koloth','',1,1,4303,4303),(5101001,'Akira','',1,1,5101,5101),(5103001,'Fek\'lhr','',1,1,5103,5103),(5191001,'Excelsior','',1,1,5191,5191),(5201001,'Prometheus','',1,1,5201,5201),(5202001,'Mogai','',1,1,5202,5202),(5203001,'Vor\'cha','',1,1,5203,5203),(5302001,'Raptor','',1,1,5302,5302),(5401001,'Intrepid','',1,1,5401,5401),(5402001,'Shadow','',1,1,5402,5402),(5403001,'Unnamed KliCruRes','',1,1,5403,5403),(5491001,'Luna','',1,1,5491,5491),(6501001,'Aerie','',1,1,6501,6501),(6502001,'Kestrel','',1,1,6502,6502),(6503001,'Unnamed KliCivCol','',1,1,6503,6503),(6601001,'Epslon','',1,1,6601,6601),(6602001,'T\'Mera','',1,1,6602,6602),(6603001,'Tong\'duj','',1,1,6603,6603),(6701001,'Antares','',1,1,6701,6701),(6702001,'Terix','',1,1,6702,6702),(6703001,'Jolpa\'law','',1,1,6703,6703),(6703049,'Klasse M','',5,0,401,401),(6703050,'Klasse M-V','',5,0,402,402),(6703051,'Klasse L','',5,0,403,403),(6703052,'Klasse L-F','',5,0,404,404),(6703053,'Klasse O','',5,0,405,405),(6703054,'Klasse K','',5,0,411,411),(6703055,'Klasse H','',5,0,413,413),(6703056,'Klasse P','',5,0,415,415),(6703057,'Klasse P-T','',5,0,416,416),(6703058,'Klasse D','',5,0,431,431),(6703059,'Klasse D-?','',5,0,432,432),(6703060,'Klasse X','',5,0,417,417),(6703061,'Klasse R','',5,0,419,419),(6703062,'Klasse Q','',5,0,421,421),(6703063,'Klasse M','',5,0,201,201),(6703064,'Klasse M-V','',5,0,202,202),(6703065,'Klasse M-R','',5,0,301,301),(6703066,'Klasse L','',5,0,203,203),(6703067,'Klasse L-F','',5,0,204,204),(6703068,'Klasse L-R','',5,0,303,303),(6703069,'Klasse O','',5,0,205,205),(6703070,'Klasse O-R','',5,0,305,305),(6703071,'Klasse K','',5,0,211,211),(6703072,'Klasse K-R','',5,0,311,311),(6703073,'Klasse H','',5,0,213,213),(6703074,'Klasse H-R','',5,0,313,313),(6703075,'Klasse P','',5,0,215,215),(6703076,'Klasse P-T','',5,0,216,216),(6703077,'Klasse P-R','',5,0,315,315),(6703078,'Klasse D','',5,0,231,231),(6703079,'Klasse D-R','',5,0,331,331),(6703080,'Klasse D-?','',5,0,232,232),(6703081,'Klasse X','',5,0,217,217),(6703082,'Klasse X-R','',5,0,317,317),(6703083,'Klasse R','',5,0,219,219),(6703084,'Klasse Q','',5,0,221,221),(6703085,'Klasse I-1','',5,0,261,261),(6703086,'Klasse I-2','',5,0,262,262),(6703087,'Klasse I-3','',5,0,263,263),(6703088,'Klasse J-1','',5,0,361,361),(6703089,'Klasse J-2','',5,0,362,362),(6703090,'Klasse J-3','',5,0,363,363),(6703091,'System 1','',7,0,1,1),(6703092,'System 2','',7,0,2,2),(6703093,'System 3','',7,0,3,3),(6703094,'System 4','',7,0,4,4),(6703095,'System 5','',7,0,5,5),(6703096,'System 6','',7,0,6,6),(6703097,'System 7','',7,0,7,7),(6703098,'System 8','',7,0,8,8),(6703099,'System 9','',7,0,9,9),(6703100,'System 10','',7,0,10,10),(6703101,'System 11','',7,0,11,11),(6703102,'System 12','',7,0,12,12),(6703103,'System 13','',7,0,13,13),(6703104,'System 14','',7,0,14,14),(6703105,'System 15','',7,0,15,15),(6703106,'System 16','',7,0,16,16),(6703107,'System 17','',7,0,17,17),(6703108,'System 18','',7,0,18,18),(6703109,'System 19','',7,0,19,19),(6703110,'System 20','',7,0,20,20),(6703111,'System 21','',7,0,21,21),(6703112,'System 22','',7,0,22,22),(6703113,'System 23','',7,0,23,23),(6703114,'System 24','',7,0,24,24),(6703115,'System 25','',7,0,25,25),(6703116,'System 26','',7,0,26,26),(6703117,'System 27','',7,0,27,27),(6703118,'System 28','',7,0,28,28),(6703119,'System 29','',7,0,29,29),(6703120,'System 30','',7,0,30,30),(6703121,'System 31','',7,0,31,31),(6703122,'System 32','',7,0,32,32),(6703123,'System 33','',7,0,33,33),(6703124,'System 34','',7,0,34,34),(6703125,'System 35','',7,0,35,35),(6703126,'System 36','',7,0,36,36),(6703127,'System 37','',7,0,37,37),(6703128,'System 38','',7,0,38,38),(6703129,'System 39','',7,0,39,39),(6703130,'System 40','',7,0,40,40),(6703131,'System 41','',7,0,41,41),(6703132,'System 42','',7,0,42,42),(6703133,'System 43','',7,0,43,43),(6703134,'System 44','',7,0,44,44),(6703135,'System 45','',7,0,45,45),(6703136,'System 46','',7,0,46,46),(6703137,'System 47','',7,0,47,47),(6703138,'System 48','',7,0,48,48),(6703139,'System 49','',7,0,49,49),(6703140,'System 50','',7,0,50,50),(6703141,'System 51','',7,0,51,51),(6703142,'System 52','',7,0,52,52),(6703143,'System 53','',7,0,53,53),(6703144,'System 54','',7,0,54,54),(6703145,'System 55','',7,0,55,55),(6703146,'System 56','',7,0,56,56),(6703147,'System 57','',7,0,57,57),(6703148,'System 58','',7,0,58,58),(6703149,'System 59','',7,0,59,59),(6703150,'System 60','',7,0,60,60),(6703151,'System 61','',7,0,61,61),(6703152,'System 62','',7,0,62,62),(6703153,'System 63','',7,0,63,63),(6703154,'System 64','',7,0,64,64),(6703155,'System 65','',7,0,65,65),(6703156,'System 66','',7,0,66,66),(6703157,'System 67','',7,0,67,67),(6703158,'System 68','',7,0,68,68),(6703159,'System 69','',7,0,69,69),(6703160,'System 70','',7,0,70,70),(6703161,'System 71','',7,0,71,71),(6703162,'System 72','',7,0,72,72),(6703163,'System 73','',7,0,73,73),(6703164,'System 74','',7,0,74,74),(6703165,'System 75','',7,0,75,75),(6703166,'System 76','',7,0,76,76),(6703167,'System 77','',7,0,77,77),(6703168,'System 78','',7,0,78,78),(6703169,'System 79','',7,0,79,79),(6703170,'System 80','',7,0,80,80),(6703171,'System 81','',7,0,81,81),(6703172,'System 82','',7,0,82,82),(6703173,'System 83','',7,0,83,83),(6703174,'System 84','',7,0,84,84),(6703175,'System 85','',7,0,85,85),(6703176,'System 86','',7,0,86,86),(6703177,'System 87','',7,0,87,87),(6703178,'System 88','',7,0,88,88),(6703179,'System 89','',7,0,89,89),(6703180,'System 90','',7,0,90,90),(6703181,'System 91','',7,0,91,91),(6703182,'System 92','',7,0,92,92),(6703183,'System 93','',7,0,93,93),(6703184,'System 94','',7,0,94,94),(6703185,'System 95','',7,0,95,95),(6703186,'System 96','',7,0,96,96),(6703187,'System 97','',7,0,97,97),(6703188,'System 98','',7,0,98,98),(6703189,'System 99','',7,0,99,99),(6703190,'System 100','',7,0,100,100),(6703191,'System 101','',7,0,101,101),(6703192,'System 102','',7,0,102,102),(6703193,'System 103','',7,0,103,103),(6703194,'System 104','',7,0,104,104),(6703195,'System 105','',7,0,105,105),(6703196,'System 106','',7,0,106,106),(6703197,'System 107','',7,0,107,107),(6703198,'System 108','',7,0,108,108),(6703199,'System 109','',7,0,109,109),(6703200,'System 110','',7,0,110,110),(6703201,'System 111','',7,0,111,111),(6703202,'System 112','',7,0,112,112),(6703203,'System 113','',7,0,113,113),(6703204,'System 114','',7,0,114,114),(6703205,'System 115','',7,0,115,115),(6703206,'System 116','',7,0,116,116),(6703207,'System 117','',7,0,117,117),(6703208,'System 118','',7,0,118,118),(6703209,'System 119','',7,0,119,119),(6703210,'System 120','',7,0,120,120),(6703211,'System 121','',7,0,121,121),(6703212,'System 122','',7,0,122,122),(6703213,'System 123','',7,0,123,123),(6703214,'System 124','',7,0,124,124),(6703215,'System 125','',7,0,125,125),(6703216,'System 126','',7,0,126,126),(6703217,'System 127','',7,0,127,127),(6703218,'System 128','',7,0,128,128),(6703219,'System 129','',7,0,129,129),(6703220,'System 130','',7,0,130,130),(6703221,'System 131','',7,0,131,131),(6703222,'System 132','',7,0,132,132),(6703223,'System 133','',7,0,133,133),(6703224,'System 134','',7,0,134,134),(6703225,'System 135','',7,0,135,135),(6703226,'System 136','',7,0,136,136),(6703227,'System 137','',7,0,137,137),(6703228,'System 138','',7,0,138,138),(6703229,'System 139','',7,0,139,139),(6703230,'System 140','',7,0,140,140),(6703231,'System 141','',7,0,141,141),(6703232,'System 142','',7,0,142,142),(6703233,'System 143','',7,0,143,143),(6703234,'System 144','',7,0,144,144),(6703235,'System 145','',7,0,145,145),(6703236,'System 146','',7,0,146,146),(6703237,'System 147','',7,0,147,147),(6703238,'System 148','',7,0,148,148),(6703239,'System 149','',7,0,149,149),(6703240,'System 150','',7,0,150,150),(6703241,'System 151','',7,0,151,151),(6703242,'System 152','',7,0,152,152),(6703243,'Weißer Zwerg','',6,0,959,959),(6703244,'Oranger Zwerg','',6,0,900,900),(6703245,'Roter Zwerg','',6,0,901,901),(6703246,'Gelber Zwerg','',6,0,902,902),(6703247,'Oranger Riese','',6,0,910,910),(6703248,'Roter Riese','',6,0,911,911),(6703249,'Blauer Riese','',6,0,913,913),(6703250,'Roter Überriese','',6,0,924,924),(6703251,'Blauer Überriese','',6,0,925,925),(6703252,'Schwarzes Loch','',6,0,981,981),(6703253,'Schwarzes Loch','',6,0,982,982),(6703254,'Schwarzes Loch','',6,0,991,991),(6703255,'Schwarzes Loch','',6,0,992,992),(6703256,'Binärsystem OZ-OZ','',6,0,20000,20000),(6703257,'Binärsystem OZ-RZ','',6,0,20001,20001),(6703258,'Binärsystem OZ-GZ','',6,0,20002,20002),(6703259,'Binärsystem RZ-RZ','',6,0,20101,20101),(6703260,'Binärsystem RZ-GZ','',6,0,20102,20102),(6703261,'Binärsystem GZ-GZ','',6,0,20202,20202),(6703262,'Binärsystem RR-OZ','',6,0,21100,21100),(6703263,'Binärsystem RR-RZ','',6,0,21101,21101),(6703264,'Binärsystem RR-GZ','',6,0,21102,21102),(6703265,'Binärsystem RR-RR','',6,0,21111,21111),(6703266,'Binärsystem RR-BR','',6,0,21113,21113),(6703267,'Binärsystem BR-OZ','',6,0,21300,21300),(6703268,'Binärsystem BR-RZ','',6,0,21301,21301),(6703269,'Binärsystem BR-GZ','',6,0,21302,21302),(6703270,'Binärsystem BR-BR','',6,0,21313,21313),(6703271,'Binärsystem RÜ-OZ','',6,0,22400,22400),(6703272,'Binärsystem RÜ-RZ','',6,0,22401,22401),(6703273,'Binärsystem RÜ-GZ','',6,0,22402,22402),(6703274,'Binärsystem RÜ-RR','',6,0,22411,22411),(6703275,'Binärsystem RÜ-BR','',6,0,22413,22413),(6703276,'Binärsystem BÜ-OZ','',6,0,22500,22500),(6703277,'Binärsystem BÜ-RZ','',6,0,22501,22501),(6703278,'Binärsystem BÜ-GZ','',6,0,22502,22502),(6703279,'Binärsystem BÜ-RR','',6,0,22511,22511),(6703280,'Binärsystem BÜ-BR','',6,0,22513,22513);
 /*!40000 ALTER TABLE `stu_database_entrys` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -950,7 +949,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_database_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_database_types` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -975,7 +974,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_database_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_database_user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `database_id` int(10) NOT NULL,
@@ -1002,7 +1001,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_dockingrights`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_dockingrights` (
   `id` int(14) NOT NULL AUTO_INCREMENT,
   `ships_id` int(10) NOT NULL,
@@ -1030,13 +1029,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_factions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_factions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `color` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `darker_color` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `color` varchar(7) CHARACTER SET utf8 NOT NULL,
+  `darker_color` varchar(7) CHARACTER SET utf8 NOT NULL,
   `flight_infix` varchar(255) NOT NULL,
   `chooseable` tinyint(1) NOT NULL,
   `player_limit` int(4) NOT NULL,
@@ -1062,7 +1061,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_field_build`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_field_build` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` int(10) NOT NULL DEFAULT '0',
@@ -1089,7 +1088,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_fleets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_fleets` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL DEFAULT 'Flotte',
@@ -1116,7 +1115,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_game_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_game_config` (
   `id` int(6) NOT NULL AUTO_INCREMENT,
   `option` smallint(4) NOT NULL,
@@ -1142,7 +1141,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_game_turns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_game_turns` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `turn` int(10) NOT NULL DEFAULT '0',
@@ -1169,10 +1168,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_goods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_goods` (
   `id` int(3) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `sort` smallint(3) NOT NULL DEFAULT '0',
   `view` tinyint(1) NOT NULL DEFAULT '1',
   `tradeable` tinyint(1) NOT NULL DEFAULT '1',
@@ -1205,7 +1204,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` text NOT NULL,
@@ -1238,7 +1237,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_ignorelist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_ignorelist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -1265,7 +1264,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_kn`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_kn` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `titel` varchar(255) NOT NULL,
@@ -1295,7 +1294,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_kn_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_kn_comments` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `post_id` int(10) NOT NULL,
@@ -1325,7 +1324,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_map`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_map` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `cx` int(12) NOT NULL DEFAULT '0',
@@ -1360,7 +1359,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_map_bordertypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_map_bordertypes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `faction_id` int(10) NOT NULL,
@@ -1387,22 +1386,22 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_map_ftypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_map_ftypes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` int(10) NOT NULL,
   `is_system` tinyint(1) NOT NULL DEFAULT '0',
   `ecost` tinyint(2) NOT NULL DEFAULT '1',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `colonies_classes_id` int(10) NOT NULL DEFAULT '0',
   `deut` tinyint(2) NOT NULL DEFAULT '0',
   `plasma` tinyint(1) NOT NULL DEFAULT '0',
   `damage` int(3) NOT NULL DEFAULT '0',
   `x_damage` tinyint(1) NOT NULL DEFAULT '0',
   `x_damage_system` tinyint(1) NOT NULL DEFAULT '1',
-  `sensoroff` enum('1') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `cloakoff` enum('1') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `shieldoff` enum('1') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `sensoroff` enum('1') CHARACTER SET utf8 DEFAULT NULL,
+  `cloakoff` enum('1') CHARACTER SET utf8 DEFAULT NULL,
+  `shieldoff` enum('1') CHARACTER SET utf8 DEFAULT NULL,
   `view` enum('1') NOT NULL,
   `region_id` int(10) NOT NULL,
   `passable` tinyint(1) NOT NULL DEFAULT '1',
@@ -1428,7 +1427,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_map_regions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_map_regions` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -1453,7 +1452,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_map_regions_settlement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_map_regions_settlement` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `region_id` int(10) NOT NULL,
@@ -1479,7 +1478,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_modules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_modules` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -1514,7 +1513,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_modules_buildingfunction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_modules_buildingfunction` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `module_id` int(10) NOT NULL,
@@ -1540,7 +1539,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_modules_cost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_modules_cost` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `module_id` int(10) NOT NULL,
@@ -1567,7 +1566,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_modules_queue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_modules_queue` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `colony_id` int(10) NOT NULL,
@@ -1594,7 +1593,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_modules_specials`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_modules_specials` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `module_id` int(10) NOT NULL,
@@ -1620,7 +1619,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subject` varchar(255) NOT NULL,
@@ -1648,7 +1647,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_notes` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -1675,7 +1674,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_planets_goods`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_planets_goods` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `planet_classes_id` int(10) NOT NULL,
@@ -1702,7 +1701,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_plots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_plots` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(6) NOT NULL,
@@ -1732,7 +1731,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_plots_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_plots_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `plot_id` int(10) NOT NULL,
@@ -1758,7 +1757,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_pm_cats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_pm_cats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -1785,7 +1784,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_pms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_pms` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `send_user` int(12) NOT NULL DEFAULT '0',
@@ -1817,7 +1816,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_research`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_research` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -1849,7 +1848,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_research_dependencies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_research_dependencies` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `research_id` int(10) NOT NULL,
@@ -1877,7 +1876,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_researched`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_researched` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `research_id` int(10) NOT NULL DEFAULT '0',
@@ -1907,7 +1906,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rump_costs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rump_costs` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(10) NOT NULL,
@@ -1936,7 +1935,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category_id` smallint(2) NOT NULL DEFAULT '0',
@@ -1963,7 +1962,7 @@ CREATE TABLE `stu_rumps` (
   `eps_cost` smallint(3) unsigned NOT NULL DEFAULT '0',
   `storage` smallint(4) unsigned NOT NULL DEFAULT '500',
   `slots` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `cloakable` enum('0','1') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `cloakable` enum('0','1') CHARACTER SET utf8 NOT NULL DEFAULT '0',
   `buildtime` mediumint(8) unsigned NOT NULL DEFAULT '300',
   `sort` varchar(4) NOT NULL DEFAULT '0',
   `database_id` int(10) NOT NULL DEFAULT '0',
@@ -1990,7 +1989,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_buildingfunction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_buildingfunction` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(10) NOT NULL,
@@ -2016,7 +2015,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_cat_role_crew`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_cat_role_crew` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_category_id` int(10) NOT NULL,
@@ -2052,7 +2051,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_categories` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -2079,7 +2078,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_colonize_building`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_colonize_building` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(10) NOT NULL,
@@ -2105,7 +2104,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_module_level`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_module_level` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rump_id` int(11) NOT NULL,
@@ -2162,7 +2161,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_module_special`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_module_special` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(10) NOT NULL,
@@ -2187,7 +2186,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_roles` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -2213,7 +2212,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_specials`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_specials` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rumps_id` int(10) NOT NULL,
@@ -2239,7 +2238,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_rumps_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_rumps_user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `rump_id` int(10) NOT NULL,
@@ -2265,7 +2264,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_session_strings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_session_strings` (
   `sess_string` varchar(30) NOT NULL,
   `user_id` int(10) NOT NULL,
@@ -2291,7 +2290,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_ships`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_ships` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `user_id` int(12) NOT NULL DEFAULT '0',
@@ -2304,8 +2303,8 @@ CREATE TABLE `stu_ships` (
   `sx` tinyint(2) NOT NULL DEFAULT '0',
   `sy` tinyint(2) NOT NULL DEFAULT '0',
   `direction` tinyint(1) DEFAULT '1',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `alvl` enum('1','2','3') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1',
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `alvl` enum('1','2','3') CHARACTER SET utf8 NOT NULL DEFAULT '1',
   `warp` tinyint(1) NOT NULL DEFAULT '0',
   `warpcore` int(4) NOT NULL DEFAULT '0',
   `cloak` tinyint(1) NOT NULL DEFAULT '0',
@@ -2384,7 +2383,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_ships_crew`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_ships_crew` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `ships_id` int(10) NOT NULL,
@@ -2414,7 +2413,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_ships_storage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_ships_storage` (
   `id` int(15) NOT NULL AUTO_INCREMENT,
   `ships_id` int(12) NOT NULL DEFAULT '0',
@@ -2442,7 +2441,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_ships_systems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_ships_systems` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `ships_id` double unsigned NOT NULL,
@@ -2470,7 +2469,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_sys_map`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_sys_map` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `sx` tinyint(2) NOT NULL DEFAULT '0',
@@ -2504,7 +2503,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_system_namelist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_system_namelist` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -2529,7 +2528,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_system_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_system_types` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -2554,7 +2553,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_systems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_systems` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `cx` int(4) NOT NULL DEFAULT '0',
@@ -2587,7 +2586,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_terraforming`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_terraforming` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -2620,7 +2619,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_terraforming_cost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_terraforming_cost` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `terraforming_id` int(8) NOT NULL,
@@ -2648,7 +2647,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_torpedo_cost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_torpedo_cost` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `torpedo_type_id` int(10) NOT NULL,
@@ -2675,10 +2674,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_torpedo_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_torpedo_types` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `base_damage` smallint(4) NOT NULL,
   `critical_chance` smallint(4) NOT NULL,
   `hit_factor` smallint(4) NOT NULL,
@@ -2712,7 +2711,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_trade_licences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_trade_licences` (
   `id` int(15) NOT NULL AUTO_INCREMENT,
   `posts_id` int(10) NOT NULL,
@@ -2739,7 +2738,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_trade_offers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_trade_offers` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -2772,7 +2771,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_trade_posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_trade_posts` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -2806,7 +2805,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_trade_shoutbox`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_trade_shoutbox` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -2833,7 +2832,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_trade_storage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_trade_storage` (
   `id` int(14) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -2862,7 +2861,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_trade_transfers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_trade_transfers` (
   `id` int(14) NOT NULL AUTO_INCREMENT,
   `posts_id` int(10) NOT NULL,
@@ -2891,17 +2890,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_user` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `user` varchar(255) NOT NULL DEFAULT '',
   `login` varchar(20) NOT NULL,
-  `pass` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `pass` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `email` varchar(150) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `allys_id` int(12) NOT NULL DEFAULT '0',
   `race` tinyint(1) NOT NULL DEFAULT '0',
   `aktiv` tinyint(1) NOT NULL DEFAULT '0',
-  `npc_type` enum('1','2') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `npc_type` enum('1','2') CHARACTER SET utf8 DEFAULT NULL,
   `propic` varchar(255) NOT NULL DEFAULT '',
   `email_notification` tinyint(1) NOT NULL DEFAULT '0',
   `lastaction` int(11) NOT NULL DEFAULT '0',
@@ -2909,9 +2908,9 @@ CREATE TABLE `stu_user` (
   `kn_lez` int(12) NOT NULL DEFAULT '6',
   `akn_lez` int(10) NOT NULL DEFAULT '6',
   `rkn_lez` int(11) NOT NULL DEFAULT '12',
-  `delmark` enum('1','2') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `vac_active` enum('1') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `vac_possible` enum('1','2','3') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '3',
+  `delmark` enum('1','2') CHARACTER SET utf8 DEFAULT NULL,
+  `vac_active` enum('1') CHARACTER SET utf8 DEFAULT NULL,
+  `vac_possible` enum('1','2','3') CHARACTER SET utf8 DEFAULT '3',
   `vac_blocktime` int(12) NOT NULL DEFAULT '0',
   `sort_mode` varchar(10) NOT NULL DEFAULT '',
   `sort_way` varchar(10) NOT NULL DEFAULT '',
@@ -2949,7 +2948,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_user_iptable`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_user_iptable` (
   `user_id` smallint(5) NOT NULL,
   `ip` varchar(15) NOT NULL,
@@ -2980,7 +2979,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_user_map`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_user_map` (
   `user_id` int(10) NOT NULL,
   `cx` smallint(3) NOT NULL,
@@ -3009,7 +3008,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_user_profile_visitors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_user_profile_visitors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -3036,7 +3035,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `stu_weapons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stu_weapons` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -3068,4 +3067,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-10 10:07:00
+-- Dump completed on 2019-08-13 15:58:24
