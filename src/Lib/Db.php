@@ -27,7 +27,8 @@ final class Db implements DbInterface
                 $this->config->get('db.host'),
                 $this->config->get('db.user'),
                 $this->config->get('db.pass'),
-                $this->config->get('db.database')
+                $this->config->get('db.database'),
+                (int) $this->config->get('db.port')
             );
             if (!$this->dblink) {
                 throw new DBException(mysqli_error($this->dblink));
