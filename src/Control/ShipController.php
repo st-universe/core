@@ -2187,8 +2187,8 @@ final class ShipController extends GameController
                     $good->getGood()->getName()));
                 continue;
             }
-            if ($count > $good->getCount()) {
-                $count = $good->getCount();
+            if ($count > $good->getAmount()) {
+                $count = $good->getAmount();
             }
             if ($tradepost->getStorageByUser(currentUser()->getId())->getStorageSum() + $count > $tradepost->getStorage()) {
                 $count = $tradepost->getStorage() - $tradepost->getStorageByUser(currentUser()->getId())->getStorageSum();
