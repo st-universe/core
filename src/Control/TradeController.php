@@ -401,7 +401,7 @@ final class TradeController extends GameController
         }
         $msg = encodeString(substr(strip_tags($msg), 0, 200));
         if (strlen($msg) > 0) {
-            $entry = new TradeShoutBoxData;
+            $entry = new TradeShoutboxData;
             $entry->setUserId(currentUser()->getId());
             $entry->setDate(time());
             $entry->setTradeNetworkId($tradeNetworkId);
