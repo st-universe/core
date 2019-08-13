@@ -1949,14 +1949,8 @@ final class ColonyController extends GameController
         $this->addInformation(sprintf(_('%s-Klasse wurde gebaut'), $rump->getName()));
     }
 
-    /**
-     */
     protected function startAirfieldShip()
     {
-        if (!isAdmin(currentUser()->getId())) {
-            $this->addInformation('Geht grad ned ... aber bald!');
-            return;
-        }
         $rump_id = request::postInt('startrump');
         if (!array_key_exists($rump_id, $this->getStartableAirfieldRumps())) {
             return;
