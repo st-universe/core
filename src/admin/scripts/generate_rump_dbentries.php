@@ -5,7 +5,7 @@ $db_category = '00'.DATABASE_TYPE_SHIPRUMP;
 
 DatabaseEntry::truncate('WHERE category_id='.$db_category);
 
-$result = ShipRump::getBy('WHERE is_buildable=1');
+$result = Shiprump::getBy('WHERE is_buildable=1');
 foreach ($result as $key => $obj) {
 	$db = new DatabaseEntryData;
 	$db->setCategoryId($db_category);
@@ -19,4 +19,3 @@ foreach ($result as $key => $obj) {
 	$obj->setDatabaseId($db->getId());
 	$obj->save();
 }
-?>

@@ -13,4 +13,3 @@ foreach ($result as $key => $obj) {
 	$obj->setDatabaseId($db->getId());
 	$obj->save();
 }
-?>
