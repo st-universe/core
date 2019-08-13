@@ -50,7 +50,7 @@ class TradeStorageData extends BaseTable {
 	}
 
 	public function setCount($value) {
-		$this->setFieldValue('count',$value,'getCount');
+		$this->setFieldValue('count',$value,'getAmount');
 	}
 
 	public function upperCount($value) {
