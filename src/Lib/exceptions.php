@@ -71,10 +71,10 @@ class STUException extends Exception {
 			exit;
 		}
 		ob_clean();
-		$tpl = new Talpage('html/defaultexception.xhtml');
+		$tpl = new TalPage('html/defaultexception.xhtml');
 		$tpl->setVar('THIS',$this);
 		$tpl->parse();
-		if (currentUser() && isAdmin(currentUser()->getId())) {
+		if (!$this instanceof DBException && currentUser() && isAdmin(currentUser()->getId())) {
 			printBacktrace();
 		}
 		exit;
