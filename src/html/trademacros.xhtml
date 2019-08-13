@@ -107,8 +107,8 @@
 							<tr>
 								<td style="vertical-align: middle;">Angebotene Menge</td>
 								<td>
-									<input type="text" name="gcount" size="5" onchange="$('calcam').innerHTML = Math.floor(${STOR/getCount}/parseInt(this.value))" />
-									(<span tal:replace="STOR/getCount">COUNT</span>)
+									<input type="text" name="gcount" size="5" onchange="$('calcam').innerHTML = Math.floor(${STOR/getAmount}/parseInt(this.value))" />
+									(<span tal:replace="STOR/getAmount">COUNT</span>)
 								</td>
 							</tr>
 							<tr>
@@ -150,7 +150,7 @@
 								<td style="vertical-align: middle;">Menge</td>
 								<td>
 									<input type="text" name="count" size="5" />
-									(<span tal:replace="STOR/getCount">COUNT</span>)
+									(<span tal:replace="STOR/getAmount">COUNT</span>)
 								</td>
 							</tr>
 							<tr>
@@ -204,7 +204,7 @@
 						</div>
 						<br />
 						<div style="text-align: center;" tal:condition="exists:THIS/getSelectedOffer/getTradePost/getStorageByCurrentUser/getStorage/${THIS/getSelectedOffer/getWantedGoodId}">
-							Lagernd auf diesem Handelsposten: <img src="${GFX}/goods/${THIS/getSelectedOffer/getWantedGoodId}.gif" /> <span tal:replace="THIS/getSelectedOffer/getTradePost/getStorageByCurrentUser/getStorage/${THIS/getSelectedOffer/getWantedGoodId}/getCount">COUNT</span><br />
+							Lagernd auf diesem Handelsposten: <img src="${GFX}/goods/${THIS/getSelectedOffer/getWantedGoodId}.gif" /> <span tal:replace="THIS/getSelectedOffer/getTradePost/getStorageByCurrentUser/getStorage/${THIS/getSelectedOffer/getWantedGoodId}/getAmount">COUNT</span><br />
 						</div>
 					</td>
 				</tr>
