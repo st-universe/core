@@ -2095,7 +2095,7 @@ final class ShipController extends GameController
                 if (!checkPosition($tradepost->getShip(), $obj)) {
                     return;
                 }
-                if (!$obj->getStorageByGood($tradepost->getLicenceCostGood()->getId()) || $obj->getStorageByGood($tradepost->getLicenceCostGood()->getId())->getCount() < $tradepost->calculateLicenceCost()) {
+                if (!$obj->getStorageByGood($tradepost->getLicenceCostGood()->getId()) || $obj->getStorageByGood($tradepost->getLicenceCostGood()->getId())->getAmount() < $tradepost->calculateLicenceCost()) {
                     return;
                 }
                 $obj->lowerStorage($tradepost->getLicenceCostGood()->getId(), $tradepost->calculateLicenceCost());

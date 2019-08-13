@@ -950,7 +950,7 @@ class ShipData extends BaseTable {
 		if (!$this->getStorage()->offsetExists($good_id)) {
 			return;
 		}
-		if ($this->getStorage()->offsetGet($good_id)->getCount() <= $count) {
+		if ($this->getStorage()->offsetGet($good_id)->getAmount() <= $count) {
 			$this->getStorage()->offsetGet($good_id)->deleteFromDatabase();
 			$this->getStorage()->offsetUnset($good_id);
 			return;
