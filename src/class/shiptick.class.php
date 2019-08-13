@@ -5,7 +5,7 @@ class ShipTickManager {
 	private $ships = NULL;
 
 	function __construct() {
-		$this->ships = Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user WHERE id!='.USER_NOONE.' AND npc_type IS NULL)');
+		$this->ships = Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user WHERE id!='.USER_NOONE.' AND npc_type IS NULL and plans_id > 0)');
 		//$this->ships = Ship::getObjectsBy('WHERE id=608');
 
 		DB()->beginTransaction();
