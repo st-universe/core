@@ -61,9 +61,9 @@ $builder->addDefinitions([
         $manager = EntityManager::create(
             [
                 'driver' => 'mysqli',
-                'user' => 'stu',
-                'password' => 'stu',
-                'dbname'=> 'stu_db',
+                'user' => $config->get('db.user'),
+                'password' => $config->get('db.pass'),
+                'dbname'=> $config->get('db.database'),
                 'host'  => $config->get('db.host'),
             ],
             Setup::createAnnotationMetadataConfiguration(
