@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Maintenance;
 
-use UserDeletion;
+use Stu\Lib\UserDeletion;
 
 final class IdleUserDeletion implements MaintenanceHandlerInterface
 {
