@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+
 class ColonyTickManager {
 
 	private $colonies = NULL;
@@ -56,7 +58,11 @@ class ColonyTickManager {
 	/**
 	 */
 	private function repairShips() { #{{{
-		foreach (ColonyShipRepair::getObjectsBy('id IN (SELECT MIN(id) FROM stu_colonies_shiprepair GROUP BY colony_id, field_id)') as $obj) {
+		global $container;
+
+		$jobs = $container->get(ColonyShipRepairRepositoryInterface::class)->getMostRecentJobs();
+
+		foreach ($jobs as $obj) {
 			if (!$obj->getField()->isActive()) {
 				continue;
 			}

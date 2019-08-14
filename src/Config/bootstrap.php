@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use DI\ContainerBuilder;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
+use Psr\Container\ContainerInterface;
 use Stu\Control\HistoryController;
 use Stu\Control\AllianceController;
 use Stu\Control\ColonyController;
@@ -51,6 +55,26 @@ $builder->addDefinitions([
             get(ConfigInterface::class)
         ),
     SessionInterface::class => autowire(Session::class),
+    EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
+        $config = $c->get(ConfigInterface::class);
+
+        $manager = EntityManager::create(
+            [
+                'driver' => 'mysqli',
+                'user' => 'stu',
+                'password' => 'stu',
+                'dbname'=> 'stu_db',
+                'host'  => $config->get('db.host'),
+            ],
+            Setup::createAnnotationMetadataConfiguration(
+                [__DIR__.'/../Orm/Entity/'],
+                $config->get('debug.debug_mode')
+            )
+        );
+
+        $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
+        return $manager;
+    },
 ]);
 
 $builder->addDefinitions([
@@ -78,4 +102,7 @@ $builder->addDefinitions([
 $builder->addDefinitions([
     'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',
 ]);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Orm/Repository/services.php',
+);
 return $builder->build();

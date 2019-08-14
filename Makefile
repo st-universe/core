@@ -1,17 +1,13 @@
 # DEFAULT
-PHONY=init init-production tests update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db data dirs i18nextract version_link
+PHONY=init init-production tests update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs i18nextract version_link migrateDatabase showDatabaseChanges
 
-all:init dirs data
+all:init dirs
 
 dirs:force
 	for a in src/admin/backup src/inc/generated src/html/avatare/user src/html/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
 
 generators:force
 	for a in fieldnamedefines.inc.php crewraces.inc.php systemnames.inc.php; do php -f src/admin/generators/"$$a" $(ENV); done
-
-data:force
-	cd src/data && $(MAKE) -f genmakefile.mk
-	cd src/data && $(MAKE)
 
 i18nextract:force
 	xgettext --no-location --no-wrap --from-code UTF-8 **/*.php -o php.pot
@@ -53,6 +49,10 @@ dev-stop-db:force
 version_link:force
 	cd src && ln -s . version_dev
 
-force:
-force:
+migrateDatabase:force
+	vendor/bin/doctrine orm:schema-tool:update --force
 
+showDatabaseChanges:force
+	vendor/bin/doctrine orm:schema-tool:update --dump-sql
+
+force:

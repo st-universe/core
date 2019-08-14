@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\BuildingUpgradeCostRepositoryInterface;
+
 class BuildingUpgradeData extends BaseTable {
 
 	protected $tablename = 'stu_buildings_upgrades';
@@ -48,7 +50,12 @@ class BuildingUpgradeData extends BaseTable {
 	/**
 	 */
 	public function getCost() { #{{{
-		return BuildingsUpgradesCost::getObjectsBy('buildings_upgrades_id='.$this->getId());
+		// @todo inject
+		global $container;
+
+		return $container->get(BuildingUpgradeCostRepositoryInterface::class)->getByBuildingUpgradeId(
+			$this->getId()
+		);
 	} # }}}
 
 	/**

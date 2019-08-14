@@ -1,6 +1,8 @@
 <?php
 
 
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+
 class ShipData extends BaseTable {
 
 	const tablename = 'stu_ships';
@@ -1607,7 +1609,11 @@ class ShipData extends BaseTable {
 	public function cancelRepair() { #{{{
 		if ($this->getState() == SHIP_STATE_REPAIR) {
 			$this->setState(SHIP_STATE_NONE);
-			ColonyShipRepair::truncate('ship_id='.$this->getId());
+
+			// @todo inject
+			global $container;
+			$container->get(ColonyShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
+
 			$this->save();
 		}
 	} # }}}

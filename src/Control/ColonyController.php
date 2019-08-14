@@ -9,6 +9,7 @@ use BuildingUpgrade;
 use BuildMenuWrapper;
 use BuildplanHangar;
 use BuildPlanModules;
+use ColfieldData;
 use Colfields;
 use ColonyMenu;
 use ColonyShipQueue;
@@ -36,6 +37,8 @@ use ShipBuildplansData;
 use ShipCrew;
 use Shiprump;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Entity\ColonyShipRepairInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Terraforming;
 use TorpedoType;
 use Tuple;
@@ -46,10 +49,15 @@ final class ColonyController extends GameController
 
     private $default_tpl = "html/colony.xhtml";
 
+    private $colonyShipRepairRepository;
+
     public function __construct(
-        SessionInterface $session
+        SessionInterface $session,
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository
     )
     {
+        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
+
         parent::__construct($session, $this->default_tpl, "/ Kolonien");
         $this->addNavigationPart(new Tuple("colonylist.php", "Kolonien"));
 
@@ -441,6 +449,9 @@ final class ColonyController extends GameController
         return $this->colony;
     }
 
+    /**
+     * @var null|ColfieldData
+     */
     private $colfield = null;
 
     public function getField()
@@ -1784,13 +1795,20 @@ final class ColonyController extends GameController
 
     private $ship_repair_progress;
 
-    /**
-     */
-    public function getShipRepairProgress()
+    public function getShipRepairProgress(): array
     {
         if ($this->ship_repair_progress === null) {
-            $this->ship_repair_progress = ColonyShipRepair::getByColonyField($this->getColony()->getId(),
-                $this->getField()->getFieldId());
+            $this->ship_repair_progress = $this->colonyShipRepairRepository->getByColonyField(
+                $this->getColony()->getId(),
+                $this->getField()->getFieldId()
+            );
+
+            usort(
+                $this->ship_repair_progress,
+                function (ColonyShipRepairInterface $a, ColonyShipRepairInterface $b): int {
+                    return $a->getId() <=> $b->getId();
+                }
+            );
         }
         return $this->ship_repair_progress;
     }
@@ -2313,17 +2331,23 @@ final class ColonyController extends GameController
             return;
         }
 
-        $obj = new ColonyShipRepair;
+        $obj = $this->colonyShipRepairRepository->prototype();
         $obj->setColonyId($this->getColony()->getId());
         $obj->setShipId($ship_id);
         $obj->setFieldId($this->getField()->getFieldId());
-        $obj->save();
+        $this->colonyShipRepairRepository->save($obj);
 
         $ship->setState(SHIP_STATE_REPAIR);
         $ship->save();
 
         DB()->commitTransaction();
-        if (ColonyShipRepair::countInstances('colony_id=' . $this->getColony()->getId() . ' AND field_id=' . $this->getField()->getId()) > 1) {
+
+        $jobs = $this->colonyShipRepairRepository->getByColonyField(
+            $this->getColony()->getId(),
+            $this->getField()->getFieldId()
+        );
+
+        if (count($jobs) > 1) {
             $this->addInformation(_('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt'));
             return;
         }
