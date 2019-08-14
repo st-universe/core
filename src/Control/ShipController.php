@@ -5,7 +5,7 @@ namespace Stu\Control;
 use AccessViolation;
 use Alliance;
 use Building;
-use ColFields;
+use Colfields;
 use Colony;
 use DatabaseEntry;
 use DatabaseUser;
@@ -2352,7 +2352,7 @@ final class ShipController extends GameController
         $colonyId = request::getIntFatal('colid');
         $fieldId = request::getIntFatal('field');
         $colony = new Colony($colonyId);
-        $field = new ColFields($fieldId);
+        $field = new Colfields($fieldId);
 
         if (!$this->canColonizeCurrentColony()) {
             return;
