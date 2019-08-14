@@ -321,7 +321,7 @@ class UserData extends BaseTable {
 		if ($researchId == 0) {
 			return TRUE;
 		}
-		return ResearchUser::getByResearch($researchId,$this->getId());
+		return ResearchUser::getByFinishedResearch($researchId, $this->getId());
 	}
 
 	public function setSaveLogin($value) {

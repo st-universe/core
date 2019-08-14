@@ -138,6 +138,23 @@ class ResearchUser extends ResearchUserData {
 		return self::_getBy($result,$researchId,'ResearchUserData');
 	}
 
+	public static function getByFinishedResearch(int $researchId, int $userId)
+	{
+		$result = DB()->query(
+			sprintf(
+				'SELECT * FROM %s WHERE research_id = %d AND user_id = %d AND finished > 0',
+				self::tablename,
+				$researchId,
+				$userId
+			),
+			4
+		);
+		if ($result == 0) {
+			return FALSE;
+		}
+		return self::_getBy($result,$researchId,'ResearchUserData');
+	}
+
 	static function getFinishedListByUser($userId) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE user_id=".intval($userId)." AND finished>0 ORDER BY finished ASC");
 		return self::_getList($result,'ResearchUserData','research_id');
