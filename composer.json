@@ -4,8 +4,7 @@
     "classmap": [
       "src/class",
       "src/Lib",
-      "src/admin",
-      "src/data"
+      "src/admin"
     ],
     "psr-4": {
       "Stu\\": "src/"
@@ -25,7 +24,8 @@
     "usox/stu3-assets": "dev-master",
     "zendframework/zend-mail": "^2",
     "zendframework/zend-validator": "^2",
-    "php-di/php-di": "^6.0"
+    "php-di/php-di": "^6.0",
+    "doctrine/orm": "^2.6"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.3",
