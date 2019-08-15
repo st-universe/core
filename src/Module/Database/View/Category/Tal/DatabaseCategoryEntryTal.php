@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Tal;
 
-use DatabaseUserData;
 use Ship;
 use StarSystem;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Entity\DatabaseUserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
@@ -27,7 +27,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     private $wasEntryDiscovered;
 
     /**
-     * @var DatabaseUserData|null
+     * @var DatabaseUserInterface|null
      */
     private $userDiscovery;
 
