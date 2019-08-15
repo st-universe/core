@@ -314,13 +314,13 @@ class ColonyTick {
 			if (!array_key_exists($key,$prod)) {
 				$data = new ColProductionData;
 				$data->setGoodId($key);	
-				$data->setProduction($obj->getCount()*-1);
+				$data->setProduction($obj->getAmount()*-1);
 				$this->getColony()->setProductionRaw($this->getColony()->getProductionRaw()+array($key => $data));
 			} else {
-				if ($obj->getCount() < 0) {
-					$prod[$key]->upperProduction(abs($obj->getCount()));
+				if ($obj->getAmount() < 0) {
+					$prod[$key]->upperProduction(abs($obj->getAmount()));
 				} else {
-					$prod[$key]->lowerProduction($obj->getCount());
+					$prod[$key]->lowerProduction($obj->getAmount());
 				}
 			}
 		}
