@@ -10,6 +10,7 @@ use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
+use Stu\Orm\Entity\DatabaseType;
 
 return [
     ColonyShipRepairRepositoryInterface::class => function (
@@ -31,5 +32,10 @@ return [
         ContainerInterface $c
     ): DatabaseEntryRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(DatabaseEntry::class);
+    },
+    DatabaseTypeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): DatabaseTypeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(DatabaseType::class);
     },
 ];

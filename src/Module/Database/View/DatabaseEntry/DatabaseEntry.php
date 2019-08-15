@@ -85,7 +85,7 @@ final class DatabaseEntry implements ViewControllerInterface
     {
         $entry_object_id = $entry->getObjectId();
 
-        switch ($entry->getType()) {
+        switch ($entry->getTypeObject()->getId()) {
             case DATABASE_TYPE_REGION:
                 $game->setTemplateVar('REGION', new MapRegion($entry_object_id));
                 break;

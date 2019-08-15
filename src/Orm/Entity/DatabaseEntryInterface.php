@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use DatabaseType;
 use DatabaseUserData;
 
 interface DatabaseEntryInterface
@@ -21,10 +20,6 @@ interface DatabaseEntryInterface
 
     public function getCategoryId(): int;
 
-    public function setType(int $type): DatabaseEntryInterface;
-
-    public function getType(): int;
-
     public function setSort(int $sort): DatabaseEntryInterface;
 
     public function getSort(): int;
@@ -35,7 +30,9 @@ interface DatabaseEntryInterface
 
     public function getObject();
 
-    public function getTypeObject(): DatabaseType;
+    public function getTypeObject(): DatabaseTypeInterface;
+
+    public function setTypeObject(DatabaseTypeInterface $type_object): DatabaseEntryInterface;
 
     public function isDiscoveredByCurrentUser(): bool;
 

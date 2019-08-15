@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use DatabaseType;
 use DatabaseUser;
 use DatabaseUserData;
 use Ship;
@@ -13,7 +12,11 @@ use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 /**
  * @Entity
- * @Table(name="stu_database_entrys",indexes={@Index(name="database_entry_category_id_idx", columns={"category_id"})})
+ * @Table(
+ *     name="stu_database_entrys",
+ *     options={"engine":"InnoDB"},
+ *     indexes={@Index(name="database_entry_category_id_idx", columns={"category_id"})}
+ * )
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseEntryRepository")
  **/
 final class DatabaseEntry implements DatabaseEntryInterface
@@ -38,6 +41,12 @@ final class DatabaseEntry implements DatabaseEntryInterface
 
     /** @Column(type="integer") * */
     private $object_id;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseType")
+     * @JoinColumn(name="type", referencedColumnName="id")
+     */
+    private $type_object;
 
     public function getId(): int
     {
@@ -80,16 +89,14 @@ final class DatabaseEntry implements DatabaseEntryInterface
         return $this->category_id;
     }
 
-    public function setType(int $type): DatabaseEntryInterface
-    {
-        $this->type = $type;
-
-        return $this;
+    public function getTypeObject(): DatabaseTypeInterface {
+        return $this->type_object;
     }
 
-    public function getType(): int
-    {
-        return $this->type;
+    public function setTypeObject(DatabaseTypeInterface $type_object): DatabaseEntryInterface {
+        $this->type_object = $type_object;
+
+        return $this;
     }
 
     public function setSort(int $sort): DatabaseEntryInterface
@@ -131,10 +138,6 @@ final class DatabaseEntry implements DatabaseEntryInterface
         }
 
         return null;
-    }
-
-    public function getTypeObject(): DatabaseType {
-        return new DatabaseType($this->getType());
     }
 
     public function isDiscoveredByCurrentUser(): bool {

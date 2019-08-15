@@ -17,6 +17,7 @@ foreach ($result as $key => $obj) {
     $db = $repository->prototype();
 	$db->setCategoryId($db_category);
 	$db->setDescription($obj->getName());
+	$db->setData('');
 	$db->setSort($obj->getSort());
 	$db->setObjectId($obj->getId());
 	$db->setType(DATABASE_TYPE_RUMP);
