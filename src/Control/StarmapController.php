@@ -123,7 +123,7 @@ final class StarmapController extends GameController
     public function getXHeadRow()
     {
         $ret = array();
-        for ($j = 1; $j <= MAP_MAX_X / MAPFIELDS_PER_SECTION; $j++) {
+        for ($j = 1; $j <= MAP_MAX_X / static::FIELDS_PER_SECTION; $j++) {
             $ret[] = $j;
         }
         return $ret;
@@ -282,8 +282,8 @@ final class StarmapController extends GameController
             if ($x < 1) {
                 $x = 1;
             }
-            if ($x * FIELDS_PER_SECTION > MAP_MAX_X * FIELDS_PER_SECTION) {
-                $x = FIELDS_PER_SECTION / MAP_MAX_X;
+            if ($x * static::FIELDS_PER_SECTION > MAP_MAX_X * static::FIELDS_PER_SECTION) {
+                $x = static::FIELDS_PER_SECTION / MAP_MAX_X;
             }
             $this->rx = $x;
         }
@@ -301,8 +301,8 @@ final class StarmapController extends GameController
             if ($y < 1) {
                 $y = 1;
             }
-            if ($y * FIELDS_PER_SECTION > MAP_MAX_Y * FIELDS_PER_SECTION) {
-                $y = FIELDS_PER_SECTION / MAP_MAX_Y;
+            if ($y * static::FIELDS_PER_SECTION > MAP_MAX_Y * static::FIELDS_PER_SECTION) {
+                $y = static::FIELDS_PER_SECTION / MAP_MAX_Y;
             }
             $this->ry = $y;
         }
@@ -589,7 +589,7 @@ final class StarmapController extends GameController
 
     public function hasNavigationRight()
     {
-        return request::getInt('x') * MAPFIELDS_PER_SECTION < MAP_MAX_X;
+        return request::getInt('x') * static::FIELDS_PER_SECTION < MAP_MAX_X;
     }
 
     public function hasNavigationUp()
@@ -599,7 +599,7 @@ final class StarmapController extends GameController
 
     public function hasNavigationBottom()
     {
-        return request::getInt('y') * MAPFIELDS_PER_SECTION < MAP_MAX_Y;
+        return request::getInt('y') * static::FIELDS_PER_SECTION < MAP_MAX_Y;
     }
 
     public function getNavigationUp()
@@ -632,5 +632,10 @@ final class StarmapController extends GameController
             "x" => request::getInt('x') + 1,
             "y" => request::getInt('y')
         );
+    }
+
+    public function getFieldsPerSection(): int
+    {
+        return static::FIELDS_PER_SECTION;
     }
 }

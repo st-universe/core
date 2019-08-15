@@ -110,7 +110,6 @@ define("STATUSBAR_BLUE",'0070cf');
 define("STATUSBAR_DARKBLUE",'004682');
 
 // Starmap
-define("MAPFIELDS_PER_SECTION",20);
 define("MAPTYPE_INSERT",1);
 define("MAPTYPE_DELETE",2);
 

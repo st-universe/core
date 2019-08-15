@@ -5,10 +5,10 @@
 		<table class="tcal">
 			<tr>
 				<th>0|0</th>
-				<th tal:repeat="data THIS/getXHeadRow" tal:content="php:data*MAPFIELDS_PER_SECTION">Y</th>
+				<th tal:repeat="data THIS/getXHeadRow" tal:content="php:data*THIS.getFieldsPerSection()">Y</th>
 			</tr>
 			<tr tal:repeat="rowy THIS/getMapSections">
-				<th style="width: 30px;" tal:content="php:repeat.rowy.number*MAPFIELDS_PER_SECTION">Y</th>
+				<th style="width: 30px;" tal:content="php:repeat.rowy.number*THIS.getFieldsPerSection()">Y</th>
 				<td tal:repeat="data rowy">
 					<a href="?SHOW_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}" tal:content="data">sec</a>
 				</td>
