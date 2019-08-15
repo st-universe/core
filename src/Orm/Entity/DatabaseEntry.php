@@ -48,6 +48,12 @@ final class DatabaseEntry implements DatabaseEntryInterface
      */
     private $type_object;
 
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory")
+     * @JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
     public function getId(): int
     {
         return $this->id;
@@ -77,26 +83,16 @@ final class DatabaseEntry implements DatabaseEntryInterface
         return $this->data;
     }
 
-    public function setCategoryId(int $categoryId): DatabaseEntryInterface
+    public function setCategory(DatabaseCategoryInterface $category): DatabaseEntryInterface
     {
-        $this->category_id = $categoryId;
+        $this->category = $category;
 
         return $this;
     }
 
-    public function getCategoryId(): int
+    public function getCategory(): DatabaseCategoryInterface
     {
-        return $this->category_id;
-    }
-
-    public function getTypeObject(): DatabaseTypeInterface {
-        return $this->type_object;
-    }
-
-    public function setTypeObject(DatabaseTypeInterface $type_object): DatabaseEntryInterface {
-        $this->type_object = $type_object;
-
-        return $this;
+        return $this->category;
     }
 
     public function setSort(int $sort): DatabaseEntryInterface
@@ -128,7 +124,7 @@ final class DatabaseEntry implements DatabaseEntryInterface
      * @see \Stu\Module\Database\View\DatabaseEntry\DatabaseEntry
      */
     public function getObject() {
-        switch ($this->getCategoryId()) {
+        switch ($this->category_id) {
             case DATABASE_CATEGORY_STARSYSTEMS:
                 return new StarSystem($this->getObjectId());
                 break;
@@ -140,6 +136,16 @@ final class DatabaseEntry implements DatabaseEntryInterface
         return null;
     }
 
+    public function getTypeObject(): DatabaseTypeInterface {
+        return $this->type_object;
+    }
+
+    public function setTypeObject(DatabaseTypeInterface $type_object): DatabaseEntryInterface {
+        $this->type_object = $type_object;
+
+        return $this;
+    }
+
     public function isDiscoveredByCurrentUser(): bool {
         return DatabaseUser::checkEntry($this->getId(),currentUser()->getId());
     }
@@ -149,11 +155,5 @@ final class DatabaseEntry implements DatabaseEntryInterface
             return null;
         }
         return DatabaseUser::getBy($this->getId(),currentUser()->getId());
-    }
-
-    public function getCategory(): DatabaseCategoryInterface {
-        // @todo replace by entity
-        global $container;
-        return $container->get(DatabaseCategoryRepositoryInterface::class)->find($this->getCategoryId());
     }
 }

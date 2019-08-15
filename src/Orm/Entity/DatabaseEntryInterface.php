@@ -16,9 +16,9 @@ interface DatabaseEntryInterface
 
     public function getData(): string;
 
-    public function setCategoryId(int $categoryId): DatabaseEntryInterface;
+    public function setCategory(DatabaseCategoryInterface $category): DatabaseEntryInterface;
 
-    public function getCategoryId(): int;
+    public function getCategory(): DatabaseCategoryInterface;
 
     public function setSort(int $sort): DatabaseEntryInterface;
 
@@ -32,11 +32,7 @@ interface DatabaseEntryInterface
 
     public function getTypeObject(): DatabaseTypeInterface;
 
-    public function setTypeObject(DatabaseTypeInterface $type_object): DatabaseEntryInterface;
-
     public function isDiscoveredByCurrentUser(): bool;
 
     public function getDBUserObject(): ?DatabaseUserData;
-
-    public function getCategory(): DatabaseCategoryInterface;
 }

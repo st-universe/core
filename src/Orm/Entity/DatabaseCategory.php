@@ -11,7 +11,7 @@ use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
  * @Table(name="stu_database_categories")
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseCategoryRepository")
  **/
-final class DatabaseCategory implements DatabaseCategoryInterface
+class DatabaseCategory implements DatabaseCategoryInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;
