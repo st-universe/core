@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Tal;
 
-use DatabaseUser;
 use DatabaseUserData;
 use Ship;
 use StarSystem;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
 {
+    private $databaseUserRepository;
 
     private $databaseEntry;
 
     public function __construct(
+        DatabaseUserRepositoryInterface $databaseUserRepository,
         DatabaseEntryInterface $databaseEntry
     ) {
         $this->databaseEntry = $databaseEntry;
+        $this->databaseUserRepository = $databaseUserRepository;
     }
 
     private $wasEntryDiscovered;
@@ -49,8 +52,8 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     public function wasDiscovered(): bool
     {
         if ($this->wasEntryDiscovered === null) {
-            $result = DatabaseUser::getBy($this->databaseEntry->getId(), currentUser()->getId());
-            if ($result === false) {
+            $result = $this->databaseUserRepository->findFor($this->databaseEntry->getId(), (int) currentUser()->getId());
+            if ($result === null) {
                 $this->wasEntryDiscovered = false;
             } else {
                 $this->wasEntryDiscovered = true;
@@ -59,14 +62,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         }
 
         return $this->wasEntryDiscovered;
-    }
-
-    private function getDBUserObject(): ?DatabaseUserData
-    {
-        if (!$this->wasDiscovered()) {
-            return null;
-        }
-        return DatabaseUser::getBy($this->databaseEntry->getId(), currentUser()->getId());
     }
 
     public function getId(): int

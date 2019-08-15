@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+
 class UserData extends BaseTable {
 
 	protected $tablename = 'stu_user';
@@ -394,12 +396,6 @@ class UserData extends BaseTable {
 
 	/**
 	 */
-	public function checkDatabaseEntry($databaseId) { #{{{
-		return DatabaseUser::checkEntry($databaseId,$this->getId());
-	} # }}}
-
-	/**
-	 */
 	public function deepDelete() { #{{{
 		DB()->query('DELETE FROM stu_user_map WHERE user_id='.$this->getId());
 		DB()->query('DELETE FROM stu_user_iptable WHERE user_id='.$this->getId());
@@ -440,7 +436,12 @@ class UserData extends BaseTable {
 	/**
 	 */
 	private function resetUser() { #{{{
-		DatabaseUser::truncate('WHERE user_id='.$this->getId());
+		// @todo refactor
+		global $container;
+		$databaseUserRepo = $container->get(DatabaseUserRepositoryInterface::class);
+
+		$databaseUserRepo->truncateByUserId($this->getId());
+
 		ResearchUser::truncate('WHERE user_id='.$this->getId().' AND research_id!='.$this->getResearchStartId());
 		$this->setActive(1);
 		$this->save();

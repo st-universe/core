@@ -3,7 +3,6 @@
 namespace Stu\Control;
 
 use Colony;
-use DatabaseUser;
 use GameConfig;
 use GameTurn;
 use HistoryEntry;
@@ -12,6 +11,7 @@ use PM;
 use PMCategory;
 use request;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use TalPage;
 use Tuple;
 use User;
@@ -398,10 +398,16 @@ abstract class GameController implements GameControllerInterface
         return $this->recent_history;
     }
 
-    protected function checkDatabaseItem($database_entry_id)
+    protected function checkDatabaseItem($databaseEntryId)
     {
-        if ($database_entry_id > 0 && !DatabaseUser::checkEntry($database_entry_id, currentUser()->getId())) {
-            $this->addAchievement(databaseScan($database_entry_id, currentUser()->getId()));
+        $userId = currentUser()->getId();
+
+        // @todo refactor
+        global $container;
+        $databaseUserRepo = $container->get(DatabaseUserRepositoryInterface::class);
+
+        if ($databaseEntryId > 0 && $databaseUserRepo->exists($userId, $databaseEntryId) === false) {
+            $this->addAchievement(databaseScan($databaseEntryId, $userId));
         }
     }
 

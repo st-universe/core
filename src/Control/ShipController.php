@@ -7,7 +7,6 @@ use Alliance;
 use Building;
 use Colfields;
 use Colony;
-use DatabaseUser;
 use DockingRights;
 use DockingRightsData;
 use Faction;
@@ -23,7 +22,9 @@ use ShipCrew;
 use ShipMover;
 use ShipSingleAttackCycle;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use SystemActivationWrapper;
 use TradeLicencesData;
 use TradeStorage;
@@ -41,9 +42,12 @@ final class ShipController extends GameController
 
     private $databaseEntryRepository;
 
+    private $databaseUserRepository;
+
     public function __construct(
         SessionInterface $session,
-        DatabaseEntryRepositoryInterface $databaseEntryRepository
+        DatabaseEntryRepositoryInterface $databaseEntryRepository,
+        DatabaseUserRepositoryInterface $databaseUserRepository
     )
     {
         $this->session = $session;
@@ -145,6 +149,7 @@ final class ShipController extends GameController
         if (!$this->getView()) {
             $this->showShip();
         }
+        $this->databaseUserRepository = $databaseUserRepository;
     }
 
     private $ship = null;
@@ -1873,15 +1878,35 @@ final class ShipController extends GameController
         if (!checkPosition($this->getShip(), $tradepost->getShip())) {
             new AccessViolation;
         }
-        if (!DatabaseUser::checkEntry($tradepost->getShip()->getDatabaseId(), currentUser()->getId())) {
-            DatabaseUser::addEntry($tradepost->getShip()->getDatabaseId(), currentUser()->getId());
 
-            $entry = $this->databaseEntryRepository->find($tradepost->getShip()->getDatabaseId());
+        $databaseEntryId = $tradepost->getShip()->getDatabaseId();
 
-            $this->addInformation("Neuer Datenbankeintrag: " . $entry->getDescription());
+        if ($databaseEntryId > 0) {
+            $this->discover($databaseEntryId, currentUser()->getId());
         }
+
         $this->setPageTitle('Handelsposten: ' . $tradepost->getName());
         $this->getTemplate()->setVar('TRADEPOST', $tradepost);
+    }
+
+    private function discover(int $databaseEntryId, int $userId): void
+    {
+        if ($this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
+
+            /**
+             * @var DatabaseEntryInterface $databaseEntry
+             */
+            $databaseEntry = $this->databaseEntryRepository->find($databaseEntryId);
+
+            $newEntry = $this->databaseUserRepository->prototype()
+                ->setUserId($userId)
+                ->setDatabaseEntry($databaseEntry)
+                ->setDate(time());
+
+            $this->databaseUserRepository->save($newEntry);
+
+            $this->addInformation("Neuer Datenbankeintrag: " . $databaseEntry->getDescription());
+        }
     }
 
     protected function showTradeMenuChoosePayment()
@@ -1942,15 +1967,13 @@ final class ShipController extends GameController
         if ($this->getShip()->getCurrentMapField()->getMapRegion()->getId() != $regionId) {
             new AccessViolation;
         }
-        if ($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId() && !DatabaseUser::checkEntry($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId(),
-                currentUser()->getId())) {
-            DatabaseUser::addEntry($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId(),
-                currentUser()->getId());
 
-            $entry = $this->databaseEntryRepository->find($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId());
+        $databaseEntryId = $this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId();
 
-            $this->addInformation("Neuer Datenbankeintrag: " . $entry->getDescription());
+        if ($databaseEntryId > 0) {
+            $this->discover($databaseEntryId, currentUser()->getId());
         }
+
         $this->setPageTitle('Details: ' . $this->getShip()->getCurrentMapField()->getMapRegion()->getDescription());
         $this->getTemplate()->setVar('REGION', $this->getShip()->getCurrentMapField()->getMapRegion());
     }

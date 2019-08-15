@@ -4,6 +4,7 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\Db;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 function dbSafe(&$string) {
 	return addslashes(str_replace("\"","",$string));
@@ -231,19 +232,26 @@ function calculateCosts(&$costs,&$storage,&$place) {
 function infoToString(&$info) {
 	return implode("\n",$info);
 }
-function getAvailableSlots() {
-	return range(1,SLOT_COUNT);
-}
-function databaseScan(&$database_id,&$user_id) {
+function databaseScan($database_id,$user_id) {
 	if ($database_id == 0) {
 		return;
 	}
-	DatabaseUser::addEntry($database_id,$user_id);
 
 	// @todo refactor
     global $container;
 
+    /**
+     * @var \Stu\Orm\Entity\DatabaseEntryInterface $entry
+     */
     $entry = $container->get(DatabaseEntryRepositoryInterface::class)->find($database_id);
+	$databaseUserRepository = $container->get(DatabaseUserRepositoryInterface::class);
+
+	$userEntry = $databaseUserRepository->prototype()
+        ->setUserId($user_id)
+        ->setDatabaseEntry($entry)
+        ->setDate(time());
+
+	$databaseUserRepository->save($userEntry);
 
 	return sprintf(_("Neuer Datenbankeintrag: %s (+%d Punkte)"),$entry->getDescription(),$entry->getCategory()->getPoints());
 }

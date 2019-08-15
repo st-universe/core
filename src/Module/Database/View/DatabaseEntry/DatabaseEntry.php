@@ -14,6 +14,7 @@ use Stu\Module\Database\View\Category\Category;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
@@ -26,15 +27,19 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private $databaseEntryRepository;
 
+    private $databaseUserRepository;
+
     public function __construct(
         DatabaseEntryRequestInterface $databaseEntryRequest,
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
-        DatabaseEntryRepositoryInterface $databaseEntryRepository
+        DatabaseEntryRepositoryInterface $databaseEntryRepository,
+        DatabaseUserRepositoryInterface $databaseUserRepository
     )
     {
         $this->databaseEntryRequest = $databaseEntryRequest;
         $this->databaseCategoryRepository = $databaseCategoryRepository;
         $this->databaseEntryRepository = $databaseEntryRepository;
+        $this->databaseUserRepository = $databaseUserRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,7 +50,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry = $this->databaseEntryRepository->find($entry_id);
         $category = $this->databaseCategoryRepository->find($category_id);
 
-        if (!currentUser()->checkDatabaseEntry($entry->getId())) {
+        if ($this->databaseUserRepository->exists((int) $game->getUser()->getId(), $entry->getId()) === false) {
             throw new AccessViolation();
         }
 

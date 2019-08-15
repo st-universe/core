@@ -6,7 +6,6 @@ use AllianceJobs;
 use Colony;
 use Contactlist;
 use Crew;
-use DatabaseUser;
 use Fleet;
 use KnComment;
 use KNPosting;
@@ -16,6 +15,7 @@ use ResearchUser;
 use RPGPlot;
 use Ship;
 use ShipBuildplans;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use TradeLicences;
 use TradeOffer;
 use TradeShoutbox;
@@ -77,7 +77,12 @@ class UserDeletion
 
     public function handleDatabaseEntries()
     {
-        DatabaseUser::truncate('WHERE user_id=' . $this->getUser()->getId());
+        // @todo refactor
+        global $container;
+
+        $container->get(DatabaseUserRepositoryInterface::class)->truncateByUserId(
+            (int) $this->getUser()->getId()
+        );
     }
 
     public function handleFleets()

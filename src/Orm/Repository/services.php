@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
+use Stu\Orm\Entity\DatabaseUser;
 
 return [
     ColonyShipRepairRepositoryInterface::class => function (
@@ -37,5 +38,10 @@ return [
         ContainerInterface $c
     ): DatabaseTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(DatabaseType::class);
+    },
+    DatabaseUserRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): DatabaseUserRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class);
     },
 ];
