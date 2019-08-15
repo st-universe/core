@@ -40,28 +40,13 @@ define("GENERATED_DIR",APP_PATH."/src/inc/generated/");
 
 set_include_path(get_include_path() . PATH_SEPARATOR . APP_PATH);
 
-// Maintenance
-define("MAINTENANCE_DIR",APP_PATH."/src/admin/maintenance/");
-
 define('DEBUG_MODE', $config->get('debug.debug_mode'));
 
 define('SHIELD_REGENERATION_TIME',900);
 
 define('SHIP_CATEGORY_DEBRISFIELD',7);
 
-define('COLONY_SEPERATOR_DEFAULT',10);
-define('COLONY_SEPERATOR_MOON',7);
-
-define('FREE_COLONY_SYSTEM_RANGE',40);
-
-define('NPC_FEDERATION_ID',10);
-define('NPC_ROMULANS_ID',11);
-define('NPC_KLINGONS_ID',12);
-define('NPC_CARDASSIANS_ID',13);
-define('NPC_FERENGI_ID',14);
-
 //XXX
-define('USER_IDLE_TIME',120960000);
 
 define("AVATAR_USER_PATH", "/html/avatare/user/");
 define("AVATAR_ALLIANCE_PATH", "/html/avatare/alliance/");
@@ -69,10 +54,6 @@ define("AVATAR_USER_PATH_INTERNAL", APP_PATH.'/src/'.AVATAR_USER_PATH);
 define("AVATAR_ALLIANCE_PATH_INTERNAL", APP_PATH.'/src/'.AVATAR_ALLIANCE_PATH);
 
 define("BUILDMENU_SCROLLOFFSET",6);
-define("SHUTTLE_COLCENTRAL",81010100);
-define("KNLIMITER",6);
-define("PMLIMITER",6);
-define('ALLIANCEBOARDLIMITER',20);
 
 define('INDICATOR_MAX','m');
 
@@ -94,8 +75,6 @@ define("USER_NOONE",1);
 define("TRUMFIELD_CLASS",8);
 
 define("USER_ONLINE_PERIOD",300);
-define("USER_VERIFICATION",FALSE);
-define("PEOPLE_FOOD",7);
 
 // Tick
 define("LOCKFILE_DIR",'/var/tmp/');

@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Control\CommController;
+
 class PMData extends Basetable {
 
 	const tablename = 'stu_pms';
@@ -191,7 +193,7 @@ class PM extends PMData {
 	}
 
 	static function getPMsBy($catId,$mark) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE cat_id=".$catId." AND recip_user=".currentUser()->getId()." ORDER BY id DESC LIMIT ".$mark.",".PMLIMITER);
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE cat_id=".$catId." AND recip_user=".currentUser()->getId()." ORDER BY id DESC LIMIT ".$mark.",". CommController::PMLIMITER);
 		$ret = array();
 		while($data = mysqli_fetch_assoc($result)) {
 			$ret[] = new PMData($data);

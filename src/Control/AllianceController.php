@@ -25,6 +25,8 @@ use User;
 final class AllianceController extends GameController
 {
 
+    public const ALLIANCEBOARDLIMITER = 20;
+
     private $default_tpl = "html/alliancelist.xhtml";
 
     private $session;
@@ -1000,16 +1002,16 @@ final class AllianceController extends GameController
     {
         if ($this->topic_nav === null) {
             $mark = $this->getPageMark();
-            if ($mark % ALLIANCEBOARDLIMITER != 0 || $mark < 0) {
+            if ($mark % static::ALLIANCEBOARDLIMITER != 0 || $mark < 0) {
                 $mark = 0;
             }
             $maxcount = $this->getTopic()->getPostCount();
-            $maxpage = ceil($maxcount / ALLIANCEBOARDLIMITER);
-            $curpage = floor($mark / ALLIANCEBOARDLIMITER);
+            $maxpage = ceil($maxcount / static::ALLIANCEBOARDLIMITER);
+            $curpage = floor($mark / static::ALLIANCEBOARDLIMITER);
             $ret = array();
             if ($curpage != 0) {
                 $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - ALLIANCEBOARDLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => "<", "mark" => ($mark - static::ALLIANCEBOARDLIMITER), "cssclass" => "pages");
             }
             for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
                 if ($i > $maxpage || $i < 1) {
@@ -1017,15 +1019,15 @@ final class AllianceController extends GameController
                 }
                 $ret[] = array(
                     "page" => $i,
-                    "mark" => ($i * ALLIANCEBOARDLIMITER - ALLIANCEBOARDLIMITER),
+                    "mark" => ($i * static::ALLIANCEBOARDLIMITER - static::ALLIANCEBOARDLIMITER),
                     "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
                 );
             }
             if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + ALLIANCEBOARDLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => ">", "mark" => ($mark + static::ALLIANCEBOARDLIMITER), "cssclass" => "pages");
                 $ret[] = array(
                     "page" => ">>",
-                    "mark" => $maxpage * ALLIANCEBOARDLIMITER - ALLIANCEBOARDLIMITER,
+                    "mark" => $maxpage * static::ALLIANCEBOARDLIMITER - static::ALLIANCEBOARDLIMITER,
                     "cssclass" => "pages"
                 );
             }

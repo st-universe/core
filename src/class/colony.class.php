@@ -2,6 +2,8 @@
 
 class ColonyData extends BaseTable {
 
+	public const PEOPLE_FOOD = 7;
+
 	const tablename = 'stu_colonies';
 	protected $tablename = 'stu_colonies';
 
@@ -459,7 +461,7 @@ class ColonyData extends BaseTable {
 	}
 
 	function getBevFood() {
-		return ceil(($this->getWorkers()+$this->getWorkless())/PEOPLE_FOOD);
+		return ceil(($this->getWorkers()+$this->getWorkless())/static::PEOPLE_FOOD);
 	}
 
 	function upperMaxBev($value) {

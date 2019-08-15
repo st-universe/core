@@ -290,6 +290,9 @@ class ColfieldData extends BaseTable {
 }
 class Colfields extends ColfieldData {
 
+	private const COLONY_SEPERATOR_DEFAULT = 10;
+	private const COLONY_SEPERATOR_MOON = 7;
+
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".$this->getTable()." WHERE id=".intval($id)." LIMIT 1",4);
 		if ($result == 0) {
@@ -307,9 +310,9 @@ class Colfields extends ColfieldData {
 	}
 
 	static function getFieldsBy($where,$isMoon=FALSE) {
-		$sep = COLONY_SEPERATOR_DEFAULT;
+		$sep = static::COLONY_SEPERATOR_DEFAULT;
 		if ($isMoon) {
-			$sep = COLONY_SEPERATOR_MOON;
+			$sep = static::COLONY_SEPERATOR_MOON;
 		}
 		$result = DB()->query("SELECT a.*,b.name FROM ".self::tablename." as a LEFT JOIN stu_buildings as b ON b.id=a.buildings_id WHERE ".$where." ORDER BY a.field_id ASC LIMIT 100");
 		$ret = array();

@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Control\AllianceController;
+
 class AllianceBoardData extends BaseTable {
 
 	const TABLENAME = 'stu_alliance_boards';
@@ -192,7 +194,7 @@ class AllianceTopicData extends BaseTable {
 	function getPostings($mark=FALSE) {
 		if ($this->postings === NULL) {
 			if ($mark !== FALSE) {
-				$limit = ' LIMIT '.$mark.','.ALLIANCEBOARDLIMITER;
+				$limit = ' LIMIT '.$mark.','. AllianceController::ALLIANCEBOARDLIMITER;
 			} else {
 				$limit = '';
 			}
@@ -229,11 +231,11 @@ class AllianceTopicData extends BaseTable {
 	 */
 	public function getPages() { #{{{
 		if ($this->pages === NULL) {
-			if ($this->getPostCount() <= ALLIANCEBOARDLIMITER) {
+			if ($this->getPostCount() <= AllianceController::ALLIANCEBOARDLIMITER) {
 				return FALSE;
 			}
-			for ($i=1;$i<=ceil($this->getPostCount()/ALLIANCEBOARDLIMITER);$i++) {
-				$this->pages[$i] = ($i-1)*ALLIANCEBOARDLIMITER;
+			for ($i=1;$i<=ceil($this->getPostCount()/AllianceController::ALLIANCEBOARDLIMITER);$i++) {
+				$this->pages[$i] = ($i-1)*AllianceController::ALLIANCEBOARDLIMITER;
 			}
 		}
 		return $this->pages;

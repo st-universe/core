@@ -43,47 +43,6 @@ class UserData extends BaseTable {
 		return $this->db->query("UPDATE stu_user SET notes='".addslashes($txt)."' WHERE id=".$this->getId()." LIMIT 1");
 	}
 
-	/**
-	 */
-	public function getNPCIdByFaction() { #{{{
-		switch($this->getFaction()) {
-			case 1:
-				$npc = NPC_FEDERATION_ID;
-				break;
-			case 2:
-				$npc = NPC_ROMULANS_ID;
-				break;
-			case 3:
-				$npc = NPC_KLINGONS_ID;
-				break;
-			case 4:
-				$npc = NPC_CARDASSIANS_ID;
-				break;
-			case 5:
-				$npc = NPC_FERENGI_ID;
-				break;
-		}
-		return $npc;	
-	} # }}}
-
-
-	function getGameSalutation() {
-		switch ($this->getFaction()) {
-			case 1:
-				return "Willkommen";
-			case 2:
-				return "Aefvadh";
-			case 3:
-				return "nuqneH";
-			case 4:
-				return "tarv gri-LEV";
-			case 5:
-				return "bjavt";
-			default:
-				return "Willkommen";
-		}
-	}
-
 	function getKNMark() {
 		return $this->data['kn_lez'];
 	}
@@ -589,6 +548,8 @@ class User extends UserData {
 
 	const USER_ACTIVE = 1;
 
+	private const USER_IDLE_TIME = 120960000;
+
 	function __construct(&$id=0) {
 		$data = DB()->query("SELECT * FROM ".parent::tablename." WHERE id=".intval($id),4);
 		if ($data == 0) {
@@ -642,7 +603,7 @@ class User extends UserData {
 	 */
 	public static function getUserListIdle() { #{{{
 		// XXX stub. we have to look at several conditions here
-		return self::getListBy('WHERE id>100 AND id NOT IN ('.join(',',getAdminUserIds()).') AND lastaction<'.(time()-USER_IDLE_TIME));
+		return self::getListBy('WHERE id>100 AND id NOT IN ('.join(',',getAdminUserIds()).') AND lastaction<'.(time()-static::USER_IDLE_TIME));
 	} # }}}
 
 	public static function getUserListReset() {

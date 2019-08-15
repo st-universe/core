@@ -27,6 +27,9 @@ use User;
 final class CommController extends GameController
 {
 
+    private const KNLIMITER = 6;
+    public const PMLIMITER = 6;
+
     private $default_tpl = "html/comm.xhtml";
 
     public function __construct(
@@ -582,16 +585,16 @@ final class CommController extends GameController
     {
         if ($this->knnav === null) {
             $mark = request::getInt('mark');
-            if ($mark % KNLIMITER != 0 || $mark < 0) {
+            if ($mark % static::KNLIMITER != 0 || $mark < 0) {
                 $mark = 0;
             }
             $maxcount = $this->getKNPostingCount();
-            $maxpage = ceil($maxcount / KNLIMITER);
-            $curpage = floor($mark / KNLIMITER);
+            $maxpage = ceil($maxcount / static::KNLIMITER);
+            $curpage = floor($mark / static::KNLIMITER);
             $ret = array();
             if ($curpage != 0) {
                 $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - KNLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages");
             }
             for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
                 if ($i > $maxpage || $i < 1) {
@@ -599,13 +602,13 @@ final class CommController extends GameController
                 }
                 $ret[] = array(
                     "page" => $i,
-                    "mark" => ($i * KNLIMITER - KNLIMITER),
+                    "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
                     "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
                 );
             }
             if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + KNLIMITER), "cssclass" => "pages");
-                $ret[] = array("page" => ">>", "mark" => $maxpage * KNLIMITER - KNLIMITER, "cssclass" => "pages");
+                $ret[] = array("page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages");
             }
             $this->knnav = $ret;
         }
@@ -616,16 +619,16 @@ final class CommController extends GameController
     {
         if ($this->knnav === null) {
             $mark = request::getInt('mark');
-            if ($mark % KNLIMITER != 0 || $mark < 0) {
+            if ($mark % static::KNLIMITER != 0 || $mark < 0) {
                 $mark = 0;
             }
             $maxcount = $this->getPlotKNPostingCount();
-            $maxpage = ceil($maxcount / KNLIMITER);
-            $curpage = floor($mark / KNLIMITER);
+            $maxpage = ceil($maxcount / static::KNLIMITER);
+            $curpage = floor($mark / static::KNLIMITER);
             $ret = array();
             if ($curpage != 0) {
                 $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - KNLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages");
             }
             for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
                 if ($i > $maxpage || $i < 1) {
@@ -633,13 +636,13 @@ final class CommController extends GameController
                 }
                 $ret[] = array(
                     "page" => $i,
-                    "mark" => ($i * KNLIMITER - KNLIMITER),
+                    "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
                     "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
                 );
             }
             if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + KNLIMITER), "cssclass" => "pages");
-                $ret[] = array("page" => ">>", "mark" => $maxpage * KNLIMITER - KNLIMITER, "cssclass" => "pages");
+                $ret[] = array("page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages");
             }
             $this->knnav = $ret;
         }
@@ -652,16 +655,16 @@ final class CommController extends GameController
     {
         if ($this->pmnav === null) {
             $mark = $this->getPMMark();
-            if ($mark % PMLIMITER != 0 || $mark < 0) {
+            if ($mark % static::PMLIMITER != 0 || $mark < 0) {
                 $mark = 0;
             }
             $maxcount = $this->getPMCategory()->getCategoryCount();
-            $maxpage = ceil($maxcount / PMLIMITER);
-            $curpage = floor($mark / PMLIMITER);
+            $maxpage = ceil($maxcount / static::PMLIMITER);
+            $curpage = floor($mark / static::PMLIMITER);
             $ret = array();
             if ($curpage != 0) {
                 $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - PMLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => "<", "mark" => ($mark - static::PMLIMITER), "cssclass" => "pages");
             }
             for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
                 if ($i > $maxpage || $i < 1) {
@@ -669,13 +672,13 @@ final class CommController extends GameController
                 }
                 $ret[] = array(
                     "page" => $i,
-                    "mark" => ($i * PMLIMITER - PMLIMITER),
+                    "mark" => ($i * static::PMLIMITER - static::PMLIMITER),
                     "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
                 );
             }
             if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + PMLIMITER), "cssclass" => "pages");
-                $ret[] = array("page" => ">>", "mark" => $maxpage * PMLIMITER - PMLIMITER, "cssclass" => "pages");
+                $ret[] = array("page" => ">", "mark" => ($mark + static::PMLIMITER), "cssclass" => "pages");
+                $ret[] = array("page" => ">>", "mark" => $maxpage * static::PMLIMITER - static::PMLIMITER, "cssclass" => "pages");
             }
             $this->pmnav = $ret;
         }
@@ -964,9 +967,9 @@ final class CommController extends GameController
     public function getKNStart()
     {
         $mark = $this->getKNPostingCount();
-        $lim = floor($mark / KNLIMITER) * KNLIMITER;
-        if ($mark % KNLIMITER == 0) {
-            return $lim - KNLIMITER;
+        $lim = floor($mark / static::KNLIMITER) * static::KNLIMITER;
+        if ($mark % static::KNLIMITER == 0) {
+            return $lim - static::KNLIMITER;
         }
         return $lim;
     }
@@ -1001,7 +1004,7 @@ final class CommController extends GameController
     public function getKNPostings()
     {
         if ($this->knpostings === null) {
-            $this->knpostings = KNPosting::getBy("ORDER BY date DESC LIMIT " . ($this->getKNMark()) . "," . KNLIMITER);
+            $this->knpostings = KNPosting::getBy("ORDER BY date DESC LIMIT " . ($this->getKNMark()) . "," . static::KNLIMITER);
         }
         return $this->knpostings;
     }
@@ -1009,7 +1012,7 @@ final class CommController extends GameController
     public function getPlotPostings()
     {
         if ($this->knpostings === null) {
-            $this->knpostings = KNPosting::getBy("WHERE plot_id=" . request::getIntFatal('plotid') . " ORDER BY date DESC LIMIT " . ($this->getKNMark()) . "," . KNLIMITER);
+            $this->knpostings = KNPosting::getBy("WHERE plot_id=" . request::getIntFatal('plotid') . " ORDER BY date DESC LIMIT " . ($this->getKNMark()) . "," . static::KNLIMITER);
         }
         return $this->knpostings;
     }
@@ -1031,7 +1034,7 @@ final class CommController extends GameController
     public function getKNUserMark()
     {
         $mark = DB()->query("SELECT COUNT(id) FROM stu_kn WHERE id>" . currentUser()->getKNMark(), 1);
-        return floor($mark / KNLIMITER) * KNLIMITER;
+        return floor($mark / static::KNLIMITER) * static::KNLIMITER;
     }
 
     private $cattree = null;

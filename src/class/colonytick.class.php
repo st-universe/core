@@ -269,7 +269,7 @@ class ColonyTick {
 	private function proceedEmigration($foodrelated=FALSE,$foodmissing=FALSE) {
 		if ($this->getColony()->getWorkless()) {
 			if ($foodmissing > 0) {
-				$bev = $foodmissing*PEOPLE_FOOD;
+				$bev = $foodmissing*ColonyData::PEOPLE_FOOD;
 				if ($bev > $this->getColony()->getWorkless()) {
 					$bev = $this->getColony()->getWorkless();
 				}
