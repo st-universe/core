@@ -6,6 +6,8 @@ namespace Stu\Module\Database\View\Category;
 
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
+use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
+use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class Category implements ViewControllerInterface
@@ -17,20 +19,27 @@ final class Category implements ViewControllerInterface
 
     private $databaseCategoryRepository;
 
+    private $databaseCategoryTalFactory;
+
     public function __construct(
         CategoryRequestInterface $categoryRequest,
-        DatabaseCategoryRepositoryInterface $databaseCategoryRepository
+        DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
+        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
     )
     {
         $this->categoryRequest = $categoryRequest;
         $this->databaseCategoryRepository = $databaseCategoryRepository;
+        $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $category = $this->databaseCategoryRepository->find(
-            $this->categoryRequest->getCategoryId()
-        );
+        $category_id = $this->categoryRequest->getCategoryId();
+
+        /**
+         * @var DatabaseCategoryInterface $category
+         */
+        $category = $this->databaseCategoryRepository->find($category_id);
 
         $category_description = $category->getDescription();
 
@@ -38,7 +47,7 @@ final class Category implements ViewControllerInterface
             sprintf(
                 'database.php?%s=1&cat=%d',
                 static::VIEW_IDENTIFIER,
-                $category->getId(),
+                $category_id
             ),
             sprintf(
                 _('Datenbank: %s'),
@@ -52,6 +61,9 @@ final class Category implements ViewControllerInterface
             )
         );
         $game->setTemplateFile('html/databasecategory.xhtml');
-        $game->setTemplateVar('CATEGORY', $category);
+        $game->setTemplateVar(
+            'CATEGORY',
+            $this->databaseCategoryTalFactory->createDatabaseCategoryTal($category)
+        );
     }
 }

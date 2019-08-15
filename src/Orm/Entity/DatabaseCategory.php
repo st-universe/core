@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
@@ -27,6 +27,12 @@ class DatabaseCategory implements DatabaseCategoryInterface
 
     /** @Column(type="integer") * */
     private $sort;
+
+    /**
+     * @var ArrayCollection
+     * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
+     */
+    private $entries;
 
     public function getId(): int
     {
@@ -83,23 +89,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
 
     public function getEntries(): array
     {
-        // @todo refactor
-        global $container;
-        return $container->get(DatabaseEntryRepositoryInterface::class)->getByCategoryId($this->getId());
-    }
-
-    public function isCategoryStarSystems(): bool
-    {
-        return $this->getId() == DATABASE_CATEGORY_STARSYSTEMS;
-    }
-
-    public function isCategoryTradePosts(): bool
-    {
-        return $this->getId() == DATABASE_CATEGORY_TRADEPOSTS;
-    }
-
-    public function displayDefaultList(): bool
-    {
-        return !$this->isCategoryStarSystems() && !$this->isCategoryTradePosts();
+        return $this->entries->toArray();
     }
 }

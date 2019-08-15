@@ -27,10 +27,4 @@ interface DatabaseCategoryInterface
      * @return DatabaseEntryInterface[]
      */
     public function getEntries(): array;
-
-    public function isCategoryStarSystems(): bool;
-
-    public function isCategoryTradePosts(): bool;
-
-    public function displayDefaultList(): bool;
 }

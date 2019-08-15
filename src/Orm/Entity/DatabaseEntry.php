@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use DatabaseUser;
-use DatabaseUserData;
-use Ship;
-use StarSystem;
-use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
-
 /**
  * @Entity
  * @Table(
@@ -49,7 +43,7 @@ final class DatabaseEntry implements DatabaseEntryInterface
     private $type_object;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory")
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\DatabaseCategory", inversedBy="entries")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
@@ -119,41 +113,15 @@ final class DatabaseEntry implements DatabaseEntryInterface
         return $this->object_id;
     }
 
-    /**
-     * @todo Refactor this
-     * @see \Stu\Module\Database\View\DatabaseEntry\DatabaseEntry
-     */
-    public function getObject() {
-        switch ($this->category_id) {
-            case DATABASE_CATEGORY_STARSYSTEMS:
-                return new StarSystem($this->getObjectId());
-                break;
-            case DATABASE_CATEGORY_TRADEPOSTS:
-                return new Ship($this->getObjectId());
-                break;
-        }
-
-        return null;
-    }
-
-    public function getTypeObject(): DatabaseTypeInterface {
+    public function getTypeObject(): DatabaseTypeInterface
+    {
         return $this->type_object;
     }
 
-    public function setTypeObject(DatabaseTypeInterface $type_object): DatabaseEntryInterface {
-        $this->type_object = $type_object;
+    public function setTypeObject(DatabaseTypeInterface $typeObject): DatabaseEntryInterface
+    {
+        $this->type_object = $typeObject;
 
         return $this;
-    }
-
-    public function isDiscoveredByCurrentUser(): bool {
-        return DatabaseUser::checkEntry($this->getId(),currentUser()->getId());
-    }
-
-    public function getDBUserObject(): ?DatabaseUserData {
-        if (!$this->isDiscoveredByCurrentUser()) {
-            return null;
-        }
-        return DatabaseUser::getBy($this->getId(),currentUser()->getId());
     }
 }

@@ -10,13 +10,13 @@
 				<th>Entdeckung</th>
 			</tr>
 			<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
-				<tal:block tal:condition="data/isDiscoveredByCurrentUser">
+				<tal:block tal:condition="data/wasDiscovered">
 					<td>
 						<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
 					</td>
-					<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
+					<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 				</tal:block>
-				<tal:block tal:condition="not:data/isDiscoveredByCurrentUser">
+				<tal:block tal:condition="not:data/wasDiscovered">
 					<td>???</td>
 					<td>---</td>
 				</tal:block>
@@ -32,16 +32,16 @@
 			<th i18n:translate="">Entdeckung</th>
 		</tr>
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
-			<tal:block tal:condition="data/isDiscoveredByCurrentUser">
+			<tal:block tal:condition="data/wasDiscovered">
 				<td>
 					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
 					<span tal:replace="data/getObject/getCX">CX</span>|<span tal:replace="data/getObject/getCY">CY</span>
 				</td>
-				<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
+				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>
-			<tal:block tal:condition="not:data/isDiscoveredByCurrentUser">
+			<tal:block tal:condition="not:data/wasDiscovered">
 				<td>???</td>
 				<td>???</td>
 				<td>---</td>
@@ -57,16 +57,16 @@
 			<th i18n:translate="">Entdeckung</th>
 		</tr>
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
-			<tal:block tal:condition="data/isDiscoveredByCurrentUser">
+			<tal:block tal:condition="data/wasDiscovered">
 				<td>
 					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
 					<span tal:replace="data/getObject/getCX">CX</span>|<span tal:replace="data/getObject/getCY">CY</span>
 				</td>
-				<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
+				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>
-			<tal:block tal:condition="not:data/isDiscoveredByCurrentUser">
+			<tal:block tal:condition="not:data/wasDiscovered">
 				<td>???</td>
 				<td>???</td>
 				<td>---</td>

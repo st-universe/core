@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use DatabaseUserData;
-
 interface DatabaseEntryInterface
 {
     public function getId(): int;
@@ -28,11 +26,7 @@ interface DatabaseEntryInterface
 
     public function getObjectId(): int;
 
-    public function getObject();
-
     public function getTypeObject(): DatabaseTypeInterface;
 
-    public function isDiscoveredByCurrentUser(): bool;
-
-    public function getDBUserObject(): ?DatabaseUserData;
+    public function setTypeObject(DatabaseTypeInterface $typeObject): DatabaseEntryInterface;
 }

@@ -9,6 +9,8 @@ use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
+use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
+use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Module\Database\View\UserList\UserListRequest;
 use Stu\Module\Database\View\UserList\UserListRequestInterface;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequest;
@@ -23,6 +25,7 @@ use function DI\create;
 use function DI\get;
 
 return [
+    DatabaseCategoryTalFactoryInterface::class => autowire(DatabaseCategoryTalFactory::class),
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
