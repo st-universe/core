@@ -5,8 +5,8 @@
 		<metal:macro metal:define-macro="ulnav">
 			<table class="use">
 				<tr>
-					<td tal:repeat="item THIS/getUserListNavigation">
-						<a href="?SHOW_SETTLERLIST=1&mark=${item/mark}&order=${THIS/getUserListOrder}&way=${THIS/getUserListWay}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+					<td tal:repeat="item NAVIGATION">
+						<a href="?SHOW_SETTLERLIST=1&mark=${item/mark}&order=${ORDER_BY}&way=${SORT_ORDER}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 					</td>
 				</tr>
 			</table>	
@@ -16,23 +16,23 @@
 		<table class="tcal">
 			<tr>
 				<th style="width: 20px;">
-					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=fac&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
-					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=fac&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
 				</th>
 				<th style="width: 50px;">
-					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=id&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
 					ID
-					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=id&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
 				</th>
 				<th style="width: 650px;">Name</th>
 				<th>
-					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=alliance&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=up"><img src="${GFX}/buttons/pup.gif" /></a>
 					Allianz
-					<a href="?SHOW_SETTLERLIST=1&mark=${THIS/getUserListMark}&order=alliance&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
+					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=down"><img src="${GFX}/buttons/pdown.gif" /></a>
 				</th>
 				<th style="width: 50px;"></th>
 			</tr>
-			<tr tal:repeat="data THIS/getUserList" class="runtime" tal:attributes="class string:row${repeat/data/odd}">
+			<tr tal:repeat="data LIST" class="runtime" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center;"><img src="${GFX}/rassen/${data/getFaction}s.gif" /></td>
 				<td tal:content="data/getId">ID</td>
 				<td>

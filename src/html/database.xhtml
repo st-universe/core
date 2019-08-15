@@ -5,11 +5,11 @@
 		<div style="width: 300px; float: left;">
 			<div class="divhead">Schiffe</div>
 			<div class="divbody">
-				<div tal:repeat="data THIS/getShipRumplist">
+				<div tal:repeat="data RUMP_LIST">
 					<a href="?SHOW_CATEGORY=1&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
 				</div>
 				<br />
-				<div tal:repeat="data THIS/getRPGShiplist">
+				<div tal:repeat="data RPG_SHIP_LIST">
 					<a href="?SHOW_CATEGORY=2&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
 				</div>
 			</div>
@@ -17,7 +17,7 @@
 		<div style="width: 300px; margin-left: 5px; float: left;">
 			<div class="divhead">Karte</div>
 			<div class="divbody">
-				<div tal:repeat="data THIS/getMaplist">
+				<div tal:repeat="data MAP_LIST">
 					<a href="?SHOW_CATEGORY=4&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 		<div style="width: 300px; margin-left: 5px; float: left;">
 			<div class="divhead">Wichtige Orte</div>
 			<div class="divbody">
-				<div tal:repeat="data THIS/getPlaceslist">
+				<div tal:repeat="data POI_LIST">
 					<a href="?SHOW_CATEGORY=3&cat=${data/getId}" tal:content="data/getDescription">NAME</a>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 					<th i18n:translate="">Siedler</th>
 					<th i18n:translate="">Punkte</th>
 				</tr>
-				<tr tal:repeat="entry THIS/getTopResearchUser" tal:attributes="class string:row${repeat/entry/odd}">
+				<tr tal:repeat="entry DISCOVERER_LIST" tal:attributes="class string:row${repeat/entry/odd}">
 					<td>
 						<metal:macro metal:use-macro="html/macros.xhtml/userprofile" tal:define="id entry/getUserId" />
 						<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>

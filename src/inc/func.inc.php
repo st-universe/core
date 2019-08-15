@@ -406,7 +406,7 @@ function &getMapType(&$type) {
     return $mapTypes[$type];
 }
 
-function currentUser() {
+function currentUser(): User {
 	static $currentUser = NULL;
 	if ($currentUser === NULL) {
 		global $_SESSION;

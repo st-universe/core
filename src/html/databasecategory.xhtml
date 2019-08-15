@@ -2,17 +2,17 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<metal:macro metal:use-macro="category_starsystems" tal:condition="THIS/getCategory/isCategoryStarSystems" />
-		<metal:macro metal:use-macro="category_tradeposts" tal:condition="THIS/getCategory/isCategoryTradePosts" />
-		<table class="use" tal:condition="THIS/getCategory/displayDefaultList">
+		<metal:macro metal:use-macro="category_starsystems" tal:condition="CATEGORY/isCategoryStarSystems" />
+		<metal:macro metal:use-macro="category_tradeposts" tal:condition="CATEGORY/isCategoryTradePosts" />
+		<table class="use" tal:condition="CATEGORY/displayDefaultList">
 			<tr>
 				<th>Beschreibung</th>
 				<th>Entdeckung</th>
 			</tr>
-			<tr tal:repeat="data THIS/getCategory/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+			<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 				<tal:block tal:condition="data/isDiscoveredByCurrentUser">
 					<td>
-						<a href="?SHOW_ENTRY=1&cat=${THIS/getCategory/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+						<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
 					</td>
 					<td tal:content="data/getDBUserObject/getDateDisplay">DATE</td>
 				</tal:block>

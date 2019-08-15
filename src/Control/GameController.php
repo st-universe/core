@@ -18,6 +18,9 @@ use User;
 
 abstract class GameController
 {
+
+    public const DEFAULT_VIEW = 'DEFAULT_VIEW';
+
     private $session;
 
     private $tpl_file = null;
@@ -44,7 +47,7 @@ abstract class GameController
 
     public function __construct(
         SessionInterface $session,
-        &$tpl_file,
+        $tpl_file,
         $pagetitle
     )
     {
@@ -108,9 +111,9 @@ abstract class GameController
         return $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue();
     }
 
-    protected function setTemplateFile($tpl)
+    public function setTemplateFile($tpl)
     {
-        $this->tpl_file = &$tpl;
+        $this->tpl_file = $tpl;
         $this->getTemplate()->setTemplate($tpl);
     }
 
@@ -119,7 +122,7 @@ abstract class GameController
         $this->ajaxMacro = $macro;
     }
 
-    protected function showAjaxMacro($macro)
+    public function showAjaxMacro($macro)
     {
         $this->setTemplateFile('html/ajaxempty.xhtml');
         $this->setAjaxMacro($macro);
@@ -171,6 +174,11 @@ abstract class GameController
     public function hasInformation()
     {
         return count($this->getInformation()) > 0;
+    }
+
+    public function setTemplateVar(string $key, $variable)
+    {
+        $this->getTemplate()->setRef($key, $variable);
     }
 
     protected function render()
@@ -246,6 +254,17 @@ abstract class GameController
         $this->siteNavigation[] = $part;
     }
 
+    public function appendNavigationPart(
+        string $url,
+        string $title
+    )
+    {
+        $this->addNavigationPart(new Tuple(
+            $url,
+            $title
+        ));
+    }
+
     public function getNavigation()
     {
         return $this->siteNavigation;
@@ -256,7 +275,7 @@ abstract class GameController
         return $this->pagetitle;
     }
 
-    protected function setPageTitle($title)
+    public function setPageTitle($title)
     {
         $this->pagetitle = $title;
     }
@@ -437,12 +456,28 @@ abstract class GameController
 
             $this->viewOverride = $override;
             if (request::indString($key)) {
+                if (is_object($callable)) {
+                    $callable->handle($this);
+                    return;
+                }
                 if (!method_exists($this, $callable)) {
                     throw new \Exception('Invalid view');
                 }
                 call_user_func_array([$this, $callable], []);
                 return;
             }
+        }
+
+        $view = $this->views[static::DEFAULT_VIEW] ?? null;
+
+        if ($view !== null) {
+            /**
+             * @var ViewControllerInterface $callable
+             */
+            list($callable, $override) = $view;
+
+            $this->viewOverride = $override;
+            $callable->handle($this);
         }
     }
 }

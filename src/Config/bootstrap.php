@@ -11,14 +11,15 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Control\GameController;
 use Stu\Control\HistoryController;
 use Stu\Control\AllianceController;
 use Stu\Control\ColonyController;
 use Stu\Control\ColonyListController;
 use Stu\Control\CommController;
 use Stu\Control\CrewController;
-use Stu\Control\DatabaseController;
 use Stu\Control\IndexController;
+use Stu\Control\IntermediateController;
 use Stu\Control\LogoutController;
 use Stu\Control\MaindeskController;
 use Stu\Control\NotesController;
@@ -33,6 +34,11 @@ use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Database\View\DatabaseEntry;
+use Stu\Module\Database\View\DisplayCategory;
+use Stu\Module\Database\View\DisplayDiscovererRanking;
+use Stu\Module\Database\View\DisplayUserList;
+use Stu\Module\Database\View\Overview;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -84,7 +90,18 @@ $builder->addDefinitions([
     ColonyListController::class => autowire(ColonyListController::class),
     CommController::class => autowire(CommController::class),
     CrewController::class => autowire(CrewController::class),
-    DatabaseController::class => autowire(DatabaseController::class),
+    IntermediateController::TYPE_DATABASE => create(IntermediateController::class)
+        ->constructor(
+            get(SessionInterface::class),
+            [],
+            [
+                'SHOW_CATEGORY' => autowire(DisplayCategory::class),
+                'SHOW_TOP_DISCOVER' => autowire(DisplayDiscovererRanking::class),
+                'SHOW_SETTLERLIST' => autowire(DisplayUserList::class),
+                'SHOW_ENTRY' => autowire(DatabaseEntry::class),
+                GameController::DEFAULT_VIEW => autowire(Overview::class),
+            ]
+        ),
     HistoryController::class => autowire(HistoryController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
