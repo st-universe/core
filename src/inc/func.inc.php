@@ -3,6 +3,7 @@
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\Db;
+use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 
 function dbSafe(&$string) {
 	return addslashes(str_replace("\"","",$string));
@@ -237,9 +238,13 @@ function databaseScan(&$database_id,&$user_id) {
 	if ($database_id == 0) {
 		return;
 	}
-	require_once('class/databaseuser.class.php');
 	DatabaseUser::addEntry($database_id,$user_id);
-	$entry = new DatabaseEntry($database_id);
+
+	// @todo refactor
+    global $container;
+
+    $entry = $container->get(DatabaseEntryRepositoryInterface::class)->find($database_id);
+
 	return sprintf(_("Neuer Datenbankeintrag: %s (+%d Punkte)"),$entry->getDescription(),$entry->getCategory()->getPoints());
 }
 function getUniqId() {

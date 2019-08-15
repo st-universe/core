@@ -7,7 +7,6 @@ use Alliance;
 use Building;
 use Colfields;
 use Colony;
-use DatabaseEntry;
 use DatabaseUser;
 use DockingRights;
 use DockingRightsData;
@@ -24,6 +23,7 @@ use ShipCrew;
 use ShipMover;
 use ShipSingleAttackCycle;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use SystemActivationWrapper;
 use TradeLicencesData;
 use TradeStorage;
@@ -39,11 +39,15 @@ final class ShipController extends GameController
 
     private $session;
 
+    private $databaseEntryRepository;
+
     public function __construct(
-        SessionInterface $session
+        SessionInterface $session,
+        DatabaseEntryRepositoryInterface $databaseEntryRepository
     )
     {
         $this->session = $session;
+        $this->databaseEntryRepository = $databaseEntryRepository;
         parent::__construct($session, $this->default_tpl, "/ Schiffe");
         $this->addNavigationPart(new Tuple("shiplist.php", "Schiffe"));
         $this->addCallBack("B_ACTIVATE_CLOAK", "activateCloak", true);
@@ -1871,7 +1875,9 @@ final class ShipController extends GameController
         }
         if (!DatabaseUser::checkEntry($tradepost->getShip()->getDatabaseId(), currentUser()->getId())) {
             DatabaseUser::addEntry($tradepost->getShip()->getDatabaseId(), currentUser()->getId());
-            $entry = new DatabaseEntry($tradepost->getShip()->getDatabaseId());
+
+            $entry = $this->databaseEntryRepository->find($tradepost->getShip()->getDatabaseId());
+
             $this->addInformation("Neuer Datenbankeintrag: " . $entry->getDescription());
         }
         $this->setPageTitle('Handelsposten: ' . $tradepost->getName());
@@ -1940,7 +1946,9 @@ final class ShipController extends GameController
                 currentUser()->getId())) {
             DatabaseUser::addEntry($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId(),
                 currentUser()->getId());
-            $entry = new DatabaseEntry($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId());
+
+            $entry = $this->databaseEntryRepository->find($this->getShip()->getCurrentMapField()->getMapRegion()->getDatabaseId());
+
             $this->addInformation("Neuer Datenbankeintrag: " . $entry->getDescription());
         }
         $this->setPageTitle('Details: ' . $this->getShip()->getCurrentMapField()->getMapRegion()->getDescription());

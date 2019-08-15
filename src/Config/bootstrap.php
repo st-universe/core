@@ -71,6 +71,7 @@ $builder->addDefinitions([
                 'password' => $config->get('db.pass'),
                 'dbname'=> $config->get('db.database'),
                 'host'  => $config->get('db.host'),
+                'charset' => 'utf8',
             ],
             Setup::createAnnotationMetadataConfiguration(
                 [__DIR__.'/../Orm/Entity/'],

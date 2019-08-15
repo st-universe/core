@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category;
 
-use DatabaseCategory;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
+use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class Category implements ViewControllerInterface
 {
@@ -15,16 +15,22 @@ final class Category implements ViewControllerInterface
 
     private $categoryRequest;
 
+    private $databaseCategoryRepository;
+
     public function __construct(
-        CategoryRequestInterface $categoryRequest
+        CategoryRequestInterface $categoryRequest,
+        DatabaseCategoryRepositoryInterface $databaseCategoryRepository
     )
     {
         $this->categoryRequest = $categoryRequest;
+        $this->databaseCategoryRepository = $databaseCategoryRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $category = new DatabaseCategory($this->categoryRequest->getCategoryId());
+        $category = $this->databaseCategoryRepository->find(
+            $this->categoryRequest->getCategoryId()
+        );
 
         $category_description = $category->getDescription();
 

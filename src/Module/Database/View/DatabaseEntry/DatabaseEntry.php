@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\DatabaseEntry;
 
 use AccessViolation;
-use DatabaseCategory;
-use DatabaseEntryData;
 use MapRegion;
 use Shiprump;
 use StarSystem;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
+use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
+use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
@@ -21,11 +22,19 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private $databaseEntryRequest;
 
+    private $databaseCategoryRepository;
+
+    private $databaseEntryRepository;
+
     public function __construct(
-        DatabaseEntryRequestInterface $databaseEntryRequest
+        DatabaseEntryRequestInterface $databaseEntryRequest,
+        DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
+        DatabaseEntryRepositoryInterface $databaseEntryRepository
     )
     {
         $this->databaseEntryRequest = $databaseEntryRequest;
+        $this->databaseCategoryRepository = $databaseCategoryRepository;
+        $this->databaseEntryRepository = $databaseEntryRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,8 +42,8 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_id = $this->databaseEntryRequest->getEntryId();
         $category_id = $this->databaseEntryRequest->getCategoryId();
 
-        $entry = new \DatabaseEntry($entry_id);
-        $category = new DatabaseCategory($category_id);
+        $entry = $this->databaseEntryRepository->find($entry_id);
+        $category = $this->databaseCategoryRepository->find($category_id);
 
         if (!currentUser()->checkDatabaseEntry($entry->getId())) {
             throw new AccessViolation();
@@ -72,7 +81,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $game->setTemplateVar('ENTRY', $entry);
     }
 
-    protected function addSpecialVars(GameControllerInterface $game, DatabaseEntryData $entry)
+    protected function addSpecialVars(GameControllerInterface $game, DatabaseEntryInterface $entry)
     {
         $entry_object_id = $entry->getObjectId();
 

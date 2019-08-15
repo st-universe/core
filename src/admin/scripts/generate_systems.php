@@ -16,4 +16,3 @@ foreach ($result as $key => $obj) {
 }
 
 DB()->commitTransaction();
-?>

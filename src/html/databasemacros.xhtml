@@ -47,7 +47,7 @@
 						<img src="${GFX}/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> ${RUMP/getEpsCost}
 					</div>
 					<div tal:repeat="data RUMP/getBuildingCosts">
-						<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" /> ${data/getCount}
+						<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" /> ${data/getAmount}
 					</div>
 				</td>
 			</tr>
