@@ -964,7 +964,7 @@ CREATE TABLE `stu_database_types` (
 
 LOCK TABLES `stu_database_types` WRITE;
 /*!40000 ALTER TABLE `stu_database_types` DISABLE KEYS */;
-INSERT INTO `stu_database_types` VALUES (1,'Schiffsrümpfe','shiprump'),(3,'Regionen','regioninfo'),(4,'Sternensysteme','starsystem');
+INSERT INTO `stu_database_types` VALUES (1,'Schiffsrümpfe','shiprump'),(3,'Regionen','regioninfo'),(4,'Sternensysteme','starsystem'),(5,'Sternensystemtypen','starsystemtype'),(6,'Planetentypen','planettype');
 /*!40000 ALTER TABLE `stu_database_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
