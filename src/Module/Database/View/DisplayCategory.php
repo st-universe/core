@@ -6,13 +6,13 @@ namespace Stu\Module\Database\View;
 
 use DatabaseCategory;
 use request;
-use Stu\Control\GameController;
+use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 
 final class DisplayCategory implements ViewControllerInterface
 {
 
-    public function handle(GameController $game): void
+    public function handle(GameControllerInterface $game): void
     {
         $category = new DatabaseCategory(request::getIntFatal('cat'));
 

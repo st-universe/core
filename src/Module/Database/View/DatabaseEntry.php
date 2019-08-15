@@ -12,12 +12,13 @@ use request;
 use Shiprump;
 use StarSystem;
 use Stu\Control\GameController;
+use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
 
-    public function handle(GameController $game): void
+    public function handle(GameControllerInterface $game): void
     {
         $entry = new \DatabaseEntry(request::getIntFatal('ent'));
         $category = new DatabaseCategory(request::getIntFatal('cat'));

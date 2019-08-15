@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View;
 
 use DatabaseCategory;
-use Stu\Control\GameController;
+use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 
 class Overview implements ViewControllerInterface
 {
 
-    public function handle(GameController $game): void
+    public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(
             "database.php",

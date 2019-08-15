@@ -5,5 +5,5 @@ namespace Stu\Control;
 interface ViewControllerInterface
 {
 
-    public function handle(GameController $game): void;
+    public function handle(GameControllerInterface $game): void;
 }

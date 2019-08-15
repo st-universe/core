@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View;
 
 use request;
-use Stu\Control\GameController;
+use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use User;
 
 final class DisplayUserList implements ViewControllerInterface
 {
 
-    public function handle(GameController $game): void
+    public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(
             "database.php?SHOW_SETTLERLIST=1",
@@ -71,7 +71,7 @@ final class DisplayUserList implements ViewControllerInterface
         return request::getInt('mark', 0);
     }
 
-    private function getUserListNavigation(GameController $game)
+    private function getUserListNavigation(GameControllerInterface $game)
     {
         $mark = $this->getUserListMark();
         if ($mark % USERLISTLIMITER != 0 || $mark < 0) {

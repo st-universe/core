@@ -16,7 +16,7 @@ use TalPage;
 use Tuple;
 use User;
 
-abstract class GameController
+abstract class GameController implements GameControllerInterface
 {
 
     public const DEFAULT_VIEW = 'DEFAULT_VIEW';
