@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View;
+namespace Stu\Module\Database\View\DiscovererRating;
 
 use DatabaseTopListDiscover;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Lib\DbInterface;
 
-final class DisplayDiscovererRanking implements ViewControllerInterface
+final class DiscovererRanking implements ViewControllerInterface
 {
+
+    public const VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
 
     private $db;
 
@@ -24,8 +26,11 @@ final class DisplayDiscovererRanking implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(
-            "database.php?SHOW_TOP_DISCOVER=1",
-            ('Die 10 besten Entdecker')
+            sprintf(
+                'database.php?%s=1',
+                static::VIEW_IDENTIFIER
+            ),
+            _('Die 10 besten Entdecker')
         );
         $game->setPageTitle(_('/ Datenbank / Die 10 besten Entdecker'));
         $game->showAjaxMacro('html/database.xhtml/top_research_user');

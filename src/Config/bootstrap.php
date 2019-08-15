@@ -34,11 +34,11 @@ use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Database\View\DatabaseEntry;
-use Stu\Module\Database\View\DisplayCategory;
-use Stu\Module\Database\View\DisplayDiscovererRanking;
-use Stu\Module\Database\View\DisplayUserList;
-use Stu\Module\Database\View\Overview;
+use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
+use Stu\Module\Database\View\Category\Category;
+use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
+use Stu\Module\Database\View\UserList\UserList;
+use Stu\Module\Database\View\Overview\Overview;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -90,18 +90,6 @@ $builder->addDefinitions([
     ColonyListController::class => autowire(ColonyListController::class),
     CommController::class => autowire(CommController::class),
     CrewController::class => autowire(CrewController::class),
-    IntermediateController::TYPE_DATABASE => create(IntermediateController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            [],
-            [
-                'SHOW_CATEGORY' => autowire(DisplayCategory::class),
-                'SHOW_TOP_DISCOVER' => autowire(DisplayDiscovererRanking::class),
-                'SHOW_SETTLERLIST' => autowire(DisplayUserList::class),
-                'SHOW_ENTRY' => autowire(DatabaseEntry::class),
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-            ]
-        ),
     HistoryController::class => autowire(HistoryController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
@@ -115,6 +103,10 @@ $builder->addDefinitions([
     TradeController::class => autowire(TradeController::class),
     UserProfileController::class => autowire(UserProfileController::class),
 ]);
+
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Database/services.php'
+);
 
 $builder->addDefinitions([
     'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',

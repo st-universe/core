@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\View;
+namespace Stu\Module\Database\View\Overview;
 
 use DatabaseCategory;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 
-class Overview implements ViewControllerInterface
+final class Overview implements ViewControllerInterface
 {
 
     public function handle(GameControllerInterface $game): void
