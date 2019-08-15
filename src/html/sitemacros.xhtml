@@ -258,6 +258,7 @@
 	<stu:root>
 		<stu:body>
 			<div class="ajaxwin">
+				<metal:block metal:use-macro="achievements" />
 				<table class="tcal">
 					<tr>
 						<th tal:content="THIS/getPageTitle" onmouseover="switch_drag_on();" onmouseout="switch_drag_off();">...</th>
@@ -341,13 +342,16 @@
 	</div>
 	<br />
 	<metal:macro metal:use-macro="systeminformation" tal:condition="THIS/hasInformation" />
+	<metal:macro metal:use-macro="achievements" />
+	<div id="result" style="display: none;" tal:condition="not:THIS/getInformation">..</div>
+</tal:block>
+<metal:block metal:define-macro="achievements">
 	<script tal:condition="THIS/getAchievements" type="text/Javascript" defer="defer">
 		<tal:block tal:repeat="achievement THIS/getAchievements">
 		showAchievement('${jsquote:achievement}');
 		</tal:block>
 	</script>
-	<div id="result" style="display: none;" tal:condition="not:THIS/getInformation">..</div>
-</tal:block>
+</metal:block>
 <metal:block metal:define-macro="systeminformation">
 	<script language="Javascript" tal:condition="THIS/hasExecuteJS">
 		<tal:block tal:repeat="item THIS/getExecuteJS">
