@@ -14,7 +14,6 @@ use Colfields;
 use ColonyMenu;
 use ColonyShipQueue;
 use ColonyShipQueueData;
-use ColonyShipRepair;
 use CrewTrainingData;
 use Exception;
 use FieldTerraforming;
@@ -581,12 +580,12 @@ final class ColonyController extends GameController
             if ($this->getField()->hasBuilding()) {
                 if (!array_key_exists($key, $storage) && !array_key_exists($key,
                         $this->getField()->getBuilding()->getCosts())) {
-                    $this->addInformation("Es werden " . $obj->getCount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Es ist jedoch keines vorhanden");
+                    $this->addInformation("Es werden " . $obj->getAmount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Es ist jedoch keines vorhanden");
                     return;
                 }
             } else {
                 if (!array_key_exists($key, $storage)) {
-                    $this->addInformation("Es werden " . $obj->getCount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Es ist jedoch keines vorhanden");
+                    $this->addInformation("Es werden " . $obj->getAmount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Es ist jedoch keines vorhanden");
                     return;
                 }
             }
