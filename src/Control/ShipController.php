@@ -1697,6 +1697,7 @@ final class ShipController extends GameController
             return;
         }
         $this->getShip()->selfDestroy();
+        DB()->commitTransaction();
         $this->redirectTo('shiplist.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
     }
 
