@@ -11,11 +11,11 @@ use KnComment;
 use KNPosting;
 use Notes;
 use PMCategory;
-use ResearchUser;
 use RPGPlot;
 use Ship;
 use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use TradeLicences;
 use TradeOffer;
 use TradeShoutbox;
@@ -128,7 +128,10 @@ class UserDeletion
 
     public function handleResearch()
     {
-        ResearchUser::truncate('WHERE user_id=' . $this->getUser()->getId());
+        // @todo refactor
+        global $container;
+
+        $container->get(ResearchedRepositoryInterface::class)->truncateForUser((int) $this->getUser()->getId());
     }
 
     public function handleShips()

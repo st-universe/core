@@ -448,6 +448,12 @@ TalesRegistry::registerPrefix(
     }
 );
 TalesRegistry::registerPrefix(
+    'date',
+    function ($src, $nothrow): string {
+        return 'date(\'d.m.Y\', '.TalesInternal::compileToPHPExpression($src,$nothrow).')';
+    }
+);
+TalesRegistry::registerPrefix(
     'nl2br',
     function ($src, $nothrow): string {
         return 'nl2br('.TalesInternal::compileToPHPExpression($src,$nothrow).')';

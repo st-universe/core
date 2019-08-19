@@ -3,8 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use GoodData;
-use ResearchDependency;
-use ResearchUser;
 
 interface ResearchInterface
 {

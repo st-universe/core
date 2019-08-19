@@ -13,6 +13,7 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\Researched;
 
 return [
     ColonyShipRepairRepositoryInterface::class => function (
@@ -49,5 +50,10 @@ return [
         ContainerInterface $c
     ): ResearchRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Research::class);
+    },
+    ResearchedRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ResearchedRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Researched::class);
     },
 ];

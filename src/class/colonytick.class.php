@@ -1,6 +1,8 @@
 <?php
 
+use Stu\Module\Research\ResearchState;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 class ColonyTickManager {
 
@@ -211,9 +213,18 @@ class ColonyTick {
 			$this->getColony()->upperStorage($key,$obj->getProduction());
 			$sum += $obj->getProduction();
 		}
-		if ($this->getColony()->getUser()->getCurrentResearch() && $this->getColony()->getUser()->getCurrentResearch()->getActive()) {
-			if (isset($production[$this->getColony()->getUser()->getCurrentResearch()->getResearch()->getGoodId()])) {
-				$finished = $this->getColony()->getUser()->getCurrentResearch()->advance($production[$this->getColony()->getUser()->getCurrentResearch()->getResearch()->getGoodId()]->getProduction());
+
+		/**
+		 * @var false|\Stu\Orm\Entity\ResearchedInterface $current_research
+		 */
+		$current_research = $this->getColony()->getUser()->getCurrentResearch();
+
+		if ($current_research && $current_research->getActive()) {
+			if (isset($production[$current_research->getResearch()->getGoodId()])) {
+				$this->getResearchState()->advance(
+					$current_research,
+					$production[$current_research->getResearch()->getGoodId()]->getProduction()
+				);
 			}
 		}
 		if ($this->getColony()->hasOverpopulation()) {
@@ -232,6 +243,15 @@ class ColonyTick {
 		if ($emigrated == 0) {
 			$this->proceedImmigration();
 		}
+	}
+
+	private function getResearchState(): ResearchState {
+		// @todo refactor
+		global $container;
+
+		return new ResearchState(
+			$container->get(ResearchedRepositoryInterface::class)
+		);
 	}
 
 	/**

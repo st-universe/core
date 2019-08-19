@@ -38,7 +38,7 @@
 							<a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearchId});" tal:content="data/getResearch/getName">NAME</a>
 						</td>
 						<td style="width: 150px;">
-							Erforscht am ${data/getFinishedDateFormatted}	
+							Erforscht am ${date:data/getFinished}
 						</td>
 					</tr>
 				</tal:block>

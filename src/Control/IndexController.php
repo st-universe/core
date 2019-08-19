@@ -5,8 +5,8 @@ namespace Stu\Control;
 use Faction;
 use InvalidParamException;
 use request;
-use ResearchUserData;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use SystemNews;
 use User;
 use UserData;
@@ -20,8 +20,11 @@ final class IndexController extends GameController
 
     private $session;
 
+    private $researchedRepository;
+
     public function __construct(
-        SessionInterface $session
+        SessionInterface $session,
+        ResearchedRepositoryInterface $researchedRepository
     )
     {
         $this->session = $session;
@@ -38,6 +41,7 @@ final class IndexController extends GameController
         $this->addView("SHOW_REGISTRATION_END", "showRegistrationEnd");
         $this->addView('SHOW_LOST_PASSWORD', 'showLostPassword');
         $this->addView('SHOW_RESET_PASSWORD', 'showResetPassword');
+        $this->researchedRepository = $researchedRepository;
     }
 
     protected function render(): void
@@ -300,11 +304,15 @@ Das Star Trek Universe Team\n
         // $obj->setTick(rand(1,8));
         $obj->setCreationDate(time());
         $obj->save();
-        $db = new ResearchUserData;
+
+        $db = $this->researchedRepository->prototype();
+
         $db->setResearchId($obj->getResearchStartId());
         $db->setUserId($obj->getId());
-        $db->setFinishedDate(time());
-        $db->save();
+        $db->setFinished(time());
+
+        $this->researchedRepository->save($db);
+
         DB()->commitTransaction();
         $this->sendRegistrationEmail($obj);
 

@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use GoodData;
 use ResearchDependency;
-use ResearchUser;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 /**
  * @Entity
@@ -172,7 +172,13 @@ final class Research implements ResearchInterface
     public function getResearchState()
     {
         if ($this->state === null) {
-            $this->state = ResearchUser::getByResearch($this->getId(), currentUser()->getId());
+            // @todo refactor
+            global $container;
+
+            $this->state = $container->get(ResearchedRepositoryInterface::class)->getFor(
+                $this->getId(),
+                (int) currentUser()->getId()
+            );
         }
         return $this->state;
     }

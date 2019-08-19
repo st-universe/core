@@ -5,9 +5,9 @@ namespace Stu\Control;
 use AccessViolation;
 use request;
 use ResearchDependency;
-use ResearchUser;
-use ResearchUserData;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Tuple;
 
@@ -18,9 +18,12 @@ final class ResearchController extends GameController
 
     private $researchRepository;
 
+    private $researchedRepository;
+
     public function __construct(
         SessionInterface $session,
-        ResearchRepositoryInterface $researchRepository
+        ResearchRepositoryInterface $researchRepository,
+        ResearchedRepositoryInterface $researchedRepository
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Forschung");
@@ -31,22 +34,25 @@ final class ResearchController extends GameController
 
         $this->addView("SHOW_RESEARCH", "showResearch");
         $this->researchRepository = $researchRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     protected function doResearch()
     {
         if (currentUser()->getCurrentResearch()) {
-            currentUser()->getCurrentResearch()->deleteFromDatabase();
+            $this->researchedRepository->delete(currentUser()->getCurrentResearch());
         }
         if (!array_key_exists($this->getSelectedResearch()->getId(), $this->getResearchList())) {
             new AccessViolation;
         }
 
-        $research = new ResearchUserData;
+        $research = $this->researchedRepository->prototype();
         $research->setActive($this->getSelectedResearch()->getPoints());
         $research->setUserId(currentUser()->getId());
         $research->setResearchId($this->getSelectedResearch()->getId());
-        $research->save();
+        $research->setFinished(0);
+
+        $this->researchedRepository->save($research);
 
         currentUser()->currentResearch = null;
         $this->addInformation($this->getSelectedResearch()->getName() . " wird erforscht");
@@ -55,7 +61,7 @@ final class ResearchController extends GameController
     protected function cancelResearch()
     {
         if (currentUser()->getCurrentResearch()) {
-            currentUser()->getCurrentResearch()->deleteFromDatabase();
+            $this->researchedRepository->delete(currentUser()->getCurrentResearch());
         }
         currentUser()->currentResearch = null;
         $this->addInformation("Die laufende Forschung wurde abgebrochen");
@@ -78,6 +84,14 @@ final class ResearchController extends GameController
     public function getResearchList()
     {
         if ($this->researchList === null) {
+
+            $finished_list = array_map(
+                function (ResearchedInterface $researched): int {
+                    return $researched->getResearchId();
+                },
+                $this->getFinishedResearchList()
+            );
+
             $result = $this->researchRepository->getAvailableResearch((int) currentUser()->getId());
             $dependencies = ResearchDependency::getList();
             $excludes = ResearchDependency::getListExcludes();
@@ -85,7 +99,7 @@ final class ResearchController extends GameController
                 $key = $obj->getId();
                 if (isset($excludes[$key])) {
                     foreach ($excludes[$key] as $exclude) {
-                        if (array_key_exists($exclude->getResearchId(), $this->getFinishedResearchList())) {
+                        if (in_array($exclude->getResearchId(), $finished_list)) {
                             continue 2;
                         }
                     }
@@ -107,7 +121,7 @@ final class ResearchController extends GameController
                     foreach ($grouped_list as $group) {
                         $found = false;
                         foreach ($group as $dependency) {
-                            if (array_key_exists($dependency->getDependOn(), $this->getFinishedResearchList())) {
+                            if (in_array($dependency->getDependOn(), $finished_list)) {
                                 $found = true;
                             }
                         }
@@ -132,7 +146,13 @@ final class ResearchController extends GameController
     public function getFinishedResearchList()
     {
         if ($this->finishedResearchList === null) {
-            $this->finishedResearchList = ResearchUser::getFinishedListByUser(currentUser()->getId());
+            $this->finishedResearchList = $this->researchedRepository->getListByUser((int) currentUser()->getId());
+            usort(
+                $this->finishedResearchList,
+                function (ResearchedInterface $a, ResearchedInterface $b): int {
+                    return $a->getFinished() <=> $b->getFinished();
+                }
+            );
         }
         return $this->finishedResearchList;
     }

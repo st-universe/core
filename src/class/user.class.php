@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 class UserData extends BaseTable {
 
@@ -280,9 +281,15 @@ class UserData extends BaseTable {
 
 	public function hasResearched($researchId) {
 		if ($researchId == 0) {
-			return TRUE;
+			return true;
 		}
-		return ResearchUser::getByFinishedResearch($researchId, $this->getId());
+		// @todo refactor
+		global $container;
+
+		return $container->get(ResearchedRepositoryInterface::class)->hasUserFinishedResearch(
+			(int) $researchId,
+			(int) $this->getId()
+		);
 	}
 
 	public function setSaveLogin($value) {
@@ -362,7 +369,10 @@ class UserData extends BaseTable {
 
 	public function getCurrentResearch() {
 		if ($this->currentResearch === NULL) {
-			$this->currentResearch = ResearchUser::getCurrentResearch($this->getId());	
+			// @todo refactor
+			global $container;
+			$this->currentResearch = $container->get(ResearchedRepositoryInterface::class)
+				->getCurrentResearch((int) $this->getId());
 		}
 		return $this->currentResearch;
 	}
@@ -421,30 +431,6 @@ class UserData extends BaseTable {
 		case FACTION_EMPIRE:
 			return RESEARCH_START_EMPIRE;
 		}
-	} # }}}
-
-	/**
-	 */
-	public function checkActivityLevel() { #{{{
-		if (Colony::countInstances('WHERE user_id='.$this->getId()) > 0) {
-			return FALSE;
-		}
-		// XXX: Check for colonyships
-		$this->resetUser();
-	} # }}}
-
-	/**
-	 */
-	private function resetUser() { #{{{
-		// @todo refactor
-		global $container;
-		$databaseUserRepo = $container->get(DatabaseUserRepositoryInterface::class);
-
-		$databaseUserRepo->truncateByUserId($this->getId());
-
-		ResearchUser::truncate('WHERE user_id='.$this->getId().' AND research_id!='.$this->getResearchStartId());
-		$this->setActive(1);
-		$this->save();
 	} # }}}
 
 	/**

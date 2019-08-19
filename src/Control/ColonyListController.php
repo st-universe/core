@@ -83,8 +83,6 @@ final class ColonyListController extends GameController
         FieldTerraforming::truncate($col->getId());
         ColonyShipQueue::truncate('colony_id=' . $col->getId());
 
-        currentUser()->checkActivityLevel();
-
         $this->addInformation(_("Die Kolonie wurde aufgegeben"));
     }
 

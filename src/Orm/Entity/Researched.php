@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\ResearchRepositoryInterface;
+use UserData;
+
 /**
  * @Entity
  * @Table(name="stu_researched")
@@ -79,4 +82,22 @@ final class Researched implements ResearchedInterface
         return $this;
     }
 
+    public function getResearch(): ResearchInterface {
+        // @todo refactor
+        global $container;
+
+        return $container->get(ResearchRepositoryInterface::class)->find((int) $this->getResearchId());
+    }
+
+    public function isResearchInProgress(): bool {
+        return $this->getActive() > 0;
+    }
+
+    public function isResearchFinished(): bool {
+        return $this->getFinished() > 0;
+    }
+
+    public function getUser(): UserData {
+        return ResourceCache()->getObject('user', $this->getUserId());
+    }
 }
