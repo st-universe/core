@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\ResearchRepositoryInterface;
+
 class ResourceCacher {
 	
 	private $resources = NULL;
@@ -18,7 +20,6 @@ class ResourceCacher {
 			$this->resources->offsetSet(CACHE_TRADEPOST,new ArrayObject);
 			$this->resources->offsetSet(CACHE_ALLIANCE,new ArrayObject);
 			$this->resources->offsetSet(CACHE_FACTION,new ArrayObject);
-			$this->resources->offsetSet(CACHE_RESEARCH,new ArrayObject);
 			$this->resources->offsetSet(CACHE_MAPFIELD,new ArrayObject);
 			$this->resources->offsetSet(CACHE_MODULE,new ArrayObject);
 			$this->resources->offsetSet(CACHE_COLONY,new ArrayObject);
@@ -82,9 +83,6 @@ class ResourceCacher {
 				break;
 			case "faction":
 				$newobj = "Faction";
-				break;
-			case "research":
-				$newobj = "Research";
 				break;
 			case "mapfield":
 				$newobj = "MapFieldType";

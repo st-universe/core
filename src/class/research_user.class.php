@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\ResearchRepositoryInterface;
+
 class ResearchUserData extends BaseTable {
 
 	protected $tablename = 'stu_researched';
@@ -34,7 +36,10 @@ class ResearchUserData extends BaseTable {
 	}
 
 	public function getResearch() {
-		return ResourceCache()->getObject('research',$this->getResearchId());
+		// @todo refactor
+		global $container;
+
+		return $container->get(ResearchRepositoryInterface::class)->find((int) $this->getResearchId());
 	}
 
 	public function getFinishedDate() {
@@ -117,7 +122,7 @@ class ResearchUser extends ResearchUserData {
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);
 		if ($result == 0) {
-			new ObjectNotFoundException($crewId);
+			new ObjectNotFoundException($id);
 		}
 		return parent::__construct($result);
 	}

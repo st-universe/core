@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\ResearchRepositoryInterface;
+
 class ResearchDependencyData extends BaseTable {
 
 	protected $tablename = 'stu_research_dependencies';
@@ -33,12 +35,18 @@ class ResearchDependencyData extends BaseTable {
 		$this->setFieldValue('mode',$value,'getMode');
 	}
 
-        public function getResearch() {
-                return ResourceCache()->getObject('research',$this->getResearchId());
-        }
+	public function getResearch() {
+		// @todo refactor
+		global $container;
+
+		return $container->get(ResearchRepositoryInterface::class)->find((int) $this->getResearchId());
+	}
 
 	public function getResearchDependOn() {
-		return ResourceCache()->getObject('research',$this->getDependOn());
+		// @todo refactor
+		global $container;
+
+		return $container->get(ResearchRepositoryInterface::class)->find((int) $this->getDependOn());
 	}
 }
 class ResearchDependency extends ResearchDependencyData {

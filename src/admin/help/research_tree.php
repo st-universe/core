@@ -1,10 +1,14 @@
 <?php
 
+use Stu\Orm\Repository\ResearchRepositoryInterface;
+
 require_once __DIR__.'/../../inc/config.inc.php';
 
 $graph = new Fhaculty\Graph\Graph();
 
-$research_list = \Research::getList(2);
+$researchRepository = $container->get(ResearchRepositoryInterface::class);
+
+$research_list = $researchRepository->getForFaction(2);
 $dependencies = \ResearchDependency::getList();
 $excludes = \ResearchDependency::getListExcludes();
 

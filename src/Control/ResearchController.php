@@ -4,11 +4,11 @@ namespace Stu\Control;
 
 use AccessViolation;
 use request;
-use Research;
 use ResearchDependency;
 use ResearchUser;
 use ResearchUserData;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Tuple;
 
 final class ResearchController extends GameController
@@ -16,8 +16,11 @@ final class ResearchController extends GameController
 
     private $default_tpl = "html/research.xhtml";
 
+    private $researchRepository;
+
     public function __construct(
-        SessionInterface $session
+        SessionInterface $session,
+        ResearchRepositoryInterface $researchRepository
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Forschung");
@@ -27,6 +30,7 @@ final class ResearchController extends GameController
         $this->addCallback('B_CANCEL_CURRENT_RESEARCH', 'cancelResearch', true);
 
         $this->addView("SHOW_RESEARCH", "showResearch");
+        $this->researchRepository = $researchRepository;
     }
 
     protected function doResearch()
@@ -66,7 +70,7 @@ final class ResearchController extends GameController
 
     public function getSelectedResearch()
     {
-        return ResourceCache()->getObject('research', request::getIntFatal('id'));
+        return $this->researchRepository->find(request::getIntFatal('id'));
     }
 
     private $researchList = null;
@@ -74,10 +78,11 @@ final class ResearchController extends GameController
     public function getResearchList()
     {
         if ($this->researchList === null) {
-            $result = Research::getListByUser(currentUser()->getId());
+            $result = $this->researchRepository->getAvailableResearch((int) currentUser()->getId());
             $dependencies = ResearchDependency::getList();
             $excludes = ResearchDependency::getListExcludes();
-            foreach ($result as $key => $obj) {
+            foreach ($result as $obj) {
+                $key = $obj->getId();
                 if (isset($excludes[$key])) {
                     foreach ($excludes[$key] as $exclude) {
                         if (array_key_exists($exclude->getResearchId(), $this->getFinishedResearchList())) {

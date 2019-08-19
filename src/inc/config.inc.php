@@ -269,7 +269,6 @@ define('CACHE_CREWRACES','crewraces');
 define('CACHE_TRADEPOST','tradepost');
 define('CACHE_ALLIANCE','alliance');
 define('CACHE_FACTION','faction');
-define('CACHE_RESEARCH','research');
 define('CACHE_MAPFIELD','mapfield');
 define('CACHE_MODULE','module');
 define('CACHE_COLONY','colony');
