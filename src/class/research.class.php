@@ -158,13 +158,18 @@ class Research extends ResearchData {
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);
 		if ($result == 0) {
-			new ObjectNotFoundException($crewId);
+			new ObjectNotFoundException($id);
 		}
 		return parent::__construct($result);
 	}
 
 	static function getListByUser($userId) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id NOT IN (SELECT research_id FROM stu_researched WHERE user_id=".$userId." AND aktiv=0) ORDER BY sort");
+		return self::_getList($result,'ResearchData');
+	}
+
+	public static function getList($faction_id) {
+		$result = DB()->query("SELECT * FROM ".self::tablename.' WHERE id like \'%'.$faction_id.'\'');
 		return self::_getList($result,'ResearchData');
 	}
 }
