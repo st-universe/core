@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 require_once __DIR__.'/../../inc/config.inc.php';
@@ -7,10 +8,12 @@ require_once __DIR__.'/../../inc/config.inc.php';
 $graph = new Fhaculty\Graph\Graph();
 
 $researchRepository = $container->get(ResearchRepositoryInterface::class);
+$researchDependencyRepository = $container->get(ResearchDependencyRepositoryInterface::class);
 
 $research_list = $researchRepository->getForFaction(2);
-$dependencies = \ResearchDependency::getList();
-$excludes = \ResearchDependency::getListExcludes();
+
+$dependencies = $researchDependencyRepository->getByMode([RESEARCH_MODE_REQUIRE, RESEARCH_MODE_REQUIRE_SOME]);
+$excludes = $researchDependencyRepository->getByMode([RESEARCH_MODE_EXCLUDE]);
 
 $vertexes = [];
 
@@ -20,22 +23,18 @@ foreach ($research_list as $research) {
     $vertexes[$research->getId()] = $vertex;
 }
 
-foreach ($dependencies as $research_id => $dependency) {
-    foreach ($dependency as $obj) {
-        if (!array_key_exists($obj->getDependOn(), $vertexes) || !array_key_exists($research_id, $vertexes)) {
-            continue;
-        }
-        $vertexes[$obj->getDependOn()]->createEdgeTo($vertexes[$research_id]);
+foreach ($dependencies as $obj) {
+    if (!array_key_exists($obj->getDependsOn(), $vertexes) || !array_key_exists($obj->getResearchId(), $vertexes)) {
+        continue;
     }
+    $vertexes[$obj->getDependsOn()]->createEdgeTo($vertexes[$obj->getResearchId()]);
 }
-foreach ($excludes as $depend_on => $dependency) {
-    foreach ($dependency as $obj) {
-        if (!array_key_exists($obj->getDependOn(), $vertexes) || !array_key_exists($depend_on, $vertexes)) {
-            continue;
-        }
-        $edge = $vertexes[$depend_on]->createEdgeTo($vertexes[$obj->getResearchId()]);
-        $edge->setAttribute('graphviz.color', 'red');
+foreach ($excludes as $obj) {
+    if (!array_key_exists($obj->getDependsOn(), $vertexes) || !array_key_exists($obj->getResearchId(), $vertexes)) {
+        continue;
     }
+    $edge = $vertexes[$obj->getDependsOn()]->createEdgeTo($vertexes[$obj->getResearchId()]);
+    $edge->setAttribute('graphviz.color', 'red');
 }
 
 $graphviz = new Graphp\GraphViz\GraphViz();

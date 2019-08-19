@@ -4,9 +4,9 @@ namespace Stu\Control;
 
 use AccessViolation;
 use request;
-use ResearchDependency;
 use Stu\Lib\SessionInterface;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Tuple;
@@ -20,10 +20,13 @@ final class ResearchController extends GameController
 
     private $researchedRepository;
 
+    private $researchDependencyRepository;
+
     public function __construct(
         SessionInterface $session,
         ResearchRepositoryInterface $researchRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        ResearchDependencyRepositoryInterface $researchDependencyRepository
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Forschung");
@@ -35,6 +38,7 @@ final class ResearchController extends GameController
         $this->addView("SHOW_RESEARCH", "showResearch");
         $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->researchDependencyRepository = $researchDependencyRepository;
     }
 
     protected function doResearch()
@@ -93,8 +97,29 @@ final class ResearchController extends GameController
             );
 
             $result = $this->researchRepository->getAvailableResearch((int) currentUser()->getId());
-            $dependencies = ResearchDependency::getList();
-            $excludes = ResearchDependency::getListExcludes();
+
+            $dependencies = [];
+            $dependencies_result = $this->researchDependencyRepository->getByMode(
+                [RESEARCH_MODE_REQUIRE, RESEARCH_MODE_REQUIRE_SOME]
+            );
+            $excludes = [];
+            $exclude_result = $this->researchDependencyRepository->getByMode([RESEARCH_MODE_EXCLUDE]);
+
+            foreach ($dependencies_result as $dependency) {
+                $research_id = $dependency->getResearchId();
+                if (array_key_exists($research_id, $dependencies) === false) {
+                    $dependencies[$research_id] = [];
+                }
+                $dependencies[$research_id][] = $dependency;
+            }
+            foreach ($exclude_result as $dependency) {
+                $research_id = $dependency->getDependsOn();
+                if (array_key_exists($research_id, $dependencies) === false) {
+                    $excludes[$research_id] = [];
+                }
+                $excludes[$research_id][] = $dependency;
+            }
+
             foreach ($result as $obj) {
                 $key = $obj->getId();
                 if (isset($excludes[$key])) {
@@ -121,7 +146,7 @@ final class ResearchController extends GameController
                     foreach ($grouped_list as $group) {
                         $found = false;
                         foreach ($group as $dependency) {
-                            if (in_array($dependency->getDependOn(), $finished_list)) {
+                            if (in_array($dependency->getDependsOn(), $finished_list)) {
                                 $found = true;
                             }
                         }

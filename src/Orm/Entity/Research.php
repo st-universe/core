@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use GoodData;
-use ResearchDependency;
+use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 /**
@@ -186,7 +186,11 @@ final class Research implements ResearchInterface
     public function getExcludes(): array
     {
         if ($this->excludes === null) {
-            $this->excludes = ResearchDependency::getExcludesByResearch($this->getId());
+            // @todo refactor
+            global $container;
+
+            $this->excludes = $container->get(ResearchDependencyRepositoryInterface::class)
+                ->getExcludesByResearch($this->getId());
         }
         return $this->excludes;
     }
@@ -199,7 +203,11 @@ final class Research implements ResearchInterface
     public function getPositiveDependencies(): array
     {
         if ($this->positiveDependencies === null) {
-            $this->positiveDependencies = ResearchDependency::getPositiveDependenciesByResearch($this->getId());
+            // @todo refactor
+            global $container;
+
+            $this->positiveDependencies = $container->get(ResearchDependencyRepositoryInterface::class)
+                ->getRequirementsByResearch($this->getId());
         }
         return $this->positiveDependencies;
     }
