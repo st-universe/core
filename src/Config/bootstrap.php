@@ -11,7 +11,6 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Control\HistoryController;
 use Stu\Control\AllianceController;
 use Stu\Control\ColonyController;
 use Stu\Control\ColonyListController;
@@ -81,7 +80,6 @@ $builder->addDefinitions([
     ColonyListController::class => autowire(ColonyListController::class),
     CommController::class => autowire(CommController::class),
     CrewController::class => autowire(CrewController::class),
-    HistoryController::class => autowire(HistoryController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
     OptionsController::class => autowire(OptionsController::class),
@@ -103,6 +101,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Notes/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/History/services.php'
 );
 
 $builder->addDefinitions([
