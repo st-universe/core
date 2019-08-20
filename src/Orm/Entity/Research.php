@@ -13,7 +13,7 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
  * @Table(name="stu_research")
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchRepository")
  **/
-final class Research implements ResearchInterface
+class Research implements ResearchInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;

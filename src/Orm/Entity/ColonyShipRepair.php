@@ -13,7 +13,7 @@ use Ship;
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipRepairRepository")
  * @Table(name="stu_colonies_shiprepair")
  **/
-final class ColonyShipRepair implements ColonyShipRepairInterface
+class ColonyShipRepair implements ColonyShipRepairInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;

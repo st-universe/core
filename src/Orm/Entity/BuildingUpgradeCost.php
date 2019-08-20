@@ -11,7 +11,7 @@ use Good;
  * @Table(name="stu_buildings_upgrades_cost",indexes={@Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})})
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeCostRepository")
  **/
-final class BuildingUpgradeCost implements BuildingUpgradeCostInterface
+class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;

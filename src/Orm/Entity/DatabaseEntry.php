@@ -13,7 +13,7 @@ namespace Stu\Orm\Entity;
  * )
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseEntryRepository")
  **/
-final class DatabaseEntry implements DatabaseEntryInterface
+class DatabaseEntry implements DatabaseEntryInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;

@@ -8,7 +8,7 @@ namespace Stu\Orm\Entity;
  * @Entity
  * @Table(name="stu_map_regions_settlement")
  **/
-final class MapRegionSettlement implements MapRegionSettlementInterface
+class MapRegionSettlement implements MapRegionSettlementInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;

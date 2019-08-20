@@ -34,11 +34,6 @@ use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
-use Stu\Module\Database\View\Category\Category;
-use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
-use Stu\Module\Database\View\UserList\UserList;
-use Stu\Module\Database\View\Overview\Overview;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -112,6 +107,7 @@ $builder->addDefinitions(
 $builder->addDefinitions([
     'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',
 ]);
+
 $builder->addDefinitions(
     require_once __DIR__.'/../Orm/Repository/services.php',
 );

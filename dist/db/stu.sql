@@ -1829,7 +1829,7 @@ CREATE TABLE `stu_research` (
   `upper_planetlimit` tinyint(1) NOT NULL DEFAULT '0',
   `upper_moonlimit` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=905304 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=905304 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

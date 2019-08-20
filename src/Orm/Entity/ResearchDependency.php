@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ResearchRepositoryInterface;
-
 /**
  * @Entity
  * @Table(name="stu_research_dependencies")
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchDependencyRepository")
  **/
-final class ResearchDependency implements ResearchDependencyInterface
+class ResearchDependency implements ResearchDependencyInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;
@@ -24,6 +22,18 @@ final class ResearchDependency implements ResearchDependencyInterface
 
     /** @Column(type="smallint") * */
     private $mode;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
+     * @JoinColumn(name="research_id", referencedColumnName="id")
+     */
+    private $research;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
+     * @JoinColumn(name="depends_on", referencedColumnName="id")
+     */
+    private $research_depends_on;
 
     public function getId(): int
     {
@@ -68,17 +78,11 @@ final class ResearchDependency implements ResearchDependencyInterface
 
     public function getResearch(): ResearchInterface
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ResearchRepositoryInterface::class)->find((int)$this->getResearchId());
+        return $this->research;
     }
 
     public function getResearchDependOn(): ResearchInterface
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ResearchRepositoryInterface::class)->find((int)$this->getDependsOn());
+        return $this->research_depends_on;
     }
 }

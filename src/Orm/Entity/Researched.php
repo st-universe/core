@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\ResearchRepositoryInterface;
 use UserData;
 
 /**
@@ -12,7 +11,7 @@ use UserData;
  * @Table(name="stu_researched")
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchedRepository")
  **/
-final class Researched implements ResearchedInterface
+class Researched implements ResearchedInterface
 {
     /** @Id @Column(type="integer") @GeneratedValue * */
     private $id;
@@ -28,6 +27,12 @@ final class Researched implements ResearchedInterface
 
     /** @Column(type="integer") * */
     private $finished;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
+     * @JoinColumn(name="research_id", referencedColumnName="id")
+     */
+    private $research;
 
     public function getId(): int
     {
@@ -83,10 +88,7 @@ final class Researched implements ResearchedInterface
     }
 
     public function getResearch(): ResearchInterface {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ResearchRepositoryInterface::class)->find((int) $this->getResearchId());
+        return $this->research;
     }
 
     public function isResearchInProgress(): bool {
