@@ -1543,13 +1543,13 @@ class ShipData extends BaseTable {
 			if (!$this->getStorage()->offsetExists($key)) {
 				return FALSE;
 			}
-			if ($this->getStorage()->offsetGet($key)->getCount() < $count) {
-				$count = $this->getStorage()->offsetGet($key)->getCount();
+			if ($this->getStorage()->offsetGet($key)->getAmount() < $count) {
+				$count = $this->getStorage()->offsetGet($key)->getAmount();
 			}
 		}
 		$this->lowerStorage(GOOD_DEUTERIUM,$count);
 		$this->lowerStorage(GOOD_ANTIMATTER,$count);
-                if ($this->getWarpcoreLoad()+$count*WARPCORE_LOAD > $this->getWarpcoreCapacity()) {
+		if ($this->getWarpcoreLoad()+$count*WARPCORE_LOAD > $this->getWarpcoreCapacity()) {
 			$load = $this->getWarpcoreCapacity() - $this->getWarpcoreLoad();
 		} else {
 			$load = $count*WARPCORE_LOAD;
