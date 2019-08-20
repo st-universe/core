@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\OptionsController;
+use Stu\Control\IntermediateController;
 
 @session_start();
 
@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(OptionsController::class)->main();
+$container->get(IntermediateController::TYPE_PLAYER_SETTING)->main();
 
 DB()->commitTransaction();

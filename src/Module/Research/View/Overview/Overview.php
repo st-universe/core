@@ -25,7 +25,7 @@ final class Overview implements ViewControllerInterface
 
         $game->appendNavigationPart(
             'research.php',
-            _('Datenbank')
+            _('Forschung')
         );
         $game->setPageTitle(_('/ Forschung'));
         $game->setTemplateFile('html/research.xhtml');
