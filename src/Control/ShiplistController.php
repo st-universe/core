@@ -3,12 +3,10 @@
 namespace Stu\Control;
 
 use AccessViolation;
-use CrewData;
 use Fleet;
 use FleetData;
 use request;
 use Ship;
-use ShipCrewData;
 use Stu\Lib\SessionInterface;
 use Tuple;
 
@@ -30,7 +28,6 @@ final class ShiplistController extends GameController
         $this->addCallback("B_CHANGE_NAME", "renameFleet");
         $this->addCallback("B_SELFDESTRUCT", "selfDestruct", true);
         $this->addCallback("B_NOT_OWNER", "displayNotOwner", true);
-        $this->addCallback("B_GET_GALAXY_CLASS", "getGalaxyClass");
         $this->addNavigationPart(new Tuple("shiplist.php", "Schiffe"));
     }
 
@@ -175,42 +172,6 @@ final class ShiplistController extends GameController
         $fleet->setName(request::postStringFatal('fleetname'));
         $fleet->save();
         $this->addInformation("Der Flottenname wurde geändert");
-    }
-
-    protected function getGalaxyClass()
-    {
-        if (!currentUser()->isAdmin() && Ship::countInstances("WHERE user_id=" . currentUser()->getId()) >= 5) {
-            $this->addInformation("Diese Aktion ist auf 5 Mirandas pro Siedler beschränkt");
-            return;
-        }
-        $ship = Ship::copyShip(404);
-        $ship->setName('Miranda');
-        $ship->setUserId(currentUser()->getId());
-        $pre = array('Kathryn', 'Geordi', 'Jean-Luc', 'Deana', 'Beverly', 'William', 'Reginald', 'Miles', 'Wesley');
-        $post = array('Janeway', 'Crusher', 'Picard', 'Troi', 'Riker', 'Obrien', 'Barcley', 'La Forge');
-        $i = 1;
-        while ($i <= 5) {
-            $j = 1;
-            while ($j <= 2) {
-                $crew = new CrewData;
-                $crew->setGender(rand(1, 2));
-                $crew->setName($pre[array_rand($pre)] . " " . $post[array_rand($post)]);
-                $crew->setType($i);
-                $crew->setUserId(currentUser()->getId());
-                $crew->setRaceId(1);
-                $crew->save();
-                $sc = new ShipCrewData;
-                $sc->setCrewId($crew->getId());
-                $sc->setShipId($ship->getId());
-                $sc->setSlot($i);
-                $sc->save();
-                $j++;
-            }
-            $i++;
-        }
-
-        $ship->save();
-        $this->addInformation("Jawohl Sir!");
     }
 
     protected function displayNotOwner()
