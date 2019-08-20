@@ -24,9 +24,5 @@ interface ResearchedInterface
 
     public function getResearch(): ResearchInterface;
 
-    public function isResearchInProgress(): bool;
-
-    public function isResearchFinished(): bool;
-
     public function getUser(): UserData;
 }

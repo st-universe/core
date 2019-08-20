@@ -16,7 +16,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT t FROM %s t WHERE t.id NOT IN (
-                    SELECT r.research_id from %s r WHERE r.aktiv = 0 AND r.user_id = %d
+                    SELECT r.research_id from %s r WHERE r.user_id = %d
                 )',
                 Research::class,
                 Researched::class,

@@ -87,18 +87,10 @@ class Researched implements ResearchedInterface
         return $this;
     }
 
-    public function isResearchInProgress(): bool
-    {
-        return $this->getActive() > 0;
-    }
-
-    public function isResearchFinished(): bool
-    {
-        return $this->getFinished() > 0;
-    }
-
     public function getUser(): UserData
     {
+        // @todo refactor - use user entity
+
         return ResourceCache()->getObject('user', $this->getUserId());
     }
 }

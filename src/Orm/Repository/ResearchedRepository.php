@@ -30,7 +30,7 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT t FROM %s t WHERE t.user_id = %d AND t.finished > 0',
+                    'SELECT t FROM %s t WHERE t.user_id = %d AND (t.finished > 0 OR t.aktiv > 0)',
                     Researched::class,
                     $userId
                 )

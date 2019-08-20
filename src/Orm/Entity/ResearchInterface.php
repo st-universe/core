@@ -45,18 +45,4 @@ interface ResearchInterface
     public function setUpperMoonLimit(int $upperMoonLimit): ResearchInterface;
 
     public function getGood(): GoodData;
-
-    public function getResearchState();
-
-    public function getExcludes(): array;
-
-    public function hasExcludes(): bool;
-
-    public function getPositiveDependencies(): array;
-
-    public function hasPositiveDependencies(): bool;
-
-    public function getDonePoints(): int;
-
-    public function isStartResearch(): bool;
 }

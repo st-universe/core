@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use GoodData;
-use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
-use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 /**
  * @Entity
@@ -46,10 +44,6 @@ class Research implements ResearchInterface
     private $upper_moonlimit;
 
     private $state;
-
-    private $excludes;
-
-    private $positiveDependencies;
 
     public function getId(): int
     {
@@ -166,64 +160,8 @@ class Research implements ResearchInterface
 
     public function getGood(): GoodData
     {
+        // @todo refactor - use good entity
+
         return ResourceCache()->getObject('good', $this->getGoodId());
-    }
-
-    public function getResearchState()
-    {
-        if ($this->state === null) {
-            // @todo refactor
-            global $container;
-
-            $this->state = $container->get(ResearchedRepositoryInterface::class)->getFor(
-                $this->getId(),
-                (int) currentUser()->getId()
-            );
-        }
-        return $this->state;
-    }
-
-    public function getExcludes(): array
-    {
-        if ($this->excludes === null) {
-            // @todo refactor
-            global $container;
-
-            $this->excludes = $container->get(ResearchDependencyRepositoryInterface::class)
-                ->getExcludesByResearch($this->getId());
-        }
-        return $this->excludes;
-    }
-
-    public function hasExcludes(): bool
-    {
-        return count($this->getExcludes()) > 0;
-    }
-
-    public function getPositiveDependencies(): array
-    {
-        if ($this->positiveDependencies === null) {
-            // @todo refactor
-            global $container;
-
-            $this->positiveDependencies = $container->get(ResearchDependencyRepositoryInterface::class)
-                ->getRequirementsByResearch($this->getId());
-        }
-        return $this->positiveDependencies;
-    }
-
-    public function hasPositiveDependencies(): bool
-    {
-        return count($this->getPositiveDependencies()) > 0;
-    }
-
-    public function getDonePoints(): int
-    {
-        return $this->getPoints() - $this->getResearchState()->getActive();
-    }
-
-    public function isStartResearch(): bool
-    {
-        return in_array($this->getId(), getDefaultTechs());
     }
 }

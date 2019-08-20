@@ -5,7 +5,10 @@ namespace Stu\Control;
 use AccessViolation;
 use request;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Research\TalFactoryInterface;
+use Stu\Module\Research\TalSelectedTechInterface;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
@@ -22,11 +25,14 @@ final class ResearchController extends GameController
 
     private $researchDependencyRepository;
 
+    private $talFactory;
+
     public function __construct(
         SessionInterface $session,
         ResearchRepositoryInterface $researchRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        ResearchDependencyRepositoryInterface $researchDependencyRepository
+        ResearchDependencyRepositoryInterface $researchDependencyRepository,
+        TalFactoryInterface $talFactory
     )
     {
         parent::__construct($session, $this->default_tpl, "/ Forschung");
@@ -39,6 +45,7 @@ final class ResearchController extends GameController
         $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
+        $this->talFactory = $talFactory;
     }
 
     protected function doResearch()
@@ -60,6 +67,9 @@ final class ResearchController extends GameController
 
         currentUser()->currentResearch = null;
         $this->addInformation($this->getSelectedResearch()->getName() . " wird erforscht");
+
+        $this->finishedResearchList = null;
+        $this->researchList = null;
     }
 
     protected function cancelResearch()
@@ -69,6 +79,9 @@ final class ResearchController extends GameController
         }
         currentUser()->currentResearch = null;
         $this->addInformation("Die laufende Forschung wurde abgebrochen");
+
+        $this->finishedResearchList = null;
+        $this->researchList = null;
     }
 
     protected function showResearch()
@@ -78,7 +91,14 @@ final class ResearchController extends GameController
         $this->setAjaxMacro('html/researchmacros.xhtml/details');
     }
 
-    public function getSelectedResearch()
+    public function getSelectedTech(): TalSelectedTechInterface {
+        return $this->talFactory->createTalSelectedTech(
+            $this->getSelectedResearch(),
+            currentUser()
+        );
+    }
+
+    private function getSelectedResearch(): ResearchInterface
     {
         return $this->researchRepository->find(request::getIntFatal('id'));
     }
@@ -93,7 +113,12 @@ final class ResearchController extends GameController
                 function (ResearchedInterface $researched): int {
                     return $researched->getResearch()->getId();
                 },
-                $this->getFinishedResearchList()
+                array_filter(
+                    $this->getFinishedResearchList(),
+                    function (ResearchedInterface $researched): bool {
+                        return $researched->getFinished() > 0;
+                    }
+                )
             );
 
             $result = $this->researchRepository->getAvailableResearch((int) currentUser()->getId());
@@ -124,7 +149,9 @@ final class ResearchController extends GameController
                 $key = $obj->getId();
                 if (isset($excludes[$key])) {
                     foreach ($excludes[$key] as $exclude) {
-                        if (in_array($exclude->getResearchId(), $finished_list)) {
+                        if (
+                            in_array($exclude->getResearchId(), $finished_list)
+                        ) {
                             continue 2;
                         }
                     }
@@ -175,7 +202,10 @@ final class ResearchController extends GameController
             usort(
                 $this->finishedResearchList,
                 function (ResearchedInterface $a, ResearchedInterface $b): int {
-                    return $a->getFinished() <=> $b->getFinished();
+                    if ($a->getActive() != $b->getActive()) {
+                        return $b->getActive() <=> $a->getActive();
+                    }
+                    return $b->getFinished() <=> $a->getFinished();
                 }
             );
         }
