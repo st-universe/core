@@ -30,7 +30,6 @@ use Stu\Lib\SessionInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
-use Stu\Control\AdminController;
 
 $builder = new ContainerBuilder();
 
@@ -73,7 +72,6 @@ $builder->addDefinitions([
 ]);
 
 $builder->addDefinitions([
-    AdminController::class => autowire(AdminController::class),
     AllianceController::class => autowire(AllianceController::class),
     ColonyController::class => autowire(ColonyController::class),
     ColonyListController::class => autowire(ColonyListController::class),

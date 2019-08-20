@@ -250,9 +250,6 @@
 		<tal:block metal:use-macro="benchmark" />
 		<tal:block metal:use-macro="debug" />
 	</tal:block>
-	<tal:block tal:condition="THIS/isAdmin">
-		<a href="admin.php">Admin</a>
-	</tal:block>
 </metal:macro>
 <metal:block metal:define-macro="ajaxwindow">
 	<stu:root>
