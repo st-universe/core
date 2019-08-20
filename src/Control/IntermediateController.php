@@ -12,6 +12,7 @@ final class IntermediateController extends GameController
     public const TYPE_MAINDESK = 'MAINDESK';
     public const TYPE_NOTES = 'NOTES';
     public const TYPE_HISTORY = 'HISTORY';
+    public const TYPE_PLAYER_PROFILE = 'PLAYER_PROFILE';
 
     /**
      * @param SessionInterface $session
