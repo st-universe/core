@@ -15,6 +15,7 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use TalPage;
 use Tuple;
 use User;
+use UserData;
 
 abstract class GameController implements GameControllerInterface
 {
@@ -193,7 +194,7 @@ abstract class GameController implements GameControllerInterface
         $tpl->parse();
     }
 
-    public function getUser() {
+    public function getUser(): ?UserData {
         return $this->session->getUser();
     }
 
@@ -315,8 +316,9 @@ abstract class GameController implements GameControllerInterface
         return GAME_VERSION;
     }
 
-    protected function redirectTo($href)
+    public function redirectTo(string $href): void
     {
+        DB()->commitTransaction();
         header('Location: ' . $href);
         exit;
     }
@@ -398,7 +400,7 @@ abstract class GameController implements GameControllerInterface
         return $this->recent_history;
     }
 
-    protected function checkDatabaseItem($databaseEntryId)
+    public function checkDatabaseItem($databaseEntryId): void
     {
         $userId = currentUser()->getId();
 

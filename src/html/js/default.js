@@ -238,12 +238,6 @@ function findObject(obj) {
 		return [curleft,curtop];
 	}
 }
-function openBuddyList(obj) {
-	var pos = findObject(obj);
-	elt = 'buddylist';
-	openWindowPosition(elt,1,300,pos[0]-2,pos[1]+19);
-	ajax_update(elt,"maindesk.php?SHOW_BUDDYLIST=1");
-}
 function openTopicSettings(obj,tid,bid) {
 	var pos = findObject(obj);
 	elt = 'topicaction';

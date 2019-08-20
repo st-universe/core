@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Stu\Control;
 
 use Tuple;
+use UserData;
 
 interface GameControllerInterface
 {
@@ -31,7 +30,7 @@ interface GameControllerInterface
 
     public function setTemplateVar(string $key, $variable);
 
-    public function getUser();
+    public function getUser(): ?UserData;
 
     public function getBenchmark();
 
@@ -67,6 +66,8 @@ interface GameControllerInterface
 
     public function getGameVersion();
 
+    public function redirectTo(string $href): void;
+
     public function getFriendsOnline();
 
     public function getFriendsOnlineCount();
@@ -90,6 +91,8 @@ interface GameControllerInterface
     public function isAdmin();
 
     public function getRecentHistory();
+
+    public function checkDatabaseItem($databaseEntryId): void;
 
     public function getAchievements();
 

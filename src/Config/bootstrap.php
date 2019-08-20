@@ -11,7 +11,6 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Control\GameController;
 use Stu\Control\HistoryController;
 use Stu\Control\AllianceController;
 use Stu\Control\ColonyController;
@@ -20,7 +19,6 @@ use Stu\Control\CommController;
 use Stu\Control\CrewController;
 use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
-use Stu\Control\MaindeskController;
 use Stu\Control\NotesController;
 use Stu\Control\OptionsController;
 use Stu\Control\ShipController;
@@ -87,7 +85,6 @@ $builder->addDefinitions([
     HistoryController::class => autowire(HistoryController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
-    MaindeskController::class => autowire(MaindeskController::class),
     NotesController::class => autowire(NotesController::class),
     OptionsController::class => autowire(OptionsController::class),
     ShipController::class => autowire(ShipController::class),
@@ -102,6 +99,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Research/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Maindesk/services.php'
 );
 
 $builder->addDefinitions([

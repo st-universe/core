@@ -8,7 +8,7 @@
 	</tr>
 		<tr>
 			<td class="colonylist">
-				<div onclick="goToUrl('maindesk.php?SHOW_COLONYLIST=1&B_FIRST_COLONY=1&id=${colony/getId}')" tal:repeat="colony THIS/getFreeColonyList" tal:attributes="class string:row${repeat/colony/odd} divbody" style="cursor: pointer; display: block; float: left; width: 300px;">
+				<div onclick="goToUrl('maindesk.php?SHOW_COLONYLIST=1&B_FIRST_COLONY=1&id=${colony/getId}')" tal:repeat="colony FREE_PLANET_LIST" tal:attributes="class string:row${repeat/colony/odd} divbody" style="cursor: pointer; display: block; float: left; width: 300px;">
 					<div style="display: table-cell;">
 						<img src="${GFX}/planets/${colony/getColonyClass}.gif" />
 					</div>
