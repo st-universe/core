@@ -35,7 +35,7 @@
 				<tal:block tal:repeat="data THIS/getFinishedResearchList">
 					<tr tal:attributes="class string:row${repeat/data/odd}" tal:condition="not:data/getResearch/isStartResearch">
 						<td>
-							<a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearchId});" tal:content="data/getResearch/getName">NAME</a>
+							<a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearch/getId});" tal:content="data/getResearch/getName">NAME</a>
 						</td>
 						<td style="width: 150px;">
 							Erforscht am ${date:data/getFinished}

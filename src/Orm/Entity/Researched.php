@@ -39,18 +39,6 @@ class Researched implements ResearchedInterface
         return $this->id;
     }
 
-    public function getResearchId(): int
-    {
-        return $this->research_id;
-    }
-
-    public function setResearchId(int $reserchId): ResearchedInterface
-    {
-        $this->research_id = $reserchId;
-
-        return $this;
-    }
-
     public function getUserId(): int
     {
         return $this->user_id;
@@ -87,19 +75,30 @@ class Researched implements ResearchedInterface
         return $this;
     }
 
-    public function getResearch(): ResearchInterface {
+    public function getResearch(): ResearchInterface
+    {
         return $this->research;
     }
 
-    public function isResearchInProgress(): bool {
+    public function setResearch(ResearchInterface $research): ResearchedInterface
+    {
+        $this->research = $research;
+
+        return $this;
+    }
+
+    public function isResearchInProgress(): bool
+    {
         return $this->getActive() > 0;
     }
 
-    public function isResearchFinished(): bool {
+    public function isResearchFinished(): bool
+    {
         return $this->getFinished() > 0;
     }
 
-    public function getUser(): UserData {
+    public function getUser(): UserData
+    {
         return ResourceCache()->getObject('user', $this->getUserId());
     }
 }

@@ -53,7 +53,7 @@ final class ResearchController extends GameController
         $research = $this->researchedRepository->prototype();
         $research->setActive($this->getSelectedResearch()->getPoints());
         $research->setUserId(currentUser()->getId());
-        $research->setResearchId($this->getSelectedResearch()->getId());
+        $research->setResearch($this->getSelectedResearch());
         $research->setFinished(0);
 
         $this->researchedRepository->save($research);
@@ -91,7 +91,7 @@ final class ResearchController extends GameController
 
             $finished_list = array_map(
                 function (ResearchedInterface $researched): int {
-                    return $researched->getResearchId();
+                    return $researched->getResearch()->getId();
                 },
                 $this->getFinishedResearchList()
             );

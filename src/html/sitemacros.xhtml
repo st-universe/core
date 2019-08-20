@@ -33,7 +33,7 @@
 				<div class="header_box header_box_pm border_box" id="navlet_newpm">
 					<metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
 				</div>
-				<div class="header_box header_box_research border_box action"  tal:condition="USER/getCurrentResearch" onclick="showResearchDetails(${USER/getCurrentResearch/getResearchId}); return false;">
+				<div class="header_box header_box_research border_box action"  tal:condition="USER/getCurrentResearch" onclick="showResearchDetails(${USER/getCurrentResearch/getResearch/getId}); return false;">
 					<div class="center" tal:content="USER/getCurrentResearch/getResearch/getName">RESEARCH</div>
 					<img style="width: 12px; height: 12px;" src="${GFX}/buttons/menu_forsch1.gif" title="Forschung: ${USER/getCurrentResearch/getResearch/getName}" />
 					<span tal:replace="structure php:renderResearchStatusBar(USER.getCurrentResearch().getResearch().getPoints()-USER.getCurrentResearch().getActive(),USER.getCurrentResearch().getResearch().getPoints())">STATUSBAR</span>
