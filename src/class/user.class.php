@@ -365,16 +365,10 @@ class UserData extends BaseTable {
 		new AccessViolation();
 	}
 
-	public $currentResearch = NULL;
-
 	public function getCurrentResearch() {
-		if ($this->currentResearch === NULL) {
-			// @todo refactor
-			global $container;
-			$this->currentResearch = $container->get(ResearchedRepositoryInterface::class)
-				->getCurrentResearch((int) $this->getId());
-		}
-		return $this->currentResearch;
+		// @todo refactor
+		global $container;
+		return $container->get(ResearchedRepositoryInterface::class)->getCurrentResearch((int) $this->getId());
 	}
 
 	public function getSessionData() {

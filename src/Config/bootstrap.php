@@ -19,12 +19,10 @@ use Stu\Control\ColonyListController;
 use Stu\Control\CommController;
 use Stu\Control\CrewController;
 use Stu\Control\IndexController;
-use Stu\Control\IntermediateController;
 use Stu\Control\LogoutController;
 use Stu\Control\MaindeskController;
 use Stu\Control\NotesController;
 use Stu\Control\OptionsController;
-use Stu\Control\ResearchController;
 use Stu\Control\ShipController;
 use Stu\Control\ShiplistController;
 use Stu\Control\StarmapController;
@@ -92,7 +90,6 @@ $builder->addDefinitions([
     MaindeskController::class => autowire(MaindeskController::class),
     NotesController::class => autowire(NotesController::class),
     OptionsController::class => autowire(OptionsController::class),
-    ResearchController::class => autowire(ResearchController::class),
     ShipController::class => autowire(ShipController::class),
     ShiplistController::class => autowire(ShiplistController::class),
     StarmapController::class => autowire(StarmapController::class),

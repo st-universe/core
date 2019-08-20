@@ -8,15 +8,22 @@ use Tuple;
 
 interface GameControllerInterface
 {
+
+    public function setView(string $view): void;
+
     public function getGameState();
 
     public function setTemplateFile($tpl);
+
+    public function setAjaxMacro($macro);
 
     public function showAjaxMacro($macro);
 
     public function getAjaxMacro();
 
     public function getMemoryUsage();
+
+    public function addInformation(string $msg, bool $override = false): void;
 
     function getInformation();
 

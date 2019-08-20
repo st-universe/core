@@ -86,7 +86,7 @@ abstract class GameController implements GameControllerInterface
         return $this->view;
     }
 
-    protected function setView($view)
+    public function setView(string $view): void
     {
         request::setVar($view, 1);
     }
@@ -117,7 +117,7 @@ abstract class GameController implements GameControllerInterface
         $this->getTemplate()->setTemplate($tpl);
     }
 
-    protected function setAjaxMacro($macro)
+    public function setAjaxMacro($macro)
     {
         $this->ajaxMacro = $macro;
     }
@@ -143,7 +143,7 @@ abstract class GameController implements GameControllerInterface
         return round((memory_get_peak_usage() / 1024) / 1024, 3);
     }
 
-    protected function addInformation($msg, $override = false)
+    public function addInformation(string $msg, bool $override = false): void
     {
         if ($override) {
             $this->gameInformations = array();
@@ -441,6 +441,10 @@ abstract class GameController implements GameControllerInterface
         foreach ($this->callbacks as $key => $config) {
             if (request::indString($key)) {
                 list($callable, $session_check) = $config;
+                if (is_object($callable)) {
+                    $callable->handle($this);
+                    return;
+                }
                 if (!method_exists($this, $callable)) {
                     throw new InvalidCallbackException;
                 }

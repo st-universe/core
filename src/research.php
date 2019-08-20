@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\ResearchController;
+use Stu\Control\IntermediateController;
 
 @session_start();
 
@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(ResearchController::class)->main();
+$container->get(IntermediateController::TYPE_RESEARCH)->main();
 
 DB()->commitTransaction();

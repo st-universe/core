@@ -8,7 +8,7 @@
 				<th style="width: 80px;" i18n:translate="">Benötigt</th>
 				<th class="left" i18n:translate="">Bezeichnung</th>
 			</tr>
-			<tr tal:repeat="data THIS/getResearchList" tal:attributes="class string:row${repeat/data/odd}">
+			<tr tal:repeat="data RESEARCH_LIST" tal:attributes="class string:row${repeat/data/odd}">
 				<td class="center">
 					<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
 					<span tal:content="data/getPoints">POINTS</span>
@@ -18,13 +18,13 @@
 				</td>
 			</tr>
 		</table>
-		<div tal:condition="THIS/getFinishedResearchList">
+		<div tal:condition="FINISHED_LIST">
 			<br />
 			<table class="tcal">
 				<tr>
 					<th colspan="2" i18n:translate="">Aktive und abgeschlossene Forschungen</th>
 				</tr>
-				<tal:block tal:repeat="data THIS/getFinishedResearchList">
+				<tal:block tal:repeat="data FINISHED_LIST">
 					<tr tal:attributes="class string:row${repeat/data/odd}">
 						<td>
 							<a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearch/getId});" tal:content="data/getResearch/getName">NAME</a>
