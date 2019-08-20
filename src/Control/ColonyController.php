@@ -516,9 +516,9 @@ final class ColonyController extends GameController
                     $obj->getAmount(), getGoodName($obj->getGoodId())));
                 return;
             }
-            if ($obj->getAmount() > $storage[$obj->getGoodId()]->getCount()) {
+            if ($obj->getAmount() > $storage[$obj->getGoodId()]->getAmount()) {
                 $this->addInformation(sprintf(_("Es werden %d %s benötigt - Vorhanden sind nur %d"), $obj->getAmount(),
-                    getGoodName($obj->getGoodId()), $storage[$obj->getGoodId()]->getCount()));
+                    getGoodName($obj->getGoodId()), $storage[$obj->getGoodId()]->getAmount()));
                 return;
             }
         }
