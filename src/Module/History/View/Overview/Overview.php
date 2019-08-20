@@ -44,7 +44,7 @@ final class Overview implements ViewControllerInterface
         foreach ($this->possibleTypes as $key => $value) {
             $history_types[$key]['name'] = $value;
             $history_types[$key]['class'] = $key == $type ? 'selected' : '';
-            $history_types[$key]['count'] = HistoryEntry::countInstances("WHERE type=" . $key);
+            $history_types[$key]['count'] = HistoryEntry::countInstances(sprintf('WHERE type = %d', $key));
         }
 
         $game->appendNavigationPart(
@@ -68,7 +68,11 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'HISTORY',
-            HistoryEntry::getListBy("WHERE type=" . $type . " ORDER BY id DESC LIMIT " . $count)
+            HistoryEntry::getListBy(sprintf(
+                'WHERE type = %d ORDER BY id DESC LIMIT %d',
+                $type,
+                $count
+            ))
         );
     }
 }
