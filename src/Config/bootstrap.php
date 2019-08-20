@@ -19,7 +19,6 @@ use Stu\Control\CommController;
 use Stu\Control\CrewController;
 use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
-use Stu\Control\NotesController;
 use Stu\Control\OptionsController;
 use Stu\Control\ShipController;
 use Stu\Control\ShiplistController;
@@ -85,7 +84,6 @@ $builder->addDefinitions([
     HistoryController::class => autowire(HistoryController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
-    NotesController::class => autowire(NotesController::class),
     OptionsController::class => autowire(OptionsController::class),
     ShipController::class => autowire(ShipController::class),
     ShiplistController::class => autowire(ShiplistController::class),
@@ -102,6 +100,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Maindesk/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Notes/services.php'
 );
 
 $builder->addDefinitions([

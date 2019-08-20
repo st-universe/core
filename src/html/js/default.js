@@ -373,3 +373,16 @@ function showAchievement(text) {
 	document.body.appendChild(elem);
 	elem.show();
 }
+function nodelistToString(list) {
+	return Array.from(list)
+		.filter(function (node) {
+			if (node.checked) {
+				return true;
+			}
+			return false;
+		})
+		.map(function (node) {
+			return node.value;
+		})
+		.join(',');
+}

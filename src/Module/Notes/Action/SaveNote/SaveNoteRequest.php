@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Notes\Action\SaveNote;
+
+use Stu\Lib\Request\CustomControllerHelperTrait;
+
+final class SaveNoteRequest implements SaveNoteRequestInterface
+{
+    use CustomControllerHelperTrait;
+
+    public function getNoteId(): int
+    {
+        return $this->queryParameter('note')->int()->defaultsTo(0);
+    }
+
+    public function getTitle(): string
+    {
+        return strip_tags(
+            tidyString(
+                $this->queryParameter('title')->string()->defaultsToIfEmpty('')
+            )
+        );
+    }
+
+    public function getText(): string
+    {
+        return strip_tags(
+            tidyString(
+                $this->queryParameter('text')->string()->defaultsToIfEmpty('')
+            )
+        );
+    }
+
+}

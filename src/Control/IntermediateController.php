@@ -10,6 +10,7 @@ final class IntermediateController extends GameController
     public const TYPE_DATABASE = 'DATABASE';
     public const TYPE_RESEARCH = 'RESEARCH';
     public const TYPE_MAINDESK = 'MAINDESK';
+    public const TYPE_NOTES = 'NOTES';
 
     /**
      * @param SessionInterface $session

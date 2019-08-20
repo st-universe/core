@@ -3,7 +3,8 @@
 	<metal:macro metal:fill-slot="content">
 		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<form action="notes.php" method="post">
+		<form action="notes.php" method="post" id="note_form">
+			<stu:hidden name="delnotes" value="" />
 			<table class="tcal">
 				<tr>
 					<th>Notiz</th>
@@ -11,24 +12,24 @@
 					<th></th>
 					<th style="width: 20px;"></th>
 				</tr>
-				<tr tal:condition="not:THIS/getNotesList">
+				<tr tal:condition="not:NOTE_LIST">
 					<td colspan="4" style="text-align: center">Keine Notizen vorhanden</td>
 				</tr>
-				<tr tal:repeat="data THIS/getNotesList" tal:attributes="class string:row${repeat/data/odd}">
+				<tr tal:repeat="data NOTE_LIST" tal:attributes="class string:row${repeat/data/odd}">
 					<td>
 						<a href="notes.php?SHOW_NOTE=1&note=${data/getId}" tal:content="structure data/getTitleDecoded">TITLE</a>
 					</td>
 					<td style="text-align: center;" tal:content="data/getDateFormatted">DATE</td>
 					<td style="width:20px;">
-						<stu:imagelink image="x" href="notes.php?B_DEL_NOTE=1&note=${data/getId}&sstr=${THIS/getSessionString}" />
+						<stu:imagelink image="x" href="notes.php?B_DELETE_NOTES=1&delnotes=${data/getId}&sstr=${THIS/getSessionString}" />
 					</td>
 					<td style="text-align: center;">
-						<input type="checkbox" name="delnotes[]" tal:attributes="value data/getId" />
+						<input type="checkbox" name="marked_notes[]" tal:attributes="value data/getId" onclick="$('delnotes').value = nodelistToString(document.getElementById('note_form').elements['marked_notes[]']);"/>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="3" style="text-align: center;">
-						<stu:submit value="Neue Notiz" name="SHOW_NOTE" />
+						<stu:submit value="Neue Notiz" name="SHOW_NEW_NOTE" />
 					</td>
 					<td>
 						<stu:submit value="löschen" i18n:attributes="" name="B_DELETE_NOTES" />
@@ -45,17 +46,17 @@
 		<form action="notes.php" method="post">
 			<stu:hidden name="SHOW_NOTE" value="1" />
 			<stu:hidden name="sstr" tal:attributes="value THIS/getSessionString" />
-			<stu:hidden tal:condition="not:THIS/getSelectedNote/isNew" name="note" tal:attributes="value THIS/getSelectedNote/getId" />
+			<stu:hidden tal:condition="not:NOTE/isNew" name="note" tal:attributes="value NOTE/getId" />
 			<table class="tcal">
 				<tr>
 					<th>Titel</th>
 					<td>
-						<input type="text" name="title" tal:attributes="value THIS/getSelectedNote/getTitleDecodedRaw" style="width: 100%;" />
+						<input type="text" name="title" tal:attributes="value NOTE/getTitleDecodedRaw" style="width: 100%;" />
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<stu:textarea name="text" style="width: 100%; height: 400px;" tal:content="THIS/getSelectedNote/getTextDecodedRaw"></stu:textarea>
+						<stu:textarea name="text" style="width: 100%; height: 400px;" tal:content="NOTE/getTextDecodedRaw"></stu:textarea>
 					</td>
 				</tr>
 				<tr>

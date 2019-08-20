@@ -26,7 +26,7 @@
 						<span tal:replace="structure bbcode:THIS/getUser/getName" /><br />
 						<span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 							
-						<stu:jsimagelink onclick="openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
+						<stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
 						<stu:imagelink href="comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
 					</div>
 				</div>

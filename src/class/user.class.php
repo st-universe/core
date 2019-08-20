@@ -13,7 +13,7 @@ class UserData extends BaseTable {
 	}	
 
 	function getId() {
-		return $this->data['id'];
+		return (int) $this->data['id'];
 	}
 
 	function setId($value) {

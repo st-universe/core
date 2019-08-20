@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\NotesController;
+use Stu\Control\IntermediateController;
 
 @session_start();
 
@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(NotesController::class)->main();
+$container->get(IntermediateController::TYPE_NOTES)->main();
 
 DB()->commitTransaction();
