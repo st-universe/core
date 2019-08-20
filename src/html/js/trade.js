@@ -1,43 +1,43 @@
 function openTradepostInfo(postId) {
 	var elt = 'tradepostinfo';
 	openPJsWin(elt,1);
-	ajaxcall(elt,'trade.php?postid='+postId+'&SHOW_TRADEPOST_INFO=1');
+	ajax_update(elt,'trade.php?postid='+postId+'&SHOW_TRADEPOST_INFO=1');
 }
 function showTradeOfferByGood(postId,goodId) {
 	var elt = 'tradegoodinfo';
 	openPJsWin(elt,1);
-	ajaxcall(elt,'trade.php?postid='+postId+'&SHOW_OFFER_GOOD=1&goodid='+goodId);
+	ajax_update(elt,'trade.php?postid='+postId+'&SHOW_OFFER_GOOD=1&goodid='+goodId);
 }
 function showTradeOfferMenu(storid) {
 	var elt = 'tradeoffermenu';
 	openPJsWin(elt,1);
-	ajaxcall(elt,'trade.php?SHOW_OFFER_MENU=1&storid='+storid);
+	ajax_update(elt,'trade.php?SHOW_OFFER_MENU=1&storid='+storid);
 }
 function showOfferMenuNewOffer(storid) {
-	ajaxcall('tradeoffermenucontent','trade.php?SHOW_OFFER_MENU_NEW_OFFER=1&storid='+storid);
+	ajax_update('tradeoffermenucontent','trade.php?SHOW_OFFER_MENU_NEW_OFFER=1&storid='+storid);
 	$('tradeoffermenunewoffer').addClassName('selected');
 	$('tradeoffermenutransfer').removeClassName('selected');
 }
 function showOfferMenuTransfer(storid) {
-	ajaxcall('tradeoffermenucontent','trade.php?SHOW_OFFER_MENU_TRANSFER=1&storid='+storid);
+	ajax_update('tradeoffermenucontent','trade.php?SHOW_OFFER_MENU_TRANSFER=1&storid='+storid);
 	$('tradeoffermenutransfer').addClassName('selected');
 	$('tradeoffermenunewoffer').removeClassName('selected');
 }
 function takeTradeOffer(offerid) {
 	var elt = 'tradeoffer';
 	openPJsWin(elt,1);
-	ajaxcall(elt,'trade.php?SHOW_TAKE_OFFER=1&offerid='+offerid);
+	ajax_update(elt,'trade.php?SHOW_TAKE_OFFER=1&offerid='+offerid);
 }
 function showTradeLicenceList(obj,postId) {
 	var elt = 'licencelist';
 	var pos = findObject(obj);
 	openWindowPosition(elt,1,300,pos[0]-300,pos[1]);
-	ajaxcall(elt,'trade.php?SHOW_LICENCE_LIST=1&postid='+postId);
+	ajax_update(elt,'trade.php?SHOW_LICENSE_LIST=1&postid='+postId);
 }
 function openShoutbox(networkid) {
 	var elt = 'shoutbox';
 	openWindowPosition(elt,1,800,90,60);
-	ajaxcall(elt,'trade.php?SHOW_SHOUTBOX=1&network='+networkid);
+	ajax_update(elt,'trade.php?SHOW_SHOUTBOX=1&network='+networkid);
 	setTimeout('refreshShoutbox()',5000);
 	setTimeout('startKeyObserver()',1000);
 }
@@ -46,10 +46,10 @@ function startKeyObserver() {
 		return;
 	}
 	$('shoutboxentry').observe('keypress', function(event) {
-			if (Event.KEY_RETURN == event.keyCode) {
-				addShoutboxEntry();
-			}
-		});
+		if (Event.KEY_RETURN == event.keyCode) {
+			addShoutboxEntry();
+		}
+	});
 }
 function addShoutboxEntry() {
 	if (!$('shoutboxentry')) {
@@ -66,6 +66,6 @@ function refreshShoutbox() {
 	if (over == null) {
 		return;
 	}
-	ajaxcall('shoutbox_list','trade.php?SHOW_SHOUTBOX_LIST=1&network='+$('network').value);
+	ajax_update('shoutbox_list','trade.php?SHOW_SHOUTBOX_LIST=1&network='+$('network').value);
 	setTimeout('refreshShoutbox()',5000);
 }

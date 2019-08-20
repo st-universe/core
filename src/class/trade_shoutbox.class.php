@@ -82,12 +82,6 @@ class TradeShoutboxData extends BaseTable { #{{{
 
 	/**
 	 */
-	public function getDateFormatted() { #{{{
-		return parseDateTime($this->getDate());
-	} # }}}
-
-	/**
-	 */
 	public function getUser() { #{{{
 		return ResourceCache()->getObject('user',$this->getUserId());
 	} # }}}

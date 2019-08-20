@@ -36,10 +36,6 @@ class TradeLicencesData extends BaseTable {
 	public function getUser() {
 		return ResourceCache()->getObject('user',$this->getUserId());
 	}
-
-	public function getDateFormatted() {
-		return date("d.m.Y H:i",$this->getDate());
-	}
 }
 class TradeLicences extends TradeLicencesData {
 

@@ -10,7 +10,7 @@
 				</tr>
 				<tr>
 					<td>
-						<a href="?SHOW_ACCOUNTS=1">Warenkonten</a> (<span tal:replace="THIS/getTradeLicenceCount">TRADELICENCES</span>/<span tal:replace="php:MAX_TRADELICENCE_COUNT">MAXCOUNT</span>)
+						<a href="?SHOW_ACCOUNTS=1">Warenkonten</a> (<span tal:replace="TRADE_LICENSE_COUNT">TRADELICENCES</span>/<span tal:replace="MAX_TRADE_LICENSE_COUNT">MAXCOUNT</span>)
 					</td>
 				</tr>
 			</table>
@@ -26,16 +26,16 @@
 				<th>Handelsposten</th>
 				<th>Siedler</th>
 			</tr>
-			<tr tal:condition="not:THIS/getOfferList">
+			<tr tal:condition="not:OFFER_LIST">
 				<td colspan="6" i18n:translate="">Keine Angebote vorhanden</td>
 			</tr>
-			<tal:block tal:repeat="data THIS/getOfferList">
+			<tal:block tal:repeat="data OFFER_LIST">
 				<tr tal:attributes="class string:row${repeat/data/odd}">
 					<td tal:define="handle THIS/getUniqHandle">
 						<a tal:condition="php:currentUser().getId()!=data.getUserId()" href="javascript:void(0);" onmouseover="cp('${handle}','buttons/menu_trade1');" onmouseout="cp('${handle}','buttons/menu_trade0');" onclick="takeTradeOffer(${data/getId});">
 							<img src="${GFX}/buttons/menu_trade0.gif" tal:attributes="name handle" title="Angebot annehmen" />
 						</a>
-						<a href="?B_CANCEL_OFFER_ACCOUNT=1&offerid=${data/getId}&sstr=${THIS/getSessionString}" tal:condition="php:currentUser().getId()==data.getUserId()" onmouseover="cp('${handle}','buttons/x2');" onmouseout="cp('${handle}','buttons/x1');">
+						<a href="?B_CANCEL_OFFER=1&offerid=${data/getId}&sstr=${THIS/getSessionString}" tal:condition="php:currentUser().getId()==data.getUserId()" onmouseover="cp('${handle}','buttons/x2');" onmouseout="cp('${handle}','buttons/x1');">
 							<img src="${GFX}/buttons/x1.gif" tal:attributes="name handle" title="Angebot löschen" />
 						</a>
 					</td>

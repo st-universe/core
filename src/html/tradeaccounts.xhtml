@@ -3,10 +3,10 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-        <stu:box tal:condition="not:THIS/getAccounts" title="Meldung" i18n:attributes="title">
+        <stu:box tal:condition="not:ACCOUNTS" title="Meldung" i18n:attributes="title">
             <span i18n:translate="">Keine Warenkonten vorhanden</span>
         </stu:box>
-		<tal:block tal:repeat="data THIS/getAccounts">
+		<tal:block tal:repeat="data ACCOUNTS">
 			<table class="tcal">
 				<tr>
 					<th colspan="5" tal:content="structure data/getShip/getName">POST</th>

@@ -22,7 +22,6 @@ use Stu\Control\OptionsController;
 use Stu\Control\ShipController;
 use Stu\Control\ShiplistController;
 use Stu\Control\StarmapController;
-use Stu\Control\TradeController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
@@ -83,7 +82,6 @@ $builder->addDefinitions([
     ShipController::class => autowire(ShipController::class),
     ShiplistController::class => autowire(ShiplistController::class),
     StarmapController::class => autowire(StarmapController::class),
-    TradeController::class => autowire(TradeController::class),
 ]);
 
 $builder->addDefinitions(
@@ -103,6 +101,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/PlayerProfile/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Trade/services.php'
 );
 
 $builder->addDefinitions([
