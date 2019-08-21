@@ -512,7 +512,7 @@
 				<tr>
 					<td style="width: 450px;">
 						<div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
-							<img src="${GFX}/systems/${data/getSystemType}.gif" tal:attributes="title data/getDescription" />	
+							<img src="${GFX}/system/${data/getSystemType}.gif" tal:attributes="title data/getDescription" />	
 							<span tal:replace="structure php:renderHuellStatusBar(THIS.getShip().getHuell(),THIS.getShip().getMaxHuell())">EPS</span> 
 							${data/getStatus}%
 						</div>
@@ -631,7 +631,7 @@
 			<div class="divhead" i18n:translate="">Systemstatus</div>
 			<div class="divbody">
 				<div tal:repeat="data THIS/getShip/getSystems">
-					<img src="${GFX}/systems/${data/getSystemType}.gif" tal:attributes="title data/getDescription" />	
+					<img src="${GFX}/system/${data/getSystemType}.gif" tal:attributes="title data/getDescription" />	
 					<span tal:replace="structure php:renderHuellStatusBar(THIS.getShip().getHuell(),THIS.getShip().getMaxHuell())">EPS</span> 
 					${data/getStatus}%
 				</div>
