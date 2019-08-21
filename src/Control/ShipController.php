@@ -1018,7 +1018,7 @@ final class ShipController extends GameController
             return;
         }
         // TBD zusätzliche checks für flotten
-        $fleet = Fleet::getUserFleetById(request::getIntFatal('fleetid'));
+        $fleet = Fleet::getUserFleetById(request::getIntFatal('fleetid'), currentUser()->getId());
         if ($fleet->getFleetLeader() == $this->getShip()->getId()) {
             return;
         }

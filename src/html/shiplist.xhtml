@@ -2,7 +2,7 @@
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<table class="tcal" tal:condition="not:THIS/hasShips">
+		<table class="tcal" tal:condition="not:SHIPS_AVAILABLE">
 			<tr>
 				<th i18n:translate="">Meldung</th>
 			</tr>
@@ -10,8 +10,8 @@
 				<td i18n:translate="">Du besitzt derzeit keine Schiffe</td>
 			</tr>
 		</table>
-		<tal:block tal:condition="THIS/hasShips">
-			<tal:block tal:condition="THIS/hasFleets" tal:repeat="fleet THIS/getFleets">
+		<tal:block tal:condition="SHIPS_AVAILABLE">
+			<tal:block tal:repeat="fleet FLEETS">
 				<form action="shiplist.php" method="post">
 					<input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
 					<table class="tcal">
@@ -26,7 +26,7 @@
 											<div style="display: table-cell; vertical-align:middle;">
 												<span tal:replace="structure bbcode:fleet/getName">NAME</span>
 												<span i18n:translate="">
-													(<span tal:replace="fleet/getPointSum" i18n:name="points" />/<span tal:replace="THIS/getMaxFleetPoints" i18n:name="maxpoints" /> Punkte)
+													(<span tal:replace="fleet/getPointSum" i18n:name="points" />/<span tal:replace="MAX_POINTS_PER_FLEET" i18n:name="maxpoints" /> Punkte)
 												</span>
 											</div>
 										</td>
@@ -55,26 +55,26 @@
 				<br />
 			</tal:block>
 
-			<tal:block tal:condition="THIS/hasBases">
+			<tal:block tal:condition="BASES">
 				<table class="tcal">
 					<tr>
 						<td colspan="11">Stationen</td>
 					</tr>
 					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />	
-					<tal:block tal:repeat="ship THIS/getBases">
+					<tal:block tal:repeat="ship BASES">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
 					</tal:block>
 				</table>
 				<br />
 			</tal:block>
 
-			<tal:block tal:condition="THIS/hasSingleShips">
+			<tal:block tal:condition="SHIPS">
 				<table class="tcal">
 					<tr>
 						<td colspan="11">Einzelschiffe</td>
 					</tr>
 					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />	
-					<tal:block tal:repeat="ship THIS/getSingleShips">
+					<tal:block tal:repeat="ship SHIPS">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
 					</tal:block>
 				</table>

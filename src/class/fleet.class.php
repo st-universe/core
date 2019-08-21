@@ -194,8 +194,8 @@ class Fleet extends FleetData {
 		return $ret;
 	}
 
-	static function getUserFleetById($fleet_id) {
-		$result = DB()->query("SELECT * FROM stu_fleets WHERE id=".$fleet_id." AND user_id=".currentUser()->getId()." LIMIT 1",4);
+	static function getUserFleetById($fleet_id, int $userId) {
+		$result = DB()->query("SELECT * FROM stu_fleets WHERE id=".$fleet_id." AND user_id=".$userId." LIMIT 1",4);
 		if ($result == 0) {
 			new ObjectNotFoundException($fleet_id);
 		}

@@ -19,7 +19,6 @@ use Stu\Control\CrewController;
 use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
 use Stu\Control\ShipController;
-use Stu\Control\ShiplistController;
 use Stu\Control\StarmapController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
@@ -78,7 +77,6 @@ $builder->addDefinitions([
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
     ShipController::class => autowire(ShipController::class),
-    ShiplistController::class => autowire(ShiplistController::class),
     StarmapController::class => autowire(StarmapController::class),
 ]);
 
@@ -105,6 +103,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/PlayerSetting/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Ship/services.php'
 );
 
 $builder->addDefinitions([
