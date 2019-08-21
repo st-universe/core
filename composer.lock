@@ -2865,12 +2865,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "9739e713f2d68be88a4e4418949bfd2cec63a0fa"
+                "reference": "e959e171b48d47be1b054dfcd1dc04059204536b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/9739e713f2d68be88a4e4418949bfd2cec63a0fa",
-                "reference": "9739e713f2d68be88a4e4418949bfd2cec63a0fa",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/e959e171b48d47be1b054dfcd1dc04059204536b",
+                "reference": "e959e171b48d47be1b054dfcd1dc04059204536b",
                 "shasum": ""
             },
             "type": "library",
@@ -2882,7 +2882,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-08-20T22:22:47+00:00"
+            "time": "2019-08-21T20:28:26+00:00"
         },
         {
             "name": "zendframework/zend-loader",
@@ -3895,16 +3895,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.14",
+            "version": "7.5.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2834789aeb9ac182ad69bfdf9ae91856a59945ff"
+                "reference": "d79c053d972856b8b941bb233e39dc521a5093f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2834789aeb9ac182ad69bfdf9ae91856a59945ff",
-                "reference": "2834789aeb9ac182ad69bfdf9ae91856a59945ff",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d79c053d972856b8b941bb233e39dc521a5093f0",
+                "reference": "d79c053d972856b8b941bb233e39dc521a5093f0",
                 "shasum": ""
             },
             "require": {
@@ -3975,7 +3975,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-07-15T06:24:08+00:00"
+            "time": "2019-08-21T07:05:16+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
