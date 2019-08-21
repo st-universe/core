@@ -284,7 +284,7 @@ class ColfieldData extends BaseTable {
 	/**
 	 */
 	public function hasUpgradeOrTerraformingOption() { #{{{
-		return (count($this->getPossibleUpgrades()) > 0 && !$this->isInConstruction()) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());
+		return (!$this->isInConstruction() && count($this->getPossibleUpgrades()) > 0) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());
 	} # }}}
 
 }
