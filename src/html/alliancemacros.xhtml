@@ -1,31 +1,22 @@
 <html xmlns:stu="stu">
-	<metal:macro metal:define-macro="topicnavigation">
-		<table class="use">
-			<tr>
-				<td tal:repeat="item THIS/getTopicNavigation">
-					<a href="?SHOW_TOPIC=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
-				</td>
-			</tr>
-		</table>	
-	</metal:macro>
 	<metal:block metal:define-macro="topic_settings">
 		<form action="alliance.php" method="post">
-			<input type="hidden" name="bid" value="runtime" tal:attributes="value THIS/getTopic/getBoardId" />
-			<input type="hidden" name="tid" value="runtime" tal:attributes="value THIS/getTopic/getId" />
+			<input type="hidden" name="bid" value="runtime" tal:attributes="value TOPIC/getBoardId" />
+			<input type="hidden" name="tid" value="runtime" tal:attributes="value TOPIC/getId" />
 			<table class="use" style="width: 200px">
 				<tr>
 					<td>
-						<a href="?B_DELETE_TOPIC=1&tid=${THIS/getTopic/getId}&bid=${THIS/getBoard/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Thema löschen</a>
+						<a href="?B_DELETE_TOPIC=1&tid=${TOPIC/getId}&bid=${TOPIC/getBoardId}&sstr=${THIS/getSessionString}" class="linkbutton">Thema löschen</a>
 						<br />
 						<br />
 						<br />
-						<input type="text" style="width: 100%" name="tname" value="runtime" tal:attributes="value THIS/getTopic/getName" /><br />
+						<input type="text" style="width: 100%" name="tname" value="runtime" tal:attributes="value TOPIC/getName" /><br />
 						<br />
 						<input type="submit" value="Umbenennen" name="B_RENAME_TOPIC" />
 						<br />
 						<br />
-						<a tal:condition="not:THIS/getTopic/getSticky" class="linkbutton" href="?B_SET_STICKY=1&SHOW_BOARD=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}" i18n:translate="">Als Wichtig markieren</a>
-						<a tal:condition="THIS/getTopic/getSticky" class="linkbutton" href="?B_UNSET_STICKY=1&SHOW_BOARD=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}" i18n:translate="">Als Unwichtig markieren</a>
+						<a tal:condition="not:TOPIC/getSticky" class="linkbutton" href="?B_SET_STICKY=1&SHOW_BOARD=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}" i18n:translate="">Als Wichtig markieren</a>
+						<a tal:condition="TOPIC/getSticky" class="linkbutton" href="?B_UNSET_STICKY=1&SHOW_BOARD=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}" i18n:translate="">Als Unwichtig markieren</a>
 					</td>
 				</tr>
 			</table>
@@ -33,15 +24,15 @@
 	</metal:block>
 	<metal:block metal:define-macro="board_settings">
 		<form action="alliance.php" method="post">
-			<input type="hidden" name="bid" value="runtime" tal:attributes="value THIS/getBoard/getId" />
+			<input type="hidden" name="bid" value="runtime" tal:attributes="value BOARD/getId" />
 			<table class="use" style="width: 200px">
 				<tr>
 					<td>
-						<a href="?B_DELETE_BOARD=1&bid=${THIS/getBoard/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Forum löschen</a>
+						<a href="?B_DELETE_BOARD=1&bid=${BOARD/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Forum löschen</a>
 						<br />
 						<br />
 						<br />
-						<input type="text" style="width: 100%" name="tname" value="runtime" tal:attributes="value THIS/getBoard/getName" /><br />
+						<input type="text" style="width: 100%" name="tname" value="runtime" tal:attributes="value BOARD/getName" /><br />
 						<br />
 						<input type="submit" value="Umbenennen" name="B_RENAME_BOARD" />
 					</td>

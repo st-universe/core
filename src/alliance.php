@@ -1,12 +1,12 @@
 <?php
 
-use Stu\Control\AllianceController;
+use Stu\Control\IntermediateController;
 
 @session_start();
 require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(AllianceController::class)->main();
+$container->get(IntermediateController::TYPE_ALLIANCE)->main();
 
 DB()->commitTransaction();

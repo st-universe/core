@@ -2,21 +2,21 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<a href="?SHOW_NEW_POST=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}" class="linkbutton">Antwort erstellen</a>
+		<a href="?SHOW_NEW_POST=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}" class="linkbutton">Antwort erstellen</a>
 		<br />
 		<br />
-		<metal:macro metal:use-macro="html/alliancemacros.xhtml/topicnavigation" />
+		<metal:macro metal:use-macro="topicnavigation" />
 		<br />
-		<div tal:repeat="post THIS/getTopicPostings">
+		<div tal:repeat="post POSTINGS">
 			<table tal:attributes="class string:tcal row${repeat/post/odd}">
 				<tr>
 					<td>
 						<img src="${GFX}/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 					</td>
-					<td style="width: 100px;" tal:condition="THIS/getAlliance/currentUserIsBoardModerator">
-						<stu:imagelink image="x" href="?B_DEL_POSTING=1&bid=${THIS/getTopic/getBoardId}&tid=${post/getTopicId}&pid=${post/getId}&sstr=${THIS/getSessionString}" title="Löschen" i18n:attributes="title" />
+					<td style="width: 100px;" tal:condition="IS_MODERATOR">
+						<stu:imagelink image="x" href="?B_DEL_POSTING=1&bid=${TOPIC/getBoardId}&tid=${post/getTopicId}&pid=${post/getId}&sstr=${THIS/getSessionString}" title="Löschen" i18n:attributes="title" />
 					</td>
-					<th tal:content="post/getDateDisplay" style="width: 120px;">DATE</th>
+					<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
 				</tr>
 			</table>
 			<table class="tcal">
@@ -42,9 +42,18 @@
 			<br />
 		</div>	
 		<br />
-		<metal:macro metal:use-macro="html/alliancemacros.xhtml/topicnavigation" />
+		<metal:macro metal:use-macro="topicnavigation" />
 		<br />
-		<a href="?SHOW_NEW_POST=1&bid=${THIS/getTopic/getBoardId}&tid=${THIS/getTopic/getId}" class="linkbutton">Antwort erstellen</a>
+		<a href="?SHOW_NEW_POST=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}" class="linkbutton">Antwort erstellen</a>
 	</tal:block>
 </tal:block>
+<metal:macro metal:define-macro="topicnavigation">
+	<table class="use">
+		<tr>
+			<td tal:repeat="item TOPIC_NAVIGATION">
+				<a href="?SHOW_TOPIC=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+			</td>
+		</tr>
+	</table>	
+</metal:macro>
 </html>

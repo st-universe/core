@@ -9,18 +9,18 @@
 			</div>
 			<br />
 		</div>
-		<tal:block tal:condition="not:THIS/getAllianceList">
+		<tal:block tal:condition="not:ALLIANCE_LIST">
 			<div class="divhead" i18n:translate="">Meldung</div>
 			<div class="divbody" i18n:translate="">Keine Allianzen vorhanden</div>
 		</tal:block>
-		<table class="tcal" tal:condition="THIS/getAllianceList">
+		<table class="tcal" tal:condition="ALLIANCE_LIST">
 			<tr>
 				<th style="width: 80%;">Allianzen</th>
 				<th>Mitglieder</th>
 				<th>Typ</th>
 				<th>Bewerbung</th>
 			</tr>
-			<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data THIS/getAllianceList">
+			<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data ALLIANCE_LIST">
 				<td class="runtime" tal:attributes="class data/getCSSClass">
 					<a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
 				</td>

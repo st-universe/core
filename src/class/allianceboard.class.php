@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\AllianceController;
+use Stu\Module\Alliance\View\Topic\Topic;
 
 class AllianceBoardData extends BaseTable {
 
@@ -194,7 +194,7 @@ class AllianceTopicData extends BaseTable {
 	function getPostings($mark=FALSE) {
 		if ($this->postings === NULL) {
 			if ($mark !== FALSE) {
-				$limit = ' LIMIT '.$mark.','. AllianceController::ALLIANCEBOARDLIMITER;
+				$limit = ' LIMIT '.$mark.','. Topic::ALLIANCEBOARDLIMITER;
 			} else {
 				$limit = '';
 			}
@@ -231,11 +231,11 @@ class AllianceTopicData extends BaseTable {
 	 */
 	public function getPages() { #{{{
 		if ($this->pages === NULL) {
-			if ($this->getPostCount() <= AllianceController::ALLIANCEBOARDLIMITER) {
+			if ($this->getPostCount() <= Topic::ALLIANCEBOARDLIMITER) {
 				return FALSE;
 			}
-			for ($i=1;$i<=ceil($this->getPostCount()/AllianceController::ALLIANCEBOARDLIMITER);$i++) {
-				$this->pages[$i] = ($i-1)*AllianceController::ALLIANCEBOARDLIMITER;
+			for ($i=1;$i<=ceil($this->getPostCount()/Topic::ALLIANCEBOARDLIMITER);$i++) {
+				$this->pages[$i] = ($i-1)*Topic::ALLIANCEBOARDLIMITER;
 			}
 		}
 		return $this->pages;
@@ -381,10 +381,6 @@ class AlliancePostData extends BaseTable {
 
 	function getDate() {
 		return $this->data['date'];
-	}
-
-	function getDateDisplay() {
-		return date("d.m.Y H:i",$this->getDate());
 	}
 
 	function setUserId($value) {

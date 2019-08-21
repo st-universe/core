@@ -12,7 +12,7 @@
 				<th></th>
 				<th></th>
 			</tr>
-			<tr tal:repeat="data THIS/getAlliance/getMembers">
+			<tr tal:repeat="data ALLIANCE/getMembers">
 				<td style="width: 36px;" tal:define="id data/getUserId">
 					<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
 					<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
@@ -34,7 +34,7 @@
 						<div id="promote${data/getUserId}" style="border-top: 1px solid #262323; margin-top: 10px; padding-top: 10px; display: none;">
 							<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_DIPLOMATIC}&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Außenminister</a><br /><br />
 							<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_SUCCESSOR}&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Vize-Präsident</a>
-							<tal:block tal:condition="THIS/getAlliance/currentUserIsFounder">
+							<tal:block tal:condition="ALLIANCE/currentUserIsFounder">
 								<br /><br />
 								<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_FOUNDER}&uid=${data/getUserId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Präsident</a>
 							</tal:block>

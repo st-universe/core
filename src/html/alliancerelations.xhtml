@@ -7,7 +7,7 @@
 			<form action="alliance.php" method="post">
 				<input type="hidden" name="SHOW_RELATIONS" value="1" />
 				<select name="oid">
-					<option tal:repeat="data THIS/getAllianceList" tal:content="data/getNameWithoutMarkup" value="runtime" tal:attributes="value data/getId">NAME</option>
+					<option tal:repeat="data ALLIANCE_LIST" tal:content="data/getNameWithoutMarkup" value="runtime" tal:attributes="value data/getId">NAME</option>
 				</select>
 				<select name="type">
 					<option value="runtime" tal:attributes="value php:ALLIANCE_RELATION_WAR">Krieg</option>
@@ -28,10 +28,10 @@
 				<td class="darkbg">Zeitpunkt</td>
 				<td class="darkbg">Aktionen</td>
 			</tr>
-			<tr tal:condition="not:THIS/getRelations">
+			<tr tal:condition="not:RELATIONS">
 				<td colspan="4">Keine Beziehungen vorhanden</td>
 			</tr>
-			<tr tal:condition="THIS/getRelations" tal:repeat="data THIS/getRelations" tal:attributes="class string:row${repeat/data/odd}">
+			<tr tal:condition="RELATIONS" tal:repeat="data RELATIONS" tal:attributes="class string:row${repeat/data/odd}">
 				<form method="post" action="alliance.php">
 					<input type="hidden" name="SHOW_RELATIONS" value="1" />
 					<input type="hidden" name="oid" value="runtime" tal:attributes="value data/getOpponent/getId" />

@@ -2,14 +2,14 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<table class="tcal" tal:condition="THIS/getBoards">
+		<table class="tcal" tal:condition="TOPICS">
 			<tr>
 				<th>Thema</th>
 				<th>Beiträge</th>
 				<th>Letzter Beitrag</th>
-				<th tal:condition="THIS/getAlliance/currentUserMayEdit"></th>
+				<th tal:condition="EDITABLE"></th>
 			</tr>
-			<tr tal:repeat="topic THIS/getTopics" tal:attributes="class string:row${repeat/topic/odd}">
+			<tr tal:repeat="topic TOPICS" tal:attributes="class string:row${repeat/topic/odd}">
 				<td>
 					<div style="display: table-cell; width: 100%">
 						<img src="${GFX}/buttons/board_important.png" title="Wichtig" i18n:attributes="title" tal:condition="topic/getSticky" />
@@ -23,11 +23,11 @@
 				</td>
 				<td tal:content="topic/getPostCount">POSTINGS</td>
 				<td tal:condition="topic/getLatestPost">
-					<span tal:replace="topic/getLatestPost/getDateDisplay">DATE</span> von:<br />
+					<span tal:replace="datetime:topic/getLatestPost/getDate">DATE</span> von:<br />
 					<span tal:replace="structure bbcode:topic/getLatestPost/getUser/getName">NAME</span>
 				</td>
 				<td tal:condition="not:topic/getLatestPost">-</td>
-				<td style="width: 30px; text-align: center;" tal:condition="THIS/getAlliance/currentUserMayEdit" tal:define="handle THIS/getUniqHandle">
+				<td style="width: 30px; text-align: center;" tal:condition="EDITABLE" tal:define="handle THIS/getUniqHandle">
 					<a href="javascript:void(0)" onclick="openTopicSettings(this,${topic/getId},${topic/getBoardId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
 						<img src="${GFX}/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
 					</a>
@@ -35,7 +35,7 @@
 			</tr>
 		</table>
 		<br />
-		<a href="alliance.php?SHOW_NEW_TOPIC=1&bid=${THIS/getBoard/getId}" class="linkbutton">Thema erstellen</a>
+		<a href="alliance.php?SHOW_NEW_TOPIC=1&bid=${BOARD_ID}" class="linkbutton">Thema erstellen</a>
 	</tal:block>
 </tal:block>
 </html>

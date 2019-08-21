@@ -11,7 +11,6 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Control\AllianceController;
 use Stu\Control\ColonyController;
 use Stu\Control\ColonyListController;
 use Stu\Control\CommController;
@@ -69,7 +68,6 @@ $builder->addDefinitions([
 ]);
 
 $builder->addDefinitions([
-    AllianceController::class => autowire(AllianceController::class),
     ColonyController::class => autowire(ColonyController::class),
     ColonyListController::class => autowire(ColonyListController::class),
     CommController::class => autowire(CommController::class),
@@ -106,6 +104,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Ship/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Alliance/services.php'
 );
 
 $builder->addDefinitions([
