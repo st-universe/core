@@ -721,7 +721,7 @@ final class ColonyController extends GameController
 
         $cost = $this->getField()->getBuilding()->getCosts();
         foreach ($cost as $key => $obj) {
-            $obj->setTempCount(round(($obj->getCount() / 100) * $integrity));
+            $obj->setTempCount(round(($obj->getAmount() / 100) * $integrity));
         }
         $ret = calculateCosts($cost, $this->getColony()->getStorage(), $this->getColony());
         if ($ret) {
@@ -954,7 +954,7 @@ final class ColonyController extends GameController
             $good = $storage->offsetGet($value);
             $count = $gcount[$key];
             if ($count == "m") {
-                $count = $good->getCount();
+                $count = $good->getAmount();
             } else {
                 $count = intval($count);
             }
@@ -1039,15 +1039,15 @@ final class ColonyController extends GameController
                 continue;
             }
             if ($count == "m") {
-                $count = $good->getCount();
+                $count = $good->getAmount();
             } else {
                 $count = intval($count);
             }
             if ($count < 1) {
                 continue;
             }
-            if ($count > $good->getCount()) {
-                $count = $good->getCount();
+            if ($count > $good->getAmount()) {
+                $count = $good->getAmount();
             }
             if (ceil($count / $good->getGood()->getTransferCount()) > $this->getColony()->getEps()) {
                 $count = $this->getColony()->getEps() * $good->getGood()->getTransferCount();
@@ -1393,11 +1393,11 @@ final class ColonyController extends GameController
                             }
                         }
                         if ($load >= 1) {
-                            if ($storage->offsetGet(GOOD_DEUTERIUM)->getCount() < $load) {
-                                $load = $storage->offsetGet(GOOD_DEUTERIUM)->getCount();
+                            if ($storage->offsetGet(GOOD_DEUTERIUM)->getAmount() < $load) {
+                                $load = $storage->offsetGet(GOOD_DEUTERIUM)->getAmount();
                             }
-                            if ($storage->offsetGet(GOOD_ANTIMATTER)->getCount() < $load) {
-                                $load = $storage->offsetGet(GOOD_ANTIMATTER)->getCount();
+                            if ($storage->offsetGet(GOOD_ANTIMATTER)->getAmount() < $load) {
+                                $load = $storage->offsetGet(GOOD_ANTIMATTER)->getAmount();
                             }
                             $this->getColony()->lowerStorage(GOOD_DEUTERIUM, $load);
                             $this->getColony()->lowerStorage(GOOD_ANTIMATTER, $load);
@@ -1458,8 +1458,8 @@ final class ColonyController extends GameController
                                     $shipobj->getName(), $torp_obj->getName());
                                 throw new Exception;
                             }
-                            if ($load > $storage->offsetGet($torp_obj->getGoodId())->getCount()) {
-                                $load = $storage->offsetGet($torp_obj->getGoodId())->getCount();
+                            if ($load > $storage->offsetGet($torp_obj->getGoodId())->getAmount()) {
+                                $load = $storage->offsetGet($torp_obj->getGoodId())->getAmount();
                             }
                         }
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
@@ -1482,8 +1482,8 @@ final class ColonyController extends GameController
                         if (!$storage->offsetExists($torp_obj->getGoodId())) {
                             throw new Exception;
                         }
-                        if ($count > $storage->offsetGet($torp_obj->getGoodId())->getCount()) {
-                            $count = $storage->offsetGet($torp_obj->getGoodId())->getCount();
+                        if ($count > $storage->offsetGet($torp_obj->getGoodId())->getAmount()) {
+                            $count = $storage->offsetGet($torp_obj->getGoodId())->getAmount();
                         }
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
@@ -2009,8 +2009,8 @@ final class ColonyController extends GameController
             $torp = new TorpedoType($hangar->getDefaultTorpedoTypeId());
             if ($this->getColony()->getStorage()->offsetExists($torp->getGoodId())) {
                 $count = $ship->getMaxTorpedos();
-                if ($count > $this->getColony()->getStorage()->offsetGet($torp->getGoodId())->getCount()) {
-                    $count = $this->getColony()->getStorage()->offsetGet($torp->getGoodId())->getCount();
+                if ($count > $this->getColony()->getStorage()->offsetGet($torp->getGoodId())->getAmount()) {
+                    $count = $this->getColony()->getStorage()->offsetGet($torp->getGoodId())->getAmount();
                 }
                 $ship->setTorpedoType($torp->getId());
                 $ship->setTorpedoCount($count);
@@ -2065,7 +2065,7 @@ final class ColonyController extends GameController
         $this->getColony()->upperStorage($ship->getRump()->getGoodId(), 1);
         $this->getColony()->setStorageSum($this->getColony()->getStorageSum() + 1);
         foreach ($ship->getStorage() as $key => $stor) {
-            $stor->getCount() + $this->getColony()->getStorageSum() > $this->getColony()->getMaxStorage() ? $count = $this->getColony()->getMaxStorage() - $this->getColony()->getStorageSum() : $count = $stor->getCount();
+            $stor->getAmount() + $this->getColony()->getStorageSum() > $this->getColony()->getMaxStorage() ? $count = $this->getColony()->getMaxStorage() - $this->getColony()->getStorageSum() : $count = $stor->getAmount();
             if ($count > 0) {
                 $this->getColony()->upperStorage($stor->getGoodId(), $count);
                 $this->getColony()->setStorageSum($this->getColony()->getStorageSum() + $count);
@@ -2159,14 +2159,14 @@ final class ColonyController extends GameController
         if (!$queue) {
             return false;
         }
-        if ($queue->getCount() < $count) {
-            $count = $queue->getCount();
+        if ($queue->getAmount() < $count) {
+            $count = $queue->getAmount();
         }
         DB()->beginTransaction();
-        if ($count >= $queue->getCount()) {
+        if ($count >= $queue->getAmount()) {
             $queue->deleteFromDatabase();
         } else {
-            $queue->setCount($queue->getCount() - $count);
+            $queue->setCount($queue->getAmount() - $count);
             $queue->save();
         }
         if ($module->getEcost() * $count > $this->getColony()->getMaxEps() - $this->getColony()->getEps()) {
@@ -2178,10 +2178,10 @@ final class ColonyController extends GameController
             if ($this->getColony()->getStorageSum() >= $this->getColony()->getMaxStorage()) {
                 break;
             }
-            if ($cost->getCount() * $count > $this->getColony()->getMaxStorage() - $this->getColony()->getStorageSum()) {
+            if ($cost->getAmount() * $count > $this->getColony()->getMaxStorage() - $this->getColony()->getStorageSum()) {
                 $gc = $this->getColony()->getMaxStorage() - $this->getColony()->getStorageSum();
             } else {
-                $gc = $count * $cost->getCount();
+                $gc = $count * $cost->getAmount();
             }
             $this->getColony()->upperStorage($cost->getGoodId(), $gc);
             $this->getColony()->setStorageSum($this->getColony()->getStorageSum() + $gc);
@@ -2226,15 +2226,15 @@ final class ColonyController extends GameController
                     $count = 0;
                     break;
                 }
-                if ($count * $cost->getCount() > $storage->offsetGet($cost->getGoodId())->getCount()) {
-                    $count = floor($storage->offsetGet($cost->getGoodId())->getCount() / $cost->getCount());
+                if ($count * $cost->getAmount() > $storage->offsetGet($cost->getGoodId())->getAmount()) {
+                    $count = floor($storage->offsetGet($cost->getGoodId())->getAmount() / $cost->getAmount());
                 }
             }
             if ($count == 0) {
                 continue;
             }
             foreach ($torp->getCosts() as $id => $cost) {
-                $this->getColony()->lowerStorage($cost->getGoodId(), $cost->getCount() * $count);
+                $this->getColony()->lowerStorage($cost->getGoodId(), $cost->getAmount() * $count);
             }
             $this->getColony()->upperStorage($torp->getGoodId(), $count * $torp->getAmount());
             $msg[] = sprintf(_('Es wurden %d Torpedos des Typs %s hergestellt'), $count * $torp->getAmount(),

@@ -666,7 +666,7 @@ class ColonyData extends BaseTable {
 	/**
 	 */
 	public function getNegativeEffect() { #{{{
-		return ceil($this->getPopulation()/7);
+		return ceil($this->getPopulation()/70);
 	} # }}}
 
 	private $positive_effect_primary = NULL;
@@ -681,8 +681,11 @@ class ColonyData extends BaseTable {
 				case FACTION_FEDERATION:
 					$key = GOOD_SATISFACTION_FED_PRIMARY;
 					break;
-				case FACTION_EMPIRE:
-					$key = GOOD_SATISFACTION_EMPIRE_PRIMARY;
+				case FACTION_ROMULAN:
+					$key = GOOD_SATISFACTION_ROMULAN_PRIMARY;
+					break;
+				case FACTION_KLINGON:
+					$key = GOOD_SATISFACTION_KLINGON_PRIMARY;
 					break;
 			}
 			$this->positive_effect_primary = 0;
@@ -707,8 +710,11 @@ class ColonyData extends BaseTable {
 				case FACTION_FEDERATION:
 					$key = GOOD_SATISFACTION_FED_SECONDARY;
 					break;
-				case FACTION_EMPIRE:
-					$key = GOOD_SATISFACTION_EMPIRE_SECONDARY;
+				case FACTION_ROMULAN:
+					$key = GOOD_SATISFACTION_ROMULAN_SECONDARY;
+					break;
+				case FACTION_KLINGON:
+					$key = GOOD_SATISFACTION_KLINGON_SECONDARY;
 					break;
 			}
 			if (!isset($production[$key])) {
@@ -758,7 +764,15 @@ class ColonyData extends BaseTable {
 	/**
 	 */
 	public function getCrewLimit() { #{{{
-		return floor(min(max(($this->getPositiveEffectPrimary()-(4 * max(0,($this->getNegativeEffect() - $this->getPositiveEffectSecondary())))),0),$this->getWorkers())/5);
+		return floor(
+			min(
+				max(
+					$this->getPositiveEffectPrimary() - (4 * max(0, $this->getNegativeEffect() - $this->getPositiveEffectSecondary())),
+					0
+				),
+				$this->getWorkers()
+			)/5
+		);
 	} # }}}
 
 	/**
