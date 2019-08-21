@@ -53,12 +53,12 @@ class ModuleQueueData extends BaseTable { #{{{
 	/**
 	 */
 	public function setCount($value) { # {{{
-		$this->setFieldValue('count',$value,'getCount');
+		$this->setFieldValue('count',$value,'getAmount');
 	} # }}}
 
 	/**
 	 */
-	public function getCount() { # {{{
+	public function getAmount() { # {{{
 		return $this->data['count'];
 	} # }}}
 
@@ -171,7 +171,7 @@ class ModuleQueueColonyWrapper { #{{{
 		if (!$queue) {
 			return FALSE;
 		}
-		return $queue->getCount();
+		return $queue->getAmount();
 	} # }}}
 
 } #}}}

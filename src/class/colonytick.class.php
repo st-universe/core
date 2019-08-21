@@ -259,8 +259,8 @@ class ColonyTick {
 	private function proceedModules() { #{{{
 		foreach (ModuleQueue::getObjectsBy('WHERE colony_id='.$this->getColony()->getId()) as $id => $queue) {
 			if ($this->getColony()->hasActiveBuildingWithFunction($queue->getBuildingFunction())) {
-				$this->getColony()->upperStorage($queue->getModule()->getGoodId(),$queue->getCount());
-				$this->addMessage(sprintf(_('Es wurden %d %s hergestellt'),$queue->getCount(),$queue->getModule()->getName()));
+				$this->getColony()->upperStorage($queue->getModule()->getGoodId(),$queue->getAmount());
+				$this->addMessage(sprintf(_('Es wurden %d %s hergestellt'),$queue->getAmount(),$queue->getModule()->getName()));
 				$queue->deleteFromDatabase();
 			}
 		}

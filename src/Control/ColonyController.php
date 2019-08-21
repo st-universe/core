@@ -2108,13 +2108,13 @@ final class ColonyController extends GameController
                             $cost->getGood()->getName());
                         throw new Exception;
                     }
-                    if ($storage[$cost->getGoodId()]->getCount() < $cost->getCount()) {
+                    if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
                         $prod[] = sprintf(_("Zur Herstellung von %s wird %d %s benötigt"), $module->getName(),
-                            $cost->getCount(), $cost->getGood()->getName());
+                            $cost->getAmount(), $cost->getGood()->getName());
                         throw new Exception;
                     }
-                    if ($storage[$cost->getGoodId()]->getCount() < $cost->getCount() * $count) {
-                        $count = floor($storage[$cost->getGoodId()]->getCount() / $cost->getCount());
+                    if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount() * $count) {
+                        $count = floor($storage[$cost->getGoodId()]->getAmount() / $cost->getAmount());
                     }
                 }
             } catch (Exception $e) {
@@ -2122,7 +2122,7 @@ final class ColonyController extends GameController
             }
             DB()->beginTransaction();
             foreach ($module->getCost() as $cid => $cost) {
-                $this->getColony()->lowerStorage($cost->getGoodId(), $cost->getCount() * $count);
+                $this->getColony()->lowerStorage($cost->getGoodId(), $cost->getAmount() * $count);
             }
             $this->getColony()->lowerEps($count * $module->getEcost());
             $this->getColony()->save();
