@@ -1516,6 +1516,10 @@ final class ShipController extends GameController
             $this->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
+        if ($this->getShip()->getShieldState()) {
+            $this->addInformation(_('Die Schilde sind aktiviert'));
+            return;
+        }
         if ($this->getShip()->getWarpState()) {
             $this->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
@@ -1604,6 +1608,10 @@ final class ShipController extends GameController
         }
         if ($this->getShip()->getCloakState()) {
             $this->addInformation(_("Die Tarnung ist aktiviert"));
+            return;
+        }
+        if ($this->getShip()->getShieldState()) {
+            $this->addInformation(_('Die Schilde sind aktiviert'));
             return;
         }
         if ($this->getShip()->getWarpState()) {
