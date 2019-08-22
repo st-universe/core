@@ -9,9 +9,9 @@
 				Gegründet: ${ALLIANCE/getDateDisplay}
 				<div style="padding-top: 10px; width: 50%; float: left;">
 					<div tal:condition="ALLIANCE/currentUserMayEdit">
-						<a href="alliance.php?EDIT_ALLIANCE=1&id=${ALLIANCE/getId}" class="linkbutton">Editieren</a>
-						<a href="alliance.php?SHOW_APPLICATIONS=1&id=${ALLIANCE/getId}" class="linkbutton">Bewerbungen anzeigen</a>
-						<a href="alliance.php?SHOW_MANAGEMENT=1&id=${ALLIANCE/getId}" class="linkbutton">Verwaltung</a>
+						<a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
+						<a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
+						<a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
 						<a href="alliance.php?SHOW_LIST=1" class="linkbutton">Allianzliste</a>
 					</div>
 					<div style="margin-top: 10px;" tal:condition="ALLIANCE/currentUserMaySignup">

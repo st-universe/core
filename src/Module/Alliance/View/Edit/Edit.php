@@ -15,7 +15,6 @@ final class Edit implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $allianceId = $alliance->getId();
 
         if (!$alliance->currentUserMayEdit()) {
             throw new AccessViolation();
@@ -23,12 +22,12 @@ final class Edit implements ViewControllerInterface
         $game->setPageTitle(_('Allianz editieren'));
 
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_ALLIANCE=1&id=%s', $allianceId),
-            _('Allianz anzeigen')
+            'alliance.php',
+            _('Allianz')
         );
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_ALLIANCE=1&id=%s', $allianceId),
-            _('Allianz editieren')
+            'alliance.php?EDIT_ALLIANCE=1',
+            _('Editieren')
         );
         $game->setTemplateFile('html/allianceedit.xhtml');
         $game->setTemplateVar('ALLIANCE', $alliance);

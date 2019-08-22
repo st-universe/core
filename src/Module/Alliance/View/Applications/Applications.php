@@ -21,15 +21,11 @@ final class Applications implements ViewControllerInterface
         }
         $game->setPageTitle(_('Allianz anzeigen'));
         $game->appendNavigationPart(
-            sprintf(
-                'alliance.php?SHOW_ALLIANCE=1&id=%d', $alliance->getId()
-            ),
-            _('Allianz anzeigen')
+            'alliance.php',
+            _('Allianz')
         );
         $game->appendNavigationPart(
-            sprintf(
-                'alliance.php?SHOW_APPLICATIONS=1&id=%d', $alliance->getId()
-            ),
+            'alliance.php?SHOW_APPLICATIONS=1',
             _('Bewerbungen')
         );
         $game->setTemplateFile('html/allianceapplications.xhtml');

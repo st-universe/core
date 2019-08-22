@@ -36,14 +36,17 @@ final class Board implements ViewControllerInterface
         $game->setPageTitle(_('Allianzforum'));
 
         $game->appendNavigationPart(
+            'alliance.php',
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
             sprintf('alliance.php?SHOW_BOARDS=1&id=%d', $boardId),
-            _('Allianzforum')
+            _('Forum')
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d&id=%d',
+                'alliance.php?SHOW_BOARD=1&bid=%d',
                 $boardId,
-                $allianceId
             ),
             $board->getName()
         );

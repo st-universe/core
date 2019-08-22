@@ -25,7 +25,6 @@ final class NewTopic implements ViewControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
         $boardId = $this->newTopicRequest->getBoardId();
-        $allianceId = $alliance->getId();
 
         $board = new AllianceBoard($boardId);
         if ($board->getAllianceId() != $alliance->getId()) {
@@ -35,22 +34,24 @@ final class NewTopic implements ViewControllerInterface
         $game->setPageTitle(_('Allianzforum'));
 
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_BOARDS=1&id=%d', $allianceId),
-            _('Allianzforum')
+            'alliance.php',
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
+            'alliance.php?SHOW_BOARDS=1',
+            _('Forum')
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d&id=%d',
-                $boardId,
-                $allianceId
+                'alliance.php?SHOW_BOARD=1&bid=%d',
+                $boardId
             ),
             $board->getName()
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_NEW_TOPIC=1&bid=%d&id=%d',
-                $boardId,
-                $allianceId
+                'alliance.php?SHOW_NEW_TOPIC=1&bid=%d',
+                $boardId
             ),
             _('Thema erstellen')
         );

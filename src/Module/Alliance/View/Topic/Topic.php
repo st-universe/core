@@ -45,11 +45,12 @@ final class Topic implements ViewControllerInterface
         $game->setPageTitle(_('Allianzforum'));
 
         $game->appendNavigationPart(
-            sprintf(
-                'alliance.php?SHOW_BOARDS=1&id=%d',
-                $allianceId
-            ),
-            _('Allianzforum')
+            sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $allianceId),
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
+            'alliance.php?SHOW_BOARDS=1',
+            _('Forum')
         );
         $game->appendNavigationPart(
             sprintf(
@@ -61,10 +62,9 @@ final class Topic implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d&id=%d',
+                'alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d',
                 $boardId,
-                $topicId,
-                $allianceId
+                $topicId
             ),
             $topic->getName()
         );

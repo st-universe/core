@@ -14,6 +14,14 @@ final class AllianceList implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Allianzliste'));
+
+        if ($game->getUser()->getAllianceId() > 0) {
+            $game->appendNavigationPart(
+                'alliance.php',
+                _('Allianz')
+            );
+        }
+
         $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
         $game->setTemplateFile('html/alliancelist.xhtml');
 

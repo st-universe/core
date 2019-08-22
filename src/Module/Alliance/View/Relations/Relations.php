@@ -39,9 +39,11 @@ final class Relations implements ViewControllerInterface
 
         $game->setPageTitle(_('Diplomatie'));
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_RELATIONS=1&id=%d',
-                $alliance->getId()
-            ),
+            'alliance.php',
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
+            'alliance.php?SHOW_RELATIONS=1',
             _('Diplomatie')
         );
         $game->setTemplateFile('html/alliancerelations.xhtml');

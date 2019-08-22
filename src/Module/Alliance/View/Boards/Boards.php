@@ -18,8 +18,12 @@ final class Boards implements ViewControllerInterface
 
         $game->setPageTitle(_('Allianzforum'));
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_BOARDS=1&id=%d', $alliance->getId()),
-            _('Allianzforum')
+            'alliance.php',
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
+            'alliance.php?SHOW_BOARDS=1',
+            _('Forum')
         );
         $game->setTemplateFile('html/allianceboard.xhtml');
 

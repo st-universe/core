@@ -15,11 +15,13 @@ final class Management implements ViewControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
-        $game->setPageTitle(_('Allianz anzeigen'));
+        $game->setPageTitle(_('Allianz verwalten'));
         $game->appendNavigationPart(
-            sprintf(
-                'alliance.php?SHOW_MANAGEMENT=1&id=%s',
-                $alliance->getId()),
+            'alliance.php',
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
+            'alliance.php?SHOW_MANAGEMENT=1',
             _('Verwaltung')
         );
         $game->setTemplateFile('html/alliancemanagement.xhtml');

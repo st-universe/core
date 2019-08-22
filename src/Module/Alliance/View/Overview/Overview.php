@@ -43,7 +43,7 @@ final class Overview implements ViewControllerInterface
                 $alliance->getDescription()
             );
 
-            $game->setPageTitle(_('Allianz anzeigen'));
+            $game->setPageTitle(_('Allianz'));
             $game->setTemplateFile('html/alliancedetails.xhtml');
 
             $game->setTemplateVar('ALLIANCE', $user->getAlliance());
@@ -51,8 +51,8 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateVar('DESCRIPTION', $description);
 
             $game->appendNavigationPart(
-                sprintf('alliance.php?ALLIANCE_DETAILS=1&id=%d', $alliance->getId()),
-                _('Allianzschirm')
+                'alliance.php',
+                _('Allianz')
             );
         } else {
             $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));

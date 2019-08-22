@@ -56,9 +56,16 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
         $game->setTemplateVar('DESCRIPTION', $description);
 
+        if ($game->getUser()->getAllianceId() > 0) {
+            $game->appendNavigationPart(
+                'alliance.php',
+                _('Allianz')
+            );
+        }
+        $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
         $game->appendNavigationPart(
-            sprintf('alliance.php?ALLIANCE_DETAILS=1&id=%d', $alliance->getId()),
-            _('Allianzschirm')
+            sprintf('alliance.php?SHOW_ALLIANCE=1&id=%d', $alliance->getId()),
+            _('Allianz anzeigen')
         );
     }
 

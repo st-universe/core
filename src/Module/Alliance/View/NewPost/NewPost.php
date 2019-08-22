@@ -9,7 +9,6 @@ use AllianceBoard;
 use AllianceTopic;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Alliance\View\NewPost\NewPostRequestInterface;
 
 final class NewPost implements ViewControllerInterface
 {
@@ -43,22 +42,33 @@ final class NewPost implements ViewControllerInterface
         $game->setPageTitle(_('Allianzforum'));
 
         $game->appendNavigationPart(
-            sprintf('alliance.php?SHOW_BOARDS=1&id=%d', $allianceId),
-            _('Allianzforum')
+            'alliance.php',
+            _('Allianz')
+        );
+        $game->appendNavigationPart(
+            'alliance.php?SHOW_BOARDS=1',
+            _('Forum')
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_BOARD=1&bid=%d&id=%d',
-                $boardId,
-                $allianceId
+                'alliance.php?SHOW_BOARD=1&bid=%d',
+                $boardId
             ),
             $board->getName()
         );
         $game->appendNavigationPart(
             sprintf(
-                'alliance.php?SHOW_NEW_POST=1&bid=%s&id=%s',
+                'alliance.php?SHOW_TOPIC=1&bid=%d&tid=%d',
                 $boardId,
-                $allianceId
+                $topicId
+            ),
+            $board->getName()
+        );
+        $game->appendNavigationPart(
+            sprintf(
+                'alliance.php?SHOW_NEW_POST=1&bid=%s&tid=%d',
+                $boardId,
+                $topicId
             ),
             _('Antwort erstellen')
         );
