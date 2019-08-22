@@ -461,9 +461,6 @@ final class ColonyController extends GameController
     private function setFieldByRequest()
     {
         if ($this->colfield === null) {
-            if (!request::has('fid')) {
-                new InvalidParamException('fid');
-            }
             $field_id = (int)request::indInt('fid');
             $this->setField($field_id);
         }
