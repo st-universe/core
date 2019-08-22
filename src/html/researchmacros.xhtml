@@ -26,7 +26,7 @@
 							<tr>
 								<td tal:content="SELECTED_RESEARCH/getPoints">POINTS</td>
 								<td tal:condition="SELECTED_RESEARCH/getGoodId">
-									<img src="gfx/goods/${SELECTED_RESEARCH/getGoodId}.gif" /> <span tal:replace="SELECTED_RESEARCH/getGood/getName"></span>
+									<img src="${GFX}/goods/${SELECTED_RESEARCH/getGoodId}.gif" /> <span tal:replace="SELECTED_RESEARCH/getGood/getName"></span>
 								</td>
 							</tr>
 						</table>

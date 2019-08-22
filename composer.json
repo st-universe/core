@@ -21,7 +21,6 @@
     "hassankhan/config": "^2.0",
     "mnsami/composer-custom-directory-installer": "1.1.*",
     "scn/phptal": "^3.0",
-    "usox/stu3-assets": "dev-master",
     "zendframework/zend-mail": "^2",
     "zendframework/zend-validator": "^2",
     "php-di/php-di": "^6.0",
@@ -31,7 +30,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^7.3",
-    "mockery/mockery": "^1.1"
+    "mockery/mockery": "^1.1",
+    "usox/stu3-assets": "dev-master"
   },
   "config": {
     "platform": {
@@ -43,7 +43,7 @@
   },
   "extra": {
     "installer-paths": {
-      "./src/gfx": [
+      "./src/assets": [
         "usox/stu3-assets"
       ]
     }

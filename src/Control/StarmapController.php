@@ -442,7 +442,7 @@ final class StarmapController extends GameController
             }
             if (!array_key_exists($data['field_id'], $types)) {
                 $maptype = new MapFieldType($data['field_id']);
-                $types[$data['field_id']] = imagecreatefromgif(APP_PATH . '/gfx/map/' . $maptype->getType() . '.gif');
+                $types[$data['field_id']] = imagecreatefromgif(APP_PATH . '/assets/map/' . $maptype->getType() . '.gif');
             }
             imagecopyresized($img, $types[$data['field_id']], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;

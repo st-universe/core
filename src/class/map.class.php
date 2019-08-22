@@ -85,7 +85,7 @@ class MapFieldData extends BaseTable {
 		} else {
 			$type = getMapType($this->getFieldId())->getType();
 		}
-		$style = "background-image: url('gfx/map/".$type.".gif');";
+		$style = "background-image: url('assets/map/".$type.".gif');";
 		$style .= $this->getBorder();
 		return $style;
 	}

@@ -58,7 +58,7 @@ class SystemMapData extends BaseTable {
 
 	function getFieldStyle() {
 		$type = getMapType($this->getFieldId())->getType();
-		$style = "background-image: url('gfx/map/".$type.".gif');";
+		$style = "background-image: url('assets/map/".$type.".gif');";
 		return $style;
 	}
 } 

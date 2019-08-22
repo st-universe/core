@@ -229,12 +229,12 @@ function showModuleSelectTab(obj,tabId) {
 }
 function replaceTabImage(type,moduleId,goodId,module_level) {
 	if (moduleId == 0) {
-		$('tab_image_mod_'+type).src = 'gfx/buttons/modul_'+type+'.gif';
+		$('tab_image_mod_'+type).src = 'assets/buttons/modul_'+type+'.gif';
 		$('module_type_'+type).innerHTML = '';
 		updateCrewCount(type,0);
 	} else {
 		Element.removeClassName($('module_tab_'+type),'module_select_base_mandatory');
-		$('tab_image_mod_'+type).src = 'gfx/goods/'+goodId+'.gif';
+		$('tab_image_mod_'+type).src = 'assets/goods/'+goodId+'.gif';
 		$('module_type_'+type).innerHTML = $(moduleId+'_content').innerHTML;
 		$('module_type_'+type).show();
 		updateCrewCount(type,module_level);

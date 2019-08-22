@@ -28,9 +28,9 @@ if (request::postArray('costs')) {
 echo '<form method="post" action="buildingcosts.php">
 	<input type="hidden" name="buildingid" value="'.$building->getId().'" />
 	Baukosten für '.$building->getName().'<br /><b>Goodid</b> <b>Count</b><br />
-	<img src="../../gfx/buttons/e_trans1.gif" /> <input type="text" value="'.$building->getEpsCost().'" size="4" name="eps" /><br />';
+	<img src="../../assets/buttons/e_trans1.gif" /> <input type="text" value="'.$building->getEpsCost().'" size="4" name="eps" /><br />';
 foreach ($building->getCosts() as $key => $obj) {
-	echo '<img src="../../gfx/goods/'.$obj->getGoodId().'.gif" /> <input type="text" size="4" name="goodid[]" value="'.$obj->getGoodId().'" /> <input type="text" size="4" name="costs[]" value="'.$obj->getCount().'" /><br />';
+	echo '<img src="../../assets/goods/'.$obj->getGoodId().'.gif" /> <input type="text" size="4" name="goodid[]" value="'.$obj->getGoodId().'" /> <input type="text" size="4" name="costs[]" value="'.$obj->getCount().'" /><br />';
 }
 while($i<15) {
 	echo '<input type="text" size="4" name="goodid[]" <input type="text" size="4" name="costs[]" /><br />';

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7bff481327ed48e0d912fd89b02a68a",
+    "content-hash": "cd6ec7ca4ceb994c8b7c7172d0612aff",
     "packages": [
         {
             "name": "clue/graph",
@@ -2860,31 +2860,6 @@
             "time": "2016-11-16T10:37:54+00:00"
         },
         {
-            "name": "usox/stu3-assets",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "0707158dd5f37445f56528523bbdd261b5cef49b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/0707158dd5f37445f56528523bbdd261b5cef49b",
-                "reference": "0707158dd5f37445f56528523bbdd261b5cef49b",
-                "shasum": ""
-            },
-            "type": "library",
-            "license": [
-                "proprietary"
-            ],
-            "description": "STU3 Assets",
-            "support": {
-                "source": "https://github.com/usox/stu3-assets/tree/master",
-                "issues": "https://github.com/usox/stu3-assets/issues"
-            },
-            "time": "2019-08-22T20:47:06+00:00"
-        },
-        {
             "name": "zendframework/zend-loader",
             "version": "2.6.0",
             "source": {
@@ -4582,6 +4557,31 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
+        },
+        {
+            "name": "usox/stu3-assets",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/usox/stu3-assets.git",
+                "reference": "0707158dd5f37445f56528523bbdd261b5cef49b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/0707158dd5f37445f56528523bbdd261b5cef49b",
+                "reference": "0707158dd5f37445f56528523bbdd261b5cef49b",
+                "shasum": ""
+            },
+            "type": "library",
+            "license": [
+                "proprietary"
+            ],
+            "description": "STU3 Assets",
+            "support": {
+                "source": "https://github.com/usox/stu3-assets/tree/master",
+                "issues": "https://github.com/usox/stu3-assets/issues"
+            },
+            "time": "2019-08-22T20:47:06+00:00"
         },
         {
             "name": "webmozart/assert",

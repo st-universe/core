@@ -8,8 +8,8 @@
 		</tal:block>
 	</metal:macro>
 	<metal:macro metal:define-macro="colonyimage_base">
-		<div tal:condition="colony/getPlanetType/hasRing" class="planet_ring" style="background-image: url(gfx/planets/${colony/getColonyClass}.gif)">
-			<img src="gfx/planets/${colony/getColonyClass}r.png"/>
+		<div tal:condition="colony/getPlanetType/hasRing" class="planet_ring" style="background-image: url(${GFX}/planets/${colony/getColonyClass}.gif)">
+			<img src="${GFX}/planets/${colony/getColonyClass}r.png"/>
 		</div>
 		<img src="${GFX}/planets/${colony/getColonyClass}.gif" tal:condition="not:colony/getPlanetType/hasRing"/>
 	</metal:macro>
@@ -504,7 +504,7 @@
                             <tal:block tal:repeat="data THIS/getEffects">
                                 <div style="display: inline-block; width: 49%;">
                                     <div style="display: inline-block; width: 87%;">
-                                        <img src="gfx/goods/${data/good/getId}.gif" /> <span tal:content="data/good/getName">EFFECT</span>
+                                        <img src="${GFX}/goods/${data/good/getId}.gif" /> <span tal:content="data/good/getName">EFFECT</span>
                                     </div>
                                     <span tal:content="data/production/getProductionDisplay" tal:attributes="class data/production/getCssClass">SUM</span>
                                 </div>
@@ -845,7 +845,7 @@
                                     <tr>
                                         <td i18n:translate="">Module</td>
                                         <td>
-                                            <img src="gfx/goods/${module/getModule/getGoodId}.gif" tal:attributes="name module/getModule/getName" tal:repeat="module data/getModules" />
+                                            <img src="${GFX}/goods/${module/getModule/getGoodId}.gif" tal:attributes="name module/getModule/getName" tal:repeat="module data/getModules" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -874,10 +874,10 @@
 						<br /><br />
 						<strong i18n:translate="">Baubar</strong><br />
 						<tal:block tal:condition="not:building/isAlternateBuilding">
-							<img src="#" tal:repeat="field building/getBuildableFields" tal:attributes="src string:gfx/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
+							<img src="#" tal:repeat="field building/getBuildableFields" tal:attributes="src string:${GFX}/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
 						</tal:block>
 						<tal:block tal:condition="building/isAlternateBuilding">
-							<img src="#" tal:repeat="field building/isAlternateBuilding/getBuilding/getBuildableFields" tal:attributes="src string:gfx/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
+							<img src="#" tal:repeat="field building/isAlternateBuilding/getBuilding/getBuildableFields" tal:attributes="src string:${GFX}/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
 						</tal:block>
 					</td>
 					<td style="vertical-align: top; width: 110px;">
@@ -1213,7 +1213,7 @@
 			</tr>
 			<tr tal:repeat="data THIS/getShipBuildProgress" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center; vertical-align: middle;">
-					<img src="gfx/ships/${data/getRumpId}.gif" />
+					<img src="${GFX}/ships/${data/getRumpId}.gif" />
 				</td>
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getRump/getName">RUMP</td>
 				<tal:block tal:condition="not:data/isStopped">
@@ -1235,7 +1235,7 @@
 			</tr>
 			<tr tal:repeat="data THIS/getShipRepairProgress" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center; vertical-align: middle;">
-					<img src="gfx/ships/${data/getShip/getRumpId}.gif" />
+					<img src="${GFX}/ships/${data/getShip/getRumpId}.gif" />
 				</td>
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getShip/getRump/getName">RUMP</td>
 				<td style="text-align: center; vertical-align: middle">
@@ -1395,9 +1395,9 @@
 	</metal:block>
 	<metal:macro metal:define-macro="module_select_tab">
 		<td id="module_tab_${moduleType}" tal:define="tab THIS/getModuleScreenTabs/${moduleType}" tal:attributes="class tab/getCssClass" onclick="showModuleSelectTab(this,${moduleType});">
-			<img src="gfx/buttons/modul_${moduleType}.gif" tal:condition="not:tab/hasSelectedModule" id="tab_image_mod_${moduleType}" />
+			<img src="${GFX}/buttons/modul_${moduleType}.gif" tal:condition="not:tab/hasSelectedModule" id="tab_image_mod_${moduleType}" />
 			<tal:block tal:condition="tab/hasSelectedModule" tal:repeat="mod tab/getSelectedModule	">
-				<img src="gfx/goods/${mod/getModule/getGoodId}.gif" id="tab_image_mod_${moduleType}" />
+				<img src="${GFX}/goods/${mod/getModule/getGoodId}.gif" id="tab_image_mod_${moduleType}" />
 			</tal:block>
 			<span tal:replace="tab/getTabTitle">DESCRIPTION</span>
 		</td>

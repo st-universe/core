@@ -10,7 +10,7 @@ docu/de/_build/*
 tags
 vendor
 config.json
-src/gfx
+src/assets
 src/version_*
 src/html/avatare
 backup

@@ -891,7 +891,7 @@
 		<table class="tcal">
 			<tr>
 				<td rowspan="2" style="width: 30px; vertical-align: top;">
-					<img src="gfx/map/${THIS/getShip/getCurrentMapField/getFieldId}.gif" />
+					<img src="${GFX}/map/${THIS/getShip/getCurrentMapField/getFieldId}.gif" />
 				</td>
 				<th tal:content="THIS/getShip/getCurrentMapField/getFieldType/getName">NAME</th>
 			</tr>
@@ -926,7 +926,7 @@
 			<br />
 			<div class="divhead" i18n:translate="">Kolonisierbare Felder</div>
 			<div class="divbody">
-				<img src="gfx/fields/${field}.gif" tal:repeat="field currentColony/getPlanetType/getColonizeableFieldsAsArray" />
+				<img src="${GFX}/fields/${field}.gif" tal:repeat="field currentColony/getPlanetType/getColonizeableFieldsAsArray" />
 			</div>
 		</tal:block>
 	</metal:macro>
