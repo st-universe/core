@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
+use AccessViolation;
 use AllianceRelation;
 use HistoryEntry;
 use Stu\Control\ActionControllerInterface;
@@ -29,6 +30,10 @@ final class AcceptOffer implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         $relation = AllianceRelation::getById($this->acceptOfferRequest->getRelationId());
+
+        if (!$alliance->currentUserIsDiplomatic()) {
+            throw new AccessViolation();
+        }
 
         if (!$relation || $relation->getRecipientId() != $allianceId) {
             return;

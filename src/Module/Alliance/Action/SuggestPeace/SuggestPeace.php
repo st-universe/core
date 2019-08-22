@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\SuggestPeace;
 
+use AccessViolation;
 use AllianceRelation;
 use AllianceRelationData;
 use Stu\Control\ActionControllerInterface;
@@ -25,6 +26,10 @@ final class SuggestPeace implements ActionControllerInterface
     {
         $relation = AllianceRelation::getById($this->suggestPeaceRequest->getRelationId());
         $alliance = $game->getUser()->getAlliance();
+
+        if (!$alliance->currentUserIsDiplomatic()) {
+            throw new AccessViolation();
+        }
 
         $allianceId = $alliance->getId();
         $opponentId = $relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();

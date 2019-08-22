@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
+use AccessViolation;
 use AllianceRelation;
 use PM;
 use Stu\Control\ActionControllerInterface;
@@ -27,6 +28,10 @@ final class CancelOffer implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         $relation = AllianceRelation::getById($this->cancelOfferRequest->getRelationId());
+
+        if (!$alliance->currentUserIsDiplomatic()) {
+            throw new AccessViolation();
+        }
 
         if (!$relation || $relation->getAllianceId() != $allianceId) {
             return;

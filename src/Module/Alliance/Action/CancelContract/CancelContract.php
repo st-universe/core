@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CancelContract;
 
+use AccessViolation;
 use AllianceRelation;
 use HistoryEntry;
 use Stu\Control\ActionControllerInterface;
@@ -28,6 +29,10 @@ final class CancelContract implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         $relation = AllianceRelation::getById($this->cancelContractRequest->getRelationId());
+
+        if (!$alliance->currentUserIsDiplomatic()) {
+            throw new AccessViolation();
+        }
 
         if (!$relation || ($relation->getRecipientId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
             return;
