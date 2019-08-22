@@ -2,7 +2,7 @@
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<table class="tcal" tal:condition="not:THIS/hasColonies">
+		<table class="tcal" tal:condition="not:COLONY_LIST">
 			<tr>
 				<th i18n:translate="">Meldung</th>
 			</tr>
@@ -10,7 +10,7 @@
 				<td i18n:translate="">Du besitzt derzeit keine Kolonien</td>
 			</tr>
 		</table>
-		<tal:block tal:condition="THIS/hasColonies">
+		<tal:block tal:condition="COLONY_LIST">
 			<table class="tcal">
 				<tr>
 					<th style="width: 120px;"></th>
@@ -20,7 +20,7 @@
 					<th i18n:translate="">Bevölkerung</th>
 					<th i18n:translate="">Lager</th>
 				</tr>
-				<tr tal:repeat="colony THIS/getColonyList" tal:attributes="class string:row${repeat/colony/odd}">
+				<tr tal:repeat="colony COLONY_LIST" tal:attributes="class string:row${repeat/colony/odd}">
 					<td style="text-align: center;">
 						<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage" />
 					</td>
@@ -56,12 +56,12 @@
 			</table>		
 			<br />
 			<div style="float: left; width: 49%;">
-				<div tal:condition="THIS/getBuildingJobs">
+				<div tal:condition="BUILDINGJOB_LIST">
 					<table class="tcal">
 						<tr>
 							<th colspan="5">Aktuelle Bauvorgänge</th>
 						</tr>
-						<tr tal:repeat="data THIS/getBuildingJobs">
+						<tr tal:repeat="data BUILDINGJOB_LIST">
 							<td style="width: 45px; text-align: center;vertical-align: middle">
 								<img src="${GFX}/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title data/getColony/getNameWithoutMarkup" />
 							</td>
@@ -76,12 +76,12 @@
 				</div>
 			</div>
 			<div style="float: left; margin-left: 5px; width: 49%;">
-				<div tal:condition="THIS/getTerraformingJobs">
+				<div tal:condition="TERRAFORMING_LIST">
 					<table class="tcal">
 						<tr>
 							<th colspan="5">Aktuelle Terraformingvorgänge</th>
 						</tr>
-						<tr tal:repeat="data THIS/getTerraformingJobs">
+						<tr tal:repeat="data TERRAFORMING_LIST">
 							<td style="width: 45px; text-align: center;vertical-align: middle">
 								<img src="${GFX}/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title data/getColony/getNameWithoutMarkup" />
 							</td>

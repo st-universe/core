@@ -12,7 +12,6 @@ use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Control\ColonyController;
-use Stu\Control\ColonyListController;
 use Stu\Control\CommController;
 use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
@@ -68,7 +67,6 @@ $builder->addDefinitions([
 
 $builder->addDefinitions([
     ColonyController::class => autowire(ColonyController::class),
-    ColonyListController::class => autowire(ColonyListController::class),
     CommController::class => autowire(CommController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
@@ -105,6 +103,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Alliance/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Colony/services.php'
 );
 
 $builder->addDefinitions([

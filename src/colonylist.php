@@ -1,12 +1,12 @@
 <?php
 
-use Stu\Control\ColonyListController;
+use Stu\Control\IntermediateController;
 
 @session_start();
 require_once 'inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(ColonyListController::class)->main();
+$container->get(IntermediateController::TYPE_COLONY_LIST)->main();
 
 DB()->commitTransaction();
