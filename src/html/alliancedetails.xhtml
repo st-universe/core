@@ -56,7 +56,7 @@
 				<tr>
 					<th i18n:translate="">Beziehungen zu anderen Allianzen</th>
 				</tr>
-				<tr tal:condition="ALLIANCE_RELATIONS">
+				<tr tal:condition="not:ALLIANCE_RELATIONS">
 					<td>Keine Beziehungen vorhanden</td>
 				</tr>
 				<tr tal:repeat="data ALLIANCE_RELATIONS" tal:attributes="class string:row${repeat/data/odd}">

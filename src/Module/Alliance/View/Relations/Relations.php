@@ -31,7 +31,7 @@ final class Relations implements ViewControllerInterface
 
         $relations = [];
         foreach ($result as $key => $obj) {
-            if ($obj->getRecipientId() == $$allianceId) {
+            if ($obj->getRecipientId() == $allianceId) {
                 $obj->cycleOpponents();
             }
             $relations[$key] = $obj;
