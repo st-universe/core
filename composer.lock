@@ -2865,12 +2865,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "e959e171b48d47be1b054dfcd1dc04059204536b"
+                "reference": "ac1d95aa0aae85e2fac4832391a4676fc120186e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/e959e171b48d47be1b054dfcd1dc04059204536b",
-                "reference": "e959e171b48d47be1b054dfcd1dc04059204536b",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/ac1d95aa0aae85e2fac4832391a4676fc120186e",
+                "reference": "ac1d95aa0aae85e2fac4832391a4676fc120186e",
                 "shasum": ""
             },
             "type": "library",
@@ -2882,7 +2882,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-08-21T20:28:26+00:00"
+            "time": "2019-08-22T13:05:52+00:00"
         },
         {
             "name": "zendframework/zend-loader",
