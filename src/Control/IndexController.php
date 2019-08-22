@@ -54,6 +54,7 @@ final class IndexController extends GameController
     {
         $tpl = $this->getTemplate();
         $tpl->setVar('THIS', $this);
+        $tpl->setVar("GFX", GFX_PATH);
         $tpl->parse();
     }
 
