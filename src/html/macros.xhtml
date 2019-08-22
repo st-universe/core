@@ -98,35 +98,6 @@
 		<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="title user/getNameWithoutMarkup;src user/getFullAvatarPath" />
 	</a>
 </metal:macro>
-<metal:block metal:define-macro="crew_details">
-	<div style="width: 300px">
-		<table class="tcal">
-			<tr>
-				<td class="darkbg">
-					<strong>Name</strong>
-				</td>
-				<td>
-					<div id="crewname" onclick="$('crewname_edit').show();$('crewname').hide();" style="cursor: pointer;" title="Umbenennen" tal:content="THIS/getCrew/getName">NAME</div>
-					<div id="crewname_edit" style="display: none;">
-						<input type="text" style="width: 200px;" id="crewname_value" tal:attributes="value THIS/getCrew/getName" /> <input class="button" type="button" onclick="saveCrewName(${THIS/getCrew/getId});" value="OK" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="darkbg">
-					<strong>Position</strong>
-				</td>
-				<td tal:content="THIS/getCrew/getTypeDescription">FUNCTION</td>
-			</tr>
-			<tr>
-				<td class="darkbg">
-					<strong>Rasse</strong>
-				</td>
-				<td tal:content="THIS/getCrew/getRace/getDescription">RACE</td>
-			</tr>
-		</table>
-	</div>
-</metal:block>
 <metal:block metal:define-macro="starmap">
 	<div style="float: left">
 		<table cellpadding="0" cellspacing="0">

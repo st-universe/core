@@ -14,7 +14,6 @@ use Psr\Container\ContainerInterface;
 use Stu\Control\ColonyController;
 use Stu\Control\ColonyListController;
 use Stu\Control\CommController;
-use Stu\Control\CrewController;
 use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
 use Stu\Control\ShipController;
@@ -71,7 +70,6 @@ $builder->addDefinitions([
     ColonyController::class => autowire(ColonyController::class),
     ColonyListController::class => autowire(ColonyListController::class),
     CommController::class => autowire(CommController::class),
-    CrewController::class => autowire(CrewController::class),
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
     ShipController::class => autowire(ShipController::class),

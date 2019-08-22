@@ -250,22 +250,6 @@ function openBoardSettings(obj,bid) {
 	openWindowPosition(elt,1,200,pos[0]-200,pos[1]);
 	ajax_update(elt,"alliance.php?SHOW_BOARD_SETTINGS=1&bid="+bid);
 }
-function showCrewInfo(obj,crewid) {
-	var pos = findObject(obj);
-	elt = 'crewinfo';
-	openWindowPosition(elt,1,300,pos[0]-300,pos[1]);
-	ajax_update(elt,'crew.php?SHOW_CREW_DETAILS=1&cid='+crewid);
-}
-function saveCrewName(crewid) {
-	var newname = $('crewname_value').value;
-	if (newname.length < 3) {
-		alert("Der Name muss mindestens 3 Zeichen lang sein");
-		return;
-	}
-	ajax_update('crewname','crew.php?B_CHANGE_NAME=1&cid='+crewid+'&name='+newname);
-	$('crewname').show();
-	$('crewname_edit').hide();
-}
 function openPmWindow(userId) {
 	elt = 'pmwindow';
 	openWindowPosition(elt,1,600,90,60);
