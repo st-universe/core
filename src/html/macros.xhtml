@@ -22,50 +22,36 @@
 <metal:block metal:define-macro="goodentry">
 	<stu:goodentry tal:attributes="name good/getName; goodid good/getGoodId; count good/getAmount" />
 </metal:block>
-<metal:block metal:define-macro="mapeditor_fieldselector">
-	<table class="use" tal:define="field THIS/getSelectedField">
-		<tr>
-			<td style="vertical-align: top">
-				<div>
-					<a href="javascript:void(0)" onclick="selectBorderType('${field/getId}','${field/getCX}','${field/getCY}','0')">Keine Grenze</a>	
-				</div>
-				<div tal:repeat="data THIS/getPossibleBordertypes">
-					<a href="javascript:void(0)" tal:content="data/getDescription" onclick="selectBorderType('${field/getId}','${field/getCX}','${field/getCY}','${data/getId}','${data/getColor}')">BORDER</a>	
-				</div>
-			</td>
-		</tr>
-	</table>
-</metal:block>
 <metal:block metal:define-macro="mapeditor_system_fieldselector">
-	<table class="use" tal:define="field THIS/getSelectedSystemField">
+	<table class="use" tal:define="field SELECTED_MAP_FIELD">
 		<tr>
 			<td style="vertical-align: top;">
-				<div tal:repeat="data THIS/getPossibleFieldTypes/row_0">
+				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_0">
 					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
-				<div tal:repeat="data THIS/getPossibleFieldTypes/row_1">
+				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_1">
 					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
-				<div tal:repeat="data THIS/getPossibleFieldTypes/row_2">
+				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_2">
 					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
-				<div tal:repeat="data THIS/getPossibleFieldTypes/row_3">
+				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_3">
 					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
-				<div tal:repeat="data THIS/getPossibleFieldTypes/row_4">
+				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_4">
 					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
-				<div tal:repeat="data THIS/getPossibleFieldTypes/row_5">
+				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_5">
 					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>

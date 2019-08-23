@@ -16,7 +16,6 @@ use Stu\Control\CommController;
 use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
 use Stu\Control\ShipController;
-use Stu\Control\StarmapController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
@@ -71,7 +70,6 @@ $builder->addDefinitions([
     IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
     ShipController::class => autowire(ShipController::class),
-    StarmapController::class => autowire(StarmapController::class),
 ]);
 
 $builder->addDefinitions(

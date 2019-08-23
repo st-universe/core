@@ -5,9 +5,9 @@
 		<table class="use">
 			<tr>
 				<th>x|y</th>
-				<th tal:repeat="head THIS/getHeadRow" tal:content="head">..</th>
+				<th tal:repeat="head HEAD_ROW" tal:content="head">..</th>
 			</tr>
-			<tr tal:repeat="yrow THIS/getMapData">
+			<tr tal:repeat="yrow MAP_FIELDS">
 				<th tal:content="yrow/getRow">y</th>
 				<td tal:repeat="data yrow/getSystemFields" class="lss" tal:attributes="id string:${data/getSX}_${data/getSY};style string:${data/getFieldStyle}">
 					<div class="lssobj" onclick="openSystemFieldSelector(${data/getId});" id="runtime">&nbsp;</div>

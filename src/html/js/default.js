@@ -192,38 +192,18 @@ function setNewFieldType(obj,fieldid) {
 		alert("Es wurde kein Feldtyp ausgewaehlt");
 		return;
 	}
-	ajaxrequest('starmap.php?B_EDIT_FIELD=1&field='+fieldid+'&type='+selectedFieldType);
+	ajax_update(false, 'starmap.php?B_EDIT_FIELD=1&field='+fieldid+'&type='+selectedFieldType);
 	obj.parentNode.style.backgroundImage = "url("+gfx_path+"/map/"+selectedFieldType+".gif)";
 	tmpfield = obj.parentNode.style.backgroundImage;
 }
 
-function openFieldSelector(fieldid) {
-	elt = 'fieldselector';
-	openWindow(elt,0);
-	ajax_update(elt,'starmap.php?SHOW_EDITFIELD=1&field='+fieldid);
-}
 function openSystemFieldSelector(fieldid) {
 	elt = 'fieldselector';
 	openWindow(elt,0);
 	ajax_update(elt,'starmap.php?SHOW_SYSTEM_EDITFIELD=1&field='+fieldid);
 }
-function selectBorderType(fieldid,cx,cy,typeid,border) {
-	ajaxrequest('starmap.php?B_EDIT_BORDER=1&field='+fieldid+'&type='+typeid);
-	field = $(cx+'_'+cy);
-	if (typeid == 0) {
-		border = '2D2D2D';
-	}
-	field.style.border = "1px solid #"+border;
-	closeAjaxWindow();
-}
-function selectNewMapField(fieldid,cx,cy,typeid,type) {
-	ajaxrequest('starmap.php?B_EDIT_FIELD=1&field='+fieldid+'&type='+typeid);
-	field = $(cx+'_'+cy);
-	field.style.backgroundImage = "url("+gfx_path+"/map/"+type+".gif)";
-	closeAjaxWindow();
-}
 function selectNewSystemMapField(fieldid,cx,cy,typeid,type) {
-	ajaxrequest('starmap.php?B_EDIT_SYSTEM_FIELD=1&field='+fieldid+'&type='+typeid);
+	ajax_update(false, 'starmap.php?B_EDIT_SYSTEM_FIELD=1&field='+fieldid+'&type='+typeid);
 	field = $(cx+'_'+cy);
 	field.style.backgroundImage = "url("+gfx_path+"/map/"+type+".gif)";
 	closeAjaxWindow();

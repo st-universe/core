@@ -1,7 +1,7 @@
 <?php
 
 
-use Stu\Control\StarmapController;
+use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 
 class ShipData extends BaseTable {
@@ -1278,11 +1278,11 @@ class ShipData extends BaseTable {
 	}
 
 	public function getMapCX() {
-		return ceil($this->getCX()/StarmapController::FIELDS_PER_SECTION);
+		return ceil($this->getCX() / Overview::FIELDS_PER_SECTION);
 	}
 
 	public function getMapCY() {
-		return ceil($this->getCY()/StarmapController::FIELDS_PER_SECTION);
+		return ceil($this->getCY() / Overview::FIELDS_PER_SECTION);
 	}
 
 	public function getCrewBySlot($slot) {

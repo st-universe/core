@@ -4,11 +4,25 @@
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<table class="tcal">
 			<tr>
-				<th tal:attributes="colspan THIS/getEditorCols">Sektoren</th>
+				<th>x|y</th>
+				<th tal:repeat="data X_HEAD_ROW" tal:content="php:data*FIELDS_PER_SECTION">Y</th>
 			</tr>
-			<tr tal:repeat="rowy THIS/getMapSections">
+			<tr tal:repeat="rowy SECTIONS">
+				<th style="width: 30px;" tal:content="php:repeat.rowy.number*FIELDS_PER_SECTION">Y</th>
 				<td tal:repeat="data rowy">
 					<a href="?EDIT_SECTION=1&x=${repeat/data/number}&y=${repeat/rowy/number}&sec=${data}" tal:content="data">sec</a>
+				</td>
+			</tr>
+		</table>
+		<br />
+		
+		<table class="tcal">
+			<tr>
+				<th i18n:translate="">Sternensysteme</th>
+			</tr>
+			<tr>
+				<td>
+					<div tal:repeat="system SYSTEM_LIST"><a href="/starmap.php?SHOW_SYSTEM=1&sysid=${system/getId}" tal:content="system/getName">SYSNAME</a></div>
 				</td>
 			</tr>
 		</table>

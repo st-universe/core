@@ -2,20 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\Overview;
+namespace Stu\Module\Starmap\View\ShowEditor;
 
+use AccessViolation;
+use StarSystem;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 
-final class Overview implements ViewControllerInterface
+final class ShowEditor implements ViewControllerInterface
 {
-    public const FIELDS_PER_SECTION = 20;
+    private const FIELDS_PER_SECTION = 20;
+    public const VIEW_IDENTIFIER = 'SHOW_EDITOR';
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setPageTitle(_('Sternenkarte'));
-        $game->setTemplateFile('html/starmap.xhtml');
-        $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
+        if (!$game->isAdmin()) {
+            throw new AccessViolation();
+        }
+        $game->setTemplateFile('html/mapeditor_overview.xhtml');
+        $game->appendNavigationPart('starmap.php?SHOW_EDITOR=1', _('Karteneditor'));
+        $game->setPageTitle(_('Karteneditor'));
 
         $xHeadRow = [];
         for ($j = 1; $j <= MAP_MAX_X / static::FIELDS_PER_SECTION; $j++) {
@@ -34,5 +40,6 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('X_HEAD_ROW', $xHeadRow);
         $game->setTemplateVar('SECTIONS', $sections);
         $game->setTemplateVar('FIELDS_PER_SECTION', static::FIELDS_PER_SECTION);
+        $game->setTemplateVar('SYSTEM_LIST', StarSystem::getList());
     }
 }

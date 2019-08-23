@@ -8,10 +8,10 @@
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>
-						<table class="use" tal:condition="THIS/getTopPreviewRow">
+						<table class="use" tal:condition="TOP_PREVIEW_ROW">
 							<tr>
-								<th tal:content="php:THIS.getMinY()-1"></th>
-								<td tal:repeat="data THIS/getTopPreviewRow" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">&nbsp;</td>
+								<th style="width: 30px;">/\</th>
+								<td tal:repeat="data TOP_PREVIEW_ROW" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj">&nbsp;</div></td>
 							</tr>
 						</table>
 					</td>
@@ -19,13 +19,13 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="runtime" tal:attributes="colspan php:THIS.FIELDS_PER_SECTION+1" style="height: 30px;"></td>	
+					<td colspan="runtime" tal:attributes="colspan php:FIELDS_PER_SECTION+1" style="height: 30px;"></td>	
 				</tr>
 				<tr>
 					<td>
-						<table class="use" tal:condition="THIS/getLeftPreviewRow">
-							<th tal:content="php:THIS.getMinX()-1"></th>
-							<tr tal:repeat="row THIS/getLeftPreviewRow">
+						<table class="use" tal:condition="LEFT_PREVIEW_ROW">
+							<th style="width: 30px;">&lt;</th>
+							<tr tal:repeat="row LEFT_PREVIEW_ROW">
 								<td tal:repeat="data row/getFields" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
@@ -36,20 +36,20 @@
 					<td>
 						<table class="use">
 							<tr>
-								<th>x|y</th>
-								<th tal:repeat="head THIS/getHeadRow" tal:content="head">..</th>
+								<th style="width: 30px;">x|y</th>
+								<th tal:repeat="head HEAD_ROW" tal:content="head">..</th>
 							</tr>
-							<tr tal:repeat="yrow THIS/getMapData">
+							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
-								<td tal:repeat="data yrow/getFields" class="lss" style="runtime" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj" onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)" onclick="setNewFieldType(this,${data/getId});" id="runtime">&nbsp;</div></td>
+								<td tal:repeat="data yrow/getFields" class="lss" style="runtime" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj" style="cursor: pointer ! important;" onmouseover="toggleMapfieldType(this)" onmouseout="toggleMapfieldType(this)" onclick="setNewFieldType(this,${data/getId});">&nbsp;</div></td>
 							</tr>
 						</table>
 					</td>
 					<td style="width: 30px;">&nbsp;</td>
 					<td>
-						<table class="use" tal:condition="THIS/getRightPreviewRow">
-							<th tal:content="php:THIS.getMaxX()+1"></th>
-							<tr tal:repeat="row THIS/getRightPreviewRow">
+						<table class="use" tal:condition="RIGHT_PREVIEW_ROW">
+							<th>&gt;</th>
+							<tr tal:repeat="row RIGHT_PREVIEW_ROW">
 								<td tal:repeat="data row/getFields" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
 									<div class="lssobj">&nbsp;</div>
 								</td>
@@ -58,16 +58,16 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="runtime" tal:attributes="colspan php:THIS.FIELDS_PER_SECTION+1" style="height: 30px;"></td>	
+					<td colspan="runtime" tal:attributes="colspan php:FIELDS_PER_SECTION+1" style="height: 30px;"></td>	
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>
-						<table class="use" tal:condition="THIS/getBottomPreviewRow">
+						<table class="use" tal:condition="BOTTOM_PREVIEW_ROW">
 							<tr>
-								<th tal:content="php:THIS.getMaxY()+1"></th>
-								<td tal:repeat="data THIS/getBottomPreviewRow" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">&nbsp;</td>
+								<th style="width: 30px;">\/</th>
+								<td tal:repeat="data BOTTOM_PREVIEW_ROW" class="lss" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj">&nbsp;</div></td>
 							</tr>
 						</table>
 					</td>
@@ -80,17 +80,17 @@
 			<table class="tcal">
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href THIS/getNavigationHrefUp" style="display: block;">/\</a>
+						<a href="runtime" tal:attributes="href NAV_UP" style="display: block;" tal:condition="HAS_NAV_UP">/\</a>
 					</td>
 				</tr>
 				<tr>
-					<td><a href="runtime" tal:attributes="href THIS/getNavigationHrefLeft" style="display: block;">&lt;</a></td>
-					<td style="text-align: center;" tal:content="THIS/getNavigationSection">SEC</td>
-					<td style="text-align: right;"><a href="runtime" tal:attributes="href THIS/getNavigationHrefRight" style="display: block;">&gt;</a></td>
+					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT" style="display: block;">&lt;</a></td>
+					<td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
+					<td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT" tal:condition="HAS_NAV_RIGHT" style="display: block;">&gt;</a></td>
 				</tr>
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href THIS/getNavigationHrefDown" style="display: block;">\/</a>
+						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN" style="display: block;">\/</a>
 					</td>
 				</tr>
 			</table>
@@ -101,32 +101,32 @@
 			<table class="use">
 				<tr>
 					<td style="vertical-align: top;">
-						<div tal:repeat="data THIS/getPossibleFieldTypes/row_0">
+						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_0">
 							<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
 						</div>
 					</td>
 					<td style="vertical-align: top;">
-						<div tal:repeat="data THIS/getPossibleFieldTypes/row_1">
+						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_1">
 							<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
 						</div>
 					</td>
 					<td style="vertical-align: top;">
-						<div tal:repeat="data THIS/getPossibleFieldTypes/row_2">
+						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_2">
 							<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
 						</div>
 					</td>
 					<td style="vertical-align: top;">
-						<div tal:repeat="data THIS/getPossibleFieldTypes/row_3">
+						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_3">
 							<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
 						</div>
 					</td>
 					<td style="vertical-align: top;">
-						<div tal:repeat="data THIS/getPossibleFieldTypes/row_4">
+						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_4">
 							<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
 						</div>
 					</td>
 					<td style="vertical-align: top;">
-						<div tal:repeat="data THIS/getPossibleFieldTypes/row_5">
+						<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_5">
 							<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectMapFieldType('${data/getType}')" />
 						</div>
 					</td>
