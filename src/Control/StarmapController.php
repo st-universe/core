@@ -555,13 +555,13 @@ final class StarmapController extends GameController
 
     function getNavigationHrefUp()
     {
-        $sec = request::getInt('sec') - 25;
+        $sec = request::getInt('sec') - 6;
         return '?' . $this->getNavigationAction() . '=1&x=' . $this->getRequestX() . '&y=' . ($this->getRequestY() > 1 ? $this->getRequestY() - 1 : 1) . '&sec=' . $sec;
     }
 
     function getNavigationHrefDown()
     {
-        $sec = request::getInt('sec') + 25;
+        $sec = request::getInt('sec') + 6;
         return '?' . $this->getNavigationAction() . '=1&x=' . $this->getRequestX() . '&y=' . ($this->getRequestY() + 1 > MAP_MAX_Y / self::FIELDS_PER_SECTION ? $this->getRequestY() : $this->getRequestY() + 1) . '&sec=' . $sec;
     }
 
@@ -574,7 +574,7 @@ final class StarmapController extends GameController
     function getNavigationHrefRight()
     {
         $sec = request::getInt('sec') + 1;
-        return '?' . $this->getNavigationAction() . '=1&x=' . ($this->getRequestX() + 1 > MAP_MAX_X / self::FIELDS_PER_SECTION ? $this->getRequestX() : $this->getRequestX() + 1) . '&y=' . $this->getRequestX() . '&sec=' . $sec;
+        return '?' . $this->getNavigationAction() . '=1&x=' . ($this->getRequestX() + 1 > MAP_MAX_X / self::FIELDS_PER_SECTION ? $this->getRequestX() : $this->getRequestX() + 1) . '&y=' . $this->getRequestY() . '&sec=' . $sec;
     }
 
     function getNavigationSection()
