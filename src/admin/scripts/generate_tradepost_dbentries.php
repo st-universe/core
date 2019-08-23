@@ -7,7 +7,7 @@ use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
 include_once(__DIR__.'/../../inc/config.inc.php');
 
 $repository = $container->get(DatabaseEntryRepositoryInterface::class);
-$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DATABASE_TYPE_TRADEPOSTS);
+$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DATABASE_TYPE_POI);
 $category = $container->get(DatabaseCategoryRepositoryInterface::class)->find(DATABASE_CATEGORY_TRADEPOST);
 
 $result = Ship::getObjectsBy('WHERE database_id = 0 and trade_post_id > 0');
