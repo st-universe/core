@@ -6,6 +6,7 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 
 use AccessViolation;
 use MapRegion;
+use Ship;
 use Shiprump;
 use StarSystem;
 use Stu\Control\GameControllerInterface;
@@ -91,7 +92,10 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_object_id = $entry->getObjectId();
 
         switch ($entry->getTypeObject()->getId()) {
-            case DATABASE_TYPE_REGION:
+            case DATABASE_TYPE_POI:
+                $game->setTemplateVar('POI', new Ship($entry_object_id));
+                break;
+            case DATABASE_TYPE_MAP:
                 $game->setTemplateVar('REGION', new MapRegion($entry_object_id));
                 break;
             case DATABASE_TYPE_SHIPRUMP:
