@@ -104,11 +104,13 @@
 	<metal:block metal:define-macro="nbslist_body">
 		<tal:block tal:condition="THIS/getShip/displayNbsActions" tal:define="sstr string:${THIS/getSessionString}">
 			<td style="width: 30px; text-align: center;">
-				<div tal:condition="ship/canBeAttacked" style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();" onmouseover="cp('att_${ship/getId}','buttons/phaser2')" onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
-					<img src="${GFX}/buttons/phaser1.gif" name="att_${ship/getId}" title="${ship/getNameWithoutMarkup} angreifen" />
-				</div>
+				<tal:block tal:condition="THIS/getShip/canAttack">
+					<div tal:condition="ship/canBeAttacked" style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();" onmouseover="cp('att_${ship/getId}','buttons/phaser2')" onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
+						<img src="${GFX}/buttons/phaser1.gif" name="att_${ship/getId}" title="${ship/getNameWithoutMarkup} angreifen" />
+					</div>
+				</tal:block>
 			</td>
-			<td style="width: 100px;">
+			<td style="width: 120px;">
 				<a href="javascript:void(0);" onclick="showScanWindow(${THIS/getShip/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
 					<img src="${GFX}/buttons/lupe1.gif" name="scn_${ship/getId}" title="${ship/getNameWithoutMarkup} scannen" />
 				</a>
@@ -173,7 +175,7 @@
 				</tal:block>
 			</td>
 			<td>
-				<stu:jsimagelink onclick="openPmWindow(${ship/getUserId})" image="msg" title="Nachricht an ${ship/getUser/getNameWithoutMarkup} verfassen" /><span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span> (${ship/getUserId})
+				<stu:jsimagelink onclick="openPmWindow(${ship/getUserId})" image="msg" title="Nachricht an ${ship/getUser/getNameWithoutMarkup} verfassen" /> <span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span> (${ship/getUserId})
 			</td>
 		</tal:block>
 		<tal:block tal:condition="ship/getRump/isTrumfield">

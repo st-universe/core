@@ -1518,6 +1518,10 @@ class ShipData extends BaseTable {
 		return !$this->ownedByCurrentUser() && !$this->getRump()->isTrumfield();
 	} # }}}
 
+	public function canAttack(): bool {
+		return $this->phaserIsActive() || $this->torpedoIsActive();
+	}
+
 	/**
 	 */
 	public function hasEscapePods() { #{{{
