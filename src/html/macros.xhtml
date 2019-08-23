@@ -105,7 +105,7 @@
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>
-					<div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationUp" onclick="showMapBy('${THIS/getNavigationUp/x}','${THIS/getNavigationUp/y}');">
+					<div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_UP" onclick="showMapBy('${NAV_UP/x}','${NAV_UP/y}');">
 						<img src="${GFX}/buttons/b_up1.gif" name="aup" />
 					</div>
 				</td>
@@ -114,7 +114,7 @@
 			</tr>
 			<tr>
 				<td>
-					<div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationLeft" onclick="showMapBy('${THIS/getNavigationLeft/x}','${THIS/getNavigationLeft/y}');">
+					<div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_LEFT" onclick="showMapBy('${NAV_LEFT/x}','${NAV_LEFT/y}');">
 						<img src="${GFX}/buttons/b_from1.gif" name="aleft" />
 					</div>
 				</td>
@@ -123,9 +123,9 @@
 					<table class="use">
 						<tr>
 							<th>x|y</th>
-							<th tal:repeat="head THIS/getHeadRow" tal:content="head">..</th>
+							<th tal:repeat="head HEAD_ROW" tal:content="head">..</th>
 						</tr>
-						<tr tal:repeat="yrow THIS/getMapData">
+						<tr tal:repeat="yrow MAP_FIELDS">
 							<th tal:content="yrow/getRow">y</th>
 							<td tal:repeat="data yrow/getFields" class="lss" style="runtime" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj" style="cursor: auto ! important;">&nbsp;</div></td>
 						</tr>
@@ -133,7 +133,7 @@
 				</td>
 				<td style="width: 30px;">&nbsp;</td>
 				<td>
-					<div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationRight" onclick="showMapBy('${THIS/getNavigationRight/x}','${THIS/getNavigationRight/y}');">
+					<div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_RIGHT" onclick="showMapBy('${NAV_RIGHT/x}','${NAV_RIGHT/y}');">
 						<img src="${GFX}/buttons/b_to1.gif" name="aright" />
 					</div>
 				</td>
@@ -142,7 +142,7 @@
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>
-					<div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="THIS/hasNavigationBottom" onclick="showMapBy('${THIS/getNavigationDown/x}','${THIS/getNavigationDown/y}');">
+					<div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_DOWN" onclick="showMapBy('${NAV_DOWN/x}','${NAV_DOWN/y}');">
 						<img src="${GFX}/buttons/b_down1.gif" name="adown" />
 					</div>
 				</td>

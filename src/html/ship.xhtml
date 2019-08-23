@@ -80,7 +80,9 @@
 						<a href="javascript:void(0);" onclick="showShipDetails(${currentShip/getId});" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 							<img src="${GFX}/buttons/info1.gif" title="Schiffsinformationen anzeigen" name="shinfo" />
 						</a>
-						<a href="javascript:void(0);" onclick="openStarMap(this,'${currentShip/getMapCX}','${currentShip/getMapCY}');">Map</a>
+						<a href="javascript:void(0);" onclick="openStarMap(this,'${currentShip/getMapCX}','${currentShip/getMapCY}');" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');" >
+							<img src="${GFX}/buttons/map1.gif" title="Karte anzeigen" name="shimap" />
+						</a>
 					</td>
 					<td colspan="2">
 						<img tal:repeat="mod currentShip/getBuildplan/getModules" style="margin-right: 5px;" src="${GFX}/goods/${mod/getModuleId}.gif" phptal:cache="10d" />

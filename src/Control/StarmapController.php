@@ -41,12 +41,10 @@ final class StarmapController extends GameController
 
         $this->addView("SHOW_EDITOR", "showEditor");
         $this->addView("EDIT_SECTION", "editSection");
-        $this->addView("SHOW_SECTION", "showSection");
         $this->addView("SHOW_OVERALL", "showOverallMap");
         $this->addView("SHOW_EDITFIELD", "showEditField");
         $this->addView("SHOW_SYSTEM_EDITFIELD", "showSystemEditField");
         $this->addView("SHOW_SYSTEM", "showSystem");
-        $this->addView('SHOW_STARMAP_POSITION', 'showStarmapByPosition');
     }
 
     private function setEditMode()
@@ -57,21 +55,6 @@ final class StarmapController extends GameController
     private function isEditMode()
     {
         return $this->navigationAction == 'EDIT_SECTION';
-    }
-
-    protected function showStarmapByPosition()
-    {
-        $cx = request::getIntFatal('x');
-        $cy = request::getIntFatal('y');
-
-        if ($cx < 1) {
-
-        }
-        if ($cx < 1 || $cx > MAP_MAX_X || $cy < 1 || $cy > MAP_MAX_Y) {
-            return;
-        }
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
-        $this->setAjaxMacro('html/macros.xhtml/starmap');
     }
 
     function showEditor()
@@ -90,14 +73,6 @@ final class StarmapController extends GameController
         $this->addNavigationPart(new Tuple("starmap.php?EDIT_SECTION=1&x=" . $this->getRequestX() . "&y=" . $this->getRequestY(),
             "Sektion editieren"));
         $this->setPageTitle("Sektion editieren");
-    }
-
-    protected function showSection()
-    {
-        $this->setTemplateFile('html/starmap_section.xhtml');
-        $this->addNavigationPart(new Tuple("starmap.php?SHOW_SECTION=1&x=" . $this->getRequestX() . "&y=" . $this->getRequestY(),
-            "Sektion anzeigen"));
-        $this->setPageTitle("Sektion anzeigen");
     }
 
     function showSystem()
@@ -606,38 +581,6 @@ final class StarmapController extends GameController
     public function hasNavigationBottom()
     {
         return request::getInt('y') * static::FIELDS_PER_SECTION < MAP_MAX_Y;
-    }
-
-    public function getNavigationUp()
-    {
-        return array(
-            "x" => request::getInt('x'),
-            "y" => request::getInt('y') - 1
-        );
-    }
-
-    public function getNavigationDown()
-    {
-        return array(
-            "x" => request::getInt('x'),
-            "y" => request::getInt('y') + 1
-        );
-    }
-
-    public function getNavigationLeft()
-    {
-        return array(
-            "x" => request::getInt('x') - 1,
-            "y" => request::getInt('y')
-        );
-    }
-
-    public function getNavigationRight()
-    {
-        return array(
-            "x" => request::getInt('x') + 1,
-            "y" => request::getInt('y')
-        );
     }
 
     public function getFieldsPerSection(): int
