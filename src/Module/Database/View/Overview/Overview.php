@@ -39,7 +39,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'POI_LIST',
-            $this->databaseCategoryRepository->getByTypeId(DATABASE_TYPE_TRADEPOSTS)
+            $this->databaseCategoryRepository->getByTypeId(DATABASE_TYPE_POI)
         );
         $game->setTemplateVar(
             'MAP_LIST',
