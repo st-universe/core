@@ -117,7 +117,12 @@ class TradePostData extends BaseTable {
 	}
 
 	public function getAccountsForLicence() {
-		return TradeStorage::getAccountsByGood($this->getLicenceCostGood(),currentUser()->getId(),$this->calculateLicenceCost(),$this->getTradeNetwork());
+		return TradeStorage::getAccountsByGood(
+			$this->getLicenceCostGood()->getId(),
+			currentUser()->getId(),
+			$this->calculateLicenceCost(),
+			$this->getTradeNetwork()
+		);
 	}
 
 	/**
