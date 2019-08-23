@@ -10,7 +10,7 @@ $graph = new Fhaculty\Graph\Graph();
 $researchRepository = $container->get(ResearchRepositoryInterface::class);
 $researchDependencyRepository = $container->get(ResearchDependencyRepositoryInterface::class);
 
-$research_list = $researchRepository->getForFaction(2);
+$research_list = $researchRepository->getForFaction(1);
 
 $dependencies = $researchDependencyRepository->getByMode([RESEARCH_MODE_REQUIRE, RESEARCH_MODE_REQUIRE_SOME]);
 $excludes = $researchDependencyRepository->getByMode([RESEARCH_MODE_EXCLUDE]);

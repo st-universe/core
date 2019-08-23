@@ -32,7 +32,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT t FROM %s t WHERE t.id LIKE \'%%%d\'',
+                'SELECT t FROM %s t WHERE t.id LIKE \'%%%d\' OR t.id LIKE \'%%0\'',
                 Research::class,
                 $factionId
             )
