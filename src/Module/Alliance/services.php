@@ -106,6 +106,7 @@ use Stu\Module\Alliance\View\Topic\TopicRequestInterface;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettings;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequest;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequestInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -143,6 +144,7 @@ return [
     IntermediateController::TYPE_ALLIANCE => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 AddBoard::ACTION_IDENTIFIER => autowire(AddBoard::class),
                 CreateTopic::ACTION_IDENTIFIER => autowire(CreateTopic::class),

@@ -3,6 +3,7 @@
 namespace Stu\Control;
 
 use Colony;
+use DateTimeImmutable;
 use GameConfig;
 use GameTurn;
 use HistoryEntry;
@@ -12,6 +13,7 @@ use PMCategory;
 use request;
 use Stu\Lib\SessionInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use TalPage;
 use Tuple;
 use User;
@@ -23,6 +25,8 @@ abstract class GameController implements GameControllerInterface
     public const DEFAULT_VIEW = 'DEFAULT_VIEW';
 
     private $session;
+
+    private $sessionStringRepository;
 
     private $tpl_file = null;
     private $gameInformations = array();
@@ -48,11 +52,12 @@ abstract class GameController implements GameControllerInterface
 
     public function __construct(
         SessionInterface $session,
+        SessionStringRepositoryInterface $sessionStringRepository,
         $tpl_file,
         $pagetitle
-    )
-    {
+    ) {
         $this->session = $session;
+        $this->sessionStringRepository = $sessionStringRepository;
         $this->startBenchmark();
         $this->pagetitle = $pagetitle;
         $this->setTemplateFile($tpl_file);
@@ -425,7 +430,16 @@ abstract class GameController implements GameControllerInterface
 
     public function getSessionString(): string
     {
-        return $this->session->getSessionString();
+        $string = bin2hex(random_bytes(15));
+
+        $sessionStringEntry = $this->sessionStringRepository->prototype();
+        $sessionStringEntry->setUserId($this->getUser()->getId());
+        $sessionStringEntry->setDate(new DateTimeImmutable());
+        $sessionStringEntry->setSessionString($string);
+
+        $this->sessionStringRepository->save($sessionStringEntry);
+
+        return $string;
     }
 
     public function main(bool $session_check = true): void
@@ -436,6 +450,13 @@ abstract class GameController implements GameControllerInterface
         $this->executeView();
 
         $this->render();
+    }
+
+    private function sessionIsSafe(): bool {
+        return $this->sessionStringRepository->isValid(
+            (string) request::indString('sstr'),
+            $this->getUser()->getId()
+        );
     }
 
     private function executeCallback(): void
@@ -451,7 +472,7 @@ abstract class GameController implements GameControllerInterface
                     throw new InvalidCallbackException;
                 }
                 if ($session_check === true && !request::isPost()) {
-                    if (!$this->session->sessionIsSafe()) {
+                    if (!$this->sessionIsSafe()) {
                         return;
                     }
                 }

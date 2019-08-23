@@ -24,6 +24,7 @@ use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
 use Stu\Module\PlayerSetting\View\Overview\Overview;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -37,6 +38,7 @@ return [
     IntermediateController::TYPE_PLAYER_SETTING => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
                 ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),

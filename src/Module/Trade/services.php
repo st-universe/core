@@ -51,6 +51,7 @@ use Stu\Module\Trade\View\ShowTradePostInfo\ShowTradePostInfoRequestInterface;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenu;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequest;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequestInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -73,6 +74,7 @@ return [
     IntermediateController::TYPE_TRADE => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
                 TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),

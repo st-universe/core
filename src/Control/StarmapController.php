@@ -9,6 +9,7 @@ use request;
 use StarSystem;
 use StarSystemData;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use SystemMap;
 use Tuple;
 use UserYRow;
@@ -22,10 +23,15 @@ final class StarmapController extends GameController
     private $default_tpl = "html/starmap.xhtml";
 
     public function __construct(
-        SessionInterface $session
-    )
-    {
-        parent::__construct($session, $this->default_tpl, "/ Sternenkarte");
+        SessionInterface $session,
+        SessionStringRepositoryInterface $sessionStringRepository
+    ) {
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            $this->default_tpl,
+            "/ Sternenkarte"
+        );
         $this->addNavigationPart(new Tuple("starmap.php", "Sternenkarte"));
 
         $this->addCallback('B_EDIT_FIELD', 'editField');

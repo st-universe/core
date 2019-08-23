@@ -5,10 +5,12 @@ namespace Stu\Control;
 use Faction;
 use InvalidParamException;
 use request;
+use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use SystemNews;
 use User;
 use UserData;
@@ -29,11 +31,16 @@ final class IndexController extends GameController
     public function __construct(
         SessionInterface $session,
         ResearchedRepositoryInterface $researchedRepository,
-        ResearchRepositoryInterface $researchRepository
-    )
-    {
+        ResearchRepositoryInterface $researchRepository,
+        SessionStringRepositoryInterface $sessionStringRepository
+    ) {
         $this->session = $session;
-        parent::__construct($session, $this->default_tpl, "Star Trek Universe");
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            $this->default_tpl,
+            "Star Trek Universe"
+        );
         $this->addCallback('B_CHECK_REGVAR', 'checkRegistrationVar');
         $this->addCallback('B_SEND_REGISTRATION', 'registerUser');
         $this->addCallback('B_LOGIN', 'loginUser');
@@ -356,25 +363,34 @@ Das Star Trek Universe Team\n
     }
 
     /**
+     * @var ?string
+     */
+    private $login_error;
+
+    /**
      */
     protected function loginUser()
     {
+        try {
+            $this->session->login(
+                trim(request::postStringFatal('login')),
+                trim(request::postStringFatal('pass'))
+            );
+        } catch (LoginException $e) {
+            $this->login_error = $e->getMessage();
+        }
+    }
+
+    public function hasLoginError(): bool
+    {
+        return $this->login_error !== null;
     }
 
     /**
      */
-    public function hasLoginError()
+    public function getLoginError(): string
     {
-        return $this->session->getSessionVar('loginerror');
-    }
-
-    /**
-     */
-    public function getLoginError()
-    {
-        $error = $this->session->getSessionVar('loginerror');
-        $this->session->removeSessionVar('loginerror');
-        return $error;
+        return (string) $this->login_error;
     }
 
     public function getGameStateTextual()

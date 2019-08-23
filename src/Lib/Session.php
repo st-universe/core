@@ -2,37 +2,42 @@
 
 namespace Stu\Lib;
 
+use DateTimeImmutable;
 use LoginException;
 use request;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
+use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use User;
 use UserData;
+use Zend\Validator\Date;
 
 final class Session implements SessionInterface
 {
 
     private $user;
 
-    private $sessionIsSafe;
-
     private $db;
 
+    private $userIpTableRepository;
+
+    private $sessionStringRepository;
+
     public function __construct(
-        DbInterface $db
-    )
-    {
+        DbInterface $db,
+        UserIpTableRepositoryInterface $userIpTableRepository,
+        SessionStringRepositoryInterface $sessionStringRepository
+    ) {
         $this->db = $db;
+        $this->userIpTableRepository = $userIpTableRepository;
+        $this->sessionStringRepository = $sessionStringRepository;
     }
 
     public function createSession(bool $session_check = true): void
     {
-        if ($this->hasLoginVars()) {
-            $this->destroyLoginCookies();
-            $this->login();
+        if (!$this->isLoggedIn() && $session_check) {
+            throw new LoginException('Session abgelaufen');
         }
-        if (!$this->isLoggedIn() && !$this->hasLoginVars() && $session_check) {
-            throw new LoginException("Session abgelaufen");
-        }
-        if (!$this->hasLoginVars() && $session_check && (!$_SESSION['uid'] || !$_SESSION['login'])) {
+        if ($session_check && (!$_SESSION['uid'] || !$_SESSION['login'])) {
             $this->logout();
             return;
         }
@@ -44,155 +49,111 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function checkLoginCookie()
+    public function checkLoginCookie(): void
     {
         $sstr = $_COOKIE['sstr'];
         $uid = intval($_SESSION['uid']);
         if ($uid > 0) {
-            return $this->performCookieLogin($uid, $sstr);
+            $this->performCookieLogin($uid, $sstr);
         }
-        return false;
     }
 
-    private function isLoggedIn()
+    private function isLoggedIn(): bool
     {
-        if (!$_SESSION['uid'] || !$_SESSION['login'] || $_SESSION['login'] == 0) {
-            return false;
-        }
-        return true;
-    }
-
-    private function hasLoginVars()
-    {
-        if (request::postString('login') && request::postString('pass')) {
-            return true;
-        }
-        return false;
+        return array_key_exists('uid', $_SESSION)
+            && array_key_exists('login',$_SESSION)
+            && $_SESSION['login'] == 1;
     }
 
     /**
      * @api
      */
-    public function setSessionVar($var, $value)
-    {
-        global $_SESSION;
-        $_SESSION[$var] = $value;
-    }
-
-    /**
-     * @api
-     */
-    public function getSessionVar($var)
-    {
-        return $_SESSION[$var];
-    }
-
-    /**
-     * @api
-     */
-    public function removeSessionVar($var)
-    {
-        unset($_SESSION[$var]);
-    }
-
-    /**
-     * @api
-     */
-    public function getUser()
+    public function getUser(): ?UserData
     {
         return $this->user;
     }
 
-    private function getUid()
+    public function login(string $userName, string $password): void
     {
-        return $_SESSION['uid'];
-    }
+        $this->destroyLoginCookies();
 
-    /**
-     */
-    private function handleLoginError($error)
-    {
-        $this->setSessionVar('loginerror', $error);
-        header("Location: index.php");
-        exit;
-    }
-
-    private function login()
-    {
-        $result = User::getByLogin(trim(request::postStringFatal('login')));
+        $result = User::getByLogin($userName);
         if (!$result) {
-            $this->handleLoginError(_('Benutzername nicht gefunden'));
+            throw new \Stu\Lib\LoginException(_('Benutzername nicht gefunden'));
         }
-        if ($result->getPassword() != sha1(trim(request::postStringFatal('pass')))) {
-            $this->handleLoginError(_('Das Passwort ist falsch'));
+        if ($result->getPassword() != sha1($password)) {
+            throw new \Stu\Lib\LoginException(_('Das Passwort ist falsch'));
         }
         if ($result->getActive() == 0) {
             $result->setActive(User::USER_ACTIVE);
             $result->save();
         }
         if ($result->getActive() == 4) {
-            throw new LoginException("Gesperrt");
+            throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde gesperrt'));
         }
         if ($result->getDeletionMark() == 2) {
-            throw new LoginException("Löschung");
+            throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
         }
         if ($result->getVacationMode() == 1) {
             $result->setVacationMode(0);
         }
-        $this->setSessionVar('uid', $result->getId());
-        $this->setSessionVar('login', 1);
-        $this->setSessionVar('logintime', time());
-        $this->setSessionVar('session_strings', 0);
-        $this->setSessionVar('login_verified', false);
         $result->save();
+
+        $_SESSION['uid'] = $result->getId();
+        $_SESSION['login'] = 1;
+
         $this->user = $result;
 
-        $this->truncateSessionStrings();
+        $this->sessionStringRepository->truncate($result->getId());
 
         if (!$result->getSaveLogin()) {
-            setcookie('sstr', currentUser()->getCookieString(), (time() + 86400 * 2));
+            setcookie('sstr', $this->user->getCookieString(), (time() + 86400 * 2));
         }
 
         // Login verzeichnen
-        $this->db->query("INSERT INTO stu_user_iptable (user_id,ip,session,agent,start) VALUES ('" . $result->getId() . "','" . getenv("REMOTE_ADDR") . "','" . session_id() . "','" . dbSafe(getenv("HTTP_USER_AGENT")) . "',NOW())");
+        $ipTableEntry = $this->userIpTableRepository->prototype();
+        $ipTableEntry->setUserId((int) $result->getId());
+        $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
+        $ipTableEntry->setSessionId(session_id());
+        $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));
+        $ipTableEntry->setStartDate(new DateTimeImmutable());
+
+        $this->userIpTableRepository->save($ipTableEntry);
     }
 
-    private function destroySession()
+    private function destroySession(): void
     {
-        $this->truncateSessionStrings();
+        $this->sessionStringRepository->truncate($this->user->getId());
         $this->destroyLoginCookies();
         setCookie(session_name(), '', time() - 42000);
         @session_destroy();
     }
 
-    /**
-     */
-    private function destroyLoginCookies()
+    private function destroyLoginCookies(): void
     {
         setCookie('sstr', 0);
     }
 
-    public function logout()
+    public function logout(): void
     {
         $this->destroySession();
-        header("Location: index.php");
-        exit;
+        header('Location: /');
     }
 
-    private function performCookieLogin(&$uid, &$sstr)
+    private function performCookieLogin(int $uid, string $sstr): void
     {
         if (strlen($sstr) != 40) {
             $this->destroySession();
-            return false;
+            return;
         }
         $result = User::getUserById($uid);
         if (!$result) {
             $this->destroySession();
-            return false;
+            return;
         }
         if ($result->getCookieString() != $sstr) {
             $this->destroySession();
-            return false;
+            return;
         }
         if ($result->getActive() == 0) {
             throw new LoginException("Aktivierung");
@@ -206,34 +167,49 @@ final class Session implements SessionInterface
         if ($result->getVacationMode() == 1) {
             $result->setVacationMode(0);
         }
-        $this->setSessionVar('uid', $result->getId());
-        $this->setSessionVar('login', 1);
-        $this->setSessionVar('logintime', time());
-        $this->setSessionVar('session_strings', 0);
         $result->save();
+
+        $_SESSION['uid'] = $result->getId();
+        $_SESSION['login'] = 1;
+
         $this->user = $result;
 
-        $this->truncateSessionStrings();
+        $this->sessionStringRepository->truncate($result->getId());
         session_start();
 
         // Login verzeichnen
-        $this->db->query("INSERT INTO stu_user_iptable (user_id,ip,session,agent,start) VALUES ('" . $result->getId() . "','" . getenv("REMOTE_ADDR") . "','" . session_id() . "','" . dbsafe(getenv("HTTP_USER_AGENT")) . "',NOW())");
+        $ipTableEntry = $this->userIpTableRepository->prototype();
+        $ipTableEntry->setUserId((int) $result->getId());
+        $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
+        $ipTableEntry->setSessionId(session_id());
+        $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));
+        $ipTableEntry->setStartDate(new DateTimeImmutable());
+
+        $this->userIpTableRepository->save($ipTableEntry);
     }
 
-    private function chklogin()
+    private function chklogin(): void
     {
         if (!$this->isLoggedIn()) {
-            new LoginException("Not logged in");
+            throw new LoginException("Not logged in");
         }
-        $this->db->query("UPDATE stu_user SET lastaction='" . time() . "' WHERE id=" . $this->getUid() . " LIMIT 1");
-        $this->db->query("UPDATE stu_user_iptable SET end=NOW() WHERE session='" . session_id() . "' LIMIT 1");
-        $data = $this->db->query("SELECT * FROM stu_user WHERE id=" . $this->getUid() . " LIMIT 1", 4);
+
+        $userId = (int) $_SESSION['uid'];
+
+        $this->db->query("UPDATE stu_user SET lastaction='" . time() . "' WHERE id=" . $userId . " LIMIT 1");
+
+        $ipTableEntry = $this->userIpTableRepository->findBySessionId(session_id());
+        if ($ipTableEntry !== null) {
+            $ipTableEntry->setEndDate(new DateTimeImmutable());
+
+            $this->userIpTableRepository->save($ipTableEntry);
+        }
+
+        $data = $this->db->query("SELECT * FROM stu_user WHERE id=" . $userId . " LIMIT 1", 4);
         if ($data == 0) {
             $this->logout();
         }
-        $this->setSessionVar('username', $data['user']);
-        $this->setSessionVar('login', 1);
-        $this->setSessionVar('lastaction', time());
+        $_SESSION['login'] = 1;
 
         $this->user = new UserData($data);
     }
@@ -241,49 +217,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function sessionIsSafe()
-    {
-        if ($this->sessionIsSafe === null) {
-            $this->sessionIsSafe = $this->checkSessionString(request::indString('sstr'));
-        }
-        return $this->sessionIsSafe;
-    }
-
-    private function checkSessionString(&$string)
-    {
-        $result = $this->db->query("DELETE FROM stu_session_strings WHERE user_id=" . $this->getUid() . " AND sess_string='" . dbsafe($string) . "'",
-            6);
-        if ($result == 0) {
-            return false;
-        }
-        return true;
-    }
-
-    private function truncateSessionStrings()
-    {
-        $this->db->query("DELETE FROM stu_session_strings WHERE UNIX_TIMESTAMP(date)<" . (time() - 3600) . " OR user_id=" . currentUser()->getId());
-    }
-
-    private function generateSessionString()
-    {
-        $this->setSessionVar('session_strings', $this->getSessionVar('session_strings') + 1);
-        return substr(md5(getUniqId() * $this->getSessionVar('session_strings')), rand(1, 4), rand(15, 20));
-    }
-
-    /**
-     * @api
-     */
-    public function getSessionString()
-    {
-        $string = $this->generateSessionString();
-        $this->db->query("INSERT INTO stu_session_strings (sess_string,user_id,date) VALUES ('" . $string . "','" . currentUser()->getId() . "',NOW())");
-        return $string;
-    }
-
-    /**
-     * @api
-     */
-    public function storeSessionData($key, $value)
+    public function storeSessionData($key, $value): void
     {
         $data = currentUser()->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
@@ -299,7 +233,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function deleteSessionData($key, $value)
+    public function deleteSessionData($key, $value): void
     {
         $data = currentUser()->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
@@ -316,7 +250,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function hasSessionValue($key, $value)
+    public function hasSessionValue($key, $value): bool
     {
         $data = currentUser()->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {

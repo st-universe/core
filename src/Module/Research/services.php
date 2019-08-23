@@ -15,6 +15,7 @@ use Stu\Module\Research\View\Overview\Overview;
 use Stu\Module\Research\View\ShowResearch\ShowResearch;
 use Stu\Module\Research\View\ShowResearch\ShowResearchRequest;
 use Stu\Module\Research\View\ShowResearch\ShowResearchRequestInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -27,6 +28,7 @@ return [
     IntermediateController::TYPE_RESEARCH => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 CancelResearch::ACTION_IDENTIFIER => autowire(CancelResearch::class),
                 StartResearch::ACTION_IDENTIFIER => autowire(StartResearch::class),

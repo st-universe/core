@@ -10,6 +10,7 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\History\View\Overview\Overview;
 use Stu\Module\History\View\Overview\OverviewRequest;
 use Stu\Module\History\View\Overview\OverviewRequestInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -19,6 +20,7 @@ return [
     IntermediateController::TYPE_HISTORY => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
             ],
             [

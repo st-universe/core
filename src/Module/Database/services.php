@@ -20,6 +20,7 @@ use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -32,6 +33,7 @@ return [
     IntermediateController::TYPE_DATABASE => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [],
             [
                 Category::VIEW_IDENTIFIER => autowire(Category::class),

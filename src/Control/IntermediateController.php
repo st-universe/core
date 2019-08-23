@@ -3,6 +3,7 @@
 namespace Stu\Control;
 
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 final class IntermediateController extends GameController
 {
@@ -21,15 +22,22 @@ final class IntermediateController extends GameController
 
     /**
      * @param SessionInterface $session
+     * @param SessionStringRepositoryInterface $sessionStringRepository
      * @param ActionControllerInterface[] $actions
      * @param ViewControllerInterface[] $views
      */
     public function __construct(
         SessionInterface $session,
+        SessionStringRepositoryInterface $sessionStringRepository,
         array $actions,
         array $views
     ) {
-        parent::__construct($session, '', '');
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            '',
+            ''
+        );
 
         foreach ($actions as $key => $action) {
             $this->addCallBack($key, $action, $action->performSessionCheck());

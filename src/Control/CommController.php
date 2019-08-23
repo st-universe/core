@@ -21,6 +21,7 @@ use RPGPlotData;
 use RPGPlotMember;
 use RPGPlotMemberData;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Tuple;
 use User;
 
@@ -33,10 +34,15 @@ final class CommController extends GameController
     private $default_tpl = "html/comm.xhtml";
 
     public function __construct(
-        SessionInterface $session
-    )
-    {
-        parent::__construct($session, $this->default_tpl, "/ Kommunikationsnetzwerk");
+        SessionInterface $session,
+        SessionStringRepositoryInterface $sessionStringRepository
+    ) {
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            $this->default_tpl,
+            "/ Kommunikationsnetzwerk"
+        );
         $this->addNavigationPart(new Tuple("comm.php", "Kommunikationsnetzwerk"));
 
         $this->addCallBack("B_WRITE_KN", "addKNPosting", true);

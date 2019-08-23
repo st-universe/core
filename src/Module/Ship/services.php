@@ -25,6 +25,7 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SelfDestructConfirmation\SelfDestructConfirmation;
 use Stu\Module\Ship\View\Overview\Overview;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -38,6 +39,7 @@ return [
     IntermediateController::TYPE_SHIP_LIST => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
                 SelfDestructConfirmation::ACTION_IDENTIFIER => autowire(SelfDestructConfirmation::class),

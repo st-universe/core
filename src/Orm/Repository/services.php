@@ -15,6 +15,8 @@ use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\UserIpTable;
 
 return [
     ColonyShipRepairRepositoryInterface::class => function (
@@ -62,4 +64,14 @@ return [
     ): ResearchDependencyRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ResearchDependency::class);
     },
+    SessionStringRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): SessionStringRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
+    },
+    UserIpTableRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserIpTableRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class);
+    }
 ];

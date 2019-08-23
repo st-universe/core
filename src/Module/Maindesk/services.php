@@ -13,6 +13,7 @@ use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;
 use Stu\Module\Maindesk\View\Overview\Overview;
 use Stu\Module\Maindesk\View\ShowColonyList\ShowColonyList;
 use Stu\Module\Maindesk\View\ShowColonyListAjax\ShowColonyListAjax;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -22,6 +23,7 @@ return [
     IntermediateController::TYPE_MAINDESK => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 FirstColony::ACTION_IDENTIFIER => autowire(FirstColony::class),
             ],

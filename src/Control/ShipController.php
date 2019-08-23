@@ -25,6 +25,7 @@ use Stu\Lib\SessionInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use SystemActivationWrapper;
 use TradeLicencesData;
 use TradeStorage;
@@ -47,12 +48,19 @@ final class ShipController extends GameController
     public function __construct(
         SessionInterface $session,
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository
-    )
-    {
+        DatabaseUserRepositoryInterface $databaseUserRepository,
+        SessionStringRepositoryInterface $sessionStringRepository
+    ) {
         $this->session = $session;
         $this->databaseEntryRepository = $databaseEntryRepository;
-        parent::__construct($session, $this->default_tpl, "/ Schiffe");
+
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            $this->default_tpl,
+            "/ Schiffe"
+        );
+
         $this->addNavigationPart(new Tuple("shiplist.php", "Schiffe"));
         $this->addCallBack("B_ACTIVATE_CLOAK", "activateCloak", true);
         $this->addCallBack("B_DEACTIVATE_CLOAK", "deActivateCloak", true);
@@ -1691,19 +1699,17 @@ final class ShipController extends GameController
 
     function getSelfdestructCode()
     {
-        $time = microtime();
-        $str = sha1($time * $this->getShip()->getId());
-        $str = substr($str, 18, 6);
-        $this->session->setSessionVar('sz_code', $str);
-        return $str;
+        // @todo repair
+        return 'gehtned';
     }
 
     protected function selfDestruct()
     {
         $code = request::postString('destructioncode');
-        if ($code != $this->session->getSessionVar('sz_code')) {
-            return;
-        }
+
+        // @todo repair
+        return;
+
         $this->getShip()->selfDestroy();
         DB()->commitTransaction();
         $this->redirectTo('shiplist.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());

@@ -11,6 +11,7 @@ use Stu\Module\Colony\Action\Abandon\Abandon;
 use Stu\Module\Colony\Action\Abandon\AbandonRequest;
 use Stu\Module\Colony\Action\Abandon\AbandonRequestInterface;
 use Stu\Module\Colony\View\Overview\Overview;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -20,6 +21,7 @@ return [
     IntermediateController::TYPE_COLONY_LIST => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 Abandon::ACTION_IDENTIFIER => autowire(Abandon::class),
             ],

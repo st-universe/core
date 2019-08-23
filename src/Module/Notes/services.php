@@ -18,6 +18,7 @@ use Stu\Module\Notes\View\ShowNewNote\ShowNewNote;
 use Stu\Module\Notes\View\ShowNote\ShowNote;
 use Stu\Module\Notes\View\ShowNote\ShowNoteRequest;
 use Stu\Module\Notes\View\ShowNote\ShowNoteRequestInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -29,6 +30,7 @@ return [
     IntermediateController::TYPE_NOTES => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
+            get(SessionStringRepositoryInterface::class),
             [
                 SaveNote::ACTION_IDENTIFIER => autowire(SaveNote::class),
                 DeleteNotes::ACTION_IDENTIFIER => autowire(DeleteNotes::class),

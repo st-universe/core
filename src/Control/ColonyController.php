@@ -18,7 +18,6 @@ use CrewTrainingData;
 use Exception;
 use FieldTerraforming;
 use Good;
-use InvalidParamException;
 use ModuleBuildingFunction;
 use ModuleQueue;
 use ModuleScreenTab;
@@ -38,6 +37,7 @@ use Shiprump;
 use Stu\Lib\SessionInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Terraforming;
 use TorpedoType;
 use Tuple;
@@ -52,12 +52,18 @@ final class ColonyController extends GameController
 
     public function __construct(
         SessionInterface $session,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        SessionStringRepositoryInterface $sessionStringRepository
     )
     {
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
 
-        parent::__construct($session, $this->default_tpl, "/ Kolonien");
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            $this->default_tpl,
+            "/ Kolonien"
+        );
         $this->addNavigationPart(new Tuple("colonylist.php", "Kolonien"));
 
         $this->getTemplate()->setVar('currentColony', $this->getColony());

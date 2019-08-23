@@ -4,29 +4,23 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use UserData;
+
 interface SessionInterface
 {
     public function createSession(bool $session_check = true): void;
 
-    public function checkLoginCookie();
+    public function checkLoginCookie(): void;
 
-    public function setSessionVar($var, $value);
+    public function getUser(): ?UserData;
 
-    public function getSessionVar($var);
+    public function logout(): void;
 
-    public function removeSessionVar($var);
+    public function storeSessionData($key, $value): void;
 
-    public function getUser();
+    public function deleteSessionData($key, $value): void;
 
-    public function logout();
+    public function hasSessionValue($key, $value): bool;
 
-    public function sessionIsSafe();
-
-    public function getSessionString();
-
-    public function storeSessionData($key, $value);
-
-    public function deleteSessionData($key, $value);
-
-    public function hasSessionValue($key, $value);
+    public function login(string $userName, string $password): void;
 }

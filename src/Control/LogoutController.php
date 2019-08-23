@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Control;
 
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 
 final class LogoutController extends GameController
 {
@@ -14,11 +15,16 @@ final class LogoutController extends GameController
     private $session;
 
     public function __construct(
-        SessionInterface $session
-    )
-    {
+        SessionInterface $session,
+        SessionStringRepositoryInterface $sessionStringRepository
+    ) {
         $this->session = $session;
-        parent::__construct($session, $this->default_tpl, 'Logout');
+        parent::__construct(
+            $session,
+            $sessionStringRepository,
+            $this->default_tpl,
+            'Logout'
+        );
     }
 
     public function logout(): void {
