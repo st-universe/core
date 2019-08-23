@@ -99,7 +99,7 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('REGION', new MapRegion($entry_object_id));
                 break;
             case DATABASE_TYPE_SHIPRUMP:
-                $game->setTemplateVar('RUMP', new ShipRump($entry_object_id));
+                $game->setTemplateVar('RUMP', new Shiprump($entry_object_id));
                 break;
             case DATABASE_TYPE_STARSYSTEM:
                 $game->setTemplateVar('SYSTEM', new StarSystem($entry_object_id));

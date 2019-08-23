@@ -1199,7 +1199,7 @@
 						</tr>
 					</table>
 					<tal:block tal:condition="THIS/getField/getBuilding/isShipyard">
-						<metal:macro metal:use-macro="ship_buildprogress" tal:condition="THIS/getShipBuildProgress"/>
+						<metal:macro metal:use-macro="ship_buildprogress" tal:condition="THIS/getShipBuildProgress" tal:define="SHIP_BUILD_PROGRESS THIS/getShipBuildProgress" />
 						<metal:macro metal:use-macro="ship_repairprogress" tal:condition="THIS/getShipRepairProgress"/>
 					</tal:block>
 				</td>
@@ -1211,7 +1211,7 @@
 			<tr>
 				<th i18n:translate="" colspan="3">Schiffe in Bau</th>
 			</tr>
-			<tr tal:repeat="data THIS/getShipBuildProgress" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
+			<tr tal:repeat="data SHIP_BUILD_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center; vertical-align: middle;">
 					<img src="${GFX}/ships/${data/getRumpId}.gif" />
 				</td>

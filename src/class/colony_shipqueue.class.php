@@ -92,7 +92,7 @@ class ColonyShipQueueData extends BaseTable { #{{{
 	/**
 	 */
 	public function getRump() { #{{{
-		return new ShipRump($this->getRumpId());
+		return new Shiprump($this->getRumpId());
 	} # }}}
 
 	/**

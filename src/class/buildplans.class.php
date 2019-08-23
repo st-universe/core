@@ -63,7 +63,7 @@ class ShipBuildplansData extends BaseTable {
 	 */
 	function getRump() { #{{{
 		if ($this->rump === NULL) {
-			$this->rump = new ShipRump($this->getRumpId());
+			$this->rump = new Shiprump($this->getRumpId());
 		}
 		return $this->rump;
 	} # }}}

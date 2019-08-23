@@ -1565,7 +1565,7 @@ final class ColonyController extends GameController
      */
     private function showModuleSelectScreen()
     {
-        $this->setPagetitle("Kolonie: " . $this->getColony()->getNameWithoutMarkup() . _(' / Schiffbau'));
+        $this->setPagetitle(_(' / Schiffbau'));
         $this->setTemplateFile('html/modulescreen.xhtml');
         $this->getSelectedRump()->enforceBuildableByUser(currentUser()->getId());
     }
@@ -1573,8 +1573,6 @@ final class ColonyController extends GameController
 
     protected function showModuleScreen()
     {
-        $this->addNavigationPart(new Tuple("?id=" . $this->getColony()->getId(),
-            $this->getColony()->getNameWithoutMarkup()));
         $this->addNavigationPart(new Tuple("?id=" . $this->getColony()->getId() . '&SHOW_MODULE_SCREEN=1&rump=' . $this->getSelectedRump()->getId(),
             _('Schiffbau')));
         $this->showModuleSelectScreen();

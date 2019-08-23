@@ -54,6 +54,7 @@ class ModuleSelector { #{{{
 		if ($this->template === NULL) {
 			$this->template = new TalPage($this->templateFile);
 			$this->template->setVar('THIS',$this);
+			$this->template->setVar('GFX', GFX_PATH);
 		}
 		return $this->template;
 	} # }}}

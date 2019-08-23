@@ -67,7 +67,7 @@ class ColonyStorageGoodCountWrapper { #{{{
 		if ($count == self::CHECK_ONLY) {
 			return TRUE;
 		}
-		if ($this->storage[$this->goodId]->getCount() < $count) {
+		if ($this->storage[$this->goodId]->getAmount() < $count) {
 			return FALSE;
 		}
 		return TRUE;
