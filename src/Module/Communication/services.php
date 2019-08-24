@@ -7,9 +7,19 @@ namespace Stu\Module\Communication;
 use Stu\Control\GameController;
 use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Communication\Action\AddContact\AddContact;
+use Stu\Module\Communication\Action\AddContact\AddContactRequest;
+use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;
+use Stu\Module\Communication\Action\DeleteAllContacts\DeleteAllContacts;
+use Stu\Module\Communication\Action\DeleteContacts\DeleteContacts;
+use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequest;
+use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
+use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactMode;
+use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactModeRequest;
+use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactModeRequestInterface;
 use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
@@ -72,12 +82,19 @@ return [
     ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
     ShowEditKnRequestInterface::class => autowire(ShowEditKnRequest::class),
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),
+    SwitchContactModeRequestInterface::class => autowire(SwitchContactModeRequest::class),
+    AddContactRequestInterface::class => autowire(AddContactRequest::class),
+    DeleteContactsRequestInterface::class => autowire(DeleteContactsRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),
             [
                 SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
+                SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
+                AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
+                DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
+                DeleteAllContacts::ACTION_IDENTIFIER => autowire(DeleteAllContacts::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -54,10 +54,6 @@ final class CommController extends GameController
         $this->addCallBack("B_EDIT_PMCATEGORY_NAME", "editPMCategoryName");
         $this->addCallBack("B_DELETE_PMCATEGORY", "deletePMCategory");
         $this->addCallBack("B_IGNORE_USER", "ignoreUser");
-        $this->addCallBack("B_ADD_CONTACT", "addToContactlist");
-        $this->addCallBack("B_CHANGE_CONTACTMODE", "editContactMode");
-        $this->addCallBack("B_DELETE_CONTACTS", "deleteMarkedContacts");
-        $this->addCallBack("B_DELETE_ALL_CONTACTS", "deleteAllContacts", true);
         $this->addCallBack("B_DELETE_IGNORES", "deleteMarkedIgnores");
         $this->addCallBack("B_DELETE_ALL_IGNORES", "deleteAllIgnores", true);
         $this->addCallBack("B_CREATE_PLOT", "createRPGPlot");
@@ -122,25 +118,6 @@ final class CommController extends GameController
         }
         $cat->truncate();
         $this->addInformation("Der Ordner wurden geleert");
-    }
-
-    function deleteMarkedContacts()
-    {
-        $msg = request::indArray('deleted');
-        foreach ($msg as $key => $val) {
-            $contact = Contactlist::getById($val);
-            if (!$contact || !$contact->isOwnContact()) {
-                continue;
-            }
-            $contact->deleteFromDatabase();
-        }
-        $this->addInformation("Die Kontakte wurden gelöscht");
-    }
-
-    function deleteAllContacts()
-    {
-        Contactlist::truncate('WHERE user_id=' . currentUser()->getId());
-        $this->addInformation("Die Kontakte wurden gelöscht");
     }
 
     function deleteMarkedIgnores()
@@ -401,80 +378,6 @@ final class CommController extends GameController
         return $this->rpgplot;
     }
 
-    private $contact = null;
-
-    function addToContactlist()
-    {
-        $this->getTemplate()->setVar('div', request::getString('cldiv'));
-        $recid = request::indInt('recid');
-        $user = User::getUserById($recid);
-        if (!$user) {
-            $this->addInformation("Dieser Siedler existiert nicht");
-            return;
-        }
-        if (isSystemUser($user->getId())) {
-            $this->addInformation(_("Dieser Siedler kann nicht hinzugefügt werden"));
-            return;
-        }
-        if ($user->getId() == currentUser()->getId()) {
-            $this->addInformation("Du kannst Dich nicht selbst auf die Kontaktliste setzen");
-            return;
-        }
-        if (Contactlist::isOnList(currentUser()->getId(), $recid) == 1) {
-            $this->addInformation("Dieser Siedler befindet sich bereits auf Deiner Kontaktliste");
-            return;
-        }
-        $mode = request::indInt('clmode');
-        if (!array_key_exists($mode, getContactlistModes())) {
-            return;
-        }
-        $contact = new ContactlistData;
-        $contact->setUserId(currentUser()->getId());
-        $contact->setMode($mode);
-        $contact->setRecipientId($user->getId());
-        $contact->setDate(time());
-        $contact->save();
-        $this->contact = $contact;
-        if ($mode == Contactlist::CONTACT_ENEMY) {
-            PM::sendPM(currentUser()->getId(), $user->getId(), "Der Siedler betrachtet Dich von nun an als Feind");
-        }
-        $this->addInformation("Der Siedler wurde hinzugefügt");
-    }
-
-    function editContactMode()
-    {
-        $this->getTemplate()->setVar('div', request::getString('cldiv'));
-        $contactid = request::indInt('cid');
-        $contact = Contactlist::getById($contactid);
-        if (!$contact || !$contact->isOwnContact()) {
-            return;
-        }
-        $mode = request::indInt('clmode');
-        if (!array_key_exists($mode, getContactlistModes())) {
-            return;
-        }
-        if ($mode != $contact->getMode() && $mode == Contactlist::CONTACT_ENEMY) {
-            PM::sendPM(currentUser()->getId(), $contact->getRecipientId(),
-                _("Der Siedler betrachtet Dich von nun an als Feind"));
-            $obj = Contactlist::hasContact($contact->getRecipientId(), currentUser()->getId());
-            if ($obj) {
-                if (!$obj->isEnemy()) {
-                    $obj->setMode(Contactlist::CONTACT_ENEMY);
-                    $obj->save();
-                }
-            } else {
-                $obj = new ContactlistData();
-                $obj->setUserId($contact->getRecipientId());
-                $obj->setRecipientId(currentUser()->getId());
-                $obj->setMode(Contactlist::CONTACT_ENEMY);
-                $obj->setDate(time());
-                $obj->save();
-            }
-        }
-        $contact->setMode($mode);
-        $contact->save();
-        $this->contact = $contact;
-    }
 
     /**
      */

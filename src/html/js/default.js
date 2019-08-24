@@ -127,7 +127,7 @@ function showContactModeSwitcher(div,contactid) {
 	ajax_update('clmswitcher','comm.php?SHOW_CONTACT_MODESWITCH=1&cid='+contactid);
 }
 function switchContactMode(contactid,mode) {
-	ajaxcall(clmodeswitchdiv,'comm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid='+contactid+'&clmode='+mode+"&cldiv="+clmodeswitchdiv);
+	ajax_update(clmodeswitchdiv,'comm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid='+contactid+'&clmode='+mode+"&cldiv="+clmodeswitchdiv);
 	clmodeswitcdiv = '';
 	cClick();
 }

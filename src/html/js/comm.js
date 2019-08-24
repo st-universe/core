@@ -47,6 +47,7 @@ function unMarkAllPMs() {
 }
 
 function deleteMarkedContacts() {
+	$('deletion_mark').value = nodelistToString(document.getElementById('contactlist').elements['deleted[]'])
 	$('formaction').name = 'B_DELETE_CONTACTS';
 	document.forms.contactlist.submit();
 }
