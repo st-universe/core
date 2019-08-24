@@ -13,7 +13,7 @@
 					<th>Start</th>
 					<th>Status</th>
 				</tr>
-				<tr class="runtime" tal:attributes="class string:row${repeat/plot/odd}" tal:repeat="plot THIS/getRPGPlots">
+				<tr class="runtime" tal:attributes="class string:row${repeat/plot/odd}" tal:repeat="plot PLOT_LIST">
 					<td><a href="?SHOW_PLOT=1&plotid=${plot/getId}" tal:content="structure plot/getTitleDecoded">TITLE</a></td>
 					<td tal:content="plot/getMemberCount">COUNT</td>
 					<td tal:content="plot/getPostingCount">POSTINGS</td>
@@ -23,7 +23,7 @@
 						<span tal:condition="plot/isActive">Aktiv</span>
 					</td>
 				</tr>
-				<tr tal:condition="not:THIS/getRPGPlots">
+				<tr tal:condition="not:PLOT_LIST">
 					<td colspan="5">Keine Plots vorhanden</td>
 				</tr>
 			</table>

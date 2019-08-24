@@ -75,12 +75,9 @@ final class CommController extends GameController
         $this->addView("SHOW_CONTACT_MODE", "showContactMode");
         $this->addView("SHOW_CREATE_PLOT", "showCreatePlot");
         $this->addView("SHOW_EDIT_PLOT", "showEditPlot");
-        $this->addView("SHOW_PLOTLIST", "showPlotlist");
-        $this->addView("SHOW_MYPLOTS", "showUserPlotlist");
 
         $this->addView("SHOW_NOOP", "showNoop");
     }
-
 
     function showCreatePlot()
     {
@@ -98,20 +95,6 @@ final class CommController extends GameController
         $this->setTemplateFile('html/createplot.xhtml');
         $this->addNavigationPart(new Tuple("comm.php?SHOW_EDIT_PLOT=1", "Plot editieren"));
         $this->setPageTitle("Plot editieren");
-    }
-
-    function showPlotlist()
-    {
-        $this->setTemplateFile('html/plotlist.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOTLIST=1", "Plotliste"));
-        $this->setPageTitle("Plotliste");
-    }
-
-    function showUserPlotlist()
-    {
-        $this->setTemplateFile('html/userplotlist.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_MYPlOTS=1", "Eigene Plots"));
-        $this->setPageTitle("Plotliste");
     }
 
     function showIgnore()
@@ -771,24 +754,6 @@ final class CommController extends GameController
             return false;
         }
         return $pm;
-    }
-
-    private $rpgplots = null;
-
-    public function getRPGPlots()
-    {
-        if ($this->rpgplots === null) {
-            $this->rpgplots = RPGPlot::getObjectsBy('ORDER BY start_date DESC');
-        }
-        return $this->rpgplots;
-    }
-
-    public function getOwnRPGPlots()
-    {
-        if ($this->rpgplots === null) {
-            $this->rpgplots = RPGPlot::getObjectsBy('WHERE id IN (SELECT plot_id FROM stu_plots_members WHERE user_id=' . currentUser()->getId() . ') ORDER BY start_date DESC');
-        }
-        return $this->rpgplots;
     }
 
     public function getActiveRPGPlots()
