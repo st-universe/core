@@ -46,13 +46,9 @@ final class CommController extends GameController
         $this->addCallBack("B_WRITE_PM", "addPM", true);
         $this->addCallBack("B_EDIT_KN", "editKNPosting");
         $this->addCallBack("B_DEL_KN", "delKNPosting", true);
-        $this->addCallBack("B_ADD_PMCATEGORY", "addPMCategory");
         $this->addCallBack("B_MOVE_PM", "movePMToCategory");
         $this->addCallBack("B_DELETE_PMS", "deleteMarkedPMs");
         $this->addCallBack("B_DELETE_ALL_PMS", "deleteAllPMs", true);
-        $this->addCallBack("B_PMCATEGORY_SORT", "changePMCategorySort");
-        $this->addCallBack("B_EDIT_PMCATEGORY_NAME", "editPMCategoryName");
-        $this->addCallBack("B_DELETE_PMCATEGORY", "deletePMCategory");
         $this->addCallBack("B_CREATE_PLOT", "createRPGPlot");
         $this->addCallBack("B_EDIT_PLOT", "editRPGPlot");
         $this->addCallBack("B_ADD_PLOTMEMBER", "addPlotMember");
@@ -111,60 +107,6 @@ final class CommController extends GameController
         $pm->setCategoryId($cat->getId());
         $pm->save();
         $this->addInformation("Die Nachricht wurde verscheben");
-    }
-
-    function addPMCategory()
-    {
-        $this->setView('SHOW_CAT_LIST');
-        $name = request::getString('catname');
-        if (strlen($name) < 1) {
-            return;
-        }
-        $cat = new PMCategoryData(array());
-        $cat->setUserId(currentUser()->getId());
-        $cat->appendToSorting();
-        $cat->setDescription(tidyString($name));
-        $cat->save();
-    }
-
-    function editPMCategoryName()
-    {
-        $this->setView('SHOW_CAT_LIST');
-        $name = request::getString('catname');
-        if (strlen($name) < 1) {
-            return;
-        }
-        $catid = request::getIntFatal('pmcat');
-        $cat = new PMCategory($catid);
-        $cat->setDescription(tidyString($name));
-        $cat->save();
-    }
-
-    function deletePMCategory()
-    {
-        $this->setView('SHOW_PM_CAT');
-        $catid = request::postInt('pmcat');
-        $cat = PMCategory::getById($catid);
-        if (!$cat || !$cat->isOwnCategory() || !$cat->isDeleteAble()) {
-            return;
-        }
-        $cat->truncate();
-        $cat->deleteFromDatabase();
-        $this->addInformation("Der Ordner wurde gelöscht");
-    }
-
-    function changePMCategorySort()
-    {
-        $this->setView('SHOW_NOOP');
-        $order = request::getArray('catlist');
-        $cats = $this->getPMCategories();
-        foreach ($order as $key => $value) {
-            if (!array_key_exists($value, $cats)) {
-                continue;
-            }
-            $cats[$value]->setSort(intval($key));
-            $cats[$value]->save();
-        }
     }
 
     function addKNPosting()

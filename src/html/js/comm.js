@@ -112,7 +112,7 @@ function deletePostingComment(commentId) {
 	ajax_update('kncomments',"comm.php?B_DELETE_COMMENT=1&comment="+commentId);
 }
 function updateCategoryOrder() {
-	ajaxrequest('comm.php?B_PMCATEGORY_SORT=1&'+Sortable.serialize('catlist'));
+	ajax_update(false,'comm.php?B_PMCATEGORY_SORT=1&catlist='+Sortable.sequence('catlist').join(','));
 }
 function movePm(pmId) {
 	$('move_pm').value = pmId;

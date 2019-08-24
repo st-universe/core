@@ -10,6 +10,9 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
 use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;
+use Stu\Module\Communication\Action\AddPmCategory\AddPmCategory;
+use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequest;
+use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequestInterface;
 use Stu\Module\Communication\Action\DeleteAllContacts\DeleteAllContacts;
 use Stu\Module\Communication\Action\DeleteAllIgnores\DeleteAllIgnores;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContacts;
@@ -18,15 +21,25 @@ use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequestInterfac
 use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnores;
 use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequest;
 use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequestInterface;
+use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategory;
+use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategoryRequest;
+use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategoryRequestInterface;
+use Stu\Module\Communication\Action\EditPmCategory\EditPmCategory;
+use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequest;
+use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequestInterface;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUser;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequest;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
+use Stu\Module\Communication\Action\SortPmCategories\SortPmCategories;
+use Stu\Module\Communication\Action\SortPmCategories\SortPmCategoriesRequest;
+use Stu\Module\Communication\Action\SortPmCategories\SortPmCategoriesRequestInterface;
 use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactMode;
 use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactModeRequest;
 use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactModeRequestInterface;
+use Stu\Module\Communication\View\Noop\Noop;
 use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
@@ -94,6 +107,10 @@ return [
     DeleteContactsRequestInterface::class => autowire(DeleteContactsRequest::class),
     IgnoreUserRequestInterface::class => autowire(IgnoreUserRequest::class),
     DeleteIgnoresRequestInterface::class => autowire(DeleteIgnoresRequest::class),
+    SortPmCategoriesRequestInterface::class => autowire(SortPmCategoriesRequest::class),
+    AddPmCategoryRequestInterface::class => autowire(AddPmCategoryRequest::class),
+    EditPmCategoryRequestInterface::class => autowire(EditPmCategoryRequest::class),
+    DeletePmCategoryRequestInterface::class => autowire(DeletePmCategoryRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -107,6 +124,10 @@ return [
                 IgnoreUser::ACTION_IDENTIFIER => autowire(IgnoreUser::class),
                 DeleteAllIgnores::ACTION_IDENTIFIER => autowire(DeleteAllIgnores::class),
                 DeleteIgnores::ACTION_IDENTIFIER => autowire(DeleteIgnores::class),
+                SortPmCategories::ACTION_IDENTIFIER => autowire(SortPmCategories::class),
+                AddPmCategory::ACTION_IDENTIFIER => autowire(AddPmCategory::class),
+                EditPmCategory::ACTION_IDENTIFIER => autowire(EditPmCategory::class),
+                DeletePmCategory::ACTION_IDENTIFIER => autowire(DeletePmCategory::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -131,6 +152,7 @@ return [
                 ShowIgnore::VIEW_IDENTIFIER => autowire(ShowIgnore::class),
                 ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
                 ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
+                Noop::VIEW_IDENTIFIER => autowire(Noop::class),
             ]
         ),
 ];
