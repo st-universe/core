@@ -11,9 +11,16 @@ use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
 use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;
 use Stu\Module\Communication\Action\DeleteAllContacts\DeleteAllContacts;
+use Stu\Module\Communication\Action\DeleteAllIgnores\DeleteAllIgnores;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContacts;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequest;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequestInterface;
+use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnores;
+use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequest;
+use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequestInterface;
+use Stu\Module\Communication\Action\IgnoreUser\IgnoreUser;
+use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequest;
+use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
@@ -85,6 +92,8 @@ return [
     SwitchContactModeRequestInterface::class => autowire(SwitchContactModeRequest::class),
     AddContactRequestInterface::class => autowire(AddContactRequest::class),
     DeleteContactsRequestInterface::class => autowire(DeleteContactsRequest::class),
+    IgnoreUserRequestInterface::class => autowire(IgnoreUserRequest::class),
+    DeleteIgnoresRequestInterface::class => autowire(DeleteIgnoresRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -95,6 +104,9 @@ return [
                 AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
                 DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
                 DeleteAllContacts::ACTION_IDENTIFIER => autowire(DeleteAllContacts::class),
+                IgnoreUser::ACTION_IDENTIFIER => autowire(IgnoreUser::class),
+                DeleteAllIgnores::ACTION_IDENTIFIER => autowire(DeleteAllIgnores::class),
+                DeleteIgnores::ACTION_IDENTIFIER => autowire(DeleteIgnores::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),

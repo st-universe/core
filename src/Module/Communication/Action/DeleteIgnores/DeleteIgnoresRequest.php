@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Communication\Action\DeleteContacts;
+namespace Stu\Module\Communication\Action\DeleteIgnores;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class DeleteContactsRequest implements DeleteContactsRequestInterface
+final class DeleteIgnoresRequest implements DeleteIgnoresRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getContactIds(): array {
+    public function getIgnoreIds(): array {
         return $this->queryParameter('deletion_mark')->commaSeparated()->int()->defaultsTo([]);
     }
 }

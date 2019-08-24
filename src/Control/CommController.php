@@ -53,9 +53,6 @@ final class CommController extends GameController
         $this->addCallBack("B_PMCATEGORY_SORT", "changePMCategorySort");
         $this->addCallBack("B_EDIT_PMCATEGORY_NAME", "editPMCategoryName");
         $this->addCallBack("B_DELETE_PMCATEGORY", "deletePMCategory");
-        $this->addCallBack("B_IGNORE_USER", "ignoreUser");
-        $this->addCallBack("B_DELETE_IGNORES", "deleteMarkedIgnores");
-        $this->addCallBack("B_DELETE_ALL_IGNORES", "deleteAllIgnores", true);
         $this->addCallBack("B_CREATE_PLOT", "createRPGPlot");
         $this->addCallBack("B_EDIT_PLOT", "editRPGPlot");
         $this->addCallBack("B_ADD_PLOTMEMBER", "addPlotMember");
@@ -66,30 +63,6 @@ final class CommController extends GameController
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
         $this->addView("SHOW_NOOP", "showNoop");
-    }
-
-    function ignoreUser()
-    {
-        $userId = request::indInt('recid');
-        $user = User::getUserById($userId);
-        if (!$user) {
-            $this->addInformation("Dieser Siedler existiert nicht");
-            return;
-        }
-        if ($user->getId() == currentUser()->getId()) {
-            $this->addInformation("Du kannst Dich nicht selbst ignorieren");
-            return;
-        }
-        if (Ignorelist::isOnList(currentUser()->getId(), $user->getId()) == 1) {
-            $this->addInformation("Der Siedler befindet sich bereits auf Deiner Ignoreliste");
-            return false;
-        }
-        $ignore = new IgnorelistData();
-        $ignore->setUserId(currentUser()->getId());
-        $ignore->setDate(time());
-        $ignore->setRecipientId($user->getId());
-        $ignore->save();
-        $this->addInformation("Der Siedler wird ignoriert");
     }
 
     public function getSelectedRecipient()
@@ -118,25 +91,6 @@ final class CommController extends GameController
         }
         $cat->truncate();
         $this->addInformation("Der Ordner wurden geleert");
-    }
-
-    function deleteMarkedIgnores()
-    {
-        $msg = request::indArray('deleted');
-        foreach ($msg as $key => $val) {
-            $contact = Ignorelist::getById($val);
-            if (!$contact || !$contact->isOwnIgnore()) {
-                continue;
-            }
-            $contact->deleteFromDatabase();
-        }
-        $this->addInformation("Die Einträge wurden gelöscht");
-    }
-
-    function deleteAllIgnores()
-    {
-        Ignorelist::truncate('WHERE user_id=' . currentUser()->getId());
-        $this->addInformation("Die Einträge wurden gelöscht");
     }
 
     function movePMToCategory()

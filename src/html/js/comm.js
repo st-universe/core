@@ -1,7 +1,7 @@
 function openNewCatWindow() {
 	elt = 'newcatwin';
 	openPJsWin(elt,300);
-	ajaxcall(elt,"comm.php?SHOW_NEW_CAT=1");
+	ajax_update(elt,"comm.php?SHOW_NEW_CAT=1");
 }
 
 function addNewCategory() {
@@ -10,7 +10,7 @@ function addNewCategory() {
 		alert('Es wurde kein Name eingegeben');
 		return;
 	}
-	ajaxcall('catlist','comm.php?B_ADD_PMCATEGORY=1&'+Form.Element.serialize('catname'));
+	ajax_update('catlist','comm.php?B_ADD_PMCATEGORY=1&'+Form.Element.serialize('catname'));
 	cClick();
 }
 
@@ -21,7 +21,7 @@ function changeCategoryName() {
 		return;
 	}
 	catid = document.forms['editcat'].elements['pmcat'].value;
-	ajaxcall('catlist','comm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat='+catid+'&'+Form.Element.serialize('catname'));
+	ajax_update('catlist','comm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat='+catid+'&'+Form.Element.serialize('catname'));
 	cClick();
 }
 
@@ -47,12 +47,13 @@ function unMarkAllPMs() {
 }
 
 function deleteMarkedContacts() {
-	$('deletion_mark').value = nodelistToString(document.getElementById('contactlist').elements['deleted[]'])
+	$('deletion_mark').value = nodelistToString(document.getElementById('contactlist').elements['deleted[]']);
 	$('formaction').name = 'B_DELETE_CONTACTS';
 	document.forms.contactlist.submit();
 }
 
 function deleteMarkedIgnores() {
+	$('deletion_mark').value = nodelistToString(document.getElementById('contactlist').elements['deleted[]']);
 	$('formaction').name = 'B_DELETE_IGNORES';
 	document.forms.contactlist.submit();
 }
@@ -105,10 +106,10 @@ function showKnComments(postingId) {
 }
 function postComment(postingId) {
 	comment = Form.Element.serialize('comment');
-	ajaxcall('kncomments',"comm.php?B_POST_COMMENT=1&posting="+postingId+"&"+comment);
+	ajax_update('kncomments',"comm.php?B_POST_COMMENT=1&posting="+postingId+"&"+comment);
 }
 function deletePostingComment(commentId) {
-	ajaxcall('kncomments',"comm.php?B_DELETE_COMMENT=1&comment="+commentId);
+	ajax_update('kncomments',"comm.php?B_DELETE_COMMENT=1&comment="+commentId);
 }
 function updateCategoryOrder() {
 	ajaxrequest('comm.php?B_PMCATEGORY_SORT=1&'+Sortable.serialize('catlist'));

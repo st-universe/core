@@ -338,6 +338,14 @@ function showAchievement(text) {
 	elem.show();
 }
 function nodelistToString(list) {
+	console.log(list);
+	if (!RadioNodeList.prototype.isPrototypeOf(list)) {
+		if (list.checked) {
+			return list.value
+		} else {
+			return '';
+		}
+	}
 	return Array.from(list)
 		.filter(function (node) {
 			if (node.checked) {
