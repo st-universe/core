@@ -266,14 +266,14 @@
 				</tr>
 				<tr>
 					<td style="text-align: right;">
-						<input type="button" class="button" onclick="postComment(${THIS/getKNPosting/getId})" value="Abschicken" i18n:attributes="value" />
+						<input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken" i18n:attributes="value" />
 					</td>
 				</tr>
 			</table>
 		</div>
 		<div style="width: 100%; text-align: right;"><input type="button" class="button" value="Kommentar schreiben" onclick="Element.hide(this.parentNode);Element.show($('writecomment'))" /></div>
 		<br />
-		<tal:block tal:repeat="data THIS/getKNPosting/getComments">
+		<tal:block tal:repeat="data POST/getComments">
 			<table class="tcal">
 				<tr>
 					<td rowspan="2" style="width: 40px">
@@ -283,9 +283,9 @@
 						<span tal:replace="structure bbcode:data/getDisplayUserName">NAME</span>
 						(<span tal:replace="data/getUserId">ID</span>)
 					</th>
-					<th style="width: 120px; text-align: center;" tal:content="data/getDateFormatted">DATE</th>
+					<th style="width: 120px; text-align: center;" tal:content="datetime:data/getDate">DATE</th>
 					<th style="width: 20px">
-						<stu:jsimagelink image="x" onclick="deletePostingComment(${data/getId})" tal:condition="THIS/getKNPosting/currentUserMayDeleteComment" />
+						<stu:jsimagelink image="x" onclick="deletePostingComment(${data/getId})" tal:condition="POST/currentUserMayDeleteComment" />
 					</th>
 				</tr>
 				<tr>
@@ -294,6 +294,6 @@
 			</table>
 			<br tal:condition="not:repeat/data/end" />
 		</tal:block>
-		<div class="divhead" tal:condition="not:THIS/getKNPosting/hasComments" style="text-align: center;">Keine Kommentare vorhanden</div>
+		<div class="divhead" tal:condition="not:POST/getComments" style="text-align: center;">Keine Kommentare vorhanden</div>
 	</metal:macro>
 </html>

@@ -100,7 +100,7 @@ function switchToTitleInput() {
 function showKnComments(postingId) {
 	elt = 'kncomments';
 	openWindow(elt,1,450);
-	ajaxcall(elt,"comm.php?SHOW_KN_COMMENTS=1&posting="+postingId);
+	ajax_update(elt,"comm.php?SHOW_KN_COMMENTS=1&posting="+postingId);
 }
 function postComment(postingId) {
 	comment = Form.Element.serialize('comment');

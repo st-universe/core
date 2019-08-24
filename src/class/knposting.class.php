@@ -167,12 +167,6 @@ class KNPostingData extends BaseTable {
 		return $this->commentCount;	
 	} # }}}
 
-	/**
-	 */
-	public function hasComments() { #{{{
-		return $this->getCommentCount() > 0;
-	} # }}}
-
 	private $comments = NULL;
 
 	/**

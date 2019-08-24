@@ -81,12 +81,6 @@ class KnCommentData extends BaseTable {
 
 	/**
 	 */
-	public function getDateFormatted() { #{{{
-		return parseDateTime($this->getDate());
-	} # }}}
-
-	/**
-	 */
 	public function getDisplayUserName() { #{{{
 		if ($this->getUserName()) {
 			return $this->getUserName();

@@ -13,6 +13,9 @@ use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
 use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
+use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
+use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
+use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
 use Stu\Module\Communication\View\ShowNewPm\ShowNewPm;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequest;
@@ -30,6 +33,7 @@ return [
     SetKnMarkRequestInterface::class => autowire(SetKnMarkRequest::class),
     ShowWriteQuickPmRequestInterface::class => autowire(ShowWriteQuickPmRequest::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
+    ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -42,6 +46,7 @@ return [
                 ShowNewPm::VIEW_IDENTIFIER => autowire(ShowNewPm::class),
                 ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
                 ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
+                ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
             ]
         ),
 ];
