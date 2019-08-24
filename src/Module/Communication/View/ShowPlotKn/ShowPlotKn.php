@@ -2,45 +2,39 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Communication\View\Overview;
+namespace Stu\Module\Communication\View\ShowPlotKn;
 
 use KNPosting;
 use PMCategory;
+use RPGPlot;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
+use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 
-final class Overview implements ViewControllerInterface
+final class ShowPlotKn implements ViewControllerInterface
 {
+    public const VIEW_IDENTIFIER = 'SHOW_PLOTKN';
+
     private const KNLIMITER = 6;
 
-    private $overviewRequest;
+    private $showPlotKnRequest;
 
     public function __construct(
-        OverviewRequestInterface $overviewRequest
+        ShowPlotKnRequestInterface $showPlotKnRequest
     ) {
-        $this->overviewRequest = $overviewRequest;
+        $this->showPlotKnRequest = $showPlotKnRequest;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userKnMark = $game->getUser()->getKNMark();
+        $plot = new RPGPlot($this->showPlotKnRequest->getPlotId());
+        $mark = $this->showPlotKnRequest->getKnOffset();
 
-        $newKnPostCount = KNPosting::countInstances(sprintf('id > %d', $userKnMark));
-        $knPostCount = KNPosting::countInstances('1=1');
-
-        $mark = $knPostCount;
-        $lim = floor($mark / static::KNLIMITER) * static::KNLIMITER;
-        if ($mark % static::KNLIMITER == 0) {
-            $knStart = $lim - static::KNLIMITER;
-        } else {
-            $knStart = $lim;
-        }
-
-        $mark = $this->overviewRequest->getKnOffset();
         if ($mark % static::KNLIMITER != 0 || $mark < 0) {
             $mark = 0;
         }
-        $maxpage = ceil($knPostCount/ static::KNLIMITER);
+        $maxcount = KNPosting::countInstances(sprintf('plot_id = %d', $plot->getId()));
+        $maxpage = ceil($maxcount / static::KNLIMITER);
         $curpage = floor($mark / static::KNLIMITER);
         $knNavigation = [];
         if ($curpage != 0) {
@@ -62,27 +56,32 @@ final class Overview implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
         }
 
-        $game->setPageTitle(_('Kommunikationsnetzwerk'));
-        $game->setTemplateFile('html/comm.xhtml');
+        $game->setTemplateFile('html/plotkn.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
+        $game->appendNavigationPart('comm.php?SHOW_PLOTLIST=1', _('Plots'));
+        $game->appendNavigationPart(
+            sprintf('comm.php?%s=1&plotid=%s', ShowKnPlot::VIEW_IDENTIFIER, $plot->getId()),
+            $plot->getTitleDecoded()
+        );
+        $game->appendNavigationPart(
+            sprintf('comm.php?%s=1&plotid=%s', static::VIEW_IDENTIFIER, $plot->getId()),
+            _('Beiträge')
+        );
+        $game->setPageTitle("Plot: " . $plot->getTitleDecoded());
 
         $game->setTemplateVar(
             'KN_POSTINGS',
             KNPosting::getBy(
                 sprintf(
-                    'ORDER BY date DESC LIMIT %d,%d',
-                    $this->overviewRequest->getKnOffset(),
-                static::KNLIMITER)
+                    'WHERE plot_id = %d ORDER BY date DESC LIMIT %d,%d',
+                    $plot->getId(),
+                    $mark,
+                    static::KNLIMITER
+                )
             )
         );
-        $game->setTemplateVar(
-            'HAS_NEW_KN_POSTINGS',
-            KNPosting::countInstances(sprintf('id > %d', $userKnMark))
-        );
-        $game->setTemplateVar('KN_START', $knStart);
+        $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('KN_OFFSET', $mark);
-        $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
-        $game->setTemplateVar('USER_KN_MARK', $userKnMark);
         $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree());
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }

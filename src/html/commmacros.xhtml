@@ -49,8 +49,8 @@
 	<metal:macro metal:define-macro="plotknnavigation">
 			<table class="use">
 			<tr>
-				<td tal:repeat="item THIS/getPlotKNNavigation">
-					<a href="?SHOW_PLOTKN=1&plotid=${THIS/getRPGPlot/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+				<td tal:repeat="item KN_NAVIGATION">
+					<a href="?SHOW_PLOTKN=1&plotid=${PLOT/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 				</td>
 			</tr>
 		</table>	

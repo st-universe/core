@@ -21,8 +21,14 @@ use Stu\Module\Communication\View\ShowIgnoreList\ShowIgnoreList;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
+use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
+use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequest;
+use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequestInterface;
 use Stu\Module\Communication\View\ShowNewPm\ShowNewPm;
 use Stu\Module\Communication\View\ShowNewPmCategory\ShowNewPmCategory;
+use Stu\Module\Communication\View\ShowPlotKn\ShowPlotKn;
+use Stu\Module\Communication\View\ShowPlotKn\ShowPlotKnRequest;
+use Stu\Module\Communication\View\ShowPlotKn\ShowPlotKnRequestInterface;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequest;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequestInterface;
@@ -46,6 +52,8 @@ return [
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
     ShowPmCategoryRequestInterface::class => autowire(ShowPmCategoryRequest::class),
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
+    ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),
+    ShowPlotKnRequestInterface::class => autowire(ShowPlotKnRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -65,6 +73,8 @@ return [
                 ShowNewPmCategory::VIEW_IDENTIFIER => autowire(ShowNewPmCategory::class),
                 ShowPmCategoryList::VIEW_IDENTIFIER => autowire(ShowPmCategoryList::class),
                 ShowEditPmCategory::VIEW_IDENTIFIER => autowire(ShowEditPmCategory::class),
+                ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),
+                ShowPlotKn::VIEW_IDENTIFIER => autowire(ShowPlotKn::class),
             ]
         ),
 ];

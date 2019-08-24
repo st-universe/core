@@ -5,7 +5,7 @@
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<metal:macro metal:use-macro="html/commmacros.xhtml/plotknnavigation" />
 		<br />
-		<div tal:repeat="post THIS/getPlotPostings">
+		<div tal:repeat="post KN_POSTINGS">
 			<table class="tcal">
 				<tr>
 					<th colspan="2" tal:content="structure post/getTitleDecoded">TITLE</th>

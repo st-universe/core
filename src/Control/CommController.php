@@ -28,8 +28,6 @@ use User;
 final class CommController extends GameController
 {
 
-    private const KNLIMITER = 6;
-
     private $default_tpl = "html/comm.xhtml";
 
     public function __construct(
@@ -79,23 +77,10 @@ final class CommController extends GameController
         $this->addView("SHOW_EDIT_PLOT", "showEditPlot");
         $this->addView("SHOW_PLOTLIST", "showPlotlist");
         $this->addView("SHOW_MYPLOTS", "showUserPlotlist");
-        $this->addView("SHOW_PLOT", "showPlotDetails");
-        $this->addView("SHOW_PLOTKN", "showPlotKn");
 
         $this->addView("SHOW_NOOP", "showNoop");
     }
 
-    function showPlotKN()
-    {
-        $plot = new RPGPlot(request::indInt('plotid'));
-        $this->setTemplateFile('html/plotkn.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOTLIST=1", "Plotliste"));
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOT=1&plotid=" . $plot->getId(),
-            "Plot: " . $plot->getTitleDecoded()));
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOTKN=1&plotid=" . $plot->getId(),
-            "Plot: " . $plot->getTitleDecoded()));
-        $this->setPageTitle("Plot: " . $plot->getTitleDecoded());
-    }
 
     function showCreatePlot()
     {
@@ -127,16 +112,6 @@ final class CommController extends GameController
         $this->setTemplateFile('html/userplotlist.xhtml');
         $this->addNavigationPart(new Tuple("comm.php?SHOW_MYPlOTS=1", "Eigene Plots"));
         $this->setPageTitle("Plotliste");
-    }
-
-    function showPlotDetails()
-    {
-        $this->rpgplot = new RPGPlot(request::indInt('plotid'));
-        $this->setTemplateFile('html/plotdetails.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOTLIST=1", "Plotliste"));
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOT=1&plotid=" . $this->getRPGPlot()->getId(),
-            "Plot: " . $this->getRPGPlot()->getTitleDecoded()));
-        $this->setPageTitle("Plot: " . $this->getRPGPlot()->getTitleDecoded());
     }
 
     function showIgnore()
@@ -485,40 +460,6 @@ final class CommController extends GameController
         $this->addInformation(_("Der Beitrag wurde gelöscht"));
     }
 
-    function getPlotKNNavigation()
-    {
-        if ($this->knnav === null) {
-            $mark = request::getInt('mark');
-            if ($mark % static::KNLIMITER != 0 || $mark < 0) {
-                $mark = 0;
-            }
-            $maxcount = $this->getPlotKNPostingCount();
-            $maxpage = ceil($maxcount / static::KNLIMITER);
-            $curpage = floor($mark / static::KNLIMITER);
-            $ret = array();
-            if ($curpage != 0) {
-                $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages");
-            }
-            for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-                if ($i > $maxpage || $i < 1) {
-                    continue;
-                }
-                $ret[] = array(
-                    "page" => $i,
-                    "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
-                    "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
-                );
-            }
-            if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages");
-                $ret[] = array("page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages");
-            }
-            $this->knnav = $ret;
-        }
-        return $this->knnav;
-    }
-
     private $currentposting = null;
 
     function getKNPosting()
@@ -784,28 +725,6 @@ final class CommController extends GameController
             $obj->deleteFromDatabase();
         }
         $this->currentposting = $obj->getPosting();
-    }
-
-    public function getPlotPostings()
-    {
-        if ($this->knpostings === null) {
-            $this->knpostings = KNPosting::getBy("WHERE plot_id=" . request::getIntFatal('plotid') . " ORDER BY date DESC LIMIT " . ($this->getKNMark()) . "," . static::KNLIMITER);
-        }
-        return $this->knpostings;
-    }
-
-    public function getPlotKNPostingCount()
-    {
-        if ($this->knmaxpostingcount === null) {
-            $this->knmaxpostingcount = KNPosting::countInstances("plot_id=" . request::getIntFatal('plotid'), 1);
-        }
-        return $this->knmaxpostingcount;
-    }
-
-    public function getKNMark()
-    {
-        $mark = request::getInt('mark');
-        return $mark;
     }
 
     private $cattree = null;
