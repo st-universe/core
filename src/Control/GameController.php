@@ -189,13 +189,20 @@ abstract class GameController implements GameControllerInterface
 
     protected function render()
     {
+        $user = $this->getUser();
+
         if (!$this->viewOverride && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
         $tpl = $this->getTemplate();
         $tpl->setRef("THIS", $this);
         $tpl->setVar("GFX", GFX_PATH);
-        $tpl->setRef("USER", $this->getUser());
+        $tpl->setRef("USER", $user);
+
+        if ($user !== null) {
+            $this->setTemplateVar('PM_NAVLET', PMCategory::getNavletCategories());
+        }
+
         $tpl->parse();
     }
 
@@ -346,14 +353,6 @@ abstract class GameController implements GameControllerInterface
             $this->currentRound = GameTurn::getCurrentTurn();
         }
         return $this->currentRound;
-    }
-
-    public function getNewPMNavlet()
-    {
-        if ($this->pmnavlet === null) {
-            $this->pmnavlet = PMCategory::getNavletCategories();
-        }
-        return $this->pmnavlet;
     }
 
     public function isDebugMode()

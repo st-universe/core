@@ -49,7 +49,6 @@ final class CommController extends GameController
         $this->addCallBack("B_WRITE_PM", "addPM", true);
         $this->addCallBack("B_EDIT_KN", "editKNPosting");
         $this->addCallBack("B_DEL_KN", "delKNPosting", true);
-        $this->addCallBack("B_SET_KNMARK", "setKNMark");
         $this->addCallBack("B_ADD_PMCATEGORY", "addPMCategory");
         $this->addCallBack("B_MOVE_PM", "movePMToCategory");
         $this->addCallBack("B_DELETE_PMS", "deleteMarkedPMs");
@@ -79,7 +78,6 @@ final class CommController extends GameController
         $this->addView("SHOW_INBOX", "showInbox");
         $this->addView("SHOW_OUTBOX", "showOutbox");
         $this->addView("SHOW_PM_CAT", "showPMCat");
-        $this->addView("SHOW_NEW_PM", "showNewPM", true);
         $this->addView("SHOW_NEW_CAT", "showNewCategory");
         $this->addView("SHOW_CAT_LIST", "showCategoryList");
         $this->addView("SHOW_EDIT_CAT", "showEditCategory");
@@ -186,12 +184,6 @@ final class CommController extends GameController
         $this->addNavigationPart(new Tuple("comm.php?SHOW_PM_CAT=1&pmcat=" . $this->getPMCategory()->getId(),
             "Private Nachrichten: " . $this->getPMCategory()->getDescriptionDecoded()));
         $this->setPageTitle("Ordner " . $this->getPMCategory()->getDescriptionDecoded());
-    }
-
-    function showNewPM()
-    {
-        $this->setTemplateFile('html/ajaxempty.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/newpmnavlet');
     }
 
     function showIgnore()
@@ -574,51 +566,6 @@ final class CommController extends GameController
         KnComment::truncate('WHERE post_id=' . $this->getKNPosting()->getId());
         $this->getKNPosting()->deleteFromDatabase();
         $this->addInformation(_("Der Beitrag wurde gelöscht"));
-    }
-
-    function setKNMark()
-    {
-        $id = request::getIntFatal('markid');
-        $posting = new KNPosting($id);
-        currentUser()->setKNMark($id);
-        currentUser()->save();
-        $this->addInformation("Das Lesezeichen wurde gesetzt");
-    }
-
-    private $knnav = null;
-
-    function getKNNavigation()
-    {
-        if ($this->knnav === null) {
-            $mark = request::getInt('mark');
-            if ($mark % static::KNLIMITER != 0 || $mark < 0) {
-                $mark = 0;
-            }
-            $maxcount = $this->getKNPostingCount();
-            $maxpage = ceil($maxcount / static::KNLIMITER);
-            $curpage = floor($mark / static::KNLIMITER);
-            $ret = array();
-            if ($curpage != 0) {
-                $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages");
-            }
-            for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-                if ($i > $maxpage || $i < 1) {
-                    continue;
-                }
-                $ret[] = array(
-                    "page" => $i,
-                    "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
-                    "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
-                );
-            }
-            if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages");
-                $ret[] = array("page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages");
-            }
-            $this->knnav = $ret;
-        }
-        return $this->knnav;
     }
 
     function getPlotKNNavigation()

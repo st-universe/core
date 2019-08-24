@@ -74,8 +74,6 @@ interface GameControllerInterface
 
     public function getCurrentRound();
 
-    public function getNewPMNavlet();
-
     public function isDebugMode();
 
     public function getJavascriptPath();
