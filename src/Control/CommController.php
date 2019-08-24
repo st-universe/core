@@ -73,8 +73,6 @@ final class CommController extends GameController
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
         $this->addView("WRITE_KN", "writeKN");
-        $this->addView("WRITE_PM", "writePM");
-        $this->addView('SHOW_WRITE_QUICKPM', "writeQuickPM");
         $this->addView("SHOW_INBOX", "showInbox");
         $this->addView("SHOW_OUTBOX", "showOutbox");
         $this->addView("SHOW_PM_CAT", "showPMCat");
@@ -277,20 +275,6 @@ final class CommController extends GameController
             $this->setPageTitle("Beitrag schreiben");
             $this->addNavigationPart(new Tuple("comm.php?WRITE_KN=1", "Beitrag schreiben"));
         }
-    }
-
-    function writePM()
-    {
-        $this->setTemplateFile('html/writepm.xhtml');
-        $this->setPageTitle("Private Nachrichten: Verfassen");
-        $this->addNavigationPart(new Tuple("comm.php?WRITE_PM=1", "Private Nachrichte verfassen"));
-    }
-
-    protected function writeQuickPM()
-    {
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/write_quick_pm');
-        $this->setPageTitle("Private Nachrichten: Verfassen");
     }
 
     public function getSelectedRecipient()
@@ -1089,29 +1073,4 @@ final class CommController extends GameController
         }
         return $this->rpgplots;
     }
-
-    /**
-     */
-    public function hasCorrespondence()
-    {
-        return count($this->getCorrespondence()) > 0;
-    }
-
-    private $correspondence = null;
-
-    /**
-     */
-    public function getCorrespondence()
-    {
-        if ($this->correspondence === null) {
-            if (!$this->getReply()) {
-                return array();
-            }
-            $this->correspondence = PM::getObjectsBy('WHERE ((send_user=' . $this->getReply()->getSenderId() . ' AND recip_user=' . $this->getReply()->getRecipientId() . ') OR (recip_user=' . $this->getReply()->getSenderId() . ' AND send_user=' . $this->getReply()->getRecipientId() . ')) AND cat_id IN (' . PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN,
-                    $this->getReply()->getRecipientId())->getId() . ',' . PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN,
-                    $this->getReply()->getSenderId())->getId() . ') ORDER BY date DESC LIMIT 10');
-        }
-        return $this->correspondence;
-    }
-
 }

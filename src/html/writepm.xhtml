@@ -12,23 +12,23 @@
 						<th>Empfänger</th>
 					</tr>
 					<tr>
-						<td tal:condition="not:THIS/getReply">
-							Siedler-ID <input type="text" name="recipient" style="width: 50px;" tal:attributes="value THIS/getPM/getRecipientId" />
+						<td tal:condition="not:REPLY">
+							Siedler-ID <input type="text" name="recipient" style="width: 50px;" tal:attributes="value RECIPIENT_ID" />
 							<select name="recid" onchange="updateRecipient();">
 								<option value="0">------------------</option>
-								<option tal:repeat="contact THIS/getFullContactlist" tal:attributes="value contact/getRecipient/getId" tal:content="contact/getRecipient/getNameWithoutMarkup">NAME</option>
+								<option tal:repeat="contact CONTACT_LIST" tal:attributes="value contact/getRecipient/getId" tal:content="contact/getRecipient/getNameWithoutMarkup">NAME</option>
 							</select>	
 						</td>
-						<td tal:condition="THIS/getReply">
-							<input type="hidden" name="recipient" value="runtime" tal:attributes="value THIS/getReply/getSender/getId" />
-							<span tal:replace="structure bbcode:THIS/getReply/getSender/getName">NAME</span> (<span tal:replace="THIS/getReply/getSender/getId">ID</span>)
+						<td tal:condition="REPLY">
+							<input type="hidden" name="recipient" value="runtime" tal:attributes="value REPLY/getSender/getId" />
+							<span tal:replace="structure bbcode:REPLY/getSender/getName">NAME</span> (<span tal:replace="REPLY/getSender/getId">ID</span>)
 						</td>
 					</tr>
 					<tr>
 						<th>Text</th>
 					</tr>
 					<tr>
-						<td><stu:textarea name="text" style="width: 100%; height: 300px;" tal:content="THIS/getPM/getTextDecodedRaw"></stu:textarea></td>
+						<td><stu:textarea name="text" style="width: 100%; height: 300px;"></stu:textarea></td>
 					</tr>
 					<tr>
 						<td>
@@ -36,10 +36,10 @@
 						</td>
 					</tr>
 				</table>
-				<div tal:condition="THIS/hasCorrespondence">
+				<div tal:condition="CORRESPONDENCE">
 					<br />
 					<div class="divhead" i18n:translate="">Korrespondenz</div>
-					<div tal:repeat="post THIS/getCorrespondence">
+					<div tal:repeat="post CORRESPONDENCE">
 						<table class="tcal">
 							<tr>
 								<td>
