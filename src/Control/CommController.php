@@ -29,7 +29,6 @@ final class CommController extends GameController
 {
 
     private const KNLIMITER = 6;
-    public const PMLIMITER = 6;
 
     private $default_tpl = "html/comm.xhtml";
 
@@ -73,14 +72,10 @@ final class CommController extends GameController
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
         $this->addView("WRITE_KN", "writeKN");
-        $this->addView("SHOW_INBOX", "showInbox");
-        $this->addView("SHOW_OUTBOX", "showOutbox");
-        $this->addView("SHOW_PM_CAT", "showPMCat");
         $this->addView("SHOW_NEW_CAT", "showNewCategory");
         $this->addView("SHOW_CAT_LIST", "showCategoryList");
         $this->addView("SHOW_EDIT_CAT", "showEditCategory");
         $this->addView("SHOW_IGNORE", "showIgnore");
-        $this->addView("SHOW_IGNORELIST", "showIgnorelist");
         $this->addView("SHOW_CONTACT_MODESWITCH", "showContactlistModeswitch");
         $this->addView("SHOW_CONTACT_MODE", "showContactMode");
         $this->addView("SHOW_CREATE_PLOT", "showCreatePlot");
@@ -145,26 +140,6 @@ final class CommController extends GameController
         $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOT=1&plotid=" . $this->getRPGPlot()->getId(),
             "Plot: " . $this->getRPGPlot()->getTitleDecoded()));
         $this->setPageTitle("Plot: " . $this->getRPGPlot()->getTitleDecoded());
-    }
-
-    function showInbox()
-    {
-        $this->showPMCat();
-    }
-
-    function showOutbox()
-    {
-        request::setVar('pmcat',
-            PMCategory::getOrGenSpecialCategory(PM_SPECIAL_PMOUT, currentUser()->getId())->getId());
-        $this->showPMCat();
-    }
-
-    function showPMCat()
-    {
-        $this->setTemplateFile('html/pmcategory.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_PM_CAT=1&pmcat=" . $this->getPMCategory()->getId(),
-            "Private Nachrichten: " . $this->getPMCategory()->getDescriptionDecoded()));
-        $this->setPageTitle("Ordner " . $this->getPMCategory()->getDescriptionDecoded());
     }
 
     function showIgnore()
@@ -569,42 +544,6 @@ final class CommController extends GameController
         return $this->knnav;
     }
 
-    private $pmnav = null;
-
-    function getPMNavigation()
-    {
-        if ($this->pmnav === null) {
-            $mark = $this->getPMMark();
-            if ($mark % static::PMLIMITER != 0 || $mark < 0) {
-                $mark = 0;
-            }
-            $maxcount = $this->getPMCategory()->getCategoryCount();
-            $maxpage = ceil($maxcount / static::PMLIMITER);
-            $curpage = floor($mark / static::PMLIMITER);
-            $ret = array();
-            if ($curpage != 0) {
-                $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-                $ret[] = array("page" => "<", "mark" => ($mark - static::PMLIMITER), "cssclass" => "pages");
-            }
-            for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
-                if ($i > $maxpage || $i < 1) {
-                    continue;
-                }
-                $ret[] = array(
-                    "page" => $i,
-                    "mark" => ($i * static::PMLIMITER - static::PMLIMITER),
-                    "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
-                );
-            }
-            if ($curpage + 1 != $maxpage) {
-                $ret[] = array("page" => ">", "mark" => ($mark + static::PMLIMITER), "cssclass" => "pages");
-                $ret[] = array("page" => ">>", "mark" => $maxpage * static::PMLIMITER - static::PMLIMITER, "cssclass" => "pages");
-            }
-            $this->pmnav = $ret;
-        }
-        return $this->pmnav;
-    }
-
     private $currentposting = null;
 
     function getKNPosting()
@@ -872,26 +811,6 @@ final class CommController extends GameController
         $this->currentposting = $obj->getPosting();
     }
 
-    private $knmaxpostingcount;
-
-    private function getKNPostingCount()
-    {
-        if ($this->knmaxpostingcount === null) {
-            $this->knmaxpostingcount = KNPosting::countInstances('1=1');
-        }
-        return $this->knmaxpostingcount;
-    }
-
-    private $knpostings = null;
-
-    public function getKNPostings()
-    {
-        if ($this->knpostings === null) {
-            $this->knpostings = KNPosting::getBy("ORDER BY date DESC LIMIT " . ($this->getKNMark()) . "," . static::KNLIMITER);
-        }
-        return $this->knpostings;
-    }
-
     public function getPlotPostings()
     {
         if ($this->knpostings === null) {
@@ -912,12 +831,6 @@ final class CommController extends GameController
     {
         $mark = request::getInt('mark');
         return $mark;
-    }
-
-    public function getKNUserMark()
-    {
-        $mark = DB()->query("SELECT COUNT(id) FROM stu_kn WHERE id>" . currentUser()->getKNMark(), 1);
-        return floor($mark / static::KNLIMITER) * static::KNLIMITER;
     }
 
     private $cattree = null;
@@ -944,21 +857,6 @@ final class CommController extends GameController
             }
         }
         return $this->pmcategory;
-    }
-
-    private $pms = null;
-
-    public function getPMsByCategory()
-    {
-        if ($this->pms === null) {
-            $this->pms = PM::getPMsBy($this->getPMCategory()->getId(), $this->getPMMark());
-        }
-        return $this->pms;
-    }
-
-    private function getPMMark()
-    {
-        return request::getInt('mark');
     }
 
     private $pmreply = null;

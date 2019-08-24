@@ -85,10 +85,6 @@ class PMData extends Basetable {
 		$this->addUpdateField('text','getText');
 	}
 
-	function getDateFormatted() {
-		return date("d.m.Y H:i",$this->getDate());
-	}
-
 	function getDate() {
 		return $this->data['date'];
 	}
@@ -192,8 +188,8 @@ class PM extends PMData {
 		parent::__construct($data);
 	}
 
-	static function getPMsBy($catId,$mark) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE cat_id=".$catId." AND recip_user=".currentUser()->getId()." ORDER BY id DESC LIMIT ".$mark.",". CommController::PMLIMITER);
+	static function getPMsBy(int $catId, int $mark, int $limit) {
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE cat_id=".$catId." AND recip_user=".currentUser()->getId()." ORDER BY id DESC LIMIT ".$mark.",". $limit);
 		$ret = array();
 		while($data = mysqli_fetch_assoc($result)) {
 			$ret[] = new PMData($data);

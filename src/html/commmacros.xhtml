@@ -59,8 +59,8 @@
 	<metal:macro metal:define-macro="pmnavigation">
 		<table class="use">
 			<tr>
-				<td tal:repeat="item THIS/getPMNavigation">
-					<a href="?SHOW_PM_CAT=1&pmcat=${THIS/getPMCategory/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+				<td tal:repeat="item PM_NAVIGATION">
+					<a href="?SHOW_PM_CAT=1&pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 				</td>
 			</tr>
 		</table>	
@@ -71,8 +71,8 @@
 			<li id="item_${cat/getId}" style="width: 100%; display: block;">
                 <div class="iblock" style="width: 90%">
                     <span style="color: #cecece; cursor: move;">&gt;</span>
-                    <a tal:condition="not:php:markcat AND cat.getId() EQ THIS.getPMCategory().getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
-                    <a tal:condition="php:markcat AND cat.getId() EQ THIS.getPMCategory().getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
+                    <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
+                    <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
                     (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
                 </div>
                 <div class="iblock right" style="width: 8%">
@@ -104,7 +104,7 @@
 						<br /><br />
 						<span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteAllMarkedPMs();">Alle selektierten löschen</a>
 						<br /><br />
-						<span style="color: #cecece">&gt;</span> <a href="?SHOW_PM_CAT=1&B_DELETE_ALL_PMS=1&pmcat=${THIS/getPMCategory/getId}&sstr=${THIS/getSessionString}">Ordner leeren</a>
+						<span style="color: #cecece">&gt;</span> <a href="?SHOW_PM_CAT=1&B_DELETE_ALL_PMS=1&pmcat=${CATEGORY/getId}&sstr=${THIS/getSessionString}">Ordner leeren</a>
 					</div>
 				</td>
 			</tr>
@@ -192,7 +192,7 @@
 
 	<metal:macro metal:define-macro="movepmcategories">
 		<select name="movecat_${post/getId}">
-			<tal:block tal:repeat="cat THIS/getPMCategories">
+			<tal:block tal:repeat="cat PM_CATEGORIES">
 				<option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</option>
 			</tal:block> 
 		</select>

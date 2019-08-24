@@ -108,7 +108,7 @@ function openWindowPosition(elt,exclusive,width,posx,posy) {
 }
 
 function ignoreUser(obj,userid) {
-	ajaxcall(obj,'comm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid='+userid);
+	ajax_update(obj,'comm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid='+userid);
 }
 function addUserContact(obj,userid) {
 	var contact = 'selector_'+obj;

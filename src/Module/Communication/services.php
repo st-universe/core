@@ -19,6 +19,9 @@ use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
 use Stu\Module\Communication\View\ShowNewPm\ShowNewPm;
+use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
+use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequest;
+use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequestInterface;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequest;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequestInterface;
@@ -36,6 +39,7 @@ return [
     ShowWriteQuickPmRequestInterface::class => autowire(ShowWriteQuickPmRequest::class),
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
+    ShowPmCategoryRequestInterface::class => autowire(ShowPmCategoryRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -51,6 +55,7 @@ return [
                 ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
                 ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
                 ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),
+                ShowPmCategory::VIEW_IDENTIFIER => autowire(ShowPmCategory::class),
             ]
         ),
 ];
