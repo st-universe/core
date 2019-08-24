@@ -169,14 +169,14 @@
 				<tr>
 					<td>Name</td>	
 					<td>
-						<input type="text" style="width: 100px;" value="runtime" id="catname" tal:attributes="value THIS/getPMCategory/getDescriptionDecodedRaw" name="catname" />
+						<input type="text" style="width: 100px;" value="runtime" id="catname" tal:attributes="value PM_CATEGORY/getDescriptionDecodedRaw" name="catname" />
 						<input type="button" class="button" value="Ändern" onclick="changeCategoryName();" />
 					</td>
 				</tr>
 			</table>
 			<br />
-			<input type="hidden" name="pmcat" value="runtime" tal:attributes="value THIS/getPMCategory/getId" />
-			<table class="tcal" tal:condition="THIS/getPMCategory/isDeleteAble">
+			<input type="hidden" name="pmcat" value="runtime" tal:attributes="value PM_CATEGORY/getId" />
+			<table class="tcal" tal:condition="PM_CATEGORY/isDeleteAble">
 				<tr>
 					<th>Löschen</th>
 				</tr>

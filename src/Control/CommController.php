@@ -72,9 +72,6 @@ final class CommController extends GameController
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
         $this->addView("WRITE_KN", "writeKN");
-        $this->addView("SHOW_NEW_CAT", "showNewCategory");
-        $this->addView("SHOW_CAT_LIST", "showCategoryList");
-        $this->addView("SHOW_EDIT_CAT", "showEditCategory");
         $this->addView("SHOW_IGNORE", "showIgnore");
         $this->addView("SHOW_CONTACT_MODESWITCH", "showContactlistModeswitch");
         $this->addView("SHOW_CONTACT_MODE", "showContactMode");
@@ -162,14 +159,6 @@ final class CommController extends GameController
         $this->setAjaxMacro('html/commmacros.xhtml/clmodeview');
     }
 
-    function showCategoryList()
-    {
-        $val = true;
-        $this->getTemplate()->setVar('markcat', $val);
-        $this->setTemplateFile('html/ajaxempty.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/pmcategorylist_ajax');
-    }
-
     function showContactlistModeswitch()
     {
         $contact = new Contactlist(request::getIntFatal('cid'));
@@ -180,20 +169,6 @@ final class CommController extends GameController
         $this->setTemplateFile('html/ajaxwindow.xhtml');
         $this->getTemplate()->setRef('contact', $contact);
         $this->setAjaxMacro('html/commmacros.xhtml/clmodeswitch');
-    }
-
-    function showNewCategory()
-    {
-        $this->setPageTitle("Ordner anlegen");
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/newcategory');
-    }
-
-    function showEditCategory()
-    {
-        $this->setPageTitle("Ordner editieren");
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/editcategory');
     }
 
     function ignoreUser()

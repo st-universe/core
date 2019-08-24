@@ -14,14 +14,19 @@ use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
 use Stu\Module\Communication\View\ShowContactList\ShowContactList;
+use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditCategoryRequest;
+use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
+use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditPmCategory;
 use Stu\Module\Communication\View\ShowIgnoreList\ShowIgnoreList;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
 use Stu\Module\Communication\View\ShowNewPm\ShowNewPm;
+use Stu\Module\Communication\View\ShowNewPmCategory\ShowNewPmCategory;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequest;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequestInterface;
+use Stu\Module\Communication\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequest;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequestInterface;
@@ -40,6 +45,7 @@ return [
     ShowWritePmRequestInterface::class => autowire(ShowWritePmRequest::class),
     ShowKnCommentsRequestInterface::class => autowire(ShowKnCommentsRequest::class),
     ShowPmCategoryRequestInterface::class => autowire(ShowPmCategoryRequest::class),
+    ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -56,6 +62,9 @@ return [
                 ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
                 ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),
                 ShowPmCategory::VIEW_IDENTIFIER => autowire(ShowPmCategory::class),
+                ShowNewPmCategory::VIEW_IDENTIFIER => autowire(ShowNewPmCategory::class),
+                ShowPmCategoryList::VIEW_IDENTIFIER => autowire(ShowPmCategoryList::class),
+                ShowEditPmCategory::VIEW_IDENTIFIER => autowire(ShowEditPmCategory::class),
             ]
         ),
 ];

@@ -71,7 +71,7 @@ function unMarkAllContacts() {
 function showPMCategoryWindow(catid) {
 	elt = 'cateditwin';
 	openWindow(elt,1,300);
-	ajaxcall(elt,"comm.php?SHOW_EDIT_CAT=1&pmcat="+catid);
+	ajax_update(elt,"comm.php?SHOW_EDIT_CAT=1&pmcat="+catid);
 }
 
 function updateRecipient() {
