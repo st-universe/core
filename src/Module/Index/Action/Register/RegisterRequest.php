@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Index\Action\Register;
+
+use Stu\Lib\Request\CustomControllerHelperTrait;
+
+final class RegisterRequest implements RegisterRequestInterface
+{
+    use CustomControllerHelperTrait;
+
+    public function getLoginName(): string
+    {
+        return $this->queryParameter('loginname')->string()->defaultsToIfEmpty('');
+    }
+
+    public function getEmailAddress(): string
+    {
+        return $this->queryParameter('email')->string()->defaultsToIfEmpty('');
+    }
+
+    public function getFactionId(): int
+    {
+        return $this->queryParameter('factionid')->int()->required();
+    }
+}

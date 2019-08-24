@@ -28,8 +28,8 @@
 					<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln wurden nicht akzeptiert</div>
 				</div>
 				<br />
-				<input tal:condition="THIS/isRegistrationPossible" type="submit" name="B_REGISTER" value="Registrieren" class="button" onclick="checkSubmit();" />
-				<tal:block tal:condition="not:THIS/isRegistrationPossible">
+				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_REGISTER" value="Registrieren" class="button" onclick="checkSubmit();" />
+				<tal:block tal:condition="not:REGISTRATION_POSSIBLE">
 					<div class="divhead">Hinweis</div>
 					<div class="divbody">Im Moment sind leider keine weiteren Anmeldungen möglich</div>
 				</tal:block>
@@ -43,7 +43,7 @@
 				<br />
 				<div id="factionerror" style="display:none; color: #FF0000">Es wurde keine Fraktion gewählt</div>
 				<div class="divhead" i18n:translate="">Fraktion wählen</div>
-				<tal:block tal:repeat="data THIS/getPossibleFactions">
+				<tal:block tal:repeat="data POSSIBLE_FACTIONS">
 					<div class="divbody" style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}" onclick="toggleFaction(${data/getId}); selectFaction(${data/getId});" tal:condition="data/hasFreePlayerSlots">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>

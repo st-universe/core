@@ -190,7 +190,7 @@
 					<tal:block tal:condition="not:THIS/getUser">
 						<div class="sidebar_box_header">Login</div>
 						<div class="sidebar_box_content">
-							<div tal:condition="THIS/hasLoginError" tal:content="THIS/getLoginError">LOGINERROR</div>
+							<div tal:condition="THIS/getLoginError" tal:content="THIS/getLoginError">LOGINERROR</div>
 							<form action="/index.php" method="post" name="f" id="defaultform">
 								<table>
 									<tr>

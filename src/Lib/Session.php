@@ -4,12 +4,10 @@ namespace Stu\Lib;
 
 use DateTimeImmutable;
 use LoginException;
-use request;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
 use User;
 use UserData;
-use Zend\Validator\Date;
 
 final class Session implements SessionInterface
 {

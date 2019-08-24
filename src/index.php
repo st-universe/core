@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\IndexController;
+use Stu\Control\IntermediateController;
 
 @session_start();
 
@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(IndexController::class)->main(false);
+$container->get(IntermediateController::TYPE_INDEX)->main(false);
 
 DB()->commitTransaction();

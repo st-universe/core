@@ -99,4 +99,10 @@ interface GameControllerInterface
     public function getSessionString(): string;
 
     public function main(bool $session_check = true): void;
+
+    public function isRegistrationPossible(): bool;
+
+    public function setLoginError(string $error): void;
+
+    public function getLoginError(): string;
 }

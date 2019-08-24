@@ -20,6 +20,7 @@ final class IntermediateController extends GameController
     public const TYPE_ALLIANCE = 'ALLIANCE';
     public const TYPE_COLONY_LIST = 'COLONY_LIST';
     public const TYPE_STARMAP = 'STARMAP';
+    public const TYPE_INDEX = 'INDEX';
 
     /**
      * @param SessionInterface $session

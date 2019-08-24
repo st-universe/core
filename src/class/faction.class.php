@@ -113,6 +113,9 @@ class Faction extends FactionData {
 		return $ret;
 	}
 
+	/**
+	 * @return Faction[]
+	 */
 	static function getChooseableFactions() {
 		return self::getObjectsBy('chooseable=1 ORDER BY id');
 	}

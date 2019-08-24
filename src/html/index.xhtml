@@ -16,7 +16,7 @@
 		<div style="width: 100%;">
 			<h3>Aktuelles</h3>
 		</div>
-		<div tal:repeat="data THIS/getSystemNews" style="background-color: #121212; padding: 5px; margin-bottom: 10px;">
+		<div tal:repeat="data SYSTEM_NEWS" style="background-color: #121212; padding: 5px; margin-bottom: 10px;">
 			<div style="font-weight: bold;" tal:content="data/getSubjectDecoded">SUBJECT</div>
 			<div style="font-size: 80%; color: #686868;">vom ${data/getDateDisplay}</div>
 			<br />

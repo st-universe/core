@@ -195,7 +195,7 @@ abstract class GameController implements GameControllerInterface
         $tpl = $this->getTemplate();
         $tpl->setRef("THIS", $this);
         $tpl->setVar("GFX", GFX_PATH);
-        $tpl->setRef("USER", currentUser());
+        $tpl->setRef("USER", $this->getUser());
         $tpl->parse();
     }
 
@@ -446,6 +446,10 @@ abstract class GameController implements GameControllerInterface
     {
         $this->session->createSession($session_check);
 
+        if ($session_check === false) {
+            $this->session->checkLoginCookie();
+        }
+
         $this->executeCallback();
         $this->executeView();
 
@@ -512,5 +516,51 @@ abstract class GameController implements GameControllerInterface
             $this->viewOverride = $override;
             $callable->handle($this);
         }
+    }
+
+    public function isRegistrationPossible(): bool
+    {
+        return true;
+    }
+
+    private $gameStats = null;
+
+    function getGameStats()
+    {
+        if ($this->gameStats === null) {
+            $this->gameStats = $this->gatherGameStats();
+        }
+        return $this->gameStats;
+    }
+
+    function gatherGameStats()
+    {
+        $ret = array();
+        $ret['turn'] = $this->getCurrentRound();
+        $ret['player'] = $this->getPlayerCount();
+        $ret['playeronline'] = $this->getOnlinePlayerCount();
+        return $ret;
+    }
+
+    public function getGameStateTextual()
+    {
+        switch ($this->getGameState()) {
+            case CONFIG_GAMESTATE_VALUE_ONLINE:
+                return _('Online');
+            case CONFIG_GAMESTATE_VALUE_MAINTENANCE:
+                return _('Wartung');
+            case CONFIG_GAMESTATE_VALUE_TICK:
+                return _('Tick');
+        }
+    }
+
+    private $loginError = '';
+
+    public function setLoginError(string $error): void {
+        $this->loginError = $error;
+    }
+
+    public function getLoginError(): string {
+        return $this->loginError;
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd6ec7ca4ceb994c8b7c7172d0612aff",
+    "content-hash": "964fc2a313b8e32c1973f0acb57aaef6",
     "packages": [
         {
             "name": "clue/graph",
@@ -4564,12 +4564,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "0707158dd5f37445f56528523bbdd261b5cef49b"
+                "reference": "cd3fc5b693f292982c784d85b56d01cea04cb345"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/0707158dd5f37445f56528523bbdd261b5cef49b",
-                "reference": "0707158dd5f37445f56528523bbdd261b5cef49b",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/cd3fc5b693f292982c784d85b56d01cea04cb345",
+                "reference": "cd3fc5b693f292982c784d85b56d01cea04cb345",
                 "shasum": ""
             },
             "type": "library",
@@ -4581,7 +4581,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-08-22T20:47:06+00:00"
+            "time": "2019-08-23T19:58:30+00:00"
         },
         {
             "name": "webmozart/assert",

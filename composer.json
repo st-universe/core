@@ -22,7 +22,6 @@
     "mnsami/composer-custom-directory-installer": "1.1.*",
     "scn/phptal": "^3.0",
     "zendframework/zend-mail": "^2",
-    "zendframework/zend-validator": "^2",
     "php-di/php-di": "^6.0",
     "doctrine/orm": "^2.6",
     "mpscholten/request-parser": "^1.5",

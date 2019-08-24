@@ -13,7 +13,6 @@ use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Control\ColonyController;
 use Stu\Control\CommController;
-use Stu\Control\IndexController;
 use Stu\Control\LogoutController;
 use Stu\Control\ShipController;
 use Stu\Lib\Db;
@@ -67,7 +66,6 @@ $builder->addDefinitions([
 $builder->addDefinitions([
     ColonyController::class => autowire(ColonyController::class),
     CommController::class => autowire(CommController::class),
-    IndexController::class => autowire(IndexController::class),
     LogoutController::class => autowire(LogoutController::class),
     ShipController::class => autowire(ShipController::class),
 ]);
@@ -107,6 +105,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Starmap/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Index/services.php'
 );
 
 $builder->addDefinitions([
