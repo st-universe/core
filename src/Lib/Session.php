@@ -121,10 +121,14 @@ final class Session implements SessionInterface
 
     private function destroySession(): void
     {
-        $this->sessionStringRepository->truncate($this->user->getId());
+        if ($this->user !== null) {
+            $this->sessionStringRepository->truncate($this->user->getId());
+        }
         $this->destroyLoginCookies();
         setCookie(session_name(), '', time() - 42000);
         @session_destroy();
+
+        $this->user = null;
     }
 
     private function destroyLoginCookies(): void
@@ -135,7 +139,6 @@ final class Session implements SessionInterface
     public function logout(): void
     {
         $this->destroySession();
-        header('Location: /');
     }
 
     private function performCookieLogin(int $uid, string $sstr): void

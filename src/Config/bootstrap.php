@@ -13,7 +13,6 @@ use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Control\ColonyController;
 use Stu\Control\CommController;
-use Stu\Control\LogoutController;
 use Stu\Control\ShipController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
@@ -66,7 +65,6 @@ $builder->addDefinitions([
 $builder->addDefinitions([
     ColonyController::class => autowire(ColonyController::class),
     CommController::class => autowire(CommController::class),
-    LogoutController::class => autowire(LogoutController::class),
     ShipController::class => autowire(ShipController::class),
 ]);
 
