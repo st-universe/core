@@ -9,7 +9,7 @@
 			<stu:hidden name="edit_contact" value="0" />
 			<stu:hidden name="formaction" value="1" />
 			<div style="float: left; width: 75%;">
-				<tal:block tal:repeat="contact THIS/getFullContactlist">
+				<tal:block tal:repeat="contact CONTACT_LIST">
 					<table class="tcal">
 						<tr tal:attributes="class string:row${repeat/contact/odd}">
 							<td style="width: 20px; text-align: center;">
@@ -40,13 +40,13 @@
 					</table>
 					<br />
 				</tal:block>
-				<tal:block tal:condition="THIS/getRemoteContacts">
+				<tal:block tal:condition="REMOTE_CONTACTS">
 					<br /><br />
 					<table class="tcal">
 						<tr>
 							<th colspan="2">Dir freundlich/feindlich gesinnte Siedler</th>
 						</tr>
-						<tr tal:attributes="class string:row${repeat/contact/odd}" tal:repeat="contact THIS/getRemoteContacts">
+						<tr tal:attributes="class string:row${repeat/contact/odd}" tal:repeat="contact REMOTE_CONTACTS">
 							<td style="width: 60px;">
 								<span id="contact${contact/getId}">
 									<tal:block tal:define="div php:FALSE" metal:use-macro="html/commmacros.xhtml/clmodeview" />

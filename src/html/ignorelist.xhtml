@@ -11,7 +11,7 @@
 					<tr>
 						<th colspan="3">Ignorierte Siedler</th>
 					</tr>
-					<tr tal:repeat="contact THIS/getFullIgnorelist">
+					<tr tal:repeat="contact IGNORE_LIST">
 						<td style="width: 20px; text-align: center;">
 							<input type="checkbox" name="deleted[]" value="runtime" tal:attributes="value contact/getId" />
 						</td>
@@ -20,13 +20,13 @@
 						</td>
 					</tr>
 				</table>
-				<tal:block tal:condition="THIS/getRemoteIgnores">
+				<tal:block tal:condition="REMOTE_IGNORES">
 					<br /><br />
 					<table class="tcal">
 						<tr>
 							<th>Siedler die Dich ignorieren</th>
 						</tr>
-						<tr tal:repeat="contact THIS/getRemoteIgnores">
+						<tr tal:repeat="contact REMOTE_IGNORES">
 							<td>
 								<span tal:replace="structure bbcode:contact/getUser/getName">USER</span> (<span tal:replace="contact/getUser/getId">ID</span>)
 							</td>

@@ -80,7 +80,6 @@ final class CommController extends GameController
         $this->addView("SHOW_CAT_LIST", "showCategoryList");
         $this->addView("SHOW_EDIT_CAT", "showEditCategory");
         $this->addView("SHOW_IGNORE", "showIgnore");
-        $this->addView("SHOW_CONTACTLIST", "showContactlist");
         $this->addView("SHOW_IGNORELIST", "showIgnorelist");
         $this->addView("SHOW_CONTACT_MODESWITCH", "showContactlistModeswitch");
         $this->addView("SHOW_CONTACT_MODE", "showContactMode");
@@ -90,8 +89,6 @@ final class CommController extends GameController
         $this->addView("SHOW_MYPLOTS", "showUserPlotlist");
         $this->addView("SHOW_PLOT", "showPlotDetails");
         $this->addView("SHOW_PLOTKN", "showPlotKn");
-        $this->addView("SHOW_KN_COMMENTS", "showKnComments");
-        $this->addView("SHOW_KN_COMMENTLIST", "showKnCommentList");
 
         $this->addView("SHOW_NOOP", "showNoop");
     }
@@ -106,20 +103,6 @@ final class CommController extends GameController
         $this->addNavigationPart(new Tuple("comm.php?SHOW_PLOTKN=1&plotid=" . $plot->getId(),
             "Plot: " . $plot->getTitleDecoded()));
         $this->setPageTitle("Plot: " . $plot->getTitleDecoded());
-    }
-
-    function showContactlist()
-    {
-        $this->setTemplateFile('html/contactlist.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_CONTACTLIST=1", "Kontaktliste"));
-        $this->setPageTitle("Kontaktliste");
-    }
-
-    function showIgnorelist()
-    {
-        $this->setTemplateFile('html/ignorelist.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_IGNORELIST=1", "Ignoreliste"));
-        $this->setPageTitle("Ignoreliste");
     }
 
     function showCreatePlot()
@@ -861,18 +844,6 @@ final class CommController extends GameController
 
     /**
      */
-    protected function showKnComments()
-    {
-        if ($this->currentposting === null) {
-            $this->currentposting = new KNPosting(request::getIntFatal('posting'));
-        }
-        $this->setPageTitle(_("Kommentare für Posting ") . $this->getKNPosting()->getId());
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/kncomments');
-    }
-
-    /**
-     */
     protected function postComment()
     {
         $this->setView("SHOW_KN_COMMENTS");
@@ -1008,44 +979,6 @@ final class CommController extends GameController
             return false;
         }
         return $pm;
-    }
-
-    public function getFullContactlist()
-    {
-        if ($this->contactlist === null) {
-            $this->contactlist = Contactlist::getList(currentUser()->getId());
-        }
-        return $this->contactlist;
-    }
-
-    private $remotecontacts = null;
-
-    public function getRemoteContacts()
-    {
-        if ($this->remotecontacts === null) {
-            $this->remotecontacts = Contactlist::getRemoteContacts(currentUser()->getId());
-        }
-        return $this->remotecontacts;
-    }
-
-    private $ignorelist = null;
-
-    public function getFullIgnorelist()
-    {
-        if ($this->ignorelist === null) {
-            $this->ignorelist = Ignorelist::getList(currentUser()->getId());
-        }
-        return $this->ignorelist;
-    }
-
-    private $remoteignores = null;
-
-    public function getRemoteIgnores()
-    {
-        if ($this->remoteignores === null) {
-            $this->remoteignores = Ignorelist::getRemoteIgnores(currentUser()->getId());
-        }
-        return $this->remoteignores;
     }
 
     private $rpgplots = null;

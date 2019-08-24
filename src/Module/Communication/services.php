@@ -13,6 +13,8 @@ use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
 use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
+use Stu\Module\Communication\View\ShowContactList\ShowContactList;
+use Stu\Module\Communication\View\ShowIgnoreList\ShowIgnoreList;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequestInterface;
@@ -47,6 +49,8 @@ return [
                 ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
                 ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
                 ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
+                ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
+                ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),
             ]
         ),
 ];
