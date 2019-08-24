@@ -4,14 +4,14 @@
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 			<div style="width: 75%; float: left; margin-right: 1%">
-                <tal:block tal:condition="not:THIS/getKNPostings">
+                <tal:block tal:condition="not:KN_POSTINGS">
                     <div class="divhead" i18n:translate="">Meldung</div>
                     <div class="divbody" i18n:translate="">Keine Beiträge vorhanden</div>
                 </tal:block>
-                <tal:block tal:condition="THIS/getKNPostings">
+                <tal:block tal:condition="KN_POSTINGS">
                     <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
                     <br />
-			<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" tal:repeat="post THIS/getKNPostings">
+			<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
 				<table class="tcal">
 					<tr tal:condition="post/getTitle">
 						<th colspan="2">
@@ -49,7 +49,7 @@
 					<tr>
 						<td>
 							<div style="float: left; width: 50%">
-								<a href="?mark=${THIS/getKNMark}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2')" onmouseout="cp('mark${post/getId}','buttons/lese1')">
+								<a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2')" onmouseout="cp('mark${post/getId}','buttons/lese1')">
 									<img src="${GFX}/buttons/lese1.gif" title="Lesezeichen setzen" name="mark${post/getId}" />
 								</a>
 								<tal:block tal:condition="post/isEditAble">
@@ -84,11 +84,11 @@
                     <br /><br />
                     <strong i18n:translate="">Übersicht</strong><br />
                     <ul>
-                        <li tal:condition="THIS/hasNewKNPostings">
-                            <span style="color: #cecece">&gt;</span> <a href="?mark=${THIS/getKNUserMark}"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="THIS/getNewKNPostingCount">...</span>
+                        <li tal:condition="HAS_NEW_KN_POSTINGS">
+                            <span style="color: #cecece">&gt;</span> <a href="?mark=${USER_KN_MARK}"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
                         </li>
                         <li>
-                            <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${THIS/getKNStart}" i18n:translate="">aufsteigend</a>)
+                            <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)
                         </li>
                     </ul>
                     <div class="seperator"> </div>
@@ -114,7 +114,7 @@
                     <br />
                     <strong i18n:translate="">Ordner</strong>
                     <ul id="catlist" class="pm_categories">
-                        <li tal:repeat="cat THIS/getPMCategories" style="width: 100%; display: block;">
+                        <li tal:repeat="cat PM_CATEGORIES" style="width: 100%; display: block;">
                             <span style="color: #cecece">&gt;</span>
                             <a href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
                             (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)

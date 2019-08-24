@@ -970,16 +970,6 @@ final class CommController extends GameController
         $this->currentposting = $obj->getPosting();
     }
 
-    public function getKNStart()
-    {
-        $mark = $this->getKNPostingCount();
-        $lim = floor($mark / static::KNLIMITER) * static::KNLIMITER;
-        if ($mark % static::KNLIMITER == 0) {
-            return $lim - static::KNLIMITER;
-        }
-        return $lim;
-    }
-
     private $knmaxpostingcount;
 
     private function getKNPostingCount()
@@ -988,21 +978,6 @@ final class CommController extends GameController
             $this->knmaxpostingcount = KNPosting::countInstances('1=1');
         }
         return $this->knmaxpostingcount;
-    }
-
-    private $knpostingcount = null;
-
-    public function getNewKNPostingCount()
-    {
-        if ($this->knpostingcount === null) {
-            $this->knpostingcount = KNPosting::countInstances('id>' . currentUser()->getKnMark());
-        }
-        return $this->knpostingcount;
-    }
-
-    public function hasNewKNPostings()
-    {
-        return $this->getNewKNPostingCount() > 0;
     }
 
     private $knpostings = null;

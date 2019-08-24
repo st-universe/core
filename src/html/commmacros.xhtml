@@ -39,7 +39,7 @@
 				<td style="padding-right: 1px;">
 					<stu:imagelink href="?WRITE_KN=1" image="knedit" title="Beitrag schreiben" i18n:attributes="title" />
 				</td>
-				<td tal:repeat="item THIS/getKNNavigation">
+				<td tal:repeat="item KN_NAVIGATION">
 					<a href="?SHOW_KN=1&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 				</td>
 			</tr>

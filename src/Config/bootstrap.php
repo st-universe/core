@@ -12,7 +12,6 @@ use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Control\ColonyController;
-use Stu\Control\CommController;
 use Stu\Control\ShipController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
@@ -64,7 +63,6 @@ $builder->addDefinitions([
 
 $builder->addDefinitions([
     ColonyController::class => autowire(ColonyController::class),
-    CommController::class => autowire(CommController::class),
     ShipController::class => autowire(ShipController::class),
 ]);
 
@@ -106,6 +104,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Index/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Communication/services.php'
 );
 
 $builder->addDefinitions([
