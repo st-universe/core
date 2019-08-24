@@ -14,6 +14,10 @@ use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
 use Stu\Module\Communication\View\ShowContactList\ShowContactList;
+use Stu\Module\Communication\View\ShowContactMode\ShowContactMode;
+use Stu\Module\Communication\View\ShowContactModeSwitch\ShowContactModeSwitch;
+use Stu\Module\Communication\View\ShowContactModeSwitch\ShowContactModeSwitchRequest;
+use Stu\Module\Communication\View\ShowContactModeSwitch\ShowContactModeSwitchRequestInterface;
 use Stu\Module\Communication\View\ShowCreatePlot\ShowCreatePlot;
 use Stu\Module\Communication\View\ShowEditKn\ShowEditKn;
 use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequest;
@@ -24,6 +28,7 @@ use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequestInterface;
 use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditCategoryRequest;
 use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
 use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditPmCategory;
+use Stu\Module\Communication\View\ShowIgnore\ShowIgnore;
 use Stu\Module\Communication\View\ShowIgnoreList\ShowIgnoreList;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnCommentsRequest;
@@ -66,6 +71,7 @@ return [
     ShowPlotKnRequestInterface::class => autowire(ShowPlotKnRequest::class),
     ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
     ShowEditKnRequestInterface::class => autowire(ShowEditKnRequest::class),
+    ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -93,6 +99,9 @@ return [
                 ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
                 ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
                 ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
+                ShowIgnore::VIEW_IDENTIFIER => autowire(ShowIgnore::class),
+                ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
+                ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
             ]
         ),
 ];

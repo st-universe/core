@@ -69,43 +69,7 @@ final class CommController extends GameController
         $this->addCallBack("B_DELETE_COMMENT", "deleteComment");
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
-        $this->addView("SHOW_IGNORE", "showIgnore");
-        $this->addView("SHOW_CONTACT_MODESWITCH", "showContactlistModeswitch");
-        $this->addView("SHOW_CONTACT_MODE", "showContactMode");
-
         $this->addView("SHOW_NOOP", "showNoop");
-    }
-
-    function showIgnore()
-    {
-        $this->setTemplateFile('html/ajaxempty.xhtml');
-        $this->setAjaxMacro('html/macros.xhtml/ignoretext');
-    }
-
-    function showAddContact()
-    {
-        $this->getTemplate()->setVar('clobj', $this->getContactlist());
-        $this->setTemplateFile('html/ajaxempty.xhtml');
-        $this->setAjaxMacro('html/macros.xhtml/contacttext');
-    }
-
-    function showContactMode()
-    {
-        $this->getTemplate()->setVar('contact', $this->contact);
-        $this->setTemplateFile('html/ajaxempty.xhtml');
-        $this->setAjaxMacro('html/commmacros.xhtml/clmodeview');
-    }
-
-    function showContactlistModeswitch()
-    {
-        $contact = new Contactlist(request::getIntFatal('cid'));
-        if (!$contact->isOwnContact()) {
-            return;
-        }
-        $this->setPageTitle("Status");
-        $this->setTemplateFile('html/ajaxwindow.xhtml');
-        $this->getTemplate()->setRef('contact', $contact);
-        $this->setAjaxMacro('html/commmacros.xhtml/clmodeswitch');
     }
 
     function ignoreUser()
@@ -425,16 +389,6 @@ final class CommController extends GameController
             $this->currentpm = new PMData();
         }
         return $this->currentpm;
-    }
-
-    private $contactlist = null;
-
-    function getContactlist()
-    {
-        if ($this->contactlist === null) {
-            $this->contactlist = new ContactlistData();
-        }
-        return $this->contactlist;
     }
 
     private $rpgplot = null;
