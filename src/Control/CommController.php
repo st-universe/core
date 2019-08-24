@@ -73,28 +73,8 @@ final class CommController extends GameController
         $this->addView("SHOW_IGNORE", "showIgnore");
         $this->addView("SHOW_CONTACT_MODESWITCH", "showContactlistModeswitch");
         $this->addView("SHOW_CONTACT_MODE", "showContactMode");
-        $this->addView("SHOW_CREATE_PLOT", "showCreatePlot");
-        $this->addView("SHOW_EDIT_PLOT", "showEditPlot");
 
         $this->addView("SHOW_NOOP", "showNoop");
-    }
-
-    function showCreatePlot()
-    {
-        $this->setTemplateFile('html/createplot.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_CREATE_PLOT=1", "Plot erstellen"));
-        $this->setPageTitle("Plot erstellen");
-    }
-
-    function showEditPlot()
-    {
-        $this->rpgplot = new RPGPlot(request::indInt('plotid'));
-        if (!$this->getRPGPlot()->ownedByCurrentUser()) {
-            return;
-        }
-        $this->setTemplateFile('html/createplot.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php?SHOW_EDIT_PLOT=1", "Plot editieren"));
-        $this->setPageTitle("Plot editieren");
     }
 
     function showIgnore()

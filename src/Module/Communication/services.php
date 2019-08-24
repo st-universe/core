@@ -14,6 +14,10 @@ use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
 use Stu\Module\Communication\View\ShowContactList\ShowContactList;
+use Stu\Module\Communication\View\ShowCreatePlot\ShowCreatePlot;
+use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlot;
+use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequest;
+use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequestInterface;
 use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditCategoryRequest;
 use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
 use Stu\Module\Communication\View\ShowEditPmCategory\ShowEditPmCategory;
@@ -56,6 +60,7 @@ return [
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),
     ShowPlotKnRequestInterface::class => autowire(ShowPlotKnRequest::class),
+    ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -79,6 +84,8 @@ return [
                 ShowPlotKn::VIEW_IDENTIFIER => autowire(ShowPlotKn::class),
                 ShowPlotList::VIEW_IDENTIFIER => autowire(ShowPlotList::class),
                 ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
+                ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
+                ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
             ]
         ),
 ];
