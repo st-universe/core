@@ -69,7 +69,6 @@ final class CommController extends GameController
         $this->addCallBack("B_DELETE_COMMENT", "deleteComment");
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
-        $this->addView("WRITE_KN", "writeKN");
         $this->addView("SHOW_IGNORE", "showIgnore");
         $this->addView("SHOW_CONTACT_MODESWITCH", "showContactlistModeswitch");
         $this->addView("SHOW_CONTACT_MODE", "showContactMode");
@@ -131,21 +130,6 @@ final class CommController extends GameController
         $ignore->setRecipientId($user->getId());
         $ignore->save();
         $this->addInformation("Der Siedler wird ignoriert");
-    }
-
-    function writeKN()
-    {
-        $this->setTemplateFile('html/writekn.xhtml');
-        $this->addNavigationPart(new Tuple("comm.php", "Kommunikationsnetzwerk"));
-        if (request::getInt('knid')) {
-            $knid = request::getInt('knid');
-            $this->setPageTitle("Beitrag editieren");
-            $this->currentposting = new KNPosting($knid);
-            $this->addNavigationPart(new Tuple("comm.php?WRITE_KN=1&knid=" . $knid, "Beitrag editieren"));
-        } else {
-            $this->setPageTitle("Beitrag schreiben");
-            $this->addNavigationPart(new Tuple("comm.php?WRITE_KN=1", "Beitrag schreiben"));
-        }
     }
 
     public function getSelectedRecipient()
@@ -734,13 +718,5 @@ final class CommController extends GameController
             return false;
         }
         return $pm;
-    }
-
-    public function getActiveRPGPlots()
-    {
-        if ($this->rpgplots === null) {
-            $this->rpgplots = RPGPlot::getObjectsBy('WHERE end_date=0 AND id IN (SELECT plot_id FROM stu_plots_members WHERE user_id=' . currentUser()->getId() . ') ORDER BY start_date DESC');
-        }
-        return $this->rpgplots;
     }
 }

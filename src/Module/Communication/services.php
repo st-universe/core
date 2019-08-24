@@ -15,6 +15,9 @@ use Stu\Module\Communication\View\Overview\OverviewRequest;
 use Stu\Module\Communication\View\Overview\OverviewRequestInterface;
 use Stu\Module\Communication\View\ShowContactList\ShowContactList;
 use Stu\Module\Communication\View\ShowCreatePlot\ShowCreatePlot;
+use Stu\Module\Communication\View\ShowEditKn\ShowEditKn;
+use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequest;
+use Stu\Module\Communication\View\ShowEditKn\ShowEditKnRequestInterface;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlot;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequest;
 use Stu\Module\Communication\View\ShowEditPlot\ShowEditPlotRequestInterface;
@@ -39,6 +42,7 @@ use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequest;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequestInterface;
 use Stu\Module\Communication\View\ShowPmCategoryList\ShowPmCategoryList;
 use Stu\Module\Communication\View\ShowUserPlotList\ShowUserPlotList;
+use Stu\Module\Communication\View\ShowWriteKn\ShowWriteKn;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePm;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequest;
 use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequestInterface;
@@ -61,6 +65,7 @@ return [
     ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),
     ShowPlotKnRequestInterface::class => autowire(ShowPlotKnRequest::class),
     ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
+    ShowEditKnRequestInterface::class => autowire(ShowEditKnRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -86,6 +91,8 @@ return [
                 ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
                 ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
                 ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
+                ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
+                ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
             ]
         ),
 ];

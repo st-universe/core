@@ -6,23 +6,24 @@
 		<form action="comm.php" method="post">
 			<input type="hidden" name="WRITE_KN" value="1" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+			<input type="hidden" name="knid" value="runtime" tal:attributes="value POST/getId" />
 			<table class="tcal">
 				<tr>
 					<td>
-						<div id="writekntitle" class="selected" style="cursor: pointer; float: left; width: 100px; padding: 5px;" onclick="switchToTitleInput();">Titel</div>
-						<div id="writeknplot" style="cursor: pointer; float: left; width: 100px; padding: 5px;" onclick="switchToPlotSelector();">Plot</div>
+						<div id="writekntitle" tal:condition="not:POST/hasPlot" class="selected" style="float: left; width: 100px; padding: 5px;">Titel</div>
+						<div id="writeknplot" tal:condition="POST/hasPlot" class="selected" style="float: left; width: 100px; padding: 5px;">Plot</div>
 						<br style="clear: both;" />
-						<div id="writekntitleinput" style="clear: both; margin: 5px;">
-							<input type="text" name="title" style="width: 100%;" />
+						<div tal:condition="not:POST/hasPlot" id="writekntitleinput" style="clear: both; margin: 5px;">
+							<input type="text" name="title" style="width: 100%;" tal:attributes="value POST/getTitleDecodedRaw" />
 						</div>
-						<div id="writeknplotselect" style="display: none; margin: 5px;">
+						<div id="writeknplotselect" tal:condition="POST/hasPlot" style="margin: 5px;">
 							<metal:macro metal:use-macro="plotselect" />
 						</div>
 						<metal:macro metal:define-macro="plotselect">
 							<select name="plotid" style="width: 500px;">
 								<option value="0">------------------------------</option>
 								<tal:block tal:repeat="plot ACTIVE_RPG_PLOTS">
-									<option value="runtime" tal:attributes="value plot/getId;" tal:content="plot/getTitleDecodedRaw"></option>
+									<option value="runtime" tal:attributes="value plot/getId;selected php:POST.getPlotId()==plot.getId()" tal:content="plot/getTitleDecodedRaw"></option>
 								</tal:block>
 							</select>
 						</metal:macro>
@@ -32,12 +33,11 @@
 					<th>Text</th>
 				</tr>
 				<tr>
-					<td><stu:textarea name="text" style="width: 100%; height: 300px;"></stu:textarea></td>
+					<td><stu:textarea name="text" style="width: 100%; height: 300px;" tal:content="POST/getTextDecodedRaw"></stu:textarea></td>
 				</tr>
 				<tr>
 					<td>
-						<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
-						<input value="1" type="checkbox" name="markposting" /> <span i18n:translate="">Lesezeichen bei diesem Beitrag setzen</span>
+						<input type="submit" name="B_EDIT_KN" value="Editieren" />
 					</td>
 				</tr>
 			</table>
