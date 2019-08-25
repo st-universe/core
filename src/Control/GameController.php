@@ -6,7 +6,6 @@ use Colony;
 use DateTimeImmutable;
 use GameConfig;
 use GameTurn;
-use HistoryEntry;
 use InvalidCallbackException;
 use PM;
 use PMCategory;
@@ -16,12 +15,10 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use TalPage;
 use Tuple;
-use User;
 use UserData;
 
 abstract class GameController implements GameControllerInterface
 {
-
     public const DEFAULT_VIEW = 'DEFAULT_VIEW';
 
     private $session;
@@ -42,13 +39,9 @@ abstract class GameController implements GameControllerInterface
 
     private $currentRound = null;
 
-    private $pmnavlet = null;
-
     private $achievements = array();
 
     private $playercount = null;
-
-    private $onlinePlayercount = null;
 
     public function __construct(
         SessionInterface $session,
@@ -227,20 +220,6 @@ abstract class GameController implements GameControllerInterface
         return $this->playercount;
     }
 
-    public function getOnlinePlayerCount()
-    {
-        if ($this->onlinePlayercount === null) {
-            $this->onlinePlayercount = DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300",
-                1);
-        }
-        return $this->onlinePlayercount;
-    }
-
-    public function getUserName()
-    {
-        return BBCode()->parse($this->getUser()->user);
-    }
-
     private $gameConfig = null;
 
     public function getGameConfig()
@@ -335,18 +314,6 @@ abstract class GameController implements GameControllerInterface
         exit;
     }
 
-    public function getFriendsOnline()
-    {
-        return User::getListBy("WHERE lastaction>" . (time() - USER_ONLINE_PERIOD) . " AND (id IN (SELECT user_id FROM stu_contactlist WHERE mode=1 AND recipient=" . currentUser()->getId() . ")
-				      OR id IN (SELECT id FROM stu_user WHERE allys_id>0 AND allys_id=" . currentUser()->getAllianceId() . ")) AND id!=" . currentUser()->getId() . " GROUP BY id ORDER BY RAND() LIMIT 10");
-    }
-
-    public function getFriendsOnlineCount()
-    {
-        return User::countInstances("WHERE lastaction>" . (time() - USER_ONLINE_PERIOD) . " AND (id IN (SELECT user_id FROM stu_contactlist WHERE mode=1 AND recipient=" . currentUser()->getId() . ")
-				      OR id IN (SELECT id FROM stu_user WHERE allys_id>0 AND allys_id=" . currentUser()->getAllianceId() . ")) AND id!=" . currentUser()->getId());
-    }
-
     public function getCurrentRound()
     {
         if ($this->currentRound === null) {
@@ -368,7 +335,7 @@ abstract class GameController implements GameControllerInterface
     public function getPlanetColonyLimit()
     {
         return DB()->query(
-            'SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . currentUser()->getId() . ' ANd aktiv=0)',
+            'SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
             1
         );
     }
@@ -376,32 +343,24 @@ abstract class GameController implements GameControllerInterface
     public function getMoonColonyLimit()
     {
         return DB()->query(
-            'SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . currentUser()->getId() . ' ANd aktiv=0)',
+            'SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
             1
         );
     }
 
     public function getPlanetColonyCount()
     {
-        return Colony::countInstances('WHERE user_id=' . currentUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
+        return Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
     }
 
     public function getMoonColonyCount()
     {
-        return Colony::countInstances('WHERE user_id=' . currentUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
+        return Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
     }
 
     public function isAdmin()
     {
-        return currentUser()->isAdmin();
-    }
-
-    public function getRecentHistory()
-    {
-        if ($this->recent_history === null) {
-            $this->recent_history = HistoryEntry::getListBy('ORDER BY id DESC LIMIT 10');
-        }
-        return $this->recent_history;
+        return $this->getUser()->isAdmin();
     }
 
     public function checkDatabaseItem($databaseEntryId): void
@@ -522,23 +481,18 @@ abstract class GameController implements GameControllerInterface
         return true;
     }
 
-    private $gameStats = null;
+    private $gameStats;
 
-    function getGameStats()
+    public function getGameStats(): array
     {
         if ($this->gameStats === null) {
-            $this->gameStats = $this->gatherGameStats();
+            $this->gameStats = [
+                'turn' => $this->getCurrentRound(),
+                'player' => $this->getPlayerCount(),
+                'playeronline' => DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300", 1),
+            ];
         }
         return $this->gameStats;
-    }
-
-    function gatherGameStats()
-    {
-        $ret = array();
-        $ret['turn'] = $this->getCurrentRound();
-        $ret['player'] = $this->getPlayerCount();
-        $ret['playeronline'] = $this->getOnlinePlayerCount();
-        return $ret;
     }
 
     public function getGameStateTextual()

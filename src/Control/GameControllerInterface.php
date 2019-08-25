@@ -36,10 +36,6 @@ interface GameControllerInterface
 
     public function getPlayerCount();
 
-    public function getOnlinePlayerCount();
-
-    public function getUserName();
-
     public function getGameConfig();
 
     public function getGameConfigValue($value);
@@ -68,10 +64,6 @@ interface GameControllerInterface
 
     public function redirectTo(string $href): void;
 
-    public function getFriendsOnline();
-
-    public function getFriendsOnlineCount();
-
     public function getCurrentRound();
 
     public function isDebugMode();
@@ -88,8 +80,6 @@ interface GameControllerInterface
 
     public function isAdmin();
 
-    public function getRecentHistory();
-
     public function checkDatabaseItem($databaseEntryId): void;
 
     public function getAchievements();
@@ -99,6 +89,8 @@ interface GameControllerInterface
     public function main(bool $session_check = true): void;
 
     public function isRegistrationPossible(): bool;
+
+    public function getGameStats(): array;
 
     public function setLoginError(string $error): void;
 

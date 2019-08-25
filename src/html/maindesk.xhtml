@@ -91,8 +91,8 @@
 					</div>
 					<br />
 				    <stu:box title="Letzte Ereignisse" i18n:attributes="title">
-					<div tal:condition="not:THIS/getRecentHistory" i18n:translate="">Keine</div>
-					<div class="list" tal:condition="THIS/getRecentHistory" tal:repeat="item THIS/getRecentHistory">
+					<div tal:condition="not:RECENT_HISTORY" i18n:translate="">Keine</div>
+					<div class="list" tal:condition="RECENT_HISTORY" tal:repeat="item RECENT_HISTORY">
 					    <div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT</div>
 					    <div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
 					</div>

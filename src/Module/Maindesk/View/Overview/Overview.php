@@ -7,6 +7,7 @@ namespace Stu\Module\Maindesk\View\Overview;
 use AllianceTopic;
 use ColonyShipQueue;
 use ContactlistData;
+use HistoryEntry;
 use KNPosting;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -66,5 +67,6 @@ final class Overview implements ViewControllerInterface
             'RECENT_ALLIANCE_BOARD_TOPICS',
             AllianceTopic::getLatestTopics($user->getAllianceId())
         );
+        $game->setTemplateVar('RECENT_HISTORY', HistoryEntry::getListBy('ORDER BY id DESC LIMIT 10'));
     }
 }
