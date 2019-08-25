@@ -10,6 +10,9 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
 use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;
+use Stu\Module\Communication\Action\AddKnPost\AddKnPost;
+use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequest;
+use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategory;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequest;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequestInterface;
@@ -123,6 +126,7 @@ return [
     DeletePmsRequestInterface::class => autowire(DeletePmsRequest::class),
     DeleteAllPmsRequestInterface::class => autowire(DeleteAllPmsRequest::class),
     MovePmRequestInterface::class => autowire(MovePmRequest::class),
+    AddKnPostRequestInterface::class => autowire(AddKnPostRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -143,6 +147,7 @@ return [
                 DeletePms::ACTION_IDENTIFIER => autowire(DeletePms::class),
                 DeleteAllPms::ACTION_IDENTIFIER => autowire(DeleteAllPms::class),
                 MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
+                AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),

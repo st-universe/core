@@ -3,9 +3,6 @@
 namespace Stu\Control;
 
 use Contactlist;
-use ContactlistData;
-use Ignorelist;
-use IgnorelistData;
 use KnComment;
 use KnCommentData;
 use KNPosting;
@@ -13,7 +10,6 @@ use KNPostingData;
 use ObjectNotFoundException;
 use PM;
 use PMCategory;
-use PMCategoryData;
 use PMData;
 use request;
 use RPGPlot;
@@ -42,7 +38,6 @@ final class CommController extends GameController
         );
         $this->addNavigationPart(new Tuple("comm.php", "Kommunikationsnetzwerk"));
 
-        $this->addCallBack("B_WRITE_KN", "addKNPosting", true);
         $this->addCallBack("B_WRITE_PM", "addPM", true);
         $this->addCallBack("B_EDIT_KN", "editKNPosting");
         $this->addCallBack("B_DEL_KN", "delKNPosting", true);
@@ -61,43 +56,6 @@ final class CommController extends GameController
     public function getSelectedRecipient()
     {
         return ResourceCache()->getObject("user", request::getIntFatal('recipient'));
-    }
-
-    function addKNPosting()
-    {
-        $title = request::postString('title');
-        $text = request::postString('text');
-        $plotid = request::postInt('plotid');
-        if ($plotid > 0) {
-            $plot = RPGPlot::getById($plotid);
-            if ($plot && RPGPlotMember::mayWriteStory($plot->getId(), currentUser()->getId())) {
-                $this->getKNPosting()->setPlotId($plot->getId());
-                $this->getKNPosting()->setTitle($plot->getTitleDecoded());
-            }
-        } else {
-            $this->getKNPosting()->setTitle(tidyString($title));
-        }
-        $this->getKNPosting()->setSetKNMark(request::postInt('markposting'));
-        $this->getKNPosting()->setText(strip_tags(tidyString($text)));
-
-        if (strlen(trim($title)) < 10 && !$plotid) {
-            $this->addInformation(_('Der Titel ist zu kurz (mindestens 10 Zeichen)'));
-            return;
-        }
-        if (strlen(trim($text)) < 50) {
-            $this->addInformation(_('Der Text ist zu kurz (mindestens 50 Zeichen)'));
-            return;
-        }
-        $this->getKNPosting()->setUserId(currentUser()->getId());
-        $this->getKNPosting()->setDate(time());
-
-        $this->getKNPosting()->save();
-        $this->addInformation("Der Beitrag wurde hinzugefügt");
-        if ($this->getKNPosting()->getSetKNMark()) {
-            currentUser()->setKNMark($this->getKNPosting()->getId());
-            currentUser()->save();
-        }
-        request::delVar("WRITE_KN");
     }
 
     function addPM()
@@ -379,32 +337,6 @@ final class CommController extends GameController
             $obj->deleteFromDatabase();
         }
         $this->currentposting = $obj->getPosting();
-    }
-
-    private $cattree = null;
-
-    public function getPMCategories()
-    {
-        if ($this->cattree === null) {
-            $this->cattree = PMCategory::getCategoryTree();
-        }
-        return $this->cattree;
-    }
-
-    private $pmcategory = null;
-
-    public function getPMCategory()
-    {
-        if ($this->pmcategory === null) {
-            $cat = request::indInt('pmcat');
-            $cats = $this->getPMCategories();
-            if (!$cat || !array_key_exists($cat, $cats)) {
-                $this->pmcategory = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, currentUser()->getId());
-            } else {
-                $this->pmcategory = $cats[$cat];
-            }
-        }
-        return $this->pmcategory;
     }
 
     private $pmreply = null;
