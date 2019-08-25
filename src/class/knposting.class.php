@@ -63,15 +63,6 @@ class KNPostingData extends BaseTable {
 		$this->addUpdateField('text','getText');
 	}
 
-	function getDateFormatted() {
-		trigger_error("OBSOLETE - getDateFormatted - use getDateDisplay instead");
-		return $this->getDateDisplay();
-	}
-
-	function getDateDisplay() {
-		return date("d.m.Y H:i",$this->getDate());
-	}
-
 	function getDate() {
 		return $this->data['date'];
 	}

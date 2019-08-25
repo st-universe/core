@@ -26,7 +26,7 @@
 							</div>
 							<div tal:condition="not:post/hasUser" tal:content="structure bbcode:post/getUserName">USER</div>
 						</td>
-						<th tal:content="post/getDateDisplay" style="width: 120px;">DATE</th>
+						<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
 					</tr>
 				</table>
 				<table class="tcal">

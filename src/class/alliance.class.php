@@ -85,10 +85,6 @@ class AllianceData extends BaseTable {
 		$this->addUpdateField('date','getDate');
 	}
 
-	function getDateDisplay() {
-		return date("d.m.Y H:i",$this->getDate());
-	}
-
 	function isInAlliance() {
 		return array_key_exists(currentUser()->getId(),$this->getMembers());
 	}

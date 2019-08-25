@@ -46,7 +46,7 @@
 									<td>
 										<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:data/getUser/getName" /></span>
 										-
-										<span tal:content="data/getDateDisplay">DATE</span>
+										<span tal:content="datetime:data/getDate">DATE</span>
 										-
 										<span tal:replace="data/getCommentcount">COMMENTS</span> <span i18n:translate="">Kommentare</span>
 									</td>

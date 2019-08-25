@@ -1221,7 +1221,7 @@
 						<span tal:replace="structure php:getPercentageStatusBar(STATUSBAR_GREEN,data.getBuildtime()-(data.getFinishDate()-time()),data.getBuildtime())">STATUSBAR</span>
 					</td>
 					<td style="text-align: center; vertical-align: middle">
-						<span tal:replace="data/getFinishDateFormatted">DATE</span>
+						<span tal:replace="datetime:data/getFinishDate">DATE</span>
 					</td>
 				</tal:block>
 				<td colspan="2" style="text-align: center; vertical-align: middle" tal:condition="data/isStopped" i18n:translate="">Angehalten</td>

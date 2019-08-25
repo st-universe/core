@@ -85,12 +85,6 @@ class ColonyShipQueueData extends BaseTable { #{{{
 
 	/**
 	 */
-	public function getFinishDateFormatted() { #{{{
-		return parseDateTime($this->getFinishDate());
-	} # }}}
-
-	/**
-	 */
 	public function getRump() { #{{{
 		return new Shiprump($this->getRumpId());
 	} # }}}

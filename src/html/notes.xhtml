@@ -19,7 +19,7 @@
 					<td>
 						<a href="notes.php?SHOW_NOTE=1&note=${data/getId}" tal:content="structure data/getTitleDecoded">TITLE</a>
 					</td>
-					<td style="text-align: center;" tal:content="data/getDateFormatted">DATE</td>
+					<td style="text-align: center;" tal:content="datetime:data/getDate">DATE</td>
 					<td style="width:20px;">
 						<stu:imagelink image="x" href="notes.php?B_DELETE_NOTES=1&delnotes=${data/getId}&sstr=${THIS/getSessionString}" />
 					</td>

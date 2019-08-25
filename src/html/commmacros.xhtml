@@ -5,33 +5,6 @@
 		</script> 
 		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/comm.js"><!-- stuniverse --></script>
 	</metal:block>
-	<tal:block metal:define-macro="simple_posting_list">
-		<tr tal:repeat="data posts">
-			<td>
-				<p style="padding: 5px;">
-					<span tal:condition="data/hasTitle" tal:replace="structure data/getTitleDecoded" />
-					<span tal:condition="not:data/hasTitle">Kein Titel</span>
-				</p>
-				von: <span tal:replace="structure bbcode:data/getUser/getName"/>
-			</td>
-			<td style="width: 120px; text-align: center;" tal:content="data/getDateFormatted"></td>
-		</tr>
-	</tal:block>
-
-	<tal:block metal:define-macro="preview_posting_list">
-		<tr tal:repeat="data posts">
-			<td style="padding-top: 10px;">
-				<p style="padding: 5px;">
-					<span tal:condition="data/hasTitle" tal:replace="data/getTitle" />
-					<span tal:condition="not:data/hasTitle">Kein Titel</span>
-					<br />
-					<span tal:replace="structure data/getTextCutted">...</span>
-				</p>
-				von: <span tal:replace="structure bbcode:data/getUser/getName"/>
-			</td>
-			<td style="width: 120px; text-align: center;" tal:content="data/getDateFormatted"></td>
-		</tr>
-	</tal:block>
 
 	<metal:macro metal:define-macro="knnavigation">
 			<table>

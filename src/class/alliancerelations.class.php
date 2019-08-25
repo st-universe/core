@@ -87,16 +87,6 @@ class AllianceRelationData extends BaseTable {
 		$this->addUpdateField('date','getDate');
 	}
 
-	function getDateDisplay() {
-		if ($this->isPending()) {
-			if ($this->offerIsSend()) {
-				return "Wird angeboten";
-			}
-			return "Wurde angeboten";
-		}
-		return date("d.m.Y H:i",$this->getDate());
-	}
-
 	function isPending() {
 		return $this->getDate() == 0;
 	}

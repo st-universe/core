@@ -6,7 +6,7 @@
 			<div class="divhead">Informationen</div>
 			<div class="divbody">
 				<span tal:replace="structure bbcode:ALLIANCE/getName">NAME</span><br /><br />
-				Gegründet: ${ALLIANCE/getDateDisplay}
+				Gegründet: ${datetime:ALLIANCE/getDate}
 				<div style="padding-top: 10px; width: 50%; float: left;">
 					<div tal:condition="ALLIANCE/currentUserMayEdit">
 						<a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>

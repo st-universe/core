@@ -14,7 +14,7 @@
 					<td>
 						<img src="${GFX}/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 					</td>
-					<th tal:content="post/getDateDisplay" style="width: 120px;">DATE</th>
+					<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
 				</tr>
 			</table>
 			<table class="tcal">
@@ -28,7 +28,7 @@
 						<span tal:content="structure post/getTextParsed">TEXT</span>
 						<tal:block tal:condition="post/hasEdit">
 							<br /><br /><br />
-							<span class="knedit">Letzte Bearbeitung: ${post/getEditDateFormatted}</span>
+							<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
 						</tal:block>
 					</td>
 				</tr>

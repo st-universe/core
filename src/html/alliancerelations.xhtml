@@ -44,7 +44,11 @@
 							<span tal:condition="not:php:data.getType() EQ ALLIANCE_RELATION_WAR"> (<a href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al=${data/getId}&sstr=${THIS/getSessionString}">lösen</a>)</span>
 						</span>
 					</td>
-					<td tal:content="data/getDateDisplay">DATE</td>
+					<td tal:condition="not:data/isPending" tal:content="datetime:data/getDate">DATE</td>
+					<td tal:condition="data/isPending">
+						<span tal:condition="data/offerIsSend" i18n:translate="">Wird angeboten</span>
+						<span tal:condition="not:data/offerIsSend" i18n:translate="">Wurde angeboten</span>
+					</td>
 					<td tal:condition="not:data/isPending">
 						<a class="linkbutton" tal:condition="data/isWar" href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al=${data/getId}&sstr=${THIS/getSessionString}">Frieden vorschlagen</a>
 						<tal:block tal:condition="not:data/isWar">

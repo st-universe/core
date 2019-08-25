@@ -57,10 +57,6 @@ class NotesData extends BaseTable {
 		return decodeString($this->getText(),FALSE);
 	}
 
-	public function getDateFormatted() {
-		return parseDateTime($this->getDate());
-	}
-
 	public function forceOwnedByCurrentUser() {
 		if ($this->getUserId() != currentUser()->getId()) {
 			throw new AccessViolation;

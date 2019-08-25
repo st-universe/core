@@ -47,11 +47,6 @@ class SystemNewsData
         return $this->data['refs'];
     }
 
-    function getDateDisplay()
-    {
-        return date("d.m.Y", (int) $this->getDate());
-    }
-
     private $links = null;
 
     function getLinks()
