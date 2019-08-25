@@ -46,9 +46,6 @@ final class CommController extends GameController
         $this->addCallBack("B_WRITE_PM", "addPM", true);
         $this->addCallBack("B_EDIT_KN", "editKNPosting");
         $this->addCallBack("B_DEL_KN", "delKNPosting", true);
-        $this->addCallBack("B_MOVE_PM", "movePMToCategory");
-        $this->addCallBack("B_DELETE_PMS", "deleteMarkedPMs");
-        $this->addCallBack("B_DELETE_ALL_PMS", "deleteAllPMs", true);
         $this->addCallBack("B_CREATE_PLOT", "createRPGPlot");
         $this->addCallBack("B_EDIT_PLOT", "editRPGPlot");
         $this->addCallBack("B_ADD_PLOTMEMBER", "addPlotMember");
@@ -64,49 +61,6 @@ final class CommController extends GameController
     public function getSelectedRecipient()
     {
         return ResourceCache()->getObject("user", request::getIntFatal('recipient'));
-    }
-
-    function deleteMarkedPMs()
-    {
-        $msg = request::indArray('deleted');
-        foreach ($msg as $key => $val) {
-            $pm = PM::getPMById($val);
-            if (!$pm || !$pm->isOwnPM()) {
-                continue;
-            }
-            $pm->deleteFromDatabase();
-        }
-        $this->addInformation("Die Nachrichten wurden gelöscht");
-    }
-
-    function deleteAllPMs()
-    {
-        $cat = PMCategory::getById(request::getIntFatal('pmcat'));
-        if (!$cat || !$cat->isOwnCategory()) {
-            return;
-        }
-        $cat->truncate();
-        $this->addInformation("Der Ordner wurden geleert");
-    }
-
-    function movePMToCategory()
-    {
-        if ($this->getPMCategory()->isPMOutDir()) {
-            return;
-        }
-        $pm = PM::getPMById(request::postIntFatal('move_pm'));
-        $cat = PMCategory::getById(request::postIntFatal('movecat_' . $pm->getId()));
-        if (!$cat || !$cat->isOwnCategory()) {
-            $this->addInformation("Dieser Ordner existiert nicht");
-            return;
-        }
-        if (!$pm || !$pm->isOwnPM()) {
-            $this->addInformation("Diese Nachricht existiert nicht");
-            return;
-        }
-        $pm->setCategoryId($cat->getId());
-        $pm->save();
-        $this->addInformation("Die Nachricht wurde verscheben");
     }
 
     function addKNPosting()

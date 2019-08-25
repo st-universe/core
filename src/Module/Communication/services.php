@@ -15,6 +15,9 @@ use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequest;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequestInterface;
 use Stu\Module\Communication\Action\DeleteAllContacts\DeleteAllContacts;
 use Stu\Module\Communication\Action\DeleteAllIgnores\DeleteAllIgnores;
+use Stu\Module\Communication\Action\DeleteAllPms\DeleteAllPms;
+use Stu\Module\Communication\Action\DeleteAllPms\DeleteAllPmsRequest;
+use Stu\Module\Communication\Action\DeleteAllPms\DeleteAllPmsRequestInterface;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContacts;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequest;
 use Stu\Module\Communication\Action\DeleteContacts\DeleteContactsRequestInterface;
@@ -24,12 +27,18 @@ use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequestInterface;
 use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategory;
 use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategoryRequest;
 use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategoryRequestInterface;
+use Stu\Module\Communication\Action\DeletePms\DeletePms;
+use Stu\Module\Communication\Action\DeletePms\DeletePmsRequest;
+use Stu\Module\Communication\Action\DeletePms\DeletePmsRequestInterface;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategory;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequest;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequestInterface;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUser;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequest;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequestInterface;
+use Stu\Module\Communication\Action\MovePm\MovePm;
+use Stu\Module\Communication\Action\MovePm\MovePmRequest;
+use Stu\Module\Communication\Action\MovePm\MovePmRequestInterface;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMark;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequest;
 use Stu\Module\Communication\Action\SetKnMark\SetKnMarkRequestInterface;
@@ -111,6 +120,9 @@ return [
     AddPmCategoryRequestInterface::class => autowire(AddPmCategoryRequest::class),
     EditPmCategoryRequestInterface::class => autowire(EditPmCategoryRequest::class),
     DeletePmCategoryRequestInterface::class => autowire(DeletePmCategoryRequest::class),
+    DeletePmsRequestInterface::class => autowire(DeletePmsRequest::class),
+    DeleteAllPmsRequestInterface::class => autowire(DeleteAllPmsRequest::class),
+    MovePmRequestInterface::class => autowire(MovePmRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -128,6 +140,9 @@ return [
                 AddPmCategory::ACTION_IDENTIFIER => autowire(AddPmCategory::class),
                 EditPmCategory::ACTION_IDENTIFIER => autowire(EditPmCategory::class),
                 DeletePmCategory::ACTION_IDENTIFIER => autowire(DeletePmCategory::class),
+                DeletePms::ACTION_IDENTIFIER => autowire(DeletePms::class),
+                DeleteAllPms::ACTION_IDENTIFIER => autowire(DeleteAllPms::class),
+                MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),

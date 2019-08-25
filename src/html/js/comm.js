@@ -30,6 +30,7 @@ function deleteAllMarkedPMs() {
 }
 
 function deleteMarkedPMs() {
+	$('deletion_mark').value = nodelistToString(document.getElementById('pmlist').elements['deleted[]']);
 	$('formaction').name = 'B_DELETE_PMS';
 	document.forms.pmlist.submit();
 }

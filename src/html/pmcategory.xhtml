@@ -5,6 +5,7 @@
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="comm.php" method="post" name="pmlist" id="pmlist">
 			<stu:hidden name="move_pm" value="0" />
+			<stu:hidden name="deletion_mark" value="" />
 			<div style="float: left; width: 75%;">
 				<metal:macro metal:use-macro="html/commmacros.xhtml/pmnavigation" />
 				<br />
