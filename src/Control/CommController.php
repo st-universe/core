@@ -2,17 +2,10 @@
 
 namespace Stu\Control;
 
-use Contactlist;
-use KnComment;
-use KNPosting;
-use KNPostingData;
-use ObjectNotFoundException;
 use PM;
-use PMData;
 use request;
 use RPGPlot;
 use RPGPlotData;
-use RPGPlotMember;
 use RPGPlotMemberData;
 use Stu\Lib\SessionInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -36,8 +29,6 @@ final class CommController extends GameController
         );
         $this->addNavigationPart(new Tuple("comm.php", "Kommunikationsnetzwerk"));
 
-        $this->addCallBack("B_EDIT_KN", "editKNPosting");
-        $this->addCallBack("B_DEL_KN", "delKNPosting", true);
         $this->addCallBack("B_CREATE_PLOT", "createRPGPlot");
         $this->addCallBack("B_EDIT_PLOT", "editRPGPlot");
         $this->addCallBack("B_ADD_PLOTMEMBER", "addPlotMember");
@@ -45,68 +36,6 @@ final class CommController extends GameController
         $this->addCallBack("B_END_PLOT", "endPlot", true);
 
         $this->addView("SHOW_NOOP", "showNoop");
-    }
-
-    function editKNPosting()
-    {
-        $this->currentposting = new KNPosting(request::postIntFatal('knid'));
-        $title = request::postString('title');
-        $text = request::postString('text');
-        $plotid = request::postInt('plotid');
-        if ($plotid > 0) {
-            $plot = RPGPlot::getById($plotid);
-            if ($plot && RPGPlotMember::mayWriteStory($plot->getId(), currentUser()->getId())) {
-                $this->getKNPosting()->setPlotId($plot->getId());
-                $this->getKNPosting()->setTitle($plot->getTitleDecoded());
-            }
-        } else {
-            if ($this->getKNPosting()->hasPlot()) {
-                $this->getKNPosting()->setPlotId(0);
-            }
-            $this->getKNPosting()->setTitle(tidyString($title));
-        }
-        if ($this->getKNPosting()->getUserId() != currentUser()->getId()) {
-            new ObjectNotFoundException();
-        }
-        if (!$this->getKNPosting()->isEditAble()) {
-            $this->addInformation("Dieser Beitrag kann nicht editiert werden");
-            return;
-        }
-        $this->getKNPosting()->setText(strip_tags(tidyString($text)));
-        $this->getKNPosting()->setEditDate(time());
-        if (strlen($text) < 10) {
-            $this->addInformation("Der Text ist zu kurz");
-            return;
-        }
-        $this->getKNPosting()->save();
-        $this->addInformation("Der Beitrag wurde editiert");
-    }
-
-    /**
-     */
-    protected function delKNPosting()
-    {
-        $this->currentposting = new KNPosting(request::getIntFatal('knid'));
-        if ($this->getKNPosting()->getUserId() != currentUser()->getId()) {
-            new ObjectNotFoundException();
-        }
-        if (!$this->getKNPosting()->isEditAble()) {
-            $this->addInformation(_("Dieser Beitrag kann nicht gelöscht werden"));
-            return;
-        }
-        KnComment::truncate('WHERE post_id=' . $this->getKNPosting()->getId());
-        $this->getKNPosting()->deleteFromDatabase();
-        $this->addInformation(_("Der Beitrag wurde gelöscht"));
-    }
-
-    private $currentposting = null;
-
-    function getKNPosting()
-    {
-        if ($this->currentposting === null) {
-            $this->currentposting = new KNPostingData();
-        }
-        return $this->currentposting;
     }
 
     private $rpgplot = null;

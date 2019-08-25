@@ -4,7 +4,7 @@
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="comm.php" method="post">
-			<input type="hidden" name="WRITE_KN" value="1" />
+			<input type="hidden" name="EDIT_KN" value="1" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<input type="hidden" name="knid" value="runtime" tal:attributes="value POST/getId" />
 			<table class="tcal">

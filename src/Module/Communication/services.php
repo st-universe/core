@@ -30,6 +30,9 @@ use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequestInterface;
 use Stu\Module\Communication\Action\DeleteKnComment\DeleteKnComment;
 use Stu\Module\Communication\Action\DeleteKnComment\DeleteKnCommentRequest;
 use Stu\Module\Communication\Action\DeleteKnComment\DeleteKnCommentRequestInterface;
+use Stu\Module\Communication\Action\DeleteKnPost\DeleteKnPost;
+use Stu\Module\Communication\Action\DeleteKnPost\DeleteKnPostRequest;
+use Stu\Module\Communication\Action\DeleteKnPost\DeleteKnPostRequestInterface;
 use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategory;
 use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategoryRequest;
 use Stu\Module\Communication\Action\DeletePmCategory\DeletePmCategoryRequestInterface;
@@ -39,6 +42,9 @@ use Stu\Module\Communication\Action\DeletePms\DeletePmsRequestInterface;
 use Stu\Module\Communication\Action\EditContactComment\EditContactComment;
 use Stu\Module\Communication\Action\EditContactComment\EditContactCommentRequest;
 use Stu\Module\Communication\Action\EditContactComment\EditContactCommentRequestInterface;
+use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
+use Stu\Module\Communication\Action\EditKnPost\EditKnPostRequest;
+use Stu\Module\Communication\Action\EditKnPost\EditKnPostRequestInterface;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategory;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequest;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequestInterface;
@@ -143,6 +149,8 @@ return [
     PostKnCommentRequestInterface::class => autowire(PostKnCommentRequest::class),
     DeleteKnCommentRequestInterface::class => autowire(DeleteKnCommentRequest::class),
     EditContactCommentRequestInterface::class => autowire(EditContactCommentRequest::class),
+    EditKnPostRequestInterface::class => autowire(EditKnPostRequest::class),
+    DeleteKnPostRequestInterface::class => autowire(DeleteKnPostRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -168,6 +176,8 @@ return [
                 PostKnComment::ACTION_IDENTIFIER => autowire(PostKnComment::class),
                 DeleteKnComment::ACTION_IDENTIFIER => autowire(DeleteKnComment::class),
                 EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
+                EditKnPost::ACTION_IDENTIFIER => autowire(EditKnPost::class),
+                DeleteKnPost::ACTION_IDENTIFIER => autowire(DeleteKnPost::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),
