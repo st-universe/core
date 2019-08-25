@@ -32,7 +32,7 @@ final class EditPmCategory implements ActionControllerInterface
         }
 
         $cat = new PMCategory($this->editPmCategoryRequest->getCategoryId());
-        if (!$cat->isOwnCategory()) {
+        if ($cat->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

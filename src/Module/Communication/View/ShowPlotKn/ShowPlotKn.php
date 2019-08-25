@@ -82,7 +82,7 @@ final class ShowPlotKn implements ViewControllerInterface
         );
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('KN_OFFSET', $mark);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree());
+        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($game->getUser()->getId()));
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }
 }

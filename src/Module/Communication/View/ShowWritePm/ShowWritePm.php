@@ -60,6 +60,6 @@ final class ShowWritePm implements ViewControllerInterface
         $game->setTemplateVar('REPLY', $reply);
         $game->setTemplateVar('CONTACT_LIST', Contactlist::getList($userId));
         $game->setTemplateVar('CORRESPONDENCE', $correspondence);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree());
+        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($userId));
     }
 }

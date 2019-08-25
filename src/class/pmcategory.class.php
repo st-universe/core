@@ -92,10 +92,6 @@ class PMCategoryData extends BaseTable {
 		$this->setSort($sort+1);
 	}
 
-	function isOwnCategory() {
-		return $this->getUserId() == currentUser()->getId();
-	}
-
 	function isPMOutDir() {
 		return $this->getSpecial() == PM_SPECIAL_PMOUT;
 	}
@@ -137,19 +133,19 @@ class PMCategory extends PMCategoryData {
 		parent::__construct($result);
 	}
 
-	static function getCategoryTree() {
+	static function getCategoryTree(int $userId) {
 		$ret = array();
-		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_MAIN,currentUser()->getId());
+		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $userId);
 		$ret[$cat->getId()] = $cat;
-		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_SHIP,currentUser()->getId());
+		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_SHIP, $userId);
 		$ret[$cat->getId()] = $cat;
-		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_COLONY,currentUser()->getId());
+		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_COLONY, $userId);
 		$ret[$cat->getId()] = $cat;
-		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_TRADE,currentUser()->getId());
+		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_TRADE, $userId);
 		$ret[$cat->getId()] = $cat;
-		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_PMOUT,currentUser()->getId());
+		$cat = self::getOrGenSpecialCategory(PM_SPECIAL_PMOUT, $userId);
 		$ret[$cat->getId()] = $cat;
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE user_id=".currentUser()->getId()." AND special=0 ORDER BY sort ASC");
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE user_id=".$userId." AND special=0 ORDER BY sort ASC");
 		while($data = mysqli_fetch_assoc($result)) {
 			$ret[$data['id']] = new PMCategoryData($data);
 		}
@@ -157,12 +153,12 @@ class PMCategory extends PMCategoryData {
 		return $ret;
 	}
 
-	static function getNavletCategories() {
+	static function getNavletCategories(int $userId) {
 		$ret = array();
-		$ret[PM_SPECIAL_MAIN] = self::getOrGenSpecialCategory(PM_SPECIAL_MAIN,currentUser()->getId());
-		$ret[PM_SPECIAL_SHIP] = self::getOrGenSpecialCategory(PM_SPECIAL_SHIP,currentUser()->getId());
-		$ret[PM_SPECIAL_COLONY] = self::getOrGenSpecialCategory(PM_SPECIAL_COLONY,currentUser()->getId());
-		$ret[PM_SPECIAL_TRADE] = self::getOrGenSpecialCategory(PM_SPECIAL_TRADE,currentUser()->getId());
+		$ret[PM_SPECIAL_MAIN] = self::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $userId);
+		$ret[PM_SPECIAL_SHIP] = self::getOrGenSpecialCategory(PM_SPECIAL_SHIP, $userId);
+		$ret[PM_SPECIAL_COLONY] = self::getOrGenSpecialCategory(PM_SPECIAL_COLONY, $userId);
+		$ret[PM_SPECIAL_TRADE] = self::getOrGenSpecialCategory(PM_SPECIAL_TRADE, $userId);
 		return $ret;
 	}
 

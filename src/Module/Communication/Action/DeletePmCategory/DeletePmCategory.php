@@ -23,7 +23,11 @@ final class DeletePmCategory implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $cat = new PMCategory($this->deletePmCategoryRequest->getCategoryId());
-        if (!$cat || !$cat->isOwnCategory() || !$cat->isDeleteAble()) {
+        if (
+            !$cat ||
+            $cat->getUserId() != $game->getUser()->getId() ||
+            !$cat->isDeleteAble()
+        ) {
             return;
         }
         $cat->truncate();

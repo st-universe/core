@@ -24,7 +24,7 @@ final class ShowContactModeSwitch implements ViewControllerInterface
     {
         $contact = new Contactlist($this->showContactModeSwitchRequest->getContactId());
 
-        if (!$contact->isOwnContact()) {
+        if ($contact->getUserId() != $game->getUser()->getId()) {
             return;
         }
         $game->setPageTitle(_('Status'));

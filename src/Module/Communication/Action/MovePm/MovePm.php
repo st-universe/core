@@ -32,7 +32,7 @@ final class MovePm implements ActionControllerInterface
         $destination = new PMCategory($this->movePmRequest->getDestinationCategoryId());
         $pm = new PM($this->movePmRequest->getPmId());
 
-        if (!$destination->isOwnCategory()) {
+        if ($destination->getUserId() != $game->getUser()->getId()) {
             $game->addInformation(_('Dieser Ordner existiert nicht'));
             return;
         }

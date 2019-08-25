@@ -125,10 +125,6 @@ class ContactlistData extends BaseTable {
 		}
 		return $this->user;
 	}
-
-	function isOwnContact() {
-		return currentUser()->getId() == $this->getUserId();
-	}
 }
 class Contactlist extends ContactlistData {
 

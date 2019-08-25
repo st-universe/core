@@ -39,5 +39,6 @@ final class ShowKnPlot implements ViewControllerInterface
         );
 
         $game->setTemplateVar('PLOT', $plot);
+        $game->setTemplateVar('MAY_EDIT', $plot->getUserId() == $game->getUser()->getId());
     }
 }

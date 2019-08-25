@@ -129,15 +129,6 @@ class RPGPlotData extends BaseTable {
 		return $this->members;
 	}
 
-	function ownedByCurrentUser() {
-		return currentUser()->getId() == $this->getUserId();
-	}
-
-	function mayEdit() {
-		// may be usefull for privileges
-		return $this->ownedByCurrentUser();
-	}
-
 	/**
 	 */
 	public function deleteOwner() { #{{{

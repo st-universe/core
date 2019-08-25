@@ -24,7 +24,7 @@ final class DeleteContacts implements ActionControllerInterface
     {
         foreach ($this->deleteContactsRequest->getContactIds() as $key => $val) {
             $contact = Contactlist::getById($val);
-            if (!$contact || !$contact->isOwnContact()) {
+            if (!$contact || $contact->getUserId() != $game->getUser()->getId()) {
                 continue;
             }
             $contact->deleteFromDatabase();

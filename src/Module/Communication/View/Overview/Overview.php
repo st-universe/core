@@ -83,7 +83,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
         $game->setTemplateVar('USER_KN_MARK', $userKnMark);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree());
+        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($game->getUser()->getId()));
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }
 }

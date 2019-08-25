@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\View\ShowNote;
 
+use AccessViolation;
 use Notes;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -25,7 +26,9 @@ final class ShowNote implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $note = new Notes($this->showNoteRequest->getNoteId());
-        $note->forceOwnedByCurrentUser();
+        if ($note->getUserId() != $game->getUser()->getId()) {
+            throw new AccessViolation();
+        }
 
         $game->setPageTitle("Notiz: " . $note->getTitleDecoded());
         $game->addNavigationPart(

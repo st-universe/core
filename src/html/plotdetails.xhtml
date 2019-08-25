@@ -11,7 +11,7 @@
 				<table class="tcal">
 					<tr>
 						<th>Beschreibung
-							<tal:block tal:condition="PLOT/mayEdit">(<a href="?SHOW_EDIT_PLOT=1&plotid=${PLOT/getId}">Bearbeiten</a>)</tal:block>
+							<tal:block tal:condition="MAY_EDIT">(<a href="?SHOW_EDIT_PLOT=1&plotid=${PLOT/getId}">Bearbeiten</a>)</tal:block>
 						</th>
 					</tr>
 					<tr>
@@ -19,19 +19,19 @@
 					</tr>
 				</table>
 				<br />
-				<table tal:condition="PLOT/ownedByCurrentUser" class="tcal">
+				<table class="tcal">
 					<tr>
 						<th>Status</th>
 					</tr>
 					<tr>
 						<td>
 							<span tal:condition="PLOT/isActive">Plot läuft seit ${PLOT/getStartDateDisplay}<br /><br />
-								<input type="submit" value="Plot beenden" name="B_END_PLOT" /></span>
+								<input tal:condition="MAY_EDIT" type="submit" value="Plot beenden" name="B_END_PLOT" /></span>
 							<span tal:condition="not:PLOT/isActive">Plot beendet seit ${PLOT/getEndDateDisplay}</span>
 						</td>
 					</tr>
 				</table>
-				<br tal:condition="PLOT/ownedByCurrentUser" />
+				<br />
 				<table class="tcal">
 					<tr>
 						<th colspan="2">Schreiber</th>
@@ -42,7 +42,7 @@
 					</tr>
 					<tr tal:attributes="class string:row${repeat/members/odd}" tal:repeat="members PLOT/getMembers">
 						<td>
-							<tal:block tal:condition="PLOT/ownedByCurrentUser">
+							<tal:block tal:condition="MAY_EDIT">
 							<a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&B_DEL_PLOTMEMBER=1&memid=${members/user/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('rmm${members/user/getId}','buttons/x2')" onmouseout="cp('rmm${members/user/getId}','buttons/x1')">
 									<img src="${GFX}/buttons/x1.gif" title="Schreiber entfernen" name="rmm${members/user/getId}" />
 								</a>
@@ -53,7 +53,7 @@
 						<td tal:content="members/count">COUNT</td>
 					</tr>
 					<tal:block tal:condition="PLOT/isActive">
-						<tr tal:condition="PLOT/ownedByCurrentUser">
+						<tr tal:condition="MAY_EDIT">
 							<td colspan="2">
 								Neuer Schreiber <input type="text" name="memid" style="width: 50px;" /> <input type="submit" value="Hinzufügen" name="B_ADD_PLOTMEMBER" />
 							</td>

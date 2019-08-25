@@ -24,7 +24,7 @@ final class ShowEditPlot implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $plot = new RPGPlot($this->showEditPlotRequest->getPlotId());
-        if (!$plot->ownedByCurrentUser()) {
+        if ($plot->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

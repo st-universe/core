@@ -25,7 +25,7 @@ final class EditKnPlot implements ActionControllerInterface
     {
         $plot = new RPGPlot($this->editKnPlotRequest->getPlotId());
 
-        if (!$plot->ownedByCurrentUser()) {
+        if ($plot->getUserId() != $game->getUser()->getId()) {
             return;
         }
         $title = $this->editKnPlotRequest->getTitle();

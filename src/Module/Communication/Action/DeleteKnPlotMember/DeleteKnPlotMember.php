@@ -23,7 +23,7 @@ final class DeleteKnPlotMember implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $plot = new RPGPlot($this->deleteKnPlotMemberRequest->getPlotId());
-        if (!$plot->ownedByCurrentUser() || !$plot->isActive()) {
+        if ($plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
 

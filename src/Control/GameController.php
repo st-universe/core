@@ -200,7 +200,7 @@ abstract class GameController implements GameControllerInterface
         $tpl->setRef("USER", $user);
 
         if ($user !== null) {
-            $this->setTemplateVar('PM_NAVLET', PMCategory::getNavletCategories());
+            $this->setTemplateVar('PM_NAVLET', PMCategory::getNavletCategories($user->getId()));
         }
 
         $tpl->parse();

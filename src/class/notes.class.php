@@ -56,19 +56,13 @@ class NotesData extends BaseTable {
 	public function getTextDecodedRaw() {
 		return decodeString($this->getText(),FALSE);
 	}
-
-	public function forceOwnedByCurrentUser() {
-		if ($this->getUserId() != currentUser()->getId()) {
-			throw new AccessViolation;
-		}
-	}
 }
 class Notes extends NotesData {
 
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);
 		if ($result == 0) {
-			new ObjectNotFoundException($crewId);
+			new ObjectNotFoundException($id);
 		}
 		return parent::__construct($result);
 	}

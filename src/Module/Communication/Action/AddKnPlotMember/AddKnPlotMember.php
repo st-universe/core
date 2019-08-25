@@ -25,7 +25,7 @@ final class AddKnPlotMember implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $plot = new RPGPlot($this->addKnPlotMemberRequest->getPlotId());
-        if (!$plot->ownedByCurrentUser() || !$plot->isActive()) {
+        if ($plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
         $recipient = User::getUserById($this->addKnPlotMemberRequest->getRecipientId());

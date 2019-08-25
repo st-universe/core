@@ -23,7 +23,7 @@ final class DeleteAllPms implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $cat = PMCategory::getById($this->deleteAllPmsRequest->getCategoryId());
-        if (!$cat || !$cat->isOwnCategory()) {
+        if (!$cat || $cat->getUserId() != $game->getUser()->getId()) {
             return;
         }
         $cat->truncate();

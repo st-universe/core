@@ -28,7 +28,7 @@ final class SortPmCategories implements ActionControllerInterface
 
         foreach ($this->sortPmCategoriesRequest->getCategoryIds() as $key => $value) {
             $cat = new PMCategory($value);
-            if (!$cat->isOwnCategory()) {
+            if ($cat->getUserId() != $game->getUser()->getId()) {
                 throw new AccessViolation();
             }
             $cat->setSort(intval($key));
