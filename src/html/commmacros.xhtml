@@ -227,7 +227,7 @@
 		<form id="quickpm">
 			<table class="tcal" id="quickpm_compose">
 				<tr>
-					<td><span i18n:translate="">Empfänger:</span> <span tal:replace="structure bbcode:THIS/getSelectedRecipient/getName"></span></td>
+					<td><span i18n:translate="">Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span></td>
 				</tr>
 				<tr>
 					<th>Text</th>
@@ -239,7 +239,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="button" class="button" onclick="sendQuickPM(${THIS/getSelectedRecipient/getId})" value="Absenden" />
+						<input type="button" class="button" onclick="sendQuickPM(${RECIPIENT/getId})" value="Absenden" />
 					</td>
 				</tr>
 			</table>

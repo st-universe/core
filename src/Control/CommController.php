@@ -9,7 +9,6 @@ use KNPosting;
 use KNPostingData;
 use ObjectNotFoundException;
 use PM;
-use PMCategory;
 use PMData;
 use request;
 use RPGPlot;
@@ -50,11 +49,6 @@ final class CommController extends GameController
         $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
         $this->addView("SHOW_NOOP", "showNoop");
-    }
-
-    public function getSelectedRecipient()
-    {
-        return ResourceCache()->getObject("user", request::getIntFatal('recipient'));
     }
 
     function editKNPosting()
