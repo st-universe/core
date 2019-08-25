@@ -109,8 +109,8 @@ function postComment(postingId) {
 	comment = Form.Element.serialize('comment');
 	ajax_update('kncomments',"comm.php?B_POST_COMMENT=1&posting="+postingId+"&"+comment);
 }
-function deletePostingComment(commentId) {
-	ajax_update('kncomments',"comm.php?B_DELETE_COMMENT=1&comment="+commentId);
+function deletePostingComment(postingId, commentId) {
+	ajax_update('kncomments',"comm.php?B_DELETE_COMMENT=1&posting="+postingId+"&comment="+commentId);
 }
 function updateCategoryOrder() {
 	ajax_update(false,'comm.php?B_PMCATEGORY_SORT=1&catlist='+Sortable.sequence('catlist').join(','));

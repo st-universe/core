@@ -100,7 +100,7 @@ class KnCommentData extends BaseTable {
 	 */
 	public function getPosting() { #{{{
 		if ($this->posting === NULL) {
-			$this->posting = new KnPosting($this->getPostId());
+			$this->posting = new KNPosting($this->getPostId());
 		}
 		return $this->posting;
 	} # }}}

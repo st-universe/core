@@ -285,7 +285,7 @@
 					</th>
 					<th style="width: 120px; text-align: center;" tal:content="datetime:data/getDate">DATE</th>
 					<th style="width: 20px">
-						<stu:jsimagelink image="x" onclick="deletePostingComment(${data/getId})" tal:condition="POST/currentUserMayDeleteComment" />
+						<stu:jsimagelink image="x" onclick="deletePostingComment(${data/getPostId}, ${data/getId})" tal:condition="POST/currentUserMayDeleteComment" />
 					</th>
 				</tr>
 				<tr>

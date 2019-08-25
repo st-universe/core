@@ -4,7 +4,6 @@ namespace Stu\Control;
 
 use Contactlist;
 use KnComment;
-use KnCommentData;
 use KNPosting;
 use KNPostingData;
 use ObjectNotFoundException;
@@ -44,9 +43,6 @@ final class CommController extends GameController
         $this->addCallBack("B_ADD_PLOTMEMBER", "addPlotMember");
         $this->addCallBack("B_DEL_PLOTMEMBER", "delPlotMember", true);
         $this->addCallBack("B_END_PLOT", "endPlot", true);
-        $this->addCallBack("B_POST_COMMENT", "postComment");
-        $this->addCallBack("B_DELETE_COMMENT", "deleteComment");
-        $this->addCallBack('B_EDIT_CONTACT_COMMENT', 'editContactComment');
 
         $this->addView("SHOW_NOOP", "showNoop");
     }
@@ -113,16 +109,6 @@ final class CommController extends GameController
         return $this->currentposting;
     }
 
-    private $currentpm = null;
-
-    function getPM()
-    {
-        if ($this->currentpm === null) {
-            $this->currentpm = new PMData();
-        }
-        return $this->currentpm;
-    }
-
     private $rpgplot = null;
 
     function getRPGPlot()
@@ -132,24 +118,6 @@ final class CommController extends GameController
         }
         return $this->rpgplot;
     }
-
-
-    /**
-     */
-    protected function editContactComment()
-    {
-        $contactid = request::postIntFatal('edit_contact');
-        $contact = Contactlist::getById($contactid);
-        if (!$contact || !$contact->isOwnContact()) {
-            return;
-        }
-        $comment = request::postString('comment_' . $contact->getId());
-        $value = tidyString(strip_tags($comment));
-        $contact->setComment($value);
-        $contact->save();
-        $this->addInformation(_("Kommentar wurde editiert"));
-    }
-
 
     function createRPGPlot()
     {
@@ -254,35 +222,5 @@ final class CommController extends GameController
         $this->addInformation("Der Plot wurde editiert");
         request::delVar("SHOW_EDIT_PLOT");
         $this->setView("SHOW_PLOT");
-    }
-
-    /**
-     */
-    protected function postComment()
-    {
-        $this->setView("SHOW_KN_COMMENTS");
-        $this->currentposting = new KNPosting(request::getIntFatal('posting'));
-        $comment = strip_tags(request::getString('comment'));
-        if (strlen($comment) < 3) {
-            return;
-        }
-        $obj = new KnCommentData;
-        $obj->setUserId(currentUser()->getId());
-        $obj->setDate(time());
-        $obj->setPostId($this->getKNPosting()->getId());
-        $obj->setText(encodeString(tidyString($comment)));
-        $obj->save();
-    }
-
-    /**
-     */
-    protected function deleteComment()
-    {
-        $this->setView("SHOW_KN_COMMENTS");
-        $obj = new KnComment(request::getIntFatal('comment'));
-        if ($obj->getPosting()->currentUserMayDeleteComment()) {
-            $obj->deleteFromDatabase();
-        }
-        $this->currentposting = $obj->getPosting();
     }
 }
