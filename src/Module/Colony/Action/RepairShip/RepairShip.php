@@ -78,15 +78,15 @@ final class RepairShip implements ActionControllerInterface
         $obj = $this->colonyShipRepairRepository->prototype();
         $obj->setColonyId($colony->getId());
         $obj->setShipId($ship_id);
-        $obj->setFieldId($field->getFieldId());
+        $obj->setFieldId((int) $field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
         $ship->setState(SHIP_STATE_REPAIR);
         $ship->save();
 
         $jobs = $this->colonyShipRepairRepository->getByColonyField(
-            $colony->getId(),
-            $field->getFieldId()
+            (int) $colony->getId(),
+            (int) $field->getFieldId()
         );
 
         if (count($jobs) > 1) {
