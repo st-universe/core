@@ -85,9 +85,17 @@ abstract class GameController implements GameControllerInterface
         return $this->view;
     }
 
-    public function setView(string $view): void
+    private $viewContext = [];
+
+    public function setView(string $view, array $viewContext = []): void
     {
         request::setVar($view, 1);
+
+        $this->viewContext = $viewContext;
+    }
+
+    public function getViewContext(): array {
+        return $this->viewContext;
     }
 
     private function maintenanceView()
@@ -150,7 +158,7 @@ abstract class GameController implements GameControllerInterface
         $this->gameInformations[] = decodeString($msg);
     }
 
-    protected function addInformationMerge(&$info)
+    public function addInformationMerge($info)
     {
         $this->gameInformations = array_merge($info, $this->getInformation());
     }
@@ -165,7 +173,7 @@ abstract class GameController implements GameControllerInterface
         return $this->gameInformations;
     }
 
-    protected function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN)
+    public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN)
     {
         PM::sendPM($sender_id, $recipient_id, join('<br />', $this->getInformation()), $category_id);
     }
@@ -292,7 +300,7 @@ abstract class GameController implements GameControllerInterface
         return $this->execjs;
     }
 
-    protected function addExecuteJS($value)
+    public function addExecuteJS($value)
     {
         $this->execjs[] = $value;
     }

@@ -4,10 +4,10 @@
 		<metal:macro metal:use-macro="html/colonymacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="colony.php" method="post" name="colmanform">
-			<stu:hidden name="id" tal:attributes="value currentColony/getId" />	
-			<stu:hidden name="rump" tal:attributes="value THIS/getSelectedRump/getId" />
+			<stu:hidden name="id" tal:attributes="value COLONY/getId" />	
+			<stu:hidden name="rump" tal:attributes="value RUMP/getId" />
 			<stu:hidden name="SHOW_MODULE_SCREEN" value="1" />
-			<stu:hidden name="module_level" tal:attributes="value THIS/getSelectedRump/getModuleLevel" />
+			<stu:hidden name="module_level" tal:attributes="value RUMP/getModuleLevel" />
 			<table style="width: 100%">
 				<tr>
 					<td style="width: 70%">
@@ -21,12 +21,12 @@
 							</tr>
 							<tr>
 								<td rowspan="3" style="text-align: center; vertical-align: middle">
-									<img src="${GFX}/ships/${THIS/getSelectedRump/getId}.gif" />
+									<img src="${GFX}/ships/${RUMP/getId}.gif" />
 								</td>
-								<td tal:content="THIS/getSelectedRump/getName"></td>
-								<td tal:content="THIS/getSelectedRump/getCategory/getName">.</td>
-								<td tal:content="THIS/getSelectedRump/getRole/getName">.</td>
-								<td tal:content="THIS/getSelectedRump/getStorage">STORAGE</td>
+								<td tal:content="RUMP/getName"></td>
+								<td tal:content="RUMP/getCategory/getName">.</td>
+								<td tal:content="RUMP/getRole/getName">.</td>
+								<td tal:content="RUMP/getStorage">STORAGE</td>
 							</tr>
 							<tr>
 								<th i18n:translate="">Sensorreichweite</th>
@@ -35,10 +35,10 @@
 								<th i18n:translate="">Torpedokapazität</th>
 							</tr>
 							<tr>
-								<td tal:content="THIS/getSelectedRump/getBaseSensorRange">SENSORRANGE</td>
-								<td tal:content="THIS/getSelectedRump/getTorpedoLevel">.</td>
-								<td tal:content="THIS/getSelectedRump/getTorpedoVolleys">.</td>
-								<td tal:content="THIS/getSelectedRump/getBaseTorpedoStorage">TORPEDOSTORAGE</td>
+								<td tal:content="RUMP/getBaseSensorRange">SENSORRANGE</td>
+								<td tal:content="RUMP/getTorpedoLevel">.</td>
+								<td tal:content="RUMP/getTorpedoVolleys">.</td>
+								<td tal:content="RUMP/getBaseTorpedoStorage">TORPEDOSTORAGE</td>
 							</tr>
 						</table>
 					</td>
@@ -48,9 +48,9 @@
 							<div class="divbody">
 								<div style="width: 100%; text-align: center">
 									<div id="crewdisplay">
-										<div id="crew100p" i18n:translate="">Benötigte Crew: <span i18n:name="crewcount" tal:replace="THIS/getSelectedRump/getCrew100P" />(100%)</div>
-										<div id="crew110p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="THIS/getSelectedRump/getCrew110P" />(110%)</div>
-										<div id="crew120p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="THIS/getSelectedRump/getCrew120P" />(120%)</div>
+										<div id="crew100p" i18n:translate="">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew100P" />(100%)</div>
+										<div id="crew110p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew110P" />(110%)</div>
+										<div id="crew120p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew120P" />(120%)</div>
 										<div id="crewerr" style="display: none;" i18n:translate="">Crewbedarf &gt; 120% - Nicht baubar</div>
 									</div>
 								</div>
@@ -95,16 +95,16 @@
 						<th i18n:translate="">Zusammenfassung</th>
 					</tr>
 					<tr>
-						<td tal:define="rump THIS/getSelectedRump">
-							<tal:block tal:repeat="slot THIS/getModuleSlots">
-								<tal:block tal:condition="not:THIS/getSelectedBuildplan">
+						<td tal:define="rump RUMP">
+							<tal:block tal:repeat="slot MODULE_SLOTS">
+								<tal:block tal:condition="not:PLAN">
 									<div id="module_type_${slot}">
 									</div>
 								</tal:block>
-								<tal:block tal:condition="THIS/getSelectedBuildplan" >
-									<div id="module_type_${slot}" tal:condition="not:THIS/getSelectedBuildplan/getModule/${slot}" style="display: none;">
+								<tal:block tal:condition="PLAN" >
+									<div id="module_type_${slot}" tal:condition="not:PLAN/getModule/${slot}" style="display: none;">
 									</div>
-									<div id="module_type_${slot}" tal:condition="THIS/getSelectedBuildplan/getModule/${slot}" tal:define="module THIS/getSelectedBuildplan/getModule/${slot}">
+									<div id="module_type_${slot}" tal:condition="PLAN/getModule/${slot}" tal:define="module PLAN/getModule/${slot}">
 										<metal:macro metal:use-macro="moduleselector_stats_type_${slot}"/>
 										<script type="text/Javascript" tal:condition="module">
 											crew_type.set(${slot},${module/getModule/getLevel});
@@ -116,10 +116,10 @@
 					</tr>
 				</table>
 			</div>
-			<tal:block tal:repeat="selector THIS/getModuleSelectors">
+			<tal:block tal:repeat="selector MODULE_SELECTORS">
 				<div id="module_select_tab_${selector/getModuleType}" style="display: none;" tal:content="structure selector/render">CONTENT</div>
 			</tal:block>
-			<script type="text/javascript" defer="defer" tal:condition="THIS/getSelectedBuildplan">
+			<script type="text/javascript" defer="defer" tal:condition="PLAN">
 				enableShipBuildButton();
 			</script>
 		</form>

@@ -3,8 +3,8 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/colonymacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-        <div id="colonymenu">
-            <metal:macro metal:use-macro="html/colonymacros.xhtml/${THIS/getSelectedColonyMenu}" />
+        <div id="colonymenu" tal:define="menu PRE_SELECTED_COLONY_MENU|SELECTED_COLONY_MENU">
+            <metal:macro metal:use-macro="html/colonymacros.xhtml/${menu}" />
         </div>
 	</metal:macro>
 </metal:macro>

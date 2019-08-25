@@ -11,7 +11,6 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Control\ColonyController;
 use Stu\Control\ShipController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
@@ -62,7 +61,6 @@ $builder->addDefinitions([
 ]);
 
 $builder->addDefinitions([
-    ColonyController::class => autowire(ColonyController::class),
     ShipController::class => autowire(ShipController::class),
 ]);
 

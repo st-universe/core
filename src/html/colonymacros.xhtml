@@ -13,20 +13,20 @@
 		</div>
 		<img src="${GFX}/planets/${colony/getColonyClass}.gif" tal:condition="not:colony/getPlanetType/hasRing"/>
 	</metal:macro>
-	<metal:macro metal:define-macro="hiddencolonyid" phptal:cache="1m per THIS/getColony/getId">
-		<input type="hidden" name="id" tal:attributes="value THIS/getColony/getId" />
+	<metal:macro metal:define-macro="hiddencolonyid" phptal:cache="1m per COLONY/getId">
+		<input type="hidden" name="id" tal:attributes="value COLONY/getId" />
 	</metal:macro>
 	<metal:block metal:define-macro="initial_js">
 		<script language="Javascript">
 			var sstr = '${THIS/getSessionString}';
-			var colonyid = ${THIS/getColony/getId};
-			var scrollOffset = ${THIS/getBuildMenuScrollOffsetStandard};
+			var colonyid = ${COLONY/getId};
+			var scrollOffset = 6;
 		</script> 
 		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/colony.js"><!-- stuniverse --></script>
 	</metal:block>
 	<metal:block metal:define-macro="buildmenu">
 		<input type="hidden" name="buildmenu${menutype}_offset" id="buildmenu${menutype}_offset" tal:attributes="value scrolloffset" />
-		<div tal:content="THIS/getBuildMenu/${menutype}/getName">MENUNAME</div>
+		<div tal:content="BUILD_MENU/${menutype}/getName">MENUNAME</div>
 		<div class="arrow" onclick="buildMenuScrollUp(${menutype},${scrolloffset})" title="Hochblättern">
 			<table style="width:100%; height: 100%;">
 				<tr>
@@ -61,7 +61,7 @@
             <div metal:fill-slot="containment">
                 <table cellpading="0" cellspacing="0" style="text-align: center;">
                     <tr>
-                        <td tal:repeat="menu THIS/getBuildingMenus" class="buildmenu buildmenu${repeat/menu/key}">
+                        <td tal:repeat="menu BUILD_MENUS" class="buildmenu buildmenu${repeat/menu/key}">
                             <div id="buildmenu${repeat/menu/key}">
                                 <metal:macro metal:use-macro="html/colonymacros.xhtml/buildmenu" tal:define="menutype repeat/menu/key;scrolloffset string:0" />
                             </div>
@@ -81,27 +81,27 @@
                         <th colspan="4" i18n:translate="">Crewberechnung dieser Kolonie</th>
                     </tr>
                     <tr>
-                        <td style="width: 25%" class="darkbg"><span tal:replace="THIS/getColony/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
-                        <td style="width: 25%" class="darkbg"><span tal:replace="THIS/getColony/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
-                        <td style="width: 25%" class="darkbg"><span tal:replace="THIS/getColony/getNegativeEffectDescription">PRIMARY</span></td>
+                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
+                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
+                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY/getNegativeEffectDescription">PRIMARY</span></td>
                         <td style="width: 25%" class="darkbg" i18n="translate">Erzeugte Crew</td>
                     </tr>
                     <tr>
                         <td>
                             <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Bevölkerung" />
-                            <span tal:replace="THIS/getColony/getPositiveEffectPrimary">VALUE</span>
+                            <span tal:replace="COLONY/getPositiveEffectPrimary">VALUE</span>
                         </td>
                         <td>
                             <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Bevölkerung" />
-                            <span tal:replace="THIS/getColony/getPositiveEffectSecondary">VALUE</span>
+                            <span tal:replace="COLONY/getPositiveEffectSecondary">VALUE</span>
                         </td>
                         <td>
                             <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Bevölkerung" />
-                            <span tal:replace="THIS/getColony/getNegativeEffect">VALUE</span>
+                            <span tal:replace="COLONY/getNegativeEffect">VALUE</span>
                         </td>
                         <td>
                             <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Bevölkerung" />
-                            <span tal:replace="THIS/getColony/getCrewLimit">VALUE</span>
+                            <span tal:replace="COLONY/getCrewLimit">VALUE</span>
                         </td>
                     </tr>
                 </table>
@@ -147,7 +147,7 @@
     <metal:macro metal:define-macro="cm_academy">
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
-                <stu:hidden name="id" tal:attributes="value THIS/getColony/getId" />
+                <stu:hidden name="id" tal:attributes="value COLONY/getId" />
                 <table class="tcal">
                     <tr>
                         <td style="width: 50%;" class="colonymenu">
@@ -155,7 +155,7 @@
                                 &lt;&lt; Zurück zum Koloniemenü
                             </a>
                         </td>
-                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/12}">
+                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/12}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(12);">
                                 <span i18n:translate="">Akademie</span>
                             </a>
@@ -176,7 +176,7 @@
                     <tr>
                         <td>
                             <img src="${GFX}/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Freie Bevölkerung" />
-                            <span tal:replace="THIS/getColony/getWorkless" />
+                            <span tal:replace="COLONY/getWorkless" />
                         </td>
                         <td>
                             <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Freie Bevölkerung" />
@@ -199,7 +199,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" name="crewcount" size="2" /> / <span tal:replace="THIS/getTrainableCrewCountPerTick" />
+                            <input type="text" name="crewcount" size="2" /> / <span tal:replace="TRAINABLE_CREW_COUNT_PER_TICK" />
                             <span i18n:translate="">Crew</span>
                             <stu:submit name="B_TRAIN_CREW" value="Ausbilden" i18n:attributes="value" />
                         </td>
@@ -211,7 +211,7 @@
     <metal:macro metal:define-macro="cm_fighter_shipyard">
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
-                <stu:hidden name="id" tal:attributes="value THIS/getColony/getId" />
+                <stu:hidden name="id" tal:attributes="value COLONY/getId" />
                 <table class="tcal">
                     <tr>
                         <td style="width: 50%;" class="colonymenu">
@@ -219,7 +219,7 @@
                                 &lt;&lt; Zurück zum Koloniemenü
                             </a>
                         </td>
-                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/10}">
+                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/10}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(10);">
                                 <span i18n:translate="">Hangar</span>
                             </a>
@@ -262,7 +262,7 @@
     <metal:macro metal:define-macro="cm_torpedo_fab">
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
-                <stu:hidden name="id" tal:attributes="value THIS/getColony/getId" />
+                <stu:hidden name="id" tal:attributes="value COLONY/getId" />
                 <table class="tcal">
                     <tr>
                         <td style="width: 50%;" class="colonymenu">
@@ -270,7 +270,7 @@
                                 &lt;&lt; Zurück zum Koloniemenü
                             </a>
                         </td>
-                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/11}">
+                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/11}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(11);">
                                 <span i18n:translate="">Torpedoherstellung</span>
                             </a>
@@ -315,7 +315,7 @@
     <metal:macro metal:define-macro="cm_airfield">
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
-                <stu:hidden name="id" tal:attributes="value THIS/getColony/getId" />
+                <stu:hidden name="id" tal:attributes="value COLONY/getId" />
                 <table class="tcal">
                     <tr>
                         <td style="width: 50%;" class="colonymenu">
@@ -323,7 +323,7 @@
                                 &lt;&lt; Zurück zum Koloniemenü
                             </a>
                         </td>
-                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/6}">
+                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/6}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(6);">
                                 <span i18n:translate="">Hangar</span>
                             </a>
@@ -335,18 +335,18 @@
                     <tr>
                         <th i18n:translate="">Schiff starten</th>
                     </tr>
-                    <tr tal:repeat="data THIS/getStartableAirfieldRumps">
+                    <tr tal:repeat="data STARTABLE_SHIPS">
                         <td>
                             <input type="radio" name="startrump" value="" tal:attributes="value data/getId" />
                             <img src="${GFX}/ships/${data/getId}.gif" />
                         </td>
                         <td tal:content="data/getName" style="vertical-align: middle;">NAME</td>
                     </tr>
-                    <tr tal:condition="not:THIS/getStartableAirfieldRumps">
+                    <tr tal:condition="not:STARTABLE_SHIPS">
                         <td colspan="2" i18n:translate="" style="text-align: center;">Keine startbaren Schiffe vorhanden</td>
                     </tr>
                 </table>
-                <div tal:condition="THIS/getStartableAirfieldRumps" style="width: 100%; text-align: center">
+                <div tal:condition="STARTABLE_SHIPS" style="width: 100%; text-align: center">
                     <br />
                     <stu:submit name="B_START_AIRFIELD_SHIP" value="Schiff starten" i18n:attributes="value" />
                 </div>
@@ -355,7 +355,7 @@
                     <tr>
                         <th i18n:translate="" colspan="3">Schiff bauen</th>
                     </tr>
-                    <tr tal:repeat="data THIS/getAvailableAirfieldRumps" tal:attributes="class string:row${repeat/data/odd}">
+                    <tr tal:repeat="data BUILDABLE_SHIPS" tal:attributes="class string:row${repeat/data/odd}">
                         <td>
                             <input type="radio" name="buildrump" value="" tal:attributes="value data/getId" />
                             <img src="${GFX}/ships/${data/getId}.gif" />
@@ -372,11 +372,11 @@
                             </div>
                         </td>
                     </tr>
-                    <tr tal:condition="not:THIS/getAvailableAirfieldRumps">
+                    <tr tal:condition="not:BUILDABLE_SHIPS">
                         <td colspan="3" i18n:translate="" style="text-align: center;">Keine baubaren Rümpfe vorhanden</td>
                     </tr>
                 </table>
-                <div tal:condition="THIS/getAvailableAirfieldRumps" style="width: 100%; text-align: center">
+                <div tal:condition="BUILDABLE_SHIPS" style="width: 100%; text-align: center">
                     <br />
                     <stu:submit name="B_BUILD_AIRFIELD_RUMP" value="Schiff bauen" i18n:attributes="value" />
                 </div>
@@ -388,12 +388,12 @@
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
                 <input type="hidden" name="colmenu" value="cm_building_mgmt" />
-                <input type="hidden" name="id" tal:attributes="value currentColony/getId" />
+                <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
                 <div style="float: left; width: 300px;">
                     <div class="divhead">Gebäudewahl</div>
                     <div class="divbody">
                         <select style="width: 100%; height: 370px;" multiple="multiple" name="selfields[]">
-                            <tal:block tal:repeat="data THIS/getBuildingList">
+                            <tal:block tal:repeat="data BUILDING_LIST">
                                 <option style="padding-top: 2px; padding-left: 2px;" tal:condition="data/isActivateable" tal:attributes="value data/getFieldId" tal:content="string:${data/getBuilding/getName} (${data/getActiveShort})">NAME</option>
                             </tal:block>
                         </select>
@@ -410,13 +410,13 @@
                     <div class="divhead">Gebäudegruppen</div>
                     <div class="divbody">
                         <img src="${GFX}/buttons/e_trans2.gif" title="Energie" style="width: 10px; height: 10px;" /> <strong>Energie</strong><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_ACTIVATE_EPSRELATED_USER=1&sstr=${THIS/getSessionString}">Verbraucher aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_DEACTIVATE_EPSRELATED_USER=1&sstr=${THIS/getSessionString}">Verbraucher deaktivieren</a><br /><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_ACTIVATE_EPSRELATED_PROD=1&sstr=${THIS/getSessionString}">Produzenten aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_DEACTIVATE_EPSRELATED_PROD=1&sstr=${THIS/getSessionString}">Produzenten deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_EPSRELATED_USER=1&sstr=${THIS/getSessionString}">Verbraucher aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_EPSRELATED_USER=1&sstr=${THIS/getSessionString}">Verbraucher deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_EPSRELATED_PROD=1&sstr=${THIS/getSessionString}">Produzenten aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_EPSRELATED_PROD=1&sstr=${THIS/getSessionString}">Produzenten deaktivieren</a><br /><br />
                         <img src="${GFX}/buttons/lager.gif" title="Warenbezogen" style="width: 10px; height: 10px;" /> <strong>Warenbezogen</strong><br />
                         Ware wählen: <select name="good" style="height: 17px;">
-                        <option class="goodselect_option" tal:repeat="data THIS/getUseableGoodlist" tal:attributes="value data/getId" tal:content="data/getName" style=" background-image: url(${GFX}/goods/${data/getId}.gif);">NAME</option>
+                        <option class="goodselect_option" tal:repeat="data USEABLE_GOOD_LIST" tal:attributes="value data/getId" tal:content="data/getName" style=" background-image: url(${GFX}/goods/${data/getId}.gif);">NAME</option>
                     </select><br /><br />
                         <table class="tcal">
                             <tr>
@@ -437,10 +437,10 @@
                         </table>
                         <br />
                         <img src="${GFX}/buttons/lager.gif" title="Bevölkerungsbezogen" style="width: 10px; height: 10px;" /> <strong>Bevölkerungsbezogen</strong><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_ACTIVATE_BEVRELATED=1&sstr=${THIS/getSessionString}">Wohngebäude aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_DEACTIVATE_BEVRELATED=1&sstr=${THIS/getSessionString}">Wohngebäude deaktivieren</a><br /><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_ACTIVATE_WORKRELATED=1&sstr=${THIS/getSessionString}">Arbeitgeber aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${currentColony/getId}&B_DEACTIVATE_WORKRELATED=1&sstr=${THIS/getSessionString}">Arbeitgeber deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_BEVRELATED=1&sstr=${THIS/getSessionString}">Wohngebäude aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_BEVRELATED=1&sstr=${THIS/getSessionString}">Wohngebäude deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_WORKRELATED=1&sstr=${THIS/getSessionString}">Arbeitgeber aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_WORKRELATED=1&sstr=${THIS/getSessionString}">Arbeitgeber deaktivieren</a><br /><br />
                     </div>
                 </div>
             </div>
@@ -450,24 +450,24 @@
         <metal:macro metal:use-macro="cm_tabs" />
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
-                <input type="hidden" name="id" value="runtime" tal:attributes="value currentColony/getId" />
+                <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
                 <stu:box title="Schiffe im Orbit" i18n:attributes="title">
                     <ul id="shipselector">
-                        <metal:block tal:condition="currentColony/getFirstOrbitShip" metal:use-macro="shipselector" tal:define="data currentColony/getFirstOrbitShip" />
-                        <li tal:condition="not:currentColony/getFirstOrbitShip" style="text-align: center" i18n:translate="">Keine Schiffe im Orbit</li>
+                        <metal:block tal:condition="COLONY/getFirstOrbitShip" metal:use-macro="shipselector" tal:define="data COLONY/getFirstOrbitShip" />
+                        <li tal:condition="not:COLONY/getFirstOrbitShip" style="text-align: center" i18n:translate="">Keine Schiffe im Orbit</li>
                     </ul>
-                    <div style="width: 100%;" tal:condition="currentColony/getFirstOrbitShip">
+                    <div style="width: 100%;" tal:condition="COLONY/getFirstOrbitShip">
                         <br />
                         <a href="javascript:void(0);" onclick="showBFromWindow();" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="${GFX}/buttons/b_down1.gif" name="beamfrom" title="Von Schiff beamen" /></a>
                         <a href="javascript:void(0);" onclick="showBToWindow();" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="${GFX}/buttons/b_up1.gif" name="beamto" title="Zu Schiff beamen" /></a>
-                        <a href="javascript:void(0);" onclick="getOrbitShipList();">Liste</a> | <a href="?SHOW_ORBITAL_SHIPS=1&id=${currentColony/getId}">Management</a>
+                        <a href="javascript:void(0);" onclick="getOrbitShipList();">Liste</a> | <a href="?SHOW_ORBITAL_SHIPS=1&id=${COLONY/getId}">Management</a>
                     </div>
                 </stu:box>
                 <br />
                 <stu:box title="Standort" i18n:attributes="title" style="text-align: center">
-                    <img src="${GFX}/planets/${currentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span i18n:translate="">Planet <span i18n:name="planetname" tal:replace="currentColony/getPlanetName"/></span> (${currentColony/getPosX}|${currentColony/getPosY})
+                    <img src="${GFX}/planets/${COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span i18n:translate="">Planet <span i18n:name="planetname" tal:replace="COLONY/getPlanetName"/></span> (${COLONY/getPosX}|${COLONY/getPosY})
                     <span i18n:translate="">in Sternensystem</span>
-                    <img src="${GFX}/map/${currentColony/getSystem/getType}.gif" style="width: 15px; height: 15px;" /> ${currentColony/getSystem/getName} (${currentColony/getSystem/getCX}|${currentColony/getSystem/getCY})
+                    <img src="${GFX}/map/${COLONY/getSystem/getType}.gif" style="width: 15px; height: 15px;" /> ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
                 </stu:box>
                 <br />
                 <table class="tcal population">
@@ -477,31 +477,31 @@
                     <tr>
                         <td>
                             <span i18n:translate="">Gesamt</span><br />
-                            <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Bevölkerung" /> ${currentColony/getPopulation}
+                            <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Bevölkerung" /> ${COLONY/getPopulation}
                         </td>
                         <td>
                             <span i18n:translate="">Arbeiter</span><br />
-                            <img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" title="Arbeiter" /> ${currentColony/getWorkers}
+                            <img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" title="Arbeiter" /> ${COLONY/getWorkers}
                         </td>
                         <td>
                             <span i18n:translate="">Verfügbar</span><br />
-                            <img src="${GFX}/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Freie Bevölkerung" /> ${currentColony/getWorkless}
+                            <img src="${GFX}/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Freie Bevölkerung" /> ${COLONY/getWorkless}
                         </td>
                         <td>
                             <span i18n:translate="">Wohnraum</span><br />
-                            <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Wohnraum" /> ${currentColony/getFreeHousing} (${currentColony/getMaxBev})
+                            <img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Wohnraum" /> ${COLONY/getFreeHousing} (${COLONY/getMaxBev})
                         </td>
                         <td>
                             <span i18n:translate="">Wachstum</span><br />
-                            <img src="${GFX}/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Wachstum" /> ${currentColony/getBevGrowthSymbol}${currentColony/getImmigration}
+                            <img src="${GFX}/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Wachstum" /> ${COLONY/getBevGrowthSymbol}${COLONY/getImmigration}
                         </td>
                     </tr>
                 </table>
-                <tal:block tal:condition="THIS/hasEffects">
+                <tal:block tal:condition="EFFECTS">
                     <br />
                     <div style="white-space: normal">
                         <stu:box title="Effekte" i18n:attributes="title">
-                            <tal:block tal:repeat="data THIS/getEffects">
+                            <tal:block tal:repeat="data EFFECTS">
                                 <div style="display: inline-block; width: 49%;">
                                     <div style="display: inline-block; width: 87%;">
                                         <img src="${GFX}/goods/${data/good/getId}.gif" /> <span tal:content="data/good/getName">EFFECT</span>
@@ -517,7 +517,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="orbitshiplist">
 		<ul>
-			<tal:block tal:repeat="fleets THIS/getColony/getOrbitShipList">
+			<tal:block tal:repeat="fleets COLONY/getOrbitShipList">
 				<tal:block tal:repeat="data fleets/ships">
 					<metal:block metal:use-macro="shipselector" />
 				</tal:block>
@@ -588,19 +588,19 @@
 		</li>
 	</metal:block>
     <metal:block metal:define-macro="cm_tabs">
-        <div tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/2} colmenubutton" onclick="switchColonyMenu(2);">
+        <div tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/2} colmenubutton" onclick="switchColonyMenu(2);">
             <img src="${GFX}/buttons/lupe2.gif" /> <span i18n:translate="">Informationen</span>
         </div>
-        <div tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/1} colmenubutton" onclick="switchColonyMenu(1);">
+        <div tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/1} colmenubutton" onclick="switchColonyMenu(1);">
             <img src="${GFX}/buttons/menu_planets1.gif" /> <span i18n:translate="">Baumenü</span>
         </div>
-        <div tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/4} colmenubutton" onclick="switchColonyMenu(4)">
+        <div tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/4} colmenubutton" onclick="switchColonyMenu(4)">
             <img src="${GFX}/buttons/bar2.gif" /> <span i18n:translate="">Soziales</span>
         </div>
-        <div tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/5} colmenubutton" onclick="switchColonyMenu(5)">
+        <div tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/5} colmenubutton" onclick="switchColonyMenu(5)">
             <img src="${GFX}/buttons/gebact2.gif" /> <span i18n:translate="">Gebäudeschaltung</span>
         </div>
-        <div tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/3} colmenubutton" onclick="switchColonyMenu(3)">
+        <div tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/3} colmenubutton" onclick="switchColonyMenu(3)">
             <img src="${GFX}/buttons/menu_option1.gif" /> <span i18n:translate="">Einstellungen</span>
         </div>
 		<br />
@@ -628,12 +628,12 @@
                                 &lt;&lt; Zurück zum Koloniemenü
                             </a>
                         </td>
-                        <td style="width: 33%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/8}">
+                        <td style="width: 33%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/8}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(8,${FUNC/getId});">
                                 <span i18n:translate="">Neuer Bauplan</span>
                             </a>
                         </td>
-                        <td style="width: 33%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/9}">
+                        <td style="width: 33%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/9}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(9,${FUNC/getId});">
                                 <span i18n:translate="">Gespeicherte Baupläne</span>
                             </a>
@@ -653,7 +653,7 @@
                                 &lt;&lt; Zurück zum Koloniemenü
                             </a>
                         </td>
-                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${THIS/isColonyMenuSelected/7}">
+                        <td style="width: 50%;" tal:attributes="class string:colonymenu ${COLONY_MENU_SELECTOR/7}">
                             <a class="colmenubutton" href="javascript:void(0);" onclick="switchColonyMenu(7,${FUNC/getId});">
                                 <span i18n:translate="">Modulherstellung</span>
                             </a>
@@ -668,7 +668,7 @@
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
                 <input type="hidden" name="colmenu" value="cm_misc" />
-                <input type="hidden" name="id" value="runtime" tal:attributes="value currentColony/getId" />
+                <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
                 <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
                 <table class="tcal">
                     <tr>
@@ -676,7 +676,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="test" value="runtime" tal:attributes="value currentColony/getName" name="colname" style="width: 250px;" />
+                            <input type="test" value="runtime" tal:attributes="value COLONY/getName" name="colname" style="width: 250px;" />
                             <input type="submit" name="B_CHANGE_NAME" value="Ändern" />
                         </td>
                     </tr>
@@ -687,18 +687,18 @@
                     <table cellpadding="0" cellspacing="0" style="width: 100%;">
                         <tr>
                             <td style="width: 50%;">
-							<span tal:condition="currentColony/getImmigrationState">
+							<span tal:condition="COLONY/getImmigrationState">
 								Status: <span style="color: #007300;">Erlaubt</span>
 							</span>
-							<span tal:condition="not:currentColony/getImmigrationState">
+							<span tal:condition="not:COLONY/getImmigrationState">
 								Status: <span style="color: #FF0000;">Verboten</span>
 							</span>
                             </td>
                             <td style="width: 50%; text-align: right;">
-							<span tal:condition="currentColony/getImmigrationState">
+							<span tal:condition="COLONY/getImmigrationState">
 								<input type="submit" value="Verbieten" name="B_PERMIT_IMMIGRATION" />
 							</span>
-							<span tal:condition="not:currentColony/getImmigrationState">
+							<span tal:condition="not:COLONY/getImmigrationState">
 								<input type="submit" value="Erlauben" name="B_ALLOW_IMMIGRATION" />
 							</span>
                             </td>
@@ -708,14 +708,14 @@
                 <br />
                 <div class="divhead">Bevölkerungslimit</div>
                 <div class="divbody">
-                    <input type="text" size="4" name="poplimit" value="runtime" tal:attributes="value currentColony/getPopulationLimit" />
+                    <input type="text" size="4" name="poplimit" value="runtime" tal:attributes="value COLONY/getPopulationLimit" />
                     <input type="submit" name="B_SET_POPULATIONLIMIT" value="Ändern" />
                 </div>
                 <br />
                 <div class="divhead">Kolonie aufgeben</div>
                 <div class="divbody">
                     <div class="fabutton_red">
-                        <a href="colonylist.php?B_GIVEUP_COLONY=1&id=${currentColony/getId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_red">Kolonie aufgeben</a>
+                        <a href="colonylist.php?B_GIVEUP_COLONY=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_red">Kolonie aufgeben</a>
                     </div>
                 </div>
             </div>
@@ -726,7 +726,7 @@
         <br />
         <metal:macro metal:use-macro="colonymenu_container">
             <div metal:fill-slot="containment">
-                <stu:hidden name="id" tal:attributes="value currentColony/getId" />
+                <stu:hidden name="id" tal:attributes="value COLONY/getId" />
                 <stu:hidden name="sstr" tal:attributes="value THIS/getSessionString" />
                 <stu:hidden name="func" tal:attributes="value FUNC/getFunction" />
                 <table class="tcal">
@@ -765,7 +765,7 @@
             </div>
         </metal:macro>
 	</metal:block>
-	<metal:macro metal:define-macro="queue_count" tal:define="queue_count MODULE/getQueueCount/${THIS/getColony/getId}">
+	<metal:macro metal:define-macro="queue_count" tal:define="queue_count MODULE/getQueueCount/${COLONY/getId}">
 		<div tal:condition="queue_count">
 			<div style="display: table-cell; vertical-align:middle;">
 				<input type="text" size="2" name="cancel_module[${MODULE/getId}]" id="module_${MODULE/getId}_count" tal:attributes="value queue_count" />
@@ -785,10 +785,10 @@
                     <tr>
                         <th>Verfügbare Schiffsrümpfe</th>
                     </tr>
-                    <tr tal:condition="THIS/getBuildableRumpsByBuildingFunction">
+                    <tr tal:condition="BUILDABLE_SHIPS">
                         <td>
-                            <div tal:repeat="rump THIS/getBuildableRumpsByBuildingFunction" style="width: 196px; height:100px; float: left;">
-                                <a class="std" href="?SHOW_MODULE_SCREEN=1&id=${currentColony/getId}&rump=${rump/getId}" style="height: 100px; width: 196px; text-align: center; text-decoration: none; display: block;">
+                            <div tal:repeat="rump BUILDABLE_SHIPS" style="width: 196px; height:100px; float: left;">
+                                <a class="std" href="?SHOW_MODULE_SCREEN=1&id=${COLONY/getId}&rump=${rump/getId}" style="height: 100px; width: 196px; text-align: center; text-decoration: none; display: block;">
                                     <img src="${GFX}/ships/${rump/getId}.gif" tal:attributes="title rump/getName" style="padding-top: 5px;" /><br />
                                     ${rump/getName}<br /><br />
                                     <span i18n:translate="">Typ</span>: <span tal:replace="rump/getCategory/getName">TYPE</span><br />
@@ -798,11 +798,11 @@
                             </div>
                         </td>
                     </tr>
-                    <tr tal:condition="not:THIS/getBuildableRumps">
+                    <tr tal:condition="not:BUILDABLE_RUMPS">
                         <td>Keine Rümpfe zum Bau vorhanden</td>
                     </tr>
                 </table>
-                <input type="hidden" name="id" value="runtime" tal:attributes="value currentColony/getId" />
+                <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
                 <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
             </div>
         </metal:macro>
@@ -819,12 +819,12 @@
                         <th></th>
                         <th style="width: 20px;"></th>
                     </tr>
-                    <tal:block tal:repeat="data THIS/getBuildplans">
+                    <tal:block tal:repeat="data AVAILABLE_BUILDPLANS">
                         <tr tal:attributes="class string:row${repeat/data/odd}" i18n:attributes="title" style="cursor: pointer;" title="Details">
                             <td tal:content="data/getName" class="selectable" onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
                             <td tal:content="data/getBuildtimeFormatted" onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
                             <td style="text-align: center;">
-                                <a class="linkbutton" i18n:translate="" href="?id=${currentColony/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauen</a>
+                                <a class="linkbutton" i18n:translate="" href="?id=${COLONY/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauen</a>
                             </td>
                             <td style="text-align: center;">
                                 <a tal:condition="data/isDeleteAble" class="linkbutton linkbutton_red" onclick="deleteBuildplan(${data/getId},${FUNC/getId});" i18n:attributes="title" href="javascript:void(0);" title="Löschen">X</a>
@@ -907,10 +907,10 @@
 						<strong>Vorschau</strong>
 						<div tal:condition="building/getEpsProduction">
 							<img src="${GFX}/buttons/e_trans2.gif" title="Energie" />
-							<span tal:content="THIS/getColony/getEpsProductionPreview/${building/getId}/getDisplay" tal:attributes="class THIS/getColony/getEpsProductionPreview/${building/getId}/getCSS">EPSDISPLAY</span>
+							<span tal:content="COLONY/getEpsProductionPreview/${building/getId}/getDisplay" tal:attributes="class COLONY/getEpsProductionPreview/${building/getId}/getCSS">EPSDISPLAY</span>
 							(<span tal:content="building/getEpsProductionDisplay" tal:attributes="class building/getEpsProductionCss">EPSDISPLAY</span>)
 						</div>
-						<div tal:repeat="data THIS/getColony/getProductionPreview/${building/getId}">
+						<div tal:repeat="data COLONY/getProductionPreview/${building/getId}">
 							<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
 							<span tal:attributes="class data/getCssClass" tal:content="data/getProductionDisplay">CNT</span>
 							<tal:block tal:condition="data/getPreviewProduction">
@@ -944,17 +944,17 @@
 	</metal:block>
 	<metal:macro metal:define-macro="colonysurface">
 		<table class="use" style="border: 0; margin: 0; padding: 0 ! important;">
-			<tr tal:repeat="slot currentColony/getColonyFields">
+			<tr tal:repeat="slot COLONY/getColonyFields">
 				<tal:block tal:repeat="field slot/fields">
 					<tal:block tal:condition="not:field/hasBuilding">
 						<td tal:condition="not:field/getTerraformingId" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" /></div></div></div>
 						</td>
-						<td tal:condition="field/getTerraformingId" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="background-image: url(${GFX}/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img class="action" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/terraform/${field/getTerraformingId}/${currentColony/getDayNightState}.png" /></div></div></div>
+						<td tal:condition="field/getTerraformingId" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="background-image: url(${GFX}/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img class="action" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/terraform/${field/getTerraformingId}/${COLONY/getDayNightState}.png" /></div></div></div>
 						</td>
 					</tal:block>
 					<tal:block tal:condition="field/hasBuilding">
-						<td tal:condition="not:field/isInConstruction" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="background-image: url(${GFX}/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})"><div><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${currentColony/getDayNightState}.png" /></div></div></div></td>
-						<td tal:condition="field/isInConstruction" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="background-image: url(${GFX}/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px; background-image: url(${GFX}/buildings/${field/getPictureType}${currentColony/getDayNightState}.png)"><div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${currentColony/getDayNightState}.png" /></div></div></div></td>
+						<td tal:condition="not:field/isInConstruction" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="background-image: url(${GFX}/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})"><div><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY/getDayNightState}.png" /></div></div></div></td>
+						<td tal:condition="field/isInConstruction" style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass"><div style="background-image: url(${GFX}/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px; background-image: url(${GFX}/buildings/${field/getPictureType}${COLONY/getDayNightState}.png)"><div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${COLONY/getDayNightState}.png" /></div></div></div></td>
 					</tal:block>
 				</tal:block>
 			</tr>
@@ -964,119 +964,119 @@
 		<table class="use" style="width: 500px;">
 			<tr>
 				<td>
-					<div style="width: 100%;" tal:condition="THIS/getField/isInConstruction">
-						<div style="background-image: url(${GFX}/fields/${THIS/getField/getFieldType}.gif); width: 40px; height: 40px; display: table-cell;">
-							<div style="width: 40px; height: 40px; background-image: url(${GFX}/buildings/${THIS/getField/getPictureType}${currentColony/getDayNightState}.png)">
-								<div style="height: 40px; overflow: hidden; width: ${THIS/getField/getOverlayWidth}px;">
-									<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title THIS/getField/getTitleString" src="${GFX}/buildings/${THIS/getField/getBuildingId}/${THIS/getField/getBuilding/getBuildingType}a${currentColony/getDayNightState}.png" />
+					<div style="width: 100%;" tal:condition="FIELD/isInConstruction">
+						<div style="background-image: url(${GFX}/fields/${FIELD/getFieldType}.gif); width: 40px; height: 40px; display: table-cell;">
+							<div style="width: 40px; height: 40px; background-image: url(${GFX}/buildings/${FIELD/getPictureType}${COLONY/getDayNightState}.png)">
+								<div style="height: 40px; overflow: hidden; width: ${FIELD/getOverlayWidth}px;">
+									<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString" src="${GFX}/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}a${COLONY/getDayNightState}.png" />
 								</div>
 							</div>
 						</div>
 						<div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
-							<span style="font-weight: bold;">${THIS/getField/getBuilding/getName}</span><br />
-							<span i18n:translate="">auf</span> ${THIS/getField/getFieldTypeName}
+							<span style="font-weight: bold;">${FIELD/getBuilding/getName}</span><br />
+							<span i18n:translate="">auf</span> ${FIELD/getFieldTypeName}
 						</div>
 						<div>
-							<div style="display: table-cell; padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,THIS.getField().getBuildProgress(),THIS.getField().getBuilding().getBuildTime())">STATUSBAR</div>
+							<div style="display: table-cell; padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">STATUSBAR</div>
 							<div style="display: table-cell; vertical-align: middle; padding-left: 5px;">
-								<span i18n:translate="">Baustatus</span>: <span tal:replace="php:getPercentage(THIS.getField().getBuildProgress(),THIS.getField().getBuilding().getBuildTime())">PERCENTAGE</span>%<br />
+								<span i18n:translate="">Baustatus</span>: <span tal:replace="php:getPercentage(FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">PERCENTAGE</span>%<br />
 							</div>
 						</div>
-						<tal:block tal:condition="THIS/getField/isInConstruction">
-							<span i18n:translate="">Fertigstellung</span>: <span tal:replace="THIS/getField/getBuildtimeDisplay">DATE</span>
+						<tal:block tal:condition="FIELD/isInConstruction">
+							<span i18n:translate="">Fertigstellung</span>: <span tal:replace="FIELD/getBuildtimeDisplay">DATE</span>
 						</tal:block>
 					</div>
-					<div tal:condition="not:THIS/getField/isInConstruction">
-						<div tal:condition="not: THIS/getField/hasBuilding">
+					<div tal:condition="not:FIELD/isInConstruction">
+						<div tal:condition="not: FIELD/hasBuilding">
 							<div style="display: table-cell;">
-								<img src="${GFX}/fields/${THIS/getField/getFieldType}.gif" /><br />
+								<img src="${GFX}/fields/${FIELD/getFieldType}.gif" /><br />
 							</div>
 							<div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
-								${THIS/getField/getFieldTypeName}
+								${FIELD/getFieldTypeName}
 							</div>
 						</div>
-						<div tal:condition="THIS/getField/hasBuilding">
-							<div style="background-image: url(${GFX}/fields/${THIS/getField/getFieldType}.gif); width: 40px; height: 40px; display: table-cell;">
-								<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title THIS/getField/getTitleString" src="${GFX}/buildings/${THIS/getField/getBuildingId}/${THIS/getField/getBuilding/getBuildingType}${THIS/getField/getBuildingState}${currentColony/getDayNightState}.png" />
+						<div tal:condition="FIELD/hasBuilding">
+							<div style="background-image: url(${GFX}/fields/${FIELD/getFieldType}.gif); width: 40px; height: 40px; display: table-cell;">
+								<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString" src="${GFX}/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}${FIELD/getBuildingState}${COLONY/getDayNightState}.png" />
 							</div>
 							<div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
-								<span style="font-weight: bold;">${THIS/getField/getBuilding/getName}</span><br />
-								<span i18n:translate="">auf</span> ${THIS/getField/getFieldTypeName}<br />
-								<span i18n:translate="">Integrität</span>: ${THIS/getField/getIntegrity}/${THIS/getField/getBuilding/getIntegrity}
+								<span style="font-weight: bold;">${FIELD/getBuilding/getName}</span><br />
+								<span i18n:translate="">auf</span> ${FIELD/getFieldTypeName}<br />
+								<span i18n:translate="">Integrität</span>: ${FIELD/getIntegrity}/${FIELD/getBuilding/getIntegrity}
 							</div>
 							<br /><br />
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isShipyard">
-								<a href="javascript:void(0)" onclick="switchColonyMenu(8,${THIS/getField/getBuilding/isShipyard});cClick();" class="fabutton" i18n:translate="">Schiffbau</a>
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isShipyard">
+								<a href="javascript:void(0)" onclick="switchColonyMenu(8,${FIELD/getBuilding/isShipyard});cClick();" class="fabutton" i18n:translate="">Schiffbau</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isShipyard">
-								<a href="colony.php?id=${THIS/getColony/getId}&SHOW_SHIP_REPAIR=1&fid=${THIS/getField/getFieldId}" class="fabutton" i18n:translate="">Schiffreparatur</a>
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isShipyard">
+								<a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_REPAIR=1&fid=${FIELD/getFieldId}" class="fabutton" i18n:translate="">Schiffreparatur</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isAirfield">
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isAirfield">
 								<a href="javascript:void(0)" onclick="switchColonyMenu(6);cClick();" class="fabutton" i18n:translate="">Hangar</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isModuleFab">
-								<a href="javascript:void(0)" onclick="switchColonyMenu(7,${THIS/getField/getBuilding/isModuleFab});cClick();" class="fabutton" i18n:translate="">Modulherstellung</a>
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isModuleFab">
+								<a href="javascript:void(0)" onclick="switchColonyMenu(7,${FIELD/getBuilding/isModuleFab});cClick();" class="fabutton" i18n:translate="">Modulherstellung</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isFighterShipyard">
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isFighterShipyard">
 								<a href="javascript:void(0)" onclick="switchColonyMenu(10);cClick();" class="fabutton" i18n:translate="">Schiffbau</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isFighterShipyard">
-								<a href="colony.php?id=${THIS/getColony/getId}&SHOW_SHIP_REPAIR=1&fid=${THIS/getField/getFieldId}" class="fabutton" i18n:translate="">Schiffreparatur</a>
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isFighterShipyard">
+								<a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_REPAIR=1&fid=${FIELD/getFieldId}" class="fabutton" i18n:translate="">Schiffreparatur</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isTorpedoFab">
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isTorpedoFab">
 								<a href="javascript:void(0)" onclick="switchColonyMenu(11);cClick();" class="fabutton" i18n:translate="">Torpedoherstellung</a>
 							</div>
-							<div class="fabutton" tal:condition="THIS/getField/getBuilding/isAcademy">
+							<div class="fabutton" tal:condition="FIELD/getBuilding/isAcademy">
 								<a href="javascript:void(0)" onclick="switchColonyMenu(12);cClick();" class="fabutton" i18n:translate="">Akademie</a>
 							</div>
 							<br />
 						</div>
-						<tal:block tal:condition="THIS/getField/hasBuilding">
-							<tal:block tal:condition="THIS/getField/isActivateAble">
-								<div tal:condition="THIS/getField/hasHighDamage" i18n:translate="">
+						<tal:block tal:condition="FIELD/hasBuilding">
+							<tal:block tal:condition="FIELD/isActivateAble">
+								<div tal:condition="FIELD/hasHighDamage" i18n:translate="">
 									Das Gebäude ist stark beschädigt und kann nicht aktiviert werden.
 								</div>
 							</tal:block>
 						</tal:block>
 					</div>
 				</td>
-				<td tal:condition="THIS/getField/hasBuilding" style="vertical-align: top; width: 100px;">
+				<td tal:condition="FIELD/hasBuilding" style="vertical-align: top; width: 100px;">
 					<strong i18n:translate="">Auswirkungen</strong>
-					<div tal:condition="THIS/getField/getBuilding/getHousing">
-						<img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Wohnraum" /> +<span tal:replace="THIS/getField/getBuilding/getHousing">HOUSING</span>
+					<div tal:condition="FIELD/getBuilding/getHousing">
+						<img src="${GFX}/bev/bev_free_5_${THIS/getUser/getFaction}.gif" title="Wohnraum" /> +<span tal:replace="FIELD/getBuilding/getHousing">HOUSING</span>
 					</div>
-					<div tal:condition="THIS/getField/getBuilding/getWorkers">
-						<img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" title="Arbeiter" /> -<span tal:replace="THIS/getField/getBuilding/getWorkers">WORKERS</span>
+					<div tal:condition="FIELD/getBuilding/getWorkers">
+						<img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" title="Arbeiter" /> -<span tal:replace="FIELD/getBuilding/getWorkers">WORKERS</span>
 					</div>
-					<div tal:condition="THIS/getField/getBuilding/getStorage">
-						<img src="${GFX}/buttons/lager.gif" title="Lagerraum" /> +<span tal:replace="THIS/getField/getBuilding/getStorage">STORAGE</span>
+					<div tal:condition="FIELD/getBuilding/getStorage">
+						<img src="${GFX}/buttons/lager.gif" title="Lagerraum" /> +<span tal:replace="FIELD/getBuilding/getStorage">STORAGE</span>
 					</div>
-					<div tal:condition="THIS/getField/getBuilding/getEpsStorage">
-						<img src="${GFX}/buttons/eps.gif" title="Energiespeicher" /> +<span tal:replace="THIS/getField/getBuilding/getEpsStorage">EPSSTORAGE</span>
+					<div tal:condition="FIELD/getBuilding/getEpsStorage">
+						<img src="${GFX}/buttons/eps.gif" title="Energiespeicher" /> +<span tal:replace="FIELD/getBuilding/getEpsStorage">EPSSTORAGE</span>
 					</div>
-					<div tal:condition="THIS/getField/getBuilding/isActivateable">
+					<div tal:condition="FIELD/getBuilding/isActivateable">
 						<br />
 						<strong>Produktion</strong>
-						<div tal:condition="THIS/getField/getBuilding/getEpsProduction">
-							<img src="${GFX}/buttons/e_trans2.gif" title="Energie" /> <span tal:replace="THIS/getField/getBuilding/getEpsProductionDisplay">EPSDISPLAY</span>
+						<div tal:condition="FIELD/getBuilding/getEpsProduction">
+							<img src="${GFX}/buttons/e_trans2.gif" title="Energie" /> <span tal:replace="FIELD/getBuilding/getEpsProductionDisplay">EPSDISPLAY</span>
 						</div>
-						<div tal:repeat="data THIS/getField/getBuilding/getGoods">
+						<div tal:repeat="data FIELD/getBuilding/getGoods">
 							<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
 							<span tal:replace="data/getCountDisplay">CNT</span>
 						</div>
 						<br />
 					</div>
 				</td>
-				<td rowspan="2" tal:condition="THIS/getField/hasUpgradeOrTerraformingOption" style="width: 100px; vertical-align: top;">
-					<div tal:condition="THIS/getField/getPossibleUpgrades">
-						<div tal:repeat="data THIS/getField/getPossibleUpgrades">
+				<td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 100px; vertical-align: top;">
+					<div tal:condition="FIELD/getPossibleUpgrades">
+						<div tal:repeat="data FIELD/getPossibleUpgrades">
 							<table class="tcal">
 								<tr>
 									<th tal:content="data/getDescription" colspan="4">DESCRIPTION</th>
 								</tr>
 								<tr>
 									<td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
-										<img src="${GFX}/buildings/${THIS/getField/getBuilding/getId}/0at.png" />
+										<img src="${GFX}/buildings/${FIELD/getBuilding/getId}/0at.png" />
 									</td>
 									<td style="text-align: center; vertical-align: middle">
 										=&gt;	
@@ -1094,24 +1094,24 @@
 								</tr>
 								<tr>
 									<td colspan="4" style="text-align: center;">
-										<a href="?B_UPGRADE_BUILDING=1&id=${currentColony/getId}&fid=${THIS/getField/getFieldId}&upid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Upgrade durchführen</a>
+										<a href="?B_UPGRADE_BUILDING=1&id=${COLONY/getId}&fid=${FIELD/getFieldId}&upid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Upgrade durchführen</a>
 									</td>
 								</tr>
 							</table>
 							<br />
 						</div>
 					</div>
-					<div tal:condition="not:THIS/getField/hasBuilding">
-						<tal:block tal:condition="THIS/getField/hasTerraforming">
+					<div tal:condition="not:FIELD/hasBuilding">
+						<tal:block tal:condition="FIELD/hasTerraforming">
 							<table class="use" style="width: 250px;">
 								<tr>
 									<th colspan="3" style="text-align: center;">
-										<span tal:content="THIS/getField/getTerraforming/getTerraforming/getDescription">DESCRIPTION</span> läuft
+										<span tal:content="FIELD/getTerraforming/getTerraforming/getDescription">DESCRIPTION</span> läuft
 									</th>
 								</tr>
 								<tr>
 									<td style="width: 45px; text-align: center;">
-										<img src="${GFX}/fields/${THIS/getField/getTerraforming/getTerraforming/getSource}.gif" />
+										<img src="${GFX}/fields/${FIELD/getTerraforming/getTerraforming/getSource}.gif" />
 									</td>
 									<td style="vertical-align: middle; width: 50px; text-align: center;">
 										<div>
@@ -1119,19 +1119,19 @@
 										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,THIS.getField().getTerraforming().getProgress(),THIS.getField().getTerraforming().getTerraforming().getDuration())">STATUSBAR</div>
 									</td>
 									<td style="width: 45px; text-align: center;">
-										<img src="${GFX}/fields/${THIS/getField/getTerraforming/getTerraforming/getDestination}.gif" />
+										<img src="${GFX}/fields/${FIELD/getTerraforming/getTerraforming/getDestination}.gif" />
 									</td>
 								</tr>
 								<tr>
 									<td colspan="3" style="text-align: center;">
-										Fertigstellung: <span tal:replace="THIS/getField/getTerraforming/getFinishDateDisplay">FINISH</span>	
+										Fertigstellung: <span tal:replace="FIELD/getTerraforming/getFinishDateDisplay">FINISH</span>	
 									</td>
 								</tr>
 							</table>
 						</tal:block>
-						<tal:block tal:condition="not:THIS/getField/hasTerraforming">
-							<div tal:condition="THIS/getField/getTerraformingOptions">
-								<table class="use" style="width: 250px;" tal:repeat="data THIS/getField/getTerraformingOptions">
+						<tal:block tal:condition="not:FIELD/hasTerraforming">
+							<div tal:condition="FIELD/getTerraformingOptions">
+								<table class="use" style="width: 250px;" tal:repeat="data FIELD/getTerraformingOptions">
 									<tr>
 										<th colspan="4" tal:content="data/getDescription">DESCRIPTION</th>
 									</tr>
@@ -1156,7 +1156,7 @@
 									</tr>
 									<tr>
 										<td colspan="3" style="text-align: center">
-											<a href="?B_TERRAFORM=1&id=${currentColony/getId}&fid=${THIS/getField/getFieldId}&tfid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Durchführen</a>
+											<a href="?B_TERRAFORM=1&id=${COLONY/getId}&fid=${FIELD/getFieldId}&tfid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Durchführen</a>
 										</td>
 									</tr>
 								</table>
@@ -1166,41 +1166,41 @@
 					</div>
 				</td>
 			</tr>
-			<tr tal:condition="THIS/getField/hasBuilding">
+			<tr tal:condition="FIELD/hasBuilding">
 				<td colspan="2" style="text-align: center;">
 					<table cellpadding="0" cellspacing="0">
 						<tr>
-							<td style="width: 100px;" tal:condition="THIS/getField/isActivateAble">
-								<tal:block tal:condition="not:THIS/getField/hasHighDamage">
-									<div class="fabutton" tal:condition="THIS/getField/isActive">
-										<a href="?id=${currentColony/getId}&B_DEACTIVATE=1&fid=${THIS/getField/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton">Deaktivieren</a>
+							<td style="width: 100px;" tal:condition="FIELD/isActivateAble">
+								<tal:block tal:condition="not:FIELD/hasHighDamage">
+									<div class="fabutton" tal:condition="FIELD/isActive">
+										<a href="?id=${COLONY/getId}&B_DEACTIVATE=1&fid=${FIELD/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton">Deaktivieren</a>
 									</div>
-									<div class="fabutton" tal:condition="not:THIS/getField/isActive">
-										<a href="?id=${currentColony/getId}&B_ACTIVATE=1&fid=${THIS/getField/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton">Aktivieren</a>
+									<div class="fabutton" tal:condition="not:FIELD/isActive">
+										<a href="?id=${COLONY/getId}&B_ACTIVATE=1&fid=${FIELD/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton">Aktivieren</a>
 									</div>
 									<br />
 								</tal:block>
 							</td>
 							<td style="width: 100px;">
-								<div class="fabutton" tal:condition="THIS/getField/isDamaged">
-									<a href="?id=${currentColony/getId}&B_REPAIR=1&fid=${THIS/getField/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton">Reparieren</a>
+								<div class="fabutton" tal:condition="FIELD/isDamaged">
+									<a href="?id=${COLONY/getId}&B_REPAIR=1&fid=${FIELD/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton">Reparieren</a>
 								</div>
 							</td>
 							<td style="width: 100px;">
-								<div class="fabutton_red" tal:condition="THIS/getField/getBuilding/isRemoveAble">
+								<div class="fabutton_red" tal:condition="FIELD/getBuilding/isRemoveAble">
 									<a href="javascript:void(0);" onclick="toggleVisible('confirm_remove')" class="fabutton fabutton_red" i18n:translate="">Demontieren</a>
 								</div>
 							</td>
 							<td style="width: 100px;">
-								<div id="confirm_remove" style="display:none;" class="fabutton_red" tal:condition="THIS/getField/getBuilding/isRemoveAble">
-									<a href="?id=${currentColony/getId}&B_REMOVE_BUILDING=1&fid=${THIS/getField/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_red" i18n:translate="">bestätigen</a>
+								<div id="confirm_remove" style="display:none;" class="fabutton_red" tal:condition="FIELD/getBuilding/isRemoveAble">
+									<a href="?id=${COLONY/getId}&B_REMOVE_BUILDING=1&fid=${FIELD/getFieldId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_red" i18n:translate="">bestätigen</a>
 								</div>
 							</td>
 						</tr>
 					</table>
-					<tal:block tal:condition="THIS/getField/getBuilding/isShipyard">
-						<metal:macro metal:use-macro="ship_buildprogress" tal:condition="THIS/getShipBuildProgress" tal:define="SHIP_BUILD_PROGRESS THIS/getShipBuildProgress" />
-						<metal:macro metal:use-macro="ship_repairprogress" tal:condition="THIS/getShipRepairProgress"/>
+					<tal:block tal:condition="FIELD/getBuilding/isShipyard">
+						<metal:macro metal:use-macro="ship_buildprogress" tal:condition="SHIP_BUILD_PROGRESS" />
+						<metal:macro metal:use-macro="ship_repairprogress" tal:condition="SHIP_REPAIR_PROGRESS"/>
 					</tal:block>
 				</td>
 			</tr>
@@ -1233,7 +1233,7 @@
 			<tr>
 				<th i18n:translate="" colspan="3">Schiffe in Reparatur</th>
 			</tr>
-			<tr tal:repeat="data THIS/getShipRepairProgress" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
+			<tr tal:repeat="data SHIP_REPAIR_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center; vertical-align: middle;">
 					<img src="${GFX}/ships/${data/getShip/getRumpId}.gif" />
 				</td>
@@ -1246,7 +1246,7 @@
 	</metal:macro>
 	<metal:block metal:define-macro="show_ship_beamto">
 		<form action="colony.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentColony/getId" />
+			<input type="hidden" name="id" tal:attributes="value COLONY/getId" />
 			<input type="hidden" name="target" tal:attributes="value targetShip/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
@@ -1255,7 +1255,7 @@
 				</tr>
 				<tr>
 					<td style="width: 100%;">
-						<tal:block tal:condition="currentColony/getStorage" tal:repeat="good currentColony/getStorage">
+						<tal:block tal:condition="COLONY/getStorage" tal:repeat="good COLONY/getStorage">
 							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -1265,7 +1265,7 @@
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
-						<tal:block tal:condition="not:currentColony/getStorage">
+						<tal:block tal:condition="not:COLONY/getStorage">
 							Keine Waren vorhanden
 						</tal:block>
 					</td>
@@ -1273,8 +1273,8 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${currentColony/getId}">
-										<img src="${GFX}/planets/${currentColony/getColonyClass}.gif" />
+									<a href="?id=${COLONY/getId}">
+										<img src="${GFX}/planets/${COLONY/getColonyClass}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -1303,7 +1303,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_beamfrom">
 		<form action="colony.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentColony/getId" />
+			<input type="hidden" name="id" tal:attributes="value COLONY/getId" />
 			<input type="hidden" name="target" tal:attributes="value targetShip/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
@@ -1330,8 +1330,8 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${currentColony/getId}">
-										<img src="${GFX}/planets/${currentColony/getColonyClass}.gif" />
+									<a href="?id=${COLONY/getId}">
+										<img src="${GFX}/planets/${COLONY/getColonyClass}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -1360,22 +1360,22 @@
 	</metal:block>
 	<metal:block metal:define-macro="colonyeps">
 		<input type="hidden" name="sstr" id="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
-		<stu:box tal:attributes="title currentColony/getEpsBoxTitleString">
-			<img src="${GFX}/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar THIS/getEpsBar" tal:content="structure php:getStatusBar(bar.getVar(),bar.getValue())">BAR</span> ${currentColony/getEpsProductionDisplay}
+		<stu:box tal:attributes="title COLONY/getEpsBoxTitleString">
+			<img src="${GFX}/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar EPS_BAR" tal:content="structure php:getStatusBar(bar.getVar(),bar.getValue())">BAR</span> ${COLONY/getEpsProductionDisplay}
 		</stu:box>
 	</metal:block>
 	<metal:block metal:define-macro="colonystorage">
 		<table class="use" style="width: 433px;">
 			<tr>
 				<th>
-					<span i18n:translate="">Lager:</span> ${currentColony/getStorageSum}/${currentColony/getMaxStorage}
-					(<span tal:replace="currentColony/getStorageSumPercent">PERCENT</span>%)
+					<span i18n:translate="">Lager:</span> ${COLONY/getStorageSum}/${COLONY/getMaxStorage}
+					(<span tal:replace="COLONY/getStorageSumPercent">PERCENT</span>%)
 				</th>
 				<td>
-					<span tal:content="currentColony/getProductionSumDisplay" tal:attributes="class currentColony/getProductionSumClass">SUM</span>
+					<span tal:content="COLONY/getProductionSumDisplay" tal:attributes="class COLONY/getProductionSumClass">SUM</span>
 				</td>
 			</tr>
-			<tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor THIS/getColonyStorageDisplay">
+			<tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor STORAGE">
 				<td style="vertical-align: middle;">
 					<div style="display: table-cell; width: 45px;">
 						<img src="${GFX}/goods/${stor/good/getId}.gif" tal:attributes="title stor/good/getName" />
@@ -1394,7 +1394,7 @@
 		</table>
 	</metal:block>
 	<metal:macro metal:define-macro="module_select_tab">
-		<td id="module_tab_${moduleType}" tal:define="tab THIS/getModuleScreenTabs/${moduleType}" tal:attributes="class tab/getCssClass" onclick="showModuleSelectTab(this,${moduleType});">
+		<td id="module_tab_${moduleType}" tal:define="tab MODULE_SCREEN_TABS/${moduleType}" tal:attributes="class tab/getCssClass" onclick="showModuleSelectTab(this,${moduleType});">
 			<img src="${GFX}/buttons/modul_${moduleType}.gif" tal:condition="not:tab/hasSelectedModule" id="tab_image_mod_${moduleType}" />
 			<tal:block tal:condition="tab/hasSelectedModule" tal:repeat="mod tab/getSelectedModule	">
 				<img src="${GFX}/goods/${mod/getModule/getGoodId}.gif" id="tab_image_mod_${moduleType}" />

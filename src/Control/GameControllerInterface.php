@@ -8,7 +8,9 @@ use UserData;
 interface GameControllerInterface
 {
 
-    public function setView(string $view): void;
+    public function setView(string $view, array $viewContext = []): void;
+
+    public function getViewContext(): array;
 
     public function getGameState();
 
@@ -24,7 +26,11 @@ interface GameControllerInterface
 
     public function addInformation(string $msg, bool $override = false): void;
 
+    public function addInformationMerge($info);
+
     function getInformation();
+
+    public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN);
 
     public function hasInformation();
 
@@ -59,6 +65,8 @@ interface GameControllerInterface
     public function hasExecuteJS();
 
     public function getExecuteJS();
+
+    public function addExecuteJS($value);
 
     public function getGameVersion();
 
