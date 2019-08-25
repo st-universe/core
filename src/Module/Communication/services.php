@@ -51,6 +51,9 @@ use Stu\Module\Communication\Action\SortPmCategories\SortPmCategoriesRequestInte
 use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactMode;
 use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactModeRequest;
 use Stu\Module\Communication\Action\SwitchContactMode\SwitchContactModeRequestInterface;
+use Stu\Module\Communication\Action\WritePm\WritePm;
+use Stu\Module\Communication\Action\WritePm\WritePmRequest;
+use Stu\Module\Communication\Action\WritePm\WritePmRequestInterface;
 use Stu\Module\Communication\View\Noop\Noop;
 use Stu\Module\Communication\View\Overview\Overview;
 use Stu\Module\Communication\View\Overview\OverviewRequest;
@@ -127,6 +130,7 @@ return [
     DeleteAllPmsRequestInterface::class => autowire(DeleteAllPmsRequest::class),
     MovePmRequestInterface::class => autowire(MovePmRequest::class),
     AddKnPostRequestInterface::class => autowire(AddKnPostRequest::class),
+    WritePmRequestInterface::class => autowire(WritePmRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -148,6 +152,7 @@ return [
                 DeleteAllPms::ACTION_IDENTIFIER => autowire(DeleteAllPms::class),
                 MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
                 AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class),
+                WritePm::ACTION_IDENTIFIER => autowire(WritePm::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),

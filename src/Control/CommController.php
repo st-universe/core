@@ -38,7 +38,6 @@ final class CommController extends GameController
         );
         $this->addNavigationPart(new Tuple("comm.php", "Kommunikationsnetzwerk"));
 
-        $this->addCallBack("B_WRITE_PM", "addPM", true);
         $this->addCallBack("B_EDIT_KN", "editKNPosting");
         $this->addCallBack("B_DEL_KN", "delKNPosting", true);
         $this->addCallBack("B_CREATE_PLOT", "createRPGPlot");
@@ -56,52 +55,6 @@ final class CommController extends GameController
     public function getSelectedRecipient()
     {
         return ResourceCache()->getObject("user", request::getIntFatal('recipient'));
-    }
-
-    function addPM()
-    {
-        $text = request::postString('text');
-        $recid = request::postInt('recipient');
-        $this->getPM()->setText(strip_tags(tidyString($text)));
-        $this->getPM()->setRecipientId($recid);
-        if (!$recid) {
-            $this->addInformation("Es wurde kein Empfänger angegeben");
-            return;
-        }
-        $rec = User::getUserById($recid);
-        if (!$rec) {
-            $this->addInformation("Dieser Siedler existiert nicht");
-            return;
-        }
-        if ($rec->getId() == currentUser()->getId()) {
-            $this->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
-            return;
-        }
-        if ($rec->isOnIgnoreList(currentUser()->getId())) {
-            $this->addInformation("Der Siedler ignoriert Dich");
-            return;
-        }
-
-        if (strlen($text) < 5) {
-            $this->addInformation("Der Text ist zu kurz");
-            return;
-        }
-        $this->getPM()->setSenderId(currentUser()->getId());
-        $this->getPM()->setDate(time());
-        $cat = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $rec->getId());
-        $this->getPM()->setCategoryId($cat->getId());
-
-        $this->getPM()->copyPM();
-        $this->getPM()->save();
-
-        if ($this->getReply()) {
-            $this->getReply()->setReplied(1);
-            $this->getReply()->save();
-        }
-
-        $this->addInformation("Die Nachricht wurde abgeschickt");
-        request::delVar("WRITE_PM");
-        $this->setView("SHOW_PM_CAT", 1);
     }
 
     function editKNPosting()
@@ -337,25 +290,5 @@ final class CommController extends GameController
             $obj->deleteFromDatabase();
         }
         $this->currentposting = $obj->getPosting();
-    }
-
-    private $pmreply = null;
-
-    public function getReply()
-    {
-        if ($this->pmreply === null) {
-            $this->pmreply = $this->checkPMReply();
-        }
-        return $this->pmreply;
-    }
-
-    private function checkPMReply()
-    {
-        $repid = request::indInt('reply');
-        $pm = PM::getPMById($repid);
-        if (!$pm || $pm->getRecipientId() != currentUser()->getId()) {
-            return false;
-        }
-        return $pm;
     }
 }

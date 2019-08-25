@@ -47,7 +47,7 @@
 									<span i18n:translate="">Von:</span>
 									<span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
 								</td>
-								<td tal:content="post/getDateFormatted" style="width: 120px; text-align: center;">DATE</td>
+								<td tal:content="datetime:post/getDate" style="width: 120px; text-align: center;">DATE</td>
 							</tr>
 						</table>
 						<table class="tcal">
