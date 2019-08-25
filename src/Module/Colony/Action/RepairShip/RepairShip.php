@@ -44,11 +44,26 @@ final class RepairShip implements ActionControllerInterface
 
         $ship_id = request::getIntFatal('ship_id');
 
+        $repairableShiplist = [];
+        foreach ($colony->getOrbitShipList() as $fleet) {
+            foreach ($fleet['ships'] as $ship_id => $ship) {
+                if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
+                    continue;
+                }
+                foreach (RumpBuildingFunction::getByRumpId($ship->getRumpId()) as $rump_rel) {
+                    if ($field->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
+                        $repairableShiplist[$ship->getId()] = $ship;
+                        break;
+                    }
+                }
+            }
+        }
+
         /**
          * @var \Ship $ship
          */
         $ship = ResourceCache()->getObject(CACHE_SHIP, $ship_id);
-        if (!array_key_exists($ship->getId(), $this->getShiplistRepairable($colony))) {
+        if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
         if (!$ship->canBeRepaired()) {
@@ -80,25 +95,6 @@ final class RepairShip implements ActionControllerInterface
         }
         $ticks = ceil(($ship->getMaxHuell() - $ship->getHuell()) / $ship->getRepairRate());
         $game->addInformation(sprintf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks));
-    }
-
-    private function getShiplistRepairable(\ColonyData $colony)
-    {
-        $ret = array();
-        foreach ($colony->getOrbitShipList() as $fleet) {
-            foreach ($fleet['ships'] as $ship_id => $ship) {
-                if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
-                    continue;
-                }
-                foreach (RumpBuildingFunction::getByRumpId($ship->getRumpId()) as $rump_rel) {
-                    if ($this->getField()->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
-                        $ret[$ship->getId()] = $ship;
-                        break;
-                    }
-                }
-            }
-        }
-        return $ret;
     }
 
     public function performSessionCheck(): bool
