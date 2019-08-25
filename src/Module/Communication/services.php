@@ -10,12 +10,18 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
 use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;
+use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMember;
+use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequest;
+use Stu\Module\Communication\Action\AddKnPlotMember\AddKnPlotMemberRequestInterface;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPost;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequest;
 use Stu\Module\Communication\Action\AddKnPost\AddKnPostRequestInterface;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategory;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequest;
 use Stu\Module\Communication\Action\AddPmCategory\AddPmCategoryRequestInterface;
+use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlot;
+use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlotRequest;
+use Stu\Module\Communication\Action\CreateKnPlot\CreateKnPlotRequestInterface;
 use Stu\Module\Communication\Action\DeleteAllContacts\DeleteAllContacts;
 use Stu\Module\Communication\Action\DeleteAllIgnores\DeleteAllIgnores;
 use Stu\Module\Communication\Action\DeleteAllPms\DeleteAllPms;
@@ -30,6 +36,9 @@ use Stu\Module\Communication\Action\DeleteIgnores\DeleteIgnoresRequestInterface;
 use Stu\Module\Communication\Action\DeleteKnComment\DeleteKnComment;
 use Stu\Module\Communication\Action\DeleteKnComment\DeleteKnCommentRequest;
 use Stu\Module\Communication\Action\DeleteKnComment\DeleteKnCommentRequestInterface;
+use Stu\Module\Communication\Action\DeleteKnPlotMember\DeleteKnPlotMember;
+use Stu\Module\Communication\Action\DeleteKnPlotMember\DeleteKnPlotMemberRequest;
+use Stu\Module\Communication\Action\DeleteKnPlotMember\DeleteKnPlotMemberRequestInterface;
 use Stu\Module\Communication\Action\DeleteKnPost\DeleteKnPost;
 use Stu\Module\Communication\Action\DeleteKnPost\DeleteKnPostRequest;
 use Stu\Module\Communication\Action\DeleteKnPost\DeleteKnPostRequestInterface;
@@ -42,12 +51,18 @@ use Stu\Module\Communication\Action\DeletePms\DeletePmsRequestInterface;
 use Stu\Module\Communication\Action\EditContactComment\EditContactComment;
 use Stu\Module\Communication\Action\EditContactComment\EditContactCommentRequest;
 use Stu\Module\Communication\Action\EditContactComment\EditContactCommentRequestInterface;
+use Stu\Module\Communication\Action\EditKnPlot\EditKnPlot;
+use Stu\Module\Communication\Action\EditKnPlot\EditKnPlotRequest;
+use Stu\Module\Communication\Action\EditKnPlot\EditKnPlotRequestInterface;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPostRequest;
 use Stu\Module\Communication\Action\EditKnPost\EditKnPostRequestInterface;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategory;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequest;
 use Stu\Module\Communication\Action\EditPmCategory\EditPmCategoryRequestInterface;
+use Stu\Module\Communication\Action\EndKnPlot\EndKnPlot;
+use Stu\Module\Communication\Action\EndKnPlot\EndKnPlotRequest;
+use Stu\Module\Communication\Action\EndKnPlot\EndKnPlotRequestInterface;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUser;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequest;
 use Stu\Module\Communication\Action\IgnoreUser\IgnoreUserRequestInterface;
@@ -151,6 +166,11 @@ return [
     EditContactCommentRequestInterface::class => autowire(EditContactCommentRequest::class),
     EditKnPostRequestInterface::class => autowire(EditKnPostRequest::class),
     DeleteKnPostRequestInterface::class => autowire(DeleteKnPostRequest::class),
+    EditKnPlotRequestInterface::class => autowire(EditKnPlotRequest::class),
+    AddKnPlotMemberRequestInterface::class => autowire(AddKnPlotMemberRequest::class),
+    DeleteKnPlotMemberRequestInterface::class => autowire(DeleteKnPlotMemberRequest::class),
+    CreateKnPlotRequestInterface::class => autowire(CreateKnPlotRequest::class),
+    EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
     IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
@@ -178,6 +198,11 @@ return [
                 EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
                 EditKnPost::ACTION_IDENTIFIER => autowire(EditKnPost::class),
                 DeleteKnPost::ACTION_IDENTIFIER => autowire(DeleteKnPost::class),
+                EditKnPlot::ACTION_IDENTIFIER => autowire(EditKnPlot::class),
+                AddKnPlotMember::ACTION_IDENTIFIER => autowire(AddKnPlotMember::class),
+                DeleteKnPlotMember::ACTION_IDENTIFIER => autowire(DeleteKnPlotMember::class),
+                CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
+                EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
             ],
             [
                 GameController::DEFAULT_VIEW => autowire(Overview::class),

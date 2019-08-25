@@ -1,7 +1,5 @@
 <?php
 
-use Stu\Control\CommController;
-
 class PMData extends Basetable {
 
 	const tablename = 'stu_pms';
