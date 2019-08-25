@@ -37,12 +37,9 @@ class GoodData extends BaseTable {
 		return $this->data['name'];
 	} # }}}
 
-	/**
-     * @todo rename
-	 */
-	//function getCount() {
-	//	return $this->data['count'];
-	//}
+	function getAmount() {
+		return $this->data['count'];
+	}
 
 	function isTradeable() {
 		return $this->data['tradeable'];
@@ -91,11 +88,11 @@ class GoodData extends BaseTable {
 	}
 
 	function lowerCount($value) {
-		$this->setCount($this->getCount()-$value);
+		$this->setCount($this->getAmount()-$value);
 	}
 
 	function upperCount($value) {
-		$this->setCount($this->getCount()+$value);
+		$this->setCount($this->getAmount()+$value);
 	}
 
 	/**

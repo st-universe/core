@@ -9,8 +9,6 @@ class ShipData extends BaseTable {
 	const tablename = 'stu_ships';
 	protected $tablename = 'stu_ships';
 
-	private $sessionString = NULL;
-	
 	function __construct(&$data=array()) {
 		$this->data = $data;
 		$this->getCrewList();
@@ -736,7 +734,6 @@ class ShipData extends BaseTable {
 			} else {
 				$this->setShield($this->getShield()-$damage);
 				$msg[] = "- Schildschaden: ".$damage." - Status: ".$this->getShield();
-				$damage = 0;
 				$basedamage = 0;
 			}
 		}
@@ -972,7 +969,7 @@ class ShipData extends BaseTable {
 		$this->getStorage()->offsetGet($good_id)->save();
 	}
 
-	private $currentcolony = NULL;
+	private $currentColony = NULL;
 
 	function getCurrentColony() {
 		if ($this->currentColony === NULL) {

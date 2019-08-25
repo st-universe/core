@@ -1,7 +1,5 @@
 <?php
 
-use Stu\Orm\Repository\ResearchRepositoryInterface;
-
 class ResourceCacher {
 	
 	private $resources = NULL;

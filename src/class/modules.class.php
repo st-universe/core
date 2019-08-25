@@ -153,8 +153,6 @@ class ModulesData extends BaseTable {
 		return $this->data['ecost'];
 	} # }}}
 	
-	private $queue_count = NULL;
-
 	/**
 	 */
 	public function getQueueCount() { #{{{

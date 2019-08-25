@@ -143,7 +143,7 @@ class PMData extends Basetable {
 		$newobj->setRecipientId($this->getSenderId());
 		$cat = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_PMOUT,$this->getSenderId());
 		$newobj->setCategoryId($cat->getId());
-		$newobj->setNew(0);
+		$newobj->setNew();
 		$newobj->save();
 	}
 

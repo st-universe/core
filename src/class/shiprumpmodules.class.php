@@ -59,7 +59,7 @@ class ShipRumpModules extends ShipRumpModulesData {
 	}
 
 	static public function getByRump($rumpId) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE rumps_id=".intval($rumpId);
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE rumps_id=".intval($rumpId));
 		return self::_getList($result,'ShipRumpModulesData','module_type');
 	}
 

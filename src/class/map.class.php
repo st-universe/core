@@ -121,8 +121,6 @@ class MapFieldData extends BaseTable {
 		return $this->getRegionId() > 0;
 	}
 
-	private $fieldtype = NULL;
-
 	public function getFieldType() {
 		return ResourceCache()->getObject('mapfield',$this->getFieldId());
 	}

@@ -793,8 +793,6 @@ class StringParser_BBCode extends StringParser {
 			$cond = $this->_isUseContent ($this->_stack[count($this->_stack)-1], false);
 			break;
 		case 1:
-			$cond = $this->_isUseContent ($this->_stack[count($this->_stack)-1], true);
-			break;
 		case 2:
 			$cond = $this->_isUseContent ($this->_stack[count($this->_stack)-1], true);
 			break;

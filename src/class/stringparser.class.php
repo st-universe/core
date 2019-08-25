@@ -195,14 +195,6 @@ class StringParser {
 	var $_recentlyReparsed = false;
 	 
 	/**
-	 * Constructor
-	 *
-	 * @access public
-	 */
-	function StringParser () {
-	}
-	
-	/**
 	 * Add a filter
 	 *
 	 * @access public
@@ -533,7 +525,6 @@ class StringParser {
 	 * @return bool
 	 */
 	function _searchLoop () {
-		$i = 0;
 		while (1) {
 			// make sure this is false!
 			$this->_recentlyReparsed = false;
@@ -1206,7 +1197,6 @@ class StringParser_Node {
 		
 		if ($destroy) {
 			return StringParser_Node::destroyNode ($object);
-			unset ($object);
 		}
 		return true;
 	}

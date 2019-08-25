@@ -5,7 +5,6 @@ class FleetData extends BaseTable {
 	const tablename = 'stu_fleets';
 	protected $tablename = 'stu_fleets';
 
-	private $fleets_id = 0;
 	private $shiplist = NULL;
 	private $shipCount = NULL;
 

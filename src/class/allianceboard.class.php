@@ -360,8 +360,6 @@ class AlliancePostData extends BaseTable {
 		return $this->data['text'];
 	}
 
-	private $text = NULL;
-
 	function getTextDecoded() {
 		return stripslashes(BBCode()->parse(decodeString($this->getText())));
 	}

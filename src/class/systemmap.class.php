@@ -46,8 +46,6 @@ class SystemMapData extends BaseTable {
 		$this->setFieldValue('field_id',$value,'getFieldId');
 	}
 
-	private $fieldtype = NULL;
-
 	public function getFieldType() {
 		return ResourceCache()->getObject('mapfield',$this->getFieldId());
 	}

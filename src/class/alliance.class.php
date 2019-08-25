@@ -1,5 +1,7 @@
 <?php
 
+use Lib\AllianceMemberWrapper;
+
 class AllianceData extends BaseTable {
 
 	protected $tablename = 'stu_alliances';
@@ -171,7 +173,7 @@ class AllianceData extends BaseTable {
 	function getMembers() {
 		if ($this->members === NULL) {
 			foreach (User::getListBy('WHERE allys_id='.$this->getId()) as $user) {
-				$this->members[$user->getId()] = new \Lib\AllianceMemberWrapper($user,$this);
+				$this->members[$user->getId()] = new AllianceMemberWrapper($user,$this);
 			}
 		}
 		return $this->members;

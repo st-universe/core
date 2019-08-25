@@ -134,7 +134,7 @@ class ModuleQueue extends ModuleQueueData { #{{{
 	 */
 	static function queueModule($colony_id,$function,$module_id,$count) { #{{{
 		if (($queue=self::getBy('WHERE colony_id='.$colony_id.' AND module_id='.$module_id.' AND buildingfunction='.$function)) !== FALSE) {
-			$queue->setCount($queue->getCount()+$count);
+			$queue->setCount($queue->getAmount()+$count);
 			$queue->save();
 			return;
 		}

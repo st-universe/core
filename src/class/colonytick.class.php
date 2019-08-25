@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Module\Research\ResearchState;
+use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -96,7 +97,6 @@ class ColonyTickManager {
 class ColonyTick {
 
 	private $colony = NULL;
-	private $buildings = NULL;
 	private $msg = array();
 
 	function __construct(&$colony) {
@@ -215,7 +215,7 @@ class ColonyTick {
 		}
 
 		/**
-		 * @var false|\Stu\Orm\Entity\ResearchedInterface $current_research
+		 * @var false|ResearchedInterface $current_research
 		 */
 		$current_research = $this->getColony()->getUser()->getCurrentResearch();
 
