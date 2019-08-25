@@ -46,7 +46,7 @@ final class ShowShipRepair implements ViewControllerInterface
                         continue;
                     }
                     foreach (RumpBuildingFunction::getByRumpId($ship->getRumpId()) as $rump_rel) {
-                        if ($this->getField()->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
+                        if ($field->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
                             $repairableShips[$ship->getId()] = $ship;
                             break;
                         }
