@@ -162,7 +162,7 @@ abstract class GameController implements GameControllerInterface
         if ($override) {
             $this->gameInformations = array();
         }
-        $this->gameInformations[] = decodeString(BBCode()->parse($msg));
+        $this->gameInformations[] = $msg;
     }
 
     public function addInformationMerge($info)

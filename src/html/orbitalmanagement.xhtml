@@ -18,14 +18,14 @@
 				</tr>
 				<tal:block tal:repeat="fleet COLONY/getOrbitShiplist">
 					<tr>
-						<td colspan="6" tal:content="structure fleet/name">FLEETNAME</td>
+						<td colspan="6" tal:content="structure bbcode:fleet/name">FLEETNAME</td>
 					</tr>
 					<tr tal:repeat="ship fleet/ships" tal:attributes="class string:row${repeat/ship/odd}">
 						<td>
 							<stu:hidden name="ships[]" tal:attributes="value ship/getId" />
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 						</td>
-						<td tal:content="structure ship/getName">NAME</td>
+						<td tal:content="structure bbcode:ship/getName">NAME</td>
 						<td>
 							<div tal:condition="ship/currentUserCanMan">
 								<input type="checkbox" name="man[${ship/getId}]" />
@@ -61,7 +61,7 @@
 								<stu:textinput tal:condition="not:ship/ownedByCurrentUser" width="3" name="torp[${ship/getId}]" />
 								<tal:block tal:condition="not:ship/getTorpedoCount">
 									<tal:block tal:repeat="data ship/getPossibleTorpedoTypes">
-										<img class="center" src="goods/${data/getGoodId}.gif" tal:attributes="title data/getName" />	
+										<img class="center" src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getName" />	
 										<stu:radio name="torp_type[${ship/getId}]" tal:attributes="checked repeat/data/start; value data/getId" />
 									</tal:block>
 								</tal:block>

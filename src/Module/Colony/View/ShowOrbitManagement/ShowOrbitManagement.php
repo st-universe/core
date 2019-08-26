@@ -35,7 +35,11 @@ final class ShowOrbitManagement implements ViewControllerInterface
         );
 
         $game->appendNavigationPart(
-            sprintf('?%s=1id=%s',
+            'colony.php',
+            _('Kolonien')
+        );
+        $game->appendNavigationPart(
+            sprintf('?%s=1&id=%s',
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             ),

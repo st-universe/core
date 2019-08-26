@@ -527,7 +527,7 @@
 	<metal:block metal:define-macro="shipselector"><li><table class="use" style="width: 595px;" onmouseover="shipSelectorHover(this)" onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this,${data/ownedByCurrentUser});">
 				<tr>
 					<td class="darkbg" colspan="4">
-						<span tal:replace="structure data/getName">SHIPNAME</span> | <span tal:replace="structure bbcode:data/getUser/getName">USERNAME</span>
+						<span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span tal:replace="structure bbcode:data/getUser/getName">USERNAME</span>
 					</td>
 				</tr>
 				<tr>
@@ -1251,7 +1251,7 @@
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
-					<td colspan="2">Ziel: <span tal:replace="structure targetShip/getName">...</span></td>
+					<td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
 				</tr>
 				<tr>
 					<td style="width: 100%;">
@@ -1308,7 +1308,7 @@
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
-					<td colspan="2">Ziel: <span tal:replace="structure targetShip/getName">...</span></td>
+					<td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
 				</tr>
 				<tr>
 					<td style="width: 100%;">

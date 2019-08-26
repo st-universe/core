@@ -19,7 +19,7 @@
 							<stu:hidden name="ships[]" tal:attributes="value ship/getId" />
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 						</td>
-						<td tal:content="structure ship/getName">NAME</td>
+						<td tal:content="structure bbcode:ship/getName">NAME</td>
 						<td>
 							<div tal:condition="ship/canBeRepaired">
 								<a href="?id=${COLONY/getId}&B_REPAIR_SHIP=1&ship_id=${ship/getId}&fid=${FIELD/getFieldId}">Reparieren</a>

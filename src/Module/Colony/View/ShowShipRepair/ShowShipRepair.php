@@ -62,6 +62,10 @@ final class ShowShipRepair implements ViewControllerInterface
             }
 
             $game->appendNavigationPart(
+                'colony.php',
+                _('Kolonien')
+            );
+            $game->appendNavigationPart(
                 sprintf('?%s=1&id=%d',
                     ShowColony::VIEW_IDENTIFIER,
                     $colony->getId()
