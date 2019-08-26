@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowFighterShipyard;
 
 use ColonyMenu;
-use request;
 use Shiprump;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -20,12 +19,16 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showFighterShipyardRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowFighterShipyardRequestInterface $showFighterShipyardRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showFighterShipyardRequest = $showFighterShipyardRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +36,7 @@ final class ShowFighterShipyard implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showFighterShipyardRequest->getColonyId(),
             $userId
         );
 

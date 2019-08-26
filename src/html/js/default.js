@@ -67,9 +67,9 @@ function closeAjaxWindow() {
 
 function ajaxcall(div,url) {
 	new Ajax.Updater(div,url,
-			{
-				evalScripts: true
-			});
+		{
+			evalScripts: true
+		});
 }
 
 function ajaxrequest(url) {

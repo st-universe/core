@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBuilding;
 
 use Building;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class ShowBuilding implements ViewControllerInterface
@@ -17,14 +15,14 @@ final class ShowBuilding implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
+    private $showBuildingRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ShowBuildingRequestInterface $showBuildingRequest
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showBuildingRequest = $showBuildingRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,11 +30,11 @@ final class ShowBuilding implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showBuildingRequest->getColonyId(),
             $userId
         );
 
-        $building = new Building(request::getIntFatal('bid'));
+        $building = new Building($this->showBuildingRequest->getBuildingId());
 
         $game->setTemplateVar('buildingdata', $building);
         $game->setPageTitle($building->getName());

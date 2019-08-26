@@ -59,33 +59,89 @@ use Stu\Module\Colony\Lib\ColonyLoader;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\Overview\Overview;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
+use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequest;
+use Stu\Module\Colony\View\ShowAcademy\ShowAcademyRequestInterface;
 use Stu\Module\Colony\View\ShowAirfield\ShowAirfield;
+use Stu\Module\Colony\View\ShowAirfield\ShowAirfieldRequest;
+use Stu\Module\Colony\View\ShowAirfield\ShowAirfieldRequestInterface;
 use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFrom;
+use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFromRequest;
+use Stu\Module\Colony\View\ShowBeamFrom\ShowBeamFromRequestInterface;
 use Stu\Module\Colony\View\ShowBeamTo\ShowBeamTo;
+use Stu\Module\Colony\View\ShowBeamTo\ShowBeamToRequest;
+use Stu\Module\Colony\View\ShowBeamTo\ShowBeamToRequestInterface;
 use Stu\Module\Colony\View\ShowBuilding\ShowBuilding;
+use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequest;
+use Stu\Module\Colony\View\ShowBuilding\ShowBuildingRequestInterface;
 use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagement;
+use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagementRequest;
+use Stu\Module\Colony\View\ShowBuildingManagement\ShowBuildingManagementRequestInterface;
 use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenu;
+use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenuRequest;
+use Stu\Module\Colony\View\ShowBuildMenu\ShowBuildMenuRequestInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
+use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPartRequest;
+use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPartRequestInterface;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
+use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequest;
+use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlansRequestInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
+use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResultRequest;
+use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResultRequestInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Colony\View\ShowColony\ShowColonyRequest;
+use Stu\Module\Colony\View\ShowColony\ShowColonyRequestInterface;
 use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBar;
+use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBarRequest;
+use Stu\Module\Colony\View\ShowEpsBar\ShowEpsBarRequestInterface;
 use Stu\Module\Colony\View\ShowField\ShowField;
+use Stu\Module\Colony\View\ShowField\ShowFieldRequest;
+use Stu\Module\Colony\View\ShowField\ShowFieldRequestInterface;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
+use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
+use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
+use Stu\Module\Colony\View\ShowManagement\ShowManagementRequest;
+use Stu\Module\Colony\View\ShowManagement\ShowManagementRequestInterface;
 use Stu\Module\Colony\View\ShowMisc\ShowMisc;
+use Stu\Module\Colony\View\ShowMisc\ShowMiscRequest;
+use Stu\Module\Colony\View\ShowMisc\ShowMiscRequestInterface;
 use Stu\Module\Colony\View\ShowModuleCancel\ShowModuleCancel;
+use Stu\Module\Colony\View\ShowModuleCancel\ShowModuleCancelRequest;
+use Stu\Module\Colony\View\ShowModuleCancel\ShowModuleCancelRequestInterface;
 use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFab;
+use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFabRequest;
+use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFabRequestInterface;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
+use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequest;
+use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreenRequestInterface;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
+use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplanRequest;
+use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplanRequestInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
+use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequest;
+use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequestInterface;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplist;
+use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequest;
+use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequestInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
+use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
+use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequestInterface;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
+use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequest;
+use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowSocial\ShowSocial;
+use Stu\Module\Colony\View\ShowSocial\ShowSocialRequest;
+use Stu\Module\Colony\View\ShowSocial\ShowSocialRequestInterface;
 use Stu\Module\Colony\View\ShowStorage\ShowStorage;
+use Stu\Module\Colony\View\ShowStorage\ShowStorageRequest;
+use Stu\Module\Colony\View\ShowStorage\ShowStorageRequestInterface;
 use Stu\Module\Colony\View\ShowSurface\ShowSurface;
+use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequest;
+use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequestInterface;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
+use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
+use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
@@ -96,6 +152,34 @@ return [
     ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
     ColonyLoaderInterface::class => autowire(ColonyLoader::class),
     AbandonRequestInterface::class => autowire(AbandonRequest::class),
+    ShowAcademyRequestInterface::class => autowire(ShowAcademyRequest::class),
+    ShowAirfieldRequestInterface::class => autowire(ShowAirfieldRequest::class),
+    ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),
+    ShowBeamToRequestInterface::class => autowire(ShowBeamToRequest::class),
+    ShowBuildingRequestInterface::class => autowire(ShowBuildingRequest::class),
+    ShowBuildingManagementRequestInterface::class => autowire(ShowBuildingManagementRequest::class),
+    ShowBuildMenuRequestInterface::class => autowire(ShowBuildMenuRequest::class),
+    ShowBuildMenuPartRequestInterface::class => autowire(ShowBuildMenuPartRequest::class),
+    ShowBuildPlansRequestInterface::class => autowire(ShowBuildPlansRequest::class),
+    ShowBuildResultRequestInterface::class => autowire(ShowBuildResultRequest::class),
+    ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
+    ShowEpsBarRequestInterface::class => autowire(ShowEpsBarRequest::class),
+    ShowFieldRequestInterface::class => autowire(ShowFieldRequest::class),
+    ShowFighterShipyardRequestInterface::class => autowire(ShowFighterShipyardRequest::class),
+    ShowManagementRequestInterface::class => autowire(ShowManagementRequest::class),
+    ShowMiscRequestInterface::class => autowire(ShowMiscRequest::class),
+    ShowModuleCancelRequestInterface::class => autowire(ShowModuleCancelRequest::class),
+    ShowModuleFabRequestInterface::class => autowire(ShowModuleFabRequest::class),
+    ShowModuleScreenRequestInterface::class => autowire(ShowModuleScreenRequest::class),
+    ShowModuleScreenBuildplanRequestInterface::class => autowire(ShowModuleScreenBuildplanRequest::class),
+    ShowOrbitManagementRequestInterface::class => autowire(ShowOrbitManagementRequest::class),
+    ShowOrbitShiplistRequestInterface::class => autowire(ShowOrbitShiplistRequest::class),
+    ShowShipRepairRequestInterface::class => autowire(ShowShipRepairRequest::class),
+    ShowShipyardRequestInterface::class => autowire(ShowShipyardRequest::class),
+    ShowSocialRequestInterface::class => autowire(ShowSocialRequest::class),
+    ShowStorageRequestInterface::class => autowire(ShowStorageRequest::class),
+    ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
+    ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
     IntermediateController::TYPE_COLONY_LIST => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),

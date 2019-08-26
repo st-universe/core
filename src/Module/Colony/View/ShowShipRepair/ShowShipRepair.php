@@ -18,10 +18,14 @@ final class ShowShipRepair implements ViewControllerInterface
 
     private $colonyLoader;
 
+    private $showShipRepairRequest;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ShowShipRepairRequestInterface $showShipRepairRequest
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->showShipRepairRequest = $showShipRepairRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -29,13 +33,16 @@ final class ShowShipRepair implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showShipRepairRequest->getColonyId(),
             $userId
         );
 
         $fieldId = (int)request::indInt('fid');
 
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
+        $field = Colfields::getByColonyField(
+            $this->showShipRepairRequest->getFieldId(),
+            $colony->getId()
+        );
 
         if ($colony->hasShipyard()) {
 

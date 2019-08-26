@@ -13,7 +13,7 @@ function buildMenuScrollDown(menu,offset) {
 }
 
 function buildMenuScroll(menu,offset) {
-	new Ajax.Updater('buildmenu'+menu,'colony.php?id='+colonyid+'&B_SCROLL_BUILDMENU=1&menu='+menu+'&offset='+offset);
+	ajax_update('buildmenu'+menu,'colony.php?id='+colonyid+'&B_SCROLL_BUILDMENU=1&menu='+menu+'&offset='+offset);
 }
 
 function switchColonyMenu(menu,func) {
@@ -23,11 +23,12 @@ function switchColonyMenu(menu,func) {
 		url = url+'&func='+func;
 	}
 	new Ajax.Updater('colonymenu',url,{
-			onComplete: function(transport) {
-				initBuildmenuMouseEvent();
-				}
-			}
-			);
+		onComplete: function(transport) {
+			initBuildmenuMouseEvent();
+		},
+		method: 'get'
+	}
+	);
 }
 
 var selectedbuilding = 0;
@@ -36,14 +37,14 @@ function openBuildingInfo(buildingId) {
 	closeAjaxWindow();
 	elt = 'buildinginfo';
 	openPJsWin(elt);
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_BUILDING=1&bid='+buildingId);
-	new Ajax.Updater('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1&bid='+buildingId);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_BUILDING=1&bid='+buildingId);
+	ajax_update('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1&bid='+buildingId);
 	buildmode = 1;
 	selectedbuilding = buildingId;
 }
 
 function closeBuildingInfo() {
-	new Ajax.Updater('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1');
+	ajax_update('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1');
 	buildmode = 0;
 	selectedbuilding = 0;
 }
@@ -61,7 +62,7 @@ function showFieldInfo(field) {
 	}
 	elt = 'fieldinfo';
 	openPJsWin(elt);
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_FIELD_INFO=1&fid='+field);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_FIELD_INFO=1&fid='+field);
 }
 function fieldMouseOver(obj,field,building,fieldtype) {
 	document.body.style.cursor = 'pointer';
@@ -113,7 +114,7 @@ function fieldAction(field) {
 	fieldonm = 0;
 	elt = 'fieldaction';
 	openPJsWin(elt,1);
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_FIELD=1&fid='+field);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_FIELD=1&fid='+field);
 }
 function buildOnField(field) {
     new Ajax.Updater('result','colony.php',{
@@ -127,16 +128,16 @@ function buildOnField(field) {
 }
 
 function refreshColony() {
-	new Ajax.Updater('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1&bid='+selectedbuilding);
-	new Ajax.Updater('colonyeps','colony.php?id='+colonyid+'&SHOW_EPSBAR_AJAX=1');
-	new Ajax.Updater('colonystorage','colony.php?id='+colonyid+'&SHOW_STORAGE_AJAX=1');
-	new Ajax.Updater('colonylist_navlet','maindesk.php?SHOW_COLONYLIST_AJAX=1');
+	ajax_update('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1&bid='+selectedbuilding);
+	ajax_update('colonyeps','colony.php?id='+colonyid+'&SHOW_EPSBAR_AJAX=1');
+	ajax_update('colonystorage','colony.php?id='+colonyid+'&SHOW_STORAGE_AJAX=1');
+	ajax_update('colonylist_navlet','maindesk.php?SHOW_COLONYLIST_AJAX=1');
 }
 
 function getOrbitShipList() {
 	elt = 'shiplist';
 	openPJsWin(elt);
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_ORBIT_SHIPLIST=1');
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_ORBIT_SHIPLIST=1');
 }
 var selbg = '';
 function shipSelectorHover(obj) {
@@ -173,24 +174,24 @@ function showBToWindow() {
 	var shipid = $('selshipid').value;
 	elt = 'beam'
 	openPJsWin(elt,1);
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_BEAMTO=1&target='+shipid);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_BEAMTO=1&target='+shipid);
 }
 
 function showBFromWindow() {
 	var shipid = $('selshipid').value;
 	elt = 'beam'
 	openPJsWin(elt,1);
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_BEAMFROM=1&target='+shipid);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_BEAMFROM=1&target='+shipid);
 }
 
 function triggerBeamTo() {
 	var shipid = $('selshipid').value;
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_BEAMTO=1&target='+shipid);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_BEAMTO=1&target='+shipid);
 }
 
 function triggerBeamFrom() {
 	var shipid = $('selshipid').value;
-	new Ajax.Updater(elt,'colony.php?id='+colonyid+'&SHOW_BEAMFROM=1&target='+shipid);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_BEAMFROM=1&target='+shipid);
 }
 
 function initBuildmenuMouseEvent() {

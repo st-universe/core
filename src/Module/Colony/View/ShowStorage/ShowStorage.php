@@ -18,12 +18,16 @@ final class ShowStorage implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showStorageRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowStorageRequestInterface $showStorageRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showStorageRequest = $showStorageRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,7 +35,7 @@ final class ShowStorage implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showStorageRequest->getColonyId(),
             $userId
         );
 

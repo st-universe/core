@@ -8,11 +8,9 @@ use ModuleScreenTab;
 use ModuleScreenTabWrapper;
 use ModuleSelector;
 use ModuleSelectorSpecial;
-use request;
 use ShipBuildplans;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 
@@ -22,14 +20,14 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
+    private $showModuleScreenBuildplanRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ShowModuleScreenBuildplanRequestInterface $showModuleScreenBuildplanRequest
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showModuleScreenBuildplanRequest = $showModuleScreenBuildplanRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,12 +35,11 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showModuleScreenBuildplanRequest->getColonyId(),
             $userId
         );
 
-        $planId = request::getIntFatal('planid');
-        $plan = new ShipBuildplans($planId);
+        $plan = new ShipBuildplans($this->showModuleScreenBuildplanRequest->getBuildplanId());
         if (!$plan->ownedByCurrentUser()) {
             return;
         }

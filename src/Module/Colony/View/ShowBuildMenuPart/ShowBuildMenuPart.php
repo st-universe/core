@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\View\ShowBuildMenuPart;
 
 use Building;
 use ColonyMenu;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -20,12 +19,16 @@ final class ShowBuildMenuPart implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showBuildMenuPartRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowBuildMenuPartRequestInterface $showBuildMenuPartRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showBuildMenuPartRequest = $showBuildMenuPartRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +36,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showBuildMenuPartRequest->getColonyId(),
             $userId
         );
 

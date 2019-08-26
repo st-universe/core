@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitManagement;
 
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 
@@ -17,14 +15,14 @@ final class ShowOrbitManagement implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
+    private $showOrbitManagementRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ShowOrbitManagementRequestInterface $showOrbitManagementRequest
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showOrbitManagementRequest = $showOrbitManagementRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,7 +30,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showOrbitManagementRequest->getColonyId(),
             $userId
         );
 
@@ -49,7 +47,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
                 $colony->getId()),
             _('Orbitalmanagement')
         );
-        $game->setPagetitle(sprintf('%s Orbit', $colony->getNameWithoutMarkup(),));
+        $game->setPagetitle(sprintf('%s Orbit', $colony->getNameWithoutMarkup()));
         $game->setTemplateFile('html/orbitalmanagement.xhtml');
 
         $game->setTemplateVar('COLONY', $colony);

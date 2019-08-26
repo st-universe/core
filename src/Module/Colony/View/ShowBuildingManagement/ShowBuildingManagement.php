@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\View\ShowBuildingManagement;
 use Colfields;
 use ColonyMenu;
 use Good;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -21,12 +20,16 @@ final class ShowBuildingManagement implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showBuildingManagementRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowBuildingManagementRequestInterface $showBuildingManagementRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showBuildingManagementRequest = $showBuildingManagementRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,7 +37,7 @@ final class ShowBuildingManagement implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showBuildingManagementRequest->getColonyId(),
             $userId
         );
 

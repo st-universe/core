@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSocial;
 
 use ColonyMenu;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -19,12 +18,16 @@ final class ShowSocial implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showSocialRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowSocialRequestInterface $showSocialRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showSocialRequest = $showSocialRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,7 +35,7 @@ final class ShowSocial implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showSocialRequest->getColonyId(),
             $userId
         );
 

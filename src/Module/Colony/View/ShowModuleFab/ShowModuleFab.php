@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use ColonyMenu;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -19,12 +18,16 @@ final class ShowModuleFab implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showModuleFabRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowModuleFabRequestInterface $showModuleFabRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showModuleFabRequest = $showModuleFabRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,7 +35,7 @@ final class ShowModuleFab implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showModuleFabRequest->getColonyId(),
             $userId
         );
 

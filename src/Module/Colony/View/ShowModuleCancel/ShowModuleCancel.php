@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleCancel;
 
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -15,10 +14,14 @@ final class ShowModuleCancel implements ViewControllerInterface
 
     private $colonyLoader;
 
+    private $showModuleCancelRequest;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ShowModuleCancelRequestInterface $showModuleCancelRequest
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->showModuleCancelRequest = $showModuleCancelRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -26,11 +29,14 @@ final class ShowModuleCancel implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showModuleCancelRequest->getColonyId(),
             $userId
         );
 
-        $game->setTemplateVar('MODULE', ResourceCache()->getObject('module', request::postIntFatal('module')));
+        $game->setTemplateVar(
+            'MODULE',
+            ResourceCache()->getObject('module', $this->showModuleCancelRequest->getModuleId())
+        );
         $game->setTemplateFile('html/ajaxempty.xhtml');
         $game->setAjaxMacro('html/colonymacros.xhtml/queue_count');
         $game->setTemplateVar('COLONY', $colony);

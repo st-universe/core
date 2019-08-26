@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\View\ShowBuildPlans;
 
 use BuildingFunctions;
 use ColonyMenu;
-use request;
 use ShipBuildplans;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -21,12 +20,16 @@ final class ShowBuildPlans implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showBuildPlansRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowBuildPlansRequestInterface $showBuildPlansRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showBuildPlansRequest = $showBuildPlansRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,13 +37,13 @@ final class ShowBuildPlans implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showBuildPlansRequest->getColonyId(),
             $userId
         );
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $buildingFunction = new BuildingFunctions(request::getIntFatal('func'));
+        $buildingFunction = new BuildingFunctions($this->showBuildPlansRequest->getBuildingFunctionId());
 
         $game->setTemplateFile('html/ajaxempty.xhtml');
         $game->setAjaxMacro('html/colonymacros.xhtml/cm_buildplans');

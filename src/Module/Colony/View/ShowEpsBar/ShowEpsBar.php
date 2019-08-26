@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowEpsBar;
 
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -18,11 +17,15 @@ final class ShowEpsBar implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showEpsBarRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowEpsBarRequestInterface $showEpsBarRequest
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->showEpsBarRequest = $showEpsBarRequest;
         $this->colonyGuiHelper = $colonyGuiHelper;
     }
 
@@ -31,7 +34,7 @@ final class ShowEpsBar implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showEpsBarRequest->getColonyId(),
             $userId
         );
 

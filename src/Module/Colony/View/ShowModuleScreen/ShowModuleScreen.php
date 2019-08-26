@@ -8,11 +8,9 @@ use ModuleScreenTab;
 use ModuleScreenTabWrapper;
 use ModuleSelector;
 use ModuleSelectorSpecial;
-use request;
 use Shiprump;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
@@ -21,14 +19,14 @@ final class ShowModuleScreen implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
+    private $showModuleScreenRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ShowModuleScreenRequestInterface $showModuleScreenRequest
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showModuleScreenRequest = $showModuleScreenRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,11 +34,11 @@ final class ShowModuleScreen implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showModuleScreenRequest->getColonyId(),
             $userId
         );
 
-        $rump = new Shiprump(request::indInt('rump'));
+        $rump = new Shiprump($this->showModuleScreenRequest->getRumpId());
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;
         for ($i = 1; $i <= MODULE_TYPE_COUNT; $i++) {

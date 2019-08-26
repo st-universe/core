@@ -6,11 +6,9 @@ namespace Stu\Module\Colony\View\ShowShipyard;
 
 use BuildingFunctions;
 use ColonyMenu;
-use request;
 use Shiprump;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class ShowShipyard implements ViewControllerInterface
@@ -19,14 +17,14 @@ final class ShowShipyard implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
+    private $showShipyardRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ShowShipyardRequestInterface $showShipyardRequest
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showShipyardRequest = $showShipyardRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,14 +32,11 @@ final class ShowShipyard implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showShipyardRequest->getColonyId(),
             $userId
         );
 
-        $this->colonyGuiHelper->register($colony, $game);
-
-        $func_id = request::getIntFatal('func');
-        $function = new BuildingFunctions($func_id);
+        $function = new BuildingFunctions($this->showShipyardRequest->getBuildingFunctionId());
         $buildableShips = Shiprump::getBuildableRumpsByBuildingFunction($userId, $function->getFunction());
 
         $game->setTemplateFile('html/ajaxempty.xhtml');

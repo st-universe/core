@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowAirfield;
 
 use ColonyMenu;
-use request;
 use Shiprump;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -20,12 +19,16 @@ final class ShowAirfield implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showAirfieldRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowAirfieldRequestInterface $showAirfieldRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showAirfieldRequest = $showAirfieldRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +36,7 @@ final class ShowAirfield implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showAirfieldRequest->getColonyId(),
             $userId
         );
 

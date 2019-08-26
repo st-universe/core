@@ -9,7 +9,6 @@ use ColonyShipQueue;
 use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -22,12 +21,16 @@ final class ShowField implements ViewControllerInterface
 
     private $colonyShipRepairRepository;
 
+    private $showFieldRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        ShowFieldRequestInterface $showFieldRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
+        $this->showFieldRequest = $showFieldRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,12 +38,15 @@ final class ShowField implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showFieldRequest->getColonyId(),
             $userId
         );
         $fieldId = (int)request::indInt('fid');
 
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
+        $field = Colfields::getByColonyField(
+            $this->showFieldRequest->getFieldId(),
+            $colony->getId()
+        );
 
 
         $shipRepairProgress = $this->colonyShipRepairRepository->getByColonyField(
@@ -55,7 +61,7 @@ final class ShowField implements ViewControllerInterface
             }
         );
 
-        $game->setPageTitle(sprintf('Feld %d - Informationen', $fieldId));
+        $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getId()));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setAjaxMacro('html/colonymacros.xhtml/fieldaction');
 

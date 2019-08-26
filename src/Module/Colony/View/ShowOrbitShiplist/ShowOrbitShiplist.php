@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitShiplist;
 
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class ShowOrbitShiplist implements ViewControllerInterface
@@ -16,14 +14,14 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
+    private $showOrbitShiplistRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ShowOrbitShiplistRequestInterface $showOrbitShiplistRequest
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showOrbitShiplistRequest = $showOrbitShiplistRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,7 +29,7 @@ final class ShowOrbitShiplist implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showOrbitShiplistRequest->getColonyId(),
             $userId
         );
 

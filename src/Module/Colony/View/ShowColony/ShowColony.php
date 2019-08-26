@@ -19,12 +19,16 @@ final class ShowColony implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showColonyRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowColonyRequestInterface $showColonyRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showColonyRequest = $showColonyRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,8 +36,8 @@ final class ShowColony implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
-            $game->getUser()->getId()
+            $this->showColonyRequest->getColonyId(),
+            $userId
         );
 
         $this->colonyGuiHelper->register($colony, $game);

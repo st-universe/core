@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowAcademy;
 
 use ColonyMenu;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -19,12 +18,16 @@ final class ShowAcademy implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $showAcademyRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ShowAcademyRequestInterface $showAcademyRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->showAcademyRequest = $showAcademyRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +36,7 @@ final class ShowAcademy implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('id'),
+            $this->showAcademyRequest->getColonyId(),
             $userId
         );
 
