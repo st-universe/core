@@ -9,6 +9,7 @@ use StarSystem;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\DatabaseUserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use UserData;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
 {
@@ -16,12 +17,16 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
 
     private $databaseEntry;
 
+    private $user;
+
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,
-        DatabaseEntryInterface $databaseEntry
+        DatabaseEntryInterface $databaseEntry,
+        UserData $user
     ) {
         $this->databaseEntry = $databaseEntry;
         $this->databaseUserRepository = $databaseUserRepository;
+        $this->user = $user;
     }
 
     private $wasEntryDiscovered;
@@ -52,7 +57,10 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     public function wasDiscovered(): bool
     {
         if ($this->wasEntryDiscovered === null) {
-            $result = $this->databaseUserRepository->findFor($this->databaseEntry->getId(), (int) currentUser()->getId());
+            $result = $this->databaseUserRepository->findFor(
+                $this->databaseEntry->getId(),
+                $this->user->getId()
+            );
             if ($result === null) {
                 $this->wasEntryDiscovered = false;
             } else {

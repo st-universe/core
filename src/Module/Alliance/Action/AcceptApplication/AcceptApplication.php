@@ -47,7 +47,7 @@ final class AcceptApplication implements ActionControllerInterface
             _('Deine Bewerbung wurde akzeptiert - Du bist jetzt Mitglied der Allianz %s'),
             $alliance->getNameWithoutMarkup()
         );
-        PM::sendPM(currentUser()->getId(), $appl->getUserId(), $text);
+        PM::sendPM($game->getUser()->getId(), $appl->getUserId(), $text);
 
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
     }

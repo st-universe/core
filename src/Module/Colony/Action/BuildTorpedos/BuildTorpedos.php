@@ -25,13 +25,15 @@ final class BuildTorpedos implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $torps = request::postArray('torps');
-        $torpedo_types = TorpedoType::getBuildableTorpedoTypesByUser(currentUser()->getId());
+        $torpedo_types = TorpedoType::getBuildableTorpedoTypesByUser($userId);
         $storage = $colony->getStorage();
         $msg = array();
         foreach ($torps as $torp_id => $count) {

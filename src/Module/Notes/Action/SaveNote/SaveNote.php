@@ -41,7 +41,7 @@ final class SaveNote implements ActionControllerInterface
         $note->setText($this->saveNoteRequest->getText());
         $note->setTitle($this->saveNoteRequest->getTitle());
         $note->setDate(time());
-        $note->setUserId(currentUser()->getId());
+        $note->setUserId($userId);
         $note->save();
 
         $game->addInformation(_('Die Notiz wurde gespeichert'));

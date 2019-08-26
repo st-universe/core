@@ -55,7 +55,7 @@ final class AddKnPost implements ActionControllerInterface
             }
         }
         $post->setText($text);
-        $post->setUserId(currentUser()->getId());
+        $post->setUserId($userId);
         $post->setDate(time());
         $post->save();
 

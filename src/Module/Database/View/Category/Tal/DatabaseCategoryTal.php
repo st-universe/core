@@ -6,6 +6,7 @@ namespace Stu\Module\Database\View\Category\Tal;
 
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use UserData;
 
 final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 {
@@ -13,13 +14,16 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 
     private $databaseCategory;
 
+    private $user;
+
     public function __construct(
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
-        DatabaseCategoryInterface $databaseCategory
-    )
-    {
+        DatabaseCategoryInterface $databaseCategory,
+        UserData $user
+    ) {
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->databaseCategory = $databaseCategory;
+        $this->user = $user;
     }
 
     public function isCategoryStarSystems(): bool
@@ -41,13 +45,14 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
     {
         return array_map(
             function (DatabaseEntryInterface $entry): DatabaseCategoryEntryTalInterface {
-                return $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($entry);
+                return $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($entry, $this->user);
             },
             $this->databaseCategory->getEntries()
         );
     }
 
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->databaseCategory->getId();
     }
 }

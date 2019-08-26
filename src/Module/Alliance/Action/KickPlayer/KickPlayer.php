@@ -45,7 +45,7 @@ final class KickPlayer implements ActionControllerInterface
         $player->save();
 
         if ($alliance->getFounder()->getUserId() == $playerId) {
-            $alliance->setFounder(currentUser()->getId());
+            $alliance->setFounder($userId);
             $alliance->delSuccessor();
         }
         AllianceJobs::delByUser($playerId);

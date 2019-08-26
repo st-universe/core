@@ -35,11 +35,11 @@ final class WritePm implements ActionControllerInterface
             $this->addInformation("Dieser Siedler existiert nicht");
             return;
         }
-        if ($recipient->getId() == currentUser()->getId()) {
+        if ($recipient->getId() == $userId) {
             $this->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
-        if ($recipient->isOnIgnoreList(currentUser()->getId())) {
+        if ($recipient->isOnIgnoreList($userId)) {
             $this->addInformation("Der Siedler ignoriert Dich");
             return;
         }

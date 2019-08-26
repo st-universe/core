@@ -52,7 +52,7 @@ final class SwitchContactMode implements ActionControllerInterface
             } else {
                 $obj = new ContactlistData();
                 $obj->setUserId($contact->getRecipientId());
-                $obj->setRecipientId(currentUser()->getId());
+                $obj->setRecipientId($userId);
                 $obj->setMode(Contactlist::CONTACT_ENEMY);
                 $obj->setDate(time());
                 $obj->save();

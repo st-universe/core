@@ -100,7 +100,7 @@ abstract class GameController implements GameControllerInterface
 
     private function maintenanceView()
     {
-        if (!isAdmin(currentUser()->getId())) {
+        if (!$this->isAdmin()) {
             if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_TICK) {
                 $this->setPageTitle("Rundenwechsel aktiv");
                 $this->setTemplateFile('html/tick.xhtml');
@@ -380,11 +380,11 @@ abstract class GameController implements GameControllerInterface
 
     public function checkDatabaseItem($databaseEntryId): void
     {
-        $userId = currentUser()->getId();
-
         // @todo refactor
         global $container;
         $databaseUserRepo = $container->get(DatabaseUserRepositoryInterface::class);
+
+        $userId = $this->getUser()->getId();
 
         if ($databaseEntryId > 0 && $databaseUserRepo->exists($userId, $databaseEntryId) === false) {
             $this->addAchievement(databaseScan($databaseEntryId, $userId));
