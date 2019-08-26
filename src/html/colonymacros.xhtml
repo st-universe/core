@@ -449,7 +449,7 @@
 	<metal:block metal:define-macro="cm_management">
         <metal:macro metal:use-macro="cm_tabs" />
         <metal:macro metal:use-macro="colonymenu_container">
-            <div metal:fill-slot="containment">
+            <div metal:fill-slot="containment" style="width: 610px">
                 <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
                 <stu:box title="Schiffe im Orbit" i18n:attributes="title">
                     <ul id="shipselector">
