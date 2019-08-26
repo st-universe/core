@@ -170,10 +170,10 @@ class ShipBuildplansData extends BaseTable {
 
 class ShipBuildplans extends ShipBuildplansData {
 	
-	function __construct(&$colony_id) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".intval($colony_id),4);
+	function __construct(&$planId) {
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".intval($planId),4);
 		if ($result == 0) {
-			throw new ObjectNotFoundException($colony_id);
+			throw new ObjectNotFoundException($planId);
 		}
 		parent::__construct($result);
 	}

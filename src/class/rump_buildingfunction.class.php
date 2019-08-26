@@ -68,6 +68,7 @@ class RumpBuildingFunction extends RumpBuildingFunctionData { #{{{
 	}
 
 	/**
+	 * @return RumpBuildingFunction[]
 	 */
 	static function getByRumpId($rump_id) { #{{{
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE rump_id=".$rump_id);

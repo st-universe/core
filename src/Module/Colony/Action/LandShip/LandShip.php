@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\LandShip;
 
 use request;
+use Ship;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -33,7 +34,7 @@ final class LandShip implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
         /**
-         * @var \Ship $ship
+         * @var Ship $ship
          */
         $ship = ResourceCache()->getObject('ship', request::getIntFatal('shipid'));
         if (!$ship->ownedByCurrentUser() || !$ship->canLandOnCurrentColony()) {

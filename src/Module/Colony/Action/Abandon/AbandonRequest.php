@@ -10,7 +10,7 @@ final class AbandonRequest implements AbandonRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getPlanetId(): int {
+    public function getColonyId(): int {
         return $this->queryParameter('id')->int()->required();
     }
 

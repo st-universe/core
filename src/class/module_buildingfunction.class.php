@@ -51,6 +51,7 @@ class ModuleBuildingFunctionData extends BaseTable { #{{{
 	} # }}}
 
 	/**
+	 * @return Modules
 	 */
 	public function getModule() { #{{{
 		return ResourceCache()->getObject('module',$this->getModuleId());
@@ -74,6 +75,7 @@ class ModuleBuildingFunction extends ModuleBuildingFunctionData { #{{{
 	}
 	
 	/**
+	 * @return ModuleBuildingFunction[]
 	 */
 	static function getByFunctionAndUser($function_id,$user_id) { #{{{
 		$result = DB()->query('SELECT * FROM '.self::tablename.' WHERE buildingfunction='.$function_id.' AND module_id IN ('.self::getResearchQuery($user_id).') ORDER BY module_id');

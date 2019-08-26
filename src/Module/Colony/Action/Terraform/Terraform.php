@@ -28,9 +28,11 @@ final class Terraform implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $user->getId()
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
@@ -48,7 +50,7 @@ final class Terraform implements ActionControllerInterface
         if ($field->getFieldType() != $terraf->getSource()) {
             return;
         }
-        if (!currentUser()->hasResearched($terraf->getResearchId())) {
+        if (!$user->hasResearched($terraf->getResearchId())) {
             return;
         }
         if ($terraf->getLimit() > 0 && $terraf->getLimit() <= Colfields::countInstances('type=' . $terraf->getDestination())) {
@@ -73,13 +75,12 @@ final class Terraform implements ActionControllerInterface
         }
         $colony->lowerEps($terraf->getEpsCost());
         $time = time() + $terraf->getDuration() + 60;
-        FieldTerraforming::addTerraforming($colony->getId(), $field->getId(), $terraf->getId(),
-            $time);
+        FieldTerraforming::addTerraforming($colony->getId(), $field->getId(), $terraf->getId(), $time);
         $field->setTerraformingId($terraf->getId());
         $field->save();
         $colony->save();
         $game->addInformationf(
-            _("%s wird durchgeführt - Fertigstellung: %s"),
+            _('%s wird durchgeführt - Fertigstellung: %s'),
             $terraf->getDescription(),
             parseDateTime($time)
         );

@@ -32,34 +32,42 @@ final class BuildOnField implements ActionControllerInterface
     {
         $game->setView(ShowBuildResult::VIEW_IDENTIFIER);
 
+        $user = $game->getUser();
+        $userId = $user->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
-        $fieldId = (int)request::indInt('fid');
+        $colonyId = $colony->getId();
 
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
+        $field = Colfields::getByColonyField(
+            (int)request::indInt('fid'),
+            $colonyId
+        );
 
         if ($field->getTerraformingId() > 0) {
             return;
         }
-        $building_id = request::indInt('bid');
-        $building = new Building($building_id);
-        if (!$game->getUser()->hasResearched($building->getResearchId())) {
+        $building = new Building(request::indInt('bid'));
+
+        $buildingId = $building->getId();
+
+        if (!$user->hasResearched($building->getResearchId())) {
             return;
         }
         if (!in_array($field->getFieldType(), $building->getBuildableFields())) {
             return;
         }
-        if ($building->hasLimitColony() && Colfields::countInstances('buildings_id=' . $building->getId() . ' AND colonies_id=' . $colony->getId()) >= $building->getLimitColony()) {
+        if ($building->hasLimitColony() && Colfields::countInstances('buildings_id=' . $buildingId . ' AND colonies_id=' . $colonyId) >= $building->getLimitColony()) {
             $game->addInformationf(
                 _('Dieses Gebäude kann auf dieser Kolonie nur %d mal gebaut werden'),
                 $building->getLimitColony()
             );
             return;
         }
-        if ($building->hasLimit() && Colfields::countInstances('buildings_id=' . $building->getId() . ' AND colonies_id IN (SELECT id FROM stu_colonies WHERE user_id=' . $game->getUser()->getId() . ')') >= $building->getLimit()) {
+        if ($building->hasLimit() && Colfields::countInstances('buildings_id=' . $buildingId . ' AND colonies_id IN (SELECT id FROM stu_colonies WHERE user_id=' . $userId . ')') >= $building->getLimit()) {
             $game->addInformationf(
                 _('Dieses Gebäude kann insgesamt nur %d mal gebaut werden'),
                 $building->getLimit()
@@ -145,7 +153,7 @@ final class BuildOnField implements ActionControllerInterface
         $colony->save();
         $field->save();
         $game->addInformationf(
-            _("%s wird gebaut - Fertigstellung: %s"),
+            _('%s wird gebaut - Fertigstellung: %s'),
             $building->getName(),
             $field->getBuildtimeDisplay()
         );
@@ -178,7 +186,7 @@ final class BuildOnField implements ActionControllerInterface
                 break;
             }
             $colony->upperStorage($value->getGoodId(), $amount);
-            $game->addInformation($amount . " " . $value->getGood()->getName());
+            $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();
         $field->save();

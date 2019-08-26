@@ -27,9 +27,11 @@ final class BeamTo implements ActionControllerInterface
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         if ($colony->getEps() == 0) {
@@ -37,7 +39,7 @@ final class BeamTo implements ActionControllerInterface
             return;
         }
         $target = new Ship(request::postIntFatal('target'));
-        if ($target->shieldIsActive() && $target->getUserId() != currentUser()->getId()) {
+        if ($target->shieldIsActive() && $target->getUserId() != $userId) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }
@@ -110,8 +112,8 @@ final class BeamTo implements ActionControllerInterface
             $colony->lowerStorage($value, $count);
             $target->setStorageSum($target->getStorageSum() + $count);
         }
-        if ($target->getUserId() != $colony->getUserId()) {
-            $game->sendInformation($target->getUserId(), currentUser()->getId(), PM_SPECIAL_TRADE);
+        if ($target->getUserId() != $userId) {
+            $game->sendInformation($target->getUserId(), $userId, PM_SPECIAL_TRADE);
         }
         $colony->save();
     }

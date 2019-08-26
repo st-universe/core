@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\RepairShip;
 use Colfields;
 use request;
 use RumpBuildingFunction;
+use Ship;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -33,20 +34,25 @@ final class RepairShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
         );
-        $fieldId = (int)request::indInt('fid');
 
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
-
-        $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
+        $field = Colfields::getByColonyField(
+            (int)request::indInt('fid'),
+            $colony->getId()
+        );
 
         $ship_id = request::getIntFatal('ship_id');
 
         $repairableShiplist = [];
         foreach ($colony->getOrbitShipList() as $fleet) {
+            /**
+             * @var Ship $ship
+             */
             foreach ($fleet['ships'] as $ship_id => $ship) {
                 if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
                     continue;
@@ -61,7 +67,7 @@ final class RepairShip implements ActionControllerInterface
         }
 
         /**
-         * @var \Ship $ship
+         * @var Ship $ship
          */
         $ship = ResourceCache()->getObject(CACHE_SHIP, $ship_id);
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
@@ -95,7 +101,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
         $ticks = ceil(($ship->getMaxHuell() - $ship->getHuell()) / $ship->getRepairRate());
-        $game->addInformationf(('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
+        $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
     }
 
     public function performSessionCheck(): bool

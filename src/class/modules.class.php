@@ -136,6 +136,7 @@ class ModulesData extends BaseTable {
 	} # }}}
 	
 	/**
+	 * @return ModuleCost[]
 	 */
 	public function getCost() { #{{{
 		return ModuleCost::getByModule($this->getId());

@@ -135,6 +135,7 @@ class TorpedoTypeData extends BaseTable { #{{{
 	} # }}}
 
 	/**
+	 * @return TorpedoCost[]
 	 */
 	public function getCosts() { #{{{
 		if ($this->costs === NULL) {
@@ -192,6 +193,7 @@ class TorpedoType extends TorpedoTypeData { #{{{
 	} # }}}
 
 	/**
+	 * @return TorpedoType[]
 	 */
 	static function getBuildableTorpedoTypesByUser($user_id) { #{{{
 		return self::getObjectsBy('WHERE research_id=0 OR research_id IN (SELECT research_id FROM stu_researched WHERE user_id='.$user_id.' AND aktiv=0)');

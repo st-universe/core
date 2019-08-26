@@ -27,11 +27,13 @@ final class Abandon implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $colony = new Colony($this->abandonRequest->getPlanetId());
+        $colony = new Colony($this->abandonRequest->getColonyId());
 
         if ($colony->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
+
+        $colonyId = $colony->getId();
 
         $colony->updateColonySurface();
         $colony->setEps(0);
@@ -46,9 +48,9 @@ final class Abandon implements ActionControllerInterface
         $colony->setName('');
         $colony->save();
 
-        ColStorage::truncate($colony->getId());
-        FieldTerraforming::truncate($colony->getId());
-        ColonyShipQueue::truncate('colony_id=' . $colony->getId());
+        ColStorage::truncate($colonyId);
+        FieldTerraforming::truncate($colonyId);
+        ColonyShipQueue::truncate(sprintf('colony_id = %d', $colony));
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }

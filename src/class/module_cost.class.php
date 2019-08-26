@@ -51,6 +51,7 @@ class ModuleCostData extends BaseTable { #{{{
 	} # }}}
 
 	/**
+	 * @return Good
 	 */
 	public function getGood() { #{{{
 		return ResourceCache()->getObject(CACHE_GOOD,$this->getGoodId());

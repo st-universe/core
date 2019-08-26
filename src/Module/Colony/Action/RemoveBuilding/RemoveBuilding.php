@@ -34,9 +34,10 @@ final class RemoveBuilding implements ActionControllerInterface
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $fieldId = (int)request::indInt('fid');
-
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
+        $field = Colfields::getByColonyField(
+            (int)request::indInt('fid'),
+            $colony->getId()
+        );
 
         if (!$field->hasBuilding()) {
             return;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeleteBuildPlan;
 
+use AccessViolation;
 use request;
 use ShipBuildplans;
 use Stu\Control\ActionControllerInterface;
@@ -25,17 +26,20 @@ final class DeleteBuildPlan implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
-        $planid = request::getIntFatal('planid');
-        $plan = new ShipBuildplans($planid);
+        $plan = new ShipBuildplans(request::getIntFatal('planid'));
+        if ($plan->getUserId() != $userId) {
+            throw new AccessViolation();
+        }
         $plan->delete();
 
         $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setTemplateVar('currentColony', $colony);
         //$this->getTemplate()->setVar('FUNC', $this->getSelectedBuildingFunction());
         $game->setAjaxMacro('html/colonymacros.xhtml/cm_buildplans');
     }

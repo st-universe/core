@@ -28,15 +28,20 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $rump_id = request::postInt('buildrump');
 
 
-        $available_rumps = Shiprump::getBuildableRumpsByBuildingFunction($game->getUser()->getId(),BUILDING_FUNCTION_FIGHTER_SHIPYARD);
+        $available_rumps = Shiprump::getBuildableRumpsByBuildingFunction(
+            $userId,
+            BUILDING_FUNCTION_FIGHTER_SHIPYARD
+        );
 
         if (!array_key_exists($rump_id, $available_rumps)) {
             return;

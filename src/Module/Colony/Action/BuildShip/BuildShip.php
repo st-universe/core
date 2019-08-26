@@ -39,21 +39,23 @@ final class BuildShip implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
+        $userId = $game->getUser()->getId();
+        $colonyId = $colony->getId();
+
         $rump = new Shiprump(request::indInt('rump'));
 
-        $building_functions = RumpBuildingFunction::getByRumpId($rump->getId());
-        $buildung_function = false;
-        foreach ($building_functions as $bfunc) {
+        $buildung_function = null;
+        foreach (RumpBuildingFunction::getByRumpId($rump->getId()) as $bfunc) {
             if ($colony->hasActiveBuildingWithFunction($bfunc->getBuildingFunction())) {
                 $building_function = $bfunc;
             }
         }
-        if (!$building_function) {
+        if ($building_function === null) {
             $game->addInformation(_('Die Werft ist nicht aktiviert'));
             return;
         }
         $game->setView('SHOW_MODULE_SCREEN');
-        if (ColonyShipQueue::countInstances('WHERE colony_id=' . $colony->getId() . ' AND building_function_id=' . $building_function->getBuildingFunction()) > 0) {
+        if (ColonyShipQueue::countInstances('WHERE colony_id=' . $colonyId . ' AND building_function_id=' . $building_function->getBuildingFunction()) > 0) {
             $game->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
             return;
         }
@@ -112,8 +114,7 @@ final class BuildShip implements ActionControllerInterface
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
-            $selector = new ModuleSelector($module->getType(), $colony, $rump,
-                currentUser()->getId());
+            $selector = new ModuleSelector($module->getType(), $colony, $rump, $userId);
             if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
                 return;
             }
@@ -125,7 +126,7 @@ final class BuildShip implements ActionControllerInterface
         // FIXME
         $buildtime = 3600;
         $signature = ShipBuildplansData::createSignature($sigmod);
-        $plan = ShipBuildplans::getBySignature(currentUser()->getId(), $signature);
+        $plan = ShipBuildplans::getBySignature($userId, $signature);
         if (!$plan) {
             $planname = sprintf(
                 _('Bauplan %s %s'),
@@ -137,7 +138,7 @@ final class BuildShip implements ActionControllerInterface
                 $planname
             );
             $plan = new ShipBuildplansData;
-            $plan->setUserId(currentUser()->getId());
+            $plan->setUserId($userId);
             $plan->setRumpId($rump->getId());
             $plan->setName($planname);
             $plan->setSignature($signature);
@@ -154,8 +155,8 @@ final class BuildShip implements ActionControllerInterface
             );
         }
         $queue = new ColonyShipQueueData;
-        $queue->setColonyId($colony->getId());
-        $queue->setUserId(currentUser()->getId());
+        $queue->setColonyId($colony);
+        $queue->setUserId($userId);
         $queue->setRumpId($rump->getId());
         $queue->setBuildplanId($plan->getId());
         $queue->setBuildtime($buildtime);

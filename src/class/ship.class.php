@@ -255,6 +255,9 @@ class ShipData extends BaseTable {
 		return $this->data['user_id'];
 	}
 
+	/**
+	 * @return User
+	 */
 	function getUser() {
 		return ResourceCache()->getObject("user",$this->getUserId());
 	}
@@ -906,6 +909,9 @@ class ShipData extends BaseTable {
 
 	private $storage = NULL;
 
+	/**
+	 * @return ShipStorage[]
+	 */
 	public function getStorage() {
 		if ($this->storage === NULL) {
 			$this->storage = ShipStorage::getObjectsBy('ships_id='.$this->getId());
@@ -1004,6 +1010,9 @@ class ShipData extends BaseTable {
 
 	private $rump = NULL;
 
+	/**
+	 * @return Shiprump
+	 */
 	function getRump() {
 		if ($this->rump === NULL) {
 			$this->rump = ResourceCache()->getObject('rump',$this->getRumpId());

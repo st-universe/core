@@ -347,6 +347,7 @@ class ShiprumpData extends BaseTable {
 	private $buildingsCosts = NULL;
 
 	/**
+	 * @return ShipRumpCosts[]
 	 */
 	public function getBuildingCosts() { #{{{
 		if ($this->buildingsCosts === NULL) {

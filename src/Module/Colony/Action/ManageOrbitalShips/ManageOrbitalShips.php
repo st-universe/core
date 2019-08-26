@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use Exception;
+use PM;
 use request;
 use ShipCrew;
 use Stu\Control\ActionControllerInterface;
@@ -28,12 +29,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
+
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
-
-        $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
 
         $ships = request::postArray('ships');
         if (count($ships) == 0) {
@@ -83,7 +86,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getName(), $load
                     );
                     if (!$shipobj->ownedByCurrentUser()) {
-                        PM::sendPM(currentUser()->getId(),
+                        PM::sendPM(
+                            $userId,
                             $shipobj->getUserId(),
                             sprintf(
                                 _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
@@ -131,11 +135,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             }
                         }
                         if ($load >= 1) {
-                            if ($storage->offsetGet(GOOD_DEUTERIUM)->getAmount() < $load) {
-                                $load = $storage->offsetGet(GOOD_DEUTERIUM)->getAmount();
+                            if ($storage[GOOD_DEUTERIUM]->getAmount() < $load) {
+                                $load = $storage[GOOD_DEUTERIUM]->getAmount();
                             }
-                            if ($storage->offsetGet(GOOD_ANTIMATTER)->getAmount() < $load) {
-                                $load = $storage->offsetGet(GOOD_ANTIMATTER)->getAmount();
+                            if ($storage[GOOD_ANTIMATTER]->getAmount() < $load) {
+                                $load = $storage[GOOD_ANTIMATTER]->getAmount();
                             }
                             $colony->lowerStorage(GOOD_DEUTERIUM, $load);
                             $colony->lowerStorage(GOOD_ANTIMATTER, $load);
@@ -151,7 +155,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load
                             );
                             if (!$shipobj->ownedByCurrentUser()) {
-                                PM::sendPM(currentUser()->getId(),
+                                PM::sendPM(
+                                    $userId,
                                     $shipobj->getUserId(),
                                     sprintf(
                                         _('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
@@ -206,8 +211,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 );
                                 throw new Exception();
                             }
-                            if ($load > $storage->offsetGet($torp_obj->getGoodId())->getAmount()) {
-                                $load = $storage->offsetGet($torp_obj->getGoodId())->getAmount();
+                            if ($load > $storage[$torp_obj->getGoodId()]->getAmount()) {
+                                $load = $storage[$torp_obj->getGoodId()]->getAmount();
                             }
                         }
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
@@ -238,8 +243,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if (!$storage->offsetExists($torp_obj->getGoodId())) {
                             throw new Exception;
                         }
-                        if ($count > $storage->offsetGet($torp_obj->getGoodId())->getAmount()) {
-                            $count = $storage->offsetGet($torp_obj->getGoodId())->getAmount();
+                        if ($count > $storage[$torp_obj->getGoodId()]->getAmount()) {
+                            $count = $storage[$torp_obj->getGoodId()]->getAmount();
                         }
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();

@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
 use Colfields;
 use ModuleQueue;
+use Modules;
 use request;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
@@ -35,6 +36,10 @@ final class CancelModuleCreation implements ActionControllerInterface
         $module_id = request::postIntFatal('module');
         $function = request::postIntFatal('func');
         $count = request::postInt('count');
+
+        /**
+         * @var Modules $module
+         */
         $module = ResourceCache()->getObject('module', $module_id);
         if (count(Colfields::getFieldsByBuildingFunction($colony->getId(), $function)) == 0) {
             return;

@@ -134,6 +134,9 @@ class BuildingData extends BaseTable {
 
 	private $costs = NULL;
 
+	/**
+	 * @return BuildingCost[]
+	 */
 	function getCosts() {
 		if ($this->costs === NULL) {
 			$this->costs = BuildingCost::getCostByBuilding($this->getId());

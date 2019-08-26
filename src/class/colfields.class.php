@@ -161,6 +161,9 @@ class ColfieldData extends BaseTable {
 		}
 	}
 
+	/**
+	 * @return Building
+	 */
 	function getBuilding() {
 		return ResourceCache()->getObject("building",$this->getBuildingId());
 	}
@@ -301,7 +304,7 @@ class Colfields extends ColfieldData {
 		parent::__construct($result);
 	}
 
-	static function getByColonyField(&$fieldId,&$colonyId) {
+	static function getByColonyField($fieldId,$colonyId) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE field_id=".intval($fieldId)." AND colonies_id=".intval($colonyId)." LIMIT 1",4);
 		if ($result == 0) {
 			throw new ObjectNotFoundException($fieldId);

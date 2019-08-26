@@ -30,9 +30,12 @@ final class CreateModules implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
+
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $modules = request::postArrayFatal('module');
@@ -41,7 +44,7 @@ final class CreateModules implements ActionControllerInterface
             return;
         }
         $prod = array();
-        $modules_av = ModuleBuildingFunction::getByFunctionAndUser($func, currentUser()->getId());
+        $modules_av = ModuleBuildingFunction::getByFunctionAndUser($func, $userId);
         $storage = $colony->getStorage();
         foreach ($modules as $module_id => $count) {
             if (!array_key_exists($module_id, $modules_av)) {
@@ -63,7 +66,7 @@ final class CreateModules implements ActionControllerInterface
                             $module->getName(),
                             $cost->getGood()->getName()
                         );
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
                         $prod[] = sprintf(
@@ -72,7 +75,7 @@ final class CreateModules implements ActionControllerInterface
                             $cost->getAmount(),
                             $cost->getGood()->getName()
                         );
-                        throw new Exception;
+                        throw new Exception();
                     }
                     if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount() * $count) {
                         $count = floor($storage[$cost->getGoodId()]->getAmount() / $cost->getAmount());

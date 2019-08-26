@@ -44,11 +44,11 @@ final class ActivateBuildings implements ActionControllerInterface
             $this->buildingAction->activate($colony, $field, $game);
         }
 
-        $list = Colfields::getListBy('colonies_id=' . $colony->getId() . ' AND buildings_id>0');
+        $list = Colfields::getListBy(sprintf('colonies_id = %d AND buildings_id>0', $colonyId));
         usort($list, 'compareBuildings');
 
         $game->setTemplateVar('BUILDING_LIST', $list);
-        $game->setTemplateVar('USEABLE_GOOD_LIST', Good::getListByActiveBuildings($colony->getId()));
+        $game->setTemplateVar('USEABLE_GOOD_LIST', Good::getListByActiveBuildings($colonyId));
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => MENU_BUILDINGS]);
     }

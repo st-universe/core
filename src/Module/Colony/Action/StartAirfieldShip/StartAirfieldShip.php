@@ -32,15 +32,22 @@ final class StartAirfieldShip implements ActionControllerInterface
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
+        $user = $game->getUser();
+        $userId = $user->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $rump_id = request::postInt('startrump');
         $available_rumps = Shiprump::getBy(
-            'WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id=' . $game->getUser()->getId() . ')
-					AND good_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=' . $colony->getId() . ') GROUP BY id');
+            sprintf(
+                'WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id = %d) AND good_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=%d) GROUP BY id',
+                $userId,
+                $colony->getId()
+            )
+        );
 
         if (!array_key_exists($rump_id, $available_rumps)) {
             return;
@@ -49,17 +56,23 @@ final class StartAirfieldShip implements ActionControllerInterface
          * @var Shiprump $rump
          */
         $rump = ResourceCache()->getObject('rump', $rump_id);
-        if ($rump->canColonize() && Ship::countInstances('WHERE user_id=' . currentUser()->getId() . ' AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special=' . RUMP_SPECIAL_COLONIZE . ')') > 0) {
+        if ($rump->canColonize() && Ship::countInstances(
+                sprintf(
+                    'WHERE user_id = %d AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special = %d)',
+                    $userId,
+                    RUMP_SPECIAL_COLONIZE
+                )
+            ) > 0) {
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
-        $hangar = BuildplanHangar::getBy('WHERE rump_id=' . $rump_id);
+        $hangar = BuildplanHangar::getBy(sprintf('WHERE rump_id = %d', $rump_id));
 
-        if ($hangar->getBuildplan()->getCrew() > currentUser()->getFreeCrewCount()) {
+        if ($hangar->getBuildplan()->getCrew() > $user->getFreeCrewCount()) {
             $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
             return;
         }
-        if (Ship::countInstances('WHERE user_id=' . currentUser()->getId()) >= 10) {
+        if (Ship::countInstances('WHERE user_id=' . $userId) >= 10) {
             $game->addInformation(_('Im Moment sind nur 10 Schiffe pro Spieler erlaubt'));
             return;
         }
@@ -82,7 +95,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             return;
         }
 
-        $ship = Ship::createBy(currentUser()->getId(), $rump_id, $hangar->getBuildplanId(), $colony);
+        $ship = Ship::createBy($userId, $rump_id, $hangar->getBuildplanId(), $colony);
 
         ShipCrew::createByRumpCategory($ship);
 
@@ -90,8 +103,8 @@ final class StartAirfieldShip implements ActionControllerInterface
             $torp = new TorpedoType($hangar->getDefaultTorpedoTypeId());
             if ($colony->getStorage()->offsetExists($torp->getGoodId())) {
                 $count = $ship->getMaxTorpedos();
-                if ($count > $colony->getStorage()->offsetGet($torp->getGoodId())->getAmount()) {
-                    $count = $colony->getStorage()->offsetGet($torp->getGoodId())->getAmount();
+                if ($count > $storage[$torp->getGoodId()]->getAmount()) {
+                    $count = $storage[$torp->getGoodId()]->getAmount();
                 }
                 $ship->setTorpedoType($torp->getId());
                 $ship->setTorpedoCount($count);

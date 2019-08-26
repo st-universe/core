@@ -30,21 +30,24 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $user->getId()
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $fieldId = (int)request::indInt('fid');
-
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
+        $field = Colfields::getByColonyField(
+            (int)request::indInt('fid'),
+            $colony->getId()
+        );
 
         $upgrade = new BuildingUpgrade(request::getIntFatal('upid'));
         if ($upgrade->getUpgradeFrom() != $field->getBuildingId()) {
             return;
         }
-        if (!currentUser()->hasResearched($upgrade->getResearchId())) {
+        if (!$user->hasResearched($upgrade->getResearchId())) {
             return;
         }
         if ($field->isInConstruction()) {
@@ -81,7 +84,6 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
 
-
         $colony->lowerEps($upgrade->getEnergyCost());
         $this->removeBuilding($field, $colony, $game);
 
@@ -89,14 +91,18 @@ final class UpgradeBuilding implements ActionControllerInterface
             $colony->lowerStorage($obj->getGoodId(), $obj->getAmount());
         }
         // Check for alternative building
-        $alt_building = BuildingFieldAlternative::getByBuildingField($upgrade->getBuilding()->getId(),
-            $field->getFieldType());
+        $alt_building = BuildingFieldAlternative::getByBuildingField(
+            $upgrade->getBuilding()->getId(),
+            $field->getFieldType()
+        );
         if ($alt_building) {
             $building = $alt_building->getAlternateBuilding();
+        } else {
+            $building = $upgrade->getBuilding();
         }
 
-        $field->setBuildingId($upgrade->getBuilding()->getId());
-        $field->setBuildtime($upgrade->getBuilding()->getBuildtime());
+        $field->setBuildingId($building->getId());
+        $field->setBuildtime($building->getBuildtime());
         $colony->save();
         $field->save();
 
@@ -141,7 +147,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $colony->save();
     }
 
-    protected function deActivateBuilding(Colfields $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;

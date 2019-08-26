@@ -39,7 +39,6 @@ final class AllowImmigration implements ActionControllerInterface
         $colony->setImmigrationState(1);
         $colony->save();
         $game->addInformation(_('Die Einwanderung wurde erlaubt'));
-        $game->setTemplateVar('PRE_SELECTED_COLONY_MENU', $this->colonyGuiHelper->getColonyMenu(MENU_OPTION));
     }
 
     public function performSessionCheck(): bool

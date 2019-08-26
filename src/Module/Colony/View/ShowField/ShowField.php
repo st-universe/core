@@ -41,13 +41,10 @@ final class ShowField implements ViewControllerInterface
             $this->showFieldRequest->getColonyId(),
             $userId
         );
-        $fieldId = (int)request::indInt('fid');
-
         $field = Colfields::getByColonyField(
             $this->showFieldRequest->getFieldId(),
             $colony->getId()
         );
-
 
         $shipRepairProgress = $this->colonyShipRepairRepository->getByColonyField(
             (int) $colony->getId(),

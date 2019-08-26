@@ -13,7 +13,6 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 
 final class DenyImmigration implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_PERMIT_IMMIGRATION';
 
     private $colonyLoader;
@@ -40,8 +39,6 @@ final class DenyImmigration implements ActionControllerInterface
         $colony->setImmigrationState(0);
         $colony->save();
         $game->addInformation(_('Die Einwanderung wurde verboten'));
-
-        $game->setTemplateVar('PRE_SELECTED_COLONY_MENU', $this->colonyGuiHelper->getColonyMenu(MENU_OPTION));
     }
 
     public function performSessionCheck(): bool

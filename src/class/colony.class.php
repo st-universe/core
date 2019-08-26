@@ -267,6 +267,9 @@ class ColonyData extends BaseTable {
 
 	private $storage = NULL;
 
+	/**
+	 * @return ColStorage[]
+	 */
 	function getStorage() {
 		if ($this->storage === NULL) {
 			$this->storage = ColStorage::getStorageBy('a.colonies_id='.$this->getId());

@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Orm\Entity\BuildingUpgradeCostInterface;
 use Stu\Orm\Repository\BuildingUpgradeCostRepositoryInterface;
 
 class BuildingUpgradeData extends BaseTable {
@@ -48,6 +49,7 @@ class BuildingUpgradeData extends BaseTable {
 	}
 
 	/**
+	 * @return BuildingUpgradeCostInterface[]
 	 */
 	public function getCost() { #{{{
 		// @todo inject

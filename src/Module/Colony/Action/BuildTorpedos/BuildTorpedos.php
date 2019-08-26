@@ -47,12 +47,12 @@ final class BuildTorpedos implements ActionControllerInterface
                 continue;
             }
             foreach ($torp->getCosts() as $id => $cost) {
-                if (!$storage->offsetExists($cost->getGoodId())) {
+                if (!$storage[$cost->getGoodId()]) {
                     $count = 0;
                     break;
                 }
-                if ($count * $cost->getAmount() > $storage->offsetGet($cost->getGoodId())->getAmount()) {
-                    $count = floor($storage->offsetGet($cost->getGoodId())->getAmount() / $cost->getAmount());
+                if ($count * $cost->getAmount() > $storage[$cost->getGoodId()]->getAmount()) {
+                    $count = floor($storage[$cost->getGoodId()]->getAmount() / $cost->getAmount());
                 }
             }
             if ($count == 0) {

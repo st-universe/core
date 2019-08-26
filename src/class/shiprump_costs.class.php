@@ -61,6 +61,7 @@ class ShipRumpCostsData extends BaseTable { #{{{
 	}
 
 	/**
+	 * @return Good
 	 */
 	public function getGood() { #{{{
 		return ResourceCache()->getObject('good',$this->getGoodId());

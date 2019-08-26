@@ -28,21 +28,25 @@ final class BuildAirfieldRump implements ActionControllerInterface
     {
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $rump_id = request::postInt('buildrump');
 
-
-        $available_rumps = Shiprump::getBuildableRumpsByBuildingFunction($game->getUser()->getId(),BUILDING_FUNCTION_AIRFIELD);
+        $available_rumps = Shiprump::getBuildableRumpsByBuildingFunction(
+            $userId,
+            BUILDING_FUNCTION_AIRFIELD
+        );
 
         if (!array_key_exists($rump_id, $available_rumps)) {
             return;
         }
         /**
-         * @var \Shiprump $rump
+         * @var Shiprump $rump
          */
         $rump = ResourceCache()->getObject('rump', $rump_id);
         if ($rump->getEpsCost() > $colony->getEps()) {
@@ -54,6 +58,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
             return;
         }
         $storage = &$colony->getStorage();
+
         foreach ($rump->getBuildingCosts() as $key => $cost) {
             if (!array_key_exists($cost->getGoodId(), $storage)) {
                 $game->addInformationf(
@@ -77,7 +82,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
         $colony->lowerEps($rump->getEpsCost());
         $colony->upperStorage($rump->getGoodId(), 1);
         $colony->save();
-        $game->addInformation(sprintf(_('%s-Klasse wurde gebaut'), $rump->getName()));
+        $game->addInformationf(_('%s-Klasse wurde gebaut'), $rump->getName());
     }
 
     public function performSessionCheck(): bool

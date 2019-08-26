@@ -27,18 +27,32 @@ final class TrainCrew implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
+        $userId = $user->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
+        $trainableCrewPerTick = $user->getTrainableCrewCountMax() - $user->getInTrainingCrewCount();
+        if ($trainableCrewPerTick > $user->getCrewLeftCount()) {
+            $trainableCrewPerTick = $user->getCrewLeftCount();
+        }
+        if ($trainableCrewPerTick < 0) {
+            $trainableCrewPerTick = 0;
+        }
+        if ($trainableCrewPerTick > $colony->getWorkless()) {
+            $trainableCrewPerTick = $colony->getWorkless();
+        }
+
         $count = request::postStringFatal('crewcount');
         if ($count == INDICATOR_MAX) {
-            $count = $this->getTrainableCrewCountPerTick($colony);
+            $count = $trainableCrewPerTick;
         } else {
-            if ($count > $this->getTrainableCrewCountPerTick($colony)) {
-                $count = $this->getTrainableCrewCountPerTick($colony);
+            if ($count > $trainableCrewPerTick) {
+                $count = $trainableCrewPerTick;
             } else {
                 $count = intval($count);
             }
@@ -50,36 +64,21 @@ final class TrainCrew implements ActionControllerInterface
             $game->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
             return;
         }
-        if ($this->getTrainableCrewCountPerTick($colony) <= 0) {
+        if ($trainableCrewPerTick <= 0) {
             $game->addInformation(_('Derzeit kann keine weitere Crew ausgebildet werden'));
             return;
         }
         $i = 0;
         while ($i < $count) {
             $i++;
-            $crew = new CrewTrainingData;
-            $crew->setUserId(currentUser()->getId());
+            $crew = new CrewTrainingData();
+            $crew->setUserId($userId);
             $crew->setColonyId($colony->getId());
             $crew->save();
         }
         $colony->lowerWorkless($count);
         $colony->save();
         $game->addInformationf(_('Es werden %d Crew ausgebildet'), $count);
-    }
-
-    private function getTrainableCrewCountPerTick(ColonyData $colony)
-    {
-        $count = currentUser()->getTrainableCrewCountMax() - currentUser()->getInTrainingCrewCount();
-        if ($count > currentUser()->getCrewLeftCount()) {
-            $count = currentUser()->getCrewLeftCount();
-        }
-        if ($count < 0) {
-            $count = 0;
-        }
-        if ($count > $colony->getWorkless()) {
-            return $colony->getWorkless();
-        }
-        return $count;
     }
 
     public function performSessionCheck(): bool
