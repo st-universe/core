@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Colony;
 use Good;
 use Stu\Control\GameControllerInterface;
 use Tuple;
@@ -30,7 +31,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
     }
 
-    public function register(\Colony $colony, GameControllerInterface $game)
+    public function register(Colony $colony, GameControllerInterface $game)
     {
         $width = 360;
         $bars = array();

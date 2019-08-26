@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research\View\ShowResearch;
 
+use AccessViolation;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Research\TalFactoryInterface;
@@ -45,7 +46,7 @@ final class ShowResearch implements ViewControllerInterface
             $result = $this->researchedRepository->getFor($researchId, $userId);
 
             if ($result === null) {
-                throw new \AccessViolation();
+                throw new AccessViolation();
             }
             $research = $result->getResearch();
         }

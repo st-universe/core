@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 use Exception;
 use PM;
 use request;
+use Ship;
 use ShipCrew;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
@@ -53,7 +54,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $storage = $colony->getStorage();
         foreach ($ships as $key => $ship) {
             /**
-             * @var \Ship $shipobj
+             * @var Ship $shipobj
              */
             $shipobj = ResourceCache()->getObject('ship', intval($ship));
             if ($shipobj->cloakIsActive()) {

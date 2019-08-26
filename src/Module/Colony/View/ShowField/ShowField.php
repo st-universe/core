@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\View\ShowField;
 
 use Colfields;
 use ColonyShipQueue;
-use request;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;

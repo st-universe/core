@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
 use Colfields;
-use request;
 use RumpBuildingFunction;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -36,8 +35,6 @@ final class ShowShipRepair implements ViewControllerInterface
             $this->showShipRepairRequest->getColonyId(),
             $userId
         );
-
-        $fieldId = (int)request::indInt('fid');
 
         $field = Colfields::getByColonyField(
             $this->showShipRepairRequest->getFieldId(),

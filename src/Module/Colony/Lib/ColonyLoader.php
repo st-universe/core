@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use AccessViolation;
 use Colony;
 
 /**
@@ -21,7 +22,7 @@ final class ColonyLoader implements ColonyLoaderInterface
     {
         $colony = $this->byId($colonyId);
         if ((int) $colony->getUserId() !== $userId) {
-            throw new \AccessViolation();
+            throw new AccessViolation();
         }
         return $colony;
     }

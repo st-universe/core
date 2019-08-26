@@ -193,7 +193,7 @@ final class BuildOnField implements ActionControllerInterface
         $colony->save();
     }
 
-    protected function deActivateBuilding(Colfields $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;

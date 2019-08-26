@@ -9,6 +9,7 @@ use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use User;
+use Zend\Mail\Exception\RuntimeException;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
 
@@ -65,7 +66,7 @@ Das Strek Trek Universe Team\n
         try {
             $transport = new Sendmail();
             $transport->send($mail);
-        } catch (\Zend\Mail\Exception\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             $game->addInformation(_('Die eMail konnte nicht verschickt werden'));
             return;
         }

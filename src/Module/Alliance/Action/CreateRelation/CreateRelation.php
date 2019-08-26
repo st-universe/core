@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use AccessViolation;
+use Alliance;
 use AllianceRelation;
 use AllianceRelationData;
 use HistoryEntry;
@@ -36,7 +37,7 @@ final class CreateRelation implements ActionControllerInterface
         $opponentId = $this->createRelationRequest->getOpponentId();
         $typeId = $this->createRelationRequest->getRelationType();
 
-        $opp = new \Alliance($opponentId);
+        $opp = new Alliance($opponentId);
 
         if (!AllianceRelation::isValidRelationType($typeId)) {
             return;

@@ -47,7 +47,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
             return;
         }
         /**
-         * @var \Shiprump $rump
+         * @var Shiprump $rump
          */
         $rump = ResourceCache()->getObject('rump', $rump_id);
         if ($rump->getEpsCost() > $colony->getEps()) {

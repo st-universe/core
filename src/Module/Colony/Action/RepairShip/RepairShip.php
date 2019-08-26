@@ -11,7 +11,6 @@ use Ship;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 

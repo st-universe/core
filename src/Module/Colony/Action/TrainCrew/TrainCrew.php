@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\TrainCrew;
 
-use ColonyData;
 use CrewTrainingData;
 use request;
 use Stu\Control\ActionControllerInterface;

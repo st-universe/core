@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBuildMenu;
 
 use Building;
+use BuildMenuWrapper;
 use ColonyMenu;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
@@ -53,6 +54,6 @@ final class ShowBuildMenu implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILD));
         $game->setTemplateVar('BUILD_MENUS', $menus);
-        $game->setTemplateVar('BUILD_MENU', new \BuildMenuWrapper());
+        $game->setTemplateVar('BUILD_MENU', new BuildMenuWrapper());
     }
 }

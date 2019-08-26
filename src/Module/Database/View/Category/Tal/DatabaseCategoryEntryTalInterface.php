@@ -2,8 +2,6 @@
 
 namespace Stu\Module\Database\View\Category\Tal;
 
-use DatabaseUserData;
-
 interface DatabaseCategoryEntryTalInterface
 {
     public function getObject();

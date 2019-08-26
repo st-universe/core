@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\DeleteKnComment;
 
 use KnComment;
-use KNPosting;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;

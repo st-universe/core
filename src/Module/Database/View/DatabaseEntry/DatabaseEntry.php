@@ -48,6 +48,9 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_id = $this->databaseEntryRequest->getEntryId();
         $category_id = $this->databaseEntryRequest->getCategoryId();
 
+        /**
+         * @var DatabaseEntryInterface $entry
+         */
         $entry = $this->databaseEntryRepository->find($entry_id);
         $category = $this->databaseCategoryRepository->find($category_id);
 
