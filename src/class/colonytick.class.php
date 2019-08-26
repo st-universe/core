@@ -63,9 +63,9 @@ class ColonyTickManager {
 	private function repairShips() { #{{{
 		global $container;
 
-		$jobs = $container->get(ColonyShipRepairRepositoryInterface::class)->getMostRecentJobs();
+		$repo = $container->get(ColonyShipRepairRepositoryInterface::class);
 
-		foreach ($jobs as $obj) {
+		foreach ($repo->getMostRecentJobs() as $obj) {
 			if (!$obj->getField()->isActive()) {
 				continue;
 			}
@@ -73,7 +73,8 @@ class ColonyTickManager {
 			if (!$obj->getShip()->canBeRepaired()) {
 				$obj->getShip()->setHuell($obj->getShip()->getMaxHuell());
 				$obj->getShip()->setState(SHIP_STATE_NONE);
-				$obj->deleteFromDatabase();
+
+				$repo->delete($obj);
 			}
 			$obj->getShip()->save();
 		}

@@ -21,5 +21,7 @@ interface ColonyShipRepairRepositoryInterface extends ObjectRepository
 
     public function save(ColonyShipRepairInterface $colonyShipRepair): void;
 
+    public function delete(ColonyShipRepairInterface $colonyShipRepair): void;
+
     public function truncateByShipId(int $shipId): void;
 }

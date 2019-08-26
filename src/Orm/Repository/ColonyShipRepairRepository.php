@@ -45,6 +45,14 @@ final class ColonyShipRepairRepository extends EntityRepository
         $em->flush();
     }
 
+    public function delete(ColonyShipRepairInterface $colonyShipRepair): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($colonyShipRepair);
+        $em->flush($colonyShipRepair);
+    }
+
     public function truncateByShipId(int $shipId): void
     {
         $q = $this->getEntityManager()->createQuery(
