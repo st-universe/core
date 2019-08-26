@@ -126,19 +126,19 @@ td.l {
         height : 30px;
         border: 1px outset #003355;
 }
-td.cfa {
+.cfa {
 	text-align: center;
 	border: 1px solid #9BA4A4;
 	padding: 0;
 	margin: 0;
 }
-td.cfd {
+.cfd {
 	border: 1px solid #505656;
 	text-align: center;
 	padding: 0;
 	margin: 0;
 }
-td.cfb {
+.cfb {
 	border: 1px dashed #FFFFFF;
 	text-align: center;
 	padding: 0;
@@ -826,4 +826,12 @@ div.list:nth-child(even) {
 }
 div.list {
     padding: 3px;
+}
+div.planetSurfaceTiles {
+	display: grid;
+	grid-template-columns: 43px 43px 43px 43px 43px 43px 43px 43px 43px 43px;
+}
+div.moonSurfaceTiles {
+	display: grid;
+	grid-template-columns: 43px 43px 43px 43px 43px 43px 43px;
 }

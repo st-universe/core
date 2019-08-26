@@ -906,24 +906,20 @@
 		</table>
 	</metal:macro>
 	<metal:macro metal:define-macro="colonization">
-		<table class="use" style="border: 0; margin: 0; padding: 0 ! important;" tal:define="sstr THIS/getSessionString">
-			<tr tal:repeat="slot currentColony/getColonyFields">
-				<tal:block tal:repeat="field slot/fields">
-					<td style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass">
-						<div style="width: 40px; height: 40px;">
-							<div>
-								<div>
-									<img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" />
-									<a tal:condition="field/isColonizeAble" href="?id=${THIS/getShip/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
-										<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" />
-									</a>
-								</div>
-							</div>
+		<div tal:attributes="class currentColony/getSurfaceTileCssClass" tal:define="sstr THIS/getSessionString">
+			<tal:block  tal:repeat="field currentColony/getColonyFields">
+				<div style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass">
+					<div>
+						<div>
+							<img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" />
+							<a tal:condition="field/isColonizeAble" href="?id=${THIS/getShip/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
+								<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" />
+							</a>
 						</div>
-					</td>
-				</tal:block>
-			</tr>
-		</table>
+					</div>
+				</div>
+			</tal:block>
+		</div>
 		<tal:block tal:condition="currentColony/getPlanetType/hasColonizeableFields">
 			<br />
 			<div class="divhead" i18n:translate="">Kolonisierbare Felder</div>

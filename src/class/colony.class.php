@@ -265,6 +265,13 @@ class ColonyData extends BaseTable {
 		return $this->colfields;
 	}
 
+	public function getSurfaceTileCssClass(): string {
+		if ($this->getPlanetType()->getIsMoon()) {
+			return 'moonSurfaceTiles';
+		}
+		return 'planetSurfaceTiles';
+	}
+
 	private $storage = NULL;
 
 	/**

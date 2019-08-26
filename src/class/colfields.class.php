@@ -327,7 +327,7 @@ class Colfields extends ColfieldData {
 			if (request::getInt('bid') && $val->getTerraformingId() == 0 && in_array($val->getFieldType(),$building->getBuildableFields())) {
 				$val->setBuildMode(TRUE);
 			}
-			$ret[floor($val->getFieldId()/$sep)]['fields'][] = $val;
+			$ret[] = $val;
 		}
 		return $ret;
 	}
