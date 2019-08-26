@@ -86,7 +86,7 @@
 					<div id="colonylist_navlet" class="border_box navigation_item_planets" tal:condition="THIS/getUser/getOwnColonies">
 						<p i18n:translate="">Kolonien</p>
 						<div style="clear: both" tal:repeat="data THIS/getUser/getOwnColonies">
-							<a style="display: block; float: left; margin-right: 10px"  href="colony.php?SHOW_COLONY&id=${data/getId}">
+							<a style="display: block; float: left; margin-right: 10px"  href="colony.php?SHOW_COLONY=1&id=${data/getId}">
 								<img src="${GFX}/planets/${data/getColonyClass}s.gif" title="runtime" tal:attributes="title data/getNameWithoutMarkup" />
 							</a>
 							<div>
