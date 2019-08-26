@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Terraform;
 
 use Colfields;
+use FieldTerraforming;
 use request;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
