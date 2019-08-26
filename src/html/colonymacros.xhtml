@@ -501,14 +501,14 @@
                     <br />
                     <div style="white-space: normal">
                         <stu:box title="Effekte" i18n:attributes="title">
+			<div style="display: grid; grid-template-columns: 41% 9% 41% 9%;">
                             <tal:block tal:repeat="data EFFECTS">
-                                <div style="display: inline-block; width: 49%;">
-                                    <div style="display: inline-block; width: 87%;">
+                                    <div>
                                         <img src="${GFX}/goods/${data/good/getId}.gif" /> <span tal:content="data/good/getName">EFFECT</span>
                                     </div>
-                                    <span tal:content="data/production/getProductionDisplay" tal:attributes="class data/production/getCssClass">SUM</span>
-                                </div>
+				    <div tal:content="data/production/getProductionDisplay" tal:attributes="class data/production/getCssClass">PROD</div>
                             </tal:block>
+			    </div>
                         </stu:box>
                     </div>
                 </tal:block>
