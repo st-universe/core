@@ -7,6 +7,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(IntermediateController::TYPE_COLONY_LIST)->main();
+$container->get(IntermediateController::TYPE_COLONY)->main();
 
 DB()->commitTransaction();

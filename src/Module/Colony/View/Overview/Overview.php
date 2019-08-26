@@ -22,7 +22,7 @@ final class Overview implements ViewControllerInterface
         $buildingJobList = Colfields::getUnFinishedBuildingJobsByUser($userId);
 
         $game->appendNavigationPart(
-            'colonylist.php',
+            'colony.php',
             _('Kolonien')
         );
         $game->setPageTitle(_('/ Kolonien'));

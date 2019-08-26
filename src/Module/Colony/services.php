@@ -180,7 +180,7 @@ return [
     ShowStorageRequestInterface::class => autowire(ShowStorageRequest::class),
     ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
-    IntermediateController::TYPE_COLONY_LIST => create(IntermediateController::class)
+    IntermediateController::TYPE_COLONY => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),
