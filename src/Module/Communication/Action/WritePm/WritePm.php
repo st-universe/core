@@ -32,20 +32,20 @@ final class WritePm implements ActionControllerInterface
 
         $recipient = User::getUserById($recipientId);
         if (!$recipient) {
-            $this->addInformation("Dieser Siedler existiert nicht");
+            $game->addInformation("Dieser Siedler existiert nicht");
             return;
         }
         if ($recipient->getId() == $userId) {
-            $this->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
+            $game->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
         if ($recipient->isOnIgnoreList($userId)) {
-            $this->addInformation("Der Siedler ignoriert Dich");
+            $game->addInformation("Der Siedler ignoriert Dich");
             return;
         }
 
         if (strlen($text) < 5) {
-            $this->addInformation("Der Text ist zu kurz");
+            $game->addInformation("Der Text ist zu kurz");
             return;
         }
         $cat = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $recipient->getId());
