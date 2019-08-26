@@ -53,7 +53,7 @@ final class LandShip implements ActionControllerInterface
             }
         }
         $colony->save();
-        $game->addInformation(sprintf(_('Die %s ist gelandet'), $ship->getName()));
+        $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
         $ship->remove();
     }
 

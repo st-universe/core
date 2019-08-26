@@ -26,6 +26,8 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
@@ -44,20 +46,30 @@ final class BuildAirfieldRump implements ActionControllerInterface
          */
         $rump = ResourceCache()->getObject('rump', $rump_id);
         if ($rump->getEpsCost() > $colony->getEps()) {
-            $game->addInformation(sprintf(_('Es wird %d Energie benötigt - Vorhanden ist nur %d'), $rump->getEpsCost(),
-                $colony->getEps()));
+            $game->addInformationf(
+                _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
+                $rump->getEpsCost(),
+                $colony->getEps()
+            );
             return;
         }
         $storage = &$colony->getStorage();
         foreach ($rump->getBuildingCosts() as $key => $cost) {
             if (!array_key_exists($cost->getGoodId(), $storage)) {
-                $game->addInformation(sprintf(_('Es wird %d %s benötigt'), $cost->getAmount(),
-                    $cost->getGood()->getName()));
+                $game->addInformationf(
+                    _('Es wird %d %s benötigt'),
+                    $cost->getAmount(),
+                    $cost->getGood()->getName()
+                );
                 return;
             }
             if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
-                $game->addInformation(sprintf(_('Es wird %d %s benötigt - Vorhanden ist nur %d'), $cost->getAmount(),
-                    $cost->getGood()->getName(), $storage[$cost->getGoodId()]->getAmount()));
+                $game->addInformationf(
+                    _('Es wird %d %s benötigt - Vorhanden ist nur %d'),
+                    $cost->getAmount(),
+                    $cost->getGood()->getName(),
+                    $storage[$cost->getGoodId()]->getAmount()
+                );
                 return;
             }
             $colony->lowerStorage($cost->getGoodId(), $cost->getAmount());
@@ -66,8 +78,6 @@ final class BuildAirfieldRump implements ActionControllerInterface
         $colony->upperStorage($rump->getGoodId(), 1);
         $colony->save();
         $game->addInformation(sprintf(_('%s-Klasse wurde gebaut'), $rump->getName()));
-
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool

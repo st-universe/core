@@ -63,8 +63,10 @@ final class BuildShip implements ActionControllerInterface
         for ($i = 1; $i <= MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);
             if ($i != MODULE_TYPE_SPECIAL && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0 && count($module) == 0) {
-                $game->addInformation(sprintf(_('Es wurde kein Modul des Typs %s ausgewählt'),
-                    ModuleType::getDescription($i)));
+                $game->addInformationf(
+                    _('Es wurde kein Modul des Typs %s ausgewählt'),
+                    ModuleType::getDescription($i)
+                );
                 return;
             }
             if ($i === MODULE_TYPE_SPECIAL) {
@@ -107,7 +109,7 @@ final class BuildShip implements ActionControllerInterface
         $storage = &$colony->getStorage();
         foreach ($modules as $module) {
             if (!array_key_exists($module->getGoodId(), $storage)) {
-                $game->addInformation(sprintf(_('Es wird 1 %s benötigt'), $module->getName()));
+                $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
             $selector = new ModuleSelector($module->getType(), $colony, $rump,
@@ -125,8 +127,15 @@ final class BuildShip implements ActionControllerInterface
         $signature = ShipBuildplansData::createSignature($sigmod);
         $plan = ShipBuildplans::getBySignature(currentUser()->getId(), $signature);
         if (!$plan) {
-            $planname = _('Bauplan ') . $rump->getName() . ' ' . date("d.m.Y H:i");
-            $game->addInformation(_("Lege neuen Bauplan an: ") . $planname);
+            $planname = sprintf(
+                _('Bauplan %s %s'),
+                $rump->getName(),
+                date('d.m.Y H:i')
+            );
+            $game->addInformationf(
+                _('Lege neuen Bauplan an: %d'),
+                $planname
+            );
             $plan = new ShipBuildplansData;
             $plan->setUserId(currentUser()->getId());
             $plan->setRumpId($rump->getId());
@@ -139,7 +148,10 @@ final class BuildShip implements ActionControllerInterface
 
             BuildPlanModules::insertFromBuildProcess($plan->getId(), $modules);
         } else {
-            $game->addInformation(_("Benutze verfügbaren Bauplan: ") . $plan->getName());
+            $game->addInformationf(
+                _('Benutze verfügbaren Bauplan: %s'),
+                $plan->getName()
+            );
         }
         $queue = new ColonyShipQueueData;
         $queue->setColonyId($colony->getId());
@@ -151,8 +163,11 @@ final class BuildShip implements ActionControllerInterface
         $queue->setBuildingFunctionId($building_function->getBuildingFunction());
         $queue->save();
 
-        $game->addInformation(sprintf(_('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
-            $rump->getName(), date("d.m.Y H:i", (time() + $buildtime))));
+        $game->addInformationf(
+            _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
+            $rump->getName(),
+            date("d.m.Y H:i", (time() + $buildtime))
+        );
     }
 
     public function performSessionCheck(): bool

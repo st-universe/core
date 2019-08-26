@@ -10,6 +10,8 @@ use RumpBuildingFunction;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
@@ -39,8 +41,7 @@ final class RepairShip implements ActionControllerInterface
 
         $field = Colfields::getByColonyField($fieldId, $colony->getId());
 
-        $game->setView("SHOW_SHIP_REPAIR");
-        // XXX TBD
+        $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
 
         $ship_id = request::getIntFatal('ship_id');
 
@@ -94,7 +95,7 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
         $ticks = ceil(($ship->getMaxHuell() - $ship->getHuell()) / $ship->getRepairRate());
-        $game->addInformation(sprintf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks));
+        $game->addInformationf(('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
     }
 
     public function performSessionCheck(): bool

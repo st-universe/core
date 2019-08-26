@@ -53,7 +53,11 @@ final class DeactivateBuilding implements ActionControllerInterface
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde deaktiviert");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde deaktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
     public function performSessionCheck(): bool

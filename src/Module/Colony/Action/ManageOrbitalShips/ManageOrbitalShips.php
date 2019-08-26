@@ -10,6 +10,7 @@ use ShipCrew;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use TorpedoType;
 
 final class ManageOrbitalShips implements ActionControllerInterface
@@ -32,9 +33,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
+        $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
+
         $ships = request::postArray('ships');
         if (count($ships) == 0) {
-            $game->addInformation(_("Es wurden keine Schiffe ausgewählt"));
+            $game->addInformation(_('Es wurden keine Schiffe ausgewählt'));
             return;
         }
         $msg = array();
@@ -75,28 +78,45 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 if ($load > 0) {
                     $shipobj->upperEBatt($load);
                     $colony->lowerEps($load);
-                    $msg[] = sprintf(_('%s: Batterie um %d Einheiten aufgeladen'), $shipobj->getName(), $load);
+                    $msg[] = sprintf(
+                        _('%s: Batterie um %d Einheiten aufgeladen'),
+                        $shipobj->getName(), $load
+                    );
                     if (!$shipobj->ownedByCurrentUser()) {
                         PM::sendPM(currentUser()->getId(),
                             $shipobj->getUserId(),
-                            "Die Kolonie " . $colony->getName() . " lädt in Sektor " . $colony->getSectorString() . " die Batterie der " . $shipobj->getName() . " um " . $load . " Einheiten",
+                            sprintf(
+                                _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
+                                $colony->getName(),
+                                $colony->getSectorString(),
+                                $shipobj->getName(),
+                                $load
+                            ),
                             PM_SPECIAL_TRADE);
                     }
                 }
             }
             if (isset($man[$shipobj->getId()]) && $shipobj->currentUserCanMan()) {
                 if ($shipobj->getBuildplan()->getCrew() > $shipobj->getUser()->getFreeCrewCount()) {
-                    $msg[] = sprintf(_('%s: Nicht genügend Crew vorhanden (%d benötigt)'), $shipobj->getName(),
-                        $shipobj->getBuildplan()->getCrew());
+                    $msg[] = sprintf(
+                        _('%s: Nicht genügend Crew vorhanden (%d benötigt)'),
+                        $shipobj->getName(),
+                        $shipobj->getBuildplan()->getCrew()
+                    );
                 } else {
                     ShipCrew::createByRumpCategory($shipobj);
-                    $msg[] = sprintf(_('%s: Die Crew wurde hochgebeamt'), $shipobj->getName());
+                    $msg[] = sprintf(
+                        _('%s: Die Crew wurde hochgebeamt'),
+                        $shipobj->getName()
+                    );
                     $shipobj->getUser()->setFreeCrewCount($shipobj->getUser()->getFreeCrewCount() - $shipobj->getBuildplan()->getCrew());
                 }
             }
             if (isset($unman[$shipobj->getId()]) && $shipobj->currentUserCanUnMan()) {
                 ShipCrew::truncate("WHERE ships_id=" . $shipobj->getId());
-                $msg[] = sprintf(_('%s: Die Crew wurde runtergebeamt'), $shipobj->getName());
+                $msg[] = sprintf(
+                    _('%s: Die Crew wurde runtergebeamt'), $shipobj->getName()
+                );
                 $shipobj->deactivateSystems();
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
@@ -125,23 +145,30 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load = $load * WARPCORE_LOAD;
                             }
                             $shipobj->upperWarpcoreLoad($load);
-                            $msg[] = sprintf(_('Der Warpkern der %s wurde um %d Einheiten aufgeladen'),
-                                $shipobj->getName(), $load);
+                            $msg[] = sprintf(
+                                _('Der Warpkern der %s wurde um %d Einheiten aufgeladen'),
+                                $shipobj->getName(),
+                                $load
+                            );
                             if (!$shipobj->ownedByCurrentUser()) {
                                 PM::sendPM(currentUser()->getId(),
                                     $shipobj->getUserId(),
-                                    sprintf(_('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
+                                    sprintf(
+                                        _('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
                                         $colony->getName(),
                                         $colony->getSectorString(),
                                         $shipobj->getName(),
-                                        $load),
+                                        $load
+                                    ),
                                     PM_SPECIAL_TRADE);
                             }
                         }
                     }
                 } else {
-                    $msg[] = sprintf(_('%s: Es wird Deuterium und Antimaterie zum Aufladen des Warpkerns benötigt'),
-                        $shipobj->getName());
+                    $msg[] = sprintf(
+                        _('%s: Es wird Deuterium und Antimaterie zum Aufladen des Warpkerns benötigt'),
+                        $shipobj->getName()
+                    );
                 }
             }
             if (isset($torp[$shipobj->getId()]) && $shipobj->canLoadTorpedos()) {
@@ -172,8 +199,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $load = $count - $shipobj->getTorpedoCount();
                         if ($load > 0) {
                             if (!$storage->offsetExists($torp_obj->getGoodId())) {
-                                $msg[] = sprintf(_('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
-                                    $shipobj->getName(), $torp_obj->getName());
+                                $msg[] = sprintf(
+                                    _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
+                                    $shipobj->getName(),
+                                    $torp_obj->getName()
+                                );
                                 throw new Exception();
                             }
                             if ($load > $storage->offsetGet($torp_obj->getGoodId())->getAmount()) {
@@ -187,12 +217,20 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $shipobj->setTorpedoType(0);
                                 $shipobj->setTorpedos(0);
                             }
-                            $msg[] = sprintf(_('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
-                                $shipobj->getName(), abs($load), $torp_obj->getName());
+                            $msg[] = sprintf(
+                                _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
+                                $shipobj->getName(),
+                                abs($load),
+                                $torp_obj->getName()
+                            );
                         } elseif ($load > 0) {
                             $colony->lowerStorage($torp_obj->getGoodId(), $load);
-                            $msg[] = sprintf(_('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
-                                $shipobj->getName(), $load, $torp_obj->getName());
+                            $msg[] = sprintf(
+                                _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
+                                $shipobj->getName(),
+                                $load,
+                                $torp_obj->getName()
+                            );
                         }
                     } else {
                         $type = intval($torp_type[$shipobj->getId()]);
@@ -209,8 +247,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->setTorpedoType($type);
                         $shipobj->setTorpedoCount($count);
                         $colony->lowerStorage($torp_obj->getGoodId(), $count);
-                        $msg[] = sprintf(_('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
-                            $shipobj->getName(), $count, $torp_obj->getName());
+                        $msg[] = sprintf(
+                            _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
+                            $shipobj->getName(),
+                            $count,
+                            $torp_obj->getName()
+                        );
                     }
                 } catch (Exception $e) {
                     // nothing

@@ -35,7 +35,7 @@ final class ChangeName implements ActionControllerInterface
         $value = request::postStringFatal('colname');
         $colony->setName(tidyString($value));
         $colony->save();
-        $game->addInformation("Der Koloniename wurde geändert");
+        $game->addInformation(_('Der Koloniename wurde geändert'));
     }
 
     public function performSessionCheck(): bool

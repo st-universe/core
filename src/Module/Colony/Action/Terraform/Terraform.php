@@ -52,11 +52,18 @@ final class Terraform implements ActionControllerInterface
             return;
         }
         if ($terraf->getLimit() > 0 && $terraf->getLimit() <= Colfields::countInstances('type=' . $terraf->getDestination())) {
-            $game->addInformation('Dieser Feldtyp ist auf diesem Planetentyp nur ' . $terraf->getLimit() . ' mal möglich');
+            $game->addInformationf(
+                _('Dieser Feldtyp ist auf diesem Planetentyp nur %d mal möglich'),
+                $terraf->getLimit()
+            );
             return;
         }
         if ($terraf->getEpsCost() > $colony->getEps()) {
-            $game->addInformation("Es wird " . $terraf->getEpsCost() . " Energie benötigt - Vorhanden ist nur " . $colony->getEps());
+            $game->addInformationf(
+                _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
+                $terraf->getEpsCost(),
+                $colony->getEps()
+            );
             return;
         }
         $ret = calculateCosts($terraf->getCosts(), $colony->getStorage(), $colony);
@@ -71,7 +78,11 @@ final class Terraform implements ActionControllerInterface
         $field->setTerraformingId($terraf->getId());
         $field->save();
         $colony->save();
-        $game->addInformation($terraf->getDescription() . " wird durchgeführt - Fertigstellung: " . parseDateTime($time));
+        $game->addInformationf(
+            _("%s wird durchgeführt - Fertigstellung: %s"),
+            $terraf->getDescription(),
+            parseDateTime($time)
+        );
     }
 
     public function performSessionCheck(): bool

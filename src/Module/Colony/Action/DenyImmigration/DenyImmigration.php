@@ -39,7 +39,7 @@ final class DenyImmigration implements ActionControllerInterface
 
         $colony->setImmigrationState(0);
         $colony->save();
-        $game->addInformation("Die Einwanderung wurde verboten");
+        $game->addInformation(_('Die Einwanderung wurde verboten'));
 
         $game->setTemplateVar('PRE_SELECTED_COLONY_MENU', $this->colonyGuiHelper->getColonyMenu(MENU_OPTION));
     }

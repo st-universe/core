@@ -25,22 +25,24 @@ final class BeamTo implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
         );
 
         if ($colony->getEps() == 0) {
-            $game->addInformation(_("Keine Energie vorhanden"));
+            $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
         $target = new Ship(request::postIntFatal('target'));
         if ($target->shieldIsActive() && $target->getUserId() != currentUser()->getId()) {
-            $game->addInformation(sprintf(_('Die %s hat die Schilde aktiviert'), $target->getName()));
+            $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }
         if (!$target->storagePlaceLeft()) {
-            $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $target->getName()));
+            $game->addInformationf(_('Der Lagerraum der %s ist voll'), $target->getName());
             return;
         }
         $goods = request::postArray('goods');
@@ -54,8 +56,11 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(_('Es wurde keine Waren zum Beamen ausgewählt'));
             return;
         }
-        $game->addInformation(sprintf(_('Die Kolonie %s hat folgende Waren zur %s transferiert'),
-            $colony->getName(), $target->getName()));
+        $game->addInformationf(
+            _('Die Kolonie %s hat folgende Waren zur %s transferiert'),
+            $colony->getName(),
+            $target->getName()
+        );
         foreach ($goods as $key => $value) {
             if ($colony->getEps() < 1) {
                 break;
@@ -77,7 +82,7 @@ final class BeamTo implements ActionControllerInterface
                 continue;
             }
             if (!$good->getGood()->isBeamable()) {
-                $game->addInformation(sprintf(_("%s ist nicht beambar"), $good->getGood()->getName()));
+                $game->addInformationf(_('%s ist nicht beambar'), $good->getGood()->getName());
                 continue;
             }
             if ($target->getStorageSum() >= $target->getMaxStorage()) {
@@ -94,8 +99,12 @@ final class BeamTo implements ActionControllerInterface
             }
 
             $eps_usage = ceil($count / $good->getGood()->getTransferCount());
-            $game->addInformation(sprintf(_("%d %s (Energieverbrauch: %d)"), $count, $good->getGood()->getName(),
-                $eps_usage));
+            $game->addInformationf(
+                _('%d %s (Energieverbrauch: %d)'),
+                $count,
+                $good->getGood()->getName(),
+                $eps_usage
+            );
             $colony->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
             $target->upperStorage($value, $count);
             $colony->lowerStorage($value, $count);
@@ -105,8 +114,6 @@ final class BeamTo implements ActionControllerInterface
             $game->sendInformation($target->getUserId(), currentUser()->getId(), PM_SPECIAL_TRADE);
         }
         $colony->save();
-
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool

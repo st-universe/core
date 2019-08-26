@@ -64,7 +64,7 @@ final class TrainCrew implements ActionControllerInterface
         }
         $colony->lowerWorkless($count);
         $colony->save();
-        $game->addInformation(sprintf(_('Es werden %d Crew ausgebildet'), $count));
+        $game->addInformationf(_('Es werden %d Crew ausgebildet'), $count);
     }
 
     private function getTrainableCrewCountPerTick(ColonyData $colony)

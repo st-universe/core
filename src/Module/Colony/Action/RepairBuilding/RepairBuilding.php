@@ -48,7 +48,11 @@ final class RepairBuilding implements ActionControllerInterface
         $integrity = round((100 / $field->getBuilding()->getIntegrity()) * $field->getIntegrity());
         $eps = round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
         if ($eps > $colony->getEps()) {
-            $game->addInformation("Zur Reparatur wird " . $eps . " Energie benötigt - Es sind jedoch nur " . $colony->getEps() . " vorhanden");
+            $game->addInformationf(
+                _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
+                $eps,
+                $colony->getEps()
+            );
             return;
         }
 
@@ -67,7 +71,11 @@ final class RepairBuilding implements ActionControllerInterface
         $field->setIntegrity($field->getBuilding()->getIntegrity());
         $field->save();
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde repariert");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde repariert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
     public function performSessionCheck(): bool

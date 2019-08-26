@@ -150,12 +150,19 @@ abstract class GameController implements GameControllerInterface
         return round((memory_get_peak_usage() / 1024) / 1024, 3);
     }
 
+    public function addInformationf(string $text, ...$args): void {
+        $this->addInformation(vsprintf(
+            $text,
+            $args
+        ));
+    }
+
     public function addInformation(string $msg, bool $override = false): void
     {
         if ($override) {
             $this->gameInformations = array();
         }
-        $this->gameInformations[] = decodeString($msg);
+        $this->gameInformations[] = decodeString(BBCode()->parse($msg));
     }
 
     public function addInformationMerge($info)

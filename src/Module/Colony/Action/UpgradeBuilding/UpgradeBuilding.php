@@ -8,6 +8,7 @@ use BuildingFieldAlternative;
 use BuildingUpgrade;
 use ColfieldData;
 use Colfields;
+use ColonyData;
 use request;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
@@ -53,20 +54,30 @@ final class UpgradeBuilding implements ActionControllerInterface
         $storage = $colony->getStorage();
         foreach ($upgrade->getCost() as $key => $obj) {
             if (!array_key_exists($obj->getGoodId(), $storage)) {
-                $game->addInformation(sprintf(_("Es werden %d %s benötigt - Es ist jedoch keines vorhanden"),
-                    $obj->getAmount(), getGoodName($obj->getGoodId())));
+                $game->addInformationf(
+                    _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
+                    $obj->getAmount(),
+                    getGoodName($obj->getGoodId())
+                );
                 return;
             }
             if ($obj->getAmount() > $storage[$obj->getGoodId()]->getAmount()) {
-                $game->addInformation(sprintf(_("Es werden %d %s benötigt - Vorhanden sind nur %d"), $obj->getAmount(),
-                    getGoodName($obj->getGoodId()), $storage[$obj->getGoodId()]->getAmount()));
+                $game->addInformationf(
+                    _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
+                    $obj->getAmount(),
+                    getGoodName($obj->getGoodId()),
+                    $storage[$obj->getGoodId()]->getAmount()
+                );
                 return;
             }
         }
 
         if ($colony->getEps() < $upgrade->getEnergyCost()) {
-            $game->addInformation(sprintf(_("Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d"),
-                $upgrade->getEnergyCost(), $colony->getEps()));
+            $game->addInformationf(
+                _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
+                $upgrade->getEnergyCost(),
+                $colony->getEps()
+            );
             return;
         }
 
@@ -89,8 +100,11 @@ final class UpgradeBuilding implements ActionControllerInterface
         $colony->save();
         $field->save();
 
-        $game->addInformation($upgrade->getDescription() . " wird durchgeführt - Fertigstellung: " . $field->getBuildtimeDisplay(),
-            true);
+        $game->addInformationf(
+            _('%s wird durchgeführt - Fertigstellung: %s'),
+            $upgrade->getDescription(),
+            $field->getBuildtimeDisplay()
+        );
     }
 
     private function removeBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
@@ -104,8 +118,12 @@ final class UpgradeBuilding implements ActionControllerInterface
         $this->deActivateBuilding($field, $colony, $game);
         $colony->lowerMaxStorage($field->getBuilding()->getStorage());
         $colony->lowerMaxEps($field->getBuilding()->getEpsStorage());
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde demontiert");
-        $game->addInformation("Es konnten folgende Waren recycled werden");
+        $game->addInformationf(
+            _('%s auf Feld %s wurde demontiert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
+        $game->addInformation(_('Es konnten folgende Waren recycled werden'));
         foreach ($field->getBuilding()->getCosts() as $key => $value) {
             if ($colony->getStorageSum() + $value->getHalfCount() > $colony->getMaxStorage()) {
                 $amount = $colony->getMaxStorage() - $colony->getStorageSum();
@@ -116,7 +134,7 @@ final class UpgradeBuilding implements ActionControllerInterface
                 break;
             }
             $colony->upperStorage($value->getGoodId(), $amount);
-            $game->addInformation($amount . " " . $value->getGood()->getName());
+            $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();
         $field->save();
@@ -142,7 +160,11 @@ final class UpgradeBuilding implements ActionControllerInterface
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde deaktiviert");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde deaktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
     public function performSessionCheck(): bool

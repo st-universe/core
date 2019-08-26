@@ -24,6 +24,8 @@ interface GameControllerInterface
 
     public function getMemoryUsage();
 
+    public function addInformationf(string $text, ...$args): void;
+
     public function addInformation(string $msg, bool $override = false): void;
 
     public function addInformationMerge($info);

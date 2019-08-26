@@ -61,7 +61,7 @@ final class ShowField implements ViewControllerInterface
             }
         );
 
-        $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getId()));
+        $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getFieldId()));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setAjaxMacro('html/colonymacros.xhtml/fieldaction');
 

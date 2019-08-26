@@ -58,13 +58,20 @@ final class CreateModules implements ActionControllerInterface
             try {
                 foreach ($module->getCost() as $cid => $cost) {
                     if (!array_key_exists($cost->getGoodId(), $storage)) {
-                        $prod[] = sprintf(_("Zur Herstellung von %s wird %s benötigt"), $module->getName(),
-                            $cost->getGood()->getName());
+                        $prod[] = sprintf(
+                            _('Zur Herstellung von %s wird %s benötigt'),
+                            $module->getName(),
+                            $cost->getGood()->getName()
+                        );
                         throw new Exception;
                     }
                     if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
-                        $prod[] = sprintf(_("Zur Herstellung von %s wird %d %s benötigt"), $module->getName(),
-                            $cost->getAmount(), $cost->getGood()->getName());
+                        $prod[] = sprintf(
+                            _('Zur Herstellung von %s wird %d %s benötigt'),
+                            $module->getName(),
+                            $cost->getAmount(),
+                            $cost->getGood()->getName()
+                        );
                         throw new Exception;
                     }
                     if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount() * $count) {

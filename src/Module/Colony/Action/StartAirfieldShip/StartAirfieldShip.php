@@ -12,6 +12,7 @@ use Shiprump;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use TorpedoType;
 
 final class StartAirfieldShip implements ActionControllerInterface
@@ -29,6 +30,8 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
@@ -47,29 +50,35 @@ final class StartAirfieldShip implements ActionControllerInterface
          */
         $rump = ResourceCache()->getObject('rump', $rump_id);
         if ($rump->canColonize() && Ship::countInstances('WHERE user_id=' . currentUser()->getId() . ' AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special=' . RUMP_SPECIAL_COLONIZE . ')') > 0) {
-            $game->addInformation(_("Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden"));
+            $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
         $hangar = BuildplanHangar::getBy('WHERE rump_id=' . $rump_id);
 
         if ($hangar->getBuildplan()->getCrew() > currentUser()->getFreeCrewCount()) {
-            $game->addInformation(_("Es ist für den Start des Schiffes nicht genügend Crew vorhanden"));
+            $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
             return;
         }
         if (Ship::countInstances('WHERE user_id=' . currentUser()->getId()) >= 10) {
-            $game->addInformation(_("Im Moment sind nur 10 Schiffe pro Siedler erlaubt"));
+            $game->addInformation(_('Im Moment sind nur 10 Schiffe pro Spieler erlaubt'));
             return;
         }
         // XXX starting costs
         if ($colony->getEps() < 10) {
-            $game->addInformation(sprintf(_('Es wird %d Energie benötigt - Vorhanden ist nur %d'), 10,
-                $colony->getEps()));
+            $game->addInformationf(
+                _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
+                10,
+                $colony->getEps()
+            );
             return;
         }
         $storage = &$colony->getStorage();
         if (!array_key_exists($rump->getGoodId(), $storage)) {
-            $game->addInformation(sprintf(_('Es wird %d %s benötigt'), 1, getGoodName($rump->getGoodId())));
-            $this->rollbackTransaction();
+            $game->addInformationf(
+                _('Es wird %d %s benötigt'),
+                1,
+                getGoodName($rump->getGoodId())
+            );
             return;
         }
 

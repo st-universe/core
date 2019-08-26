@@ -14,7 +14,6 @@ use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 
 final class BuildOnField implements ActionControllerInterface
 {
@@ -54,11 +53,17 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
         if ($building->hasLimitColony() && Colfields::countInstances('buildings_id=' . $building->getId() . ' AND colonies_id=' . $colony->getId()) >= $building->getLimitColony()) {
-            $game->addInformation("Dieses Gebäude kann auf dieser Kolonie nur " . $building->getLimitColony() . " mal gebaut werden");
+            $game->addInformationf(
+                _('Dieses Gebäude kann auf dieser Kolonie nur %d mal gebaut werden'),
+                $building->getLimitColony()
+            );
             return;
         }
         if ($building->hasLimit() && Colfields::countInstances('buildings_id=' . $building->getId() . ' AND colonies_id IN (SELECT id FROM stu_colonies WHERE user_id=' . $game->getUser()->getId() . ')') >= $building->getLimit()) {
-            $game->addInformation("Dieses Gebäude kann insgesamt nur " . $building->getLimit() . " mal gebaut werden");
+            $game->addInformationf(
+                _('Dieses Gebäude kann insgesamt nur %d mal gebaut werden'),
+                $building->getLimit()
+            );
             return;
         }
         $storage = $colony->getStorage();
@@ -66,12 +71,20 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 if (!array_key_exists($key, $storage) && !array_key_exists($key,
                         $field->getBuilding()->getCosts())) {
-                    $game->addInformation("Es werden " . $obj->getAmount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Es ist jedoch keines vorhanden");
+                    $game->addInformationf(
+                        _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
+                        $obj->getAmount(),
+                        getGoodName($obj->getGoodId())
+                    );
                     return;
                 }
             } else {
                 if (!array_key_exists($key, $storage)) {
-                    $game->addInformation("Es werden " . $obj->getAmount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Es ist jedoch keines vorhanden");
+                    $game->addInformationf(
+                        _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
+                        $obj->getAmount(),
+                        getGoodName($obj->getGoodId())
+                    );
                     return;
                 }
             }
@@ -87,20 +100,29 @@ final class BuildOnField implements ActionControllerInterface
                 }
             }
             if ($obj->getAmount() > $amount) {
-                $game->addInformation("Es werden " . $obj->getAmount() . " " . getGoodName($obj->getGoodId()) . " benötigt - Vorhanden sind nur " . $amount);
+                $game->addInformationf(
+                    _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
+                    $obj->getAmount(),
+                    getGoodName($obj->getGoodId()),
+                    $amount
+                );
                 return;
             }
         }
 
         if ($colony->getEps() < $building->getEpsCost()) {
-            $game->addInformation("Zum Bau wird " . $building->getEpsCost() . " Energie benötigt - Vorhanden ist nur " . $colony->getEps());
+            $game->addInformationf(
+                _('Zum Bau wird %d Energie benötigt - Vorhanden ist nur %d'),
+                $building->getEpsCost(),
+                $colony->getEps()
+            );
             return;
         }
 
         if ($field->hasBuilding()) {
             if ($colony->getEps() > $colony->getMaxEps() - $field->getBuilding()->getEpsStorage()) {
                 if ($colony->getMaxEps() - $field->getBuilding()->getEpsStorage() < $building->getEpsCost()) {
-                    $game->addInformation("Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung");
+                    $game->addInformation(_('Nach der Demontage steht nicht mehr genügend Energie zum Bau zur Verfügung'));
                     return;
                 }
             }
@@ -122,7 +144,11 @@ final class BuildOnField implements ActionControllerInterface
         $field->setBuildtime($building->getBuildtime());
         $colony->save();
         $field->save();
-        $game->addInformation($building->getName() . " wird gebaut - Fertigstellung: " . $field->getBuildtimeDisplay());
+        $game->addInformationf(
+            _("%s wird gebaut - Fertigstellung: %s"),
+            $building->getName(),
+            $field->getBuildtimeDisplay()
+        );
     }
 
     private function removeBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
@@ -136,8 +162,12 @@ final class BuildOnField implements ActionControllerInterface
         $this->deActivateBuilding($field, $colony, $game);
         $colony->lowerMaxStorage($field->getBuilding()->getStorage());
         $colony->lowerMaxEps($field->getBuilding()->getEpsStorage());
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde demontiert");
-        $game->addInformation("Es konnten folgende Waren recycled werden");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde demontiert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
+        $game->addInformation(_('Es konnten folgende Waren recycled werden'));
         foreach ($field->getBuilding()->getCosts() as $key => $value) {
             if ($colony->getStorageSum() + $value->getHalfCount() > $colony->getMaxStorage()) {
                 $amount = $colony->getMaxStorage() - $colony->getStorageSum();
@@ -174,7 +204,11 @@ final class BuildOnField implements ActionControllerInterface
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde deaktiviert");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde deaktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
     public function performSessionCheck(): bool

@@ -47,8 +47,12 @@ final class RemoveBuilding implements ActionControllerInterface
         $this->deActivateBuilding($field, $colony, $game);
         $colony->lowerMaxStorage($field->getBuilding()->getStorage());
         $colony->lowerMaxEps($field->getBuilding()->getEpsStorage());
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde demontiert");
-        $game->addInformation("Es konnten folgende Waren recycled werden");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde demontiert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
+        $game->addInformation(_('Es konnten folgende Waren recycled werden'));
         foreach ($field->getBuilding()->getCosts() as $key => $value) {
             if ($colony->getStorageSum() + $value->getHalfCount() > $colony->getMaxStorage()) {
                 $amount = $colony->getMaxStorage() - $colony->getStorageSum();
@@ -59,7 +63,7 @@ final class RemoveBuilding implements ActionControllerInterface
                 break;
             }
             $colony->upperStorage($value->getGoodId(), $amount);
-            $game->addInformation($amount . " " . $value->getGood()->getName());
+            $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();
         $field->save();
@@ -85,7 +89,11 @@ final class RemoveBuilding implements ActionControllerInterface
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde deaktiviert");
+        $game->addInformationf(
+            _('%s auf Feld %d wurde deaktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
     public function performSessionCheck(): bool

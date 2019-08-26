@@ -62,8 +62,11 @@ final class BuildTorpedos implements ActionControllerInterface
                 $colony->lowerStorage($cost->getGoodId(), $cost->getAmount() * $count);
             }
             $colony->upperStorage($torp->getGoodId(), $count * $torp->getAmount());
-            $msg[] = sprintf(_('Es wurden %d Torpedos des Typs %s hergestellt'), $count * $torp->getAmount(),
-                $torp->getName());
+            $msg[] = sprintf(
+                _('Es wurden %d Torpedos des Typs %s hergestellt'),
+                $count * $torp->getAmount(),
+                $torp->getName()
+            );
             $colony->lowerEps($count * $torp->getECost());
         }
         $colony->save();

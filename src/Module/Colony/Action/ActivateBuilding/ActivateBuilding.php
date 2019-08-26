@@ -26,6 +26,8 @@ final class ActivateBuilding implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $game->getUser()->getId()
@@ -45,11 +47,14 @@ final class ActivateBuilding implements ActionControllerInterface
             return;
         }
         if ($field->hasHighDamage()) {
-            $game->addInformation("Das Gebäude kann aufgrund zu starker Beschädigung nicht aktiviert werden");
+            $game->addInformation(_('Das Gebäude kann aufgrund zu starker Beschädigung nicht aktiviert werden'));
             return;
         }
         if ($colony->getWorkless() < $field->getBuilding()->getWorkers()) {
-            $game->addInformation("Zum aktivieren des Gebäudes werden " . $field->getBuilding()->getWorkers() . " Arbeiter benötigt");
+            $game->addInformationf(
+                _('Zum aktivieren des Gebäudes werden %d Arbeiter benötigt'),
+                $field->getBuilding()->getWorkers()
+            );
             return;
         }
         $colony->lowerWorkless($field->getBuilding()->getWorkers());
@@ -60,9 +65,11 @@ final class ActivateBuilding implements ActionControllerInterface
         $colony->save();
         $field->getBuilding()->postActivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde aktiviert");
-
-        $game->setView(ShowColony::VIEW_IDENTIFIER);
+        $game->addInformationf(
+            _('%s auf Feld %d wurde aktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
     public function performSessionCheck(): bool
