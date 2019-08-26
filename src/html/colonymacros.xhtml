@@ -1113,8 +1113,8 @@
 									</td>
 									<td style="vertical-align: middle; width: 50px; text-align: center;">
 										<div>
-											Status: <span tal:replace="php:getPercentage(THIS.getField().getTerraforming().getProgress(),THIS.getField().getTerraforming().getTerraforming().getDuration())">PERCENTAGE</span>%</div>
-										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,THIS.getField().getTerraforming().getProgress(),THIS.getField().getTerraforming().getTerraforming().getDuration())">STATUSBAR</div>
+											Status: <span tal:replace="php:getPercentage(FIELD.getTerraforming().getProgress(),FIELD.getTerraforming().getTerraforming().getDuration())">PERCENTAGE</span>%</div>
+										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getTerraforming().getProgress(),FIELD.getTerraforming().getTerraforming().getDuration())">STATUSBAR</div>
 									</td>
 									<td style="width: 45px; text-align: center;">
 										<img src="${GFX}/fields/${FIELD/getTerraforming/getTerraforming/getDestination}.gif" />
