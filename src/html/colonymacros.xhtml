@@ -231,7 +231,7 @@
                     <tr>
                         <th i18n:translate="" colspan="3">Jäger bauen</th>
                     </tr>
-                    <tr tal:repeat="data THIS/getAvailableFighterShipyardRumps" tal:attributes="class string:row${repeat/data/odd}">
+                    <tr tal:repeat="data BUILDABLE_SHIPS" tal:attributes="class string:row${repeat/data/odd}">
                         <td>
                             <input type="radio" name="buildrump" value="" tal:attributes="value data/getId" />
                             <img src="${GFX}/ships/${data/getId}.gif" />
@@ -248,11 +248,11 @@
                             </div>
                         </td>
                     </tr>
-                    <tr tal:condition="not:THIS/getAvailableAirfieldRumps">
+                    <tr tal:condition="not:BUILDABLE_SHIPS">
                         <td colspan="3" i18n:translate="" style="text-align: center;">Keine baubaren Rümpfe vorhanden</td>
                     </tr>
                 </table>
-                <div tal:condition="THIS/getAvailableFighterShipyardRumps" style="width: 100%; text-align: center">
+                <div tal:condition="BUILDABLE_SHIPS" style="width: 100%; text-align: center">
                     <br />
                     <stu:submit name="B_BUILD_FIGHTER_SHIPYARD_RUMP" value="Schiff bauen" i18n:attributes="value" />
                 </div>
