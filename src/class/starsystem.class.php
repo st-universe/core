@@ -134,6 +134,9 @@ class StarSystemData extends BaseTable {
 		return $fields;
 	} # }}}
 
+	public function getMapField(): MapFieldData {
+		return MapField::getFieldByCoords($this->getCX(), $this->getCY());
+	}
 }
 
 class StarSystem extends StarSystemData {

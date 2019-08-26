@@ -467,7 +467,7 @@
                 <stu:box title="Standort" i18n:attributes="title" style="text-align: center">
                     <img src="${GFX}/planets/${COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span i18n:translate="">Planet <span i18n:name="planetname" tal:replace="COLONY/getPlanetName"/></span> (${COLONY/getPosX}|${COLONY/getPosY})
                     <span i18n:translate="">in Sternensystem</span>
-                    <img src="${GFX}/map/${COLONY/getSystem/getType}.gif" style="width: 15px; height: 15px;" /> ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
+                    <img src="${GFX}/map/${COLONY/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" /> ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
                 </stu:box>
                 <br />
                 <table class="tcal population">

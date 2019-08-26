@@ -295,7 +295,7 @@
 								</div>
 							</td>
 							<td tal:condition="currentShip/enableSystemLeave">
-								<img src="${GFX}/map/${currentShip/getSystem/getType}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${currentShip/getSystem/getName}<br />
+								<img src="${GFX}/map/${currentShip/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${currentShip/getSystem/getName}<br />
 								<a href="ship.php?B_LEAVE_STARSYSTEM=1&id=${currentShip/getId}&sstr=${THIS/getSessionString}">
 									<img src="${GFX}/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
 								</a>
@@ -303,7 +303,7 @@
 							</td>
 							<tal:block tal:condition="not:currentShip/isInSystem">
 								<td tal:condition="currentShip/isOverSystem">
-									<img src="${GFX}/map/${currentShip/getSystem/getType}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${currentShip/getSystem/getName}<br />
+									<img src="${GFX}/map/${currentShip/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${currentShip/getSystem/getName}<br />
 									<a href="ship.php?B_ENTER_STARSYSTEM=1&id=${currentShip/getId}&sstr=${THIS/getSessionString}">
 										<img src="${GFX}/buttons/sysenter1.gif" name="sysleave" title="Ins System einfliegen" /> einfliegen
 									</a>

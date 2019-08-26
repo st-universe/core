@@ -31,7 +31,7 @@
 						${colony/getEps}/${colony/getMaxEps} (<span tal:replace="colony/getEpsProductionDisplay">PROD</span>)
 					</td>
 					<td style="vertical-align: middle;">
-						<img src="${GFX}/map/${colony/getSystem/getType}.gif" tal:attributes="title string:${colony/getSystem/getName}-System bei ${colony/getSystem/getCX}|${colony/getSystem/getCY}" style="width: 15px; height: 15px;" /> ${colony/getPosX}|${colony/getPosY}
+						<img src="${GFX}/map/${colony/getSystem/getMapField/getFieldId}.gif" tal:attributes="title string:${colony/getSystem/getName}-System bei ${colony/getSystem/getCX}|${colony/getSystem/getCY}" style="width: 15px; height: 15px;" /> ${colony/getPosX}|${colony/getPosY}
 					</td>
 					<td style="vertical-align: middle;">
 						<table border="0" cellspacing="0" cellpadding="0">
