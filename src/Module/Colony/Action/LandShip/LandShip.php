@@ -8,6 +8,7 @@ use request;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 
 final class LandShip implements ActionControllerInterface
 {
