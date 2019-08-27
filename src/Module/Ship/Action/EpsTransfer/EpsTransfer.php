@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\EpsTransfer;
 
-use ObjectNotFoundException;
 use PM;
 use request;
-use ShipData;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -56,7 +54,7 @@ final class EpsTransfer implements ActionControllerInterface
             return;
         }
         $target = $this->shipLoader->getById(request::postIntFatal('target'));
-        if (!$this->preChecks($ship, $target, $game)) {
+        if (!$ship->canInteractWith($target)) {
             return;
         }
         if ($target->getWarpState()) {
@@ -82,21 +80,10 @@ final class EpsTransfer implements ActionControllerInterface
         $target->upperEbatt($load);
         $target->save();
         $ship->save();
-        PM::sendPM(currentUser()->getId(), $target->getUserId(),
+        PM::sendPM($userId, $target->getUserId(),
             "Die " . $ship->getName() . " transferiert in SeKtor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
             PM_SPECIAL_TRADE);
         $game->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
-    }
-
-    private function preChecks(ShipData $ship, ShipData $target, GameControllerInterface $game): bool {
-        if (!checkPosition($ship, $target) || $ship->getCloakState()) {
-            new ObjectNotFoundException($target->getId());
-        }
-        if ($target->shieldIsActive() && $target->getUserId() != currentUser()->getId()) {
-            $game->addInformation("Die " . $target->getName() . " hat die Schilde aktiviert");
-            return false;
-        }
-        return true;
     }
 
     public function performSessionCheck(): bool

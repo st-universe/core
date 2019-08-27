@@ -51,7 +51,7 @@ final class DockShip implements ActionControllerInterface
         if (!$target->isBase()) {
             return;
         }
-        if (!DockingRights::checkPrivilegeFor($target->getId(), currentUser())) {
+        if (!DockingRights::checkPrivilegeFor($target->getId(), $game->getUser())) {
             $game->addInformation('Das Andocken wurden verweigert');
             return;
         }
@@ -83,7 +83,7 @@ final class DockShip implements ActionControllerInterface
         $ship->setDock($target->getId());
         $ship->save();
 
-        PM::sendPm(currentUser()->getId(), $target->getUserId(),
+        PM::sendPm($userId, $target->getUserId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt', PM_SPECIAL_SHIP);
         $game->addInformation('Andockvorgang abgeschlossen');
     }

@@ -35,7 +35,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         );
 
         $target = ResourceCache()->getObject(CACHE_SHIP, request::postIntFatal('target'));
-        $this->preChecks($ship, $target, $game);
+        $ship->canInteractWith($target);
         if ($target->getCrew() == 0) {
             $game->addInformation(_('Keine Rettungskapseln vorhanden'));
             return;
@@ -46,8 +46,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
         $ship->cancelRepair();
         $dummy_crew = current($target->getCrewList());
-        if ($dummy_crew->getCrew()->getUserId() != currentUser()->getId()) {
-            PM::sendPm(currentUser()->getId(), $dummy_crew->getCrew()->getUserId(),
+        if ($dummy_crew->getCrew()->getUserId() != $userId) {
+            PM::sendPm($userId, $dummy_crew->getCrew()->getUserId(),
                 sprintf(_('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
                     $target->getCrew()), PM_SPECIAL_SHIP);
         }
@@ -55,19 +55,6 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $ship->lowerEps(1);
         $ship->save();
         $game->addInformation(_('Die Rettungskapseln wurden geborgen'));
-    }
-
-    protected function preChecks(ShipData $ship, ShipData $target, GameControllerInterface $game): bool
-    {
-        if (!checkPosition($ship,
-                $target) || $ship->getCloakState()) {
-            new ObjectNotFoundException($target->getId());
-        }
-        if ($target->shieldIsActive() && $target->getUserId() != currentUser()->getId()) {
-            $game->addInformation("Die " . $target->getName() . " hat die Schilde aktiviert");
-            return false;
-        }
-        return true;
     }
 
     public function performSessionCheck(): bool

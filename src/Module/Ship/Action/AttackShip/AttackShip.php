@@ -46,7 +46,7 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUserId() == currentUser()->getId()) {
+        if ($target->getUserId() == $userId) {
             return;
         }
         if ($target->getRump()->isTrumfield()) {
@@ -82,7 +82,7 @@ final class AttackShip implements ActionControllerInterface
         foreach ($obj->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
-        PM::sendPM(currentUser()->getId(), $target_user_id, $pm, PM_SPECIAL_SHIP);
+        PM::sendPM($userId, $target_user_id, $pm, PM_SPECIAL_SHIP);
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());

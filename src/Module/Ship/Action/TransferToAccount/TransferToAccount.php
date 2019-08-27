@@ -53,7 +53,7 @@ final class TransferToAccount implements ActionControllerInterface
         if (!$tradepost->currentUserHasLicence()) {
             return;
         }
-        if ($tradepost->getStorageByUser(currentUser()->getId())->getStorageSum() >= $tradepost->getStorage()) {
+        if ($tradepost->getStorageByUser($userId)->getStorageSum() >= $tradepost->getStorage()) {
             $game->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
             return;
         }
@@ -82,7 +82,7 @@ final class TransferToAccount implements ActionControllerInterface
             } else {
                 $count = intval($count);
             }
-            if ($count < 1 || $tradepost->getStorage() - $tradepost->getStorageByUser(currentUser()->getId())->getStorageSum() <= 0) {
+            if ($count < 1 || $tradepost->getStorage() - $tradepost->getStorageByUser($userId)->getStorageSum() <= 0) {
                 continue;
             }
             if (!$good->getGood()->isBeamable()) {
@@ -98,14 +98,14 @@ final class TransferToAccount implements ActionControllerInterface
             if ($count > $good->getAmount()) {
                 $count = $good->getAmount();
             }
-            if ($tradepost->getStorageByUser(currentUser()->getId())->getStorageSum() + $count > $tradepost->getStorage()) {
-                $count = $tradepost->getStorage() - $tradepost->getStorageByUser(currentUser()->getId())->getStorageSum();
+            if ($tradepost->getStorageByUser($userId)->getStorageSum() + $count > $tradepost->getStorage()) {
+                $count = $tradepost->getStorage() - $tradepost->getStorageByUser($userId)->getStorageSum();
             }
             $game->addInformation(sprintf(_('%d %s'), $count, $good->getGood()->getName()));
 
             $ship->lowerStorage($value, $count);
-            $tradepost->upperStorage(currentUser()->getId(), $value, $count);
-            $tradepost->getStorageByUser(currentUser()->getId())->upperSum($count);
+            $tradepost->upperStorage($userId, $value, $count);
+            $tradepost->getStorageByUser($userId)->upperSum($count);
         }
     }
 

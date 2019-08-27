@@ -55,7 +55,7 @@ final class TransferFromAccount implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        $curGoods = $tradepost->getStorageByUser(currentUser()->getId())->getStorage();
+        $curGoods = $tradepost->getStorageByUser($userId)->getStorage();
         if (count($curGoods) == 0) {
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
@@ -95,7 +95,7 @@ final class TransferFromAccount implements ActionControllerInterface
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
-            $tradepost->lowerStorage(currentUser()->getId(), $value, $count);
+            $tradepost->lowerStorage($userId, $value, $count);
             $ship->upperStorage($value, $count);
             $ship->setStorageSum($ship->getStorageSum() + $count);
 

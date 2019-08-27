@@ -9,7 +9,6 @@ use Colfields;
 use Colony;
 use request;
 use RumpColonizeBuilding;
-use ShipData;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -43,7 +42,15 @@ final class Colonize implements ActionControllerInterface
         $colony = new Colony($colonyId);
         $field = new Colfields($fieldId);
 
-        if (!$this->canColonizeCurrentColony($ship)) {
+        if (!$ship->getRump()->canColonize()) {
+            return;
+        }
+
+        if (
+            !$colony->getPlanetType()->getResearchId() > 0 ||
+            !$game->getUser()->hasResearched($colony->getPlanetType()->getResearchId())
+            |$colony->isFree()
+        ) {
             return;
         }
         if ($colony->getId() != $field->getColonyId()) {
@@ -74,15 +81,6 @@ final class Colonize implements ActionControllerInterface
 
         header('Location: colony.php?id=' . $colony->getId());
         exit;
-    }
-
-    public function canColonizeCurrentColony(ShipData $ship): bool
-    {
-        $colony = $ship->getCurrentColony();
-        if ($colony->getPlanetType()->getResearchId() > 0 && !currentUser()->hasResearched($colony->getPlanetType()->getResearchId())) {
-            return false;
-        }
-        return $ship->getCurrentColony()->isFree() && $ship->getRump()->canColonize();
     }
 
     public function performSessionCheck(): bool

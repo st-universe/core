@@ -73,7 +73,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Die " . $ship->getName() . " befindet sich in der selben Flotte wie die " . $ship->getName());
             return;
         }
-        if (($ship->getAlertState() == ALERT_YELLOW || $ship->getAlertState() == ALERT_RED) && !$ship->getUser()->isFriend(currentUser()->getId())) {
+        if (($ship->getAlertState() == ALERT_YELLOW || $ship->getAlertState() == ALERT_RED) && !$ship->getUser()->isFriend($userId)) {
             if ($ship->isInFleet()) {
                 $attacker = $ship->getFleet()->getShips();
             } else {
@@ -81,7 +81,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             }
             $obj = new ShipSingleAttackCycle($attacker, $ship, $ship->getFleetId(),$ship->getFleetId());
             $game->addInformationMergeDown($obj->getMessages());
-            PM::sendPM(currentUser()->getId(), $ship->getUserId(),
+            PM::sendPM($userId, $ship->getUserId(),
                 "Die " . $ship->getName() . " versucht die " . $ship->getName() . " in Sektor " . $ship->getSectorString() . " mit dem Traktorstrahl zu erfassen. Folgende Aktionen wurden ausgeführt:\n" . infoToString($obj->getMessages()),
                 PM_SPECIAL_SHIP);
         }
@@ -96,8 +96,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $ship->setTraktorShipId($ship->getId());
         $ship->save();
         $ship->save();
-        if (currentUser()->getId() != $ship->getUserId()) {
-            PM::sendPM(currentUser()->getId(), $ship->getUserId(),
+        if ($userId != $ship->getUserId()) {
+            PM::sendPM($userId, $ship->getUserId(),
                 "Die " . $ship->getName() . " wurde in SeKtor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
                 PM_SPECIAL_SHIP);
         }

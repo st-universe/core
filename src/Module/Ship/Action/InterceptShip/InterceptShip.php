@@ -69,7 +69,7 @@ final class InterceptShip implements ActionControllerInterface
             $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
             $target->save();
         }
-        PM::sendPM(currentUser()->getId(), $target->getUserId(), $pm, PM_SPECIAL_SHIP);
+        PM::sendPM($userId, $target->getUserId(), $pm, PM_SPECIAL_SHIP);
         if ($ship->isInFleet()) {
             $ship->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
         } else {

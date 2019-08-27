@@ -85,7 +85,7 @@ class DockingRights extends DockingRightsData {
 		return self::_getList($result,'DockingRightsData');
 	}
 
-	static function checkPrivilegeFor($shipId,User $user) {
+	static function checkPrivilegeFor($shipId, UserData $user) {
 		$privileges = self::getConfigByShipId($shipId);
 		if (count($privileges) == 0) {
 			return FALSE;
@@ -94,7 +94,7 @@ class DockingRights extends DockingRightsData {
 		foreach ($privileges as $key => $priv) {
 			switch ($priv->getPrivilegeType()) {
 				case DOCK_PRIVILEGE_USER:
-					if ($priv->getTargetId() == currentUser()->getId()) {
+					if ($priv->getTargetId() == $user->getId()) {
 						if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
 							return FALSE;
 						}
@@ -102,7 +102,7 @@ class DockingRights extends DockingRightsData {
 					}
 					break;
 				case DOCK_PRIVILEGE_ALLIANCE:
-					if ($priv->getTargetId() == currentUser()->getAllianceId()) {
+					if ($priv->getTargetId() == $user->getAllianceId()) {
 						if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
 							return FALSE;
 						}
@@ -110,7 +110,7 @@ class DockingRights extends DockingRightsData {
 					}
 					break;
 				case DOCK_PRIVILEGE_FACTION:
-					if ($priv->getTargetId() == currentUser()->getFaction()) {
+					if ($priv->getTargetId() == $user->getFaction()) {
 						if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
 							return FALSE;
 						}

@@ -68,7 +68,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 $obj->lowerStorage($tradepost->getLicenceCostGood()->getId(), $tradepost->calculateLicenceCost());
                 break;
             case 'account':
-                $stor = TradeStorage::getStorageByGood($targetId, currentUser()->getId(),
+                $stor = TradeStorage::getStorageByGood($targetId, $userId,
                     $tradepost->getLicenceCostGood()->getId());
                 if ($stor == 0) {
                     return;
@@ -76,7 +76,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 if ($stor->getTradePost()->getTradeNetwork() != $tradepost->getTradeNetwork()) {
                     return;
                 }
-                $stor->getTradePost()->lowerStorage(currentUser()->getId(), $tradepost->getLicenceCostGood()->getId(),
+                $stor->getTradePost()->lowerStorage($userId, $tradepost->getLicenceCostGood()->getId(),
                     $tradepost->calculateLicenceCost());
                 break;
             default:
@@ -84,7 +84,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         }
         $licence = new TradeLicencesData();
         $licence->setTradePostId($tradepost->getId());
-        $licence->setUserId(currentUser()->getId());
+        $licence->setUserId($userId);
         $licence->setDate(time());
         $licence->save();
     }

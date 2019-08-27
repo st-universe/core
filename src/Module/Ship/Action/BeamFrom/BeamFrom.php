@@ -59,7 +59,7 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
         $target = $this->shipLoader->getById(request::postIntFatal('target'));
-        if (!$this->preChecks($ship, $target, $game)) {
+        if (!$ship->canInteractWith($target)) {
             return;
         }
         if ($target->getWarpState()) {
@@ -130,17 +130,6 @@ final class BeamFrom implements ActionControllerInterface
             $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);
         }
         $ship->save();
-    }
-
-    private function preChecks(ShipData $ship, ShipData $target, GameControllerInterface $game): bool {
-        if (!checkPosition($ship, $target) || $ship->getCloakState()) {
-            new ObjectNotFoundException($target->getId());
-        }
-        if ($target->shieldIsActive() && $target->getUserId() != currentUser()->getId()) {
-            $game->addInformation("Die " . $target->getName() . " hat die Schilde aktiviert");
-            return false;
-        }
-        return true;
     }
 
     public function performSessionCheck(): bool
