@@ -30,6 +30,8 @@ interface GameControllerInterface
 
     public function addInformationMerge($info);
 
+    public function addInformationMergeDown($info);
+
     function getInformation();
 
     public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN);

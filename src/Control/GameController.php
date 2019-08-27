@@ -170,7 +170,7 @@ abstract class GameController implements GameControllerInterface
         $this->gameInformations = array_merge($info, $this->getInformation());
     }
 
-    protected function addInformationMergeDown(&$info)
+    public function addInformationMergeDown($info)
     {
         $this->gameInformations = array_merge($this->getInformation(), $info);
     }
