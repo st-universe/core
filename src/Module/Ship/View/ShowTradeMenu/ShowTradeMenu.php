@@ -31,7 +31,7 @@ final class ShowTradeMenu implements ViewControllerInterface
             $userId
         );
 
-        $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
+        $tradepost = ResourceCache()->getObject('tradepost', request::indInt('postid'));
 
         if (!checkPosition($ship, $tradepost->getShip())) {
             new AccessViolation();

@@ -8,7 +8,7 @@ use request;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class TransferFromAccount implements ActionControllerInterface
 {
@@ -24,7 +24,7 @@ final class TransferFromAccount implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
@@ -36,7 +36,7 @@ final class TransferFromAccount implements ActionControllerInterface
         /**
          * @var \TradePost $tradepost
          */
-        $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
+        $tradepost = ResourceCache()->getObject('tradepost', request::postIntFatal('postid'));
 
         if (!checkPosition($ship, $tradepost->getShip())) {
             return;
