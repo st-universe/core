@@ -1,0 +1,86 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Ship\Action\InterceptShip;
+
+use PM;
+use request;
+use Stu\Control\ActionControllerInterface;
+use Stu\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
+
+final class InterceptShip implements ActionControllerInterface
+{
+    public const ACTION_IDENTIFIER = 'B_INTERCEPT';
+
+    private $shipLoader;
+
+    public function __construct(
+        ShipLoaderInterface $shipLoader
+    ) {
+        $this->shipLoader = $shipLoader;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
+        $userId = $game->getUser()->getId();
+
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId
+        );
+        $target = $this->shipLoader->getById(request::postIntFatal('target'));
+        if (!checkPosition($target, $ship)) {
+            return;
+        }
+
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrew() == 0) {
+            $game->addInformationf(
+                _("Es werden %d Crewmitglieder benötigt"),
+                $ship->getBuildplan()->getCrew()
+            );
+            return;
+        }
+
+        if (!$target->getWarpState()) {
+            return;
+        }
+        if ($target->ownedByCurrentUser()) {
+            return;
+        }
+        if (!$ship->canIntercept()) {
+            return;
+        }
+        if ($ship->isDocked()) {
+            $game->addInformation('Das Schiff hat abgedockt');
+            $ship->setDock(0);
+        }
+        if ($target->isInFleet()) {
+            $target->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
+            $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
+            $pm = "Die Flotte " . $target->getFleet()->getName() . " wurde von der " . $ship->getName() . " abgefangen";
+        } else {
+            $target->deactivateSystem(SYSTEM_WARPDRIVE);
+            $game->addInformation("Die " . $target->getName() . "  wurde abgefangen");
+            $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
+            $target->save();
+        }
+        PM::sendPM(currentUser()->getId(), $target->getUserId(), $pm, PM_SPECIAL_SHIP);
+        if ($ship->isInFleet()) {
+            $ship->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
+        } else {
+            $ship->deactivateSystem(SYSTEM_WARPDRIVE);
+            $ship->save();
+        }
+        // @todo TBD Red alert
+    }
+
+    public function performSessionCheck(): bool
+    {
+        return true;
+    }
+}

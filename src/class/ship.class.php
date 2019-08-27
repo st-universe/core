@@ -15,7 +15,7 @@ class ShipData extends BaseTable {
 	}
 
 	function getId() {
-		return $this->data['id'];
+		return (int) $this->data['id'];
 	}
 
 	function setId($value) {
@@ -1636,9 +1636,23 @@ class ShipData extends BaseTable {
 		return 100;
 	} # }}}
 
+	public function canInteractWith(Ship $target, bool $colony = false): bool
+	{
+		if (!checkPosition($this, $target) || $this->getCloakState() || ($colony && $target->getId() == $this->getId())) {
+			new ObjectNotFoundException($target->getId());
+		}
+		if ($colony) {
+			return true;
+		}
+		if ($target->shieldIsActive() && $target->getUserId() != $this->getUserId()) {
+			return false;
+		}
+		return true;
+
+	}
 }
 class Ship extends ShipData {
-	
+
 	function __construct($ship_id) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$ship_id." LIMIT 1",4);
 		if ($result == 0) {

@@ -10,7 +10,7 @@ use Stu\Control\GameControllerInterface;
 
 final class RenameFleet implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
+    public const ACTION_IDENTIFIER = 'B_FLEET_CHANGE_NAME';
 
     private $renameFleetRequest;
 

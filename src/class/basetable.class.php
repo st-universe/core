@@ -100,7 +100,7 @@ class BaseTable {
 	}
 
 	public function getId() {
-		return $this->data['id'];
+		return (int) $this->data['id'];
 	}
 
 	protected function setId($value) {

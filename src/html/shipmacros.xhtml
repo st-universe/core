@@ -89,8 +89,8 @@
 			<img src="${GFX}/ships/${ship/getRumpId}.gif" />
 		</tal:block>
 	</metal:macro>
-	<metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per THIS/getShip/getId">
-		<input type="hidden" name="id" tal:attributes="value THIS/getShip/getId" />
+	<metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
+		<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 	</metal:macro>
 	<metal:block metal:define-macro="nbslist_header">
 	<tr>
@@ -102,20 +102,20 @@
 	</tr>
 	</metal:block>
 	<metal:block metal:define-macro="nbslist_body">
-		<tal:block tal:condition="THIS/getShip/displayNbsActions" tal:define="sstr string:${THIS/getSessionString}">
+		<tal:block tal:condition="SHIP/displayNbsActions" tal:define="sstr string:${THIS/getSessionString}">
 			<td style="width: 30px; text-align: center;">
-				<tal:block tal:condition="THIS/getShip/canAttack">
+				<tal:block tal:condition="SHIP/canAttack">
 					<div tal:condition="ship/canBeAttacked" style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();" onmouseover="cp('att_${ship/getId}','buttons/phaser2')" onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
 						<img src="${GFX}/buttons/phaser1.gif" name="att_${ship/getId}" title="${ship/getNameWithoutMarkup} angreifen" />
 					</div>
 				</tal:block>
 			</td>
 			<td style="width: 120px;">
-				<a href="javascript:void(0);" onclick="showScanWindow(${THIS/getShip/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
+				<a href="javascript:void(0);" onclick="showScanWindow(${SHIP/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
 					<img src="${GFX}/buttons/lupe1.gif" name="scn_${ship/getId}" title="${ship/getNameWithoutMarkup} scannen" />
 				</a>
-				<tal:block tal:condition="currentShip/canIntercept">
-					<a tal:condition="ship/isInterceptable" href="?B_INTERCEPT=1&id=${THIS/getShip/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
+				<tal:block tal:condition="SHIP/canIntercept">
+					<a tal:condition="ship/isInterceptable" href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
 						<img src="${GFX}/buttons/inc1.gif" name="int_${ship/getId}" title="${ship/getNameWithoutMarkup} abfangen" />
 					</a>
 				</tal:block>
@@ -130,14 +130,14 @@
 						<img src="${GFX}/buttons/b_up1.gif" name="bfr_${ship/getId}" title="Von der ${ship/getNameWithoutMarkup} hochbeamen" />
 					</a>
 					<tal:block tal:condition="not:ship/traktorbeamNotPossible">
-						<tal:block tal:condition="not:THIS/getShip/isTraktorBeamActive">
-							<a href="?B_ACTIVATE_TRAKTOR=1&id=${THIS/getShip/getId}&target=${ship/getId}&sstr=${sstr}" onmouseover="cp('tra_${ship/getId}','buttons/trak2')" onmouseout="cp('tra_${ship/getId}','buttons/trak1')">
+						<tal:block tal:condition="not:SHIP/isTraktorBeamActive">
+							<a href="?B_ACTIVATE_TRAKTOR=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}" onmouseover="cp('tra_${ship/getId}','buttons/trak2')" onmouseout="cp('tra_${ship/getId}','buttons/trak1')">
 								<img src="${GFX}/buttons/trak1.gif" name="tra_${ship/getId}" title="Traktorstrahl auf die ${ship/getNameWithoutMarkup} richten" />
 							</a>
 						</tal:block>
 					</tal:block>
 					<tal:block tal:condition="ship/isBase">
-						<a tal:condition="not:THIS/getShip/isDocked" href="?B_DOCK=1&id=${THIS/getShip/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
+						<a tal:condition="not:SHIP/isDocked" href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
 							<img src="${GFX}/buttons/dock1.gif" name="dock_${ship/getId}" title="An die ${ship/getNameWithoutMarkup} andocken" />
 						</a>
 					</tal:block>
@@ -147,20 +147,20 @@
 				</tal:block>
 			</td>
 		</tal:block>
-		<tal:block tal:condition="not:THIS/getShip/displayNbsActions">
+		<tal:block tal:condition="not:SHIP/displayNbsActions">
 			<td colspan="2" style="text-align: center;">
-				<tal:block tal:condition="THIS/getShip/getWarpState">
-					<tal:block tal:condition="currentShip/canIntercept">
-						<a tal:condition="ship/isInterceptable" href="?B_INTERCEPT=1&id=${THIS/getShip/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
+				<tal:block tal:condition="SHIP/getWarpState">
+					<tal:block tal:condition="SHIP/canIntercept">
+						<a tal:condition="ship/isInterceptable" href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
 							<img src="${GFX}/buttons/inc1.gif" name="int_${ship/getId}" title="${ship/getNameWithoutMarkup} abfangen" />
 						</a>
 					</tal:block>
-					<a href="javascript:void(0);" onclick="showScanWindow(${THIS/getShip/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
+					<a href="javascript:void(0);" onclick="showScanWindow(${SHIP/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
 						<img src="${GFX}/buttons/lupe1.gif" name="scn_${ship/getId}" title="${ship/getNameWithoutMarkup} scannen" />
 					</a>
 					<span style="width: 100%; color: #474791;">Warpantrieb aktiv</span>
 				</tal:block>
-				<div style="width: 100%; color: #404040;" tal:condition="THIS/getShip/cloakIsActive">Tarnung aktiv</div>	
+				<div style="width: 100%; color: #404040;" tal:condition="SHIP/cloakIsActive">Tarnung aktiv</div>	
 			</td>
 		</tal:block>
 		<td style="width: 200px; background-color: #000000 ! important;">
@@ -188,7 +188,7 @@
 	<metal:block metal:define-macro="initial_js">
 		<script language="Javascript">
 			var sstr = '${THIS/getSessionString}';
-			var shipid = ${THIS/getShip/getId};
+			var shipid = ${SHIP/getId};
 		</script> 
 		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/ship.js"><!-- stuniverse --></script>
 	</metal:block>
@@ -196,21 +196,21 @@
 		<table style="width: 100%;" tal:define="sstr THIS/getSessionString">
 			<tr>
 				<td>
-					<a href="?B_SET_GREEN_ALERT=1&id=${currentShip/getId}&sstr=${sstr}">
+					<a href="?B_SET_GREEN_ALERT=1&id=${SHIP/getId}&sstr=${sstr}">
 						<img src="${GFX}/buttons/alert1.gif" /> Alarmstufe Grün
 					</a>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<a href="?B_SET_YELLOW_ALERT=1&id=${currentShip/getId}&sstr=${sstr}">
+					<a href="?B_SET_YELLOW_ALERT=1&id=${SHIP/getId}&sstr=${sstr}">
 						<img src="${GFX}/buttons/alert2.gif" /> Alarmstufe Gelb
 					</a>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<a href="?B_SET_RED_ALERT=1&id=${currentShip/getId}&sstr=${sstr}">
+					<a href="?B_SET_RED_ALERT=1&id=${SHIP/getId}&sstr=${sstr}">
 						<img src="${GFX}/buttons/alert3.gif" /> Alarmstufe Rot
 					</a>
 				</td>
@@ -219,7 +219,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_etransfer">
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 			<input type="hidden" name="target" tal:attributes="value targetShip/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
@@ -227,7 +227,7 @@
 					<td>Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
 				</tr>
 				<tr>
-					<td>Verfügbare Energie: ${currentShip/getEps}/${currentShip/getMaxEps}</td>
+					<td>Verfügbare Energie: ${SHIP/getEps}/${SHIP/getMaxEps}</td>
 				</tr>
 				<tr>
 					<td>
@@ -242,7 +242,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_beamto">
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 			<input type="hidden" name="target" tal:attributes="value targetShip/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
@@ -251,7 +251,7 @@
 				</tr>
 				<tr>
 					<td style="width: 100%;">
-						<tal:block tal:condition="currentShip/getStorage" tal:repeat="good currentShip/getStorage">
+						<tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
 							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -261,7 +261,7 @@
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
-						<tal:block tal:condition="not:currentShip/getStorage">
+						<tal:block tal:condition="not:SHIP/getStorage">
 							Keine Waren vorhanden
 						</tal:block>
 					</td>
@@ -269,8 +269,8 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${currentShip/getId}">
-										<img src="${GFX}/ships/${currentShip/getRumpId}.gif" />
+									<a href="?id=${SHIP/getId}">
+										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -302,7 +302,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_beamfrom">
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 			<input type="hidden" name="target" tal:attributes="value targetShip/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
@@ -329,8 +329,8 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${currentShip/getId}">
-										<img src="${GFX}/ships/${currentShip/getRumpId}.gif" />
+									<a href="?id=${SHIP/getId}">
+										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -362,16 +362,16 @@
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_beamto_colony">
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
-			<input type="hidden" name="target" tal:attributes="value currentShip/getCurrentColony/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+			<input type="hidden" name="target" tal:attributes="value SHIP/getCurrentColony/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
-					<td colspan="2">Ziel: <span tal:replace="structure bbcode:currentShip/getCurrentColony/getName">...</span></td>
+					<td colspan="2">Ziel: <span tal:replace="structure bbcode:SHIP/getCurrentColony/getName">...</span></td>
 				</tr>
 				<tr>
 					<td style="width: 100%;">
-						<tal:block tal:condition="currentShip/getStorage" tal:repeat="good currentShip/getStorage">
+						<tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
 							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -381,7 +381,7 @@
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
-						<tal:block tal:condition="not:currentShip/getStorage">
+						<tal:block tal:condition="not:SHIP/getStorage">
 							Keine Waren vorhanden
 						</tal:block>
 					</td>
@@ -389,23 +389,23 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${currentShip/getId}">
-										<img src="${GFX}/ships/${currentShip/getRumpId}.gif" />
+									<a href="?id=${SHIP/getId}">
+										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: center; height: 10%;">
-									<a href="javascript:void(0);" onclick="triggerBeamFromColony(${currentShip/getCurrentColony/getId})" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
+									<a href="javascript:void(0);" onclick="triggerBeamFromColony(${SHIP/getCurrentColony/getId})" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
 										<img src="${GFX}/buttons/b_down1.gif" name="beamtrigger" title="Beammodus wechseln" />
 									</a>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: center;">
-									<img tal:condition="not:currentShip/getCurrentColony/ownedByCurrentUser" src="${GFX}/planets/${currentShip/getCurrentColony/getColonyClass}.gif" />
-									<a tal:condition="currentShip/getCurrentColony/ownedByCurrentUser" href="colony.php?id=${targetShip/getId}">
-										<img src="${GFX}/planets/${currentShip/getCurrentColony/getColonyClass}.gif" />
+									<img tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser" src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
+									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?id=${targetShip/getId}">
+										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -422,16 +422,16 @@
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_beamfrom_colony">
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
-			<input type="hidden" name="target" tal:attributes="value currentShip/getCurrentColony/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+			<input type="hidden" name="target" tal:attributes="value SHIP/getCurrentColony/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
-					<td colspan="2">Ziel: <span tal:replace="structure bbcode:currentShip/getCurrentColony/getName">...</span></td>
+					<td colspan="2">Ziel: <span tal:replace="structure bbcode:SHIP/getCurrentColony/getName">...</span></td>
 				</tr>
 				<tr>
 					<td style="width: 100%;">
-						<tal:block tal:condition="currentShip/getCurrentColony/getStorage" tal:repeat="good currentShip/getCurrentColony/getStorage">
+						<tal:block tal:condition="SHIP/getCurrentColony/getStorage" tal:repeat="good SHIP/getCurrentColony/getStorage">
 							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -441,7 +441,7 @@
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
-						<tal:block tal:condition="not:currentShip/getCurrentColony/getStorage">
+						<tal:block tal:condition="not:SHIP/getCurrentColony/getStorage">
 							Keine Waren vorhanden
 						</tal:block>
 					</td>
@@ -449,23 +449,23 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${currentShip/getId}">
-										<img src="${GFX}/ships/${currentShip/getRumpId}.gif" />
+									<a href="?id=${SHIP/getId}">
+										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: center; height: 10%;">
-									<a href="javascript:void(0);" onclick="triggerBeamToColony(${currentShip/getCurrentColony/getId})" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
+									<a href="javascript:void(0);" onclick="triggerBeamToColony(${SHIP/getCurrentColony/getId})" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
 										<img src="${GFX}/buttons/b_up1.gif" name="beamtrigger" title="Beammodus wechseln" />
 									</a>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: center;">
-									<img tal:condition="not:currentShip/getCurrentColony/ownedByCurrentUser" src="${GFX}/planets/${currentShip/getCurrentColony/getColonyClass}.gif" />
-									<a tal:condition="currentShip/getCurrentColony/ownedByCurrentUser" href="colony.php?id=${targetShip/getId}">
-										<img src="${GFX}/planets/${currentShip/getCurrentColony/getColonyClass}.gif" />
+									<img tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser" src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
+									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?id=${targetShip/getId}">
+										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -482,14 +482,14 @@
 	</metal:block>
 	<metal:block metal:define-macro="selfdestruct">
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 			<input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
 					<td colspan="2">Tippe folgenden Code in das Feld um die Selbstzerstörung zu bestätigen.</td>
 				</tr>
 				<tr>
-					<td tal:content="THIS/getSelfdestructCode" style="text-align: center; color: Red;">CODE</td>
+					<td tal:content="SELF_DESTRUCT_CODE" style="text-align: center; color: Red;">CODE</td>
 					<td>
 						<input type="text" size="8" name="destructioncode" />
 					</td>
@@ -505,7 +505,7 @@
 	<metal:block metal:define-macro="show_ship_scan">
 		<metal:block tal:condition="THIS/hasInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
 		<form action="ship.php" method="post">
-			<input type="hidden" name="id" tal:attributes="value currentShip/getId" />
+			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 			<br />
 			<table class="tcal" tal:condition="not:targetShip/getRump/isTrumfield">
 				<tr>
@@ -515,7 +515,7 @@
 					<td style="width: 450px;">
 						<div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
 							<img src="${GFX}/system/${data/getSystemType}.gif" tal:attributes="title data/getDescription" />	
-							<span tal:replace="structure php:renderHuellStatusBar(THIS.getShip().getHuell(),THIS.getShip().getMaxHuell())">EPS</span> 
+							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span> 
 							${data/getStatus}%
 						</div>
 					</td>
@@ -545,10 +545,10 @@
 							<img src="${GFX}/buttons/modul_1.gif" />
 						</th>
 						<td style="vertical-align: middle; text-align: center;">
-							<span tal:replace="structure php:renderHuellStatusBar(THIS.getShip().getHuell(),THIS.getShip().getMaxHuell())">EPS</span> 
+							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span> 
 						</td>
 						<td style="text-align: center; width: 60px;">
-							${THIS/getShip/getHuell}
+							${SHIP/getHuell}
 						</td>
 					</tr>
 				</table>
@@ -560,10 +560,10 @@
 							<img src="${GFX}/buttons/modul_2.gif" />
 						</th>
 						<td style="text-align: center; vertical-align: middle;">
-							<span tal:replace="structure php:renderShieldStatusBar(THIS.getShip().shieldIsActive(),THIS.getShip().getShield(),THIS.getShip().getMaxShield())">SCHILDE</span>
+							<span tal:replace="structure php:renderShieldStatusBar(SHIP.shieldIsActive(),SHIP.getShield(),SHIP.getMaxShield())">SCHILDE</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
-							${THIS/getShip/getShield}
+							${SHIP/getShield}
 						</td>
 					</tr>
 				</table>
@@ -575,10 +575,10 @@
 							<img src="${GFX}/buttons/modul_8.gif" />
 						</th>
 						<td style="vertical-align: middle; text-align: center;">
-							<span tal:replace="structure php:renderEpsStatusBar(THIS.getShip().getEps(),THIS.getShip().getMaxEps())">EPS</span>
+							<span tal:replace="structure php:renderEpsStatusBar(SHIP.getEps(),SHIP.getMaxEps())">EPS</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
-							${THIS/getShip/getEps}
+							${SHIP/getEps}
 						</td>
 					</tr>
 				</table>
@@ -595,7 +595,7 @@
 					<td class="darkbg"></td>
 					<td class="darkbg"><strong>Name</strong></td>
 				</tr>
-				<tr tal:repeat="data THIS/getShip/getCrewlist">
+				<tr tal:repeat="data SHIP/getCrewlist">
 					<td>
 						<img src="${GFX}/crew/${data/getCrew/getRace/getDefine}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
 					</td>
@@ -618,23 +618,23 @@
 		<div style="padding-left: 5px; float: left; width: 205px">
 			<div class="divhead" i18n:translate="">Informationen</div>
 			<div class="divbody">
-				<span i18n:translate="">Ersatzbatterie:</span> ${THIS/getShip/getEBatt}<br />
-				<span i18n:translate="">Trefferchance (eff.):</span> ${THIS/getShip/getHitChance}%<br />
-				<span i18n:translate="">Ausweichchance (eff.):</span> ${THIS/getShip/getEvadeChance}%<br />
-				<span i18n:translate="">Basisschaden:</span> ${THIS/getShip/getBaseDamage}<br />
-				<span i18n:translate="">Schildregeneration:</span> ${THIS/getShip/getShieldRegenerationRate}<br />
-				<span i18n:translate="">Reaktorleistung:</span> ${THIS/getShip/getReactorOutput}<br />
-				<span i18n:translate="">Sensorreichtweite:</span> ${THIS/getShip/getSensorRange}<br />
-				<span i18n:translate="">Flugkosten</span>: ${THIS/getShip/getRump/getFlightEcost}<br />
-				<span i18n:translate="">Torpedolagerraum</span>: ${THIS/getShip/getMaxTorpedos}<br />
-				<span i18n:translate="">Punkte</span>: ${THIS/getShip/getRump/getCategory/getPoints}<br />
+				<span i18n:translate="">Ersatzbatterie:</span> ${SHIP/getEBatt}<br />
+				<span i18n:translate="">Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
+				<span i18n:translate="">Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
+				<span i18n:translate="">Basisschaden:</span> ${SHIP/getBaseDamage}<br />
+				<span i18n:translate="">Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
+				<span i18n:translate="">Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
+				<span i18n:translate="">Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
+				<span i18n:translate="">Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
+				<span i18n:translate="">Torpedolagerraum</span>: ${SHIP/getMaxTorpedos}<br />
+				<span i18n:translate="">Punkte</span>: ${SHIP/getRump/getCategory/getPoints}<br />
 			</div>
 			<br />
 			<div class="divhead" i18n:translate="">Systemstatus</div>
 			<div class="divbody">
-				<div tal:repeat="data THIS/getShip/getSystems">
+				<div tal:repeat="data SHIP/getSystems">
 					<img src="${GFX}/system/${data/getSystemType}.gif" tal:attributes="title data/getDescription" />	
-					<span tal:replace="structure php:renderHuellStatusBar(THIS.getShip().getHuell(),THIS.getShip().getMaxHuell())">EPS</span> 
+					<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span> 
 					${data/getStatus}%
 				</div>
 			</div>
@@ -651,7 +651,7 @@
 						<th>Modus</th>
 						<th></th>
 					</tr>
-					<tr tal:repeat="data THIS/getShip/getDockPrivileges">
+					<tr tal:repeat="data SHIP/getDockPrivileges">
 						<td tal:content="structure bbcode:data/getTargetName">NAME</td>
 						<td class="positive" tal:condition="data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE</td>
 						<td class="negative" tal:condition="not:data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE</td>
@@ -715,7 +715,7 @@
 			</tal:block>
 			<tal:block tal:condition="TRADEPOST/currentUserHasLicence">
 				<form method="post" action="ship.php">
-					<input type="hidden" name="id" tal:attributes="value THIS/getShip/getId" />
+					<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 					<input type="hidden" name="postid" tal:attributes="value TRADEPOST/getId" />
 					<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 					<br />
@@ -731,7 +731,7 @@
 							</td>
 							<td>
 								<img src="${GFX}/buttons/lager.gif" />
-								<span tal:replace="THIS/getShip/getStorageSum">SUM</span>/<span tal:replace="THIS/getShip/getRump/getStorage">MAX</span>
+								<span tal:replace="SHIP/getStorageSum">SUM</span>/<span tal:replace="SHIP/getRump/getStorage">MAX</span>
 							</td>
 						</tr>
 					</table>
@@ -760,7 +760,7 @@
 								</tr>
 								<tr>
 									<td>
-										<tal:block tal:condition="THIS/getShip/getStorage" tal:repeat="good THIS/getShip/getStorage">
+										<tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
 											<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 											<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 												<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -770,7 +770,7 @@
 											</div>
 											<br tal:condition="repeat/good/odd" style="clear: both;" />
 										</tal:block>
-										<tal:block tal:condition="not:THIS/getShip/getStorage">
+										<tal:block tal:condition="not:SHIP/getStorage">
 											Keine Waren vorhanden
 										</tal:block>
 									</td>
@@ -893,14 +893,14 @@
 		<table class="tcal">
 			<tr>
 				<td rowspan="2" style="width: 30px; vertical-align: top;">
-					<img src="${GFX}/map/${THIS/getShip/getCurrentMapField/getFieldId}.gif" />
+					<img src="${GFX}/map/${SHIP/getCurrentMapField/getFieldId}.gif" />
 				</td>
-				<th tal:content="THIS/getShip/getCurrentMapField/getFieldType/getName">NAME</th>
+				<th tal:content="SHIP/getCurrentMapField/getFieldType/getName">NAME</th>
 			</tr>
 			<tr>
 				<td>
-					Energiekosten: ${THIS/getShip/getCurrentMapField/getFieldType/getEpsCost}<br />
-					Schaden: ${THIS/getShip/getCurrentMapField/getFieldType/getSpecialDamage} (${THIS/getShip/getCurrentMapField/getFieldType/getDamage})
+					Energiekosten: ${SHIP/getCurrentMapField/getFieldType/getEpsCost}<br />
+					Schaden: ${SHIP/getCurrentMapField/getFieldType/getSpecialDamage} (${SHIP/getCurrentMapField/getFieldType/getDamage})
 				</td>
 			</tr>
 		</table>
@@ -912,7 +912,7 @@
 					<div>
 						<div>
 							<img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" />
-							<a tal:condition="field/isColonizeAble" href="?id=${THIS/getShip/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
+							<a tal:condition="field/isColonizeAble" href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
 								<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="${GFX}/fields/${field/getFieldType}.gif" />
 							</a>
 						</div>

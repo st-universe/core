@@ -11,7 +11,6 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Control\ShipController;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
@@ -58,10 +57,6 @@ $builder->addDefinitions([
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
         return $manager;
     },
-]);
-
-$builder->addDefinitions([
-    ShipController::class => autowire(ShipController::class),
 ]);
 
 $builder->addDefinitions(

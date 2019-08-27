@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Ship\View\ShowShipDetails;
+
+use request;
+use Stu\Control\GameControllerInterface;
+use Stu\Control\ViewControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
+
+final class ShowShipDetails implements ViewControllerInterface
+{
+    public const VIEW_IDENTIFIER = 'SHOW_SHIPDETAILS';
+
+    private $shipLoader;
+
+    public function __construct(
+        ShipLoaderInterface $shipLoader
+    ) {
+        $this->shipLoader = $shipLoader;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $userId = $game->getUser()->getId();
+
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId
+        );
+
+        $game->setPageTitle(_('Schiffsinformationen'));
+        $game->setTemplateFile('html/ajaxwindow.xhtml');
+        $game->setAjaxMacro('html/shipmacros.xhtml/shipdetails');
+
+        $game->setTemplateVar('SHIP', $ship);
+    }
+}

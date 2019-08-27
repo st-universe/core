@@ -57,7 +57,7 @@ class SystemActivationWrapper
     function getError()
     {
         $this->doCheck();
-        return $this->errormsg;
+        return (string) $this->errormsg;
     }
 
 }
