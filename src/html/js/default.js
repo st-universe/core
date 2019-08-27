@@ -2,11 +2,11 @@ mf = 0;
 var buildmode = 0;
 
 function onmousewheel(element, callback) {
-       
+
     // @author    Andrea Giammarchi        [http://www.devpro.it/]
     // @license    MIT                 [http://www.opensource.org/licenses/mit-license.php]
     // @credits    Adomas Paltanavicius         [http://adomas.org/javascript-mouse-wheel/]
-   
+
     function __onwheel(event) {
         var    delta = 0;
         if(event.wheelDelta) {
@@ -23,7 +23,7 @@ function onmousewheel(element, callback) {
         event.returnValue = false;
         return false;
     };
-   
+
     if(element.addEventListener && !window.opera)
         element.addEventListener("DOMMouseScroll", __onwheel, false);
     else
@@ -35,326 +35,327 @@ function onmousewheel(element, callback) {
 };
 
 function closePopup() {
-	if (over) {
-		cClick();
-		over = null;
-	}
+        if (over) {
+                cClick();
+                over = null;
+        }
 }
 
 function kpListener(e) {
-	if (!e) e = window.event; // Drecks IE
-	if (e.keyCode==27) {
-		if (buildmode == 1) {
-			setTimeout("closeBuildingInfo()",100);
-			field_observer = 0;
-		}
-		if (over) {
-			closePopup();
-		}
-	}
+        if (!e) e = window.event; // Drecks IE
+        if (e.keyCode==27) {
+                if (buildmode == 1) {
+                        setTimeout("closeBuildingInfo()",100);
+                        field_observer = 0;
+                }
+                if (over) {
+                        closePopup();
+                }
+        }
 }
 window.onkeydown = kpListener;
 
 function closeAjaxWindow() {
-	if (buildmode == 1) {
-		closeBuildingInfo();
-	}
-	if (over) {
-		cClick();
-		over = null;
-	}
+        if (buildmode == 1) {
+                closeBuildingInfo();
+        }
+        if (over) {
+                cClick();
+                over = null;
+        }
 }
 
 function ajaxcall(div,url) {
-	new Ajax.Updater(div,url,
-		{
-			evalScripts: true
-		});
+        new Ajax.Updater(div,url,
+                {
+                        evalScripts: true
+                });
 }
 
 function ajaxrequest(url) {
-	new Ajax.Request(url);
+        new Ajax.Request(url);
 }
 
 function openWindow(elt,exclusive,width) {
-	if (width) {
-		if (exclusive) {
-			return overlib('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
-		} else {
-			return overlib('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
-		}
-	} else {
-		if (exclusive) {
-			return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
-		} else {
-			return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
-		}
-	}
+        if (width) {
+                if (exclusive) {
+
+                        ('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                } else {
+                        return overlib('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
+                }
+        } else {
+                if (exclusive) {
+                        return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                } else {
+                        return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
+                }
+        }
 }
 function openWindowPosition(elt,exclusive,width,posx,posy) {
-	if (width) {
-		if (exclusive) {
-			return overlib('<div id='+elt+'></div>', WIDTH, width, RELX, posx, RELY, posy, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
-		} else {
-			return overlib('<div id='+elt+'></div>', WIDTH, width, RELX, posx, RELY, posy, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
-		}
-	} else {
-		if (exclusive) {
-			return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', RELX, posx, RELY, posy, TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
-		} else {
-			return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', RELX, posx, RELY, posy, TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
-		}
-	}
+        if (width) {
+                if (exclusive) {
+                        return overlib('<div id='+elt+'></div>', WIDTH, width, RELX, posx, RELY, posy, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                } else {
+                        return overlib('<div id='+elt+'></div>', WIDTH, width, RELX, posx, RELY, posy, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
+                }
+        } else {
+                if (exclusive) {
+                        return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', RELX, posx, RELY, posy, TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                } else {
+                        return overlib('<div id='+elt+'></div>', BGCOLOR, '#8897cf', RELX, posx, RELY, posy, TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
+                }
+        }
 }
 
 function ignoreUser(obj,userid) {
-	ajax_update(obj,'comm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid='+userid);
+        ajax_update(obj,'comm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid='+userid);
 }
 function addUserContact(obj,userid) {
-	var contact = 'selector_'+obj;
-	if (!$(contact)) {
-		mode = document.forms[0].elements[contact].value;
-	} else {
-		mode = $(contact).value;
-	}
-	ajaxcall(obj,'comm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid='+userid+'&clmode='+mode+'&cldiv='+obj);
+        var contact = 'selector_'+obj;
+        if (!$(contact)) {
+                mode = document.forms[0].elements[contact].value;
+        } else {
+                mode = $(contact).value;
+        }
+        ajaxcall(obj,'comm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid='+userid+'&clmode='+mode+'&cldiv='+obj);
 }
 var clmodeswitchdiv = '';
 function showContactModeSwitcher(div,contactid) {
-	clmodeswitchdiv = div;
-	elt = 'clmswitcher';
-	openWindow(elt,0,70);
-	ajax_update('clmswitcher','comm.php?SHOW_CONTACT_MODESWITCH=1&cid='+contactid);
+        clmodeswitchdiv = div;
+        elt = 'clmswitcher';
+        openWindow(elt,0,70);
+        ajax_update('clmswitcher','comm.php?SHOW_CONTACT_MODESWITCH=1&cid='+contactid);
 }
 function switchContactMode(contactid,mode) {
-	ajax_update(clmodeswitchdiv,'comm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid='+contactid+'&clmode='+mode+"&cldiv="+clmodeswitchdiv);
-	clmodeswitcdiv = '';
-	cClick();
+        ajax_update(clmodeswitchdiv,'comm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid='+contactid+'&clmode='+mode+"&cldiv="+clmodeswitchdiv);
+        clmodeswitcdiv = '';
+        cClick();
 }
 function addLoadEvent(func) {
-	var oldonload = window.onload;
-	if (typeof window.onload != 'function') {
-		window.onload = func;
-	}
-	else
-	{
-		window.onload = function() {
-			oldonload();
-			func();
-		}
-	}
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+                window.onload = func;
+        }
+        else
+        {
+                window.onload = function() {
+                        oldonload();
+                        func();
+                }
+        }
 }
 function startUp() {
-	startServerTimer();
+        startServerTimer();
 }
 var servertime = 0;
 function startServerTimer() {
-	if (servertime == 0) {
-		servertime = new Date($('servertime').innerHTML);
-	}
-	var hours   = servertime.getHours();
-	var minutes = servertime.getMinutes();
-	var seconds = servertime.getSeconds();
-	servertime.setSeconds( seconds+1 );
-	if(hours <= 9) hours = "0" + hours;
-	if(minutes <= 9) minutes = "0" + minutes;
-	if(seconds <= 9) seconds = "0" + seconds;
-	dispTime = hours + ":" + minutes + ":" + seconds;
-	$('servertime').innerHTML = dispTime;
-	$('servertime').show();
-	setTimeout("startServerTimer()", 1000);
+        if (servertime == 0) {
+                servertime = new Date($('servertime').innerHTML);
+        }
+        var hours   = servertime.getHours();
+        var minutes = servertime.getMinutes();
+        var seconds = servertime.getSeconds();
+        servertime.setSeconds( seconds+1 );
+        if(hours <= 9) hours = "0" + hours;
+        if(minutes <= 9) minutes = "0" + minutes;
+        if(seconds <= 9) seconds = "0" + seconds;
+        dispTime = hours + ":" + minutes + ":" + seconds;
+        $('servertime').innerHTML = dispTime;
+        $('servertime').show();
+        setTimeout("startServerTimer()", 1000);
 
 }
 var selectedFieldType = 0;
 var tmpfield = 0;
 function ajax_update(elt,url) {
-	new Ajax.Updater(elt,url, { method: 'get', evalScripts:true});
+        new Ajax.Updater(elt,url, { method: 'get', evalScripts:true});
 }
 function selectMapFieldType(type) {
-	$('fieldtypeselector').innerHTML = '<img src="'+gfx_path+'/map/'+type+'.gif" />';
-	selectedFieldType = type;
+        $('fieldtypeselector').innerHTML = '<img src="'+gfx_path+'/map/'+type+'.gif" />';
+        selectedFieldType = type;
 }
 function toggleMapfieldType(obj) {
-	if (selectedFieldType == 0) {
-		return;
-	}
-	if (tmpfield == 0) {
-		tmpfield = obj.parentNode.style.backgroundImage;
-		obj.parentNode.style.backgroundImage = "url("+gfx_path+"/map/"+selectedFieldType+".gif)";
-		return;
-	}
-	obj.parentNode.style.backgroundImage = tmpfield;
-	tmpfield = 0;
-	return;
+        if (selectedFieldType == 0) {
+                return;
+        }
+        if (tmpfield == 0) {
+                tmpfield = obj.parentNode.style.backgroundImage;
+                obj.parentNode.style.backgroundImage = "url("+gfx_path+"/map/"+selectedFieldType+".gif)";
+                return;
+        }
+        obj.parentNode.style.backgroundImage = tmpfield;
+        tmpfield = 0;
+        return;
 }
 function setNewFieldType(obj,fieldid) {
-	if (selectedFieldType == 0) {
-		alert("Es wurde kein Feldtyp ausgewaehlt");
-		return;
-	}
-	ajax_update(false, 'starmap.php?B_EDIT_FIELD=1&field='+fieldid+'&type='+selectedFieldType);
-	obj.parentNode.style.backgroundImage = "url("+gfx_path+"/map/"+selectedFieldType+".gif)";
-	tmpfield = obj.parentNode.style.backgroundImage;
+        if (selectedFieldType == 0) {
+                alert("Es wurde kein Feldtyp ausgewaehlt");
+                return;
+        }
+        ajax_update(false, 'starmap.php?B_EDIT_FIELD=1&field='+fieldid+'&type='+selectedFieldType);
+        obj.parentNode.style.backgroundImage = "url("+gfx_path+"/map/"+selectedFieldType+".gif)";
+        tmpfield = obj.parentNode.style.backgroundImage;
 }
 
 function openSystemFieldSelector(fieldid) {
-	elt = 'fieldselector';
-	openWindow(elt,0);
-	ajax_update(elt,'starmap.php?SHOW_SYSTEM_EDITFIELD=1&field='+fieldid);
+        elt = 'fieldselector';
+        openWindow(elt,0);
+        ajax_update(elt,'starmap.php?SHOW_SYSTEM_EDITFIELD=1&field='+fieldid);
 }
 function selectNewSystemMapField(fieldid,cx,cy,typeid,type) {
-	ajax_update(false, 'starmap.php?B_EDIT_SYSTEM_FIELD=1&field='+fieldid+'&type='+typeid);
-	field = $(cx+'_'+cy);
-	field.style.backgroundImage = "url("+gfx_path+"/map/"+type+".gif)";
-	closeAjaxWindow();
+        ajax_update(false, 'starmap.php?B_EDIT_SYSTEM_FIELD=1&field='+fieldid+'&type='+typeid);
+        field = $(cx+'_'+cy);
+        field.style.backgroundImage = "url("+gfx_path+"/map/"+type+".gif)";
+        closeAjaxWindow();
 }
 function findObject(obj) {
-	var curleft = curtop = 0;
-	if (obj.offsetParent) {
-		do {
-			curleft += obj.offsetLeft;
-			curtop += obj.offsetTop;
-		} while (obj = obj.offsetParent);
-		return [curleft,curtop];
-	}
+        var curleft = curtop = 0;
+        if (obj.offsetParent) {
+                do {
+                        curleft += obj.offsetLeft;
+                        curtop += obj.offsetTop;
+                } while (obj = obj.offsetParent);
+                return [curleft,curtop];
+        }
 }
 function openTopicSettings(obj,tid,bid) {
-	var pos = findObject(obj);
-	elt = 'topicaction';
-	openWindowPosition(elt,1,200,pos[0]-200,pos[1]);
-	ajax_update(elt,"alliance.php?SHOW_TOPIC_SETTINGS=1&tid="+tid+"&bid="+bid);
+        var pos = findObject(obj);
+        elt = 'topicaction';
+        openWindowPosition(elt,1,200,pos[0]-200,pos[1]);
+        ajax_update(elt,"alliance.php?SHOW_TOPIC_SETTINGS=1&tid="+tid+"&bid="+bid);
 }
 function openBoardSettings(obj,bid) {
-	var pos = findObject(obj);
-	elt = 'boardaction';
-	openWindowPosition(elt,1,200,pos[0]-200,pos[1]);
-	ajax_update(elt,"alliance.php?SHOW_BOARD_SETTINGS=1&bid="+bid);
+        var pos = findObject(obj);
+        elt = 'boardaction';
+        openWindowPosition(elt,1,200,pos[0]-200,pos[1]);
+        ajax_update(elt,"alliance.php?SHOW_BOARD_SETTINGS=1&bid="+bid);
 }
 function openPmWindow(userId) {
-	elt = 'pmwindow';
-	openWindowPosition(elt,1,600,90,60);
-	ajax_update(elt,'comm.php?SHOW_WRITE_QUICKPM=1&recipient='+userId);
+        elt = 'pmwindow';
+        openWindowPosition(elt,1,600,90,60);
+        ajax_update(elt,'comm.php?SHOW_WRITE_QUICKPM=1&recipient='+userId);
 }
 function sendQuickPM(userId) {
-	var elem = $('quickpm').serialize()+'&sstr='+$('pm_sstr').value;
-	ajaxPost('comm.php','B_WRITE_PM=1&recipient='+userId+"&"+elem);
-	$('quickpm_compose').hide();
-	$('quickpm_done').show();
+        var elem = $('quickpm').serialize()+'&sstr='+$('pm_sstr').value;
+        ajaxPost('comm.php','B_WRITE_PM=1&recipient='+userId+"&"+elem);
+        $('quickpm_compose').hide();
+        $('quickpm_done').show();
 }
 function ajaxPostUpdate(destelement,url,elements) {
-	new Ajax.Updater(destelement,url,
-			 {
-			 	method: 'post',
-				parameters: elements
-			 });
+        new Ajax.Updater(destelement,url,
+                         {
+                                 method: 'post',
+                                parameters: elements
+                         });
 }
 function ajaxPost(url,elements) {
-	new Ajax.Request(url,
-			 {
-			 	method: 'post',
-				parameters: elements
-			 });
+        new Ajax.Request(url,
+                         {
+                                 method: 'post',
+                                parameters: elements
+                         });
 }
 function showResearchDetails(researchId) {
-	elt = 'researchwin';
-	openWindow(elt);
-	ajax_update(elt,'research.php?SHOW_RESEARCH=1&id='+researchId);
+        elt = 'researchwin';
+        openWindow(elt);
+        ajax_update(elt,'research.php?SHOW_RESEARCH=1&id='+researchId);
 }
 function openNotes() {
-	str="notes.php";
-	Win = window.open(str,'WinNotes','width=850,height=700,resizeable=no,location=no,scrollbars=yes,status=no');
-	Win.opener = self;
+        str="notes.php";
+        Win = window.open(str,'WinNotes','width=850,height=700,resizeable=no,location=no,scrollbars=yes,status=no');
+        Win.opener = self;
 }
 function goToUrl(url) {
-	window.location.href = url;
+        window.location.href = url;
 }
 function toggleTableRowVisible(id) {
-	if ($(id).style.display == 'block' || $(id).style.display == 'table-row') {
-		$(id).style.display = 'none';
-		return;
-	}
-	$(id).style.display = 'table-row';
+        if ($(id).style.display == 'block' || $(id).style.display == 'table-row') {
+                $(id).style.display = 'none';
+                return;
+        }
+        $(id).style.display = 'table-row';
 }
 function openPJsWin(elt,exclusive,width) {
-	if (width) {
-		var OLWIDTH = ' WIDTH, '+width;
-	} else {
-		var OLWIDTH = '';
-	}
-	if (exclusive) {
-		return overlib('<div id='+elt+'></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
-	}
-	else {
-		return overlib('<div id='+elt+'></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
-	}
+        if (width) {
+                var OLWIDTH = ' WIDTH, '+width;
+        } else {
+                var OLWIDTH = '';
+        }
+        if (exclusive) {
+                return overlib('<div id='+elt+'></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+        }
+        else {
+                return overlib('<div id='+elt+'></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
+        }
 }
 function cp(obj,file) {
-	document.images[obj].src = gfx_path+"/"+file+".gif";
+        document.images[obj].src = gfx_path+"/"+file+".gif";
 }
 function updatePMNavlet() {
-	new Ajax.Request(
-	'comm.php',
-		{
+        new Ajax.Request(
+        'comm.php',
+                {
             method: 'post',
             parameters: 'SHOW_NEW_PM=1&ajax=1',
-			onFailure: function(e) {
-			},
-			onSuccess: function(request) {
-				div = 'navlet_newpm';
-				$(div).innerHTML = request.responseText;
-				$(div).innerHTML.evalScripts();
-			}
-		}
-	);
+                        onFailure: function(e) {
+                        },
+                        onSuccess: function(request) {
+                                div = 'navlet_newpm';
+                                $(div).innerHTML = request.responseText;
+                                $(div).innerHTML.evalScripts();
+                        }
+                }
+        );
 setTimeout('updatePMNavlet()',60000);
 }
 function toggleVisible(id) {
-	if ($(id).style.display == 'block') {
-		$(id).style.display = 'none';
-		return;
-	}
-	$(id).style.display = 'block';
+        if ($(id).style.display == 'block') {
+                $(id).style.display = 'none';
+                return;
+        }
+        $(id).style.display = 'block';
 }
 function showAchievement(text) {
-	var elem = new Element("div");
-	$(elem).addClassName('achievementbox box boxshadow');
-	var header = new Element("div");
-	$(header).addClassName("box_title");
-	$(header).innerHTML = 'Neue Errungenschaft!';
-	$(elem).appendChild(header);
-	var body = new Element("div");
-	$(body).addClassName("box_body");
-	$(body).innerHTML = text;
-	$(elem).appendChild(body);
-	var close = new Element("div");
-	$(close).addClassName("closebutton");
-	$(close).innerHTML = 'X';
-	$(close).observe("click",function () {
-		Effect.Fade(this.up());
-	});
-	$(close).addClassName('action');
-	$(elem).appendChild(close);
-	document.body.appendChild(elem);
-	elem.show();
+        var elem = new Element("div");
+        $(elem).addClassName('achievementbox box boxshadow');
+        var header = new Element("div");
+        $(header).addClassName("box_title");
+        $(header).innerHTML = 'Neue Errungenschaft!';
+        $(elem).appendChild(header);
+        var body = new Element("div");
+        $(body).addClassName("box_body");
+        $(body).innerHTML = text;
+        $(elem).appendChild(body);
+        var close = new Element("div");
+        $(close).addClassName("closebutton");
+        $(close).innerHTML = 'X';
+        $(close).observe("click",function () {
+                Effect.Fade(this.up());
+        });
+        $(close).addClassName('action');
+        $(elem).appendChild(close);
+        document.body.appendChild(elem);
+        elem.show();
 }
 function nodelistToString(list) {
-	console.log(list);
-	if (!RadioNodeList.prototype.isPrototypeOf(list)) {
-		if (list.checked) {
-			return list.value
-		} else {
-			return '';
-		}
-	}
-	return Array.from(list)
-		.filter(function (node) {
-			if (node.checked) {
-				return true;
-			}
-			return false;
-		})
-		.map(function (node) {
-			return node.value;
-		})
-		.join(',');
+        console.log(list);
+        if (!RadioNodeList.prototype.isPrototypeOf(list)) {
+                if (list.checked) {
+                        return list.value
+                } else {
+                        return '';
+                }
+        }
+        return Array.from(list)
+                .filter(function (node) {
+                        if (node.checked) {
+                                return true;
+                        }
+                        return false;
+                })
+                .map(function (node) {
+                        return node.value;
+                })
+                .join(',');
 }
