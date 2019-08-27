@@ -3,7 +3,7 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<tal:block tal:define="FIGHT_RESULTS FIGHT_RESULTS|default">
+		<tal:block tal:define="FIGHT_RESULTS FIGHT_RESULTS|false">
 			<div tal:condition="FIGHT_RESULTS" style="width: 150px;">
 				<div class="divhead" i18n:translate="">Kampflog</div>
 				<div class="divbody" i18n:translate="" style="cursor: pointer;" onclick="showFightLog();">Kampflog einsehen</div>
@@ -13,7 +13,7 @@
 							<table class="tcal">
 								<tr>
 									<td>
-										<div tal:repeat="result FIGHT_RESULTS" tal:content="structure result">LINE</div>
+										<div tal:repeat="result FIGHT_RESULTS" tal:content="structure bbcode:result">LINE</div>
 									</td>
 								</tr>	
 							</table>
