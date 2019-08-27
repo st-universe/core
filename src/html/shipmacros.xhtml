@@ -20,7 +20,7 @@
 				<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><metal:macro metal:use-macro="shipimage" /></a>
 			</td>
 			<td>
-				<a href="ship.php?id=${ship/getId}" tal:content="structure bbcode:ship/getName">.</a>
+				<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:content="structure bbcode:ship/getName">.</a>
 			</td>	
 			<td style="text-align: center;">
 				<img src="${GFX}/buttons/alert${ship/getAlertState}.gif" title="Alarmstufe" />
@@ -269,7 +269,7 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${SHIP/getId}">
+									<a href="?SHOW_SHIP=1&id=${SHIP/getId}">
 										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
@@ -284,7 +284,7 @@
 							<tr>
 								<td style="text-align: center;">
 									<img tal:condition="not:targetShip/ownedByCurrentUser" src="${GFX}/ships/${targetShip/getRumpId}.gif" />
-									<a tal:condition="targetShip/ownedByCurrentUser" href="?id=${targetShip/getId}">
+									<a tal:condition="targetShip/ownedByCurrentUser" href="?SHOW_SHIP=1&id=${targetShip/getId}">
 										<img src="${GFX}/ships/${targetShip/getRumpId}.gif" />
 									</a>
 								</td>
@@ -329,7 +329,7 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${SHIP/getId}">
+									<a href="?SHOW_SHIP=1&id=${SHIP/getId}">
 										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
@@ -344,7 +344,7 @@
 							<tr>
 								<td style="text-align: center;">
 									<img tal:condition="not:targetShip/ownedByCurrentUser" src="${GFX}/ships/${targetShip/getRumpId}.gif" />
-									<a tal:condition="targetShip/ownedByCurrentUser" href="?id=${targetShip/getId}">
+									<a tal:condition="targetShip/ownedByCurrentUser" href="?SHOW_SHIP=1&id=${targetShip/getId}">
 										<img src="${GFX}/ships/${targetShip/getRumpId}.gif" />
 									</a>
 								</td>
@@ -389,7 +389,7 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${SHIP/getId}">
+									<a href="?SHOW_SHIP=1&id=${SHIP/getId}">
 										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
@@ -404,7 +404,7 @@
 							<tr>
 								<td style="text-align: center;">
 									<img tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser" src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
-									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?id=${targetShip/getId}">
+									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?SHOW_COLONY=1&id=${targetShip/getId}">
 										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
 									</a>
 								</td>
@@ -449,7 +449,7 @@
 						<table style="width: 100%; height: 100%;">
 							<tr>
 								<td style="text-align: center;">
-									<a href="?id=${SHIP/getId}">
+									<a href="?SHOW_SHIP=1&id=${SHIP/getId}">
 										<img src="${GFX}/ships/${SHIP/getRumpId}.gif" />
 									</a>
 								</td>
@@ -464,7 +464,7 @@
 							<tr>
 								<td style="text-align: center;">
 									<img tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser" src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
-									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?id=${targetShip/getId}">
+									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?SHOW_COLONY=1&id=${targetShip/getId}">
 										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
 									</a>
 								</td>

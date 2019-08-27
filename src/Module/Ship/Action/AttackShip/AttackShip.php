@@ -88,6 +88,7 @@ final class AttackShip implements ActionControllerInterface
             $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());
         } else {
             $game->addInformationMerge($obj->getMessages());
+            $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());
         }
     }
 

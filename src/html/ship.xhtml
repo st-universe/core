@@ -486,7 +486,7 @@
 									<td colspan="3">
 										<span tal:condition="not:data/fleet/ownedByCurrentUser" tal:content="structure bbcode:data/fleet/getName">NAME</span>
 										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<a href="?id=${data/fleet/getFleetLeader}" tal:content="structure bbcode:data/fleet/getName">NAME</a>
+											<a href="?SHOW_SHIP=1&id=${data/fleet/getFleetLeader}" tal:content="structure bbcode:data/fleet/getName">NAME</a>
 										</tal:block>
 										<span id="hidefleet${data/fleet/getId}">
 											(<a href="javascript:void(0);" onclick="hideFleet(${data/fleet/getId});">zuklappen</a>)
@@ -526,7 +526,7 @@
 									<td colspan="3">
 										<span tal:condition="not:data/fleet/ownedByCurrentUser" tal:content="structure data/fleet/getName">NAME</span>
 										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<a href="?id=${data/fleet/getFleetLeader}" tal:content="structure data/fleet/getName">NAME</a>
+											<a href="?SHOW_SHIP=1&id=${data/fleet/getFleetLeader}" tal:content="structure data/fleet/getName">NAME</a>
 										</tal:block>
 										<span style="display: none;" id="hidefleet${data/fleet/getId}">
 											(<a href="javascript:void(0);" onclick="hideFleet(${data/fleet/getId});">zuklappen</a>)
