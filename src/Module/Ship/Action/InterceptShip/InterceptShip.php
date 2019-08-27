@@ -33,7 +33,7 @@ final class InterceptShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipLoader->getById(request::postIntFatal('target'));
+        $target = $this->shipLoader->getById(request::indInt('target'));
         if (!checkPosition($target, $ship)) {
             return;
         }
