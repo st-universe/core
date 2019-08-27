@@ -1636,7 +1636,7 @@ class ShipData extends BaseTable {
 		return 100;
 	} # }}}
 
-	public function canInteractWith(Ship $target, bool $colony = false): bool
+	public function canInteractWith($target, bool $colony = false): bool
 	{
 		if (!checkPosition($this, $target) || $this->getCloakState() || ($colony && $target->getId() == $this->getId())) {
 			new ObjectNotFoundException($target->getId());

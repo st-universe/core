@@ -38,7 +38,7 @@ final class ShowBeamFromColony implements ViewControllerInterface
 
         $game->setPageTitle(_('Von Kolonie beamen'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/show_ship_beamfrom');
+        $game->setAjaxMacro('html/shipmacros.xhtml/show_ship_beamfrom_colony');
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);
