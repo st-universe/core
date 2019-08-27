@@ -21,7 +21,7 @@ final class Overview implements ViewControllerInterface
         $ships = Ship::getObjectsBy("WHERE user_id=" . $userId . " AND fleets_id=0 AND is_base=0 ORDER BY id");
 
         $game->appendNavigationPart(
-            'shiplist.php',
+            'ship.php',
             _('Schiffe')
         );
         $game->setPageTitle(_('/ Schiffe'));

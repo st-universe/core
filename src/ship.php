@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(IntermediateController::TYPE_SHIP_LIST)->main();
+$container->get(IntermediateController::TYPE_SHIP)->main();
 
 DB()->commitTransaction();

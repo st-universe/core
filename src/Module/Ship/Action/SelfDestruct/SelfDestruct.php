@@ -40,7 +40,7 @@ final class SelfDestruct implements ActionControllerInterface
 
         //$ship->selfDestroy();
         //DB()->commitTransaction();
-        //$game->redirectTo('shiplist.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
+        //$game->redirectTo('ship.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
     }
 
     public function performSessionCheck(): bool

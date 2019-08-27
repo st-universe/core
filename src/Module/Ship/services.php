@@ -125,7 +125,7 @@ return [
     LeaveFleetRequestInterface::class => autowire(LeaveFleetRequest::class),
     JoinFleetRequestInterface::class => autowire(JoinFleetRequest::class),
     ShipLoaderInterface::class => autowire(ShipLoader::class),
-    IntermediateController::TYPE_SHIP_LIST => create(IntermediateController::class)
+    IntermediateController::TYPE_SHIP => create(IntermediateController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),
