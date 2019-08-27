@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BeamFromColony;
 
 use Colony;
-use ColonyData;
-use ObjectNotFoundException;
 use request;
-use ShipData;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -59,7 +56,7 @@ final class BeamFromColony implements ActionControllerInterface
             return;
         }
         $target = new Colony(request::postIntFatal('target'));
-        if (!$this->preChecks($ship, $target, $game)) {
+        if (!$ship->canInteractWith($target, true)) {
             return;
         }
         if (!$ship->storagePlaceLeft()) {
@@ -127,13 +124,6 @@ final class BeamFromColony implements ActionControllerInterface
             $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);
         }
         $ship->save();
-    }
-
-    private function preChecks(ShipData $ship, ColonyData $target, GameControllerInterface $game): bool {
-        if (!checkPosition($ship, $target) || $ship->getCloakState()) {
-            new ObjectNotFoundException($target->getId());
-        }
-        return true;
     }
 
     public function performSessionCheck(): bool

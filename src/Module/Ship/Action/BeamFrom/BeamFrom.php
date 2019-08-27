@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BeamFrom;
 
-use ObjectNotFoundException;
 use request;
-use ShipData;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;

@@ -10,6 +10,7 @@ use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use TradeLicencesData;
+use TradePost;
 use TradeStorage;
 
 final class BuyTradeLicense implements ActionControllerInterface
@@ -36,7 +37,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         );
 
         /**
-         * @var \TradePost $tradepost
+         * @var TradePost $tradepost
          */
         $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
 

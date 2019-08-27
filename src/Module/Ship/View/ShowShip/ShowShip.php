@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\View\ShowShip;
 use Fleet;
 use NavPanel;
 use request;
-use Ship;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;

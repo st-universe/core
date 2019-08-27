@@ -66,7 +66,7 @@ final class EnterStarSystem implements ActionControllerInterface
         // @todo Beschädigung bei Systemeinflug
         $ship->enterStarSystem($ship->getSystem()->getId(), $posx, $posy);
         if ($ship->isTraktorbeamActive()) {
-            $this->enterStarSystemTraktor($ship);
+            $this->enterStarSystemTraktor($ship, $game);
         }
         if ($ship->isFleetLeader()) {
             $msg = array();
@@ -80,7 +80,7 @@ final class EnterStarSystem implements ActionControllerInterface
                 } else {
                     $ship->enterStarSystem($ship->getSystem()->getId(), $posx, $posy);
                     if ($ship->isTraktorbeamActive()) {
-                        $this->enterStarSystemTraktor($ship);
+                        $this->enterStarSystemTraktor($ship, $game);
                     }
                 }
                 $ship->save();

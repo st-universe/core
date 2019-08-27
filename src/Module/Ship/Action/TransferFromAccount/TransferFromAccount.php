@@ -9,6 +9,7 @@ use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use TradePost;
 
 final class TransferFromAccount implements ActionControllerInterface
 {
@@ -34,7 +35,7 @@ final class TransferFromAccount implements ActionControllerInterface
         );
 
         /**
-         * @var \TradePost $tradepost
+         * @var TradePost $tradepost
          */
         $tradepost = ResourceCache()->getObject('tradepost', request::postIntFatal('postid'));
 

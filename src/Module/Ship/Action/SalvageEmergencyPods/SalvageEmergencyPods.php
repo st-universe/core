@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
-use ObjectNotFoundException;
 use PM;
 use request;
 use ShipCrew;
-use ShipData;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
