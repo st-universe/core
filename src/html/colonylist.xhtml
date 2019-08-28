@@ -16,7 +16,6 @@
 					<th style="width: 120px;"></th>
 					<th i18n:translate="">Name</th>
 					<th i18n:translate="">Energie</th>
-					<th i18n:translate="">Sektor</th>
 					<th i18n:translate="">Bevölkerung</th>
 					<th i18n:translate="">Lager</th>
 				</tr>
@@ -24,14 +23,14 @@
 					<td style="text-align: center;">
 						<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage" />
 					</td>
-					<td style="vertical-align: middle;">
-						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" tal:content="structure bbcode:colony/getName">.</a>
+					<td style="vertical-align: middle;" tal:define="system colony/getSystem">
+						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%" tal:content="structure bbcode:colony/getName">.</a>
+						<div>
+							<img src="${GFX}/map/${colony/getSystem/getMapField/getFieldId}.gif" tal:attributes="title system/getSystemType/getDescription" style="width: 15px; height: 15px;" /> ${colony/getPosX}|${colony/getPosY} (${system/getName}-System ${system/getCX}|${system/getCY})
+						</div>
 					</td>
 					<td style="vertical-align: middle;">
 						${colony/getEps}/${colony/getMaxEps} (<span tal:replace="colony/getEpsProductionDisplay">PROD</span>)
-					</td>
-					<td style="vertical-align: middle;">
-						<img src="${GFX}/map/${colony/getSystem/getMapField/getFieldId}.gif" tal:attributes="title string:${colony/getSystem/getName}-System bei ${colony/getSystem/getCX}|${colony/getSystem/getCY}" style="width: 15px; height: 15px;" /> ${colony/getPosX}|${colony/getPosY}
 					</td>
 					<td style="vertical-align: middle;">
 						<table border="0" cellspacing="0" cellpadding="0">
