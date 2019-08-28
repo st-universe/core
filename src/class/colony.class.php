@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Lib\PlanetGenerator\PlanetGenerator;
+
 class ColonyData extends BaseTable {
 
 	public const PEOPLE_FOOD = 7;
@@ -643,7 +645,7 @@ class ColonyData extends BaseTable {
 
 	public function updateColonySurface() {
 		if (!$this->getMask()) {
-			$generator = new ColonyGenerator;
+			$generator = new PlanetGenerator();
 			$surface = $generator->generateColony($this->getColonyClass(),$this->getSystem()->getBonusFields());
 			$this->setMask(base64_encode(serialize($surface)));
 			$this->save();
@@ -877,7 +879,7 @@ class UserColony extends ColonyData {
 }
 class Colony extends ColonyData {
 	
-	function __construct(&$colony_id) {
+	function __construct($colony_id) {
 		$result = DB()->query("SELECT * FROM stu_colonies WHERE id=".intval($colony_id),4);
 		if ($result == 0) {
 			throw new ObjectNotFoundException($colony_id);
