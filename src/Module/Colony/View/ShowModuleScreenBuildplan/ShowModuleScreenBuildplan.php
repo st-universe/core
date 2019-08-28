@@ -93,6 +93,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('RUMP', $rump);
         $game->setTemplateVar('PLAN', $plan);
+        $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         $game->setTemplateVar('MODULE_SLOTS', range(1, MODULE_TYPE_COUNT));
     }
