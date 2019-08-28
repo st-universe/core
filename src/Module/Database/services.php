@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database;
 
-use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Lib\SessionInterface;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
@@ -20,27 +18,19 @@ use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     DatabaseCategoryTalFactoryInterface::class => autowire(DatabaseCategoryTalFactory::class),
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
-    ControllerTypeEnum::TYPE_DATABASE => create(GameController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            get(SessionStringRepositoryInterface::class),
-            [],
-            [
-                Category::VIEW_IDENTIFIER => autowire(Category::class),
-                DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
-                UserList::VIEW_IDENTIFIER => autowire(UserList::class),
-                DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-            ]
-        ),
+    'DATABASE_ACTIONS' => [],
+    'DATABASE_VIEWS' => [
+        Category::VIEW_IDENTIFIER => autowire(Category::class),
+        DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
+        UserList::VIEW_IDENTIFIER => autowire(UserList::class),
+        DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
+    ]
 ];

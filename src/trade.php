@@ -1,12 +1,15 @@
 <?php
 
-use Stu\Control\ControllerTypeEnum;
+use Stu\Control\GameControllerInterface;
 
 @session_start();
 require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(ControllerTypeEnum::TYPE_TRADE)->main();
+$container->get(GameControllerInterface::class)->main(
+    $container->get('TRADE_ACTIONS'),
+    $container->get('TRADE_VIEWS')
+);
 
 DB()->commitTransaction();

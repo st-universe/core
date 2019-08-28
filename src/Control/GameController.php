@@ -39,32 +39,18 @@ final class GameController implements GameControllerInterface
 
     private $playercount = null;
 
-    private $callbacks = [];
-
-    private $views = [];
-
     private $viewContext = [];
 
     private $gameStats;
 
     private $loginError = '';
 
-    /**
-     * @param SessionInterface $session
-     * @param SessionStringRepositoryInterface $sessionStringRepository
-     * @param ActionControllerInterface[] $actions
-     * @param ViewControllerInterface[] $views
-     */
     public function __construct(
         SessionInterface $session,
-        SessionStringRepositoryInterface $sessionStringRepository,
-        array $actions,
-        array $views
+        SessionStringRepositoryInterface $sessionStringRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
-        $this->callbacks = $actions;
-        $this->views = $views;
     }
 
     private function getTemplate()
@@ -381,7 +367,7 @@ final class GameController implements GameControllerInterface
         return $string;
     }
 
-    public function main(bool $session_check = true): void
+    public function main(array $actions, array $views, bool $session_check = true): void
     {
         $this->session->createSession($session_check);
 
@@ -389,15 +375,15 @@ final class GameController implements GameControllerInterface
             $this->session->checkLoginCookie();
         }
 
-        $this->executeCallback();
-        $this->executeView();
+        $this->executeCallback($actions);
+        $this->executeView($views);
 
         $this->render();
     }
 
-    private function executeCallback(): void
+    private function executeCallback(array $actions): void
     {
-        foreach ($this->callbacks as $request_key => $config) {
+        foreach ($actions as $request_key => $config) {
             if (request::indString($request_key)) {
                 if ($config->performSessionCheck() === true && !request::isPost()) {
                     if (!$this->sessionStringRepository->isValid(
@@ -413,9 +399,9 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    private function executeView()
+    private function executeView(array $views): void
     {
-        foreach ($this->views as $request_key => $config) {
+        foreach ($views as $request_key => $config) {
 
             if (request::indString($request_key)) {
                 $config->handle($this);
@@ -423,7 +409,7 @@ final class GameController implements GameControllerInterface
             }
         }
 
-        $view = $this->views[static::DEFAULT_VIEW] ?? null;
+        $view = $views[static::DEFAULT_VIEW] ?? null;
 
         if ($view !== null) {
             $view->handle($this);

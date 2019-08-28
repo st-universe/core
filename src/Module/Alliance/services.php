@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
-use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Lib\SessionInterface;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequestInterface;
@@ -106,10 +104,7 @@ use Stu\Module\Alliance\View\Topic\TopicRequestInterface;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettings;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequest;
 use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequestInterface;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     AddBoardRequestInterface::class => autowire(AddBoardRequest::class),
@@ -141,54 +136,49 @@ return [
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     AcceptOfferRequestInterface::class => autowire(AcceptOfferRequest::class),
     CancelContractRequestInterface::class => autowire(CancelContractRequest::class),
-    ControllerTypeEnum::TYPE_ALLIANCE => create(GameController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            get(SessionStringRepositoryInterface::class),
-            [
-                AddBoard::ACTION_IDENTIFIER => autowire(AddBoard::class),
-                CreateTopic::ACTION_IDENTIFIER => autowire(CreateTopic::class),
-                CreatePost::ACTION_IDENTIFIER => autowire(CreatePost::class),
-                RenameTopic::ACTION_IDENTIFIER => autowire(RenameTopic::class),
-                RenameBoard::ACTION_IDENTIFIER => autowire(RenameBoard::class),
-                DeleteTopic::ACTION_IDENTIFIER => autowire(DeleteTopic::class),
-                DeleteBoard::ACTION_IDENTIFIER => autowire(DeleteBoard::class),
-                DeletePost::ACTION_IDENTIFIER => autowire(DeletePost::class),
-                SetTopicSticky::ACTION_IDENTIFIER => autowire(SetTopicSticky::class),
-                UnsetTopicSticky::ACTION_IDENTIFIER => autowire(UnsetTopicSticky::class),
-                Signup::ACTION_IDENTIFIER => autowire(Signup::class),
-                DeclineApplication::ACTION_IDENTIFIER => autowire(DeclineApplication::class),
-                AcceptApplication::ACTION_IDENTIFIER => autowire(AcceptApplication::class),
-                KickPlayer::ACTION_IDENTIFIER => autowire(KickPlayer::class),
-                PromotePlayer::ACTION_IDENTIFIER => autowire(PromotePlayer::class),
-                Leave::ACTION_IDENTIFIER => autowire(Leave::class),
-                CreateAlliance::ACTION_IDENTIFIER => autowire(CreateAlliance::class),
-                EditDetails::ACTION_IDENTIFIER => autowire(EditDetails::class),
-                CreateRelation::ACTION_IDENTIFIER => autowire(CreateRelation::class),
-                SuggestPeace::ACTION_IDENTIFIER => autowire(SuggestPeace::class),
-                CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
-                AcceptOffer::ACTION_IDENTIFIER => autowire(AcceptOffer::class),
-                CancelContract::ACTION_IDENTIFIER => autowire(CancelContract::class),
-                ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
-                DeleteAvatar::ACTION_IDENTIFIER => autowire(DeleteAvatar::class),
-                DeleteAlliance::ACTION_IDENTIFIER => autowire(DeleteAlliance::class),
-            ],
-            [
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-                AllianceList::VIEW_IDENTIFIER => autowire(AllianceList::class),
-                Boards::VIEW_IDENTIFIER => autowire(Boards::class),
-                NewTopic::VIEW_IDENTIFIER => autowire(NewTopic::class),
-                Board::VIEW_IDENTIFIER => autowire(Board::class),
-                Topic::VIEW_IDENTIFIER => autowire(Topic::class),
-                NewPost::VIEW_IDENTIFIER => autowire(NewPost::class),
-                TopicSettings::VIEW_IDENTIFIER => autowire(TopicSettings::class),
-                BoardSettings::VIEW_IDENTIFIER => autowire(BoardSettings::class),
-                AllianceDetails::VIEW_IDENTIFIER => autowire(AllianceDetails::class),
-                Applications::VIEW_IDENTIFIER => autowire(Applications::class),
-                Management::VIEW_IDENTIFIER => autowire(Management::class),
-                Create::VIEW_IDENTIFIER => autowire(Create::class),
-                Edit::VIEW_IDENTIFIER => autowire(Edit::class),
-                Relations::VIEW_IDENTIFIER => autowire(Relations::class),
-            ]
-        ),
+    'ALLIANCE_ACTIONS' => [
+        AddBoard::ACTION_IDENTIFIER => autowire(AddBoard::class),
+        CreateTopic::ACTION_IDENTIFIER => autowire(CreateTopic::class),
+        CreatePost::ACTION_IDENTIFIER => autowire(CreatePost::class),
+        RenameTopic::ACTION_IDENTIFIER => autowire(RenameTopic::class),
+        RenameBoard::ACTION_IDENTIFIER => autowire(RenameBoard::class),
+        DeleteTopic::ACTION_IDENTIFIER => autowire(DeleteTopic::class),
+        DeleteBoard::ACTION_IDENTIFIER => autowire(DeleteBoard::class),
+        DeletePost::ACTION_IDENTIFIER => autowire(DeletePost::class),
+        SetTopicSticky::ACTION_IDENTIFIER => autowire(SetTopicSticky::class),
+        UnsetTopicSticky::ACTION_IDENTIFIER => autowire(UnsetTopicSticky::class),
+        Signup::ACTION_IDENTIFIER => autowire(Signup::class),
+        DeclineApplication::ACTION_IDENTIFIER => autowire(DeclineApplication::class),
+        AcceptApplication::ACTION_IDENTIFIER => autowire(AcceptApplication::class),
+        KickPlayer::ACTION_IDENTIFIER => autowire(KickPlayer::class),
+        PromotePlayer::ACTION_IDENTIFIER => autowire(PromotePlayer::class),
+        Leave::ACTION_IDENTIFIER => autowire(Leave::class),
+        CreateAlliance::ACTION_IDENTIFIER => autowire(CreateAlliance::class),
+        EditDetails::ACTION_IDENTIFIER => autowire(EditDetails::class),
+        CreateRelation::ACTION_IDENTIFIER => autowire(CreateRelation::class),
+        SuggestPeace::ACTION_IDENTIFIER => autowire(SuggestPeace::class),
+        CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
+        AcceptOffer::ACTION_IDENTIFIER => autowire(AcceptOffer::class),
+        CancelContract::ACTION_IDENTIFIER => autowire(CancelContract::class),
+        ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
+        DeleteAvatar::ACTION_IDENTIFIER => autowire(DeleteAvatar::class),
+        DeleteAlliance::ACTION_IDENTIFIER => autowire(DeleteAlliance::class),
+    ],
+    'ALLIANCE_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
+        AllianceList::VIEW_IDENTIFIER => autowire(AllianceList::class),
+        Boards::VIEW_IDENTIFIER => autowire(Boards::class),
+        NewTopic::VIEW_IDENTIFIER => autowire(NewTopic::class),
+        Board::VIEW_IDENTIFIER => autowire(Board::class),
+        Topic::VIEW_IDENTIFIER => autowire(Topic::class),
+        NewPost::VIEW_IDENTIFIER => autowire(NewPost::class),
+        TopicSettings::VIEW_IDENTIFIER => autowire(TopicSettings::class),
+        BoardSettings::VIEW_IDENTIFIER => autowire(BoardSettings::class),
+        AllianceDetails::VIEW_IDENTIFIER => autowire(AllianceDetails::class),
+        Applications::VIEW_IDENTIFIER => autowire(Applications::class),
+        Management::VIEW_IDENTIFIER => autowire(Management::class),
+        Create::VIEW_IDENTIFIER => autowire(Create::class),
+        Edit::VIEW_IDENTIFIER => autowire(Edit::class),
+        Relations::VIEW_IDENTIFIER => autowire(Relations::class),
+    ]
 ];

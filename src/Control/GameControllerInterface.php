@@ -94,7 +94,7 @@ interface GameControllerInterface
 
     public function getSessionString(): string;
 
-    public function main(bool $session_check = true): void;
+    public function main(array $actions, array $views, bool $session_check = true): void;
 
     public function isRegistrationPossible(): bool;
 

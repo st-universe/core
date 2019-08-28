@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
-use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
 use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;
@@ -129,10 +127,7 @@ use Stu\Module\Communication\View\ShowWritePm\ShowWritePmRequestInterface;
 use Stu\Module\Communication\View\ShowWriteQuickPm\ShowWriteQuickPm;
 use Stu\Module\Communication\View\ShowWriteQuickPm\ShowWriteQuickPmRequest;
 use Stu\Module\Communication\View\ShowWriteQuickPm\ShowWriteQuickPmRequestInterface;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
@@ -171,63 +166,58 @@ return [
     DeleteKnPlotMemberRequestInterface::class => autowire(DeleteKnPlotMemberRequest::class),
     CreateKnPlotRequestInterface::class => autowire(CreateKnPlotRequest::class),
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
-    ControllerTypeEnum::TYPE_COMMUNICATION => create(GameController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            get(SessionStringRepositoryInterface::class),
-            [
-                SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
-                SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
-                AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
-                DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
-                DeleteAllContacts::ACTION_IDENTIFIER => autowire(DeleteAllContacts::class),
-                IgnoreUser::ACTION_IDENTIFIER => autowire(IgnoreUser::class),
-                DeleteAllIgnores::ACTION_IDENTIFIER => autowire(DeleteAllIgnores::class),
-                DeleteIgnores::ACTION_IDENTIFIER => autowire(DeleteIgnores::class),
-                SortPmCategories::ACTION_IDENTIFIER => autowire(SortPmCategories::class),
-                AddPmCategory::ACTION_IDENTIFIER => autowire(AddPmCategory::class),
-                EditPmCategory::ACTION_IDENTIFIER => autowire(EditPmCategory::class),
-                DeletePmCategory::ACTION_IDENTIFIER => autowire(DeletePmCategory::class),
-                DeletePms::ACTION_IDENTIFIER => autowire(DeletePms::class),
-                DeleteAllPms::ACTION_IDENTIFIER => autowire(DeleteAllPms::class),
-                MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
-                AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class),
-                WritePm::ACTION_IDENTIFIER => autowire(WritePm::class),
-                PostKnComment::ACTION_IDENTIFIER => autowire(PostKnComment::class),
-                DeleteKnComment::ACTION_IDENTIFIER => autowire(DeleteKnComment::class),
-                EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
-                EditKnPost::ACTION_IDENTIFIER => autowire(EditKnPost::class),
-                DeleteKnPost::ACTION_IDENTIFIER => autowire(DeleteKnPost::class),
-                EditKnPlot::ACTION_IDENTIFIER => autowire(EditKnPlot::class),
-                AddKnPlotMember::ACTION_IDENTIFIER => autowire(AddKnPlotMember::class),
-                DeleteKnPlotMember::ACTION_IDENTIFIER => autowire(DeleteKnPlotMember::class),
-                CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
-                EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
-            ],
-            [
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-                ShowNewPm::VIEW_IDENTIFIER => autowire(ShowNewPm::class),
-                ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
-                ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
-                ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
-                ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
-                ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),
-                ShowPmCategory::VIEW_IDENTIFIER => autowire(ShowPmCategory::class),
-                ShowNewPmCategory::VIEW_IDENTIFIER => autowire(ShowNewPmCategory::class),
-                ShowPmCategoryList::VIEW_IDENTIFIER => autowire(ShowPmCategoryList::class),
-                ShowEditPmCategory::VIEW_IDENTIFIER => autowire(ShowEditPmCategory::class),
-                ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),
-                ShowPlotKn::VIEW_IDENTIFIER => autowire(ShowPlotKn::class),
-                ShowPlotList::VIEW_IDENTIFIER => autowire(ShowPlotList::class),
-                ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
-                ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
-                ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
-                ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
-                ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
-                ShowIgnore::VIEW_IDENTIFIER => autowire(ShowIgnore::class),
-                ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
-                ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
-                Noop::VIEW_IDENTIFIER => autowire(Noop::class),
-            ]
-        ),
+    'COMMUNICATION_ACTIONS' => [
+        SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
+        SwitchContactMode::ACTION_IDENTIFIER => autowire(SwitchContactMode::class),
+        AddContact::ACTION_IDENTIFIER => autowire(AddContact::class),
+        DeleteContacts::ACTION_IDENTIFIER => autowire(DeleteContacts::class),
+        DeleteAllContacts::ACTION_IDENTIFIER => autowire(DeleteAllContacts::class),
+        IgnoreUser::ACTION_IDENTIFIER => autowire(IgnoreUser::class),
+        DeleteAllIgnores::ACTION_IDENTIFIER => autowire(DeleteAllIgnores::class),
+        DeleteIgnores::ACTION_IDENTIFIER => autowire(DeleteIgnores::class),
+        SortPmCategories::ACTION_IDENTIFIER => autowire(SortPmCategories::class),
+        AddPmCategory::ACTION_IDENTIFIER => autowire(AddPmCategory::class),
+        EditPmCategory::ACTION_IDENTIFIER => autowire(EditPmCategory::class),
+        DeletePmCategory::ACTION_IDENTIFIER => autowire(DeletePmCategory::class),
+        DeletePms::ACTION_IDENTIFIER => autowire(DeletePms::class),
+        DeleteAllPms::ACTION_IDENTIFIER => autowire(DeleteAllPms::class),
+        MovePm::ACTION_IDENTIFIER => autowire(MovePm::class),
+        AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class),
+        WritePm::ACTION_IDENTIFIER => autowire(WritePm::class),
+        PostKnComment::ACTION_IDENTIFIER => autowire(PostKnComment::class),
+        DeleteKnComment::ACTION_IDENTIFIER => autowire(DeleteKnComment::class),
+        EditContactComment::ACTION_IDENTIFIER => autowire(EditContactComment::class),
+        EditKnPost::ACTION_IDENTIFIER => autowire(EditKnPost::class),
+        DeleteKnPost::ACTION_IDENTIFIER => autowire(DeleteKnPost::class),
+        EditKnPlot::ACTION_IDENTIFIER => autowire(EditKnPlot::class),
+        AddKnPlotMember::ACTION_IDENTIFIER => autowire(AddKnPlotMember::class),
+        DeleteKnPlotMember::ACTION_IDENTIFIER => autowire(DeleteKnPlotMember::class),
+        CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
+        EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
+    ],
+    'COMMUNICATION_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowNewPm::VIEW_IDENTIFIER => autowire(ShowNewPm::class),
+        ShowWriteQuickPm::VIEW_IDENTIFIER => autowire(ShowWriteQuickPm::class),
+        ShowWritePm::VIEW_IDENTIFIER => autowire(ShowWritePm::class),
+        ShowKnComments::VIEW_IDENTIFIER => autowire(ShowKnComments::class),
+        ShowContactList::VIEW_IDENTIFIER => autowire(ShowContactList::class),
+        ShowIgnoreList::VIEW_IDENTIFIER => autowire(ShowIgnoreList::class),
+        ShowPmCategory::VIEW_IDENTIFIER => autowire(ShowPmCategory::class),
+        ShowNewPmCategory::VIEW_IDENTIFIER => autowire(ShowNewPmCategory::class),
+        ShowPmCategoryList::VIEW_IDENTIFIER => autowire(ShowPmCategoryList::class),
+        ShowEditPmCategory::VIEW_IDENTIFIER => autowire(ShowEditPmCategory::class),
+        ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),
+        ShowPlotKn::VIEW_IDENTIFIER => autowire(ShowPlotKn::class),
+        ShowPlotList::VIEW_IDENTIFIER => autowire(ShowPlotList::class),
+        ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
+        ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),
+        ShowEditPlot::VIEW_IDENTIFIER => autowire(ShowEditPlot::class),
+        ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
+        ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
+        ShowIgnore::VIEW_IDENTIFIER => autowire(ShowIgnore::class),
+        ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
+        ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+    ]
 ];

@@ -11,6 +11,8 @@ use Doctrine\ORM\Tools\Setup;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Control\GameController;
+use Stu\Control\GameControllerInterface;
 use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
@@ -57,6 +59,7 @@ $builder->addDefinitions([
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
         return $manager;
     },
+    GameControllerInterface::class => autowire(GameController::class),
 ]);
 
 $builder->addDefinitions(

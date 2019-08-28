@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade;
 
-use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Lib\SessionInterface;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntry;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequest;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequestInterface;
@@ -51,10 +49,7 @@ use Stu\Module\Trade\View\ShowTradePostInfo\ShowTradePostInfoRequestInterface;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenu;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequest;
 use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequestInterface;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
@@ -71,29 +66,24 @@ return [
     ShowShoutBoxListRequestInterface::class => autowire(ShowShoutBoxListRequest::class),
     AddShoutBoxEntryRequestInterface::class => autowire(AddShoutBoxEntryRequest::class),
     TransferGoodsRequestInterface::class => autowire(TransferGoodsRequest::class),
-    ControllerTypeEnum::TYPE_TRADE => create(GameController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            get(SessionStringRepositoryInterface::class),
-            [
-                CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
-                TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
-                CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
-                AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),
-                TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class),
-            ],
-            [
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-                ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
-                ShowOfferMenu::VIEW_IDENTIFIER => autowire(ShowOfferMenu::class),
-                ShowTransferMenu::VIEW_IDENTIFIER => autowire(ShowTransferMenu::class),
-                ShowOfferMenuNewOffer::VIEW_IDENTIFIER => autowire(ShowOfferMenuNewOffer::class),
-                ShowTakeOffer::VIEW_IDENTIFIER => autowire(ShowTakeOffer::class),
-                ShowTradePostInfo::VIEW_IDENTIFIER => autowire(ShowTradePostInfo::class),
-                ShowLicenseList::VIEW_IDENTIFIER => autowire(ShowLicenseList::class),
-                ShowOfferGood::VIEW_IDENTIFIER => autowire(ShowOfferGood::class),
-                ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
-                ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
-            ]
-        ),
+    'TRADE_ACTIONS' => [
+        CreateOffer::ACTION_IDENTIFIER => autowire(CreateOffer::class),
+        TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
+        CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
+        AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),
+        TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class),
+    ],
+    'TRADE_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
+        ShowOfferMenu::VIEW_IDENTIFIER => autowire(ShowOfferMenu::class),
+        ShowTransferMenu::VIEW_IDENTIFIER => autowire(ShowTransferMenu::class),
+        ShowOfferMenuNewOffer::VIEW_IDENTIFIER => autowire(ShowOfferMenuNewOffer::class),
+        ShowTakeOffer::VIEW_IDENTIFIER => autowire(ShowTakeOffer::class),
+        ShowTradePostInfo::VIEW_IDENTIFIER => autowire(ShowTradePostInfo::class),
+        ShowLicenseList::VIEW_IDENTIFIER => autowire(ShowLicenseList::class),
+        ShowOfferGood::VIEW_IDENTIFIER => autowire(ShowOfferGood::class),
+        ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
+        ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
+    ],
 ];

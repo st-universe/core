@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting;
 
-use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Lib\SessionInterface;
 use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescriptionRequest;
@@ -24,10 +22,7 @@ use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
 use Stu\Module\PlayerSetting\View\Overview\Overview;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     ChangeUserNameRequestInterface::class => autowire(ChangeUserNameRequest::class),
@@ -35,20 +30,15 @@ return [
     ChangeEmailRequestInterface::class => autowire(ChangeEmailRequest::class),
     ChangeDescriptionRequestInterface::class => autowire(ChangeDescriptionRequest::class),
     ChangeSettingsRequestInterface::class => autowire(ChangeSettingsRequest::class),
-    ControllerTypeEnum::TYPE_PLAYER_SETTING => create(GameController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            get(SessionStringRepositoryInterface::class),
-            [
-                ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
-                ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),
-                ChangeEmail::ACTION_IDENTIFIER => autowire(ChangeEmail::class),
-                ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
-                ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
-                ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
-            ],
-            [
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-            ]
-        ),
+    'PLAYER_SETTING_ACTIONS' => [
+        ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
+        ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),
+        ChangeEmail::ACTION_IDENTIFIER => autowire(ChangeEmail::class),
+        ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
+        ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
+        ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
+    ],
+    'PLAYER_SETTING_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
+    ]
 ];

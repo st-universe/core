@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap;
 
-use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Lib\SessionInterface;
 use Stu\Module\Starmap\Action\EditField\EditField;
 use Stu\Module\Starmap\Action\EditField\EditFieldRequest;
 use Stu\Module\Starmap\Action\EditField\EditFieldRequestInterface;
@@ -32,10 +30,7 @@ use Stu\Module\Starmap\View\ShowSystem\ShowSystemRequestInterface;
 use Stu\Module\Starmap\View\ShowSystemEditField\ShowSystemEditField;
 use Stu\Module\Starmap\View\ShowSystemEditField\ShowSystemEditFieldRequest;
 use Stu\Module\Starmap\View\ShowSystemEditField\ShowSystemEditFieldRequestInterface;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 return [
     ShowSectionRequestInterface::class => autowire(ShowSectionRequest::class),
@@ -45,24 +40,19 @@ return [
     ShowSystemRequestInterface::class => autowire(ShowSystemRequest::class),
     ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
-    ControllerTypeEnum::TYPE_STARMAP => create(GameController::class)
-        ->constructor(
-            get(SessionInterface::class),
-            get(SessionStringRepositoryInterface::class),
-            [
-                EditField::ACTION_IDENTIFIER => autowire(EditField::class),
-                EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
-            ],
-            [
-                GameController::DEFAULT_VIEW => autowire(Overview::class),
-                ShowSection::VIEW_IDENTIFIER => autowire(ShowSection::class),
-                ShowByPosition::VIEW_IDENTIFIER => autowire(ShowByPosition::class),
-                EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),
-                ShowEditor::VIEW_IDENTIFIER => autowire(ShowEditor::class),
-                ShowOverall::VIEW_IDENTIFIER => autowire(ShowOverall::class),
-                Noop::VIEW_IDENTIFIER => autowire(Noop::class),
-                ShowSystem::VIEW_IDENTIFIER => autowire(ShowSystem::class),
-                ShowSystemEditField::VIEW_IDENTIFIER => autowire(ShowSystemEditField::class),
-            ]
-        ),
+    'STARMAP_ACTIONS' => [
+        EditField::ACTION_IDENTIFIER => autowire(EditField::class),
+        EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
+    ],
+    'STARMAP_VIEWS' => [
+        GameController::DEFAULT_VIEW => autowire(Overview::class),
+        ShowSection::VIEW_IDENTIFIER => autowire(ShowSection::class),
+        ShowByPosition::VIEW_IDENTIFIER => autowire(ShowByPosition::class),
+        EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),
+        ShowEditor::VIEW_IDENTIFIER => autowire(ShowEditor::class),
+        ShowOverall::VIEW_IDENTIFIER => autowire(ShowOverall::class),
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+        ShowSystem::VIEW_IDENTIFIER => autowire(ShowSystem::class),
+        ShowSystemEditField::VIEW_IDENTIFIER => autowire(ShowSystemEditField::class),
+    ],
 ];
