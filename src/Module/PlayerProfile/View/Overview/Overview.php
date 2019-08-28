@@ -25,8 +25,9 @@ final class Overview implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $profileId = $this->overviewRequest->getProfileId();
-        $profile = new User($profileId);
+        $profile = new User($this->overviewRequest->getProfileId());
+
+        $profileId = $profile->getId();
 
         if ($profileId !== $userId && !UserProfileVisitors::hasVisit($profileId, $userId)) {
             UserProfileVisitors::registerVisit($profileId, $userId);
@@ -37,14 +38,14 @@ final class Overview implements ViewControllerInterface
                 'userprofile.php?uid=%d',
                 $profile->getId()
             ),
-            _('Siedlerprofil')
+            _('Spielerprofil')
         );
-        $game->setPageTitle(_('/ Siedlerprofi;e'));
+        $game->setPageTitle(_('/ Spielerprofile'));
         $game->setTemplateFile('html/userprofile.xhtml');
         $game->setTemplateVar('PROFILE', $profile);
         $game->setTemplateVar(
             'RPG_PLOTS',
-            RPGPlotMember::getPlotsByUser($userId)
+            RPGPlotMember::getPlotsByUser($profileId)
         );
     }
 }
