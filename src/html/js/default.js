@@ -79,8 +79,7 @@ function ajaxrequest(url) {
 function openWindow(elt,exclusive,width) {
         if (width) {
                 if (exclusive) {
-
-                        ('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                        return overlib('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
                 } else {
                         return overlib('<div id='+elt+'></div>', WIDTH, width, BGCOLOR, '#8897cf', FGCOLOR,'#000000', TEXTCOLOR, '#8897cf', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
                 }
