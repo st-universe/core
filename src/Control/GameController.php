@@ -7,9 +7,11 @@ use DateTimeImmutable;
 use GameConfig;
 use GameTurn;
 use GameTurnData;
+use Noodlehaus\ConfigInterface;
 use PM;
 use PMCategory;
 use request;
+use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -27,11 +29,17 @@ final class GameController implements GameControllerInterface
 
     private $talPage;
 
+    private $databaseUserRepository;
+
+    private $config;
+
+    private $db;
+
     private $gameInformations = [];
 
     private $siteNavigation = [];
 
-    private $pagetitle = "Changeme";
+    private $pagetitle = '';
 
     private $macro = '';
 
@@ -52,12 +60,17 @@ final class GameController implements GameControllerInterface
     public function __construct(
         SessionInterface $session,
         SessionStringRepositoryInterface $sessionStringRepository,
-        TalPageInterface $talPage
+        TalPageInterface $talPage,
+        DatabaseUserRepositoryInterface $databaseUserRepository,
+        ConfigInterface $config,
+        DbInterface $db
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
-
         $this->talPage = $talPage;
+        $this->databaseUserRepository = $databaseUserRepository;
+        $this->config = $config;
+        $this->db = $db;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -193,7 +206,7 @@ final class GameController implements GameControllerInterface
     public function getPlayerCount(): int
     {
         if ($this->playercount === null) {
-            $this->playercount = (int) DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100", 1);
+            $this->playercount = (int) $this->db->query("SELECT COUNT(*) FROM stu_user WHERE id>100", 1);
         }
         return $this->playercount;
     }
@@ -243,7 +256,7 @@ final class GameController implements GameControllerInterface
 
     public function getQueryCount(): int
     {
-        return (int) DB()->getQueryCount();
+        return (int) $this->db->getQueryCount();
     }
 
     public function getDebugNotices(): array
@@ -263,12 +276,12 @@ final class GameController implements GameControllerInterface
 
     public function getGameVersion(): string
     {
-        return (string) GAME_VERSION;
+        return (string) $this->config->get('game.version');
     }
 
     public function redirectTo(string $href): void
     {
-        DB()->commitTransaction();
+        $this->db->commitTransaction();
         header('Location: ' . $href);
         exit;
     }
@@ -283,7 +296,7 @@ final class GameController implements GameControllerInterface
 
     public function isDebugMode(): bool
     {
-        return isDebugMode();
+        return $this->config->get('debug.debug_mode');
     }
 
     public function getJavascriptPath(): string
@@ -293,7 +306,7 @@ final class GameController implements GameControllerInterface
 
     public function getPlanetColonyLimit(): int
     {
-        return (int) DB()->query(
+        return (int) $this->db->query(
             'SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
             1
         );
@@ -301,7 +314,7 @@ final class GameController implements GameControllerInterface
 
     public function getMoonColonyLimit(): int
     {
-        return (int) DB()->query(
+        return (int) $this->db->query(
             'SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
             1
         );
@@ -324,13 +337,9 @@ final class GameController implements GameControllerInterface
 
     public function checkDatabaseItem($databaseEntryId): void
     {
-        // @todo refactor
-        global $container;
-        $databaseUserRepo = $container->get(DatabaseUserRepositoryInterface::class);
-
         $userId = $this->getUser()->getId();
 
-        if ($databaseEntryId > 0 && $databaseUserRepo->exists($userId, $databaseEntryId) === false) {
+        if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
             $this->achievements[] = databaseScan($databaseEntryId, $userId);
         }
     }
@@ -414,7 +423,7 @@ final class GameController implements GameControllerInterface
             $this->gameStats = [
                 'turn' => $this->getCurrentRound(),
                 'player' => $this->getPlayerCount(),
-                'playeronline' => DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300",
+                'playeronline' => $this->db->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300",
                     1),
             ];
         }

@@ -5,14 +5,22 @@ declare(strict_types=1);
 namespace Stu\Module\Tal;
 
 use DomDocument;
+use Noodlehaus\ConfigInterface;
 use PhpTal;
 use PhpTal\PhpTalInterface;
 use XsltProcessor;
 
 final class TalPage implements TalPageInterface
 {
+    private $config;
 
     private $template;
+
+    public function __construct(
+        ConfigInterface $config
+    ) {
+        $this->config = $config;
+    }
 
     public function setVar(string $var, $value): void
     {
@@ -24,14 +32,13 @@ final class TalPage implements TalPageInterface
         if ($this->template === null) {
             $tr = new PhpTal\GetTextTranslator();
 
-            // TBD: set language
-            $tr->setLanguage('de_DE');
+            $tr->setLanguage($this->config->get('game.language'));
 
             $tr->addDomain('stu', APP_PATH . '/lang');
             $tr->useDomain('stu');
 
             $this->template = new PhpTal\PHPTAL();
-            $this->template->setForceReparse(true);
+            $this->template->setForceReparse((bool) $this->config->get('debug.debug_mode'));
             $this->template->setTranslator($tr);
             $this->template->allowPhpModifier();
             $this->template->setOutputMode(PhpTal\PHPTAL::XHTML);
@@ -64,8 +71,8 @@ final class TalPage implements TalPageInterface
         $file = str_replace('&', '&amp;', $this->getTemplate()->execute());
         $xmlDom->loadXML($file);
 
-        $xsl = new XsltProcessor; // XSLT Prozessor Objekt erzeugen
-        $xsl->importStylesheet($xslDom); // Stylesheet laden
+        $xsl = new XsltProcessor();
+        $xsl->importStylesheet($xslDom);
         $data = html_entity_decode($xsl->transformToXML($xmlDom));
         $data = preg_replace('/<(textarea|script)([^>]*)\/>/U', '<\\1\\2></\\1>', $data);
         return str_replace("&gt;", ">", $data);
