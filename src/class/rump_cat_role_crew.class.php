@@ -190,7 +190,7 @@ class RumpCatRoleCrew extends RumpCatRoleCrewData { #{{{
 	function __construct($id) { #{{{
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);	
 		if ($result == 0) {
-			throw new ObjectNotFoundException($ship_id);
+			throw new ObjectNotFoundException($id);
 		}
 		parent::__construct($result);
 	} # }}}

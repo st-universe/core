@@ -54,7 +54,7 @@ class ShipCrew extends ShipCrewData {
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);	
 		if ($result == 0) {
-			throw new ObjectNotFoundException($ship_id);
+			throw new ObjectNotFoundException($id);
 		}
 		parent::__construct($result);
 		return self::_getBy($result,$id,'ShipCrewData');

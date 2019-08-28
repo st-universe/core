@@ -59,6 +59,8 @@ class ShipBuildplansData extends BaseTable {
 		return $this->data['rump_id'];
 	} # }}}
 
+	private $rump;
+
 	/**
 	 */
 	function getRump() { #{{{

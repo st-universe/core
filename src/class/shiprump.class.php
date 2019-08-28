@@ -30,23 +30,6 @@ class ShiprumpData extends BaseTable {
 		$this->setFieldValue('storage',$value,'getStorage');
 	}
 
-	private $modules = NULL;
-
-	public function getModules() {
-		if ($this->modules === NULL) {
-			$this->modules = ShipRumpModules::getByRump($this->getId());
-		}
-		return $this->modules;
-	}
-
-	public function getModule($type) {
-		if (!array_key_exists($type,$this->getModules)) {
-			return FALSE;
-		}
-		$arr = &$this->getModules();
-		return $arr[$type];
-	}
-
 	/**
 	 */
 	public function isTrumfield() { #{{{

@@ -26,6 +26,7 @@ echo '<form method="post" action="buildingfieldassigner.php">
 foreach ($building->getFieldList() as $key => $obj) {
 	echo '<input type="text" size="6" name="fields[]" value="'.$obj->getType().'" />';
 }
+$i = 0;
 while($i<15) {
 	echo '<input type="text" size="6" name="fields[]" />';
 	$i++;

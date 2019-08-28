@@ -19,6 +19,7 @@ class TorpedoTypeData extends BaseTable { #{{{
 
 	const tablename = 'stu_torpedo_types';
 	protected $tablename = 'stu_torpedo_types';
+	private $costs;
 
 	/**
 	 */

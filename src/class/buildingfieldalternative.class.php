@@ -33,7 +33,7 @@ class BuildingFieldAlternativeData extends BaseTable {
 		return $this->data['alternate_buildings_id'];
 	}
 
-	public function setAlternativeBuildingId() {
+	public function setAlternativeBuildingId($value) {
 		$this->setFieldValue('alternate_buildings_id',$value,'getAlternativeBuildingId');
 	}
 

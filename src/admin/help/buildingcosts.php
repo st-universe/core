@@ -32,6 +32,7 @@ echo '<form method="post" action="buildingcosts.php">
 foreach ($building->getCosts() as $key => $obj) {
 	echo '<img src="../../assets/goods/'.$obj->getGoodId().'.gif" /> <input type="text" size="4" name="goodid[]" value="'.$obj->getGoodId().'" /> <input type="text" size="4" name="costs[]" value="'.$obj->getCount().'" /><br />';
 }
+$i = 0;
 while($i<15) {
 	echo '<input type="text" size="4" name="goodid[]" <input type="text" size="4" name="costs[]" /><br />';
 	$i++;

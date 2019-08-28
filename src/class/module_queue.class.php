@@ -100,7 +100,7 @@ class ModuleQueue extends ModuleQueueData { #{{{
 	/**
 	 */
 	static function countInstances($sql="") { #{{{
-		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$qry,1);
+		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$sql,1);
 	} # }}}
 
 	/**

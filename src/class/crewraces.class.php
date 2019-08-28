@@ -75,7 +75,7 @@ class CrewRaces extends CrewRacesData {
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);
 		if ($result == 0) {
-			new ObjectNotFoundException($crewId);
+			new ObjectNotFoundException($id);
 		}
 		return parent::__construct($result);
 	}

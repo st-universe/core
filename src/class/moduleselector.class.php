@@ -1,6 +1,5 @@
 <?php
 
-use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 
 /**

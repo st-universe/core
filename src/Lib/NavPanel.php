@@ -5,6 +5,8 @@ declare(strict_types=1);
 class NavPanel
 {
 
+    private $ship;
+
     function __construct(&$ship)
     {
         $this->ship = $ship;
