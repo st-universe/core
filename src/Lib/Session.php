@@ -12,13 +12,16 @@ use UserData;
 final class Session implements SessionInterface
 {
 
-    private $user;
-
     private $db;
 
     private $userIpTableRepository;
 
     private $sessionStringRepository;
+
+    /**
+     * @var UserData|null
+     */
+    private $user;
 
     public function __construct(
         DbInterface $db,
@@ -220,14 +223,14 @@ final class Session implements SessionInterface
      */
     public function storeSessionData($key, $value): void
     {
-        $data = currentUser()->getSessionDataUnserialized();
+        $data = $this->user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             $data[$key] = array();
         }
         if (!array_key_exists($value, $data[$key])) {
             $data[$key][$value] = 1;
-            currentUser()->setSessionData(serialize($data));
-            currentUser()->save();
+            $this->user->setSessionData(serialize($data));
+            $this->user->save();
         }
     }
 
@@ -236,7 +239,7 @@ final class Session implements SessionInterface
      */
     public function deleteSessionData($key, $value): void
     {
-        $data = currentUser()->getSessionDataUnserialized();
+        $data = $this->user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             return;
         }
@@ -244,8 +247,8 @@ final class Session implements SessionInterface
             return;
         }
         unset($data[$key][$value]);
-        currentUser()->setSessionData(serialize($data));
-        currentUser()->save();
+        $this->user->setSessionData(serialize($data));
+        $this->user->save();
     }
 
     /**
@@ -253,7 +256,7 @@ final class Session implements SessionInterface
      */
     public function hasSessionValue($key, $value): bool
     {
-        $data = currentUser()->getSessionDataUnserialized();
+        $data = $this->user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             return false;
         }
