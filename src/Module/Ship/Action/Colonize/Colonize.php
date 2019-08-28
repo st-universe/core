@@ -11,6 +11,7 @@ use request;
 use RumpColonizeBuilding;
 use Stu\Control\ActionControllerInterface;
 use Stu\Control\GameControllerInterface;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -46,10 +47,11 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
+        $researchId = $colony->getPlanetType()->getResearchId();
+
         if (
-            !$colony->getPlanetType()->getResearchId() > 0 ||
-            !$game->getUser()->hasResearched($colony->getPlanetType()->getResearchId())
-            |$colony->isFree()
+            ($researchId > 0 && !$game->getUser()->hasResearched($researchId)) ||
+            !$colony->isFree()
         ) {
             return;
         }
@@ -77,10 +79,11 @@ final class Colonize implements ActionControllerInterface
         $ship->changeFleetLeader();
         $ship->remove();
 
-        DB()->commitTransaction();
-
-        header('Location: colony.php?id=' . $colony->getId());
-        exit;
+        $game->redirectTo(sprintf(
+            '/colony.php?%s=1&id=%d',
+            ShowColony::VIEW_IDENTIFIER,
+            $colony->getId()
+        ));
     }
 
     public function performSessionCheck(): bool

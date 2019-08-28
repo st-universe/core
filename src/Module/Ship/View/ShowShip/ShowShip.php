@@ -95,6 +95,12 @@ final class ShowShip implements ViewControllerInterface
         while ($data = mysqli_fetch_assoc($result)) {
             $singleShipsNbs[] = ResourceCache()->getObject('ship', $data['id']);
         }
+        $colony = $ship->getCurrentColony();
+        $canColonize = false;
+        if ($colony && $ship->getRump()->canColonize()) {
+            $researchId = $colony->getPlanetType()->getResearchId();
+            $canColonize = ($researchId == 0 || ($researchId > 0 && $game->getUser()->hasResearched($researchId))) && $colony->isFree();
+        }
 
         $game->appendNavigationPart(
             'ship.php',
@@ -117,5 +123,6 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $nbs);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
+        $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
     }
 }
