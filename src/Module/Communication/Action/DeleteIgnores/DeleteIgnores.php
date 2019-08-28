@@ -22,9 +22,11 @@ final class DeleteIgnores implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
+
         foreach ($this->deleteIgnoresRequest->getIgnoreIds() as $key => $val) {
             $contact = Ignorelist::getById($val);
-            if (!$contact || !$contact->isOwnIgnore()) {
+            if (!$contact || !$contact->getUserId() != $userId) {
                 continue;
             }
             $contact->deleteFromDatabase();

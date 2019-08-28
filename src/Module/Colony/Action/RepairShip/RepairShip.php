@@ -35,9 +35,11 @@ final class RepairShip implements ActionControllerInterface
     {
         $game->setView(ShowShipRepair::VIEW_IDENTIFIER);
 
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $field = Colfields::getByColonyField(
@@ -48,7 +50,7 @@ final class RepairShip implements ActionControllerInterface
         $ship_id = request::getIntFatal('ship_id');
 
         $repairableShiplist = [];
-        foreach ($colony->getOrbitShipList() as $fleet) {
+        foreach ($colony->getOrbitShipList($userId) as $fleet) {
             /**
              * @var Ship $ship
              */

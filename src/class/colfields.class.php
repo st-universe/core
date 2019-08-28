@@ -228,7 +228,7 @@ class ColfieldData extends BaseTable {
 
 	function getTerraformingOptions() {
 		if ($this->terraformingopts === NULL) {
-			$this->terraformingopts = Terraforming::getByDestination($this->getFieldType());
+			$this->terraformingopts = Terraforming::getByDestination($this->getFieldType(), $this->getColony()->getUserId());
 		}
 		return $this->terraformingopts;
 	}
@@ -273,7 +273,7 @@ class ColfieldData extends BaseTable {
 			return FALSE;
 		}
 		if ($this->upgrades === NULL) {
-			$this->upgrades = BuildingUpgrade::getObjectsBySource($this->getBuildingId());
+			$this->upgrades = BuildingUpgrade::getObjectsBySource($this->getBuildingId(), $this->getColony()->getUserId());
 		}
 		return $this->upgrades;
 	}

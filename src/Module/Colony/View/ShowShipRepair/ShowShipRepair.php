@@ -44,7 +44,7 @@ final class ShowShipRepair implements ViewControllerInterface
         if ($colony->hasShipyard()) {
 
             $repairableShips = [];
-            foreach ($colony->getOrbitShipList() as $fleet) {
+            foreach ($colony->getOrbitShipList($userId) as $fleet) {
                 foreach ($fleet['ships'] as $ship_id => $ship) {
                     if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
                         continue;

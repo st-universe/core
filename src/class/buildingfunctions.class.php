@@ -62,19 +62,13 @@ class BuildingFunctionsData extends BaseTable {
 		return in_array($this->getFunction(),self::getShipyardOptions());
 	} # }}}
 
-	/**
-	 */
-	public function getModulesByUser() { #{{{
-		return ModuleBuildingFunction::getByFunctionAndUser($this->getFunction(),currentUser()->getId());
-	} # }}}
-
 }
 class BuildingFunctions extends BuildingFunctionsData {
 
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);
 		if ($result == 0) {
-			new ObjectNotFoundException($crewId);
+			new ObjectNotFoundException($id);
 		}
 		return parent::__construct($result);
 	}

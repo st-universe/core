@@ -74,9 +74,9 @@ class Terraforming extends TerraformingData {
 		return parent::__construct($result);
 	}
 
-	static function getByDestination($destination=0) {
+	static function getByDestination($destination=0, $userId) {
 		$ret = array();
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE v_feld=".intval($destination)." AND (research_id=0 OR research_id IN (SELECT research_id FROM stu_researched WHERE user_id=".currentUser()->getId()." AND finished>0))");
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE v_feld=".intval($destination)." AND (research_id=0 OR research_id IN (SELECT research_id FROM stu_researched WHERE user_id=".$userId." AND finished>0))");
 		while ($data = mysqli_fetch_assoc($result)) {
 			$ret[] = new TerraformingData($data);
 		}

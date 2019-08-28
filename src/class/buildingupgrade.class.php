@@ -89,8 +89,8 @@ class BuildingUpgrade extends BuildingUpgradeData {
 		return self::_getList($result,'BuildingUpgradeData');
 	}
 
-	static public function getObjectsBySource($buildingId=0) {
-		return self::getObjectsBy('upgrade_from='.intval($buildingId).' AND (research_id=0 OR research_id IN (SELECT research_id FROM stu_researched WHERE user_id='.currentUser()->getId().' AND aktiv=0))');
+	static public function getObjectsBySource($buildingId=0, $userId) {
+		return self::getObjectsBy('upgrade_from='.intval($buildingId).' AND (research_id=0 OR research_id IN (SELECT research_id FROM stu_researched WHERE user_id='.$userId.' AND aktiv=0))');
 	}
 }
 ?>

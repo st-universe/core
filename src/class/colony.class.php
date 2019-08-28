@@ -358,7 +358,6 @@ class ColonyData extends BaseTable {
 		return '';
 	}
 
-	
 	function getDayNightState() {
 		//return 'day' for now
 		return 't';
@@ -366,16 +365,11 @@ class ColonyData extends BaseTable {
 
 	private $shiplist = NULL;	
 
-	private $shiplist_count = 0;
-
-	function getOrbitShipList() {
+	function getOrbitShipList(int $userId) {
 		if ($this->shiplist === NULL) {
 			$this->shiplist = array();
-			$shiplist = Ship::getObjectsBy("WHERE systems_id=".$this->getSystemsId()." AND sx=".$this->getSX()." AND sy=".$this->getSY()." AND (user_id=".currentUser()->getId()." OR cloak=0) ORDER BY is_destroyed ASC, fleets_id DESC,id ASC");
+			$shiplist = Ship::getObjectsBy("WHERE systems_id=".$this->getSystemsId()." AND sx=".$this->getSX()." AND sy=".$this->getSY()." AND (user_id=".$userId." OR cloak=0) ORDER BY is_destroyed ASC, fleets_id DESC,id ASC");
 			foreach ($shiplist as $key => $obj) {
-				if (!$obj->getIsDestroyed()) {
-					$this->shiplist_count++;
-				}
 				$this->shiplist[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
 				if (!array_key_exists('name',$this->shiplist[$obj->getFleetId()])) {
 					if ($obj->getFleetId() == 0) {
@@ -389,44 +383,6 @@ class ColonyData extends BaseTable {
 		return $this->shiplist;
 	}
 
-	/**
-	 */
-	public function getShipListCount() { #{{{
-		if ($this->shiplist === NULL) {
-			$this->getOrbitShipList();
-		}
-		return $this->shiplist_count;
-	} # }}}
-
-
-	private $firstOrbitShip = NULL;
-
-	function getFirstOrbitShip() {
-		if ($this->firstOrbitShip === NULL) {
-			$data = $this->getOrbitShipList();
-			if (count($data) == 0) {
-				$this->firstOrbitShip = FALSE;
-				return $this->firstOrbitShip;
-			}
-			
-			// if selected, return the last target
-			$target = request::postInt('target');
-			
-			if ($target) {
-				foreach ($this->getOrbitShipList() as $key => $fleet) {
-					foreach ($fleet['ships'] as $idx => $ship) {
-						if ($idx == $target) {
-							return $ship;
-						}
-					}
-				}
-			}
-			$list = current($data);
-			$this->firstOrbitShip = current($list['ships']);
-		}
-		return $this->firstOrbitShip;
-	}
-	
 	function getPlanetName() {
 		return $this->data['planet_name'];
 	}
@@ -445,7 +401,7 @@ class ColonyData extends BaseTable {
 		return ResourceCache()->getObject('user',$this->getUserId());
 	}
 
-	public function colonize(Building $building,$field=FALSE) {
+	public function colonize(int $userId, Building $building,$field=FALSE) {
 		if (!$this->isFree()) {
 			return;
 		}
@@ -464,7 +420,7 @@ class ColonyData extends BaseTable {
 		$this->upperWorkers($building->getWorkers());
 		$this->lowerWorkless($building->getWorkers());
 		$this->upperWorkless($building->getHousing());
-		$this->setUserId(currentUser()->getId());
+		$this->setUserId($userId);
 		$this->upperEps($building->getEpsStorage());
 		$this->setName(_('Kolonie'));
 		$this->save();
@@ -854,27 +810,10 @@ class ColonyData extends BaseTable {
 
 	/**
 	 */
-	static function getUsedCrewCount() { #{{{
-		return Ship::getCrewSumByUser(currentUser()->getId());
-	} # }}}
-
-	/**
-	 */
 	public function getEpsBoxTitleString() { #{{{
 		return sprintf(_('Energie: %d/%d (%d/Runde = %d)'),$this->getEps(),$this->getMaxEps(),$this->getEpsProductionDisplay(),$this->getEpsProductionForecast());
 	} # }}}
 
-
-}
-class UserColony extends ColonyData {
-	
-	function __construct(&$colony_id) {
-		$result = DB()->query("SELECT * FROM stu_colonies WHERE id=".$colony_id." AND user_id=".currentUser()->getId()." LIMIT 1",4);
-		if ($result == 0) {
-			throw new ObjectNotFoundException($colony_id);
-		}
-		parent::__construct($result);
-	}
 
 }
 class Colony extends ColonyData {

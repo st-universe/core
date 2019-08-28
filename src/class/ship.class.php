@@ -948,10 +948,6 @@ class ShipData extends BaseTable {
 		return $this->getRump()->getStorage();
 	}
 
-	public function getCacheValue() {
-		return "ship-".$this->getId()."-".currentUser()->getId()."-".$this->getLastModified();
-	}
-
 	public function lowerStorage($good_id,$count) {
 		if (!$this->getStorage()->offsetExists($good_id)) {
 			return;

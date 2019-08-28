@@ -44,9 +44,9 @@ final class ShowBuildMenu implements ViewControllerInterface
         $this->colonyGuiHelper->register($colony, $game);
 
         $menus = [];
-        $menus[1]['buildings'] = Building::getBuildingMenuList($colony->getId(), 1);
-        $menus[2]['buildings'] = Building::getBuildingMenuList($colony->getId(), 2);
-        $menus[3]['buildings'] = Building::getBuildingMenuList($colony->getId(), 3);
+        $menus[1]['buildings'] = Building::getBuildingMenuList($userId, $colony->getId(), 1);
+        $menus[2]['buildings'] = Building::getBuildingMenuList($userId, $colony->getId(), 2);
+        $menus[3]['buildings'] = Building::getBuildingMenuList($userId, $colony->getId(), 3);
 
         $game->showMacro('html/colonymacros.xhtml/cm_buildmenu');
 

@@ -43,10 +43,6 @@ class BuildingData extends BaseTable {
 		return $this->data['eps_proc'];
 	}
 
-	function getTalCacheValue() {
-		return $this->getId()."_".currentUser()->getId();
-	}
-
 	function getEpsProductionDisplay() {
 		if ($this->getEpsProduction() < 0) {
 			return $this->getEpsProduction();
@@ -319,9 +315,9 @@ class Building extends BuildingData {
 		return ResourceCache()->getObject('building',$id);
 	}
 
-	static function getBuildingMenuList($colonyId,$type,$offset=0) {
+	static function getBuildingMenuList($userId, $colonyId,$type,$offset=0) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE bm_col=".intval($type)." AND view=1 AND (research_id=0 OR research_id IN (SELECT research_id
-			FROM stu_researched WHERE user_id=".currentUser()->getId()." AND aktiv=0)) AND id IN (SELECT buildings_id FROM stu_field_build WHERE type IN 
+			FROM stu_researched WHERE user_id=".$userId." AND aktiv=0)) AND id IN (SELECT buildings_id FROM stu_field_build WHERE type IN 
 			(SELECT type FROM stu_colonies_fielddata WHERE colonies_id=".$colonyId.")) GROUP BY id ORDER BY name LIMIT ".$offset.",".BUILDMENU_SCROLLOFFSET);
 		return self::_getList($result,'BuildingData','id','building');
 	}

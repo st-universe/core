@@ -60,10 +60,6 @@ class IgnorelistData extends BaseTable {
 		}
 		return $this->user;
 	}
-
-	function isOwnIgnore() {
-		return currentUser()->getId() == $this->getUserId();
-	}
 }
 
 class Ignorelist extends IgnorelistData {

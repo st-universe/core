@@ -26,9 +26,11 @@ final class ScrollBuildMenu implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
+
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
-            $game->getUser()->getId()
+            $userId
         );
 
         $menu = request::getIntFatal('menu');
@@ -39,9 +41,9 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset % BUILDMENU_SCROLLOFFSET != 0) {
             $offset = floor($offset / BUILDMENU_SCROLLOFFSET);
         }
-        $ret = Building::getBuildingMenuList($colony->getId(), $menu, $offset);
+        $ret = Building::getBuildingMenuList($userId, $colony->getId(), $menu, $offset);
         if (count($ret) == 0) {
-            $ret = Building::getBuildingMenuList($colony->getId(), $menu, $offset - BUILDMENU_SCROLLOFFSET);
+            $ret = Building::getBuildingMenuList($userId, $colony->getId(), $menu, $offset - BUILDMENU_SCROLLOFFSET);
             $offset -= BUILDMENU_SCROLLOFFSET;
         }
         $arr['buildings'] = &$ret;

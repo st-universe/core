@@ -282,7 +282,7 @@ class UserData extends BaseTable {
 	/**
 	 */
 	public function getContact() { #{{{
-		return new ContactlistWrapper;
+		return new ContactlistWrapper($this);
 	} # }}}
 
 	public function isFriend(&$userId) {

@@ -114,7 +114,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateFile('html/ship.xhtml');
 
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship));
+        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser()));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',

@@ -74,7 +74,7 @@ final class Colonize implements ActionControllerInterface
         }
         $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
         $base_building = RumpColonizeBuilding::getByRump($ship->getRump()->getId());
-        $colony->colonize(new Building($base_building->getBuildingId()), $field);
+        $colony->colonize($userId, new Building($base_building->getBuildingId()), $field);
         $ship->deactivateTraktorBeam();
         $ship->changeFleetLeader();
         $ship->remove();

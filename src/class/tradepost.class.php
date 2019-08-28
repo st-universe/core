@@ -103,26 +103,13 @@ class TradePostData extends BaseTable {
 	}
 
 	public function calculateLicenceCost() {
-		// TBD: Kostenkalkukation
+		// @todo Kostenkalkukation
 		return 1;
 	}
 
 	public function getLicenceCostGood() {
-		// TBD: Kann auch was anderes als Dilithium sein
+		// @todo Kann auch was anderes als Dilithium sein
 		return ResourceCache()->getObject('good',GOOD_DILITHIUM);
-	}
-
-	public function getDockedShipsForLicence() {
-		return Ship::getObjectsBy('WHERE user_id='.currentUser()->getId().' AND dock='.$this->getShipId().' AND id IN (SELECT ships_id FROM stu_ships_storage WHERE goods_id='.$this->getLicenceCostGood()->getId().' AND count>='.$this->calculateLicenceCost().')');
-	}
-
-	public function getAccountsForLicence() {
-		return TradeStorage::getAccountsByGood(
-			$this->getLicenceCostGood()->getId(),
-			currentUser()->getId(),
-			$this->calculateLicenceCost(),
-			$this->getTradeNetwork()
-		);
 	}
 
 	/**
@@ -172,7 +159,7 @@ class TradePostData extends BaseTable {
 	private $offerStorageByUser = NULL;
 
 	public function getOfferStorageByCurrentUser() {
-		if ($offerStorageByUser === NULL) {
+		if ($this->offerStorageByUser === NULL) {
 			$this->offerStorageByUser = TradeOffer::getStorageByTradepostUser($this->getId(),currentUser()->getId());
 		}
 		return $this->offerStorageByUser;

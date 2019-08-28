@@ -286,7 +286,7 @@ class ShipMover {
 			if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost()+1) {
 				$msg[] = "Der Traktorstrahl auf die ".$ship->getTraktorShip()->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." aufgrund Energiemangels deaktiviert";
 				$ship->deactivateTraktorBeam();
-				PM::sendPM(currentUser()->getId(),$ship->getTraktorShip()->getUserId(),"Der auf die ".$ship->getTraktorShip()->getName()." gerichtete Traktorstrahl wurde in SeKtor ".$ship->getSectorString()." deaktiviert",PM_SPECIAL_SHIP);
+				PM::sendPM($ship->getUserId(),$ship->getTraktorShip()->getUserId(),"Der auf die ".$ship->getTraktorShip()->getName()." gerichtete Traktorstrahl wurde in SeKtor ".$ship->getSectorString()." deaktiviert",PM_SPECIAL_SHIP);
 			}
 			$this->flightDone = TRUE;
 			$this->flightFields++;

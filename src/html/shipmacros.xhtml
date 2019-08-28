@@ -863,13 +863,13 @@
 				<td>
 					<div style="float: left; width: 190px;">
 						<strong>Angedockte Schiffe</strong>
-						<div tal:repeat="ship TRADEPOST/getDockedShipsForLicence">
+						<div tal:repeat="ship DOCKED_SHIPS_FOR_LICENSE">
 							- <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})" tal:content="structure ship/getName">NAME</a>
 						</div>
 					</div>
 					<div style="padding-left: 6px; float: right; width: 190px;">
 						<strong>Warenkonten</strong>
-						<div tal:repeat="acc TRADEPOST/getAccountsForLicence">
+						<div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
 							- <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})" tal:content="structure acc/getTradePost/getName">NAME</a>
 						</div>
 					</div>	

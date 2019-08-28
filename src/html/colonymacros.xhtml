@@ -38,7 +38,7 @@
 		</div>
 		<ul class="menu" style="width: 190px;">
 			<li tal:repeat="building menu/buildings">
-			<div phptal:cache="1d per building/getTalCacheValue" onclick="openBuildingInfo(${building/getId})">
+			<div onclick="openBuildingInfo(${building/getId})">
 				<img src="${GFX}/buildings/${building/getId}/${building/getBuildingType}at.png" /><br />
 				<span tal:replace="building/getName">runtime</span>
 			</div>
@@ -453,10 +453,10 @@
                 <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
                 <stu:box title="Schiffe im Orbit" i18n:attributes="title">
                     <ul id="shipselector">
-                        <metal:block tal:condition="COLONY/getFirstOrbitShip" metal:use-macro="shipselector" tal:define="data COLONY/getFirstOrbitShip" />
-                        <li tal:condition="not:COLONY/getFirstOrbitShip" style="text-align: center" i18n:translate="">Keine Schiffe im Orbit</li>
+                        <metal:block tal:condition="FIRST_ORBIT_SHIP" metal:use-macro="shipselector" tal:define="data FIRST_ORBIT_SHIP" />
+                        <li tal:condition="not:FIRST_ORBIT_SHIP" style="text-align: center" i18n:translate="">Keine Schiffe im Orbit</li>
                     </ul>
-                    <div style="width: 100%;" tal:condition="COLONY/getFirstOrbitShip">
+                    <div style="width: 100%;" tal:condition="FIRST_ORBIT_SHIP">
                         <br />
                         <a href="javascript:void(0);" onclick="showBFromWindow();" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')"><img src="${GFX}/buttons/b_down1.gif" name="beamfrom" title="Von Schiff beamen" /></a>
                         <a href="javascript:void(0);" onclick="showBToWindow();" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')"><img src="${GFX}/buttons/b_up1.gif" name="beamto" title="Zu Schiff beamen" /></a>
@@ -517,7 +517,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="orbitshiplist">
 		<ul>
-			<tal:block tal:repeat="fleets COLONY/getOrbitShipList">
+			<tal:block tal:repeat="fleets ORBIT_SHIP_LIST">
 				<tal:block tal:repeat="data fleets/ships">
 					<metal:block metal:use-macro="shipselector" />
 				</tal:block>
@@ -735,7 +735,7 @@
                         <th i18n:translate="">Anzahl</th>
                         <th i18n:translate="">In Bau</th>
                     </tr>
-                    <tr tal:repeat="data FUNC/getModulesByUser" tal:attributes="class string:row${repeat/data/odd}">
+                    <tr tal:repeat="data MODULE_LIST" tal:attributes="class string:row${repeat/data/odd}">
                         <td tal:define="module data/getModule">
                             <div style="margin-bottom: 5px;">
                                 <img src="${GFX}/goods/${module/getGoodId}.gif" /> <span tal:content="module/getName">NAME</span>

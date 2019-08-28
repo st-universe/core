@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowColony;
 
 use ColonyMenu;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -43,6 +44,27 @@ final class ShowColony implements ViewControllerInterface
 
         $menuId = $game->getViewContext()['COLONY_MENU'] ?? MENU_INFO;
 
+        $firstOrbitShip = null;
+
+        $shipList = $colony->getOrbitShipList($userId);
+        if ($shipList !== []) {
+            // if selected, return the current target
+            $target = request::postInt('target');
+
+            if ($target) {
+                foreach ($shipList as $key => $fleet) {
+                    foreach ($fleet['ships'] as $idx => $ship) {
+                        if ($idx == $target) {
+                            $firstOrbitShip = $ship;
+                        }
+                    }
+                }
+            }
+            if ($firstOrbitShip === null) {
+                $firstOrbitShip = current(current($shipList)['ships']);
+            }
+        }
+
         $game->appendNavigationPart(
             'colony.php',
             _('Kolonien')
@@ -63,5 +85,6 @@ final class ShowColony implements ViewControllerInterface
             'COLONY_MENU_SELECTOR',
             new ColonyMenu($menuId)
         );
+        $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip);
     }
 }

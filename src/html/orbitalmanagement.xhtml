@@ -16,7 +16,7 @@
 					<th i18n:translate="">Warpkern</th>
 					<th i18n:translate="">Torpedos</th>
 				</tr>
-				<tal:block tal:repeat="fleet COLONY/getOrbitShiplist">
+				<tal:block tal:repeat="fleet ORBIT_SHIP_LIST">
 					<tr>
 						<td colspan="6" tal:content="structure bbcode:fleet/name">FLEETNAME</td>
 					</tr>

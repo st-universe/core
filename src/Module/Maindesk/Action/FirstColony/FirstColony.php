@@ -44,7 +44,7 @@ final class FirstColony implements ActionControllerInterface
         }
 
         $faction = ResourceCache()->getObject(CACHE_FACTION, $user->getFaction());
-        $colony->colonize(new Building($faction->getBuildingId()));
+        $colony->colonize($user->getId(), new Building($faction->getBuildingId()));
 
         $user->setActive(2);
         $user->save();
