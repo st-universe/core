@@ -18,14 +18,6 @@ class InvalidParamException extends STUException {
 	}
 
 }
-class InvalidCallbackException extends STUException  {
-
-	function __construct() {
-		$this->setError("Invalid callback exception");
-		parent::__construct();
-	}
-
-}
 class LoginException extends STUException  {
 
 	function __construct($msg="") {
@@ -45,12 +37,6 @@ class DBException extends STUException  {
 		$err = "DB exception".$msg;
 		if ($qry) $err .= "<br />".$qry;
 		$this->setError($err);
-		parent::__construct();
-	}
-}
-class LogoutException extends STUException  {
-	function __construct() {
-		$this->setError("Logout erfolgt");
 		parent::__construct();
 	}
 }
