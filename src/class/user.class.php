@@ -24,11 +24,6 @@ class UserData extends BaseTable {
 		return $this->data['allys_id'] > 0;
 	}
 
-	function getAllyId() {
-		trigger_error("OBSOLETE - USE getAllianceId instead");
-		return $this->getAllianceId();
-	}
-
 	function setAllianceId($value) {
 		$this->data['allys_id'] = $value;
 		$this->addUpdateField('allys_id','getAllianceId');
@@ -38,14 +33,6 @@ class UserData extends BaseTable {
 		return $this->data['allys_id'];
 	}
 
-	function getNote() {
-		return $this->db->query("SELECT notes FROM stu_user WHERE id=".$this->getId()." LIMIT 1",1);
-	}
-
-	function setNote($txt) {
-		return $this->db->query("UPDATE stu_user SET notes='".addslashes($txt)."' WHERE id=".$this->getId()." LIMIT 1");
-	}
-
 	function getKNMark() {
 		return $this->data['kn_lez'];
 	}
@@ -53,14 +40,6 @@ class UserData extends BaseTable {
 	function setKNMark($value) {
 		$this->data['kn_lez'] = $value;
 		$this->addUpdateField('kn_lez','getKNMark');
-	}
-
-	function getAKnMark() {
-		return $this->data['akn_lez'];
-	}
-
-	function getRKnMark() {
-		return $this->data['rkn_lez'];
 	}
 
 	function getFaction() {
@@ -213,10 +192,6 @@ class UserData extends BaseTable {
 		return $this->data['creation'];
 	}
 
-	function getCreationDateDisplay() {
-		return date("d.m.Y",$this->getCreationDate());
-	}
-
 	function getCookieString() {
 		return sha1($this->getId().$this->getEMail().$this->getCreationDate());
 	}
@@ -236,10 +211,6 @@ class UserData extends BaseTable {
 	function getVacation() {
 		trigger_error('getVacation is obsolete - use getVacationMode');
 		return $this->getVacationMode();
-	}
-
-	function isInVacation() {
-		return $this->getVacation() == 1;
 	}
 
 	private $friends = NULL;
@@ -356,13 +327,6 @@ class UserData extends BaseTable {
 
 	public function setMapType($value) {
 		$this->setFieldValue('maptype',$value,'getMapType');
-	}
-
-	public function enforceOwnerCheck($obj) {
-		if ($obj->getUserId() == $this->getId()) {
-			return TRUE;
-		}
-		new AccessViolation();
 	}
 
 	public function getCurrentResearch() {
