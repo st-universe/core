@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Research\Action\CancelResearch\CancelResearch;
 use Stu\Module\Research\Action\StartResearch\StartResearch;
@@ -25,7 +25,7 @@ return [
     TechlistRetrieverInterface::class => autowire(TechlistRetriever::class),
     ShowResearchRequestInterface::class => autowire(ShowResearchRequest::class),
     StartResearchRequestInterface::class => autowire(StartResearchRequest::class),
-    IntermediateController::TYPE_RESEARCH => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_RESEARCH => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

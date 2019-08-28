@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
@@ -141,7 +141,7 @@ return [
     CancelOfferRequestInterface::class => autowire(CancelOfferRequest::class),
     AcceptOfferRequestInterface::class => autowire(AcceptOfferRequest::class),
     CancelContractRequestInterface::class => autowire(CancelContractRequest::class),
-    IntermediateController::TYPE_ALLIANCE => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_ALLIANCE => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

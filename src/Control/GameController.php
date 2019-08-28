@@ -6,7 +6,6 @@ use Colony;
 use DateTimeImmutable;
 use GameConfig;
 use GameTurn;
-use InvalidCallbackException;
 use PM;
 use PMCategory;
 use request;
@@ -17,7 +16,7 @@ use TalPage;
 use Tuple;
 use UserData;
 
-abstract class GameController implements GameControllerInterface
+final class GameController implements GameControllerInterface
 {
     public const DEFAULT_VIEW = 'DEFAULT_VIEW';
 
@@ -25,14 +24,12 @@ abstract class GameController implements GameControllerInterface
 
     private $sessionStringRepository;
 
-    private $tpl_file = null;
+    private $tpl_file = '';
     private $gameInformations = array();
-    private $benchmarkTimer = null;
     private $handleId = 0;
     private $siteNavigation = array();
     private $pagetitle = "Changeme";
     private $template = null;
-    private $view = null;
     private $ajaxMacro = null;
 
     private $execjs = array();
@@ -43,49 +40,41 @@ abstract class GameController implements GameControllerInterface
 
     private $playercount = null;
 
+    private $callbacks = [];
+
+    private $views = [];
+
+    private $viewContext = [];
+
+    private $gameStats;
+
+    private $loginError = '';
+
+    /**
+     * @param SessionInterface $session
+     * @param SessionStringRepositoryInterface $sessionStringRepository
+     * @param ActionControllerInterface[] $actions
+     * @param ViewControllerInterface[] $views
+     */
     public function __construct(
         SessionInterface $session,
         SessionStringRepositoryInterface $sessionStringRepository,
-        $tpl_file,
-        $pagetitle
+        array $actions,
+        array $views
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
-        $this->startBenchmark();
-        $this->pagetitle = $pagetitle;
-        $this->setTemplateFile($tpl_file);
+        $this->callbacks = $actions;
+        $this->views = $views;
     }
 
-    protected function getTemplate()
+    private function getTemplate()
     {
         if ($this->template === null) {
             $this->template = new TalPage($this->tpl_file);
         }
         return $this->template;
     }
-
-    private $callbacks = [];
-
-    protected function addCallBack($cb, $func, $session = false)
-    {
-        $this->callbacks[$cb] = [$func, $session];
-    }
-
-    private $viewOverride = false;
-
-    private $views = [];
-
-    protected function addView($view, $func, $override = false)
-    {
-        $this->views[$view] = [$func, $override];
-    }
-
-    protected function getView()
-    {
-        return $this->view;
-    }
-
-    private $viewContext = [];
 
     public function setView(string $view, array $viewContext = []): void
     {
@@ -100,22 +89,19 @@ abstract class GameController implements GameControllerInterface
 
     private function maintenanceView()
     {
-        if (!$this->isAdmin()) {
-            if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_TICK) {
-                $this->setPageTitle("Rundenwechsel aktiv");
-                $this->setTemplateFile('html/tick.xhtml');
-            }
-            if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
-                $this->setPageTitle("Wartungsmodus");
-                $this->setTemplateFile('html/maintenance.xhtml');
-            }
+        if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_TICK) {
+            $this->setPageTitle("Rundenwechsel aktiv");
+            $this->setTemplateFile('html/tick.xhtml');
         }
-        return;
+        if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
+            $this->setPageTitle("Wartungsmodus");
+            $this->setTemplateFile('html/maintenance.xhtml');
+        }
     }
 
     public function getGameState()
     {
-        return $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue();
+        return $this->getGameConfig()[CONFIG_GAMESTATE]->getValue();
     }
 
     public function setTemplateFile($tpl)
@@ -138,11 +124,6 @@ abstract class GameController implements GameControllerInterface
     public function getAjaxMacro()
     {
         return $this->ajaxMacro;
-    }
-
-    private function startBenchmark()
-    {
-        $this->benchmarkTimer = microtime();
     }
 
     public function getMemoryUsage()
@@ -195,17 +176,17 @@ abstract class GameController implements GameControllerInterface
         $this->getTemplate()->setRef($key, $variable);
     }
 
-    protected function render()
+    private function render()
     {
         $user = $this->getUser();
 
-        if (!$this->viewOverride && $this->getGameConfigValue(CONFIG_GAMESTATE)->getValue() != CONFIG_GAMESTATE_VALUE_ONLINE) {
+        if ($this->getGameState() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
         $tpl = $this->getTemplate();
-        $tpl->setRef("THIS", $this);
-        $tpl->setVar("GFX", GFX_PATH);
-        $tpl->setRef("USER", $user);
+        $tpl->setRef('THIS', $this);
+        $tpl->setVar('GFX', GFX_PATH);
+        $tpl->setRef('USER', $user);
 
         if ($user !== null) {
             $this->setTemplateVar('PM_NAVLET', PMCategory::getNavletCategories($user->getId()));
@@ -220,7 +201,9 @@ abstract class GameController implements GameControllerInterface
 
     public function getBenchmark()
     {
-        $start = explode(' ', $this->benchmarkTimer);
+        global $benchmark_start;
+
+        $start = explode(' ', $benchmark_start);
         $s_timer = $start[1] + $start[0];
         $end = explode(' ', microtime());
         $e_timer = $end[1] + $end[0];
@@ -237,17 +220,15 @@ abstract class GameController implements GameControllerInterface
 
     private $gameConfig = null;
 
+    /**
+     * @return GameConfig[]
+     */
     public function getGameConfig()
     {
         if ($this->gameConfig === null) {
             $this->gameConfig = GameConfig::getObjectsBy();
         }
         return $this->gameConfig;
-    }
-
-    public function getGameConfigValue($value)
-    {
-        return $this->getGameConfig()[$value];
     }
 
     public function getUniqHandle()
@@ -310,11 +291,6 @@ abstract class GameController implements GameControllerInterface
     public function addExecuteJS($value)
     {
         $this->execjs[] = $value;
-    }
-
-    protected function showNoop()
-    {
-        exit;
     }
 
     public function getGameVersion()
@@ -387,13 +363,8 @@ abstract class GameController implements GameControllerInterface
         $userId = $this->getUser()->getId();
 
         if ($databaseEntryId > 0 && $databaseUserRepo->exists($userId, $databaseEntryId) === false) {
-            $this->addAchievement(databaseScan($databaseEntryId, $userId));
+            $this->achievements[] = databaseScan($databaseEntryId, $userId);
         }
-    }
-
-    protected function addAchievement($text)
-    {
-        $this->achievements[] = $text;
     }
 
     public function getAchievements()
@@ -429,31 +400,19 @@ abstract class GameController implements GameControllerInterface
         $this->render();
     }
 
-    private function sessionIsSafe(): bool {
-        return $this->sessionStringRepository->isValid(
-            (string) request::indString('sstr'),
-            $this->getUser()->getId()
-        );
-    }
-
     private function executeCallback(): void
     {
-        foreach ($this->callbacks as $key => $config) {
-            if (request::indString($key)) {
-                list($callable, $session_check) = $config;
-                if (is_object($callable)) {
-                    $callable->handle($this);
-                    return;
-                }
-                if (!method_exists($this, $callable)) {
-                    throw new InvalidCallbackException;
-                }
-                if ($session_check === true && !request::isPost()) {
-                    if (!$this->sessionIsSafe()) {
+        foreach ($this->callbacks as $request_key => $config) {
+            if (request::indString($request_key)) {
+                if ($config->performSessionCheck() === true && !request::isPost()) {
+                    if (!$this->sessionStringRepository->isValid(
+                        (string) request::indString('sstr'),
+                        $this->getUser()->getId()
+                    )) {
                         return;
                     }
                 }
-                call_user_func_array([$this, $callable], []);
+                $config->handle($this);
                 return;
             }
         }
@@ -461,19 +420,10 @@ abstract class GameController implements GameControllerInterface
 
     private function executeView()
     {
-        foreach ($this->views as $key => $config) {
-            list($callable, $override) = $config;
+        foreach ($this->views as $request_key => $config) {
 
-            $this->viewOverride = $override;
-            if (request::indString($key)) {
-                if (is_object($callable)) {
-                    $callable->handle($this);
-                    return;
-                }
-                if (!method_exists($this, $callable)) {
-                    throw new \Exception('Invalid view');
-                }
-                call_user_func_array([$this, $callable], []);
+            if (request::indString($request_key)) {
+                $config->handle($this);
                 return;
             }
         }
@@ -481,13 +431,7 @@ abstract class GameController implements GameControllerInterface
         $view = $this->views[static::DEFAULT_VIEW] ?? null;
 
         if ($view !== null) {
-            /**
-             * @var ViewControllerInterface $callable
-             */
-            list($callable, $override) = $view;
-
-            $this->viewOverride = $override;
-            $callable->handle($this);
+            $view->handle($this);
         }
     }
 
@@ -495,8 +439,6 @@ abstract class GameController implements GameControllerInterface
     {
         return true;
     }
-
-    private $gameStats;
 
     public function getGameStats(): array
     {
@@ -521,8 +463,6 @@ abstract class GameController implements GameControllerInterface
                 return _('Tick');
         }
     }
-
-    private $loginError = '';
 
     public function setLoginError(string $error): void {
         $this->loginError = $error;

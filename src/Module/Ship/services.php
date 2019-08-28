@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
 use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
@@ -125,7 +125,7 @@ return [
     LeaveFleetRequestInterface::class => autowire(LeaveFleetRequest::class),
     JoinFleetRequestInterface::class => autowire(JoinFleetRequest::class),
     ShipLoaderInterface::class => autowire(ShipLoader::class),
-    IntermediateController::TYPE_SHIP => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_SHIP => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

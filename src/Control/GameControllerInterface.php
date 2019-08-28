@@ -48,8 +48,6 @@ interface GameControllerInterface
 
     public function getGameConfig();
 
-    public function getGameConfigValue($value);
-
     public function getUniqHandle();
 
     function addNavigationPart(Tuple $part);

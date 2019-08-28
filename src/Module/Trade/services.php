@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntry;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequest;
@@ -71,7 +71,7 @@ return [
     ShowShoutBoxListRequestInterface::class => autowire(ShowShoutBoxListRequest::class),
     AddShoutBoxEntryRequestInterface::class => autowire(AddShoutBoxEntryRequest::class),
     TransferGoodsRequestInterface::class => autowire(TransferGoodsRequest::class),
-    IntermediateController::TYPE_TRADE => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_TRADE => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

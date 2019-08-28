@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Research\Action\CancelResearch;
 
 use Stu\Control\ActionControllerInterface;
+use Stu\Control\GameController;
 use Stu\Control\GameControllerInterface;
-use Stu\Control\IntermediateController;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class CancelResearch implements ActionControllerInterface
@@ -30,7 +30,7 @@ final class CancelResearch implements ActionControllerInterface
             $this->researchedRepository->delete($current_research);
         }
         $game->addInformation(_('Die laufende Forschung wurde abgebrochen'));
-        $game->setView(IntermediateController::DEFAULT_VIEW);
+        $game->setView(GameController::DEFAULT_VIEW);
     }
 
     public function performSessionCheck(): bool

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Starmap\Action\EditField\EditField;
 use Stu\Module\Starmap\Action\EditField\EditFieldRequest;
@@ -45,7 +45,7 @@ return [
     ShowSystemRequestInterface::class => autowire(ShowSystemRequest::class),
     ShowSystemEditFieldRequestInterface::class => autowire(ShowSystemEditFieldRequest::class),
     EditSystemFieldRequestInterface::class => autowire(EditSystemFieldRequest::class),
-    IntermediateController::TYPE_STARMAP => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_STARMAP => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

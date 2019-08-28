@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\PlayerProfile\View\Overview\Overview;
 use Stu\Module\PlayerProfile\View\Overview\OverviewRequest;
@@ -17,7 +17,7 @@ use function DI\get;
 
 return [
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
-    IntermediateController::TYPE_PLAYER_PROFILE => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_PLAYER_PROFILE => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

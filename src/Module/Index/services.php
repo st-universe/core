@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Index\Action\CheckInput\CheckInput;
 use Stu\Module\Index\Action\CheckInput\CheckInputRequest;
@@ -44,7 +44,7 @@ return [
     SendPasswordRequestInterface::class => autowire(SendPasswordRequest::class),
     ShowResetPasswordRequestInterface::class => autowire(ShowResetPasswordRequest::class),
     ResetPasswordRequestInterface::class => autowire(ResetPasswordRequest::class),
-    IntermediateController::TYPE_INDEX => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_INDEX => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

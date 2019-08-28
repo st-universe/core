@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
@@ -35,7 +35,7 @@ return [
     ChangeEmailRequestInterface::class => autowire(ChangeEmailRequest::class),
     ChangeDescriptionRequestInterface::class => autowire(ChangeDescriptionRequest::class),
     ChangeSettingsRequestInterface::class => autowire(ChangeSettingsRequest::class),
-    IntermediateController::TYPE_PLAYER_SETTING => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_PLAYER_SETTING => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

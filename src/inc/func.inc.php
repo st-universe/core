@@ -2,7 +2,6 @@
 
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
-use Stu\Lib\Db;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 

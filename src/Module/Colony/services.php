@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Action\Abandon\Abandon;
 use Stu\Module\Colony\Action\Abandon\AbandonRequest;
@@ -180,7 +180,7 @@ return [
     ShowStorageRequestInterface::class => autowire(ShowStorageRequest::class),
     ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
-    IntermediateController::TYPE_COLONY => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_COLONY => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

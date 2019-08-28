@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
@@ -30,7 +30,7 @@ return [
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
-    IntermediateController::TYPE_DATABASE => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_DATABASE => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

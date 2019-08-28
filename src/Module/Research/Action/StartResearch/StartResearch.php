@@ -6,8 +6,8 @@ namespace Stu\Module\Research\Action\StartResearch;
 
 use AccessViolation;
 use Stu\Control\ActionControllerInterface;
+use Stu\Control\GameController;
 use Stu\Control\GameControllerInterface;
-use Stu\Control\IntermediateController;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -58,7 +58,7 @@ final class StartResearch implements ActionControllerInterface
         $this->researchedRepository->save($researched);
 
         $game->addInformation(sprintf(_('%s wird erforscht'), $research->getName()));
-        $game->setView(IntermediateController::DEFAULT_VIEW);
+        $game->setView(GameController::DEFAULT_VIEW);
     }
 
     public function performSessionCheck(): bool

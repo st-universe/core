@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColony;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequest;
@@ -20,7 +20,7 @@ use function DI\get;
 
 return [
     FirstColonyRequestInterface::class => autowire(FirstColonyRequest::class),
-    IntermediateController::TYPE_MAINDESK => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_MAINDESK => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

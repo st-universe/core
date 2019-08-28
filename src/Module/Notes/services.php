@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Notes\Action\DeleteNotes\DeleteNotes;
 use Stu\Module\Notes\Action\DeleteNotes\DeleteNotesRequest;
@@ -27,7 +27,7 @@ return [
     ShowNoteRequestInterface::class => autowire(ShowNoteRequest::class),
     SaveNoteRequestInterface::class => autowire(SaveNoteRequest::class),
     DeleteNotesRequestInterface::class => autowire(DeleteNotesRequest::class),
-    IntermediateController::TYPE_NOTES => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_NOTES => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),

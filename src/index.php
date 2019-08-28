@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\IntermediateController;
+use Stu\Control\ControllerTypeEnum;
 
 @session_start();
 
@@ -8,6 +8,6 @@ require_once __DIR__.'/inc/config.inc.php';
 
 DB()->beginTransaction();
 
-$container->get(IntermediateController::TYPE_INDEX)->main(false);
+$container->get(ControllerTypeEnum::TYPE_INDEX)->main(false);
 
 DB()->commitTransaction();

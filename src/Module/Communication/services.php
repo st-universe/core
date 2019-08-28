@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
+use Stu\Control\ControllerTypeEnum;
 use Stu\Control\GameController;
-use Stu\Control\IntermediateController;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
@@ -171,7 +171,7 @@ return [
     DeleteKnPlotMemberRequestInterface::class => autowire(DeleteKnPlotMemberRequest::class),
     CreateKnPlotRequestInterface::class => autowire(CreateKnPlotRequest::class),
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
-    IntermediateController::TYPE_COMMUNICATION => create(IntermediateController::class)
+    ControllerTypeEnum::TYPE_COMMUNICATION => create(GameController::class)
         ->constructor(
             get(SessionInterface::class),
             get(SessionStringRepositoryInterface::class),
