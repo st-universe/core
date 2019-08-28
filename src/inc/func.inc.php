@@ -26,10 +26,6 @@ class Tuple {
 		return $this->value;
 	}
 }
-function isUseableSkin(&$value) {
-	$skins = array(6,7,8,9);
-	return in_array($value,$skins);
-}
 function checkPosition(&$shipa,&$shipb) {
 	if ($shipa->isInSystem()) {
 		if (!$shipb->isInSystem()) {
@@ -66,9 +62,6 @@ function getStorageBar(&$bar,$file,$amount,&$sum) {
 		$bar[] = new Tuple($file.'_'.$amount,FALSE);
 	}
 	$sum -= $mod*$amount;
-}
-function noop() {
-	return '';
 }
 function comparePMCategories(&$a,&$b) {
 	return strcmp($a->getSort(), $b->getSort());
@@ -254,14 +247,6 @@ function databaseScan($database_id,$user_id) {
 
 	return sprintf(_("Neuer Datenbankeintrag: %s (+%d Punkte)"),$entry->getDescription(),$entry->getCategory()->getPoints());
 }
-function getUniqId() {
-	static $uniqId = NULL;
-	if ($uniqId === NULL) {
-		$uniqId = microtime(true);
-	}
-	$uniqId++;
-	return $uniqId;
-}
 /**
  */
 function calculateModuleValue($rump,$module,$callback='aggi',$value=FALSE) { #{{{
@@ -339,14 +324,6 @@ function getContactlistModes() { #{{{
 } # }}}
 /**
  */
-function isDebugMode() { #{{{
-	if (DEBUG_MODE && isAdmin(currentUser()->getId())) {
-		return TRUE;
-	}
-	return FALSE;
-} # }}}
-/**
- */
 function getDefaultTechs() { #{{{
 	return array(RESEARCH_START_FEDERATION,RESEARCH_START_ROMULAN,RESEARCH_START_KLINGON,RESEARCH_START_CARDASSIAN,RESEARCH_START_FERENGI,RESEARCH_START_EMPIRE);
 } # }}}
@@ -355,14 +332,6 @@ function getDefaultTechs() { #{{{
 function isSystemUser($userId) { #{{{
 	$user = array(USER_NOONE);
 	return in_array($userId,$user);
-} # }}}
-
-/**
- */
-function printR($data) { #{{{
-	echo "<pre>";
-	print_r($data);
-	echo "</pre>";
 } # }}}
 
 /**
