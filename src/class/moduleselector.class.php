@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Module\Tal\TalPage;
+use Stu\Module\Tal\TalPageInterface;
 
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
@@ -54,7 +55,11 @@ class ModuleSelector { #{{{
 	 */
 	private function getTemplate() { #{{{
 		if ($this->template === NULL) {
-			$this->template = new TalPage($this->templateFile);
+			// @todo refactor
+			global $container;
+
+			$this->template = $container->get(TalPageInterface::class);
+			$this->template->setTemplate($this->templateFile);
 			$this->template->setVar('THIS',$this);
 			$this->template->setVar('GFX', GFX_PATH);
 		}
