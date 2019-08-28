@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Colony;
 use Good;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Tuple;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface

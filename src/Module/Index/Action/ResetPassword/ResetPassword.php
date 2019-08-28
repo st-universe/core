@@ -6,8 +6,8 @@ namespace Stu\Module\Index\Action\ResetPassword;
 
 use InvalidParamException;
 use Noodlehaus\ConfigInterface;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use User;
 use Zend\Mail\Exception\RuntimeException;

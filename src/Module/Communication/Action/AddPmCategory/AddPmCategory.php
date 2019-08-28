@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\AddPmCategory;
 
 use PMCategoryData;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategoryList\ShowPmCategoryList;
 
 final class AddPmCategory implements ActionControllerInterface

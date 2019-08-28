@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use AccessViolation;
 use AllianceJobs;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 
 final class EditDetails implements ActionControllerInterface

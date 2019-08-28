@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeDescription;
 
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class ChangeDescription implements ActionControllerInterface
 {

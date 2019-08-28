@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Register;
 
 use Faction;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;

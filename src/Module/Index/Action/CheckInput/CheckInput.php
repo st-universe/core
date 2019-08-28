@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\CheckInput;
 
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use User;
 
 final class CheckInput implements ActionControllerInterface

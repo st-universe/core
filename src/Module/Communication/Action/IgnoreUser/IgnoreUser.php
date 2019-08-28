@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\IgnoreUser;
 
 use Ignorelist;
 use IgnorelistData;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use User;
 
 final class IgnoreUser implements ActionControllerInterface

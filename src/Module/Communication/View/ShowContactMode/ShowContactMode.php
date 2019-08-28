@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowContactMode;
 
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowContactMode implements ViewControllerInterface
 {

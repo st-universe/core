@@ -7,8 +7,8 @@ namespace Stu\Module\Communication\View\ShowWritePm;
 use Contactlist;
 use PM;
 use PMCategory;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowWritePm implements ViewControllerInterface
 {

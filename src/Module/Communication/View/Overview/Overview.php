@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\View\Overview;
 
 use KNPosting;
 use PMCategory;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class Overview implements ViewControllerInterface
 {

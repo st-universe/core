@@ -7,8 +7,8 @@ namespace Stu\Module\Alliance\Action\KickPlayer;
 use AccessViolation;
 use AllianceJobs;
 use PM;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use User;
 
 final class KickPlayer implements ActionControllerInterface

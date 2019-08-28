@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\ShowShipyard;
 use BuildingFunctions;
 use ColonyMenu;
 use Shiprump;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class ShowShipyard implements ViewControllerInterface

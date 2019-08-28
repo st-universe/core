@@ -8,8 +8,8 @@ use AccessViolation;
 use AllianceBoard;
 use AlliancePostData;
 use AllianceTopicData;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
 
 final class CreateTopic implements ActionControllerInterface

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Colony\Action\Abandon\Abandon;
 use Stu\Module\Colony\Action\Abandon\AbandonRequest;
 use Stu\Module\Colony\Action\Abandon\AbandonRequestInterface;

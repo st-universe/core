@@ -7,9 +7,9 @@ namespace Stu\Module\Notes\Action\SaveNote;
 use AccessViolation;
 use Notes;
 use NotesData;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameController;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameController;
+use Stu\Module\Control\GameControllerInterface;
 
 final class SaveNote implements ActionControllerInterface
 {

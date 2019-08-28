@@ -6,8 +6,8 @@ namespace Stu\Module\Notes\Action\DeleteNotes;
 
 use AccessViolation;
 use Notes;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class DeleteNotes implements ActionControllerInterface
 {

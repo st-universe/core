@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\ShowBuildPlans;
 use BuildingFunctions;
 use ColonyMenu;
 use ShipBuildplans;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 

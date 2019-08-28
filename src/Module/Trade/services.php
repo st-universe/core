@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntry;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequest;
 use Stu\Module\Trade\Action\AddShoutBoxEntry\AddShoutBoxEntryRequestInterface;

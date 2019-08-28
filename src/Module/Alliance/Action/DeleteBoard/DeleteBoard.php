@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\DeleteBoard;
 
 use AccessViolation;
 use AllianceBoard;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
 
 final class DeleteBoard implements ActionControllerInterface

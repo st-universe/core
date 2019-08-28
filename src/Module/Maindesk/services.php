@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColony;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequest;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;

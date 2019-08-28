@@ -7,8 +7,8 @@ namespace Stu\Module\Alliance\Action\DeclineApplication;
 use AccessViolation;
 use AllianceJobs;
 use PM;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 
 final class DeclineApplication implements ActionControllerInterface

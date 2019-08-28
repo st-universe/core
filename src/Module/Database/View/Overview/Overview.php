@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Overview;
 
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 
 final class Overview implements ViewControllerInterface

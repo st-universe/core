@@ -6,8 +6,8 @@ namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 
 use Building;
 use request;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
 

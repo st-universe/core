@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Control;
+namespace Stu\Module\Control;
 
 use Colony;
 use DateTimeImmutable;
@@ -426,7 +426,7 @@ final class GameController implements GameControllerInterface
         return $this->gameStats;
     }
 
-    public function getGameStateTextual()
+    public function getGameStateTextual(): string
     {
         switch ($this->getGameState()) {
             case CONFIG_GAMESTATE_VALUE_ONLINE:
@@ -436,6 +436,7 @@ final class GameController implements GameControllerInterface
             case CONFIG_GAMESTATE_VALUE_TICK:
                 return _('Tick');
         }
+        return '';
     }
 
     public function setLoginError(string $error): void

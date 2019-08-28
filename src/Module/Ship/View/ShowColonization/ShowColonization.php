@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\View\ShowColonization;
 
 use Colony;
 use request;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ShowColonization implements ViewControllerInterface

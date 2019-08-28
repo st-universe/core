@@ -6,8 +6,8 @@ namespace Stu\Module\Trade\View\ShowOfferMenu;
 
 use AccessViolation;
 use Good;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use TradePost;
 use TradeStorage;
 

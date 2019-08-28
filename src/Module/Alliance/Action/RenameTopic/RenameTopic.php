@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\RenameTopic;
 
 use AccessViolation;
 use AllianceTopic;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
 
 final class RenameTopic implements ActionControllerInterface

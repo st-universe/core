@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Boards;
 
 use AllianceBoard;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class Boards implements ViewControllerInterface
 {

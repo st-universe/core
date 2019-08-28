@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\ShowBuildMenu;
 use Building;
 use BuildMenuWrapper;
 use ColonyMenu;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 

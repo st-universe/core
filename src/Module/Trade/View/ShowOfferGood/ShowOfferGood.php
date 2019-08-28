@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowOfferGood;
 
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use TradeOffer;
 use TradePost;
 

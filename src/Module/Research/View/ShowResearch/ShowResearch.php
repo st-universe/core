@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Research\View\ShowResearch;
 
 use AccessViolation;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Research\TalFactoryInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;

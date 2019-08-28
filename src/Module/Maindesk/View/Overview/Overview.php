@@ -9,8 +9,8 @@ use ColonyShipQueue;
 use ContactlistData;
 use HistoryEntry;
 use KNPosting;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use User;
 use UserProfileVisitors;
 

@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\MovePm;
 
 use PM;
 use PMCategory;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class MovePm implements ActionControllerInterface
 {

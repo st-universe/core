@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TransferGoods;
 
 use AccessViolation;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use TradePost;
 use TradeStorage;

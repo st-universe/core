@@ -7,8 +7,8 @@ namespace Stu\Module\Starmap\Action\EditField;
 use AccessViolation;
 use MapField;
 use MapFieldType;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Starmap\View\Noop\Noop;
 
 final class EditField implements ActionControllerInterface

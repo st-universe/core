@@ -6,8 +6,8 @@ namespace Stu\Module\Maindesk\View\ShowColonyList;
 
 use AccessViolation;
 use Colony;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowColonyList implements ViewControllerInterface
 {

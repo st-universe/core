@@ -7,8 +7,8 @@ namespace Stu\Module\Alliance\View\Relations;
 use AccessViolation;
 use Alliance;
 use AllianceRelation;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class Relations implements ViewControllerInterface
 {

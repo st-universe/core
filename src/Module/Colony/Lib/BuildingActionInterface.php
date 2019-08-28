@@ -4,7 +4,7 @@ namespace Stu\Module\Colony\Lib;
 
 use ColfieldData;
 use ColonyData;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 interface BuildingActionInterface
 {

@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\Action\DeleteBuildPlan;
 use AccessViolation;
 use request;
 use ShipBuildplans;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class DeleteBuildPlan implements ActionControllerInterface

@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\View\NewTopic;
 
 use AccessViolation;
 use AllianceBoard;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class NewTopic implements ViewControllerInterface
 {

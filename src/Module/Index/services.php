@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Index\Action\CheckInput\CheckInput;
 use Stu\Module\Index\Action\CheckInput\CheckInputRequest;
 use Stu\Module\Index\Action\CheckInput\CheckInputRequestInterface;

@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\View\Overview;
 
 use Fleet;
 use Ship;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class Overview implements ViewControllerInterface
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
 use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
 use Stu\Module\Ship\Action\ActivateNbs\ActivateNbs;

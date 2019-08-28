@@ -7,9 +7,9 @@ namespace Stu\Module\Communication\Action\AddKnPost;
 use KNPostingData;
 use RPGPlot;
 use RPGPlotMember;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameController;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameController;
+use Stu\Module\Control\GameControllerInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {

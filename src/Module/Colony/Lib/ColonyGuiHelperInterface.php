@@ -3,7 +3,7 @@
 namespace Stu\Module\Colony\Lib;
 
 use Colony;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 interface ColonyGuiHelperInterface
 {

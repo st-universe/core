@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
 use Stu\Module\Communication\Action\AddContact\AddContactRequestInterface;

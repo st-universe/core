@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;

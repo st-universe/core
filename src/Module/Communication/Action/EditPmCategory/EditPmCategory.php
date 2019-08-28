@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\EditPmCategory;
 
 use AccessViolation;
 use PMCategory;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategoryList\ShowPmCategoryList;
 
 final class EditPmCategory implements ActionControllerInterface

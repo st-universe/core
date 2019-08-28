@@ -7,8 +7,8 @@ namespace Stu\Module\Maindesk\Action\FirstColony;
 use AccessViolation;
 use Building;
 use Colony;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class FirstColony implements ActionControllerInterface
 {

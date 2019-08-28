@@ -7,8 +7,8 @@ namespace Stu\Module\Starmap\View\ShowOverall;
 use AccessViolation;
 use MapField;
 use MapFieldType;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class ShowOverall implements ViewControllerInterface
 {

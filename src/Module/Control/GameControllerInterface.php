@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Control;
+namespace Stu\Module\Control;
 
 use GameTurnData;
 use UserData;
@@ -95,6 +95,8 @@ interface GameControllerInterface
     public function isRegistrationPossible(): bool;
 
     public function getGameStats(): array;
+
+    public function getGameStateTextual(): string;
 
     public function setLoginError(string $error): void;
 

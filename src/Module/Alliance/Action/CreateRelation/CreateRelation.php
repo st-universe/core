@@ -9,8 +9,8 @@ use Alliance;
 use AllianceRelation;
 use AllianceRelationData;
 use HistoryEntry;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {

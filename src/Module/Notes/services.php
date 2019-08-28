@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Notes\Action\DeleteNotes\DeleteNotes;
 use Stu\Module\Notes\Action\DeleteNotes\DeleteNotesRequest;
 use Stu\Module\Notes\Action\DeleteNotes\DeleteNotesRequestInterface;

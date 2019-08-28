@@ -6,8 +6,8 @@ namespace Stu\Module\Trade\Action\CreateOffer;
 
 use AccessViolation;
 use Good;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use TradeOfferData;
 use TradePost;

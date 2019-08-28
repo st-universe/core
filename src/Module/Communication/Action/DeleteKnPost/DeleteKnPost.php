@@ -7,8 +7,8 @@ namespace Stu\Module\Communication\Action\DeleteKnPost;
 use AccessViolation;
 use KnComment;
 use KNPosting;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class DeleteKnPost implements ActionControllerInterface
 {

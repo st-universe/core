@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Control;
+namespace Stu\Module\Control;
 
 interface ViewControllerInterface
 {

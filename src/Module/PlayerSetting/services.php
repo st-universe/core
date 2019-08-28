@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\PlayerSetting\Action\ChangeAvatar\ChangeAvatar;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescription;
 use Stu\Module\PlayerSetting\Action\ChangeDescription\ChangeDescriptionRequest;

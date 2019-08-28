@@ -7,8 +7,8 @@ namespace Stu\Module\Communication\View\ShowPlotKn;
 use KNPosting;
 use PMCategory;
 use RPGPlot;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 
 final class ShowPlotKn implements ViewControllerInterface

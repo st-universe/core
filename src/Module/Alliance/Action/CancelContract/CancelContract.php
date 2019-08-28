@@ -7,8 +7,8 @@ namespace Stu\Module\Alliance\Action\CancelContract;
 use AccessViolation;
 use AllianceRelation;
 use HistoryEntry;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class CancelContract implements ActionControllerInterface
 {

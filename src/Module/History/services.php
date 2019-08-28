@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\History;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\History\View\Overview\Overview;
 use Stu\Module\History\View\Overview\OverviewRequest;
 use Stu\Module\History\View\Overview\OverviewRequestInterface;

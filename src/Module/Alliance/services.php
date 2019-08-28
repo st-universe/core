@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequestInterface;

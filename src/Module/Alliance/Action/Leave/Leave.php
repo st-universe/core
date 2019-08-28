@@ -7,8 +7,8 @@ namespace Stu\Module\Alliance\Action\Leave;
 use AccessViolation;
 use AllianceJobs;
 use PM;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class Leave implements ActionControllerInterface
 {

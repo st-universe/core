@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 @session_start();
 

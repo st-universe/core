@@ -8,8 +8,8 @@ use Colfields;
 use ModuleQueue;
 use Modules;
 use request;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 
 final class CancelModuleCreation implements ActionControllerInterface

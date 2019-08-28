@@ -8,8 +8,8 @@ use AccessViolation;
 use KNPosting;
 use RPGPlot;
 use RPGPlotMember;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class EditKnPost implements ActionControllerInterface
 {

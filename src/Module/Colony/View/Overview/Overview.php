@@ -7,8 +7,8 @@ namespace Stu\Module\Colony\View\Overview;
 use Colfields;
 use Colony;
 use FieldTerraforming;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 
 final class Overview implements ViewControllerInterface
 {

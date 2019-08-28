@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Research\Action\CancelResearch\CancelResearch;
 use Stu\Module\Research\Action\StartResearch\StartResearch;
 use Stu\Module\Research\Action\StartResearch\StartResearchRequest;

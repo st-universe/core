@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\DiscovererRating;
 
 use DatabaseTopListDiscover;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\DbInterface;
 
 final class DiscovererRanking implements ViewControllerInterface

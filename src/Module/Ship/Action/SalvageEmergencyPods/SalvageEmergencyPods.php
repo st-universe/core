@@ -7,8 +7,8 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 use PM;
 use request;
 use ShipCrew;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface

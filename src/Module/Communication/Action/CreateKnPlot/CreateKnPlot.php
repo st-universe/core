@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\CreateKnPlot;
 
 use RPGPlotData;
 use RPGPlotMemberData;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 
 final class CreateKnPlot implements ActionControllerInterface

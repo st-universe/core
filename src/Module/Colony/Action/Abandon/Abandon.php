@@ -9,8 +9,8 @@ use Colony;
 use ColonyShipQueue;
 use ColStorage;
 use FieldTerraforming;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 
 final class Abandon implements ActionControllerInterface
 {

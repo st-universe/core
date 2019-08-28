@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\DeletePost;
 
 use AccessViolation;
 use AlliancePost;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
 

@@ -6,8 +6,8 @@ namespace Stu\Module\Communication\Action\PostKnComment;
 
 use KnCommentData;
 use KNPosting;
-use Stu\Control\ActionControllerInterface;
-use Stu\Control\GameControllerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
 
 final class PostKnComment implements ActionControllerInterface

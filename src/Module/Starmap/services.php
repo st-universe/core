@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap;
 
-use Stu\Control\GameController;
+use Stu\Module\Control\GameController;
 use Stu\Module\Starmap\Action\EditField\EditField;
 use Stu\Module\Starmap\Action\EditField\EditFieldRequest;
 use Stu\Module\Starmap\Action\EditField\EditFieldRequestInterface;

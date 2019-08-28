@@ -6,8 +6,8 @@ namespace Stu\Module\Colony\View\ShowShipRepair;
 
 use Colfields;
 use RumpBuildingFunction;
-use Stu\Control\GameControllerInterface;
-use Stu\Control\ViewControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 
