@@ -31,7 +31,7 @@ final class ShowEditPmCategory implements ViewControllerInterface
 
         $game->setPageTitle(_('Ordner editieren'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/editcategory');
+        $game->setMacro('html/commmacros.xhtml/editcategory');
 
         $game->setTemplateVar('PM_CATEGORY', $category);
     }

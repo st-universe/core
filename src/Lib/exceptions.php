@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Module\Tal\TalPage;
+
 class AccessViolation extends STUException {
 
 	function __construct() {

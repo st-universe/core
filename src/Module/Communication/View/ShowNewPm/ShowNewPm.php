@@ -13,7 +13,6 @@ final class ShowNewPm implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/newpmnavlet');
+        $game->showMacro('html/commmacros.xhtml/newpmnavlet');
     }
 }

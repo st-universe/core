@@ -15,6 +15,6 @@ final class ShowNewPmCategory implements ViewControllerInterface
     {
         $game->setPageTitle(_('Ordner anlegen'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/newcategory');
+        $game->setMacro('html/commmacros.xhtml/newcategory');
     }
 }

@@ -503,7 +503,7 @@
 		</form>
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_scan">
-		<metal:block tal:condition="THIS/hasInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
+		<metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
 		<form action="ship.php" method="post">
 			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 			<br />
@@ -709,7 +709,7 @@
 	</metal:block>
 	<metal:macro metal:define-macro="trademenu">
 		<div id="trademenucontent" style="width: 400px;">
-			<tal:block tal:condition="THIS/hasInformation">
+			<tal:block tal:condition="THIS/getInformation">
 				<br />
 				<metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
 			</tal:block>
@@ -878,14 +878,14 @@
 		</table>
 	</metal:macro>
 	<metal:macro metal:define-macro="regioninfo">
-		<tal:block tal:condition="THIS/hasInformation">
+		<tal:block tal:condition="THIS/getInformation">
 			<br />
 			<metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
 		</tal:block>
 		<metal:macro metal:use-macro="html/databasemacros.xhtml/regioninfo" />
 	</metal:macro>
 	<metal:macro metal:define-macro="sectorscan">
-		<tal:block tal:condition="THIS/hasInformation">
+		<tal:block tal:condition="THIS/getInformation">
 			<br />
 			<metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
 		</tal:block>

@@ -33,12 +33,11 @@ final class ShowModuleCancel implements ViewControllerInterface
             $userId
         );
 
+        $game->showMacro('html/colonymacros.xhtml/queue_count');
         $game->setTemplateVar(
             'MODULE',
             ResourceCache()->getObject('module', $this->showModuleCancelRequest->getModuleId())
         );
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/queue_count');
         $game->setTemplateVar('COLONY', $colony);
     }
 }

@@ -339,7 +339,7 @@
 		</div>
 	</div>
 	<br />
-	<metal:macro metal:use-macro="systeminformation" tal:condition="THIS/hasInformation" />
+	<metal:macro metal:use-macro="systeminformation" tal:condition="THIS/getInformation" />
 	<metal:macro metal:use-macro="achievements" />
 	<div id="result" style="display: none;" tal:condition="not:THIS/getInformation">..</div>
 </tal:block>

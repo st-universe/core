@@ -34,18 +34,17 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
         $mode = request::getStringFatal('mode');
         switch ($mode) {
             case 'from':
-                $game->setAjaxMacro('html/shipmacros.xhtml/transferfromaccount');
+                $game->showMacro('html/shipmacros.xhtml/transferfromaccount');
                 break;
             case 'to':
             default:
-                $game->setAjaxMacro('html/shipmacros.xhtml/transfertoaccount');
+                $game->showMacro('html/shipmacros.xhtml/transfertoaccount');
         }
         $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
         if (!checkPosition($ship, $tradepost->getShip())) {
             new AccessViolation;
         }
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
         $game->setTemplateVar('TRADEPOST', $tradepost);
         $game->setTemplateVar('SHIP', $ship);
     }

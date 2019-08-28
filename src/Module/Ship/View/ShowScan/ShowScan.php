@@ -34,7 +34,7 @@ final class ShowScan implements ViewControllerInterface
         $target = new Ship(request::getIntFatal('target'));
         $game->setPageTitle(_('Scan'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/show_ship_scan');
+        $game->setMacro('html/shipmacros.xhtml/show_ship_scan');
         if (!checkPosition($ship, $target)) {
             $game->addInformation(_('Das Schiff befindet sich nicht in diesem Sektor'));
             return;

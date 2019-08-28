@@ -27,7 +27,7 @@ final class ShowOfferGood implements ViewControllerInterface
         $good = ResourceCache()->getObject('good', $this->showOfferGoodRequest->getGoodId());
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/trademacros.xhtml/offerbygood');
+        $game->setMacro('html/trademacros.xhtml/offerbygood');
         $game->setPageTitle(sprintf(_('Angebote mit %d'), $good->getName()));
 
         $tradepost = new TradePost($this->showOfferGoodRequest->getTradePostId());

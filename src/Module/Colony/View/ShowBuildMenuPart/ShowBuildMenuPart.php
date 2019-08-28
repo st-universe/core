@@ -48,8 +48,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
         $menus[2]['buildings'] = Building::getBuildingMenuList($colony->getId(), 2);
         $menus[3]['buildings'] = Building::getBuildingMenuList($colony->getId(), 3);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/buildmenu');
+        $game->showMacro('html/colonymacros.xhtml/buildmenu');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILD));

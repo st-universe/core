@@ -8,11 +8,9 @@ use AccessViolation;
 use Notes;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Tuple;
 
 final class ShowNote implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_NOTE';
 
     private $showNoteRequest;
@@ -31,11 +29,15 @@ final class ShowNote implements ViewControllerInterface
         }
 
         $game->setPageTitle("Notiz: " . $note->getTitleDecoded());
-        $game->addNavigationPart(
-            new Tuple("notes.php?SHOW_NOTE=1&note=" . $note->getId(), $note->getTitleDecoded())
+        $game->appendNavigationPart(
+            sprintf(
+                'notes.php?%s=1&note=%d',
+                static::VIEW_IDENTIFIER,
+                $note->getId()
+            ),
+            $note->getTitleDecoded()
         );
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/notes.xhtml/note');
+        $game->showMacro('html/notes.xhtml/note');
         $game->setTemplateVar('NOTE', $note);
     }
 }

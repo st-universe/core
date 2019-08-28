@@ -32,7 +32,7 @@ final class ShowShoutBox implements ViewControllerInterface
         }
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/trademacros.xhtml/shoutbox');
+        $game->setMacro('html/trademacros.xhtml/shoutbox');
         $game->setPageTitle(_('Schwarzes Brett'));
         $game->setTemplateVar('NETWORK', $tradeNetworkId);
         $game->setTemplateVar('SHOUTBOX', TradeShoutbox::getByTradeNetworkId($tradeNetworkId));

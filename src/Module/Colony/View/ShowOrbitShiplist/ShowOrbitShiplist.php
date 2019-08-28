@@ -35,7 +35,7 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 
         $game->setPageTitle(sprintf(_('%d Schiffe im Orbit'), $colony->getShipListCount()));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/orbitshiplist');
+        $game->setMacro('html/colonymacros.xhtml/orbitshiplist');
         $game->setTemplateVar('COLONY', $colony);
     }
 }

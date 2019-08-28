@@ -13,7 +13,6 @@ final class Noop implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/sitemacros.xhtml/noop');
+        $game->showMacro('html/sitemacros.xhtml/noop');
     }
 }

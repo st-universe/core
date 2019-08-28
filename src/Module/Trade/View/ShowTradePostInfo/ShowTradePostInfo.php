@@ -24,7 +24,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/trademacros.xhtml/tradepostinfo');
+        $game->setMacro('html/trademacros.xhtml/tradepostinfo');
         $game->setPageTitle(_('Handelsposten Details'));
 
         // @todo check if user may access trade post

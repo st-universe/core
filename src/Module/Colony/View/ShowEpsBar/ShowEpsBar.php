@@ -40,8 +40,7 @@ final class ShowEpsBar implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/colonyeps');
+        $game->showMacro('html/colonymacros.xhtml/colonyeps');
         $game->setTemplateVar('COLONY', $colony);
     }
 }

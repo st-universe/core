@@ -29,7 +29,7 @@ final class ShowContactModeSwitch implements ViewControllerInterface
         }
         $game->setPageTitle(_('Status'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/clmodeswitch');
+        $game->setMacro('html/commmacros.xhtml/clmodeswitch');
         $game->setTemplateVar('contact', $contact);
     }
 }

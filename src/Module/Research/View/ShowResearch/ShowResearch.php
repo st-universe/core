@@ -53,7 +53,7 @@ final class ShowResearch implements ViewControllerInterface
 
         $game->setPageTitle(sprintf('Forschung: %s', $research->getName()));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/researchmacros.xhtml/details');
+        $game->setMacro('html/researchmacros.xhtml/details');
         $game->setTemplateVar(
             'SELECTED_RESEARCH',
             $this->talFactory->createTalSelectedTech($research, $game->getUser())

@@ -36,8 +36,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             new AccessViolation;
         }
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/trademenupayment');
+        $game->showMacro('html/shipmacros.xhtml/trademenupayment');
 
         $game->setTemplateVar('TRADEPOST', $tradepost);
         $game->setTemplateVar('SHIP', $ship);

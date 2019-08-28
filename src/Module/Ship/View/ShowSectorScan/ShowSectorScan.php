@@ -32,7 +32,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
         $game->setPageTitle("Sektor Scan");
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/sectorscan');
+        $game->setMacro('html/shipmacros.xhtml/sectorscan');
 
         $mapField = $ship->getCurrentMapField();
 

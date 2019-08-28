@@ -8,15 +8,10 @@ use AccessViolation;
 use Colony;
 use Stu\Control\GameControllerInterface;
 use Stu\Control\ViewControllerInterface;
-use Tuple;
 
 final class ShowColonyList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONYLIST';
-
-    public function __construct()
-    {
-    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -25,7 +20,13 @@ final class ShowColonyList implements ViewControllerInterface
         }
         $game->setTemplateFile("html/maindesk_colonylist.xhtml");
         $game->setPageTitle("Kolonie gründen");
-        $game->addNavigationPart(new Tuple("?cb=getColonyList", _('Kolonie gründen')));
+        $game->appendNavigationPart(
+            sprintf(
+                '?%s=1',
+                static::VIEW_IDENTIFIER
+            ),
+            _('Kolonie gründen')
+        );
 
         $game->setTemplateVar(
             'FREE_PLANET_LIST',

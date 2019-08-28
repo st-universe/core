@@ -38,8 +38,7 @@ final class ShowMisc implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_misc');
+        $game->showMacro('html/colonymacros.xhtml/cm_misc');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_OPTION));

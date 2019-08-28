@@ -39,7 +39,7 @@ final class ShowBuilding implements ViewControllerInterface
         $game->setTemplateVar('buildingdata', $building);
         $game->setPageTitle($building->getName());
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/buildinginfo');
+        $game->setMacro('html/colonymacros.xhtml/buildinginfo');
         $game->setTemplateVar('COLONY', $colony);
     }
 }

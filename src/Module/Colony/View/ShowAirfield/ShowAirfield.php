@@ -42,8 +42,7 @@ final class ShowAirfield implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_airfield');
+        $game->showMacro('html/colonymacros.xhtml/cm_airfield');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_AIRFIELD));

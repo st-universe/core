@@ -41,8 +41,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             }
         }
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/trademacros.xhtml/newoffermenu_transfer');
+        $game->showMacro('html/trademacros.xhtml/newoffermenu_transfer');
         $game->setPageTitle(sprintf(
             _('Management %s'), $storage->getGood()->getName()
         ));

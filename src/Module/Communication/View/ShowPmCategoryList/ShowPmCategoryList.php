@@ -14,10 +14,9 @@ final class ShowPmCategoryList implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateVar('markcat', true);
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/pmcategorylist_ajax');
+        $game->showMacro('html/commmacros.xhtml/pmcategorylist_ajax');
 
+        $game->setTemplateVar('markcat', true);
         $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($game->getUser()->getId()));
     }
 }

@@ -38,7 +38,7 @@ final class ShowBeamTo implements ViewControllerInterface
 
         $game->setPageTitle(_('Zu Schiff beamen'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/show_ship_beamto');
+        $game->setMacro('html/shipmacros.xhtml/show_ship_beamto');
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);

@@ -2,7 +2,7 @@
 
 namespace Stu\Control;
 
-use Tuple;
+use GameTurnData;
 use UserData;
 
 interface GameControllerInterface
@@ -12,15 +12,15 @@ interface GameControllerInterface
 
     public function getViewContext(): array;
 
-    public function getGameState();
+    public function getGameState(): string;
 
-    public function setTemplateFile($tpl);
+    public function setTemplateFile(string $tpl): void;
 
-    public function setAjaxMacro($macro);
+    public function setMacro($macro): void;
 
-    public function showAjaxMacro($macro);
+    public function showMacro($macro): void;
 
-    public function getAjaxMacro();
+    public function getMacro(): string;
 
     public function getMemoryUsage();
 
@@ -28,69 +28,65 @@ interface GameControllerInterface
 
     public function addInformation(string $msg, bool $override = false): void;
 
-    public function addInformationMerge($info);
+    public function addInformationMerge(array $info): void;
 
-    public function addInformationMergeDown($info);
+    public function addInformationMergeDown(array $info): void;
 
-    function getInformation();
+    public function getInformation(): array;
 
     public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN);
-
-    public function hasInformation();
 
     public function setTemplateVar(string $key, $variable);
 
     public function getUser(): ?UserData;
 
-    public function getBenchmark();
+    public function getBenchmark(): float;
 
-    public function getPlayerCount();
+    public function getPlayerCount(): int;
 
-    public function getGameConfig();
+    public function getGameConfig(): array;
 
-    public function getUniqId();
-
-    function addNavigationPart(Tuple $part);
+    public function getUniqId(): string;
 
     public function appendNavigationPart(string $url, string $title);
 
-    public function getNavigation();
+    public function getNavigation(): array;
 
-    public function getPageTitle();
+    public function getPageTitle(): string;
 
-    public function setPageTitle($title);
+    public function setPageTitle(string $title): void;
 
-    public function getQueryCount();
+    public function getQueryCount(): int;
 
-    public function getDebugNotices();
+    public function getDebugNotices(): array;
 
-    public function getExecuteJS();
+    public function getExecuteJS(): array;
 
-    public function addExecuteJS($value);
+    public function addExecuteJS(string $value): void;
 
-    public function getGameVersion();
+    public function getGameVersion(): string;
 
     public function redirectTo(string $href): void;
 
-    public function getCurrentRound();
+    public function getCurrentRound(): GameTurnData;
 
-    public function isDebugMode();
+    public function isDebugMode(): bool;
 
-    public function getJavascriptPath();
+    public function getJavascriptPath(): string;
 
-    public function getPlanetColonyLimit();
+    public function getPlanetColonyLimit(): int;
 
-    public function getMoonColonyLimit();
+    public function getMoonColonyLimit(): int;
 
-    public function getPlanetColonyCount();
+    public function getPlanetColonyCount(): int;
 
-    public function getMoonColonyCount();
+    public function getMoonColonyCount(): int;
 
-    public function isAdmin();
+    public function isAdmin(): bool;
 
     public function checkDatabaseItem($databaseEntryId): void;
 
-    public function getAchievements();
+    public function getAchievements(): array;
 
     public function getSessionString(): string;
 

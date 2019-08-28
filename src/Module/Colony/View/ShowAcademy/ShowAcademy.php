@@ -53,8 +53,7 @@ final class ShowAcademy implements ViewControllerInterface
             $trainableCrew = $colony->getWorkless();
         }
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_academy');
+        $game->showMacro('html/colonymacros.xhtml/cm_academy');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_ACADEMY));

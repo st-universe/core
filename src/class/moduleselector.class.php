@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Module\Tal\TalPage;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
@@ -61,7 +63,7 @@ class ModuleSelector { #{{{
 
 	/**
 	 */
-	public function getAjaxMacro() { #{{{
+	public function getMacro(): string { #{{{
 		return $this->macro;
 	} # }}}
 

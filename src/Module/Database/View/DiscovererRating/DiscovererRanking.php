@@ -33,7 +33,7 @@ final class DiscovererRanking implements ViewControllerInterface
             _('Die 10 besten Entdecker')
         );
         $game->setPageTitle(_('/ Datenbank / Die 10 besten Entdecker'));
-        $game->showAjaxMacro('html/database.xhtml/top_research_user');
+        $game->showMacro('html/database.xhtml/top_research_user');
 
         $game->setTemplateVar('DISCOVERER_LIST', $this->getTopResearchUser());
     }

@@ -39,8 +39,7 @@ final class ShowShipyard implements ViewControllerInterface
         $function = new BuildingFunctions($this->showShipyardRequest->getBuildingFunctionId());
         $buildableShips = Shiprump::getBuildableRumpsByBuildingFunction($userId, $function->getFunction());
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_shipyard');
+        $game->showMacro('html/colonymacros.xhtml/cm_shipyard');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_SHIPYARD));

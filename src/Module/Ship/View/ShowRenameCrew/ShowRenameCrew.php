@@ -30,8 +30,7 @@ final class ShowRenameCrew implements ViewControllerInterface
             $userId
         );
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/crewslot');
+        $game->showMacro('html/shipmacros.xhtml/crewslot');
 
         $game->setTemplateVar('SHIP', $ship);
     }

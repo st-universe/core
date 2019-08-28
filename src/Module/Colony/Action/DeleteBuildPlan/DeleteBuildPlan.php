@@ -39,9 +39,8 @@ final class DeleteBuildPlan implements ActionControllerInterface
         }
         $plan->delete();
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
         //$this->getTemplate()->setVar('FUNC', $this->getSelectedBuildingFunction());
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_buildplans');
+        $game->showMacro('html/colonymacros.xhtml/cm_buildplans');
     }
 
     public function performSessionCheck(): bool

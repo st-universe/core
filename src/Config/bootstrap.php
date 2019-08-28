@@ -17,6 +17,8 @@ use Stu\Lib\Db;
 use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Tal\TalPage;
+use Stu\Module\Tal\TalPageInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
@@ -59,6 +61,7 @@ $builder->addDefinitions([
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
         return $manager;
     },
+    TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),
 ]);
 

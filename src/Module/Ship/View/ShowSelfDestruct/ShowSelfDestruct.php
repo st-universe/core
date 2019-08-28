@@ -35,7 +35,7 @@ final class ShowSelfDestruct implements ViewControllerInterface
 
         $game->setPageTitle(_('Selbstzerstörung'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/selfdestruct');
+        $game->setMacro('html/shipmacros.xhtml/selfdestruct');
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('SELF_DESTRUCT_CODE', $code);

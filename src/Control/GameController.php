@@ -6,13 +6,14 @@ use Colony;
 use DateTimeImmutable;
 use GameConfig;
 use GameTurn;
+use GameTurnData;
 use PM;
 use PMCategory;
 use request;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
-use TalPage;
 use Tuple;
 use UserData;
 
@@ -24,20 +25,23 @@ final class GameController implements GameControllerInterface
 
     private $sessionStringRepository;
 
-    private $tpl_file = '';
+    private $talPage;
+
     private $gameInformations = [];
+
     private $siteNavigation = [];
+
     private $pagetitle = "Changeme";
-    private $template = null;
-    private $ajaxMacro = null;
+
+    private $macro = '';
 
     private $execjs = [];
 
-    private $currentRound = null;
+    private $currentRound;
 
     private $achievements = [];
 
-    private $playercount = null;
+    private $playercount;
 
     private $viewContext = [];
 
@@ -47,18 +51,13 @@ final class GameController implements GameControllerInterface
 
     public function __construct(
         SessionInterface $session,
-        SessionStringRepositoryInterface $sessionStringRepository
+        SessionStringRepositoryInterface $sessionStringRepository,
+        TalPageInterface $talPage
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
-    }
 
-    private function getTemplate()
-    {
-        if ($this->template === null) {
-            $this->template = new TalPage($this->tpl_file);
-        }
-        return $this->template;
+        $this->talPage = $talPage;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -73,7 +72,7 @@ final class GameController implements GameControllerInterface
         return $this->viewContext;
     }
 
-    private function maintenanceView()
+    private function maintenanceView(): void
     {
         if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_TICK) {
             $this->setPageTitle("Rundenwechsel aktiv");
@@ -85,31 +84,30 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function getGameState()
+    public function getGameState(): string
     {
         return $this->getGameConfig()[CONFIG_GAMESTATE]->getValue();
     }
 
-    public function setTemplateFile($tpl)
+    public function setTemplateFile(string $tpl): void
     {
-        $this->tpl_file = $tpl;
-        $this->getTemplate()->setTemplate($tpl);
+        $this->talPage->setTemplate($tpl);
     }
 
-    public function setAjaxMacro($macro)
+    public function setMacro($macro): void
     {
-        $this->ajaxMacro = $macro;
+        $this->macro = $macro;
     }
 
-    public function showAjaxMacro($macro)
+    public function showMacro($macro): void
     {
         $this->setTemplateFile('html/ajaxempty.xhtml');
-        $this->setAjaxMacro($macro);
+        $this->macro = $macro;
     }
 
-    public function getAjaxMacro()
+    public function getMacro(): string
     {
-        return $this->ajaxMacro;
+        return $this->macro;
     }
 
     public function getMemoryUsage()
@@ -133,17 +131,17 @@ final class GameController implements GameControllerInterface
         $this->gameInformations[] = $msg;
     }
 
-    public function addInformationMerge($info)
+    public function addInformationMerge(array $info): void
     {
         $this->gameInformations = array_merge($info, $this->getInformation());
     }
 
-    public function addInformationMergeDown($info)
+    public function addInformationMergeDown(array $info): void
     {
         $this->gameInformations = array_merge($this->getInformation(), $info);
     }
 
-    function getInformation()
+    public function getInformation(): array
     {
         return $this->gameInformations;
     }
@@ -153,33 +151,27 @@ final class GameController implements GameControllerInterface
         PM::sendPM($sender_id, $recipient_id, join('<br />', $this->getInformation()), $category_id);
     }
 
-    public function hasInformation()
+    public function setTemplateVar(string $key, $variable): void
     {
-        return count($this->getInformation()) > 0;
+        $this->talPage->setVar($key, $variable);
     }
 
-    public function setTemplateVar(string $key, $variable)
-    {
-        $this->getTemplate()->setRef($key, $variable);
-    }
-
-    private function render()
+    private function render(): void
     {
         $user = $this->getUser();
 
         if ($this->getGameState() != CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
-        $tpl = $this->getTemplate();
-        $tpl->setRef('THIS', $this);
-        $tpl->setVar('GFX', GFX_PATH);
-        $tpl->setRef('USER', $user);
+        $this->talPage->setVar('THIS', $this);
+        $this->talPage->setVar('GFX', GFX_PATH);
+        $this->talPage->setVar('USER', $user);
 
         if ($user !== null) {
-            $this->setTemplateVar('PM_NAVLET', PMCategory::getNavletCategories($user->getId()));
+            $this->talPage->setVar('PM_NAVLET', PMCategory::getNavletCategories($user->getId()));
         }
 
-        $tpl->parse();
+        $this->talPage->parse();
     }
 
     public function getUser(): ?UserData
@@ -187,7 +179,7 @@ final class GameController implements GameControllerInterface
         return $this->session->getUser();
     }
 
-    public function getBenchmark()
+    public function getBenchmark(): float
     {
         global $benchmark_start;
 
@@ -198,10 +190,10 @@ final class GameController implements GameControllerInterface
         return round($e_timer - $s_timer, 6);;
     }
 
-    public function getPlayerCount()
+    public function getPlayerCount(): int
     {
         if ($this->playercount === null) {
-            $this->playercount = DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100", 1);
+            $this->playercount = (int) DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100", 1);
         }
         return $this->playercount;
     }
@@ -211,7 +203,7 @@ final class GameController implements GameControllerInterface
     /**
      * @return GameConfig[]
      */
-    public function getGameConfig()
+    public function getGameConfig(): array
     {
         if ($this->gameConfig === null) {
             $this->gameConfig = GameConfig::getObjectsBy();
@@ -219,64 +211,59 @@ final class GameController implements GameControllerInterface
         return $this->gameConfig;
     }
 
-    public function getUniqId()
+    public function getUniqId(): string
     {
         return uniqid();
-    }
-
-    function addNavigationPart(Tuple $part)
-    {
-        $this->siteNavigation[] = $part;
     }
 
     public function appendNavigationPart(
         string $url,
         string $title
     ) {
-        $this->addNavigationPart(new Tuple(
+        $this->siteNavigation[] = new Tuple(
             $url,
             $title
-        ));
+        );
     }
 
-    public function getNavigation()
+    public function getNavigation(): array
     {
         return $this->siteNavigation;
     }
 
-    public function getPageTitle()
+    public function getPageTitle(): string
     {
         return $this->pagetitle;
     }
 
-    public function setPageTitle($title)
+    public function setPageTitle(string $title): void
     {
         $this->pagetitle = $title;
     }
 
-    public function getQueryCount()
+    public function getQueryCount(): int
     {
-        return DB()->getQueryCount();
+        return (int) DB()->getQueryCount();
     }
 
-    public function getDebugNotices()
+    public function getDebugNotices(): array
     {
         return get_debug_error()->getDebugNotices();
     }
 
-    public function getExecuteJS()
+    public function getExecuteJS(): array
     {
         return $this->execjs;
     }
 
-    public function addExecuteJS($value)
+    public function addExecuteJS(string $value): void
     {
         $this->execjs[] = $value;
     }
 
-    public function getGameVersion()
+    public function getGameVersion(): string
     {
-        return GAME_VERSION;
+        return (string) GAME_VERSION;
     }
 
     public function redirectTo(string $href): void
@@ -286,7 +273,7 @@ final class GameController implements GameControllerInterface
         exit;
     }
 
-    public function getCurrentRound()
+    public function getCurrentRound(): GameTurnData
     {
         if ($this->currentRound === null) {
             $this->currentRound = GameTurn::getCurrentTurn();
@@ -294,43 +281,43 @@ final class GameController implements GameControllerInterface
         return $this->currentRound;
     }
 
-    public function isDebugMode()
+    public function isDebugMode(): bool
     {
         return isDebugMode();
     }
 
-    public function getJavascriptPath()
+    public function getJavascriptPath(): string
     {
-        return 'version_' . $this->getGameVersion();
+        return sprintf('version_%s', $this->getGameVersion());
     }
 
-    public function getPlanetColonyLimit()
+    public function getPlanetColonyLimit(): int
     {
-        return DB()->query(
+        return (int) DB()->query(
             'SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
             1
         );
     }
 
-    public function getMoonColonyLimit()
+    public function getMoonColonyLimit(): int
     {
-        return DB()->query(
+        return (int) DB()->query(
             'SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
             1
         );
     }
 
-    public function getPlanetColonyCount()
+    public function getPlanetColonyCount(): int
     {
-        return Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
+        return (int) Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
     }
 
-    public function getMoonColonyCount()
+    public function getMoonColonyCount(): int
     {
-        return Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
+        return (int) Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->getUser()->isAdmin();
     }
@@ -348,7 +335,7 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function getAchievements()
+    public function getAchievements(): array
     {
         return $this->achievements;
     }

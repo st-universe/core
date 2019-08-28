@@ -13,8 +13,6 @@ final class ShowContactMode implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/clmodeview');
-
+        $game->showMacro('html/commmacros.xhtml/clmodeview');
     }
 }

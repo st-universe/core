@@ -42,8 +42,7 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_fighter_shipyard');
+        $game->showMacro('html/colonymacros.xhtml/cm_fighter_shipyard');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_FIGHTER_SHIPYARD));

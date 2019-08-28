@@ -30,8 +30,7 @@ final class ShowDockingPrivileges implements ViewControllerInterface
             $userId
         );
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/shipmacros.xhtml/dockprivilegelist');
+        $game->showMacro('html/shipmacros.xhtml/dockprivilegelist');
 
         $game->setTemplateVar('SHIP', $ship);
     }

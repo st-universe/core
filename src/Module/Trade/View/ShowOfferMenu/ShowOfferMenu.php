@@ -36,7 +36,7 @@ final class ShowOfferMenu implements ViewControllerInterface
         $trade_post = new TradePost($storage->getTradePostId());
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/trademacros.xhtml/tradeoffermenu');
+        $game->setMacro('html/trademacros.xhtml/tradeoffermenu');
         $game->setPageTitle(sprintf(
             _('Management %s'), $storage->getGood()->getName()
         ));

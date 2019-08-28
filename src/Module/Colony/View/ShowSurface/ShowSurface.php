@@ -34,7 +34,6 @@ final class ShowSurface implements ViewControllerInterface
         );
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/colonysurface');
+        $game->showMacro('html/colonymacros.xhtml/colonysurface');
     }
 }

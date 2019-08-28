@@ -45,8 +45,7 @@ final class ShowBuildPlans implements ViewControllerInterface
 
         $buildingFunction = new BuildingFunctions($this->showBuildPlansRequest->getBuildingFunctionId());
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_buildplans');
+        $game->showMacro('html/colonymacros.xhtml/cm_buildplans');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILDPLANS));

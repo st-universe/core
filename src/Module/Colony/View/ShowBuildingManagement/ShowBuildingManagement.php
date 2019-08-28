@@ -46,8 +46,7 @@ final class ShowBuildingManagement implements ViewControllerInterface
         $list = Colfields::getListBy('colonies_id=' . $colony->getId() . ' AND buildings_id>0');
         usort($list, 'compareBuildings');
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/cm_building_mgmt');
+        $game->showMacro('html/colonymacros.xhtml/cm_building_mgmt');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILDINGS));

@@ -22,7 +22,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/write_quick_pm');
+        $game->setMacro('html/commmacros.xhtml/write_quick_pm');
         $game->setPageTitle(_('Neue private Nachricht'));
 
         $game->setTemplateVar(

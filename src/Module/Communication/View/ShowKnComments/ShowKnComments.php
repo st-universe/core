@@ -26,7 +26,7 @@ final class ShowKnComments implements ViewControllerInterface
 
         $game->setPageTitle(sprintf(_('Kommentare für Beitrag %d'), $post->getId()));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setAjaxMacro('html/commmacros.xhtml/kncomments');
+        $game->setMacro('html/commmacros.xhtml/kncomments');
         $game->setTemplateVar('POST', $post);
     }
 }

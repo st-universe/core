@@ -40,8 +40,7 @@ final class ShowStorage implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setAjaxMacro('html/colonymacros.xhtml/colonystorage');
+        $game->showMacro('html/colonymacros.xhtml/colonystorage');
         $game->setTemplateVar('COLONY', $colony);
     }
 }
