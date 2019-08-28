@@ -185,9 +185,9 @@ class MapField extends MapFieldData {
 		return new MapFieldData($result);
 	}
 
-	static function getUserFieldsByRange($xStart,$xEnd,$y) {
+	static function getUserFieldsByRange(UserData $user, $xStart,$xEnd,$y) {
 		$ret = array();
-		$result = DB()->query("SELECT a.*,b.user_id as hide FROM stu_map as a LEFT JOIN stu_user_map as b ON b.cx=a.cx AND b.cy=a.cy AND b.user_id=".currentUser()->getId()." WHERE a.cx BETWEEN ".intval($xStart)." AND ".intval($xEnd)." AND a.cy=".intval($y)." ORDER BY a.cx");
+		$result = DB()->query("SELECT a.*,b.user_id as hide FROM stu_map as a LEFT JOIN stu_user_map as b ON b.cx=a.cx AND b.cy=a.cy AND b.user_id=".$user->getId()." WHERE a.cx BETWEEN ".intval($xStart)." AND ".intval($xEnd)." AND a.cy=".intval($y)." ORDER BY a.cx");
 		while($data=mysqli_fetch_assoc($result)) {
 			$ret[$data['cx']] = new MapFieldData($data);
 			if (currentUser()->getMapType() == MAPTYPE_INSERT) {

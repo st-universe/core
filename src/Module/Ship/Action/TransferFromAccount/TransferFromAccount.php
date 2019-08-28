@@ -51,7 +51,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if (!$tradepost->currentUserHasLicence()) {
+        if (!$tradepost->userHasLicence($userId)) {
             return;
         }
         $goods = request::postArray('goods');

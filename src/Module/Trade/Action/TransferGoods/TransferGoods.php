@@ -57,7 +57,7 @@ final class TransferGoods implements ActionControllerInterface
 
         $targetpost = new TradePost($destinationTradePostId);
 
-        if (!$targetpost->currentUserHasLicence()) {
+        if (!$targetpost->userHasLicence($userId)) {
             return;
         }
         if ($targetpost->getTradeNetwork() != $tradepost->getTradeNetwork()) {

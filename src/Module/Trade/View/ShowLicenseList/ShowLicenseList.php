@@ -31,8 +31,8 @@ final class ShowLicenseList implements ViewControllerInterface
 
         $tradepost = new TradePost($this->showLicenseListRequest->getTradePostId());
 
-        if (!$tradepost->currentUserHasLicence()) {
-            new AccessViolation;
+        if (!$tradepost->userHasLicence($game->getUser()->getId())) {
+            throw new AccessViolation();
         }
         $game->setTemplateVar('LIST', TradeLicences::getLicencesByTradePost($tradepost->getId()));
     }

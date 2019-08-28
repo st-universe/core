@@ -186,8 +186,8 @@ class PM extends PMData {
 		parent::__construct($data);
 	}
 
-	static function getPMsBy(int $catId, int $mark, int $limit) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE cat_id=".$catId." AND recip_user=".currentUser()->getId()." ORDER BY id DESC LIMIT ".$mark.",". $limit);
+	static function getPMsBy(int $userId, int $catId, int $mark, int $limit) {
+		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE cat_id=".$catId." AND recip_user=".$userId." ORDER BY id DESC LIMIT ".$mark.",". $limit);
 		$ret = array();
 		while($data = mysqli_fetch_assoc($result)) {
 			$ret[] = new PMData($data);

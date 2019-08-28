@@ -81,13 +81,8 @@ class TradePostData extends BaseTable {
 		return TradeLicences::getLicenceCountByTradepost($this->getId());	
 	}
 
-	public $userHasLicence = NULL;
-
-	public function currentUserHasLicence() {
-		if ($this->userHasLicence === NULL) {
-			$this->userHasLicence = TradeLicences::userHasLicence($this->getId(),currentUser()->getId());
-		}
-		return $this->userHasLicence;
+	public function userHasLicence(int $userId) {
+		return TradeLicences::userHasLicence($this->getId(), $userId);
 	}
 
 	public function getDescription() {
@@ -197,8 +192,8 @@ class TradePostData extends BaseTable {
 		return $this->getStorageByUser(currentUser()->getId())->getStorageSum() > $this->getStorage();
 	}
 
-	public function currentUserCanBuyLicence() {
-		return TradeLicences::countInstances('user_id='.currentUser()->getId()) < MAX_TRADELICENCE_COUNT;
+	public function currentUserCanBuyLicence(int $userId) {
+		return TradeLicences::countInstances('user_id='.$userId) < MAX_TRADELICENCE_COUNT;
 	}
 }
 class TradePost extends TradePostData {

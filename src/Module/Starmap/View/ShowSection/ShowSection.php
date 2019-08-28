@@ -34,7 +34,7 @@ final class ShowSection implements ViewControllerInterface
 
         $fields = [];
         foreach (range($miny, $maxy) as $key => $value) {
-            $fields[] = new UserYRow($value, $minx, $maxx);
+            $fields[] = new UserYRow($game->getUser(), $value, $minx, $maxx);
         }
 
         $game->setTemplateFile('html/starmap_section.xhtml');

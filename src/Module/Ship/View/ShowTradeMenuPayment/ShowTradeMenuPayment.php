@@ -47,7 +47,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $game->setTemplateVar('TRADEPOST', $tradepost);
         $game->setTemplateVar('SHIP', $ship);
 
-        if (!$tradepost->currentUserHasLicence()) {
+        if (!$tradepost->userHasLicence($userId)) {
             $licenseCostGood = $tradepost->getLicenceCostGood();
             $licenseCost = $tradepost->calculateLicenceCost();
 

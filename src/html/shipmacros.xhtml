@@ -713,7 +713,7 @@
 				<br />
 				<metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
 			</tal:block>
-			<tal:block tal:condition="TRADEPOST/currentUserHasLicence">
+			<tal:block tal:condition="HAS_LICENSE">
 				<form method="post" action="ship.php">
 					<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 					<input type="hidden" name="postid" tal:attributes="value TRADEPOST/getId" />
@@ -811,14 +811,14 @@
 					</div>
 				</form>
 			</tal:block>
-			<tal:block tal:condition="not:TRADEPOST/currentUserHasLicence">
+			<tal:block tal:condition="not:HAS_LICENSE">
 					<table class="tcal">
 						<tr>
 							<td tal:content="structure TRADEPOST/getDescriptionFormatted">DESCRIPTION</td>
 						</tr>
 					</table>
 					<br />
-					<table class="tcal" tal:condition="TRADEPOST/currentUserCanBuyLicence">
+					<table class="tcal" tal:condition="CAN_BUY_LICENSE">
 						<tr>
 							<th>Lizenz erwerben</th>
 						</tr>
@@ -831,7 +831,7 @@
 							</td>
 						</tr>
 					</table>
-					<table class="tcal" tal:condition="not:TRADEPOST/currentUserCanBuyLicence">
+					<table class="tcal" tal:condition="not:CAN_BUY_LICENSE">
 						<tr>
 							<th>Lizenzerwerb nicht möglich</th>
 						</tr>

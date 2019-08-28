@@ -47,11 +47,11 @@ final class BuyTradeLicense implements ActionControllerInterface
         $targetId = request::getIntFatal('target');
         $mode = request::getStringFatal('method');
 
-        if (!$tradepost->currentUserCanBuyLicence()) {
+        if (!$tradepost->currentUserCanBuyLicence($userId)) {
             return;
         }
 
-        if ($tradepost->currentUserHasLicence()) {
+        if ($tradepost->userHasLicence($userId)) {
             return;
         }
         switch ($mode) {
