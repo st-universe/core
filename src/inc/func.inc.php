@@ -304,19 +304,6 @@ function printBackTrace() {
 }
 /**
  */
-function createCrewman($userId) { #{{{
-	$crew = new CrewData;
-	// XXX: For testing purposes
-	$crew->setGender(rand(CREW_GENDER_MALE,CREW_GENDER_FEMALE));
-	$crew->setType(CREW_TYPE_CREWMAN);
-	$crew->setName(_('Crewman'));
-	$crew->setRaceId(1);
-	$crew->setUserId($userId);
-	$crew->save();
-	return $crew;
-} # }}}
-/**
- */
 function getContactlistModes() { #{{{
 	return array(ContactlistData::CONTACT_FRIEND => array("mode" => ContactlistData::CONTACT_FRIEND,"name" => _("Freund")),
 		     ContactlistData::CONTACT_ENEMY => array("mode" => ContactlistData::CONTACT_ENEMY,"name" => _("Feind")),

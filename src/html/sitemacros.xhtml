@@ -333,7 +333,7 @@
 	<div class="box">
 		<div class="box_title" style="text-align: left">/
 			<tal:block tal:repeat="item THIS/getNavigation">
-				<a href="#" tal:attributes="href item/getVar" tal:content="structure item/getValue">...</a> 
+				<a href="#" tal:attributes="href repeat/item/key" tal:content="structure item">...</a> 
 				<span tal:condition="not:repeat/item/end"> / </span>
 			</tal:block>
 		</div>

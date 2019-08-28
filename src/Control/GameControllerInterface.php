@@ -48,7 +48,7 @@ interface GameControllerInterface
 
     public function getUniqId(): string;
 
-    public function appendNavigationPart(string $url, string $title);
+    public function appendNavigationPart(string $url, string $title): void;
 
     public function getNavigation(): array;
 

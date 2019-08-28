@@ -16,7 +16,6 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
-use Tuple;
 use UserData;
 
 final class GameController implements GameControllerInterface
@@ -232,11 +231,8 @@ final class GameController implements GameControllerInterface
     public function appendNavigationPart(
         string $url,
         string $title
-    ) {
-        $this->siteNavigation[] = new Tuple(
-            $url,
-            $title
-        );
+    ): void {
+        $this->siteNavigation[$url] = $title;
     }
 
     public function getNavigation(): array
