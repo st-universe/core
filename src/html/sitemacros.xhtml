@@ -351,7 +351,7 @@
 	</script>
 </metal:block>
 <metal:block metal:define-macro="systeminformation">
-	<script language="Javascript" tal:condition="THIS/hasExecuteJS">
+	<script language="Javascript" tal:condition="THIS/getsExecuteJS">
 		<tal:block tal:repeat="item THIS/getExecuteJS">
 			${item}();
 		</tal:block>

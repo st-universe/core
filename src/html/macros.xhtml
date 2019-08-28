@@ -1,8 +1,8 @@
 <html xmlns:stu="stu">
-<tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqHandle">
+<tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqId">
 	<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2');" onmouseout="cp('${handle}','buttons/msg1');" onclick="closePopup();openPmWindow(${id});"><img src="${GFX}/buttons/msg1.gif" tal:attributes="name handle" title="Nachricht senden" /></a>
 </tal:block>
-<tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqHandle">
+<tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqId">
 	<a href="userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2');"  onmouseout="cp('${handle}','buttons/info1');"><img src="${GFX}/buttons/info1.gif" tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
 </tal:block>
 <tal:block metal:define-macro="ignoretext">
@@ -141,7 +141,7 @@
 <metal:block metal:define-macro="crewimage">
 	<img phptal:cache="1d per crew/getId" src="${GFX}/crew/${crew/getRace/getDefine}/${crew/getGenderShort}/1_${crew/getType}.png" />
 </metal:block>
-<metal:macro metal:define-macro="render_contactoptions" tal:define="handle THIS/getUniqHandle">
+<metal:macro metal:define-macro="render_contactoptions" tal:define="handle THIS/getUniqId">
 	<!-- userId is needed -->
 	<tal:block tal:define="contact USER/getContact/${userid}">
 		<tal:block tal:condition="contact">

@@ -48,7 +48,7 @@ interface GameControllerInterface
 
     public function getGameConfig();
 
-    public function getUniqHandle();
+    public function getUniqId();
 
     function addNavigationPart(Tuple $part);
 
@@ -63,8 +63,6 @@ interface GameControllerInterface
     public function getQueryCount();
 
     public function getDebugNotices();
-
-    public function hasExecuteJS();
 
     public function getExecuteJS();
 

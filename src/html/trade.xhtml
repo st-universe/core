@@ -31,7 +31,7 @@
 			</tr>
 			<tal:block tal:repeat="data OFFER_LIST">
 				<tr tal:attributes="class string:row${repeat/data/odd}">
-					<td tal:define="handle THIS/getUniqHandle">
+					<td tal:define="handle THIS/getUniqId">
 						<a tal:condition="php:currentUser().getId()!=data.getUserId()" href="javascript:void(0);" onmouseover="cp('${handle}','buttons/menu_trade1');" onmouseout="cp('${handle}','buttons/menu_trade0');" onclick="takeTradeOffer(${data/getId});">
 							<img src="${GFX}/buttons/menu_trade0.gif" tal:attributes="name handle" title="Angebot annehmen" />
 						</a>

@@ -25,18 +25,17 @@ final class GameController implements GameControllerInterface
     private $sessionStringRepository;
 
     private $tpl_file = '';
-    private $gameInformations = array();
-    private $handleId = 0;
-    private $siteNavigation = array();
+    private $gameInformations = [];
+    private $siteNavigation = [];
     private $pagetitle = "Changeme";
     private $template = null;
     private $ajaxMacro = null;
 
-    private $execjs = array();
+    private $execjs = [];
 
     private $currentRound = null;
 
-    private $achievements = array();
+    private $achievements = [];
 
     private $playercount = null;
 
@@ -83,7 +82,8 @@ final class GameController implements GameControllerInterface
         $this->viewContext = $viewContext;
     }
 
-    public function getViewContext(): array {
+    public function getViewContext(): array
+    {
         return $this->viewContext;
     }
 
@@ -131,7 +131,8 @@ final class GameController implements GameControllerInterface
         return round((memory_get_peak_usage() / 1024) / 1024, 3);
     }
 
-    public function addInformationf(string $text, ...$args): void {
+    public function addInformationf(string $text, ...$args): void
+    {
         $this->addInformation(vsprintf(
             $text,
             $args
@@ -195,7 +196,8 @@ final class GameController implements GameControllerInterface
         $tpl->parse();
     }
 
-    public function getUser(): ?UserData {
+    public function getUser(): ?UserData
+    {
         return $this->session->getUser();
     }
 
@@ -231,10 +233,9 @@ final class GameController implements GameControllerInterface
         return $this->gameConfig;
     }
 
-    public function getUniqHandle()
+    public function getUniqId()
     {
-        $this->handleId++;
-        return "hdl" . $this->handleId;
+        return uniqid();
     }
 
     function addNavigationPart(Tuple $part)
@@ -245,8 +246,7 @@ final class GameController implements GameControllerInterface
     public function appendNavigationPart(
         string $url,
         string $title
-    )
-    {
+    ) {
         $this->addNavigationPart(new Tuple(
             $url,
             $title
@@ -276,11 +276,6 @@ final class GameController implements GameControllerInterface
     public function getDebugNotices()
     {
         return get_debug_error()->getDebugNotices();
-    }
-
-    public function hasExecuteJS()
-    {
-        return count($this->execjs);
     }
 
     public function getExecuteJS()
@@ -406,7 +401,7 @@ final class GameController implements GameControllerInterface
             if (request::indString($request_key)) {
                 if ($config->performSessionCheck() === true && !request::isPost()) {
                     if (!$this->sessionStringRepository->isValid(
-                        (string) request::indString('sstr'),
+                        (string)request::indString('sstr'),
                         $this->getUser()->getId()
                     )) {
                         return;
@@ -446,7 +441,8 @@ final class GameController implements GameControllerInterface
             $this->gameStats = [
                 'turn' => $this->getCurrentRound(),
                 'player' => $this->getPlayerCount(),
-                'playeronline' => DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300", 1),
+                'playeronline' => DB()->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300",
+                    1),
             ];
         }
         return $this->gameStats;
@@ -464,11 +460,13 @@ final class GameController implements GameControllerInterface
         }
     }
 
-    public function setLoginError(string $error): void {
+    public function setLoginError(string $error): void
+    {
         $this->loginError = $error;
     }
 
-    public function getLoginError(): string {
+    public function getLoginError(): string
+    {
         return $this->loginError;
     }
 }
