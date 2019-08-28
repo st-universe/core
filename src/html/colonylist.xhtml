@@ -15,8 +15,8 @@
 				<tr>
 					<th style="width: 120px;"></th>
 					<th i18n:translate="">Name</th>
-					<th i18n:translate="">Energie</th>
 					<th i18n:translate="">Bevölkerung</th>
+					<th i18n:translate="">Energie</th>
 					<th i18n:translate="">Lager</th>
 				</tr>
 				<tr tal:repeat="colony COLONY_LIST" tal:attributes="class string:row${repeat/colony/odd}">
@@ -30,22 +30,16 @@
 						</div>
 					</td>
 					<td style="vertical-align: middle;">
+						<img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" />
+						<span tal:replace="colony/getPopulation">POPULATION</span>/<span tal:replace="colony/getMaxBev">HOUSING</span> (<span tal:replace="colony/getImmigration">IMMIGRATION</span>)
+					</td>
+					<td style="vertical-align: middle;">
+						<span tal:content="structure php:renderEpsStatusBar(colony.getEps(),colony.getMaxEps())">EPS</span>
 						${colony/getEps}/${colony/getMaxEps} (<span tal:replace="colony/getEpsProductionDisplay">PROD</span>)
 					</td>
 					<td style="vertical-align: middle;">
-						<table border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td style="padding: 0;">
-									<img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" />
-								</td>
-								<td style="padding: 0;vertical-align: middle;">
-						 			<span tal:replace="colony/getPopulation">POPULATION</span>/<span tal:replace="colony/getMaxBev">HOUSING</span> (<span tal:replace="colony/getImmigration">IMMIGRATION</span>)
-								</td>
-							</tr>
-						</table>
-					</td>
-					<td style="vertical-align: middle;">
-						<img src="${GFX}/buttons/lager.gif" title="Lagerraum" /> ${colony/getStorageSum}/${colony/getMaxStorage}<br />
+						<span tal:content="structure php:renderStorageStatusBar(colony.getStorageSum(),colony.getMaxStorage())">STORAGE</span>
+						${colony/getStorageSum}/${colony/getMaxStorage} (${colony/getProductionSumDisplay})<br />
 						<div tal:repeat="stor colony/getGoodUseView">
 							<img src="${GFX}/goods/${stor/good/getId}.gif" title="runtime" tal:attributes="title stor/good/getName" />
 							<span style="color: #FF0000;" tal:content="stor/production/getProduction">COUNT</span> (<span tal:replace="stor/turnsleft">TURNS</span> Runden)
