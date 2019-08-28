@@ -52,15 +52,7 @@ class ShipAttackCycle {
 		return $this->defendShip;
 	}
 
-	private function getAttackFleetId() {
-		return $this->attackFleetId;
-	}
-
-	private function getDefendFleetId() {
-		return $this->defendFleetId;
-	}
-
-	private function cycle() {
+    private function cycle() {
 		while ($this->hasReadyAttacker() || $this->hasReadyDefender()) {
 			$this->defineContrabants();
 			if (!$this->getAttackShip() || !$this->getDefendShip()) {

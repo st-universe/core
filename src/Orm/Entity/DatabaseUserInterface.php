@@ -17,4 +17,6 @@ interface DatabaseUserInterface
     public function setDate(int $date): DatabaseUserInterface;
 
     public function getDate(): int;
+
+    public function getDatabaseEntryId(): int;
 }

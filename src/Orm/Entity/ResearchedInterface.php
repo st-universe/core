@@ -25,4 +25,6 @@ interface ResearchedInterface
     public function getResearch(): ResearchInterface;
 
     public function getUser(): UserData;
+
+    public function getResearchId(): int;
 }

@@ -124,4 +124,14 @@ class DatabaseEntry implements DatabaseEntryInterface
 
         return $this;
     }
+
+    public function getCategoryId(): int
+    {
+        return $this->category_id;
+    }
+
+    public function getTypeId(): int
+    {
+        return $this->type;
+    }
 }

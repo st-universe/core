@@ -35,7 +35,7 @@ class DockingRightsData extends BaseTable {
 				return ResourceCache()->getObject('faction',$this->getTargetId())->getName();
 
 		}
-		return ResourceCache::getObject('ship',$this->getTargetId())->getName();
+		return ResourceCache()->getObject('ship',$this->getTargetId())->getName();
 	}
 
 	public function getPrivilegeType() {

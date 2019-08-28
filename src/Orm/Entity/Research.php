@@ -43,8 +43,6 @@ class Research implements ResearchInterface
     /** @Column(type="smallint") * */
     private $upper_moonlimit;
 
-    private $state;
-
     public function getId(): int
     {
         return $this->id;

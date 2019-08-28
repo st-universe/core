@@ -73,4 +73,9 @@ class DatabaseUser implements DatabaseUserInterface
     {
         return $this->date;
     }
+
+    public function getDatabaseEntryId(): int
+    {
+        return $this->database_id;
+    }
 }

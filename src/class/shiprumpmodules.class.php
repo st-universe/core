@@ -49,7 +49,7 @@ class ShipRumpModulesData extends BaseTable {
 class ShipRumpModules extends ShipRumpModulesData {
 
 	function __construct($id=0) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id." LIMIT 1",4);
+		$result = DB()->query("SELECT * FROM ".static::tablename." WHERE id=".$id." LIMIT 1",4);
 		return self::_getById($result,$id,'ShipRumpModulesData');	
 	}
 

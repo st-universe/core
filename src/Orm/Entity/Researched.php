@@ -93,4 +93,9 @@ class Researched implements ResearchedInterface
 
         return ResourceCache()->getObject('user', $this->getUserId());
     }
+
+    public function getResearchId(): int
+    {
+        return $this->research_id;
+    }
 }

@@ -199,7 +199,7 @@ final class GameController implements GameControllerInterface
         $s_timer = $start[1] + $start[0];
         $end = explode(' ', microtime());
         $e_timer = $end[1] + $end[0];
-        return round($e_timer - $s_timer, 6);;
+        return round($e_timer - $s_timer, 6);
     }
 
     public function getPlayerCount(): int

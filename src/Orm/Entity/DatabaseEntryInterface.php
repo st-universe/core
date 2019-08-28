@@ -29,4 +29,8 @@ interface DatabaseEntryInterface
     public function getTypeObject(): DatabaseTypeInterface;
 
     public function setTypeObject(DatabaseTypeInterface $typeObject): DatabaseEntryInterface;
+
+    public function getCategoryId(): int;
+
+    public function getTypeId(): int;
 }

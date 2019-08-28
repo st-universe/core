@@ -7,7 +7,6 @@ class ShipMover {
 	private $firstShip = NULL;
 	private $fleetMode = 0;
 	private $fieldData = NULL;
-	private $fieldProps = NULL;
 	private $fieldCount = NULL;
 	private $flightFields = 0;
 
