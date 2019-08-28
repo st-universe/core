@@ -292,7 +292,7 @@ final class GameController implements GameControllerInterface
 
     public function isDebugMode(): bool
     {
-        return $this->config->get('debug.debug_mode');
+        return $this->isAdmin() && $this->config->get('debug.debug_mode');
     }
 
     public function getJavascriptPath(): string
