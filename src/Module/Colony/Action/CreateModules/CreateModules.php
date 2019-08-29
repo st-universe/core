@@ -8,6 +8,7 @@ use Colfields;
 use Exception;
 use ModuleBuildingFunction;
 use ModuleQueue;
+use ModuleQueueData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -38,9 +39,11 @@ final class CreateModules implements ActionControllerInterface
             $userId
         );
 
+        $colonyId = $colony->getId();
+
         $modules = request::postArrayFatal('module');
         $func = request::postIntFatal('func');
-        if (count(Colfields::getFieldsByBuildingFunction($colony->getId(), $func)) == 0) {
+        if (count(Colfields::getFieldsByBuildingFunction($colonyId, $func)) == 0) {
             return;
         }
         $prod = array();
@@ -89,7 +92,19 @@ final class CreateModules implements ActionControllerInterface
             }
             $colony->lowerEps($count * $module->getEcost());
             $colony->save();
-            ModuleQueue::queueModule($colony->getId(), $func, $module_id, $count);
+
+            if (($queue = ModuleQueue::getBy('WHERE colony_id='.$colonyId.' AND module_id='.$module_id.' AND buildingfunction='.$func)) !== FALSE) {
+                $queue->setCount($queue->getAmount()+$count);
+                $queue->save();
+            } else {
+                $queue = new ModuleQueueData();
+                $queue->setColonyId($colonyId);
+                $queue->setBuildingFunction($func);
+                $queue->setModuleId($module_id);
+                $queue->setCount($count);
+                $queue->save();
+            }
+
             $prod[] = $count . ' ' . $module->getName();
         }
         if (count($prod) == 0) {

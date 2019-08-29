@@ -128,21 +128,4 @@ class ModuleQueue extends ModuleQueueData { #{{{
 		return self::_getList($result,'ModuleQueueData');
 	} # }}}
 
-	/**
-	 */
-	static function queueModule($colony_id,$function,$module_id,$count) { #{{{
-		if (($queue=self::getBy('WHERE colony_id='.$colony_id.' AND module_id='.$module_id.' AND buildingfunction='.$function)) !== FALSE) {
-			$queue->setCount($queue->getAmount()+$count);
-			$queue->save();
-			return;
-		}
-		$queue = new ModuleQueueData;
-		$queue->setColonyId($colony_id);
-		$queue->setBuildingFunction($function);
-		$queue->setModuleId($module_id);
-		$queue->setCount($count);
-		$queue->save();
-
-	} # }}}
-
 } #}}}
