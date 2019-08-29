@@ -167,6 +167,9 @@ class Fleet extends FleetData {
 		parent::__construct($result);
 	}
 
+	/**
+	 * @return ShipData[]
+	 */
 	static function getShipsBy(&$fleetId,$without=array(0)) {
 		$ret = array();
 		$result = DB()->query("SELECT * FROM stu_ships WHERE fleets_id=".$fleetId." AND id NOT IN (".join(",",$without).") ORDER BY id DESC,is_base DESC, id LIMIT 200");

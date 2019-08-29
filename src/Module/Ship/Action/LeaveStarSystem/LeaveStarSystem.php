@@ -53,19 +53,19 @@ final class LeaveStarSystem implements ActionControllerInterface
         if ($ship->isFleetLeader()) {
             $msg = array();
             $result = Fleet::getShipsBy($ship->getFleetId(), array($ship->getId()));
-            foreach ($result as $key => $ship) {
-                $wrapper = new SystemActivationWrapper($ship);
+            foreach ($result as $key => $fleetShip) {
+                $wrapper = new SystemActivationWrapper($fleetShip);
                 $wrapper->setVar('eps', 1);
                 if ($wrapper->getError()) {
                     $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
                     $ship->leaveFleet();
                 } else {
-                    $ship->leaveStarSystem();
-                    if ($ship->isTraktorbeamActive()) {
-                        $this->leaveStarSystemTraktor($ship, $game);
+                    $fleetShip->leaveStarSystem();
+                    if ($fleetShip->isTraktorbeamActive()) {
+                        $fleetShip->leaveStarSystemTraktor($fleetShip, $game);
                     }
                 }
-                $ship->save();
+                $fleetShip->save();
             }
             $game->addInformation("Die Flotte hat das Sternensystem verlassen");
             $game->addInformationMerge($msg);

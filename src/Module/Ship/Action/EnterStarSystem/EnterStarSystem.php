@@ -63,36 +63,40 @@ final class EnterStarSystem implements ActionControllerInterface
                 $posy = rand(1, (int) $ship->getSystem()->getMaxY());
                 break;
         }
+
+        $system = $ship->getSystem();
+        $systemId = $system->getId();
+
         // @todo Beschädigung bei Systemeinflug
-        $ship->enterStarSystem($ship->getSystem()->getId(), $posx, $posy);
+        $ship->enterStarSystem($systemId, $posx, $posy);
         if ($ship->isTraktorbeamActive()) {
             $this->enterStarSystemTraktor($ship, $game);
         }
         if ($ship->isFleetLeader()) {
             $msg = array();
             $result = Fleet::getShipsBy($ship->getFleetId(), array($ship->getId()));
-            foreach ($result as $key => $ship) {
-                $wrapper = new SystemActivationWrapper($ship);
+            foreach ($result as $key => $fleetShip) {
+                $wrapper = new SystemActivationWrapper($fleetShip);
                 $wrapper->setVar('eps', 1);
                 if ($wrapper->getError()) {
-                    $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
+                    $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
                     $ship->leaveFleet();
                 } else {
-                    $ship->enterStarSystem($ship->getSystem()->getId(), $posx, $posy);
-                    if ($ship->isTraktorbeamActive()) {
-                        $this->enterStarSystemTraktor($ship, $game);
+                    $fleetShip->enterStarSystem($systemId, $posx, $posy);
+                    if ($fleetShip->isTraktorbeamActive()) {
+                        $this->enterStarSystemTraktor($fleetShip, $game);
                     }
                 }
-                $ship->save();
+                $fleetShip->save();
             }
-            $game->addInformation("Die Flotte fliegt in das " . $ship->getSystem()->getName() . "-System ein");
+            $game->addInformation("Die Flotte fliegt in das " . $system->getName() . "-System ein");
             $game->addInformationMerge($msg);
         } else {
             if ($ship->isInFleet()) {
                 $ship->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
-            $game->addInformation("Das Schiff fliegt in das " . $ship->getSystem()->getName() . "-System ein");
+            $game->addInformation("Das Schiff fliegt in das " . $system->getName() . "-System ein");
         }
         $ship->save();
     }
