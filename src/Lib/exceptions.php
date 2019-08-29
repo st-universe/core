@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Module\Tal\TalPage;
+use Stu\Module\Tal\TalPageInterface;
 
 class AccessViolation extends STUException {
 
@@ -60,7 +60,11 @@ class STUException extends Exception {
 			exit;
 		}
 		ob_clean();
-		$tpl = new TalPage('html/defaultexception.xhtml');
+		// @todo refactor
+
+		global $container;
+		$tpl = $container->get(TalPageInterface::class);
+		$tpl->setTemplate('html/defaultexception.xhtml');
 		$tpl->setVar('THIS',$this);
 		$tpl->parse();
 		if (!$this instanceof DBException && currentUser() && isAdmin(currentUser()->getId())) {
