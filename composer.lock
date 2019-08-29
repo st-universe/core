@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "964fc2a313b8e32c1973f0acb57aaef6",
+    "content-hash": "1c9d512eb4d33f11ca4c395cdbef71b9",
     "packages": [
         {
             "name": "clue/graph",
@@ -2860,6 +2860,45 @@
             "time": "2016-11-16T10:37:54+00:00"
         },
         {
+            "name": "usox/stu3-planet-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/usox/stu3-planet-generator.git",
+                "reference": "ef5957fe49a00638bb266900a310bb68ab199c30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/usox/stu3-planet-generator/zipball/ef5957fe49a00638bb266900a310bb68ab199c30",
+                "reference": "ef5957fe49a00638bb266900a310bb68ab199c30",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "mockery/mockery": "^1.1",
+                "phpunit/phpunit": "^7.3",
+                "usox/stu3-assets": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "./example/assets": [
+                        "usox/stu3-assets"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stu\\PlanetGenerator\\": "src/PlanetGenerator"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-08-29T17:57:46+00:00"
+        },
+        {
             "name": "zendframework/zend-loader",
             "version": "2.6.0",
             "source": {
@@ -4637,6 +4676,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "usox/stu3-planet-generator": 20,
         "usox/stu3-assets": 20
     },
     "prefer-stable": false,

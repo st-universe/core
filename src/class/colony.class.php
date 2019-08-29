@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Lib\PlanetGenerator\PlanetGenerator;
+use Stu\PlanetGenerator\PlanetGenerator;
 
 class ColonyData extends BaseTable {
 
