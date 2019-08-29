@@ -440,8 +440,8 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     private function loadPlanetType(int $id): array
     {
         $fileName = sprintf(
-            '%s/src/Lib/colgen/coldata/%d.php',
-            APP_PATH,
+            '%s/coldata/%d.php',
+            __DIR__,
             $id
         );
         if (!file_exists($fileName)) {
