@@ -100,7 +100,7 @@ class PMData extends Basetable {
 	}
 
 	function getTextParsed() {
-		return nl2br(BBCode()->parse($this->getTextDecoded()));
+		return nl2br(BBCode()->render($this->getTextDecoded()));
 	}
 
 	function getTextDecoded() {

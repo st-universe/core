@@ -1,5 +1,6 @@
 <?php
 
+use ChrisKonnertz\BBCode\BBCode;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
@@ -382,12 +383,17 @@ function currentUser(): User {
 	}
 	return $currentUser;
 }
+function BBCode() {
+	global $container;
+
+	return $container->get(BBCode::class);
+}
 
 
 TalesRegistry::registerPrefix(
     'bbcode',
     function($src, $nothrow): string {
-        return 'BBCode()->parse('.TalesInternal::compileToPHPExpression($src,$nothrow).')';
+        return 'BBCode()->render('.TalesInternal::compileToPHPExpression($src,$nothrow).')';
     }
 );
 TalesRegistry::registerPrefix(

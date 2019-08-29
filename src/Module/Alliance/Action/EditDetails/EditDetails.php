@@ -54,7 +54,7 @@ final class EditDetails implements ActionControllerInterface
             AllianceJobs::truncatePendingMembers($alliance->getId());
         }
 
-        if (mb_strlen(trim(BBCode()->parse($name))) < 5) {
+        if (mb_strlen(trim(BBCode()->render($name))) < 5) {
             $game->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
             return;
         }

@@ -45,7 +45,7 @@ class ShipData extends BaseTable {
 	}
 
 	function getNameWithoutMarkup() {
-		return strip_tags(BBCode()->parse($this->getName()));
+		return strip_tags(BBCode()->render($this->getName()));
 	}
 
 	function getCX() {

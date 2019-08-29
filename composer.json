@@ -26,7 +26,8 @@
     "mpscholten/request-parser": "^1.5",
     "graphp/graphviz": "^0.2.1",
     "usox/stu3-planet-generator": "dev-master",
-    "usox/stu3-starsystem-generator": "dev-master"
+    "usox/stu3-starsystem-generator": "dev-master",
+    "chriskonnertz/bbcode": "^1.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.3",

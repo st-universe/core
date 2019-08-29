@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use ChrisKonnertz\BBCode\BBCode;
 use DI\ContainerBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,6 +64,25 @@ $builder->addDefinitions([
     },
     TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),
+    BBCode::class => function (): BBCode {
+        $bbcode = new BBCode();
+        $bbcode->ignoreTag('code');
+        $bbcode->ignoreTag('email');
+        $bbcode->ignoreTag('url');
+        $bbcode->ignoreTag('img');
+        $bbcode->ignoreTag('quote');
+        $bbcode->ignoreTag('youtube');
+        $bbcode->ignoreTag('font');
+        $bbcode->ignoreTag('size');
+        $bbcode->ignoreTag('left');
+        $bbcode->ignoreTag('center');
+        $bbcode->ignoreTag('right');
+        $bbcode->ignoreTag('spoiler');
+        $bbcode->ignoreTag('list');
+        $bbcode->ignoreTag('*');
+        $bbcode->ignoreTag('li');
+        return $bbcode;
+    }
 ]);
 
 $builder->addDefinitions(

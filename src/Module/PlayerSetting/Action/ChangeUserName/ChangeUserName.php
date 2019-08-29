@@ -39,7 +39,7 @@ final class ChangeUserName implements ActionControllerInterface
             );
             return;
         }
-        if (strlen(strip_tags(BBCode()->parse($value))) > 60) {
+        if (strlen(strip_tags(BBCode()->render($value))) > 60) {
             $game->addInformation(
                 sprintf(
                     _('Der Siedlername darf nur maximal 60 Zeichen lang sein')

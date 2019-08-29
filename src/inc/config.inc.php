@@ -387,7 +387,6 @@ function &get_debug_error() {
 
 require_once 'func.inc.php';
 include_once("generated/fieldtypesname.inc.php");
-require_once 'bbcode_parser.inc.php';
 
 function &ResourceCache() {
     static $ResourceCache = NULL;
