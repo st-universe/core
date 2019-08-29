@@ -2,12 +2,15 @@
 
 namespace Lib;
 
+use AllianceData;
+use UserData;
+
 class AllianceMemberWrapper {
 
 	private $user = NULL;
 	private $alliance = NULL;
 
-	function __construct(\UserData $user, \AllianceData $alliance) {
+	function __construct(UserData $user, AllianceData $alliance) {
 	        $this->user = $user;
 		$this->alliance = $alliance;
 	}

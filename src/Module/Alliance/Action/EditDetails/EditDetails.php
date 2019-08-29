@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use AccessViolation;
 use AllianceJobs;
+use JBBCode\Parser;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -17,10 +18,14 @@ final class EditDetails implements ActionControllerInterface
 
     private $editDetailsRequest;
 
+    private $bbcodeParser;
+
     public function __construct(
-        EditDetailsRequestInterface $editDetailsRequest
+        EditDetailsRequestInterface $editDetailsRequest,
+        Parser $bbcodeParser
     ) {
         $this->editDetailsRequest = $editDetailsRequest;
+        $this->bbcodeParser = $bbcodeParser;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,7 +59,7 @@ final class EditDetails implements ActionControllerInterface
             AllianceJobs::truncatePendingMembers($alliance->getId());
         }
 
-        if (mb_strlen(trim(BBCode()->parse($name)->getAsText())) < 5) {
+        if (mb_strlen(trim($this->bbcodeParser->parse($name)->getAsText())) < 5) {
             $game->addInformation(_('Der Name muss aus mindestens 5 Zeichen bestehen'));
             return;
         }

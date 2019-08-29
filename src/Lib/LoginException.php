@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-final class LoginException extends \Exception
+use Exception;
+
+final class LoginException extends Exception
 {
 
 }

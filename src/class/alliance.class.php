@@ -319,7 +319,7 @@ class AllianceData extends BaseTable {
 			$this->delete();
 			return;
 		}
-		$this->handleFounderChance();
+		$this->handleFounderChange();
 	} # }}}
 
 	/**

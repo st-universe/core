@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 
+use JBBCode\Parser;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 
@@ -12,18 +13,22 @@ final class ChangeUserName implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
 
     private $changeUserNameRequest;
+    
+    private $bbcodeParser;
 
     public function __construct(
-        ChangeUserNameRequestInterface $changeUserNameRequest
+        ChangeUserNameRequestInterface $changeUserNameRequest,
+        Parser $bbcodeParser
     ) {
         $this->changeUserNameRequest = $changeUserNameRequest;
+        $this->bbcodeParser = $bbcodeParser;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $value = $this->changeUserNameRequest->getName();
         $value = strip_tags(tidyString($value));
-        if (strlen($value) < 6) {
+        if (mb_strlen($value) < 6) {
             $game->addInformation(
                 sprintf(
                     _('Der Siedlername muss aus mindestens 6 Zeichen bestehen')
@@ -31,7 +36,7 @@ final class ChangeUserName implements ActionControllerInterface
             );
             return;
         }
-        if (strlen($value) > 255) {
+        if (mb_strlen($value) > 255) {
             $game->addInformation(
                 sprintf(
                     _('Der Siedlername darf inklusive BBCode nur maximal 255 Zeichen lang sein')
@@ -39,7 +44,7 @@ final class ChangeUserName implements ActionControllerInterface
             );
             return;
         }
-        if (mb_strlen(BBCode()->parse($value)->getAsText()) > 60) {
+        if (mb_strlen($this->bbcodeParser->parse($value)->getAsText()) > 60) {
             $game->addInformation(
                 sprintf(
                     _('Der Siedlername darf nur maximal 60 Zeichen lang sein')

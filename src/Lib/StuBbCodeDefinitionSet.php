@@ -8,6 +8,7 @@ use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
 use JBBCode\validators\CssColorValidator;
+use JBBCode\validators\UrlValidator;
 
 final class StuBbCodeDefinitionSet implements CodeDefinitionSet
 {
@@ -28,7 +29,7 @@ final class StuBbCodeDefinitionSet implements CodeDefinitionSet
         /* [u] underline tag */
         $builder = new CodeDefinitionBuilder('u', '<u>{param}</u>');
         $this->definitions[] = $builder->build();
-        $urlValidator = new \JBBCode\validators\UrlValidator();
+        $urlValidator = new UrlValidator();
         /* [color] color tag */
         $builder = new CodeDefinitionBuilder('color', '<span style="color: {option}">{param}</span>');
         $builder->setUseOption(true)->setOptionValidator(new CssColorValidator());

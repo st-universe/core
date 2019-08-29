@@ -1,9 +1,10 @@
 <?php
 
-use ChrisKonnertz\BBCode\BBCode;
 use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
+use Stu\Lib\DbInterface;
+use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
@@ -235,7 +236,7 @@ function databaseScan($database_id,$user_id) {
     global $container;
 
     /**
-     * @var \Stu\Orm\Entity\DatabaseEntryInterface $entry
+     * @var DatabaseEntryInterface $entry
      */
     $entry = $container->get(DatabaseEntryRepositoryInterface::class)->find($database_id);
 	$databaseUserRepository = $container->get(DatabaseUserRepositoryInterface::class);
@@ -356,7 +357,7 @@ function &DB() {
     static $DB = NULL;
     if ($DB === NULL) {
         global $container;
-        return $container->get(\Stu\Lib\DbInterface::class);
+        return $container->get(DbInterface::class);
     }
     return $DB;
 }
@@ -380,7 +381,7 @@ function currentUser(): User {
 	static $currentUser = NULL;
 	if ($currentUser === NULL) {
 		global $_SESSION;
-		$currentUser = \User::getById($_SESSION['uid']);
+		$currentUser = User::getById($_SESSION['uid']);
 	}
 	return $currentUser;
 }

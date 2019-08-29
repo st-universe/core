@@ -1,11 +1,14 @@
 <?php
 
+use Noodlehaus\ConfigInterface;
+use Psr\Container\ContainerInterface;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
 $benchmark_start = microtime();
 
 /**
- * @var \Psr\Container\ContainerInterface $container
+ * @var ContainerInterface $container
  */
 $container = require_once __DIR__.'/../Config/bootstrap.php';
 
@@ -32,7 +35,7 @@ function isAdmin($user_id) { #{{{
 
 $global_path = __DIR__.'/../../';
 
-$config = $container->get(\Noodlehaus\ConfigInterface::class);
+$config = $container->get(ConfigInterface::class);
 
 define("APP_PATH", $global_path);
 // Generator dirs
