@@ -155,7 +155,7 @@ final class BuildShip implements ActionControllerInterface
             );
         }
         $queue = new ColonyShipQueueData;
-        $queue->setColonyId($colony);
+        $queue->setColonyId($colonyId);
         $queue->setUserId($userId);
         $queue->setRumpId($rump->getId());
         $queue->setBuildplanId($plan->getId());
