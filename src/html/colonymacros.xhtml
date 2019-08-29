@@ -729,52 +729,66 @@
                 <stu:hidden name="id" tal:attributes="value COLONY/getId" />
                 <stu:hidden name="sstr" tal:attributes="value THIS/getSessionString" />
                 <stu:hidden name="func" tal:attributes="value FUNC/getFunction" />
+		<br />
                 <table class="tcal">
                     <tr>
                         <th i18n:translate="">Verfügbare Module</th>
-                        <th i18n:translate="">Anzahl</th>
                         <th i18n:translate="">In Bau</th>
+			<th i18n:translate="">Lagernd</th>
+			<th i18n:translate="">Anzahl</th>
                     </tr>
                     <tr tal:repeat="data MODULE_LIST" tal:attributes="class string:row${repeat/data/odd}">
-                        <td tal:define="module data/getModule">
+                        <td>
                             <div style="margin-bottom: 5px;">
-                                <img src="${GFX}/goods/${module/getGoodId}.gif" /> <span tal:content="module/getName">NAME</span>
+                                <img src="${GFX}/goods/${data/getGoodId}.gif" /> <span tal:content="data/getName">NAME</span>
                             </div>
                             <div style="display: table-cell;">
-                                <img src="${GFX}/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> <span tal:replace="module/getEcost">ECOST</span>
+                                <img src="${GFX}/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> <span tal:replace="data/getEnergyCost">ECOST</span>
                             </div>
-                            <tal:block tal:repeat="cost module/getCost">
+                            <tal:block tal:repeat="cost data/getConstructionCosts">
                                 <div style="display: table-cell; padding-left: 4px;">
                                     <img src="${GFX}/goods/${cost/getGoodId}.gif" />
                                 </div>
                                 <div style="display: table-cell; vertical-align: middle;" tal:content="cost/getAmount">COST</div>
                             </tal:block>
                         </td>
-                        <td style="vertical-align: middle; text-align: center;">
-                            <input type="text" size="2" name="module[${data/getModule/getId}]" />
+                        <td id="module_${data/getModuleId}_action" style="vertical-align: middle; text-align: center;" tal:define="QUEUED_AMOUNT data/getAmountQueued">
+				<div tal:condition="QUEUED_AMOUNT">
+					<div style="display: table-cell; vertical-align:middle;">
+						<input type="text" size="2" name="cancel_module[${data/getModuleId}]" id="module_${data/getModuleId}_count" tal:attributes="value QUEUED_AMOUNT" />
+					</div>
+					<div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
+						<stu:imagelink href="Javascript:cancelModuleQueueEntries(${data/getModuleId});" image="x" title="Anzahl löschen" i18n:attributes="title" />
+					</div>
+				</div>
+				<div tal:condition="not:QUEUED_AMOUNT">-</div>
                         </td>
-                        <td id="module_${data/getModuleId}_action" style="vertical-align: middle; text-align: center;">
-                            <metal:macro metal:use-macro="queue_count" tal:define="MODULE data/getModule" />
-                        </td>
+			<td  style="vertical-align: middle; text-align: center;" tal:content="data/getAmountInStock">
+			</td>
+			<td style="vertical-align: middle; text-align: center;">
+			    <input type="text" size="2" name="module[${data/getModuleId}]" />
+			</td>
                     </tr>
+		    <tr>
+			    <td colspan="3"></td>
+			    <td>
+				    <stu:submit name="B_CREATE_MODULES" value="Herstellen" i18n:attributes="value" />
+			    </td>
+		    </tr>
                 </table>
-                <br />
-                <div style="width: 100%; text-align: center;">
-                    <stu:submit name="B_CREATE_MODULES" value="Herstellen" i18n:attributes="value" />
-                </div>
             </div>
         </metal:macro>
 	</metal:block>
-	<metal:macro metal:define-macro="queue_count" tal:define="queue_count MODULE/getQueueCount/${COLONY/getId}">
-		<div tal:condition="queue_count">
+	<metal:macro metal:define-macro="queue_count">
+		<div tal:condition="QUEUED_AMOUNT">
 			<div style="display: table-cell; vertical-align:middle;">
-				<input type="text" size="2" name="cancel_module[${MODULE/getId}]" id="module_${MODULE/getId}_count" tal:attributes="value queue_count" />
+				<input type="text" size="2" name="cancel_module[${MODULE_ID}]" id="module_${MODULE_ID}_count" tal:attributes="value QUEUED_AMOUNT" />
 			</div>
 			<div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
-				<stu:imagelink href="Javascript:cancelModuleQueueEntries(${MODULE/getId});" image="x" title="Anzahl löschen" i18n:attributes="title" />
+				<stu:imagelink href="Javascript:cancelModuleQueueEntries(${MODULE_ID});" image="x" title="Anzahl löschen" i18n:attributes="title" />
 			</div>
 		</div>
-		<div tal:condition="not:queue_count">-</div>
+		<div tal:condition="not:QUEUED_AMOUNT">-</div>
 	</metal:macro>
 	<metal:block metal:define-macro="cm_shipyard">
 		<metal:macro metal:use-macro="cm_shipyard_tabs" />

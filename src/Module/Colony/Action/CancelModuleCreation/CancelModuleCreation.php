@@ -32,7 +32,6 @@ final class CancelModuleCreation implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView('SHOW_MODULE_CANCEL');
         $module_id = request::postIntFatal('module');
         $function = request::postIntFatal('func');
         $count = request::postInt('count');
@@ -41,6 +40,9 @@ final class CancelModuleCreation implements ActionControllerInterface
          * @var Modules $module
          */
         $module = ResourceCache()->getObject('module', $module_id);
+
+        $game->setView('SHOW_MODULE_CANCEL', ['MODULE' => $module]);
+
         if (count(Colfields::getFieldsByBuildingFunction($colony->getId(), $function)) == 0) {
             return;
         }

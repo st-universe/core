@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 use BuildingFunctions;
 use Colfields;
 use Colony;
-use ModuleBuildingFunction;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -73,12 +72,6 @@ final class SwitchColonyMenu implements ActionControllerInterface
             case MENU_MODULEFAB:
                 if ($colony->hasModuleFab()) {
                     $game->setView('SHOW_MODULEFAB');
-                    $func = new BuildingFunctions(request::getIntFatal('func'));
-                    $game->setTemplateVar('FUNC', $func);
-                    $game->setTemplateVar(
-                        'MODULE_LIST',
-                        ModuleBuildingFunction::getByFunctionAndUser($func->getFunction(), $userId)
-                    );
                     return;
                 }
             case MENU_FIGHTER_SHIPYARD:

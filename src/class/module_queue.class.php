@@ -103,15 +103,13 @@ class ModuleQueue extends ModuleQueueData { #{{{
 		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$sql,1);
 	} # }}}
 
-	/**
-	 */
-	static function getByColonyAndModule($colony_id,$module_id) { #{{{
+	static function getAmountByColonyAndModule($colony_id,$module_id): int {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE colony_id=".$colony_id." AND module_id=".$module_id,4);
 		if ($result == 0) {
-			return FALSE;
+			return 0;
 		}
-		return new ModuleQueueData($result);
-	} # }}}
+		return (int) $result['count'];
+	}
 
 	/**
 	 */
@@ -148,32 +146,3 @@ class ModuleQueue extends ModuleQueueData { #{{{
 	} # }}}
 
 } #}}}
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ModuleQueueColonyWrapper { #{{{
-
-	private $module_id = 0;
-
-	/**
-	 */
-	function __construct($module_id) { #{{{
-		$this->module_id = $module_id;
-	} # }}}
-
-	/**
-	 */
-	function __get($colony_id) { #{{{
-		$queue = ModuleQueue::getByColonyAndModule($colony_id,$this->module_id);
-		if (!$queue) {
-			return FALSE;
-		}
-		return $queue->getAmount();
-	} # }}}
-
-} #}}}
-
-?>

@@ -153,12 +153,6 @@ class ModulesData extends BaseTable {
 	public function getEcost() { # {{{
 		return $this->data['ecost'];
 	} # }}}
-	
-	/**
-	 */
-	public function getQueueCount() { #{{{
-		return new ModuleQueueColonyWrapper($this->getId());
-	} # }}}
 
 	/**
 	 */
