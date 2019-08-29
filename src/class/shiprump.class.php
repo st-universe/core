@@ -508,5 +508,24 @@ class Shiprump extends ShiprumpData {
 		return self::_getList($result,'ShipRumpData');
 	} # }}}
 
+	public static function getGroupedInfoByUser(int $userId): array {
+		$result = DB()->query(
+			sprintf(
+				'SELECT a.id, a.name, count(a.id) as amount FROM %s a LEFT JOIN %s b ON (b.rumps_id = a.id) WHERE b.user_id = %d GROUP BY a.id, a.name',
+				static::tablename,
+				ShipData::tablename,
+				$userId
+			)
+		);
+		$list = [];
+		while ($data = mysqli_fetch_array($result)) {
+			$list[] = [
+				'rump_id' => $data['id'],
+				'amount' => $data['amount'],
+				'name' => $data['name'],
+			];
+		}
+
+		return $list;
+	}
 }
-?>

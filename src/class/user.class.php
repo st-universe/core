@@ -157,10 +157,6 @@ class UserData extends BaseTable {
 		return $this->data['lastaction'];
 	}
 
-	function getLastActionDisplay() {
-		return date("d.m.Y H:i",$this->getLastAction());
-	}
-
 	function isOnIgnoreList($value) {
 		return Ignorelist::isOnList($this->getId(),$value);
 	}
