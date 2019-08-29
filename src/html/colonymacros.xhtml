@@ -282,14 +282,14 @@
                     <tr>
                         <th i18n:translate="">Herstellung</th>
                     </tr>
-                    <tr tal:condition="not:THIS/getBuildableTorpedoTypes">
+                    <tr tal:condition="not:BUILDABLE_TORPEDO_TYPES">
                         <td i18n:translate="">Es können keine Torpedos gebaut werden</td>
                     </tr>
-                    <tr tal:condition="THIS/getBuildableTorpedoTypes">
+                    <tr tal:condition="BUILDABLE_TORPEDO_TYPES">
                         <td class="darkbg">Typ</td>
                         <td class="darkbg">Kosten</td>
                     </tr>
-                    <tr tal:repeat="data THIS/getBuildableTorpedoTypes" tal:attributes="class string:row${repeat/data/odd}">
+                    <tr tal:repeat="data BUILDABLE_TORPEDO_TYPES" tal:attributes="class string:row${repeat/data/odd}">
                         <td>
                             <stu:textinput name="torps[${data/getId}]" width="3" /> x <span tal:replace="data/getAmount">AMOUNT</span>
                             <img src="${GFX}/goods/${data/getGoodId}.gif" class="center" />
@@ -305,7 +305,7 @@
                         </td>
                     </tr>
                 </table>
-                <div tal:condition="THIS/getBuildableTorpedoTypes" style="width: 100%; text-align: center">
+                <div tal:condition="BUILDABLE_TORPEDO_TYPES" style="width: 100%; text-align: center">
                     <br />
                     <stu:submit name="B_BUILD_TORPEDOS" value="Torpedos herstellen" i18n:attributes="value" />
                 </div>
