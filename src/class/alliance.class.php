@@ -29,7 +29,7 @@ class AllianceData extends BaseTable {
 	}
 
 	function getNameWithoutMarkup() {
-		return strip_tags(BBCode()->render($this->getName()));
+		return BBCode()->parse($this->getName())->getAsText();
 	}
 
 	function getHomepage() {

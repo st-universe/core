@@ -361,11 +361,11 @@ class AlliancePostData extends BaseTable {
 	}
 
 	function getTextDecoded() {
-		return stripslashes(BBCode()->render(decodeString($this->getText())));
+		return stripslashes(BBCode()->parse(decodeString($this->getText()))->getAsText());
 	}
 
 	function getTextDecodedRaw() {
-		return stripslashes(BBCode()->render(decodeString($this->getText(),FALSE)));
+		return stripslashes(BBCode()->parse(decodeString($this->getText(),FALSE))->getAsText());
 	}
 
 	function getTextParsed() {

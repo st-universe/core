@@ -74,7 +74,7 @@ class UserData extends BaseTable {
 	}
 
 	function getNameWithoutMarkup() {
-		return strip_tags(BBCode()->render($this->getName()));
+		return BBCode()->parse($this->getName())->getAsText();
 	}
 	function getPassword() {
 		return $this->data['pass'];
@@ -116,7 +116,7 @@ class UserData extends BaseTable {
 	}
 
 	function getDescriptionDecoded() {
-		return nl2br(stripslashes(BBCode()->render(decodeString($this->getDescription()))));
+		return nl2br(stripslashes(BBCode()->parse(decodeString($this->getDescription()))->getAsText()));
 	}
 
 	public function hasDescription() {

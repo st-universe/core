@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
-use ChrisKonnertz\BBCode\BBCode;
 use DI\ContainerBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
+use JBBCode\Parser;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\Db;
@@ -64,24 +65,10 @@ $builder->addDefinitions([
     },
     TalPageInterface::class => autowire(TalPage::class),
     GameControllerInterface::class => autowire(GameController::class),
-    BBCode::class => function (): BBCode {
-        $bbcode = new BBCode();
-        $bbcode->ignoreTag('code');
-        $bbcode->ignoreTag('email');
-        $bbcode->ignoreTag('url');
-        $bbcode->ignoreTag('img');
-        $bbcode->ignoreTag('quote');
-        $bbcode->ignoreTag('youtube');
-        $bbcode->ignoreTag('font');
-        $bbcode->ignoreTag('size');
-        $bbcode->ignoreTag('left');
-        $bbcode->ignoreTag('center');
-        $bbcode->ignoreTag('right');
-        $bbcode->ignoreTag('spoiler');
-        $bbcode->ignoreTag('list');
-        $bbcode->ignoreTag('*');
-        $bbcode->ignoreTag('li');
-        return $bbcode;
+    Parser::class => function (): Parser {
+        $parser = new Parser();
+        $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());
+        return $parser;
     }
 ]);
 
