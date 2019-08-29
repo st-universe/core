@@ -111,14 +111,6 @@ class UserData extends BaseTable {
 		$this->addUpdateField('description','getDescription');
 	}
 
-	function getDescriptionDecodedRaw() {
-		return stripslashes(decodeString($this->getDescription(),FALSE));
-	}
-
-	function getDescriptionDecoded() {
-		return nl2br(stripslashes(BBCode()->parse(decodeString($this->getDescription()))->getAsText()));
-	}
-
 	public function hasDescription() {
 		return strlen(trim($this->getDescription())) > 0;
 	}

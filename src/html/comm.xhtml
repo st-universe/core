@@ -15,7 +15,7 @@
 				<table class="tcal">
 					<tr tal:condition="post/getTitle">
 						<th colspan="2">
-							<span tal:replace="structure post/getTitleDecoded">TITLE</span>
+							<span tal:replace="structure post/getTitle">TITLE</span>
 							<span tal:condition="post/hasPlot">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}">Plot anzeigen</a>)</span>
 						</th>
 					</tr>
@@ -39,10 +39,10 @@
 							</tal:block>
 						</td>
 						<td style="vertical-align: top;">
-							<div tal:content="structure post/getTextParsed">TEXT</div>
+							<div tal:content="structure nl2br:bbcode2txt:post/getText">TEXT</div>
 							<tal:block tal:condition="post/hasEdit">
 								<br /><br />
-								<span class="knedit">Letzte Bearbeitung: ${post/getEditDateDisplay}</span>
+								<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
 							</tal:block>
 						</td>
 					</tr>

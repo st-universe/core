@@ -92,25 +92,6 @@ class PMData extends Basetable {
 		$this->addUpdateField('date','getDate');
 	}
 
-	function getTextCutted() {
-		if (strlen($this->getText()) < 400) {
-			return $this->getText();
-		}
-		return substr($this->getText(),0,397)."...";
-	}
-
-	function getTextParsed() {
-		return nl2br(BBCode()->parse($this->getTextDecoded())->getAsText());
-	}
-
-	function getTextDecoded() {
-		return stripslashes(decodeString($this->getText()));
-	}
-
-	public function getTextDecodedRaw() {
-		return stripslashes(decodeString($this->getText(),FALSE));
-	}
-
 	function getCategoryId() {
 		return $this->data['cat_id'];
 	}

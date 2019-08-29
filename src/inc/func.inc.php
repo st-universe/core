@@ -399,6 +399,12 @@ TalesRegistry::registerPrefix(
     }
 );
 TalesRegistry::registerPrefix(
+    'bbcode2txt',
+    function($src, $nothrow): string {
+        return 'BBCode()->parse('.TalesInternal::compileToPHPExpression($src,$nothrow).')->getAsText()';
+    }
+);
+TalesRegistry::registerPrefix(
     'jsquote',
     function ($src, $nothrow): string {
         return 'jsquote('.TalesInternal::compileToPHPExpression($src,$nothrow).')';

@@ -31,7 +31,7 @@
                         </tal:block>
                     </div>
                     <div class="iblock top pm_text_space">
-                        <span tal:replace="structure post/getTextParsed">TEXT</span>
+                        <span tal:replace="structure nl2br:bbcode2txt:post/getText">TEXT</span>
                     </div>
                     <div class="p100 pm_footer">
                         <div phptal:cache="1d per post/getCacheValue" class="iblock" style="width: 40%;">

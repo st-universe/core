@@ -50,10 +50,6 @@ class KNPostingData extends BaseTable {
 		$this->addUpdateField('titel','getTitle');
 	}
 
-	function getRating() {
-		return "";
-	}
-
 	function getText() {
 		return $this->data['text'];
 	}
@@ -72,44 +68,8 @@ class KNPostingData extends BaseTable {
 		$this->addUpdateField('date','getDate');
 	}
 
-	function getTextCutted() {
-		if (strlen($this->getText()) < 400) {
-			return $this->getTextParsed();
-		}
-		return substr($this->getTextParsed(),0,397)."...";
-	}
-
-	function getTextParsed() {
-		return nl2br(BBCode()->parse($this->getTextDecoded())->getAsText());
-	}
-
-	function getTextDecoded() {
-		return stripslashes(decodeString($this->getText()));
-	}
-
-	public function getTextDecodedRaw() {
-		return stripslashes(decodeString($this->getText(),FALSE));
-	}
-
-	function getTitleDecoded() {
-		return stripslashes(decodeString($this->getTitle()));
-	}
-
-	public function getTitleDecodedRaw() {
-		return stripslashes(decodeString($this->getTitle(),FALSE));
-	}
-
 	function getEditDate() {
 		return $this->data['lastedit'];
-	}
-
-	function getEditDateFormatted() {
-		trigger_error("OBSOLETE - use getEditDateDisplay instead");
-		return $this->getEditDateDisplay();
-	}
-
-	function getEditDateDisplay() {
-		return date("d.m.Y H:i",$this->getEditDate());
 	}
 
 	function setEditDate($value) {
