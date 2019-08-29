@@ -22,7 +22,7 @@
 					<tr>
 						<td>
 							<div tal:condition="post/hasUser">
-								<img src="${GFX}/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
+								<img src="assets/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 							</div>
 							<div tal:condition="not:post/hasUser" tal:content="structure bbcode:post/getUserName">USER</div>
 						</td>
@@ -50,11 +50,11 @@
 						<td>
 							<div style="float: left; width: 50%">
 								<a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2')" onmouseout="cp('mark${post/getId}','buttons/lese1')">
-									<img src="${GFX}/buttons/lese1.gif" title="Lesezeichen setzen" name="mark${post/getId}" />
+									<img src="assets/buttons/lese1.gif" title="Lesezeichen setzen" name="mark${post/getId}" />
 								</a>
 								<tal:block tal:condition="post/isEditAble">
 									<a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2')" onmouseout="cp('edit${post/getId}','buttons/knedit1')">
-										<img src="${GFX}/buttons/knedit1.gif" title="Beitrag editieren" name="edit${post/getId}" />
+										<img src="assets/buttons/knedit1.gif" title="Beitrag editieren" name="edit${post/getId}" />
 									</a>
 									<stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
 								</tal:block>

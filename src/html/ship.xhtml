@@ -39,7 +39,7 @@
 					<th style="text-align: center;">Name</th>
 					<td rowspan="3" style="text-align: center;">
 						<a href="javascript:void(0);" onclick="showSelfdestructWindow(${SHIP/getId});" onmouseover="cp('selfdestruct','buttons/selfdes2');" onmouseout="cp('selfdestruct','buttons/selfdes1');">
-							<img src="${GFX}/buttons/selfdes1.gif" name="selfdestruct" title="Selbstzerstörung" />
+							<img src="assets/buttons/selfdes1.gif" name="selfdestruct" title="Selbstzerstörung" />
 						</a>
 					</td>
 				</tr>
@@ -48,7 +48,7 @@
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 					</td>
 					<td style="text-align: center;">
-						<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="${GFX}/buttons/alert${SHIP/getAlertState}.gif" title="Alarmstufe" name="setalvl" /></a>
+						<a href="javascript:void(0);" onclick="showALvlWindow();"><img src="assets/buttons/alert${SHIP/getAlertState}.gif" title="Alarmstufe" name="setalvl" /></a>
 					</td>
 					<td style="text-align: center;">
 						${SHIP/getPosX}|${SHIP/getPosY}
@@ -77,20 +77,20 @@
 				<tr>
 					<td colspan="2">
 						<a href="?SHOW_SHIP=1&id=${SHIP/getId}" onmouseover="cp('uship','buttons/lese2');" onmouseout="cp('uship','buttons/lese1');">
-							<img src="${GFX}/buttons/lese1.gif" title="Aktualisieren" name="uship"/>
+							<img src="assets/buttons/lese1.gif" title="Aktualisieren" name="uship"/>
 						</a>
 						<a href="javascript:void(0);" onclick="showShipDetails(${SHIP/getId});" onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
-							<img src="${GFX}/buttons/info1.gif" title="Schiffsinformationen anzeigen" name="shinfo" />
+							<img src="assets/buttons/info1.gif" title="Schiffsinformationen anzeigen" name="shinfo" />
 						</a>
 						<a href="javascript:void(0);" onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');" onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');" >
-							<img src="${GFX}/buttons/map1.gif" title="Karte anzeigen" name="shimap" />
+							<img src="assets/buttons/map1.gif" title="Karte anzeigen" name="shimap" />
 						</a>
 					</td>
 					<td colspan="2">
-						<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;" src="${GFX}/goods/${mod/getModuleId}.gif" phptal:cache="10d" />
+						<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;" src="assets/goods/${mod/getModuleId}.gif" phptal:cache="10d" />
 					</td>
 					<td colspan="4">
-						<img tal:repeat="mod SHIP/getSystems" style="margin-right: 5px;" src="${GFX}/system/${mod/getSystemType}.gif" tal:attributes="title mod/getDescription" phptal:cache="1d" />
+						<img tal:repeat="mod SHIP/getSystems" style="margin-right: 5px;" src="assets/system/${mod/getSystemType}.gif" tal:attributes="title mod/getDescription" phptal:cache="1d" />
 					</td>
 				</tr>
 			</table>
@@ -100,7 +100,7 @@
 				<td style="width: 33%; vertical-align: top;">
 					<table class="tcal" tal:condition="not:SHIP/lssIsActive">
 						<tr>
-							<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="${GFX}/buttons/lss1.gif" title="Langstreckensensoren aktivieren" /></a> Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}" i18n:translate="">Sensoren aktivieren</a>)</th>
+							<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss1.gif" title="Langstreckensensoren aktivieren" /></a> Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}" i18n:translate="">Sensoren aktivieren</a>)</th>
 						</tr>
 						<tr>
 							<td colspan="3" style="text-align: center;">
@@ -127,14 +127,14 @@
 					<table tal:condition="SHIP/lssIsActive" tal:define="panel VISUAL_NAV_PANEL" class="lssarea" cellpadding="0" cellspacing="0">
 						<tr>
 							<td style="text-align: center; height: 30px;">
-								<a phptal:cache="1d per SHIP/getId" href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img src="${GFX}/buttons/lss2.gif" name="lss_panel" title="Langstreckensensoren deaktivieren" /></a>
+								<a phptal:cache="1d per SHIP/getId" href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss2.gif" name="lss_panel" title="Langstreckensensoren deaktivieren" /></a>
 							</td>
 							<td class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.</td>
 						</tr>
 						<tr tal:repeat="row panel/getRows">
 							<tal:block tal:repeat="entry row/getEntries">
 								<td tal:condition="entry/getRow" style="width: 30px;" tal:attributes="class entry/getCSSClass" tal:content="entry/getRow" phptal:cache="1d per entry/getRow">.</td>
-								<td tal:condition="not:entry/getRow" tal:attributes="class entry/getCSSClass" style="background-image: url(${GFX}/map/${entry/getMapfieldType}.gif)">
+								<td tal:condition="not:entry/getRow" tal:attributes="class entry/getCSSClass" style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
 									<tal:block tal:condition="entry/isClickable">
 										<div class="lssobj" onclick="moveToPosition(${entry/getPosX},${entry/getPosY});" tal:content="entry/getDisplayCount">.</div>	
 									</tal:block>	
@@ -149,35 +149,35 @@
 				<td style="vertical-align: top; width: 33%;">
 					<table class="tcal">
 						<tr>
-							<th colspan="2"><img src="${GFX}/buttons/gefecht.gif" /> Schiffskontrolle</th>
+							<th colspan="2"><img src="assets/buttons/gefecht.gif" /> Schiffskontrolle</th>
 						</tr>
 						<tr>
 							<td colspan="2">
 								<a href="?B_DEACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/shieldIsActive" onmouseover="cp('shld','buttons/shldac1');" onmouseout="cp('shld','buttons/shldac2');">
-									<img src="${GFX}/buttons/shldac2.gif" name="shld" /> Schilde deaktivieren
+									<img src="assets/buttons/shldac2.gif" name="shld" /> Schilde deaktivieren
 								</a>
 								<a href="?B_ACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/shieldIsActive" onmouseover="cp('shld','buttons/shldac2');" onmouseout="cp('shld','buttons/shldac1');">
-									<img src="${GFX}/buttons/shldac1.gif" name="shld" /> Schilde aktivieren
+									<img src="assets/buttons/shldac1.gif" name="shld" /> Schilde aktivieren
 								</a>
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasPhaser">
 							<td colspan="2">
 								<a href="?B_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/phaserIsActive" onmouseover="cp('actphaser','buttons/act_phaser1');" onmouseout="cp('actphaser','buttons/act_phaser2');">
-									<img src="${GFX}/buttons/act_phaser2.gif" name="actphaser" /> Strahlenwaffe deaktivieren</a>
+									<img src="assets/buttons/act_phaser2.gif" name="actphaser" /> Strahlenwaffe deaktivieren</a>
 								<a href="?B_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/phaserIsActive" onmouseover="cp('actphaser','buttons/act_phaser2');" onmouseout="cp('actphaser','buttons/act_phaser1');">
-									<img src="${GFX}/buttons/act_phaser1.gif" name="actphaser" /> Strahlenwaffe aktivieren</a>
+									<img src="assets/buttons/act_phaser1.gif" name="actphaser" /> Strahlenwaffe aktivieren</a>
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasTorpedo">
 							<td>
 								<a href="?B_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/torpedoIsActive" onmouseover="cp('acttorp','buttons/act_torp1');" onmouseout="cp('acttorp','buttons/act_torp2');">
-									<img src="${GFX}/buttons/act_torp2.gif" name="acttorp" /> Torpedobänke deaktivieren</a>
+									<img src="assets/buttons/act_torp2.gif" name="acttorp" /> Torpedobänke deaktivieren</a>
 								<a href="?B_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/torpedoIsActive" onmouseover="cp('acttorp','buttons/act_torp2');" onmouseout="cp('acttorp','buttons/act_torp1');">
-									<img src="${GFX}/buttons/act_torp1.gif" name="acttorp" /> Torpedobänke aktivieren</a>
+									<img src="assets/buttons/act_torp1.gif" name="acttorp" /> Torpedobänke aktivieren</a>
 							</td>
 							<td>
-								<img src="${GFX}/buttons/torp.gif" /> Torpedos: ${SHIP/getTorpedoCount}
+								<img src="assets/buttons/torp.gif" /> Torpedos: ${SHIP/getTorpedoCount}
 							</td>
 						</tr>
 						<tal:block tal:condition="SHIP/isCloakAble">
@@ -194,7 +194,7 @@
 						<table class="tcal">
 							<tr>
 								<th colspan="3">
-									<img src="${GFX}/buttons/fleet.gif" title="Flottenkontrolle" />
+									<img src="assets/buttons/fleet.gif" title="Flottenkontrolle" />
 									<span i18n:translate="">Flottenkontrolle</span>
 								</th>
 							</tr>
@@ -206,53 +206,53 @@
 							<tr>
 								<td>
 									<a href="?B_FLEET_ACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/kss1.gif" name="fl_ksson" title="Nahbereichssensoren aktivieren" />
+										<img src="assets/buttons/kss1.gif" name="fl_ksson" title="Nahbereichssensoren aktivieren" />
 									</a>
 									<a href="?B_FLEET_ACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/shldac1.gif" name="fl_shieldon" title="Schilde aktivieren" />
+										<img src="assets/buttons/shldac1.gif" name="fl_shieldon" title="Schilde aktivieren" />
 									</a>
 									<a href="?B_FLEET_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/act_phaser1.gif" name="fl_phaseron" title="Strahlenwaffen aktivieren" />
+										<img src="assets/buttons/act_phaser1.gif" name="fl_phaseron" title="Strahlenwaffen aktivieren" />
 									</a>
 									<a href="?B_FLEET_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/act_torp1.gif" name="fl_torpon" title="Torpedobänke aktivieren" />
+										<img src="assets/buttons/act_torp1.gif" name="fl_torpon" title="Torpedobänke aktivieren" />
 									</a>
 									<a href="?B_FLEET_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/tarn1.gif" name="fl_cloakon" title="Tarnung aktivieren" />
+										<img src="assets/buttons/tarn1.gif" name="fl_cloakon" title="Tarnung aktivieren" />
 									</a>
 									<a href="?B_FLEET_ACTIVATE_WARP=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/warp1.gif" name="fl_cloakon" title="Warpantrieb aktivieren" />
+										<img src="assets/buttons/warp1.gif" name="fl_cloakon" title="Warpantrieb aktivieren" />
 									</a>
 								</td>
 								<td>
 									<a href="?B_FLEET_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/kss2.gif" name="fl_kssoff" title="Nahbereichssensoren deaktivieren" />
+										<img src="assets/buttons/kss2.gif" name="fl_kssoff" title="Nahbereichssensoren deaktivieren" />
 									</a>
 									<a href="?B_FLEET_DEACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/shldac2.gif" name="fl_shieldoff" title="Schilde deaktivieren" />
+										<img src="assets/buttons/shldac2.gif" name="fl_shieldoff" title="Schilde deaktivieren" />
 									</a>
 									<a href="?B_FLEET_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/act_phaser2.gif" name="fl_phaseroff" title="Strahlenwaffen deaktivieren" />
+										<img src="assets/buttons/act_phaser2.gif" name="fl_phaseroff" title="Strahlenwaffen deaktivieren" />
 									</a>
 									<a href="?B_FLEET_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/act_torp2.gif" name="fl_torpoff" title="Torpedobänke deaktivieren" />
+										<img src="assets/buttons/act_torp2.gif" name="fl_torpoff" title="Torpedobänke deaktivieren" />
 									</a>
 									<a href="?B_FLEET_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/tarn2.gif" name="fl_cloakoff" title="Tarnung deaktivieren" />
+										<img src="assets/buttons/tarn2.gif" name="fl_cloakoff" title="Tarnung deaktivieren" />
 									</a>
 									<a href="?B_FLEET_DEACTIVATE_WARP=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/warp2.gif" name="fl_cloakoff" title="Warpantrieb deaktivieren" />
+										<img src="assets/buttons/warp2.gif" name="fl_cloakoff" title="Warpantrieb deaktivieren" />
 									</a>
 								</td>
 								<td>
 									<a href="?B_FLEET_ALERT_GREEN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/alert1.gif" title="Flotte: Alarmstufe Grün" i18n:attributes="title" />
+										<img src="assets/buttons/alert1.gif" title="Flotte: Alarmstufe Grün" i18n:attributes="title" />
 									</a>
 									<a href="?B_FLEET_ALERT_YELLOW=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/alert2.gif" title="Flotte: Alarmstufe Gelb" i18n:attributes="title" />
+										<img src="assets/buttons/alert2.gif" title="Flotte: Alarmstufe Gelb" i18n:attributes="title" />
 									</a>
 									<a href="?B_FLEET_ALERT_RED=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/alert3.gif" title="Flotte: Alarmstufe Rot" i18n:attributes="title" />
+										<img src="assets/buttons/alert3.gif" title="Flotte: Alarmstufe Rot" i18n:attributes="title" />
 									</a>
 								</td>
 							</tr>
@@ -267,10 +267,10 @@
 						<tr>
 							<td>
 								<a href="?B_UNDOCK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock','buttons/dock1')" onmouseout="cp('dock','buttons/dock2')">
-									<img src="${GFX}/buttons/dock2.gif" title="Abdocken" name="dock" />
+									<img src="assets/buttons/dock2.gif" title="Abdocken" name="dock" />
 								</a>
 								<a tal:condition="SHIP/dockedOnTradepost" href="javascript:void(0);" onclick="openTradeMenu(${SHIP/getDockedShip/getTradePostId});" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
-									<img src="${GFX}/buttons/menu_trade0.gif" title="Handel" name="trade" />
+									<img src="assets/buttons/menu_trade0.gif" title="Handel" name="trade" />
 								</a>
 							</td>
 						</tr>
@@ -297,17 +297,17 @@
 								</div>
 							</td>
 							<td tal:condition="SHIP/enableSystemLeave">
-								<img src="${GFX}/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
+								<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
 								<a href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-									<img src="${GFX}/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
+									<img src="assets/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
 								</a>
 							
 							</td>
 							<tal:block tal:condition="not:SHIP/isInSystem">
 								<td tal:condition="SHIP/isOverSystem">
-									<img src="${GFX}/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
+									<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
 									<a href="ship.php?B_ENTER_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="${GFX}/buttons/sysenter1.gif" name="sysleave" title="Ins System einfliegen" /> einfliegen
+										<img src="assets/buttons/sysenter1.gif" name="sysleave" title="Ins System einfliegen" /> einfliegen
 									</a>
 								</td>
 							</tal:block>
@@ -322,12 +322,12 @@
 							<tr>
 								<td style="width: 50%;">
 									<a href="colony.php?SHOW_COLONY=1&id=${SHIP/getCurrentColony/getId}" tal:condition="SHIP/getCurrentColony/ownedByCurrentUser">
-										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 										<span tal:replace="structure bbcode:SHIP/getCurrentColony/getName">NAME</span>
 									</a>
 									<tal:block tal:condition="not:SHIP/getCurrentColony/isFree">
 										<span tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser">
-											<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+											<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 											<span tal:condition="not:SHIP/getCurrentColony/isFree" tal:replace="structure bbcode:SHIP/getCurrentColony/getName">NAME</span>
 										</span>	
 										<div>
@@ -336,21 +336,21 @@
 										</div>
 									</tal:block>
 									<tal:block tal:condition="SHIP/getCurrentColony/isFree">
-										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 										<span tal:replace="SHIP/getCurrentColony/getPlanetType/getName">PLANETTYPE</span>
 									</tal:block> 
 								</td>
 								<td style="width: 50%;">
 									<div tal:condition="not:SHIP/getCurrentColony/isFree" style="margin-top: 5px;">
 										<a href="javascript:void(0);" onclick="showBToColonyWindow(${SHIP/getCurrentColony/getId});" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
-											<img src="${GFX}/buttons/b_down1.gif" name="beamfrom" title="Zu der Kolonie beamen" />
+											<img src="assets/buttons/b_down1.gif" name="beamfrom" title="Zu der Kolonie beamen" />
 										</a>
 										<a href="javascript:void(0);" onclick="showBFromColonyWindow(${SHIP/getCurrentColony/getId});" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
-											<img src="${GFX}/buttons/b_up1.gif" name="beamto" title="Von der Kolonie beamen" />
+											<img src="assets/buttons/b_up1.gif" name="beamto" title="Von der Kolonie beamen" />
 										</a>
 									</div>	
 									<tal:block tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser">
-										<img src="${GFX}/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 										<a onclick="showColonization(${SHIP/getCurrentColony/getId});" href="javascript:void(0);" tal:condition="CAN_COLONIZE_CURRENT_COLONY">
 											Kolonie gründen
 										</a>
@@ -367,13 +367,13 @@
 					<table class="tcal" tal:condition="SHIP/isWarpAble">
 						<tr>
 							<th colspan="2">
-								<img src="${GFX}/buttons/warpsys.gif" />
+								<img src="assets/buttons/warpsys.gif" />
 								<span i18n:translate="">Warp-System</span>
 							</th>
 						</tr>
 						<tr tal:condition="SHIP/hasWarpcore">
 							<td style="width:50%;">
-								<img src="${GFX}/buttons/warpk.gif" title="Warpkern" /> ${SHIP/getWarpcoreLoad}/${SHIP/getWarpcoreCapacity}
+								<img src="assets/buttons/warpk.gif" title="Warpkern" /> ${SHIP/getWarpcoreLoad}/${SHIP/getWarpcoreCapacity}
 							</td>
 							<td>
 								<input type="submit" class="button" name="B_LOAD_WARPCORE" value="Aufladen" /> <input type="submit" class="button" name="B_LOAD_WARPCORE_MAX" value="max" />
@@ -382,8 +382,8 @@
 						</tr>
 						<tr tal:condition="SHIP/isWarpPossible">
 							<td style="width:50%;">
-								<img src="${GFX}/buttons/warp1.gif" title="Warpantrieb deaktiviert" tal:condition="not:SHIP/getWarpState" />
-								<img src="${GFX}/buttons/warp2.gif" title="Warpantrieb aktiviert" tal:condition="SHIP/getWarpState" />
+								<img src="assets/buttons/warp1.gif" title="Warpantrieb deaktiviert" tal:condition="not:SHIP/getWarpState" />
+								<img src="assets/buttons/warp2.gif" title="Warpantrieb aktiviert" tal:condition="SHIP/getWarpState" />
 								Warpantrieb
 							</td>
 							<td>
@@ -395,7 +395,7 @@
 					<table class="tcal" tal:condition="SHIP/hasEmergencyBattery">
 						<tr>
 							<th>
-								<img src="${GFX}/buttons/batt.gif" title="Ersatzbatterie" /> Ersatzbatterie ${SHIP/getEBatt} / ${SHIP/getMaxEBatt}
+								<img src="assets/buttons/batt.gif" title="Ersatzbatterie" /> Ersatzbatterie ${SHIP/getEBatt} / ${SHIP/getMaxEBatt}
 							</th>
 						</tr>
 						<tr>
@@ -411,7 +411,7 @@
 					</table>
 					<table class="tcal" tal:condition="SHIP/isTraktorBeamActive">
 						<tr>
-							<th colspan="2"><img src="${GFX}/buttons/trak.gif" title="Traktorstrahl" /> Traktorstrahl</th>
+							<th colspan="2"><img src="assets/buttons/trak.gif" title="Traktorstrahl" /> Traktorstrahl</th>
 						</tr>
 						<tr>
 							<td colspan="2" tal:condition="SHIP/traktorBeamFromShip">
@@ -424,7 +424,7 @@
 						</tr>
 						<tr>
 							<td>
-								<img src="${GFX}/ships/${SHIP/getTraktorShip/getRumpId}.gif" />
+								<img src="assets/ships/${SHIP/getTraktorShip/getRumpId}.gif" />
 							</td>
 							<td>
 								<input tal:condition="SHIP/traktorBeamFromShip" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR" i18n:attributes="value" value="Deaktivieren" />
@@ -440,8 +440,8 @@
 		<table class="tcal">
 			<tr>
 				<th>
-					<a href="?B_ACTIVATE_NBS=1&id=${SHIP/getId}" tal:condition="not:SHIP/nbsIsActive"><img src="${GFX}/buttons/kss1.gif" /> Nahbereichssensoren aktivieren</a>
-					<a href="?B_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/nbsIsActive"><img src="${GFX}/buttons/kss2.gif" /> Nahbereichssensoren deaktivieren</a>
+					<a href="?B_ACTIVATE_NBS=1&id=${SHIP/getId}" tal:condition="not:SHIP/nbsIsActive"><img src="assets/buttons/kss1.gif" /> Nahbereichssensoren aktivieren</a>
+					<a href="?B_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/nbsIsActive"><img src="assets/buttons/kss2.gif" /> Nahbereichssensoren deaktivieren</a>
 				</th>
 			</tr>
 		</table>
@@ -576,19 +576,19 @@
 		<br />
 		<table class="use" style="width: 200px;">
 			<tr>
-				<th><img src="${GFX}/buttons/lager.gif" title="Lagerraum" /> Lagerraum ${SHIP/getStorageSum}/${SHIP/getMaxStorage}</th>
+				<th><img src="assets/buttons/lager.gif" title="Lagerraum" /> Lagerraum ${SHIP/getStorageSum}/${SHIP/getMaxStorage}</th>
 				<tr>
 					<td>
 						<tal:block tal:repeat="good SHIP/getStorage">
 							<tal:block tal:condition="good/getAmount">
 								<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-									<img src="${GFX}/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
+									<img src="assets/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
 								</div>
 								<tal:block tal:condition="repeat/good/odd">
 									<div tal:condition="repeat/good/last" style="float: left; width: 50%;"> </div>
 								</tal:block>
 								<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-									<img src="${GFX}/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
+									<img src="assets/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
 								</div>
 								<br tal:condition="repeat/good/odd" style="clear: both;" />
 							</tal:block>

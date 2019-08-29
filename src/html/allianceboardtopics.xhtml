@@ -12,7 +12,7 @@
 			<tr tal:repeat="topic TOPICS" tal:attributes="class string:row${repeat/topic/odd}">
 				<td>
 					<div style="display: table-cell; width: 100%">
-						<img src="${GFX}/buttons/board_important.png" title="Wichtig" i18n:attributes="title" tal:condition="topic/getSticky" />
+						<img src="assets/buttons/board_important.png" title="Wichtig" i18n:attributes="title" tal:condition="topic/getSticky" />
 						<a href="alliance.php?SHOW_TOPIC=1&bid=${topic/getBoardId}&tid=${topic/getId}&mark=0" tal:content="structure topic/getName">
 							NAME
 						</a>
@@ -29,7 +29,7 @@
 				<td tal:condition="not:topic/getLatestPost">-</td>
 				<td style="width: 30px; text-align: center;" tal:condition="EDITABLE" tal:define="handle THIS/getUniqId">
 					<a href="javascript:void(0)" onclick="openTopicSettings(this,${topic/getId},${topic/getBoardId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
-						<img src="${GFX}/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
+						<img src="assets/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
 					</a>
 				</td>
 			</tr>

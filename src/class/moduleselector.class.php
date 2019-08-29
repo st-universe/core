@@ -60,7 +60,6 @@ class ModuleSelector { #{{{
 			$this->template = $container->get(TalPageInterface::class);
 			$this->template->setTemplate($this->templateFile);
 			$this->template->setVar('THIS',$this);
-			$this->template->setVar('GFX', GFX_PATH);
 		}
 		return $this->template;
 	} # }}}

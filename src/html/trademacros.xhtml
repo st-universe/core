@@ -22,7 +22,7 @@
 				<tr>
 					<th>Handelsnetz</th>
 					<td>
-						<img src="${GFX}/rassen/${TRADE_POST/getTradeNetwork}s.gif" />
+						<img src="assets/rassen/${TRADE_POST/getTradeNetwork}s.gif" />
 					</td>
 				</tr>
 				<tr>
@@ -49,7 +49,7 @@
 	</metal:macro>
 	<tal:block metal:define-macro="tradepost">
 		<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/info2');" onmouseout="cp('${handle}','buttons/info1');" onclick="openTradepostInfo(${id},0,0);">
-			<img src="${GFX}/buttons/info1.gif" tal:attributes="name handle" title="Details" />
+			<img src="assets/buttons/info1.gif" tal:attributes="name handle" title="Details" />
 		</a>
 	</tal:block>
 	<metal:macro metal:define-macro="offerbygood">
@@ -63,17 +63,17 @@
 				</tr>
 				<tr tal:repeat="data OFFER">
 					<td>
-						<img src="${GFX}/goods/${data/getOfferedGoodId}.gif" /> <span tal:replace="data/getOfferedGoodCount">COUNT</span>
+						<img src="assets/goods/${data/getOfferedGoodId}.gif" /> <span tal:replace="data/getOfferedGoodCount">COUNT</span>
 					</td>
 					<td>
-						<img src="${GFX}/goods/${data/getWantedGoodId}.gif" /> <span tal:replace="data/getWantedGoodCount">COUNT</span>
+						<img src="assets/goods/${data/getWantedGoodId}.gif" /> <span tal:replace="data/getWantedGoodCount">COUNT</span>
 					</td>
 					<td>
 						<span tal:replace="data/getOfferCount">AMOUNT</span>
 					</td>
 					<td>
 						<a href="?B_CANCEL_OFFER=1&offerid=${data/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('del_${repeat/data/key}','buttons/x2')" onmouseout="cp('del_${repeat/data/key}','buttons/x1')">
-							<img src="${GFX}/buttons/x1.gif" name="del_${repeat/data/key}" title="Angebot löschen" />
+							<img src="assets/buttons/x1.gif" name="del_${repeat/data/key}" title="Angebot löschen" />
 						</a>
 					</td>
 				</tr>
@@ -122,7 +122,7 @@
 									</select>
 									<tal:block tal:condition="not:IS_DILITHIUM">
 										<input type="hidden" name="wgid" value="8" />
-										<img src="${GFX}/goods/8.gif" title="Dilithium"/>
+										<img src="assets/goods/8.gif" title="Dilithium"/>
 									</tal:block>
 								</td>
 							</tr>
@@ -169,7 +169,7 @@
 								</td>
 								<td tal:content="post/getName" colspan="2">NAME</td>
 								<td>
-									<img src="${GFX}/buttons/lager.gif" title="Freier Lagerraum" />
+									<img src="assets/buttons/lager.gif" title="Freier Lagerraum" />
 									<span tal:replace="post/getFreeStorage">STORAGE</span>
 								</td>
 							</tr>
@@ -193,10 +193,10 @@
 					<td>
 						Wie oft soll das Angebot angenommen werden?<br /><br />
 						<div style="width: 100%; text-align: center;">
-							<img src="${GFX}/goods/${SELECTED_OFFER/getOfferedGoodId}.gif" />
+							<img src="assets/goods/${SELECTED_OFFER/getOfferedGoodId}.gif" />
 							<span tal:replace="SELECTED_OFFER/getOfferedGoodCount">GCOUNT</span>
 							gegen
-							<img src="${GFX}/goods/${SELECTED_OFFER/getWantedGoodId}.gif" />
+							<img src="assets/goods/${SELECTED_OFFER/getWantedGoodId}.gif" />
 							<span tal:replace="SELECTED_OFFER/getWantedGoodCount">WCOUNT</span>
 							<br />
 							<br />
@@ -204,7 +204,7 @@
 						</div>
 						<br />
 						<div style="text-align: center;" tal:condition="exists:SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedGoodId}">
-							Lagernd auf diesem Handelsposten: <img src="${GFX}/goods/${SELECTED_OFFER/getWantedGoodId}.gif" /> <span tal:replace="SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedGoodId}/getAmount">COUNT</span><br />
+							Lagernd auf diesem Handelsposten: <img src="assets/goods/${SELECTED_OFFER/getWantedGoodId}.gif" /> <span tal:replace="SELECTED_OFFER/getTradePost/getStorageByCurrentUser/getStorage/${SELECTED_OFFER/getWantedGoodId}/getAmount">COUNT</span><br />
 						</div>
 					</td>
 				</tr>
@@ -216,7 +216,7 @@
 				</tr>
 				<tr>
 					<td>
-						<img src="${GFX}/buttons/lager.gif" title="Freier Lagerraum" /> <span tal:replace="SELECTED_OFFER/getTradePost/getFreeStorage">FREESTORAGE</span> (<span tal:replace="SELECTED_OFFER/getTradePost/getStorage">STORAGE</span>)
+						<img src="assets/buttons/lager.gif" title="Freier Lagerraum" /> <span tal:replace="SELECTED_OFFER/getTradePost/getFreeStorage">FREESTORAGE</span> (<span tal:replace="SELECTED_OFFER/getTradePost/getStorage">STORAGE</span>)
 					</td>
 				</tr>
 			</table>

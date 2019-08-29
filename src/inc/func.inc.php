@@ -105,7 +105,7 @@ function renderShieldStatusBar(&$active,&$shields,&$maxshields) {
 	return $bar;
 }
 function getStatusBar($color,$amount,$title='') {
-	return '<img src="'.GFX_PATH.'/bars/balken.png" style="background-color: #'.$color.';height: 12px; width:'.round($amount).'px;" title="'.$title.'" />';
+	return '<img src="assets/bars/balken.png" style="background-color: #'.$color.';height: 12px; width:'.round($amount).'px;" title="'.$title.'" />';
 }
 
 function getPercentageStatusBar($color,$amount,$maxamount) {

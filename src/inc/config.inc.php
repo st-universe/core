@@ -35,7 +35,6 @@ $global_path = __DIR__.'/../../';
 $config = $container->get(\Noodlehaus\ConfigInterface::class);
 
 define("APP_PATH", $global_path);
-define("GFX_PATH","assets");
 // Generator dirs
 define("GENERATOR_DIR",APP_PATH."/src/admin/generators/");
 define("GENERATED_DIR",APP_PATH."/src/inc/generated/");

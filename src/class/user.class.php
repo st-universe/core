@@ -141,7 +141,7 @@ class UserData extends BaseTable {
 
 	function getFullAvatarPath() {
 		if (!$this->getAvatar()) {
-			return GFX_PATH."/rassen/".$this->getFaction()."kn.png";
+			return "/assets/rassen/".$this->getFaction()."kn.png";
 		}
 		return AVATAR_USER_PATH."/".$this->getAvatar().".png";
 	}

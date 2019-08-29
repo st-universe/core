@@ -44,7 +44,7 @@
 						<td>
 							<tal:block tal:condition="MAY_EDIT">
 							<a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&B_DEL_PLOTMEMBER=1&memid=${members/user/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('rmm${members/user/getId}','buttons/x2')" onmouseout="cp('rmm${members/user/getId}','buttons/x1')">
-									<img src="${GFX}/buttons/x1.gif" title="Schreiber entfernen" name="rmm${members/user/getId}" />
+									<img src="assets/buttons/x1.gif" title="Schreiber entfernen" name="rmm${members/user/getId}" />
 								</a>
 							</tal:block>
 							<tal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id members/user/getId" />

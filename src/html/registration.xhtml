@@ -56,7 +56,7 @@
 	</metal:macro>
 	<metal:macro metal:define-macro="faction_entry">
 		<div id="fachead_${data/getId}">
-			<img src="${GFX}/rassen/${data/getId}s.gif" /> <strong tal:content="data/getName">NAME</strong>
+			<img src="assets/rassen/${data/getId}s.gif" /> <strong tal:content="data/getName">NAME</strong>
 			<span tal:condition="data/getPlayerLimit">
 				(<span tal:replace="data/getPlayerAmount">AMOUNT</span>/<span tal:replace="data/getPlayerLimit">LIMIT</span>)
 			</span>

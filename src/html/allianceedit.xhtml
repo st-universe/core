@@ -23,7 +23,7 @@
 			<div style="margin-left: 5px; width: 200px; float: left;">
 				<div class="divhead" i18n:translate="">Rassenallianz</div>
 				<div class="divbody">
-					<img src="${GFX}/rassen/${THIS/getUser/getFaction}s.gif" />
+					<img src="assets/rassen/${THIS/getUser/getFaction}s.gif" />
 					<input type="checkbox" tal:condition="ALLIANCE/mayEditFactionMode" name="factionid" value="1" tal:attributes="checked ALLIANCE/getFactionId" />
 					<input type="checkbox" tal:condition="not:ALLIANCE/mayEditFactionMode" readonly="readonly" name="factionid" tal:attributes="checked ALLIANCE/getFactionId" />
 				</div>

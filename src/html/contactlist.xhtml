@@ -27,7 +27,7 @@
 								<span tal:replace="structure bbcode:contact/getRecipient/getName">USER</span> (<span tal:replace="contact/getRecipient/getId">ID</span>)
 							</td>
 							<td style="width: 16px;">
-								<img tal:condition="not:contact/getComment" src="${GFX}/buttons/b_down1.gif" title="Kommentar" i18n:attributes="title" onclick="toggleTableRowVisible('contact_comment_${contact/getId}')" />
+								<img tal:condition="not:contact/getComment" src="assets/buttons/b_down1.gif" title="Kommentar" i18n:attributes="title" onclick="toggleTableRowVisible('contact_comment_${contact/getId}')" />
 							</td>
 						</tr>
 						<tr tal:attributes="style contact/getCommentStyle" id="contact_comment_${contact/getId}">

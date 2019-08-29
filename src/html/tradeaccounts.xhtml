@@ -21,7 +21,7 @@
 						</div>
 						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorageByCurrentUser/getStorage">
 							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})" style="display: block; padding: 4px;" class="tradebutton">
-								<img src="${GFX}/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
+								<img src="assets/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
 							</a>
 						</div>
 					</td>
@@ -31,7 +31,7 @@
 						</div>
 						<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorageByCurrentUser">
 							<a href="javascript:void(0);" onclick="showTradeOfferByGood(${data/getId},${stor/getGoodId})" style="display: block; padding: 4px;" class="tradebutton">
-								<img src="${GFX}/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
+								<img src="assets/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
 							</a>
 						</div>
 					</td>
@@ -41,7 +41,7 @@
 				<tr>
 					<td class="darkbg">Handelsnetz</td>
 					<td>
-						<img src="${GFX}/rassen/${data/getTradeNetwork}s.gif" />
+						<img src="assets/rassen/${data/getTradeNetwork}s.gif" />
 						<a href="javascript:void(0);" onclick="openShoutbox(${data/getTradeNetwork})">Schwarzes Brett</a>
 					</td>
 				</tr>

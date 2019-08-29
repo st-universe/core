@@ -1,9 +1,9 @@
 <html xmlns:stu="stu">
 <tal:block metal:define-macro="pmwindow" tal:define="handle THIS/getUniqId">
-	<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2');" onmouseout="cp('${handle}','buttons/msg1');" onclick="closePopup();openPmWindow(${id});"><img src="${GFX}/buttons/msg1.gif" tal:attributes="name handle" title="Nachricht senden" /></a>
+	<a href="javascript:void(0);" onmouseover="cp('${handle}','buttons/msg2');" onmouseout="cp('${handle}','buttons/msg1');" onclick="closePopup();openPmWindow(${id});"><img src="assets/buttons/msg1.gif" tal:attributes="name handle" title="Nachricht senden" /></a>
 </tal:block>
 <tal:block metal:define-macro="userprofile" tal:define="handle THIS/getUniqId">
-	<a href="userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2');"  onmouseout="cp('${handle}','buttons/info1');"><img src="${GFX}/buttons/info1.gif" tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
+	<a href="userprofile.php?uid=${id}" onmouseover="cp('${handle}','buttons/info2');"  onmouseout="cp('${handle}','buttons/info1');"><img src="assets/buttons/info1.gif" tal:attributes="name handle" title="Siedlerprofil ansehen" /></a>
 </tal:block>
 <tal:block metal:define-macro="ignoretext">
 	<span style="color: #c37700;">Sieder wird ignoriert</span>
@@ -27,32 +27,32 @@
 		<tr>
 			<td style="vertical-align: top;">
 				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_0">
-					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+					<img src="assets/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
 				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_1">
-					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+					<img src="assets/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
 				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_2">
-					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+					<img src="assets/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
 				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_3">
-					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+					<img src="assets/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
 				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_4">
-					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+					<img src="assets/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 			<td style="vertical-align: top;">
 				<div tal:repeat="data POSSIBLE_FIELD_TYPES/row_5">
-					<img src="${GFX}/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
+					<img src="assets/map/${data/getType}.gif" title="runtime" style="cursor: pointer;" tal:attributes="title data/getName" onclick="selectNewSystemMapField('${field/getId}','${field/getSX}','${field/getSY}','${data/getId}','${data/getType}')" />
 				</div>
 			</td>
 		</tr>
@@ -75,7 +75,7 @@
 		<div style="float: left; width: 15px; text-align: right;">
 			<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id data/getId" />	
 			<metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id data/getId" />	
-			<img src="${GFX}/rassen/${data/getFaction}s.gif" />
+			<img src="assets/rassen/${data/getFaction}s.gif" />
 		</div>
 	</div>
 </metal:block>
@@ -92,7 +92,7 @@
 				<td>&nbsp;</td>
 				<td>
 					<div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_UP" onclick="showMapBy('${NAV_UP/x}','${NAV_UP/y}');">
-						<img src="${GFX}/buttons/b_up1.gif" name="aup" />
+						<img src="assets/buttons/b_up1.gif" name="aup" />
 					</div>
 				</td>
 				<td>&nbsp;</td>
@@ -101,7 +101,7 @@
 			<tr>
 				<td>
 					<div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_LEFT" onclick="showMapBy('${NAV_LEFT/x}','${NAV_LEFT/y}');">
-						<img src="${GFX}/buttons/b_from1.gif" name="aleft" />
+						<img src="assets/buttons/b_from1.gif" name="aleft" />
 					</div>
 				</td>
 				<td style="width: 30px;">&nbsp;</td>
@@ -120,7 +120,7 @@
 				<td style="width: 30px;">&nbsp;</td>
 				<td>
 					<div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_RIGHT" onclick="showMapBy('${NAV_RIGHT/x}','${NAV_RIGHT/y}');">
-						<img src="${GFX}/buttons/b_to1.gif" name="aright" />
+						<img src="assets/buttons/b_to1.gif" name="aright" />
 					</div>
 				</td>
 			</tr>
@@ -129,7 +129,7 @@
 				<td>&nbsp;</td>
 				<td>
 					<div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')" style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_DOWN" onclick="showMapBy('${NAV_DOWN/x}','${NAV_DOWN/y}');">
-						<img src="${GFX}/buttons/b_down1.gif" name="adown" />
+						<img src="assets/buttons/b_down1.gif" name="adown" />
 					</div>
 				</td>
 				<td>&nbsp;</td>
@@ -139,7 +139,7 @@
 	</div>
 </metal:block>
 <metal:block metal:define-macro="crewimage">
-	<img phptal:cache="1d per crew/getId" src="${GFX}/crew/${crew/getRace/getDefine}/${crew/getGenderShort}/1_${crew/getType}.png" />
+	<img phptal:cache="1d per crew/getId" src="assets/crew/${crew/getRace/getDefine}/${crew/getGenderShort}/1_${crew/getType}.png" />
 </metal:block>
 <metal:macro metal:define-macro="render_contactoptions" tal:define="handle THIS/getUniqId">
 	<!-- userId is needed -->

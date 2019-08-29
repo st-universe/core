@@ -18,21 +18,21 @@
 				</td>
 				<td>
 					<div style="font-size: 120%">
-						<img src="${GFX}/rassen/${data/getFaction}s.gif" />
+						<img src="assets/rassen/${data/getFaction}s.gif" />
 						<span tal:content="structure bbcode:data/getName">NAME</span>
 					</div>
 					<div>
-						<img src="${GFX}/buttons/time.gif" title="Zuletzt online" i18n:attributes="title" />
+						<img src="assets/buttons/time.gif" title="Zuletzt online" i18n:attributes="title" />
 						<span tal:content="datetime:data/getLastActionDate">LASTACTION</span>
 					</div>
 				</td>
 				<td>
-					<img src="${GFX}/planets/${col/getColonyClass}.gif" title="runtime" tal:attributes="title col/getNameWithoutMarkup" tal:repeat="col data/getColonies" />
+					<img src="assets/planets/${col/getColonyClass}.gif" title="runtime" tal:attributes="title col/getNameWithoutMarkup" tal:repeat="col data/getColonies" />
 				</td>
 				<td>
 					<div style="display: inline-block; padding-left: 10px; text-align: center;" tal:repeat="rump data/getShipRumpList">
 						${rump/amount} ${rump/name}<br />
-						<img src="${GFX}/ships/${rump/rump_id}.gif" tal:attributes="title rump/name" />
+						<img src="assets/ships/${rump/rump_id}.gif" tal:attributes="title rump/name" />
 					</div>
 				</td>
 				<td style="width: 200px; text-align: center;" tal:condition="not:data/isCurrentUser">

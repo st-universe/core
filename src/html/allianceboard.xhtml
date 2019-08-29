@@ -26,7 +26,7 @@
 				<td tal:condition="not:board/getLatestPost">-</td>
 				<td style="text-align: center;" tal:condition="EDITABLE" tal:define="handle THIS/getUniqId">
 					<a href="javascript:void(0)" onclick="openBoardSettings(this,${board/getId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
-						<img src="${GFX}/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
+						<img src="assets/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
 					</a>
 				</td>
 			</tr>

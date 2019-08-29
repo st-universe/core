@@ -10,7 +10,7 @@
 			</tr>
 			<tr tal:repeat="data RESEARCH_LIST" tal:attributes="class string:row${repeat/data/odd}">
 				<td class="center">
-					<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
+					<img src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
 					<span tal:content="data/getPoints">POINTS</span>
 				</td>
 				<td style="vertical-align: middle;">

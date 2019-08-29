@@ -26,7 +26,7 @@
 							<tr>
 								<td tal:content="SELECTED_RESEARCH/getPoints">POINTS</td>
 								<td tal:condition="SELECTED_RESEARCH/getGoodId">
-									<img src="${GFX}/goods/${SELECTED_RESEARCH/getGoodId}.gif" /> <span tal:replace="SELECTED_RESEARCH/getGood/getName"></span>
+									<img src="assets/goods/${SELECTED_RESEARCH/getGoodId}.gif" /> <span tal:replace="SELECTED_RESEARCH/getGood/getName"></span>
 								</td>
 							</tr>
 						</table>
@@ -46,7 +46,7 @@
 				<tal:block tal:condition="not:SELECTED_RESEARCH/isResearchFinished">
 					<br />
 					<div style="width: 100%; text-align: center">
-						<img style="width: 12px; height: 12px;" src="${GFX}/buttons/menu_forsch1.gif" title="Forschung" />
+						<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung" />
 						<span tal:replace="structure php:renderResearchStatusBar(SELECTED_RESEARCH.getPoints()-SELECTED_RESEARCH.getResearchState().getActive(),SELECTED_RESEARCH.getPoints())">STATUSBAR</span>
 						Status:<span tal:replace="SELECTED_RESEARCH/getDonePoints">COUNT</span>/<span tal:replace="SELECTED_RESEARCH/getPoints">MAXCOUNT</span>
 					</div>

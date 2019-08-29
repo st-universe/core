@@ -50,7 +50,7 @@
                 </div>
                 <div class="iblock right" style="width: 8%">
                     <a href="javascript:void(0);" onclick="showPMCategoryWindow(${cat/getId});" onmouseover="cp('catedit${cat/getId}','buttons/knedit2')" onmouseout="cp('catedit${cat/getId}','buttons/knedit1')">
-                        <img src="${GFX}/buttons/knedit1.gif" title="Editieren" name="catedit${cat/getId}" />
+                        <img src="assets/buttons/knedit1.gif" title="Editieren" name="catedit${cat/getId}" />
                     </a>
                 </div>
 			</li>
@@ -111,11 +111,11 @@
 	<metal:macro metal:define-macro="newpmnavlet">
 		<div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" tal:repeat="item PM_NAVLET" class="action" onclick="goToUrl('comm.php?SHOW_PM_CAT=1&pmcat=${item/getId}')">
 			<tal:block tal:condition="item/hasNewPMs">
-				<img src="${GFX}/buttons/pmnavlet_${repeat/item/key}_1.gif" width="30" height="30" />
+				<img src="assets/buttons/pmnavlet_${repeat/item/key}_1.gif" width="30" height="30" />
 				<div style="margin-top: 5px; color: red; text-decoration: blink" tal:content="item/getCategoryCountNew">COUNT</div>
 			</tal:block>
 			<tal:block tal:condition="not:item/hasNewPms">
-				<img src="${GFX}/buttons/pmnavlet_${repeat/item/key}_0.gif" width="30" height="30" id="newpm${repeat/item/key}" onmouseover="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_1')" onmouseout="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_0')"  />
+				<img src="assets/buttons/pmnavlet_${repeat/item/key}_0.gif" width="30" height="30" id="newpm${repeat/item/key}" onmouseover="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_1')" onmouseout="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_0')"  />
 				<div style="margin-top: 5px">0</div>
 			</tal:block>
 		</div>

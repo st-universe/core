@@ -12,7 +12,7 @@
                 <div class="p100 pm" tal:repeat="post PM_LIST">
                     <div class="title">
                         <div class="iblock pm_sender">
-                            <img src="${GFX}/rassen/${post/getSender/getFaction}s.gif" />
+                            <img src="assets/rassen/${post/getSender/getFaction}s.gif" />
                             <span tal:condition="not:CATEGORY/isPMOutDir" i18n:translate="">Von:</span>
                             <span tal:condition="CATEGORY/isPMOutDir" i18n:translate="">An:</span>
                             <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
@@ -38,14 +38,14 @@
                             <input type="checkbox" name="deleted[]" value="runtime" tal:attributes="value post/getId" />
                             <tal:block tal:condition="post/displayUserLinks">
                                 <a href="?WRITE_PM=1&reply=${post/getId}" onmouseover="cp('reply${post/getId}','buttons/msg2');" onmouseout="cp('reply${post/getId}','buttons/msg1');">
-                                    <img src="${GFX}/buttons/msg1.gif" name="reply${post/getId}" title="Antwort verfassen" />
+                                    <img src="assets/buttons/msg1.gif" name="reply${post/getId}" title="Antwort verfassen" />
                                 </a>
                                 <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id post/getSenderId" />
                             </tal:block>
-                            <img tal:condition="post/isReplied" src="${GFX}/buttons/postein2.gif" title="Diese Nachricht wurde bereits beantwortet" />
+                            <img tal:condition="post/isReplied" src="assets/buttons/postein2.gif" title="Diese Nachricht wurde bereits beantwortet" />
                             <div class="iblock" style="padding-left: 15px;">
                                 <a href="?SHOW_PM_CAT=1&B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&deleted[]=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2')" onmouseout="cp('del${post/getId}','buttons/x1')">
-                                    <img src="${GFX}/buttons/x1.gif" name="del${post/getId}" title="Nachricht löschen" />
+                                    <img src="assets/buttons/x1.gif" name="del${post/getId}" title="Nachricht löschen" />
                                 </a>
                             </div>
                         </div>

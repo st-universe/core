@@ -44,10 +44,10 @@
 				<td class="darkbg" i18n:translate="">Baukosten</td>
 				<td>
 					<div>
-						<img src="${GFX}/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> ${RUMP/getEpsCost}
+						<img src="assets/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> ${RUMP/getEpsCost}
 					</div>
 					<div tal:repeat="data RUMP/getBuildingCosts">
-						<img src="${GFX}/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" /> ${data/getAmount}
+						<img src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" /> ${data/getAmount}
 					</div>
 				</td>
 			</tr>
@@ -62,10 +62,10 @@
 			</tr>
 			<tr tal:repeat="data REGION/getMapFieldTypes">
 				<td style="width: 30px">
-					<img src="${GFX}/map/${data/getType}.gif" tal:attributes="title data/getName" />
+					<img src="assets/map/${data/getType}.gif" tal:attributes="title data/getName" />
 				</td>
 				<td style="text-align: center; vertical-align: middle;">
-					<img src="${GFX}/buttons/e_trans2.gif" title="Flugkosten" /> ${data/getEpsCost}
+					<img src="assets/buttons/e_trans2.gif" title="Flugkosten" /> ${data/getEpsCost}
 				</td>
 				<td style="vertical-align: middle;">
 					Schaden: ${data/getSpecialDamage}
@@ -83,7 +83,7 @@
 				<tr tal:repeat="yaxis map/fields">
 					<th tal:content="repeat/yaxis/key">CY</th>
 					<td tal:repeat="xaxis yaxis" class="lss">
-						<img src="${GFX}/map/${xaxis/getFieldType/getType}.gif" />
+						<img src="assets/map/${xaxis/getFieldType/getType}.gif" />
 					</td>
 				</tr>
 			</table>
@@ -91,7 +91,7 @@
 		<div style="width: 200px; padding-left: 5px;display: table-cell; width: 150px; vertical-align:top;">
 			<div class="divhead" style="width: 200px;" tal:content="SYSTEM/getName">NAME</div>
 			<div class="divbody">
-				<img src="${GFX}/map/${SYSTEM/getType}.gif" /><br />
+				<img src="assets/map/${SYSTEM/getType}.gif" /><br />
 				<span i18n:translate="">Typ</span>: ${SYSTEM/getSystemType/getDescription}<br />
 				<span i18n:translate="">Koordinaten</span>: ${SYSTEM/getCX}|${SYSTEM/getCY}<br />
 			</div>

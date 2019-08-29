@@ -176,7 +176,6 @@ final class GameController implements GameControllerInterface
             $this->maintenanceView();
         }
         $this->talPage->setVar('THIS', $this);
-        $this->talPage->setVar('GFX', GFX_PATH);
         $this->talPage->setVar('USER', $user);
 
         if ($user !== null) {

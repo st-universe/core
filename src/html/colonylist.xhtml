@@ -26,11 +26,11 @@
 					<td style="vertical-align: middle;" tal:define="system colony/getSystem">
 						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%" tal:content="structure bbcode:colony/getName">.</a>
 						<div>
-							<img src="${GFX}/map/${colony/getSystem/getMapField/getFieldId}.gif" tal:attributes="title system/getSystemType/getDescription" style="width: 15px; height: 15px;" /> ${colony/getPosX}|${colony/getPosY} (${system/getName}-System ${system/getCX}|${system/getCY})
+							<img src="assets/map/${colony/getSystem/getMapField/getFieldId}.gif" tal:attributes="title system/getSystemType/getDescription" style="width: 15px; height: 15px;" /> ${colony/getPosX}|${colony/getPosY} (${system/getName}-System ${system/getCX}|${system/getCY})
 						</div>
 					</td>
 					<td style="vertical-align: middle;">
-						<img src="${GFX}/bev/bev_used_5_${THIS/getUser/getFaction}.gif" />
+						<img src="assets/bev/bev_used_5_${THIS/getUser/getFaction}.gif" />
 						<span tal:replace="colony/getPopulation">POPULATION</span>/<span tal:replace="colony/getMaxBev">HOUSING</span> (<span tal:replace="colony/getImmigration">IMMIGRATION</span>)
 					</td>
 					<td style="vertical-align: middle;">
@@ -41,7 +41,7 @@
 						<span tal:content="structure php:renderStorageStatusBar(colony.getStorageSum(),colony.getMaxStorage())">STORAGE</span>
 						${colony/getStorageSum}/${colony/getMaxStorage} (${colony/getProductionSumDisplay})<br />
 						<div tal:repeat="stor colony/getGoodUseView">
-							<img src="${GFX}/goods/${stor/good/getId}.gif" title="runtime" tal:attributes="title stor/good/getName" />
+							<img src="assets/goods/${stor/good/getId}.gif" title="runtime" tal:attributes="title stor/good/getName" />
 							<span style="color: #FF0000;" tal:content="stor/production/getProduction">COUNT</span> (<span tal:replace="stor/turnsleft">TURNS</span> Runden)
 						</div>
 					</td>
@@ -56,10 +56,10 @@
 						</tr>
 						<tr tal:repeat="data BUILDINGJOB_LIST">
 							<td style="width: 45px; text-align: center;vertical-align: middle">
-								<img src="${GFX}/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title data/getColony/getNameWithoutMarkup" />
+								<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title data/getColony/getNameWithoutMarkup" />
 							</td>
 							<td style="width: 45px; text-align:center;">
-								<img src="${GFX}/buildings/${data/getBuildingId}/0at.png" />
+								<img src="assets/buildings/${data/getBuildingId}/0at.png" />
 							</td>
 							<td style="vertical-align: middle">
 								<span tal:replace="data/getBuilding/getName">DESCRIPTION</span> - Fertigstellung: <span tal:replace="data/getBuildtimeDisplay">DATE</span>
@@ -76,14 +76,14 @@
 						</tr>
 						<tr tal:repeat="data TERRAFORMING_LIST">
 							<td style="width: 45px; text-align: center;vertical-align: middle">
-								<img src="${GFX}/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title data/getColony/getNameWithoutMarkup" />
+								<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title data/getColony/getNameWithoutMarkup" />
 							</td>
 							<td style="width: 45px; text-align:center;">
-								<img src="${GFX}/fields/${data/getTerraforming/getSource}.gif" />
+								<img src="assets/fields/${data/getTerraforming/getSource}.gif" />
 							</td>
 							<td style="vertical-align: middle; width: 40px; text-align: center;">=&gt;</td>
 							<td style="width: 45px; text-align:center;">
-								<img src="${GFX}/fields/${data/getTerraforming/getDestination}.gif" />
+								<img src="assets/fields/${data/getTerraforming/getDestination}.gif" />
 							</td>
 							<td style="vertical-align: middle">
 								<span tal:replace="data/getTerraforming/getDescription">DESCRIPTION</span> - Fertigstellung: <span tal:replace="data/getFinishDateDisplay">DATE</span>
