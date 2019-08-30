@@ -76,12 +76,6 @@ class TradeShoutboxData extends BaseTable { #{{{
 
 	/**
 	 */
-	public function getMessageDecoded() { #{{{
-		return stripslashes(decodeString($this->getMessage()));
-	} # }}}
-
-	/**
-	 */
 	public function getUser() { #{{{
 		return ResourceCache()->getObject('user',$this->getUserId());
 	} # }}}

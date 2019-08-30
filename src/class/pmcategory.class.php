@@ -31,16 +31,8 @@ class PMCategoryData extends BaseTable {
 	}
 
 	function setDescription($value) {
-		$this->data['description'] = encodeString($value);
+		$this->data['description'] = $value;
 		$this->addUpdateField('description','getDescription');
-	}
-
-	function getDescriptionDecoded() {
-		return stripslashes(decodeString($this->getDescription()));
-	}
-
-	public function getDescriptionDecodedRaw() {
-		return stripslashes(decodeString($this->getDescription(),FALSE));
 	}
 
 	function getSort() {

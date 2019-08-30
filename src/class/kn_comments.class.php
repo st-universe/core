@@ -88,12 +88,6 @@ class KnCommentData extends BaseTable {
 		return ResourceCache()->getObject('user',$this->getUserId())->getName();
 	} # }}}
 
-	/**
-	 */
-	public function getTextFormatted() { #{{{
-		return nl2br(stripslashes(decodeString($this->getText())));
-	} # }}}
-
 	private $posting = NULL;
 
 	/**

@@ -79,7 +79,7 @@ class PMData extends Basetable {
 	}
 
 	function setText($value) {
-		$this->data['text'] = encodeString(decodeString($value));
+		$this->data['text'] = $value;
 		$this->addUpdateField('text','getText');
 	}
 

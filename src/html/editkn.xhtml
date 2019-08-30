@@ -23,7 +23,7 @@
 							<select name="plotid" style="width: 500px;">
 								<option value="0">------------------------------</option>
 								<tal:block tal:repeat="plot ACTIVE_RPG_PLOTS">
-									<option value="runtime" tal:attributes="value plot/getId;selected php:POST.getPlotId()==plot.getId()" tal:content="plot/getTitleDecodedRaw"></option>
+									<option value="runtime" tal:attributes="value plot/getId;selected php:POST.getPlotId()==plot.getId()" tal:content="structure plot/getTitle"></option>
 								</tal:block>
 							</select>
 						</metal:macro>

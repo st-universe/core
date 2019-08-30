@@ -42,11 +42,11 @@ class KNPostingData extends BaseTable {
 	}
 
 	function getTitle() {
-		return stripslashes($this->data['titel']);
+		return $this->data['titel'];
 	}
 
 	function setTitle($value) {
-		$this->data['titel'] = encodeString($value);
+		$this->data['titel'] = $value;
 		$this->addUpdateField('titel','getTitle');
 	}
 
@@ -55,7 +55,7 @@ class KNPostingData extends BaseTable {
 	}
 
 	function setText($value) {
-		$this->data['text'] = encodeString($value);
+		$this->data['text'] = $value;
 		$this->addUpdateField('text','getText');
 	}
 

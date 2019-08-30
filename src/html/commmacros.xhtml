@@ -44,8 +44,8 @@
 			<li id="item_${cat/getId}" style="width: 100%; display: block;">
                 <div class="iblock" style="width: 90%">
                     <span style="color: #cecece; cursor: move;">&gt;</span>
-                    <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
-                    <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
+                    <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
+                    <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescription">DESCRIPTION</a>
                     (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
                 </div>
                 <div class="iblock right" style="width: 8%">
@@ -142,7 +142,7 @@
 				<tr>
 					<td>Name</td>	
 					<td>
-						<input type="text" style="width: 100px;" value="runtime" id="catname" tal:attributes="value PM_CATEGORY/getDescriptionDecodedRaw" name="catname" />
+						<input type="text" style="width: 100px;" value="runtime" id="catname" tal:attributes="value PM_CATEGORY/getDescription" name="catname" />
 						<input type="button" class="button" value="Ändern" onclick="changeCategoryName();" />
 					</td>
 				</tr>
@@ -166,7 +166,7 @@
 	<metal:macro metal:define-macro="movepmcategories">
 		<select name="movecat_${post/getId}">
 			<tal:block tal:repeat="cat PM_CATEGORIES">
-				<option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</option>
+				<option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescription">DESCRIPTION</option>
 			</tal:block> 
 		</select>
 		<input type="button" class="button" onclick="movePm(${post/getId});" value="Verschieben" />
@@ -262,7 +262,7 @@
 					</th>
 				</tr>
 				<tr>
-					<td colspan="3" tal:content="structure data/getTextFormatted">TEXT</td>
+					<td colspan="3" tal:content="structure nl2br:data/getText">TEXT</td>
 				</tr>
 			</table>
 			<br tal:condition="not:repeat/data/end" />

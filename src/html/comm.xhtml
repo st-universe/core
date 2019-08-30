@@ -116,7 +116,7 @@
                     <ul id="catlist" class="pm_categories">
                         <li tal:repeat="cat PM_CATEGORIES" style="width: 100%; display: block;">
                             <span style="color: #cecece">&gt;</span>
-                            <a href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescriptionDecoded">DESCRIPTION</a>
+                            <a href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
                             (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
                         </li>
                     </ul>

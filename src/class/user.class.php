@@ -107,7 +107,7 @@ class UserData extends BaseTable {
 	}
 
 	function setDescription($value) {
-		$this->data['description'] = encodeString($value);
+		$this->data['description'] = $value;
 		$this->addUpdateField('description','getDescription');
 	}
 
@@ -328,7 +328,7 @@ class UserData extends BaseTable {
 	}
 
 	public function setSessionData($value) {
-		$this->setFieldValue('sessiondata',encodeString($value),'getSessionData');
+		$this->setFieldValue('sessiondata',$value,'getSessionData');
 		$this->sessiondata = NULL;
 	}
 
@@ -336,7 +336,7 @@ class UserData extends BaseTable {
 
 	public function getSessionDataUnserialized() {
 		if ($this->sessiondata === NULL) {
-			$this->sessiondata = unserialize(decodeString($this->getSessionData()));
+			$this->sessiondata = unserialize($this->getSessionData());
 			if (!is_array($this->sessiondata)) {
 				$this->sessiondata = array();
 			}

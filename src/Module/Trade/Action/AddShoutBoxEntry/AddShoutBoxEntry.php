@@ -34,7 +34,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         if (!TradeLicences::hasLicenceInNetwork($userId, $tradeNetworkId)) {
             throw new AccessViolation();
         }
-        $msg = encodeString(substr(strip_tags($msg), 0, 200));
+        $msg = substr(strip_tags($msg), 0, 200);
         if (mb_strlen($msg) > 0) {
             $entry = new TradeShoutboxData();
             $entry->setUserId($userId);

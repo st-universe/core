@@ -352,24 +352,12 @@ class AlliancePostData extends BaseTable {
 	}
 
 	function setText($value) {
-		$this->data['text'] = encodeString($value);
+		$this->data['text'] = $value;
 		$this->addUpdateField('text','getText');
 	}
 
 	function getText() {
 		return $this->data['text'];
-	}
-
-	function getTextDecoded() {
-		return stripslashes(BBCode()->parse(decodeString($this->getText()))->getAsText());
-	}
-
-	function getTextDecodedRaw() {
-		return stripslashes(BBCode()->parse(decodeString($this->getText(),FALSE))->getAsText());
-	}
-
-	function getTextParsed() {
-		return nl2br($this->getTextDecoded());
 	}
 
 	function setDate($value) {

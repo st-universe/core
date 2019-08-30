@@ -28,14 +28,14 @@ final class ShowNote implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setPageTitle("Notiz: " . $note->getTitleDecoded());
+        $game->setPageTitle("Notiz: " . $note->getTitle());
         $game->appendNavigationPart(
             sprintf(
                 'notes.php?%s=1&note=%d',
                 static::VIEW_IDENTIFIER,
                 $note->getId()
             ),
-            $note->getTitleDecoded()
+            $note->getTitle()
         );
         $game->showMacro('html/notes.xhtml/note');
         $game->setTemplateVar('NOTE', $note);

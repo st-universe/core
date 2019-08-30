@@ -44,7 +44,7 @@ final class EditKnPost implements ActionControllerInterface
             $plot = RPGPlot::getById($plotid);
             if ($plot && RPGPlotMember::mayWriteStory($plot->getId(), $userId)) {
                 $post->setPlotId($plot->getId());
-                $post->setTitle($plot->getTitleDecoded());
+                $post->setTitle($plot->getTitle());
             }
         } else {
             if ($post->hasPlot()) {

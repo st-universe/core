@@ -8,7 +8,7 @@
 		<div tal:repeat="post KN_POSTINGS">
 			<table class="tcal">
 				<tr>
-					<th colspan="2" tal:content="structure post/getTitleDecoded">TITLE</th>
+					<th colspan="2" tal:content="structure post/getTitle">TITLE</th>
 				</tr>
 				<tr>
 					<td>
@@ -25,7 +25,7 @@
 						<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
 					</td>
 					<td style="vertical-align: top;">
-						<span tal:content="structure post/getTextParsed">TEXT</span>
+						<span tal:content="structure nl2br:post/getText">TEXT</span>
 						<tal:block tal:condition="post/hasEdit">
 							<br /><br /><br />
 							<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>

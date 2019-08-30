@@ -33,15 +33,14 @@ class CrewData extends BaseTable {
 	}
 
 	public function getName() {
-		return stripslashes(decodeString($this->getNameRaw()));
-	}
-
-	public function getNameRaw() {
 		return $this->data['name'];
 	}
 
+	public function getNameRaw() {
+	}
+
 	public function setName($value) {
-		$this->setFieldValue('name',encodeString($value),'getNameRaw');
+		$this->setFieldValue('name',$value,'getName');
 	}
 
 	public function getUserId() {

@@ -27,14 +27,6 @@ class FactionData extends BaseTable {
 		return $this->data['description'];
 	}
 
-	function getDescriptionDecoded() {
-		return decodeString($this->getDescription());
-	}
-
-	function getDescriptionDisplay() {
-		return nl2br($this->getDescriptionDecoded());
-	}
-
 	function getDarkerColor() {
 		return $this->data['darker_color'];
 	}

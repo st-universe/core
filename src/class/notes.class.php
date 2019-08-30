@@ -30,15 +30,7 @@ class NotesData extends BaseTable {
 	}
 
 	public function setTitle($value) {
-		$this->setFieldValue('title',encodeString($value),'getTitle');
-	}
-
-	public function getTitleDecoded() {
-		return decodeString($this->getTitle());
-	}
-
-	public function getTitleDecodedRaw() {
-		return decodeString($this->getTitle(),FALSE);
+		$this->setFieldValue('title',$value,'getTitle');
 	}
 
 	public function getText() {
@@ -46,15 +38,7 @@ class NotesData extends BaseTable {
 	}
 
 	public function setText($value) {
-		$this->setFieldValue('text',encodeString($value),'getText');
-	}
-
-	public function getTextDecoded() {
-		return decodeString($this->getText());
-	}
-
-	public function getTextDecodedRaw() {
-		return decodeString($this->getText(),FALSE);
+		$this->setFieldValue('text',$value,'getText');
 	}
 }
 class Notes extends NotesData {

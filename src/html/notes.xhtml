@@ -17,7 +17,7 @@
 				</tr>
 				<tr tal:repeat="data NOTE_LIST" tal:attributes="class string:row${repeat/data/odd}">
 					<td>
-						<a href="notes.php?SHOW_NOTE=1&note=${data/getId}" tal:content="structure data/getTitleDecoded">TITLE</a>
+						<a href="notes.php?SHOW_NOTE=1&note=${data/getId}" tal:content="structure data/getTitle">TITLE</a>
 					</td>
 					<td style="text-align: center;" tal:content="datetime:data/getDate">DATE</td>
 					<td style="width:20px;">
@@ -51,12 +51,12 @@
 				<tr>
 					<th>Titel</th>
 					<td>
-						<input type="text" name="title" tal:attributes="value NOTE/getTitleDecodedRaw" style="width: 100%;" />
+						<input type="text" name="title" tal:attributes="value structure NOTE/getTitle" style="width: 100%;" />
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<stu:textarea name="text" style="width: 100%; height: 400px;" tal:content="NOTE/getTextDecodedRaw"></stu:textarea>
+						<stu:textarea name="text" style="width: 100%; height: 400px;" tal:content="structure nl2br:NOTE/getText"></stu:textarea>
 					</td>
 				</tr>
 				<tr>

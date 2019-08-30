@@ -240,7 +240,7 @@
 				<tr tal:repeat="data SHOUTBOX" tal:attributes="class string:row${repeat/data/odd}">
 					<td style="width: 110px;" tal:content="date:data/getDate">DATE</td>
 					<td>
-						&lt;<span tal:replace="structure bbcode:data/getUser/getName">USER</span> (${data/getUserId})&gt; <span tal:replace="structure data/getMessageDecoded">TEXT</span>
+						&lt;<span tal:replace="structure bbcode:data/getUser/getName">USER</span> (${data/getUserId})&gt; <span tal:replace="structure data/getMessage">TEXT</span>
 					</td>
 				</tr>
 				<tr tal:condition="not:SHOUTBOX">

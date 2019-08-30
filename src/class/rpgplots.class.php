@@ -33,16 +33,8 @@ class RPGPlotData extends BaseTable {
 		return $this->data['title'];
 	}
 
-	function getTitleDecoded() {
-		return stripslashes(decodeString($this->getTitle()));
-	}
-
-	function getTitleDecodedRaw() {
-		return stripslashes(decodeString($this->getTitle(),FALSE));
-	}
-
 	function setTitle($value) {
-		$this->data['title'] = encodeString(strip_tags($value));
+		$this->data['title'] = $value;
 		$this->addUpdateField('title','getTitle');
 	}
 
@@ -50,16 +42,8 @@ class RPGPlotData extends BaseTable {
 		return $this->data['description'];
 	}
 
-	function getDescriptionDecodedRaw() {
-		return stripslashes(decodeString($this->getDescription(),FALSE));
-	}
-
-	function getDescriptionDecoded() {
-		return nl2br(stripslashes(decodeString($this->getDescription())));
-	}
-
 	function setDescription($value) {
-		$this->data['description'] = encodeString(strip_tags($value));
+		$this->data['description'] = $value;
 		$this->addUpdateField('description','getDescription');
 	}
 
@@ -72,16 +56,8 @@ class RPGPlotData extends BaseTable {
 		return $this->data['start_date'];
 	}
 
-	function getStartDateDisplay() {
-		return date("d.m.Y H:i",$this->getStartDate());
-	}
-
 	function getEndDate() {
 		return $this->data['end_date'];
-	}
-
-	function getEndDateDisplay() {
-		return date("d.m.Y H:i",$this->getEndDate());
 	}
 
 	function setEndDate($value) {

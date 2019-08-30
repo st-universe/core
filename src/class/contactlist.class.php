@@ -85,11 +85,7 @@ class ContactlistData extends BaseTable {
 	}
 
 	function setComment($value) {
-		$this->setFieldValue('comment',encodeString($value),'getComment');
-	}
-
-	function getCommentDecoded() {
-		return decodeString(stripslashes($this->getComment()));
+		$this->setFieldValue('comment',$value,'getComment');
 	}
 
 	/**

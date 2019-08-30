@@ -22,19 +22,9 @@ class SystemNewsData
         return $this->data['subject'];
     }
 
-    function getSubjectDecoded()
-    {
-        return decodeString(stripslashes($this->getSubject()));
-    }
-
     function getText()
     {
         return $this->data['text'];
-    }
-
-    function getTextDecoded()
-    {
-        return nl2br(decodeString(stripslashes($this->getText())));
     }
 
     function getDate()

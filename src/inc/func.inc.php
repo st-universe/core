@@ -81,16 +81,6 @@ function tidyString(&$string) { #{{{
 	return str_replace(array('<','>','&gt;','&lt;'),'',$string);
 } # }}}
 
-function encodeString(&$string) {
-	return htmlentities($string,ENT_COMPAT,"UTF-8");
-}
-function decodeString(&$string,$replaceEntities=TRUE) {
-	$string = html_entity_decode($string,ENT_COMPAT,"UTF-8");
-	if (!$replaceEntities) {
-		return $string;
-	}
-	return str_replace(array("&"),array("&amp;"),$string);
-}
 function renderResearchStatusBar($points,&$maxpoints) {
 	$pro = getPercentage($points,$maxpoints);
 	$bar = getStatusBar(STATUSBAR_BLUE,ceil($pro/2)*2,'Fortschritt: '.$points.'/'.$maxpoints);

@@ -25,7 +25,7 @@ final class ShowKnPlot implements ViewControllerInterface
         $plot = new RPGPlot($this->showKnPlotRequest->getPlotId());
 
         $game->setTemplateFile('html/plotdetails.xhtml');
-        $game->setPageTitle(sprintf('Plot: %s', $plot->getTitleDecoded()));
+        $game->setPageTitle(sprintf('Plot: %s', $plot->getTitle()));
 
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart('comm.php?SHOW_PLOTLIST=1', _('Plots'));
@@ -35,7 +35,7 @@ final class ShowKnPlot implements ViewControllerInterface
                 static::VIEW_IDENTIFIER,
                 $plot->getId()
             ),
-            $plot->getTitleDecoded()
+            $plot->getTitle()
         );
 
         $game->setTemplateVar('PLOT', $plot);

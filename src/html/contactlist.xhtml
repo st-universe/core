@@ -33,7 +33,7 @@
 						<tr tal:attributes="style contact/getCommentStyle" id="contact_comment_${contact/getId}">
 							<td colspan="4">
 								<span i18n:translate="">Kommentar</span>
-								<input type="text" style="width: 500px" name="comment_${contact/getId}" id="contact_comment_input_${contact/getId}" tal:attributes="value contact/getCommentDecoded" />
+								<input type="text" style="width: 500px" name="comment_${contact/getId}" id="contact_comment_input_${contact/getId}" tal:attributes="value structure contact/getComment" />
 								<input type="button" class="button" value="speichern" onclick="saveContactComment(${contact/getId})" i18n:attributes="value" />
 								<input type="button" class="button" value="löschen" onclick="emptyContactComment(${contact/getId})" i18n:attributes="value" />
 							</td>

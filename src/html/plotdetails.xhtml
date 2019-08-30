@@ -15,7 +15,7 @@
 						</th>
 					</tr>
 					<tr>
-						<td tal:content="structure PLOT/getDescriptionDecoded">DESCRIPTION</td>
+						<td tal:content="structure nl2br:PLOT/getDescription">DESCRIPTION</td>
 					</tr>
 				</table>
 				<br />
@@ -25,9 +25,9 @@
 					</tr>
 					<tr>
 						<td>
-							<span tal:condition="PLOT/isActive">Plot läuft seit ${PLOT/getStartDateDisplay}<br /><br />
+							<span tal:condition="PLOT/isActive">Plot läuft seit ${datetime:PLOT/getStartDate}<br /><br />
 								<input tal:condition="MAY_EDIT" type="submit" value="Plot beenden" name="B_END_PLOT" /></span>
-							<span tal:condition="not:PLOT/isActive">Plot beendet seit ${PLOT/getEndDateDisplay}</span>
+							<span tal:condition="not:PLOT/isActive">Plot beendet seit ${datetime:PLOT/getEndDate}</span>
 						</td>
 					</tr>
 				</table>

@@ -27,7 +27,7 @@
 						<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
 					</td>
 					<td style="vertical-align: top;">
-						<span tal:content="structure post/getTextParsed">TEXT</span>
+						<span tal:content="structure nl2br:bbcode2txt:post/getText">TEXT</span>
 					</td>
 				</tr>
 				<tr>

@@ -69,9 +69,9 @@ final class ShowPmCategory implements ViewControllerInterface
         $game->setTemplateFile('html/pmcategory.xhtml');
         $game->appendNavigationPart(
             sprintf('comm.php?%s=1&pmcat=%d', static::VIEW_IDENTIFIER, $category->getId()),
-            sprintf(_('Ordner: %s'), $category->getDescriptionDecoded())
+            sprintf(_('Ordner: %s'), $category->getDescription())
         );
-        $game->setPageTitle(sprintf(_('Ordner: %s'), $category->getDescriptionDecoded()));
+        $game->setPageTitle(sprintf(_('Ordner: %s'), $category->getDescription()));
 
         $game->setTemplateVar('CATEGORY', $category);
         $game->setTemplateVar('PM_LIST', PM::getPMsBy($userId, (int) $category->getId(), $mark, static::PMLIMITER));
