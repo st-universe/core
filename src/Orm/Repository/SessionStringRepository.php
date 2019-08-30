@@ -15,22 +15,31 @@ final class SessionStringRepository extends EntityRepository implements SessionS
 
     public function isValid(string $sessionString, int $userId): bool
     {
-        return $this->count([
-                'user_id' => $userId,
-                'sess_string' => $sessionString
-            ]) > 0;
+        $q = $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s t WHERE t.user_id = :userId and t.sess_string = :sessionString',
+                SessionString::class,
+            )
+        );
+        $q->setParameters([
+            'userId' => $userId,
+            'sessionString' => $sessionString,
+        ]);
+        return $q->execute() > 0;
     }
 
     public function truncate(int $userId): void
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'delete from %s t where t.user_id = %d OR t.date < \'%s\'',
+                'delete from %s t where t.user_id = :userId OR t.date < :date',
                 SessionString::class,
-                $userId,
-                (new DateTime())->sub(new DateInterval('PT1H'))->format('Y-m-d H:i:s')
             )
         );
+        $q->setParameters([
+            'userId' => $userId,
+            'date' => (new DateTime())->sub(new DateInterval('PT1H'))->format('Y-m-d H:i:s'),
+        ]);
         $q->execute();
     }
 

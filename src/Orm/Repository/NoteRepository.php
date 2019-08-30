@@ -7,7 +7,6 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\NoteInterface;
-use Stu\Orm\Entity\Researched;
 
 final class NoteRepository extends EntityRepository implements NoteRepositoryInterface
 {
