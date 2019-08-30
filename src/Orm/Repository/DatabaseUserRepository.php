@@ -15,27 +15,28 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'delete from %s d where d.user_id = %d',
-                DatabaseUser::class,
-                $userId
+                'delete from %s d where d.user_id = :userId',
+                DatabaseUser::class
             )
-        )->execute();
+        )
+            ->setParameter('userId', $userId)
+            ->execute();
     }
 
     public function findFor(int $databaseEntryId, int $userId): ?DatabaseUserInterface
     {
         return $this->findOneBy([
-                'user_id' => $userId,
-                'database_id' => $databaseEntryId,
-            ]);
+            'user_id' => $userId,
+            'database_id' => $databaseEntryId,
+        ]);
     }
 
     public function exists(int $userId, int $databaseEntryId): bool
     {
         return $this->count([
-            'user_id' => $userId,
-            'database_id' => $databaseEntryId
-        ]) > 0;
+                'user_id' => $userId,
+                'database_id' => $databaseEntryId
+            ]) > 0;
     }
 
     public function prototype(): DatabaseUserInterface

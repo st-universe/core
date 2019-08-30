@@ -57,11 +57,11 @@ final class ColonyShipRepairRepository extends EntityRepository
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'delete from %s t where t.ship_id = %d',
-                ColonyShipRepair::class,
-                $shipId
+                'delete from %s t where t.ship_id = :shipId',
+                ColonyShipRepair::class
             )
         );
+        $q->setParameter('shipId', $shipId);
         $q->execute();
     }
 }

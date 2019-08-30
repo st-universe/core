@@ -41,11 +41,11 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s t WHERE t.user_id = %d',
-                Note::class,
-                $userId
+                'DELETE FROM %s t WHERE t.user_id = :userId',
+                Note::class
             )
         );
+        $q->setParameter('userId', $userId);
         $q->execute();
     }
 }

@@ -16,12 +16,11 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT COUNT(t.id) FROM %s t WHERE t.research_id = %d AND t.user_id = %d AND t.finished > 0',
+                        'SELECT COUNT(t.id) FROM %s t WHERE t.research_id = :researchId AND t.user_id = :userId AND t.finished > 0',
                         Researched::class,
-                        $researchId,
-                        $userId
                     )
                 )
+                ->setParameters(['userId' => $userId, 'researchId' => $researchId])
                 ->getSingleScalarResult() > 0;
     }
 
@@ -30,11 +29,11 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT t FROM %s t WHERE t.user_id = %d AND (t.finished > 0 OR t.aktiv > 0)',
+                    'SELECT t FROM %s t WHERE t.user_id = :userId AND (t.finished > 0 OR t.aktiv > 0)',
                     Researched::class,
-                    $userId
                 )
             )
+            ->setParameter('userId', $userId)
             ->getResult();
     }
 
@@ -43,11 +42,11 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT t FROM %s t WHERE t.user_id = %d AND t.aktiv > 0',
-                    Researched::class,
-                    $userId
+                    'SELECT t FROM %s t WHERE t.user_id = :userId AND t.aktiv > 0',
+                    Researched::class
                 )
             )
+            ->setParameter('userId', $userId)
             ->getOneOrNullResult();
     }
 
@@ -84,11 +83,11 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s t WHERE t.user_id = %d',
-                Researched::class,
-                $userId
+                'DELETE FROM %s t WHERE t.user_id = :userId',
+                Researched::class
             )
         );
+        $q->setParameter('userId', $userId);
         $q->execute();
     }
 }

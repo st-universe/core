@@ -16,13 +16,14 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT t FROM %s t WHERE t.id NOT IN (
-                    SELECT r.research_id from %s r WHERE r.user_id = %d
+                    SELECT r.research_id from %s r WHERE r.user_id = :userId
                 )',
                 Research::class,
                 Researched::class,
-                $userId
             )
-        )->getResult();
+        )
+            ->setParameter('userId', $userId)
+            ->getResult();
     }
 
     /**
@@ -32,10 +33,11 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT t FROM %s t WHERE t.id LIKE \'%%%d\' OR t.id LIKE \'%%0\'',
+                'SELECT t FROM %s t WHERE t.id LIKE :factionId OR t.id LIKE \'%%0\'',
                 Research::class,
-                $factionId
             )
-        )->getResult();
+        )
+            ->setParameter('factionId', sprintf('%%%d', $factionId))
+            ->getResult();
     }
 }
