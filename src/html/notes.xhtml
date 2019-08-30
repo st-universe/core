@@ -46,7 +46,7 @@
 		<form action="notes.php" method="post">
 			<stu:hidden name="SHOW_NOTE" value="1" />
 			<stu:hidden name="sstr" tal:attributes="value THIS/getSessionString" />
-			<stu:hidden tal:condition="not:NOTE/isNew" name="note" tal:attributes="value NOTE/getId" />
+			<stu:hidden tal:condition="not:IS_NEW" name="note" tal:attributes="value NOTE/getId" />
 			<table class="tcal">
 				<tr>
 					<th>Titel</th>

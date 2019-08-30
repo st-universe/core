@@ -19,7 +19,7 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
     {
         return strip_tags(
             tidyString(
-                $this->queryParameter('title')->string()->defaultsToIfEmpty('')
+                $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
             )
         );
     }
@@ -28,7 +28,7 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
     {
         return strip_tags(
             tidyString(
-                $this->queryParameter('text')->string()->defaultsToIfEmpty('')
+                $this->queryParameter('text')->string()->trim()->defaultsToIfEmpty('')
             )
         );
     }

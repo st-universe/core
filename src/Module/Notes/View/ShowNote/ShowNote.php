@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Notes\View\ShowNote;
 
 use AccessViolation;
-use Notes;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class ShowNote implements ViewControllerInterface
 {
@@ -15,20 +15,29 @@ final class ShowNote implements ViewControllerInterface
 
     private $showNoteRequest;
 
+    private $noteRepository;
+
     public function __construct(
-        ShowNoteRequestInterface $showNoteRequest
+        ShowNoteRequestInterface $showNoteRequest,
+        NoteRepositoryInterface $noteRepository
     ) {
         $this->showNoteRequest = $showNoteRequest;
+        $this->noteRepository = $noteRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $note = new Notes($this->showNoteRequest->getNoteId());
+        $note = $this->noteRepository->find($this->showNoteRequest->getNoteId());
         if ($note->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
-        $game->setPageTitle("Notiz: " . $note->getTitle());
+        $game->setPageTitle(sprintf(_('Notiz: %s'), $note->getTitle()));
+
+        $game->appendNavigationPart(
+            'notes.php',
+            _('Notizen')
+        );
         $game->appendNavigationPart(
             sprintf(
                 'notes.php?%s=1&note=%d',
@@ -39,5 +48,6 @@ final class ShowNote implements ViewControllerInterface
         );
         $game->showMacro('html/notes.xhtml/note');
         $game->setTemplateVar('NOTE', $note);
+        $game->setTemplateVar('IS_NEW', false);
     }
 }

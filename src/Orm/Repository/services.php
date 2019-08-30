@@ -12,6 +12,7 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
+use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
@@ -48,6 +49,11 @@ return [
         ContainerInterface $c
     ): DatabaseUserRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class);
+    },
+    NoteRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): NoteRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
     },
     ResearchRepositoryInterface::class => function (
         ContainerInterface $c

@@ -9,12 +9,12 @@ use Crew;
 use Fleet;
 use KnComment;
 use KNPosting;
-use Notes;
 use PMCategory;
 use RPGPlot;
 use Ship;
 use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use TradeLicences;
 use TradeOffer;
@@ -109,7 +109,10 @@ class UserDeletion
 
     public function handleNotes()
     {
-        Notes::truncate('WHERE user_id=' . $this->getUser()->getId());
+        // @todo refactor
+        global $container;
+
+        $container->get(NoteRepositoryInterface::class)->truncateByUserId((int) $this->getUser()->getId());
     }
 
     public function handleRPGPlots()

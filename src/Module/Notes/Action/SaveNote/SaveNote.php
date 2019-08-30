@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Notes\Action\SaveNote;
 
 use AccessViolation;
-use Notes;
-use NotesData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class SaveNote implements ActionControllerInterface
 {
@@ -18,10 +17,14 @@ final class SaveNote implements ActionControllerInterface
 
     private $saveNoteRequest;
 
+    private $noteRepository;
+
     public function __construct(
-        SaveNoteRequestInterface $saveNoteRequest
+        SaveNoteRequestInterface $saveNoteRequest,
+        NoteRepositoryInterface $noteRepository
     ) {
         $this->saveNoteRequest = $saveNoteRequest;
+        $this->noteRepository = $noteRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -30,19 +33,26 @@ final class SaveNote implements ActionControllerInterface
         $noteId = $this->saveNoteRequest->getNoteId();
 
         if ($noteId === 0) {
-            $note = new NotesData();
+            $note = $this->noteRepository->prototype();
         } else {
-            $note = new Notes($noteId);
+            $note = $this->noteRepository->find($noteId);
             if ((int) $note->getUserId() !== $userId) {
                 throw new AccessViolation();
             }
         }
 
+        $title = $this->saveNoteRequest->getTitle();
+
+        if (mb_strlen($title) === 0) {
+            $title = _('Neue Notiz');
+        }
+
         $note->setText($this->saveNoteRequest->getText());
-        $note->setTitle($this->saveNoteRequest->getTitle());
+        $note->setTitle($title);
         $note->setDate(time());
         $note->setUserId($userId);
-        $note->save();
+
+        $this->noteRepository->save($note);
 
         $game->addInformation(_('Die Notiz wurde gespeichert'));
 

@@ -5,34 +5,37 @@ declare(strict_types=1);
 namespace Stu\Module\Notes\Action\DeleteNotes;
 
 use AccessViolation;
-use Notes;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class DeleteNotes implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_DELETE_NOTES';
 
     private $deleteNotesRequest;
 
+    private $noteRepository;
+
     public function __construct(
-        DeleteNotesRequestInterface $deleteNotesRequest
+        DeleteNotesRequestInterface $deleteNotesRequest,
+        NoteRepositoryInterface $noteRepository
     ) {
         $this->deleteNotesRequest = $deleteNotesRequest;
+        $this->noteRepository = $noteRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         foreach ($this->deleteNotesRequest->getNoteIds() as $noteId) {
-            $obj = new Notes($noteId);
-            if (!$obj) {
+            $obj = $this->noteRepository->find($noteId);
+            if ($obj === null) {
                 continue;
             }
-            if ((int) $obj->getUserId() !== $game->getUser()->getId()) {
+            if ($obj->getUserId() !== $game->getUser()->getId()) {
                 throw new AccessViolation();
             }
-            $obj->deleteFromDatabase();
+            $this->noteRepository->delete($obj);
         }
 
         $game->addInformation(_('Die ausgewählten Notizen wurden gelöscht'));
