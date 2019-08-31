@@ -302,34 +302,5 @@ class Building extends BuildingData {
 		return self::_getList($result,'BuildingData');
 	} # }}}
 
-	/**
-	 */
-	static function cloneBuilding($buildingId,$newId) { #{{{
-		if ($newId == 0) {
-			return;
-		}
-		$result = DB()->query('SELECT * FROM '.self::tablename.' WHERE id='.$buildingId.' LIMIT 1',4);
-		$result['id'] = $newId;
-		$keys = array_keys($result);
-		$values = array_values($result);
-		DB()->query("INSERT INTO ".self::tablename." (".join(',',$keys).") VALUES ('".join('\',\'',$values)."')");
-		
-		$building = new Building($buildingId);
-		foreach ($building->getCosts() as $key => $obj) {
-			$cost = new BuildingCostData;
-			$cost->setBuildingId($newId);
-			$cost->setGoodId($obj->getGoodId());
-			$cost->setCount($obj->getCount());
-			$cost->save();
-		}
-		foreach ($building->getGoods() as $key => $obj) {
-			$good = new BuildingGoodData;
-			$good->setGoodId($obj->getGoodId());
-			$good->setBuildingId($newId);
-			$good->setCount($obj->getCount());
-			$good->save();
-		}
-	} # }}}
-
 }
 ?>
