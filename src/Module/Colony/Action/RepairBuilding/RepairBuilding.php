@@ -57,15 +57,37 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
 
-        $cost = $field->getBuilding()->getCosts();
-        foreach ($cost as $key => $obj) {
-            $obj->setTempCount(round(($obj->getAmount() / 100) * $integrity));
+        $storage = $colony->getStorage();
+        $costs = $field->getBuilding()->getCosts();
+
+        foreach ($costs as $key => $cost) {
+            $amount = round(($cost->getAmount() / 100) * $integrity);
+
+            if (!array_key_exists($key, $storage)) {
+                $game->addInformationf(
+                    _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
+                    $amount,
+                    $cost->getGood()->getName()
+                );
+                return;
+            }
+            if ($amount > $storage[$key]->getAmount()) {
+                $game->addInformationf(
+                    _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
+                    $amount,
+                    $cost->getGood()->getName(),
+                    $storage[$key]->getAmount()
+                );
+                return;
+            }
         }
-        $ret = calculateCosts($cost, $colony->getStorage(), $colony);
-        if ($ret) {
-            $game->addInformation($ret);
-            return;
+        foreach ($costs as $key => $cost) {
+            $colony->lowerStorage(
+                $cost->getGoodId(),
+                round(($cost->getAmount() / 100) * $integrity)
+            );
         }
+        $colony->resetStorage();
 
         $colony->lowerEps($eps);
         $colony->save();

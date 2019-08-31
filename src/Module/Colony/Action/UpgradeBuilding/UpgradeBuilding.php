@@ -150,10 +150,11 @@ final class UpgradeBuilding implements ActionControllerInterface
         );
         $game->addInformation(_('Es konnten folgende Waren recycled werden'));
         foreach ($field->getBuilding()->getCosts() as $key => $value) {
-            if ($colony->getStorageSum() + $value->getHalfCount() > $colony->getMaxStorage()) {
+            $halfAmount = $value->getHalfAmount();
+            if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
                 $amount = $colony->getMaxStorage() - $colony->getStorageSum();
             } else {
-                $amount = $value->getHalfCount();
+                $amount = $halfAmount;
             }
             if ($amount <= 0) {
                 break;

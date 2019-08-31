@@ -883,15 +883,15 @@
 			<table class="use building_preview_table" style="width: 390px; display: ${display};" tal:attributes="id preview_id">
 				<tr>
 					<td class="center" style="vertical-align: top; width: 100px;">
-                        <br />
+						<br />
 						<img src="assets/buildings/${building/getId}/0at.png" />
 						<br /><br />
 						<strong i18n:translate="">Baubar</strong><br />
 						<tal:block tal:condition="not:SINGLE_ALTERNATIVE_BUILDING">
-							<img src="#" tal:repeat="field building/getBuildableFields" tal:attributes="src string:assets/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
+						<img src="#" tal:repeat="field building/getBuildableFields" tal:attributes="src string:assets/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
 						</tal:block>
 						<tal:block tal:condition="SINGLE_ALTERNATIVE_BUILDING">
-							<img src="#" tal:repeat="field SINGLE_ALTERNATIVE_BUILDING/getBuilding/getBuildableFields" tal:attributes="src string:assets/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
+						<img src="#" tal:repeat="field SINGLE_ALTERNATIVE_BUILDING/getBuilding/getBuildableFields" tal:attributes="src string:assets/fields/${field}.gif; title php:getFieldName(field)" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
 						</tal:block>
 					</td>
 					<td style="vertical-align: top; width: 110px;">
@@ -928,7 +928,7 @@
 							<img src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
 							<span tal:attributes="class data/getCssClass" tal:content="data/getProductionDisplay">CNT</span>
 							<tal:block tal:condition="data/getPreviewProduction">
-								(<span tal:content="data/getPreviewProductionDisplay" tal:attributes="class data/getPreviewProductionCss">CNT</span>)
+							(<span tal:content="data/getPreviewProductionDisplay" tal:attributes="class data/getPreviewProductionCss">CNT</span>)
 							</tal:block>
 						</div>
 					</td>

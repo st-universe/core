@@ -27,21 +27,11 @@ class BuildingCostData extends BaseTable {
 		return $this->data['goods_id'];
 	}
 
-	public function getGoodsId() {
-		return $this->getGoodId();
-	}
-
-	private $good = NULL;
-
 	function getGood() {
-		if ($this->good === NULL) {
-			// @todo refactor
-			global $container;
+		global $container;
 
-			$commodityRepository = $container->get(CommodityRepositoryInterface::class);
-			$this->good = $commodityRepository->find((int) $this->getGoodId());
-		}
-		return $this->good;
+		$commodityRepository = $container->get(CommodityRepositoryInterface::class);
+		return $commodityRepository->find((int) $this->getGoodId());
 
 	}
 
@@ -49,7 +39,7 @@ class BuildingCostData extends BaseTable {
 		return $this->data['count'];
 	}
 
-	function getHalfCount() {
+	function getHalfAmount() {
 		return floor($this->getAmount()/2);
 	}
 
@@ -83,12 +73,6 @@ class BuildingCost extends BuildingCostData {
 		}
 		return $ret;
 	}
-
-	/**
-	 */
-	static function truncate($sql) { #{{{
-		DB()->query('DELETE FROM '.self::tablename.' '.$sql);
-	} # }}}
 
 }
 ?>

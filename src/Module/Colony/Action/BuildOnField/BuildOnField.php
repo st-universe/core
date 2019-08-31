@@ -108,7 +108,7 @@ final class BuildOnField implements ActionControllerInterface
             if ($field->hasBuilding()) {
                 $goods = $field->getBuilding()->getCosts();
                 if (isset($goods[$key])) {
-                    $amount += $goods[$key]->getHalfCount();
+                    $amount += $goods[$key]->getHalfAmount();
                 }
             }
             if ($obj->getAmount() > $amount) {
@@ -183,10 +183,11 @@ final class BuildOnField implements ActionControllerInterface
         );
         $game->addInformation(_('Es konnten folgende Waren recycled werden'));
         foreach ($field->getBuilding()->getCosts() as $key => $value) {
-            if ($colony->getStorageSum() + $value->getHalfCount() > $colony->getMaxStorage()) {
+            $halfAmount = $value->getHalfAmount();
+            if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
                 $amount = $colony->getMaxStorage() - $colony->getStorageSum();
             } else {
-                $amount = $value->getHalfCount();
+                $amount = $halfAmount;
             }
             if ($amount <= 0) {
                 break;
