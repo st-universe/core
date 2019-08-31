@@ -792,38 +792,38 @@
 	</metal:macro>
 	<metal:block metal:define-macro="cm_shipyard">
 		<metal:macro metal:use-macro="cm_shipyard_tabs" />
-        <metal:macro metal:use-macro="colonymenu_container">
-            <div metal:fill-slot="containment">
-                <br />
-                <table class="tcal">
-                    <tr>
-                        <th>Verfügbare Schiffsrümpfe</th>
-                    </tr>
-                    <tr tal:condition="BUILDABLE_SHIPS">
-                        <td>
-                            <div tal:repeat="rump BUILDABLE_SHIPS" style="width: 196px; height:100px; float: left;">
-                                <a class="std" href="?SHOW_MODULE_SCREEN=1&id=${COLONY/getId}&rump=${rump/getId}" style="height: 100px; width: 196px; text-align: center; text-decoration: none; display: block;">
-                                    <img src="assets/ships/${rump/getId}.gif" tal:attributes="title rump/getName" style="padding-top: 5px;" /><br />
-                                    ${rump/getName}<br /><br />
-                                    <span i18n:translate="">Typ</span>: <span tal:replace="rump/getCategory/getName">TYPE</span><br />
-                                    <span i18n:translate="">Im Einsatz</span>: <span tal:replace="rump/getShipCount">COUNT</span><br />
-                                    <span i18n:translate="">Baupläne</span>: <span tal:replace="rump/getBuildplanCount">BUILDPLANS</span>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr tal:condition="not:BUILDABLE_RUMPS">
-                        <td>Keine Rümpfe zum Bau vorhanden</td>
-                    </tr>
-                </table>
-                <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
-                <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
-            </div>
-        </metal:macro>
+		<metal:macro metal:use-macro="colonymenu_sub_container">
+		    <div metal:fill-slot="containment">
+			<br />
+			<table class="tcal">
+			    <tr>
+				<th>Verfügbare Schiffsrümpfe</th>
+			    </tr>
+			    <tr tal:condition="BUILDABLE_SHIPS">
+				<td>
+				    <div tal:repeat="rump BUILDABLE_SHIPS" style="width: 196px; height:100px; float: left;">
+					<a class="std" href="?SHOW_MODULE_SCREEN=1&id=${COLONY/getId}&rump=${rump/getId}" style="height: 100px; width: 196px; text-align: center; text-decoration: none; display: block;">
+					    <img src="assets/ships/${rump/getId}.gif" tal:attributes="title rump/getName" style="padding-top: 5px;" /><br />
+					    ${rump/getName}<br /><br />
+					    <span i18n:translate="">Typ</span>: <span tal:replace="rump/getCategory/getName">TYPE</span><br />
+					    <span i18n:translate="">Im Einsatz</span>: <span tal:replace="rump/getShipCount">COUNT</span><br />
+					    <span i18n:translate="">Baupläne</span>: <span tal:replace="rump/getBuildplanCount">BUILDPLANS</span>
+					</a>
+				    </div>
+				</td>
+			    </tr>
+			    <tr tal:condition="not:BUILDABLE_RUMPS">
+				<td>Keine Rümpfe zum Bau vorhanden</td>
+			    </tr>
+			</table>
+			<input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
+			<input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
+		    </div>
+		</metal:macro>
 	</metal:block>
 	<metal:block metal:define-macro="cm_buildplans">
         <metal:macro metal:use-macro="cm_shipyard_tabs" />
-        <metal:macro metal:use-macro="colonymenu_container">
+        <metal:macro metal:use-macro="colonymenu_sub_container">
             <div metal:fill-slot="containment">
                 <br />
                 <table class="tcal">
@@ -1420,5 +1420,12 @@
                 <metal:macro metal:define-slot="containment" />
             </form>
         </div>
+    </metal:macro>
+    <metal:macro metal:define-macro="colonymenu_sub_container">
+	<div>
+	    <form action="colony.php" method="post">
+		<metal:macro metal:define-slot="containment" />
+	    </form>
+	</div>
     </metal:macro>
 </html>
