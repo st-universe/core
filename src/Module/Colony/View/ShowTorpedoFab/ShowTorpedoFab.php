@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\View\ShowTorpedoFab;
 use ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -17,20 +16,16 @@ final class ShowTorpedoFab implements ViewControllerInterface
 
     private $colonyLoader;
 
-    private $colonyGuiHelper;
-
     private $showTorpedoFabRequest;
 
     private $torpedoTypeRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper,
         ShowTorpedoFabRequestInterface $showTorpedoFabRequest,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showTorpedoFabRequest = $showTorpedoFabRequest;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
