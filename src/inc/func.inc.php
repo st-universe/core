@@ -192,31 +192,6 @@ function parseDateTime($value) {
 function parseDate($value) {
 	return date("d.m.Y",$value);
 }
-
-/**
- * @deprecated
- */
-function calculateCosts(&$costs,&$storage,&$place) {
-    global $container;
-    $commodityRepository = $container->get(CommodityRepositoryInterface::class);
-
-	foreach ($costs as $key => $obj) {
-		if (!array_key_exists($key,$storage)) {
-            $commodity = $commodityRepository->find((int) $obj->getGoodsId());
-			return "Es werden ".$obj->getAmount()." ".$commodity->getName()." benötigt - Es ist jedoch keines vorhanden";
-		}
-		if ($obj->getAmount() > $storage[$key]->getAmount()) {
-            $commodity = $commodityRepository->find((int) $obj->getGoodsId());
-			return "Es werden ".$obj->getAmount()." ".$commodity->getName()." benötigt - Vorhanden sind nur ".$storage[$key]->getAmount();
-		}
-	}
-	reset($costs);
-	foreach ($costs as $key => $obj) {
-		$place->lowerStorage($obj->getGoodsId(),$obj->getAmount());
-	}
-	$place->resetStorage();
-	return FALSE;
-}
 function infoToString(&$info) {
 	return implode("\n",$info);
 }

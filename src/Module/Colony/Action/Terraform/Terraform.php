@@ -68,11 +68,34 @@ final class Terraform implements ActionControllerInterface
             );
             return;
         }
-        $ret = calculateCosts($terraf->getCosts(), $colony->getStorage(), $colony);
-        if ($ret) {
-            $game->addInformation($ret);
-            return;
+
+        $storage = $colony->getStorage();
+
+        foreach ($terraf->getCosts() as $obj) {
+            $commodityId = $obj->getGoodId();
+            if (!array_key_exists($commodityId, $storage)) {
+                $game->addInformationf(
+                    _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
+                    $obj->getAmount(),
+                    $obj->getGood()->getName()
+                );
+                return;
+            }
+            if ($obj->getAmount() > $storage[$commodityId]->getAmount()) {
+                $game->addInformationf(
+                    _('Es werden %s %s benötigt - Vorhanden sind nur %s'),
+                    $obj->getAmount(),
+                    $obj->getGood()->getName(),
+                    $storage[$commodityId]->getAmount()
+                );
+                return;
+            }
         }
+
+        foreach ($terraf->getCosts() as $obj) {
+            $colony->lowerStorage($obj->getGoodId(),$obj->getAmount());
+        }
+        $colony->resetStorage();
         $colony->lowerEps($terraf->getEpsCost());
         $time = time() + $terraf->getDuration() + 60;
         FieldTerraforming::addTerraforming($colony->getId(), $field->getId(), $terraf->getId(), $time);

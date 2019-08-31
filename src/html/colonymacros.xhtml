@@ -1164,7 +1164,7 @@
 											<br />
 											<img src="assets/buttons/e_trans2.gif" title="Energie" /> <span tal:replace="data/getEpsCost">EPS</span>
 											<div tal:repeat="cost data/getCosts">
-												<img src="assets/goods/${cost/getGoodsId}.gif" title="runtime" tal:attributes="title cost/getGood/getName" /> <span tal:replace="cost/getAmount">COUNT</span>
+												<img src="assets/goods/${cost/getGoodId}.gif" title="runtime" tal:attributes="title cost/getGood/getName" /> <span tal:replace="cost/getAmount">COUNT</span>
 											</div>
 										</td>
 									</tr>

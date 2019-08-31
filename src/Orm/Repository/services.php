@@ -23,6 +23,7 @@ use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\UserIpTable;
 
@@ -111,6 +112,11 @@ return [
         ContainerInterface $c
     ): SessionStringRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
+    },
+    TerraformingCostRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TerraformingCostRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TerraformingCost::class);
     },
     TorpedoTypeRepositoryInterface::class => function (
         ContainerInterface $c

@@ -1,5 +1,8 @@
 <?php
 
+use Stu\Orm\Entity\TerraformingCostInterface;
+use Stu\Orm\Repository\TerraformingCostRepositoryInterface;
+
 class TerraformingData extends BaseTable {
 
 	protected $tablename = 'stu_terraforming';
@@ -53,13 +56,14 @@ class TerraformingData extends BaseTable {
 		return $this->data['duration'];
 	}
 
-	private $costs = NULL;
-
+	/**
+	 * @return TerraformingCostInterface[]
+	 */
 	function getCosts() {
-		if ($this->costs === NULL) {
-			$this->costs = TerraformingCost::getByTerraforming($this->getId());
-		}
-		return $this->costs;
+		// @todo refactor
+		global $container;
+
+		return $container->get(TerraformingCostRepositoryInterface::class)->getByTerraforming((int) $this->getId());
 	}
 
 
