@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\BuildingCostRepositoryInterface;
+
 class BuildingData extends BaseTable {
 
 	const tablename = 'stu_buildings';
@@ -135,7 +137,10 @@ class BuildingData extends BaseTable {
 	 */
 	function getCosts() {
 		if ($this->costs === NULL) {
-			$this->costs = BuildingCost::getCostByBuilding($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->costs = $container->get(BuildingCostRepositoryInterface::class)->getByBuilding((int) $this->getId());
 		}
 		return $this->costs;
 	}

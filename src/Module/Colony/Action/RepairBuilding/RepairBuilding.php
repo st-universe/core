@@ -60,10 +60,11 @@ final class RepairBuilding implements ActionControllerInterface
         $storage = $colony->getStorage();
         $costs = $field->getBuilding()->getCosts();
 
-        foreach ($costs as $key => $cost) {
+        foreach ($costs as $cost) {
             $amount = round(($cost->getAmount() / 100) * $integrity);
+            $commodityId = $cost->getGoodId();
 
-            if (!array_key_exists($key, $storage)) {
+            if (!array_key_exists($commodityId, $storage)) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $amount,
@@ -71,17 +72,17 @@ final class RepairBuilding implements ActionControllerInterface
                 );
                 return;
             }
-            if ($amount > $storage[$key]->getAmount()) {
+            if ($amount > $storage[$commodityId]->getAmount()) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $amount,
                     $cost->getGood()->getName(),
-                    $storage[$key]->getAmount()
+                    $storage[$commodityId]->getAmount()
                 );
                 return;
             }
         }
-        foreach ($costs as $key => $cost) {
+        foreach ($costs as $cost) {
             $colony->lowerStorage(
                 $cost->getGoodId(),
                 round(($cost->getAmount() / 100) * $integrity)

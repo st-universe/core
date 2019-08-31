@@ -13,6 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
+use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 
 final class BuildOnField implements ActionControllerInterface
@@ -79,10 +80,24 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
         $storage = $colony->getStorage();
-        foreach ($building->getCosts() as $key => $obj) {
+        foreach ($building->getCosts() as $obj) {
+            $commodityId = $obj->getGoodId();
+
             if ($field->hasBuilding()) {
-                if (!array_key_exists($key, $storage) && !array_key_exists($key,
-                        $field->getBuilding()->getCosts())) {
+
+                $currentBuildingCost = $field->getBuilding()->getCosts();
+
+                $result = array_filter(
+                    $currentBuildingCost,
+                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
+                        return $commodityId === $buildingCost->getGoodsId();
+                    }
+                );
+
+                if (
+                    !array_key_exists($commodityId, $storage) &&
+                    $result === []
+                ) {
                     $game->addInformationf(
                         _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                         $obj->getAmount(),
@@ -91,7 +106,7 @@ final class BuildOnField implements ActionControllerInterface
                     return;
                 }
             } else {
-                if (!array_key_exists($key, $storage)) {
+                if (!array_key_exists($commodityId, $storage)) {
                     $game->addInformationf(
                         _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                         $obj->getAmount(),
@@ -100,15 +115,20 @@ final class BuildOnField implements ActionControllerInterface
                     return;
                 }
             }
-            if (!isset($storage[$key])) {
+            if (!isset($storage[$commodityId])) {
                 $amount = 0;
             } else {
-                $amount = $storage[$key]->getAmount();
+                $amount = $storage[$commodityId]->getAmount();
             }
             if ($field->hasBuilding()) {
-                $goods = $field->getBuilding()->getCosts();
-                if (isset($goods[$key])) {
-                    $amount += $goods[$key]->getHalfAmount();
+                $result = array_filter(
+                    $currentBuildingCost,
+                    function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
+                        return $commodityId === $buildingCost->getGoodsId();
+                    }
+                );
+                if ($result !== []) {
+                    $amount += current($result)->getHalfAmount();
                 }
             }
             if ($obj->getAmount() > $amount) {
@@ -141,7 +161,7 @@ final class BuildOnField implements ActionControllerInterface
             $this->removeBuilding($field, $colony, $game);
         }
 
-        foreach ($building->getCosts() as $key => $obj) {
+        foreach ($building->getCosts() as $obj) {
             $colony->lowerStorage($obj->getGoodId(), $obj->getAmount());
         }
         // Check for alternative building
@@ -182,7 +202,7 @@ final class BuildOnField implements ActionControllerInterface
             $field->getFieldId()
         );
         $game->addInformation(_('Es konnten folgende Waren recycled werden'));
-        foreach ($field->getBuilding()->getCosts() as $key => $value) {
+        foreach ($field->getBuilding()->getCosts() as $value) {
             $halfAmount = $value->getHalfAmount();
             if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
                 $amount = $colony->getMaxStorage() - $colony->getStorageSum();

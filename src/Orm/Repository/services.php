@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\BuildingUpgradeCost;
@@ -28,6 +29,11 @@ return [
         ContainerInterface $c
     ): ColonyShipRepairRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
+    },
+    BuildingCostRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BuildingCostRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(BuildingCost::class);
     },
     BuildingFieldAlternativeRepositoryInterface::class => function (
         ContainerInterface $c
