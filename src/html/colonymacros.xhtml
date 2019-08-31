@@ -1094,12 +1094,12 @@
 										=&gt;	
 									</td>
 									<td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
-										<img src="assets/buildings/${data/getUpgradeTo}/0at.png" />
+										<img src="assets/buildings/${data/getUpgradeToBuildingId}/0at.png" />
 									</td>
 									<td style="text-align: left;">
 										<strong>Kosten</strong><br />
 										<img src="assets/buttons/e_trans2.gif" title="Energie" /> ${data/getBuilding/getEpsCost}
-										<div tal:repeat="cost data/getCost">
+										<div tal:repeat="cost data/getUpgradeCosts">
 											<img src="assets/goods/${cost/getGoodId}.gif" tal:attributes="title cost/getGood/getName" /> ${cost/getAmount}
 										</div>
 									</td>

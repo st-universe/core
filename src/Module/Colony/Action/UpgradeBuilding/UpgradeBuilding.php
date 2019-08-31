@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
 use BuildingFieldAlternative;
-use BuildingUpgrade;
 use ColfieldData;
 use Colfields;
 use ColonyData;
@@ -14,6 +13,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\BuildingUpgradeInterface;
+use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 
 final class UpgradeBuilding implements ActionControllerInterface
 {
@@ -22,10 +23,14 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $buildingUpgradeRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        BuildingUpgradeRepositoryInterface $buildingUpgradeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->buildingUpgradeRepository = $buildingUpgradeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,8 +48,18 @@ final class UpgradeBuilding implements ActionControllerInterface
             $colony->getId()
         );
 
-        $upgrade = new BuildingUpgrade(request::getIntFatal('upid'));
-        if ($upgrade->getUpgradeFrom() != $field->getBuildingId()) {
+        // has to be string because of bigint issue
+        $upgradeId = request::getStringFatal('upid');
+
+        /**
+         * @var BuildingUpgradeInterface
+         */
+        $upgrade = $this->buildingUpgradeRepository->find($upgradeId);
+        if ($upgrade === null) {
+            return;
+        }
+
+        if ($upgrade->getUpgradeFromBuildingId() != $field->getBuildingId()) {
             return;
         }
         if (!$user->hasResearched($upgrade->getResearchId())) {
@@ -55,7 +70,7 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
         $storage = $colony->getStorage();
-        foreach ($upgrade->getCost() as $key => $obj) {
+        foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
             if (!array_key_exists($obj->getGoodId(), $storage)) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
@@ -87,7 +102,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $colony->lowerEps($upgrade->getEnergyCost());
         $this->removeBuilding($field, $colony, $game);
 
-        foreach ($upgrade->getCost() as $key => $obj) {
+        foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
             $colony->lowerStorage($obj->getGoodId(), $obj->getAmount());
         }
         // Check for alternative building

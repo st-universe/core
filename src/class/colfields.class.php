@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
+
 class ColfieldData extends BaseTable {
 
 	protected $tablename = 'stu_colonies_fielddata';
@@ -269,11 +271,15 @@ class ColfieldData extends BaseTable {
 	private $upgrades = NULL;
 
 	public function getPossibleUpgrades() {
-		if ($this->isInConstruction()) {
-			return FALSE;
+		if ($this->isInConstruction() || $this->getBuildingId() == 0) {
+			return [];
 		}
 		if ($this->upgrades === NULL) {
-			$this->upgrades = BuildingUpgrade::getObjectsBySource($this->getBuildingId(), $this->getColony()->getUserId());
+			// @todo refactor
+			global $container;
+			$this->upgrades = $container
+				->get(BuildingUpgradeRepositoryInterface::class)
+				->getByBuilding((int) $this->getBuildingId(), (int) $this->getColony()->getUserId());
 		}
 		return $this->upgrades;
 	}

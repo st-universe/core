@@ -19,4 +19,6 @@ interface BuildingUpgradeCostInterface
     public function getAmount(): int;
 
     public function getGood(): CommodityInterface;
+
+    public function getUpgrade(): BuildingUpgradeInterface;
 }

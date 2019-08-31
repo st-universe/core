@@ -29,6 +29,12 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
      */
     private $good;
 
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\BuildingUpgrade")
+     * @JoinColumn(name="buildings_upgrades_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $upgrade;
+
     public function getId(): int
     {
         return $this->id;
@@ -70,5 +76,9 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 
     public function getGood(): CommodityInterface {
         return $this->good;
+    }
+
+    public function getUpgrade(): BuildingUpgradeInterface {
+        return $this->upgrade;
     }
 }
