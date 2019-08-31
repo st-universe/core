@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildOnField;
 
 use Building;
-use BuildingFieldAlternative;
 use ColfieldData;
 use Colfields;
 use ColonyData;
@@ -14,6 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
+use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 
 final class BuildOnField implements ActionControllerInterface
 {
@@ -22,10 +22,14 @@ final class BuildOnField implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $buildingFieldAlternativeRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,7 +56,7 @@ final class BuildOnField implements ActionControllerInterface
         }
         $building = new Building(request::indInt('bid'));
 
-        $buildingId = $building->getId();
+        $buildingId = (int) $building->getId();
 
         if (!$user->hasResearched($building->getResearchId())) {
             return;
@@ -141,10 +145,12 @@ final class BuildOnField implements ActionControllerInterface
             $colony->lowerStorage($obj->getGoodId(), $obj->getAmount());
         }
         // Check for alternative building
-        $alt_building = BuildingFieldAlternative::getByBuildingField($building->getId(),
-            $field->getFieldType());
-        if ($alt_building) {
-            $building = $alt_building->getAlternateBuilding();
+        $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
+            $buildingId,
+            (int) $field->getFieldType()
+        );
+        if ($alt_building !== null) {
+            $building = $alt_building->getAlternativeBuilding();
         }
 
         $colony->lowerEps($building->getEpsCost());

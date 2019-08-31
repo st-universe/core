@@ -8,6 +8,7 @@ use Building;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 
 final class ShowBuilding implements ViewControllerInterface
 {
@@ -17,12 +18,16 @@ final class ShowBuilding implements ViewControllerInterface
 
     private $showBuildingRequest;
 
+    private $buildingFieldAlternativeRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowBuildingRequestInterface $showBuildingRequest
+        ShowBuildingRequestInterface $showBuildingRequest,
+        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showBuildingRequest = $showBuildingRequest;
+        $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,10 +41,19 @@ final class ShowBuilding implements ViewControllerInterface
 
         $building = new Building($this->showBuildingRequest->getBuildingId());
 
-        $game->setTemplateVar('buildingdata', $building);
+        $alternativeBuildings = $this->buildingFieldAlternativeRepository->getByBuildingId(
+            (int) $building->getId()
+        );
+
         $game->setPageTitle($building->getName());
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/colonymacros.xhtml/buildinginfo');
+        $game->setTemplateVar('buildingdata', $building);
         $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('ALTERNATIVE_BUILDINGS', $alternativeBuildings);
+        $game->setTemplateVar(
+            'SINGLE_ALTERNATIVE_BUILDING',
+            $alternativeBuildings === [] ? null :  current($alternativeBuildings)
+        );
     }
 }

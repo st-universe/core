@@ -260,33 +260,6 @@ class BuildingData extends BaseTable {
 		return TRUE;
 	} # }}}
 
-	private $alternates = NULL;
-
-	/**
-	 */
-	public function getAlternateBuildings() { #{{{
-		if ($this->alternates === NULL) {
-			$this->alternates = BuildingFieldAlternative::getObjectsBy('WHERE buildings_id='.$this->getId());
-		}
-		return $this->alternates;
-	} # }}}
-
-	private $isAlternateBuilding = NULL;
-
-	/**
-	 */
-	public function isAlternateBuilding() { #{{{
-		if ($this->isAlternateBuilding === NULL) {
-			$ret = BuildingFieldAlternative::getObjectsBy('WHERE alternate_buildings_id='.$this->getId());
-			if (count($ret) == 0) {
-				$this->isAlternateBuilding = FALSE;
-			} else {
-				$this->isAlternateBuilding = current($ret);
-			}
-		}
-		return $this->isAlternateBuilding;
-	} # }}}
-
 	/**
 	 */
 	public function onDestruction($colony_id) { #{{{

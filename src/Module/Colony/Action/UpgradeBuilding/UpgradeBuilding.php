@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
-use BuildingFieldAlternative;
 use ColfieldData;
 use Colfields;
 use ColonyData;
@@ -14,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
+use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 
 final class UpgradeBuilding implements ActionControllerInterface
@@ -25,12 +25,16 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private $buildingUpgradeRepository;
 
+    private $buildingFieldAlternativeRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        BuildingUpgradeRepositoryInterface $buildingUpgradeRepository
+        BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
+        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
+        $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -106,12 +110,12 @@ final class UpgradeBuilding implements ActionControllerInterface
             $colony->lowerStorage($obj->getGoodId(), $obj->getAmount());
         }
         // Check for alternative building
-        $alt_building = BuildingFieldAlternative::getByBuildingField(
-            $upgrade->getBuilding()->getId(),
-            $field->getFieldType()
+        $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
+            (int) $upgrade->getBuilding()->getId(),
+            (int) $field->getFieldType()
         );
-        if ($alt_building) {
-            $building = $alt_building->getAlternateBuilding();
+        if ($alt_building !== null) {
+            $building = $alt_building->getAlternativeBuilding();
         } else {
             $building = $upgrade->getBuilding();
         }
