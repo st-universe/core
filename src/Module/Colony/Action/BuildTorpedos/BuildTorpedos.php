@@ -48,7 +48,7 @@ final class BuildTorpedos implements ActionControllerInterface
             $count = intval($count);
             $torp = $buildableTorpedoTypes[$torp_id];
             if ($torp->getEnergyCost() * $count > $colony->getEps()) {
-                $count = floor($colony->getEps() / $torp->getEenergyCost());
+                $count = floor($colony->getEps() / $torp->getEnergyCost());
             }
             if ($count <= 0) {
                 continue;
