@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
+use Stu\Orm\Entity\BuildingGood;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\ColonyShipRepair;
@@ -39,6 +40,11 @@ return [
         ContainerInterface $c
     ): BuildingFieldAlternativeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BuildingFieldAlternative::class);
+    },
+    BuildingGoodRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BuildingGoodRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(BuildingGood::class);
     },
     BuildingUpgradeRepositoryInterface::class => function (
         ContainerInterface $c

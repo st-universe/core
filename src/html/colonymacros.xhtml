@@ -913,7 +913,8 @@
 							</div>
 							<div tal:repeat="data building/getGoods">
 								<img src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
-								<span tal:replace="data/getCountDisplay">CNT</span>
+								<span tal:condition="isPositive:data/getAmount">+${data/getAmount}</span>
+								<span tal:condition="isNegative:data/getAmount">${data/getAmount}</span>
 							</div>
 							<br />
 						</div>
@@ -1074,7 +1075,8 @@
 						</div>
 						<div tal:repeat="data FIELD/getBuilding/getGoods">
 							<img src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
-							<span tal:replace="data/getCountDisplay">CNT</span>
+							<span tal:condition="isPositive:data/getAmount">+${data/getAmount}</span>
+							<span tal:condition="isNegative:data/getAmount">${data/getAmount}</span>
 						</div>
 						<br />
 					</div>

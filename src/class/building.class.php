@@ -1,6 +1,9 @@
 <?php
 
+use Stu\Orm\Entity\BuildingCostInterface;
+use Stu\Orm\Entity\BuildingGoodInterface;
 use Stu\Orm\Repository\BuildingCostRepositoryInterface;
+use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 
 class BuildingData extends BaseTable {
 
@@ -133,7 +136,7 @@ class BuildingData extends BaseTable {
 	private $costs = NULL;
 
 	/**
-	 * @return BuildingCost[]
+	 * @return BuildingCostInterface[]
 	 */
 	function getCosts() {
 		if ($this->costs === NULL) {
@@ -147,9 +150,15 @@ class BuildingData extends BaseTable {
 
 	private $goods = NULL;
 
+	/**
+	 * @return BuildingGoodInterface[]
+	 */
 	function getGoods() {
 		if ($this->goods === NULL) {
-			$this->goods = BuildingGood::getGoodsByBuilding($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->goods = $container->get(BuildingGoodRepositoryInterface::class)->getByBuilding((int) $this->getId());
 		}
 		return $this->goods;
 	}

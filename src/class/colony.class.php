@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
 
@@ -885,19 +886,23 @@ class ColonyProductionPreviewWrapper { #{{{
 	/**
 	 */
 	private function getPreview($buildingId) { #{{{
-		$bgoods = BuildingGood::getGoodsByBuilding($buildingId);
+		// @todo refactor
+		global $container;
+
+		$bgoods = $container->get(BuildingGoodRepositoryInterface::class)->getByBuilding((int) $buildingId);
 		$ret = array();
-		foreach ($bgoods as $key => $prod) {
-			if (array_key_exists($key,$this->production)) {
-				$ret[$key] = clone $this->production[$key];
-				$ret[$key]->upperProduction($prod->getAmount());
+		foreach ($bgoods as $commodityId => $prod) {
+			$commodityId = $prod->getGoodId();
+			if (array_key_exists($commodityId,$this->production)) {
+				$ret[$commodityId] = clone $this->production[$commodityId];
+				$ret[$commodityId]->upperProduction($prod->getAmount());
 			} else {
 				$obj = new ColProductionData;
-				$obj->setGoodId($key);
+				$obj->setGoodId($commodityId);
 				$obj->setProduction($prod->getAmount());
-				$ret[$key] = $obj;
+				$ret[$commodityId] = $obj;
 			}
-			$ret[$key]->setPreviewProduction($prod->getAmount());
+			$ret[$commodityId]->setPreviewProduction($prod->getAmount());
 		}
 		return $ret;
 	} # }}}

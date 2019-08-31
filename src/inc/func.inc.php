@@ -384,6 +384,18 @@ function BBCode(): Parser {
 	return $container->get(Parser::class);
 }
 
+TalesRegistry::registerPrefix(
+    'isPositive',
+    function($src, $nothrow): string {
+        return '(int) '.TalesInternal::compileToPHPExpression($src,$nothrow).' > 0';
+    }
+);
+TalesRegistry::registerPrefix(
+    'isNegative',
+    function($src, $nothrow): string {
+        return '(int) '.TalesInternal::compileToPHPExpression($src,$nothrow).' < 0';
+    }
+);
 
 TalesRegistry::registerPrefix(
     'bbcode',

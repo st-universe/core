@@ -336,17 +336,18 @@ class ColonyTick {
 
 	function mergeProduction(&$arr) {
 		$prod = $this->getColony()->getProductionRaw();
-		foreach ($arr as $key => $obj) {
-			if (!array_key_exists($key,$prod)) {
+		foreach ($arr as $obj) {
+		    $commodityId = $obj->getGoodId();
+			if (!array_key_exists($commodityId,$prod)) {
 				$data = new ColProductionData;
-				$data->setGoodId($key);	
+				$data->setGoodId($commodityId);
 				$data->setProduction($obj->getAmount()*-1);
-				$this->getColony()->setProductionRaw($this->getColony()->getProductionRaw()+array($key => $data));
+				$this->getColony()->setProductionRaw($this->getColony()->getProductionRaw()+array($commodityId => $data));
 			} else {
 				if ($obj->getAmount() < 0) {
-					$prod[$key]->upperProduction(abs($obj->getAmount()));
+					$prod[$commodityId]->upperProduction(abs($obj->getAmount()));
 				} else {
-					$prod[$key]->lowerProduction($obj->getAmount());
+					$prod[$commodityId]->lowerProduction($obj->getAmount());
 				}
 			}
 		}
