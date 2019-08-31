@@ -68,15 +68,6 @@ class AllianceJobsData extends BaseTable {
 		$this->deleteFromDatabase();
 	}
 
-	function takebackApplication() {
-		$text = "Der Siedler hat seine Allianzbewerbung zurückgezogen";
-		PM::sendPM($this->getUserId(),$this->getAlliance()->getFounder()->getId(),$text);
-		if ($this->getAlliance()->hasSuccessor()) {
-			PM::sendPM($this->getUserId(),$this->getAlliance()->getSuccessor()->getId(),$text);
-		}
-		$this->deleteFromDatabase();
-	}
-
 }
 class AllianceJobs extends AllianceJobsData {
 

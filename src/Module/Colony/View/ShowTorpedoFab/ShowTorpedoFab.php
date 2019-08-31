@@ -9,7 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
-use TorpedoType;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowTorpedoFab implements ViewControllerInterface
 {
@@ -21,14 +21,18 @@ final class ShowTorpedoFab implements ViewControllerInterface
 
     private $showTorpedoFabRequest;
 
+    private $torpedoTypeRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowTorpedoFabRequestInterface $showTorpedoFabRequest
+        ShowTorpedoFabRequestInterface $showTorpedoFabRequest,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showTorpedoFabRequest = $showTorpedoFabRequest;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,12 +44,10 @@ final class ShowTorpedoFab implements ViewControllerInterface
             $userId
         );
 
-        $this->colonyGuiHelper->register($colony, $game);
-
         $game->showMacro('html/colonymacros.xhtml/cm_torpedo_fab');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_TORPEDOFAB));
-        $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', TorpedoType::getBuildableTorpedoTypesByUser($userId));
+        $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $this->torpedoTypeRepository->getForUser($userId));
     }
 }

@@ -9,7 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use TorpedoType;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class BuildTorpedos implements ActionControllerInterface
 {
@@ -17,10 +17,14 @@ final class BuildTorpedos implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $torpedoTypeRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,23 +36,24 @@ final class BuildTorpedos implements ActionControllerInterface
             $userId
         );
 
+        $buildableTorpedoTypes = $this->torpedoTypeRepository->getForUser($userId);
+
         $torps = request::postArray('torps');
-        $torpedo_types = TorpedoType::getBuildableTorpedoTypesByUser($userId);
         $storage = $colony->getStorage();
         $msg = array();
         foreach ($torps as $torp_id => $count) {
-            if (!array_key_exists($torp_id, $torpedo_types)) {
+            if (!array_key_exists($torp_id, $buildableTorpedoTypes)) {
                 continue;
             }
             $count = intval($count);
-            $torp = $torpedo_types[$torp_id];
-            if ($torp->getECost() * $count > $colony->getEps()) {
-                $count = floor($colony->getEps() / $torp->getEcost());
+            $torp = $buildableTorpedoTypes[$torp_id];
+            if ($torp->getEnergyCost() * $count > $colony->getEps()) {
+                $count = floor($colony->getEps() / $torp->getEenergyCost());
             }
             if ($count <= 0) {
                 continue;
             }
-            foreach ($torp->getCosts() as $id => $cost) {
+            foreach ($torp->getProductionCosts() as $id => $cost) {
                 if (!$storage[$cost->getGoodId()]) {
                     $count = 0;
                     break;
@@ -60,16 +65,16 @@ final class BuildTorpedos implements ActionControllerInterface
             if ($count == 0) {
                 continue;
             }
-            foreach ($torp->getCosts() as $id => $cost) {
+            foreach ($torp->getProductionCosts() as $id => $cost) {
                 $colony->lowerStorage($cost->getGoodId(), $cost->getAmount() * $count);
             }
-            $colony->upperStorage($torp->getGoodId(), $count * $torp->getAmount());
+            $colony->upperStorage($torp->getGoodId(), $count * $torp->getProductionAmount());
             $msg[] = sprintf(
                 _('Es wurden %d Torpedos des Typs %s hergestellt'),
-                $count * $torp->getAmount(),
+                $count * $torp->getProductionAmount(),
                 $torp->getName()
             );
-            $colony->lowerEps($count * $torp->getECost());
+            $colony->lowerEps($count * $torp->getEnergyCost());
         }
         $colony->save();
         if (count($msg) > 0) {

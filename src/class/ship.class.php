@@ -3,6 +3,7 @@
 
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ShipData extends BaseTable {
 
@@ -687,7 +688,10 @@ class ShipData extends BaseTable {
 	 */
 	public function getTorpedo() { #{{{
 		if ($this->torpedo === NULL) {
-			$this->torpedo = new TorpedoType($this->getTorpedoType());
+			// @todo refactor
+            global $container;
+
+            $this->torpedo = $container->get(TorpedoTypeRepositoryInterface::class)->find((int) $this->getTorpedoType());
 		}
 		return $this->torpedo;
 	} # }}}
@@ -1581,7 +1585,12 @@ class ShipData extends BaseTable {
 	 */
 	public function getPossibleTorpedoTypes() { #{{{
 		if ($this->torpedo_types === NULL) {
-			$this->torpedo_types = TorpedoType::getObjectsBy('WHERE level='.$this->getRump()->getTorpedoLevel());
+			// @todo refactor
+			global $container;
+
+			$this->torpedo_types = $container
+				->get(TorpedoTypeRepositoryInterface::class)
+				->getByLevel($this->getRump()->getTorpedoLevel());
 		}
 		return $this->torpedo_types;
 	} # }}}

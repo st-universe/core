@@ -13,7 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use TorpedoType;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
 {
@@ -22,10 +22,14 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $torpedoTypeRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -100,7 +104,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         ShipCrew::createByRumpCategory($ship);
 
         if ($hangar->getDefaultTorpedoTypeId()) {
-            $torp = new TorpedoType($hangar->getDefaultTorpedoTypeId());
+            $torp = $this->torpedoTypeRepository->find((int) $hangar->getDefaultTorpedoTypeId());
             if ($colony->getStorage()->offsetExists($torp->getGoodId())) {
                 $count = $ship->getMaxTorpedos();
                 if ($count > $storage[$torp->getGoodId()]->getAmount()) {

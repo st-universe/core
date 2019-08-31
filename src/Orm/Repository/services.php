@@ -17,6 +17,7 @@ use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\UserIpTable;
 
 return [
@@ -74,6 +75,11 @@ return [
         ContainerInterface $c
     ): SessionStringRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
+    },
+    TorpedoTypeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TorpedoTypeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
     },
     UserIpTableRepositoryInterface::class => function (
         ContainerInterface $c

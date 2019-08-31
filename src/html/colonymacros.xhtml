@@ -280,10 +280,10 @@
                 <br />
                 <table class="tcal">
                     <tr>
-                        <th i18n:translate="">Herstellung</th>
+                        <th i18n:translate="" colspan="2">Herstellung</th>
                     </tr>
                     <tr tal:condition="not:BUILDABLE_TORPEDO_TYPES">
-                        <td i18n:translate="">Es können keine Torpedos gebaut werden</td>
+                        <td i18n:translate="" colspan="2">Es können keine Torpedos gebaut werden</td>
                     </tr>
                     <tr tal:condition="BUILDABLE_TORPEDO_TYPES">
                         <td class="darkbg">Typ</td>
@@ -291,14 +291,14 @@
                     </tr>
                     <tr tal:repeat="data BUILDABLE_TORPEDO_TYPES" tal:attributes="class string:row${repeat/data/odd}">
                         <td>
-                            <stu:textinput name="torps[${data/getId}]" width="3" /> x <span tal:replace="data/getAmount">AMOUNT</span>
+                            <stu:textinput name="torps[${data/getId}]" width="3" /> x <span tal:replace="data/getProductionAmount">AMOUNT</span>
                             <img src="assets/goods/${data/getGoodId}.gif" class="center" />
                             <span tal:replace="data/getName">TORPEDOTYPE</span>
                         </td>
                         <td>
                             <img src="assets/buttons/e_trans2.gif" class="center" title="Energiekosten" i18n:attributes="title" />
-                            <span tal:replace="data/getECost">ECOST</span>
-                            <tal:block tal:repeat="cost data/getCosts">
+                            <span tal:replace="data/getEnergyCost">ECOST</span>
+                            <tal:block tal:repeat="cost data/getProductionCosts">
                                 <img src="assets/goods/${cost/getGoodId}.gif" class="center" tal:attributes="title cost/getGood/getName" />
                                 <span tal:replace="cost/getAmount">COUNT</span>
                             </tal:block>

@@ -13,7 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
-use TorpedoType;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -22,10 +22,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $torpedoTypeRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -193,15 +197,18 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     if (!$shipobj->ownedByCurrentUser() && $count <= $shipobj->getTorpedoCount()) {
                         throw new Exception;
                     }
-                    if ($shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) || !array_key_exists($torp_type[$shipobj->getId()],
-                                $shipobj->getPossibleTorpedoTypes()))) {
+                    $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());
+                    if (
+                        $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
+                        !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
+                    ) {
                         throw new Exception;
                     }
                     if ($count > $shipobj->getMaxTorpedos()) {
                         $count = $shipobj->getMaxTorpedos();
                     }
                     if ($shipobj->getTorpedoCount() > 0) {
-                        $torp_obj = new TorpedoType($shipobj->getTorpedoType());
+                        $torp_obj = $possibleTorpedoTypes[(int) $shipobj->getTorpedoType()];
                         $load = $count - $shipobj->getTorpedoCount();
                         if ($load > 0) {
                             if (!$storage->offsetExists($torp_obj->getGoodId())) {
@@ -239,8 +246,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             );
                         }
                     } else {
-                        $type = intval($torp_type[$shipobj->getId()]);
-                        $torp_obj = new TorpedoType($type);
+                        $type = (int) $torp_type[$shipobj->getId()];
+                        $torp_obj = $this->torpedoTypeRepository->find($type);
                         if (!$storage->offsetExists($torp_obj->getGoodId())) {
                             throw new Exception;
                         }
