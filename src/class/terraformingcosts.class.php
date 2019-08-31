@@ -1,5 +1,9 @@
 <?php
 
+use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+
 class TerraformingCostData extends BaseTable {
 
 	protected $tablename = 'stu_terraforming_cost';
@@ -29,10 +33,13 @@ class TerraformingCostData extends BaseTable {
 		return $this->data['count'];
 	}
 
-	function getGoodName() {
-		return getGoodName($this->getGoodsId());
-	}
+	public function getGood(): CommodityInterface
+	{
+		// @todo refactor
+		global $container;
 
+		return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getGoodsId());
+	}
 
 }
 class TerraformingCost extends TerraformingCostData {

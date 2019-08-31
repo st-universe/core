@@ -5,6 +5,7 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
@@ -191,20 +192,22 @@ function parseDateTime($value) {
 function parseDate($value) {
 	return date("d.m.Y",$value);
 }
-function &getGoodName($goodId) {
-	static $goods = NULL;
-	if ($goods === NULL) {
-		$goods = Good::getList();
-	}
-	return $goods[$goodId]->getName();
-}
+
+/**
+ * @deprecated
+ */
 function calculateCosts(&$costs,&$storage,&$place) {
+    global $container;
+    $commodityRepository = $container->get(CommodityRepositoryInterface::class);
+
 	foreach ($costs as $key => $obj) {
 		if (!array_key_exists($key,$storage)) {
-			return "Es werden ".$obj->getAmount()." ".getGoodName($obj->getGoodsId())." benötigt - Es ist jedoch keines vorhanden";
+            $commodity = $commodityRepository->find((int) $obj->getGoodsId());
+			return "Es werden ".$obj->getAmount()." ".$commodity->getName()." benötigt - Es ist jedoch keines vorhanden";
 		}
 		if ($obj->getAmount() > $storage[$key]->getAmount()) {
-			return "Es werden ".$obj->getAmount()." ".getGoodName($obj->getGoodsId())." benötigt - Vorhanden sind nur ".$storage[$key]->getAmount();
+            $commodity = $commodityRepository->find((int) $obj->getGoodsId());
+			return "Es werden ".$obj->getAmount()." ".$commodity->getName()." benötigt - Vorhanden sind nur ".$storage[$key]->getAmount();
 		}
 	}
 	reset($costs);

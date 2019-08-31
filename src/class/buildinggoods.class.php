@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+
 class BuildingGoodData extends BaseTable {
 
 	const tablename = 'stu_buildings_goods';
@@ -25,7 +27,11 @@ class BuildingGoodData extends BaseTable {
 
 	function getGood() {
 		if ($this->good === NULL) {
-			$this->good = new Good($this->getGoodId());
+            // @todo refactor
+            global $container;
+
+            $commodityRepository = $container->get(CommodityRepositoryInterface::class);
+            $this->good = $commodityRepository->find((int) $this->getGoodId());
 		}
 		return $this->good;
 

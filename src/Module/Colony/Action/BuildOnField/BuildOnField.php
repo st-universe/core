@@ -82,7 +82,7 @@ final class BuildOnField implements ActionControllerInterface
                     $game->addInformationf(
                         _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                         $obj->getAmount(),
-                        getGoodName($obj->getGoodId())
+                        $obj->getGood()->getName()
                     );
                     return;
                 }
@@ -91,7 +91,7 @@ final class BuildOnField implements ActionControllerInterface
                     $game->addInformationf(
                         _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                         $obj->getAmount(),
-                        getGoodName($obj->getGoodId())
+                        $obj->getGood()->getName()
                     );
                     return;
                 }
@@ -111,7 +111,7 @@ final class BuildOnField implements ActionControllerInterface
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Vorhanden sind nur %d'),
                     $obj->getAmount(),
-                    getGoodName($obj->getGoodId()),
+                    $obj->getGood()->getName(),
                     $amount
                 );
                 return;

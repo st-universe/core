@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowOfferMenuNewOffer;
 
 use AccessViolation;
-use Good;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use TradePost;
 use TradeStorage;
 
@@ -18,10 +20,14 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
 
     private $showOfferMenuNewOfferRequest;
 
+    private $commodityRepository;
+
     public function __construct(
-        ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest
+        ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->showOfferMenuNewOfferRequest = $showOfferMenuNewOfferRequest;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,18 +41,20 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
 
         $trade_post = new TradePost($storage->getTradePostId());
 
+        $commodityList = $this->commodityRepository->getViewable();
+        usort(
+            $commodityList,
+            function (CommodityInterface $a, CommodityInterface $b): int {
+                return $a->getSort() <=> $b->getSort();
+            }
+        );
+
         $game->showMacro('html/trademacros.xhtml/newoffermenu_newoffer');
         $game->setPageTitle(sprintf(
             _('Management %s'), $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_DILITHIUM', (int) $storage->getGoodId() === GOOD_DILITHIUM);
-        $game->setTemplateVar(
-            'SELECTABLE_GOODS',
-            Good::getGoodsBy(sprintf(
-                'WHERE view=1 AND tradeable=1 AND illegal_%d=0 ORDER BY sort',
-                $trade_post->getTradeNetwork()
-            ))
-        );
+        $game->setTemplateVar('IS_DILITHIUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_DILITHIUM);
+        $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
     }
 }

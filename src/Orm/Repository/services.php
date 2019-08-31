@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
@@ -30,6 +31,11 @@ return [
         ContainerInterface $c
     ): BuildingUpgradeCostRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BuildingUpgradeCost::class);
+    },
+    CommodityRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): CommodityRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Commodity::class);
     },
     DatabaseCategoryRepositoryInterface::class => function (
         ContainerInterface $c

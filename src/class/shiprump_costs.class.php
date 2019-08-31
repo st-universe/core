@@ -10,6 +10,8 @@
 
 /* $Id:$ */
 
+use Stu\Orm\Entity\CommodityInterface;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
@@ -61,7 +63,7 @@ class ShipRumpCostsData extends BaseTable { #{{{
 	}
 
 	/**
-	 * @return Good
+	 * @return CommodityInterface
 	 */
 	public function getGood() { #{{{
 		return ResourceCache()->getObject('good',$this->getGoodId());

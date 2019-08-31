@@ -1,6 +1,7 @@
 <?php
 
 
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -1549,7 +1550,7 @@ class ShipData extends BaseTable {
 	/**
 	 */
 	public function loadWarpCore($count) { #{{{
-		foreach (array(GOOD_DEUTERIUM,GOOD_ANTIMATTER) as $key) {
+		foreach (array(CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER) as $key) {
 			if (!$this->getStorage()->offsetExists($key)) {
 				return FALSE;
 			}
@@ -1557,8 +1558,8 @@ class ShipData extends BaseTable {
 				$count = $this->getStorage()->offsetGet($key)->getAmount();
 			}
 		}
-		$this->lowerStorage(GOOD_DEUTERIUM,$count);
-		$this->lowerStorage(GOOD_ANTIMATTER,$count);
+		$this->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM,$count);
+		$this->lowerStorage(CommodityTypeEnum::GOOD_ANTIMATTER,$count);
 		if ($this->getWarpcoreLoad()+$count*WARPCORE_LOAD > $this->getWarpcoreCapacity()) {
 			$load = $this->getWarpcoreCapacity() - $this->getWarpcoreLoad();
 		} else {

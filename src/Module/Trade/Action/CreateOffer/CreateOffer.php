@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\CreateOffer;
 
 use AccessViolation;
-use Good;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use TradeOfferData;
 use TradePost;
 use TradeStorage;
@@ -20,10 +22,14 @@ final class CreateOffer implements ActionControllerInterface
 
     private $createOfferRequest;
 
+    private $commodityRepository;
+
     public function __construct(
-        CreateOfferRequestInterface $createOfferRequest
+        CreateOfferRequestInterface $createOfferRequest,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->createOfferRequest = $createOfferRequest;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,17 +60,18 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        $selectable_goods = Good::getGoodsBy(sprintf(
-            'WHERE view=1 AND tradeable=1 AND illegal_%d=0 ORDER BY sort',
-            $trade_post->getTradeNetwork()
-        ));
-
-        if ($giveGoodId == GOOD_DILITHIUM) {
-            if (!array_key_exists($wantedGoodId, $selectable_goods)) {
+        if ($giveGoodId == CommodityTypeEnum::GOOD_DILITHIUM) {
+            $result = array_filter(
+                $this->commodityRepository->getViewable(),
+                function (CommodityInterface $commodity) use ($wantedGoodId): bool {
+                    return $commodity->getId() === $wantedGoodId;
+                }
+            );
+            if ($result === []) {
                 return;
             }
         } else {
-            if ($wantedGoodId != GOOD_DILITHIUM) {
+            if ($wantedGoodId != CommodityTypeEnum::GOOD_DILITHIUM) {
                 return;
             }
         }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use GoodData;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -74,9 +74,9 @@ final class TalSelectedTech implements TalSelectedTechInterface
         return $this->research->getUpperMoonLimit();
     }
 
-    public function getGood(): GoodData
+    public function getGood(): CommodityInterface
     {
-        return ResourceCache()->getObject('good', $this->getGoodId());
+        return $this->research->getGood();
     }
 
     public function getResearchState()

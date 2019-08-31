@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Good;
-
 /**
  * @Entity
  * @Table(name="stu_buildings_upgrades_cost",indexes={@Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})})
@@ -24,6 +22,12 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 
     /** @Column(type="integer") * */
     private $amount;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $good;
 
     public function getId(): int
     {
@@ -64,7 +68,7 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
         return $this->amount;
     }
 
-    public function getGood(): Good {
-        return ResourceCache()->getGood($this->getGoodId());
+    public function getGood(): CommodityInterface {
+        return $this->good;
     }
 }

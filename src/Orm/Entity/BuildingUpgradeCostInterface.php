@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Good;
-
 interface BuildingUpgradeCostInterface
 {
     public function getId(): int;
@@ -20,5 +18,5 @@ interface BuildingUpgradeCostInterface
 
     public function getAmount(): int;
 
-    public function getGood(): Good;
+    public function getGood(): CommodityInterface;
 }

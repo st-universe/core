@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ActivateBuildingsEps;
 
 use Colfields;
-use Good;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ActivateBuildingsEps implements ActionControllerInterface
 {
@@ -22,12 +22,16 @@ final class ActivateBuildingsEps implements ActionControllerInterface
 
     private $buildingAction;
 
+    private $commodityRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        BuildingActionInterface $buildingAction
+        BuildingActionInterface $buildingAction,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingAction = $buildingAction;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,7 +41,7 @@ final class ActivateBuildingsEps implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $colonyId = $colony->getId();
+        $colonyId = (int) $colony->getId();
         $fields = Colfields::getListBy("colonies_id=" . $colonyId . " AND buildings_id>0 AND aktiv=0 AND buildings_id IN (SELECT id FROM stu_buildings WHERE eps_proc<0)");
 
         foreach ($fields as $field) {
@@ -48,7 +52,7 @@ final class ActivateBuildingsEps implements ActionControllerInterface
         usort($list, 'compareBuildings');
 
         $game->setTemplateVar('BUILDING_LIST', $list);
-        $game->setTemplateVar('USEABLE_GOOD_LIST', Good::getListByActiveBuildings($colony->getId()));
+        $game->setTemplateVar('USEABLE_GOOD_LIST', $this->commodityRepository->getByBuildingsOnColony($colonyId));
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => MENU_BUILDINGS]);
     }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use GoodData;
-
 /**
  * @Entity
  * @Table(
@@ -31,6 +29,12 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
      * @JoinColumn(name="torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $torpedoType;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $good;
 
     public function getId(): int
     {
@@ -78,10 +82,8 @@ class TorpedoTypeCost implements TorpedoTypeCostInterface
         return $this;
     }
 
-    public function getGood(): GoodData
+    public function getGood(): CommodityInterface
     {
-        // @todo refactor - use good entity
-
-        return ResourceCache()->getObject(CACHE_GOOD, $this->getGoodId());
+        return $this->good;
     }
 }

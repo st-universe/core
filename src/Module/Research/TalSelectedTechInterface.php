@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Research;
 
-use GoodData;
+use Stu\Orm\Entity\CommodityInterface;
 
 interface TalSelectedTechInterface
 {
@@ -20,7 +20,7 @@ interface TalSelectedTechInterface
 
     public function getUpperMoonLimit(): int;
 
-    public function getGood(): GoodData;
+    public function getGood(): CommodityInterface;
 
     public function getResearchState();
 

@@ -1,8 +1,10 @@
 <?php
 
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Research\ResearchState;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 class ColonyTickManager {
@@ -153,10 +155,13 @@ class ColonyTick {
 	}
 
 	function deactivateBuilding(&$field,$key) {
+		// @todo refactor
+		global $container;
+
 		if ($key == 0) {
 			$ext = "Energie";
 		} else {
-			$ext = getGoodName($key);
+			$ext = $container->get(CommodityRepositoryInterface::class)->find((int) $key)->getName();
 		}
 
 		$this->addMessage($field->getBuilding()->getName()." auf Feld ".$field->getFieldId()." deaktiviert (Mangel an ".$ext.")");
@@ -188,11 +193,11 @@ class ColonyTick {
 			if ($obj->getProduction() >= 0) {
 				continue;
 			}
-			if ($key == GoodData::NAHRUNG) {
-				if (!$this->getColony()->getStorage()->offsetExists(GoodData::NAHRUNG) && $obj->getProduction() < 1) {
+			if ($key == CommodityTypeEnum::GOOD_FOOD) {
+				if (!$this->getColony()->getStorage()->offsetExists(CommodityTypeEnum::GOOD_FOOD) && $obj->getProduction() < 1) {
 					$this->proceedEmigration(TRUE);
 					$emigrated = 1;
-				} elseif (($foodm=$this->getColony()->getStorage()->offsetGet(GoodData::NAHRUNG)->getAmount()+$obj->getProduction()) < 0) {
+				} elseif (($foodm=$this->getColony()->getStorage()->offsetGet(CommodityTypeEnum::GOOD_FOOD)->getAmount()+$obj->getProduction()) < 0) {
 					$this->proceedEmigration(TRUE,abs($foodm));
 					$emigrated = 1;
 				}
@@ -270,13 +275,13 @@ class ColonyTick {
 	function proceedFood() {
 		$foodvalue = $this->getColony()->getBevFood();
 		$prod = &$this->getColony()->getProductionRaw();
-		if (!array_key_exists(GoodData::NAHRUNG,$prod)) {
+		if (!array_key_exists(CommodityTypeEnum::GOOD_FOOD,$prod)) {
 			$obj = new ColProductionData;
-			$obj->setGoodId(GoodData::NAHRUNG);
+			$obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
 			$obj->lowerProduction($foodvalue);
-			$prod[GoodData::NAHRUNG] = $obj;
+			$prod[CommodityTypeEnum::GOOD_FOOD] = $obj;
 		} else {
-			$prod[GoodData::NAHRUNG]->lowerProduction($foodvalue);
+			$prod[CommodityTypeEnum::GOOD_FOOD]->lowerProduction($foodvalue);
 		}
 		return $prod;
 	}

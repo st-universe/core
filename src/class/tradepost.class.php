@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Module\Commodity\CommodityTypeEnum;
+
 class TradePostData extends BaseTable {
 
 	protected $tablename = 'stu_trade_posts';
@@ -104,7 +106,7 @@ class TradePostData extends BaseTable {
 
 	public function getLicenceCostGood() {
 		// @todo Kann auch was anderes als Dilithium sein
-		return ResourceCache()->getObject('good',GOOD_DILITHIUM);
+		return ResourceCache()->getObject('good', CommodityTypeEnum::GOOD_DILITHIUM);
 	}
 
 	/**

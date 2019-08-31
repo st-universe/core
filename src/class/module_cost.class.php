@@ -10,6 +10,8 @@
 
 /* $Id:$ */
 
+use Stu\Orm\Entity\CommodityInterface;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
@@ -51,7 +53,7 @@ class ModuleCostData extends BaseTable { #{{{
 	} # }}}
 
 	/**
-	 * @return Good
+	 * @return CommodityInterface
 	 */
 	public function getGood() { #{{{
 		return ResourceCache()->getObject(CACHE_GOOD,$this->getGoodId());

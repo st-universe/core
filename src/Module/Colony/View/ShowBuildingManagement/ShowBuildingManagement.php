@@ -6,11 +6,11 @@ namespace Stu\Module\Colony\View\ShowBuildingManagement;
 
 use Colfields;
 use ColonyMenu;
-use Good;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ShowBuildingManagement implements ViewControllerInterface
 {
@@ -22,14 +22,18 @@ final class ShowBuildingManagement implements ViewControllerInterface
 
     private $showBuildingManagementRequest;
 
+    private $commodityRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowBuildingManagementRequestInterface $showBuildingManagementRequest
+        ShowBuildingManagementRequestInterface $showBuildingManagementRequest,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showBuildingManagementRequest = $showBuildingManagementRequest;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,6 +55,6 @@ final class ShowBuildingManagement implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILDINGS));
         $game->setTemplateVar('BUILDING_LIST', $list);
-        $game->setTemplateVar('USEABLE_GOOD_LIST', Good::getListByActiveBuildings($colony->getId()));
+        $game->setTemplateVar('USEABLE_GOOD_LIST', $this->commodityRepository->getByBuildingsOnColony((int) $colony->getId()));
     }
 }

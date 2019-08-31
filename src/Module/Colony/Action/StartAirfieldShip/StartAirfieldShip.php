@@ -13,6 +13,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
@@ -24,12 +25,16 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $torpedoTypeRepository;
 
+    private $commodityRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -94,7 +99,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
-                getGoodName($rump->getGoodId())
+                $this->commodityRepository->find((int) $rump->getGoodId())->getName()
             );
             return;
         }

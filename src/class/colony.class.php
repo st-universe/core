@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
 
 class ColonyData extends BaseTable {
@@ -309,17 +311,17 @@ class ColonyData extends BaseTable {
 	public function getProduction() {
 		if ($this->production === NULL) {
 			$this->production = $this->getProductionRaw();
-			if (array_key_exists(GoodData::NAHRUNG,$this->production)) {
-				if ($this->production[GoodData::NAHRUNG]->getProduction()-$this->getBevFood() == 0) {
-					unset($this->production[GoodData::NAHRUNG]);
+			if (array_key_exists(CommodityTypeEnum::GOOD_FOOD,$this->production)) {
+				if ($this->production[CommodityTypeEnum::GOOD_FOOD]->getProduction()-$this->getBevFood() == 0) {
+					unset($this->production[CommodityTypeEnum::GOOD_FOOD]);
 				} else {
-					$this->production[GoodData::NAHRUNG]->lowerProduction($this->getBevFood());
+					$this->production[CommodityTypeEnum::GOOD_FOOD]->lowerProduction($this->getBevFood());
 				}
 			} else {
 				$obj = new ColProductionData;
 				$obj->setProduction(-$this->getBevFood());
-				$obj->setGoodId(GoodData::NAHRUNG);
-				$this->production[GoodData::NAHRUNG] = $obj;
+				$obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
+				$this->production[CommodityTypeEnum::GOOD_FOOD] = $obj;
 			}
 		}
 		return $this->production;
@@ -331,7 +333,7 @@ class ColonyData extends BaseTable {
 		if ($this->productionsum === NULL) {
 			$sum = 0;
 			foreach($this->getProduction() as $key => $value) {
-				if ($value->getGood()->getType() == GOOD_TYPE_EFFECT) {
+				if ($value->getGood()->getType() == CommodityTypeEnum::GOOD_TYPE_EFFECT) {
 					continue;
 				}
 				$sum += $value->getProduction();
@@ -424,8 +426,8 @@ class ColonyData extends BaseTable {
 		$this->upperEps($building->getEpsStorage());
 		$this->setName(_('Kolonie'));
 		$this->save();
-		$this->upperStorage(GoodData::BAUMATERIAL,150);
-		$this->upperStorage(GoodData::NAHRUNG,100);
+		$this->upperStorage(CommodityTypeEnum::GOOD_BUILDING_MATERIALS,150);
+		$this->upperStorage(CommodityTypeEnum::GOOD_FOOD,100);
 	}
 
 	function getBevFood() {
@@ -558,25 +560,27 @@ class ColonyData extends BaseTable {
 	}
 
 	function getGoodUseView() {
-		$goods = Good::getList();
+		// @todo refactor
+		global $container;
+
+		$commodityRepository = $container->get(CommodityRepositoryInterface::class);
+
 		$stor = $this->getStorage();
 		$prod = $this->getProduction();
 		$ret = array();
-		foreach ($goods as $key => $value) {
-			if (array_key_exists($key,$prod)) {
-				$proc = $prod[$key]->getProduction();
+		foreach ($prod as $key => $value) {
+				$proc = $value->getProduction();
 				if ($proc >= 0) {
 					continue;
 				}
-				$ret[$key]['good'] = $value;
-				$ret[$key]['production'] = $prod[$key];
+				$ret[$key]['good'] = $commodityRepository->find((int) $value->getGoodId());
+				$ret[$key]['production'] = $value;
 				if (!array_key_exists($key,$stor)) {
 					$ret[$key]['storage'] = 0;
 				} else {
 					$ret[$key]['storage'] = $stor[$key]->getAmount();
 				}
 				$ret[$key]['turnsleft'] = floor($ret[$key]['storage']/abs($proc));
-			}
 		}
 		return $ret;
 	}

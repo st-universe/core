@@ -5,12 +5,21 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Colony;
-use Good;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Tuple;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
+    private $commodityRepository;
+
+    public function __construct(
+        CommodityRepositoryInterface $commodityRepository
+    ) {
+        $this->commodityRepository = $commodityRepository;
+    }
+
     public function getColonyMenu(int $menuId): string
     {
         switch ($menuId) {
@@ -76,35 +85,37 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
 
 
-        $goods = Good::getList('type=' . GOOD_TYPE_STANDARD);
+        $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_STANDARD);
         $stor = $colony->getStorage();
         $prod = $colony->getProduction();
         $storage = [];
-        foreach ($goods as $key => $value) {
-            if (array_key_exists($key, $prod)) {
-                $storage[$key]['good'] = $value;
-                $storage[$key]['production'] = $prod[$key];
-                if (!$stor->offsetExists($key)) {
-                    $storage[$key]['storage'] = false;
+        foreach ($goods as $value) {
+            $commodityId = $value->getId();
+            if (array_key_exists($commodityId, $prod)) {
+                $storage[$commodityId]['good'] = $value;
+                $storage[$commodityId]['production'] = $prod[$commodityId];
+                if (!$stor->offsetExists($commodityId)) {
+                    $storage[$commodityId]['storage'] = false;
                 } else {
-                    $storage[$key]['storage'] = $stor->offsetGet($key);
+                    $storage[$commodityId]['storage'] = $stor->offsetGet($commodityId);
                 }
-            } elseif ($stor->offsetExists($key)) {
-                $storage[$key]['good'] = $value;
-                $storage[$key]['storage'] = $stor->offsetGet($key);
-                $storage[$key]['production'] = false;
+            } elseif ($stor->offsetExists($commodityId)) {
+                $storage[$commodityId]['good'] = $value;
+                $storage[$commodityId]['storage'] = $stor->offsetGet($commodityId);
+                $storage[$commodityId]['production'] = false;
             }
         }
 
-        $goods = Good::getList('type=' . GOOD_TYPE_EFFECT);
+        $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_EFFECT);
         $prod = $colony->getProduction();
         $effets = [];
-        foreach ($goods as $key => $value) {
-            if (!array_key_exists($key, $prod) || $prod[$key]->getProduction() == 0) {
+        foreach ($goods as $value) {
+            $commodityId = $value->getId();
+            if (!array_key_exists($commodityId, $prod) || $prod[$commodityId]->getProduction() == 0) {
                 continue;
             }
-            $effets[$key]['good'] = $value;
-            $effets[$key]['production'] = $prod[$key];
+            $effets[$commodityId]['good'] = $value;
+            $effets[$commodityId]['production'] = $prod[$commodityId];
         }
 
         $game->setTemplateVar('EPS_BAR', $epsBar);

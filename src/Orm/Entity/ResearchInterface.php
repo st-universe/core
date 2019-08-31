@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use GoodData;
-
 interface ResearchInterface
 {
     public function getId(): int;
@@ -44,5 +42,5 @@ interface ResearchInterface
 
     public function setUpperMoonLimit(int $upperMoonLimit): ResearchInterface;
 
-    public function getGood(): GoodData;
+    public function getGood(): CommodityInterface;
 }

@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use GoodData;
-
 interface TorpedoTypeCostInterface
 {
     public function getId(): int;
@@ -22,5 +20,5 @@ interface TorpedoTypeCostInterface
 
     public function setAmount(int $amount): TorpedoTypeCostInterface;
 
-    public function getGood(): GoodData;
+    public function getGood(): CommodityInterface;
 }

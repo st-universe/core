@@ -31,7 +31,7 @@ class ColStorageData extends BaseTable {
 	}
 
 	public function getGood() {
-		return Good::getById($this->getGoodId());
+		return ResourceCache()->getObject("good",$this->getGoodId());
 	}
 
 	public function lowerCount($count) {

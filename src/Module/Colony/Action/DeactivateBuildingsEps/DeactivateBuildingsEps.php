@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\DeactivateBuildingsEps;
 
 use Colfields;
-use Good;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class DeactivateBuildingsEps implements ActionControllerInterface
 {
@@ -22,12 +22,16 @@ final class DeactivateBuildingsEps implements ActionControllerInterface
 
     private $buildingAction;
 
+    private $commodityRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        BuildingActionInterface $buildingAction
+        BuildingActionInterface $buildingAction,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingAction = $buildingAction;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,7 +52,7 @@ final class DeactivateBuildingsEps implements ActionControllerInterface
         usort($list, 'compareBuildings');
 
         $game->setTemplateVar('BUILDING_LIST', $list);
-        $game->setTemplateVar('USEABLE_GOOD_LIST', Good::getListByActiveBuildings($colony->getId()));
+        $game->setTemplateVar('USEABLE_GOOD_LIST', $this->commodityRepository->getByBuildingsOnColony($colonyId));
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => MENU_BUILDINGS]);
     }

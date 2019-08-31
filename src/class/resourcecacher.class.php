@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+
 class ResourceCacher {
 	
 	private $resources = NULL;
@@ -29,7 +31,7 @@ class ResourceCacher {
 
 	public function getObject($obj,$id) {
 		if (!$this->isResourceCached($obj,$id)) {
-			$this->addResource($obj,$id);
+			$this->addResource($obj,(int) $id);
 		}
 		return $this->getCache()->offsetGet($obj)->offsetGet($id);
 	}
@@ -53,7 +55,7 @@ class ResourceCacher {
 	} # }}}
 
 
-	private function addResource(&$obj,&$id) {
+	private function addResource(&$obj,$id) {
 		switch ($obj) {
 			case "user":
 				$newobj = "User";
@@ -62,8 +64,14 @@ class ResourceCacher {
 				$newobj = "Building";
 				break;
 			case "good":
-				$newobj = "Good";
-				break;
+			    global $container;
+
+                $this->registerResource(
+                    $obj,
+                    $id,
+                    $container->get(CommodityRepositoryInterface::class)->find($id)
+                );
+                return;
 			case "ship":
 				$newobj = "Ship";
 				break;

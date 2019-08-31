@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use GoodData;
-
 /**
  * @Entity
  * @Table(name="stu_research")
@@ -42,6 +40,12 @@ class Research implements ResearchInterface
 
     /** @Column(type="smallint") * */
     private $upper_moonlimit;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $good;
 
     public function getId(): int
     {
@@ -156,10 +160,8 @@ class Research implements ResearchInterface
         return $this;
     }
 
-    public function getGood(): GoodData
+    public function getGood(): CommodityInterface
     {
-        // @todo refactor - use good entity
-
-        return ResourceCache()->getObject('good', $this->getGoodId());
+        return $this->good;
     }
 }

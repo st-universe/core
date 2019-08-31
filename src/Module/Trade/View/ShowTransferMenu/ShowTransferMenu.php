@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\ShowTransferMenu;
 
 use AccessViolation;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use TradePost;
@@ -46,7 +47,7 @@ final class ShowTransferMenu implements ViewControllerInterface
             _('Management %s'), $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_DILITHIUM', $storage->getGoodId() === GOOD_DILITHIUM);
+        $game->setTemplateVar('IS_DILITHIUM', $storage->getGoodId() === CommodityTypeEnum::GOOD_DILITHIUM);
         $game->setTemplateVar(
             'TRADE_POST',
             $trade_post

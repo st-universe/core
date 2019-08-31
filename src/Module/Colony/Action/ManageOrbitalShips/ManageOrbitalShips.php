@@ -9,6 +9,7 @@ use PM;
 use request;
 use Ship;
 use ShipCrew;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -129,7 +130,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $shipobj->deactivateSystems();
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if ($storage->offsetExists(GOOD_DEUTERIUM) && $storage->offsetExists(GOOD_ANTIMATTER)) {
+                if ($storage->offsetExists(CommodityTypeEnum::GOOD_DEUTERIUM) && $storage->offsetExists(CommodityTypeEnum::GOOD_ANTIMATTER)) {
                     if ($shipobj->getWarpcoreLoad() < $shipobj->getWarpcoreCapacity()) {
                         if ($wk[$shipobj->getId()] == INDICATOR_MAX) {
                             $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / WARPCORE_LOAD);
@@ -140,14 +141,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             }
                         }
                         if ($load >= 1) {
-                            if ($storage[GOOD_DEUTERIUM]->getAmount() < $load) {
-                                $load = $storage[GOOD_DEUTERIUM]->getAmount();
+                            if ($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() < $load) {
+                                $load = $storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount();
                             }
-                            if ($storage[GOOD_ANTIMATTER]->getAmount() < $load) {
-                                $load = $storage[GOOD_ANTIMATTER]->getAmount();
+                            if ($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() < $load) {
+                                $load = $storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount();
                             }
-                            $colony->lowerStorage(GOOD_DEUTERIUM, $load);
-                            $colony->lowerStorage(GOOD_ANTIMATTER, $load);
+                            $colony->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM, $load);
+                            $colony->lowerStorage(CommodityTypeEnum::GOOD_ANTIMATTER, $load);
                             if ($shipobj->getWarpcoreLoad() + $load * WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
                                 $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
                             } else {
