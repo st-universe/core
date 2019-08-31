@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
-use BuildplanHangar;
 use request;
 use Ship;
 use ShipCrew;
@@ -13,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -23,18 +23,18 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $colonyLoader;
 
-    private $torpedoTypeRepository;
-
     private $commodityRepository;
+
+    private $buildplanHangarRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        BuildplanHangarRepositoryInterface $buildplanHangarRepository
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->buildplanHangarRepository = $buildplanHangarRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -75,7 +75,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
-        $hangar = BuildplanHangar::getBy(sprintf('WHERE rump_id = %d', $rump_id));
+        $hangar = $this->buildplanHangarRepository->getByRump((int) $rump->getId());
 
         if ($hangar->getBuildplan()->getCrew() > $user->getFreeCrewCount()) {
             $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
@@ -108,17 +108,17 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         ShipCrew::createByRumpCategory($ship);
 
-        if ($hangar->getDefaultTorpedoTypeId()) {
-            $torp = $this->torpedoTypeRepository->find((int) $hangar->getDefaultTorpedoTypeId());
-            if ($colony->getStorage()->offsetExists($torp->getGoodId())) {
+        $defaultTorpedoType = $hangar->getDefaultTorpedoType();
+        if ($defaultTorpedoType !== null) {
+            if ($colony->getStorage()->offsetExists($defaultTorpedoType->getGoodId())) {
                 $count = $ship->getMaxTorpedos();
-                if ($count > $storage[$torp->getGoodId()]->getAmount()) {
-                    $count = $storage[$torp->getGoodId()]->getAmount();
+                if ($count > $storage[$defaultTorpedoType->getGoodId()]->getAmount()) {
+                    $count = $storage[$defaultTorpedoType->getGoodId()]->getAmount();
                 }
-                $ship->setTorpedoType($torp->getId());
+                $ship->setTorpedoType($defaultTorpedoType->getId());
                 $ship->setTorpedoCount($count);
                 $ship->save();
-                $colony->lowerStorage($torp->getGoodId(), $count);
+                $colony->lowerStorage($defaultTorpedoType->getGoodId(), $count);
             }
         }
         if ($rump->canColonize()) {
