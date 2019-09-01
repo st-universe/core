@@ -1102,6 +1102,9 @@ class ShipData extends BaseTable {
 		return $arr[$system];
 	}
 
+	/**
+	 * @return ShipSystemsData[]
+	 */
 	public function getActiveSystems() {
 		if ($this->activeSystems !== NULL) {
 			return $this->activeSystems;
@@ -1672,6 +1675,9 @@ class Ship extends ShipData {
 		return ResourceCache()->getObject("ship",$shipId);
 	}
 
+	/**
+	 * @return ShipData[]
+	 */
 	static function getObjectsBy($qry="") {
 		$result = DB()->query("SELECT * FROM ".self::tablename." ".$qry);
 		return self::_getList($result,'ShipData','id','ship');
