@@ -19,6 +19,7 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
+use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\Research;
@@ -94,6 +95,11 @@ return [
         ContainerInterface $c
     ): DatabaseUserRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class);
+    },
+    FactionRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): FactionRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Faction::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c

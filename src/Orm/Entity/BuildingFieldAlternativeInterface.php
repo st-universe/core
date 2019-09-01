@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use BuildingData;
+
 interface BuildingFieldAlternativeInterface
 {
     public function getId(): int;
@@ -18,7 +20,7 @@ interface BuildingFieldAlternativeInterface
 
     public function setAlternativeBuildingId(int $alternativeBuildingId): BuildingFieldAlternativeInterface;
 
-    public function getAlternativeBuilding(): \BuildingData;
+    public function getAlternativeBuilding(): BuildingData;
 
-    public function getBuilding(): \BuildingData;
+    public function getBuilding(): BuildingData;
 }

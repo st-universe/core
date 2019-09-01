@@ -7,13 +7,13 @@ namespace Stu\Module\Ship\Action\AddDockPrivilege;
 use Alliance;
 use DockingRights;
 use DockingRightsData;
-use Faction;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\FactionRepositoryInterface;
 use User;
 
 final class AddDockPrivilege implements ActionControllerInterface
@@ -22,10 +22,14 @@ final class AddDockPrivilege implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $factionRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        FactionRepositoryInterface $factionRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->factionRepository = $factionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,7 +69,7 @@ final class AddDockPrivilege implements ActionControllerInterface
                 $save = 1;
                 break;
             case DOCK_PRIVILEGE_FACTION:
-                if (!Faction::getById($target)) {
+                if ($this->factionRepository->find((int) $target) === null) {
                     break;
                 }
                 $save = 1;

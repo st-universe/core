@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
-use Faction;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use User;
@@ -24,21 +25,25 @@ final class Register implements ActionControllerInterface
 
     private $researchedRepository;
 
+    private $factionRepository;
+
     public function __construct(
         RegisterRequestInterface $registerRequest,
         ResearchRepositoryInterface $researchRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        FactionRepositoryInterface $factionRepository
     ) {
         $this->registerRequest = $registerRequest;
         $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->factionRepository = $factionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $loginname = $this->registerRequest->getLoginName();
         $email = $this->registerRequest->getEmailAddress();
-        $faction_id = $this->registerRequest->getFactionId();
+        $factionId = $this->registerRequest->getFactionId();
         if (!$game->isRegistrationPossible()) {
             return;
         }
@@ -57,18 +62,19 @@ final class Register implements ActionControllerInterface
         if (User::getByEmail($email)) {
             return;
         }
-        $possible_factions = Faction::getChooseableFactions();
-        if (!array_key_exists($faction_id, $possible_factions)) {
-            return;
-        }
-        $faction = $possible_factions[$faction_id];
-        if (!$faction->hasFreePlayerSlots()) {
+        $factions = array_filter(
+            $this->factionRepository->getByChooseable(true),
+            function (FactionInterface $faction) use ($factionId): bool {
+                return $factionId === $faction->getId() && $faction->hasFreePlayerSlots();
+            }
+        );
+        if ($factions === []) {
             return;
         }
         $obj = new UserData([]);
         $obj->setLogin($loginname);
         $obj->setEmail($email);
-        $obj->setFaction($faction_id);
+        $obj->setFaction($factionId);
         $obj->save();
         $obj->setUser('Siedler ' . $obj->getId());
         $obj->setTick(1);

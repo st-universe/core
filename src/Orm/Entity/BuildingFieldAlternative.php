@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use BuildingData;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingFieldAlternativeRepository")
  * @Table(
@@ -67,12 +69,12 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
         return $this;
     }
 
-    public function getAlternativeBuilding(): \BuildingData
+    public function getAlternativeBuilding(): BuildingData
     {
         return ResourceCache()->getObject(CACHE_BUILDING, $this->getAlternativeBuildingId());
     }
 
-    public function getBuilding(): \BuildingData
+    public function getBuilding(): BuildingData
     {
         return ResourceCache()->getObject(CACHE_BUILDING, $this->getBuildingId());
     }

@@ -570,5 +570,10 @@ class User extends UserData {
 
 		DB()->query('ALTER TABLE '.parent::tablename.' AUTO_INCREMENT=101');
 	}
+
+	public static function getAmountByFaction(int $factionId): int
+	{
+		return (int) static::getCount('stu_user','race='.$factionId);
+	}
 }
 ?>
