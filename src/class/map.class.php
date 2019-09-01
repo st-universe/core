@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
+
 class MapFieldData extends BaseTable {
 
 	protected $tablename = 'stu_map';
@@ -75,7 +78,13 @@ class MapFieldData extends BaseTable {
 		if ($this->getBordertype() == 0) {
 			return '';
 		}
-		$border = getBorderType($this->getBorderType());
+		// @todo refactor
+		global $container;
+
+		$border = $container->get(MapBorderTypeRepositoryInterface::class)->find((int) $this->getBordertype());
+		if ($border === null) {
+			return '';
+		}
 		return 'border: 1px solid #'.$border->getColor();
 	}
 

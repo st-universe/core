@@ -9,10 +9,19 @@ use MapField;
 use MapFieldType;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 
 final class ShowOverall implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_OVERALL';
+
+    private $mapBorderTypeRepository;
+
+    public function __construct(
+        MapBorderTypeRepositoryInterface $mapBorderTypeRepository
+    ) {
+        $this->mapBorderTypeRepository = $mapBorderTypeRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -36,7 +45,7 @@ final class ShowOverall implements ViewControllerInterface
             }
             if ($data['bordertype_id'] > 0) {
                 $border = imagecreatetruecolor(15, 15);
-                $var = '#' . getBorderType($data['bordertype_id'])->getColor();
+                $var = '#' . $this->mapBorderTypeRepository->find((int) $data['bordertype_id'])->getColor();
                 $arr = sscanf($var, '#%2x%2x%2x');
                 $col = imagecolorallocate($border, $arr[0], $arr[1], $arr[2]);
                 imagefill($border, 0, 0, $col);

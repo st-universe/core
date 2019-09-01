@@ -330,13 +330,6 @@ function &DB() {
     return $DB;
 }
 
-function &getBorderType(&$type) {
-    static $borderTypes = array();
-    if (!array_key_exists($type,$borderTypes)) {
-        $borderTypes[$type] = new Bordertypes($type);
-    }
-    return $borderTypes[$type];
-}
 function &getMapType(&$type) {
     static $mapTypes = array();
     if (!array_key_exists($type,$mapTypes)) {
