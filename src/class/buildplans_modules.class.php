@@ -78,18 +78,6 @@ class BuildPlanModules extends BuildPlanModulesData { #{{{
 
 	/**
 	 */
-	static function insertFromBuildProcess($planId,$modules) { #{{{
-		foreach($modules as $type => $obj) {
-			$mod = new BuildPlanModulesData;
-			$mod->setModuleType($obj->getType());
-			$mod->setBuildplanId($planId);
-			$mod->setModuleId($obj->getId());
-			$mod->save();
-		}
-	} # }}}
-
-	/**
-	 */
 	static function getByType($planId,$type) { #{{{
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE buildplan_id=".intval($planId)." AND module_type=".intval($type));;	
 		return self::_getList($result,'BuildPlanModulesData','module_id');

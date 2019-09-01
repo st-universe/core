@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildShip;
 
 use BuildPlanModules;
+use BuildPlanModulesData;
 use ColonyShipQueue;
 use ColonyShipQueueData;
 use ModuleSelector;
@@ -147,7 +148,13 @@ final class BuildShip implements ActionControllerInterface
             $plan->setCrewPercentage($crewcount);
             $plan->save();
 
-            BuildPlanModules::insertFromBuildProcess($plan->getId(), $modules);
+            foreach($modules as $obj) {
+                $mod = new BuildPlanModulesData();
+                $mod->setModuleType($obj->getType());
+                $mod->setBuildplanId($plan->getId());
+                $mod->setModuleId($obj->getId());
+                $mod->save();
+            }
         } else {
             $game->addInformationf(
                 _('Benutze verfügbaren Bauplan: %s'),
