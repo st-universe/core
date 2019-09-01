@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\Terraform;
 
 use Colfields;
 use FieldTerraforming;
+use FieldTerraformingData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -98,7 +99,14 @@ final class Terraform implements ActionControllerInterface
         $colony->resetStorage();
         $colony->lowerEps($terraf->getEpsCost());
         $time = time() + $terraf->getDuration() + 60;
-        FieldTerraforming::addTerraforming($colony->getId(), $field->getId(), $terraf->getId(), $time);
+
+        $obj = new FieldTerraformingData();
+        $obj->setColonyId($colony->getId());
+        $obj->setFieldId($field->getId());
+        $obj->setTerraformingId($terraf->getId());
+        $obj->setFinishDate($time);
+        $obj->save();
+
         $field->setTerraformingId($terraf->getId());
         $field->save();
         $colony->save();

@@ -108,15 +108,6 @@ class FieldTerraforming extends FieldTerraformingData {
 		return new FieldTerraformingData($result);
 	}
 
-	static function addTerraforming($colonyId,$fieldId,$terraformingId,$duration) {
-		$obj = new FieldTerraformingData;
-		$obj->setColonyId($colonyId);
-		$obj->setFieldId($fieldId);
-		$obj->setTerraformingId($terraformingId);
-		$obj->setFinishDate($duration);
-		$obj->save();
-	}
-
 	static function getFinishedJobs() {
 		$ret = array();
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE finished<=".time());
