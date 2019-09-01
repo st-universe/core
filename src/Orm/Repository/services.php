@@ -22,6 +22,8 @@ use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\Note;
+use Stu\Orm\Entity\PlanetFieldType;
+use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
@@ -110,6 +112,16 @@ return [
         ContainerInterface $c
     ): NoteRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
+    },
+    PlanetFieldTypeBuildingRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PlanetFieldTypeBuildingRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldTypeBuilding::class);
+    },
+    PlanetFieldTypeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PlanetFieldTypeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldType::class);
     },
     ResearchRepositoryInterface::class => function (
         ContainerInterface $c

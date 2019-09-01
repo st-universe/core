@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingGoodRepository")
  * @Table(
  *     name="stu_buildings_goods",

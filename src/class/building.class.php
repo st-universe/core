@@ -2,8 +2,10 @@
 
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Entity\BuildingGoodInterface;
+use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 use Stu\Orm\Repository\BuildingCostRepositoryInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
 class BuildingData extends BaseTable {
 
@@ -121,10 +123,15 @@ class BuildingData extends BaseTable {
 	function getBuildableFields() {
 		if ($this->buildfields === NULL) {
 			$this->buildfields = array();
-			$result = DB()->query("SELECT type FROM stu_field_build WHERE buildings_id=".$this->getId());
-			while ($field = mysqli_fetch_assoc($result)) {
-				$this->buildfields[] = $field['type'];
-			}
+			// @todo refactor
+			global $container;
+
+			$this->buildfields = array_map(
+				function (PlanetFieldTypeBuildingInterface $fieldTypeBuilding): int {
+					return $fieldTypeBuilding->getFieldTypeId();
+				},
+				$container->get(PlanetFieldTypeBuildingRepositoryInterface::class)->getByBuilding((int) $this->getId())
+			);
 		}
 		return $this->buildfields;
 	}
@@ -258,12 +265,6 @@ class BuildingData extends BaseTable {
 		}
 		return implode(",",$func);
 	}
-
-	/**
-	 */
-	public function getFieldList() { #{{{
-		return FieldBuilding::getObjectsBy('WHERE buildings_id='.$this->getId()." ORDER BY type");
-	} # }}}
 
 	/**
 	 */
