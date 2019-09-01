@@ -118,6 +118,9 @@ $builder->addDefinitions(
 $builder->addDefinitions([
     'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',
 ]);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Tick/services.php'
+);
 
 $builder->addDefinitions(
     require_once __DIR__.'/../Orm/Repository/services.php',
