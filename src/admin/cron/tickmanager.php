@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Module\Tick\TickManagerInterface;
+
 require_once __DIR__.'/../../inc/config.inc.php';
 
-new TickManager;
+$container->get(TickManagerInterface::class)->work();

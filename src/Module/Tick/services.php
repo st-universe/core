@@ -19,6 +19,7 @@ return [
     ColonyTickManagerInterface::class => autowire(ColonyTickManager::class),
     ShipTickInterface::class => autowire(ShipTick::class),
     ShipTickManagerInterface::class => autowire(ShipTickManager::class),
+    TickManagerInterface::class => autowire(TickManager::class),
     'process_tick_handler' => [
         autowire(Process\FinishBuildJobs::class),
         autowire(Process\FinishShipBuildJobs::class),

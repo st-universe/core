@@ -11,6 +11,8 @@ use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 
 final class ColonyTickManager implements ColonyTickManagerInterface
 {
+    public const LOCKFILE_DIR = '/var/tmp/';
+
     private $colonyTick;
 
     private $colonyShipRepairRepository;
@@ -83,12 +85,12 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private function setLock(int $tickId): void
     {
-        @touch(LOCKFILE_DIR . $tickId . '.lock');
+        @touch(self::LOCKFILE_DIR . $tickId . '.lock');
     }
 
     private function clearLock(int $tickId): void
     {
-        @unlink(LOCKFILE_DIR . $tickId . '.lock');
+        @unlink(self::LOCKFILE_DIR . $tickId . '.lock');
     }
 
 }

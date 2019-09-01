@@ -81,8 +81,6 @@ define("TRUMFIELD_CLASS",8);
 define("USER_ONLINE_PERIOD",300);
 
 // Tick
-define("LOCKFILE_DIR",'/var/tmp/');
-define("PROCESS_COUNT",7);
 
 // Barcolors
 define("STATUSBAR_YELLOW",'aaaa00');
