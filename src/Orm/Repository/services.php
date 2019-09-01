@@ -14,6 +14,7 @@ use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
@@ -73,6 +74,11 @@ return [
         ContainerInterface $c
     ): BuildplanModuleRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BuildplanModule::class);
+    },
+    ColonyTerraformingRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonyTerraformingRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyTerraforming::class);
     },
     CommodityRepositoryInterface::class => function (
         ContainerInterface $c

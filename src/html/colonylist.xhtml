@@ -86,7 +86,7 @@
 								<img src="assets/fields/${data/getTerraforming/getToFieldTypeId}.gif" />
 							</td>
 							<td style="vertical-align: middle">
-								<span tal:replace="data/getTerraforming/getDescription">DESCRIPTION</span> - Fertigstellung: <span tal:replace="data/getFinishDateDisplay">DATE</span>
+								<span tal:replace="data/getTerraforming/getDescription">DESCRIPTION</span> - Fertigstellung: <span tal:replace="datetime:data/getFinishDate">DATE</span>
 							</td>
 						</tr>
 					</table>

@@ -748,18 +748,6 @@ class ColonyData extends BaseTable {
 		);
 	} # }}}
 
-	/**
-	 */
-	public function deepDelete() { #{{{
-		Colfields::truncate('colonies_id='.$this->getId());
-		ColonyShipQueue::truncate('colony_id='.$this->getId());
-		ColStorage::truncate($this->getId());
-		FieldTerraforming::truncate($this->getId());
-		$this->setUserId(USER_NOONE);
-		$this->save();
-	} # }}}
-
-
 	public function getProductionPreview() {
 		return new ColonyProductionPreviewWrapper($this->getProduction());
 	}

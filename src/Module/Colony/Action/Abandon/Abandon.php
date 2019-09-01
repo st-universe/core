@@ -8,9 +8,9 @@ use AccessViolation;
 use Colony;
 use ColonyShipQueue;
 use ColStorage;
-use FieldTerraforming;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
 final class Abandon implements ActionControllerInterface
 {
@@ -19,10 +19,14 @@ final class Abandon implements ActionControllerInterface
 
     private $abandonRequest;
 
+    private $colonyTerraformingRepository;
+
     public function __construct(
-        AbandonRequestInterface $abandonRequest
+        AbandonRequestInterface $abandonRequest,
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
     ) {
         $this->abandonRequest = $abandonRequest;
+        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +37,7 @@ final class Abandon implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $colonyId = $colony->getId();
+        $colonyId = (int) $colony->getId();
 
         $colony->updateColonySurface();
         $colony->setEps(0);
@@ -49,7 +53,9 @@ final class Abandon implements ActionControllerInterface
         $colony->save();
 
         ColStorage::truncate($colonyId);
-        FieldTerraforming::truncate($colonyId);
+        foreach ($this->colonyTerraformingRepository->getByColony([$colonyId]) as $fieldTerraforming) {
+            $this->colonyTerraformingRepository->delete($fieldTerraforming);
+        }
         ColonyShipQueue::truncate(sprintf('colony_id = %d', $colony));
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));

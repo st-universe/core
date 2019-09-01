@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+
 class ProcessTick {
 
 	static function finishBuildProcesses() {
@@ -23,17 +25,23 @@ class ProcessTick {
 	}
 
 	static function finishTerraformingProcesses() {
-		$result = FieldTerraforming::getFinishedJobs();
-		foreach ($result as $key => $field) {
-			/**
-			 * @var FieldTerraformingData $field
-			 */
-			$field->getField()->setFieldType($field->getTerraforming()->getToFieldTypeId());
-			$field->getField()->setTerraformingId(0);
-			$field->getField()->save();
-			$field->deleteFromDatabase();
-			$txt = "Kolonie ".$field->getColony()->getNameWithoutMarkup().": ".$field->getTerraforming()->getDescription()." auf Feld ".$field->getField()->getFieldId()." abgeschlossen";
-			PM::sendPM(USER_NOONE,$field->getColony()->getUserId(),$txt,PM_SPECIAL_COLONY);
+		// @todo refactor
+		global $container;
+
+		$colonyTerraformingRepository = $container->get(ColonyTerraformingRepositoryInterface::class);
+
+		$result = $colonyTerraformingRepository->getFinishedJobs();
+		foreach ($result as $field) {
+		    $colonyField = $field->getField();
+		    $colony = $field->getColony();
+
+			$colonyField->setFieldType($field->getTerraforming()->getToFieldTypeId());
+			$colonyField->setTerraformingId(0);
+			$colonyField->save();
+
+			$colonyTerraformingRepository->delete($field);
+			$txt = "Kolonie ".$colony->getNameWithoutMarkup().": ".$field->getTerraforming()->getDescription()." auf Feld ".$colonyField->getFieldId()." abgeschlossen";
+			PM::sendPM(USER_NOONE,$colony->getUserId(),$txt,PM_SPECIAL_COLONY);
 		}
 	}
 

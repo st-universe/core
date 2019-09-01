@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Terraform;
 
 use Colfields;
-use FieldTerraformingData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\TerraformingInterface;
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class Terraform implements ActionControllerInterface
@@ -22,13 +22,19 @@ final class Terraform implements ActionControllerInterface
     private $colonyLoader;
 
     private $terraformingRepository;
+    /**
+     * @var ColonyTerraformingRepositoryInterface
+     */
+    private $colonyTerraformingRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        TerraformingRepositoryInterface $terraformingRepository
+        TerraformingRepositoryInterface $terraformingRepository,
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->terraformingRepository = $terraformingRepository;
+        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -98,14 +104,15 @@ final class Terraform implements ActionControllerInterface
         }
         $colony->resetStorage();
         $colony->lowerEps($terraf->getEnergyCosts());
-        $time = time() + $terraf->getDuration() + 60;
+        $time = time() + $terraf->getDuration();
 
-        $obj = new FieldTerraformingData();
-        $obj->setColonyId($colony->getId());
-        $obj->setFieldId($field->getId());
-        $obj->setTerraformingId($terraf->getId());
+        $obj = $this->colonyTerraformingRepository->prototype();
+        $obj->setColonyId((int) $colony->getId());
+        $obj->setFieldId((int) $field->getId());
+        $obj->setTerraforming($terraf);
         $obj->setFinishDate($time);
-        $obj->save();
+
+        $this->colonyTerraformingRepository->save($obj);
 
         $field->setTerraformingId($terraf->getId());
         $field->save();

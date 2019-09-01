@@ -6,19 +6,34 @@ namespace Stu\Module\Colony\View\Overview;
 
 use Colfields;
 use Colony;
-use FieldTerraforming;
+use ColonyData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    private $colonyTerraformingRepository;
+
+    public function __construct(
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
+    ) {
+        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
         $colonyList = Colony::getListBy(sprintf('user_id = %d', $userId));
-        $terraformingList = FieldTerraforming::getUnFinishedJobsByUser($userId);
+
+        $colonyIdList = array_map(
+            function (ColonyData $colony): int {
+                return (int) $colony->getId();
+            },
+            $colonyList
+        );
+
         $buildingJobList = Colfields::getUnFinishedBuildingJobsByUser($userId);
 
         $game->appendNavigationPart(
@@ -34,7 +49,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'TERRAFORMING_LIST',
-            $terraformingList
+            $this->colonyTerraformingRepository->getByColony($colonyIdList)
         );
         $game->setTemplateVar(
             'BUILDINGJOB_LIST',

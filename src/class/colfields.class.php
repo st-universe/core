@@ -1,6 +1,8 @@
 <?php
 
+use Stu\Orm\Entity\ColonyTerraformingInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
+use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 class ColfieldData extends BaseTable {
@@ -222,7 +224,13 @@ class ColfieldData extends BaseTable {
 
 	public function getTerraforming() {
 		if ($this->terraforming === NULL) {
-			$this->terraforming = FieldTerraforming::getByColonyField($this->getColonyId(),$this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->terraforming = $container->get(ColonyTerraformingRepositoryInterface::class)->getByColonyAndField(
+				(int) $this->getColonyId(),
+				(int) $this->getId()
+			);
 		}
 		return $this->terraforming;
 	}
@@ -244,7 +252,7 @@ class ColfieldData extends BaseTable {
 	public function getTitleString() {
 		if (!$this->hasBuilding()) {
 			if ($this->hasTerraforming()) {
-				return $this->getTerraforming()->getTerraforming()->getDescription()." läuft bis ".$this->getTerraforming()->getFinishDateDisplay();
+				return $this->getTerraforming()->getTerraforming()->getDescription()." läuft bis ".parseDateTime($this->getTerraforming()->getFinishDate());
 			}
 			return $this->getFieldTypeName();
 		}
