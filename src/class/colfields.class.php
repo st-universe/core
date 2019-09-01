@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
+use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 class ColfieldData extends BaseTable {
 
@@ -230,7 +231,12 @@ class ColfieldData extends BaseTable {
 
 	function getTerraformingOptions() {
 		if ($this->terraformingopts === NULL) {
-			$this->terraformingopts = Terraforming::getByDestination($this->getFieldType(), $this->getColony()->getUserId());
+			// @todo refactor
+			global $container;
+
+            $this->terraformingopts = $container->get(TerraformingRepositoryInterface::class)->getBySourceFieldType(
+	            (int) $this->getFieldType()
+            );
 		}
 		return $this->terraformingopts;
 	}

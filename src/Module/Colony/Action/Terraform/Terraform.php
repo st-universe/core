@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Terraform;
 
 use Colfields;
-use FieldTerraforming;
 use FieldTerraformingData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use Terraforming;
+use Stu\Orm\Entity\TerraformingInterface;
+use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class Terraform implements ActionControllerInterface
 {
@@ -21,10 +21,14 @@ final class Terraform implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $terraformingRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        TerraformingRepositoryInterface $terraformingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->terraformingRepository = $terraformingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,24 +51,20 @@ final class Terraform implements ActionControllerInterface
         if ($field->getTerraformingId() > 0) {
             return;
         }
-        $terraf = new Terraforming(request::getIntFatal('tfid'));
-        if ($field->getFieldType() != $terraf->getSource()) {
+        /**
+         * @var TerraformingInterface $terraf
+         */
+        $terraf = $this->terraformingRepository->find(request::getIntFatal('tfid'));
+        if ($terraf === null) {
             return;
         }
-        if (!$user->hasResearched($terraf->getResearchId())) {
+        if ($field->getFieldType() != $terraf->getFromFieldTypeId()) {
             return;
         }
-        if ($terraf->getLimit() > 0 && $terraf->getLimit() <= Colfields::countInstances('type=' . $terraf->getDestination())) {
-            $game->addInformationf(
-                _('Dieser Feldtyp ist auf diesem Planetentyp nur %d mal möglich'),
-                $terraf->getLimit()
-            );
-            return;
-        }
-        if ($terraf->getEpsCost() > $colony->getEps()) {
+        if ($terraf->getEnergyCosts() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %s Energie benötigt - Vorhanden ist nur %s'),
-                $terraf->getEpsCost(),
+                $terraf->getEnergyCosts(),
                 $colony->getEps()
             );
             return;
@@ -97,7 +97,7 @@ final class Terraform implements ActionControllerInterface
             $colony->lowerStorage($obj->getGoodId(),$obj->getAmount());
         }
         $colony->resetStorage();
-        $colony->lowerEps($terraf->getEpsCost());
+        $colony->lowerEps($terraf->getEnergyCosts());
         $time = time() + $terraf->getDuration() + 60;
 
         $obj = new FieldTerraformingData();

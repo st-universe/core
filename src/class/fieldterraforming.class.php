@@ -1,5 +1,8 @@
 <?php
 
+use Stu\Orm\Entity\TerraformingInterface;
+use Stu\Orm\Repository\TerraformingRepositoryInterface;
+
 class FieldTerraformingData extends BaseTable {
 
 	protected $tablename = 'stu_colonies_terraforming';
@@ -59,9 +62,15 @@ class FieldTerraformingData extends BaseTable {
 
 	private $terraforming = NULL;
 
+	/**
+	 * @return TerraformingInterface
+	 */
 	function getTerraforming() {
 		if ($this->terraforming === NULL) {
-			$this->terraforming = new Terraforming($this->getTerraformingId());
+			// @todo refactor
+			global $container;
+
+			$this->terraforming = $container->get(TerraformingRepositoryInterface::class)->find((int) $this->getTerraformingId());
 		}
 		return $this->terraforming;
 	}

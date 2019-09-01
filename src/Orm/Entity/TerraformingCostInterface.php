@@ -19,4 +19,6 @@ interface TerraformingCostInterface
     public function setAmount(int $amount): TerraformingCostInterface;
 
     public function getGood(): CommodityInterface;
+
+    public function getTerraforming(): TerraformingInterface;
 }

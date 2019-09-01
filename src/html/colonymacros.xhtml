@@ -1125,7 +1125,7 @@
 								</tr>
 								<tr>
 									<td style="width: 45px; text-align: center;">
-										<img src="assets/fields/${FIELD/getTerraforming/getTerraforming/getSource}.gif" />
+										<img src="assets/fields/${FIELD/getTerraforming/getTerraforming/getFromFieldTypeId}.gif" />
 									</td>
 									<td style="vertical-align: middle; width: 50px; text-align: center;">
 										<div>
@@ -1133,7 +1133,7 @@
 										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getTerraforming().getProgress(),FIELD.getTerraforming().getTerraforming().getDuration())">STATUSBAR</div>
 									</td>
 									<td style="width: 45px; text-align: center;">
-										<img src="assets/fields/${FIELD/getTerraforming/getTerraforming/getDestination}.gif" />
+										<img src="assets/fields/${FIELD/getTerraforming/getTerraforming/getToFieldTypeId}.gif" />
 									</td>
 								</tr>
 								<tr>
@@ -1151,18 +1151,18 @@
 									</tr>
 									<tr>
 										<td style="width: 45px;">
-											<img src="assets/fields/${data/getSource}.gif" />
+											<img src="assets/fields/${data/getFromFieldTypeId}.gif" />
 										</td>
 										<td style="vertical-align: middle; width: 50px; text-align: center;">
 											=&gt;
 										</td>
 										<td style="width: 45px;">
-											<img src="assets/fields/${data/getDestination}.gif" />
+											<img src="assets/fields/${data/getToFieldTypeId}.gif" />
 										</td>
 										<td style="vertical-align: top;" rowspan="2">
 											<strong>Kosten</strong>
 											<br />
-											<img src="assets/buttons/e_trans2.gif" title="Energie" /> <span tal:replace="data/getEpsCost">EPS</span>
+											<img src="assets/buttons/e_trans2.gif" title="Energie" /> <span tal:replace="data/getEnergyCosts">EPS</span>
 											<div tal:repeat="cost data/getCosts">
 												<img src="assets/goods/${cost/getGoodId}.gif" title="runtime" tal:attributes="title cost/getGood/getName" /> <span tal:replace="cost/getAmount">COUNT</span>
 											</div>

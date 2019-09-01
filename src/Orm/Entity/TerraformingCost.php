@@ -33,6 +33,12 @@ class TerraformingCost implements TerraformingCostInterface
      */
     private $good;
 
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\Terraforming")
+     * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $terraforming;
+
     public function getId(): int
     {
         return $this->id;
@@ -77,5 +83,10 @@ class TerraformingCost implements TerraformingCostInterface
     public function getGood(): CommodityInterface
     {
         return $this->good;
+    }
+
+    public function getTerraforming(): TerraformingInterface
+    {
+        return $this->terraforming;
     }
 }

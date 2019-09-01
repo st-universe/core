@@ -25,7 +25,10 @@ class ProcessTick {
 	static function finishTerraformingProcesses() {
 		$result = FieldTerraforming::getFinishedJobs();
 		foreach ($result as $key => $field) {
-			$field->getField()->setFieldType($field->getTerraforming()->getDestination());
+			/**
+			 * @var FieldTerraformingData $field
+			 */
+			$field->getField()->setFieldType($field->getTerraforming()->getToFieldTypeId());
 			$field->getField()->setTerraformingId(0);
 			$field->getField()->save();
 			$field->deleteFromDatabase();
