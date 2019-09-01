@@ -3,6 +3,7 @@
 
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -1754,7 +1755,14 @@ class Ship extends ShipData {
 			$ship->setCY($colony->getSystem()->getCY(),TRUE);
 			$ship->save();
 		}
-		ShipSystems::createByModuleList($ship->getId(),BuildPlanModules::getByBuildplan($ship->getBuildplanId()));
+
+		// @todo refactor
+		global $container;
+
+		ShipSystems::createByModuleList(
+			$ship->getId(),
+			$container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplan((int) $ship->getBuildplanId())
+		);
 
 		return $ship;
 	} # }}}

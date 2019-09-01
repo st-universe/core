@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
-use BuildPlanModules;
-use BuildPlanModulesData;
 use ColonyShipQueue;
 use ColonyShipQueueData;
 use ModuleSelector;
@@ -19,6 +17,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
 {
@@ -27,10 +26,14 @@ final class BuildShip implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $buildplanModuleRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->buildplanModuleRepository = $buildplanModuleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -149,11 +152,12 @@ final class BuildShip implements ActionControllerInterface
             $plan->save();
 
             foreach($modules as $obj) {
-                $mod = new BuildPlanModulesData();
-                $mod->setModuleType($obj->getType());
-                $mod->setBuildplanId($plan->getId());
-                $mod->setModuleId($obj->getId());
-                $mod->save();
+                $mod = $this->buildplanModuleRepository->prototype();
+                $mod->setModuleType((int) $obj->getType());
+                $mod->setBuildplanId((int)$plan->getId());
+                $mod->setModuleId((int)$obj->getId());
+
+                $this->buildplanModuleRepository->save($mod);
             }
         } else {
             $game->addInformationf(

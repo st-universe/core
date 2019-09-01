@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+
 class ShipBuildplansData extends BaseTable {
 
 	protected $tablename = 'stu_buildplans';
@@ -85,7 +87,13 @@ class ShipBuildplansData extends BaseTable {
 	/**
 	 */
 	public function getModulesByType($type) { #{{{
-		return BuildPlanModules::getByType($this->getId(),$type);
+	    // @todo refactor
+		global $container;
+
+		return $container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplanAndModuleType(
+			(int) $this->getId(),
+			(int) $type
+		);
 	} # }}}
 
 	/**
@@ -118,7 +126,10 @@ class ShipBuildplansData extends BaseTable {
 	 */
 	public function getModules() { #{{{
 		if ($this->modules === NULL) {
-			$this->modules = BuildPlanModules::getByBuildplan($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->modules = $container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplan((int) $this->getId());
 		}
 		return $this->modules;
 	} # }}}
