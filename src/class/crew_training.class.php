@@ -33,6 +33,7 @@ class CrewTrainingData extends BaseTable { #{{{
 	} # }}}
 
 	/**
+	 * @return UserData
 	 */
 	public function getUser() { #{{{
 		return ResourceCache()->getObject(CACHE_USER,$this->getUserId());
@@ -51,6 +52,7 @@ class CrewTrainingData extends BaseTable { #{{{
 	} # }}}
 
 	/**
+	 * @return ColonyData
 	 */
 	public function getColony() { #{{{
 		return ResourceCache()->getObject(CACHE_COLONY,$this->getColonyId());
@@ -78,6 +80,9 @@ class CrewTraining extends CrewTrainingData { #{{{
 		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$qry,1);
 	} # }}}
 
+	/**
+	 * @return CrewTrainingData[]
+	 */
 	static function getObjectsBy($qry="") {
 		$result = DB()->query("SELECT * FROM ".self::tablename." ".$qry);
 		return self::_getList($result,'CrewTrainingData');

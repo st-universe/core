@@ -75,6 +75,7 @@ class ModuleQueueData extends BaseTable { #{{{
 	} # }}}
 	
 	/**
+     * @return ModulesData
 	 */
 	public function getModule() { #{{{
 		return ResourceCache()->getObject('module',$this->getModuleId());

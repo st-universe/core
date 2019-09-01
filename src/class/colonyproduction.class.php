@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Orm\Entity\CommodityInterface;
+
 class ColProductionData {
 
 	private $data = NULL;
@@ -77,11 +80,9 @@ class ColProductionData {
 		return 'positive';
 	}
 
-	/**
-	 */
-	public function getGood() { #{{{
+	public function getGood(): CommodityInterface {
 		return ResourceCache()->getObject('good',$this->getGoodId());
-	} # }}}
+	}
 
 }
 
@@ -91,7 +92,7 @@ class ColProduction extends ColProductionData {
 		$result = DB()->query('SELECT id as goods_id,id as global_goods_id,(SELECT SUM(a.count) FROM stu_buildings_goods as a LEFT JOIN stu_colonies_fielddata as b USING(buildings_id) WHERE a.goods_id=global_goods_id AND b.colonies_id='.$col->getId().' AND b.aktiv=1) as gc,(SELECT count FROM stu_planets_goods WHERE goods_id=global_goods_id AND planet_classes_id='.$col->getColonyClass().') as pc FROM stu_goods GROUP BY id HAVING gc!=0 OR pc!=0');
 		$ret = array();
 		while ($data = mysqli_fetch_assoc($result)) {
-			$ret[$data['goods_id']] = new ColProductionData($data);
+			$ret[(int) $data['goods_id']] = new ColProductionData($data);
 		}
 		return $ret;
 	}

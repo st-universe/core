@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 
@@ -26,15 +27,25 @@ final class ColonyShipRepairRepository extends EntityRepository
         ]);
     }
 
-    public function getMostRecentJobs(): array
+    public function getMostRecentJobs(int $tickId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT t FROM %s t WHERE t.id IN (SELECT MIN(a.id) FROM %s a GROUP BY a.colony_id, a.field_id)',
-                ColonyShipRepair::class,
-                ColonyShipRepair::class,
-            )
-        )->getResult();
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult(ColonyShipRepair::class, 'c');
+        $rsm->addFieldResult('c', 'id', 'id');
+        $rsm->addFieldResult('c', 'colony_id', 'colony_id');
+        $rsm->addFieldResult('c', 'ship_id', 'ship_id');
+        $rsm->addFieldResult('c', 'field_id', 'field_id');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT c.id,c.colony_id,c.ship_id,c.field_id FROM stu_colonies_shiprepair c WHERE c.colony_id IN (
+                        SELECT id FROM stu_colonies WHERE user_id IN (
+                            SELECT id FROM stu_user WHERE tick = :tickId
+                )
+            )',
+            $rsm
+        )
+            ->setParameter('tickId', $tickId)
+            ->getResult();
     }
 
     public function save(ColonyShipRepairInterface $colonyShipRepair): void

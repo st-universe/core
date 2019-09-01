@@ -296,6 +296,9 @@ class ColonyData extends BaseTable {
 	private $productionRaw = NULL;
 	private $production = NULL;
 
+	/**
+	 * @return ColProductionData[]
+	 */
 	public function getProductionRaw() {
 		if ($this->productionRaw === NULL) {
 			$this->productionRaw = ColProduction::getProductionByColony($this);
@@ -400,6 +403,9 @@ class ColonyData extends BaseTable {
 		return $this->getUserId() == USER_NOONE;
 	}
 
+	/**
+	 * @return UserData
+	 */
 	public function getUser() {
 		return ResourceCache()->getObject('user',$this->getUserId());
 	}
