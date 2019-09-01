@@ -26,10 +26,6 @@ class GameTurnData extends BaseTable {
 		$this->addUpdateField('end','getEnd');
 	}
 
-	function getEndDisplay() {
-		return date("d.m.Y H:i",$this->getEnd());
-	}
-
 	function getStart() {
 		return $this->data['start'];
 	}
@@ -37,10 +33,6 @@ class GameTurnData extends BaseTable {
 	function setStart($value) {
 		$this->data['start'] = $value;
 		$this->addUpdateField('start','getStart');
-	}
-
-	function getStartDisplay() {
-		return date("d.m.Y H:i",$this->getStart());
 	}
 
 	function getTurn() {
@@ -55,7 +47,6 @@ class GameTurnData extends BaseTable {
 	function getNextTurn() {
 		return $this->getTurn()+1;
 	}
-
 
 }
 class GameTurn extends GameTurnData {

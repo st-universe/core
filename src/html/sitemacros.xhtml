@@ -114,7 +114,7 @@
 					<p i18n:translate="">Meta</p>
 					<div style="margin: 5px">
 						<span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-						<span i18n:translate="">Läuft seit: <span i18n:name="turnstartdate" tal:replace="THIS/getCurrentRound/getStartDisplay" /></span><br /><br />
+						<span i18n:translate="">Läuft seit: <span i18n:name="turnstartdate" tal:replace="datetime:THIS/getCurrentRound/getStart" /></span><br /><br />
 						<span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span>
 					</div>
 				</div>
