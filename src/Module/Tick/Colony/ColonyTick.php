@@ -14,6 +14,7 @@ use Stu\Module\Research\ResearchState;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
@@ -21,14 +22,18 @@ final class ColonyTick implements ColonyTickInterface
 
     private $researchedRepository;
 
+    private $shipRumpUserRepository;
+
     private $msg = [];
 
     public function __construct(
         CommodityRepositoryInterface $commodityRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        ShipRumpUserRepositoryInterface $shipRumpUserRepository
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->shipRumpUserRepository = $shipRumpUserRepository;
     }
 
     public function work(ColonyData $colony): void
@@ -162,7 +167,7 @@ final class ColonyTick implements ColonyTickInterface
 
         if ($current_research && $current_research->getActive()) {
             if (isset($production[$current_research->getResearch()->getGoodId()])) {
-                (new ResearchState($this->researchedRepository)
+                (new ResearchState($this->researchedRepository, $this->shipRumpUserRepository)
                 )->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()
