@@ -9,7 +9,9 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
+use Stu\Orm\Entity\AllianceBoardPostInterface;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeletePost implements ActionControllerInterface
 {
@@ -20,18 +22,23 @@ final class DeletePost implements ActionControllerInterface
 
     private $allianceBoardPostRepository;
 
+    private $allianceBoardTopicRepository;
+
     public function __construct(
         DeletePostRequestInterface $deletePostRequest,
-        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository
+        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->deletePostRequest = $deletePostRequest;
         $this->allianceBoardPostRepository = $allianceBoardPostRepository;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
+        /** @var AllianceBoardPostInterface $post */
         $post = $this->allianceBoardPostRepository->find($this->deletePostRequest->getPostId());
         if ($post === null) {
             return;
@@ -43,7 +50,7 @@ final class DeletePost implements ActionControllerInterface
         if ($post->getTopic()->getPostCount() == 1) {
             $game->setView(Board::VIEW_IDENTIFIER);
 
-            $post->getTopic()->deepDelete();
+            $this->allianceBoardTopicRepository->delete($post->getTopic());
 
             $game->addInformation(_('Das Thema wurde gelöscht'));
             return;
