@@ -77,14 +77,6 @@ class UserProfileVisitors extends UserProfileVisitorsData {
 		return DB()->query("SELECT COUNT(*) FROM ".parent::tablename." WHERE recipient=".intval($userId)." AND user_id=".intval($visitor),1);
 	}
 
-	static function registerVisit($userId,$visitor) {
-		$obj = new UserProfileVisitorsData;
-		$obj->setRecipientId($userId);
-		$obj->setUserId($visitor);
-		$obj->setDate(time());
-		$obj->save();
-	}
-
 	/**
 	 */
 	static function truncate($sql='') { #{{{
@@ -92,5 +84,3 @@ class UserProfileVisitors extends UserProfileVisitorsData {
 	} # }}}
 
 }
-
-?>

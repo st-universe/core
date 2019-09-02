@@ -9,6 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use User;
 use UserProfileVisitors;
+use UserProfileVisitorsData;
 
 final class Overview implements ViewControllerInterface
 {
@@ -30,7 +31,11 @@ final class Overview implements ViewControllerInterface
         $profileId = $profile->getId();
 
         if ($profileId !== $userId && !UserProfileVisitors::hasVisit($profileId, $userId)) {
-            UserProfileVisitors::registerVisit($profileId, $userId);
+            $obj = new UserProfileVisitorsData();
+            $obj->setRecipientId($profileId);
+            $obj->setUserId($userId);
+            $obj->setDate(time());
+            $obj->save();
         }
 
         $game->appendNavigationPart(
