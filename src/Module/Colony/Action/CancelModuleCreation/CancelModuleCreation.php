@@ -67,7 +67,7 @@ final class CancelModuleCreation implements ActionControllerInterface
         } else {
             $colony->upperEps($count * $module->getEcost());
         }
-        foreach ($module->getCost() as $cid => $cost) {
+        foreach ($module->getCost() as $cost) {
             if ($colony->getStorageSum() >= $colony->getMaxStorage()) {
                 break;
             }
@@ -76,7 +76,7 @@ final class CancelModuleCreation implements ActionControllerInterface
             } else {
                 $gc = $count * $cost->getAmount();
             }
-            $colony->upperStorage($cost->getGoodId(), $gc);
+            $colony->upperStorage($cost->getCommodity()->getId(), $gc);
             $colony->setStorageSum($colony->getStorageSum() + $gc);
         }
         $colony->save();

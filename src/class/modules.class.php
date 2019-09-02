@@ -1,6 +1,8 @@
 <?php
 
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
+use Stu\Orm\Entity\ModuleCostInterface;
+use Stu\Orm\Repository\ModuleCostRepositoryInterface;
 
 class ModulesData extends BaseTable {
 
@@ -138,11 +140,14 @@ class ModulesData extends BaseTable {
 	} # }}}
 	
 	/**
-	 * @return ModuleCost[]
+	 * @return ModuleCostInterface[]
 	 */
-	public function getCost() { #{{{
-		return ModuleCost::getByModule($this->getId());
-	} # }}}
+	public function getCost(): array {
+		// @todo refactor
+		global $container;
+
+		return $container->get(ModuleCostRepositoryInterface::class)->getByModule((int) $this->getId());
+	}
 
 	/**
 	 */

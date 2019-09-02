@@ -17,7 +17,6 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 
 final class CreateModules implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CREATE_MODULES';
 
     private $colonyLoader;
@@ -62,8 +61,12 @@ final class CreateModules implements ActionControllerInterface
                 continue;
             }
             try {
-                foreach ($module->getCost() as $cid => $cost) {
-                    if (!array_key_exists($cost->getGoodId(), $storage)) {
+                foreach ($module->getCost() as $cost) {
+                    $commodity = $cost->getCommodity();
+                    $commodityId = $commodity->getId();
+
+                    $stor = $storage[$commodityId] ?? null;
+                    if ($stor === null) {
                         $prod[] = sprintf(
                             _('Zur Herstellung von %s wird %s benötigt'),
                             $module->getName(),
@@ -71,24 +74,24 @@ final class CreateModules implements ActionControllerInterface
                         );
                         throw new Exception();
                     }
-                    if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
+                    if ($stor->getAmount() < $cost->getAmount()) {
                         $prod[] = sprintf(
                             _('Zur Herstellung von %s wird %d %s benötigt'),
                             $module->getName(),
                             $cost->getAmount(),
-                            $cost->getGood()->getName()
+                            $commodity->getName()
                         );
                         throw new Exception();
                     }
-                    if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount() * $count) {
-                        $count = floor($storage[$cost->getGoodId()]->getAmount() / $cost->getAmount());
+                    if ($stor->getAmount() < $cost->getAmount() * $count) {
+                        $count = floor($stor->getAmount() / $cost->getAmount());
                     }
                 }
             } catch (Exception $e) {
                 continue;
             }
-            foreach ($module->getCost() as $cid => $cost) {
-                $colony->lowerStorage($cost->getGoodId(), $cost->getAmount() * $count);
+            foreach ($module->getCost() as $cost) {
+                $colony->lowerStorage($cost->getCommodity()->getId(), $cost->getAmount() * $count);
             }
             $colony->lowerEps($count * $module->getEcost());
             $colony->save();
