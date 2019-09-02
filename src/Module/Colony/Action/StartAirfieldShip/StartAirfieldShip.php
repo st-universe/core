@@ -12,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
@@ -68,7 +69,7 @@ final class StartAirfieldShip implements ActionControllerInterface
                 sprintf(
                     'WHERE user_id = %d AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special = %d)',
                     $userId,
-                    RUMP_SPECIAL_COLONIZE
+                    ShipRumpSpecialAbilityEnum::COLONIZE
                 )
             ) > 0) {
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
@@ -120,7 +121,7 @@ final class StartAirfieldShip implements ActionControllerInterface
                 $colony->lowerStorage($defaultTorpedoType->getGoodId(), $count);
             }
         }
-        if ($rump->canColonize()) {
+        if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
             $ship->setEps($ship->getMaxEps());
             $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
             $ship->save();

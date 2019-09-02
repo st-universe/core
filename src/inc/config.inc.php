@@ -273,8 +273,6 @@ define('ROLE_PHASERSHIP',1);
 define('ROLE_PULSESHIP',2);
 define('ROLE_TORPEDOSHIP',3);
 
-define('RUMP_SPECIAL_COLONIZE',1);
-
 define("ALERT_GREEN",1);
 define("ALERT_YELLOW",2);
 define("ALERT_RED",3);

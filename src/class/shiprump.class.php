@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Entity\ShipRumpSpecialInterface;
 use Stu\Orm\Repository\ShipRumpRoleRepositoryInterface;
@@ -367,7 +368,8 @@ class ShiprumpData extends BaseTable {
 
 	private $specialAbilities;
 
-	private function hasSpecialAbility(int $value): bool {
+	public function hasSpecialAbility(int $value): bool
+    {
 	    if ($this->specialAbilities === null) {
 	        // @todo refactor
             global $container;
@@ -385,7 +387,7 @@ class ShiprumpData extends BaseTable {
 	/**
 	 */
 	public function canColonize() { #{{{
-		return $this->hasSpecialAbility(RUMP_SPECIAL_COLONIZE);
+		return $this->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE);
 	} # }}}
 
 	/**
