@@ -5,8 +5,6 @@ namespace Stu\Module\Control;
 use Colony;
 use DateTimeImmutable;
 use GameConfig;
-use GameTurn;
-use GameTurnData;
 use Noodlehaus\ConfigInterface;
 use PM;
 use PMCategory;
@@ -14,7 +12,9 @@ use request;
 use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use UserData;
 
@@ -33,6 +33,8 @@ final class GameController implements GameControllerInterface
     private $config;
 
     private $db;
+
+    private $gameTurnRepository;
 
     private $gameInformations = [];
 
@@ -62,7 +64,8 @@ final class GameController implements GameControllerInterface
         TalPageInterface $talPage,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         ConfigInterface $config,
-        DbInterface $db
+        DbInterface $db,
+        GameTurnRepositoryInterface $gameTurnRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -70,6 +73,7 @@ final class GameController implements GameControllerInterface
         $this->databaseUserRepository = $databaseUserRepository;
         $this->config = $config;
         $this->db = $db;
+        $this->gameTurnRepository = $gameTurnRepository;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -281,10 +285,10 @@ final class GameController implements GameControllerInterface
         exit;
     }
 
-    public function getCurrentRound(): GameTurnData
+    public function getCurrentRound(): GameTurnInterface
     {
         if ($this->currentRound === null) {
-            $this->currentRound = GameTurn::getCurrentTurn();
+            $this->currentRound = $this->gameTurnRepository->getCurrent();
         }
         return $this->currentRound;
     }

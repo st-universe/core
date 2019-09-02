@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Control;
 
-use GameTurnData;
+use Stu\Orm\Entity\GameTurnInterface;
 use UserData;
 
 interface GameControllerInterface
@@ -68,7 +68,7 @@ interface GameControllerInterface
 
     public function redirectTo(string $href): void;
 
-    public function getCurrentRound(): GameTurnData;
+    public function getCurrentRound(): GameTurnInterface;
 
     public function isDebugMode(): bool;
 

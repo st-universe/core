@@ -21,6 +21,7 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
@@ -109,6 +110,11 @@ return [
         ContainerInterface $c
     ): FactionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Faction::class);
+    },
+    GameTurnRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): GameTurnRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(GameTurn::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c
