@@ -117,7 +117,7 @@ function addUserContact(obj,userid) {
         } else {
                 mode = $(contact).value;
         }
-        ajaxcall(obj,'comm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid='+userid+'&clmode='+mode+'&cldiv='+obj);
+        ajax_update(obj,'comm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid='+userid+'&clmode='+mode+'&cldiv='+obj);
 }
 var clmodeswitchdiv = '';
 function showContactModeSwitcher(div,contactid) {
