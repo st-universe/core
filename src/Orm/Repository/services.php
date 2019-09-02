@@ -36,6 +36,7 @@ use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\ShipRumpRole;
+use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
@@ -194,6 +195,11 @@ return [
         ContainerInterface $c
     ): ShipRumpRoleRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpRole::class);
+    },
+    ShipRumpUserRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipRumpUserRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class);
     },
     StarSystemTypeRepositoryInterface::class => function (
         ContainerInterface $c
