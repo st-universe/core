@@ -38,9 +38,6 @@ class CrewData extends BaseTable {
 		return $this->data['name'];
 	}
 
-	public function getNameRaw() {
-	}
-
 	public function setName($value) {
 		$this->setFieldValue('name',$value,'getName');
 	}

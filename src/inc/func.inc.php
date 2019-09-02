@@ -5,7 +5,6 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 

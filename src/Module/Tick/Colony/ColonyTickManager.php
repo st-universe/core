@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Colony;
-use Crew;
 use CrewTraining;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;

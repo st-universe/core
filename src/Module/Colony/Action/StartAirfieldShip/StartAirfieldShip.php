@@ -14,7 +14,6 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
 {
