@@ -1,7 +1,9 @@
 <?php
 
 use Stu\Orm\Entity\ShipRumpRoleInterface;
+use Stu\Orm\Entity\ShipRumpSpecialInterface;
 use Stu\Orm\Repository\ShipRumpRoleRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
 
 class ShiprumpData extends BaseTable {
 
@@ -363,16 +365,27 @@ class ShiprumpData extends BaseTable {
         return $container->get(ShipRumpRoleRepositoryInterface::class)->find((int) $this->getRoleId());
 	}
 
-	/**
-	 */
-	public function hasSpecial($value) { #{{{
-		return RumpsSpecials::countInstances('WHERE rumps_id='.$this->getId().' AND special='.$value);
-	} # }}}
+	private $specialAbilities;
+
+	private function hasSpecialAbility(int $value): bool {
+	    if ($this->specialAbilities === null) {
+	        // @todo refactor
+            global $container;
+
+	        $this->specialAbilities = array_map(
+	            function (ShipRumpSpecialInterface $shipRumpSpecial): int {
+	                return $shipRumpSpecial->getSpecialId();
+                },
+	            $container->get(ShipRumpSpecialRepositoryInterface::class)->getByShipRump((int) $this->getId())
+            );
+        }
+	    return in_array($value, $this->specialAbilities);
+	}
 
 	/**
 	 */
 	public function canColonize() { #{{{
-		return $this->hasSpecial(RUMP_SPECIAL_COLONIZE);
+		return $this->hasSpecialAbility(RUMP_SPECIAL_COLONIZE);
 	} # }}}
 
 	/**
