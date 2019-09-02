@@ -16,11 +16,6 @@ class MapFieldTypeData extends BaseTable {
 		$this->setFieldValue('type',$value,'getType');
 	}
 
-	function isSystem() {
-		trigger_error('OBSOLETE isSystem - use getIsSystem');
-		return $this->data['is_system'];
-	}
-
 	public function getIsSystem() {
 		return $this->data['is_system'];
 	}
@@ -129,15 +124,6 @@ class MapFieldType extends MapFieldTypeData {
 		return $ret;
 	}
 
-	static function getSystemList() {
-		$ret = array();
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE is_system='1' ORDER BY id");
-		while ($data = mysqli_fetch_assoc($result)) {
-			$ret[] = new MapFieldTypeData($data);
-		}
-		return $ret;
-	}
-	
 	/**
 	 */
 	static function getFieldByType($typeId) { #{{{
