@@ -39,6 +39,7 @@ use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\UserIpTable;
+use Stu\Orm\Entity\UserProfileVisitor;
 
 return [
     AllianceBoardRepositoryInterface::class => function (
@@ -205,5 +206,10 @@ return [
         ContainerInterface $c
     ): UserIpTableRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class);
-    }
+    },
+    UserProfileVisitorRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserProfileVisitorRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class);
+    },
 ];

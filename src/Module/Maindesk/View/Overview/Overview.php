@@ -11,8 +11,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
+use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use User;
-use UserProfileVisitors;
 
 final class Overview implements ViewControllerInterface
 {
@@ -20,12 +20,16 @@ final class Overview implements ViewControllerInterface
 
     private $allianceBoardTopicRepository;
 
+    private $userProfileVisitorRepository;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+        $this->userProfileVisitorRepository = $userProfileVisitorRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,7 +58,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'RECENT_PROFILE_VISITORS',
-            UserProfileVisitors::getRecentList($userId)
+            $this->userProfileVisitorRepository->getRecent($userId)
         );
         $game->setTemplateVar(
             'RANDOM_ONLINE_USER',

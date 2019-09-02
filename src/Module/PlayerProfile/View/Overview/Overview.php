@@ -7,19 +7,21 @@ namespace Stu\Module\PlayerProfile\View\Overview;
 use RPGPlotMember;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use User;
-use UserProfileVisitors;
-use UserProfileVisitorsData;
 
 final class Overview implements ViewControllerInterface
 {
-
     private $overviewRequest;
 
+    private $userProfileVisitorRepository;
+
     public function __construct(
-        OverviewRequestInterface $overviewRequest
+        OverviewRequestInterface $overviewRequest,
+        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository
     ) {
         $this->overviewRequest = $overviewRequest;
+        $this->userProfileVisitorRepository = $userProfileVisitorRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -28,14 +30,15 @@ final class Overview implements ViewControllerInterface
 
         $profile = new User($this->overviewRequest->getProfileId());
 
-        $profileId = $profile->getId();
+        $profileId = (int) $profile->getId();
 
-        if ($profileId !== $userId && !UserProfileVisitors::hasVisit($profileId, $userId)) {
-            $obj = new UserProfileVisitorsData();
-            $obj->setRecipientId($profileId);
-            $obj->setUserId($userId);
-            $obj->setDate(time());
-            $obj->save();
+        if ($profileId !== $userId && $this->userProfileVisitorRepository->isVisitRegistered($profileId, $userId) === false) {
+            $obj = $this->userProfileVisitorRepository->prototype()
+                ->setProfileUserId($profileId)
+                ->setUserId($userId)
+                ->setDate(time());
+
+            $this->userProfileVisitorRepository->save($obj);
         }
 
         $game->appendNavigationPart(

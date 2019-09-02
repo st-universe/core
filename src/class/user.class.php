@@ -2,6 +2,7 @@
 
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
+use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 
 class UserData extends BaseTable {
 
@@ -360,8 +361,8 @@ class UserData extends BaseTable {
 		global $container;
 
 		$container->get(SessionStringRepositoryInterface::class)->truncate((int) $this->getId());
+		$container->get(UserProfileVisitorRepositoryInterface::class)->truncateByUser((int) $this->getId());
 
-		UserProfileVisitors::truncate('WHERE user_id='.$this->getId());
 		$this->deleteFromDatabase();
 	} # }}}
 	
