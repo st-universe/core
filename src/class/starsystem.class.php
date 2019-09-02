@@ -1,6 +1,9 @@
 <?php
 
 
+use Stu\Orm\Entity\StarSystemTypeInterface;
+use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
+
 class StarSystemData extends BaseTable {
 
 	protected $tablename = 'stu_systems';
@@ -91,14 +94,15 @@ class StarSystemData extends BaseTable {
 
 	private $systemType = NULL;
 
-	/**
-	 */
-	public function getSystemType() { #{{{
+	public function getSystemType(): StarSystemTypeInterface {
 		if ($this->systemType === NULL) {
-			$this->systemType = new SystemType($this->getType());
+			// @todo refactor
+			global $container;
+
+			$this->systemType = $container->get(StarSystemTypeRepositoryInterface::class)->find((int) $this->getType());
 		}
 		return $this->systemType;
-	} # }}}
+	}
 
 	/**
 	 */

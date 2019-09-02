@@ -40,7 +40,7 @@ final class ShowSectorScan implements ViewControllerInterface
             $game->checkDatabaseItem($mapField->getFieldType()->getColonyType()->getDatabaseId());
         }
         if ($mapField->getFieldType()->getIsSystem()) {
-            $game->checkDatabaseItem($ship->getCurrentMapField()->getSystem()->getSystemType()->getDatabaseId());
+            $game->checkDatabaseItem($ship->getCurrentMapField()->getSystem()->getSystemType()->getDatabaseEntryId());
         }
         if ($ship->isInSystem()) {
             $game->checkDatabaseItem($ship->getSystem()->getDatabaseId());

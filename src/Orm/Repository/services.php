@@ -35,6 +35,7 @@ use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
@@ -187,6 +188,11 @@ return [
         ContainerInterface $c
     ): SessionStringRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
+    },
+    StarSystemTypeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): StarSystemTypeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(StarSystemType::class);
     },
     TerraformingRepositoryInterface::class => function (
         ContainerInterface $c
