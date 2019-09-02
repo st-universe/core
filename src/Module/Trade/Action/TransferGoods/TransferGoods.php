@@ -11,6 +11,7 @@ use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use TradePost;
 use TradeStorage;
 use TradeTransfer;
+use TradeTransferData;
 
 final class TransferGoods implements ActionControllerInterface
 {
@@ -76,7 +77,12 @@ final class TransferGoods implements ActionControllerInterface
         $targetpost->upperStorage($userId, $selectedStorage->getGoodId(), $amount);
         $tradepost->lowerStorage($userId, $selectedStorage->getGoodId(), $amount);
 
-        TradeTransfer::registerTransfer($tradepost->getId(), $userId, $amount);
+        $transfer = new TradeTransferData();
+        $transfer->setTradePostId($tradepost->getId());
+        $transfer->setUserId($userId);
+        $transfer->setCount($amount);
+        $transfer->setDate(time());
+        $transfer->save();
 
         $game->addInformation(
             sprintf(

@@ -55,13 +55,4 @@ class TradeTransfer extends TradeTransferData {
 		return DB()->query("SELECT SUM(count) FROM ".self::tablename." WHERE posts_id=".intval($postId)." AND user_id=".intval($userId),1);
 	}
 
-	static function registerTransfer($postId,$userId,$count) {
-		$transfer = new TradeTransferData;
-		$transfer->setTradePostId($postId);
-		$transfer->setUserId($userId);
-		$transfer->setCount($count);
-		$transfer->setDate(time());
-		$transfer->save();
-	}
 }
-?>
