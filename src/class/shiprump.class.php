@@ -1,5 +1,8 @@
 <?php
 
+use Stu\Orm\Entity\ShipRumpRoleInterface;
+use Stu\Orm\Repository\ShipRumpRoleRepositoryInterface;
+
 class ShiprumpData extends BaseTable {
 
 	const tablename = 'stu_rumps';
@@ -353,9 +356,12 @@ class ShiprumpData extends BaseTable {
 
 	/**
 	 */
-	public function getRole() { #{{{
-		return new RumpRole($this->getRoleId());
-	} # }}}
+	public function getRole(): ShipRumpRoleInterface {
+	    // @todo refactor
+        global $container;
+
+        return $container->get(ShipRumpRoleRepositoryInterface::class)->find((int) $this->getRoleId());
+	}
 
 	/**
 	 */
