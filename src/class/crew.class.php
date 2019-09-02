@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\CrewRaceRepositoryInterface;
+
 class CrewData extends BaseTable {
 
 	protected $tablename = 'stu_crew';
@@ -86,7 +88,10 @@ class CrewData extends BaseTable {
 	}
 
 	public function getRace() {
-		return CrewRaces::getById($this->getRaceId());
+	    // @todo refactor
+        global $container;
+
+        return $container->get(CrewRaceRepositoryInterface::class)->find((int) $this->getRaceId());
 	}
 
 	public function ownedByCurrentUser() {

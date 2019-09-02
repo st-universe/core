@@ -16,6 +16,7 @@ use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
@@ -85,6 +86,11 @@ return [
         ContainerInterface $c
     ): CommodityRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Commodity::class);
+    },
+    CrewRaceRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): CrewRaceRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class);
     },
     DatabaseCategoryRepositoryInterface::class => function (
         ContainerInterface $c
