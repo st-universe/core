@@ -828,11 +828,6 @@ class ShipData extends BaseTable {
 		$this->addUpdateField('rumps_id','getRumpId');
 	}
 
-	function selfDestroy() {
-		HistoryEntry::addEntry('Die '.$this->getName().' hat sich in Sektor '.$this->getSectorString().' selbst zerstört');
-		$this->destroy();
-	}
-
 	/**
 	 */
 	public function deactivateSystems() { #{{{

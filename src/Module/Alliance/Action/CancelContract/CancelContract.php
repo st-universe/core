@@ -6,9 +6,9 @@ namespace Stu\Module\Alliance\Action\CancelContract;
 
 use AccessViolation;
 use AllianceRelation;
-use HistoryEntry;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 
 final class CancelContract implements ActionControllerInterface
 {
@@ -16,10 +16,14 @@ final class CancelContract implements ActionControllerInterface
 
     private $cancelContractRequest;
 
+    private $entryCreator;
+
     public function __construct(
-        CancelContractRequestInterface $cancelContractRequest
+        CancelContractRequestInterface $cancelContractRequest,
+        EntryCreatorInterface $entryCreator
     ) {
         $this->cancelContractRequest = $cancelContractRequest;
+        $this->entryCreator = $entryCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,7 +61,7 @@ final class CancelContract implements ActionControllerInterface
             $relation->getAlliance()->sendMessage($text);
         }
 
-        HistoryEntry::addAllianceEntry(
+        $this->entryCreator->addAllianceEntry(
             sprintf(
                 'Das %s zwischen den Allianzen %s und %s wurde aufgelöst',
                 $relation->getTypeDescription(),

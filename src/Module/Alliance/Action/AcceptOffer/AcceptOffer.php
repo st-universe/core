@@ -6,9 +6,9 @@ namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use AccessViolation;
 use AllianceRelation;
-use HistoryEntry;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 
 final class AcceptOffer implements ActionControllerInterface
 {
@@ -16,10 +16,14 @@ final class AcceptOffer implements ActionControllerInterface
 
     private $acceptOfferRequest;
 
+    private $entryCreator;
+
     public function __construct(
-        AcceptOfferRequestInterface $acceptOfferRequest
+        AcceptOfferRequestInterface $acceptOfferRequest,
+        EntryCreatorInterface $entryCreator
     ) {
         $this->acceptOfferRequest = $acceptOfferRequest;
+        $this->entryCreator = $entryCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -62,7 +66,7 @@ final class AcceptOffer implements ActionControllerInterface
             $alliance->getNameWithoutMarkup()
         );
 
-        HistoryEntry::addAllianceEntry(
+        $this->entryCreator->addAllianceEntry(
             sprintf(
                 _('Die Allianzen %s und %s sind ein %s eingegangen'),
                 $relation->getAlliance()->getName(),

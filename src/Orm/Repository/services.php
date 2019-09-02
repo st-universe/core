@@ -23,6 +23,7 @@ use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\GameTurn;
+use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
@@ -121,6 +122,11 @@ return [
         ContainerInterface $c
     ): GameTurnRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(GameTurn::class);
+    },
+    HistoryRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): HistoryRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(History::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c

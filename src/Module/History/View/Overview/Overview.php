@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\History\View\Overview;
 
-use HistoryEntry;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -25,10 +25,14 @@ final class Overview implements ViewControllerInterface
 
     private $overviewRequest;
 
+    private $historyRepository;
+
     public function __construct(
-        OverviewRequestInterface $overviewRequest
+        OverviewRequestInterface $overviewRequest,
+        HistoryRepositoryInterface $historyRepository
     ) {
         $this->overviewRequest = $overviewRequest;
+        $this->historyRepository = $historyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,7 +48,7 @@ final class Overview implements ViewControllerInterface
         foreach ($this->possibleTypes as $key => $value) {
             $history_types[$key]['name'] = $value;
             $history_types[$key]['class'] = $key == $type ? 'selected' : '';
-            $history_types[$key]['count'] = HistoryEntry::countInstances(sprintf('WHERE type = %d', $key));
+            $history_types[$key]['count'] = $this->historyRepository->getAmountByType($key);
         }
 
         $game->appendNavigationPart(
@@ -68,11 +72,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'HISTORY',
-            HistoryEntry::getListBy(sprintf(
-                'WHERE type = %d ORDER BY id DESC LIMIT %d',
-                $type,
-                $count
-            ))
+            $this->historyRepository->getByType($type, $count)
         );
     }
 }

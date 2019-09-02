@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\SelfDestruct;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
@@ -16,10 +17,14 @@ final class SelfDestruct implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $entryCreator;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        EntryCreatorInterface $entryCreator
     ) {
         $this->shipLoader = $shipLoader;
+        $this->entryCreator = $entryCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,12 +40,17 @@ final class SelfDestruct implements ActionControllerInterface
 
         $code = request::postString('destructioncode');
 
+        $game->addInformation('Das Selbstzerstörungssystem ist außer Betrieb.');
         // @todo repair
         return;
 
-        //$ship->selfDestroy();
-        //DB()->commitTransaction();
-        //$game->redirectTo('ship.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
+//        $this->entryCreator->addShipEntry(
+//            sprintf(_('Die %s hat sich in Sektor %s selbst zerstört', $ship->getName(), $ship->getSectorString())),
+//            $userId
+//        );
+//        $ship->destroy();
+//        DB()->commitTransaction();
+//        $game->redirectTo('ship.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
     }
 
     public function performSessionCheck(): bool

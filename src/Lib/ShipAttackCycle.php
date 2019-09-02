@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Module\History\Lib\EntryCreatorInterface;
+
 class ShipAttackCycle {
 
 	private $attacker = array();
@@ -51,6 +53,13 @@ class ShipAttackCycle {
 	private function getDefendShip() {
 		return $this->defendShip;
 	}
+
+	private function getEntryCreator(): EntryCreatorInterface {
+	    // @todo refactor
+        global $container;
+
+        return $container->get(EntryCreatorInterface::class);
+    }
 
     private function cycle() {
 		while ($this->hasReadyAttacker() || $this->hasReadyDefender()) {
@@ -109,7 +118,10 @@ class ShipAttackCycle {
 					}
 					$this->addMessageMerge($this->getDefendShip()->damage($damage_wrapper));
 					if ($this->getDefendShip()->isDestroyed()) {
-						HistoryEntry::addEntry('Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört');
+						$this->getEntryCreator()->addShipEntry(
+						    'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
+                            (int) $this->getAttackShip()->getUserId()
+                        );
 						$this->getDefendShip()->destroy();
 						$this->unsetDefender();
 						$this->redefineDefender();
@@ -167,7 +179,11 @@ class ShipAttackCycle {
 				$this->addMessageMerge($this->getDefendShip()->damage($damage_wrapper));
 				if ($this->getDefendShip()->isDestroyed()) {
 					$this->unsetDefender();
-					HistoryEntry::addEntry('Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört');
+
+                    $this->getEntryCreator()->addShipEntry(
+                        'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
+                        (int) $this->getAttackShip()->getUserId()
+                    );
 					$this->getDefendShip()->destroy();
 					break;
 				}

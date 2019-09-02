@@ -8,9 +8,9 @@ use AccessViolation;
 use Alliance;
 use AllianceRelation;
 use AllianceRelationData;
-use HistoryEntry;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
@@ -18,10 +18,14 @@ final class CreateRelation implements ActionControllerInterface
 
     private $createRelationRequest;
 
+    private $entryCreator;
+
     public function __construct(
-        CreateRelationRequestInterface $createRelationRequest
+        CreateRelationRequestInterface $createRelationRequest,
+        EntryCreatorInterface $entryCreator
     ) {
         $this->createRelationRequest = $createRelationRequest;
+        $this->entryCreator = $entryCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -99,7 +103,7 @@ final class CreateRelation implements ActionControllerInterface
             );
             $opp->sendMessage($text);
 
-            HistoryEntry::addAllianceEntry(
+            $this->entryCreator->addAllianceEntry(
                 sprintf(
                     _('Die Allianz %s hat der Allianz %s den Krieg erklärt'),
                     $alliance->getName(),
