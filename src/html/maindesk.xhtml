@@ -65,26 +65,28 @@
 									<td colspan="3">Keine Beiträge vorhanden</td>
 								</tr>
 								<tal:block tal:repeat="data RECENT_ALLIANCE_BOARD_TOPICS">
-									<tr>
-										<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
-											<a href="userprofile.php?uid=${data/getLatestPost/getUserId}">
-												<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="src data/getLatestPost/getUser/getFullAvatarPath" />
-											</a>
-										</td>
-										<td>
-											<span i18n:translate="">Thema:</span>
-											<a href="alliance.php?SHOW_TOPIC=1&bid=${data/getBoardId}&tid=${data/getId}" tal:content="structure bbcode:data/getName">
-												NAME
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:data/getLatestPost/getUser/getName" /></span>
-											-
-											<span tal:content="data/getLastPostDateDisplay">DATE</span>
-										</td>
-									</tr>
+									<tal:block tal:define="RECENT_POST data/getLatestPost">
+										<tr>
+											<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
+												<a href="userprofile.php?uid=${RECENT_POST/getUserId}">
+													<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="src RECENT_POST/getUser/getFullAvatarPath" />
+												</a>
+											</td>
+											<td>
+												<span i18n:translate="">Thema:</span>
+												<a href="alliance.php?SHOW_TOPIC=1&bid=${data/getBoardId}&tid=${data/getId}" tal:content="structure bbcode:data/getName">
+													NAME
+												</a>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:RECENT_POST/getUser/getName" /></span>
+													-
+													<span tal:content="datetime:data/getLastPostDate">DATE</span>
+											</td>
+										</tr>
+									</tal:block>
 								</tal:block>
 							</table>
 						</tal:block>

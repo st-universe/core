@@ -11,24 +11,26 @@
 				<th style="width: 30px;" tal:condition="EDITABLE"></th>
 			</tr>
 			<tr tal:repeat="board BOARDS" tal:attributes="class string:row${repeat/board/odd}">
-				<td>
-					<a href="alliance.php?SHOW_BOARD=1&bid=${board/getId}" tal:content="structure board/getName">
-						NAME
-					</a>
-				</td>
-				<td tal:content="board/getTopicCount">TOPICS</td>
-				<td tal:content="board/getPostCount">POSTINGS</td>
-				<td tal:condition="board/getLatestPost">
-					<a href="?SHOW_TOPIC=1&bid=${board/getId}&tid=${board/getLatestPost/getTopicId}" tal:content="structure board/getLatestPost/getTopic/getName">NAME</a><br />
-					<span tal:replace="datetime:board/getLatestPost/getDate">DATE</span> von:<br />
-					<span tal:replace="structure bbcode:board/getLatestPost/getUser/getName">NAME</span>
-				</td>
-				<td tal:condition="not:board/getLatestPost">-</td>
-				<td style="text-align: center;" tal:condition="EDITABLE" tal:define="handle THIS/getUniqId">
-					<a href="javascript:void(0)" onclick="openBoardSettings(this,${board/getId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
-						<img src="assets/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
-					</a>
-				</td>
+				<tal:block tal:define="RECENT_POST board/getLatestPost">
+					<td>
+						<a href="alliance.php?SHOW_BOARD=1&bid=${board/getId}" tal:content="structure board/getName">
+							NAME
+						</a>
+					</td>
+					<td tal:content="board/getTopicCount">TOPICS</td>
+					<td tal:content="board/getPostCount">POSTINGS</td>
+					<td tal:condition="RECENT_POST">
+						<a href="?SHOW_TOPIC=1&bid=${board/getId}&tid=${RECENT_POST/getTopicId}" tal:content="structure RECENT_POST/getTopic/getName">NAME</a><br />
+						<span tal:replace="datetime:RECENT_POST/getDate">DATE</span> von:<br />
+						<span tal:replace="structure bbcode:RECENT_POST/getUser/getName">NAME</span>
+					</td>
+					<td tal:condition="not:RECENT_POST">-</td>
+					<td style="text-align: center;" tal:condition="EDITABLE" tal:define="handle THIS/getUniqId">
+						<a href="javascript:void(0)" onclick="openBoardSettings(this,${board/getId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
+							<img src="assets/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
+						</a>
+					</td>
+				</tal:block>
 			</tr>
 		</table>
 		<br />

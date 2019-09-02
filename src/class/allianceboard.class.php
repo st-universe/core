@@ -40,31 +40,16 @@ class AllianceBoardData extends BaseTable {
 		$this->addUpdateField('alliance_id','getAllianceId');
 	}
 
-	private $topics = NULL;
-
 	function getTopicCount() {
-		if ($this->topics === NULL) {
-			$this->topics = AllianceTopic::countInstances('board_id='.$this->getId());
-		}
-		return $this->topics;
+		return AllianceTopic::countInstances('board_id='.$this->getId());
 	}
-
-	private $posts = NULL;
 
 	function getPostCount() {
-		if ($this->posts === NULL) {
-			$this->posts = AlliancePost::countInstances('board_id='.$this->getId());
-		}
-		return $this->posts;
+		return AlliancePost::countInstances('board_id='.$this->getId());
 	}
 
-	private $latestpost = NULL;
-
 	function getLatestPost() {
-		if ($this->latestpost === NULL) {
-			$this->latestpost = AlliancePost::getLatestObjectBy('alliance_id='.$this->getAllianceId().' AND board_id='.$this->getId());
-		}
-		return $this->latestpost;
+		return AlliancePost::getLatestObjectBy('alliance_id='.$this->getAllianceId().' AND board_id='.$this->getId());
 	}
 
 	/**
@@ -104,15 +89,6 @@ class AllianceBoard extends AllianceBoardData {
 	static function getListByAlliance($allianceId) {
 		return self::getList('alliance_id='.$allianceId);
 	}
-
-	static function getByAlliance($boardId,$allianceId) {
-		$result = DB()->query("SELECT * FROM ".self::getTable()." WHERE id=".$boardId." AND alliance_id=".$allianceId." LIMIT 1",4);
-		if ($result == 0) {
-			new ObjectNotFoundException($boardId);
-		}
-		return new AllianceBoardData($result);
-	}
-
 }
 
 class AllianceTopicData extends BaseTable {
@@ -153,22 +129,12 @@ class AllianceTopicData extends BaseTable {
 		$this->addUpdateField('alliance_id','getAllianceId');
 	}
 
-	private $posts = NULL;
-
 	function getPostCount() {
-		if ($this->posts === NULL) {
-			$this->posts = AlliancePost::countInstances('topic_id='.$this->getId());
-		}
-		return $this->posts;
+		return AlliancePost::countInstances('topic_id='.$this->getId());
 	}
 
-	private $latestpost = NULL;
-
 	function getLatestPost() {
-		if ($this->latestpost === NULL) {
-			$this->latestpost = AlliancePost::getLatestObjectBy('alliance_id='.$this->getAllianceId().' AND topic_id='.$this->getId());
-		}
-		return $this->latestpost;
+		return AlliancePost::getLatestObjectBy('alliance_id='.$this->getAllianceId().' AND topic_id='.$this->getId());
 	}
 
 	function setBoardId($value) {
@@ -189,18 +155,13 @@ class AllianceTopicData extends BaseTable {
 		return $this->data['user_id'];
 	}
 
-	private $postings = NULL;
-
 	function getPostings($mark=FALSE) {
-		if ($this->postings === NULL) {
-			if ($mark !== FALSE) {
-				$limit = ' LIMIT '.$mark.','. Topic::ALLIANCEBOARDLIMITER;
-			} else {
-				$limit = '';
-			}
-			$this->postings = AlliancePost::getList("topic_id=".$this->getId()." ORDER BY date ASC".$limit);
+		if ($mark !== FALSE) {
+			$limit = ' LIMIT '.$mark.','. Topic::ALLIANCEBOARDLIMITER;
+		} else {
+			$limit = '';
 		}
-		return $this->postings;
+		return AlliancePost::getList("topic_id=".$this->getId()." ORDER BY date ASC".$limit);
 	}
 
 	function getLastPostDate() {
@@ -212,10 +173,6 @@ class AllianceTopicData extends BaseTable {
 		$this->addUpdateField('last_post_date','getLastPostDate');
 	}
 
-	function getLastPostDateDisplay() {
-		return date("d.m.Y H:i",$this->getLastPostDate());
-	}
-
 	/**
 	 */
 	public function deepDelete() { #{{{
@@ -225,20 +182,18 @@ class AllianceTopicData extends BaseTable {
 		$this->deleteFromDatabase();
 	} # }}}
 
-	private $pages = NULL;
-
-	/**
-	 */
 	public function getPages() { #{{{
-		if ($this->pages === NULL) {
-			if ($this->getPostCount() <= Topic::ALLIANCEBOARDLIMITER) {
-				return FALSE;
-			}
-			for ($i=1;$i<=ceil($this->getPostCount()/Topic::ALLIANCEBOARDLIMITER);$i++) {
-				$this->pages[$i] = ($i-1)*Topic::ALLIANCEBOARDLIMITER;
-			}
+		$postCount = $this->getPostCount();
+
+		if ($postCount <= Topic::ALLIANCEBOARDLIMITER) {
+			return null;
 		}
-		return $this->pages;
+
+		$pages = [];
+		for ($i = 1; $i <= ceil($postCount / Topic::ALLIANCEBOARDLIMITER); $i++) {
+			$pages[$i] = ($i-1) * Topic::ALLIANCEBOARDLIMITER;
+		}
+		return $pages;
 	} # }}}
 
 	/**
@@ -275,14 +230,6 @@ class AllianceTopic extends AllianceTopicData {
 
 	static function countInstances($sql) {
 		return DB()->query("SELECT COUNT(*) FROM ".self::getTable()." WHERE ".$sql." LIMIT 1",1);
-	}
-
-	static function getByAlliance($topicId,$allianceId) {
-		$result = DB()->query("SELECT * FROM ".self::getTable()." WHERE id=".$topicId." AND alliance_id=".$allianceId." LIMIT 1",4);
-		if ($result == 0) {
-			return FALSE;
-		}
-		return new AllianceTopicData($result);
 	}
 
 	static function truncate($sql) {
@@ -378,22 +325,12 @@ class AlliancePostData extends BaseTable {
 		return $this->data['user_id'];
 	}
 
-	private $user = NULL;
-
 	function getUser() {
-		if ($this->user === NULL) {
-			$this->user = new User($this->getUserId());
-		}
-		return $this->user;
+		return new User($this->getUserId());
 	}
 
-	private $topic = NULL;
-
 	function getTopic() {
-		if ($this->topic === NULL) {
-			$this->topic = new AllianceTopic($this->getTopicId());
-		}
-		return $this->topic;
+		return new AllianceTopic($this->getTopicId());
 	}
 
 	/**
@@ -423,14 +360,6 @@ class AlliancePost extends AlliancePostData {
 
 	static function countInstances($sql) {
 		return DB()->query("SELECT COUNT(*) FROM ".self::getTable()." WHERE ".$sql." LIMIT 1",1);
-	}
-
-	static function getByAlliance($postId,$allianceId) {
-		$result = DB()->query("SELECT * FROM ".self::getTable()." WHERE id=".$postId." AND alliance_id=".$allianceId." LIMIT 1",4);
-		if ($result == 0) {
-			return FALSE;
-		}
-		return new AlliancePostData($result);
 	}
 
 	static function getLatestObjectBy($sql) {
