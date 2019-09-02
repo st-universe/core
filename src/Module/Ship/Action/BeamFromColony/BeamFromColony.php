@@ -92,9 +92,9 @@ final class BeamFromColony implements ActionControllerInterface
                 continue;
             }
             if ($count == "m") {
-                $count = $good->getAmount();
+                $count = (int) $good->getAmount();
             } else {
-                $count = intval($count);
+                $count = (int) $count;
             }
             if ($count < 1) {
                 continue;
@@ -103,7 +103,7 @@ final class BeamFromColony implements ActionControllerInterface
                 break;
             }
             if ($count > $good->getAmount()) {
-                $count = $good->getAmount();
+                $count = (int) $good->getAmount();
             }
             if (ceil($count / $good->getGood()->getTransferCount()) > $ship->getEps()) {
                 $count = $ship->getEps() * $good->getGood()->getTransferCount();
