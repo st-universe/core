@@ -15,6 +15,8 @@ use User;
  * @Table(
  *     name="stu_alliance_topics",
  *     indexes={
+ *         @Index(name="recent_topics_idx", columns={"alliance_id","last_post_date"}),
+ *         @Index(name="ordered_topics_idx", columns={"board_id","last_post_date"})
  *     }
  * )
  **/

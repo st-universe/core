@@ -13,6 +13,7 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
  * @Table(
  *     name="stu_alliance_boards",
  *     indexes={
+ *         @Index(name="alliance_idx", columns={"alliance_id"})
  *     }
  * )
  **/
