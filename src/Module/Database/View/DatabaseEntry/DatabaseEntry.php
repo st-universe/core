@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\DatabaseEntry;
 
 use AccessViolation;
-use MapRegion;
 use Ship;
 use Shiprump;
 use StarSystem;
@@ -16,6 +15,7 @@ use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\MapRegionRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
@@ -30,17 +30,20 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private $databaseUserRepository;
 
+    private $mapRegionRepository;
+
     public function __construct(
         DatabaseEntryRequestInterface $databaseEntryRequest,
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository
-    )
-    {
+        DatabaseUserRepositoryInterface $databaseUserRepository,
+        MapRegionRepositoryInterface $mapRegionRepository
+    ) {
         $this->databaseEntryRequest = $databaseEntryRequest;
         $this->databaseCategoryRepository = $databaseCategoryRepository;
         $this->databaseEntryRepository = $databaseEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
+        $this->mapRegionRepository = $mapRegionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,7 +57,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry = $this->databaseEntryRepository->find($entry_id);
         $category = $this->databaseCategoryRepository->find($category_id);
 
-        if ($this->databaseUserRepository->exists((int) $game->getUser()->getId(), $entry->getId()) === false) {
+        if ($this->databaseUserRepository->exists((int)$game->getUser()->getId(), $entry->getId()) === false) {
             throw new AccessViolation();
         }
 
@@ -99,7 +102,7 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('POI', new Ship($entry_object_id));
                 break;
             case DATABASE_TYPE_MAP:
-                $game->setTemplateVar('REGION', new MapRegion($entry_object_id));
+                $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
                 break;
             case DATABASE_TYPE_SHIPRUMP:
                 $game->setTemplateVar('RUMP', new Shiprump($entry_object_id));

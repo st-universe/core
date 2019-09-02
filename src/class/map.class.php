@@ -1,6 +1,8 @@
 <?php
 
+use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
+use Stu\Orm\Repository\MapRegionRepositoryInterface;
 
 class MapFieldData extends BaseTable {
 
@@ -119,9 +121,12 @@ class MapFieldData extends BaseTable {
 
 	private $region = NULL;
 
-	public function getMapRegion() {
+	public function getMapRegion(): ?MapRegionInterface {
 		if ($this->region === NULL) {
-			$this->region = new MapRegion($this->getRegionId());
+			// @todo refactor
+			global $container;
+
+			$this->region = $container->get(MapRegionRepositoryInterface::class)->find((int) $this->getRegionId());
 		}
 		return $this->region;
 	}

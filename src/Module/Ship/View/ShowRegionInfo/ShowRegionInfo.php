@@ -43,7 +43,10 @@ final class ShowRegionInfo implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->checkDatabaseItem($region->getDatabaseId());
+        $databaseEntry = $region->getDatabaseEntry();
+        if ($databaseEntry !== null) {
+            $game->checkDatabaseItem($databaseEntry->getId());
+        }
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/regioninfo');

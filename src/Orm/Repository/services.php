@@ -28,6 +28,7 @@ use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\MapBorderType;
+use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -157,6 +158,11 @@ return [
         ContainerInterface $c
     ): MapBorderTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(MapBorderType::class);
+    },
+    MapRegionRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): MapRegionRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(MapRegion::class);
     },
     NoteRepositoryInterface::class => function (
         ContainerInterface $c

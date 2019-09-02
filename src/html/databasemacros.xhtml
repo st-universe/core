@@ -60,17 +60,6 @@
 			<tr>
 				<th colspan="3">Auswirkungen der Kartenfelder</th>
 			</tr>
-			<tr tal:repeat="data REGION/getMapFieldTypes">
-				<td style="width: 30px">
-					<img src="assets/map/${data/getType}.gif" tal:attributes="title data/getName" />
-				</td>
-				<td style="text-align: center; vertical-align: middle;">
-					<img src="assets/buttons/e_trans2.gif" title="Flugkosten" /> ${data/getEpsCost}
-				</td>
-				<td style="vertical-align: middle;">
-					Schaden: ${data/getSpecialDamage}
-				</td>
-			</tr>
 		</table>
 	</metal:macro>
 	<metal:macro metal:define-macro="starsystem">
