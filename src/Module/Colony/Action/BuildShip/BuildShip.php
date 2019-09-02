@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\BuildShip;
 use ColonyShipQueue;
 use ColonyShipQueueData;
 use ModuleSelector;
-use ModuleType;
+use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
 use RumpBuildingFunction;
 use ShipBuildplans;
@@ -71,7 +71,7 @@ final class BuildShip implements ActionControllerInterface
             if ($i != MODULE_TYPE_SPECIAL && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0 && count($module) == 0) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
-                    ModuleType::getDescription($i)
+                    ModuleTypeDescriptionMapper::getDescription($i)
                 );
                 return;
             }

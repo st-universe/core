@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
 
 /**
@@ -91,7 +92,7 @@ class ModuleSelector { #{{{
 	/**
 	 */
 	public function getModuleDescription() { #{{{
-		return ModuleType::getDescription($this->getModuleType());
+		return ModuleTypeDescriptionMapper::getDescription($this->getModuleType());
 	} # }}}
 
 	/**

@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
+
 class ModulesData extends BaseTable {
 
 	const tablename = 'stu_modules';
@@ -96,7 +98,7 @@ class ModulesData extends BaseTable {
 	/**
 	 */
 	public function getDescription() { #{{{
-		return ModuleType::getDescription($this->getType());
+		return ModuleTypeDescriptionMapper::getDescription($this->getType());
 	} # }}}
 
 	/**

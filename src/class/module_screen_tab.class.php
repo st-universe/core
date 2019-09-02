@@ -10,6 +10,8 @@
 
 /* $Id:$ */
 
+use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
@@ -52,7 +54,7 @@ class ModuleScreenTab { #{{{
 	/**
 	 */
 	public function getTabTitle() { #{{{
-		return ModuleType::getDescription($this->getModuleType());
+		return ModuleTypeDescriptionMapper::getDescription($this->getModuleType());
 	} # }}}
 
 	/**
