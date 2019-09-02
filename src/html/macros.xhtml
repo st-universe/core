@@ -139,7 +139,7 @@
 	</div>
 </metal:block>
 <metal:block metal:define-macro="crewimage">
-	<img phptal:cache="1d per crew/getId" src="assets/crew/${crew/getRace/getDefine}/${crew/getGenderShort}/1_${crew/getType}.png" />
+	<img phptal:cache="1d per crew/getId" src="assets/crew/${crew/getRace/getGfxPath}/${crew/getGenderShort}/1_${crew/getType}.png" />
 </metal:block>
 <metal:macro metal:define-macro="render_contactoptions" tal:define="handle THIS/getUniqId">
 	<!-- userId is needed -->
