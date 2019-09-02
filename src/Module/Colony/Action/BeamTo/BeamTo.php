@@ -108,7 +108,7 @@ final class BeamTo implements ActionControllerInterface
                 $eps_usage
             );
             $colony->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
-            $target->upperStorage($value, $count);
+            $target->upperStorage((int) $value, $count);
             $colony->lowerStorage($value, $count);
             $target->setStorageSum($target->getStorageSum() + $count);
         }

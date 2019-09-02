@@ -46,10 +46,10 @@ final class LandShip implements ActionControllerInterface
         }
         $colony->upperStorage($ship->getRump()->getGoodId(), 1);
         $colony->setStorageSum($colony->getStorageSum() + 1);
-        foreach ($ship->getStorage() as $key => $stor) {
-            $stor->getAmount() + $colony->getStorageSum() > $colony->getMaxStorage() ? $count = $colony->getMaxStorage() - $colony->getStorageSum() : $count = $stor->getAmount();
+        foreach ($ship->getStorage() as $stor) {
+            $count = min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
             if ($count > 0) {
-                $colony->upperStorage($stor->getGoodId(), $count);
+                $colony->upperStorage($stor->getCommodityId(), $count);
                 $colony->setStorageSum($colony->getStorageSum() + $count);
             }
         }

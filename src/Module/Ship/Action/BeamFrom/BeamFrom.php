@@ -70,7 +70,10 @@ final class BeamFrom implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        if ($target->getStorage()->count() == 0) {
+
+        $targetStorage = $target->getStorage();
+
+        if ($targetStorage === []) {
             $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }
@@ -78,28 +81,37 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_("Es wurde keine Waren zum Beamen ausgewählt"));
             return;
         }
-        $game->addInformation(sprintf(_('Die %s hat folgende Waren von der %s transferiert'),
-            $ship->getName(), $target->getName()));
+        $game->addInformation(
+            sprintf(
+                _('Die %s hat folgende Waren von der %s transferiert'),
+                $ship->getName(),
+                $target->getName()
+            )
+        );
         foreach ($goods as $key => $value) {
+            $commodityId = (int) $value;
             if ($ship->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
                 continue;
             }
-            if (!$target->getStorage()->offsetExists($value)) {
+            $storage = $targetStorage[$commodityId] ?? null;
+            if ($storage === null) {
                 continue;
             }
             $count = $gcount[$key];
-            $good = $target->getStorage()->offsetGet($value);
-            if (!$good->getGood()->isBeamable()) {
-                $game->addInformationf(_('%s ist nicht beambar'), $good->getGood()->getName());
+
+            $commodity = $storage->getCommodity();
+
+            if (!$commodity->isBeamable()) {
+                $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
             if ($count == "m") {
-                $count = $good->getAmount();
+                $count = $storage->getAmount();
             } else {
-                $count = intval($count);
+                $count = (int) $count;
             }
             if ($count < 1) {
                 continue;
@@ -107,21 +119,22 @@ final class BeamFrom implements ActionControllerInterface
             if ($ship->getStorageSum() >= $ship->getMaxStorage()) {
                 break;
             }
-            if ($count > $good->getAmount()) {
-                $count = $good->getAmount();
-            }
-            if (ceil($count / $good->getGood()->getTransferCount()) > $ship->getEps()) {
-                $count = $ship->getEps() * $good->getGood()->getTransferCount();
+            $count = min($count, $storage->getAmount());
+
+            $transferAmount = $commodity->getTransferCount();
+
+            if (ceil($count / $transferAmount) > $ship->getEps()) {
+                $count = $ship->getEps() * $transferAmount;
             }
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
-            $game->addInformation(sprintf(_('%d %s (Energieverbrauch: %d)'), $count, $good->getGood()->getName(),
-                ceil($count / $good->getGood()->getTransferCount())));
+            $game->addInformation(sprintf(_('%d %s (Energieverbrauch: %d)'), $count, $commodity->getName(),
+                ceil($count / $transferAmount)));
 
-            $target->lowerStorage($value, $count);
-            $ship->upperStorage($value, $count);
-            $ship->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
+            $target->lowerStorage($commodityId, $count);
+            $ship->upperStorage($commodityId, $count);
+            $ship->lowerEps(ceil($count / $transferAmount));
             $ship->setStorageSum($ship->getStorageSum() + $count);
         }
         if ($target->getUserId() != $ship->getUserId()) {

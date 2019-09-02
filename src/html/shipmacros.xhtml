@@ -252,12 +252,12 @@
 				<tr>
 					<td style="width: 100%;">
 						<tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
-							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
+							<input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+								<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 							</div>
 							<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+								<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
@@ -312,12 +312,12 @@
 				<tr>
 					<td style="width: 100%;">
 						<tal:block tal:condition="targetShip/getStorage" tal:repeat="good targetShip/getStorage">
-							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
+							<input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+								<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 							</div>
 							<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+								<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
@@ -372,12 +372,12 @@
 				<tr>
 					<td style="width: 100%;">
 						<tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
-							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
+							<input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+								<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 							</div>
 							<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+								<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
@@ -761,12 +761,12 @@
 								<tr>
 									<td>
 										<tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
-											<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
+											<input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
 											<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-												<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+												<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 											</div>
 											<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-												<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+												<stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
 											</div>
 											<br tal:condition="repeat/good/odd" style="clear: both;" />
 										</tal:block>
@@ -864,7 +864,7 @@
 					<div style="float: left; width: 190px;">
 						<strong>Angedockte Schiffe</strong>
 						<div tal:repeat="ship DOCKED_SHIPS_FOR_LICENSE">
-							- <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})" tal:content="structure ship/getName">NAME</a>
+							- <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})" tal:content="structure bbcode:ship/getName">NAME</a>
 						</div>
 					</div>
 					<div style="padding-left: 6px; float: right; width: 190px;">

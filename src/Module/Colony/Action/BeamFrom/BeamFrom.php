@@ -49,7 +49,10 @@ final class BeamFrom implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        if ($target->getStorage()->count() == 0) {
+
+        $targetStorage = $target->getStorage();
+
+        if ($targetStorage === []) {
             $game->addInformation(_('Keine Waren zum Beamen vorhanden'));
             return;
         }
@@ -63,6 +66,7 @@ final class BeamFrom implements ActionControllerInterface
             $target->getName()
         );
         foreach ($goods as $key => $value) {
+            $commodityId = (int) $value;
             if ($colony->getEps() < 1) {
                 break;
             }
@@ -72,43 +76,48 @@ final class BeamFrom implements ActionControllerInterface
             if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
                 continue;
             }
-            if (!$target->getStorage()->offsetExists($value)) {
+            $count = $gcount[$key];
+
+            $storage = $targetStorage[$commodityId] ?? null;
+            if ($storage === null) {
                 continue;
             }
-            $count = $gcount[$key];
-            $good = $target->getStorage()->offsetGet($value);
-            if (!$good->getGood()->isBeamable()) {
-                $game->addInformationf(_('%s ist nicht beambar'), $good->getGood()->getName());
+
+            $commodity = $storage->getCommodity();
+
+            if (!$commodity->isBeamable()) {
+                $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
             if ($count == "m") {
-                $count = $good->getAmount();
+                $count = $storage->getAmount();
             } else {
-                $count = intval($count);
+                $count = (int) $count;
             }
             if ($count < 1) {
                 continue;
             }
-            if ($count > $good->getAmount()) {
-                $count = $good->getAmount();
-            }
-            if (ceil($count / $good->getGood()->getTransferCount()) > $colony->getEps()) {
-                $count = $colony->getEps() * $good->getGood()->getTransferCount();
+            $count = min($count, $storage->getAmount());
+
+            $transferAmount = $storage->getCommodity()->getTransferCount();
+
+            if (ceil($count / $transferAmount) > $colony->getEps()) {
+                $count = $colony->getEps() * $transferAmount;
             }
             if ($colony->getStorageSum() + $count > $colony->getMaxStorage()) {
                 $count = $colony->getMaxStorage() - $colony->getStorageSum();
             }
 
-            $eps_usage = ceil($count / $good->getGood()->getTransferCount());
+            $eps_usage = ceil($count / $transferAmount);
             $game->addInformationf(_('%d %s (Energieverbrauch: %d)'),
                 $count,
-                $good->getGood()->getName(),
+                $commodity->getName(),
                 $eps_usage
             );
 
-            $target->lowerStorage($value, $count);
-            $colony->upperStorage($value, $count);
-            $colony->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
+            $target->lowerStorage($commodityId, $count);
+            $colony->upperStorage($commodityId, $count);
+            $colony->lowerEps(ceil($count / $transferAmount));
             $colony->setStorageSum($colony->getStorageSum() + $count);
         }
         if ($target->getUser() != $userId) {

@@ -582,13 +582,13 @@
 						<tal:block tal:repeat="good SHIP/getStorage">
 							<tal:block tal:condition="good/getAmount">
 								<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-									<img src="assets/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
+									<img src="assets/goods/${good/getCommodity/getId}.gif" tal:attributes="title good/getCommodity/getName" /> ${good/getAmount}
 								</div>
 								<tal:block tal:condition="repeat/good/odd">
 									<div tal:condition="repeat/good/last" style="float: left; width: 50%;"> </div>
 								</tal:block>
 								<div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-									<img src="assets/goods/${good/getGoodId}.gif" tal:attributes="title good/getName" /> ${good/getAmount}
+									<img src="assets/goods/${good/getCommodity/getId}.gif" tal:attributes="title good/getCommodity/getName" /> ${good/getAmount}
 								</div>
 								<br tal:condition="repeat/good/odd" style="clear: both;" />
 							</tal:block>

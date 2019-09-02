@@ -38,6 +38,7 @@ use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
+use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
@@ -191,6 +192,11 @@ return [
         ContainerInterface $c
     ): SessionStringRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
+    },
+    ShipStorageRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipStorageRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipStorage::class);
     },
     ShipRumpRoleRepositoryInterface::class => function (
         ContainerInterface $c

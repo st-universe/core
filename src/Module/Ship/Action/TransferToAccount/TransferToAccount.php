@@ -60,7 +60,10 @@ final class TransferToAccount implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        if ($ship->getStorage()->count() == 0) {
+
+        $shipStorage = $ship->getStorage();
+
+        if ($shipStorage === []) {
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
@@ -70,41 +73,44 @@ final class TransferToAccount implements ActionControllerInterface
         }
         $game->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
         foreach ($goods as $key => $value) {
+            $commodityId = (int) $value;
             if (!array_key_exists($key, $gcount)) {
                 continue;
             }
-            if (!$ship->getStorage()->offsetExists($value)) {
+            $storage = $shipStorage[$commodityId] ?? null;
+            if ($storage === null) {
                 continue;
             }
             $count = $gcount[$key];
-            $good = $ship->getStorage()->offsetGet($value);
+
+            $commodity = $storage->getCommodity();
+
             if ($count == "m") {
-                $count = $good->getAmount();
+                $count = $storage->getAmount();
             } else {
-                $count = intval($count);
+                $count = (int) $count;
             }
             if ($count < 1 || $tradepost->getStorage() - $tradepost->getStorageByUser($userId)->getStorageSum() <= 0) {
                 continue;
             }
-            if (!$good->getGood()->isBeamable()) {
-                $game->addInformation(sprintf(_('%s ist nicht beambar'), $good->getGood()->getName()));
-                $game->addInformation($good->getGood()->getName() . " ist nicht beambar");
+            if (!$commodity->isBeamable()) {
+                $game->addInformationf(_('%s ist nicht beambar'), $commodity->getName());
                 continue;
             }
-            if ($good->getGood()->isIllegal($tradepost->getTradeNetwork())) {
-                $game->addInformation(sprintf(_('Der Handel mit %s ist in diesem Handelsnetzwerk verboten'),
-                    $good->getGood()->getName()));
+            if ($commodity->isIllegal($tradepost->getTradeNetwork())) {
+                $game->addInformationf(
+                    _('Der Handel mit %s ist in diesem Handelsnetzwerk verboten'),
+                    $commodity->getName()
+                );
                 continue;
             }
-            if ($count > $good->getAmount()) {
-                $count = $good->getAmount();
-            }
+            $count = min($count, $storage->getAmount());
             if ($tradepost->getStorageByUser($userId)->getStorageSum() + $count > $tradepost->getStorage()) {
                 $count = $tradepost->getStorage() - $tradepost->getStorageByUser($userId)->getStorageSum();
             }
-            $game->addInformation(sprintf(_('%d %s'), $count, $good->getGood()->getName()));
+            $game->addInformationf(_('%d %s'), $count, $commodity->getName());
 
-            $ship->lowerStorage($value, $count);
+            $ship->lowerStorage($commodityId, $count);
             $tradepost->upperStorage($userId, $value, $count);
             $tradepost->getStorageByUser($userId)->upperSum($count);
         }

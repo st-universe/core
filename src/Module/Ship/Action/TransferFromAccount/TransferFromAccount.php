@@ -97,7 +97,7 @@ final class TransferFromAccount implements ActionControllerInterface
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
             $tradepost->lowerStorage($userId, $value, $count);
-            $ship->upperStorage($value, $count);
+            $ship->upperStorage((int) $value, $count);
             $ship->setStorageSum($ship->getStorageSum() + $count);
 
             $game->addInformation($count . " " . $curGoods[$value]->getGood()->getName());

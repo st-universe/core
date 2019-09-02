@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use request;
+use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -56,6 +57,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         }
         switch ($mode) {
             case 'ship':
+                /** @var Ship $obj */
                 $obj = ResourceCache()->getObject('ship', $targetId);
                 if (!$obj->ownedByCurrentUser()) {
                     return;
@@ -63,10 +65,14 @@ final class BuyTradeLicense implements ActionControllerInterface
                 if (!checkPosition($tradepost->getShip(), $obj)) {
                     return;
                 }
-                if (!$obj->getStorageByGood($tradepost->getLicenceCostGood()->getId()) || $obj->getStorageByGood($tradepost->getLicenceCostGood()->getId())->getAmount() < $tradepost->calculateLicenceCost()) {
+
+                $commodityId = (int) $tradepost->getLicenceCostGood()->getId();
+
+                $storage = $obj->getStorage()[$commodityId] ?? null;
+                if ($storage === null || $storage->getAmount() < $tradepost->calculateLicenceCost()) {
                     return;
                 }
-                $obj->lowerStorage($tradepost->getLicenceCostGood()->getId(), $tradepost->calculateLicenceCost());
+                $obj->lowerStorage($commodityId, $tradepost->calculateLicenceCost());
                 break;
             case 'account':
                 $stor = TradeStorage::getStorageByGood($targetId, $userId,

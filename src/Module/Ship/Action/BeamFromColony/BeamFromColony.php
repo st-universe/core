@@ -116,7 +116,7 @@ final class BeamFromColony implements ActionControllerInterface
                 ceil($count / $good->getGood()->getTransferCount())));
 
             $target->lowerStorage($value, $count);
-            $ship->upperStorage($value, $count);
+            $ship->upperStorage((int) $value, $count);
             $ship->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
             $ship->setStorageSum($ship->getStorageSum() + $count);
         }

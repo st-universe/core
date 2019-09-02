@@ -3,8 +3,11 @@
 
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
+use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 class ShipData extends BaseTable {
@@ -878,7 +881,12 @@ class ShipData extends BaseTable {
 	 */
 	public function remove() { #{{{
 		$this->changeFleetLeader();
-		ShipStorage::truncate($this->getId());
+
+		// @todo refactor
+		global $container;
+
+		$container->get(ShipStorageRepositoryInterface::class)->truncateForShip((int) $this->getId());
+
 		ShipSystems::truncate($this->getId());
 		ShipCrew::truncate('WHERE ships_id='.$this->getId());
 		$this->deleteFromDatabase();
@@ -911,21 +919,16 @@ class ShipData extends BaseTable {
 	private $storage = NULL;
 
 	/**
-	 * @return ShipStorage[]
+	 * @return ShipStorageInterface[] Indexed by commodityId
 	 */
 	public function getStorage() {
 		if ($this->storage === NULL) {
-			$this->storage = ShipStorage::getObjectsBy('ships_id='.$this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->storage = $container->get(ShipStorageRepositoryInterface::class)->getByShip((int) $this->getId());
 		}
 		return $this->storage;
-	}
-
-	public function getStorageByGood($goodId) {
-		if (!array_key_exists($goodId,$this->getStorage())) {
-			return FALSE;
-		}
-		$stor = &$this->getStorage();
-		return $stor[$goodId];
 	}
 
 	private $storageSum = NULL;
@@ -949,27 +952,44 @@ class ShipData extends BaseTable {
 		return $this->getRump()->getStorage();
 	}
 
-	public function lowerStorage($good_id,$count) {
-		if (!$this->getStorage()->offsetExists($good_id)) {
+	public function lowerStorage(int $good_id, int $count) {
+		$storage = $this->getStorage()[$good_id] ?? null;
+		if ($storage === null) {
 			return;
 		}
-		if ($this->getStorage()->offsetGet($good_id)->getAmount() <= $count) {
-			$this->getStorage()->offsetGet($good_id)->deleteFromDatabase();
-			$this->getStorage()->offsetUnset($good_id);
+		// @todo refactor
+		global $container;
+
+		$shipStorageRepository = $container->get(ShipStorageRepositoryInterface::class);
+		if ($storage->getAmount() <= $count) {
+
+			$shipStorageRepository->delete($storage);
+			$this->storage = null;
 			return;
 		}
-		$this->getStorage()->offsetGet($good_id)->lowerCount($count);
-		$this->getStorage()->offsetGet($good_id)->save();
+		$storage->setAmount($storage->getAmount() - $count);
+
+		$shipStorageRepository->save($storage);
 	}
 
-	public function upperStorage($good_id,$count) {
-		if (!$this->getStorage()->offsetExists($good_id)) {
-			$this->getStorage()->offsetSet($good_id,new ShipStorageData());
-			$this->getStorage()->offsetGet($good_id)->setShipId($this->getId());
-			$this->getStorage()->offsetGet($good_id)->setGoodId($good_id);
+	public function upperStorage(int $good_id, int $count) {
+		// @todo refactor
+		global $container;
+
+		$shipStorageRepository = $container->get(ShipStorageRepositoryInterface::class);
+		$commodityRepository = $container->get(CommodityRepositoryInterface::class);
+
+		$storage = $this->getStorage()[$good_id] ?? null;
+
+		if ($storage === null) {
+			$storage = $shipStorageRepository->prototype()
+				->setShipId((int) $this->getId())
+				->setCommodity($commodityRepository->find($good_id));
 		}
-		$this->getStorage()->offsetGet($good_id)->upperCount($count);
-		$this->getStorage()->offsetGet($good_id)->save();
+		$storage->setAmount($storage->getAmount() + $count);
+
+		$shipStorageRepository->save($storage);
+		$this->storage = null;
 	}
 
 	private $currentColony = NULL;
@@ -1549,12 +1569,14 @@ class ShipData extends BaseTable {
 	/**
 	 */
 	public function loadWarpCore($count) { #{{{
-		foreach (array(CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER) as $key) {
-			if (!$this->getStorage()->offsetExists($key)) {
+		$shipStorage = $this->getStorage();
+		foreach (array(CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER) as $commodityId) {
+		    $storage = $shipStorage[$commodityId] ?? null;
+		    if ($storage === null) {
 				return FALSE;
 			}
-			if ($this->getStorage()->offsetGet($key)->getAmount() < $count) {
-				$count = $this->getStorage()->offsetGet($key)->getAmount();
+			if ($storage->getAmount() < $count) {
+				$count = $storage->getAmount();
 			}
 		}
 		$this->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM,$count);
