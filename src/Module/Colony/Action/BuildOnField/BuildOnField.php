@@ -90,7 +90,7 @@ final class BuildOnField implements ActionControllerInterface
                 $result = array_filter(
                     $currentBuildingCost,
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getGoodsId();
+                        return $commodityId === $buildingCost->getGoodId();
                     }
                 );
 
@@ -124,7 +124,7 @@ final class BuildOnField implements ActionControllerInterface
                 $result = array_filter(
                     $currentBuildingCost,
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
-                        return $commodityId === $buildingCost->getGoodsId();
+                        return $commodityId === $buildingCost->getGoodId();
                     }
                 );
                 if ($result !== []) {
