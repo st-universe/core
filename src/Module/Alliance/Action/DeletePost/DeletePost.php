@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeletePost;
 
 use AccessViolation;
-use AlliancePost;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
 use Stu\Module\Alliance\View\Topic\Topic;
+use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
 
 final class DeletePost implements ActionControllerInterface
 {
@@ -18,17 +18,24 @@ final class DeletePost implements ActionControllerInterface
 
     private $deletePostRequest;
 
+    private $allianceBoardPostRepository;
+
     public function __construct(
-        DeletePostRequestInterface $deletePostRequest
+        DeletePostRequestInterface $deletePostRequest,
+        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository
     ) {
         $this->deletePostRequest = $deletePostRequest;
+        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        $post = new AlliancePost($this->deletePostRequest->getPostId());
+        $post = $this->allianceBoardPostRepository->find($this->deletePostRequest->getPostId());
+        if ($post === null) {
+            return;
+        }
         if ($post->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
@@ -43,7 +50,7 @@ final class DeletePost implements ActionControllerInterface
         }
         $game->setView(Topic::VIEW_IDENTIFIER);
 
-        $post->deleteFromDatabase();
+        $this->allianceBoardPostRepository->delete($post);
 
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
     }

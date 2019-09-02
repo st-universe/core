@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
-use AllianceTopic;
 use ColonyShipQueue;
 use ContactlistData;
 use KNPosting;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use User;
 use UserProfileVisitors;
@@ -18,10 +18,14 @@ final class Overview implements ViewControllerInterface
 {
     private $historyRepository;
 
+    private $allianceBoardTopicRepository;
+
     public function __construct(
-        HistoryRepositoryInterface $historyRepository
+        HistoryRepositoryInterface $historyRepository,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->historyRepository = $historyRepository;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -68,7 +72,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'RECENT_ALLIANCE_BOARD_TOPICS',
-            AllianceTopic::getLatestTopics($user->getAllianceId())
+            $this->allianceBoardTopicRepository->getRecentByAlliance((int) $user->getAllianceId())
         );
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
     }

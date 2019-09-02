@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteTopic;
 
 use AccessViolation;
-use AllianceTopic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class DeleteTopic implements ActionControllerInterface
 {
@@ -17,22 +17,26 @@ final class DeleteTopic implements ActionControllerInterface
 
     private $deleteTopicRequest;
 
+    private $allianceBoardTopicRepository;
+
     public function __construct(
-        DeleteTopicRequestInterface $deleteTopicRequest
+        DeleteTopicRequestInterface $deleteTopicRequest,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->deleteTopicRequest = $deleteTopicRequest;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        $topic = new AllianceTopic($this->deleteTopicRequest->getTopicId());
-        if ($topic->getAllianceId() != $alliance->getId()) {
+        $topic = $this->allianceBoardTopicRepository->find($this->deleteTopicRequest->getTopicId());
+        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 
-        $topic->deepDelete();
+        $this->allianceBoardTopicRepository->delete($topic);
 
         $game->addInformation(_('Das Thema wurde gelöscht'));
 

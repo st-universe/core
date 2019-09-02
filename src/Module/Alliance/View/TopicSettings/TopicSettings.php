@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\TopicSettings;
 
 use AccessViolation;
-use AllianceTopic;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class TopicSettings implements ViewControllerInterface
 {
@@ -15,10 +15,14 @@ final class TopicSettings implements ViewControllerInterface
 
     private $topicSettingsRequest;
 
+    private $allianceBoardTopicRepository;
+
     public function __construct(
-        TopicSettingsRequestInterface $topicSettingsRequest
+        TopicSettingsRequestInterface $topicSettingsRequest,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->topicSettingsRequest = $topicSettingsRequest;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -26,8 +30,8 @@ final class TopicSettings implements ViewControllerInterface
         $alliance = $game->getUser()->getAlliance();
         $topicId = $this->topicSettingsRequest->getTopicId();
 
-        $topic = new AllianceTopic($topicId);
-        if ($topic->getAllianceId() != $alliance->getId()) {
+        $topic = $this->allianceBoardTopicRepository->find($topicId);
+        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\NewTopic;
 
 use AccessViolation;
-use AllianceBoard;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\AllianceBoardInterface;
+use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class NewTopic implements ViewControllerInterface
 {
@@ -15,21 +16,27 @@ final class NewTopic implements ViewControllerInterface
 
     private $newTopicRequest;
 
+    private $allianceBoardRepository;
+
     public function __construct(
-        NewTopicRequestInterface $newTopicRequest
+        NewTopicRequestInterface $newTopicRequest,
+        AllianceBoardRepositoryInterface $allianceBoardRepository
     ) {
         $this->newTopicRequest = $newTopicRequest;
+        $this->allianceBoardRepository = $allianceBoardRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $boardId = $this->newTopicRequest->getBoardId();
 
-        $board = new AllianceBoard($boardId);
-        if ($board->getAllianceId() != $alliance->getId()) {
+        /** @var AllianceBoardInterface $board */
+        $board = $this->allianceBoardRepository->find($this->newTopicRequest->getBoardId());
+        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
+
+        $boardId = $board->getId();
 
         $game->setPageTitle(_('Allianzforum'));
 

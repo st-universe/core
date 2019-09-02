@@ -5,24 +5,36 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
 use AccessViolation;
-use AllianceBoard;
-use AlliancePostData;
-use AllianceTopicData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
+use Stu\Orm\Entity\AllianceBoardInterface;
+use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
+use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class CreateTopic implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
 
     private $createTopicRequest;
 
+    private $allianceBoardPostRepository;
+
+    private $allianceBoardTopicRepository;
+
+    private $allianceBoardRepository;
+
     public function __construct(
-        CreateTopicRequestInterface $createTopicRequest
+        CreateTopicRequestInterface $createTopicRequest,
+        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        AllianceBoardRepositoryInterface $allianceBoardRepository
     ) {
         $this->createTopicRequest = $createTopicRequest;
+        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+        $this->allianceBoardRepository = $allianceBoardRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,7 +44,6 @@ final class CreateTopic implements ActionControllerInterface
 
         $name = $this->createTopicRequest->getTopicTitle();
         $text = $this->createTopicRequest->getText();
-        $boardId = $this->createTopicRequest->getBoardId();
 
         if (mb_strlen($name) < 1) {
             $game->setView("SHOW_NEW_TOPIC");
@@ -45,31 +56,37 @@ final class CreateTopic implements ActionControllerInterface
             return;
         }
 
-        $post = new AlliancePostData();
-        $post->setText($text);
-        $post->setName($name);
-
-        $board = new AllianceBoard($boardId);
-        if ($board->getAllianceId() != $alliance->getId()) {
+        /** @var AllianceBoardInterface $board */
+        $board = $this->allianceBoardRepository->find($this->createTopicRequest->getBoardId());
+        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 
         $date = time();
 
-        $topic = new AllianceTopicData();
-        $topic->setBoardId($board->getId());
-        $topic->setAllianceId($alliance->getId());
+        $topic = $this->allianceBoardTopicRepository->prototype();
+        $topic->setBoard($board);
+        $topic->setAllianceId((int)$alliance->getId());
         $topic->setName($name);
         $topic->setUserId($userId);
         $topic->setLastPostDate($date);
-        $topic->save();
 
-        $post->setBoardId($board->getId());
-        $post->setTopicId($topic->getId());
-        $post->setAllianceId($alliance->getId());
+        $this->allianceBoardTopicRepository->save($topic);
+
+        $board->getTopics()->add($topic);
+
+        $post = $this->allianceBoardPostRepository->prototype();
+        $post->setText($text);
+        $post->setName($name);
+        $post->setBoard($board);
+        $post->setTopic($topic);
+        $post->setAllianceId((int) $alliance->getId());
         $post->setUserId($userId);
         $post->setDate($date);
-        $post->save();
+
+        $this->allianceBoardPostRepository->save($post);
+
+        $topic->getPosts()->add($post);
 
         $game->setView(Board::VIEW_IDENTIFIER);
 

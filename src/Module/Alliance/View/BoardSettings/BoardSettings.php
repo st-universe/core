@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\BoardSettings;
 
 use AccessViolation;
-use AllianceBoard;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 final class BoardSettings implements ViewControllerInterface
 {
@@ -15,18 +15,22 @@ final class BoardSettings implements ViewControllerInterface
 
     private $boardSettingsRequest;
 
+    private $allianceBoardRepository;
+
     public function __construct(
-        BoardSettingsRequestInterface $boardSettingsRequest
+        BoardSettingsRequestInterface $boardSettingsRequest,
+        AllianceBoardRepositoryInterface $allianceBoardRepository
     ) {
         $this->boardSettingsRequest = $boardSettingsRequest;
+        $this->allianceBoardRepository = $allianceBoardRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        $board = new AllianceBoard($this->boardSettingsRequest->getBoardId());
-        if ($board->getAllianceId() != $alliance->getId()) {
+        $board = $this->allianceBoardRepository->find($this->boardSettingsRequest->getBoardId());
+        if ($board === null || $board->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 

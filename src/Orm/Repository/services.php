@@ -6,6 +6,9 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Orm\Entity\AllianceBoard;
+use Stu\Orm\Entity\AllianceBoardPost;
+use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingGood;
@@ -38,10 +41,20 @@ use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\UserIpTable;
 
 return [
-    ColonyShipRepairRepositoryInterface::class => function (
+    AllianceBoardRepositoryInterface::class => function (
         ContainerInterface $c
-    ): ColonyShipRepairRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
+    ): AllianceBoardRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoard::class);
+    },
+    AllianceBoardPostRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AllianceBoardPostRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardPost::class);
+    },
+    AllianceBoardTopicRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AllianceBoardTopicRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class);
     },
     BuildingCostRepositoryInterface::class => function (
         ContainerInterface $c
@@ -92,6 +105,11 @@ return [
         ContainerInterface $c
     ): CrewRaceRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class);
+    },
+    ColonyShipRepairRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonyShipRepairRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
     },
     DatabaseCategoryRepositoryInterface::class => function (
         ContainerInterface $c

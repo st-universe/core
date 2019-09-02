@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\RenameTopic;
 
 use AccessViolation;
-use AllianceTopic;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class RenameTopic implements ActionControllerInterface
 {
@@ -17,10 +17,14 @@ final class RenameTopic implements ActionControllerInterface
 
     private $renameTopicRequest;
 
+    private $allianceBoardTopicRepository;
+
     public function __construct(
-        RenameTopicRequestInterface $renameTopicRequest
+        RenameTopicRequestInterface $renameTopicRequest,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->renameTopicRequest = $renameTopicRequest;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -28,10 +32,9 @@ final class RenameTopic implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         $name = $this->renameTopicRequest->getTitle();
-        $topicId = $this->renameTopicRequest->getTopicId();
 
-        $topic = new AllianceTopic($topicId);
-        if ($topic->getAllianceId() != $alliance->getId()) {
+        $topic = $this->allianceBoardTopicRepository->find($this->renameTopicRequest->getTopicId());
+        if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\NewPost;
 
 use AccessViolation;
-use AllianceBoard;
-use AllianceTopic;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\AllianceBoardTopicInterface;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class NewPost implements ViewControllerInterface
 {
@@ -16,10 +16,14 @@ final class NewPost implements ViewControllerInterface
 
     private $newPostRequest;
 
+    private $allianceBoardTopicRepository;
+
     public function __construct(
-        NewPostRequestInterface $newPostRequest
+        NewPostRequestInterface $newPostRequest,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->newPostRequest = $newPostRequest;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -29,15 +33,13 @@ final class NewPost implements ViewControllerInterface
         $topicId = $this->newPostRequest->getTopicId();
         $allianceId = $alliance->getId();
 
-        $board = new AllianceBoard($boardId);
-        if ($board->getAllianceId() != $alliance->getId()) {
+        /** @var AllianceBoardTopicInterface $topic */
+        $topic = $this->allianceBoardTopicRepository->find($topicId);
+        if ($topic === null || $topic->getAllianceId() != $allianceId) {
             throw new AccessViolation();
         }
 
-        $topic = new AllianceTopic($topicId);
-        if ($topic->getAllianceId() != $allianceId) {
-            throw new AccessViolation();
-        }
+        $board = $topic->getBoard();
 
         $game->setPageTitle(_('Allianzforum'));
 
@@ -62,7 +64,7 @@ final class NewPost implements ViewControllerInterface
                 $boardId,
                 $topicId
             ),
-            $board->getName()
+            $topic->getName()
         );
         $game->appendNavigationPart(
             sprintf(

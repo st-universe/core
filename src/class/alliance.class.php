@@ -1,6 +1,7 @@
 <?php
 
 use Lib\AllianceMemberWrapper;
+use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 
 class AllianceData extends BaseTable {
 
@@ -293,9 +294,13 @@ class AllianceData extends BaseTable {
 		foreach($list as $key => $obj) {
 			$obj->deleteFromDatabase();
 		}
-		$list = AllianceBoard::getList('alliance_id='.$this->getId());
+		// @todo refactor
+		global $container;
+		$allianceBoardRepository = $container->get(AllianceBoardRepositoryInterface::class);
+
+		$list = $allianceBoardRepository->getByAlliance((int) $this->getId());
 		foreach ($list as $key => $obj) {
-			$obj->deepDelete();
+			$allianceBoardRepository->delete($obj);
 		}
 		$text = "Die Allianz ".$this->getNameWithoutMarkup()." wurde aufgelöst";
 		$list = $this->getMembers();

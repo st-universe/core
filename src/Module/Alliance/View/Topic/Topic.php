@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Topic;
 
 use AccessViolation;
-use AllianceBoard;
-use AllianceTopic;
-use AllianceTopicData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\AllianceBoardTopicInterface;
+use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
+use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class Topic implements ViewControllerInterface
 {
@@ -19,10 +19,18 @@ final class Topic implements ViewControllerInterface
 
     private $topicRequest;
 
+    private $allianceBoardPostRepository;
+
+    private $allianceBoardTopicRepository;
+
     public function __construct(
-        TopicRequestInterface $topicRequest
+        TopicRequestInterface $topicRequest,
+        AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
         $this->topicRequest = $topicRequest;
+        $this->allianceBoardPostRepository = $allianceBoardPostRepository;
+        $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,14 +39,10 @@ final class Topic implements ViewControllerInterface
         $boardId = $this->topicRequest->getBoardId();
         $topicId = $this->topicRequest->getTopicId();
         $allianceId = $alliance->getId();
-        $board = new AllianceBoard($boardId);
 
-        if ($board->getAllianceId() != $allianceId) {
-            throw new AccessViolation();
-        }
-
-        $topic = new AllianceTopic($topicId);
-        if ($topic->getAllianceId() != $allianceId) {
+        /** @var AllianceBoardTopicInterface $topic */
+        $topic = $this->allianceBoardTopicRepository->find($topicId);
+        if ($topic === null || $topic->getAllianceId() != $allianceId) {
             throw new AccessViolation();
         }
 
@@ -58,7 +62,7 @@ final class Topic implements ViewControllerInterface
                 $boardId,
                 $allianceId
             ),
-            $board->getName()
+            $topic->getBoard()->getName()
         );
         $game->appendNavigationPart(
             sprintf(
@@ -72,11 +76,18 @@ final class Topic implements ViewControllerInterface
         $game->setTemplateFile('html/allianceboardtopic.xhtml');
         $game->setTemplateVar('TOPIC', $topic);
         $game->setTemplateVar('TOPIC_NAVIGATION', $this->getTopicNavigation($topic));
-        $game->setTemplateVar('POSTINGS', $topic->getPostings($this->topicRequest->getPageMark()));
+        $game->setTemplateVar(
+            'POSTINGS',
+            $this->allianceBoardPostRepository->getByTopic(
+                (int) $topic->getId(),
+                static::ALLIANCEBOARDLIMITER,
+                $this->topicRequest->getPageMark()
+            )
+        );
         $game->setTemplateVar('IS_MODERATOR', $alliance->currentUserIsBoardModerator());
     }
 
-    private function getTopicNavigation(AllianceTopicData $topic): array
+    private function getTopicNavigation(AllianceBoardTopicInterface $topic): array
     {
         $mark = $this->topicRequest->getPageMark();
         if ($mark % static::ALLIANCEBOARDLIMITER != 0 || $mark < 0) {
