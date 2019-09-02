@@ -2,6 +2,7 @@
 
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Lib\ResourceCacher;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
@@ -260,7 +261,6 @@ define('CACHE_USER','user');
 define('CACHE_BUILDING','building');
 define('CACHE_GOOD','good');
 define('CACHE_CREW','crew');
-define('CACHE_CREWRACES','crewraces');
 define('CACHE_TRADEPOST','tradepost');
 define('CACHE_ALLIANCE','alliance');
 define('CACHE_FACTION','faction');
@@ -384,7 +384,7 @@ include_once("generated/fieldtypesname.inc.php");
 function &ResourceCache() {
     static $ResourceCache = NULL;
     if ($ResourceCache === NULL) {
-        $ResourceCache = new ResourceCacher;
+        $ResourceCache = new ResourceCacher();
     }
     return $ResourceCache;
 }
