@@ -161,11 +161,20 @@ class ModulesData extends BaseTable {
 		return $this->data['ecost'];
 	} # }}}
 
-	/**
-	 */
-	public function hasSpecial($special_id) { #{{{
-		return ModuleSpecial::countInstances($this->getId(),$special_id);
-	} # }}}
+	private $specialAbilities;
+
+	public function hasSpecial($special_id): bool
+	{
+		if ($this->specialAbilities === null) {
+			$this->specialAbilities = array_map(
+				function (ModuleSpecialData $moduleSpecial): int {
+					return (int) $moduleSpecial->getSpecialId();
+				},
+				$this->getSpecials()
+			);
+		}
+		return in_array((int) $special_id, $this->specialAbilities)
+	}
 
 	private $specials = NULL;
 

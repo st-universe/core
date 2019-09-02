@@ -10,6 +10,8 @@
 
 /* $Id:$ */
 
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
@@ -247,7 +249,7 @@ class ModuleRumpWrapper9 extends ModuleRumpWrapperBase { #{{{
 	public function getCallBacks() { #{{{
 		$ret = array();
 		foreach ($this->modules as $key => $module) {
-			if ($module->getModule()->hasSpecial(MODULE_SPECIAL_CLOAK)) {
+			if ($module->getModule()->hasSpecial(ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK)) {
 				$ret['setCloakAble'] = 1;
 			}
 		}
