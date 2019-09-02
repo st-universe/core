@@ -38,6 +38,7 @@ use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserProfileVisitor;
 
@@ -201,6 +202,11 @@ return [
         ContainerInterface $c
     ): TorpedoTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
+    },
+    TradeTransferRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradeTransferRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class);
     },
     UserIpTableRepositoryInterface::class => function (
         ContainerInterface $c

@@ -8,22 +8,24 @@ use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 use TradePost;
 use TradeStorage;
-use TradeTransfer;
-use TradeTransferData;
 
 final class TransferGoods implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_TRANSFER';
 
     private $transferGoodsRequest;
 
+    private $tradeTransferRepository;
+
     public function __construct(
-        TransferGoodsRequestInterface $transferGoodsRequest
+        TransferGoodsRequestInterface $transferGoodsRequest,
+        TradeTransferRepositoryInterface $tradeTransferRepository
     ) {
         $this->transferGoodsRequest = $transferGoodsRequest;
+        $this->tradeTransferRepository = $tradeTransferRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -77,12 +79,13 @@ final class TransferGoods implements ActionControllerInterface
         $targetpost->upperStorage($userId, $selectedStorage->getGoodId(), $amount);
         $tradepost->lowerStorage($userId, $selectedStorage->getGoodId(), $amount);
 
-        $transfer = new TradeTransferData();
-        $transfer->setTradePostId($tradepost->getId());
+        $transfer = $this->tradeTransferRepository->prototype();
+        $transfer->setTradePostId((int) $tradepost->getId());
         $transfer->setUserId($userId);
-        $transfer->setCount($amount);
+        $transfer->setAmount($amount);
         $transfer->setDate(time());
-        $transfer->save();
+
+        $this->tradeTransferRepository->save($transfer);
 
         $game->addInformation(
             sprintf(

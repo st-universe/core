@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 class TradePostData extends BaseTable {
 
@@ -174,7 +175,13 @@ class TradePostData extends BaseTable {
 
 	public function getTransferCapacitySum() {
 		if ($this->freeCapacity === NULL) {
-			$this->freeCapacity = TradeTransfer::getSumByTradepost($this->getId(),currentUser()->getId());
+			// @todo refactor
+			global $container;
+
+			$this->freeCapacity = $container->get(TradeTransferRepositoryInterface::class)->getSumByPostAndUser(
+				(int) $this->getId(),
+				(int) currentUser()->getId()
+			);
 		}
 		return $this->freeCapacity;
 	}
