@@ -145,19 +145,4 @@ class Crew extends CrewData {
 		}
 		return new CrewData($result);
 	} # }}}
-
-	/**
-	 */
-	static function create($userId) { #{{{
-		$crew = new CrewData;
-		$crew->setUserId($userId);
-		$crew->setName('Crew');
-		$crew->setRaceId(CrewRaces::getRandomRace(ResourceCache()->getObject(CACHE_USER,$userId)->getFaction()));
-		$crew->setGender(CrewRaces::getRandomGenderByRace($crew->getRaceId()));
-		$crew->setType(CREW_TYPE_CREWMAN);
-		$crew->save();
-		return $crew;
-	} # }}}
-
 }
-?>

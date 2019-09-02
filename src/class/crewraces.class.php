@@ -90,30 +90,4 @@ class CrewRaces extends CrewRacesData {
 		$result = DB()->query('SELECT * FROM '.self::tablename.' '.$sql);
 		return self::_getList($result,'CrewRacesData');
 	} # }}}
-
-	/**
-	 */
-	static function getRandomRace($faction_id) { #{{{
-		$arr = array();
-		foreach (self::getObjectsBy('WHERE faction_id='.$faction_id) as $obj) {
-			$min = key($arr)+1;
-			$race = range($min,$min+$obj->getChance());
-			array_walk($race,'updateArrayValue',$obj->getId());
-			$arr = array_merge($arr,$race);
-		}
-		return $arr[array_rand($arr)];
-	} # }}}
-
-	/**
-	 */
-	static function getRandomGenderByRace($crew_race_id) { #{{{
-		$race = new CrewRaces($crew_race_id);
-		return rand(1,100)>$race->getMaleRatio() ? CREW_GENDER_FEMALE : CREW_GENDER_MALE;
-	} # }}}
-
 }
-// XXX helper method - kill kill kill in php53
-function updateArrayValue(&$value,$key,$param) {
-	$value = $param;
-}
-?>

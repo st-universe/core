@@ -82,6 +82,9 @@ $builder->addDefinitions(
     require_once __DIR__.'/../Module/Maindesk/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__.'/../Module/Crew/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__.'/../Module/Notes/services.php'
 );
 $builder->addDefinitions(

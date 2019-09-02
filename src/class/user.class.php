@@ -488,7 +488,7 @@ class User extends UserData {
 
 	private const USER_IDLE_TIME = 120960000;
 
-	function __construct(&$id=0) {
+	function __construct($id=0) {
 		$data = DB()->query("SELECT * FROM ".parent::tablename." WHERE id=".intval($id),4);
 		if ($data == 0) {
 			new ObjectNotFoundException($id);

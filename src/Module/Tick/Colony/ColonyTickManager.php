@@ -7,6 +7,7 @@ namespace Stu\Module\Tick\Colony;
 use Colony;
 use Crew;
 use CrewTraining;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 
 final class ColonyTickManager implements ColonyTickManagerInterface
@@ -17,12 +18,16 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private $colonyShipRepairRepository;
 
+    private $crewCreator;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        CrewCreatorInterface $crewCreator
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
+        $this->crewCreator = $crewCreator;
     }
 
     public function work(int $tickId): void
@@ -60,7 +65,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if (!$obj->getColony()->hasActiveBuildingWithFunction(BUILDING_FUNCTION_ACADEMY)) {
                 continue;
             }
-            Crew::create($obj->getUserId());
+            $this->crewCreator->create((int) $obj->getUserId());
             $obj->deleteFromDatabase();
             $user[$obj->getUserId()]++;
         }
