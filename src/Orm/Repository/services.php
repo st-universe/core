@@ -30,6 +30,7 @@ use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\ModuleCost;
+use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -169,6 +170,11 @@ return [
         ContainerInterface $c
     ): ModuleCostRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ModuleCost::class);
+    },
+    ModuleSpecialRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ModuleSpecialRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ModuleSpecial::class);
     },
     NoteRepositoryInterface::class => function (
         ContainerInterface $c

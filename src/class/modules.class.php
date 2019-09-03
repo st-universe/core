@@ -2,7 +2,9 @@
 
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ModuleCostInterface;
+use Stu\Orm\Entity\ModuleSpecialInterface;
 use Stu\Orm\Repository\ModuleCostRepositoryInterface;
+use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
 
 class ModulesData extends BaseTable {
 
@@ -167,7 +169,7 @@ class ModulesData extends BaseTable {
 	{
 		if ($this->specialAbilities === null) {
 			$this->specialAbilities = array_map(
-				function (ModuleSpecialData $moduleSpecial): int {
+				function (ModuleSpecialInterface $moduleSpecial): int {
 					return (int) $moduleSpecial->getSpecialId();
 				},
 				$this->getSpecials()
@@ -182,7 +184,10 @@ class ModulesData extends BaseTable {
 	 */
 	public function getSpecials() { #{{{
 		if ($this->specials === NULL) {
-			$this->specials = ModuleSpecial::getBy('module_id='.$this->getId());
+			// @todo refactor
+			global $container;
+
+			return $container->get(ModuleSpecialRepositoryInterface::class)->getByModule((int) $this->getId());
 		}
 		return $this->specials;
 	} # }}}
