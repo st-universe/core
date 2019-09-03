@@ -8,9 +8,8 @@ use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowShoutBoxList\ShowShoutBoxList;
+use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use TradeLicences;
-use TradeShoutbox;
-use TradeShoutboxData;
 
 final class AddShoutBoxEntry implements ActionControllerInterface
 {
@@ -19,10 +18,14 @@ final class AddShoutBoxEntry implements ActionControllerInterface
 
     private $addShoutBoxEntryRequest;
 
+    private $tradeShoutboxRepository;
+
     public function __construct(
-        AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest
+        AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest,
+        TradeShoutboxRepositoryInterface $tradeShoutboxRepository
     ) {
         $this->addShoutBoxEntryRequest = $addShoutBoxEntryRequest;
+        $this->tradeShoutboxRepository = $tradeShoutboxRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,15 +39,17 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         }
         $msg = substr(strip_tags($msg), 0, 200);
         if (mb_strlen($msg) > 0) {
-            $entry = new TradeShoutboxData();
-            $entry->setUserId($userId);
-            $entry->setDate(time());
-            $entry->setTradeNetworkId($tradeNetworkId);
-            $entry->setMessage($msg);
-            $entry->save();
+            $entry = $this->tradeShoutboxRepository
+                ->prototype()
+                ->setUserId($userId)
+                ->setDate(time())
+                ->setTradeNetworkId($tradeNetworkId)
+                ->setMessage($msg);
+
+            $this->tradeShoutboxRepository->save($entry);
         }
 
-        TradeShoutbox::deleteHistory($tradeNetworkId);
+        $this->tradeShoutboxRepository->deleteHistory($tradeNetworkId);
 
         $game->setView(ShowShoutBoxList::VIEW_IDENTIFIER);
     }

@@ -7,8 +7,8 @@ namespace Stu\Module\Trade\View\ShowShoutBox;
 use AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use TradeLicences;
-use TradeShoutbox;
 
 final class ShowShoutBox implements ViewControllerInterface
 {
@@ -17,10 +17,14 @@ final class ShowShoutBox implements ViewControllerInterface
 
     private $showShoutBoxRequest;
 
+    private $tradeShoutboxRepository;
+
     public function __construct(
-        ShowShoutBoxRequestInterface $showShoutBoxRequest
+        ShowShoutBoxRequestInterface $showShoutBoxRequest,
+        TradeShoutboxRepositoryInterface $tradeShoutboxRepository
     ) {
         $this->showShoutBoxRequest = $showShoutBoxRequest;
+        $this->tradeShoutboxRepository = $tradeShoutboxRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,6 +39,6 @@ final class ShowShoutBox implements ViewControllerInterface
         $game->setMacro('html/trademacros.xhtml/shoutbox');
         $game->setPageTitle(_('Schwarzes Brett'));
         $game->setTemplateVar('NETWORK', $tradeNetworkId);
-        $game->setTemplateVar('SHOUTBOX', TradeShoutbox::getByTradeNetworkId($tradeNetworkId));
+        $game->setTemplateVar('SHOUTBOX', $this->tradeShoutboxRepository->getByTradeNetwork($tradeNetworkId));
     }
 }

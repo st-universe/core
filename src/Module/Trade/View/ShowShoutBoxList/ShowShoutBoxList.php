@@ -7,20 +7,23 @@ namespace Stu\Module\Trade\View\ShowShoutBoxList;
 use AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use TradeLicences;
-use TradeShoutbox;
 
 final class ShowShoutBoxList implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_SHOUTBOX_LIST';
 
     private $showShoutBoxListRequest;
 
+    private $tradeShoutboxRepository;
+
     public function __construct(
-        ShowShoutBoxListRequestInterface $showShoutBoxListRequest
+        ShowShoutBoxListRequestInterface $showShoutBoxListRequest,
+        TradeShoutboxRepositoryInterface $tradeShoutboxRepository
     ) {
         $this->showShoutBoxListRequest = $showShoutBoxListRequest;
+        $this->tradeShoutboxRepository = $tradeShoutboxRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,6 +34,6 @@ final class ShowShoutBoxList implements ViewControllerInterface
             throw new AccessViolation();
         }
         $game->showMacro('html/trademacros.xhtml/shoutbox_entries');
-        $game->setTemplateVar('SHOUTBOX', TradeShoutbox::getByTradeNetworkId($tradeNetworkId));
+        $game->setTemplateVar('SHOUTBOX', $this->tradeShoutboxRepository->getByTradeNetwork($tradeNetworkId));
     }
 }

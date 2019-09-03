@@ -9,7 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use TradeOffer;
 use TradePost;
-use TradePostStorageWrapper;
+use Stu\Lib\TradePostStorageWrapper;
 use TradeStorage;
 
 final class TakeOffer implements ActionControllerInterface

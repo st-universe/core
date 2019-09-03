@@ -80,7 +80,7 @@ class TradeStorage extends TradeStorageData {
 		$ret = array();
 		while($data = mysqli_fetch_assoc($result)) {
 			if (!array_key_exists($data['posts_id'],$ret)) {
-				$ret[$data['posts_id']] = new TradePostStorageWrapper($data['posts_id'],$userId);
+				$ret[$data['posts_id']] = new \Stu\Lib\TradePostStorageWrapper($data['posts_id'],$userId);
 			}
 			$ret[$data['posts_id']]->addStorageEntry(new TradeStorageData($data));
 		}
@@ -89,7 +89,7 @@ class TradeStorage extends TradeStorageData {
 
 	static function getStorageByTradepostUser($postId,$userId) {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE posts_id=".intval($postId)." AND user_id=".intval($userId));
-		$ret = new TradePostStorageWrapper($postId,$userId);
+		$ret = new \Stu\Lib\TradePostStorageWrapper($postId,$userId);
 		while($data = mysqli_fetch_assoc($result)) {
 			$ret->addStorageEntry(new TradeStorageData($data));
 		}
@@ -128,55 +128,5 @@ class TradeStorage extends TradeStorageData {
 		DB()->query('DELETE FROM '.self::tablename.' '.$sql);
 	} # }}}
 }
-class TradePostStorageWrapper {
 
-	function __construct($postId,$userId) {
-		$this->tradePost = $postId;
-		$this->userId = $userId;
-	}
-
-	private $tradePost = NULL;
-	private $userId = NULL;
-	private $storage = array();
-
-	public function addStorageEntry($stor) {
-		$this->storage[$stor->getGoodId()] = $stor;
-	}
-
-	public function getStorage() {
-		return $this->storage;
-	}
-
-	public function getUserId() {
-		return $this->userId;
-	}
-
-	public function getTradePostId() {
-		return $this->tradePost;
-	}
-
-	public function getTradePost() {
-		return ResourceCache()->getObject('tradepost',$this->getTradePostId());
-	}
-	
-	private $storageSum = NULL;
-
-	public function getStorageSum() {
-		if ($this->storageSum === NULL) {
-			$sum = 0;
-			$sum += TradeStorage::getStorageSumBy($this->getTradePostId(),$this->getUserId());
-			$sum += TradeOffer::getOfferSumBy($this->getTradePostId(),$this->getUserId());
-			$this->storageSum = $sum;	
-		}
-		return $this->storageSum;
-	}
-
-	public function upperSum($count) {
-		$this->storageSum = $this->getStorageSum()+$count;
-	}
-
-	public function lowerSum($count) {
-		$this->storageSum = $this->getStorageSum()-$count;
-	}
-}
 ?>

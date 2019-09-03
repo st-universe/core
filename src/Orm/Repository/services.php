@@ -50,10 +50,12 @@ use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\Weapon;
+use function foo\func;
 
 return [
     AllianceBoardRepositoryInterface::class => function (
@@ -275,6 +277,11 @@ return [
         ContainerInterface $c
     ): TorpedoTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
+    },
+    TradeShoutboxRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradeShoutboxRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class);
     },
     TradeTransferRepositoryInterface::class => function (
         ContainerInterface $c
