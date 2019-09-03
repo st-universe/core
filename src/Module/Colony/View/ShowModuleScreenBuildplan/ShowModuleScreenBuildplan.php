@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
-use ModuleScreenTab;
-use ModuleScreenTabWrapper;
-use ModuleSelector;
-use ModuleSelectorSpecial;
+use Stu\Lib\ModuleScreen\ModuleScreenTab;
+use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
+use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use ShipBuildplans;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

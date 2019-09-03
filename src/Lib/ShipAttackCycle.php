@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 
 class ShipAttackCycle {

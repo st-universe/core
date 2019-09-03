@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Lib\DamageWrapper;
+
 class ShipMover {
 
 	private $new_x = 0;

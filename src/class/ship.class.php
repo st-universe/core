@@ -1,6 +1,7 @@
 <?php
 
 
+use Stu\Lib\DamageWrapper;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipStorageInterface;
@@ -1764,7 +1765,7 @@ class Ship extends ShipData {
 		$ship->setRumpId($rump_id);
 		for ($i=1;$i<=MODULE_TYPE_COUNT;$i++) {
 			if ($ship->getBuildplan()->getModulesByType($i)) {
-				$class = 'ModuleRumpWrapper'.$i;
+				$class = '\Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapper'.$i;
 				$wrapper = new $class($ship->getRump(),$ship->getBuildplan()->getModulesByType($i));
 				foreach ($wrapper->getCallbacks() as $callback => $value) {
 					$ship->$callback($value);

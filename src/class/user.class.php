@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Lib\ContactlistWrapper;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;

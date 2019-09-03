@@ -1,5 +1,10 @@
 <?php
 
+namespace Stu\Lib;
+
+use Contactlist;
+use UserData;
+
 class ContactlistWrapper
 {
     private $user;

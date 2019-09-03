@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BuildShip;
 
 use ColonyShipQueue;
 use ColonyShipQueueData;
-use ModuleSelector;
+use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
 use RumpBuildingFunction;

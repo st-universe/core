@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -297,11 +299,11 @@ class ColonyData extends BaseTable {
 	private $production = NULL;
 
 	/**
-	 * @return ColProductionData[]
+	 * @return ColonyProduction[]
 	 */
 	public function getProductionRaw() {
 		if ($this->productionRaw === NULL) {
-			$this->productionRaw = ColProduction::getProductionByColony($this);
+			$this->productionRaw = ColonyProduction::getProductionByColony($this);
 		}
 		return $this->productionRaw;
 	}
@@ -322,7 +324,7 @@ class ColonyData extends BaseTable {
 					$this->production[CommodityTypeEnum::GOOD_FOOD]->lowerProduction($this->getBevFood());
 				}
 			} else {
-				$obj = new ColProductionData;
+				$obj = new ColonyProduction;
 				$obj->setProduction(-$this->getBevFood());
 				$obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
 				$this->production[CommodityTypeEnum::GOOD_FOOD] = $obj;
@@ -891,7 +893,7 @@ class ColonyProductionPreviewWrapper { #{{{
 				$ret[$commodityId] = clone $this->production[$commodityId];
 				$ret[$commodityId]->upperProduction($prod->getAmount());
 			} else {
-				$obj = new ColProductionData;
+				$obj = new ColonyProduction;
 				$obj->setGoodId($commodityId);
 				$obj->setProduction($prod->getAmount());
 				$ret[$commodityId] = $obj;

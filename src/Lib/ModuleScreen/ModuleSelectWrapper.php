@@ -10,30 +10,35 @@
 
 /* $Id:$ */
 
+namespace Stu\Lib\ModuleScreen;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
  * @access public
  */
-class ModuleSelectWrapper { #{{{
+class ModuleSelectWrapper
+{ #{{{
 
-	private $buildplan = NULL;
+	private $buildplan = null;
 
 	/**
 	 */
-	function __construct($buildplan) { #{{{
+	function __construct($buildplan)
+	{ #{{{
 		$this->buildplan = $buildplan;
 	} # }}}
 
 	/**
 	 */
-	public function __get($type) { #{{{
+	public function __get($type)
+	{ #{{{
 		if (!$this->buildplan) {
-			return FALSE;
+			return false;
 		}
 		$modules = $this->buildplan->getModulesByType($type);
 		if (!$modules) {
-			return FALSE;
+			return false;
 		}
 		return current($modules);
 	} # }}}

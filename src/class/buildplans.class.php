@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
 class ShipBuildplansData extends BaseTable {

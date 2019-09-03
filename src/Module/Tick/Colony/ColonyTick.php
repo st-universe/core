@@ -5,7 +5,7 @@ namespace Stu\Module\Tick\Colony;
 use ColfieldData;
 use Colfields;
 use ColonyData;
-use ColProductionData;
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use ModuleQueue;
 use ModuleQueueData;
 use PM;
@@ -214,14 +214,14 @@ final class ColonyTick implements ColonyTickInterface
     }
 
     /**
-     * @return ColProductionData[]
+     * @return ColonyProduction[]
      */
     private function proceedFood(ColonyData $colony): array
     {
         $foodvalue = $colony->getBevFood();
         $prod = &$colony->getProductionRaw();
         if (!array_key_exists(CommodityTypeEnum::GOOD_FOOD, $prod)) {
-            $obj = new ColProductionData();
+            $obj = new ColonyProduction();
             $obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
             $obj->lowerProduction($foodvalue);
             $prod[CommodityTypeEnum::GOOD_FOOD] = $obj;
@@ -282,7 +282,7 @@ final class ColonyTick implements ColonyTickInterface
         foreach ($commodityProduction as $obj) {
             $commodityId = $obj->getGoodId();
             if (!array_key_exists($commodityId, $prod)) {
-                $data = new ColProductionData;
+                $data = new ColonyProduction;
                 $data->setGoodId($commodityId);
                 $data->setProduction($obj->getAmount() * -1);
                 $colony->setProductionRaw($colony->getProductionRaw() + array($commodityId => $data));
