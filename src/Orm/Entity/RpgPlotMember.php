@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use User;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotMemberRepository")
  * @Table(
@@ -21,6 +23,12 @@ class RpgPlotMember implements RpgPlotMemberInterface
 
     /** @Column(type="integer") * */
     private $user_id = 0;
+
+    /**
+     * @ManyToOne(targetEntity="RpgPlot", inversedBy="members")
+     * @JoinColumn(name="plot_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $rpgPlot;
 
     public function getId(): int
     {
@@ -49,5 +57,23 @@ class RpgPlotMember implements RpgPlotMemberInterface
         $this->user_id = $userId;
 
         return $this;
+    }
+
+    public function getRpgPlot(): RpgPlotInterface
+    {
+        return $this->rpgPlot;
+    }
+
+    public function setRpgPlot(RpgPlotInterface $rpgPlot): RpgPlotMemberInterface
+    {
+        $this->rpgPlot = $rpgPlot;
+
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        // @todo refactor
+        return new User($this->getUserId());
     }
 }

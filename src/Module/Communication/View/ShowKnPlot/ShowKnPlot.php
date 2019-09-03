@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnPlot;
 
-use RPGPlot;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowKnPlot implements ViewControllerInterface
 {
@@ -20,21 +21,30 @@ final class ShowKnPlot implements ViewControllerInterface
 
     private $knTalFactory;
 
+    private $rpgPlotRepository;
+
     public function __construct(
         ShowKnPlotRequestInterface $showKnPlotRequest,
         KnPostRepositoryInterface $knPostRepository,
-        KnTalFactoryInterface $knTalFactory
+        KnTalFactoryInterface $knTalFactory,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->showKnPlotRequest = $showKnPlotRequest;
         $this->knPostRepository = $knPostRepository;
         $this->knTalFactory = $knTalFactory;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
 
-        $plot = new RPGPlot($this->showKnPlotRequest->getPlotId());
+        /** @var RpgPlotInterface $plot */
+        $plot = $this->rpgPlotRepository->find($this->showKnPlotRequest->getPlotId());
+
+        if ($plot === null) {
+            return;
+        }
 
         $list = [];
 

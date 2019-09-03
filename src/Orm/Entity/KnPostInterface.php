@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use RPGPlot;
 
 interface KnPostInterface
 {
@@ -33,11 +32,13 @@ interface KnPostInterface
 
     public function setEditDate(int $editDate): KnPostInterface;
 
-    public function getPlotId(): int;
+    public function getPlotId(): ?int;
 
     public function setPlotId(int $plotId): KnPostInterface;
 
-    public function getRPGPlot(): RPGPlot;
+    public function getRpgPlot(): ?RpgPlotInterface;
+
+    public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface;
 
     /**
      * @return KnCommentInterface[]

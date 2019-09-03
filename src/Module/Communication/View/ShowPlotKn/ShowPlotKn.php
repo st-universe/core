@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowPlotKn;
 
 use PMCategory;
-use RPGPlot;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowPlotKn implements ViewControllerInterface
 {
@@ -21,26 +21,32 @@ final class ShowPlotKn implements ViewControllerInterface
     private $showPlotKnRequest;
 
     private $knTalFactory;
-    /**
-     * @var KnPostRepositoryInterface
-     */
+
     private $knPostRepository;
+
+    private $rpgPlotRepository;
 
     public function __construct(
         ShowPlotKnRequestInterface $showPlotKnRequest,
         KnTalFactoryInterface $knTalFactory,
-        KnPostRepositoryInterface $knPostRepository
+        KnPostRepositoryInterface $knPostRepository,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->showPlotKnRequest = $showPlotKnRequest;
         $this->knTalFactory = $knTalFactory;
         $this->knPostRepository = $knPostRepository;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
 
-        $plot = new RPGPlot($this->showPlotKnRequest->getPlotId());
+        $plot = $this->rpgPlotRepository->find($this->showPlotKnRequest->getPlotId());
+
+        if ($plot === null) {
+            return;
+        }
         $mark = $this->showPlotKnRequest->getKnOffset();
 
         if ($mark % static::KNLIMITER != 0 || $mark < 0) {

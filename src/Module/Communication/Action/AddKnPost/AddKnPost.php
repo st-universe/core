@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
-use RPGPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
@@ -21,14 +22,18 @@ final class AddKnPost implements ActionControllerInterface
 
     private $rpgPlotMemberRepository;
 
+    private $rpgPlotRepository;
+
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +43,7 @@ final class AddKnPost implements ActionControllerInterface
 
         $title = $this->addKnPostRequest->getTitle();
         $text = $this->addKnPostRequest->getText();
-        $plotid = $this->addKnPostRequest->getPlotId();
+        $plotId = $this->addKnPostRequest->getPlotId();
         $mark = $this->addKnPostRequest->getPostMark();
 
         if (mb_strlen($text) < 50) {
@@ -48,10 +53,11 @@ final class AddKnPost implements ActionControllerInterface
 
         $post = $this->knPostRepository->prototype();
 
-        if ($plotid > 0) {
-            $plot = RPGPlot::getById($plotid);
-            if ($plot && $this->rpgPlotMemberRepository->getByPlotAndUser($plotid, $userId) !== null) {
-                $post->setPlotId((int) $plot->getId());
+        if ($plotId > 0) {
+            /** @var RpgPlotInterface $plot */
+            $plot = $this->rpgPlotRepository->find($plotId);
+            if ($plot !== null && $this->rpgPlotMemberRepository->getByPlotAndUser($plotId, $userId) !== null) {
+                $post->setRpgPlot($plot);
                 $post->setTitle($plot->getTitle());
             }
         } else {

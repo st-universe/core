@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnPlotMember;
 
-use RPGPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class DeleteKnPlotMember implements ActionControllerInterface
 {
@@ -14,16 +15,24 @@ final class DeleteKnPlotMember implements ActionControllerInterface
 
     private $deleteKnPlotMemberRequest;
 
+    private $rpgPlotMemberRepository;
+
+    private $rpgPlotRepository;
+
     public function __construct(
-        DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest
+        DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->deleteKnPlotMemberRequest = $deleteKnPlotMemberRequest;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $plot = new RPGPlot($this->deleteKnPlotMemberRequest->getPlotId());
-        if ($plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
+        $plot = $this->rpgPlotRepository->find($this->deleteKnPlotMemberRequest->getPlotId());
+        if ($plot === null || $plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
 
@@ -33,12 +42,12 @@ final class DeleteKnPlotMember implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst entfernen'));
             return;
         }
-        if (!RPGPlot::checkUserPlot($recipientId, $plot->getId())) {
-            return;
-        }
-        RPGPlot::delPlotMember($recipientId, $plot->getId());
+        $item = $this->rpgPlotMemberRepository->getByPlotAndUser((int) $plot->getId(), $recipientId);
+        if ($item !== null) {
+            $this->rpgPlotMemberRepository->delete($item);
 
-        $game->addInformation(_('Der Spieler wurde entfernt'));
+            $game->addInformation(_('Der Spieler wurde entfernt'));
+        }
     }
 
     public function performSessionCheck(): bool

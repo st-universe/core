@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowUserPlotList;
 
-use RPGPlot;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowUserPlotList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MYPLOTS';
+
+    private $rpgPlotRepository;
+
+    public function __construct(
+        RpgPlotRepositoryInterface $rpgPlotRepository
+    ) {
+        $this->rpgPlotRepository = $rpgPlotRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -20,12 +28,7 @@ final class ShowUserPlotList implements ViewControllerInterface
 
         $game->setTemplateVar(
             'PLOT_LIST',
-            RPGPlot::getObjectsBy(
-                sprintf(
-                    'WHERE id IN (SELECT plot_id FROM stu_plots_members WHERE user_id=%s) ORDER BY start_date DESC',
-                    $game->getUser()->getId()
-                )
-            )
+            $this->rpgPlotRepository->getByUser($game->getUser()->getId())
         );
     }
 }

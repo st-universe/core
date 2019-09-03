@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
 use PM;
-use RPGPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use User;
 
 final class AddKnPlotMember implements ActionControllerInterface
@@ -16,16 +18,25 @@ final class AddKnPlotMember implements ActionControllerInterface
 
     private $addKnPlotMemberRequest;
 
+    private $rpgPlotMemberRepository;
+
+    private $rpgPlotRepository;
+
     public function __construct(
-        AddKnPlotMemberRequestInterface $addKnPlotMemberRequest
+        AddKnPlotMemberRequestInterface $addKnPlotMemberRequest,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->addKnPlotMemberRequest = $addKnPlotMemberRequest;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $plot = new RPGPlot($this->addKnPlotMemberRequest->getPlotId());
-        if ($plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
+        /** @var RpgPlotInterface $plot */
+        $plot = $this->rpgPlotRepository->find($this->addKnPlotMemberRequest->getPlotId());
+        if ($plot === null || $plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
         $recipient = User::getUserById($this->addKnPlotMemberRequest->getRecipientId());
@@ -37,12 +48,17 @@ final class AddKnPlotMember implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst hinzufügen'));
             return;
         }
-        if (RPGPlot::checkUserPlot($recipient->getId(), $plot->getId())) {
+        if ($this->rpgPlotMemberRepository->getByPlotAndUser((int) $plot->getId(), (int) $recipient->getId()) !== null) {
             $game->addInformation(_('Dieser Spieler schreibt bereits an diesem Plot'));
             return;
         }
 
-        RPGPlot::addPlotMember($recipient->getId(), $plot->getId());
+        $member = $this->rpgPlotMemberRepository->prototype()
+            ->setUserId((int) $recipient->getId())
+            ->setRpgPlot($plot);
+
+        $this->rpgPlotMemberRepository->save($member);
+
         PM::sendPM(
             $game->getUser()->getId(),
             $recipient->getId(),

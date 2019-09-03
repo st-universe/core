@@ -40,6 +40,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
@@ -230,6 +231,11 @@ return [
         ContainerInterface $c
     ): ResearchDependencyRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ResearchDependency::class);
+    },
+    RpgPlotRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): RpgPlotRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(RpgPlot::class);
     },
     RpgPlotMemberRepositoryInterface::class => function (
         ContainerInterface $c

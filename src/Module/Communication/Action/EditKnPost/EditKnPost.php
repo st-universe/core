@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\EditKnPost;
 
 use AccessViolation;
-use RPGPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EditKnPost implements ActionControllerInterface
 {
@@ -24,14 +24,18 @@ final class EditKnPost implements ActionControllerInterface
 
     private $rpgPlotMemberRepository;
 
+    private $rpgPlotRepository;
+
     public function __construct(
         EditKnPostRequestInterface $editKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
-        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->editKnPostRequest = $editKnPostRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,11 +54,11 @@ final class EditKnPost implements ActionControllerInterface
 
         $title = $this->editKnPostRequest->getTitle();
         $text = $this->editKnPostRequest->getText();
-        $plotid = $this->editKnPostRequest->getPlotId();
+        $plotId = $this->editKnPostRequest->getPlotId();
 
-        if ($plotid > 0) {
-            $plot = RPGPlot::getById($plotid);
-            if ($plot && $this->rpgPlotMemberRepository->getByPlotAndUser($plotid, $userId) !== null) {
+        if ($plotId > 0) {
+            $plot = $this->rpgPlotRepository->find($plotId);
+            if ($plot !== null && $this->rpgPlotMemberRepository->getByPlotAndUser($plotId, $userId) !== null) {
                 $post->setPlotId($plot->getId());
                 $post->setTitle($plot->getTitle());
             }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EndKnPlot;
 
-use RPGPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EndKnPlot implements ActionControllerInterface
 {
@@ -14,16 +14,20 @@ final class EndKnPlot implements ActionControllerInterface
 
     private $endKnPlotRequest;
 
+    private $rpgPlotRepository;
+
     public function __construct(
-        EndKnPlotRequestInterface $endKnPlotRequest
+        EndKnPlotRequestInterface $endKnPlotRequest,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->endKnPlotRequest = $endKnPlotRequest;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $plot = new RPGPlot($this->endKnPlotRequest->getPlotId());
-        if ($plot->getUserId() != $game->getUser()->getId()) {
+        $plot = $this->rpgPlotRepository->find($this->endKnPlotRequest->getPlotId());
+        if ($plot === null || $plot->getUserId() != $game->getUser()->getId()) {
             return;
         }
         if (!$plot->isActive()) {

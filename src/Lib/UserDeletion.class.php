@@ -8,7 +8,6 @@ use Contactlist;
 use Crew;
 use Fleet;
 use PMCategory;
-use RPGPlot;
 use Ship;
 use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -17,6 +16,7 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
@@ -135,10 +135,9 @@ class UserDeletion
         global $container;
 
         $rpgPlotMemberRepo = $container->get(RpgPlotMemberRepositoryInterface::class);
+        $rpgPlotRepository = $container->get(RpgPlotRepositoryInterface::class);
 
-        /** @var \RPGPlotData $obj
-         */
-        foreach (RPGPlot::getObjectsBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
+        foreach ($rpgPlotRepository->getByFoundingUser((int) $this->getUser()->getId()) as $obj) {
 
             $item = $rpgPlotMemberRepo->getByPlotAndUser((int) $obj->getId(), (int) $this->getUser()->getId());
             if ($item !== null) {
@@ -147,11 +146,13 @@ class UserDeletion
             if ($obj->getMembers()) {
                 $member = current($obj->getMembers());
                 $obj->setUserId($member->getUserId());
-                $obj->save();
+
+                $rpgPlotRepository->save($obj);
                 return;
             }
             $obj->setUserId(USER_NOONE);
-            $obj->save();
+
+            $rpgPlotRepository->save($obj);
         }
     }
 

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowEditPlot;
 
 use AccessViolation;
-use RPGPlot;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowEditPlot implements ViewControllerInterface
 {
@@ -15,16 +16,21 @@ final class ShowEditPlot implements ViewControllerInterface
 
     private $showEditPlotRequest;
 
+    private $rpgPlotRepository;
+
     public function __construct(
-        ShowEditPlotRequestInterface $showEditPlotRequest
+        ShowEditPlotRequestInterface $showEditPlotRequest,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->showEditPlotRequest = $showEditPlotRequest;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $plot = new RPGPlot($this->showEditPlotRequest->getPlotId());
-        if ($plot->getUserId() != $game->getUser()->getId()) {
+        /** @var RpgPlotInterface $plot */
+        $plot = $this->rpgPlotRepository->find($this->showEditPlotRequest->getPlotId());
+        if ($plot === null || $plot->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

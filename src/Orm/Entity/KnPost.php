@@ -6,7 +6,6 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use RPGPlot;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\KnPostRepository")
@@ -42,12 +41,18 @@ class KnPost implements KnPostInterface
     private $lastedit = 0;
 
     /** @Column(type="integer", nullable=true) */
-    private $plot_id = 0;
+    private $plot_id;
 
     /**
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
      */
     private $comments;
+
+    /**
+     * @ManyToOne(targetEntity="RpgPlot", inversedBy="posts")
+     * @JoinColumn(name="plot_id", referencedColumnName="id")
+     */
+    private $rpgPlot;
 
     public function __construct() {
         $this->comments = new ArrayCollection();
@@ -130,7 +135,7 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
-    public function getPlotId(): int
+    public function getPlotId(): ?int
     {
         return $this->plot_id;
     }
@@ -142,10 +147,20 @@ class KnPost implements KnPostInterface
         return $this;
     }
 
-    public function getRPGPlot(): RPGPlot
+    public function getRpgPlot(): ?RpgPlotInterface
     {
-        // @todo refactor
-        return new RPGPlot($this->getPlotId());
+        return $this->rpgPlot;
+    }
+
+    public function setRpgPlot(?RpgPlotInterface $rpgPlot): KnPostInterface
+    {
+        $this->rpgPlot = $rpgPlot;
+
+        if ($rpgPlot !== null) {
+            $this->setPlotId($rpgPlot->getId());
+        }
+
+        return $this;
     }
 
     public function getComments(): Collection

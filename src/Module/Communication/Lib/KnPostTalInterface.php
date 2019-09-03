@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Communication\Lib;
 
-use RPGPlot;
+use Stu\Orm\Entity\RpgPlotInterface;
 use User;
 
 interface KnPostTalInterface
@@ -23,9 +23,9 @@ interface KnPostTalInterface
 
     public function isEditAble(): bool;
 
-    public function getPlotId(): int;
+    public function getPlotId(): ?int;
 
-    public function getRPGPlot(): RPGPlot;
+    public function getRPGPlot(): RpgPlotInterface;
 
     public function getCommentCount(): int;
 

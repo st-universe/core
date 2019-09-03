@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditKnPlot;
 
-use RPGPlot;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EditKnPlot implements ActionControllerInterface
 {
@@ -15,17 +15,21 @@ final class EditKnPlot implements ActionControllerInterface
 
     private $editKnPlotRequest;
 
+    private $rpgPlotRepository;
+
     public function __construct(
-        EditKnPlotRequestInterface $editKnPlotRequest
+        EditKnPlotRequestInterface $editKnPlotRequest,
+        RpgPlotRepositoryInterface $rpgPlotRepository
     ) {
         $this->editKnPlotRequest = $editKnPlotRequest;
+        $this->rpgPlotRepository = $rpgPlotRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $plot = new RPGPlot($this->editKnPlotRequest->getPlotId());
+        $plot = $this->rpgPlotRepository->find($this->editKnPlotRequest->getPlotId());
 
-        if ($plot->getUserId() != $game->getUser()->getId()) {
+        if ($plot === null || $plot->getUserId() != $game->getUser()->getId()) {
             return;
         }
         $title = $this->editKnPlotRequest->getTitle();

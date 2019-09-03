@@ -34,27 +34,25 @@
 				<br />
 				<table class="tcal">
 					<tr>
-						<th colspan="2">Schreiber</th>
+						<th>Schreiber</th>
 					</tr>
 					<tr>
-						<td class="darkbg">Siedler</td>
-						<td class="darkbg">Beiträge</td>
+						<td class="darkbg">Spieler</td>
 					</tr>
-					<tr tal:attributes="class string:row${repeat/members/odd}" tal:repeat="members PLOT/getMembers">
+					<tr tal:attributes="class string:row${repeat/member/odd}" tal:repeat="member PLOT/getMembers">
 						<td>
 							<tal:block tal:condition="MAY_EDIT">
-							<a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&B_DEL_PLOTMEMBER=1&memid=${members/user/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('rmm${members/user/getId}','buttons/x2')" onmouseout="cp('rmm${members/user/getId}','buttons/x1')">
-									<img src="assets/buttons/x1.gif" title="Schreiber entfernen" name="rmm${members/user/getId}" />
+								<a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&B_DEL_PLOTMEMBER=1&memid=${member/getUserId}&sstr=${THIS/getSessionString}" onmouseover="cp('rmm${member/getUserId}','buttons/x2')" onmouseout="cp('rmm${member/getUserId}','buttons/x1')">
+									<img src="assets/buttons/x1.gif" title="Schreiber entfernen" name="rmm${member/getUserId}" />
 								</a>
 							</tal:block>
-							<tal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id members/user/getId" />
-							<span tal:replace="structure bbcode:members/user/getName">NAME</span>
+							<tal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id member/getUserId" />
+							<span tal:replace="structure bbcode:member/getUser/getName">NAME</span>
 						</td>
-						<td tal:content="members/count">COUNT</td>
 					</tr>
 					<tal:block tal:condition="PLOT/isActive">
 						<tr tal:condition="MAY_EDIT">
-							<td colspan="2">
+							<td>
 								Neuer Schreiber <input type="text" name="memid" style="width: 50px;" /> <input type="submit" value="Hinzufügen" name="B_ADD_PLOTMEMBER" />
 							</td>
 						</tr>

@@ -5,9 +5,10 @@ declare(strict_types=0);
 
 namespace Stu\Module\Communication\Lib;
 
-use RPGPlot;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use User;
 use UserData;
 
@@ -69,14 +70,17 @@ final class KnPostTal implements KnPostTalInterface
         return $this->getDate() > time() - 600 && $this->getUserId() === $this->currentUser->getId();
     }
 
-    public function getPlotId(): int
+    public function getPlotId(): ?int
     {
         return $this->post->getPlotId();
     }
 
-    public function getRPGPlot(): RPGPlot
+    public function getRPGPlot(): RpgPlotInterface
     {
-        return new RPGPlot($this->getPlotId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(RpgPlotRepositoryInterface::class)->find($this->getPlotId());
     }
 
     public function getCommentCount(): int

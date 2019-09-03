@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use User;
+
 interface RpgPlotMemberInterface
 {
     public function getId(): int;
@@ -13,4 +15,10 @@ interface RpgPlotMemberInterface
     public function getUserId(): int;
 
     public function setUserId(int $userId): RpgPlotMemberInterface;
+
+    public function getRpgPlot(): RpgPlotInterface;
+
+    public function setRpgPlot(RpgPlotInterface $rpgPlot): RpgPlotMemberInterface;
+
+    public function getUser(): User;
 }
