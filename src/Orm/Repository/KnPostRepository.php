@@ -45,7 +45,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     {
         return $this->findBy(
             ['user_id' => $userId],
-        );
+            );
     }
 
     public function getByPlot(int $plotId, ?int $offset, ?int $limit): array
@@ -56,6 +56,31 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             $limit,
             $offset
         );
+    }
+
+    public function getAmount(): int
+    {
+        return $this->count([]);
+    }
+
+    public function getAmountByPlot(int $plotId): int
+    {
+        return $this->count([
+            'plot_id' => $plotId
+        ]);
+    }
+
+    public function getAmountSince(int $postId): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(p.id) FROM %s p WHERE p.id > :postId',
+                    KnPost::class
+                )
+            )
+            ->setParameters(['postId' => $postId])
+            ->getSingleScalarResult();
     }
 
     public function getNewerThenMark(int $mark): array

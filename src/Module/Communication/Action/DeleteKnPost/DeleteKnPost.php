@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\DeleteKnPost;
 
 use AccessViolation;
-use KNPosting;
+use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class DeleteKnPost implements ActionControllerInterface
 {
@@ -15,21 +17,26 @@ final class DeleteKnPost implements ActionControllerInterface
 
     private $deleteKnPostRequest;
 
+    private $knPostRepository;
+
     public function __construct(
-        DeleteKnPostRequestInterface $deleteKnPostRequest
+        DeleteKnPostRequestInterface $deleteKnPostRequest,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->deleteKnPostRequest = $deleteKnPostRequest;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $post = new KNPosting($this->deleteKnPostRequest->getPostId());
-        if ($post->getUserId() != $userId) {
+        /** @var KnPostInterface $post */
+        $post = $this->knPostRepository->find($this->deleteKnPostRequest->getPostId());
+        if ($post === null || $post->getUserId() != $userId) {
             throw new AccessViolation();
         }
-        if (!$post->isEditAble()) {
+        if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
             $game->addInformation(_('Dieser Beitrag kann nicht editiert werden'));
             return;
         }
@@ -37,7 +44,7 @@ final class DeleteKnPost implements ActionControllerInterface
         // @todo foreign key
         //KnComment::truncate('WHERE post_id=' . $post->getId());
 
-        $post->deleteFromDatabase();
+        $this->knPostRepository->delete($post);
 
         $game->addInformation(_('Der Beitrag wurde gelöscht'));
     }

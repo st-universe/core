@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\Overview;
 
-use KNPosting;
 use PMCategory;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -34,10 +33,10 @@ final class Overview implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
-        $userKnMark = $user->getKNMark();
+        $userKnMark = (int) $user->getKNMark();
 
-        $newKnPostCount = KNPosting::countInstances(sprintf('id > %d', $userKnMark));
-        $knPostCount = KNPosting::countInstances('1=1');
+        $newKnPostCount = $this->knPostRepository->getAmountSince($userKnMark);
+        $knPostCount = $this->knPostRepository->getAmount();
 
         $mark = $knPostCount;
         $lim = floor($mark / static::KNLIMITER) * static::KNLIMITER;
@@ -83,10 +82,7 @@ final class Overview implements ViewControllerInterface
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
         $game->setTemplateVar('KN_POSTINGS', $list);
-        $game->setTemplateVar(
-            'HAS_NEW_KN_POSTINGS',
-            KNPosting::countInstances(sprintf('id > %d', $userKnMark))
-        );
+        $game->setTemplateVar('HAS_NEW_KN_POSTINGS', $this->knPostRepository->getAmountSince($userKnMark));
         $game->setTemplateVar('KN_START', $knStart);
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);

@@ -7,8 +7,6 @@ use Colony;
 use Contactlist;
 use Crew;
 use Fleet;
-use KNPosting;
-use KNPostingData;
 use PMCategory;
 use RPGPlot;
 use Ship;

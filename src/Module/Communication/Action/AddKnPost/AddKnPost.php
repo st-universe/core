@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
-use KNPostingData;
 use RPGPlot;
 use RPGPlotMember;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
@@ -17,10 +17,14 @@ final class AddKnPost implements ActionControllerInterface
 
     private $addKnPostRequest;
 
+    private $knPostRepository;
+
     public function __construct(
-        AddKnPostRequestInterface $addKnPostRequest
+        AddKnPostRequestInterface $addKnPostRequest,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,12 +42,12 @@ final class AddKnPost implements ActionControllerInterface
             return;
         }
 
-        $post = new KNPostingData();
+        $post = $this->knPostRepository->prototype();
 
         if ($plotid > 0) {
             $plot = RPGPlot::getById($plotid);
             if ($plot && RPGPlotMember::mayWriteStory($plot->getId(), $userId)) {
-                $post->setPlotId($plot->getId());
+                $post->setPlotId((int) $plot->getId());
                 $post->setTitle($plot->getTitle());
             }
         } else {
@@ -57,7 +61,8 @@ final class AddKnPost implements ActionControllerInterface
         $post->setText($text);
         $post->setUserId($userId);
         $post->setDate(time());
-        $post->save();
+
+        $this->knPostRepository->save($post);
 
         $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
 

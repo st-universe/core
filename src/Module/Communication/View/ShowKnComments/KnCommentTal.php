@@ -5,8 +5,8 @@ declare(strict_types=0);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
-use KNPostingData;
 use Stu\Orm\Entity\KnCommentInterface;
+use Stu\Orm\Entity\KnPostInterface;
 
 final class KnCommentTal implements KnCommentTalInterface
 {
@@ -18,7 +18,7 @@ final class KnCommentTal implements KnCommentTalInterface
 
     public function __construct(
         KnCommentInterface $comment,
-        KNPostingData $post,
+        KnPostInterface $post,
         int $userId
     ) {
         $this->comment = $comment;

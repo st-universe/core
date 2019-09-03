@@ -6,7 +6,6 @@ namespace Stu\Module\Maindesk\View\Overview;
 
 use ColonyShipQueue;
 use ContactlistData;
-use KNPosting;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -67,7 +66,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('NEW_KN_POSTINGS', $list);
         $game->setTemplateVar(
             'NEW_KN_POSTING_COUNT',
-            KNPosting::countInstances('id>' . $user->getKnMark())
+            $this->knPostRepository->getAmountSince((int) $user->getKNMark())
         );
         $game->setTemplateVar(
             'RECENT_PROFILE_VISITORS',

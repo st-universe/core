@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowEditKn;
 
 use AccessViolation;
-use KNPosting;
 use RPGPlot;
+use Stu\Module\Communication\Action\EditKnPost\EditKnPost;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowEditKn implements ViewControllerInterface
 {
@@ -16,16 +18,26 @@ final class ShowEditKn implements ViewControllerInterface
 
     private $showEditKnRequest;
 
+    private $knPostRepository;
+
     public function __construct(
-        ShowEditKnRequestInterface $showEditKnRequest
+        ShowEditKnRequestInterface $showEditKnRequest,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->showEditKnRequest = $showEditKnRequest;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $post = new KNPosting($this->showEditKnRequest->getPostId());
-        if (!$post->isEditAble()) {
+        /** @var KnPostInterface $post */
+        $post = $this->knPostRepository->find($this->showEditKnRequest->getPostId());
+
+        if (
+            $post === null ||
+            $post->getUserId() !== $game->getUser()->getId() ||
+            $post->getDate() < time() - EditKnPost::EDIT_TIME
+        ) {
             throw new AccessViolation();
         }
 

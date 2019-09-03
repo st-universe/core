@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowPlotKn;
 
-use KNPosting;
 use PMCategory;
 use RPGPlot;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
@@ -47,7 +46,7 @@ final class ShowPlotKn implements ViewControllerInterface
         if ($mark % static::KNLIMITER != 0 || $mark < 0) {
             $mark = 0;
         }
-        $maxcount = KNPosting::countInstances(sprintf('plot_id = %d', $plot->getId()));
+        $maxcount = $this->knPostRepository->getAmountByPlot((int) $plot->getId());
         $maxpage = ceil($maxcount / static::KNLIMITER);
         $curpage = floor($mark / static::KNLIMITER);
         $knNavigation = [];

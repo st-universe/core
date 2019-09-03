@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Orm\Repository\KnPostRepositoryInterface;
+
 class RPGPlotData extends BaseTable {
 	
 	protected $tablename = 'stu_plots';
@@ -82,7 +85,10 @@ class RPGPlotData extends BaseTable {
 
 	function getPostingCount() {
 		if ($this->postingcount === NULL) {
-			$this->postingcount = KNPosting::countInstances("plot_id=".$this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->postingcount = $container->get(KnPostRepositoryInterface::class)->getAmountByPlot((int) $this->getId());
 		}
 		return $this->postingcount;
 	}

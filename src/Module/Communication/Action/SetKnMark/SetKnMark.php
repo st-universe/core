@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\SetKnMark;
 
-use KNPosting;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class SetKnMark implements ActionControllerInterface
 {
@@ -14,15 +14,24 @@ final class SetKnMark implements ActionControllerInterface
 
     private $setKnMarkRequest;
 
+    private $knPostRepository;
+
     public function __construct(
-        SetKnMarkRequestInterface $setKnMarkRequest
+        SetKnMarkRequestInterface $setKnMarkRequest,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->setKnMarkRequest = $setKnMarkRequest;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $posting = new KNPosting($this->setKnMarkRequest->getKnOffset());
+        $posting = $this->knPostRepository->find($this->setKnMarkRequest->getKnOffset());
+
+        if ($posting === null) {
+            return;
+        }
+
         $user = $game->getUser();
 
         $user->setKNMark($posting->getId());
