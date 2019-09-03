@@ -37,6 +37,7 @@ use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
+use Stu\Orm\Entity\PlanetType;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
@@ -216,6 +217,11 @@ return [
         ContainerInterface $c
     ): PlanetFieldTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(PlanetFieldType::class);
+    },
+    PlanetTypeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PlanetTypeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PlanetType::class);
     },
     ResearchRepositoryInterface::class => function (
         ContainerInterface $c

@@ -300,7 +300,7 @@ class ColfieldData extends BaseTable {
 	/**
 	 */
 	public function isColonizeAble() { #{{{
-		return in_array($this->getFieldType(),$this->getColony()->getPlanetType()->getColonizeableFieldsAsArray());
+		return in_array($this->getFieldType(),$this->getColony()->getPlanetType()->getColonizeableFields());
 	} # }}}
 
 	/**

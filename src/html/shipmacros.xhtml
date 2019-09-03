@@ -920,11 +920,11 @@
 				</div>
 			</tal:block>
 		</div>
-		<tal:block tal:condition="currentColony/getPlanetType/hasColonizeableFields">
+		<tal:block tal:condition="currentColony/getPlanetType/getColonizeableFields">
 			<br />
 			<div class="divhead" i18n:translate="">Kolonisierbare Felder</div>
 			<div class="divbody">
-				<img src="assets/fields/${field}.gif" tal:repeat="field currentColony/getPlanetType/getColonizeableFieldsAsArray" />
+				<img src="assets/fields/${field}.gif" tal:repeat="field currentColony/getPlanetType/getColonizeableFields" />
 			</div>
 		</tal:block>
 	</metal:macro>

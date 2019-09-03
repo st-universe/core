@@ -3,8 +3,10 @@
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
 
 class ColonyData extends BaseTable {
@@ -52,14 +54,15 @@ class ColonyData extends BaseTable {
 
 	private $planettype = NULL;
 
-	/**
-	 */
-	public function getPlanetType() { #{{{
+	public function getPlanetType(): PlanetTypeInterface {
 		if ($this->planettype === NULL) {
-			$this->planettype = new ColonyClass($this->getColonyClass());
+			// @todo refactor
+			global $container;
+
+			$this->planettype = $container->get(PlanetTypeRepositoryInterface::class)->find((int) $this->getColonyClass());
 		}
 		return $this->planettype;
-	} # }}}
+	}
 
 	function setName($value) {
 		if ($value == $this->getName()) {

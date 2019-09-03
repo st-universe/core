@@ -1,4 +1,8 @@
 <?php
+
+use Stu\Orm\Entity\PlanetTypeInterface;
+use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
+
 class MapFieldTypeData extends BaseTable {
 
 	const tablename = 'stu_map_ftypes';
@@ -86,9 +90,12 @@ class MapFieldTypeData extends BaseTable {
 
 	private $colonyclass = NULL;
 
-	public function getColonyType() {
+	public function getColonyType(): PlanetTypeInterface {
 		if ($this->colonyclass === NULL) {
-			$this->colonyclass = new ColonyClass($this->getColonyClass());
+			// @todo refactor
+			global $container;
+
+			$this->colonyclass = $container->get(PlanetTypeRepositoryInterface::class)->find((int) $this->getColonyClass());
 		}
 		return $this->colonyclass;
 	}
