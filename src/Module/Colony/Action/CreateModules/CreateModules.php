@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Action\CreateModules;
 
 use Colfields;
 use Exception;
-use ModuleBuildingFunction;
 use ModuleQueue;
 use ModuleQueueData;
 use request;
@@ -14,6 +13,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
+use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 
 final class CreateModules implements ActionControllerInterface
 {
@@ -21,10 +22,14 @@ final class CreateModules implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $moduleBuildingFunctionRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,7 +51,13 @@ final class CreateModules implements ActionControllerInterface
             return;
         }
         $prod = array();
-        $modules_av = ModuleBuildingFunction::getByFunctionAndUser($func, $userId);
+
+        /** @var ModuleBuildingFunctionInterface[] $modules_av */
+        $modules_av = [];
+        foreach ($this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser($func, $userId) as $module) {
+            $modules_av[$module->getModuleId()] = $module;
+        }
+
         $storage = $colony->getStorage();
         foreach ($modules as $module_id => $count) {
             if (!array_key_exists($module_id, $modules_av)) {

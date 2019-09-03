@@ -29,6 +29,7 @@ use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
+use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\Note;
@@ -169,6 +170,11 @@ return [
         ContainerInterface $c
     ): MapRegionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(MapRegion::class);
+    },
+    ModuleBuildingFunctionRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ModuleBuildingFunctionRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ModuleBuildingFunction::class);
     },
     ModuleCostRepositoryInterface::class => function (
         ContainerInterface $c

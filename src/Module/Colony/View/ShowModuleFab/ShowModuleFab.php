@@ -6,12 +6,11 @@ namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use BuildingFunctions;
 use ColonyMenu;
-use ModuleBuildingFunction;
-use Modules;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {
@@ -21,12 +20,16 @@ final class ShowModuleFab implements ViewControllerInterface
 
     private $showModuleFabRequest;
 
+    private $moduleBuildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowModuleFabRequestInterface $showModuleFabRequest
+        ShowModuleFabRequestInterface $showModuleFabRequest,
+        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleFabRequest = $showModuleFabRequest;
+        $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,12 +42,15 @@ final class ShowModuleFab implements ViewControllerInterface
         );
 
         $func = new BuildingFunctions(request::getIntFatal('func'));
-        $modules = ModuleBuildingFunction::getByFunctionAndUser($func->getFunction(), $userId);
+        $modules = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
+            (int) $func->getFunction(),
+            $userId
+        );
 
         $list = [];
         foreach ($modules as $module) {
             $list[] = new ModuleFabricationListItemTal(
-                new Modules($module->getModuleId()),
+                $module->getModule(),
                 $colony
             );
         }

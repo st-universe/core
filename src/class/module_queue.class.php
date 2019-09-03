@@ -98,12 +98,6 @@ class ModuleQueue extends ModuleQueueData { #{{{
 		return parent::__construct($result);
 	}
 	
-	/**
-	 */
-	static function countInstances($sql="") { #{{{
-		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$sql,1);
-	} # }}}
-
 	static function getAmountByColonyAndModule($colony_id,$module_id): int {
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE colony_id=".$colony_id." AND module_id=".$module_id,4);
 		if ($result == 0) {
