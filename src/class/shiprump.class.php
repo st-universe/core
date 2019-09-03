@@ -1,8 +1,10 @@
 <?php
 
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Entity\ShipRumpCostInterface;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Entity\ShipRumpSpecialInterface;
+use Stu\Orm\Repository\ShipRumpCostRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRoleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
@@ -342,14 +344,19 @@ class ShiprumpData extends BaseTable {
 	private $buildingsCosts = NULL;
 
 	/**
-	 * @return ShipRumpCosts[]
+	 * @return ShipRumpCostInterface[]
 	 */
-	public function getBuildingCosts() { #{{{
+	public function getBuildingCosts(): array {
 		if ($this->buildingsCosts === NULL) {
-			$this->buildingsCosts = ShipRumpCosts::getByRump($this->getId());
+		    // @todo refactor
+            global $container;
+
+            $this->buildingsCosts = $container->get(ShipRumpCostRepositoryInterface::class)->getByShipRump(
+                (int) $this->getId()
+            );
 		}
 		return $this->buildingsCosts;
-	} # }}}
+	}
 
 	/**
 	 */

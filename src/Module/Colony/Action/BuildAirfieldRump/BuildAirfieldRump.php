@@ -59,25 +59,29 @@ final class BuildAirfieldRump implements ActionControllerInterface
         }
         $storage = &$colony->getStorage();
 
-        foreach ($rump->getBuildingCosts() as $key => $cost) {
-            if (!array_key_exists($cost->getGoodId(), $storage)) {
+        foreach ($rump->getBuildingCosts() as $cost) {
+            $stor = $storage[$cost->getCommodityId()] ?? null;
+
+            if ($stor === null) {
                 $game->addInformationf(
                     _('Es wird %d %s benötigt'),
                     $cost->getAmount(),
-                    $cost->getGood()->getName()
+                    $cost->getCommodity()->getName()
                 );
                 return;
             }
-            if ($storage[$cost->getGoodId()]->getAmount() < $cost->getAmount()) {
+            if ($stor->getAmount() < $cost->getAmount()) {
                 $game->addInformationf(
                     _('Es wird %d %s benötigt - Vorhanden ist nur %d'),
                     $cost->getAmount(),
-                    $cost->getGood()->getName(),
-                    $storage[$cost->getGoodId()]->getAmount()
+                    $cost->getCommodity()->getName(),
+                    $stor->getAmount()
                 );
                 return;
             }
-            $colony->lowerStorage($cost->getGoodId(), $cost->getAmount());
+        }
+        foreach ($rump->getBuildingCosts() as $cost) {
+            $colony->lowerStorage($cost->getCommodityId(), $cost->getAmount());
         }
         $colony->lowerEps($rump->getEpsCost());
         $colony->upperStorage($rump->getGoodId(), 1);
