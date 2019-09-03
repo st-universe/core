@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use Modules;
-use RumpModuleLevel;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
@@ -122,7 +122,12 @@ class ModuleSelector
 					AND (viewable=1 OR goods_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=' . $this->getColony()->getId() . '))
 					' . $special_query);
             } else {
-                $mod_level = RumpModuleLevel::getByRump($this->getRump()->getId());
+                // @todo refactor
+                global $container;
+                $mod_level = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
+                    (int) $this->getRump()->getId()
+                );
+
                 $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
                 $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
                 $modules = Modules::getBy('type=' . $this->getModuleType() . ' AND rumps_role_id=

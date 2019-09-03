@@ -3,6 +3,7 @@
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Entity\ShipRumpSpecialInterface;
+use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRoleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
 
@@ -104,7 +105,12 @@ class ShiprumpData extends BaseTable {
 	 */
 	public function getModuleLevels() { #{{{
 		if ($this->module_levels === NULL) {
-			$this->module_levels = RumpModuleLevel::getByRump($this->getId());
+		    // @todo refactor
+            global $container;
+
+            $this->module_levels = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
+                (int) $this->getId()
+            );
 		}
 		return $this->module_levels;
 	} # }}}
