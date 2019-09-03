@@ -15,7 +15,7 @@
 								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id PROFILE/getId" />
 							</td>
 							<td style="text-align: center; width: 47%">
-								<tal:block tal:define="contact USER/getContact/${PROFILE/getId}">
+								<tal:block tal:define="contact USER/getContact/${PROFILE/getId}; handle THIS/getUniqId">
 									<tal:block tal:condition="PROFILE">
 										<span tal:attributes="id handle">
 											<metal:macro tal:define="div handle" metal:use-macro="html/commmacros.xhtml/clmodeview" />

@@ -40,10 +40,6 @@ class KNPostingData extends BaseTable {
 		return $this->getUserId() > 0;
 	}
 
-	function hasTitle() {
-		return $this->data['titel'] !== NULL && $this->data['titel'] != '';
-	}
-
 	function getTitle() {
 		return $this->data['titel'];
 	}

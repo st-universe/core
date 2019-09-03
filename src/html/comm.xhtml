@@ -16,15 +16,15 @@
 					<tr tal:condition="post/getTitle">
 						<th colspan="2">
 							<span tal:replace="structure post/getTitle">TITLE</span>
-							<span tal:condition="post/hasPlot">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}">Plot anzeigen</a>)</span>
+							<span tal:condition="post/getPlotId">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}">Plot anzeigen</a>)</span>
 						</th>
 					</tr>
 					<tr>
 						<td>
-							<div tal:condition="post/hasUser">
+							<div tal:condition="post/getUserId">
 								<img src="assets/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 							</div>
-							<div tal:condition="not:post/hasUser" tal:content="structure bbcode:post/getUserName">USER</div>
+							<div tal:condition="not:post/getUserId" tal:content="structure bbcode:post/getUserName">USER</div>
 						</td>
 						<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
 					</tr>
@@ -32,7 +32,7 @@
 				<table class="tcal">
 					<tr>
 						<td style="width: 150px; text-align: center; vertical-align: top;">
-							<tal:block tal:condition="post/hasUser">
+							<tal:block tal:condition="post/getUserId">
 								<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
 								<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
 								<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
@@ -40,7 +40,7 @@
 						</td>
 						<td style="vertical-align: top;">
 							<div tal:content="structure nl2br:bbcode2txt:post/getText">TEXT</div>
-							<tal:block tal:condition="post/hasEdit">
+							<tal:block tal:condition="post/getEditDate">
 								<br /><br />
 								<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
 							</tal:block>

@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\Overview;
 
 use KNPosting;
 use PMCategory;
+use Stu\Module\Communication\Lib\KnPostTal;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -62,19 +63,19 @@ final class Overview implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
         }
 
+        $list = [];
+        foreach (KNPosting::getBy(sprintf('ORDER BY date DESC LIMIT %d,%d', $this->overviewRequest->getKnOffset(), static::KNLIMITER)) as $post) {
+            $list[] = new KnPostTal(
+                $post,
+                $game->getUser()
+            );
+        }
+
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setTemplateFile('html/comm.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        $game->setTemplateVar(
-            'KN_POSTINGS',
-            KNPosting::getBy(
-                sprintf(
-                    'ORDER BY date DESC LIMIT %d,%d',
-                    $this->overviewRequest->getKnOffset(),
-                static::KNLIMITER)
-            )
-        );
+        $game->setTemplateVar('KN_POSTINGS', $list);
         $game->setTemplateVar(
             'HAS_NEW_KN_POSTINGS',
             KNPosting::countInstances(sprintf('id > %d', $userKnMark))

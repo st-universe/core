@@ -26,7 +26,7 @@
 					</td>
 					<td style="vertical-align: top;">
 						<span tal:content="structure nl2br:post/getText">TEXT</span>
-						<tal:block tal:condition="post/hasEdit">
+						<tal:block tal:condition="post/getEditDate">
 							<br /><br /><br />
 							<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
 						</tal:block>

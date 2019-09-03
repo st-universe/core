@@ -47,7 +47,7 @@ final class EditKnPost implements ActionControllerInterface
                 $post->setTitle($plot->getTitle());
             }
         } else {
-            if ($post->hasPlot()) {
+            if ($post->getPlotId() > 0) {
                 $post->setPlotId(0);
             }
             $post->setTitle($title);
