@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\View\Overview;
 
-use RPGPlotMember;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use User;
 
@@ -16,12 +16,16 @@ final class Overview implements ViewControllerInterface
 
     private $userProfileVisitorRepository;
 
+    private $rpgPlotMemberRepository;
+
     public function __construct(
         OverviewRequestInterface $overviewRequest,
-        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository
+        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository
     ) {
         $this->overviewRequest = $overviewRequest;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,7 +57,7 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('PROFILE', $profile);
         $game->setTemplateVar(
             'RPG_PLOTS',
-            RPGPlotMember::getPlotsByUser($profileId)
+            $this->rpgPlotMemberRepository->getByUser($profileId)
         );
     }
 }

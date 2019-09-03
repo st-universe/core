@@ -6,11 +6,11 @@ namespace Stu\Module\Communication\Action\EditKnPost;
 
 use AccessViolation;
 use RPGPlot;
-use RPGPlotMember;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 
 final class EditKnPost implements ActionControllerInterface
 {
@@ -22,12 +22,16 @@ final class EditKnPost implements ActionControllerInterface
 
     private $knPostRepository;
 
+    private $rpgPlotMemberRepository;
+
     public function __construct(
         EditKnPostRequestInterface $editKnPostRequest,
-        KnPostRepositoryInterface $knPostRepository
+        KnPostRepositoryInterface $knPostRepository,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository
     ) {
         $this->editKnPostRequest = $editKnPostRequest;
         $this->knPostRepository = $knPostRepository;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,7 +54,7 @@ final class EditKnPost implements ActionControllerInterface
 
         if ($plotid > 0) {
             $plot = RPGPlot::getById($plotid);
-            if ($plot && RPGPlotMember::mayWriteStory($plot->getId(), $userId)) {
+            if ($plot && $this->rpgPlotMemberRepository->getByPlotAndUser($plotid, $userId) !== null) {
                 $post->setPlotId($plot->getId());
                 $post->setTitle($plot->getTitle());
             }

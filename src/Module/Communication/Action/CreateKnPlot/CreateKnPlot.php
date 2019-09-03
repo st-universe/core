@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\CreateKnPlot;
 
 use RPGPlotData;
-use RPGPlotMemberData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 
 final class CreateKnPlot implements ActionControllerInterface
 {
@@ -16,10 +16,14 @@ final class CreateKnPlot implements ActionControllerInterface
 
     private $createKnPlotRequest;
 
+    private $rpgPlotMemberRepository;
+
     public function __construct(
-        CreateKnPlotRequestInterface $createKnPlotRequest
+        CreateKnPlotRequestInterface $createKnPlotRequest,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository
     ) {
         $this->createKnPlotRequest = $createKnPlotRequest;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,10 +45,11 @@ final class CreateKnPlot implements ActionControllerInterface
         $plot->setStartDate(time());
         $plot->save();
 
-        $member = new RPGPlotMemberData();
+        $member = $this->rpgPlotMemberRepository->prototype();
         $member->setUserId($userId);
-        $member->setPlotId($plot->getId());
-        $member->save();
+        $member->setPlotId((int) $plot->getId());
+
+        $this->rpgPlotMemberRepository->save($member);
 
         $game->addInformation(_('Der Plot wurde erstellt'));
 

@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 
 class RPGPlotData extends BaseTable {
 	
@@ -76,7 +77,10 @@ class RPGPlotData extends BaseTable {
 
 	function getMemberCount() {
 		if ($this->membercount === NULL) {
-			$this->membercount = RPGPlotMember::countInstances("plot_id=".$this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->membercount = $container->get(RpgPlotMemberRepositoryInterface::class)->getAmountByPlot((int) $this->getId());
 		}
 		return $this->membercount;
 	}
@@ -101,20 +105,6 @@ class RPGPlotData extends BaseTable {
 		}
 		return $this->members;
 	}
-
-	/**
-	 */
-	public function deleteOwner() { #{{{
-		RPGPlotMember::findObject('WHERE user_id='.$this->getUserId().' AND plot_id='.$this->getId())->deleteFromDatabase();
-		if ($this->getMembers()) {
-			$member = current($this->getMembers());
-			$this->setUserId($member->getUserId());
-			$this->save();
-			return;
-		}
-		$this->setUserId(USER_NOONE);
-		$this->save();
-	} # }}}
 
 }
 class RPGPlot extends RPGPlotData {

@@ -16,6 +16,7 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
@@ -130,8 +131,27 @@ class UserDeletion
 
     public function handleRPGPlots()
     {
+        // @todo refactor
+        global $container;
+
+        $rpgPlotMemberRepo = $container->get(RpgPlotMemberRepositoryInterface::class);
+
+        /** @var \RPGPlotData $obj
+         */
         foreach (RPGPlot::getObjectsBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
-            $obj->deleteOwner();
+
+            $item = $rpgPlotMemberRepo->getByPlotAndUser((int) $obj->getId(), (int) $this->getUser()->getId());
+            if ($item !== null) {
+                $rpgPlotMemberRepo->delete($item);
+            }
+            if ($obj->getMembers()) {
+                $member = current($obj->getMembers());
+                $obj->setUserId($member->getUserId());
+                $obj->save();
+                return;
+            }
+            $obj->setUserId(USER_NOONE);
+            $obj->save();
         }
     }
 

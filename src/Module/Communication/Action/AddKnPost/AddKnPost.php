@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\AddKnPost;
 
 use RPGPlot;
-use RPGPlotMember;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
@@ -19,12 +19,16 @@ final class AddKnPost implements ActionControllerInterface
 
     private $knPostRepository;
 
+    private $rpgPlotMemberRepository;
+
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
-        KnPostRepositoryInterface $knPostRepository
+        KnPostRepositoryInterface $knPostRepository,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,7 +50,7 @@ final class AddKnPost implements ActionControllerInterface
 
         if ($plotid > 0) {
             $plot = RPGPlot::getById($plotid);
-            if ($plot && RPGPlotMember::mayWriteStory($plot->getId(), $userId)) {
+            if ($plot && $this->rpgPlotMemberRepository->getByPlotAndUser($plotid, $userId) !== null) {
                 $post->setPlotId((int) $plot->getId());
                 $post->setTitle($plot->getTitle());
             }
