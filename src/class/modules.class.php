@@ -173,7 +173,7 @@ class ModulesData extends BaseTable {
 				$this->getSpecials()
 			);
 		}
-		return in_array((int) $special_id, $this->specialAbilities)
+		return in_array((int) $special_id, $this->specialAbilities);
 	}
 
 	private $specials = NULL;
