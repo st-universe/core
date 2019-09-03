@@ -4,11 +4,13 @@
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipStorageInterface;
+use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
+use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 class ShipData extends BaseTable {
 
@@ -1154,25 +1156,28 @@ class ShipData extends BaseTable {
 	/**
 	 */
 	public function getTorpedoEpsCost() { #{{{
-		// XXX: TBD
+		// @todo
 		return 1;
 	} # }}}
 
 	public function getPhaserEpsCost() {
-		// XXX: TBD
+		// @todo
 		return 1;
 	}
 
 	private $phaser = NULL;
 
-	/**
-	 */
-	public function getPhaser() { #{{{
+	public function getPhaser(): ?WeaponInterface {
 		if ($this->phaser === NULL) {
-			$this->phaser = Weapons::getByModuleId($this->getShipSystem(SYSTEM_PHASER)->getModuleId());
+			// @todo refactor
+			global $container;
+
+			$this->phaser = $container->get(WeaponRepositoryInterface::class)->findByModule(
+				(int) $this->getShipSystem(SYSTEM_PHASER)->getModuleId()
+			);
 		}
 		return $this->phaser;
-	} # }}}
+	}
 
 	protected function getLastModified() {
 		return $this->data['lastmodified'];

@@ -49,6 +49,7 @@ use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserProfileVisitor;
+use Stu\Orm\Entity\Weapon;
 
 return [
     AllianceBoardRepositoryInterface::class => function (
@@ -265,5 +266,10 @@ return [
         ContainerInterface $c
     ): UserProfileVisitorRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class);
+    },
+    WeaponRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): WeaponRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Weapon::class);
     },
 ];
