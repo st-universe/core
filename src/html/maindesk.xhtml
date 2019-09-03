@@ -83,7 +83,7 @@
 											<td>
 												<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:RECENT_POST/getUser/getName" /></span>
 													-
-													<span tal:content="datetime:data/getLastPostDate">DATE</span>
+													<span tal:content="datetime:RECENT_POST/getDate">DATE</span>
 											</td>
 										</tr>
 									</tal:block>
