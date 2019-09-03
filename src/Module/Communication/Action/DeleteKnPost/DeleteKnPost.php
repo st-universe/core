@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\DeleteKnPost;
 
 use AccessViolation;
-use KnComment;
 use KNPosting;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -35,7 +34,8 @@ final class DeleteKnPost implements ActionControllerInterface
             return;
         }
 
-        KnComment::truncate('WHERE post_id=' . $post->getId());
+        // @todo foreign key
+        //KnComment::truncate('WHERE post_id=' . $post->getId());
 
         $post->deleteFromDatabase();
 

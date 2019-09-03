@@ -246,7 +246,7 @@
 		</div>
 		<div style="width: 100%; text-align: right;"><input type="button" class="button" value="Kommentar schreiben" onclick="Element.hide(this.parentNode);Element.show($('writecomment'))" /></div>
 		<br />
-		<tal:block tal:repeat="data POST/getComments">
+		<tal:block tal:repeat="data COMMENTS">
 			<table class="tcal">
 				<tr>
 					<td rowspan="2" style="width: 40px">
@@ -258,7 +258,7 @@
 					</th>
 					<th style="width: 120px; text-align: center;" tal:content="datetime:data/getDate">DATE</th>
 					<th style="width: 20px">
-						<stu:jsimagelink image="x" onclick="deletePostingComment(${data/getPostId}, ${data/getId})" tal:condition="POST/currentUserMayDeleteComment" />
+						<stu:jsimagelink image="x" onclick="deletePostingComment(${data/getPostId}, ${data/getId})" tal:condition="data/isDeleteable" />
 					</th>
 				</tr>
 				<tr>
@@ -267,6 +267,6 @@
 			</table>
 			<br tal:condition="not:repeat/data/end" />
 		</tal:block>
-		<div class="divhead" tal:condition="not:POST/getComments" style="text-align: center;">Keine Kommentare vorhanden</div>
+		<div class="divhead" tal:condition="not:COMMENTS" style="text-align: center;">Keine Kommentare vorhanden</div>
 	</metal:macro>
 </html>

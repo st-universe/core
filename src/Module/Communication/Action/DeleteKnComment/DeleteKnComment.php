@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteKnComment;
 
-use KnComment;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
+use Stu\Orm\Entity\KnCommentInterface;
+use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class DeleteKnComment implements ActionControllerInterface
 {
@@ -15,22 +16,31 @@ final class DeleteKnComment implements ActionControllerInterface
 
     private $deleteKnCommentRequest;
 
+    private $knCommentRepository;
+
     public function __construct(
-        DeleteKnCommentRequestInterface $deleteKnCommentRequest
+        DeleteKnCommentRequestInterface $deleteKnCommentRequest,
+        KnCommentRepositoryInterface $knCommentRepository
     ) {
         $this->deleteKnCommentRequest = $deleteKnCommentRequest;
+        $this->knCommentRepository = $knCommentRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
+
         $game->setView(ShowKnComments::VIEW_IDENTIFIER);
 
-        $obj = new KnComment($this->deleteKnCommentRequest->getCommentId());
-        if ($obj->getPosting()->currentUserMayDeleteComment()) {
-            $obj->deleteFromDatabase();
+        /** @var KnCommentInterface $obj */
+        $obj = $this->knCommentRepository->find($this->deleteKnCommentRequest->getCommentId());
+        if ($obj === null) {
+            return;
         }
 
-
+        if ($obj->getUserId() == $userId || $obj->getPosting()->getUserId() == $userId) {
+            $this->knCommentRepository->delete($obj);
+        }
     }
 
     public function performSessionCheck(): bool

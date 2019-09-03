@@ -7,13 +7,13 @@ use Colony;
 use Contactlist;
 use Crew;
 use Fleet;
-use KnComment;
 use KNPosting;
 use PMCategory;
 use RPGPlot;
 use Ship;
 use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -106,7 +106,10 @@ class UserDeletion
 
     public function handleKnComments()
     {
-        KnComment::truncate('WHERE user_id=' . $this->getUser()->getId());
+        // @todo refactor
+        global $container;
+
+        $container->get(KnCommentRepositoryInterface::class)->truncateByUser((int) $this->getUser()->getId());
     }
 
     public function handleNotes()

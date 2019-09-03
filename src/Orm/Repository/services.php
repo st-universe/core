@@ -27,6 +27,7 @@ use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
+use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\ModuleBuildingFunction;
@@ -162,6 +163,11 @@ return [
         ContainerInterface $c
     ): HistoryRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(History::class);
+    },
+    KnCommentRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): KnCommentRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(KnComment::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c

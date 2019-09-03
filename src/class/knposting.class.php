@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Orm\Repository\KnCommentRepositoryInterface;
+
 class KNPostingData extends BaseTable {
 
 	const tablename = 'stu_kn';
@@ -111,28 +114,25 @@ class KNPostingData extends BaseTable {
 	
 	/**
 	 */
-	public function getCommentCount() { #{{{
-		if ($this->commentCount === NULL) {
-			$this->commentCount = KnComment::countInstances('post_id='.$this->getId());
-		}
-		return $this->commentCount;	
+	public function getCommentCount(): int { #{{{
+		// @todo refactor
+		global $container;
+
+		return $container->get(KnCommentRepositoryInterface::class)->getAmountByPost((int) $this->getId());
 	} # }}}
 
 	private $comments = NULL;
 
 	/**
 	 */
-	public function getComments() { #{{{
+	public function getComments(): array { #{{{
 		if ($this->comments === NULL) {
-			$this->comments = KnComment::getByPostingId($this->getId());
+		    // @todo refactor
+			global $container;
+
+			$this->comments = $container->get(KnCommentRepositoryInterface::class)->getByPost((int) $this->getId());
 		}
 		return $this->comments;
-	} # }}}
-
-	/**
-	 */
-	public function currentUserMayDeleteComment() { #{{{
-		return currentUser()->getId() == $this->getUserId();
 	} # }}}
 
 	/**
