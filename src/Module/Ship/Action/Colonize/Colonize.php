@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
@@ -23,12 +24,16 @@ final class Colonize implements ActionControllerInterface
 
     private $shipRumpColonizationBuildingRepository;
 
+    private $researchedRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository
+        ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,10 +56,10 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
-        $researchId = $colony->getPlanetType()->getResearchId();
+        $researchId = (int) $colony->getPlanetType()->getResearchId();
 
         if (
-            ($researchId > 0 && !$game->getUser()->hasResearched($researchId)) ||
+            ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($researchId, $userId) == false) ||
             !$colony->isFree()
         ) {
             return;

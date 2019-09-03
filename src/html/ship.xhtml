@@ -331,7 +331,7 @@
 											<span tal:condition="not:SHIP/getCurrentColony/isFree" tal:replace="structure bbcode:SHIP/getCurrentColony/getName">NAME</span>
 										</span>	
 										<div>
-											<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id SHIP/getCurrentColony/getUserId;handle SHIP/getCurrentColony/getUser/getNameWithoutMarkup" />
+											<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id SHIP/getCurrentColony/getUserId;handle bbcode2txt:SHIP/getCurrentColony/getUser/getName" />
 											<span tal:replace="structure bbcode:SHIP/getCurrentColony/getUser/getName">USERNAME</span>
 										</div>
 									</tal:block>
@@ -497,7 +497,7 @@
 									</td>
 									<td>
 										<div id="fleetuser${data/fleet/getId}" style="display: none;">
-											<stu:jsimagelink onclick="openPmWindow(${data/fleet/getUserId})" image="msg" title="Nachricht an ${data/fleet/getUser/getNameWithoutMarkup} verfassen" /><span tal:content="structure bbcode:data/fleet/getUser/getName">USERNAME</span> (${data/fleet/getUserId})
+											<stu:jsimagelink onclick="openPmWindow(${data/fleet/getUserId})" image="msg" title="Nachricht an ${bbcode2txt:data/fleet/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/fleet/getUser/getName">USERNAME</span> (${data/fleet/getUserId})
 										</div>
 									</td>
 								</tr>
@@ -537,7 +537,7 @@
 									</td>
 									<td>
 										<div id="fleetuser${data/fleet/getId}">
-											<stu:jsimagelink onclick="openPmWindow(${data/fleet/getUserId})" image="msg" title="Nachricht an ${data/fleet/getUser/getNameWithoutMarkup} verfassen" /><span tal:content="structure bbcode:data/fleet/getUser/getName">USERNAME</span> (${data/fleet/getUserId})
+											<stu:jsimagelink onclick="openPmWindow(${data/fleet/getUserId})" image="msg" title="Nachricht an ${bbcode2txt:data/fleet/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/fleet/getUser/getName">USERNAME</span> (${data/fleet/getUserId})
 										</div>
 									</td>
 								</tr>

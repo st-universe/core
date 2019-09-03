@@ -1,9 +1,6 @@
 <?php
 
 use Stu\Lib\ContactlistWrapper;
-use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\Orm\Repository\SessionStringRepositoryInterface;
-use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 
 class UserData extends BaseTable {
 
@@ -62,22 +59,10 @@ class UserData extends BaseTable {
 	}
 
 	function setUser($value) {
-		if ($value == $this->getName()) {
-			return; 
-		}
-		$old = $this->getName();
-		$value = strip_tags($value);
 		$this->data['user'] = $value;
-		if (strlen($this->getNameWithoutMarkup()) < 3) {
-			$this->data['user'] = $old;
-			return;
-		}
 		$this->setFieldValue('user',$value,'getUser');
 	}
 
-	function getNameWithoutMarkup() {
-		return BBCode()->parse($this->getName())->getAsText();
-	}
 	function getPassword() {
 		return $this->data['pass'];
 	}
@@ -111,10 +96,6 @@ class UserData extends BaseTable {
 	function setDescription($value) {
 		$this->data['description'] = $value;
 		$this->addUpdateField('description','getDescription');
-	}
-
-	public function hasDescription() {
-		return strlen(trim($this->getDescription())) > 0;
 	}
 
 	public function getEmailNotification() {
@@ -151,19 +132,6 @@ class UserData extends BaseTable {
 		return $this->data['lastaction'];
 	}
 
-	function isOnIgnoreList($value) {
-		return Ignorelist::isOnList($this->getId(),$value);
-	}
-
-	private $colonylist = NULL;
-
-	function getOwnColonies() {
-		if ($this->colonylist === NULL) {
-			$this->colonylist = Colony::getListBy('user_id='.$this->getId().' ORDER BY id');
-		}
-		return $this->colonylist;
-	}
-
 	function getActive() {
 		return $this->data['aktiv'];
 	}
@@ -182,10 +150,6 @@ class UserData extends BaseTable {
 		return $this->data['creation'];
 	}
 
-	function getCookieString() {
-		return sha1($this->getId().$this->getEMail().$this->getCreationDate());
-	}
-
 	function getDeletionMark() {
 		return $this->data['delmark'];
 	}
@@ -196,11 +160,6 @@ class UserData extends BaseTable {
 
 	public function getVacationMode() {
 		return $this->data['vac_active'];
-	}
-
-	function getVacation() {
-		trigger_error('getVacation is obsolete - use getVacationMode');
-		return $this->getVacationMode();
 	}
 
 	private $friends = NULL;
@@ -240,19 +199,6 @@ class UserData extends BaseTable {
 		return $this->data['login'];
 	}
 
-	public function hasResearched($researchId) {
-		if ($researchId == 0) {
-			return true;
-		}
-		// @todo refactor
-		global $container;
-
-		return $container->get(ResearchedRepositoryInterface::class)->hasUserFinishedResearch(
-			(int) $researchId,
-			(int) $this->getId()
-		);
-	}
-
 	public function setSaveLogin($value) {
 		$this->setFieldValue('save_login',$value,'getSaveLogin');
 	}
@@ -276,7 +222,7 @@ class UserData extends BaseTable {
 	} # }}}
 
 	public function isFriend(&$userId) {
-		$user = User::getById($userId);
+		$user = ResourceCache()->getUser($userId);
 		if ($this->getAllianceId() > 0) {
 			if ($this->getAllianceId() == $user->getAllianceId()) {
 				return TRUE;
@@ -286,22 +232,6 @@ class UserData extends BaseTable {
 			}
 		}
 		if (Contactlist::isFriendlyContact($this->getId(),$userId)) {
-			return TRUE;
-		}
-		return FALSE;
-	}
-
-	public function isEnemy(&$userId) {
-		$user = User::getById($userId);
-		if ($this->getAllianceId() > 0) {
-			if ($this->getAllianceId() == $user->getAllianceId()) {
-				return FALSE;
-			}
-			if ($this->getAlliance()->hasHostileRelation($user->getAllianceId())) {
-				return TRUE;
-			}
-		}
-		if (Contactlist::isHostileContact($this->getId(),$userId)) {
 			return TRUE;
 		}
 		return FALSE;
@@ -317,12 +247,6 @@ class UserData extends BaseTable {
 
 	public function setMapType($value) {
 		$this->setFieldValue('maptype',$value,'getMapType');
-	}
-
-	public function getCurrentResearch() {
-		// @todo refactor
-		global $container;
-		return $container->get(ResearchedRepositoryInterface::class)->getCurrentResearch((int) $this->getId());
 	}
 
 	public function getSessionData() {
@@ -350,40 +274,6 @@ class UserData extends BaseTable {
 	 */
 	public function isCurrentUser() { #{{{
 		return $this->getId() == currentUser()->getId();
-	} # }}}
-
-	/**
-	 */
-	public function deepDelete() { #{{{
-		DB()->query('DELETE FROM stu_user_map WHERE user_id='.$this->getId());
-		DB()->query('DELETE FROM stu_user_iptable WHERE user_id='.$this->getId());
-
-		// @todo refactor
-		global $container;
-
-		$container->get(SessionStringRepositoryInterface::class)->truncate((int) $this->getId());
-		$container->get(UserProfileVisitorRepositoryInterface::class)->truncateByUser((int) $this->getId());
-
-		$this->deleteFromDatabase();
-	} # }}}
-	
-	/**
-	 */
-	public function getResearchStartId() { #{{{
-		switch ($this->getFaction()) {
-		case FACTION_FEDERATION:
-			return RESEARCH_START_FEDERATION;
-		case FACTION_ROMULAN:
-			return RESEARCH_START_ROMULAN;
-		case FACTION_KLINGON:
-			return RESEARCH_START_KLINGON;
-		case FACTION_CARDASSIAN:
-			return RESEARCH_START_CARDASSIAN;
-		case FACTION_FERENGI:
-			return RESEARCH_START_FERENGI;
-		case FACTION_EMPIRE:
-			return RESEARCH_START_EMPIRE;
-		}
 	} # }}}
 
 	/**
@@ -469,7 +359,7 @@ class UserData extends BaseTable {
 	} # }}}
 
 	public function generatePasswordToken() {
-	        $tok = sha1(time().$this->getLogin());
+		$tok = sha1(time().$this->getLogin());
 		$this->setPasswordToken($tok);
 		$this->save();
 		return $tok;
@@ -496,10 +386,6 @@ class User extends UserData {
 			new ObjectNotFoundException($id);
 		}
 		parent::__construct($data);
-	}
-
-	static public function getById(&$id) {
-		return ResourceCache()->getObject('user',$id);
 	}
 
 	static function getUserById($id=0) {
@@ -535,10 +421,6 @@ class User extends UserData {
 		return $ret;
 	}
 
-	static function countInstances($sql) {
-		return DB()->query("SELECT COUNT(*) FROM ".parent::tablename." ".$sql,1);
-	}
-
 	/**
 	 */
 	public static function getUserListIdle() { #{{{
@@ -556,21 +438,6 @@ class User extends UserData {
 			return FALSE;
 		}
 		return new UserData($data);
-	}
-
-	public static function hashPassword($value) {
-		return sha1($value);
-	}
-	public static function createAdminUsers() {
-		$user = new UserData(array());
-		$user->forceId(101);
-		$user->setLogin('wolverine');
-		$user->setUser('Wolverine');
-		$user->setFaction(FACTION_FEDERATION);
-		$user->setActive(self::USER_ACTIVE);
-		$user->insertToDb();
-
-		DB()->query('ALTER TABLE '.parent::tablename.' AUTO_INCREMENT=101');
 	}
 
 	public static function getAmountByFaction(int $factionId): int

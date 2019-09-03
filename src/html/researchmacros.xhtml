@@ -38,7 +38,7 @@
 				<div class="fabutton_blue">
 					<a href="research.php?B_DO_RESEARCH=1&id=${SELECTED_RESEARCH/getId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_blue">Erforschen</a>
 				</div>
-				<div tal:condition="USER/getCurrentResearch" class="negative" style="text-align: center;">
+				<div tal:condition="CURRENT_RESEARCH" class="negative" style="text-align: center;">
 					Achtung! Die gerade laufende Forschung wird abgebrochen!
 				</div>
 			</div>

@@ -81,7 +81,7 @@
 </metal:block>
 <metal:macro metal:define-macro="userprofile_link">
 	<a href="userprofile.php?uid=${user/getId}">
-		<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="title user/getNameWithoutMarkup;src user/getFullAvatarPath" />
+		<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
 	</a>
 </metal:macro>
 <metal:block metal:define-macro="starmap">
@@ -141,18 +141,7 @@
 <metal:block metal:define-macro="crewimage">
 	<img phptal:cache="1d per crew/getId" src="assets/crew/${crew/getRace/getGfxPath}/${crew/getGenderShort}/1_${crew/getType}.png" />
 </metal:block>
-<metal:macro metal:define-macro="render_contactoptions" tal:define="handle THIS/getUniqId">
-	<!-- userId is needed -->
-	<tal:block tal:define="contact USER/getContact/${userid}">
-		<tal:block tal:condition="contact">
-			<span tal:attributes="id handle">
-				<metal:macro tal:define="div handle" metal:use-macro="html/commmacros.xhtml/clmodeview" />
-			</span>
-		</tal:block>
-		<tal:block tal:condition="not:contact" tal:define="divname string:selector_${handle};div handle" metal:use-macro="html/macros.xhtml/contactbutton" />
-	</tal:block>
-</metal:macro>
 <metal:macro metal:define-macro="userlist_pictures">
-	<img onclick="goToUrl('userprofile.php?uid=${user/getId}')" class="action" tal:repeat="user userlist" tal:attributes="src user/getFullAvatarPath; title user/getNameWithoutMarkup" height="40" width="40" style="margin: 5px" />
+	<img onclick="goToUrl('userprofile.php?uid=${user/getId}')" class="action" tal:repeat="user userlist" tal:attributes="src user/getFullAvatarPath; title bbcode2txt:user/getNamep" height="40" width="40" style="margin: 5px" />
 </metal:macro>
 </html>

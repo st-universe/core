@@ -33,12 +33,12 @@
 				<div class="header_box header_box_pm border_box" id="navlet_newpm">
 					<metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
 				</div>
-				<div class="header_box header_box_research border_box action"  tal:condition="USER/getCurrentResearch" onclick="showResearchDetails(${USER/getCurrentResearch/getResearch/getId}); return false;">
-					<div class="center" tal:content="USER/getCurrentResearch/getResearch/getName">RESEARCH</div>
-					<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung: ${USER/getCurrentResearch/getResearch/getName}" />
-					<span tal:replace="structure php:renderResearchStatusBar(USER.getCurrentResearch().getResearch().getPoints()-USER.getCurrentResearch().getActive(),USER.getCurrentResearch().getResearch().getPoints())">STATUSBAR</span>
+				<div class="header_box header_box_research border_box action"  tal:condition="CURRENT_RESEARCH" onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;">
+					<div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
+					<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
+					<span tal:replace="structure php:renderResearchStatusBar(CURRENT_RESEARCH.getResearch().getPoints()-CURRENT_RESEARCH.getActive(),CURRENT_RESEARCH.getResearch().getPoints())">STATUSBAR</span>
 				</div>
-				<div class="header_box header_box_research border_box action" tal:condition="not:USER/getCurrentResearch" onclick="goToUrl('research.php')">
+				<div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('research.php')">
 					<img style="width: 30px; height: 30px;" src="assets/buttons/menu_forsch0.gif" title="Forschung" i18n:attributes="title" />
 					<div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
 				</div>
@@ -83,9 +83,9 @@
 			</stu:content>
 			<stu:sidebar_right>
 				<metal:macro metal:define-macro="colonylist">
-					<div id="colonylist_navlet" class="border_box navigation_item_planets" tal:condition="THIS/getUser/getOwnColonies">
+					<div id="colonylist_navlet" class="border_box navigation_item_planets" tal:condition="USER_COLONIES">
 						<p i18n:translate="">Kolonien</p>
-						<div style="clear: both" tal:repeat="data THIS/getUser/getOwnColonies">
+						<div style="clear: both" tal:repeat="data USER_COLONIES">
 							<a style="display: block; float: left; margin-right: 10px"  href="colony.php?SHOW_COLONY=1&id=${data/getId}">
 								<img src="assets/planets/${data/getColonyClass}s.gif" title="runtime" tal:attributes="title data/getNameWithoutMarkup" />
 							</a>
@@ -101,7 +101,7 @@
 					</div>
 				</metal:macro>
 				<metal:macro metal:define-macro="navigation_item_friends">
-					<div id="navigation_item_friends" class="border_box navigation_item_planets" tal:condition="THIS/getUser/getOwnColonies">
+					<div id="navigation_item_friends" class="border_box navigation_item_planets">
 						<p i18n:translate="">Freunde</p>
 						<div>
 							<metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures" tal:define="userlist THIS/getUser/getFriends" />

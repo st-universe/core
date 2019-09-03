@@ -26,9 +26,10 @@ final class ChangeUserName implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $value = $this->changeUserNameRequest->getName();
-        $value = strip_tags(tidyString($value));
-        if (mb_strlen($value) < 6) {
+        $value = strip_tags(tidyString($this->changeUserNameRequest->getName()));
+        $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
+
+        if (mb_strlen($valueWithoutMarkup) < 6) {
             $game->addInformation(
                 sprintf(
                     _('Der Siedlername muss aus mindestens 6 Zeichen bestehen')
@@ -44,7 +45,7 @@ final class ChangeUserName implements ActionControllerInterface
             );
             return;
         }
-        if (mb_strlen($this->bbcodeParser->parse($value)->getAsText()) > 60) {
+        if (mb_strlen($valueWithoutMarkup) > 60) {
             $game->addInformation(
                 sprintf(
                     _('Der Siedlername darf nur maximal 60 Zeichen lang sein')

@@ -106,7 +106,9 @@
 							<div style="width: 100%; text-align: center;" tal:condition="not:RECENT_PROFILE_VISITORS">
 								Keine Besucher
 							</div>
-							<a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}" tal:repeat="data RECENT_PROFILE_VISITORS"><img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55" height="55" tal:attributes="src data/getUser/getFullAvatarPath;title data/getUser/getNameWithoutMarkup"/></a>
+							<a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}" tal:repeat="data RECENT_PROFILE_VISITORS">
+								<img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55" height="55" tal:attributes="src data/getUser/getFullAvatarPath;title bbcode2txt:data/getUser/getName"/>
+							</a>
 						</stu:box>
 						<br />
 						<stu:box title="Zufällige Spieler (online)">

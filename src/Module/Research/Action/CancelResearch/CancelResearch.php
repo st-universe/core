@@ -17,14 +17,14 @@ final class CancelResearch implements ActionControllerInterface
     private $researchedRepository;
 
     public function __construct(
-        ResearchedRepositoryInterface  $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->researchedRepository = $researchedRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $current_research = $game->getUser()->getCurrentResearch();
+        $current_research = $this->researchedRepository->getCurrentResearch($game->getUser()->getId());
 
         if ($current_research) {
             $this->researchedRepository->delete($current_research);

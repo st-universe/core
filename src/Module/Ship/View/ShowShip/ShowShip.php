@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use VisualNavPanel;
 
 final class ShowShip implements ViewControllerInterface
@@ -21,12 +22,16 @@ final class ShowShip implements ViewControllerInterface
 
     private $shipLoader;
 
+    private $researchedRepository;
+
     public function __construct(
         SessionInterface $session,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -98,8 +103,10 @@ final class ShowShip implements ViewControllerInterface
         $colony = $ship->getCurrentColony();
         $canColonize = false;
         if ($colony && $ship->getRump()->canColonize()) {
-            $researchId = $colony->getPlanetType()->getResearchId();
-            $canColonize = ($researchId == 0 || ($researchId > 0 && $game->getUser()->hasResearched($researchId))) && $colony->isFree();
+            $researchId = (int) $colony->getPlanetType()->getResearchId();
+            $canColonize = $colony->isFree() && (
+                $researchId === 0 || ($this->researchedRepository->hasUserFinishedResearch($researchId, $userId))
+            );
         }
 
         $game->appendNavigationPart(

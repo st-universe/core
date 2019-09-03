@@ -86,7 +86,7 @@ final class Register implements ActionControllerInterface
         /**
          * @var ResearchInterface $research
          */
-        $research = $this->researchRepository->find((int) $obj->getResearchStartId());
+        $research = $this->researchRepository->find($this->getResearchStartId((int) $obj->getFaction()));
 
         $db = $this->researchedRepository->prototype();
 
@@ -101,6 +101,24 @@ final class Register implements ActionControllerInterface
 
         $game->setView('SHOW_REGISTRATION_END');
     }
+
+    private function getResearchStartId(int $factionId): int {
+        switch ($factionId) {
+            case FACTION_FEDERATION:
+                return RESEARCH_START_FEDERATION;
+            case FACTION_ROMULAN:
+                return RESEARCH_START_ROMULAN;
+            case FACTION_KLINGON:
+                return RESEARCH_START_KLINGON;
+            case FACTION_CARDASSIAN:
+                return RESEARCH_START_CARDASSIAN;
+            case FACTION_FERENGI:
+                return RESEARCH_START_FERENGI;
+            case FACTION_EMPIRE:
+                return RESEARCH_START_EMPIRE;
+        }
+    }
+
 
     public function performSessionCheck(): bool
     {

@@ -16,7 +16,9 @@ use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
+use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use TradeLicences;
 use TradeOffer;
 use TradeStorage;
@@ -176,7 +178,17 @@ class UserDeletion
             $handler->handleResearch();
             $handler->handleShips();
             $handler->handleTrade();
-            $user->deepDelete();
+
+            DB()->query('DELETE FROM stu_user_map WHERE user_id='.$user->getId());
+            DB()->query('DELETE FROM stu_user_iptable WHERE user_id='.$user->getId());
+
+            // @todo refactor
+            global $container;
+
+            $container->get(SessionStringRepositoryInterface::class)->truncate((int) $user->getId());
+            $container->get(UserProfileVisitorRepositoryInterface::class)->truncateByUser((int) $user->getId());
+
+            $user->deleteFromDatabase();
         }
     }
 

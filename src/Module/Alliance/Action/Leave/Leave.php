@@ -30,7 +30,7 @@ final class Leave implements ActionControllerInterface
 
         $text = sprintf(
             'Der Siedler %s hat die Allianz verlassen',
-            $user->getNameWithoutMarkup()
+            $user->getName()
         );
 
         PM::sendPM($userId, $alliance->getFounder()->getUserId(), $text);

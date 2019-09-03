@@ -15,6 +15,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class UpgradeBuilding implements ActionControllerInterface
 {
@@ -27,14 +28,18 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private $buildingFieldAlternativeRepository;
 
+    private $researchedRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
-        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository
+        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,7 +71,12 @@ final class UpgradeBuilding implements ActionControllerInterface
         if ($upgrade->getUpgradeFromBuildingId() != $field->getBuildingId()) {
             return;
         }
-        if (!$user->hasResearched($upgrade->getResearchId())) {
+
+        $researchId = (int) $upgrade->getResearchId();
+        if (
+            $researchId > 0 &&
+            $this->researchedRepository->hasUserFinishedResearch($researchId, $game->getUser()->getId()) === false
+        ) {
             return;
         }
         if ($field->isInConstruction()) {

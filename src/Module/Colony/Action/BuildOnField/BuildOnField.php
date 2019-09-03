@@ -15,6 +15,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class BuildOnField implements ActionControllerInterface
 {
@@ -25,12 +26,16 @@ final class BuildOnField implements ActionControllerInterface
 
     private $buildingFieldAlternativeRepository;
 
+    private $researchedRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository
+        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,8 +63,9 @@ final class BuildOnField implements ActionControllerInterface
         $building = new Building(request::indInt('bid'));
 
         $buildingId = (int) $building->getId();
+        $researchId = (int) $building->getResearchId();
 
-        if (!$user->hasResearched($building->getResearchId())) {
+        if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($researchId, $userId) === false) {
             return;
         }
         if (!in_array($field->getFieldType(), $building->getBuildableFields())) {

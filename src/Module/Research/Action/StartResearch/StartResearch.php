@@ -41,7 +41,7 @@ final class StartResearch implements ActionControllerInterface
         if ($research === null) {
             throw new AccessViolation();
         }
-        $current_research = $game->getUser()->getCurrentResearch();
+        $current_research = $this->researchedRepository->getCurrentResearch($userId);
 
         if ($current_research) {
             $this->researchedRepository->delete($current_research);

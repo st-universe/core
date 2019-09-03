@@ -29,7 +29,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
-        if (User::hashPassword($currentPassword) !== $user->getPassword()) {
+        if (sha1($currentPassword) !== $user->getPassword()) {
             $game->addInformation(_('Das alte Passwort ist falsch'));
             return;
         }
@@ -49,7 +49,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Die eingegebenen Passwörter stimmen nichberein'));
             return;
         }
-        $user->setPassword(User::hashPassword($newPassword));
+        $user->setPassword(sha1($newPassword));
         $user->save();
 
         $game->addInformation(_('Das Passwort wurde geändert'));

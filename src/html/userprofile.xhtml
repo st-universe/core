@@ -15,7 +15,14 @@
 								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id PROFILE/getId" />
 							</td>
 							<td style="text-align: center; width: 47%">
-								<metal:macro metal:use-macro="html/macros.xhtml/render_contactoptions" tal:define="contact PROFILE;userid PROFILE/getId" />
+								<tal:block tal:define="contact USER/getContact/${PROFILE/getId}">
+									<tal:block tal:condition="PROFILE">
+										<span tal:attributes="id handle">
+											<metal:macro tal:define="div handle" metal:use-macro="html/commmacros.xhtml/clmodeview" />
+										</span>
+									</tal:block>
+									<tal:block tal:condition="not:contact" tal:define="divname string:selector_${handle};div handle" metal:use-macro="html/macros.xhtml/contactbutton" />
+								</tal:block>
 							</td>
 							<td style="text-align: center; width: 47%">
 								<metal:macro metal:use-macro="html/macros.xhtml/ignorebutton" tal:define="div string:ignore; userid PROFILE/getId" />
@@ -52,14 +59,14 @@
 				<tr>
 					<td>
 						<div tal:condition="not:PROFILE/getFriends" class="darkbg" style="text-align: center;">Keine</div>
-						<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends" tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime" tal:attributes="src data/getFullAvatarPath; title data/getNameWithoutMarkup" title="runtime" style="width: 55px; height: 55px;" /></a>
+						<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends" tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime" tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getNamep" title="runtime" style="width: 55px; height: 55px;" /></a>
 					</td>
 				</tr>
 			</table>
 		</div>
 		<br style="clear: both;" />
 		<br />
-		<tal:block tal:condition="PROFILE/hasDescription">
+		<tal:block tal:condition="PROFILE/getDescription">
 			<div class="divhead" style="width: 530px;">Beschreibung</div>
 			<div class="divbody" style="width: 530px; word-wrap: break-word;" tal:content="structure nl2br:bbcode2txt:PROFILE/getDescription">DESCRIPTION</div>
 			<br />

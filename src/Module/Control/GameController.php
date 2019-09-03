@@ -15,6 +15,7 @@ use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use UserData;
 
@@ -35,6 +36,8 @@ final class GameController implements GameControllerInterface
     private $db;
 
     private $gameTurnRepository;
+
+    private $researchedRepository;
 
     private $gameInformations = [];
 
@@ -65,7 +68,8 @@ final class GameController implements GameControllerInterface
         DatabaseUserRepositoryInterface $databaseUserRepository,
         ConfigInterface $config,
         DbInterface $db,
-        GameTurnRepositoryInterface $gameTurnRepository
+        GameTurnRepositoryInterface $gameTurnRepository,
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -74,6 +78,7 @@ final class GameController implements GameControllerInterface
         $this->config = $config;
         $this->db = $db;
         $this->gameTurnRepository = $gameTurnRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -183,6 +188,8 @@ final class GameController implements GameControllerInterface
         $this->talPage->setVar('USER', $user);
 
         if ($user !== null) {
+            $this->talPage->setVar('CURRENT_RESEARCH', $this->researchedRepository->getCurrentResearch((int) $user->getId()));
+            $this->talPage->setVar('USER_COLONIES', Colony::getListBy('user_id='.$user->getId().' ORDER BY id'));
             $this->talPage->setVar('PM_NAVLET', PMCategory::getNavletCategories($user->getId()));
         }
 

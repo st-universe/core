@@ -160,10 +160,7 @@ final class ColonyTick implements ColonyTickInterface
             $sum += $obj->getProduction();
         }
 
-        /**
-         * @var false|ResearchedInterface $current_research
-         */
-        $current_research = $colony->getUser()->getCurrentResearch();
+        $current_research = $this->researchedRepository->getCurrentResearch($colony->getUserId());
 
         if ($current_research && $current_research->getActive()) {
             if (isset($production[$current_research->getResearch()->getGoodId()])) {

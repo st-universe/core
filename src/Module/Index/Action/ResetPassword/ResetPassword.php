@@ -38,7 +38,7 @@ final class ResetPassword implements ActionControllerInterface
             throw new InvalidParamException;
         }
         $password = generatePassword();
-        $user->setPassword(User::hashPassword($password));
+        $user->setPassword(sha1($password));
         $user->setPasswordToken('');
         $user->save();
         $game->setView(ShowLostPassword::VIEW_IDENTIFIER);

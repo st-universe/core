@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\WritePm;
 
+use Ignorelist;
 use PM;
 use PMCategory;
 use PMData;
@@ -39,7 +40,7 @@ final class WritePm implements ActionControllerInterface
             $game->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
-        if ($recipient->isOnIgnoreList($userId)) {
+        if (Ignorelist::isOnList($recipient->getId(), $userId)) {
             $game->addInformation("Der Siedler ignoriert Dich");
             return;
         }

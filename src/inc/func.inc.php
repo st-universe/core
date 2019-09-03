@@ -341,7 +341,7 @@ function currentUser(): User {
 	static $currentUser = NULL;
 	if ($currentUser === NULL) {
 		global $_SESSION;
-		$currentUser = User::getById($_SESSION['uid']);
+		$currentUser = ResourceCache()->getUser($_SESSION['uid']);
 	}
 	return $currentUser;
 }

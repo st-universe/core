@@ -40,7 +40,7 @@ final class Signup implements ActionControllerInterface
 
         $text = sprintf(
             'Der Siedler %s hat sich für die Allianz beworben',
-            $user->getNameWithoutMarkup()
+            $user->getName()
         );
         PM::sendPM($userId, $alliance->getFounder()->getUserId(), $text);
         if ($alliance->getSuccessor()) {

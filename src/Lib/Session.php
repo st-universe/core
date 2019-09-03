@@ -108,7 +108,7 @@ final class Session implements SessionInterface
         $this->sessionStringRepository->truncate($result->getId());
 
         if (!$result->getSaveLogin()) {
-            setcookie('sstr', $this->user->getCookieString(), (time() + 86400 * 2));
+            setcookie('sstr', $this->buildCookieString($result), (time() + 86400 * 2));
         }
 
         // Login verzeichnen
@@ -120,6 +120,10 @@ final class Session implements SessionInterface
         $ipTableEntry->setStartDate(new DateTimeImmutable());
 
         $this->userIpTableRepository->save($ipTableEntry);
+    }
+
+    private function buildCookieString(UserData $user): string {
+        return sha1($user->getId().$user->getEMail().$user->getCreationDate());
     }
 
     private function destroySession(): void
@@ -155,7 +159,7 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        if ($result->getCookieString() != $sstr) {
+        if ($this->buildCookieString($result) != $sstr) {
             $this->destroySession();
             return;
         }
