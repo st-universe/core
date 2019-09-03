@@ -142,6 +142,6 @@
 	<img phptal:cache="1d per crew/getId" src="assets/crew/${crew/getRace/getGfxPath}/${crew/getGenderShort}/1_${crew/getType}.png" />
 </metal:block>
 <metal:macro metal:define-macro="userlist_pictures">
-	<img onclick="goToUrl('userprofile.php?uid=${user/getId}')" class="action" tal:repeat="user userlist" tal:attributes="src user/getFullAvatarPath; title bbcode2txt:user/getNamep" height="40" width="40" style="margin: 5px" />
+	<img onclick="goToUrl('userprofile.php?uid=${user/getId}')" class="action" tal:repeat="user userlist" tal:attributes="src user/getFullAvatarPath; title bbcode2txt:user/getName" height="40" width="40" style="margin: 5px" />
 </metal:macro>
 </html>

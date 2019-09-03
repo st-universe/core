@@ -182,9 +182,7 @@ class Contactlist extends ContactlistData {
 		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." WHERE user_id=".intval($userId)." AND recipient=".intval($recipient)." AND mode=".self::CONTACT_FRIEND,1);
 	}
 
-	static public function isHostileContact($userId,$recipient) {
-		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." WHERE user_id=".intval($userId)." AND recipient=".intval($recipient)." AND mode=".self::CONTACT_ENEMY,1);
-	}
+
 
 	/**
 	 */
