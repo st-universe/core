@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use KNPosting;
-
 interface KnCommentInterface
 {
     public function getId(): int;
@@ -28,5 +26,7 @@ interface KnCommentInterface
 
     public function setDate(int $date): KnCommentInterface;
 
-    public function getPosting(): KNPosting;
+    public function getPosting(): KnPostInterface;
+
+    public function setPosting(KnPostInterface $post): KnCommentInterface;
 }

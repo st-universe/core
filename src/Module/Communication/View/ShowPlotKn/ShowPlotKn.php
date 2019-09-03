@@ -11,6 +11,7 @@ use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowPlotKn implements ViewControllerInterface
 {
@@ -21,13 +22,19 @@ final class ShowPlotKn implements ViewControllerInterface
     private $showPlotKnRequest;
 
     private $knTalFactory;
+    /**
+     * @var KnPostRepositoryInterface
+     */
+    private $knPostRepository;
 
     public function __construct(
         ShowPlotKnRequestInterface $showPlotKnRequest,
-        KnTalFactoryInterface $knTalFactory
+        KnTalFactoryInterface $knTalFactory,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->showPlotKnRequest = $showPlotKnRequest;
         $this->knTalFactory = $knTalFactory;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,7 +72,7 @@ final class ShowPlotKn implements ViewControllerInterface
 
         $list = [];
 
-        foreach (KNPosting::getBy(sprintf('WHERE plot_id = %d ORDER BY date DESC LIMIT %d,%d', $plot->getId(), $mark, static::KNLIMITER)) as $post) {
+        foreach ($this->knPostRepository->getByPlot((int) $plot->getId(), $mark, static::KNLIMITER) as $post) {
             $list[] = $this->knTalFactory->createKnPostTal(
                 $post,
                 $user

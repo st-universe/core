@@ -6,6 +6,7 @@ declare(strict_types=0);
 namespace Stu\Module\Communication\Lib;
 
 use RPGPlot;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use User;
 use UserData;
@@ -20,7 +21,7 @@ final class KnPostTal implements KnPostTalInterface
 
     public function __construct(
         KnCommentRepositoryInterface $knCommentRepository,
-        \KNPostingData $post,
+        KnPostInterface $post,
         UserData $currentUser
     ) {
         $this->post = $post;

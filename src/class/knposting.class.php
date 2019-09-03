@@ -99,14 +99,6 @@ class KNPostingData extends BaseTable {
 
 	/**
 	 */
-	public function deleteAuthor() { #{{{
-		$this->setUserName($this->getUser()->getName());
-		$this->setUserId(0);
-		$this->save();
-	} # }}}
-
-	/**
-	 */
 	public function setUserName($value) { # {{{
 		$this->setFieldValue('username',$value,'getUserName');
 	} # }}}
@@ -115,20 +107,6 @@ class KNPostingData extends BaseTable {
 	 */
 	public function getUserName() { # {{{
 		return $this->data['username'];
-	} # }}}
-
-	private $setKNMark = FALSE;
-
-	/**
-	 */
-	public function setSetKNMark($value) { #{{{
-		$this->setKNMark = $value;
-	} # }}}
-
-	/**
-	 */
-	public function getSetKNMark() { #{{{
-		return $this->setKNMark;
 	} # }}}
 
 }
@@ -145,22 +123,6 @@ class KNPosting extends KNPostingData {
 	static function countInstances($qry) {
 		return DB()->query("SELECT COUNT(id) FROM ".self::tablename." WHERE ".$qry,1);
 	}
-
-	static function getByPlotId($plotId) {
-		$ret = array();
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE plot_id=".$plotId." ORDER BY id DESC");
-		while($data = mysqli_fetch_assoc($result)) {
-			$ret[] = new KNPostingData($data);
-		}
-		return $ret;
-	}
-
-	/**
-	 */
-	static function getBy($sql) { #{{{
-		$result = DB()->query("SELECT * FROM ".self::tablename." ".$sql);
-		return self::_getList($result,'KnPostingData');
-	} # }}}
 
 }
 ?>

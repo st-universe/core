@@ -87,15 +87,6 @@ class RPGPlotData extends BaseTable {
 		return $this->postingcount;
 	}
 
-	private $postings = NULL;
-
-	function getPostings() {
-		if ($this->postings === NULL) {
-			$this->postings = KNPosting::getByPlotId($this->getId());
-		}
-		return $this->postings;
-	}
-
 	private $members = NULL;
 
 	function getMembers() {

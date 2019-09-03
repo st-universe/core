@@ -36,6 +36,12 @@ class KnComment implements KnCommentInterface
     /** @Column(type="integer") */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="KnPost")
+     * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $post;
+
     public function getId(): int
     {
         return $this->id;
@@ -101,8 +107,15 @@ class KnComment implements KnCommentInterface
         return $this;
     }
 
-    public function getPosting(): KNPosting
+    public function getPosting(): KnPostInterface
     {
-        return new KNPosting($this->getPostId());
+        return $this->post;
+    }
+
+    public function setPosting(KnPostInterface $post): KnCommentInterface
+    {
+        $this->post = $post;
+
+        return $this;
     }
 }

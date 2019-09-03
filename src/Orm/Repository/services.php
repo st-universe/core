@@ -28,6 +28,7 @@ use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\KnComment;
+use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\ModuleBuildingFunction;
@@ -168,6 +169,11 @@ return [
         ContainerInterface $c
     ): KnCommentRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(KnComment::class);
+    },
+    KnPostRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): KnPostRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(KnPost::class);
     },
     MapBorderTypeRepositoryInterface::class => function (
         ContainerInterface $c

@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Communication\Lib;
 
-use KNPostingData;
+use Stu\Orm\Entity\KnPostInterface;
 use UserData;
 
 interface KnTalFactoryInterface
 {
-    public function createKnPostTal(KNPostingData $post, UserData $user): KnPostTalInterface;
+    public function createKnPostTal(KnPostInterface $post, UserData $user): KnPostTalInterface;
 }

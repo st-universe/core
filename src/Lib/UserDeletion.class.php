@@ -8,12 +8,14 @@ use Contactlist;
 use Crew;
 use Fleet;
 use KNPosting;
+use KNPostingData;
 use PMCategory;
 use RPGPlot;
 use Ship;
 use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -99,8 +101,16 @@ class UserDeletion
 
     public function handleKnPostings()
     {
-        foreach (KNPosting::getBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
-            $obj->deleteAuthor();
+        // @todo refactor
+        global $container;
+
+        $knPostRepo = $container->get(KnPostRepositoryInterface::class);
+
+        foreach ($knPostRepo->getByUser((int) $this->getUser()->getId()) as $key => $obj) {
+            $obj->setUserName($this->getUser()->getName());
+            $obj->setUserId(0);
+
+            $knPostRepo->save($obj);
         }
     }
 

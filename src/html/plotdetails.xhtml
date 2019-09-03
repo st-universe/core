@@ -66,15 +66,15 @@
 					<tr>
 						<th colspan="3">Beiträge zum Plot (<a href="?SHOW_PLOTKN=1&plotid=${PLOT/getId}">Durchblättern</a>)</th>
 					</tr>
-					<tr tal:condition="PLOT/getPostings">
+					<tr tal:condition="POSTS">
 						<td class="darkbg">Beitrags-ID</td>
 						<td class="darkbg">Siedler</td>
 						<td class="darkbg">Datum</td>
 					</tr>
-					<tr tal:condition="not:PLOT/getPostings">
+					<tr tal:condition="not:POSTS">
 						<td colspan="3">Keine Beiträge vorhanden</td>
 					</tr>
-					<tr tal:repeat="post PLOT/getPostings" tal:attributes="class string:row${repeat/post/odd}">
+					<tr tal:repeat="post POSTS" tal:attributes="class string:row${repeat/post/odd}">
 						<td tal:content="post/getId">ID</td>
 						<td tal:content="structure bbcode:post/getUser/getName">Autor</td>
 						<td tal:content="datetime:post/getDate">Datum</td>

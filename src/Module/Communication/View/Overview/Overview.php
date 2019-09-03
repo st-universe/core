@@ -9,6 +9,7 @@ use PMCategory;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -18,12 +19,16 @@ final class Overview implements ViewControllerInterface
 
     private $knTalFactory;
 
+    private $knPostRepository;
+
     public function __construct(
         OverviewRequestInterface $overviewRequest,
-        KnTalFactoryInterface $knTalFactory
+        KnTalFactoryInterface $knTalFactory,
+        KnPostRepositoryInterface $knPostRepository
     ) {
         $this->overviewRequest = $overviewRequest;
         $this->knTalFactory = $knTalFactory;
+        $this->knPostRepository = $knPostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,7 +74,7 @@ final class Overview implements ViewControllerInterface
         }
 
         $list = [];
-        foreach (KNPosting::getBy(sprintf('ORDER BY date DESC LIMIT %d,%d', $this->overviewRequest->getKnOffset(), static::KNLIMITER)) as $post) {
+        foreach ($this->knPostRepository->getBy($this->overviewRequest->getKnOffset(), static::KNLIMITER) as $post) {
             $list[] = $this->knTalFactory->createKnPostTal($post, $user);
         }
 

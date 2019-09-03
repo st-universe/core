@@ -7,10 +7,12 @@ namespace Stu\Module\Maindesk\View\Overview;
 use ColonyShipQueue;
 use ContactlistData;
 use KNPosting;
+use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use User;
 
@@ -22,20 +24,34 @@ final class Overview implements ViewControllerInterface
 
     private $userProfileVisitorRepository;
 
+    private $knPostRepository;
+
+    private $knTalFactory;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository
+        UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
+        KnPostRepositoryInterface $knPostRepository,
+        KnTalFactoryInterface $knTalFactory
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
+        $this->knPostRepository = $knPostRepository;
+        $this->knTalFactory = $knTalFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
+
+        $list = [];
+
+        foreach ($this->knPostRepository->getNewerThenMark((int) $user->getKNMark()) as $post) {
+            $list[] = $this->knTalFactory->createKnPostTal($post, $user);
+        }
 
         $game->appendNavigationPart(
             'maindesk.php',
@@ -48,10 +64,7 @@ final class Overview implements ViewControllerInterface
             'DISPLAY_FIRST_COLONY_DIALOGUE',
             (int)$user->getActive() === 1
         );
-        $game->setTemplateVar(
-            'NEW_KN_POSTINGS',
-            KNPosting::getBy("WHERE id>" . $user->getKnMark() . " LIMIT 3")
-        );
+        $game->setTemplateVar('NEW_KN_POSTINGS', $list);
         $game->setTemplateVar(
             'NEW_KN_POSTING_COUNT',
             KNPosting::countInstances('id>' . $user->getKnMark())
