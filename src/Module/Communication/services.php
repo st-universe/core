@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
+use Stu\Module\Communication\Lib\KnTalFactory;
+use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
@@ -130,6 +132,7 @@ use Stu\Module\Communication\View\ShowWriteQuickPm\ShowWriteQuickPmRequestInterf
 use function DI\autowire;
 
 return [
+    KnTalFactoryInterface::class => autowire(KnTalFactory::class),
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
     SetKnMarkRequestInterface::class => autowire(SetKnMarkRequest::class),
     ShowWriteQuickPmRequestInterface::class => autowire(ShowWriteQuickPmRequest::class),

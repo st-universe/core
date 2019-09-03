@@ -6,7 +6,7 @@ namespace Stu\Module\Communication\View\Overview;
 
 use KNPosting;
 use PMCategory;
-use Stu\Module\Communication\Lib\KnPostTal;
+use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -16,15 +16,20 @@ final class Overview implements ViewControllerInterface
 
     private $overviewRequest;
 
+    private $knTalFactory;
+
     public function __construct(
-        OverviewRequestInterface $overviewRequest
+        OverviewRequestInterface $overviewRequest,
+        KnTalFactoryInterface $knTalFactory
     ) {
         $this->overviewRequest = $overviewRequest;
+        $this->knTalFactory = $knTalFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userKnMark = $game->getUser()->getKNMark();
+        $user = $game->getUser();
+        $userKnMark = $user->getKNMark();
 
         $newKnPostCount = KNPosting::countInstances(sprintf('id > %d', $userKnMark));
         $knPostCount = KNPosting::countInstances('1=1');
@@ -65,10 +70,7 @@ final class Overview implements ViewControllerInterface
 
         $list = [];
         foreach (KNPosting::getBy(sprintf('ORDER BY date DESC LIMIT %d,%d', $this->overviewRequest->getKnOffset(), static::KNLIMITER)) as $post) {
-            $list[] = new KnPostTal(
-                $post,
-                $game->getUser()
-            );
+            $list[] = $this->knTalFactory->createKnPostTal($post, $user);
         }
 
         $game->setPageTitle(_('Kommunikationsnetzwerk'));

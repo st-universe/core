@@ -46,7 +46,7 @@ final class AddKnPlotMember implements ActionControllerInterface
         PM::sendPM(
             $game->getUser()->getId(),
             $recipient->getId(),
-            sprintf(_('Du wurdest dem RPG-Plot \'%s\' als Schreiber hinzugefügt'), $plot->getTitleDecoded())
+            sprintf(_('Du wurdest dem RPG-Plot \'%s\' als Schreiber hinzugefügt'), $plot->getTitle())
         );
 
         $game->addInformation(_('Der Spieler wurde hinzugefügt'));

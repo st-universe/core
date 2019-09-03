@@ -10,18 +10,22 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use User;
 use UserData;
 
-final class KnPostTal
+final class KnPostTal implements KnPostTalInterface
 {
+    private $knCommentRepository;
+
     private $post;
 
     private $currentUser;
 
     public function __construct(
+        KnCommentRepositoryInterface $knCommentRepository,
         \KNPostingData $post,
         UserData $currentUser
     ) {
         $this->post = $post;
         $this->currentUser = $currentUser;
+        $this->knCommentRepository = $knCommentRepository;
     }
 
     public function getId(): int
@@ -76,10 +80,7 @@ final class KnPostTal
 
     public function getCommentCount(): int
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(KnCommentRepositoryInterface::class)->getAmountByPost((int)$this->getId());
+        return $this->knCommentRepository->getAmountByPost((int)$this->getId());
     }
 
     public function displayUserLinks(): bool

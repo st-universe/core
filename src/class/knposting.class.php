@@ -20,13 +20,6 @@ class KNPostingData extends BaseTable {
 		return $this->data['id'];
 	}
 
-	function getUser() {
-		if ($this->user === NULL) {
-			$this->user = new User($this->data['user_id']);
-		}
-		return $this->user;
-	}
-
 	function getUserId() {
 		return $this->data['user_id'];
 	}
@@ -34,10 +27,6 @@ class KNPostingData extends BaseTable {
 	function setUserId($value) {
 		$this->data['user_id'] = $value;
 		$this->addUpdateField('user_id','getUserId');
-	}
-
-	public function hasUser() {
-		return $this->getUserId() > 0;
 	}
 
 	function getTitle() {
@@ -76,14 +65,6 @@ class KNPostingData extends BaseTable {
 		$this->addUpdateField('lastedit','getEditDate');
 	}
 
-	function hasEdit() {
-		return $this->getEditDate()>0;
-	}
-
-	function isEditAble() {
-		return $this->getDate()>time()-600 && $this->getUserId() == currentUser()->getId();
-	}
-
 	function getPlotId() {
 		return $this->data['plot_id'];
 	}
@@ -91,10 +72,6 @@ class KNPostingData extends BaseTable {
 	function setPlotId($value) {
 		$this->data['plot_id'] = $value;
 		$this->addUpdateField('plot_id','getPlotId');
-	}
-
-	function hasPlot() {
-		return $this->getPlotId() > 0;
 	}
 
 	private $rpgplot = NULL;
@@ -105,17 +82,6 @@ class KNPostingData extends BaseTable {
 		}
 		return $this->rpgplot;
 	}
-
-	private $commentCount = NULL;
-	
-	/**
-	 */
-	public function getCommentCount(): int { #{{{
-		// @todo refactor
-		global $container;
-
-		return $container->get(KnCommentRepositoryInterface::class)->getAmountByPost((int) $this->getId());
-	} # }}}
 
 	private $comments = NULL;
 
@@ -129,12 +95,6 @@ class KNPostingData extends BaseTable {
 			$this->comments = $container->get(KnCommentRepositoryInterface::class)->getByPost((int) $this->getId());
 		}
 		return $this->comments;
-	} # }}}
-
-	/**
-	 */
-	public function displayUserLinks() { #{{{
-		return $this->hasUser() && !$this->getUser()->isCurrentUser();
 	} # }}}
 
 	/**
@@ -155,12 +115,6 @@ class KNPostingData extends BaseTable {
 	 */
 	public function getUserName() { # {{{
 		return $this->data['username'];
-	} # }}}
-
-	/**
-	 */
-	public function isNewerThanMark() { #{{{
-		return $this->getId() > currentUser()->getKNMark();
 	} # }}}
 
 	private $setKNMark = FALSE;

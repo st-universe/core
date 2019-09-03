@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\View\ShowPlotKn;
 use KNPosting;
 use PMCategory;
 use RPGPlot;
+use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
@@ -19,14 +20,20 @@ final class ShowPlotKn implements ViewControllerInterface
 
     private $showPlotKnRequest;
 
+    private $knTalFactory;
+
     public function __construct(
-        ShowPlotKnRequestInterface $showPlotKnRequest
+        ShowPlotKnRequestInterface $showPlotKnRequest,
+        KnTalFactoryInterface $knTalFactory
     ) {
         $this->showPlotKnRequest = $showPlotKnRequest;
+        $this->knTalFactory = $knTalFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $user = $game->getUser();
+
         $plot = new RPGPlot($this->showPlotKnRequest->getPlotId());
         $mark = $this->showPlotKnRequest->getKnOffset();
 
@@ -56,30 +63,29 @@ final class ShowPlotKn implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
         }
 
+        $list = [];
+
+        foreach (KNPosting::getBy(sprintf('WHERE plot_id = %d ORDER BY date DESC LIMIT %d,%d', $plot->getId(), $mark, static::KNLIMITER)) as $post) {
+            $list[] = $this->knTalFactory->createKnPostTal(
+                $post,
+                $user
+            );
+        }
+
         $game->setTemplateFile('html/plotkn.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart('comm.php?SHOW_PLOTLIST=1', _('Plots'));
         $game->appendNavigationPart(
             sprintf('comm.php?%s=1&plotid=%s', ShowKnPlot::VIEW_IDENTIFIER, $plot->getId()),
-            $plot->getTitleDecoded()
+            $plot->getTitle()
         );
         $game->appendNavigationPart(
             sprintf('comm.php?%s=1&plotid=%s', static::VIEW_IDENTIFIER, $plot->getId()),
             _('Beiträge')
         );
-        $game->setPageTitle("Plot: " . $plot->getTitleDecoded());
+        $game->setPageTitle("Plot: " . $plot->getTitle());
 
-        $game->setTemplateVar(
-            'KN_POSTINGS',
-            KNPosting::getBy(
-                sprintf(
-                    'WHERE plot_id = %d ORDER BY date DESC LIMIT %d,%d',
-                    $plot->getId(),
-                    $mark,
-                    static::KNLIMITER
-                )
-            )
-        );
+        $game->setTemplateVar('KN_POSTINGS', $list);
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($game->getUser()->getId()));
