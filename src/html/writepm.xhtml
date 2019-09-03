@@ -16,7 +16,7 @@
 							Siedler-ID <input type="text" name="recipient" style="width: 50px;" tal:attributes="value RECIPIENT_ID" />
 							<select name="recid" onchange="updateRecipient();">
 								<option value="0">------------------</option>
-								<option tal:repeat="contact CONTACT_LIST" tal:attributes="value contact/getRecipient/getId" tal:content="contact/getRecipient/getNameWithoutMarkup">NAME</option>
+								<option tal:repeat="contact CONTACT_LIST" tal:attributes="value contact/getRecipient/getId" tal:content="bbcode2txt:contact/getRecipient/getName">NAME</option>
 							</select>	
 						</td>
 						<td tal:condition="REPLY">
