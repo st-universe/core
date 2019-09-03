@@ -38,6 +38,7 @@ use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\ShipRumpColonizationBuilding;
 use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
@@ -216,6 +217,11 @@ return [
         ContainerInterface $c
     ): ShipStorageRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipStorage::class);
+    },
+    ShipRumpColonizationBuildingRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipRumpColonizationBuildingRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpColonizationBuilding::class);
     },
     ShipRumpRoleRepositoryInterface::class => function (
         ContainerInterface $c

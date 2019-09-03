@@ -8,12 +8,12 @@ use Building;
 use Colfields;
 use Colony;
 use request;
-use RumpColonizeBuilding;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 
 final class Colonize implements ActionControllerInterface
 {
@@ -21,10 +21,14 @@ final class Colonize implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRumpColonizationBuildingRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -73,7 +77,12 @@ final class Colonize implements ActionControllerInterface
             }
         }
         $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
-        $base_building = RumpColonizeBuilding::getByRump($ship->getRump()->getId());
+
+        $base_building = $this->shipRumpColonizationBuildingRepository->findByShipRump((int) $ship->getRumpId());
+        if ($base_building === null) {
+            return;
+        }
+
         $colony->colonize($userId, new Building($base_building->getBuildingId()), $field);
         $ship->deactivateTraktorBeam();
         $ship->changeFleetLeader();
