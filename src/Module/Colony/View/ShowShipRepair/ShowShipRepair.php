@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
 use Colfields;
-use RumpBuildingFunction;
+use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShowShipRepair implements ViewControllerInterface
 {
@@ -19,12 +20,16 @@ final class ShowShipRepair implements ViewControllerInterface
 
     private $showShipRepairRequest;
 
+    private $shipRumpBuildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowShipRepairRequestInterface $showShipRepairRequest
+        ShowShipRepairRequestInterface $showShipRepairRequest,
+        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showShipRepairRequest = $showShipRepairRequest;
+        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,11 +50,12 @@ final class ShowShipRepair implements ViewControllerInterface
 
             $repairableShips = [];
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
+                /** @var Ship $ship */
                 foreach ($fleet['ships'] as $ship_id => $ship) {
                     if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
                         continue;
                     }
-                    foreach (RumpBuildingFunction::getByRumpId($ship->getRumpId()) as $rump_rel) {
+                    foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
                         if ($field->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
                             $repairableShips[$ship->getId()] = $ship;
                             break;

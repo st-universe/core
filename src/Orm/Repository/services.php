@@ -44,6 +44,7 @@ use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
 use Stu\Orm\Entity\ShipRumpCost;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
@@ -253,10 +254,10 @@ return [
     ): SessionStringRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
     },
-    ShipStorageRepositoryInterface::class => function (
+    ShipRumpBuildingFunctionRepositoryInterface::class => function (
         ContainerInterface $c
-    ): ShipStorageRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ShipStorage::class);
+    ): ShipRumpBuildingFunctionRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class);
     },
     ShipRumpColonizationBuildingRepositoryInterface::class => function (
         ContainerInterface $c
@@ -287,6 +288,11 @@ return [
         ContainerInterface $c
     ): ShipRumpUserRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpUser::class);
+    },
+    ShipStorageRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipStorageRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipStorage::class);
     },
     StarSystemTypeRepositoryInterface::class => function (
         ContainerInterface $c

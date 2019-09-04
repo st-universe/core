@@ -9,7 +9,6 @@ use ColonyShipQueueData;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
-use RumpBuildingFunction;
 use ShipBuildplans;
 use ShipBuildplansData;
 use Shiprump;
@@ -18,6 +17,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
 {
@@ -28,12 +28,16 @@ final class BuildShip implements ActionControllerInterface
 
     private $buildplanModuleRepository;
 
+    private $shipRumpBuildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
+        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +53,7 @@ final class BuildShip implements ActionControllerInterface
         $rump = new Shiprump(request::indInt('rump'));
 
         $buildung_function = null;
-        foreach (RumpBuildingFunction::getByRumpId($rump->getId()) as $bfunc) {
+        foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $rump->getId()) as $bfunc) {
             if ($colony->hasActiveBuildingWithFunction($bfunc->getBuildingFunction())) {
                 $building_function = $bfunc;
             }

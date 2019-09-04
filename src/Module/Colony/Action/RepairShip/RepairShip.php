@@ -6,13 +6,13 @@ namespace Stu\Module\Colony\Action\RepairShip;
 
 use Colfields;
 use request;
-use RumpBuildingFunction;
 use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
 {
@@ -23,12 +23,16 @@ final class RepairShip implements ActionControllerInterface
 
     private $colonyShipRepairRepository;
 
+    private $shipRumpBuildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
+        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
+        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,7 +62,7 @@ final class RepairShip implements ActionControllerInterface
                 if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
                     continue;
                 }
-                foreach (RumpBuildingFunction::getByRumpId($ship->getRumpId()) as $rump_rel) {
+                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRumpId()) as $rump_rel) {
                     if ($field->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
                         $repairableShiplist[$ship->getId()] = $ship;
                         break;
