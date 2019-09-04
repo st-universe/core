@@ -74,16 +74,15 @@
 		<div style="width: 530px;">
 			<table class="tcal">
 				<tr>
-					<th colspan="2">Plots</th>
+					<th>Plots</th>
 				</tr>
 				<tr tal:condition="not:RPG_PLOTS">
-					<td colspan="2">Keine</td>
+					<td>Keine</td>
 				</tr>
 				<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data RPG_PLOTS">
 					<td>
-						<a href="comm.php?SHOW_PLOT=1&plotid=${data/getId}" tal:content="structure data/getTitle">NAME</a>
+						<a href="comm.php?SHOW_PLOT=1&plotid=${data/getId}" tal:content="structure data/getRpgPlot/getTitle">NAME</a>
 					</td>
-					<td><span tal:replace="data/getPostingCount">COUNT</span> Beiträge</td>
 				</tr>
 			</table>
 		</div>
