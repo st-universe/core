@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildPlans;
 
-use BuildingFunctions;
 use ColonyMenu;
 use ShipBuildplans;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 
 final class ShowBuildPlans implements ViewControllerInterface
 {
@@ -22,14 +22,18 @@ final class ShowBuildPlans implements ViewControllerInterface
 
     private $showBuildPlansRequest;
 
+    private $buildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowBuildPlansRequestInterface $showBuildPlansRequest
+        ShowBuildPlansRequestInterface $showBuildPlansRequest,
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showBuildPlansRequest = $showBuildPlansRequest;
+        $this->buildingFunctionRepository = $buildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,7 +47,9 @@ final class ShowBuildPlans implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $buildingFunction = new BuildingFunctions($this->showBuildPlansRequest->getBuildingFunctionId());
+        $buildingFunction = $this->buildingFunctionRepository->find(
+            $this->showBuildPlansRequest->getBuildingFunctionId()
+        );
 
         $game->showMacro('html/colonymacros.xhtml/cm_buildplans');
 

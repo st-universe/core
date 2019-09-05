@@ -1019,7 +1019,7 @@
 							</div>
 							<br /><br />
 							<div class="fabutton" tal:condition="FIELD/getBuilding/isShipyard">
-								<a href="javascript:void(0)" onclick="switchColonyMenu(8,${FIELD/getBuilding/isShipyard});cClick();" class="fabutton" i18n:translate="">Schiffbau</a>
+								<a href="javascript:void(0)" onclick="switchColonyMenu(8,${FIELD/getBuilding/isShipyard/getId});cClick();" class="fabutton" i18n:translate="">Schiffbau</a>
 							</div>
 							<div class="fabutton" tal:condition="FIELD/getBuilding/isShipyard">
 								<a href="colony.php?id=${COLONY/getId}&SHOW_SHIP_REPAIR=1&fid=${FIELD/getFieldId}" class="fabutton" i18n:translate="">Schiffreparatur</a>
@@ -1028,7 +1028,7 @@
 								<a href="javascript:void(0)" onclick="switchColonyMenu(6);cClick();" class="fabutton" i18n:translate="">Hangar</a>
 							</div>
 							<div class="fabutton" tal:condition="FIELD/getBuilding/isModuleFab">
-								<a href="javascript:void(0)" onclick="switchColonyMenu(7,${FIELD/getBuilding/isModuleFab});cClick();" class="fabutton" i18n:translate="">Modulherstellung</a>
+								<a href="javascript:void(0)" onclick="switchColonyMenu(7,${FIELD/getBuilding/isModuleFab/getId});cClick();" class="fabutton" i18n:translate="">Modulherstellung</a>
 							</div>
 							<div class="fabutton" tal:condition="FIELD/getBuilding/isFighterShipyard">
 								<a href="javascript:void(0)" onclick="switchColonyMenu(10);cClick();" class="fabutton" i18n:translate="">Schiffbau</a>

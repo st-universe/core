@@ -1,9 +1,12 @@
 <?php
 
+use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingCostInterface;
+use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingGoodInterface;
 use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 use Stu\Orm\Repository\BuildingCostRepositoryInterface;
+use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
@@ -172,20 +175,38 @@ class BuildingData extends BaseTable {
 
 	private $functions = NULL;
 
-	public function getFunctions() {
+	/**
+	 * @return BuildingFunctionInterface[]
+	 */
+	public function getFunctions(): array {
 		if ($this->functions === NULL) {
-			$this->functions = BuildingFunctions::getByBuilding($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->functions = $container->get(BuildingFunctionRepositoryInterface::class)->getByBuilding((int) $this->getId());
 		}
 		return $this->functions;
 	}
 
+	private $functionList;
+
+	private function getFunctionList(): array
+	{
+		if ($this->functionList === null) {
+			$this->functionList = [];
+			foreach ($this->getFunctions() as $function) {
+				$this->functionList[$function->getFunction()] = $function;
+			}
+		}
+		return $this->functionList;
+	}
+
 	public function hasFunction($func) {
-		return array_key_exists($func,$this->getFunctions());
+		return array_key_exists($func,$this->getFunctionList());
 	}
 
 	public function getFunction($func) {
-		$arr = &$this->getFunctions();
-		return $arr[$func];
+		return $this->getFunctionList()[$func];
 	}
 
 	public function isColonyCentral() {
@@ -197,9 +218,9 @@ class BuildingData extends BaseTable {
 	}
 
 	public function isShipyard() {
-		foreach (BuildingFunctions::getByBuilding($this->getId()) as $key => $func) {
-			if ($func->isShipyard()) {
-				return $func->getId();
+		foreach ($this->getFunctions() as $func) {
+			if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
+				return $func;
 			}
 		}
 		return FALSE;
@@ -208,8 +229,7 @@ class BuildingData extends BaseTable {
 	/**
 	 */
 	public function postDeactivation(ColonyData $colony) { #{{{
-		if (($func_id=$this->isShipyard())) {
-			$func = new BuildingFunctions($func_id);
+		if (($func=$this->isShipyard())) {
 			ColonyShipQueue::stopBuildProcess($colony->getId(),$func->getFunction());
 		}
 	} # }}}
@@ -217,8 +237,7 @@ class BuildingData extends BaseTable {
 	/**
 	 */
 	public function postActivation(ColonyData $colony) { #{{{
-		if (($func_id=$this->isShipyard())) {
-			$func = new BuildingFunctions($func_id);
+		if (($func=$this->isShipyard())) {
 			ColonyShipQueue::restartBuildProcess($colony->getId(),$func->getFunction());
 		}
 	} # }}}
@@ -238,8 +257,8 @@ class BuildingData extends BaseTable {
 	/**
 	 */
 	public function isModuleFab() { #{{{
-		foreach (BuildingFunctions::getByBuilding($this->getId()) as $key => $func) {
-			if ($func->isModuleFab()) {
+		foreach ($this->getFunctions() as $func) {
+			if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
 				return $func->getId();
 			}
 		}
@@ -282,8 +301,7 @@ class BuildingData extends BaseTable {
 		if ($this->isAcademy()) {
 			CrewTraining::truncate('WHERE colony_id='.$colony_id);
 		}
-		if (($func_id=$this->isShipyard())) {
-			$func = new BuildingFunctions($func_id);
+		if (($func=$this->isShipyard())) {
 			ColonyShipQueue::truncate('WHERE colony_id='.$colony_id.' AND building_function_id='.$func->getFunction());
 		}
 	} # }}}

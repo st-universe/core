@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
-use BuildingFunctions;
 use ColonyMenu;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
@@ -22,14 +22,18 @@ final class ShowModuleFab implements ViewControllerInterface
 
     private $moduleBuildingFunctionRepository;
 
+    private $buildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowModuleFabRequestInterface $showModuleFabRequest,
-        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository
+        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleFabRequest = $showModuleFabRequest;
         $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
+        $this->buildingFunctionRepository = $buildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,7 +45,7 @@ final class ShowModuleFab implements ViewControllerInterface
             $userId
         );
 
-        $func = new BuildingFunctions(request::getIntFatal('func'));
+        $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
         $modules = $this->moduleBuildingFunctionRepository->getByBuildingFunctionAndUser(
             (int) $func->getFunction(),
             $userId

@@ -11,6 +11,7 @@ use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
+use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingGood;
 use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\BuildingUpgradeCost;
@@ -89,6 +90,11 @@ return [
         ContainerInterface $c
     ): BuildingFieldAlternativeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(BuildingFieldAlternative::class);
+    },
+    BuildingFunctionRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BuildingFunctionRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(BuildingFunction::class);
     },
     BuildingGoodRepositoryInterface::class => function (
         ContainerInterface $c

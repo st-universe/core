@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
-use BuildingFunctions;
 use Colfields;
 use Colony;
 use request;
+use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
+use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 
 final class SwitchColonyMenu implements ActionControllerInterface
 {
@@ -21,11 +22,17 @@ final class SwitchColonyMenu implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
 
     private $colonyLoader;
+    /**
+     * @var BuildingFunctionRepositoryInterface
+     */
+    private $buildingFunctionRepository;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->buildingFunctionRepository = $buildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,14 +60,14 @@ final class SwitchColonyMenu implements ActionControllerInterface
             case MENU_SHIPYARD:
                 if ($colony->hasShipyard()) {
                     $game->setView(ShowShipyard::VIEW_IDENTIFIER);
-                    $func = new BuildingFunctions(request::getIntFatal('func'));
+                    $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
             case MENU_BUILDPLANS:
                 if ($colony->hasShipyard()) {
-                    $game->setView("SHOW_BUILDPLANS");
-                    $func = new BuildingFunctions(request::getIntFatal('func'));
+                    $game->setView(ShowBuildPlans::VIEW_IDENTIFIER);
+                    $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }

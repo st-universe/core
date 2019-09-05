@@ -2,6 +2,7 @@
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
+use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
@@ -792,13 +793,15 @@ class ColonyData extends BaseTable {
 	/**
 	 */
 	public function hasModuleFab() { #{{{
-		return count(Colfields::getFieldsByBuildingFunction($this->getId(),BuildingFunctions::getModuleFabOptions())) > 0;
+		return count(Colfields::getFieldsByBuildingFunction($this->getId(),
+				BuildingFunctionTypeEnum::getModuleFabOptions())) > 0;
 	} # }}}
 
 	/**
 	 */
 	public function hasShipyard() { #{{{
-		return count(Colfields::getFieldsByBuildingFunction($this->getId(),BuildingFunctions::getShipyardOptions())) > 0;
+		return count(Colfields::getFieldsByBuildingFunction($this->getId(),
+				BuildingFunctionTypeEnum::getShipyardOptions())) > 0;
 	} # }}}
 	
 	private $has_active_building_by_function = array();

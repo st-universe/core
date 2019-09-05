@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipyard;
 
-use BuildingFunctions;
 use ColonyMenu;
 use Shiprump;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 
 final class ShowShipyard implements ViewControllerInterface
 {
@@ -19,12 +19,16 @@ final class ShowShipyard implements ViewControllerInterface
 
     private $showShipyardRequest;
 
+    private $buildingFunctionRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowShipyardRequestInterface $showShipyardRequest
+        ShowShipyardRequestInterface $showShipyardRequest,
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showShipyardRequest = $showShipyardRequest;
+        $this->buildingFunctionRepository = $buildingFunctionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,7 +40,9 @@ final class ShowShipyard implements ViewControllerInterface
             $userId
         );
 
-        $function = new BuildingFunctions($this->showShipyardRequest->getBuildingFunctionId());
+        $function = $this->buildingFunctionRepository->find(
+            $this->showShipyardRequest->getBuildingFunctionId()
+        );
         $buildableShips = Shiprump::getBuildableRumpsByBuildingFunction($userId, $function->getFunction());
 
         $game->showMacro('html/colonymacros.xhtml/cm_shipyard');
