@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Colony;
-use CrewTraining;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class ColonyTickManager implements ColonyTickManagerInterface
 {
@@ -19,14 +19,18 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private $crewCreator;
 
+    private $crewTrainingRepository;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        CrewCreatorInterface $crewCreator
+        CrewCreatorInterface $crewCreator,
+        CrewTrainingRepositoryInterface $crewTrainingRepository
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->crewCreator = $crewCreator;
+        $this->crewTrainingRepository = $crewTrainingRepository;
     }
 
     public function work(int $tickId): void
@@ -51,7 +55,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
     private function proceedCrewTraining(int $tickId): void
     {
         $user = array();
-        foreach (CrewTraining::getObjectsBy('WHERE colony_id IN (SELECT id from stu_colonies WHERE user_id IN (SELECT id from stu_user WHERE user_id!=' . USER_NOONE . ' AND tick=' . $tickId . '))') as $obj) {
+        foreach ($this->crewTrainingRepository->getByTick($tickId) as $obj) {
             if (!isset($user[$obj->getUserId()])) {
                 $user[$obj->getUserId()] = 0;
             }
@@ -65,7 +69,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
                 continue;
             }
             $this->crewCreator->create((int) $obj->getUserId());
-            $obj->deleteFromDatabase();
+
+            $this->crewTrainingRepository->delete($obj);
             $user[$obj->getUserId()]++;
         }
     }

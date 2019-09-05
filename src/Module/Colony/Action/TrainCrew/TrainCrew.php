@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\TrainCrew;
 
-use CrewTrainingData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class TrainCrew implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_TRAIN_CREW';
 
     private $colonyLoader;
 
+    private $crewTrainingRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        CrewTrainingRepositoryInterface $crewTrainingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->crewTrainingRepository = $crewTrainingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,10 +73,12 @@ final class TrainCrew implements ActionControllerInterface
         $i = 0;
         while ($i < $count) {
             $i++;
-            $crew = new CrewTrainingData();
-            $crew->setUserId($userId);
-            $crew->setColonyId($colony->getId());
-            $crew->save();
+            $crew = $this->crewTrainingRepository->prototype();
+
+            $crew->setUserId((int) $userId);
+            $crew->setColonyId((int) $colony->getId());
+
+            $this->crewTrainingRepository->save($crew);
         }
         $colony->lowerWorkless($count);
         $colony->save();

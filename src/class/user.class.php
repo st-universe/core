@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Lib\ContactlistWrapper;
+use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 class UserData extends BaseTable {
 
@@ -352,8 +353,10 @@ class UserData extends BaseTable {
 	 */
 	public function getInTrainingCrewCount() { #{{{
 		if ($this->crew_in_training === NULL) {
-			$this->crew_in_training = CrewTraining::countInstances('WHERE user_id='.$this->getId());
+			// @todo refactor
+			global $container;
 
+			$this->crew_in_training = $container->get(CrewTrainingRepositoryInterface::class)->getCountByUser((int) $this->getId());
 		}
 		return $this->crew_in_training;
 	} # }}}

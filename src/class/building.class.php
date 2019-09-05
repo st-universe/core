@@ -8,6 +8,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 use Stu\Orm\Repository\BuildingCostRepositoryInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
 class BuildingData extends BaseTable {
@@ -299,7 +300,10 @@ class BuildingData extends BaseTable {
 	public function onDestruction($colony_id) { #{{{
 		// XXX we need a registry in here
 		if ($this->isAcademy()) {
-			CrewTraining::truncate('WHERE colony_id='.$colony_id);
+			// @todo refactor
+			global $container;
+
+			$container->get(CrewTrainingRepositoryInterface::class)->truncateByColony((int) $colony_id);
 		}
 		if (($func=$this->isShipyard())) {
 			ColonyShipQueue::truncate('WHERE colony_id='.$colony_id.' AND building_function_id='.$func->getFunction());

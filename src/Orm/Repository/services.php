@@ -21,6 +21,7 @@ use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\CrewRace;
+use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
@@ -131,15 +132,20 @@ return [
     ): CommodityRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Commodity::class);
     },
+    ColonyShipRepairRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonyShipRepairRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
+    },
     CrewRaceRepositoryInterface::class => function (
         ContainerInterface $c
     ): CrewRaceRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class);
     },
-    ColonyShipRepairRepositoryInterface::class => function (
+    CrewTrainingRepositoryInterface::class => function (
         ContainerInterface $c
-    ): ColonyShipRepairRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
+    ): CrewTrainingRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(CrewTraining::class);
     },
     DatabaseCategoryRepositoryInterface::class => function (
         ContainerInterface $c
