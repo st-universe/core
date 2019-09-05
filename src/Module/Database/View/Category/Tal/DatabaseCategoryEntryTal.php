@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\Category\Tal;
 
 use Ship;
-use StarSystem;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\DatabaseUserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use UserData;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
@@ -19,14 +19,18 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
 
     private $user;
 
+    private $starSystemRepository;
+
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,
         DatabaseEntryInterface $databaseEntry,
-        UserData $user
+        UserData $user,
+        StarSystemRepositoryInterface $starSystemRepository
     ) {
         $this->databaseEntry = $databaseEntry;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->user = $user;
+        $this->starSystemRepository = $starSystemRepository;
     }
 
     private $wasEntryDiscovered;
@@ -44,7 +48,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     {
         switch ($this->databaseEntry->getCategory()->getId()) {
             case DATABASE_CATEGORY_STARSYSTEM:
-                return new StarSystem($this->databaseEntry->getObjectId());
+                return $this->starSystemRepository->find($this->databaseEntry->getObjectId());
                 break;
             case DATABASE_CATEGORY_TRADEPOST:
                 return new Ship($this->databaseEntry->getObjectId());

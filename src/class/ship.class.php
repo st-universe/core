@@ -10,6 +10,7 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
 
@@ -324,7 +325,10 @@ class ShipData extends BaseTable {
 
 	function getSystem() {
 		if ($this->system === NULL) {
-			$this->system = new StarSystem($this->getSystemsId());
+			// @todo refactor
+			global $container;
+
+			$this->system = $container->get(StarSystemRepositoryInterface::class)->find((int) $this->getSystemsId());
 		}
 		return $this->system;
 	}
@@ -555,7 +559,13 @@ class ShipData extends BaseTable {
 			return FALSE;
 		}
 		if ($this->system === NULL) {
-			$this->system = StarSystem::getSystemByCoords($this->getCX(),$this->getCY());
+			// @todo refactor
+			global $container;
+
+			$this->system = $container->get(StarSystemRepositoryInterface::class)->getByCoordinates(
+				(int) $this->getCX(),
+				(int) $this->getCY()
+			);
 		}
 		return $this->system;
 	}

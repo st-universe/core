@@ -8,6 +8,7 @@ use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
 
 class ColonyData extends BaseTable {
@@ -215,7 +216,10 @@ class ColonyData extends BaseTable {
 
 	function getSystem() {
 		if ($this->system === NULL) {
-			$this->system = new StarSystem($this->getSystemsId());
+			// @todo refactor
+			global $container;
+
+			$this->system = $container->get(StarSystemRepositoryInterface::class)->find((int) $this->getSystemsId());
 		}
 		return $this->system;
 	}
@@ -619,7 +623,7 @@ class ColonyData extends BaseTable {
 	public function updateColonySurface() {
 		if (!$this->getMask()) {
 			$generator = new PlanetGenerator();
-			$surface = $generator->generateColony($this->getColonyClass(),$this->getSystem()->getBonusFields());
+			$surface = $generator->generateColony($this->getColonyClass(),$this->getSystem()->getBonusFieldAmount());
 			$this->setMask(base64_encode(serialize($surface)));
 			$this->save();
 		}

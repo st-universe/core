@@ -260,7 +260,7 @@ class BuildingData extends BaseTable {
 	public function isModuleFab() { #{{{
 		foreach ($this->getFunctions() as $func) {
 			if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
-				return $func->getId();
+				return $func;
 			}
 		}
 		return FALSE;

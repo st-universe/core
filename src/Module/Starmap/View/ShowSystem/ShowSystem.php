@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\View\ShowSystem;
 
 use AccessViolation;
-use StarSystem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use YRow;
 
 final class ShowSystem implements ViewControllerInterface
@@ -16,10 +16,14 @@ final class ShowSystem implements ViewControllerInterface
 
     private $showSystemRequest;
 
+    private $starSystemRepository;
+
     public function __construct(
-        ShowSystemRequestInterface $showSystemRequest
+        ShowSystemRequestInterface $showSystemRequest,
+        StarSystemRepositoryInterface $starSystemRepository
     ) {
         $this->showSystemRequest = $showSystemRequest;
+        $this->starSystemRepository = $starSystemRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -27,7 +31,11 @@ final class ShowSystem implements ViewControllerInterface
         if (!$game->isAdmin()) {
             throw new AccessViolation();
         }
-        $system = new StarSystem($this->showSystemRequest->getSystemId());
+        $system = $this->starSystemRepository->find($this->showSystemRequest->getSystemId());
+
+        if ($system === null) {
+            return;
+        }
 
         $fields = [];
         foreach (range(1, $system->getMaxY()) as $key => $value) {

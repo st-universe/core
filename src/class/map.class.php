@@ -5,6 +5,7 @@ use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 class MapFieldData extends BaseTable {
 
@@ -153,7 +154,13 @@ class MapFieldData extends BaseTable {
 			return FALSE;
 		}
 		if ($this->system === NULL) {
-			$this->system = StarSystem::getSystemByCoords($this->getCX(),$this->getCY());
+			// @todo refactor
+			global $container;
+
+			$this->system = $container->get(StarSystemRepositoryInterface::class)->getByCoordinates(
+				(int) $this->getCX(),
+				(int) $this->getCY()
+			);
 		}
 		return $this->system;
 	} # }}}

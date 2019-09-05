@@ -64,7 +64,7 @@
 	</metal:macro>
 	<metal:macro metal:define-macro="starsystem">
 		<div style="display: table-cell">
-			<table class="use" tal:define="map SYSTEM/getFieldsMapped">
+			<table class="use" tal:define="map FIELDS">
 				<tr>
 					<th></th>
 					<th class="cen" tal:repeat="field map/xaxis" tal:content="field">CX</th>

@@ -5,14 +5,22 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\View\ShowEditor;
 
 use AccessViolation;
-use StarSystem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class ShowEditor implements ViewControllerInterface
 {
     private const FIELDS_PER_SECTION = 20;
     public const VIEW_IDENTIFIER = 'SHOW_EDITOR';
+
+    private $starSystemRepository;
+
+    public function __construct(
+        StarSystemRepositoryInterface $starSystemRepository
+    ) {
+        $this->starSystemRepository = $starSystemRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -40,6 +48,6 @@ final class ShowEditor implements ViewControllerInterface
         $game->setTemplateVar('X_HEAD_ROW', $xHeadRow);
         $game->setTemplateVar('SECTIONS', $sections);
         $game->setTemplateVar('FIELDS_PER_SECTION', static::FIELDS_PER_SECTION);
-        $game->setTemplateVar('SYSTEM_LIST', StarSystem::getList());
+        $game->setTemplateVar('SYSTEM_LIST', $this->starSystemRepository->findAll());
     }
 }

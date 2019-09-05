@@ -7,7 +7,6 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 use AccessViolation;
 use Ship;
 use Shiprump;
-use StarSystem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -16,6 +15,7 @@ use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
 {
@@ -32,18 +32,22 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private $mapRegionRepository;
 
+    private $starSystemRepository;
+
     public function __construct(
         DatabaseEntryRequestInterface $databaseEntryRequest,
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
-        MapRegionRepositoryInterface $mapRegionRepository
+        MapRegionRepositoryInterface $mapRegionRepository,
+        StarSystemRepositoryInterface $starSystemRepository
     ) {
         $this->databaseEntryRequest = $databaseEntryRequest;
         $this->databaseCategoryRepository = $databaseCategoryRepository;
         $this->databaseEntryRepository = $databaseEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->mapRegionRepository = $mapRegionRepository;
+        $this->starSystemRepository = $starSystemRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -108,7 +112,14 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('RUMP', new Shiprump($entry_object_id));
                 break;
             case DATABASE_TYPE_STARSYSTEM:
-                $game->setTemplateVar('SYSTEM', new StarSystem($entry_object_id));
+                $starSystem = $this->starSystemRepository->find($entry_object_id);
+                $fields = [];
+                foreach ($starSystem->getFields() as $obj) {
+                    $fields['fields'][$obj->getSY()][] = $obj;
+                }
+                $fields['xaxis'] = range(1, $starSystem->getMaxX());
+                $game->setTemplateVar('SYSTEM', $starSystem);
+                $game->setTemplateVar('FIELDS', $fields);
                 break;
         }
     }

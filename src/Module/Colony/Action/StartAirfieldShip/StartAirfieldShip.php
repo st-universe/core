@@ -130,11 +130,13 @@ final class StartAirfieldShip implements ActionControllerInterface
         $colony->lowerStorage($rump->getGoodId(), 1);
         $colony->save();
 
-        if ($colony->getSystem()->getDatabaseId()) {
-            $game->checkDatabaseItem($colony->getSystem()->getDatabaseId());
+        $databaseEntry = $colony->getSystem()->getDatabaseEntry();
+        if ($databaseEntry !== null) {
+            $game->checkDatabaseItem($databaseEntry->getId());
         }
-        if ($colony->getSystem()->getSystemType()->getDatabaseEntry() !== null) {
-            $game->checkDatabaseItem($colony->getSystem()->getSystemType()->getDatabaseEntryId());
+        $databaseEntry = $colony->getSystem()->getSystemType()->getDatabaseEntry();
+        if ($databaseEntry !== null) {
+            $game->checkDatabaseItem($databaseEntry->getId());
         }
         if ($rump->getDatabaseId()) {
             $game->checkDatabaseItem($rump->getDatabaseId());
