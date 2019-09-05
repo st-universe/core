@@ -4,6 +4,7 @@ use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipRumpCostInterface;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Entity\ShipRumpSpecialInterface;
+use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCostRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRoleRepositoryInterface;
@@ -492,7 +493,14 @@ class ShiprumpData extends BaseTable {
 	 */
 	public function getCrewObj() { #{{{
 		if ($this->crewobj === NULL) {
-			$this->crewobj = RumpCatRoleCrew::getByRumpCatRole($this->getCategoryId(),$this->getRoleId());
+		    // @todo refactor
+            global $container;
+
+            $this->crewobj = $container->get(ShipRumpCategoryRoleCrewRepositoryInterface::class)
+                ->getByShipRumpCategoryAndRole(
+                    (int) $this->getCategegoryId(),
+                    (int) $this->getRoleId()
+                );
 		}
 		return $this->crewobj;
 	} # }}}

@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
+
 class ShipCrewData extends BaseTable {
 
 	protected $tablename = 'stu_ships_crew';
@@ -87,6 +90,11 @@ class ShipCrew extends ShipCrewData {
 	/**
 	 */
 	static function createByRumpCategory(ShipData $ship) { #{{{
+		// @todo refactor
+		global $container;
+
+		$shipRumpCategoryRoleCrewRepo = $container->get(ShipRumpCategoryRoleCrewRepositoryInterface::class);
+
 		for ($i=CREW_TYPE_FIRST;$i<=CREW_TYPE_LAST;$i++) {
 			$j = 1;
 			if ($i == CREW_TYPE_CREWMAN) {
@@ -94,8 +102,11 @@ class ShipCrew extends ShipCrewData {
 			} else {
 				$slot = 'getJob'.$i.'Crew';
 			}
-			$config = RumpCatRoleCrew::getByRumpCatRole($ship->getRump()->getCategoryId(),$ship->getRump()->getRoleId());
-			while ($j<=$config->$slot()) {
+			$config = $shipRumpCategoryRoleCrewRepo->getByShipRumpCategoryAndRole(
+				(int) $ship->getRump()->getCategegoryId(),
+				(int) $ship->getRump()->getRoleId()
+			);
+			while ($j <= $config->$slot()) {
 				$j++;
 				if (($crew=Crew::getFreeCrewByTypeAndUser($ship->getUserId(),$i)) === FALSE) {
 					$crew = Crew::getFreeCrewByTypeAndUser($ship->getUserId());

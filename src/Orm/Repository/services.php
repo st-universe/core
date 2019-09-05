@@ -49,6 +49,7 @@ use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
+use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
 use Stu\Orm\Entity\ShipRumpCost;
 use Stu\Orm\Entity\ShipRumpModuleLevel;
@@ -283,6 +284,11 @@ return [
         ContainerInterface $c
     ): ShipRumpBuildingFunctionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class);
+    },
+    ShipRumpCategoryRoleCrewRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipRumpCategoryRoleCrewRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategoryRoleCrew::class);
     },
     ShipRumpColonizationBuildingRepositoryInterface::class => function (
         ContainerInterface $c
