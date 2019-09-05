@@ -24,7 +24,6 @@ class ResourceCacher
             $this->resources->offsetSet(CACHE_TRADEPOST, new ArrayObject);
             $this->resources->offsetSet(CACHE_ALLIANCE, new ArrayObject);
             $this->resources->offsetSet(CACHE_FACTION, new ArrayObject);
-            $this->resources->offsetSet(CACHE_MAPFIELD, new ArrayObject);
             $this->resources->offsetSet(CACHE_MODULE, new ArrayObject);
             $this->resources->offsetSet(CACHE_COLONY, new ArrayObject);
             $this->resources->offsetSet(CACHE_RUMP, new ArrayObject);
@@ -95,9 +94,6 @@ class ResourceCacher
                 break;
             case "faction":
                 $newobj = "Faction";
-                break;
-            case "mapfield":
-                $newobj = "MapFieldType";
                 break;
             case "module":
                 $newobj = "Modules";

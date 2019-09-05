@@ -6,10 +6,10 @@ namespace Stu\Module\Starmap\View\ShowOverall;
 
 use AccessViolation;
 use MapField;
-use MapFieldType;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
+use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 
 final class ShowOverall implements ViewControllerInterface
 {
@@ -17,10 +17,14 @@ final class ShowOverall implements ViewControllerInterface
 
     private $mapBorderTypeRepository;
 
+    private $mapFieldTypeRepository;
+
     public function __construct(
-        MapBorderTypeRepositoryInterface $mapBorderTypeRepository
+        MapBorderTypeRepositoryInterface $mapBorderTypeRepository,
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository
     ) {
         $this->mapBorderTypeRepository = $mapBorderTypeRepository;
+        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,7 +58,7 @@ final class ShowOverall implements ViewControllerInterface
                 continue;
             }
             if (!array_key_exists($data['field_id'], $types)) {
-                $maptype = new MapFieldType($data['field_id']);
+                $maptype = $this->mapFieldTypeRepository->find((int) $data['field_id']);
                 $types[$data['field_id']] = imagecreatefromgif(APP_PATH . 'src/assets/map/' . $maptype->getType() . '.gif');
             }
             imagecopyresized($img, $types[$data['field_id']], $curx, $cury, 0, 0, 15, 15, 30, 30);

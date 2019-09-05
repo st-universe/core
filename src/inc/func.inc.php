@@ -329,14 +329,6 @@ function &DB() {
     return $DB;
 }
 
-function &getMapType(&$type) {
-    static $mapTypes = array();
-    if (!array_key_exists($type,$mapTypes)) {
-        $mapTypes[$type] = new MapFieldType($type);
-    }
-    return $mapTypes[$type];
-}
-
 function currentUser(): User {
 	static $currentUser = NULL;
 	if ($currentUser === NULL) {

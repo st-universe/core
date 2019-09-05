@@ -30,6 +30,7 @@ use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\MapBorderType;
+use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
@@ -183,6 +184,11 @@ return [
         ContainerInterface $c
     ): MapBorderTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(MapBorderType::class);
+    },
+    MapFieldTypeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): MapFieldTypeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(MapFieldType::class);
     },
     MapRegionRepositoryInterface::class => function (
         ContainerInterface $c

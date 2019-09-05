@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Lib\DamageWrapper;
+use Stu\Orm\Entity\MapFieldTypeInterface;
 
 class ShipMover {
 
@@ -260,7 +261,7 @@ class ShipMover {
 				$msg[] = "Die ".$ship->getName()." aktiviert den Warpantrieb";
 			}
 			$nextfield = $this->getNextField($method,$ship);
-			$flight_ecost = $ship->getRump()->getFlightEcost()+$nextfield->getFieldType()->getEpsCost();
+			$flight_ecost = $ship->getRump()->getFlightEcost()+$nextfield->getFieldType()->getEnergyCosts();
 			if ($ship->getEps() < $flight_ecost) {
 				if ($this->isFleetMode()) {
 					if ($this->isFirstShip($ship->getId())) {
@@ -279,7 +280,7 @@ class ShipMover {
 				}
 			}
 			$i++;
-			if (!$nextfield->getFieldType()->isPassable()) {
+			if (!$nextfield->getFieldType()->getPassable()) {
 				if (($this->isFleetMode() && $ship->isFleetLeader()) || !$this->isFleetMode())
 				$msg[] = _("Das nächste Feld kann nicht passiert werden");
 				$this->stopMove($ship->getPosX(),$ship->getPosY());

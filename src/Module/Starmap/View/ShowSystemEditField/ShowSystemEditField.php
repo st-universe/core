@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSystemEditField;
 
-use MapFieldType;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use SystemMap;
 
 final class ShowSystemEditField implements ViewControllerInterface
@@ -15,16 +15,20 @@ final class ShowSystemEditField implements ViewControllerInterface
 
     private $showSystemEditFieldRequest;
 
+    private $mapFieldTypeRepository;
+
     public function __construct(
-        ShowSystemEditFieldRequestInterface $showSystemEditFieldRequest
+        ShowSystemEditFieldRequestInterface $showSystemEditFieldRequest,
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository
     ) {
         $this->showSystemEditFieldRequest = $showSystemEditFieldRequest;
+        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $possibleFieldTypes = ['row_0', 'row_1', 'row_2', 'row_3', 'row_4', 'row_5'];
-        foreach (MapFieldType::getList(' WHERE region_id=0') as $key => $value) {
+        foreach ($this->mapFieldTypeRepository->findAll() as $key => $value) {
             if ($value->getIsSystem()) {
                 continue;
             }

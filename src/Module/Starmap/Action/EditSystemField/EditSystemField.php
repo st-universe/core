@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Action\EditSystemField;
 
 use AccessViolation;
-use MapFieldType;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Starmap\View\Noop\Noop;
+use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use SystemMap;
 
 final class EditSystemField implements ActionControllerInterface
@@ -17,10 +17,14 @@ final class EditSystemField implements ActionControllerInterface
 
     private $editSystemFieldRequest;
 
+    private $mapFieldTypeRepository;
+
     public function __construct(
-        EditSystemFieldRequestInterface $editSystemFieldRequest
+        EditSystemFieldRequestInterface $editSystemFieldRequest,
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository
     ) {
         $this->editSystemFieldRequest = $editSystemFieldRequest;
+        $this->mapFieldTypeRepository = $mapFieldTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -29,7 +33,7 @@ final class EditSystemField implements ActionControllerInterface
             throw new AccessViolation();
         }
         $selectedField = new SystemMap($this->editSystemFieldRequest->getFieldId());
-        $type = new MapFieldType($this->editSystemFieldRequest->getFieldType());
+        $type = $this->mapFieldTypeRepository->find($this->editSystemFieldRequest->getFieldType());
         $selectedField->setFieldId($type->getId());
         $selectedField->save();
 

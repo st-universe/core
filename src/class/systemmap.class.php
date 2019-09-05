@@ -1,4 +1,7 @@
 <?php
+
+use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
+
 class SystemMapData extends BaseTable {
 
 	const tablename = 'stu_sys_map';
@@ -47,7 +50,10 @@ class SystemMapData extends BaseTable {
 	}
 
 	public function getFieldType() {
-		return ResourceCache()->getObject('mapfield',$this->getFieldId());
+		// @todo refactor
+		global $container;
+
+		return $container->get(MapFieldTypeRepositoryInterface::class)->find((int) $this->getFieldId());
 	}
 
 	public function hasRegion() {
@@ -55,9 +61,7 @@ class SystemMapData extends BaseTable {
 	}
 
 	function getFieldStyle() {
-		$type = getMapType($this->getFieldId())->getType();
-		$style = "background-image: url('assets/map/".$type.".gif');";
-		return $style;
+		return "background-image: url('assets/map/".$this->getFieldId().".gif');";
 	}
 } 
 class SystemMap extends SystemMapData {

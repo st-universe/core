@@ -1,7 +1,9 @@
 <?php
 
+use Stu\Orm\Entity\MapFieldTypeInterface;
 use Stu\Orm\Entity\MapRegionInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
+use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
 
 class MapFieldData extends BaseTable {
@@ -94,7 +96,7 @@ class MapFieldData extends BaseTable {
 		if ($this->getHide()) {
 			$type = 0;
 		} else {
-			$type = getMapType($this->getFieldId())->getType();
+			$type = $this->getFieldId();
 		}
 		$style = "background-image: url('assets/map/".$type.".gif');";
 		$style .= $this->getBorder();
@@ -135,8 +137,11 @@ class MapFieldData extends BaseTable {
 		return $this->getRegionId() > 0;
 	}
 
-	public function getFieldType() {
-		return ResourceCache()->getObject('mapfield',$this->getFieldId());
+	public function getFieldType(): MapFieldTypeInterface {
+	    // @todo refactor
+		global $container;
+
+		return $container->get(MapFieldTypeRepositoryInterface::class)->find((int) $this->getFieldId());
 	}
 
 	private $system = NULL;
