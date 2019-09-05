@@ -17,20 +17,20 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
 
     private $databaseEntry;
 
-    private $user;
-
     private $starSystemRepository;
+
+    private $user;
 
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,
         DatabaseEntryInterface $databaseEntry,
-        UserData $user,
-        StarSystemRepositoryInterface $starSystemRepository
+        StarSystemRepositoryInterface $starSystemRepository,
+        UserData $user
     ) {
         $this->databaseEntry = $databaseEntry;
         $this->databaseUserRepository = $databaseUserRepository;
-        $this->user = $user;
         $this->starSystemRepository = $starSystemRepository;
+        $this->user = $user;
     }
 
     private $wasEntryDiscovered;
