@@ -36,7 +36,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
         $mapField = $ship->getCurrentMapField();
 
-	$planetType = $mapField->getPlanetType();
+        $planetType = $mapField->getFieldType()->getPlanetType();
         if ($planetType !== null) {
             $game->checkDatabaseItem($planetType->getDatabaseId());
         }
