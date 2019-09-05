@@ -6,8 +6,6 @@ namespace Stu\Module\Colony\Action\CreateModules;
 
 use Colfields;
 use Exception;
-use ModuleQueue;
-use ModuleQueueData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -15,6 +13,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class CreateModules implements ActionControllerInterface
 {
@@ -24,12 +23,16 @@ final class CreateModules implements ActionControllerInterface
 
     private $moduleBuildingFunctionRepository;
 
+    private $moduleQueueRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository
+        ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
+        ModuleQueueRepositoryInterface $moduleQueueRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
+        $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -107,16 +110,18 @@ final class CreateModules implements ActionControllerInterface
             $colony->lowerEps($count * $module->getEcost());
             $colony->save();
 
-            if (($queue = ModuleQueue::getBy('WHERE colony_id='.$colonyId.' AND module_id='.$module_id.' AND buildingfunction='.$func)) !== FALSE) {
-                $queue->setCount($queue->getAmount()+$count);
-                $queue->save();
+            if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding((int) $colonyId, (int) $module_id, (int) $func)) !== null) {
+                $queue->setAmount($queue->getAmount()+$count);
+
+                $this->moduleQueueRepository->save($queue);
             } else {
-                $queue = new ModuleQueueData();
-                $queue->setColonyId($colonyId);
-                $queue->setBuildingFunction($func);
-                $queue->setModuleId($module_id);
-                $queue->setCount($count);
-                $queue->save();
+                $queue = $this->moduleQueueRepository->prototype();
+                $queue->setColonyId((int) $colonyId);
+                $queue->setBuildingFunction((int) $func);
+                $queue->setModuleId((int) $module_id);
+                $queue->setAmount($count);
+
+                $this->moduleQueueRepository->save($queue);
             }
 
             $prod[] = $count . ' ' . $module->getName();

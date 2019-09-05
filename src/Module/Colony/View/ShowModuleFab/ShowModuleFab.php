@@ -11,6 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ShowModuleFab implements ViewControllerInterface
 {
@@ -24,16 +25,20 @@ final class ShowModuleFab implements ViewControllerInterface
 
     private $buildingFunctionRepository;
 
+    private $moduleQueueRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowModuleFabRequestInterface $showModuleFabRequest,
         ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
+        ModuleQueueRepositoryInterface $moduleQueueRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleFabRequest = $showModuleFabRequest;
         $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
+        $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,6 +59,7 @@ final class ShowModuleFab implements ViewControllerInterface
         $list = [];
         foreach ($modules as $module) {
             $list[] = new ModuleFabricationListItemTal(
+                $this->moduleQueueRepository,
                 $module->getModule(),
                 $colony
             );

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
 use Colfields;
-use ModuleQueue;
 use Modules;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class CancelModuleCreation implements ActionControllerInterface
 {
@@ -19,10 +19,14 @@ final class CancelModuleCreation implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $moduleQueueRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ModuleQueueRepositoryInterface $moduleQueueRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,18 +53,19 @@ final class CancelModuleCreation implements ActionControllerInterface
         if ($count == 0) {
             return;
         }
-        $queue = ModuleQueue::getBy('WHERE colony_id=' . $colony->getId() . ' AND module_id=' . $module_id . ' AND buildingfunction=' . $function);
-        if (!$queue) {
+        $queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding((int) $colony->getId(), (int) $module_id, (int) $function);
+        if ($queue === null) {
             return;
         }
         if ($queue->getAmount() < $count) {
             $count = $queue->getAmount();
         }
         if ($count >= $queue->getAmount()) {
-            $queue->deleteFromDatabase();
+            $this->moduleQueueRepository->delete($queue);
         } else {
-            $queue->setCount($queue->getAmount() - $count);
-            $queue->save();
+            $queue->setAmount($queue->getAmount() - $count);
+
+            $this->moduleQueueRepository->save($queue);
         }
         if ($module->getEcost() * $count > $colony->getMaxEps() - $colony->getEps()) {
             $colony->setEps($colony->getMaxEps());

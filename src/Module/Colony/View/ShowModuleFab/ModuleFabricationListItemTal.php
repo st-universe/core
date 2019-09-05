@@ -5,21 +5,25 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use ColonyData;
-use ModuleQueue;
 use ModulesData;
+use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabricationListItemTal
 {
+    private $moduleQueueRepository;
+
     private $colony;
 
     private $module;
 
     public function __construct(
+        ModuleQueueRepositoryInterface $moduleQueueRepository,
         ModulesData $module,
         ColonyData $colony
     ) {
         $this->colony = $colony;
         $this->module = $module;
+        $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
     public function getModule(): ModulesData
@@ -54,7 +58,10 @@ final class ModuleFabricationListItemTal
 
     public function getAmountQueued(): int
     {
-        return ModuleQueue::getAmountByColonyAndModule($this->colony->getId(), $this->module->getId());
+        return $this->moduleQueueRepository->getAmountByColonyAndModule(
+            (int) $this->colony->getId(),
+            (int) $this->module->getId()
+        );
     }
 
     public function getAmountInStock(): int

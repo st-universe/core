@@ -6,13 +6,11 @@ use ColfieldData;
 use Colfields;
 use ColonyData;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use ModuleQueue;
-use ModuleQueueData;
 use PM;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Research\ResearchState;
-use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
@@ -24,16 +22,20 @@ final class ColonyTick implements ColonyTickInterface
 
     private $shipRumpUserRepository;
 
+    private $moduleQueueRepository;
+
     private $msg = [];
 
     public function __construct(
         CommodityRepositoryInterface $commodityRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        ShipRumpUserRepositoryInterface $shipRumpUserRepository
+        ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        ModuleQueueRepositoryInterface $moduleQueueRepository
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
+        $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
     public function work(ColonyData $colony): void
@@ -194,10 +196,7 @@ final class ColonyTick implements ColonyTickInterface
 
     private function proceedModules(ColonyData $colony): void
     {
-        foreach (ModuleQueue::getObjectsBy('WHERE colony_id=' . $colony->getId()) as $id => $queue) {
-            /**
-             * @var ModuleQueueData $queue
-             */
+        foreach ($this->moduleQueueRepository->getByColony((int) $colony->getId()) as $queue) {
             if ($colony->hasActiveBuildingWithFunction($queue->getBuildingFunction())) {
                 $colony->upperStorage($queue->getModule()->getGoodId(), $queue->getAmount());
                 $this->msg[] = sprintf(
@@ -205,7 +204,7 @@ final class ColonyTick implements ColonyTickInterface
                     $queue->getAmount(),
                     $queue->getModule()->getName()
                 );
-                $queue->deleteFromDatabase();
+                $this->moduleQueueRepository->delete($queue);
             }
         }
     }

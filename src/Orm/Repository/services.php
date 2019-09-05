@@ -36,6 +36,7 @@ use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\MapRegion;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
+use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
@@ -217,6 +218,11 @@ return [
         ContainerInterface $c
     ): ModuleCostRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ModuleCost::class);
+    },
+    ModuleQueueRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ModuleQueueRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ModuleQueue::class);
     },
     ModuleSpecialRepositoryInterface::class => function (
         ContainerInterface $c
