@@ -2,6 +2,7 @@
 
 use Stu\Lib\DamageWrapper;
 use Stu\Orm\Entity\MapFieldTypeInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class ShipMover {
 
@@ -71,7 +72,7 @@ class ShipMover {
 		$this->fleetMode = $value;
 	}
 
-	function getFirstShip() {
+	function getFirstShip(): ShipData {
 		return $this->firstShip;
 	}
 
@@ -395,10 +396,36 @@ class ShipMover {
 			    	       $this->getFirstShip()->getPosY(),
 			               $this->getDestX(),$this->getDestY());	
 			} else {
-				$this->fieldData = SystemMap::getFieldsByFlightRoute($this->getFirstShip()->getSystemsId(),
-				       $this->getFirstShip()->getPosX(),
-			    	       $this->getFirstShip()->getPosY(),
-			               $this->getDestX(),$this->getDestY());	
+			    // @todo refactor
+				global $container;
+				$ship = $this->getFirstShip();
+				$sx = (int) $ship->getPosX();
+				$sy = (int) $ship->getPosY();
+				$destx = (int) $this->getDestX();
+				$desty = (int) $this->getDestY();
+
+				if ($sy > $desty) {
+					$oy = $sy;
+					$sy = $desty;
+					$desty = $oy;
+				}
+				if ($sx > $destx) {
+					$ox = $sx;
+					$sx = $destx;
+					$destx = $ox;
+				}
+
+				$result = $container->get(StarSystemMapRepositoryInterface::class)->getByCoordinateRange(
+					(int) $ship->getSystemsId(),
+					$sx,
+					$destx,
+					$sy,
+					$desty
+				);
+
+				foreach ($result as $field) {
+					$this->fieldData[sprintf('%d_%d', $field->getSx(), $field->getSy())] = $field;
+				}
 			}
 
 		}

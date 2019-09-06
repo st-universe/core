@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use MapField;
 use MapFieldData;
-use SystemMap;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemRepository")
@@ -173,9 +173,11 @@ class StarSystem implements StarSystemInterface
 
     public function getFields(): array
     {
-        // @todo refactor
         if ($this->fields === null) {
-            $this->fields = SystemMap::getObjectsBy('WHERE systems_id=' . $this->getId() . ' ORDER BY sy,sx');
+            // @todo refactor
+            global $container;
+
+            $this->fields = $container->get(StarSystemMapRepositoryInterface::class)->getBySystemOrdered($this->getId());
         }
         return $this->fields;
     }

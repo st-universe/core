@@ -6,8 +6,9 @@ namespace Stu\Module\Starmap\View\ShowSystemEditField;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
-use SystemMap;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSystemEditField implements ViewControllerInterface
 {
@@ -17,12 +18,16 @@ final class ShowSystemEditField implements ViewControllerInterface
 
     private $mapFieldTypeRepository;
 
+    private $starSystemMapRepository;
+
     public function __construct(
         ShowSystemEditFieldRequestInterface $showSystemEditFieldRequest,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
+        StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         $this->showSystemEditFieldRequest = $showSystemEditFieldRequest;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
+        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,7 +40,8 @@ final class ShowSystemEditField implements ViewControllerInterface
             $possibleFieldTypes['row_' . ($key % 6)][] = $value;
         }
 
-        $field = new SystemMap($this->showSystemEditFieldRequest->getFieldId());
+        /** @var StarSystemMapInterface $selectedField */
+        $field = $this->starSystemMapRepository->find($this->showSystemEditFieldRequest->getFieldId());
 
         $game->setPageTitle(_('Feld wählen'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');

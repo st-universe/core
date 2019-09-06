@@ -146,7 +146,7 @@ final class BuildShip implements ActionControllerInterface
                 date('d.m.Y H:i')
             );
             $game->addInformationf(
-                _('Lege neuen Bauplan an: %d'),
+                _('Lege neuen Bauplan an: %s'),
                 $planname
             );
             $plan = $this->shipBuildplanRepository->prototype();

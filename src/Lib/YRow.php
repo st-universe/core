@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
+
 class YRow
 {
 
@@ -34,7 +36,14 @@ class YRow
     {
         if ($this->fields === null) {
             for ($i = $this->minx; $i <= $this->maxx; $i++) {
-                $this->fields[] = SystemMap::getFieldByCoords($this->systemId, $i, $this->row);
+                // @todo refactor
+                global $container;
+
+                $this->fields[] = $container->get(StarSystemMapRepositoryInterface::class)->getByCoordinates(
+                    (int) $this->systemId,
+                    (int) $i,
+                    (int) $this->row
+                );
             }
         }
         return $this->fields;

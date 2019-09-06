@@ -14,6 +14,7 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
@@ -1445,7 +1446,14 @@ class ShipData extends BaseTable {
 			if (!$this->isInSystem()) {
 				$this->mapfield = MapField::getFieldByCoords($this->getCX(),$this->getCY());
 			} else {
-				$this->mapfield = SystemMap::getFieldByCoords($this->getSystemsId(),$this->getSX(),$this->getSY());
+				// @todo refactor
+				global $container;
+
+				$this->mapfield = $container->get(StarSystemMapRepositoryInterface::class)->getByCoordinates(
+					(int) $this->getSystemsId(),
+					(int) $this->getSX(),
+					(int) $this->getSY()
+				);
 			}
 		}
 		return $this->mapfield;

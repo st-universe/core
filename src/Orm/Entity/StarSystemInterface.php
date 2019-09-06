@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use MapFieldData;
-use SystemMapData;
 
 interface StarSystemInterface
 {
@@ -46,7 +45,7 @@ interface StarSystemInterface
     public function getMapField(): MapFieldData;
 
     /**
-     * @return SystemMapData[]
+     * @return StarSystemMapInterface[]
      */
     public function getFields(): array;
 }
