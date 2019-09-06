@@ -50,6 +50,7 @@ use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
+use Stu\Orm\Entity\ShipRumpCategory;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
 use Stu\Orm\Entity\ShipRumpCost;
@@ -290,6 +291,11 @@ return [
         ContainerInterface $c
     ): ShipRumpBuildingFunctionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpBuildingFunction::class);
+    },
+    ShipRumpCategoryRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipRumpCategoryRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipRumpCategory::class);
     },
     ShipRumpCategoryRoleCrewRepositoryInterface::class => function (
         ContainerInterface $c

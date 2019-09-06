@@ -1,10 +1,12 @@
 <?php
 
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Entity\ShipRumpCategoryInterface;
 use Stu\Orm\Entity\ShipRumpCostInterface;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Entity\ShipRumpSpecialInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpCategoryRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCostRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -216,9 +218,12 @@ class ShiprumpData extends BaseTable {
 
 	/**
 	 */
-	public function getCategory() { #{{{
+	public function getCategory(): ShipRumpCategoryInterface { #{{{
 		if ($this->category === NULL) {
-			$this->category = new RumpsCategory($this->getCategoryId());
+		    // @todo refactor
+            global $container;
+
+            $this->category = $container->get(ShipRumpCategoryRepositoryInterface::class)->find((int) $this->getCategoryId());
 		}
 		return $this->category;
 	} # }}}
