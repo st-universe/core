@@ -1140,7 +1140,7 @@ class ShipData extends BaseTable {
 
 			$this->systems = [];
 			foreach ($container->get(ShipSystemRepositoryInterface::class)->getByShip((int) $this->getId()) as $system) {
-				$this->systems[$system->getId()] = $system;
+				$this->systems[$system->getSystemType()] = $system;
 			}
 		}
 		return $this->systems;
