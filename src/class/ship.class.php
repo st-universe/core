@@ -6,12 +6,14 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
@@ -494,7 +496,7 @@ class ShipData extends BaseTable {
 	
 	private $traktorship = NULL;
 
-	function getTraktorShip() {
+	function getTraktorShip(): ShipData {
 		if ($this->traktorship === NULL) {
 			$this->traktorship = Ship::getById($this->getTraktorShipId());
 		}
@@ -881,7 +883,10 @@ class ShipData extends BaseTable {
 		$this->setIsDestroyed(1);
 		$this->cancelRepair();
 
-		ShipSystems::truncate($this->getId());
+		// @todo refactor
+		global $container;
+
+		$container->get(ShipSystemRepositoryInterface::class)->truncateByShip((int) $this->getId());
 		// TBD: Torpedos löschen
 
 		$this->save();
@@ -908,8 +913,8 @@ class ShipData extends BaseTable {
 
 		$container->get(ShipStorageRepositoryInterface::class)->truncateForShip((int) $this->getId());
 		$container->get(ShipCrewRepositoryInterface::class)->truncateByShip((int) $this->getId());
+		$container->get(ShipSystemRepositoryInterface::class)->truncateByShip((int) $this->getId());
 
-		ShipSystems::truncate($this->getId());
 		$this->deleteFromDatabase();
 	} # }}}
 
@@ -1115,7 +1120,7 @@ class ShipData extends BaseTable {
 		if ($this->epsUsage === NULL) {
 			$this->epsUsage = 0;
 			foreach ($this->getActiveSystems() as $key => $obj) {
-				$this->epsUsage += $obj->getEpsUsage();
+				$this->epsUsage += $obj->getEnergyCosts();
 			}
 		}
 		return $this->epsUsage;
@@ -1129,7 +1134,13 @@ class ShipData extends BaseTable {
 
 	public function getSystems() {
 		if ($this->systems === NULL) {
-			$this->systems = ShipSystems::getByShip($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->systems = [];
+			foreach ($container->get(ShipSystemRepositoryInterface::class)->getByShip((int) $this->getId()) as $system) {
+				$this->systems[$system->getId()] = $system;
+			}
 		}
 		return $this->systems;
 	}
@@ -1138,13 +1149,13 @@ class ShipData extends BaseTable {
 		return array_key_exists($system,$this->getSystems());
 	}
 
-	public function getShipSystem($system) {
+	public function getShipSystem($system): ShipSystemInterface {
 		$arr = &$this->getSystems();
 		return $arr[$system];
 	}
 
 	/**
-	 * @return ShipSystemsData[]
+	 * @return ShipSystemInterface[]
 	 */
 	public function getActiveSystems() {
 		if ($this->activeSystems !== NULL) {
@@ -1161,7 +1172,27 @@ class ShipData extends BaseTable {
 	}
 
 	public function isActiveSystem($system) {
-		return $this->data[$system->getShipField()] >= 1;
+		return $this->data[$this->getShipField($system)] >= 1;
+	}
+
+	private function getShipField(ShipSystemInterface $shipSystem): string {
+		switch ($shipSystem->getSystemType()) {
+			case SYSTEM_CLOAK:
+				return 'cloak';
+			case SYSTEM_NBS:
+				return 'nbs';
+			case SYSTEM_LSS:
+				return 'lss';
+			case SYSTEM_PHASER:
+				return 'wea_phaser';
+			case SYSTEM_TORPEDO:
+				return 'wea_torp';
+			case SYSTEM_WARPDRIVE:
+				return 'warp';
+			case SYSTEM_SHIELDS:
+				return 'schilde_status';
+		}
+		return '';
 	}
 
 	public function getPhaserDamage() {
@@ -1265,7 +1296,7 @@ class ShipData extends BaseTable {
 		if (!$this->getShipSystem($system)->isActivateable()) {
 			return FALSE;
 		}
-		if ($this->getShipSystem($system)->getEpsUsage() > $this->getEps()) {
+		if ($this->getShipSystem($system)->getEneryCosts() > $this->getEps()) {
 			return FALSE;
 		}
 		if (array_key_exists($system,$this->getActiveSystems())) {
@@ -1287,7 +1318,7 @@ class ShipData extends BaseTable {
 		$cb = $this->getShipSystem($system)->getShipCallback();
 		$this->$cb(1);
 		if ($use_eps) {
-			$this->lowerEps($this->getShipSystem($system)->getEpsUsage());
+			$this->lowerEps($this->getShipSystem($system)->getEnergyCosts());
 		}
 	}
 

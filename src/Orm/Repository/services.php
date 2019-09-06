@@ -63,6 +63,7 @@ use Stu\Orm\Entity\ShipRumpRole;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipRumpUser;
 use Stu\Orm\Entity\ShipStorage;
+use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Terraforming;
@@ -360,6 +361,11 @@ return [
         ContainerInterface $c
     ): ShipStorageRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipStorage::class);
+    },
+    ShipSystemRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipSystemRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipSystem::class);
     },
     StarSystemRepositoryInterface::class => function (
         ContainerInterface $c

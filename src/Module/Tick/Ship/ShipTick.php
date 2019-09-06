@@ -4,6 +4,7 @@ namespace Stu\Module\Tick\Ship;
 
 use PM;
 use ShipData;
+use Stu\Orm\Entity\ShipSystemInterface;
 
 final class ShipTick implements ShipTickInterface
 {
@@ -18,12 +19,12 @@ final class ShipTick implements ShipTickInterface
         if ($ship->getEpsUsage() > $eps) {
             foreach ($ship->getActiveSystems() as $system) {
                 //echo "- eps: ".$eps." - usage: ".$ship->getEpsUsage()."\n";
-                if ($eps - $ship->getEpsUsage() - $system->getEpsUsage() < 0) {
+                if ($eps - $ship->getEpsUsage() - $system->getEnergyCosts() < 0) {
                     //echo "-- hit system: ".$system->getDescription()."\n";
-                    $cb = $system->getShipCallback();
+                    $cb = $this->getShipCallback($system);
                     $ship->$cb(0);
-                    $ship->lowerEpsUsage($system->getEpsUsage());
-                    $this->msg[] = $system->getDescription() . ' deaktiviert wegen Energiemangel';
+                    $ship->lowerEpsUsage($system->getEnergyCosts());
+                    $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
                 }
                 if ($ship->getEpsUsage() <= $eps) {
                     break;
@@ -42,6 +43,53 @@ final class ShipTick implements ShipTickInterface
         $ship->save();
 
         $this->sendMessages($ship);
+    }
+
+    private function getSystemDescription(ShipSystemInterface $shipSystem): string {
+        switch ($shipSystem->getSystemType()) {
+            case SYSTEM_CLOAK:
+                return "Tarnung";
+            case SYSTEM_NBS:
+                return "Nahbereichssensoren";
+            case SYSTEM_LSS:
+                return "Langstreckensensoren";
+            case SYSTEM_PHASER:
+                return "Strahlenwaffe";
+            case SYSTEM_TORPEDO:
+                return "Torpedobänke";
+            case SYSTEM_WARPDRIVE:
+                return "Warpantrieb";
+            case SYSTEM_EPS:
+                return _("Energiesystem");
+            case SYSTEM_IMPULSEDRIVE:
+                return _("Impulsantrieb");
+            case SYSTEM_COMPUTER:
+                return _('Computer');
+            case SYSTEM_WARPCORE:
+                return _('Warpkern');
+            case SYSTEM_SHIELDS:
+                return _('Schilde');
+        }
+        return '';
+    }
+
+    private function getShipCallback(ShipSystemInterface $shipSystem) {
+        switch ($shipSystem->getSystemType()) {
+            case SYSTEM_CLOAK:
+                return "setCloak";
+            case SYSTEM_NBS:
+                return "setNbs";
+            case SYSTEM_LSS:
+                return "setLss";
+            case SYSTEM_PHASER:
+                return "setPhaser";
+            case SYSTEM_TORPEDO:
+                return "setTorpedos";
+            case SYSTEM_WARPDRIVE:
+                return 'setWarpState';
+            case SYSTEM_SHIELDS:
+                return 'setShieldState';
+        }
     }
 
     private function sendMessages(ShipData $ship): void

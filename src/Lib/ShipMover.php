@@ -168,7 +168,7 @@ class ShipMover {
 		}
 	}
 
-	private function move(&$ship) {
+	private function move(ShipData &$ship) {
 		$msg = array();
 		if (!$this->isFleetMode()) {
 			if (!$ship->isInSystem() && !$ship->isWarpAble()) {
@@ -203,7 +203,7 @@ class ShipMover {
 			return;
 		}
 		if (!$this->isFleetMode() && !$ship->getWarpState() && !$ship->isInSystem()) {
-			if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEpsUsage()) {
+			if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts()) {
 				$this->addInformation(sprintf(_("Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"),$ship->getName()));
 				return FALSE;
 			}
@@ -214,7 +214,7 @@ class ShipMover {
 					$this->addInformation(sprintf(_("Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert"),$ship->getTraktorShip()->getName(),$ship->getPosX(),$ship->getPosY()));
 				} else {
 					$ship->getTraktorShip()->activateSystem(SYSTEM_WARPDRIVE,FALSE);
-					$ship->lowerEps($ship->getTraktorShip()->getShipSystem(SYSTEM_WARPDRIVE)->getEpsUsage());
+					$ship->lowerEps($ship->getTraktorShip()->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts());
 				}
 			}
 		}
@@ -252,7 +252,7 @@ class ShipMover {
 					$msg[] = "Die ".$ship->getName()." kann den Warpantrieb nicht aktivieren (".$ship->getPosX()."|".$ship->getPosY().")";
 					break;
 				}
-				if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEpsUsage()) {
+				if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts()) {
 					$ship->leaveFleet();
 					$msg[] = "Die ".$ship->getName()." kann den Warpantrieb aufgrund Energiemangel nicht aktivieren (".$ship->getPosX()."|".$ship->getPosY().")";
 					break;

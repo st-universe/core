@@ -6,17 +6,21 @@ namespace Stu\Module\Ship\Lib;
 
 use ColonyData;
 use ShipData;
-use ShipSystemsData;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
 {
     private $buildplanModuleRepository;
 
+    private $shipSystemRepository;
+
     public function __construct(
-        BuildplanModuleRepositoryInterface $buildplanModuleRepository
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository,
+        ShipSystemRepositoryInterface $shipSystemRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
+        $this->shipSystemRepository = $shipSystemRepository;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyData $colony = null): ShipData
@@ -90,12 +94,13 @@ final class ShipCreator implements ShipCreatorInterface
             }
         }
         foreach ($systems as $sysId => $moduleId) {
-            $obj = new ShipSystemsData();
-            $obj->setShipId($shipId);
-            $obj->setSystemType($sysId);
-            $obj->setModuleId($moduleId);
+            $obj = $this->shipSystemRepository->prototype();
+            $obj->setShipId((int) $shipId);
+            $obj->setSystemType((int) $sysId);
+            $obj->setModuleId((int) $moduleId);
             $obj->setStatus(100);
-            $obj->save();
+
+            $this->shipSystemRepository->save($obj);
         }
     }
 }
