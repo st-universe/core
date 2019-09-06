@@ -31,4 +31,6 @@ interface ShipSystemInterface
     public function getModule(): ModuleInterface;
 
     public function setModule(ModuleInterface $module): ShipSystemInterface;
+
+    public function getShipCallback(): string;
 }

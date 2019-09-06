@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Exception;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipSystemRepository")
  * @Table(
@@ -117,4 +119,27 @@ class ShipSystem implements ShipSystemInterface
 
         return $this;
     }
+
+    public function getShipCallback(): string
+    {
+        // @todo refactor
+        switch ($this->getSystemType()) {
+            case SYSTEM_CLOAK:
+                return "setCloak";
+            case SYSTEM_NBS:
+                return "setNbs";
+            case SYSTEM_LSS:
+                return "setLss";
+            case SYSTEM_PHASER:
+                return "setPhaser";
+            case SYSTEM_TORPEDO:
+                return "setTorpedos";
+            case SYSTEM_WARPDRIVE:
+                return 'setWarpState';
+            case SYSTEM_SHIELDS:
+                return 'setShieldState';
+        }
+        throw new Exception('Invalid system');
+    }
+
 }
