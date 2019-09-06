@@ -28,6 +28,7 @@ use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
@@ -188,6 +189,11 @@ return [
         ContainerInterface $c
     ): FactionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Faction::class);
+    },
+    GameConfigRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): GameConfigRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(GameConfig::class);
     },
     GameTurnRepositoryInterface::class => function (
         ContainerInterface $c

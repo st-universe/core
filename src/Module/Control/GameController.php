@@ -4,7 +4,6 @@ namespace Stu\Module\Control;
 
 use Colony;
 use DateTimeImmutable;
-use GameConfig;
 use Noodlehaus\ConfigInterface;
 use PM;
 use PMCategory;
@@ -12,8 +11,10 @@ use request;
 use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -38,6 +39,8 @@ final class GameController implements GameControllerInterface
     private $gameTurnRepository;
 
     private $researchedRepository;
+
+    private $gameConfigRepository;
 
     private $gameInformations = [];
 
@@ -69,7 +72,8 @@ final class GameController implements GameControllerInterface
         ConfigInterface $config,
         DbInterface $db,
         GameTurnRepositoryInterface $gameTurnRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        GameConfigRepositoryInterface $gameConfigRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -79,6 +83,7 @@ final class GameController implements GameControllerInterface
         $this->db = $db;
         $this->gameTurnRepository = $gameTurnRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->gameConfigRepository = $gameConfigRepository;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -223,12 +228,17 @@ final class GameController implements GameControllerInterface
     private $gameConfig = null;
 
     /**
-     * @return GameConfig[]
+     * @return GameConfigInterface[]
      */
     public function getGameConfig(): array
     {
         if ($this->gameConfig === null) {
-            $this->gameConfig = GameConfig::getObjectsBy();
+            $this->gameConfig = [];
+
+            /** @var GameConfigInterface $item */
+            foreach ($this->gameConfigRepository->findAll() as $item) {
+                $this->gameConfig[$item->getOption()] = $item;
+            }
         }
         return $this->gameConfig;
     }

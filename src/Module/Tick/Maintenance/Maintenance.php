@@ -2,25 +2,32 @@
 
 namespace Stu\Module\Tick\Maintenance;
 
-use GameConfig;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
+use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
 final class Maintenance
 {
+    private $gameConfigRepository;
+
     /**
      * @var MaintenanceHandlerInterface[]
      */
     private $handler_list;
 
     public function __construct(
+        GameConfigRepositoryInterface $gameConfigRepository,
         array $handler_list
     ) {
+        $this->gameConfigRepository = $gameConfigRepository;
         $this->handler_list = $handler_list;
     }
 
     private function startMaintenance()
     {
-        GameConfig::getObjectByOption(CONFIG_GAMESTATE)->setValue(CONFIG_GAMESTATE_VALUE_MAINTENANCE);
+        $option = $this->gameConfigRepository->getByOption(CONFIG_GAMESTATE);
+        $option->setValue(CONFIG_GAMESTATE_VALUE_MAINTENANCE);
+
+        $this->gameConfigRepository->save($option);
     }
 
     public function handle()
@@ -36,6 +43,9 @@ final class Maintenance
 
     private function finishMaintenance()
     {
-        GameConfig::getObjectByOption(CONFIG_GAMESTATE)->setValue(CONFIG_GAMESTATE_VALUE_ONLINE);
+        $option = $this->gameConfigRepository->getByOption(CONFIG_GAMESTATE);
+        $option->setValue(CONFIG_GAMESTATE_VALUE_ONLINE);
+
+        $this->gameConfigRepository->save($option);
     }
 }
