@@ -88,6 +88,8 @@ use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
+use Stu\Module\Ship\Lib\ShipCreator;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -114,6 +116,7 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
     DeleteFleetRequestInterface::class => autowire(DeleteFleetRequest::class),
     RenameFleetRequestInterface::class => autowire(RenameFleetRequest::class),

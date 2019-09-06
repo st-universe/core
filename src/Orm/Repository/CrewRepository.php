@@ -83,7 +83,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             )
             ->setMaxResults(1)
             ->setParameters(['userId' => $userId, 'typeId' => $typeId])
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     public function getFreeByUser(int $userId): ?CrewInterface
@@ -100,7 +100,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             )
             ->setMaxResults(1)
             ->setParameters(['userId' => $userId])
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     public function truncateByUser(int $userId): void

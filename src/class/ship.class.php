@@ -7,7 +7,6 @@ use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Entity\WeaponInterface;
-use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -1749,88 +1748,5 @@ class Ship extends ShipData {
 	static public function countInstances($qry="") {
 		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$qry,1);
 	}
-
-	static public function copyShip($id) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE id=".$id,4);
-		$vars = array();
-		$vals = array();
-		foreach($result as $key => $value) {
-			if ($key == 'id') {
-				continue;
-			}
-			$vars[] = $key;
-			$vals[] = "'".$result[$key]."'";
-		}
-		$newId = DB()->query("INSERT INTO ".self::tablename." (".join(",",$vars).") VALUES (".join(",",$vals).")",5);
-		self::copyShipProperties($id,$newId);
-		return new Ship($newId);
-	}
-
-	static public function copyShipProperties($oldId,$newId) {
-		$result = DB()->query("SELECT * FROM stu_ships_systems WHERE ships_id=".$oldId);
-		while ($data = mysqli_fetch_assoc($result)) {
-			$vars = array();
-			$vals = array();
-			foreach($data as $key => $value) {
-				if ($key == 'id') {
-					continue;
-				}
-				if ($key == 'ships_id') {
-					$data[$key] = $newId;
-				}
-				$vars[] = $key;
-				$vals[] = "'".$data[$key]."'";
-			}
-			DB()->query("INSERT INTO stu_ships_systems (".join(",",$vars).") VALUES (".join(",",$vals).")",5);
-		}
-
-	}
-
-	/**
-	 */
-	static function createBy($user_id,$rump_id,$buildplan_id,$colony=FALSE) { #{{{
-		$ship = new ShipData;
-		$ship->setUserId($user_id);
-		$ship->setBuildplanId($buildplan_id);
-		$ship->setRumpId($rump_id);
-		for ($i=1;$i<=MODULE_TYPE_COUNT;$i++) {
-			if ($ship->getBuildplan()->getModulesByType($i)) {
-				$class = '\Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapper'.$i;
-				$wrapper = new $class($ship->getRump(),$ship->getBuildplan()->getModulesByType($i));
-				foreach ($wrapper->getCallbacks() as $callback => $value) {
-					$ship->$callback($value);
-				}
-			}
-		}
-		$ship->setMaxEbatt(round($ship->getMaxEps()/3));
-		$ship->setName($ship->getRump()->getName());
-		$ship->setSensorRange($ship->getRump()->getBaseSensorRange());
-		$ship->save();
-		if ($colony) {
-			$ship->setSX($colony->getSX());
-			$ship->setSY($colony->getSY());
-			$ship->setSystemsId($colony->getSystemsId());
-			$ship->setCX($colony->getSystem()->getCX(),TRUE);
-			$ship->setCY($colony->getSystem()->getCY(),TRUE);
-			$ship->save();
-		}
-
-		// @todo refactor
-		global $container;
-
-		ShipSystems::createByModuleList(
-			$ship->getId(),
-			$container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplan((int) $ship->getBuildplanId())
-		);
-
-		return $ship;
-	} # }}}
-
-	/**
-	 */
-	static function getCrewSumByUser($user_id) { #{{{
-		return DB()->query('SELECT COUNT(id) FROM stu_ships_crew WHERE ships_id IN (SELECT id FROM '.self::tablename.' WHERE user_id='.$user_id.')',1);
-	} # }}}
-
 }
 ?>

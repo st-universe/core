@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -29,16 +30,20 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $crewCreator;
 
+    private $shipCreator;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
         BuildplanHangarRepositoryInterface $buildplanHangarRepository,
-        CrewCreatorInterface $crewCreator
+        CrewCreatorInterface $crewCreator,
+        ShipCreatorInterface $shipCreator
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
         $this->buildplanHangarRepository = $buildplanHangarRepository;
         $this->crewCreator = $crewCreator;
+        $this->shipCreator = $shipCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -108,7 +113,12 @@ final class StartAirfieldShip implements ActionControllerInterface
             return;
         }
 
-        $ship = Ship::createBy($userId, $rump_id, $hangar->getBuildplanId(), $colony);
+        $ship = $this->shipCreator->createBy(
+            (int) $userId,
+            (int) $rump_id,
+            $hangar->getBuildplanId(),
+            $colony
+        );
 
         $this->crewCreator->createShipCrew($ship);
 

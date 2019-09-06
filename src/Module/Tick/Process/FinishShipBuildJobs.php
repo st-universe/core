@@ -8,10 +8,18 @@ use ColonyData;
 use ColonyShipQueue;
 use ColonyShipQueueData;
 use PM;
-use Ship;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 
 final class FinishShipBuildJobs implements ProcessTickInterface
 {
+    private $shipCreator;
+
+    public function __construct(
+        ShipCreatorInterface $shipCreator
+    ) {
+        $this->shipCreator = $shipCreator;
+    }
+
     public function work(): void
     {
         $queue = ColonyShipQueue::getFinishedJobs();
@@ -23,7 +31,13 @@ final class FinishShipBuildJobs implements ProcessTickInterface
              * @var ColonyData $colony
              */
             $colony = ResourceCache()->getObject('colony', $obj->getColonyId());
-            $ship = Ship::createBy($obj->getUserId(), $obj->getRumpId(), $obj->getBuildplanId(), $colony);
+
+            $ship = $this->shipCreator->createBy(
+                (int) $obj->getUserId(),
+                (int) $obj->getRumpId(),
+                (int) $obj->getBuildplanId(),
+                $colony
+            );
 
             $obj->deleteFromDatabase();
             $txt = _("Auf der Kolonie " . $colony->getNameWithoutMarkup() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");

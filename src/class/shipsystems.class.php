@@ -149,50 +149,5 @@ class ShipSystems extends ShipSystemsData {
 		DB()->query("DELETE FROM ".self::tablename." WHERE ships_id=".intval($shipId));
 	}
 
-	/**
-	 */
-	static function createByModuleList($shipId,&$modules) { #{{{
-		$systems = array();
-		foreach ($modules as $key => $module) {
-			switch ($module->getModule()->getType()) {
-				case MODULE_TYPE_SHIELDS:
-					$systems[SYSTEM_SHIELDS] = $module->getModule()->getId();
-					break;
-				case MODULE_TYPE_EPS:
-					$systems[SYSTEM_EPS] = $module->getModule()->getId();
-					break;
-				case MODULE_TYPE_IMPULSEDRIVE:
-					$systems[SYSTEM_IMPULSEDRIVE] = $module->getModule()->getId();
-					break;
-				case MODULE_TYPE_WARPCORE:
-					$systems[SYSTEM_WARPCORE] = $module->getModule()->getId();
-					$systems[SYSTEM_WARPDRIVE] = $module->getModule()->getId();
-					break;
-				case MODULE_TYPE_COMPUTER:
-					$systems[SYSTEM_COMPUTER] = $module->getModule()->getId();
-					$systems[SYSTEM_LSS] = 0;
-					$systems[SYSTEM_NBS] = 0;
-					break;
-				case MODULE_TYPE_PHASER:
-					$systems[SYSTEM_PHASER] = $module->getModule()->getId();
-					break;
-				case MODULE_TYPE_TORPEDO:
-					$systems[SYSTEM_TORPEDO] = $module->getModule()->getId();
-					break;
-				case MODULE_TYPE_SPECIAL:
-					// XXX: TBD
-					break;
-			}
-		}
-		foreach ($systems as $sysId => $moduleId) {
-			$obj = new ShipSystemsData;
-			$obj->setShipId($shipId);
-			$obj->setSystemType($sysId);
-			$obj->setModuleId($moduleId);
-			$obj->setStatus(100);
-			$obj->save();
-		}
-	} # }}}
-
 }
 ?>
