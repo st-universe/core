@@ -11,6 +11,7 @@ use Modules;
  * @Table(
  *     name="stu_ships_systems",
  *     indexes={
+ *         @Index(name="ship_idx", columns={"ships_id"})
  *     }
  * )
  **/
