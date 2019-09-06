@@ -110,7 +110,7 @@ class ModuleScreenTab
 				$class .= ' module_select_base_mandatory';
 			} else {
 				$mod = current($this->getBuildplan()->getModulesByType($this->getModuleType()));
-				$goodId = $mod->getModule()->getGoodId();
+				$goodId = (string) $mod->getModule()->getGoodId();
 				$i = '1';
 				if (!$this->getColony()->hasStorage()->$goodId()->$i()) {
 					$class .= ' module_select_base_mandatory';
