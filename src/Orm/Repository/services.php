@@ -39,6 +39,7 @@ use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleSpecial;
+use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
@@ -237,6 +238,11 @@ return [
         ContainerInterface $c
     ): ModuleSpecialRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ModuleSpecial::class);
+    },
+    NewsRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): NewsRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(News::class);
     },
     NoteRepositoryInterface::class => function (
         ContainerInterface $c

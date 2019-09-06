@@ -6,16 +6,23 @@ namespace Stu\Module\Index\View\Overview;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use SystemNews;
+use Stu\Orm\Repository\NewsRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    private $newsRepository;
+
+    public function __construct(
+        NewsRepositoryInterface $newsRepository
+    ) {
+        $this->newsRepository = $newsRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setPageTitle(_('Star Trek Universe'));
         $game->setTemplateFile('html/index.xhtml');
 
-        $game->setTemplateVar('SYSTEM_NEWS', SystemNews::getListBy('ORDER BY id DESC LIMIT 5'));
+        $game->setTemplateVar('SYSTEM_NEWS', $this->newsRepository->getRecent(5));
     }
 }
