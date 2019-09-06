@@ -101,33 +101,12 @@ class SystemMap extends SystemMapData {
 		return new SystemMapData($result);
 	}
 
-	static function getFieldsBy($sql) {
-		return DB()->query("SELECT * FROM ".self::tablename." WHERE ".$sql." ORDER BY sy,sx");
-	}
-
 	/**
 	 */
 	static function getObjectsBy($sql) { #{{{
 		$result = DB()->query("SELECT * FROM ".self::tablename." ".$sql);
 		return self::_getList($result,'SystemMapData');
 	} # }}}
-
-	static function addField($systemId,$x,$y) {
-		$field = new SystemMapData();
-		$field->setSystemId($systemId);
-		$field->setType(1);
-		$field->setSX($x);
-		$field->setSY($y);
-		$field->save();
-	}
-
-	static function getMaxX($systemId) {
-		return DB()->query("SELECT MAX(sx) FROM ".self::tablename." WHERE systems_id=".$systemId,1);
-	}
-
-	static function getMaxY($systemId) {
-		return DB()->query("SELECT MAX(sy) FROM ".self::tablename." WHERE systems_id=".$systemId,1);
-	}
 
 }
 ?>
