@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship;
 
+use Exception;
 use PM;
 use ShipData;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -90,6 +91,7 @@ final class ShipTick implements ShipTickInterface
             case SYSTEM_SHIELDS:
                 return 'setShieldState';
         }
+        throw new Exception('Invalid system');
     }
 
     private function sendMessages(ShipData $ship): void

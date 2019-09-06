@@ -8,6 +8,7 @@ use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Topic\Topic;
+use Stu\Orm\Entity\AllianceBoardTopicInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 
 final class SetTopicSticky implements ActionControllerInterface
@@ -30,6 +31,7 @@ final class SetTopicSticky implements ActionControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
+        /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($this->setTopicStickyRequest->getTopicId());
         if ($topic === null || $topic->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();

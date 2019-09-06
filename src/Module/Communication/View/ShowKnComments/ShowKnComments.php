@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 
 final class ShowKnComments implements ViewControllerInterface
@@ -28,6 +29,7 @@ final class ShowKnComments implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
+        /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->showKnCommentsRequest->getKnPostId());
 
         if ($post === null) {

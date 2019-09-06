@@ -7,6 +7,7 @@ namespace Stu\Module\Notes\Action\DeleteNotes;
 use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\NoteInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class DeleteNotes implements ActionControllerInterface
@@ -28,6 +29,7 @@ final class DeleteNotes implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         foreach ($this->deleteNotesRequest->getNoteIds() as $noteId) {
+            /** @var NoteInterface $obj */
             $obj = $this->noteRepository->find($noteId);
             if ($obj === null) {
                 continue;

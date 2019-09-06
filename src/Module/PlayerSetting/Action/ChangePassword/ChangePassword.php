@@ -6,7 +6,6 @@ namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use User;
 
 final class ChangePassword implements ActionControllerInterface
 {

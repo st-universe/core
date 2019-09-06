@@ -205,16 +205,6 @@ class Modules extends ModulesData {
 
 	/**
 	 */
-	static function getByGoodId($id) { #{{{
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE goods_id=".intval($id)." LIMIT 1",4);
-		if ($result == 0) {
-			new ObjectNotFoundException($id);
-		}
-		return new ModulesData($result);
-	} # }}}
-
-	/**
-	 */
 	static function getBy($qry) { #{{{
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE ".$qry);
 		return self::_getList($result,'ModulesData','id','module');

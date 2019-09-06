@@ -6,6 +6,7 @@ namespace Stu\Module\Crew\Lib;
 
 use ShipData;
 use Stu\Orm\Entity\CrewInterface;
+use Stu\Orm\Entity\CrewRaceInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -54,6 +55,7 @@ final class CrewCreator implements CrewCreatorInterface
             );
             $arr = array_merge($arr, $amount);
         }
+        /** @var CrewRaceInterface $race */
         $race = $this->crewRaceRepository->find((int)$arr[array_rand($arr)]);
 
         $gender = rand(1, 100) > $race->getMaleRatio() ? CREW_GENDER_FEMALE : CREW_GENDER_MALE;
@@ -67,7 +69,7 @@ final class CrewCreator implements CrewCreatorInterface
         $crew->setType(CREW_TYPE_CREWMAN);
 
         $this->crewRepository->save($crew);
-        
+
         return $crew;
     }
 

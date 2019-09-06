@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
+use Exception;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FactionInterface;
@@ -117,6 +118,7 @@ final class Register implements ActionControllerInterface
             case FACTION_EMPIRE:
                 return RESEARCH_START_EMPIRE;
         }
+        throw new Exception('Invalid faction');
     }
 
 
