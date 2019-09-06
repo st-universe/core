@@ -98,7 +98,7 @@ final class CreateModules implements ActionControllerInterface
                         throw new Exception();
                     }
                     if ($stor->getAmount() < $cost->getAmount() * $count) {
-                        $count = floor($stor->getAmount() / $cost->getAmount());
+                        $count = (int) floor($stor->getAmount() / $cost->getAmount());
                     }
                 }
             } catch (Exception $e) {
