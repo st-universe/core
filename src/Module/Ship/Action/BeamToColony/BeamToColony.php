@@ -123,8 +123,14 @@ final class BeamToColony implements ActionControllerInterface
                 $count = $target->getMaxStorage() - $target->getStorageSum();
             }
 
-            $game->addInformation(sprintf(_('%d %s (Energieverbrauch: %d)'), $count, $commodity->getName(),
-                ceil($count / $transferAmount)));
+            $game->addInformationf(
+                _('%d %s (Energieverbrauch: %d)'),
+                $count,
+                $commodity->getName(),
+                ceil($count / $transferAmount)
+            );
+
+            $count = (int) $count;
 
             $ship->lowerStorage($commodityId, $count);
             $target->upperStorage($value, $count);
