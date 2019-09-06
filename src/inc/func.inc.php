@@ -5,6 +5,7 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
@@ -234,7 +235,7 @@ function calculateModuleValue($rump,$module,$callback='aggi',$value=FALSE) { #{{
 
 /**
  */
-function calculateDamageImpact(ShipRumpData $rump, ModulesData $module) { #{{{
+function calculateDamageImpact(ShipRumpData $rump, ModuleInterface $module) { #{{{
 	if ($rump->getModuleLevel() > $module->getLevel()) {
 		return '-'.$module->getDowngradeFactor().'%';
 	}

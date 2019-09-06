@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
 use ColonyData;
-use ModulesData;
+use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabricationListItemTal
@@ -18,7 +19,7 @@ final class ModuleFabricationListItemTal
 
     public function __construct(
         ModuleQueueRepositoryInterface $moduleQueueRepository,
-        ModulesData $module,
+        ModuleInterface $module,
         ColonyData $colony
     ) {
         $this->colony = $colony;
@@ -26,7 +27,7 @@ final class ModuleFabricationListItemTal
         $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
-    public function getModule(): ModulesData
+    public function getModule(): ModuleInterface
     {
         return $this->module;
     }
@@ -51,7 +52,7 @@ final class ModuleFabricationListItemTal
         return (int)$this->module->getEcost();
     }
 
-    public function getConstructionCosts(): array
+    public function getConstructionCosts(): Collection
     {
         return $this->module->getCost();
     }

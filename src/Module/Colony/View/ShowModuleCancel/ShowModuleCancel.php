@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleCancel;
 
-use ModulesData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ShowModuleCancel implements ViewControllerInterface
@@ -39,9 +39,7 @@ final class ShowModuleCancel implements ViewControllerInterface
             $userId
         );
 
-        /**
-         * @var ModulesData $module
-         */
+        /** @var ModuleInterface $module */
         $module = $game->getViewContext()['MODULE'];
 
         $queuedAmount = $this->moduleQueueRepository->getAmountByColonyAndModule(
@@ -50,10 +48,7 @@ final class ShowModuleCancel implements ViewControllerInterface
         );
 
         $game->showMacro('html/colonymacros.xhtml/queue_count');
-        $game->setTemplateVar(
-            'MODULE',
-            ResourceCache()->getObject('module', $this->showModuleCancelRequest->getModuleId())
-        );
+        $game->setTemplateVar('MODULE', $module);
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('MODULE_ID', $module->getId());
         $game->setTemplateVar('QUEUED_AMOUNT', $queuedAmount);

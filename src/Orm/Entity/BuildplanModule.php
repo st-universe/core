@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ModulesData;
-
 /**
  * @Entity
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanModuleRepository")
@@ -27,6 +25,12 @@ class BuildplanModule implements BuildplanModuleInterface
 
     /** @Column(type="integer") * */
     private $module_id = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Module")
+     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $module;
 
     public function getId(): int
     {
@@ -69,7 +73,15 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
-    public function getModule(): ModulesData {
-        return ResourceCache()->getObject(CACHE_MODULE, $this->getModuleId());
+    public function getModule(): ModuleInterface
+    {
+        return $this->module;
+    }
+
+    public function setModule(ModuleInterface $module): BuildplanModuleInterface
+    {
+        $this->module = $module;
+
+        return $this;
     }
 }

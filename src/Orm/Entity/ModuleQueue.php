@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Modules;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ModuleQueueRepository")
  * @Table(
@@ -31,6 +29,12 @@ class ModuleQueue implements ModuleQueueInterface
 
     /** @Column(type="integer") * */
     private $buildingfunction = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Module")
+     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $module;
 
     public function getId(): int
     {
@@ -85,8 +89,15 @@ class ModuleQueue implements ModuleQueueInterface
         return $this;
     }
 
-    public function getModule(): Modules
+    public function getModule(): ModuleInterface
     {
-        return new Modules($this->module_id);
+        return $this->module;
+    }
+
+    public function setModule(ModuleInterface $module): ModuleQueueInterface
+    {
+        $this->module = $module;
+
+        return $this;
     }
 }

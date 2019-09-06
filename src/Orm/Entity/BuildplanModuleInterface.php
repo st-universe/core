@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use ModulesData;
-
 interface BuildplanModuleInterface
 {
     public function getId(): int;
@@ -20,5 +18,7 @@ interface BuildplanModuleInterface
 
     public function setModuleId(int $moduleId): BuildplanModuleInterface;
 
-    public function getModule(): ModulesData;
+    public function getModule(): ModuleInterface;
+
+    public function setModule(ModuleInterface $module): BuildplanModuleInterface;
 }

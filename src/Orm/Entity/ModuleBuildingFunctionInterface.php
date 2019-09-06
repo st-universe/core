@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use ModulesData;
-
 interface ModuleBuildingFunctionInterface
 {
     public function getId(): int;
@@ -16,5 +14,5 @@ interface ModuleBuildingFunctionInterface
 
     public function setBuildingFunction(int $buildingFunction): ModuleBuildingFunctionInterface;
 
-    public function getModule(): ModulesData;
+    public function getModule(): ModuleInterface;
 }

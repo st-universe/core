@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
-use Modules;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
 /**
@@ -114,30 +114,33 @@ class ModuleSelector
      */
     public function getAvailableModules()
     { #{{{
+        // @todo refactor
+        global $container;
         if ($this->modules === null) {
             if ($this->getModuleType() == MODULE_TYPE_SPECIAL) {
-                $special_query = ' AND id IN (SELECT module_id FROM stu_modules_specials WHERE special_id IN (SELECT module_special_id FROM stu_rumps_module_special WHERE rump_id=' . $this->getRump()->getId() . '))';
-                $modules = Modules::getBy('type=' . $this->getModuleType() . ' AND rumps_role_id=
-					(SELECT CASE WHEN (SELECT count(id) FROM stu_modules where type=' . $this->getModuleType() . ' AND rumps_role_id=' . $this->getRump()->getRoleId() . ')=0 THEN 0 ELSE ' . $this->getRump()->getRoleId() . ' END)
-					AND (viewable=1 OR goods_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=' . $this->getColony()->getId() . '))
-					' . $special_query);
+                $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeAndRump(
+                    (int) $this->getColony()->getId(),
+                    (int) $this->getModuleType(),
+                    (int) $this->getRump()->getId(),
+                    (int) $this->getRump()->getRoleId()
+                );
             } else {
-                // @todo refactor
-                global $container;
                 $mod_level = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
                     (int) $this->getRump()->getId()
                 );
 
                 $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
                 $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
-                $modules = Modules::getBy('type=' . $this->getModuleType() . ' AND rumps_role_id=
-					(SELECT CASE WHEN (SELECT count(id) FROM stu_modules where type=' . $this->getModuleType() . ' AND rumps_role_id=' . $this->getRump()->getRoleId() . ')=0 THEN 0 ELSE ' . $this->getRump()->getRoleId() . ' END)
-					AND level IN (' . join(",", range($min_level, $max_level)) . ')
-					AND (viewable=1 OR goods_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=' . $this->getColony()->getId() . '))');
+
+                $modules = $container->get(ModuleRepositoryInterface::class)->getByTypeAndLevel(
+                    (int) $this->getColony()->getId(),
+                    (int) $this->getModuleType(),
+                    (int) $this->getRump()->getRoleId(),
+                    range($min_level, $max_level)
+                );
             }
-            foreach ($modules as $key => $obj) {
-                $this->modules[$obj->getId()] = new \Stu\Lib\ModuleScreen\ModuleSelectorWrapper($obj,
-                    $this->getBuildplan());
+            foreach ($modules as $obj) {
+                $this->modules[$obj->getId()] = new ModuleSelectorWrapper($obj, $this->getBuildplan());
             }
         }
         return $this->modules;

@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Modules;
-
 interface ShipSystemInterface
 {
     public function getId(): int;
@@ -30,5 +28,7 @@ interface ShipSystemInterface
 
     public function isDisabled(): bool;
 
-    public function getModule(): Modules;
+    public function getModule(): ModuleInterface;
+
+    public function setModule(ModuleInterface $module): ShipSystemInterface;
 }

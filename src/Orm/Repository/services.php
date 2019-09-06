@@ -36,6 +36,7 @@ use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\MapRegion;
+use Stu\Orm\Entity\Module;
 use Stu\Orm\Entity\ModuleBuildingFunction;
 use Stu\Orm\Entity\ModuleCost;
 use Stu\Orm\Entity\ModuleQueue;
@@ -237,6 +238,11 @@ return [
         ContainerInterface $c
     ): ModuleCostRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ModuleCost::class);
+    },
+    ModuleRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ModuleRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Module::class);
     },
     ModuleQueueRepositoryInterface::class => function (
         ContainerInterface $c

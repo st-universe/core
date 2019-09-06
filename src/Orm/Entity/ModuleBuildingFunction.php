@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ModulesData;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ModuleBuildingFunctionRepository")
  * @Table(
@@ -25,6 +23,12 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
 
     /** @Column(type="integer") * */
     private $buildingfunction = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Module")
+     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $module;
 
     public function getId(): int
     {
@@ -53,8 +57,8 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
         $this->buildingfunction = $buildingFunction;
     }
 
-    public function getModule(): ModulesData
+    public function getModule(): ModuleInterface
     {
-        return ResourceCache()->getObject(CACHE_MODULE, $this->getModuleId());
+        return $this->module;
     }
 }

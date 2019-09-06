@@ -54,7 +54,8 @@ class KnPost implements KnPostInterface
      */
     private $rpgPlot;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->comments = new ArrayCollection();
     }
 

@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Modules;
-
 interface ModuleQueueInterface
 {
     public function getId(): int;
@@ -24,5 +22,7 @@ interface ModuleQueueInterface
 
     public function setBuildingFunction(int $buildingFunction): ModuleQueueInterface;
 
-    public function getModule(): Modules;
+    public function getModule(): ModuleInterface;
+
+    public function setModule(ModuleInterface $module): ModuleQueueInterface;
 }

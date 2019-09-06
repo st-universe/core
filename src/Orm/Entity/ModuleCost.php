@@ -28,10 +28,16 @@ class ModuleCost implements ModuleCostInterface
     private $count = 0;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
+
+    /**
+     * @ManyToOne(targetEntity="Module", inversedBy="buildingCosts")
+     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $module;
 
     public function getId(): int
     {

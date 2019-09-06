@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Modules;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipSystemRepository")
  * @Table(
@@ -31,6 +29,12 @@ class ShipSystem implements ShipSystemInterface
 
     /** @Column(type="smallint") * */
     private $status = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Module")
+     * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $module;
 
     public function getId(): int
     {
@@ -102,8 +106,15 @@ class ShipSystem implements ShipSystemInterface
         return $this->getStatus() === 0;
     }
 
-    public function getModule(): Modules
+    public function getModule(): ModuleInterface
     {
-        return new Modules($this->getModuleId());
+        return $this->module;
+    }
+
+    public function setModule(ModuleInterface $module): ShipSystemInterface
+    {
+        $this->module = $module;
+
+        return $this;
     }
 }

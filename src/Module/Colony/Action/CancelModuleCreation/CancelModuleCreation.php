@@ -5,28 +5,32 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
 use Colfields;
-use Modules;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class CancelModuleCreation implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CANCEL_MODULECREATION';
 
     private $colonyLoader;
 
     private $moduleQueueRepository;
 
+    private $moduleRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ModuleQueueRepositoryInterface $moduleQueueRepository
+        ModuleQueueRepositoryInterface $moduleQueueRepository,
+        ModuleRepositoryInterface $moduleRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleQueueRepository = $moduleQueueRepository;
+        $this->moduleRepository = $moduleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,10 +44,12 @@ final class CancelModuleCreation implements ActionControllerInterface
         $function = request::postIntFatal('func');
         $count = request::postInt('count');
 
-        /**
-         * @var Modules $module
-         */
-        $module = ResourceCache()->getObject('module', $module_id);
+        /** @var ModuleInterface $module */
+        $module = $this->moduleRepository->find((int) $module_id);
+
+        if ($module === null) {
+            return;
+        }
 
         $game->setView('SHOW_MODULE_CANCEL', ['MODULE' => $module]);
 

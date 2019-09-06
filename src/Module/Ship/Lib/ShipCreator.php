@@ -65,39 +65,41 @@ final class ShipCreator implements ShipCreatorInterface
         foreach ($modules as $key => $module) {
             switch ($module->getModule()->getType()) {
                 case MODULE_TYPE_SHIELDS:
-                    $systems[SYSTEM_SHIELDS] = $module->getModule()->getId();
+                    $systems[SYSTEM_SHIELDS] = $module->getModule();
                     break;
                 case MODULE_TYPE_EPS:
-                    $systems[SYSTEM_EPS] = $module->getModule()->getId();
+                    $systems[SYSTEM_EPS] = $module->getModule();
                     break;
                 case MODULE_TYPE_IMPULSEDRIVE:
-                    $systems[SYSTEM_IMPULSEDRIVE] = $module->getModule()->getId();
+                    $systems[SYSTEM_IMPULSEDRIVE] = $module->getModule();
                     break;
                 case MODULE_TYPE_WARPCORE:
-                    $systems[SYSTEM_WARPCORE] = $module->getModule()->getId();
-                    $systems[SYSTEM_WARPDRIVE] = $module->getModule()->getId();
+                    $systems[SYSTEM_WARPCORE] = $module->getModule();
+                    $systems[SYSTEM_WARPDRIVE] = $module->getModule();
                     break;
                 case MODULE_TYPE_COMPUTER:
-                    $systems[SYSTEM_COMPUTER] = $module->getModule()->getId();
+                    $systems[SYSTEM_COMPUTER] = $module->getModule();
                     $systems[SYSTEM_LSS] = 0;
                     $systems[SYSTEM_NBS] = 0;
                     break;
                 case MODULE_TYPE_PHASER:
-                    $systems[SYSTEM_PHASER] = $module->getModule()->getId();
+                    $systems[SYSTEM_PHASER] = $module->getModule();
                     break;
                 case MODULE_TYPE_TORPEDO:
-                    $systems[SYSTEM_TORPEDO] = $module->getModule()->getId();
+                    $systems[SYSTEM_TORPEDO] = $module->getModule();
                     break;
                 case MODULE_TYPE_SPECIAL:
                     // XXX: TBD
                     break;
             }
         }
-        foreach ($systems as $sysId => $moduleId) {
+        foreach ($systems as $sysId => $module) {
             $obj = $this->shipSystemRepository->prototype();
             $obj->setShipId((int) $shipId);
             $obj->setSystemType((int) $sysId);
-            $obj->setModuleId((int) $moduleId);
+            if ($module !== 0) {
+                $obj->setModule($module);
+            }
             $obj->setStatus(100);
 
             $this->shipSystemRepository->save($obj);

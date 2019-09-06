@@ -118,7 +118,7 @@ final class CreateModules implements ActionControllerInterface
                 $queue = $this->moduleQueueRepository->prototype();
                 $queue->setColonyId((int) $colonyId);
                 $queue->setBuildingFunction((int) $func);
-                $queue->setModuleId((int) $module_id);
+                $queue->setModule($module);
                 $queue->setAmount($count);
 
                 $this->moduleQueueRepository->save($queue);

@@ -26,6 +26,12 @@ class ModuleSpecial implements ModuleSpecialInterface
     /** @Column(type="smallint") */
     private $special_id = 0;
 
+    /**
+     * @ManyToOne(targetEntity="Module", inversedBy="moduleSpecials")
+     * @JoinColumn(name="module_id", referencedColumnName="id")
+     */
+    private $module;
+
     public function getId(): int
     {
         return $this->id;

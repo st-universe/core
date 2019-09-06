@@ -14,8 +14,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
@@ -32,16 +34,20 @@ final class BuildShip implements ActionControllerInterface
 
     private $shipBuildplanRepository;
 
+    private $moduleRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        ModuleRepositoryInterface $moduleRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->moduleRepository = $moduleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -85,7 +91,8 @@ final class BuildShip implements ActionControllerInterface
             }
             if ($i === MODULE_TYPE_SPECIAL) {
                 foreach ($module as $key) {
-                    $modules[$key] = ResourceCache()->getObject('module', $key);
+                    /** @var ModuleInterface[] $modules */
+                    $modules[$key] = $this->moduleRepository->find((int) $key);
                     $sigmod[$key] = $modules[$key]->getId();
                 }
                 continue;
@@ -94,7 +101,8 @@ final class BuildShip implements ActionControllerInterface
                 continue;
             }
             if (current($module) > 0) {
-                $mod = ResourceCache()->getObject('module', current($module));
+                /** @var ModuleInterface $mod */
+                $mod = $this->moduleRepository->find((int) current($module));
                 if ($mod->getLevel() > $rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
                     $crewcount += 20;
                 } elseif ($mod->getLevel() < $rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
@@ -164,7 +172,7 @@ final class BuildShip implements ActionControllerInterface
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType((int) $obj->getType());
                 $mod->setBuildplanId((int)$plan->getId());
-                $mod->setModuleId((int)$obj->getId());
+                $mod->setModule($obj);
 
                 $this->buildplanModuleRepository->save($mod);
             }
