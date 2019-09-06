@@ -16,6 +16,6 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('Star Trek Universe'));
         $game->setTemplateFile('html/index.xhtml');
 
-        $game->setTemplateVar('SYSTEM_NEWS', SystemNews::getListBy('ORDER BY id ASC LIMIT 5'));
+        $game->setTemplateVar('SYSTEM_NEWS', SystemNews::getListBy('ORDER BY id DESC LIMIT 5'));
     }
 }
