@@ -5,10 +5,10 @@ namespace Stu\Lib;
 use AllianceJobs;
 use Colony;
 use Contactlist;
-use Crew;
 use Fleet;
 use PMCategory;
 use Ship;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -78,9 +78,12 @@ class UserDeletion
 
     public function handleCrew()
     {
-        foreach (Crew::getObjectsBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
-            $obj->deepDelete();
-        }
+        // @todo refactor
+        global $container;
+
+        $container->get(CrewRepositoryInterface::class)->truncateByUserId(
+            (int) $this->getUser()->getId()
+        );
     }
 
     public function handleDatabaseEntries()

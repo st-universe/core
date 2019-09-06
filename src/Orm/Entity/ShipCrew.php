@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Crew;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
@@ -32,6 +30,12 @@ class ShipCrew implements ShipCrewInterface
 
     /** @Column(type="integer") * */
     private $user_id = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Crew")
+     * @JoinColumn(name="crew_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $crew;
 
     public function getId(): int
     {
@@ -86,8 +90,15 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
-    public function getCrew(): Crew
+    public function getCrew(): CrewInterface
     {
-        return new Crew($this->getCrewId());
+        return $this->crew;
+    }
+
+    public function setCrew(CrewInterface $crew): ShipCrewInterface
+    {
+        $this->crew = $crew;
+
+        return $this;
     }
 }

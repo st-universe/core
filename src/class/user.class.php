@@ -1,6 +1,8 @@
 <?php
 
 use Stu\Lib\ContactlistWrapper;
+use Stu\Orm\Repository\CrewRepository;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
@@ -290,7 +292,10 @@ class UserData extends BaseTable {
 	 */
 	public function getFreeCrewCount() { #{{{
 		if ($this->free_crew_count === NULL) {
-			$this->free_crew_count = Crew::countInstances('WHERE user_id='.$this->getId().' AND id NOT IN (select crew_id FROM stu_ships_crew where user_id='.$this->getId().')');
+			// @todo refactor
+			global $container;
+
+			$this->free_crew_count = $container->get(CrewRepositoryInterface::class)->getFreeAmountByUser((int) $this->getId());
 		}
 		return $this->free_crew_count;
 	} # }}}
@@ -305,9 +310,16 @@ class UserData extends BaseTable {
 
 	/**
 	 */
-	public function getCrewCountDebris() { #{{{
+	public function getCrewCountDebris(): int { #{{{
 		if ($this->crew_count_debris === NULL) {
-			$this->crew_count_debris = Crew::countInstances('WHERE user_id='.$this->getId().' AND id IN (SELECT crew_id FROM stu_ships_crew where ships_id IN (SELECT id FROM stu_ships where rumps_id IN (SELECT id FROM stu_rumps WHERE category_id='.SHIP_CATEGORY_DEBRISFIELD.')))');
+			// @todo refactor
+			global $container;
+
+			$this->crew_count_debris = $container->get(CrewRepositoryInterface::class)
+				->getAmountByUserAndShipRumpCategory(
+					(int) $this->getId(),
+					SHIP_CATEGORY_DEBRISFIELD
+				);
 		}
 		return $this->crew_count_debris;
 	} # }}}

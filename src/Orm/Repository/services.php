@@ -20,6 +20,7 @@ use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\DatabaseCategory;
@@ -149,6 +150,11 @@ return [
         ContainerInterface $c
     ): CrewRaceRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(CrewRace::class);
+    },
+    CrewRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): CrewRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Crew::class);
     },
     CrewTrainingRepositoryInterface::class => function (
         ContainerInterface $c

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
-use Crew;
-use CrewData;
 use ShipData;
+use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
+use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use UserData;
@@ -20,17 +20,21 @@ final class CrewCreator implements CrewCreatorInterface
 
     private $shipCrewRepository;
 
+    private $crewRepository;
+
     public function __construct(
         CrewRaceRepositoryInterface $crewRaceRepository,
         ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        CrewRepositoryInterface $crewRepository
     ) {
         $this->crewRaceRepository = $crewRaceRepository;
         $this->shipRumpCategoryRoleCrewRepository = $shipRumpCategoryRoleCrewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->crewRepository = $crewRepository;
     }
 
-    public function create(int $userId): CrewData
+    public function create(int $userId): CrewInterface
     {
         /**
          * @var UserData $user
@@ -54,13 +58,16 @@ final class CrewCreator implements CrewCreatorInterface
 
         $gender = rand(1, 100) > $race->getMaleRatio() ? CREW_GENDER_FEMALE : CREW_GENDER_MALE;
 
-        $crew = new CrewData();
-        $crew->setUserId($userId);
+        $crew = $this->crewRepository->prototype();
+
+        $crew->setUserId((int) $userId);
         $crew->setName('Crew');
-        $crew->setRaceId($race->getId());
+        $crew->setRace($race);
         $crew->setGender($gender);
         $crew->setType(CREW_TYPE_CREWMAN);
-        $crew->save();
+
+        $this->crewRepository->save($crew);
+        
         return $crew;
     }
 
@@ -91,11 +98,11 @@ final class CrewCreator implements CrewCreatorInterface
             );
             while ($j <= $config->$slot()) {
                 $j++;
-                if (($crew = Crew::getFreeCrewByTypeAndUser($ship->getUserId(), $i)) === false) {
-                    $crew = Crew::getFreeCrewByTypeAndUser($ship->getUserId());
+                if (($crew = $this->crewRepository->getFreeByUserAndType((int) $ship->getUserId(), $i)) === null) {
+                    $crew = $this->crewRepository->getFreeByUser((int) $ship->getUserId());
                 }
                 $sc = $this->shipCrewRepository->prototype();
-                $sc->setCrewId((int) $crew->getId());
+                $sc->setCrew($crew);
                 $sc->setShipId((int) $ship->getId());
                 $sc->setUserId((int) $ship->getUserId());
                 $sc->setSlot($i);

@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Crew;
-
 interface ShipCrewInterface
 {
     public function getId(): int;
@@ -24,5 +22,7 @@ interface ShipCrewInterface
 
     public function setUserId(int $userId): ShipCrewInterface;
 
-    public function getCrew(): Crew;
+    public function getCrew(): CrewInterface;
+
+    public function setCrew(CrewInterface $crew): ShipCrewInterface;
 }
