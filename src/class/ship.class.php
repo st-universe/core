@@ -4,11 +4,13 @@
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
+use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -1088,9 +1090,14 @@ class ShipData extends BaseTable {
 		$this->setFieldValue('plans_id',$value,'getBuildplanId');
 	}
 
-	public function getBuildplan() {
+	public function getBuildplan(): ShipBuildplanInterface {
 		if ($this->buildplan === NULL) {
-			$this->buildplan = new ShipBuildplans($this->getBuildplanId());
+			// @todo refactor
+			global $container;
+
+			$this->buildplan = $container->get(ShipBuildplanRepositoryInterface::class)->find(
+				(int) $this->getBuildplanId()
+			);
 		}
 		return $this->buildplan;
 	}

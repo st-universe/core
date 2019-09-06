@@ -9,14 +9,14 @@ use ColonyShipQueueData;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
-use ShipBuildplans;
-use ShipBuildplansData;
 use Shiprump;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
@@ -30,14 +30,18 @@ final class BuildShip implements ActionControllerInterface
 
     private $shipRumpBuildingFunctionRepository;
 
+    private $shipBuildplanRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository
+        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -131,11 +135,11 @@ final class BuildShip implements ActionControllerInterface
             $colony->lowerStorage($module->getGoodId(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-        // FIXME
+        // @todo
         $buildtime = 3600;
-        $signature = ShipBuildplansData::createSignature($sigmod);
-        $plan = ShipBuildplans::getBySignature($userId, $signature);
-        if (!$plan) {
+        $signature = ShipBuildplan::createSignature($sigmod);
+        $plan = $this->shipBuildplanRepository->getByUserAndSignature($userId, $signature);
+        if ($plan === null) {
             $planname = sprintf(
                 _('Bauplan %s %s'),
                 $rump->getName(),
@@ -145,15 +149,16 @@ final class BuildShip implements ActionControllerInterface
                 _('Lege neuen Bauplan an: %d'),
                 $planname
             );
-            $plan = new ShipBuildplansData;
+            $plan = $this->shipBuildplanRepository->prototype();
             $plan->setUserId($userId);
-            $plan->setRumpId($rump->getId());
+            $plan->setRumpId((int) $rump->getId());
             $plan->setName($planname);
             $plan->setSignature($signature);
             $plan->setBuildtime($buildtime);
             $plan->setCrew($crew_usage);
             $plan->setCrewPercentage($crewcount);
-            $plan->save();
+
+            $this->shipBuildplanRepository->save($plan);
 
             foreach($modules as $obj) {
                 $mod = $this->buildplanModuleRepository->prototype();

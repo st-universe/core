@@ -98,7 +98,19 @@ class ShipCrew extends ShipCrewData {
 		for ($i=CREW_TYPE_FIRST;$i<=CREW_TYPE_LAST;$i++) {
 			$j = 1;
 			if ($i == CREW_TYPE_CREWMAN) {
-				$slot = 'getJob'.$i.'Crew'.$ship->getBuildPlan()->getCrewPercentage();
+				$percentage = $ship->getBuildPlan()->getCrewPercentage();
+				// @todo refactor
+				switch ($percentage){
+					case 100:
+						$slot = 'getJob6Crew';
+						break;
+					case 110:
+						$slot = 'getJob6Crew10p';
+						break;
+					case 120:
+						$slot = 'getJob6Crew20p';
+						break;
+				}
 			} else {
 				$slot = 'getJob'.$i.'Crew';
 			}

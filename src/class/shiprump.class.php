@@ -4,6 +4,7 @@ use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipRumpCostInterface;
 use Stu\Orm\Entity\ShipRumpRoleInterface;
 use Stu\Orm\Entity\ShipRumpSpecialInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCostRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -285,7 +286,13 @@ class ShiprumpData extends BaseTable {
 	/**
 	 */
 	public function getBuildplanCount() { #{{{
-		return ShipBuildplans::countInstances('WHERE rump_id='.$this->getId().' AND user_id='.currentUser()->getId());
+	    // @todo refactor
+        global $container;
+
+        return $container->get(ShipBuildplanRepositoryInterface::class)->getCountByRumpAndUser(
+            (int) $this->getId(),
+            currentUser()->getId()
+        );
 	} # }}}
 
 	/**

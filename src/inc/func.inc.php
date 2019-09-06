@@ -392,3 +392,9 @@ TalesRegistry::registerPrefix(
         return 'nl2br('.TalesInternal::compileToPHPExpression($src,$nothrow).')';
     }
 );
+TalesRegistry::registerPrefix(
+    'formatSeconds',
+    function ($src, $nothrow): string {
+	return 'formatSeconds('.TalesInternal::compileToPHPExpression($src,$nothrow).')';
+    }
+);

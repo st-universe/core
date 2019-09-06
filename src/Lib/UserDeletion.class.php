@@ -9,7 +9,6 @@ use Crew;
 use Fleet;
 use PMCategory;
 use Ship;
-use ShipBuildplans;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -18,6 +17,7 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use TradeLicences;
@@ -52,9 +52,14 @@ class UserDeletion
 
     public function handleBuildplans()
     {
-        $result = ShipBuildplans::getObjectsBy('user_id=' . $this->getUser()->getId());
-        foreach ($result as $key => $obj) {
-            $obj->deepDelete();
+        // @todo refactor
+        global $container;
+
+        $shipBuildplanRepo = $container->get(ShipBuildplanRepositoryInterface::class);
+
+        $result = $shipBuildplanRepo->getByUser((int) $this->getUser()->getId());
+        foreach ($result as $obj) {
+            $shipBuildplanRepo->delete($obj);
         }
     }
 

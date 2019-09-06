@@ -8,11 +8,12 @@ use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
-use ShipBuildplans;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
@@ -22,12 +23,16 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
     private $showModuleScreenBuildplanRequest;
 
+    private $shipBuildplanRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowModuleScreenBuildplanRequestInterface $showModuleScreenBuildplanRequest
+        ShowModuleScreenBuildplanRequestInterface $showModuleScreenBuildplanRequest,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleScreenBuildplanRequest = $showModuleScreenBuildplanRequest;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,8 +44,9 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             $userId
         );
 
-        $plan = new ShipBuildplans($this->showModuleScreenBuildplanRequest->getBuildplanId());
-        if (!$plan->ownedByCurrentUser()) {
+        /** @var ShipBuildplanInterface $plan */
+        $plan = $this->shipBuildplanRepository->find($this->showModuleScreenBuildplanRequest->getBuildplanId());
+        if ($plan === null || $plan->getUserId() !== $userId) {
             return;
         }
         $rump = $plan->getRump();

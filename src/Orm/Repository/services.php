@@ -48,6 +48,7 @@ use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
+use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
 use Stu\Orm\Entity\ShipRumpColonizationBuilding;
@@ -279,6 +280,11 @@ return [
         ContainerInterface $c
     ): SessionStringRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(SessionString::class);
+    },
+    ShipBuildplanRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipBuildplanRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipBuildplan::class);
     },
     ShipRumpBuildingFunctionRepositoryInterface::class => function (
         ContainerInterface $c

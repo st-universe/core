@@ -836,7 +836,7 @@
                     <tal:block tal:repeat="data AVAILABLE_BUILDPLANS">
                         <tr tal:attributes="class string:row${repeat/data/odd}" i18n:attributes="title" style="cursor: pointer;" title="Details">
                             <td tal:content="data/getName" class="selectable" onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
-                            <td tal:content="data/getBuildtimeFormatted" onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
+                            <td tal:content="formatSeconds:data/getBuildtime" onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
                             <td style="text-align: center;">
                                 <a class="linkbutton" i18n:translate="" href="?id=${COLONY/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauen</a>
                             </td>
@@ -903,7 +903,7 @@
 						</div>
 						<br />
 						<strong i18n:translate="">Bauzeit</strong><br />
-						<span tal:replace="php:formatSeconds(building.getBuildTime())">BUILDTIME</span>
+						<span tal:replace="formatSeconds:building/getBuildTime">BUILDTIME</span>
 					</td>
 					<td style="vertical-align: top; width: 110px;">
 						<div tal:condition="building/isActivateable">

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ShipBuildplans;
-
 /**
  * @Entity
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanHangarRepository")
@@ -29,10 +27,16 @@ class BuildplanHangar implements BuildplanHangarInterface
     private $default_torpedo_type_id;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\TorpedoType")
+     * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="default_torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $defaultTorpedoType;
+
+    /**
+     * @ManyToOne(targetEntity="ShipBuildplan")
+     * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $buildplan;
 
     public function getId(): int
     {
@@ -80,8 +84,8 @@ class BuildplanHangar implements BuildplanHangarInterface
         return $this->defaultTorpedoType;
     }
 
-    public function getBuildplan(): ShipBuildplans
+    public function getBuildplan(): ShipBuildplanInterface
     {
-        return new ShipBuildplans($this->getBuildplanId());
+        return $this->buildplan;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use ShipBuildplans;
-
 interface BuildplanHangarInterface
 {
     public function getId(): int;
@@ -22,5 +20,5 @@ interface BuildplanHangarInterface
 
     public function getDefaultTorpedoType(): ?TorpedoTypeInterface;
 
-    public function getBuildplan(): ShipBuildplans;
+    public function getBuildplan(): ShipBuildplanInterface;
 }
