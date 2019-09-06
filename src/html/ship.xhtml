@@ -87,10 +87,10 @@
 						</a>
 					</td>
 					<td colspan="2">
-						<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;" src="assets/goods/${mod/getModule/getGoodId}.gif" phptal:cache="10d" />
+						<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;" src="assets/goods/${mod/getModule/getGoodId}.gif" />
 					</td>
 					<td colspan="4">
-						<img tal:repeat="mod SHIP/getSystems" style="margin-right: 5px;" src="assets/system/${mod/getSystemType}.gif" phptal:cache="1d" />
+						<img tal:repeat="mod SHIP/getSystems" style="margin-right: 5px;" src="assets/system/${mod/getSystemType}.gif" />
 					</td>
 				</tr>
 			</table>
