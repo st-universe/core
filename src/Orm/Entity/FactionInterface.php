@@ -26,6 +26,10 @@ interface FactionInterface
 
     public function setPlayerLimit(int $playerLimit): FactionInterface;
 
+    public function getStartBuildingId(): int;
+
+    public function setStartBuildingId(int $startBuildingId): FactionInterface;
+
     public function getPlayerAmount(): int;
 
     public function hasFreePlayerSlots(): bool;

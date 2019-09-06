@@ -9,18 +9,23 @@ use Building;
 use Colony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
     private $firstColonyRequest;
 
+    private $factionRepository;
+
     public function __construct(
-        FirstColonyRequestInterface $firstColonyRequest
+        FirstColonyRequestInterface $firstColonyRequest,
+        FactionRepositoryInterface $factionRepository
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
+        $this->factionRepository = $factionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,8 +48,9 @@ final class FirstColony implements ActionControllerInterface
             return;
         }
 
-        $faction = ResourceCache()->getObject(CACHE_FACTION, $user->getFaction());
-        $colony->colonize($user->getId(), new Building($faction->getBuildingId()));
+        /** @var FactionInterface $faction */
+        $faction = $this->factionRepository->find((int) $user->getFaction());
+        $colony->colonize($user->getId(), new Building($faction->getStartBuildingId()));
 
         $user->setActive(2);
         $user->save();

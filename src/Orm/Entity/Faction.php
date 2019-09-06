@@ -32,6 +32,9 @@ class Faction implements FactionInterface
     /** @Column(type="integer") * */
     private $player_limit = 0;
 
+    /** @Column(type="integer") * */
+    private $start_building_id = 0;
+
     public function getId(): int
     {
         return $this->id;
@@ -97,12 +100,26 @@ class Faction implements FactionInterface
         return $this;
     }
 
-	public function getPlayerAmount(): int {
+    public function getStartBuildingId(): int
+    {
+        return $this->start_building_id;
+    }
+
+    public function setStartBuildingId(int $startBuildingId): FactionInterface
+    {
+        $this->start_building_id = $startBuildingId;
+
+        return $this;
+    }
+
+    public function getPlayerAmount(): int
+    {
         // @todo refactor
         return User::getAmountByFaction($this->getId());
-	}
+    }
 
-	public function hasFreePlayerSlots(): bool {
-		return $this->getPlayerLimit() === 0 || $this->getPlayerAmount() < $this->getPlayerLimit();
-	}
+    public function hasFreePlayerSlots(): bool
+    {
+        return $this->getPlayerLimit() === 0 || $this->getPlayerAmount() < $this->getPlayerLimit();
+    }
 }
