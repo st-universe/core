@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\IgnoreUser;
 
-use Ignorelist;
-use IgnorelistData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use User;
 
 final class IgnoreUser implements ActionControllerInterface
@@ -16,10 +15,14 @@ final class IgnoreUser implements ActionControllerInterface
 
     private $ignoreUserRequest;
 
+    private $ignoreListRepository;
+
     public function __construct(
-        IgnoreUserRequestInterface $ignoreUserRequest
+        IgnoreUserRequestInterface $ignoreUserRequest,
+        IgnoreListRepositoryInterface $ignoreListRepository
     ) {
         $this->ignoreUserRequest = $ignoreUserRequest;
+        $this->ignoreListRepository = $ignoreListRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,15 +39,16 @@ final class IgnoreUser implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst ignorieren'));
             return;
         }
-        if (Ignorelist::isOnList($userId, $recipient->getId()) == 1) {
+        if ($this->ignoreListRepository->exists($userId, (int) $recipient->getId()) === true) {
             $game->addInformation(_('Der Spieler befindet sich bereits auf Deiner Ignoreliste'));
             return;
         }
-        $ignore = new IgnorelistData();
+        $ignore = $this->ignoreListRepository->prototype();
         $ignore->setUserId($userId);
         $ignore->setDate(time());
-        $ignore->setRecipientId($recipient->getId());
-        $ignore->save();
+        $ignore->setRecipientId((int) $recipient->getId());
+
+        $this->ignoreListRepository->save($ignore);
 
         $game->addInformation(_('Der Spieler wird ignoriert'));
     }

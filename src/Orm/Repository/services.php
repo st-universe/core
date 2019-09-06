@@ -29,6 +29,7 @@ use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
+use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\MapBorderType;
@@ -186,6 +187,11 @@ return [
         ContainerInterface $c
     ): HistoryRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(History::class);
+    },
+    IgnoreListRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): IgnoreListRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(IgnoreList::class);
     },
     KnCommentRepositoryInterface::class => function (
         ContainerInterface $c

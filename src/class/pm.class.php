@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\IgnoreListRepositoryInterface;
+
 class PMData extends Basetable {
 
 	const tablename = 'stu_pms';
@@ -134,9 +136,15 @@ class PMData extends Basetable {
 
 	private $senderignore = NULL;
 
-	function senderIsIgnored() {
+	function senderIsIgnored(): bool {
 		if ($this->senderignore === NULL) {
-			$this->senderignore = Ignorelist::isOnList(currentUser()->getId(),$this->getSenderId());
+			// @todo refactor
+			global $container;
+
+			$this->senderignore = $container->get(IgnoreListRepositoryInterface::class)->exists(
+				currentUser()->getId(),
+				(int) $this->getSenderId()
+			);
 		}
 		return $this->senderignore;
 	}

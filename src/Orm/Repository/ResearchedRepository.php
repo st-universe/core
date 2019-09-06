@@ -81,13 +81,14 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
 
     public function truncateForUser(int $userId): void
     {
-        $q = $this->getEntityManager()->createQuery(
-            sprintf(
-                'DELETE FROM %s t WHERE t.user_id = :userId',
-                Researched::class
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s t WHERE t.user_id = :userId',
+                    Researched::class
+                )
             )
-        );
-        $q->setParameter('userId', $userId);
-        $q->execute();
+            ->setParameter('userId', $userId)
+            ->execute();
     }
 }

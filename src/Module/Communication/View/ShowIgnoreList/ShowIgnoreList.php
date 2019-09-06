@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowIgnoreList;
 
-use Ignorelist;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 
 final class ShowIgnoreList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_IGNORELIST';
+
+    private $ignoreListRepository;
+
+    public function __construct(
+        IgnoreListRepositoryInterface $ignoreListRepository
+    ) {
+        $this->ignoreListRepository = $ignoreListRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -23,7 +31,7 @@ final class ShowIgnoreList implements ViewControllerInterface
         );
         $game->setPageTitle(_('Ignoreliste'));
 
-        $game->setTemplateVar('IGNORE_LIST', Ignorelist::getList($userId));
-        $game->setTemplateVar('REMOTE_IGNORES', Ignorelist::getRemoteIgnores($userId));
+        $game->setTemplateVar('IGNORE_LIST', $this->ignoreListRepository->getByUser($userId));
+        $game->setTemplateVar('REMOTE_IGNORES', $this->ignoreListRepository->getByRecipient($userId));
     }
 }

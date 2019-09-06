@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\WritePm;
 
-use Ignorelist;
 use PM;
 use PMCategory;
 use PMData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
+use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use User;
 
 final class WritePm implements ActionControllerInterface
@@ -19,10 +19,14 @@ final class WritePm implements ActionControllerInterface
 
     private $writePmRequest;
 
+    private $ignoreListRepository;
+
     public function __construct(
-        WritePmRequestInterface $writePmRequest
+        WritePmRequestInterface $writePmRequest,
+        IgnoreListRepositoryInterface $ignoreListRepository
     ) {
         $this->writePmRequest = $writePmRequest;
+        $this->ignoreListRepository = $ignoreListRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,7 +44,7 @@ final class WritePm implements ActionControllerInterface
             $game->addInformation("Du kannst keine Nachricht an Dich selbst schreiben");
             return;
         }
-        if (Ignorelist::isOnList($recipient->getId(), $userId)) {
+        if ($this->ignoreListRepository->exists((int) $recipient->getId(), $userId)) {
             $game->addInformation("Der Siedler ignoriert Dich");
             return;
         }
