@@ -2,6 +2,7 @@
 
 use Stu\Lib\ContactlistWrapper;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 class UserData extends BaseTable {
 
@@ -336,7 +337,10 @@ class UserData extends BaseTable {
 	 */
 	public function getUsedCrewCount() { #{{{
 		if ($this->used_crew_count === NULL) {
-			$this->used_crew_count = ShipCrew::countInstances('WHERE user_id='.$this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->used_crew_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUser((int) $this->getId());
 		}
 		return $this->used_crew_count;
 	} # }}}

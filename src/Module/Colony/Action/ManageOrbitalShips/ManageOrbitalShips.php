@@ -8,12 +8,13 @@ use Exception;
 use PM;
 use request;
 use Ship;
-use ShipCrew;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
@@ -25,12 +26,20 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $torpedoTypeRepository;
 
+    private $crewCreator;
+
+    private $shipCrewRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        CrewCreatorInterface $crewCreator,
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
+        $this->crewCreator = $crewCreator;
+        $this->shipCrewRepository = $shipCrewRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -114,7 +123,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getBuildplan()->getCrew()
                     );
                 } else {
-                    ShipCrew::createByRumpCategory($shipobj);
+                    $this->crewCreator->createShipCrew($shipobj);
                     $msg[] = sprintf(
                         _('%s: Die Crew wurde hochgebeamt'),
                         $shipobj->getName()
@@ -123,7 +132,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 }
             }
             if (isset($unman[$shipobj->getId()]) && $shipobj->currentUserCanUnMan()) {
-                ShipCrew::truncate("WHERE ships_id=" . $shipobj->getId());
+                $this->shipCrewRepository->truncateByShip((int) $shipobj->getId());
                 $msg[] = sprintf(
                     _('%s: Die Crew wurde runtergebeamt'), $shipobj->getName()
                 );

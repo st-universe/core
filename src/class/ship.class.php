@@ -11,6 +11,7 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -168,7 +169,10 @@ class ShipData extends BaseTable {
 
 	public function getCrewlist() {
 		if ($this->crew === NULL) {
-			$this->crew = ShipCrew::getByShip($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->crew = $container->get(ShipCrewRepositoryInterface::class)->getByShip((int) $this->getId());
 		}
 		return $this->crew;
 	}
@@ -176,7 +180,10 @@ class ShipData extends BaseTable {
 	/**
 	 */
 	public function getCrewCount() { #{{{
-		return ShipCrew::countInstances('WHERE ships_id='.$this->getId());
+	    // @todo refactor
+		global $container;
+
+		return $container->get(ShipCrewRepositoryInterface::class)->getAmountByShip((int) $this->getId());
 	} # }}}
 
 	public function getCrew() {
@@ -901,9 +908,9 @@ class ShipData extends BaseTable {
 		global $container;
 
 		$container->get(ShipStorageRepositoryInterface::class)->truncateForShip((int) $this->getId());
+		$container->get(ShipCrewRepositoryInterface::class)->truncateByShip((int) $this->getId());
 
 		ShipSystems::truncate($this->getId());
-		ShipCrew::truncate('WHERE ships_id='.$this->getId());
 		$this->deleteFromDatabase();
 	} # }}}
 
@@ -1334,8 +1341,14 @@ class ShipData extends BaseTable {
 		return ceil($this->getCY() / Overview::FIELDS_PER_SECTION);
 	}
 
-	public function getCrewBySlot($slot) {
-		return ShipCrew::getByShipSlot($this->getId(),$slot);
+	public function getCrewBySlot($slot): array {
+	    // @todo refactor
+		global $container;
+
+		return $container->get(ShipCrewRepositoryInterface::class)->getByShipAndSlot(
+			(int) $this->getId(),
+			(int) $slot
+		);
 	}
 
 	public function isCrewSlotSet($slot,$amount=1) {
@@ -1542,7 +1555,7 @@ class ShipData extends BaseTable {
 	 */
 	public function deepDelete() { #{{{
 		$this->deactivateTraktorBeam();
-		ShipCrew::truncate('WHERE ships_id='.$this->getId());
+
 		$this->remove();
 	} # }}}
 

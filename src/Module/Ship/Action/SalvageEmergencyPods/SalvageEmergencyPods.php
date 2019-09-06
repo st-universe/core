@@ -6,10 +6,10 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use PM;
 use request;
-use ShipCrew;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
 {
@@ -17,10 +17,14 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipCrewRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipCrewRepositoryInterface $shipCrewRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipCrewRepository = $shipCrewRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +53,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 sprintf(_('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
                     $target->getCrew()), PM_SPECIAL_SHIP);
         }
-        ShipCrew::truncate('WHERE ships_id=' . $target->getId());
+        $this->shipCrewRepository->truncateByShip((int) $target->getId());
         $ship->lowerEps(1);
         $ship->save();
         $game->addInformation(_('Die Rettungskapseln wurden geborgen'));

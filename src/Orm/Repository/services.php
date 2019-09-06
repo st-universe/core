@@ -51,6 +51,7 @@ use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotMember;
 use Stu\Orm\Entity\SessionString;
 use Stu\Orm\Entity\ShipBuildplan;
+use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 use Stu\Orm\Entity\ShipRumpCategory;
 use Stu\Orm\Entity\ShipRumpCategoryRoleCrew;
@@ -298,6 +299,11 @@ return [
         ContainerInterface $c
     ): ShipBuildplanRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ShipBuildplan::class);
+    },
+    ShipCrewRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ShipCrewRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ShipCrew::class);
     },
     ShipRumpBuildingFunctionRepositoryInterface::class => function (
         ContainerInterface $c
