@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowRenameCrew\ShowRenameCrew;
+use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 
 final class RenameCrew implements ActionControllerInterface
@@ -39,6 +40,7 @@ final class RenameCrew implements ActionControllerInterface
         $game->setView(ShowRenameCrew::VIEW_IDENTIFIER);
         $crew_id = request::getIntFatal('crewid');
 
+        /** @var CrewInterface $crew */
         $crew = $this->crewRepository->find((int) $crew_id);
 
         if ($crew === null || $crew->getUserId() != $userId) {
@@ -48,7 +50,8 @@ final class RenameCrew implements ActionControllerInterface
         $name = request::getString('rn_crew_' . $crew->getId() . '_value');
         if (mb_strlen(trim($name)) > 0) {
             $crew->setName(tidyString($name));
-            $crew->save();
+
+            $this->crewRepository->save($crew);
         }
         $game->setTemplateVar('CREW', $crew);
     }
