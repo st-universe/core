@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 
 final class TransferFromAccount implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class TransferFromAccount implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $tradeLicenseRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,7 +56,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        if (!$tradepost->userHasLicence($userId)) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
         $goods = request::postArray('goods');

@@ -8,24 +8,27 @@ use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowShoutBoxList\ShowShoutBoxList;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
-use TradeLicences;
 
 final class AddShoutBoxEntry implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_ADD_SHOUTBOX_ENTRY';
 
     private $addShoutBoxEntryRequest;
 
     private $tradeShoutboxRepository;
 
+    private $tradeLicenseRepository;
+
     public function __construct(
         AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest,
-        TradeShoutboxRepositoryInterface $tradeShoutboxRepository
+        TradeShoutboxRepositoryInterface $tradeShoutboxRepository,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->addShoutBoxEntryRequest = $addShoutBoxEntryRequest;
         $this->tradeShoutboxRepository = $tradeShoutboxRepository;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,7 +37,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         $msg = $this->addShoutBoxEntryRequest->getMessage();
         $tradeNetworkId = $this->addShoutBoxEntryRequest->getTradeNetworkId();
 
-        if (!TradeLicences::hasLicenceInNetwork($userId, $tradeNetworkId)) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndNetwork($userId, $tradeNetworkId)) {
             throw new AccessViolation();
         }
         $msg = substr(strip_tags($msg), 0, 200);

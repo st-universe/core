@@ -8,6 +8,7 @@ use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 use TradePost;
 use TradeStorage;
@@ -20,12 +21,16 @@ final class TransferGoods implements ActionControllerInterface
 
     private $tradeTransferRepository;
 
+    private $tradeLicenseRepository;
+
     public function __construct(
         TransferGoodsRequestInterface $transferGoodsRequest,
-        TradeTransferRepositoryInterface $tradeTransferRepository
+        TradeTransferRepositoryInterface $tradeTransferRepository,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->transferGoodsRequest = $transferGoodsRequest;
         $this->tradeTransferRepository = $tradeTransferRepository;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,7 +65,7 @@ final class TransferGoods implements ActionControllerInterface
 
         $targetpost = new TradePost($destinationTradePostId);
 
-        if (!$targetpost->userHasLicence($userId)) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
         if ($targetpost->getTradeNetwork() != $tradepost->getTradeNetwork()) {

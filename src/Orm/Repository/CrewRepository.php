@@ -35,6 +35,9 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
 
     public function getAmountByUserAndShipRumpCategory(int $userId, int $shipRumpCategoryId): int
     {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('amount', 'amount');
+
         return (int) $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT COUNT(c.id) as amount FROM stu_crew c WHERE c.user_id = :userId AND c.id IN (
@@ -44,7 +47,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
                         )
                     )
                 )',
-                new ResultSetMapping()
+                $rsm
             )
             ->setParameters([
                 'userId' => $userId,

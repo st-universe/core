@@ -9,6 +9,7 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 
 final class ShowTradeMenu implements ViewControllerInterface
@@ -17,10 +18,14 @@ final class ShowTradeMenu implements ViewControllerInterface
 
     private $shipLoader;
 
+    private $tradeLicenseRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,7 +58,13 @@ final class ShowTradeMenu implements ViewControllerInterface
 
         $game->setTemplateVar('TRADEPOST', $tradepost);
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar('HAS_LICENSE', $tradepost->userHasLicence($userId));
-        $game->setTemplateVar('CAN_BUY_LICENSE', $tradepost->currentUserCanBuyLicence($userId));
+        $game->setTemplateVar(
+            'HAS_LICENSE',
+            $this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())
+        );
+        $game->setTemplateVar(
+            'CAN_BUY_LICENSE',
+            $this->tradeLicenseRepository->getAmountByUser($userId) < MAX_TRADELICENCE_COUNT
+        );
     }
 }

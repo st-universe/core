@@ -10,7 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
-use TradeLicencesData;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 use TradeStorage;
 
@@ -20,10 +20,14 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $tradeLicenseRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,11 +52,11 @@ final class BuyTradeLicense implements ActionControllerInterface
         $targetId = request::getIntFatal('target');
         $mode = request::getStringFatal('method');
 
-        if (!$tradepost->currentUserCanBuyLicence($userId)) {
+        if ($this->tradeLicenseRepository->getAmountByUser($userId) >= MAX_TRADELICENCE_COUNT) {
             return;
         }
 
-        if ($tradepost->userHasLicence($userId)) {
+        if ($this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
         switch ($mode) {
@@ -89,11 +93,12 @@ final class BuyTradeLicense implements ActionControllerInterface
             default:
                 return;
         }
-        $licence = new TradeLicencesData();
-        $licence->setTradePostId($tradepost->getId());
+        $licence = $this->tradeLicenseRepository->prototype();
+        $licence->setTradePostId((int) $tradepost->getId());
         $licence->setUserId($userId);
         $licence->setDate(time());
-        $licence->save();
+
+        $this->tradeLicenseRepository->save($licence);
     }
 
     public function performSessionCheck(): bool

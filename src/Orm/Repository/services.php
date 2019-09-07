@@ -74,6 +74,7 @@ use Stu\Orm\Entity\StarSystemType;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
+use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\UserIpTable;
@@ -421,6 +422,11 @@ return [
         ContainerInterface $c
     ): TorpedoTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TorpedoType::class);
+    },
+    TradeLicenseRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradeLicenseRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeLicense::class);
     },
     TradeShoutboxRepositoryInterface::class => function (
         ContainerInterface $c

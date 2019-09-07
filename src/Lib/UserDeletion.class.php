@@ -18,9 +18,9 @@ use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
-use TradeLicences;
 use TradeOffer;
 use TradeStorage;
 use User;
@@ -188,12 +188,14 @@ class UserDeletion
 
     public function handleTrade()
     {
-        TradeLicences::truncate('WHERE user_id=' . $this->getUser()->getId());
-        TradeOffer::truncate('WHERE user_id=' . $this->getUser()->getId());
-        TradeStorage::truncate('WHERE user_id=' . $this->getUser()->getId());
+        $userId = (int) $this->getUser()->getId();
 
         // @todo refactor
         global $container;
+
+        $container->get(TradeLicenseRepositoryInterface::class)->truncateByUser($userId);
+        TradeOffer::truncate('WHERE user_id=' . $this->getUser()->getId());
+        TradeStorage::truncate('WHERE user_id=' . $this->getUser()->getId());
 
         $container->get(TradeShoutboxRepositoryInterface::class)->truncateByUser((int) $this->getUser()->getId());
     }

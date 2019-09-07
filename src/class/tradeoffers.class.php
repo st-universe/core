@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+
 class TradeOfferData extends BaseTable {
 
 	protected $tablename = 'stu_trade_offers';
@@ -112,7 +114,9 @@ class TradeOffer extends TradeOfferData {
 	}
 
 	static function getByLicencedTradePosts($userId) {
-		$list = TradeLicences::getPostsByUser($userId);
+		// @todo refactor
+		global $container;
+		$list = $container->get(TradeLicenseRepositoryInterface::class)->getByUser((int) $userId);
 		$ret = array();
 		$ret[] = 0;
 		foreach($list as $key => $value) {

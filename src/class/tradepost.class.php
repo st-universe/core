@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 class TradePostData extends BaseTable {
@@ -81,11 +82,10 @@ class TradePostData extends BaseTable {
 	}
 
 	public function getLicenceCount() {
-		return TradeLicences::getLicenceCountByTradepost($this->getId());	
-	}
+		// @todo refactor
+		global $container;
 
-	public function userHasLicence(int $userId) {
-		return TradeLicences::userHasLicence($this->getId(), $userId);
+		return $container->get(TradeLicenseRepositoryInterface::class)->getAmountByTradePost((int) $this->getId());
 	}
 
 	public function getDescription() {
@@ -199,10 +199,6 @@ class TradePostData extends BaseTable {
 
 	public function currentUserIsOverStorage() {
 		return $this->getStorageByUser(currentUser()->getId())->getStorageSum() > $this->getStorage();
-	}
-
-	public function currentUserCanBuyLicence(int $userId) {
-		return TradeLicences::countInstances('user_id='.$userId) < MAX_TRADELICENCE_COUNT;
 	}
 }
 class TradePost extends TradePostData {
