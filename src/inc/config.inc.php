@@ -259,9 +259,7 @@ define('CACHE_FLEET','fleet');
 define('CACHE_SHIP','ship');
 define('CACHE_USER','user');
 define('CACHE_BUILDING','building');
-define('CACHE_CREW','crew');
 define('CACHE_ALLIANCE','alliance');
-define('CACHE_FACTION','faction');
 define('CACHE_COLONY','colony');
 
 define('ROLE_PHASERSHIP',1);

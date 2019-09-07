@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\FactionRepositoryInterface;
+
 class DockingRightsData extends BaseTable {
 
 	protected $tablename = 'stu_dockingrights';
@@ -26,13 +28,15 @@ class DockingRightsData extends BaseTable {
 	}
 
 	public function getTargetName() {
+		// @todo refactor
+		global $container;
 		switch ($this->getPrivilegeType()) {
 			case DOCK_PRIVILEGE_USER:
 				return ResourceCache()->getObject('user',$this->getTargetId())->getName();
 			case DOCK_PRIVILEGE_ALLIANCE:
 				return ResourceCache()->getObject('alliance',$this->getTargetId())->getName();
 			case DOCK_PRIVILEGE_FACTION:
-				return ResourceCache()->getObject('faction',$this->getTargetId())->getName();
+				return $container->get(FactionRepositoryInterface::class)->find((int) $this->getTargetId());
 
 		}
 		return ResourceCache()->getObject('ship',$this->getTargetId())->getName();

@@ -3,7 +3,6 @@
 namespace Stu\Lib;
 
 use ArrayObject;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 class ResourceCacher
 {
@@ -19,9 +18,7 @@ class ResourceCacher
             $this->resources->offsetSet(CACHE_USER, new ArrayObject);
             $this->resources->offsetSet(CACHE_BUILDING, new ArrayObject);
             $this->resources->offsetSet(CACHE_SHIP, new ArrayObject);
-            $this->resources->offsetSet(CACHE_CREW, new ArrayObject);
             $this->resources->offsetSet(CACHE_ALLIANCE, new ArrayObject);
-            $this->resources->offsetSet(CACHE_FACTION, new ArrayObject);
             $this->resources->offsetSet(CACHE_COLONY, new ArrayObject);
             $this->resources->offsetSet(CACHE_FLEET, new ArrayObject);
         }
@@ -63,20 +60,11 @@ class ResourceCacher
             case "ship":
                 $newobj = "Ship";
                 break;
-            case "crew":
-                $newobj = "Crew";
-                break;
             case "alliance":
                 $newobj = "Alliance";
                 break;
-            case "faction":
-                $newobj = "Faction";
-                break;
             case "colony":
                 $newobj = "Colony";
-                break;
-            case "rump":
-                $newobj = "Shiprump";
                 break;
             case CACHE_FLEET:
                 $newobj = "Fleet";
