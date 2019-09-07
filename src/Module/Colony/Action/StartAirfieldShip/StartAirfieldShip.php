@@ -108,8 +108,8 @@ final class StartAirfieldShip implements ActionControllerInterface
             );
             return;
         }
-        $storage = $this->colonyStorageRepository->getByColony((int) $colony->getId(), 0);
-        if (!array_key_exists($rump->getGoodId(), $storage)) {
+        $shipStorage = $this->colonyStorageRepository->getByColony((int) $colony->getId(), 0);
+        if (!array_key_exists($rump->getGoodId(), $shipStorage)) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
@@ -127,6 +127,8 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         $this->crewCreator->createShipCrew($ship);
 
+        $storage = $colony->getStorage();
+        
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
         if ($defaultTorpedoType !== null) {
             if (array_key_exists($defaultTorpedoType->getGoodId(), $colony->getStorage())) {
