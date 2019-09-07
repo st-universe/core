@@ -7,6 +7,7 @@ namespace Stu\Module\Trade\Action\TakeOffer;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use TradeOffer;
 use TradePost;
 use Stu\Lib\TradePostStorageWrapper;
@@ -14,15 +15,18 @@ use TradeStorage;
 
 final class TakeOffer implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_TAKE_OFFER';
 
     private $takeOfferRequest;
 
+    private $tradeLibFactory;
+
     public function __construct(
-        TakeOfferRequestInterface $takeOfferRequest
+        TakeOfferRequestInterface $takeOfferRequest,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,10 +57,17 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
+        $tradePost = new TradePost($storage->getTradePostId());
+
+        $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
+        $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, (int) $selectedOffer->getUserId());
+
         $wrap = new TradePostStorageWrapper($storage->getTradePostId(), $userId);
 
+        $freeStorage = $storageManagerUser->getFreeStorage();
+
         if (
-            $wrap->getStorageSum() > $storage->getTradePost()->getStorage() &&
+            $freeStorage <= 0 &&
             $selectedOffer->getOfferedGoodCount() > $selectedOffer->getWantedGoodCount()
         ) {
             $game->addInformation(_('Dein Warenkonto auf diesem Handelsposten ist voll'));
@@ -65,8 +76,8 @@ final class TakeOffer implements ActionControllerInterface
         if ($amount * $selectedOffer->getWantedGoodCount() > $storage->getAmount()) {
             $amount = floor($storage->getAmount() / $selectedOffer->getWantedGoodCount());
         }
-        if ($amount * $selectedOffer->getOfferedGoodCount() - $amount * $selectedOffer->getWantedGoodCount() > $storage->getTradePost()->getStorage() - $wrap->getStorageSum()) {
-            $amount = floor(($storage->getTradePost()->getStorage() - $wrap->getStorageSum()) / ($selectedOffer->getOfferedGoodCount() - $selectedOffer->getWantedGoodCount()));
+        if ($amount * $selectedOffer->getOfferedGoodCount() - $amount * $selectedOffer->getWantedGoodCount() > $freeStorage) {
+            $amount = floor($freeStorage / ($selectedOffer->getOfferedGoodCount() - $selectedOffer->getWantedGoodCount()));
             if ($amount <= 0) {
                 $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                 return;
@@ -81,14 +92,20 @@ final class TakeOffer implements ActionControllerInterface
             $selectedOffer->save();
         }
 
-        /**
-         * @var TradePost $trade_post
-         */
-        $trade_post = $storage->getTradePost();
+        $storageManagerRemote->upperStorage(
+            (int) $selectedOffer->getWantedGoodId(),
+            (int) $selectedOffer->getWantedGoodCount() * $amount
+        );
 
-        $trade_post->upperStorage($selectedOffer->getUserId(), $selectedOffer->getWantedGoodId(), $selectedOffer->getWantedGoodCount() * $amount);
-        $trade_post->upperStorage($userId, $selectedOffer->getOfferedGoodId(), $selectedOffer->getOfferedGoodCount() * $amount);
-        $trade_post->lowerStorage($userId, $selectedOffer->getWantedGoodId(), $selectedOffer->getWantedGoodCount() * $amount);
+        $storageManagerUser->upperStorage(
+            (int) $selectedOffer->getOfferedGoodId(),
+            (int) $selectedOffer->getOfferedGoodCount() * $amount
+        );
+
+        $storageManagerUser->lowerStorage(
+            (int) $selectedOffer->getWantedGoodId(),
+            (int) $selectedOffer->getWantedGoodCount() * $amount
+        );
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 

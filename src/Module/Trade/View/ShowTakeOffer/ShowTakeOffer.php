@@ -6,6 +6,8 @@ namespace Stu\Module\Trade\View\ShowTakeOffer;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradeOffer;
 
 final class ShowTakeOffer implements ViewControllerInterface
@@ -15,17 +17,30 @@ final class ShowTakeOffer implements ViewControllerInterface
 
     private $showTakeOfferRequest;
 
+    private $tradeLibFactory;
+
+    private $tradeLicenseRepository;
+
     public function __construct(
-        ShowTakeOfferRequestInterface $showTakeOfferRequest
+        ShowTakeOfferRequestInterface $showTakeOfferRequest,
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->showTakeOfferRequest = $showTakeOfferRequest;
+        $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $selectedOffer = new TradeOffer($this->showTakeOfferRequest->getOfferId());
 
-        // @todo check if the trade post is allowed
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost(
+            $game->getUser()->getId(),
+            (int) $selectedOffer->getTradePostId()
+        )) {
+            throw new \AccessViolation();
+        }
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/trademacros.xhtml/takeoffer');
@@ -34,6 +49,10 @@ final class ShowTakeOffer implements ViewControllerInterface
         $game->setTemplateVar(
             'SELECTED_OFFER',
             $selectedOffer
+        );
+        $game->setTemplateVar(
+            'TRADE_POST',
+            $this->tradeLibFactory->createTradeAccountTal($selectedOffer->getTradePost(), $game->getUser()->getId())
         );
     }
 }

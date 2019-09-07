@@ -7,6 +7,7 @@ namespace Stu\Module\Trade\Action\TransferGoods;
 use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
@@ -23,14 +24,18 @@ final class TransferGoods implements ActionControllerInterface
 
     private $tradeLicenseRepository;
 
+    private $tradeLibFactory;
+
     public function __construct(
         TransferGoodsRequestInterface $transferGoodsRequest,
         TradeTransferRepositoryInterface $tradeTransferRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->transferGoodsRequest = $transferGoodsRequest;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,6 +55,7 @@ final class TransferGoods implements ActionControllerInterface
          * @var TradePost $tradepost
          */
         $tradepost = $selectedStorage->getTradePost();
+        $tradePostId = (int) $tradepost->getId();
 
         if ($selectedStorage->getAmount() < $amount) {
             $amount = $selectedStorage->getAmount();
@@ -58,31 +64,35 @@ final class TransferGoods implements ActionControllerInterface
             return;
         }
 
-        if ($tradepost->getFreeTransferCapacity() <= 0) {
+        $usedTransferCapacity = $this->tradeTransferRepository->getSumByPostAndUser($tradePostId, $userId);
+        $freeTransferCapacity = $tradepost->getTransferCapacity() - $usedTransferCapacity;
+
+        if ($freeTransferCapacity <= 0) {
             $game->addInformation(_('Du hast an diesem Posten derzeit keine freie Transferkapaziztät'));
             return;
         }
 
         $targetpost = new TradePost($destinationTradePostId);
 
-        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradePostId)) {
             return;
         }
         if ($targetpost->getTradeNetwork() != $tradepost->getTradeNetwork()) {
             return;
         }
-        if ($targetpost->getStorageSum() >= $targetpost->getStorage()) {
+
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
+        $storageManagerTarget = $this->tradeLibFactory->createTradePostStorageManager($targetpost, $userId);
+
+        $freeStorage = $storageManager->getFreeStorage();
+
+        if ($freeStorage <= 0) {
             return;
         }
-        if ($amount + $targetpost->getStorageSum() > $targetpost->getStorage()) {
-            $amount = $targetpost->getStorage() - $targetpost->getStorageSum();
-        }
-        if ($amount > $tradepost->getFreeTransferCapacity()) {
-            $amount = $tradepost->getFreeTransferCapacity();
-        }
+        $amount = (int) min(min($freeStorage, $amount), $freeTransferCapacity);
 
-        $targetpost->upperStorage($userId, $selectedStorage->getGoodId(), $amount);
-        $tradepost->lowerStorage($userId, $selectedStorage->getGoodId(), $amount);
+        $storageManagerTarget->upperStorage((int) $selectedStorage->getGoodId(), $amount);
+        $storageManager->lowerStorage((int) $selectedStorage->getGoodId(), $amount);
 
         $transfer = $this->tradeTransferRepository->prototype();
         $transfer->setTradePostId((int) $tradepost->getId());

@@ -19,7 +19,7 @@
 						<div style="font-weight: bold">
 							Waren lagernd	
 						</div>
-						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorageByCurrentUser/getStorage">
+						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage/getStorage">
 							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})" style="display: block; padding: 4px;" class="tradebutton">
 								<img src="assets/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
 							</a>
@@ -29,7 +29,7 @@
 						<div style="font-weight: bold;">
 							Waren in Angeboten
 						</div>
-						<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorageByCurrentUser">
+						<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorage">
 							<a href="javascript:void(0);" onclick="showTradeOfferByGood(${data/getId},${stor/getGoodId})" style="display: block; padding: 4px;" class="tradebutton">
 								<img src="assets/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
 							</a>
@@ -55,15 +55,15 @@
 				<tr>
 					<td class="darkbg">Lagerraum</td>
 					<td>
-						<span tal:condition="data/currentUserIsOverStorage" class="negative" tal:content="data/getStorageByCurrentUser/getStorageSum">STORAGESUM</span>
-						<span tal:condition="not:data/currentUserIsOverStorage" class="positive" tal:content="data/getStorageByCurrentUser/getStorageSum">STORAGESUM</span>
-						(<span tal:content="data/getStorage">STORAGE</span> pro Siedler)
+						<span tal:condition="data/isOverStorage" class="negative" tal:content="data/getStorage/getStorageSum">STORAGESUM</span>
+						<span tal:condition="not:data/isOverStorage" class="positive" tal:content="data/getStorage/getStorageSum">STORAGESUM</span>
+						(<span tal:content="data/getStorageCapacity">STORAGE</span> pro Siedler)
 					</td>
 				</tr>
 				<tr>
 					<td class="darkbg">Ausgestellte Lizenzen</td>
 					<td>
-						<span tal:content="data/getLicenceCount">LIZENZEN</span>
+						<span tal:content="data/getLicenseCount">LIZENZEN</span>
 						(<a href="javascript:void(0)" onclick="showTradeLicenceList(this,${data/getId});">Liste anzeigen</a>)
 					</td>
 				</tr>

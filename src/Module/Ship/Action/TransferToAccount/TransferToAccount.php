@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 
@@ -20,12 +21,16 @@ final class TransferToAccount implements ActionControllerInterface
 
     private $tradeLicenseRepository;
 
+    private $tradeLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +64,10 @@ final class TransferToAccount implements ActionControllerInterface
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {
             return;
         }
-        if ($tradepost->getStorageByUser($userId)->getStorageSum() >= $tradepost->getStorage()) {
+
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
+
+        if ($storageManager->getFreeStorage() <= 0) {
             $game->addInformation(_('Dein Warenkonto an diesem Posten ist voll'));
             return;
         }
@@ -77,6 +85,7 @@ final class TransferToAccount implements ActionControllerInterface
             return;
         }
         $game->addInformation(_("Es wurden folgende Waren ins Warenkonto transferiert"));
+
         foreach ($goods as $key => $value) {
             $commodityId = (int) $value;
             if (!array_key_exists($key, $gcount)) {
@@ -95,7 +104,7 @@ final class TransferToAccount implements ActionControllerInterface
             } else {
                 $count = (int) $count;
             }
-            if ($count < 1 || $tradepost->getStorage() - $tradepost->getStorageByUser($userId)->getStorageSum() <= 0) {
+            if ($count < 1 || $storageManager->getFreeStorage() <= 0) {
                 continue;
             }
             if (!$commodity->isBeamable()) {
@@ -110,14 +119,14 @@ final class TransferToAccount implements ActionControllerInterface
                 continue;
             }
             $count = min($count, $storage->getAmount());
-            if ($tradepost->getStorageByUser($userId)->getStorageSum() + $count > $tradepost->getStorage()) {
-                $count = $tradepost->getStorage() - $tradepost->getStorageByUser($userId)->getStorageSum();
+            if ($storageManager->getStorageSum() + $count > $tradepost->getStorage()) {
+                $count = $tradepost->getStorage() - $storageManager->getStorageSum();
             }
             $game->addInformationf(_('%d %s'), $count, $commodity->getName());
 
             $ship->lowerStorage($commodityId, $count);
-            $tradepost->upperStorage($userId, $value, $count);
-            $tradepost->getStorageByUser($userId)->upperSum($count);
+
+            $storageManager->upperStorage((int) $value, (int) $count);
         }
     }
 

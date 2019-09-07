@@ -9,6 +9,7 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 
 final class ShowTradeMenuTransfer implements ViewControllerInterface
 {
@@ -16,10 +17,14 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 
     private $shipLoader;
 
+    private $tradeLibFactory;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->shipLoader = $shipLoader;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,7 +50,7 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             new AccessViolation;
         }
 
-        $game->setTemplateVar('TRADEPOST', $tradepost);
+        $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
     }
 }

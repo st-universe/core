@@ -20,6 +20,8 @@ use Stu\Module\Trade\Action\TakeOffer\TakeOfferRequestInterface;
 use Stu\Module\Trade\Action\TransferGoods\TransferGoods;
 use Stu\Module\Trade\Action\TransferGoods\TransferGoodsRequest;
 use Stu\Module\Trade\Action\TransferGoods\TransferGoodsRequestInterface;
+use Stu\Module\Trade\Lib\TradeLibFactory;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Module\Trade\View\ShowLicenseList\ShowLicenseList;
@@ -52,6 +54,7 @@ use Stu\Module\Trade\View\ShowTransferMenu\ShowTransferMenueRequestInterface;
 use function DI\autowire;
 
 return [
+    TradeLibFactoryInterface::class => autowire(TradeLibFactory::class),
     ShowOfferMenuRequestInterface::class => autowire(ShowOfferMenuRequest::class),
     ShowTransferMenueRequestInterface::class => autowire(ShowTransferMenueRequest::class),
     ShowOfferMenuNewOfferRequestInterface::class => autowire(ShowOfferMenuNewOfferRequest::class),

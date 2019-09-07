@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 
@@ -20,12 +21,16 @@ final class TransferFromAccount implements ActionControllerInterface
 
     private $tradeLicenseRepository;
 
+    private $tradeLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,8 +66,11 @@ final class TransferFromAccount implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        $curGoods = $tradepost->getStorageByUser($userId)->getStorage();
-        if (count($curGoods) == 0) {
+
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($tradepost, $userId);
+        $curGoods = $storageManager->getStorage();
+
+        if ($curGoods === []) {
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }
@@ -70,6 +78,7 @@ final class TransferFromAccount implements ActionControllerInterface
             $game->addInformation(_("Es wurde keine Waren zum Transferieren ausgewählt"));
             return;
         }
+
         $game->addInformation(_("Es wurden folgende Waren vom Warenkonto transferiert"));
         foreach ($goods as $key => $value) {
             if (!array_key_exists($key, $gcount)) {
@@ -101,7 +110,8 @@ final class TransferFromAccount implements ActionControllerInterface
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
-            $tradepost->lowerStorage($userId, $value, $count);
+            $storageManager->lowerStorage((int) $value, (int) $count);
+
             $ship->upperStorage((int) $value, $count);
             $ship->setStorageSum($ship->getStorageSum() + $count);
 

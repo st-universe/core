@@ -1,8 +1,6 @@
 <?php
 
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 class TradePostData extends BaseTable {
 
@@ -81,23 +79,12 @@ class TradePostData extends BaseTable {
 		$this->setFieldValue('storage',$value,'getStorage');
 	}
 
-	public function getLicenceCount() {
-		// @todo refactor
-		global $container;
-
-		return $container->get(TradeLicenseRepositoryInterface::class)->getAmountByTradePost((int) $this->getId());
-	}
-
 	public function getDescription() {
 		return $this->data['description'];
 	}
 
 	public function setDescription($value) {
 		$this->setFieldValue('description',$value,'getDescription');
-	}
-
-	public function getDescriptionFormatted() {
-		return nl2br($this->getDescription());
 	}
 
 	public function calculateLicenceCost() {
@@ -110,96 +97,6 @@ class TradePostData extends BaseTable {
 		return ResourceCache()->getObject('good', CommodityTypeEnum::GOOD_DILITHIUM);
 	}
 
-	/**
-	 */
-	public function getStorageByCurrentUser() { #{{{
-		return $this->getStorageByUser(currentUser()->getId());
-	} # }}}
-
-	private $storageByUser = array();
-
-	public function getStorageByUser($user_id) {
-		if (!array_key_exists($user_id,$this->storageByUser)) {
-			$this->storageByUser[$user_id] = TradeStorage::getStorageByTradepostUser($this->getId(),$user_id);
-		}
-		return $this->storageByUser[$user_id];
-	}
-
-	public function upperStorage($user_id,$goodId,$count) {
-		$data = &$this->getStorageByUser($user_id)->getStorage();
-		if (!array_key_exists($goodId,$data)) {
-			$stor = new TradeStorageData;
-			$stor->setUserId($user_id);
-			$stor->setGoodId($goodId);
-			$stor->setTradePostId($this->getId());
-			$this->getStorageByUser($user_id)->addStorageEntry($stor);
-		} else {
-			$stor = &$data[$goodId];
-		}
-		$stor->upperCount($count);
-		$stor->save();
-	}
-
-	public function lowerStorage($user_id,$goodId,$count) {
-		$data = &$this->getStorageByUser($user_id)->getStorage();
-		if (!array_key_exists($goodId,$data)) {
-			return;
-		}
-		$stor = &$data[$goodId];
-		if ($stor->getAmount() <= $count) {
-			$stor->deleteFromDatabase();
-			return;
-		}
-		$stor->lowerCount($count);
-		$stor->save();
-	}
-
-	private $offerStorageByUser = NULL;
-
-	public function getOfferStorageByCurrentUser() {
-		if ($this->offerStorageByUser === NULL) {
-			$this->offerStorageByUser = TradeOffer::getStorageByTradepostUser($this->getId(),currentUser()->getId());
-		}
-		return $this->offerStorageByUser;
-	}
-
-	private $storageSum = NULL;
-	private $freeCapacity = NULL;
-
-	public function getStorageSum() {
-		if ($this->storageSum === NULL) {
-			$this->storageSum = $this->getStorageByUser(currentUser()->getId())->getStorageSum();
-		}
-		return $this->storageSum;
-	}
-
-	public function getTransferCapacitySum() {
-		if ($this->freeCapacity === NULL) {
-			// @todo refactor
-			global $container;
-
-			$this->freeCapacity = $container->get(TradeTransferRepositoryInterface::class)->getSumByPostAndUser(
-				(int) $this->getId(),
-				(int) currentUser()->getId()
-			);
-		}
-		return $this->freeCapacity;
-	}
-
-	public function getFreeStorage() {
-		if ($this->getStorage()-$this->getStorageSum() < 0) {
-			return 0;
-		}
-		return $this->getStorage()-$this->getStorageSum();
-	}
-
-	public function getFreeTransferCapacity() {
-		return $this->getTransferCapacity()-$this->getTransferCapacitySum();
-	}
-
-	public function currentUserIsOverStorage() {
-		return $this->getStorageByUser(currentUser()->getId())->getStorageSum() > $this->getStorage();
-	}
 }
 class TradePost extends TradePostData {
 

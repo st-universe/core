@@ -7,19 +7,23 @@ namespace Stu\Module\Trade\Action\CancelOffer;
 use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use TradeOffer;
 
 final class CancelOffer implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
     private $cancelOfferRequest;
 
+    private $tradeLibFactory;
+
     public function __construct(
-        CancelOfferRequestInterface $cancelOfferRequest
+        CancelOfferRequestInterface $cancelOfferRequest,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->cancelOfferRequest = $cancelOfferRequest;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,9 +35,13 @@ final class CancelOffer implements ActionControllerInterface
         if ((int) $offer->getUserId() !== $userId) {
             new AccessViolation;
         }
-        $offer->getTradePost()->upperStorage($userId,
-            $offer->getOfferedGoodId(),
-            $offer->getOfferedGoodCount() * $offer->getOfferCount()
+
+        $this->tradeLibFactory->createTradePostStorageManager(
+            $offer->getTradePost(),
+            $userId
+        )->upperStorage(
+            (int) $offer->getOfferedGoodId(),
+            (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
         );
 
         $offer->deleteFromDatabase();

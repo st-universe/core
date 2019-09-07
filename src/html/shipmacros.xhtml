@@ -727,7 +727,7 @@
 						<tr>
 							<td>
 								<img src="assets/buttons/lager.gif" />
-								<span tal:replace="TRADEPOST/getStorageByCurrentUser/getStorageSum">SUM</span>/<span tal:replace="TRADEPOST/getStorage">MAX</span>
+								<span tal:replace="TRADEPOST/getStorage/getStorageSum">SUM</span>/<span tal:replace="TRADEPOST/getStorageCapacity">MAX</span>
 							</td>
 							<td>
 								<img src="assets/buttons/lager.gif" />
@@ -785,7 +785,7 @@
 									<th i18n:translate="">Waren im Konto</th>
 								</tr>
 								<tr>
-									<td tal:define="storage TRADEPOST/getStorageByCurrentUser">
+									<td tal:define="storage TRADEPOST/getStorage">
 										<tal:block tal:condition="storage/getStorage" tal:repeat="good storage/getStorage">
 											<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 											<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
@@ -814,7 +814,7 @@
 			<tal:block tal:condition="not:HAS_LICENSE">
 					<table class="tcal">
 						<tr>
-							<td tal:content="structure TRADEPOST/getDescriptionFormatted">DESCRIPTION</td>
+							<td tal:content="structure nl2br:TRADEPOST/getDescriptionFormatted">DESCRIPTION</td>
 						</tr>
 					</table>
 					<br />

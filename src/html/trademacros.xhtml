@@ -9,10 +9,10 @@
 		<br />
 		<table class="tcal">
 			<tr>
-				<th colspan="3" tal:content="TRADE_POST/getShip/getName">NAME</th>
+				<th colspan="3" tal:content="TRADE_POST_INFO/getShip/getName">NAME</th>
 			</tr>
 			<metal:macro metal:define-macro="tradepostdetails">
-				<tr tal:define="ship TRADE_POST/getShip">
+				<tr tal:define="ship TRADE_POST_INFO/getShip">
 					<td rowspan="5">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 					</td>
@@ -22,26 +22,26 @@
 				<tr>
 					<th>Handelsnetz</th>
 					<td>
-						<img src="assets/rassen/${TRADE_POST/getTradeNetwork}s.gif" />
+						<img src="assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.gif" />
 					</td>
 				</tr>
 				<tr>
 					<th>Transferkapazität</th>
 					<td>
-						<span tal:content="TRADE_POST/getTransferCapacity">CAPACITY</span>
+						<span tal:content="TRADE_POST_INFO/getTransferCapacity">CAPACITY</span>
 						pro Tag
 					</td>
 				</tr>
 				<tr>
 					<th>Lagerraum</th>
 					<td>
-						<span tal:content="TRADE_POST/getStorage">STORAGE</span>
+						<span tal:content="TRADE_POST_INFO/getStorageCapacity">STORAGE</span>
 						pro Siedler
 					</td>
 				</tr>
 				<tr>
 					<th>Ausgestellte Lizenzen</th>
-					<td tal:content="TRADE_POST/getLicenceCount">LIZENZEN</td>
+					<td tal:content="TRADE_POST_INFO/getLicenseCount">LIZENZEN</td>
 				</tr>
 			</metal:macro>
 			<metal:macro metal:use-macro="tradepostdetails" />
@@ -165,9 +165,9 @@
 							</tr>
 							<tr tal:repeat="post AVAILABLE_TRADE_POSTS">
 								<td>
-									<input type="radio" name="target" tal:attributes="value post/getId;readonly post/getFreeStorage" />
+									<input type="radio" name="target" tal:attributes="value post/getTradePost/getId;readonly post/getFreeStorage" />
 								</td>
-								<td tal:content="post/getName" colspan="2">NAME</td>
+								<td tal:content="post/getTradePost/getName" colspan="2">NAME</td>
 								<td>
 									<img src="assets/buttons/lager.gif" title="Freier Lagerraum" />
 									<span tal:replace="post/getFreeStorage">STORAGE</span>
@@ -216,7 +216,7 @@
 				</tr>
 				<tr>
 					<td>
-						<img src="assets/buttons/lager.gif" title="Freier Lagerraum" /> <span tal:replace="SELECTED_OFFER/getTradePost/getFreeStorage">FREESTORAGE</span> (<span tal:replace="SELECTED_OFFER/getTradePost/getStorage">STORAGE</span>)
+						<img src="assets/buttons/lager.gif" title="Freier Lagerraum" /> <span tal:replace="TRADE_POST/getFreeStorage">FREESTORAGE</span> (<span tal:replace="SELECTED_OFFER/getTradePost/getStorage">STORAGE</span>)
 					</td>
 				</tr>
 			</table>

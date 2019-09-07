@@ -8,6 +8,7 @@ use AccessViolation;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use TradePost;
 use TradeStorage;
 
@@ -18,10 +19,14 @@ final class ShowTransferMenu implements ViewControllerInterface
 
     private $showTransferMenueRequest;
 
+    private $tradeLibFactory;
+
     public function __construct(
-        ShowTransferMenueRequestInterface $showTransferMenueRequest
+        ShowTransferMenueRequestInterface $showTransferMenueRequest,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->showTransferMenueRequest = $showTransferMenueRequest;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +43,7 @@ final class ShowTransferMenu implements ViewControllerInterface
         $trade_post_list = [];
         foreach ($accounts as $key => $obj) {
             if ($trade_post->getId() != $obj->getId() && $obj->getTradeNetwork() == $trade_post->getTradeNetwork()) {
-                $trade_post_list[] = $obj;
+                $trade_post_list[] = $this->tradeLibFactory->createTradePostStorageManager($obj, $userId);
             }
         }
 
@@ -50,7 +55,7 @@ final class ShowTransferMenu implements ViewControllerInterface
         $game->setTemplateVar('IS_DILITHIUM', $storage->getGoodId() === CommodityTypeEnum::GOOD_DILITHIUM);
         $game->setTemplateVar(
             'TRADE_POST',
-            $trade_post
+            $this->tradeLibFactory->createTradeAccountTal($trade_post, $userId)
         );
         $game->setTemplateVar(
             'AVAILABLE_TRADE_POSTS',

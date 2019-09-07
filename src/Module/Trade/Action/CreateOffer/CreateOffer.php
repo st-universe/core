@@ -8,6 +8,7 @@ use AccessViolation;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -24,12 +25,16 @@ final class CreateOffer implements ActionControllerInterface
 
     private $commodityRepository;
 
+    private $tradeLibFactory;
+
     public function __construct(
         CreateOfferRequestInterface $createOfferRequest,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->createOfferRequest = $createOfferRequest;
         $this->commodityRepository = $commodityRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,7 +59,10 @@ final class CreateOffer implements ActionControllerInterface
         if ($giveAmount < 1 || $wantedAmount < 1) {
             return;
         }
-        if ($trade_post->getStorageSum() > $trade_post->getStorage()) {
+
+        $storageManager = $this->tradeLibFactory->createTradePostStorageManager($trade_post, $userId);
+
+        if ($storageManager->getFreeStorage() <= 0) {
             $game->setView(ShowAccounts::VIEW_IDENTIFIER);
             $game->addInformation("Dein Warenkonto auf diesem Handelsposten ist überfüllt - Angebot kann nicht erstellt werden");
             return;
