@@ -16,7 +16,7 @@ interface ColonyStorageRepositoryInterface extends ObjectRepository
     /**
      * @return ColonyStorageInterface[]
      */
-    public function getByColony(int $colonyId): array;
+    public function getByColony(int $colonyId, int $viewable = 1): array;
 
     public function truncateByColony(int $colonyId): void;
 }

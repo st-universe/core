@@ -15,6 +15,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
+use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
@@ -32,18 +33,22 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $shipCreator;
 
+    private $colonyStorageRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
         BuildplanHangarRepositoryInterface $buildplanHangarRepository,
         CrewCreatorInterface $crewCreator,
-        ShipCreatorInterface $shipCreator
+        ShipCreatorInterface $shipCreator,
+        ColonyStorageRepositoryInterface $colonyStorageRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
         $this->buildplanHangarRepository = $buildplanHangarRepository;
         $this->crewCreator = $crewCreator;
         $this->shipCreator = $shipCreator;
+        $this->colonyStorageRepository = $colonyStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -103,7 +108,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             );
             return;
         }
-        $storage = $colony->getStorage();
+        $storage = $this->colonyStorageRepository->getByColony((int) $colony->getId(), 0);
         if (!array_key_exists($rump->getGoodId(), $storage)) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
