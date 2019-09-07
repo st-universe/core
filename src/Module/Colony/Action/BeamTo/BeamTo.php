@@ -50,7 +50,7 @@ final class BeamTo implements ActionControllerInterface
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
         $storage = $colony->getStorage();
-        if ($storage->count() == 0) {
+        if ($storage === []) {
             $game->addInformation(_('Keine Waren zum Beamen vorhanden'));
             return;
         }
@@ -64,16 +64,17 @@ final class BeamTo implements ActionControllerInterface
             $target->getName()
         );
         foreach ($goods as $key => $value) {
+            $value = (int) $value;
             if ($colony->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
                 continue;
             }
-            if (!$storage->offsetExists($value)) {
+            $good = $storage[$value] ?? null;
+            if ($good === null) {
                 continue;
             }
-            $good = $storage->offsetGet($value);
             $count = $gcount[$key];
             if ($count == "m") {
                 $count = $good->getAmount();

@@ -94,14 +94,14 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             if (array_key_exists($commodityId, $prod)) {
                 $storage[$commodityId]['good'] = $value;
                 $storage[$commodityId]['production'] = $prod[$commodityId];
-                if (!$stor->offsetExists($commodityId)) {
+                if (!array_key_exists($commodityId, $stor)) {
                     $storage[$commodityId]['storage'] = false;
                 } else {
-                    $storage[$commodityId]['storage'] = $stor->offsetGet($commodityId);
+                    $storage[$commodityId]['storage'] = $stor[$commodityId];
                 }
-            } elseif ($stor->offsetExists($commodityId)) {
+            } elseif (array_key_exists($commodityId, $stor)) {
                 $storage[$commodityId]['good'] = $value;
-                $storage[$commodityId]['storage'] = $stor->offsetGet($commodityId);
+                $storage[$commodityId]['storage'] = $stor[$commodityId];
                 $storage[$commodityId]['production'] = false;
             }
         }

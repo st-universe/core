@@ -18,6 +18,7 @@ use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
 use Stu\Orm\Entity\ColonyShipRepair;
+use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\Crew;
@@ -149,6 +150,11 @@ return [
         ContainerInterface $c
     ): ColonyShipRepairRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
+    },
+    ColonyStorageRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonyStorageRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyStorage::class);
     },
     CrewRaceRepositoryInterface::class => function (
         ContainerInterface $c

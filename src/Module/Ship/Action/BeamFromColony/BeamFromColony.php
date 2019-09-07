@@ -65,7 +65,7 @@ final class BeamFromColony implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        if ($target->getStorage()->count() == 0) {
+        if ($target->getStorage() === []) {
             $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }
@@ -76,17 +76,18 @@ final class BeamFromColony implements ActionControllerInterface
         $game->addInformation(sprintf(_('Die %s hat folgende Waren von der Kolonie %s transferiert'),
             $ship->getName(), $target->getName()));
         foreach ($goods as $key => $value) {
+            $value = (int) $value;
             if ($ship->getEps() < 1) {
                 break;
             }
             if (!array_key_exists($key, $gcount) || $gcount[$key] < 1) {
                 continue;
             }
-            if (!$target->getStorage()->offsetExists($value)) {
+            $good = $target->getStorage()[$value] ?? null;
+            if ($good === null) {
                 continue;
             }
             $count = $gcount[$key];
-            $good = $target->getStorage()->offsetGet($value);
             if (!$good->getGood()->isBeamable()) {
                 $game->addInformation(sprintf(_('%s ist nicht beambar'), $good->getGood()->getName()));
                 continue;

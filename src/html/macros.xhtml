@@ -20,7 +20,7 @@
 	</span>
 </tal:block>
 <metal:block metal:define-macro="goodentry">
-	<stu:goodentry tal:attributes="name good/getName; goodid good/getGoodId; count good/getAmount" />
+	<stu:goodentry tal:attributes="name good/getGood/getName; goodid good/getGoodId; count good/getAmount" />
 </metal:block>
 <metal:block metal:define-macro="mapeditor_system_fieldselector">
 	<table class="use" tal:define="field SELECTED_MAP_FIELD">

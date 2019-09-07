@@ -85,7 +85,7 @@ final class RepairBuilding implements ActionControllerInterface
         foreach ($costs as $cost) {
             $colony->lowerStorage(
                 $cost->getGoodId(),
-                round(($cost->getAmount() / 100) * $integrity)
+                (int) round(($cost->getAmount() / 100) * $integrity)
             );
         }
         $colony->resetStorage();

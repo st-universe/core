@@ -57,7 +57,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
             );
             return;
         }
-        $storage = &$colony->getStorage();
+        $storage = $colony->getStorage();
 
         foreach ($rump->getBuildingCosts() as $cost) {
             $stor = $storage[$cost->getCommodityId()] ?? null;

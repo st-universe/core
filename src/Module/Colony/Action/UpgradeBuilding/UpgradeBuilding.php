@@ -12,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\BuildingUpgradeCostInterface;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
@@ -84,6 +85,8 @@ final class UpgradeBuilding implements ActionControllerInterface
             return;
         }
         $storage = $colony->getStorage();
+
+        /** @var BuildingUpgradeCostInterface $obj */
         foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
             if (!array_key_exists($obj->getGoodId(), $storage)) {
                 $game->addInformationf(

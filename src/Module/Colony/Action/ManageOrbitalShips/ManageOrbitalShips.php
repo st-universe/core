@@ -139,7 +139,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $shipobj->deactivateSystems();
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if ($storage->offsetExists(CommodityTypeEnum::GOOD_DEUTERIUM) && $storage->offsetExists(CommodityTypeEnum::GOOD_ANTIMATTER)) {
+                if (
+                    array_key_exists(CommodityTypeEnum::GOOD_DEUTERIUM, $storage) &&
+                    array_key_exists(CommodityTypeEnum::GOOD_ANTIMATTER, $storage)
+                ) {
                     if ($shipobj->getWarpcoreLoad() < $shipobj->getWarpcoreCapacity()) {
                         if ($wk[$shipobj->getId()] == INDICATOR_MAX) {
                             $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / WARPCORE_LOAD);
@@ -156,8 +159,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             if ($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() < $load) {
                                 $load = $storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount();
                             }
-                            $colony->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM, $load);
-                            $colony->lowerStorage(CommodityTypeEnum::GOOD_ANTIMATTER, $load);
+                            $colony->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM, (int) $load);
+                            $colony->lowerStorage(CommodityTypeEnum::GOOD_ANTIMATTER, (int) $load);
                             if ($shipobj->getWarpcoreLoad() + $load * WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
                                 $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
                             } else {
@@ -221,7 +224,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $torp_obj = $possibleTorpedoTypes[(int) $shipobj->getTorpedoType()];
                         $load = $count - $shipobj->getTorpedoCount();
                         if ($load > 0) {
-                            if (!$storage->offsetExists($torp_obj->getGoodId())) {
+                            if (!array_key_exists($torp_obj->getGoodId(), $storage)) {
                                 $msg[] = sprintf(
                                     _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
                                     $shipobj->getName(),
@@ -258,7 +261,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     } else {
                         $type = (int) $torp_type[$shipobj->getId()];
                         $torp_obj = $this->torpedoTypeRepository->find($type);
-                        if (!$storage->offsetExists($torp_obj->getGoodId())) {
+                        if (!array_key_exists($torp_obj->getGoodId(), $storage)) {
                             throw new Exception;
                         }
                         if ($count > $storage[$torp_obj->getGoodId()]->getAmount()) {

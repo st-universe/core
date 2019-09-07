@@ -128,7 +128,7 @@ final class BuildShip implements ActionControllerInterface
             $crew_usage = $rump->getCrew100P();
             $crewcount = 100;
         }
-        $storage = &$colony->getStorage();
+        $storage = $colony->getStorage();
         foreach ($modules as $module) {
             if (!array_key_exists($module->getGoodId(), $storage)) {
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());

@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
+use Stu\Orm\Entity\ModuleCostInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
@@ -75,6 +76,7 @@ final class CreateModules implements ActionControllerInterface
                 continue;
             }
             try {
+                /** @var ModuleCostInterface $cost */
                 foreach ($module->getCost() as $cost) {
                     $commodity = $cost->getCommodity();
                     $commodityId = $commodity->getId();

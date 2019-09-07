@@ -7,26 +7,29 @@ namespace Stu\Module\Colony\Action\Abandon;
 use AccessViolation;
 use Colony;
 use ColonyShipQueue;
-use ColStorage;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
 final class Abandon implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
 
     private $abandonRequest;
 
     private $colonyTerraformingRepository;
 
+    private $colonyStorageRepository;
+
     public function __construct(
         AbandonRequestInterface $abandonRequest,
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        ColonyStorageRepositoryInterface $colonyStorageRepository
     ) {
         $this->abandonRequest = $abandonRequest;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
+        $this->colonyStorageRepository = $colonyStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,7 +55,8 @@ final class Abandon implements ActionControllerInterface
         $colony->setName('');
         $colony->save();
 
-        ColStorage::truncate($colonyId);
+        $this->colonyStorageRepository->truncateByColony($colonyId);
+
         foreach ($this->colonyTerraformingRepository->getByColony([$colonyId]) as $fieldTerraforming) {
             $this->colonyTerraformingRepository->delete($fieldTerraforming);
         }

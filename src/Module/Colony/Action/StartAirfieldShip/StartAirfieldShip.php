@@ -103,7 +103,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             );
             return;
         }
-        $storage = &$colony->getStorage();
+        $storage = $colony->getStorage();
         if (!array_key_exists($rump->getGoodId(), $storage)) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
@@ -124,7 +124,7 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
         if ($defaultTorpedoType !== null) {
-            if ($colony->getStorage()->offsetExists($defaultTorpedoType->getGoodId())) {
+            if (array_key_exists($defaultTorpedoType->getGoodId(), $colony->getStorage())) {
                 $count = $ship->getMaxTorpedos();
                 if ($count > $storage[$defaultTorpedoType->getGoodId()]->getAmount()) {
                     $count = $storage[$defaultTorpedoType->getGoodId()]->getAmount();

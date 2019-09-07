@@ -4,8 +4,11 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Entity\ColonyStorageInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -142,27 +145,46 @@ class ColonyData extends BaseTable {
 	}
 
 	public function lowerStorage($good_id,$count) {
-		if (!$this->getStorage()->offsetExists($good_id)) {
+	    $stor = $this->getStorage()[$good_id] ?? null;
+		if ($stor === null) {
 			return;
 		}
-		if ($this->getStorage()->offsetGet($good_id)->getAmount() <= $count) {
-			$this->getStorage()->offsetGet($good_id)->deleteFromDatabase();
-			$this->getStorage()->offsetUnset($good_id);
+
+		// @todo refactor
+		global $container;
+		$colonyStorageRepo = $container->get(ColonyStorageRepositoryInterface::class);
+
+		if ($stor->getAmount() <= $count) {
+		    $colonyStorageRepo->delete($stor);
 			return;
 		}
-		$this->getStorage()->offsetGet($good_id)->lowerCount($count);
-		$this->getStorage()->offsetGet($good_id)->save();
+		$stor->setAmount($stor->getAmount() - $count);
+
+		$colonyStorageRepo->save($stor);
+
+		$this->storage = null;
 	}
 
 	public function upperStorage($good_id,$count) {
-		if (!$this->getStorage()->offsetExists($good_id)) {
-			$good = new ColStorageData;
-			$good->setColonyId($this->getId());
-			$good->setGoodId($good_id);
-			$this->getStorage()->offsetSet($good_id,$good);
+	    $stor = $this->getStorage()[$good_id] ?? null;
+
+		// @todo refactor
+		global $container;
+		$colonyStorageRepo = $container->get(ColonyStorageRepositoryInterface::class);
+
+		if ($stor === null) {
+			/** @var CommodityInterface $commodity */
+			$commodity = $container->get(CommodityRepositoryInterface::class)->find((int) $good_id);
+
+			$stor = $colonyStorageRepo->prototype();
+			$stor->setColonyId((int) $this->getId());
+			$stor->setGood($commodity);
 		}
-		$this->getStorage()->offsetGet($good_id)->upperCount($count);
-		$this->getStorage()->offsetGet($good_id)->save();
+		$stor->setAmount($stor->getAmount() + $count);
+
+		$colonyStorageRepo->save($stor);
+
+		$this->storage = null;
 	}
 
 	function isInSystem() {
@@ -290,11 +312,14 @@ class ColonyData extends BaseTable {
 	private $storage = NULL;
 
 	/**
-	 * @return ColStorage[]
+	 * @return ColonyStorageInterface[]
 	 */
 	function getStorage() {
 		if ($this->storage === NULL) {
-			$this->storage = ColStorage::getStorageBy('a.colonies_id='.$this->getId());
+		    // @todo refactor
+			global $container;
+
+			$this->storage = $container->get(ColonyStorageRepositoryInterface::class)->getByColony((int) $this->getId());
 		}
 		return $this->storage;
 	}
