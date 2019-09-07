@@ -17,6 +17,7 @@ use Stu\Orm\Entity\BuildingUpgrade;
 use Stu\Orm\Entity\BuildingUpgradeCost;
 use Stu\Orm\Entity\BuildplanHangar;
 use Stu\Orm\Entity\BuildplanModule;
+use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\ColonyTerraforming;
@@ -150,6 +151,11 @@ return [
         ContainerInterface $c
     ): ColonyShipRepairRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipRepair::class);
+    },
+    ColonyShipQueueRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ColonyShipQueueRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ColonyShipQueue::class);
     },
     ColonyStorageRepositoryInterface::class => function (
         ContainerInterface $c

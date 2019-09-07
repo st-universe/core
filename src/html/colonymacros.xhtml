@@ -1230,7 +1230,7 @@
 					<img src="assets/ships/${data/getRumpId}.gif" />
 				</td>
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getRump/getName">RUMP</td>
-				<tal:block tal:condition="not:data/isStopped">
+				<tal:block tal:condition="not:data/getStopDate">
 					<td style="text-align: center; vertical-align: middle">
 						<span tal:replace="structure php:getPercentageStatusBar(STATUSBAR_GREEN,data.getBuildtime()-(data.getFinishDate()-time()),data.getBuildtime())">STATUSBAR</span>
 					</td>
@@ -1238,7 +1238,7 @@
 						<span tal:replace="datetime:data/getFinishDate">DATE</span>
 					</td>
 				</tal:block>
-				<td colspan="2" style="text-align: center; vertical-align: middle" tal:condition="data/isStopped" i18n:translate="">Angehalten</td>
+				<td colspan="2" style="text-align: center; vertical-align: middle" tal:condition="data/getStopDate" i18n:translate="">Angehalten</td>
 			</tr>
 		</table>
 	</metal:macro>

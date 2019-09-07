@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
-use ColonyShipQueue;
 use ContactlistData;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
+use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
@@ -27,18 +27,22 @@ final class Overview implements ViewControllerInterface
 
     private $knTalFactory;
 
+    private $colonyShipQueueRepository;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         KnPostRepositoryInterface $knPostRepository,
-        KnTalFactoryInterface $knTalFactory
+        KnTalFactoryInterface $knTalFactory,
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->knPostRepository = $knPostRepository;
         $this->knTalFactory = $knTalFactory;
+        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -84,7 +88,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',
-            ColonyShipQueue::getByUserId($userId)
+            $this->colonyShipQueueRepository->getByUser($userId)
         );
         $game->setTemplateVar(
             'RECENT_ALLIANCE_BOARD_TOPICS',

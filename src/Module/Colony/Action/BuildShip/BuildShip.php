@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
-use ColonyShipQueue;
-use ColonyShipQueueData;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
@@ -17,6 +15,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
@@ -36,18 +35,22 @@ final class BuildShip implements ActionControllerInterface
 
     private $moduleRepository;
 
+    private $colonyShipQueueRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ModuleRepositoryInterface $moduleRepository
+        ModuleRepositoryInterface $moduleRepository,
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleRepository = $moduleRepository;
+        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,7 +61,7 @@ final class BuildShip implements ActionControllerInterface
         );
 
         $userId = $game->getUser()->getId();
-        $colonyId = $colony->getId();
+        $colonyId = (int) $colony->getId();
 
         $rump = new Shiprump(request::indInt('rump'));
 
@@ -73,7 +76,7 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
         $game->setView('SHOW_MODULE_SCREEN');
-        if (ColonyShipQueue::countInstances('WHERE colony_id=' . $colonyId . ' AND building_function_id=' . $building_function->getBuildingFunction()) > 0) {
+        if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunction($colonyId, $building_function->getBuildingFunction()) > 0) {
             $game->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
             return;
         }
@@ -182,15 +185,16 @@ final class BuildShip implements ActionControllerInterface
                 $plan->getName()
             );
         }
-        $queue = new ColonyShipQueueData;
+        $queue = $this->colonyShipQueueRepository->prototype();
         $queue->setColonyId($colonyId);
         $queue->setUserId($userId);
-        $queue->setRumpId($rump->getId());
-        $queue->setBuildplanId($plan->getId());
+        $queue->setRumpId((int) $rump->getId());
+        $queue->setShipBuildplan($plan);
         $queue->setBuildtime($buildtime);
         $queue->setFinishDate(time() + $buildtime);
         $queue->setBuildingFunctionId($building_function->getBuildingFunction());
-        $queue->save();
+
+        $this->colonyShipQueueRepository->save($queue);
 
         $game->addInformationf(
             _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),

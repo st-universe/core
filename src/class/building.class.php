@@ -8,6 +8,7 @@ use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 use Stu\Orm\Repository\BuildingCostRepositoryInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
@@ -231,7 +232,13 @@ class BuildingData extends BaseTable {
 	 */
 	public function postDeactivation(ColonyData $colony) { #{{{
 		if (($func=$this->isShipyard())) {
-			ColonyShipQueue::stopBuildProcess($colony->getId(),$func->getFunction());
+			// @todo refactor
+			global $container;
+
+			$container->get(ColonyShipQueueRepositoryInterface::class)->stopQueueByColonyAndBuildingFunction(
+				(int) $colony->getId(),
+				$func->getFunction()
+			);
 		}
 	} # }}}
 
@@ -239,7 +246,13 @@ class BuildingData extends BaseTable {
 	 */
 	public function postActivation(ColonyData $colony) { #{{{
 		if (($func=$this->isShipyard())) {
-			ColonyShipQueue::restartBuildProcess($colony->getId(),$func->getFunction());
+			// @todo refactor
+			global $container;
+
+			$container->get(ColonyShipQueueRepositoryInterface::class)->restartQueueByColonyAndBuildingFunction(
+				(int) $colony->getId(),
+				$func->getFunction()
+			);
 		}
 	} # }}}
 
@@ -298,15 +311,17 @@ class BuildingData extends BaseTable {
 	/**
 	 */
 	public function onDestruction($colony_id) { #{{{
+		// @todo refactor
+		global $container;
 		// XXX we need a registry in here
 		if ($this->isAcademy()) {
-			// @todo refactor
-			global $container;
-
 			$container->get(CrewTrainingRepositoryInterface::class)->truncateByColony((int) $colony_id);
 		}
-		if (($func=$this->isShipyard())) {
-			ColonyShipQueue::truncate('WHERE colony_id='.$colony_id.' AND building_function_id='.$func->getFunction());
+		if (($func = $this->isShipyard())) {
+		    $container->get(ColonyShipQueueRepositoryInterface::class)->truncateByColonyAndBuildingFunction(
+			    (int) $colony_id,
+			    $func->getFunction()
+		    );
 		}
 	} # }}}
 

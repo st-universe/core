@@ -6,9 +6,9 @@ namespace Stu\Module\Colony\Action\Abandon;
 
 use AccessViolation;
 use Colony;
-use ColonyShipQueue;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 
@@ -22,14 +22,18 @@ final class Abandon implements ActionControllerInterface
 
     private $colonyStorageRepository;
 
+    private $colonyShipQueueRepository;
+
     public function __construct(
         AbandonRequestInterface $abandonRequest,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        ColonyStorageRepositoryInterface $colonyStorageRepository
+        ColonyStorageRepositoryInterface $colonyStorageRepository,
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
     ) {
         $this->abandonRequest = $abandonRequest;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->colonyStorageRepository = $colonyStorageRepository;
+        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,7 +64,8 @@ final class Abandon implements ActionControllerInterface
         foreach ($this->colonyTerraformingRepository->getByColony([$colonyId]) as $fieldTerraforming) {
             $this->colonyTerraformingRepository->delete($fieldTerraforming);
         }
-        ColonyShipQueue::truncate(sprintf('colony_id = %d', $colony));
+
+        $this->colonyShipQueueRepository->truncateByColony($colonyId);
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }

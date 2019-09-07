@@ -5,28 +5,28 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use ColonyData;
-use ColonyShipQueue;
-use ColonyShipQueueData;
 use PM;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class FinishShipBuildJobs implements ProcessTickInterface
 {
     private $shipCreator;
 
+    private $colonyShipQueueRepository;
+
     public function __construct(
-        ShipCreatorInterface $shipCreator
+        ShipCreatorInterface $shipCreator,
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
     ) {
         $this->shipCreator = $shipCreator;
+        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
     }
 
     public function work(): void
     {
-        $queue = ColonyShipQueue::getFinishedJobs();
-        foreach ($queue as $key => $obj) {
-            /**
-             * @var ColonyShipQueueData $obj
-             */
+        $queue = $this->colonyShipQueueRepository->getFinishedJobs();
+        foreach ($queue as $obj) {
             /**
              * @var ColonyData $colony
              */
@@ -35,11 +35,12 @@ final class FinishShipBuildJobs implements ProcessTickInterface
             $ship = $this->shipCreator->createBy(
                 (int) $obj->getUserId(),
                 (int) $obj->getRumpId(),
-                (int) $obj->getBuildplanId(),
+                $obj->getShipBuildplan()->getId(),
                 $colony
             );
 
-            $obj->deleteFromDatabase();
+            $this->colonyShipQueueRepository->delete($obj);
+
             $txt = _("Auf der Kolonie " . $colony->getNameWithoutMarkup() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
             PM::sendPM(USER_NOONE, $colony->getUserId(), $txt, PM_SPECIAL_COLONY);
         }
