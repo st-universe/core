@@ -7,16 +7,20 @@ namespace Stu\Module\Trade\View\Overview;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use TradeOffer;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
     private $tradeLicenseRepository;
 
+    private $tradeOfferRepository;
+
     public function __construct(
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeOfferRepositoryInterface $tradeOfferRepository
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeOfferRepository = $tradeOfferRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,6 +39,6 @@ final class Overview implements ViewControllerInterface
             $this->tradeLicenseRepository->getAmountByUser($userId)
         );
         $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', MAX_TRADELICENCE_COUNT);
-        $game->setTemplateVar('OFFER_LIST', TradeOffer::getByLicencedTradePosts($userId));
+        $game->setTemplateVar('OFFER_LIST', $this->tradeOfferRepository->getByUserLicenses($userId));
     }
 }

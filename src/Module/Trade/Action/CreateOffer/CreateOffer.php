@@ -13,8 +13,8 @@ use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeOfferData;
 use TradeStorage;
 
 final class CreateOffer implements ActionControllerInterface
@@ -30,16 +30,20 @@ final class CreateOffer implements ActionControllerInterface
 
     private $tradePostRepository;
 
+    private $tradeOfferRepository;
+
     public function __construct(
         CreateOfferRequestInterface $createOfferRequest,
         CommodityRepositoryInterface $commodityRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeOfferRepositoryInterface $tradeOfferRepository
     ) {
         $this->createOfferRequest = $createOfferRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeOfferRepository = $tradeOfferRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -102,16 +106,17 @@ final class CreateOffer implements ActionControllerInterface
         if ($offerAmount < 1) {
             return;
         }
-        $offer = new TradeOfferData();
+        $offer = $this->tradeOfferRepository->prototype();
         $offer->setUserId($userId);
-        $offer->setTradePostId($storage->getTradePostId());
+        $offer->setTradePost($trade_post);
         $offer->setDate(time());
-        $offer->setOfferedGoodId($giveGoodId);
-        $offer->setOfferedGoodCount($giveAmount);
-        $offer->setWantedGoodId($wantedGoodId);
-        $offer->setWantedGoodCount($wantedAmount);
-        $offer->setOfferCount($offerAmount);
-        $offer->save();
+        $offer->setOfferedCommodity($this->commodityRepository->find($giveGoodId));
+        $offer->setOfferedGoodCount((int) $giveAmount);
+        $offer->setWantedCommodity($this->commodityRepository->find($wantedGoodId));
+        $offer->setWantedGoodCount((int) $wantedAmount);
+        $offer->setOfferCount((int) $offerAmount);
+
+        $this->tradeOfferRepository->save($offer);
 
         if ($storage->getAmount() <= $offerAmount * $giveAmount) {
             $storage->deleteFromDatabase();

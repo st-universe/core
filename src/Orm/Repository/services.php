@@ -75,6 +75,7 @@ use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TradeLicense;
+use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeTransfer;
@@ -427,6 +428,11 @@ return [
         ContainerInterface $c
     ): TradeLicenseRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TradeLicense::class);
+    },
+    TradeOfferRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradeOfferRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeOffer::class);
     },
     TradePostRepositoryInterface::class => function (
         ContainerInterface $c

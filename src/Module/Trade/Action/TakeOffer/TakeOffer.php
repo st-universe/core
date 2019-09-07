@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Action\TakeOffer;
 
+use AccessViolation;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeOffer;
 use TradeStorage;
 
 final class TakeOffer implements ActionControllerInterface
@@ -23,14 +26,22 @@ final class TakeOffer implements ActionControllerInterface
 
     private $tradePostRepository;
 
+    private $tradeOfferRepository;
+
+    private $tradeLicenseRepository;
+
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeOfferRepositoryInterface $tradeOfferRepository,
+        TradeLicenseRepositoryInterface $tradeLicenseRepository
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeOfferRepository = $tradeOfferRepository;
+        $this->tradeLicenseRepository = $tradeLicenseRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,9 +50,12 @@ final class TakeOffer implements ActionControllerInterface
         $offerId = $this->takeOfferRequest->getOfferId();
         $amount = $this->takeOfferRequest->getAmount();
 
-        $selectedOffer = new TradeOffer($offerId);
+        /** @var TradeOfferInterface $selectedOffer */
+        $selectedOffer = $this->tradeOfferRepository->find($offerId);
 
-        // @todo check if user may acces the offer (tradepost)
+        if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $selectedOffer->getTradePost()->getId())) {
+            throw new AccessViolation();
+        }
 
         if ($userId === $selectedOffer->getUserId()) {
             return;
@@ -56,7 +70,7 @@ final class TakeOffer implements ActionControllerInterface
         if (!$storage || $storage->getAmount() < $selectedOffer->getWantedGoodCount()) {
             $game->addInformation(sprintf(
                 _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
-                $selectedOffer->getWantedGoodObject()->getName()
+                $selectedOffer->getWantedCommodity()->getName()
             ));
             return;
         }
@@ -92,10 +106,12 @@ final class TakeOffer implements ActionControllerInterface
 
         if ($selectedOffer->getOfferCount() <= $amount) {
             $amount = $selectedOffer->getOfferCount();
-            $selectedOffer->deleteFromDatabase();
+
+            $this->tradeOfferRepository->delete($selectedOffer);
         } else {
-            $selectedOffer->lowerOfferCount($amount);
-            $selectedOffer->save();
+            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - $amount);
+
+            $this->tradeOfferRepository->save($selectedOffer);
         }
 
         $storageManagerRemote->upperStorage(
@@ -121,9 +137,9 @@ final class TakeOffer implements ActionControllerInterface
             sprintf(
                 'Es wurden insgesamt %d %s gegen %d %s getauscht',
                 $selectedOffer->getOfferedGoodCount() * $amount,
-                $selectedOffer->getOfferedGoodObject()->getName(),
+                $selectedOffer->getOfferedCommodity()->getName(),
                 $selectedOffer->getWantedGoodCount() * $amount,
-                $selectedOffer->getWantedGoodObject()->getName()
+                $selectedOffer->getWantedCommodity()->getName()
             ),
             PM_SPECIAL_TRADE
         );

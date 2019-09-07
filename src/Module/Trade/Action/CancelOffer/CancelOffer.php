@@ -8,7 +8,8 @@ use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use TradeOffer;
+use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
 {
@@ -18,19 +19,25 @@ final class CancelOffer implements ActionControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradeOfferRepository;
+
     public function __construct(
         CancelOfferRequestInterface $cancelOfferRequest,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradeOfferRepositoryInterface $tradeOfferRepository
     ) {
         $this->cancelOfferRequest = $cancelOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradeOfferRepository = $tradeOfferRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
         $offerId = $this->cancelOfferRequest->getOfferId();
-        $offer = new TradeOffer($offerId);
+
+        /** @var TradeOfferInterface $offer */
+        $offer = $this->tradeOfferRepository->find($offerId);
 
         if ((int) $offer->getUserId() !== $userId) {
             new AccessViolation;
@@ -44,7 +51,7 @@ final class CancelOffer implements ActionControllerInterface
             (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
         );
 
-        $offer->deleteFromDatabase();
+        $this->tradeOfferRepository->delete($offer);
 
         $game->addInformation(_('Das Angebot wurde gelöscht'));
     }

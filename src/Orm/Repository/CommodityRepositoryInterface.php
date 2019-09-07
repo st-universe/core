@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CommodityInterface;
 
+/**
+ * @method CommodityInterface find(integer $commodityId)
+ */
 interface CommodityRepositoryInterface extends ObjectRepository
 {
     /**

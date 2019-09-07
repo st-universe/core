@@ -39,14 +39,14 @@
 							<img src="assets/buttons/x1.gif" tal:attributes="name handle" title="Angebot löschen" />
 						</a>
 					</td>
-					<td phptal:cache="1d per data/getCacheValue">
-						<img src="assets/goods/${data/getOfferedGoodObject/getId}.gif" tal:attributes="title data/getOfferedGoodObject/getName" /> ${data/getOfferedGoodCount}
+					<td>
+						<img src="assets/goods/${data/getOfferedCommodity/getId}.gif" tal:attributes="title data/getOfferedCommodity/getName" /> ${data/getOfferedGoodCount}
 					</td>
-					<td phptal:cache="1d per data/getCacheValue">
-						<img src="assets/goods/${data/getWantedGoodObject/getId}.gif" tal:attributes="title data/getWantedGoodObject/getName" /> ${data/getWantedGoodCount}
+					<td>
+						<img src="assets/goods/${data/getWantedCommodity/getId}.gif" tal:attributes="title data/getWantedCommodity/getName" /> ${data/getWantedGoodCount}
 					</td>
 					<td tal:content="data/getOfferCount">AMOUNT</td>
-					<td phptal:cache="1d per data/getCacheValue">
+					<td>
 						<metal:macro metal:use-macro="html/trademacros.xhtml/tradepost" tal:define="handle string:hdlo${data/getId};id data/getTradepostId" />
 						<span tal:replace="data/getTradePost/getName">TRADEPOST</span>
 					</td>

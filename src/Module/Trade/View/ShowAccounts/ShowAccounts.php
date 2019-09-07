@@ -39,6 +39,10 @@ final class ShowAccounts implements ViewControllerInterface
         );
 
         $game->appendNavigationPart(
+            'trade.php',
+            _('Handel')
+        );
+        $game->appendNavigationPart(
             sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),
             _('Warenkonten')
         );

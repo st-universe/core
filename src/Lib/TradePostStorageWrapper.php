@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeOffer;
 use TradeStorage;
 
 class TradePostStorageWrapper
@@ -53,10 +53,16 @@ class TradePostStorageWrapper
 
     public function getStorageSum()
     {
+        // @todo refactor
+        global $container;
+
         if ($this->storageSum === null) {
             $sum = 0;
             $sum += TradeStorage::getStorageSumBy($this->getTradePostId(), $this->getUserId());
-            $sum += TradeOffer::getOfferSumBy($this->getTradePostId(), $this->getUserId());
+            $sum += $container->get(TradeOfferRepositoryInterface::class)->getSumByTradePostAndUser(
+                (int) $this->getTradePostId(),
+                (int) $this->getUserId()
+            );
             $this->storageSum = $sum;
         }
         return $this->storageSum;

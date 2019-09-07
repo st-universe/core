@@ -30,8 +30,8 @@
 							Waren in Angeboten
 						</div>
 						<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorage">
-							<a href="javascript:void(0);" onclick="showTradeOfferByGood(${data/getId},${stor/getGoodId})" style="display: block; padding: 4px;" class="tradebutton">
-								<img src="assets/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
+							<a href="javascript:void(0);" onclick="showTradeOfferByGood(${data/getId},${stor/commodity_id})" style="display: block; padding: 4px;" class="tradebutton">
+								<img src="assets/goods/${stor/commodity_id}.gif" tal:attributes="title stor/commodity_name" /> <span tal:replace="stor/amount">COUNT</span>
 							</a>
 						</div>
 					</td>

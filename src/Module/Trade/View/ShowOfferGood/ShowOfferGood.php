@@ -6,8 +6,8 @@ namespace Stu\Module\Trade\View\ShowOfferGood;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeOffer;
 
 final class ShowOfferGood implements ViewControllerInterface
 {
@@ -17,12 +17,16 @@ final class ShowOfferGood implements ViewControllerInterface
 
     private $tradePostRepository;
 
+    private $tradeOfferRepository;
+
     public function __construct(
         ShowOfferGoodRequestInterface $showOfferGoodRequest,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeOfferRepositoryInterface $tradeOfferRepository
     ) {
         $this->showOfferGoodRequest = $showOfferGoodRequest;
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeOfferRepository = $tradeOfferRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,7 +44,11 @@ final class ShowOfferGood implements ViewControllerInterface
 
         $game->setTemplateVar(
             'OFFER',
-            TradeOffer::getOfferByGood($tradepost->getId(), $game->getUser()->getId(), $good->getId())
+            $this->tradeOfferRepository->getByTradePostAndUserAndOfferedCommodity(
+                $tradepost->getId(),
+                $game->getUser()->getId(),
+                (int) $good->getId()
+            )
         );
     }
 }

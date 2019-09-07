@@ -10,8 +10,8 @@ use Stu\Lib\TradePostStorageWrapper;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
-use TradeOffer;
 use TradeStorage;
 
 final class TradeAccountTal implements TradeAccountTalInterface
@@ -19,6 +19,8 @@ final class TradeAccountTal implements TradeAccountTalInterface
     private $tradeLicenseRepository;
 
     private $tradeTransferRepository;
+
+    private $tradeOfferRepository;
 
     private $tradePost;
 
@@ -29,11 +31,13 @@ final class TradeAccountTal implements TradeAccountTalInterface
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
+        TradeOfferRepositoryInterface $tradeOfferRepository,
         TradePostInterface $tradePost,
         int $userId
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
+        $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradePost = $tradePost;
         $this->userId = $userId;
     }
@@ -63,7 +67,10 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     public function getOfferStorage(): array
     {
-        return TradeOffer::getStorageByTradepostUser($this->tradePost->getId(), $this->userId);
+        return $this->tradeOfferRepository->getGroupedSumByTradePostAndUser(
+            $this->tradePost->getId(),
+            $this->userId
+        );
     }
 
     public function getTradeNetwork(): int
