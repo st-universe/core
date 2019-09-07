@@ -259,7 +259,6 @@ define('CACHE_FLEET','fleet');
 define('CACHE_SHIP','ship');
 define('CACHE_USER','user');
 define('CACHE_BUILDING','building');
-define('CACHE_GOOD','good');
 define('CACHE_CREW','crew');
 define('CACHE_ALLIANCE','alliance');
 define('CACHE_FACTION','faction');

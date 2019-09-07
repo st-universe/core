@@ -18,7 +18,6 @@ class ResourceCacher
             $this->resources = new ArrayObject;
             $this->resources->offsetSet(CACHE_USER, new ArrayObject);
             $this->resources->offsetSet(CACHE_BUILDING, new ArrayObject);
-            $this->resources->offsetSet(CACHE_GOOD, new ArrayObject);
             $this->resources->offsetSet(CACHE_SHIP, new ArrayObject);
             $this->resources->offsetSet(CACHE_CREW, new ArrayObject);
             $this->resources->offsetSet(CACHE_ALLIANCE, new ArrayObject);
@@ -36,13 +35,6 @@ class ResourceCacher
         }
         return $this->getCache()->offsetGet($obj)->offsetGet($id);
     }
-
-    /**
-     */
-    public function getGood($id)
-    { #{{{
-        return $this->getObject(CACHE_GOOD, $id);
-    } # }}}
 
     /**
      */
@@ -68,15 +60,6 @@ class ResourceCacher
             case "building":
                 $newobj = "Building";
                 break;
-            case "good":
-                global $container;
-
-                $this->registerResource(
-                    $obj,
-                    $id,
-                    $container->get(CommodityRepositoryInterface::class)->find($id)
-                );
-                return;
             case "ship":
                 $newobj = "Ship";
                 break;

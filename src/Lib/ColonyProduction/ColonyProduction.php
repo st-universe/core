@@ -4,6 +4,7 @@ namespace Stu\Lib\ColonyProduction;
 
 use ColonyData;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 class ColonyProduction
 {
@@ -14,12 +15,6 @@ class ColonyProduction
     {
         $this->data = $data;
         $this->data['gc'] += $this->data['pc'];
-    }
-
-    function getGoodsId()
-    {
-        trigger_error('DEPRECATED getGoodsId - use getGoodId');
-        return $this->getGoodId();
     }
 
     public function getGoodId()
@@ -100,7 +95,10 @@ class ColonyProduction
 
     public function getGood(): CommodityInterface
     {
-        return ResourceCache()->getObject('good', $this->getGoodId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getGoodId());
     }
 
     static function getProductionByColony(ColonyData $col)

@@ -61,7 +61,7 @@ final class ColonyTick implements ColonyTickInterface
                 if ($pro->getProduction() >= 0) {
                     continue;
                 }
-                $storageItem = $storage[$pro->getGoodsId()] ?? null;
+                $storageItem = $storage[$pro->getGoodId()] ?? null;
                 if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
                     continue;
                 }
