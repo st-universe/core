@@ -6,6 +6,7 @@ declare(strict_types=0);
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Lib\TradePostStorageWrapper;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 use TradeOffer;
@@ -44,6 +45,11 @@ final class TradeAccountTal implements TradeAccountTalInterface
     public function getShip(): \Ship
     {
         return $this->tradePost->getShip();
+    }
+
+    public function getTradePostDescription(): string
+    {
+        return $this->tradePost->getDescription();
     }
 
     public function getStorage(): TradePostStorageWrapper
@@ -95,5 +101,15 @@ final class TradeAccountTal implements TradeAccountTalInterface
     public function getFreeStorage(): int
     {
         return max(0, $this->tradePost->getStorage() - $this->getStorage()->getStorageSum());
+    }
+
+    public function getTradeLicenseCosts(): int
+    {
+        return $this->tradePost->calculateLicenceCost();
+    }
+
+    public function getTradeLicenseCostsCommodity(): CommodityInterface
+    {
+        return $this->tradePost->getLicenceCostGood();
     }
 }

@@ -814,7 +814,7 @@
 			<tal:block tal:condition="not:HAS_LICENSE">
 					<table class="tcal">
 						<tr>
-							<td tal:content="structure nl2br:TRADEPOST/getDescriptionFormatted">DESCRIPTION</td>
+							<td tal:content="structure nl2br:TRADEPOST/getTradePostDescription">DESCRIPTION</td>
 						</tr>
 					</table>
 					<br />
@@ -824,7 +824,7 @@
 						</tr>
 						<tr>
 							<td>
-								Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt: <span tal:replace="TRADEPOST/calculateLicenceCost">COST</span> <span tal:replace="TRADEPOST/getLicenceCostGood/getName">GOOD</span><br /><br />
+								Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt: <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
 								Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem Frachtraum des Schiffes beglichen werden.<br /><br />
 								<input class="button" type="button" value="Bezahlmethode wählen" onclick="tradeMenuChoosePayment(${TRADEPOST/getId});" />
 							
@@ -849,7 +849,7 @@
 			<tr>
 				<td>
 					Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu begleichen.<br /><br />
-					<img src="assets/goods/${TRADEPOST/getLicenceCostGood/getId}.gif" tal:attributes="title TRADEPOST/getLicenceCostGood/getName" /> <span tal:replace="TRADEPOST/calculateLicenceCost">COST</span>
+					<img src="assets/goods/${TRADEPOST/getTradeLicenseCostsCommodity/getId}.gif" tal:attributes="title TRADEPOST/getTradeLicenseCostsCommodity/getName" /> <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span>
 				</td>
 			</tr>
 		</table>

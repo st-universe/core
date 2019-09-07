@@ -10,6 +10,7 @@ use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 use TradeStorage;
@@ -22,12 +23,16 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private $tradeLicenseRepository;
 
+    private $tradeLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +54,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
         $game->showMacro('html/shipmacros.xhtml/trademenupayment');
 
-        $game->setTemplateVar('TRADEPOST', $tradepost);
+        $game->setTemplateVar('TRADEPOST', $this->tradeLibFactory->createTradeAccountTal($tradepost, $userId));
         $game->setTemplateVar('SHIP', $ship);
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $tradepost->getId())) {

@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
+use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use TradePost;
 use TradeStorage;
@@ -22,12 +23,16 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private $tradeLicenseRepository;
 
+    private $tradeLibFactory;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeLibFactoryInterface $tradeLibFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeLibFactory = $tradeLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,16 +84,23 @@ final class BuyTradeLicense implements ActionControllerInterface
                 $obj->lowerStorage($commodityId, $tradepost->calculateLicenceCost());
                 break;
             case 'account':
-                $stor = TradeStorage::getStorageByGood($targetId, $userId,
-                    $tradepost->getLicenceCostGood()->getId());
-                if ($stor == 0) {
+                $targetTradepost = ResourceCache()->getObject('tradepost', $targetId);
+                $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
+                $commodityId = (int) $tradepost->getLicenceCostGood()->getId();
+                $costs = (int) $tradepost->calculateLicenceCost();
+
+                $stor = $storageManager->getStorage()[$commodityId] ?? null;
+                if ($stor === null) {
                     return;
                 }
-                if ($stor->getTradePost()->getTradeNetwork() != $tradepost->getTradeNetwork()) {
+                if ($stor->getAmount() < $costs) {
                     return;
                 }
-                $stor->getTradePost()->lowerStorage($userId, $tradepost->getLicenceCostGood()->getId(),
-                    $tradepost->calculateLicenceCost());
+                if ($targetTradepost->getTradeNetwork() != $tradepost->getTradeNetwork()) {
+                    return;
+                }
+
+                $storageManager->lowerStorage($commodityId, $costs);
                 break;
             default:
                 return;

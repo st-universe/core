@@ -4,6 +4,7 @@ namespace Stu\Module\Trade\Lib;
 
 use Ship;
 use Stu\Lib\TradePostStorageWrapper;
+use Stu\Orm\Entity\CommodityInterface;
 use TradeStorageData;
 
 interface TradeAccountTalInterface
@@ -12,6 +13,8 @@ interface TradeAccountTalInterface
     public function getId(): int;
 
     public function getShip(): Ship;
+
+    public function getTradePostDescription(): string;
 
     public function getStorage(): TradePostStorageWrapper;
 
@@ -33,4 +36,8 @@ interface TradeAccountTalInterface
     public function getLicenseCount(): int;
 
     public function getFreeStorage(): int;
+
+    public function getTradeLicenseCosts(): int;
+
+    public function getTradeLicenseCostsCommodity(): CommodityInterface;
 }
