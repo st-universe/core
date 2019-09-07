@@ -14,7 +14,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     {
         return $this->findBy(
             ['systems_id' => $starSystemId],
-            ['cy' => 'asc', 'cx' => 'asc']
+            ['sy' => 'asc', 'sx' => 'asc']
         );
     }
 
