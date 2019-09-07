@@ -72,7 +72,7 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
             ->createQuery(
                 sprintf(
                     'SELECT ts FROM %s ts WHERE
-                        ts.posts IN (SELECT tp.id FROM %s tp WHERE tp.trade_network = :tradeNetwork) AND
+                        ts.posts_id IN (SELECT tp.id FROM %s tp WHERE tp.trade_network = :tradeNetwork) AND
                         ts.user_id = :userId AND ts.goods_id = :commodityId AND ts.count >= :amount
                     ',
                     TradeStorage::class,
