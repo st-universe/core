@@ -11,15 +11,12 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeStorage;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class CreateOffer implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CREATE_OFFER';
 
     private $createOfferRequest;
@@ -28,38 +25,34 @@ final class CreateOffer implements ActionControllerInterface
 
     private $tradeLibFactory;
 
-    private $tradePostRepository;
-
     private $tradeOfferRepository;
+
+    private $tradeStorageRepository;
 
     public function __construct(
         CreateOfferRequestInterface $createOfferRequest,
         CommodityRepositoryInterface $commodityRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository
+        TradeOfferRepositoryInterface $tradeOfferRepository,
+        TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->createOfferRequest = $createOfferRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeLibFactory = $tradeLibFactory;
-        $this->tradePostRepository = $tradePostRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $storage = new TradeStorage($this->createOfferRequest->getStorageId());
-        if ((int) $storage->getUserId() !== $userId) {
+        $storage = $this->tradeStorageRepository->find($this->createOfferRequest->getStorageId());
+        if ($storage === null || (int) $storage->getUserId() !== $userId) {
             throw new AccessViolation();
         }
 
-        /** @var TradePostInterface $trade_post */
-        $trade_post = $this->tradePostRepository->find((int) $storage->getTradePostId());
-        if ($trade_post === null) {
-            return;
-        }
+        $trade_post = $storage->getTradePost();
 
         $giveGoodId = $this->createOfferRequest->getGiveGoodId();
         $giveAmount = $this->createOfferRequest->getGiveAmount();
@@ -118,12 +111,7 @@ final class CreateOffer implements ActionControllerInterface
 
         $this->tradeOfferRepository->save($offer);
 
-        if ($storage->getAmount() <= $offerAmount * $giveAmount) {
-            $storage->deleteFromDatabase();
-        } else {
-            $storage->setAmount((int) ($storage->getAmount() - $offerAmount * $giveAmount));
-            $storage->save();
-        }
+        $storageManager->lowerStorage($giveGoodId, (int) $offerAmount * $giveAmount);
 
         $game->addInformation('Das Angebot wurde erstellt');
     }

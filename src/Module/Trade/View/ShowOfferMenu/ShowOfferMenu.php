@@ -10,8 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeStorage;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class ShowOfferMenu implements ViewControllerInterface
 {
@@ -21,30 +20,25 @@ final class ShowOfferMenu implements ViewControllerInterface
 
     private $commodityRepository;
 
-    private $tradePostRepository;
+    private $tradeStorageRepository;
 
     public function __construct(
         ShowOfferMenuRequestInterface $showOfferMenuRequest,
         CommodityRepositoryInterface $commodityRepository,
-        TradePostRepositoryInterface $tradePostRepository
+        TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->showOfferMenuRequest = $showOfferMenuRequest;
         $this->commodityRepository = $commodityRepository;
-        $this->tradePostRepository = $tradePostRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $storage = new TradeStorage($this->showOfferMenuRequest->getStorageId());
-        if ((int) $storage->getUserId() !== $userId) {
+        $storage = $this->tradeStorageRepository->find($this->showOfferMenuRequest->getStorageId());
+        if ($storage === null || $storage->getUserId() !== $userId) {
             throw new AccessViolation();
-        }
-
-        $trade_post = $this->tradePostRepository->find((int) $storage->getTradePostId());
-        if ($trade_post === null) {
-            return;
         }
 
         $commodityList = $this->commodityRepository->getViewable();

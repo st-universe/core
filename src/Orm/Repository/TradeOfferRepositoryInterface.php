@@ -7,6 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TradeOfferInterface;
 
+/**
+ * @method null|TradeOfferInterface find(integer $id)
+ */
 interface TradeOfferRepositoryInterface extends ObjectRepository
 {
     public function prototype(): TradeOfferInterface;

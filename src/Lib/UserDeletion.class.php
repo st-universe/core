@@ -21,8 +21,8 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
-use TradeStorage;
 use User;
 use UserData;
 
@@ -195,9 +195,8 @@ class UserDeletion
 
         $container->get(TradeLicenseRepositoryInterface::class)->truncateByUser($userId);
         $container->get(TradeOfferRepositoryInterface::class)->truncateByUser($userId);
-        TradeStorage::truncate('WHERE user_id=' . $this->getUser()->getId());
-
-        $container->get(TradeShoutboxRepositoryInterface::class)->truncateByUser((int) $this->getUser()->getId());
+        $container->get(TradeStorageRepositoryInterface::class)->truncateByUser($userId);
+        $container->get(TradeShoutboxRepositoryInterface::class)->truncateByUser($userId);
     }
 
     static function handle($userlist)

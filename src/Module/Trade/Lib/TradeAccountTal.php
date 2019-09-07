@@ -6,13 +6,13 @@ declare(strict_types=0);
 namespace Stu\Module\Trade\Lib;
 
 use Ship;
-use Stu\Lib\TradePostStorageWrapper;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
-use TradeStorage;
 
 final class TradeAccountTal implements TradeAccountTalInterface
 {
@@ -21,6 +21,8 @@ final class TradeAccountTal implements TradeAccountTalInterface
     private $tradeTransferRepository;
 
     private $tradeOfferRepository;
+
+    private $tradeStorageRepository;
 
     private $tradePost;
 
@@ -32,12 +34,14 @@ final class TradeAccountTal implements TradeAccountTalInterface
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
+        TradeStorageRepositoryInterface $tradeStorageRepository,
         TradePostInterface $tradePost,
         int $userId
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
         $this->tradePost = $tradePost;
         $this->userId = $userId;
     }
@@ -57,12 +61,26 @@ final class TradeAccountTal implements TradeAccountTalInterface
         return $this->tradePost->getDescription();
     }
 
-    public function getStorage(): TradePostStorageWrapper
+    public function getStorage(): array
     {
         if ($this->storage === null) {
-            $this->storage = TradeStorage::getStorageByTradepostUser($this->tradePost->getId(), $this->userId);
+            $this->storage = $this->tradeStorageRepository->getByTradePostAndUser(
+                $this->tradePost->getId(),
+                $this->userId
+            );
         }
         return $this->storage;
+    }
+
+    public function getStorageSum(): int
+    {
+        return array_reduce(
+            $this->getStorage(),
+            function (int $value, TradeStorageInterface $storage): int {
+                return $value + $storage->getAmount();
+            },
+            0
+        );
     }
 
     public function getOfferStorage(): array
@@ -93,7 +111,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     public function isOverStorage(): bool
     {
-        return $this->getStorage()->getStorageSum() > $this->tradePost->getStorage();
+        return $this->getStorageSum() > $this->tradePost->getStorage();
     }
 
     public function getStorageCapacity(): int
@@ -108,7 +126,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
 
     public function getFreeStorage(): int
     {
-        return max(0, $this->tradePost->getStorage() - $this->getStorage()->getStorageSum());
+        return max(0, $this->tradePost->getStorage() - $this->getStorageSum());
     }
 
     public function getTradeLicenseCosts(): int

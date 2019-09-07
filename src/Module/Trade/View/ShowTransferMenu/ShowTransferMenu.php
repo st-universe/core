@@ -10,7 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeStorage;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class ShowTransferMenu implements ViewControllerInterface
 {
@@ -22,33 +22,36 @@ final class ShowTransferMenu implements ViewControllerInterface
 
     private $tradePostRepository;
 
+    private $tradeStorageRepository;
+
     public function __construct(
         ShowTransferMenueRequestInterface $showTransferMenueRequest,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->showTransferMenueRequest = $showTransferMenueRequest;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $storage = new TradeStorage($this->showTransferMenueRequest->getStorageId());
-        if ((int) $storage->getUserId() !== $userId) {
+        $storage = $this->tradeStorageRepository->find($this->showTransferMenueRequest->getStorageId());
+        if ($storage === null || $storage->getUserId() !== $userId) {
             throw new AccessViolation();
         }
-        $trade_post = $this->tradePostRepository->find((int) $storage->getTradePostId());
-        if ($trade_post === null) {
-            return;
-        }
+
+        $tradePost = $storage->getTradePost();
+
         $accounts = $this->tradePostRepository->getByUserLicense($userId);
 
         $trade_post_list = [];
         foreach ($accounts as $key => $obj) {
-            if ($trade_post->getId() != $obj->getId() && $obj->getTradeNetwork() == $trade_post->getTradeNetwork()) {
+            if ($tradePost->getId() != $obj->getId() && $obj->getTradeNetwork() == $tradePost->getTradeNetwork()) {
                 $trade_post_list[] = $this->tradeLibFactory->createTradePostStorageManager($obj, $userId);
             }
         }
@@ -61,7 +64,7 @@ final class ShowTransferMenu implements ViewControllerInterface
         $game->setTemplateVar('IS_DILITHIUM', $storage->getGoodId() === CommodityTypeEnum::GOOD_DILITHIUM);
         $game->setTemplateVar(
             'TRADE_POST',
-            $this->tradeLibFactory->createTradeAccountTal($trade_post, $userId)
+            $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId)
         );
         $game->setTemplateVar(
             'AVAILABLE_TRADE_POSTS',

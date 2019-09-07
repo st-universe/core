@@ -3,9 +3,8 @@
 namespace Stu\Module\Trade\Lib;
 
 use Ship;
-use Stu\Lib\TradePostStorageWrapper;
 use Stu\Orm\Entity\CommodityInterface;
-use TradeStorageData;
+use Stu\Orm\Entity\TradeStorageInterface;
 
 interface TradeAccountTalInterface
 {
@@ -16,10 +15,15 @@ interface TradeAccountTalInterface
 
     public function getTradePostDescription(): string;
 
-    public function getStorage(): TradePostStorageWrapper;
+    /**
+     * @return TradeStorageInterface[]
+     */
+    public function getStorage(): array;
+
+    public function getStorageSum(): int;
 
     /**
-     * @return TradeStorageData[]
+     * @return TradeStorageInterface[]
      */
     public function getOfferStorage(): array;
 

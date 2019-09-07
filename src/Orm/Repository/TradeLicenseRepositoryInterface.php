@@ -4,6 +4,9 @@ namespace Stu\Orm\Repository;
 
 use Stu\Orm\Entity\TradeLicenseInterface;
 
+/**
+ * @method null|TradeLicenseInterface find(integer $id)
+ */
 interface TradeLicenseRepositoryInterface
 {
     public function prototype(): TradeLicenseInterface;

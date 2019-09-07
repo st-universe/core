@@ -14,7 +14,7 @@ use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeStorage;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
 {
@@ -28,16 +28,20 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private $tradePostRepository;
 
+    private $tradeStorageRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -78,11 +82,11 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             );
             $game->setTemplateVar(
                 'ACCOUNTS_FOR_LICENSE',
-                TradeStorage::getAccountsByGood(
-                    $licenseCostGood->getId(),
+                $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
+                    $tradepost->getTradeNetwork(),
                     $userId,
-                    $licenseCost,
-                    $tradepost->getTradeNetwork()
+                    $licenseCostGood->getId(),
+                    $licenseCost
                 )
             );
         }

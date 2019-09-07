@@ -14,7 +14,7 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
-use TradeStorage;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class TakeOffer implements ActionControllerInterface
 {
@@ -30,18 +30,22 @@ final class TakeOffer implements ActionControllerInterface
 
     private $tradeLicenseRepository;
 
+    private $tradeStorageRepository;
+
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        TradeLicenseRepositoryInterface $tradeLicenseRepository
+        TradeLicenseRepositoryInterface $tradeLicenseRepository,
+        TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,13 +65,13 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        $storage = TradeStorage::getStorageByGood(
+        $storage = $this->tradeStorageRepository->getByTradepostAndUserAndCommodity(
             $selectedOffer->getTradePostId(),
             $userId,
             $selectedOffer->getWantedGoodId()
         );
 
-        if (!$storage || $storage->getAmount() < $selectedOffer->getWantedGoodCount()) {
+        if ($storage === null || $storage->getAmount() < $selectedOffer->getWantedGoodCount()) {
             $game->addInformation(sprintf(
                 _('Es befindet sich nicht genügend %s auf diesem Handelsposten'),
                 $selectedOffer->getWantedCommodity()->getName()

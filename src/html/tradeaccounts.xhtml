@@ -19,9 +19,9 @@
 						<div style="font-weight: bold">
 							Waren lagernd	
 						</div>
-						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage/getStorage">
+						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage">
 							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})" style="display: block; padding: 4px;" class="tradebutton">
-								<img src="assets/goods/${stor/getGoodId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
+								<img src="assets/goods/${stor/getGood/getId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
 							</a>
 						</div>
 					</td>
@@ -55,8 +55,8 @@
 				<tr>
 					<td class="darkbg">Lagerraum</td>
 					<td>
-						<span tal:condition="data/isOverStorage" class="negative" tal:content="data/getStorage/getStorageSum">STORAGESUM</span>
-						<span tal:condition="not:data/isOverStorage" class="positive" tal:content="data/getStorage/getStorageSum">STORAGESUM</span>
+						<span tal:condition="data/isOverStorage" class="negative" tal:content="data/getStorageSum">STORAGESUM</span>
+						<span tal:condition="not:data/isOverStorage" class="positive" tal:content="data/getStorageSum">STORAGESUM</span>
 						(<span tal:content="data/getStorageCapacity">STORAGE</span> pro Siedler)
 					</td>
 				</tr>

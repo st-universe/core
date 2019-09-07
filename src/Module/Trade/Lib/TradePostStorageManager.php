@@ -5,21 +5,32 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Orm\Entity\TradePostInterface;
-use TradeStorage;
-use TradeStorageData;
+use Stu\Orm\Entity\TradeStorageInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class TradePostStorageManager implements TradePostStorageManagerInterface
 {
+    private $tradeStorageRepository;
+
+    private $commodityRepository;
+
     private $tradePost;
 
     private $userId;
 
     private $storageSum;
 
+    private $storage;
+
     public function __construct(
+        TradeStorageRepositoryInterface $tradeStorageRepository,
+        CommodityRepositoryInterface $commodityRepository,
         TradePostInterface $tradePost,
         int $userId
     ) {
+        $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->commodityRepository = $commodityRepository;
         $this->tradePost = $tradePost;
         $this->userId = $userId;
     }
@@ -32,7 +43,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     public function getStorageSum(): int
     {
         if ($this->storageSum === null) {
-            $this->storageSum = (int) TradeStorage::getStorageByTradepostUser($this->tradePost->getId(), $this->userId)->getStorageSum();
+            $this->storageSum = array_reduce(
+                $this->getStorage(),
+                function (int $value, TradeStorageInterface $storage): int {
+                    return $value + $storage->getAmount();
+                },
+                0
+            );
         }
         return $this->storageSum;
     }
@@ -44,45 +61,50 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
 
     public function getStorage(): array
     {
-        return TradeStorage::getStorageByTradepostUser($this->tradePost->getId(), $this->userId)->getStorage();
+        if ($this->storage === null) {
+            $this->storage = [];
+
+            foreach ($this->tradeStorageRepository->getByTradePostAndUser($this->tradePost->getId(), $this->userId) as $storage) {
+                $this->storage[$storage->getGoodId()] = $storage;
+            }
+        }
+
+        return $this->storage;
     }
 
     public function upperStorage(int $commodityId, int $amount): void
     {
-        $storage = TradeStorage::getStorageByTradepostUser($this->tradePost->getId(), $this->userId);
+        /** @var TradeStorageInterface[] $storage */
+        $storage = $this->getStorage();
 
-        $stor = $storage->getStorage()[$commodityId] ?? null;
+        $stor = $storage[$commodityId] ?? null;
         if ($stor === null) {
-            $stor = new TradeStorageData();
+            $stor = $this->tradeStorageRepository->prototype();
             $stor->setUserId($this->userId);
-            $stor->setGoodId($commodityId);
-            $stor->setTradePostId($this->tradePost->getId());
+            $stor->setGood($this->commodityRepository->find($commodityId));
+            $stor->setTradePost($this->tradePost);
         }
         $stor->setAmount($stor->getAmount() + $amount);
-        $stor->save();
 
-        $storage->addStorageEntry($stor);
-        $storage->upperSum($amount);
+        $this->tradeStorageRepository->save($stor);
     }
 
     public function lowerStorage(int $commodityId, int $amount): void
     {
-        $storage = TradeStorage::getStorageByTradepostUser($this->tradePost->getId(), $this->userId);
+        /** @var TradeStorageInterface[] $storage */
+        $storage = $this->getStorage();
 
-        /** @var TradeStorageData $stor */
-        $stor = $storage->getStorage()[$commodityId] ?? null;
+        $stor = $storage[$commodityId] ?? null;
         if ($stor === null) {
             return;
         }
 
         if ($stor->getAmount() <= $amount) {
-            $storage->lowerSum($stor->getAmount());
-            $stor->deleteFromDatabase();
+            $this->tradeStorageRepository->delete($stor);
             return;
         }
         $stor->setAmount($stor->getAmount() - $amount);
-        $stor->save();
 
-        $storage->lowerSum($amount);
+        $this->tradeStorageRepository->save($stor);
     }
 }

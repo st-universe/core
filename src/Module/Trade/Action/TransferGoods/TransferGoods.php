@@ -9,11 +9,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
-use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
+use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
-use TradeStorage;
 
 final class TransferGoods implements ActionControllerInterface
 {
@@ -29,18 +28,22 @@ final class TransferGoods implements ActionControllerInterface
 
     private $tradePostRepository;
 
+    private $tradeStorageRepository;
+
     public function __construct(
         TransferGoodsRequestInterface $transferGoodsRequest,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->transferGoodsRequest = $transferGoodsRequest;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,16 +54,13 @@ final class TransferGoods implements ActionControllerInterface
         $amount = $this->transferGoodsRequest->getAmount();
         $destinationTradePostId = $this->transferGoodsRequest->getDestinationTradePostId();
 
-        $selectedStorage = new TradeStorage($this->transferGoodsRequest->getStorageId());
-        if ((int) $selectedStorage->getUserId() !== $userId) {
+        $selectedStorage = $this->tradeStorageRepository->find($this->transferGoodsRequest->getStorageId());
+        if ($selectedStorage === null || $selectedStorage->getUserId() !== $userId) {
             throw new AccessViolation();
         }
 
-        /**
-         * @var TradePostInterface $tradepost
-         */
         $tradepost = $selectedStorage->getTradePost();
-        $tradePostId = (int) $tradepost->getId();
+        $tradePostId = $tradepost->getId();
 
         if ($selectedStorage->getAmount() < $amount) {
             $amount = $selectedStorage->getAmount();

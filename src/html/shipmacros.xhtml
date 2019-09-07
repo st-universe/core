@@ -727,7 +727,7 @@
 						<tr>
 							<td>
 								<img src="assets/buttons/lager.gif" />
-								<span tal:replace="TRADEPOST/getStorage/getStorageSum">SUM</span>/<span tal:replace="TRADEPOST/getStorageCapacity">MAX</span>
+								<span tal:replace="TRADEPOST/getStorageSum">SUM</span>/<span tal:replace="TRADEPOST/getStorageCapacity">MAX</span>
 							</td>
 							<td>
 								<img src="assets/buttons/lager.gif" />
@@ -786,7 +786,7 @@
 								</tr>
 								<tr>
 									<td tal:define="storage TRADEPOST/getStorage">
-										<tal:block tal:condition="storage/getStorage" tal:repeat="good storage/getStorage">
+										<tal:block tal:condition="storage" tal:repeat="good storage">
 											<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 											<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 												<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -796,7 +796,7 @@
 											</div>
 											<br tal:condition="repeat/good/odd" style="clear: both;" />
 										</tal:block>
-										<tal:block tal:condition="not:storage/getStorage">
+										<tal:block tal:condition="not:storage">
 											Keine Waren vorhanden
 										</tal:block>
 									</td>

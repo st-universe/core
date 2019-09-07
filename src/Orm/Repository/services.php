@@ -78,6 +78,7 @@ use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
+use Stu\Orm\Entity\TradeStorage;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserProfileVisitor;
@@ -443,6 +444,11 @@ return [
         ContainerInterface $c
     ): TradeShoutboxRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TradeShoutbox::class);
+    },
+    TradeStorageRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradeStorageRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeStorage::class);
     },
     TradeTransferRepositoryInterface::class => function (
         ContainerInterface $c

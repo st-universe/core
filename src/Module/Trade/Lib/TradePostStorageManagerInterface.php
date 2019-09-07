@@ -3,7 +3,7 @@
 namespace Stu\Module\Trade\Lib;
 
 use Stu\Orm\Entity\TradePostInterface;
-use TradeStorageData;
+use Stu\Orm\Entity\TradeStorageInterface;
 
 interface TradePostStorageManagerInterface
 {
@@ -14,7 +14,7 @@ interface TradePostStorageManagerInterface
     public function getFreeStorage(): int;
 
     /**
-     * @return TradeStorageData[]
+     * @return TradeStorageInterface[]
      */
     public function getStorage(): array;
 
