@@ -5,6 +5,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\WeaponInterface;
@@ -12,6 +13,7 @@ use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -1054,12 +1056,13 @@ class ShipData extends BaseTable {
 
 	private $rump = NULL;
 
-	/**
-	 * @return Shiprump
-	 */
-	function getRump() {
+	function getRump(): ShipRumpInterface
+	{
 		if ($this->rump === NULL) {
-			$this->rump = ResourceCache()->getObject('rump',$this->getRumpId());
+			// @todo refactor
+			global $container;
+
+			$this->rump = $container->get(ShipRumpRepositoryInterface::class)->find((int) $this->getRumpId());
 		}
 		return $this->rump;
 	}

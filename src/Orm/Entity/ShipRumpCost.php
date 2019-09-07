@@ -28,10 +28,16 @@ class ShipRumpCost implements ShipRumpCostInterface
     private $count = 0;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $commodity;
+
+    /**
+     * @ManyToOne(targetEntity="ShipRump", inversedBy="buildingCosts")
+     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $shipRump;
 
     public function getId(): int
     {

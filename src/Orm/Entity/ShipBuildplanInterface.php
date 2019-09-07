@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Shiprump;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 
 interface ShipBuildplanInterface
@@ -41,7 +40,9 @@ interface ShipBuildplanInterface
 
     public function isDeleteable(): bool;
 
-    public function getRump(): Shiprump;
+    public function getRump(): ShipRumpInterface;
+
+    public function setRump(ShipRumpInterface $shipRump): ShipBuildplanInterface;
 
     public function getModulesByType($type): array;
 

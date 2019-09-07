@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Action\BuildShip;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
-use Shiprump;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -19,10 +18,10 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildShip implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_BUILD_SHIP';
 
     private $colonyLoader;
@@ -37,13 +36,16 @@ final class BuildShip implements ActionControllerInterface
 
     private $colonyShipQueueRepository;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
@@ -51,6 +53,7 @@ final class BuildShip implements ActionControllerInterface
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleRepository = $moduleRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -63,10 +66,13 @@ final class BuildShip implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $colonyId = (int) $colony->getId();
 
-        $rump = new Shiprump(request::indInt('rump'));
+        $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
+        if ($rump === null) {
+            return;
+        }
 
         $buildung_function = null;
-        foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $rump->getId()) as $bfunc) {
+        foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($rump->getId()) as $bfunc) {
             if ($colony->hasActiveBuildingWithFunction($bfunc->getBuildingFunction())) {
                 $building_function = $bfunc;
             }

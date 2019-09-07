@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
 use request;
 use Ship;
-use Shiprump;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -17,6 +16,7 @@ use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
 {
@@ -35,13 +35,16 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $colonyStorageRepository;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
         BuildplanHangarRepositoryInterface $buildplanHangarRepository,
         CrewCreatorInterface $crewCreator,
         ShipCreatorInterface $shipCreator,
-        ColonyStorageRepositoryInterface $colonyStorageRepository
+        ColonyStorageRepositoryInterface $colonyStorageRepository,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
@@ -49,6 +52,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->crewCreator = $crewCreator;
         $this->shipCreator = $shipCreator;
         $this->colonyStorageRepository = $colonyStorageRepository;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -63,22 +67,15 @@ final class StartAirfieldShip implements ActionControllerInterface
             $userId
         );
 
-        $rump_id = request::postInt('startrump');
-        $available_rumps = Shiprump::getBy(
-            sprintf(
-                'WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id = %d) AND good_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id=%d) GROUP BY id',
-                $userId,
-                $colony->getId()
-            )
-        );
+        $rump_id = (int) request::postInt('startrump');
+        $available_rumps = $this->shipRumpRepository->getStartableByUserAndColony($userId, (int) $colony->getId());
 
         if (!array_key_exists($rump_id, $available_rumps)) {
             return;
         }
-        /**
-         * @var Shiprump $rump
-         */
-        $rump = ResourceCache()->getObject('rump', $rump_id);
+
+        $rump = $this->shipRumpRepository->find($rump_id);
+
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE) && Ship::countInstances(
                 sprintf(
                     'WHERE user_id = %d AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special = %d)',
@@ -128,10 +125,10 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->crewCreator->createShipCrew($ship);
 
         $storage = $colony->getStorage();
-        
+
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
         if ($defaultTorpedoType !== null) {
-            if (array_key_exists($defaultTorpedoType->getGoodId(), $colony->getStorage())) {
+            if (array_key_exists($defaultTorpedoType->getGoodId(), $storage)) {
                 $count = $ship->getMaxTorpedos();
                 if ($count > $storage[$defaultTorpedoType->getGoodId()]->getAmount()) {
                     $count = $storage[$defaultTorpedoType->getGoodId()]->getAmount();

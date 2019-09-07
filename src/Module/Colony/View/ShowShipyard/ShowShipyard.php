@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShipyard;
 
 use ColonyMenu;
-use Shiprump;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowShipyard implements ViewControllerInterface
 {
@@ -21,14 +21,18 @@ final class ShowShipyard implements ViewControllerInterface
 
     private $buildingFunctionRepository;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowShipyardRequestInterface $showShipyardRequest,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showShipyardRequest = $showShipyardRequest;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,14 +47,16 @@ final class ShowShipyard implements ViewControllerInterface
         $function = $this->buildingFunctionRepository->find(
             $this->showShipyardRequest->getBuildingFunctionId()
         );
-        $buildableShips = Shiprump::getBuildableRumpsByBuildingFunction($userId, $function->getFunction());
 
         $game->showMacro('html/colonymacros.xhtml/cm_shipyard');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_SHIPYARD));
 
-        $game->setTemplateVar('BUILDABLE_SHIPS', $buildableShips);
-        $game->setTemplateVar('BUILDABLE_RUMPS', Shiprump::getBuildableRumpsByUser($userId));
+        $game->setTemplateVar(
+            'BUILDABLE_SHIPS',
+            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction($userId, $function->getFunction())
+        );
+        $game->setTemplateVar('BUILDABLE_RUMPS', $this->shipRumpRepository->getBuildableByUser($userId));
     }
 }

@@ -6,7 +6,6 @@ namespace Stu\Module\Database\View\DatabaseEntry;
 
 use AccessViolation;
 use Ship;
-use Shiprump;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -15,6 +14,7 @@ use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\MapRegionRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseEntry implements ViewControllerInterface
@@ -34,13 +34,16 @@ final class DatabaseEntry implements ViewControllerInterface
 
     private $starSystemRepository;
 
+    private $shipRumpRepository;
+
     public function __construct(
         DatabaseEntryRequestInterface $databaseEntryRequest,
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
         DatabaseEntryRepositoryInterface $databaseEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         MapRegionRepositoryInterface $mapRegionRepository,
-        StarSystemRepositoryInterface $starSystemRepository
+        StarSystemRepositoryInterface $starSystemRepository,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->databaseEntryRequest = $databaseEntryRequest;
         $this->databaseCategoryRepository = $databaseCategoryRepository;
@@ -48,6 +51,7 @@ final class DatabaseEntry implements ViewControllerInterface
         $this->databaseUserRepository = $databaseUserRepository;
         $this->mapRegionRepository = $mapRegionRepository;
         $this->starSystemRepository = $starSystemRepository;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -109,7 +113,7 @@ final class DatabaseEntry implements ViewControllerInterface
                 $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
                 break;
             case DATABASE_TYPE_SHIPRUMP:
-                $game->setTemplateVar('RUMP', new Shiprump($entry_object_id));
+                $game->setTemplateVar('RUMP', $this->shipRumpRepository->find($entry_object_id));
                 break;
             case DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);

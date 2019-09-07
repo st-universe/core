@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowAirfield;
 
 use ColonyMenu;
-use Shiprump;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowAirfield implements ViewControllerInterface
 {
@@ -21,14 +21,18 @@ final class ShowAirfield implements ViewControllerInterface
 
     private $showAirfieldRequest;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowAirfieldRequestInterface $showAirfieldRequest
+        ShowAirfieldRequestInterface $showAirfieldRequest,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showAirfieldRequest = $showAirfieldRequest;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,17 +52,11 @@ final class ShowAirfield implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_AIRFIELD));
         $game->setTemplateVar(
             'STARTABLE_SHIPS',
-            Shiprump::getBy(
-                sprintf(
-                    "WHERE id IN (SELECT rump_id FROM stu_rumps_user WHERE user_id = %d) AND good_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id = %d) GROUP BY id",
-                    $userId,
-                    $colony->getId()
-                )
-            )
+            $this->shipRumpRepository->getStartableByUserAndColony($userId, (int) $colony->getId())
         );
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
-            Shiprump::getBuildableRumpsByBuildingFunction($userId,BUILDING_FUNCTION_AIRFIELD)
+            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction($userId,BUILDING_FUNCTION_AIRFIELD)
         );
     }
 }

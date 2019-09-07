@@ -5,23 +5,26 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildFighterShipyardRump;
 
 use request;
-use Shiprump;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildFighterShipyardRump implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_BUILD_FIGHTER_SHIPYARD_RUMP';
 
     private $colonyLoader;
 
+    private $shipRumpRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,21 +38,19 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
             $userId
         );
 
-        $rump_id = request::postInt('buildrump');
+        $rumpId = (int) request::postInt('buildrump');
 
-
-        $available_rumps = Shiprump::getBuildableRumpsByBuildingFunction(
+        $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
-            BUILDING_FUNCTION_FIGHTER_SHIPYARD
+            BUILDING_FUNCTION_AIRFIELD
         );
 
-        if (!array_key_exists($rump_id, $available_rumps)) {
+        if (!array_key_exists($rumpId, $availableShipRumps)) {
             return;
         }
-        /**
-         * @var Shiprump $rump
-         */
-        $rump = ResourceCache()->getObject('rump', $rump_id);
+
+        $rump = $this->shipRumpRepository->find($rumpId);
+
         if ($rump->getEpsCost() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),

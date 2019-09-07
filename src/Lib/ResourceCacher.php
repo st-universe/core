@@ -24,7 +24,6 @@ class ResourceCacher
             $this->resources->offsetSet(CACHE_ALLIANCE, new ArrayObject);
             $this->resources->offsetSet(CACHE_FACTION, new ArrayObject);
             $this->resources->offsetSet(CACHE_COLONY, new ArrayObject);
-            $this->resources->offsetSet(CACHE_RUMP, new ArrayObject);
             $this->resources->offsetSet(CACHE_FLEET, new ArrayObject);
         }
         return $this->resources;

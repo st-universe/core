@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Shiprump;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipQueueRepository")
  * @Table(
@@ -51,6 +49,12 @@ class ColonyShipQueue implements ColonyShipQueueInterface
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $shipBuildplan;
+
+    /**
+     * @ManyToOne(targetEntity="ShipRump")
+     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $shipRump;
 
     public function getId(): int
     {
@@ -141,9 +145,16 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         return $this;
     }
 
-    public function getRump(): Shiprump
+    public function getRump(): ShipRumpInterface
     {
-        return new Shiprump($this->getRumpId());
+        return $this->shipRump;
+    }
+
+    public function setRump(ShipRumpInterface $shipRump): ColonyShipQueueInterface
+    {
+        $this->shipRump = $shipRump;
+
+        return $this;
     }
 
     public function getShipBuildplan(): ShipBuildplanInterface

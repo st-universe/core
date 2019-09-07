@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Shiprump;
-
 interface ColonyShipQueueInterface
 {
     public function getId(): int;
@@ -36,7 +34,9 @@ interface ColonyShipQueueInterface
 
     public function setBuildingFunctionId(int $buildingFunctionId): ColonyShipQueueInterface;
 
-    public function getRump(): Shiprump;
+    public function getRump(): ShipRumpInterface;
+
+    public function setRump(ShipRumpInterface $shipRump): ColonyShipQueueInterface;
 
     public function getShipBuildplan(): ShipBuildplanInterface;
 

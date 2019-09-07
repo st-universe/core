@@ -6,6 +6,7 @@ use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
@@ -235,7 +236,7 @@ function calculateModuleValue($rump,$module,$callback='aggi',$value=FALSE) { #{{
 
 /**
  */
-function calculateDamageImpact(ShipRumpData $rump, ModuleInterface $module) { #{{{
+function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module) { #{{{
 	if ($rump->getModuleLevel() > $module->getLevel()) {
 		return '-'.$module->getDowngradeFactor().'%';
 	}
@@ -294,7 +295,7 @@ function isSystemUser($userId) { #{{{
 
 /**
  */
-function getModuleLevelClass(ShipRumpData $rump,$module) { #{{{
+function getModuleLevelClass(ShipRumpInterface $rump,$module) { #{{{
 	if ($rump->getModuleLevels()->{'getModuleLevel'.$module->getModule()->getType()}() > $module->getModule()->getLevel()) {
 		return 'module_positive';
 	}

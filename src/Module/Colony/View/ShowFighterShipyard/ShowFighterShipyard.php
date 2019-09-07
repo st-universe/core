@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowFighterShipyard;
 
 use ColonyMenu;
-use Shiprump;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowFighterShipyard implements ViewControllerInterface
 {
@@ -21,14 +21,18 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
     private $showFighterShipyardRequest;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowFighterShipyardRequestInterface $showFighterShipyardRequest
+        ShowFighterShipyardRequestInterface $showFighterShipyardRequest,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showFighterShipyardRequest = $showFighterShipyardRequest;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +53,7 @@ final class ShowFighterShipyard implements ViewControllerInterface
 
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',
-            Shiprump::getBuildableRumpsByBuildingFunction($userId, BUILDING_FUNCTION_FIGHTER_SHIPYARD)
+            $this->shipRumpRepository->getBuildableByUserAndBuildingFunction($userId, BUILDING_FUNCTION_FIGHTER_SHIPYARD)
         );
     }
 }

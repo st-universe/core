@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreen;
 
+use AccessViolation;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
-use Shiprump;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ShowModuleScreen implements ViewControllerInterface
 {
@@ -21,12 +22,16 @@ final class ShowModuleScreen implements ViewControllerInterface
 
     private $showModuleScreenRequest;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowModuleScreenRequestInterface $showModuleScreenRequest
+        ShowModuleScreenRequestInterface $showModuleScreenRequest,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleScreenRequest = $showModuleScreenRequest;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,10 +43,10 @@ final class ShowModuleScreen implements ViewControllerInterface
             $userId
         );
 
-        $rump = new Shiprump($this->showModuleScreenRequest->getRumpId());
+        $rump = $this->shipRumpRepository->find($this->showModuleScreenRequest->getRumpId());
 
-        if (!array_key_exists($rump->getId(), Shiprump::getBuildableRumpsByUser($userId))) {
-            throw new \AccessViolation();
+        if ($rump === null || !array_key_exists($rump->getId(), $this->shipRumpRepository->getBuildableByUser($userId))) {
+            throw new AccessViolation();
         }
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;

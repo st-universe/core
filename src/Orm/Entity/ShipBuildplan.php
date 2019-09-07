@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Shiprump;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
@@ -41,6 +40,12 @@ class ShipBuildplan implements ShipBuildplanInterface
 
     /** @Column(type="smallint") * */
     private $crew_percentage = 0;
+
+    /**
+     * @ManyToOne(targetEntity="ShipRump")
+     * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $shipRump;
 
     public function getId(): int
     {
@@ -142,9 +147,16 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
-    public function getRump(): Shiprump
+    public function getRump(): ShipRumpInterface
     {
-        return new Shiprump($this->getRumpId());
+        return $this->shipRump;
+    }
+
+    public function setRump(ShipRumpInterface $shipRump): ShipBuildplanInterface
+    {
+        $this->shipRump = $shipRump;
+
+        return $this;
     }
 
     public function getModulesByType($type): array

@@ -264,7 +264,6 @@ define('CACHE_CREW','crew');
 define('CACHE_ALLIANCE','alliance');
 define('CACHE_FACTION','faction');
 define('CACHE_COLONY','colony');
-define('CACHE_RUMP','rump');
 
 define('ROLE_PHASERSHIP',1);
 define('ROLE_PULSESHIP',2);
