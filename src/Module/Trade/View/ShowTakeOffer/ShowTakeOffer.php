@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTakeOffer;
 
+use AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
@@ -37,14 +37,13 @@ final class ShowTakeOffer implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        /** @var TradeOfferInterface $selectedOffer */
         $selectedOffer = $this->tradeOfferRepository->find($this->showTakeOfferRequest->getOfferId());
 
         if ($selectedOffer === null || !$this->tradeLicenseRepository->hasLicenseByUserAndTradePost(
             $game->getUser()->getId(),
             (int) $selectedOffer->getTradePostId()
         )) {
-            throw new \AccessViolation();
+            throw new AccessViolation();
         }
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');

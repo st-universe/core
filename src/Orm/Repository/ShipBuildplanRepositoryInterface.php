@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 
+/**
+ * @method null|ShipBuildplanInterface find(integer $id)
+ */
 interface ShipBuildplanRepositoryInterface extends ObjectRepository
 {
     /**

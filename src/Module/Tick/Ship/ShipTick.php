@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Tick\Ship;
 
-use Exception;
 use PM;
 use ShipData;
 use Stu\Orm\Entity\ShipSystemInterface;

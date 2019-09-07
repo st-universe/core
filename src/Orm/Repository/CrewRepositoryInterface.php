@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\CrewInterface;
 
+/**
+ * @method null|CrewInterface find(integer $id)
+ */
 interface CrewRepositoryInterface extends ObjectRepository
 {
     public function prototype(): CrewInterface;

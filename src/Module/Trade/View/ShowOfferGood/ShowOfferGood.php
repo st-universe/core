@@ -40,7 +40,7 @@ final class ShowOfferGood implements ViewControllerInterface
         $tradepost = $this->tradePostRepository->find($this->showOfferGoodRequest->getTradePostId());
 
         if ($commodity === null || $tradepost === null) {
-            return;;
+            return;
         }
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
