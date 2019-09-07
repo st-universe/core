@@ -205,15 +205,6 @@ class ShiprumpData extends BaseTable {
 		return $this->data['base_damage'];
 	} # }}}
 
-	
-	/**
-	 */
-	public function enforceBuildableByUser($userId) { #{{{
-		if (!array_key_exists($this->getId(),$this->getBuildableRumpsByUser($userId))) {
-			throw new ObjectNotFoundException($this->getId());
-		}
-	} # }}}
-
 	private $category = NULL;
 
 	/**
@@ -412,12 +403,6 @@ class ShiprumpData extends BaseTable {
 
 	/**
 	 */
-	public function canColonize() { #{{{
-		return $this->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE);
-	} # }}}
-
-	/**
-	 */
 	public function setGoodId($value) { # {{{
 		$this->setFieldValue('good_id',$value,'getGoodId');
 	} # }}}
@@ -426,36 +411,6 @@ class ShiprumpData extends BaseTable {
 	 */
 	public function getGoodId() { # {{{
 		return $this->data['good_id'];
-	} # }}}
-
-	/**
-	 */
-	public function setEcost($value) { # {{{
-		$this->setFieldValue('ecost',$value,'getEcost');
-	} # }}}
-
-	/**
-	 */
-	public function getEcost() { # {{{
-		return $this->data['ecost'];
-	} # }}}
-
-	/**
-	 */
-	public function setBuildableAsGood($value) { # {{{
-		$this->setFieldValue('buildable_as_good',$value,'getBuildableAsGood');
-	} # }}}
-
-	/**
-	 */
-	public function getBuildableAsGood() { # {{{
-		return $this->data['buildable_as_good'];
-	} # }}}
-
-	/**
-	 */
-	public function getCrewSum() { #{{{
-		return $this->getCategory()->getJob1Slots()+$this->getCategory()->getJob2Slots()+$this->getCategory()->getJob3Slots()+$this->getCategory()->getJob4Slots()+$this->getCategory()->getJob5Slots();
 	} # }}}
 
 	/**

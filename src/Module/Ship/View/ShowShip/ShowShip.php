@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use VisualNavPanel;
 
@@ -102,7 +103,7 @@ final class ShowShip implements ViewControllerInterface
         }
         $colony = $ship->getCurrentColony();
         $canColonize = false;
-        if ($colony && $ship->getRump()->canColonize()) {
+        if ($colony && $ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
             $researchId = (int) $colony->getPlanetType()->getResearchId();
             $canColonize = $colony->isFree() && (
                 $researchId === 0 || ($this->researchedRepository->hasUserFinishedResearch($researchId, $userId))

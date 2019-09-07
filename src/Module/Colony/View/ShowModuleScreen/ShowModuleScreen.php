@@ -40,6 +40,10 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $rump = new Shiprump($this->showModuleScreenRequest->getRumpId());
 
+        if (!array_key_exists($rump->getId(), Shiprump::getBuildableRumpsByUser($userId))) {
+            throw new \AccessViolation();
+        }
+
         $moduleScreenTabs = new ModuleScreenTabWrapper;
         for ($i = 1; $i <= MODULE_TYPE_COUNT; $i++) {
             $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump, false));
@@ -76,8 +80,6 @@ final class ShowModuleScreen implements ViewControllerInterface
         );
         $game->setPagetitle(_('Schiffbau'));
         $game->setTemplateFile('html/modulescreen.xhtml');
-        $rump->enforceBuildableByUser($userId);
-
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('RUMP', $rump);
         $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);

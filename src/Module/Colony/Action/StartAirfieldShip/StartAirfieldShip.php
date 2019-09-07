@@ -74,7 +74,7 @@ final class StartAirfieldShip implements ActionControllerInterface
          * @var Shiprump $rump
          */
         $rump = ResourceCache()->getObject('rump', $rump_id);
-        if ($rump->canColonize() && Ship::countInstances(
+        if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE) && Ship::countInstances(
                 sprintf(
                     'WHERE user_id = %d AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special = %d)',
                     $userId,

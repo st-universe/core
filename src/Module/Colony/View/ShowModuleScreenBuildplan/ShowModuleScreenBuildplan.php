@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
+use Shiprump;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
@@ -51,6 +52,10 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         }
         $rump = $plan->getRump();
 
+        if (!array_key_exists($rump->getId(), Shiprump::getBuildableRumpsByUser($userId))) {
+            throw new \AccessViolation();
+        }
+
         $moduleScreenTabs = new ModuleScreenTabWrapper;
         for ($i = 1; $i <= MODULE_TYPE_COUNT; $i++) {
             $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump, $plan));
@@ -94,8 +99,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         );
         $game->setPagetitle(_('Schiffbau'));
         $game->setTemplateFile('html/modulescreen.xhtml');
-        $rump->enforceBuildableByUser($userId);
-
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('RUMP', $rump);
         $game->setTemplateVar('PLAN', $plan);

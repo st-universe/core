@@ -12,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
@@ -52,7 +53,7 @@ final class Colonize implements ActionControllerInterface
         $colony = new Colony($colonyId);
         $field = new Colfields($fieldId);
 
-        if (!$ship->getRump()->canColonize()) {
+        if (!$ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
             return;
         }
 
