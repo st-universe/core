@@ -121,7 +121,7 @@ final class CreateOffer implements ActionControllerInterface
         if ($storage->getAmount() <= $offerAmount * $giveAmount) {
             $storage->deleteFromDatabase();
         } else {
-            $storage->lowerCount($offerAmount * $giveAmount);
+            $storage->setAmount((int) ($storage->getAmount() - $offerAmount * $giveAmount));
             $storage->save();
         }
 

@@ -54,16 +54,8 @@ class TradeStorageData extends BaseTable {
 		return $this->data['count'];
 	}
 
-	public function setCount($value) {
+	public function setAmount($value) {
 		$this->setFieldValue('count',$value,'getAmount');
-	}
-
-	public function upperCount($value) {
-		$this->setCount($this->getAmount()+$value);
-	}
-
-	public function lowerCount($value) {
-		$this->setCount($this->getAmount()-$value);
 	}
 
 	public function getGood() {
@@ -78,18 +70,6 @@ class TradeStorage extends TradeStorageData {
 			new ObjectNotFoundException($id);
 		}
 		return parent::__construct($result);
-	}
-
-	static function getStorageByUser($userId) {
-		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE user_id=".$userId);
-		$ret = array();
-		while($data = mysqli_fetch_assoc($result)) {
-			if (!array_key_exists($data['posts_id'],$ret)) {
-				$ret[$data['posts_id']] = new \Stu\Lib\TradePostStorageWrapper($data['posts_id'],$userId);
-			}
-			$ret[$data['posts_id']]->addStorageEntry(new TradeStorageData($data));
-		}
-		return $ret;
 	}
 
 	static function getStorageByTradepostUser($postId,$userId) {
@@ -109,15 +89,9 @@ class TradeStorage extends TradeStorageData {
 		return new TradeStorageData($result);
 	}
 
-	static function getAccountsByGood($goodId,$userId,$count=FALSE,$tradeNetwork=FALSE) {
-		$tnqry = '';
-		if ($tradeNetwork) {
-			$tnqry = ' AND posts_id IN (SELECT id FROM stu_trade_posts WHERE trade_network='.intval($tradeNetwork).')';
-		}
-		$cntqry = '';
-		if ($count) {
-			$cntqry = ' AND count>='.intval($count);
-		}
+	static function getAccountsByGood($goodId,$userId,$count,$tradeNetwork) {
+		$tnqry = ' AND posts_id IN (SELECT id FROM stu_trade_posts WHERE trade_network='.intval($tradeNetwork).')';
+		$cntqry = ' AND count>='.intval($count);
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE user_id=".intval($userId)." AND goods_id=".intval($goodId).$cntqry.$tnqry);
 		return parent::_getList($result,'TradeStorageData');
 

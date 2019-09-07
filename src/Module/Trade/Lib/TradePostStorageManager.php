@@ -58,7 +58,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
             $stor->setGoodId($commodityId);
             $stor->setTradePostId($this->tradePost->getId());
         }
-        $stor->upperCount($amount);
+        $stor->setAmount($stor->getAmount() + $amount);
         $stor->save();
 
         $storage->addStorageEntry($stor);
@@ -80,7 +80,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
             $stor->deleteFromDatabase();
             return;
         }
-        $stor->lowerCount($amount);
+        $stor->setAmount($stor->getAmount() - $amount);
         $stor->save();
 
         $storage->lowerSum($amount);
