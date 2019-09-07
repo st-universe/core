@@ -10,24 +10,27 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use TradePost;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use TradeStorage;
 
 final class ShowOfferMenuNewOffer implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_OFFER_MENU_NEW_OFFER';
 
     private $showOfferMenuNewOfferRequest;
 
     private $commodityRepository;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShowOfferMenuNewOfferRequestInterface $showOfferMenuNewOfferRequest,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->showOfferMenuNewOfferRequest = $showOfferMenuNewOfferRequest;
         $this->commodityRepository = $commodityRepository;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +42,10 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $trade_post = new TradePost($storage->getTradePostId());
+        $trade_post = $this->tradePostRepository->find((int) $storage->getTradePostId());
+        if ($trade_post === null) {
+            return;
+        }
 
         $commodityList = $this->commodityRepository->getViewable();
         usort(

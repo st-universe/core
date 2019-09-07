@@ -21,4 +21,8 @@ interface TradeTransferInterface
     public function getDate(): int;
 
     public function setDate(int $date): TradeTransferInterface;
+
+    public function getTradePost(): TradePostInterface;
+
+    public function setTradePost(TradePostInterface $tradePost): TradeTransferInterface;
 }

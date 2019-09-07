@@ -21,4 +21,8 @@ interface TradeLicenseInterface
     public function setDate(int $date): TradeLicenseInterface;
 
     public function getUser(): User;
+
+    public function getTradePost(): TradePostInterface;
+
+    public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface;
 }

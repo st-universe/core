@@ -6,33 +6,37 @@ namespace Stu\Module\Trade\View\ShowAccounts;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Trade\Lib\TradeAccountTalInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use TradePost;
+use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowAccounts implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ACCOUNTS';
 
-    private $talFactory;
+    private $tradeLibFactory;
+
+    private $tradePostRepository;
 
     public function __construct(
-        TradeLibFactoryInterface $talFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
-        $this->talFactory = $talFactory;
+        $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $list = [];
-
-        foreach (TradePost::getListByLicences($userId) as $account) {
-            $list[] = $this->talFactory->createTradeAccountTal(
-                $account,
-                $userId
-            );
-        }
+        $list = array_map(
+            function (TradePostInterface $tradePost) use ($userId): TradeAccountTalInterface {
+                return $this->tradeLibFactory->createTradeAccountTal($tradePost, $userId);
+            },
+            $this->tradePostRepository->getByUserLicense($userId)
+        );
 
         $game->appendNavigationPart(
             sprintf('trade.php?%s=1', static::VIEW_IDENTIFIER),

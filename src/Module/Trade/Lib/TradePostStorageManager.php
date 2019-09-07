@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
-use TradePostData;
+use Stu\Orm\Entity\TradePostInterface;
 use TradeStorage;
 use TradeStorageData;
 
@@ -17,14 +17,14 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     private $storageSum;
 
     public function __construct(
-        TradePostData $tradePost,
+        TradePostInterface $tradePost,
         int $userId
     ) {
         $this->tradePost = $tradePost;
         $this->userId = $userId;
     }
 
-    public function getTradePost(): TradePostData
+    public function getTradePost(): TradePostInterface
     {
         return $this->tradePost;
     }

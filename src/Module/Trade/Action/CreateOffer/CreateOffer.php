@@ -11,9 +11,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use TradeOfferData;
-use TradePost;
 use TradeStorage;
 
 final class CreateOffer implements ActionControllerInterface
@@ -27,14 +28,18 @@ final class CreateOffer implements ActionControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         CreateOfferRequestInterface $createOfferRequest,
         CommodityRepositoryInterface $commodityRepository,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->createOfferRequest = $createOfferRequest;
         $this->commodityRepository = $commodityRepository;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,7 +50,12 @@ final class CreateOffer implements ActionControllerInterface
         if ((int) $storage->getUserId() !== $userId) {
             throw new AccessViolation();
         }
-        $trade_post = new TradePost($storage->getTradePostId());
+
+        /** @var TradePostInterface $trade_post */
+        $trade_post = $this->tradePostRepository->find((int) $storage->getTradePostId());
+        if ($trade_post === null) {
+            return;
+        }
 
         $giveGoodId = $this->createOfferRequest->getGiveGoodId();
         $giveAmount = $this->createOfferRequest->getGiveAmount();

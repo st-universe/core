@@ -10,8 +10,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use TradePost;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class TransferFromAccount implements ActionControllerInterface
 {
@@ -23,14 +24,18 @@ final class TransferFromAccount implements ActionControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,9 +50,12 @@ final class TransferFromAccount implements ActionControllerInterface
         );
 
         /**
-         * @var TradePost $tradepost
+         * @var TradePostInterface $tradepost
          */
-        $tradepost = ResourceCache()->getObject('tradepost', request::postIntFatal('postid'));
+        $tradepost = $this->tradePostRepository->find((int) request::postIntFatal('postid'));
+        if ($tradepost === null) {
+            return;
+        }
 
         if (!checkPosition($ship, $tradepost->getShip())) {
             return;

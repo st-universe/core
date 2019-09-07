@@ -11,8 +11,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use TradePost;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use TradeStorage;
 
 final class ShowTradeMenuPayment implements ViewControllerInterface
@@ -25,14 +26,18 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,9 +50,13 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         );
 
         /**
-         * @var TradePost $tradepost
+         * @var TradePostInterface $tradepost
          */
-        $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
+        $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
+        if ($tradepost === null) {
+            return;
+        }
+
         if (!$ship->canInteractWith($tradepost->getShip())) {
             throw new AccessViolation();
         }

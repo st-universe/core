@@ -21,7 +21,6 @@ class ResourceCacher
             $this->resources->offsetSet(CACHE_GOOD, new ArrayObject);
             $this->resources->offsetSet(CACHE_SHIP, new ArrayObject);
             $this->resources->offsetSet(CACHE_CREW, new ArrayObject);
-            $this->resources->offsetSet(CACHE_TRADEPOST, new ArrayObject);
             $this->resources->offsetSet(CACHE_ALLIANCE, new ArrayObject);
             $this->resources->offsetSet(CACHE_FACTION, new ArrayObject);
             $this->resources->offsetSet(CACHE_COLONY, new ArrayObject);
@@ -84,9 +83,6 @@ class ResourceCacher
                 break;
             case "crew":
                 $newobj = "Crew";
-                break;
-            case "tradepost":
-                $newobj = "TradePost";
                 break;
             case "alliance":
                 $newobj = "Alliance";

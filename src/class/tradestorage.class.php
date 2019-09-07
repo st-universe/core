@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Repository\TradePostRepositoryInterface;
+
 class TradeStorageData extends BaseTable {
 
 	protected $tablename = 'stu_trade_storage';
@@ -26,7 +28,10 @@ class TradeStorageData extends BaseTable {
 	}
 
 	public function getTradePost() {
-		return ResourceCache()->getObject('tradepost',$this->getTradePostId());
+		// @todo refactor
+		global $container;
+
+		return $container->get(TradePostRepositoryInterface::class)->find((int) $this->getTradePostId());
 	}
 
 	public function setTradePostId($value) {

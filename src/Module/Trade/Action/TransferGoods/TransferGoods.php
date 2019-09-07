@@ -9,9 +9,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\ShowAccounts\ShowAccounts;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
-use TradePost;
 use TradeStorage;
 
 final class TransferGoods implements ActionControllerInterface
@@ -26,16 +27,20 @@ final class TransferGoods implements ActionControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         TransferGoodsRequestInterface $transferGoodsRequest,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->transferGoodsRequest = $transferGoodsRequest;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,7 +57,7 @@ final class TransferGoods implements ActionControllerInterface
         }
 
         /**
-         * @var TradePost $tradepost
+         * @var TradePostInterface $tradepost
          */
         $tradepost = $selectedStorage->getTradePost();
         $tradePostId = (int) $tradepost->getId();
@@ -72,7 +77,11 @@ final class TransferGoods implements ActionControllerInterface
             return;
         }
 
-        $targetpost = new TradePost($destinationTradePostId);
+        $targetpost = $this->tradePostRepository->find($destinationTradePostId);
+
+        if ($targetpost === null) {
+            return;
+        }
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, $tradePostId)) {
             return;
@@ -95,7 +104,7 @@ final class TransferGoods implements ActionControllerInterface
         $storageManager->lowerStorage((int) $selectedStorage->getGoodId(), $amount);
 
         $transfer = $this->tradeTransferRepository->prototype();
-        $transfer->setTradePostId((int) $tradepost->getId());
+        $transfer->setTradePost($tradepost);
         $transfer->setUserId($userId);
         $transfer->setAmount($amount);
         $transfer->setDate(time());

@@ -9,11 +9,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use TradePost;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradePostInfo implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_TRADEPOST_INFO';
 
     private $showTradePostInfoRequest;
@@ -22,21 +21,28 @@ final class ShowTradePostInfo implements ViewControllerInterface
 
     private $talFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShowTradePostInfoRequestInterface $showTradePostInfoRequest,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $talFactory
+        TradeLibFactoryInterface $talFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->showTradePostInfoRequest = $showTradePostInfoRequest;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->talFactory = $talFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $trade_post = new TradePost($this->showTradePostInfoRequest->getTradePostId());
+        $trade_post = $this->tradePostRepository->find($this->showTradePostInfoRequest->getTradePostId());
+        if ($trade_post === null) {
+            return;
+        }
 
         if (!$this->tradeLicenseRepository->hasLicenseByUserAndTradePost($userId, (int) $trade_post->getId())) {
             throw new AccessViolation();

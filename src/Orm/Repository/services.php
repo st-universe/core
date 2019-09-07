@@ -75,12 +75,12 @@ use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
 use Stu\Orm\Entity\TradeLicense;
+use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\Weapon;
-use function foo\func;
 
 return [
     AllianceBoardRepositoryInterface::class => function (
@@ -427,6 +427,11 @@ return [
         ContainerInterface $c
     ): TradeLicenseRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TradeLicense::class);
+    },
+    TradePostRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradePostRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradePost::class);
     },
     TradeShoutboxRepositoryInterface::class => function (
         ContainerInterface $c

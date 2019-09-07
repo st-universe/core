@@ -8,9 +8,9 @@ use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use TradeOffer;
-use TradePost;
-use Stu\Lib\TradePostStorageWrapper;
 use TradeStorage;
 
 final class TakeOffer implements ActionControllerInterface
@@ -21,12 +21,16 @@ final class TakeOffer implements ActionControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,12 +61,14 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
 
-        $tradePost = new TradePost($storage->getTradePostId());
+        /** @var TradePostInterface $tradePost */
+        $tradePost = $this->tradePostRepository->find((int) $storage->getTradePostId());
+        if ($tradePost === null) {
+            return;
+        }
 
         $storageManagerUser = $this->tradeLibFactory->createTradePostStorageManager($tradePost, $userId);
         $storageManagerRemote = $this->tradeLibFactory->createTradePostStorageManager($tradePost, (int) $selectedOffer->getUserId());
-
-        $wrap = new TradePostStorageWrapper($storage->getTradePostId(), $userId);
 
         $freeStorage = $storageManagerUser->getFreeStorage();
 

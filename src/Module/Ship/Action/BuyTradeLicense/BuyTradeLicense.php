@@ -11,9 +11,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
-use TradePost;
-use TradeStorage;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class BuyTradeLicense implements ActionControllerInterface
 {
@@ -25,14 +25,18 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,10 +50,11 @@ final class BuyTradeLicense implements ActionControllerInterface
             $userId
         );
 
-        /**
-         * @var TradePost $tradepost
-         */
-        $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
+        /** @var TradePostInterface $tradepost */
+        $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
+        if ($tradepost === null) {
+            return;
+        }
 
         if (!checkPosition($ship, $tradepost->getShip())) {
             return;
@@ -84,7 +89,12 @@ final class BuyTradeLicense implements ActionControllerInterface
                 $obj->lowerStorage($commodityId, $tradepost->calculateLicenceCost());
                 break;
             case 'account':
-                $targetTradepost = ResourceCache()->getObject('tradepost', $targetId);
+                /** @var TradePostInterface $targetTradepost */
+                $targetTradepost = $this->tradePostRepository->find($targetId);
+                if ($targetTradepost === null) {
+                    return;
+                }
+
                 $storageManager = $this->tradeLibFactory->createTradePostStorageManager($targetTradepost, $userId);
                 $commodityId = (int) $tradepost->getLicenceCostGood()->getId();
                 $costs = (int) $tradepost->calculateLicenceCost();
@@ -106,7 +116,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 return;
         }
         $licence = $this->tradeLicenseRepository->prototype();
-        $licence->setTradePostId((int) $tradepost->getId());
+        $licence->setTradePost($tradepost);
         $licence->setUserId($userId);
         $licence->setDate(time());
 

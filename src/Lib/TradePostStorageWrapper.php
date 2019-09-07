@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use TradeOffer;
 use TradeStorage;
 
@@ -42,7 +43,10 @@ class TradePostStorageWrapper
 
     public function getTradePost()
     {
-        return ResourceCache()->getObject('tradepost', $this->getTradePostId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(TradePostRepositoryInterface::class)->find((int) $this->getTradePostId());
     }
 
     private $storageSum = null;

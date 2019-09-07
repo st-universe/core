@@ -5,12 +5,13 @@ declare(strict_types=0);
 
 namespace Stu\Module\Trade\Lib;
 
+use Ship;
 use Stu\Lib\TradePostStorageWrapper;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 use TradeOffer;
-use TradePostData;
 use TradeStorage;
 
 final class TradeAccountTal implements TradeAccountTalInterface
@@ -28,7 +29,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
-        TradePostData $tradePost,
+        TradePostInterface $tradePost,
         int $userId
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
@@ -42,7 +43,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
         return $this->tradePost->getId();
     }
 
-    public function getShip(): \Ship
+    public function getShip(): Ship
     {
         return $this->tradePost->getShip();
     }

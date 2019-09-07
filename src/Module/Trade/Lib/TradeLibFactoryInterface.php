@@ -2,17 +2,17 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use TradePostData;
+use Stu\Orm\Entity\TradePostInterface;
 
 interface TradeLibFactoryInterface
 {
     public function createTradeAccountTal(
-        TradePostData $tradePost,
+        TradePostInterface $tradePost,
         int $userId
     ): TradeAccountTalInterface;
 
     public function createTradePostStorageManager(
-        TradePostData $tradePost,
+        TradePostInterface $tradePost,
         int $userId
     ): TradePostStorageManagerInterface;
 }

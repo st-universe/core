@@ -10,6 +10,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 final class ShowTradeMenuTransfer implements ViewControllerInterface
 {
@@ -19,12 +21,16 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,7 +51,12 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
             default:
                 $game->showMacro('html/shipmacros.xhtml/transfertoaccount');
         }
-        $tradepost = ResourceCache()->getObject('tradepost', request::getIntFatal('postid'));
+        /** @var TradePostInterface $tradepost */
+        $tradepost = $this->tradePostRepository->find((int) request::getIntFatal('postid'));
+        if ($tradepost === null) {
+            return;
+        }
+
         if (!checkPosition($ship, $tradepost->getShip())) {
             new AccessViolation;
         }

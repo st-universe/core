@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\Lib;
 
+use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
-use TradePostData;
 
 final class TradeLibFactory implements TradeLibFactoryInterface
 {
@@ -23,7 +23,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     }
 
     public function createTradeAccountTal(
-        TradePostData $tradePost,
+        TradePostInterface $tradePost,
         int $userId
     ): TradeAccountTalInterface {
         return new TradeAccountTal(
@@ -35,7 +35,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
     }
 
     public function createTradePostStorageManager(
-        TradePostData $tradePost,
+        TradePostInterface $tradePost,
         int $userId
     ): TradePostStorageManagerInterface {
         return new TradePostStorageManager(

@@ -29,6 +29,12 @@ class TradeLicense implements TradeLicenseInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="TradePost")
+     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $tradePost;
+
     public function getId(): int
     {
         return $this->id;
@@ -73,5 +79,17 @@ class TradeLicense implements TradeLicenseInterface
     public function getUser(): User
     {
         return new User($this->getUserId());
+    }
+
+    public function getTradePost(): TradePostInterface
+    {
+        return $this->tradePost;
+    }
+
+    public function setTradePost(TradePostInterface $tradePost): TradeLicenseInterface
+    {
+        $this->tradePost = $tradePost;
+
+        return $this;
     }
 }

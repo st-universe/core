@@ -2,12 +2,12 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use TradePostData;
+use Stu\Orm\Entity\TradePostInterface;
 use TradeStorageData;
 
 interface TradePostStorageManagerInterface
 {
-    public function getTradePost(): TradePostData;
+    public function getTradePost(): TradePostInterface;
 
     public function getStorageSum(): int;
 

@@ -9,24 +9,27 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use TradePost;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 use TradeStorage;
 
 final class ShowTransferMenu implements ViewControllerInterface
 {
-
     public const VIEW_IDENTIFIER = 'SHOW_OFFER_MENU_TRANSFER';
 
     private $showTransferMenueRequest;
 
     private $tradeLibFactory;
 
+    private $tradePostRepository;
+
     public function __construct(
         ShowTransferMenueRequestInterface $showTransferMenueRequest,
-        TradeLibFactoryInterface $tradeLibFactory
+        TradeLibFactoryInterface $tradeLibFactory,
+        TradePostRepositoryInterface $tradePostRepository
     ) {
         $this->showTransferMenueRequest = $showTransferMenueRequest;
         $this->tradeLibFactory = $tradeLibFactory;
+        $this->tradePostRepository = $tradePostRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,8 +40,11 @@ final class ShowTransferMenu implements ViewControllerInterface
         if ((int) $storage->getUserId() !== $userId) {
             throw new AccessViolation();
         }
-        $trade_post = new TradePost($storage->getTradePostId());
-        $accounts = TradePost::getListByLicences($userId);
+        $trade_post = $this->tradePostRepository->find((int) $storage->getTradePostId());
+        if ($trade_post === null) {
+            return;
+        }
+        $accounts = $this->tradePostRepository->getByUserLicense($userId);
 
         $trade_post_list = [];
         foreach ($accounts as $key => $obj) {

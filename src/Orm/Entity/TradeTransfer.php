@@ -30,6 +30,12 @@ class TradeTransfer implements TradeTransferInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="TradePost")
+     * @JoinColumn(name="posts_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $tradePost;
+
     public function getId(): int
     {
         return $this->id;
@@ -79,6 +85,18 @@ class TradeTransfer implements TradeTransferInterface
     public function setDate(int $date): TradeTransferInterface
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getTradePost(): TradePostInterface
+    {
+        return $this->tradePost;
+    }
+
+    public function setTradePost(TradePostInterface $tradePost): TradeTransferInterface
+    {
+        $this->tradePost = $tradePost;
 
         return $this;
     }

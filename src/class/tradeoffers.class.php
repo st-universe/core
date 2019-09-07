@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
+use Stu\Orm\Repository\TradePostRepositoryInterface;
 
 class TradeOfferData extends BaseTable {
 
@@ -28,7 +29,10 @@ class TradeOfferData extends BaseTable {
 	}
 
 	public function getTradePost() {
-		return ResourceCache()->getObject('tradepost',$this->getTradePostId());
+		// @todo refactor
+		global $container;
+
+		return $container->get(TradePostRepositoryInterface::class)->find((int) $this->getTradePostId());
 	}
 
 	public function setTradePostId($value) {
