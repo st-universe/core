@@ -5,7 +5,11 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AllianceBoardPostInterface;
 
+/**
+ * @method null|AllianceBoardPostInterface find(integer $id)
+ */
 interface AllianceBoardPostRepositoryInterface extends ObjectRepository
+
 {
     public function getRecentByBoard(int $boardId): ?AllianceBoardPostInterface;
 

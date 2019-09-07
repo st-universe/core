@@ -12,6 +12,7 @@ final class TorpedoTypeRepository extends EntityRepository implements TorpedoTyp
 {
     public function getForUser(int $userId): array
     {
+        /** @noinspection SyntaxError */
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT t FROM %s t INDEX BY t.id WHERE t.research_id IN (
@@ -27,6 +28,7 @@ final class TorpedoTypeRepository extends EntityRepository implements TorpedoTyp
 
     public function getByLevel(int $level): array
     {
+        /** @noinspection SyntaxError */
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT t FROM %s t INDEX BY t.id WHERE t.level = :level',

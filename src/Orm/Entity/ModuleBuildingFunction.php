@@ -55,6 +55,8 @@ class ModuleBuildingFunction implements ModuleBuildingFunctionInterface
     public function setBuildingFunction(int $buildingFunction): ModuleBuildingFunctionInterface
     {
         $this->buildingfunction = $buildingFunction;
+
+        return $this;
     }
 
     public function getModule(): ModuleInterface

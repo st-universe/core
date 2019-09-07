@@ -11,6 +11,8 @@ final class ShipRumpModuleLevelRepository extends EntityRepository implements Sh
 {
     public function getByShipRump(int $shipRumpId): ?ShipRumpModuleLevelInterface
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->findOneBy([
             'rump_id' => $shipRumpId,
         ]);

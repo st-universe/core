@@ -35,6 +35,7 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
 
     public function getByColony(int $colonyId): array
     {
+        /** @noinspection SyntaxError */
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(

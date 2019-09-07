@@ -36,6 +36,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
 
     public function truncateByUser(int $userId): void
     {
+        /** @noinspection SyntaxError */
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -61,6 +62,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
 
     public function getByUserLicenses(int $userId): array
     {
+        /** @noinspection SyntaxError */
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -79,6 +81,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
 
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int
     {
+        /** @noinspection SyntaxError */
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(

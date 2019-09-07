@@ -13,6 +13,7 @@ final class ShipStorageRepository extends EntityRepository implements ShipStorag
 {
     public function getByShip(int $shipId): array
     {
+        /** @noinspection SyntaxError */
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(

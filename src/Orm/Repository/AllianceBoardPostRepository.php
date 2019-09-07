@@ -20,6 +20,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
 
     public function getRecentByTopic(int $topicId): ?AllianceBoardPostInterface
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->findOneBy(
             ['topic_id' => $topicId],
             ['date' => 'desc']
