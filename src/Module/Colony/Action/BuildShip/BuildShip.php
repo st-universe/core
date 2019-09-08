@@ -168,7 +168,7 @@ final class BuildShip implements ActionControllerInterface
             );
             $plan = $this->shipBuildplanRepository->prototype();
             $plan->setUserId($userId);
-            $plan->setRumpId((int) $rump->getId());
+            $plan->setRump($rump);
             $plan->setName($planname);
             $plan->setSignature($signature);
             $plan->setBuildtime($buildtime);
@@ -194,7 +194,7 @@ final class BuildShip implements ActionControllerInterface
         $queue = $this->colonyShipQueueRepository->prototype();
         $queue->setColonyId($colonyId);
         $queue->setUserId($userId);
-        $queue->setRumpId((int) $rump->getId());
+        $queue->setRump($rump);
         $queue->setShipBuildplan($plan);
         $queue->setBuildtime($buildtime);
         $queue->setFinishDate(time() + $buildtime);
