@@ -1,49 +1,28 @@
 <?php
 
-/*
- *
- * Copyright 2010 Daniel Jakob All Rights Reserved
- * This software is the proprietary information of Daniel Jakob
- * Use is subject to license terms
- *
- */
-
-/* $Id:$ */
-
 namespace Stu\Lib\ModuleScreen;
 
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ModuleSelectWrapper
-{ #{{{
+use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
 
-	private $buildplan = null;
+final class ModuleSelectWrapper
+{
+	private $buildplan;
 
-	/**
-	 */
-	function __construct($buildplan)
-	{ #{{{
+	public function __construct(?ShipBuildplanInterface $buildplan)
+	{
 		$this->buildplan = $buildplan;
-	} # }}}
+	}
 
-	/**
-	 */
-	public function __get($type)
-	{ #{{{
-		if (!$this->buildplan) {
-			return false;
+	public function __get($type): ?BuildplanModuleInterface
+	{
+		if ($this->buildplan === null) {
+			return null;
 		}
 		$modules = $this->buildplan->getModulesByType($type);
-		if (!$modules) {
-			return false;
+		if ($modules === []) {
+			return null;
 		}
 		return current($modules);
-	} # }}}
-
-} #}}}
-
-
-?>
+	}
+}

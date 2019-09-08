@@ -9,7 +9,7 @@ use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 
-final class ModuleSelectorWrapper
+final class ModuleSelectorWrapper implements ModuleSelectorWrapperInterface
 {
     private $module;
 
@@ -23,18 +23,18 @@ final class ModuleSelectorWrapper
 
     public function isChosen(): bool
     {
-        $module_id_list = array_map(
-            function (BuildplanModuleInterface $buildplanModule): int {
-                return $buildplanModule->getModuleId();
-            },
-            $this->buildplan->getModulesByType($this->module->getType())
-        );
-        $request = request::postArray('mod_' . $this->module->getType());
-        if ($this->module) {
+        if ($this->buildplan !== null)  {
+            $module_id_list = array_map(
+                function (BuildplanModuleInterface $buildplanModule): int {
+                    return $buildplanModule->getModuleId();
+                },
+                $this->buildplan->getModulesByType($this->module->getType())
+            );
             if (in_array($this->module->getId(), $module_id_list)) {
                 return true;
             }
         }
+        $request = request::postArray('mod_' . $this->module->getType());
         return is_array($request) && array_key_exists($this->module->getId(), $request);
     }
 

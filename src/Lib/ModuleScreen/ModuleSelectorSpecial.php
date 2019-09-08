@@ -2,19 +2,12 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ModuleSelectorSpecial extends \Stu\Lib\ModuleScreen\ModuleSelector
-{ #{{{
+final class ModuleSelectorSpecial extends ModuleSelector
+{
 
-	/**
-	 */
-	public function allowMultiple()
-	{ #{{{
+	public function allowMultiple(): bool
+	{
 		return true;
-	} # }}}
+	}
 
 }

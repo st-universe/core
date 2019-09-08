@@ -12,12 +12,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ModuleSelector
+class ModuleSelector implements ModuleSelectorInterface
 {
 
     private $moduleType;
@@ -29,16 +24,13 @@ class ModuleSelector
     private $colony;
     private $buildplan;
 
-    /**
-     */
-    function __construct(
+    public function __construct(
         $moduleType,
         ColonyData $colony,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
-    )
-    {
+    ) {
         $this->moduleType = $moduleType;
         $this->rump = $rump;
         $this->userId = $userId;
@@ -46,16 +38,12 @@ class ModuleSelector
         $this->buildplan = $buildplan;
     }
 
-    /**
-     */
-    public function allowMultiple()
+    public function allowMultiple(): bool
     {
         return false;
     }
 
-    /**
-     */
-    private function getTemplate()
+    private function getTemplate(): TalPageInterface
     {
         if ($this->template === null) {
             // @todo refactor
@@ -68,83 +56,71 @@ class ModuleSelector
         return $this->template;
     }
 
-    /**
-     */
     public function getMacro(): string
     {
         return $this->macro;
     }
 
-    /**
-     */
-    public function render()
+    public function render(): string
     {
         return $this->getTemplate()->parse(true);
     }
 
-    /**
-     */
-    public function getModuleType()
+    public function getModuleType(): int
     {
         return $this->moduleType;
     }
 
-    /**
-     */
-    public function allowEmptySlot()
+    public function allowEmptySlot(): bool
     {
         return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == 0;
     }
 
-    /**
-     */
-    public function getModuleDescription()
+    public function getModuleDescription(): string
     {
         return ModuleTypeDescriptionMapper::getDescription($this->getModuleType());
     }
 
-    /**
-     */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
 
-    /**
-     */
-    public function getRump()
+    public function getRump(): ShipRumpInterface
     {
         return $this->rump;
     }
 
-    private $modules = null;
+    private $modules;
 
     /**
+     * @return ModuleSelectorWrapper[]
      */
-    public function getAvailableModules()
+    public function getAvailableModules(): array
     {
         // @todo refactor
         global $container;
         if ($this->modules === null) {
+            $this->modules = [];
             if ($this->getModuleType() == MODULE_TYPE_SPECIAL) {
                 $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeAndRump(
-                    (int) $this->getColony()->getId(),
-                    (int) $this->getModuleType(),
-                    (int) $this->getRump()->getId(),
-                    (int) $this->getRump()->getRoleId()
+                    (int)$this->getColony()->getId(),
+                    (int)$this->getModuleType(),
+                    $this->getRump()->getId(),
+                    $this->getRump()->getShipRumpRole()->getId()
                 );
             } else {
                 $mod_level = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
-                    (int) $this->getRump()->getId()
+                    $this->getRump()->getId()
                 );
 
                 $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
                 $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
 
                 $modules = $container->get(ModuleRepositoryInterface::class)->getByTypeAndLevel(
-                    (int) $this->getColony()->getId(),
-                    (int) $this->getModuleType(),
-                    (int) $this->getRump()->getRoleId(),
+                    (int)$this->getColony()->getId(),
+                    (int)$this->getModuleType(),
+                    $this->getRump()->getShipRumpRole()->getId(),
                     range($min_level, $max_level)
                 );
             }
@@ -155,23 +131,17 @@ class ModuleSelector
         return $this->modules;
     }
 
-    /**
-     */
-    public function hasModuleSelected()
+    public function hasModuleSelected(): ModuleSelectWrapper
     {
-        return new ModuleSelectWrapper($this->getBuildplan());
+        return new ModuleSelectWrapper($this->buildplan);
     }
 
-    /**
-     */
-    public function getColony()
+    public function getColony(): ColonyData
     {
         return $this->colony;
     }
 
-    /**
-     */
-    public function getBuildplan()
+    public function getBuildplan(): ?ShipBuildplanInterface
     {
         return $this->buildplan;
     }

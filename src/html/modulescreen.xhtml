@@ -102,14 +102,16 @@
 									</div>
 								</tal:block>
 								<tal:block tal:condition="PLAN" >
-									<div id="module_type_${slot}" tal:condition="not:PLAN/getModule/${slot}" style="display: none;">
+									<div id="module_type_${slot}" tal:condition="not:exists:PLAN/getModule/${slot}" style="display: none;">
 									</div>
-									<div id="module_type_${slot}" tal:condition="PLAN/getModule/${slot}" tal:define="module PLAN/getModule/${slot}">
+								<tal:block tal:condition="exists:PLAN/getModule/${slot}">
+									<div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
 										<metal:macro metal:use-macro="moduleselector_stats_type_${slot}"/>
 										<script type="text/Javascript" tal:condition="module">
 											crew_type.set(${slot},${module/getModule/getLevel});
 										</script>
 									</div>
+								</tal:block>
 								</tal:block>
 							</tal:block>
 						</td>
