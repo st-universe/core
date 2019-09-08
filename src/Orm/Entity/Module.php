@@ -249,6 +249,9 @@ class Module implements ModuleInterface
         return $this->moduleSpecials;
     }
 
+    /**
+     * @return ModuleCostInterface[]
+     */
     public function getCost(): Collection
     {
         return $this->buildingCosts;

@@ -95,8 +95,8 @@ final class CrewCreator implements CrewCreatorInterface
                 $slot = 'getJob' . $i . 'Crew';
             }
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
-                (int)$ship->getRump()->getCategegoryId(),
-                (int)$ship->getRump()->getRoleId()
+                (int)$ship->getRump()->getShipRumpCategory()->getId(),
+                (int)$ship->getRump()->getShipRumpRole()->getId()
             );
             while ($j <= $config->$slot()) {
                 $j++;

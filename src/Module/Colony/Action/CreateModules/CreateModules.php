@@ -76,7 +76,6 @@ final class CreateModules implements ActionControllerInterface
                 continue;
             }
             try {
-                /** @var ModuleCostInterface $cost */
                 foreach ($module->getCost() as $cost) {
                     $commodity = $cost->getCommodity();
                     $commodityId = $commodity->getId();
@@ -86,7 +85,7 @@ final class CreateModules implements ActionControllerInterface
                         $prod[] = sprintf(
                             _('Zur Herstellung von %s wird %s benötigt'),
                             $module->getName(),
-                            $cost->getGood()->getName()
+                            $commodity->getName()
                         );
                         throw new Exception();
                     }
