@@ -146,7 +146,7 @@
 				<tr tal:repeat="module THIS/getAvailableModules" class="runtime" tal:attributes="class string:row${repeat/module/odd}">
 					<td style="width: 3px;" tal:attributes="class php:getModuleLevelClass(rump,module)"></td>
 					<td style="width: 50px;">
-						<input type="radio" tal:attributes="checked module/isChoosen;disabled not:THIS/getColony/hasStorage/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
+						<input type="radio" tal:attributes="checked module/isChosen;disabled not:THIS/getColony/hasStorage/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
 						<img src="assets/goods/${module/getModule/getGoodId}.gif" />
 					</td>
 					<td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
@@ -164,7 +164,7 @@
 			<tal:block tal:condition="THIS/getAvailableModules" tal:repeat="module THIS/getAvailableModules">
 				<tr class="runtime" tal:attributes="class string:row${repeat/module/odd}">
 					<td style="width: 50px;">
-						<input type="checkbox" tal:attributes="checked module/isChoosen;disabled not:THIS/getColony/hasStorage/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value ="${module/getModule/getId}" onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
+						<input type="checkbox" tal:attributes="checked module/isChosen;disabled not:THIS/getColony/hasStorage/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value ="${module/getModule/getId}" onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
 						<img src="assets/goods/${module/getModule/getGoodId}.gif" />
 					</td>
 					<td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>

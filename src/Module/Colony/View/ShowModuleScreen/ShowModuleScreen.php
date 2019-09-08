@@ -9,6 +9,7 @@ use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -51,7 +52,7 @@ final class ShowModuleScreen implements ViewControllerInterface
 
         $moduleScreenTabs = new ModuleScreenTabWrapper;
         for ($i = 1; $i <= MODULE_TYPE_COUNT; $i++) {
-            $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump, false));
+            $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump));
         }
 
         $moduleSelectors = [];
@@ -61,19 +62,28 @@ final class ShowModuleScreen implements ViewControllerInterface
                     $i,
                     $colony,
                     $rump,
-                    $userId,
-                    false
+                    $userId
                 );
             } else {
                 $moduleSelectors[] = new ModuleSelector(
                     $i,
                     $colony,
                     $rump,
-                    $userId,
-                    false
+                    $userId
                 );
             }
         }
+
+        $game->appendNavigationPart(
+            'colony.php',
+            _('Kolonien')
+        );
+        $game->appendNavigationPart(
+            sprintf('?%s=1&id=%s',
+                ShowColony::VIEW_IDENTIFIER,
+                $colony->getId()
+            ),
+            $colony->getNameWithoutMarkup());
 
         $game->appendNavigationPart(
             sprintf(

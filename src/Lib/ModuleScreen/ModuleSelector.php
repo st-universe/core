@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use ColonyData;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 
@@ -15,39 +18,45 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
  * @access public
  */
 class ModuleSelector
-{ #{{{
+{
 
-    private $moduleType = null;
-    private $rump = null;
-    private $userId = 0;
+    private $moduleType;
+    private $rump;
+    private $userId;
     private $macro = 'html/modulescreen.xhtml/moduleselector';
     private $templateFile = 'html/ajaxempty.xhtml';
-    private $template = null;
-    private $colony = null;
-    private $buildplan = null;
+    private $template;
+    private $colony;
+    private $buildplan;
 
     /**
      */
-    function __construct($moduleType, $colony, $rump, $userId, $buildplan = false)
-    { #{{{
+    function __construct(
+        $moduleType,
+        ColonyData $colony,
+        ShipRumpInterface $rump,
+        int $userId,
+        ?ShipBuildplanInterface $buildplan = null
+    )
+    {
         $this->moduleType = $moduleType;
         $this->rump = $rump;
         $this->userId = $userId;
         $this->colony = $colony;
         $this->buildplan = $buildplan;
-    } # }}}
+    }
 
     /**
      */
     public function allowMultiple()
-    { #{{{
+    {
         return false;
-    } # }}}
+    }
 
     /**
      */
     private function getTemplate()
-    { #{{{
+    {
         if ($this->template === null) {
             // @todo refactor
             global $container;
@@ -57,63 +66,63 @@ class ModuleSelector
             $this->template->setVar('THIS', $this);
         }
         return $this->template;
-    } # }}}
+    }
 
     /**
      */
     public function getMacro(): string
-    { #{{{
+    {
         return $this->macro;
-    } # }}}
+    }
 
     /**
      */
     public function render()
-    { #{{{
+    {
         return $this->getTemplate()->parse(true);
-    } # }}}
+    }
 
     /**
      */
     public function getModuleType()
-    { #{{{
+    {
         return $this->moduleType;
-    } # }}}
+    }
 
     /**
      */
     public function allowEmptySlot()
-    { #{{{
+    {
         return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == 0;
-    } # }}}
+    }
 
     /**
      */
     public function getModuleDescription()
-    { #{{{
+    {
         return ModuleTypeDescriptionMapper::getDescription($this->getModuleType());
-    } # }}}
+    }
 
     /**
      */
     public function getUserId()
-    { #{{{
+    {
         return $this->userId;
-    } # }}}
+    }
 
     /**
      */
     public function getRump()
-    { #{{{
+    {
         return $this->rump;
-    } # }}}
+    }
 
     private $modules = null;
 
     /**
      */
     public function getAvailableModules()
-    { #{{{
+    {
         // @todo refactor
         global $container;
         if ($this->modules === null) {
@@ -144,27 +153,27 @@ class ModuleSelector
             }
         }
         return $this->modules;
-    } # }}}
+    }
 
     /**
      */
     public function hasModuleSelected()
-    { #{{{
+    {
         return new ModuleSelectWrapper($this->getBuildplan());
-    } # }}}
+    }
 
     /**
      */
     public function getColony()
-    { #{{{
+    {
         return $this->colony;
-    } # }}}
+    }
 
     /**
      */
     public function getBuildplan()
-    { #{{{
+    {
         return $this->buildplan;
-    } # }}}
+    }
 
 }

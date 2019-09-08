@@ -75,15 +75,12 @@ final class CreateModules implements ActionControllerInterface
             if ($count == 0) {
                 continue;
             }
+            /** @var ModuleCostInterface[] $costs */
+            $costs = $module->getCost();
+
             try {
-                $costs = $module->getCost();
-                /** @var ModuleCostInterface[] $costs */
-
                 foreach ($costs as $cost) {
-
                     $commodity = $cost->getCommodity();
-
-
                     $commodityId = $commodity->getId();
 
                     $stor = $storage[$commodityId] ?? null;
@@ -111,7 +108,7 @@ final class CreateModules implements ActionControllerInterface
             } catch (Exception $e) {
                 continue;
             }
-            foreach ($module->getCost() as $cost) {
+            foreach ($costs as $cost) {
                 $colony->lowerStorage($cost->getCommodity()->getId(), $cost->getAmount() * $count);
             }
             $colony->lowerEps($count * $module->getEcost());
