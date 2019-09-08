@@ -35,7 +35,7 @@ final class ModuleSelectorWrapper
                 return true;
             }
         }
-        return !is_array($request) || !array_key_exists($this->module->getId(), $request);
+        return is_array($request) && array_key_exists($this->module->getId(), $request);
     }
 
     public function getBuildplan(): ?ShipBuildplanInterface
