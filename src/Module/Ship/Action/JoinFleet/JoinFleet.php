@@ -40,7 +40,7 @@ final class JoinFleet implements ActionControllerInterface
         if (!checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
-        if ($fleet->getPointSum() + $ship->getRump()->getCategory()->getPoints() > POINTS_PER_FLEET) {
+        if ($fleet->getPointSum() + $ship->getRump()->getShipRumpCategory()->getPoints() > POINTS_PER_FLEET) {
             $game->addInformation(sprintf(_('Es sind maximal %d Schiffspunkte pro Flotte möglich'), POINTS_PER_FLEET));
             return;
         }
