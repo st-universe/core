@@ -36,7 +36,7 @@ final class ShowRegionInfo implements ViewControllerInterface
         $mapField = $ship->getCurrentMapField();
         $region = $mapField->getMapRegion();
 
-        if (!$mapField->hasRegion()) {
+        if ($region === null) {
             throw new AccessViolation();
         }
         if ($region->getId() != $regionId) {

@@ -37,7 +37,7 @@ class VisualNavPanel
         $range = $this->getShip()->getSensorRange();
 
         if ($this->user->getMapType() == MAPTYPE_INSERT) {
-            DB()->query("INSERT IGNORE INTO stu_user_map (user_id,cx,cy,map_id) SELECT " .$this->user ->getId() . " as user_id,cx,cy,id as map_id FROM stu_map WHERE cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range));
+            DB()->query("INSERT IGNORE INTO stu_user_map (id,user_id,cx,cy,map_id) SELECT uuid()," .$this->user ->getId() . " as user_id,cx,cy,id as map_id FROM stu_map WHERE cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range));
         } else {
             DB()->query("DELETE FROM stu_user_map WHERE user_id=" .$this->user ->getId() . " AND cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range) . "");
         }

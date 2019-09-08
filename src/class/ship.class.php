@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
@@ -1446,8 +1447,13 @@ class ShipData extends BaseTable {
 
 	public function getCurrentMapField() {
 		if ($this->mapfield === NULL) {
+			// @todo refactor
+			global $container;
 			if (!$this->isInSystem()) {
-				$this->mapfield = MapField::getFieldByCoords($this->getCX(),$this->getCY());
+			    $this->mapfield = $container->get(MapRepositoryInterface::class)->getByCoordinates(
+				    (int) $this->getCX(),
+				    (int) $this->getCY()
+			    );
 			} else {
 				// @todo refactor
 				global $container;

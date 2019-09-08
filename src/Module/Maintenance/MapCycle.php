@@ -2,25 +2,28 @@
 
 namespace Stu\Module\Maintenance;
 
-use MapField;
 use Stu\Lib\DbInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use User;
 use UserData;
 
 final class MapCycle implements MaintenanceHandlerInterface
 {
-
     private $db;
 
+    private $mapRepository;
+
     public function __construct(
-        DbInterface $db
+        DbInterface $db,
+        MapRepositoryInterface $mapRepository
     ) {
         $this->db = $db;
+        $this->mapRepository = $mapRepository;
     }
 
     public function handle(): void
     {
-        $fieldcount = MapField::countInstances('WHERE 1=1');
+        $fieldcount = $this->mapRepository->count([]);
         $list = User::getListBy("WHERE maptype=" . MAPTYPE_INSERT);
         foreach ($list as $key => $user) {
             if ($this->db->query("SELECT COUNT(*) FROM stu_user_map WHERE user_id=" . $user->getId()) >= $fieldcount) {

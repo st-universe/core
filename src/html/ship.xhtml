@@ -291,7 +291,7 @@
 							<td>
 								<stu:jsimagelink onclick="showSectorScanWindow()" image="lupe" tal:attributes="description string:Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen" />
 								<br />
-								<stu:jsimagelink tal:condition="SHIP/getCurrentMapField/hasRegion" onclick="showRegionInfo(${SHIP/getCurrentMapField/getMapRegion/getId})" image="info" tal:attributes="description SHIP/getCurrentMapField/getMapRegion/getDescription" />
+								<stu:jsimagelink tal:condition="SHIP/getCurrentMapField/getMapRegion" onclick="showRegionInfo(${SHIP/getCurrentMapField/getMapRegion/getId})" image="info" tal:attributes="description SHIP/getCurrentMapField/getMapRegion/getDescription" />
 								<div tal:condition="SHIP/isBase">
 									<a href="javascript:void(0);" onclick="editDockPrivileges()">Dockrechte</a>
 								</div>

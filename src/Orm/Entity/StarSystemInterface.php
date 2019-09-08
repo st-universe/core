@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use MapFieldData;
-
 interface StarSystemInterface
 {
     public function getId(): int;
@@ -42,7 +40,7 @@ interface StarSystemInterface
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): StarSystemInterface;
 
-    public function getMapField(): MapFieldData;
+    public function getMapField(): MapInterface;
 
     /**
      * @return StarSystemMapInterface[]

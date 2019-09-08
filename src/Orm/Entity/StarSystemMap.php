@@ -98,9 +98,9 @@ class StarSystemMap implements StarSystemMapInterface
         return $this->mapFieldType;
     }
 
-    public function hasRegion(): bool
+    public function getMapRegion(): ?MapRegionInterface
     {
-        return false;
+        return null;
     }
 
     public function getFieldStyle(): string

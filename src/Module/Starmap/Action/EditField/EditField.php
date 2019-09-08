@@ -5,27 +5,30 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Action\EditField;
 
 use AccessViolation;
-use MapField;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Starmap\View\Noop\Noop;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class EditField implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_EDIT_FIELD';
 
     private $editFieldRequest;
 
     private $mapFieldTypeRepository;
 
+    private $mapRepository;
+
     public function __construct(
         EditFieldRequestInterface $editFieldRequest,
-        MapFieldTypeRepositoryInterface $mapFieldTypeRepository
+        MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
+        MapRepositoryInterface $mapRepository
     ) {
         $this->editFieldRequest = $editFieldRequest;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
+        $this->mapRepository = $mapRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,10 +36,16 @@ final class EditField implements ActionControllerInterface
         if (!$game->isAdmin()) {
             throw new AccessViolation();
         }
-        $selectedField = new MapField($this->editFieldRequest->getFieldId());
+        $selectedField = $this->mapRepository->find($this->editFieldRequest->getFieldId());
+
+        if ($selectedField === null) {
+            return;
+        }
+
         $type = $this->mapFieldTypeRepository->find($this->editFieldRequest->getFieldType());
         $selectedField->setFieldId($type->getId());
-        $selectedField->save();
+
+        $this->mapRepository->save($selectedField);
 
         $game->setView(Noop::VIEW_IDENTIFIER);
     }

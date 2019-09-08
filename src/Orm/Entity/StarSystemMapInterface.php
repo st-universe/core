@@ -24,7 +24,7 @@ interface StarSystemMapInterface
 
     public function getFieldType(): MapFieldTypeInterface;
 
-    public function hasRegion(): bool;
+    public function getMapRegion(): ?MapRegionInterface;
 
     public function getFieldStyle(): string;
 }

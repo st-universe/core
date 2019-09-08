@@ -36,6 +36,7 @@ use Stu\Orm\Entity\History;
 use Stu\Orm\Entity\IgnoreList;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnPost;
+use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapBorderType;
 use Stu\Orm\Entity\MapFieldType;
 use Stu\Orm\Entity\MapRegion;
@@ -250,6 +251,11 @@ return [
         ContainerInterface $c
     ): MapRegionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(MapRegion::class);
+    },
+    MapRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): MapRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Map::class);
     },
     ModuleBuildingFunctionRepositoryInterface::class => function (
         ContainerInterface $c

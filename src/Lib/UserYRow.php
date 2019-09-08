@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Stu\Module\Starmap\Lib\ExploreableStarMap;
+use Stu\Orm\Repository\MapRepositoryInterface;
+
 class UserYRow extends YRow
 {
     private $user;
@@ -15,7 +18,27 @@ class UserYRow extends YRow
     function getFields()
     {
         if ($this->fields === null) {
-            $this->fields = MapField::getUserFieldsByRange($this->user, $this->minx, $this->maxx, $this->row);
+            // @todo refactor
+            global $container;
+
+            $this->fields = [];
+
+            $result = $container->get(MapRepositoryInterface::class)->getExplored($this->user->getId(), (int) $this->minx, (int) $this->maxx, (int) $this->row);
+            $mapType = currentUser()->getMapType();
+
+            /** @var ExploreableStarMap $item */
+            foreach ($result as $item) {
+                if ($mapType == MAPTYPE_INSERT) {
+                    if ($item->getUserId() === null) {
+                        $item->setHide(true);
+                    }
+                } else {
+                    if ($item->getUserId() !== null) {
+                        $item->setHide(true);
+                    }
+                }
+                $this->fields[$item->getCx()] = $item;
+            }
         }
         return $this->fields;
     }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use MapField;
-use MapFieldData;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 /**
@@ -166,9 +165,12 @@ class StarSystem implements StarSystemInterface
         return $this;
     }
 
-    public function getMapField(): MapFieldData
+    public function getMapField(): MapInterface
     {
-        return MapField::getFieldByCoords($this->getCx(), $this->getCy());
+        // @todo refactor
+        global $container;
+
+        return $container->get(MapRepositoryInterface::class)->getByCoordinates($this->getCx(), $this->getCy());
     }
 
     public function getFields(): array

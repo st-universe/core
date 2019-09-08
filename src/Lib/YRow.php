@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class YRow
@@ -25,8 +26,12 @@ class YRow
     function getFields()
     {
         if ($this->fields === null) {
+            // @todo refactor
+            global $container;
+
+            $mapRepository = $container->get(MapRepositoryInterface::class);
             for ($i = $this->minx; $i <= $this->maxx; $i++) {
-                $this->fields[] = MapField::getFieldByCoords($i, $this->row);
+                $this->fields[] = $mapRepository->getByCoordinates((int) $i, (int) $this->row);
             }
         }
         return $this->fields;
