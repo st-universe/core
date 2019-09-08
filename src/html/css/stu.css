@@ -586,7 +586,7 @@ a.tradebutton:hover {
 }
 
 table.tcal tr:nth-child(odd) td {
-    background-color: #161515 ! important;
+    background-color: #161515;
 }
 
 table.population td {
@@ -655,6 +655,7 @@ table.crew_6 {
 }
 
 td.module_select_base {
+    height: 40px;
     width: 20%;
     cursor: pointer;
 }
@@ -691,7 +692,7 @@ img.center {
 }
 
 .module_positive {
-    background-color: #383838 ! important;
+    background-color: #003806 ! important;
 }
 
 .module_negative {
@@ -999,4 +1000,8 @@ div.planetSurfaceTiles {
 div.moonSurfaceTiles {
     display: grid;
     grid-template-columns: 43px 43px 43px 43px 43px 43px 43px;
+}
+div.moduleScreenGrid {
+    display: grid;
+    grid-template-columns: auto 300px;
 }

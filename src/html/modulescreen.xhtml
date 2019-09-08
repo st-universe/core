@@ -8,94 +8,72 @@
 			<stu:hidden name="rump" tal:attributes="value RUMP/getId" />
 			<stu:hidden name="SHOW_MODULE_SCREEN" value="1" />
 			<stu:hidden name="module_level" tal:attributes="value RUMP/getModuleLevel" />
-			<table style="width: 100%">
-				<tr>
-					<td style="width: 70%">
-						<table class="tcal">
+			<div class="moduleScreenGrid">
+				<div>
+					<stu:box title="Modulauswahl" i18n:attributes="title" style="margin: 0; padding: 0">
+						<table class="tcal" id="module_select_tabs">
 							<tr>
-								<th i18n:translate="">Rumpf</th>
-								<th i18n:translate="">Klasse</th>
-								<th i18n:translate="">Typ</th>
-								<th i18n:translate="">Rolle</th>
-								<th i18n:translate="">Lagerraum</th>
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:1" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:2" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:6" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:4" />
+								<td></td>
 							</tr>
 							<tr>
-								<td rowspan="3" style="text-align: center; vertical-align: middle">
-									<img src="assets/ships/${RUMP/getId}.gif" />
-								</td>
-								<td tal:content="RUMP/getName"></td>
-								<td tal:content="RUMP/getShipRumpCategory/getName">.</td>
-								<td tal:content="RUMP/getShipRumpRole/getName">.</td>
-								<td tal:content="RUMP/getStorage">STORAGE</td>
-							</tr>
-							<tr>
-								<th i18n:translate="">Sensorreichweite</th>
-								<th i18n:translate="">Torpedotyp</th>
-								<th i18n:translate="">Torpedosalven</th>
-								<th i18n:translate="">Torpedokapazität</th>
-							</tr>
-							<tr>
-								<td tal:content="RUMP/getBaseSensorRange">SENSORRANGE</td>
-								<td tal:content="RUMP/getTorpedoLevel">.</td>
-								<td tal:content="RUMP/getTorpedoVolleys">.</td>
-								<td tal:content="RUMP/getBaseTorpedoStorage">TORPEDOSTORAGE</td>
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:5" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:3" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:7" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:8" />
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:9" />
 							</tr>
 						</table>
-					</td>
-					<td style="width: 30%; text-align: right">
-						<div style="width: 300px; display: inline-block">
-							<div class="divhead" style="text-align: center" i18n:translate="">Baufauftrag</div>
-							<div class="divbody">
-								<div style="width: 100%; text-align: center">
-									<div id="crewdisplay">
-										<div id="crew100p" i18n:translate="">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew100P" />(100%)</div>
-										<div id="crew110p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew110P" />(110%)</div>
-										<div id="crew120p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew120P" />(120%)</div>
-										<div id="crewerr" style="display: none;" i18n:translate="">Crewbedarf &gt; 120% - Nicht baubar</div>
-									</div>
-								</div>
-								<br />
-								<div style="text-align: center; width: 100%;">
-									<input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" i18n:attributes="value" id="buildbutton" disabled="disabled" />
-								</div>
-								<br />
+                        <br />
+						<tal:block tal:repeat="selector MODULE_SELECTORS">
+							<div id="module_select_tab_${selector/getModuleType}" style="display: none;" tal:content="structure selector/render">CONTENT</div>
+						</tal:block>
+						<div id="module_select_tab_0">
+						</div>
+					</stu:box>
+				</div>
+				<div style="margin-left: 10px">
+					<stu:box tal:attributes="title RUMP/getName">
+						<div class="center">
+							<img src="assets/ships/${RUMP/getId}.gif" />
+						</div>
+						<br />
+						<div style="text-align: center; width: 100%;">
+							<input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" i18n:attributes="value" id="buildbutton" disabled="disabled" />
+						</div>
+					</stu:box>
+					<br />
+					<stu:box title="Beschreibung" i18n:attributes="title">
+						<div>
+							<div i18n:translate="">
+								Die <span i18n:name="rumpname" tal:replace="RUMP/getName">RUMPNAME</span>-Klasse ist vom Typ <span tal:replace="RUMP/getShipRumpCategory/getName" i18n:name="rumpcategory"></span> und dient in erster Linie als
+								<span i18n:name="rumprolename" tal:replace="RUMP/getShipRumpRole/getName"></span>.
 							</div>
 						</div>
-					
-					</td>
-				</tr>
-			</table>
-			<br />
-			<table class="tcal" id="module_select_tabs">
-				<tr>
-					<td colspan="5" id="module_select_base" class="module_select_base module_select_base_selected" onclick="showModuleSelectTab(this,0);">
-						<img src="assets/buttons/info1.gif" />
-						<span i18n:translate="">Zusammenfassung</span>
-					</td>
-				</tr>
-				<tr>
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:1" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:2" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:6" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:4" />
-					<td></td>
-				</tr>
-				<tr>
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:5" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:3" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:7" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:8" />
-					<metal:macro metal:use-macro="html/colonymacros.xhtml/module_select_tab" tal:define="moduleType string:9" />
-				</tr>
-			</table>
-			<br />
-			<div id="module_select_tab_0">
-				<table class="tcal">
-					<tr>
-						<th i18n:translate="">Zusammenfassung</th>
-					</tr>
-					<tr>
-						<td tal:define="rump RUMP">
+						<br />
+						<div>
+							<div i18n:translate="">Frachtkapazität: <span i18n:name="torage" tal:content="RUMP/getStorage"></span> Einheiten</div>
+							<div i18n:translate="">Sensorreichweite: <span i18n:name="sensorrange" tal:content="RUMP/getBaseSensorRange"></span> Felder</div>
+							<div i18n:translate="">Torpedotyp: <span i18n:name="torpedotype" tal:content="RUMP/getTorpedoLevel"></span></div>
+							<div i18n:translate="">Torpedosalven: <span i18n:name="torpedovolleys" tal:content="RUMP/getTorpedoVolleys"></span> pro Schuss</div>
+							<div i18n:translate="">Torpedokapazität: <span i18n:name="torpedocapacity" tal:content="RUMP/getBaseTorpedoStorage"></span> Projektile</div>
+						</div>
+					</stu:box>
+					<br />
+                    <stu:box title="Modulauswirkungen" i18n:attributes="title">
+						<div style="width: 100%;">
+							<div id="crewdisplay">
+								<div id="crew100p" i18n:translate="">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew100P" />(100%)</div>
+								<div id="crew110p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew110P" />(110%)</div>
+								<div id="crew120p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew120P" />(120%)</div>
+								<div id="crewerr" style="display: none;" i18n:translate="">Crewbedarf &gt; 120% - Nicht baubar</div>
+							</div>
+						</div>
+						<br />
+						<div tal:define="rump RUMP">
 							<tal:block tal:repeat="slot MODULE_SLOTS">
 								<tal:block tal:condition="not:PLAN">
 									<div id="module_type_${slot}">
@@ -104,34 +82,38 @@
 								<tal:block tal:condition="PLAN" >
 									<div id="module_type_${slot}" tal:condition="not:exists:PLAN/getModule/${slot}" style="display: none;">
 									</div>
-								<tal:block tal:condition="exists:PLAN/getModule/${slot}">
-									<div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
-										<metal:macro metal:use-macro="moduleselector_stats_type_${slot}"/>
-										<script type="text/Javascript" tal:condition="module">
+									<tal:block tal:condition="exists:PLAN/getModule/${slot}">
+										<div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
+											<metal:macro metal:use-macro="html/modulescreen.xhtml/moduleselector_stats_type_${slot}" />
+											<script type="text/Javascript" tal:condition="module">
 											crew_type.set(${slot},${module/getModule/getLevel});
 										</script>
-									</div>
-								</tal:block>
+										</div>
+									</tal:block>
 								</tal:block>
 							</tal:block>
-						</td>
-					</tr>
-				</table>
+						</div>
+					</stu:box>
+					<br/>
+					<stu:box title="Baukosten">
+						<div>
+							<img src="assets/goods/0.gif" /> ${RUMP/getEpsCost} <span i18n:translate="">Energie</span>
+						</div>
+						<div tal:repeat="cost RUMP/getBuildingCosts">
+							<img src="assets/goods/${cost/getCommodity/getId}.gif" i18n:attributes="title cost/getCommodity/getName" /> ${cost/getAmount}
+						</div>
+						<div>
+							<img src="assets/buttons/time.gif" title="Bauzeit" i18n:attributes="title" /> <span tal:content="formatSeconds:RUMP/getBuildtime"></span>
+						</div>
+					</stu:box>
+				</div>
 			</div>
-			<tal:block tal:repeat="selector MODULE_SELECTORS">
-				<div id="module_select_tab_${selector/getModuleType}" style="display: none;" tal:content="structure selector/render">CONTENT</div>
-			</tal:block>
 			<script type="text/javascript" defer="defer" tal:condition="PLAN">
 				enableShipBuildButton();
 			</script>
 		</form>
 	</metal:macro>
 	<metal:macro metal:define-macro="moduleselector">
-		<table class="tcal">
-			<tr>
-				<th tal:content="THIS/getModuleDescription">MODULE</th>
-			</tr>
-		</table>
 		<table class="tcal" tal:define="rump THIS/getRump" tal:condition="not:THIS/allowMultiple">
 			<stu:hidden name="module_level_${THIS/getModuleType}" tal:attributes="value THIS/getRump/getModuleLevels/getModuleLevel${THIS/getModuleType}" />
 			<tal:block tal:condition="THIS/getAvailableModules">
@@ -145,7 +127,7 @@
 						</script>
 					</td>
 				</tr>
-				<tr tal:repeat="module THIS/getAvailableModules" class="runtime" tal:attributes="class string:row${repeat/module/odd}">
+				<tr tal:repeat="module THIS/getAvailableModules" class="runtime">
 					<td style="width: 3px;" tal:attributes="class php:getModuleLevelClass(rump,module)"></td>
 					<td style="width: 50px;">
 						<input type="radio" tal:attributes="checked module/isChosen;disabled not:THIS/getColony/hasStorage/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
@@ -164,7 +146,7 @@
 		</table>
 		<table class="tcal" tal:define="rump THIS/getRump" tal:condition="THIS/allowMultiple">
 			<tal:block tal:condition="THIS/getAvailableModules" tal:repeat="module THIS/getAvailableModules">
-				<tr class="runtime" tal:attributes="class string:row${repeat/module/odd}">
+				<tr>
 					<td style="width: 50px;">
 						<input type="checkbox" tal:attributes="checked module/isChosen;disabled not:THIS/getColony/hasStorage/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value ="${module/getModule/getId}" onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
 						<img src="assets/goods/${module/getModule/getGoodId}.gif" />

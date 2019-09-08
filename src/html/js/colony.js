@@ -240,7 +240,6 @@ function replaceTabImage(type,moduleId,goodId,module_level) {
 		$('module_type_'+type).show();
 		updateCrewCount(type,module_level);
 	}
-	new Effect.Highlight($('module_select_base'));
 	enableShipBuildButton();
 }
 function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
@@ -256,7 +255,6 @@ function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
 			}
 		});
 	}
-	new Effect.Highlight($('module_select_base'));
 }
 var crew_type = new Hash();
 function updateCrewCount(type,module_level) {
