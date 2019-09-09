@@ -51,6 +51,7 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateVar('ALLIANCE', $user->getAlliance());
             $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
             $game->setTemplateVar('DESCRIPTION', $description);
+            $game->setTemplateVar('IS_IN_ALLIANCE', $alliance->getId() == $user->getAllianceId());
 
             $game->appendNavigationPart(
                 'alliance.php',

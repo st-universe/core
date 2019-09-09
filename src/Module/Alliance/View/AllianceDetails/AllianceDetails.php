@@ -54,6 +54,7 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
         $game->setTemplateVar('DESCRIPTION', $description);
+        $game->setTemplateVar('IS_IN_ALLIANCE', $alliance->getId() == $game->getUser()->getAllianceId());
 
         if ($game->getUser()->getAllianceId() > 0) {
             $game->appendNavigationPart(
