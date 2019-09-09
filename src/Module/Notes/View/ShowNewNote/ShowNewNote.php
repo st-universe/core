@@ -37,7 +37,7 @@ final class ShowNewNote implements ViewControllerInterface
                 'notes.php?%s=1',
                 static::VIEW_IDENTIFIER
             ),
-            $note->getTitle()
+            _('Neue Notiz')
         );
         $game->showMacro('html/notes.xhtml/note');
         $game->setTemplateVar('NOTE', $note);
