@@ -179,14 +179,6 @@ class Fleet extends FleetData {
 		return $ret; 
 	}
 
-	static public function getRandomShipById(&$fleetId) {
-		$result = DB()->query("SELECT * FROM stu_ships WHERE fleets_id=".$fleetId." ORDER BY RAND() LIMIT 1",4);
-		if ($result == 0) {
-			return FALSE;
-		}
-		return new ShipData($result);
-	}
-
 	static function getFleetsByUser(&$user_id) {
 		$ret = array();
 		$result = DB()->query("SELECT * FROM stu_fleets WHERE user_id=".$user_id);

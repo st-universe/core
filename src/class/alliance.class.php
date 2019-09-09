@@ -88,10 +88,6 @@ class AllianceData extends BaseTable {
 		$this->addUpdateField('date','getDate');
 	}
 
-	function isInAlliance() {
-		return array_key_exists(currentUser()->getId(),$this->getMembers());
-	}
-
 	private $founder = NULL;
 
 	function getFounder() {
@@ -160,13 +156,6 @@ class AllianceData extends BaseTable {
 		$obj->setUserId($userId);
 		$obj->save();
 		$this->diplomatic = $obj;
-	}
-
-	function delDiplomatic() {
-		$obj = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_DIPLOMATIC);
-		if ($obj) {
-			$obj->deleteFromDatabase();
-		}
 	}
 
 	private $members = NULL;

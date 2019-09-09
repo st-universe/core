@@ -790,13 +790,13 @@ class ColonyData extends BaseTable {
 	} # }}}
 
 	public function getProductionPreview() {
-		return new ColonyProductionPreviewWrapper($this->getProduction());
+		return new \Stu\Lib\ColonyProductionPreviewWrapper($this->getProduction());
 	}
 
 	/**
 	 */
 	public function getEpsProductionPreview() { #{{{
-		return new ColonyEpsProductionPreviewWrapper($this);
+		return new \Stu\Lib\ColonyEpsProductionPreviewWrapper($this);
 		
 	} # }}}
 
@@ -892,119 +892,4 @@ class Colony extends ColonyData {
 		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$sql,1);
 	} # }}}
 
-}
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ColonyProductionPreviewWrapper { #{{{
-
-	private $production = NULL;
-
-	/**
-	 */
-	function __construct(&$production) { #{{{
-		$this->production = $production;
-	} # }}}
-
-	/**
-	 */
-	function __get($buildingId) { #{{{
-		return $this->getPreview($buildingId);
-	} # }}}
-
-	/**
-	 */
-	private function getPreview($buildingId) { #{{{
-		// @todo refactor
-		global $container;
-
-		$bgoods = $container->get(BuildingGoodRepositoryInterface::class)->getByBuilding((int) $buildingId);
-		$ret = array();
-		foreach ($bgoods as $commodityId => $prod) {
-			$commodityId = $prod->getGoodId();
-			if (array_key_exists($commodityId,$this->production)) {
-				$ret[$commodityId] = clone $this->production[$commodityId];
-				$ret[$commodityId]->upperProduction($prod->getAmount());
-			} else {
-				$obj = new ColonyProduction;
-				$obj->setGoodId($commodityId);
-				$obj->setProduction($prod->getAmount());
-				$ret[$commodityId] = $obj;
-			}
-			$ret[$commodityId]->setPreviewProduction($prod->getAmount());
-		}
-		return $ret;
-	} # }}}
-
 } #}}}
-
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ColonyEpsProductionPreviewWrapper { #{{{
-
-	private $colony = NULL;
-
-	/**
-	 */
-	function __construct(&$colony) { #{{{
-		$this->colony = $colony;
-	} # }}}
-
-	private $buildingId = NULL;
-
-	private $wrappers = array();
-
-	/**
-	 */
-	function __get($buildingId) { #{{{
-		$this->buildingId = $buildingId;
-		if (isset($this->wrappers[$buildingId])) {
-			return $this->wrappers[$buildingId];
-		}
-		$this->wrappers[$buildingId] = $this;
-		return $this->wrappers[$buildingId];
-	} # }}}
-
-	/**
-	 */
-	public function getBuildingId() { #{{{
-		return $this->buildingId;
-	} # }}}
-
-	private $production = array();
-
-	/**
-	 */
-	private function getPreview() { #{{{
-		if (!isset($this->production[$this->getBuildingId()])) {
-			$building = new Building($this->buildingId);
-			$this->production[$this->getBuildingId()] = $this->colony->getEpsProduction()+$building->getEpsProduction();
-		}
-		return $this->production[$this->getBuildingId()];
-	} # }}}
-	
-	/**
-	 */
-	public function getDisplay() { #{{{
-		if ($this->getPreview()) {
-			return '+'.$this->getPreview();
-		}
-		return $this->getPreview();
-	} # }}}
-
-	public function getCSS() {
-		if ($this->getPreview() > 0) {
-			return 'positive';
-		}
-		if ($this->getPreview() < 0) {
-			return 'negative';
-		}
-	}
-} #}}}
-
-?>
