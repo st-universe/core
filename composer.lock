@@ -1545,29 +1545,31 @@
         },
         {
             "name": "scn/phptal",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SC-Networks/PHPTAL.git",
-                "reference": "0ed4304cde710246f8368a83f3e80ddc15b0f804"
+                "reference": "b9d75d420b4b47cbc8d609cb5340bbfc421a1b99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SC-Networks/PHPTAL/zipball/0ed4304cde710246f8368a83f3e80ddc15b0f804",
-                "reference": "0ed4304cde710246f8368a83f3e80ddc15b0f804",
+                "url": "https://api.github.com/repos/SC-Networks/PHPTAL/zipball/b9d75d420b4b47cbc8d609cb5340bbfc421a1b99",
+                "reference": "b9d75d420b4b47cbc8d609cb5340bbfc421a1b99",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2",
+                "symfony/polyfill-mbstring": "^1.12"
             },
             "require-dev": {
                 "php": "^7.2",
                 "phpdocumentor/phpdocumentor": "^2",
-                "phpunit/phpunit": "^7.0",
+                "phpunit/phpunit": "^8.0",
                 "squizlabs/php_codesniffer": "^3.2"
             },
             "suggest": {
                 "ext-gettext": "Php gettext extension for i18n support",
+                "ext-mbstring": "Multibyte support is important for any non-english strings",
                 "scn/phptal-lint": "Linter for phptal template files"
             },
             "type": "library",
@@ -1585,6 +1587,14 @@
             ],
             "authors": [
                 {
+                    "name": "Daniel Jakob",
+                    "homepage": "https://www.sc-networks.com"
+                },
+                {
+                    "name": "Marcus Schwarz",
+                    "homepage": "https://www.sc-networks.com"
+                },
+                {
                     "name": "Laurent Bédubourg",
                     "email": "lbedubourg@motion-twin.com",
                     "homepage": "http://labe.me"
@@ -1593,14 +1603,6 @@
                     "name": "Kornel Lesiński",
                     "email": "kornel@geekhood.net",
                     "homepage": "http://pornel.net/"
-                },
-                {
-                    "name": "Daniel Jakob",
-                    "homepage": "https://www.sc-networks.com"
-                },
-                {
-                    "name": "Marcus Schwarz",
-                    "homepage": "https://www.sc-networks.com"
                 }
             ],
             "description": "PHPTAL is a templating engine for PHP that implements Zope Page Templates syntax",
@@ -1610,7 +1612,7 @@
                 "template engine",
                 "zope"
             ],
-            "time": "2019-04-05T10:06:23+00:00"
+            "time": "2019-09-09T08:57:35+00:00"
         },
         {
             "name": "symfony/console",
@@ -4689,12 +4691,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "bb30a55bb13dbc72313a3b4c954e986db7d243da"
+                "reference": "afa74ea159bafe0f67ec0cadc4a538b684a5432c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/bb30a55bb13dbc72313a3b4c954e986db7d243da",
-                "reference": "bb30a55bb13dbc72313a3b4c954e986db7d243da",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/afa74ea159bafe0f67ec0cadc4a538b684a5432c",
+                "reference": "afa74ea159bafe0f67ec0cadc4a538b684a5432c",
                 "shasum": ""
             },
             "type": "library",
@@ -4706,7 +4708,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-09-06T11:43:08+00:00"
+            "time": "2019-09-06T21:25:25+00:00"
         },
         {
             "name": "webmozart/assert",
