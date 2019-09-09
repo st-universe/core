@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Lib\ContactlistWrapper;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\CrewRepository;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -231,8 +232,16 @@ class UserData extends BaseTable {
 			if ($this->getAllianceId() == $user->getAllianceId()) {
 				return TRUE;
 			}
-			if ($this->getAlliance()->hasFriendlyRelation($user->getAllianceId())) {
-				return TRUE;
+			// @todo refactor
+			global $container;
+
+			$result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
+				[ALLIANCE_RELATION_FRIENDS, ALLIANCE_RELATION_ALLIED],
+				(int) $user->getAllianceId,
+				(int) $this->getAllianceId()
+			);
+			if ($result !== []) {
+				return true;
 			}
 		}
 		if (Contactlist::isFriendlyContact($this->getId(),$userId)) {

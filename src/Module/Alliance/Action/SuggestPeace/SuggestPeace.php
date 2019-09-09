@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\SuggestPeace;
 
 use AccessViolation;
-use AllianceRelation;
-use AllianceRelationData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class SuggestPeace implements ActionControllerInterface
 {
@@ -16,35 +15,34 @@ final class SuggestPeace implements ActionControllerInterface
 
     private $suggestPeaceRequest;
 
+    private $allianceRelationRepository;
+
     public function __construct(
-        SuggestPeaceRequestInterface $suggestPeaceRequest
+        SuggestPeaceRequestInterface $suggestPeaceRequest,
+        AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->suggestPeaceRequest = $suggestPeaceRequest;
+        $this->allianceRelationRepository = $allianceRelationRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $relation = AllianceRelation::getById($this->suggestPeaceRequest->getRelationId());
+        $relation = $this->allianceRelationRepository->find($this->suggestPeaceRequest->getRelationId());
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$alliance->currentUserIsDiplomatic()) {
+        if ($relation === null || !$alliance->currentUserIsDiplomatic()) {
             throw new AccessViolation();
         }
 
-        $allianceId = $alliance->getId();
-        $opponentId = $relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();
+        $allianceId = (int) $alliance->getId();
+        $opponentId = (int) ($relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId());
 
-        $rel = AllianceRelation::getBy(
-            sprintf(
-                'type = %d AND ((alliance_id = %d AND recipient = %d) OR (alliance_id = %d AND recipient = %d))',
-                ALLIANCE_RELATION_PEACE,
-                $allianceId,
-                $opponentId,
-                $opponentId,
-                $allianceId
-            )
+        $rel = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
+            [ALLIANCE_RELATION_PEACE],
+            $allianceId,
+            $opponentId
         );
-        if ($rel > 0) {
+        if ($rel !== null) {
             $game->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
             return;
         }
@@ -55,11 +53,12 @@ final class SuggestPeace implements ActionControllerInterface
             return;
         }
 
-        $obj = new AllianceRelationData();
+        $obj = $this->allianceRelationRepository->prototype();
         $obj->setAllianceId($allianceId);
         $obj->setRecipientId($opponentId);
         $obj->setType(ALLIANCE_RELATION_PEACE);
-        $obj->save();
+
+        $this->allianceRelationRepository->save($obj);
 
         $text = sprintf(
             _('Die Allianz %s hat Deiner Allianz ein Friedensabkommen angeboten'),

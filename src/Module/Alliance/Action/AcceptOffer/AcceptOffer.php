@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use AccessViolation;
-use AllianceRelation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class AcceptOffer implements ActionControllerInterface
 {
@@ -18,12 +18,16 @@ final class AcceptOffer implements ActionControllerInterface
 
     private $entryCreator;
 
+    private $allianceRelationRepository;
+
     public function __construct(
         AcceptOfferRequestInterface $acceptOfferRequest,
-        EntryCreatorInterface $entryCreator
+        EntryCreatorInterface $entryCreator,
+        AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->acceptOfferRequest = $acceptOfferRequest;
         $this->entryCreator = $entryCreator;
+        $this->allianceRelationRepository = $allianceRelationRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,32 +37,25 @@ final class AcceptOffer implements ActionControllerInterface
         $userId = $user->getId();
         $allianceId = $alliance->getId();
 
-        $relation = AllianceRelation::getById($this->acceptOfferRequest->getRelationId());
+        $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
 
         if (!$alliance->currentUserIsDiplomatic()) {
             throw new AccessViolation();
         }
 
-        if (!$relation || $relation->getRecipientId() != $allianceId) {
+        if ($relation === null || $relation->getRecipientId() != $allianceId) {
             return;
         }
         if (!$relation->isPending()) {
             return;
         }
-        $rel = AllianceRelation::getBy(
-            sprintf(
-                'date > 0 AND ((alliance_id = %d AND recipient = %d) OR (alliance_id = %d AND recipient = %d))',
-                $relation->getAllianceId(),
-                $relation->getRecipientId(),
-                $relation->getRecipientId(),
-                $relation->getAllianceId()
-            )
-        );
+        $rel = $this->allianceRelationRepository->getActiveByAlliancePair($relation->getAllianceId(), $relation->getRecipientId());
         if ($rel) {
-            $rel->deleteFromDatabase();
+            $this->allianceRelationRepository->delete($rel);
         }
         $relation->setDate(time());
-        $relation->save();
+
+        $this->allianceRelationRepository->save($relation);
 
         $text = sprintf(
             _("%s abgeschlossen!\nDie Allianz %s hat hat das Angebot angenommen"),

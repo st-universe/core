@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
 use AccessViolation;
-use AllianceRelation;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CancelOffer implements ActionControllerInterface
 {
@@ -16,10 +16,14 @@ final class CancelOffer implements ActionControllerInterface
 
     private $cancelOfferRequest;
 
+    private $allianceRelationRepository;
+
     public function __construct(
-        CancelOfferRequestInterface $cancelOfferRequest
+        CancelOfferRequestInterface $cancelOfferRequest,
+        AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->cancelOfferRequest = $cancelOfferRequest;
+        $this->allianceRelationRepository = $allianceRelationRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -27,20 +31,20 @@ final class CancelOffer implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
         $allianceId = $alliance->getId();
 
-        $relation = AllianceRelation::getById($this->cancelOfferRequest->getRelationId());
+        $relation = $this->allianceRelationRepository->find($this->cancelOfferRequest->getRelationId());
 
         if (!$alliance->currentUserIsDiplomatic()) {
             throw new AccessViolation();
         }
 
-        if (!$relation || $relation->getAllianceId() != $allianceId) {
+        if ($relation === null || $relation->getAllianceId() != $allianceId) {
             return;
         }
         if (!$relation->isPending()) {
             return;
         }
 
-        $relation->deleteFromDatabase();
+        $this->allianceRelationRepository->delete($relation);
 
         $text = sprintf(_('Die Allianz %s hat das Angebot zurückgezogen'), $alliance->getNameWithoutMarkup());
 

@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
+use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingFunction;
@@ -101,6 +102,11 @@ return [
         ContainerInterface $c
     ): AllianceBoardTopicRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class);
+    },
+    AllianceRelationRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AllianceRelationRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class);
     },
     BuildingCostRepositoryInterface::class => function (
         ContainerInterface $c

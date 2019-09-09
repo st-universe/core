@@ -6,11 +6,10 @@ namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use AccessViolation;
 use Alliance;
-use AllianceRelation;
-use AllianceRelationData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
@@ -20,18 +19,22 @@ final class CreateRelation implements ActionControllerInterface
 
     private $entryCreator;
 
+    private $allianceRelationRepository;
+
     public function __construct(
         CreateRelationRequestInterface $createRelationRequest,
-        EntryCreatorInterface $entryCreator
+        EntryCreatorInterface $entryCreator,
+        AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->createRelationRequest = $createRelationRequest;
         $this->entryCreator = $entryCreator;
+        $this->allianceRelationRepository = $allianceRelationRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $allianceId = $alliance->getId();
+        $allianceId = (int) $alliance->getId();
         $userId = $game->getUser()->getId();
 
         if (!$alliance->currentUserIsDiplomatic()) {
@@ -43,36 +46,27 @@ final class CreateRelation implements ActionControllerInterface
 
         $opp = new Alliance($opponentId);
 
-        if (!AllianceRelation::isValidRelationType($typeId)) {
+        $types = [
+            ALLIANCE_RELATION_WAR => 1,
+            ALLIANCE_RELATION_PEACE => 1,
+            ALLIANCE_RELATION_FRIENDS => 1,
+            ALLIANCE_RELATION_ALLIED => 1
+        ];
+
+        if (!array_key_exists($typeId, $types)) {
             return;
         }
         if ($alliance->getId() == $opp->getId()) {
             return;
         }
-        $cnt = AllianceRelation::countInstances(
-            sprintf(
-                'date = 0 AND ((alliance_id = %d AND recipient = %d) OR (alliance_id = %d AND recipient = %d))',
-                $allianceId,
-                $opponentId,
-                $opponentId,
-                $allianceId
-            )
-        );
+        $cnt = $this->allianceRelationRepository->getPendingCountByAlliances($allianceId, $opponentId);
         if ($cnt >= 2) {
             $game->addInformation(_('Es gibt bereits ein Angebot für diese Allianz'));
             return;
         }
 
-        $rel = AllianceRelation::getBy(
-            sprintf(
-                '(alliance_id = %d AND recipient = %d) OR (alliance_id = %d AND recipient = %d)',
-                $allianceId,
-                $opponentId,
-                $opponentId,
-                $allianceId
-            )
-        );
-        if ($rel) {
+        $rel = $this->allianceRelationRepository->getByAlliancePair($allianceId, $opponentId);
+        if ($rel !== null) {
             if ($rel->getType() == $typeId) {
                 return;
             }
@@ -80,23 +74,16 @@ final class CreateRelation implements ActionControllerInterface
                 return;
             }
         }
-        $obj = new AllianceRelationData();
+        $obj = $this->allianceRelationRepository->prototype();
         $obj->setAllianceId($allianceId);
         $obj->setRecipientId($opponentId);
         $obj->setType($typeId);
 
         if ($typeId == ALLIANCE_RELATION_WAR) {
-            AllianceRelation::truncateBy(
-                sprintf(
-                    '(alliance_id = %d AND recipient = %d) OR (alliance_id = %d AND recipient = %d)',
-                    $allianceId,
-                    $opponentId,
-                    $opponentId,
-                    $allianceId
-                )
-            );
+            $this->allianceRelationRepository->truncateByAlliances($allianceId, $opponentId);
+
             $obj->setDate(time());
-            $obj->save();
+            $this->allianceRelationRepository->save($obj);
             $text = sprintf(
                 _('Die Allianz %s hat Deiner Allianz den Krieg erklärt'),
                 $alliance->getNameWithoutMarkup()
@@ -116,7 +103,7 @@ final class CreateRelation implements ActionControllerInterface
             );
             return;
         }
-        $obj->save();
+        $this->allianceRelationRepository->save($obj);
 
         $text = sprintf(
             'Die Allianz %s hat Deiner Allianz ein Abkommen angeboten',

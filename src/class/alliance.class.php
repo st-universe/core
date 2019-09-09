@@ -275,14 +275,6 @@ class AllianceData extends BaseTable {
                 }
 	}
 
-	public function hasFriendlyRelation($allianceId) {
-		return AllianceRelation::getBy('alliance_id IN ('.$this->getId().','.$allianceId.') AND recipient IN ('.$allianceId.','.$this->getId().') AND type IN ('.ALLIANCE_RELATION_FRIENDS.','.ALLIANCE_RELATION_ALLIED.')');	
-	}
-
-	public function hasHostileRelation($allianceId) {
-		return AllianceRelation::getBy('alliance_id IN ('.$this->getId().','.$allianceId.') AND recipient IN ('.$allianceId.','.$this->getId().') AND type='.ALLIANCE_RELATION_WAR);	
-	}
-
 	/**
 	 */
 	public function delete() { #{{{
@@ -290,10 +282,7 @@ class AllianceData extends BaseTable {
 		foreach($list as $key => $obj) {
 			$obj->deleteFromDatabase();
 		}
-		$list = AllianceRelation::getList('alliance_id='.$this->getId().' OR recipient='.$this->getId());
-		foreach($list as $key => $obj) {
-			$obj->deleteFromDatabase();
-		}
+		// @todo deletion by foreign key
 		// @todo refactor
 		global $container;
 		$allianceBoardRepository = $container->get(AllianceBoardRepositoryInterface::class);

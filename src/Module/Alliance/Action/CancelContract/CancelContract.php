@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelContract;
 
 use AccessViolation;
-use AllianceRelation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class CancelContract implements ActionControllerInterface
 {
@@ -18,12 +18,16 @@ final class CancelContract implements ActionControllerInterface
 
     private $entryCreator;
 
+    private $allianceRelationRepository;
+
     public function __construct(
         CancelContractRequestInterface $cancelContractRequest,
-        EntryCreatorInterface $entryCreator
+        EntryCreatorInterface $entryCreator,
+        AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->cancelContractRequest = $cancelContractRequest;
         $this->entryCreator = $entryCreator;
+        $this->allianceRelationRepository = $allianceRelationRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,13 +36,13 @@ final class CancelContract implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = $alliance->getId();
 
-        $relation = AllianceRelation::getById($this->cancelContractRequest->getRelationId());
+        $relation = $this->allianceRelationRepository->find($this->cancelContractRequest->getRelationId());
 
         if (!$alliance->currentUserIsDiplomatic()) {
             throw new AccessViolation();
         }
 
-        if (!$relation || ($relation->getRecipientId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
+        if ($relation === null || ($relation->getRecipientId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
             return;
         }
         if ($relation->getType() == ALLIANCE_RELATION_WAR) {
@@ -47,7 +51,8 @@ final class CancelContract implements ActionControllerInterface
         if ($relation->isPending()) {
             return;
         }
-        $relation->deleteFromDatabase();
+
+        $this->allianceRelationRepository->delete($relation);
 
         $text = sprintf(
             _('Die Allianz %s hat das %s aufgelöst'),

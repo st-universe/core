@@ -32,35 +32,35 @@
 				<td colspan="4">Keine Beziehungen vorhanden</td>
 			</tr>
 			<tr tal:condition="RELATIONS" tal:repeat="data RELATIONS" tal:attributes="class string:row${repeat/data/odd}">
-				<form method="post" action="alliance.php">
+				<form method="post" action="alliance.php" tal:define="opponent data/opponent; relation data/relation">
 					<input type="hidden" name="SHOW_RELATIONS" value="1" />
-					<input type="hidden" name="oid" value="runtime" tal:attributes="value data/getOpponent/getId" />
+					<input type="hidden" name="oid" value="runtime" tal:attributes="value opponent/getId" />
 					<td>
-						<a href="?SHOW_ALLIANCE=1&id=${data/getOpponent/getId}" tal:content="structure bbcode:data/getOpponent/getName">NAME</a>
+						<a href="?SHOW_ALLIANCE=1&id=${opponent/getId}" tal:content="structure bbcode:opponent/getName">NAME</a>
 					</td>
 					<td>
-						<span tal:content="data/getTypeDescription">TYPE</span>
-						<span tal:condition="not:data/isPending">
-							<span tal:condition="not:php:data.getType() EQ ALLIANCE_RELATION_WAR"> (<a href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al=${data/getId}&sstr=${THIS/getSessionString}">lösen</a>)</span>
+						<span tal:content="relation/getTypeDescription">TYPE</span>
+						<span tal:condition="not:relation/isPending">
+							<span tal:condition="not:relation/isWar"> (<a href="?SHOW_RELATIONS=1&B_CANCEL_CONTRACT=1&al=${relation/getId}&sstr=${THIS/getSessionString}">lösen</a>)</span>
 						</span>
 					</td>
-					<td tal:condition="not:data/isPending" tal:content="datetime:data/getDate">DATE</td>
-					<td tal:condition="data/isPending">
-						<span tal:condition="data/offerIsSend" i18n:translate="">Wird angeboten</span>
-						<span tal:condition="not:data/offerIsSend" i18n:translate="">Wurde angeboten</span>
+					<td tal:condition="not:relation/isPending" tal:content="datetime:relation/getDate">DATE</td>
+					<td tal:condition="relation/isPending">
+						<span tal:condition="relation/offerIsSend" i18n:translate="">Wird angeboten</span>
+						<span tal:condition="not:relation/offerIsSend" i18n:translate="">Wurde angeboten</span>
 					</td>
-					<td tal:condition="not:data/isPending">
-						<a class="linkbutton" tal:condition="data/isWar" href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al=${data/getId}&sstr=${THIS/getSessionString}">Frieden vorschlagen</a>
-						<tal:block tal:condition="not:data/isWar">
+					<td tal:condition="not:relation/isPending">
+						<a class="linkbutton" tal:condition="relation/isWar" href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al=${relation/getId}&sstr=${THIS/getSessionString}">Frieden vorschlagen</a>
+						<tal:block tal:condition="not:relation/isWar">
 							<select name="type">
-								<option tal:repeat="rels data/getPossibleTypes" tal:content="rels/name" tal:attributes="value rels/value" value="runtime">TYPE</option>
+								<option tal:repeat="rels relation/getPossibleTypes" tal:content="rels/name" tal:attributes="value rels/value" value="runtime">TYPE</option>
 							</select>
 							<input type="submit" value="Anbieten" name="B_NEW_RELATION" />
 						</tal:block>
 					</td>
-					<td tal:condition="data/isPending">
-						<a tal:condition="data/offerIsSend" href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Zurückziehen</a>
-						<a tal:condition="not:data/offerIsSend" href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Annehmen</a>
+					<td tal:condition="relation/isPending">
+						<a tal:condition="relation/offerIsSend" href="alliance.php?SHOW_RELATIONS=1&B_CANCEL_OFFER=1&al=${relation/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Zurückziehen</a>
+						<a tal:condition="not:relation/offerIsSend" href="alliance.php?SHOW_RELATIONS=1&B_ACCEPT_OFFER=1&al=${relation/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Annehmen</a>
 					</td>
 				</form>
 			</tr>

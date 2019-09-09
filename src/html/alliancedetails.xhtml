@@ -61,9 +61,9 @@
 				</tr>
 				<tr tal:repeat="data ALLIANCE_RELATIONS" tal:attributes="class string:row${repeat/data/odd}">
 					<td>
-						<span tal:replace="data/getTypeDescription">TYPE</span>
+						<span tal:replace="data/relation/getTypeDescription">TYPE</span>
 						mit
-						<a href="?SHOW_ALLIANCE=1&id=${data/getRecipient/getId}" tal:content="structure bbcode:data/getRecipient/getName">NAME</a>
+						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}" tal:content="structure bbcode:data/opponent/getName">NAME</a>
 					</td>
 				</tr>
 			</table>

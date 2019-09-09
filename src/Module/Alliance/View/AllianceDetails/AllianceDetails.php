@@ -6,9 +6,9 @@ namespace Stu\Module\Alliance\View\AllianceDetails;
 
 use Alliance;
 use AllianceData;
-use AllianceRelation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class AllianceDetails implements ViewControllerInterface
 {
@@ -16,29 +16,28 @@ final class AllianceDetails implements ViewControllerInterface
 
     private $allianceDetailsRequest;
 
+    private $allianceRelationRepository;
+
     public function __construct(
-        AllianceDetailsRequestInterface $allianceDetailsRequest
+        AllianceDetailsRequestInterface $allianceDetailsRequest,
+        AllianceRelationRepositoryInterface $allianceRelationRepository
     ) {
         $this->allianceDetailsRequest = $allianceDetailsRequest;
+        $this->allianceRelationRepository = $allianceRelationRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = new Alliance($this->allianceDetailsRequest->getAllianceId());
 
-        /**
-         * @var AllianceRelation[] $result
-         */
-        $result = AllianceRelation::getList(sprintf(
-            'date>0 AND (recipient = %1$d OR alliance_id = %1$d)',
-            $alliance->getId()
-        ));
+        $result = $this->allianceRelationRepository->getActiveByAlliance((int) $alliance->getId());
+
         $relations = [];
         foreach ($result as $key => $obj) {
-            if ($obj->getRecipientId() == $alliance->getId()) {
-                $obj->cycleOpponents();
-            }
-            $relations[$key] = $obj;
+            $relations[$key] = [
+                'relation' => $obj,
+                'opponent' => $obj->getRecipientId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
+            ];
         }
 
         $replacementVars = $this->getReplacementVars($alliance);
