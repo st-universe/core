@@ -30,6 +30,7 @@ use Stu\Orm\Entity\DatabaseCategory;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
+use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameTurn;
@@ -207,6 +208,11 @@ return [
         ContainerInterface $c
     ): DatabaseUserRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(DatabaseUser::class);
+    },
+    DockingPrivilegeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): DockingPrivilegeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(DockingPrivilege::class);
     },
     FactionRepositoryInterface::class => function (
         ContainerInterface $c

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DockShip;
 
-use DockingRights;
 use PM;
 use request;
 use ShipData;
@@ -12,6 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
+use UserData;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -19,10 +20,14 @@ final class DockShip implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $dockingPrivilegeRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,7 +56,7 @@ final class DockShip implements ActionControllerInterface
         if (!$target->isBase()) {
             return;
         }
-        if (!DockingRights::checkPrivilegeFor($target->getId(), $game->getUser())) {
+        if (!$this->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
             $game->addInformation('Das Andocken wurden verweigert');
             return;
         }
@@ -90,7 +95,7 @@ final class DockShip implements ActionControllerInterface
 
     private function fleetDock(ShipData $ship, ShipData $target, GameControllerInterface $game): void
     {
-        $msg = array();
+        $msg = [];
         $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
         $freeSlots = $target->getFreeDockingSlotCount();
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
@@ -120,6 +125,44 @@ final class DockShip implements ActionControllerInterface
             $freeSlots--;
         }
         $game->addInformationMerge($msg);
+    }
+
+    private function checkPrivilegeFor(int $shipId, UserData $user): bool
+    {
+        $privileges = $this->dockingPrivilegeRepository->getByShip($shipId);
+        if ($privileges === []) {
+            return false;
+        }
+        $allowed = false;
+        foreach ($privileges as $key => $priv) {
+            switch ($priv->getPrivilegeType()) {
+                case DOCK_PRIVILEGE_USER:
+                    if ($priv->getTargetId() == $user->getId()) {
+                        if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
+                            return false;
+                        }
+                        $allowed = true;
+                    }
+                    break;
+                case DOCK_PRIVILEGE_ALLIANCE:
+                    if ($priv->getTargetId() == $user->getAllianceId()) {
+                        if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
+                            return false;
+                        }
+                        $allowed = true;
+                    }
+                    break;
+                case DOCK_PRIVILEGE_FACTION:
+                    if ($priv->getTargetId() == $user->getFaction()) {
+                        if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
+                            return false;
+                        }
+                        $allowed = true;
+                    }
+                    break;
+            }
+        }
+        return $allowed;
     }
 
     public function performSessionCheck(): bool

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeleteDockPrivilege;
 
-use DockingRights;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 
 final class DeleteDockPrivilege implements ActionControllerInterface
 {
@@ -18,10 +18,14 @@ final class DeleteDockPrivilege implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $dockingPrivilegeRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,12 +40,13 @@ final class DeleteDockPrivilege implements ActionControllerInterface
         );
 
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
-        $privilegeId = request::getIntFatal('privilegeid');
-        $privilege = new DockingRights($privilegeId);
+        $privilege = $this->dockingPrivilegeRepository->find((int) request::getIntFatal('privilegeid'));
+
         if ($privilege->getShipId() != $ship->getId()) {
             return;
         }
-        $privilege->deleteFromDatabase();
+
+        $this->dockingPrivilegeRepository->delete($privilege);
     }
 
     public function performSessionCheck(): bool

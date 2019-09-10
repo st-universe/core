@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AddDockPrivilege;
 
 use Alliance;
-use DockingRights;
-use DockingRightsData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use User;
 
@@ -24,12 +23,16 @@ final class AddDockPrivilege implements ActionControllerInterface
 
     private $factionRepository;
 
+    private $dockingPrivilegeRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        FactionRepositoryInterface $factionRepository
+        FactionRepositoryInterface $factionRepository,
+        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->factionRepository = $factionRepository;
+        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,15 +46,15 @@ final class AddDockPrivilege implements ActionControllerInterface
             $userId
         );
 
-        $target = request::getIntFatal('target');
-        $type = request::getIntFatal('type');
-        $mode = request::getIntFatal('mode');
+        $target = (int) request::getIntFatal('target');
+        $type = (int) request::getIntFatal('type');
+        $mode = (int) request::getIntFatal('mode');
 
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         if ($mode != DOCK_PRIVILEGE_MODE_ALLOW && $mode != DOCK_PRIVILEGE_MODE_DENY) {
             return;
         }
-        if (count(DockingRights::getBy($ship->getId(), $target, $type)) != 0) {
+        if ($this->dockingPrivilegeRepository->existsForTargetAndTypeAndShip($target, $type, (int) $ship->getId()) === true) {
             return;
         }
         $save = 0;
@@ -78,12 +81,13 @@ final class AddDockPrivilege implements ActionControllerInterface
                 break;
         }
         if ($save == 1) {
-            $dock = new DockingRightsData;
+            $dock = $this->dockingPrivilegeRepository->prototype();
             $dock->setPrivilegeMode($mode);
             $dock->setPrivilegeType($type);
             $dock->setTargetId($target);
-            $dock->setShipId($ship->getId());
-            $dock->save();
+            $dock->setShipId((int) $ship->getId());
+
+            $this->dockingPrivilegeRepository->save($dock);
         }
     }
 

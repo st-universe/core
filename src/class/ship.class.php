@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -1426,7 +1427,12 @@ class ShipData extends BaseTable {
 
 	public function getDockPrivileges() {
 		if ($this->dockPrivileges === NULL) {
-			$this->dockPrivileges = DockingRights::getConfigByShipId($this->getId());
+			// @todo refactor
+			global $container;
+
+			$this->dockPrivileges = $container->get(DockingPrivilegeRepositoryInterface::class)->getByShip(
+				(int) $this->getId()
+			);
 		}
 		return $this->dockPrivileges;
 	}
