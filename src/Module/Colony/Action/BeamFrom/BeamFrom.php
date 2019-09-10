@@ -44,7 +44,7 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
         if (!$colony->storagePlaceLeft()) {
-            $game->addInformation(_('Der Lagerraum der %s ist voll'), $colony->getName());
+            $game->addInformationf(_('Der Lagerraum der %s ist voll'), $colony->getName());
             return;
         }
         $goods = request::postArray('goods');
