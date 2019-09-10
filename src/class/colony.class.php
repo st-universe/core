@@ -455,7 +455,6 @@ class ColonyData extends BaseTable {
 		}
 		$field->setBuildingId($building->getId());
 		$field->setIntegrity($building->getIntegrity());
-		$field->setBuilding($building);
 		$field->setActive(1);
 		$field->save();
 		$this->upperMaxBev($building->getHousing());

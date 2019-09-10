@@ -453,10 +453,6 @@ class ShipData extends BaseTable {
 		return $this->data['batt_wait'];
 	}
 
-	function getEBattWaitingTimeFormatted() {
-		return date("d.m.Y H:i",$this->getEBattWaitingTime());
-	}
-
 	function isCloakAble() {
 		return $this->data['cloakable'];
 	}
@@ -757,54 +753,6 @@ class ShipData extends BaseTable {
 	private function registerDamage($amount) { #{{{
 		$this->damageTaken += $amount;
 	} # }}}
-
-	public function damageOLD(&$basedamage=0,$shieldDamageFactor=100,$hullDamageFactor=100,$phaser_damage=FALSE,$torpedo_damage=FALSE) {
-		$this->setShieldRegenerationTimer(time());
-		$msg = array();
-		if ($this->shieldIsActive()) {
-			$damage = round($basedamage/100*$shieldDamageFactor);
-			$this->registerDamage($damage);
-			if ($damage > $this->getShield()) {
-				$msg[] = "- Schildschaden: ".$this->getShield();
-				$msg[] = "-- Schilde brechen zusammen!";
-				$damage -= $this->getShield();
-				$this->setShieldState(0);
-				$this->setShield(0);
-				$basedamage = round($damage/$shieldDamageFactor*100);
-			} else {
-				$this->setShield($this->getShield()-$damage);
-				$msg[] = "- Schildschaden: ".$damage." - Status: ".$this->getShield();
-				$basedamage = 0;
-			}
-		}
-		if ($basedamage <= 0) {
-			return $msg;
-		}
-		$disablemessage = FALSE;
-		$damage = round($basedamage/100*$hullDamageFactor);
-		// ablative huell plating
-		if ($phaser_damage === TRUE && $this->getRump()->getRoleId() == ROLE_PHASERSHIP) {
-			$damage = ceil($damage*0.6);
-		}
-		$this->registerDamage($damage); 
-		if ($this->getCanBeDisabled() && $this->getHuell()-$damage < round($this->getMaxHuell()/100*10)) {
-			$damage = round($this->getHuell()-$this->getMaxHuell()/100*10);
-			$disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
-			$this->setDisabled(1);
-		}
-		if ($this->getHuell() > $damage) {
-			$this->setHuell($this->getHuell()-$damage);
-			$msg[] = "- Hüllenschaden: ".$damage." - Status: ".$this->getHuell();
-			if ($disablemessage) {
-				$msg[] = $disablemessage;
-			}
-			return $msg;
-		}
-		$msg[] = "- Hüllenschaden: ".$damage;
-		$msg[] = "-- Das Schiff wurde zerstört!";
-		$this->setDestroyed(1);
-		return $msg;
-	}
 
 	/**
 	 */
@@ -1385,10 +1333,6 @@ class ShipData extends BaseTable {
 			(int) $this->getId(),
 			(int) $slot
 		);
-	}
-
-	public function isCrewSlotSet($slot,$amount=1) {
-		return count($this->getCrewBySlot($slot)) >= $amount;
 	}
 
 	public function getTradePostId() {

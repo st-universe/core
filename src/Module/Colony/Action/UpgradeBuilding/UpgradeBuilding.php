@@ -141,7 +141,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
             $upgrade->getDescription(),
-            $field->getBuildtimeDisplay()
+            date('d.m.Y H:i', $field->getBuildtime())
         );
     }
 

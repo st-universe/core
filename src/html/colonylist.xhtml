@@ -62,7 +62,7 @@
 								<img src="assets/buildings/${data/getBuildingId}/0at.png" />
 							</td>
 							<td style="vertical-align: middle">
-								<span tal:replace="data/getBuilding/getName">DESCRIPTION</span> - Fertigstellung: <span tal:replace="data/getBuildtimeDisplay">DATE</span>
+								<span tal:replace="data/getBuilding/getName">DESCRIPTION</span> - Fertigstellung: <span tal:replace="datetime:data/getBuildtime">DATE</span>
 							</td>
 						</tr>
 					</table>

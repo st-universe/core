@@ -85,27 +85,8 @@ class ColfieldData extends BaseTable {
 		return $this->data['aktiv'];
 	}
 
-	/**
-	 */
-	public function getRealBuildtime() { #{{{
-		return $this->getBuildtime()+59;
-	} # }}}
-
-
-	function getBuildtimeDisplay() {
-		return date("d.m.Y H:i",$this->getRealBuildtime());
-	}
-
-	function getBuildingName() {
-		return $this->data['name'];
-	}
-
 	function isActive() {
 		return $this->data['aktiv'] == 1;
-	}
-
-	public function getActiveShort() {
-		return $this->isActive() ? "an" : "aus";
 	}
 
 	function setActive($value) {
@@ -134,10 +115,6 @@ class ColfieldData extends BaseTable {
 		return $this->data['aktiv'] > 1;
 	}
 
-	function getConstructionDate() {
-		trigger_error('OBSOLETE - call getBuildtimeDisplay instead');
-	}
-
 	function hasBuilding() {
 		return $this->getBuildingId() > 0;
 	}
@@ -157,12 +134,6 @@ class ColfieldData extends BaseTable {
 			return 'b';
 		}
 		return 'a';
-	}
-
-	function setBuilding(Building &$building) {
-		if (!array_key_exists($building->getId(),$this->buildings)) {
-			$this->buildings[$building->getId()] = $building;
-		}
 	}
 
 	/**
@@ -189,14 +160,6 @@ class ColfieldData extends BaseTable {
 			return FALSE;
 		}
 		return $this->getIntegrity() != $this->getBuilding()->getIntegrity();
-	}
-	
-	function setSessionString($value) {
-		$this->sessionString = $value;
-	}
-
-	function getSessionString() {
-		return $this->sessionString;
 	}
 
 	function clearBuilding() {
@@ -256,7 +219,12 @@ class ColfieldData extends BaseTable {
 			return $this->getFieldTypeName();
 		}
 		if ($this->isinConstruction()) {
-			return "In Bau: ".$this->getBuilding()->getName()." auf ".$this->getFieldTypeName()." - Fertigstellung: ".$this->getBuildtimeDisplay();
+			return sprintf(
+				_('In Bau: %s auf %s - Fertigstellung: %s'),
+				$this->getBuilding()->getName(),
+				$this->getFieldTypeName(),
+				date('d.m.Y H:i', $this->getBuildtime())
+			);
 		}
 		if (!$this->isActivateable()) {
 			return $this->getBuilding()->getName()." auf ".$this->getFieldTypeName();	

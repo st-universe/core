@@ -91,14 +91,6 @@ class BuildingData extends BaseTable {
 		return $this->data['view'];
 	}
 
-	function getShieldpoints() {
-		return $this->data['schilde'];
-	}
-
-	function getConstructionTime() {
-		return $this->data['buildtime'];
-	}
-
 	function getLimit() {
 		return $this->data['blimit'];
 	}
@@ -117,10 +109,6 @@ class BuildingData extends BaseTable {
 
 	function isActivateable() {
 		return $this->data['is_activateable'];
-	}
-
-	function needsSpaceCenter() {
-		return $this->data['needs_rbf'];
 	}
 
 	private $buildfields = NULL;
@@ -205,10 +193,6 @@ class BuildingData extends BaseTable {
 
 	public function hasFunction($func) {
 		return array_key_exists($func,$this->getFunctionList());
-	}
-
-	public function getFunction($func) {
-		return $this->getFunctionList()[$func];
 	}
 
 	public function isColonyCentral() {

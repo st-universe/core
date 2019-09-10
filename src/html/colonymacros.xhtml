@@ -394,7 +394,10 @@
                     <div class="divbody">
                         <select style="width: 100%; height: 370px;" multiple="multiple" name="selfields[]">
                             <tal:block tal:repeat="data BUILDING_LIST">
-                                <option style="padding-top: 2px; padding-left: 2px;" tal:condition="data/isActivateable" tal:attributes="value data/getFieldId" tal:content="string:${data/getBuilding/getName} (${data/getActiveShort})">NAME</option>
+				    <tal:block tal:condition="data/isActivateable">
+				    	<option style="padding-top: 2px; padding-left: 2px;" tal:attributes="value data/getFieldId" tal:condition="data/isActive" tal:content="string:${data/getBuilding/getName} (an)">NAME</option>
+					<option style="padding-top: 2px; padding-left: 2px;" tal:attributes="value data/getFieldId" tal:condition="not:data/isActive" tal:content="string:${data/getBuilding/getName} (aus)">NAME</option>
+				    </tal:block>
                             </tal:block>
                         </select>
                         <div style="margin-top: 10px; width: 50%; float: left;">
@@ -996,7 +999,7 @@
 							</div>
 						</div>
 						<tal:block tal:condition="FIELD/isInConstruction">
-							<span i18n:translate="">Fertigstellung</span>: <span tal:replace="FIELD/getBuildtimeDisplay">DATE</span>
+							<span i18n:translate="">Fertigstellung</span>: <span tal:replace="datetime:FIELD/getBuildtime">DATE</span>
 						</tal:block>
 					</div>
 					<div tal:condition="not:FIELD/isInConstruction">

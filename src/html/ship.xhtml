@@ -405,7 +405,7 @@
 								<input type="button" class="button" onclick="$('ebattload').value = ${SHIP/getEbatt}; $('unloadBatteryButton').click();" value="max" />
 							</td>
 							<td tal:condition="not:SHIP/isEBattUseable">
-								Gesperrt bis ${SHIP/getEBattWaitingTimeFormatted}
+								Gesperrt bis ${datetime:SHIP/getEBattWaitingTime}
 							</td>
 						</tr>
 					</table>

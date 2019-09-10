@@ -97,13 +97,6 @@ class ContactlistData extends BaseTable {
 		return 'display: none;';
 	} # }}}
 
-	/**
-	 */
-	public function getCommentParsed() { #{{{
-		return stripslashes($this->getComment());
-	} # }}}
-
-
 	private $recipient = NULL;
 
 	function getRecipient() {
