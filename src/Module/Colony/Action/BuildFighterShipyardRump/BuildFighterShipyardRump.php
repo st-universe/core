@@ -42,7 +42,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
-            BUILDING_FUNCTION_AIRFIELD
+            BUILDING_FUNCTION_FIGHTER_SHIPYARD
         );
 
         if (!array_key_exists($rumpId, $availableShipRumps)) {
