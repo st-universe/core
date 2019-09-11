@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony;
 
+use Stu\Module\Colony\Lib\ColonyLibFactory;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Colony\Action\Abandon\Abandon;
 use Stu\Module\Colony\Action\Abandon\AbandonRequest;
@@ -143,6 +145,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use function DI\autowire;
 
 return [
+    ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
     BuildingActionInterface::class => autowire(BuildingAction::class),
     ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
     ColonyLoaderInterface::class => autowire(ColonyLoader::class),

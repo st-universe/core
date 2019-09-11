@@ -18,55 +18,60 @@
 				</tr>
 				<tal:block tal:repeat="fleet ORBIT_SHIP_LIST">
 					<tr>
-						<td colspan="6" tal:content="structure bbcode:fleet/name">FLEETNAME</td>
+						<td colspan="6" tal:content="structure bbcode:fleet/getName">FLEETNAME</td>
 					</tr>
-					<tr tal:repeat="ship fleet/ships" tal:attributes="class string:row${repeat/ship/odd}">
+					<tr tal:repeat="ship fleet/getShips" tal:attributes="class string:row${repeat/ship/odd}">
 						<td>
 							<stu:hidden name="ships[]" tal:attributes="value ship/getId" />
-							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
+							<img src="assets/ships/${ship/getRumpId}.gif" />
 						</td>
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
-						<td>
-							<div tal:condition="ship/currentUserCanMan">
-								<input type="checkbox" name="man[${ship/getId}]" />
-								<span i18n:translate="">Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span tal:replace="ship/getBuildplan/getCrew">CREW</span>)
-							</div>
-							<div tal:condition="ship/currentUserCanUnMan">
-								<input type="checkbox" name="unman[${ship/getId}]" />
-								<span i18n:translate="">Runterbeamen</span>: <span tal:replace="ship/getBuildplan/getCrew">CREW</span>
-							</div>
-						</td>
-						<td>
-							<div tal:condition="not:ship/getIsDestroyed">
-								<img class="center" i18n:attributes="title" src="assets/buttons/batt.gif" title="Ersatzbatterie" />
-								<stu:textinput tal:condition="not:ship/getIsDestroyed" width="3" name="batt[${ship/getId}]" />
-								<span tal:condition="ship/ownedByCurrentUser">${ship/getEBatt}/${ship/getMaxEBatt}</span>
-							</div>
-						</td>
-						<td>
-							<div tal:condition="not:ship/getIsDestroyed">
-								<img class="center" i18n:attributes="title" src="assets/buttons/warpk.gif" title="Warpkernladung" />
-								<stu:textinput width="3" name="wk[${ship/getId}]" />
-								<span tal:condition="ship/ownedByCurrentUser">${ship/getWarpCoreLoad}/${ship/getWarpcoreCapacity}</span>
-							</div>
-						</td>
-						<td>
-							<div tal:condition="ship/canLoadTorpedos">
-								<img class="center" tal:condition="not:ship/getTorpedoCount" i18n:attributes="title" src="assets/buttons/torp.gif" title="Torpedos" />
-								<img class="center" tal:condition="ship/getTorpedoCount" src="assets/goods/${ship/getTorpedo/getGoodId}.gif" tal:attributes="title ship/getTorpedo/getName" />
-								<tal:block tal:condition="ship/ownedByCurrentUser">
-									<stu:textinput width="3" name="torp[${ship/getId}]" tal:attributes="value ship/getTorpedoCount" />
-									<span i18n:translate="">Max.</span> ${ship/getMaxTorpedos}
-								</tal:block>
-								<stu:textinput tal:condition="not:ship/ownedByCurrentUser" width="3" name="torp[${ship/getId}]" />
-								<tal:block tal:condition="not:ship/getTorpedoCount">
-									<tal:block tal:repeat="data ship/getPossibleTorpedoTypes">
-										<img class="center" src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getName" />	
-										<stu:radio name="torp_type[${ship/getId}]" tal:attributes="checked repeat/data/start; value data/getId" />
+                        <tal:block tal:condition="ship/isDestroyed">
+							<td colspan="4"> </td>
+						</tal:block>
+						<tal:block tal:condition="not:ship/isDestroyed">
+							<td tal:condition="ship/ownedByUser">
+								<div tal:condition="ship/canMan">
+									<input type="checkbox" name="man[${ship/getId}]" />
+									<span i18n:translate="">Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span tal:replace="ship/getCrewSlots">CREW</span>)
+								</div>
+								<div tal:condition="ship/getCrewCount">
+									<input type="checkbox" name="unman[${ship/getId}]" />
+									<span i18n:translate="">Runterbeamen</span>: <span tal:replace="ship/getBuildplan/getCrew">CREW</span>
+								</div>
+							</td>
+							<td>
+								<div>
+									<img class="center" i18n:attributes="title" src="assets/buttons/batt.gif" title="Ersatzbatterie" />
+									<stu:textinput width="3" name="batt[${ship/getId}]" />
+									<span tal:condition="ship/ownedByUser">${ship/getEBatt}/${ship/getEbattMax}</span>
+								</div>
+							</td>
+							<td>
+								<div>
+									<img class="center" i18n:attributes="title" src="assets/buttons/warpk.gif" title="Warpkernladung" />
+									<stu:textinput width="3" name="wk[${ship/getId}]" />
+									<span tal:condition="ship/ownedByUser">${ship/getWarpCoreLoad}/${ship/getWarpcoreCapacity}</span>
+								</div>
+							</td>
+							<td>
+								<div tal:condition="ship/canLoadTorpedos">
+									<img class="center" tal:condition="not:ship/getTorpedoCount" i18n:attributes="title" src="assets/buttons/torp.gif" title="Torpedos" />
+									<img class="center" tal:condition="ship/getTorpedoCount" src="assets/goods/${ship/getTorpedo/getGoodId}.gif" tal:attributes="title ship/getTorpedo/getName" />
+									<tal:block tal:condition="ship/ownedByUser">
+										<stu:textinput width="3" name="torp[${ship/getId}]" tal:attributes="value ship/getTorpedoCount" />
+										<span i18n:translate="">Max.</span> ${ship/getTorpedoCapacity}
 									</tal:block>
-								</tal:block>
-							</div>
-						</td>
+									<stu:textinput tal:condition="not:ship/ownedByUser" width="3" name="torp[${ship/getId}]" />
+									<tal:block tal:condition="not:ship/getTorpedoCount">
+										<tal:block tal:repeat="data ship/getPossibleTorpedoTypes">
+											<img class="center" src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getName" />
+											<stu:radio name="torp_type[${ship/getId}]" tal:attributes="checked repeat/data/start; value data/getId" />
+										</tal:block>
+									</tal:block>
+								</div>
+							</td>
+						</tal:block>
 					</tr>
 				</tal:block>
 			</table>
