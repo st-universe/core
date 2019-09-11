@@ -16,7 +16,6 @@ use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
     private $colonyLoader;
@@ -62,7 +61,7 @@ final class RepairShip implements ActionControllerInterface
                 if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
                     continue;
                 }
-                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRumpId()) as $rump_rel) {
+                foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
                     if ($field->getBuilding()->hasFunction($rump_rel->getBuildingFunction())) {
                         $repairableShiplist[$ship->getId()] = $ship;
                         break;
