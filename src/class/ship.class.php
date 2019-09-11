@@ -1250,7 +1250,7 @@ class ShipData extends BaseTable {
 		if (!$this->getShipSystem($system)->isActivateable()) {
 			return FALSE;
 		}
-		if ($this->getShipSystem($system)->getEneryCosts() > $this->getEps()) {
+		if ($this->getShipSystem($system)->getEnergyCosts() > $this->getEps()) {
 			return FALSE;
 		}
 		if (array_key_exists($system,$this->getActiveSystems())) {
