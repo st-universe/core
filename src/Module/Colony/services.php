@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony;
 
+use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
+use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
+use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
+use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
 use Stu\Module\Control\GameController;
 use Stu\Module\Colony\Action\Abandon\Abandon;
 use Stu\Module\Colony\Action\Abandon\AbandonRequest;
@@ -125,7 +130,6 @@ use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplist;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequest;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequestInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
-use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequestInterface;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequest;
@@ -172,6 +176,7 @@ return [
     ShowModuleScreenBuildplanRequestInterface::class => autowire(ShowModuleScreenBuildplanRequest::class),
     ShowOrbitManagementRequestInterface::class => autowire(ShowOrbitManagementRequest::class),
     ShowOrbitShiplistRequestInterface::class => autowire(ShowOrbitShiplistRequest::class),
+    ShowShipDisassemblyRequestInterface::class => autowire(ShowShipDisassemblyRequest::class),
     ShowShipRepairRequestInterface::class => autowire(ShowShipRepairRequest::class),
     ShowShipyardRequestInterface::class => autowire(ShowShipyardRequest::class),
     ShowSocialRequestInterface::class => autowire(ShowSocialRequest::class),
@@ -221,6 +226,7 @@ return [
         DeactivateBuildingsResidentials::ACTION_IDENTIFIER => autowire(DeactivateBuildingsResidentials::class),
         ActivateBuildingsIndustry::ACTION_IDENTIFIER => autowire(ActivateBuildingsIndustry::class),
         DeactivateBuildingsIndustry::ACTION_IDENTIFIER => autowire(DeactivateBuildingsIndustry::class),
+        DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -252,5 +258,6 @@ return [
         ShowModuleFab::VIEW_IDENTIFIER => autowire(ShowModuleFab::class),
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
+        ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
     ]
 ];
