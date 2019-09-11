@@ -10,7 +10,8 @@ namespace Stu\Orm\Entity;
  *     name="stu_ships_storage",
  *     indexes={
  *         @Index(name="ship_idx", columns={"ships_id"})
- *     }
+ *     },
+ *     uniqueConstraints={@UniqueConstraint(name="ship_commodity_cns", columns={"ships_id", "goods_id"})}
  * )
  **/
 class ShipStorage implements ShipStorageInterface

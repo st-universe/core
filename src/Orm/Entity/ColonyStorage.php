@@ -10,7 +10,8 @@ namespace Stu\Orm\Entity;
  *     name="stu_colonies_storage",
  *     indexes={
  *         @Index(name="colony_id", columns={"colonies_id"})
- *     }
+ *     },
+ *     uniqueConstraints={@UniqueConstraint(name="colony_commodity_cns", columns={"colonies_id", "goods_id"})}
  * )
  **/
 class ColonyStorage implements ColonyStorageInterface

@@ -40,14 +40,13 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
             ->createQuery(
                 sprintf(
                     'SELECT cs FROM %s cs INDEX BY cs.goods_id LEFT JOIN %s g WITH g.id = cs.goods_id
-                        WHERE cs.colonies_id = :colonyId AND g.view = :viewable ORDER BY g.sort',
+                        WHERE cs.colonies_id = :colonyId ORDER BY g.sort',
                     ColonyStorage::class,
                     Commodity::class
                 )
             )
             ->setParameters([
                 'colonyId' => $colonyId,
-                'viewable' => $viewable
             ])
             ->getResult();
     }

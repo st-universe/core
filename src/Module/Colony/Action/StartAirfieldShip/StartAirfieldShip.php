@@ -92,10 +92,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $game->addInformation(_('Es ist für den Start des Schiffes nicht genügend Crew vorhanden'));
             return;
         }
-        if (Ship::countInstances('WHERE user_id=' . $userId) >= 10) {
-            $game->addInformation(_('Im Moment sind nur 10 Schiffe pro Spieler erlaubt'));
-            return;
-        }
+
         // XXX starting costs
         if ($colony->getEps() < 10) {
             $game->addInformationf(
@@ -105,8 +102,10 @@ final class StartAirfieldShip implements ActionControllerInterface
             );
             return;
         }
-        $shipStorage = $this->colonyStorageRepository->getByColony((int) $colony->getId(), 0);
-        if (!array_key_exists($rump->getGoodId(), $shipStorage)) {
+
+        $storage = $colony->getStorage();
+
+        if (!array_key_exists($rump->getGoodId(), $storage)) {
             $game->addInformationf(
                 _('Es wird %d %s benötigt'),
                 1,
@@ -114,6 +113,8 @@ final class StartAirfieldShip implements ActionControllerInterface
             );
             return;
         }
+
+        $colony->lowerStorage($rump->getGoodId(), 1);
 
         $ship = $this->shipCreator->createBy(
             (int) $userId,
@@ -123,8 +124,6 @@ final class StartAirfieldShip implements ActionControllerInterface
         );
 
         $this->crewCreator->createShipCrew($ship);
-
-        $storage = $colony->getStorage();
 
         $defaultTorpedoType = $hangar->getDefaultTorpedoType();
         if ($defaultTorpedoType !== null) {

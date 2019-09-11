@@ -30,7 +30,7 @@ class ShipData extends BaseTable {
 
 	function __construct(&$data=array()) {
 		$this->data = $data;
-		$this->getCrewList();
+		$this->getCrewlist();
 	}
 
 	function getId() {
