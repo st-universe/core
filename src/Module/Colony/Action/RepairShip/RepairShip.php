@@ -50,8 +50,6 @@ final class RepairShip implements ActionControllerInterface
             $colony->getId()
         );
 
-        $ship_id = request::getIntFatal('ship_id');
-
         $repairableShiplist = [];
         foreach ($colony->getOrbitShipList($userId) as $fleet) {
             /**
@@ -73,7 +71,7 @@ final class RepairShip implements ActionControllerInterface
         /**
          * @var Ship $ship
          */
-        $ship = ResourceCache()->getObject(CACHE_SHIP, $ship_id);
+        $ship = ResourceCache()->getObject(CACHE_SHIP, (int) request::getIntFatal('ship_id'));
         if (!array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
