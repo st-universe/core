@@ -57,7 +57,7 @@
 							<td>
 								<div tal:condition="ship/canLoadTorpedos">
 									<img class="center" tal:condition="not:ship/getTorpedoCount" i18n:attributes="title" src="assets/buttons/torp.gif" title="Torpedos" />
-									<img class="center" tal:condition="ship/getTorpedoCount" src="assets/goods/${ship/getTorpedo/getGoodId}.gif" tal:attributes="title ship/getTorpedoType/getName" />
+									<img class="center" tal:condition="ship/getTorpedoCount" src="assets/goods/${ship/getTorpedoType/getGoodId}.gif" tal:attributes="title ship/getTorpedoType/getName" />
 									<tal:block tal:condition="ship/ownedByUser">
 										<stu:textinput width="3" name="torp[${ship/getId}]" tal:attributes="value ship/getTorpedoCount" />
 										<span i18n:translate="">Max.</span> ${ship/getTorpedoCapacity}
