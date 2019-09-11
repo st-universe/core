@@ -41,7 +41,7 @@ final class LoadWarpcoreMax implements ActionControllerInterface
                 if ($ship->getWarpcoreLoad() >= $ship->getWarpcoreCapacity()) {
                     continue;
                 }
-                $load = $ship->loadWarpCore(ceil(($this->getShip()->getWarpcoreCapacity() - $this->getShip()->getWarpcoreLoad()) / WARPCORE_LOAD));
+                $load = $ship->loadWarpCore(ceil(($ship->getWarpcoreCapacity() - $ship->getWarpcoreLoad()) / WARPCORE_LOAD));
                 if (!$load) {
                     $game->addInformation(sprintf(_('%s: Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt'),
                         $ship->getName()));
@@ -58,7 +58,7 @@ final class LoadWarpcoreMax implements ActionControllerInterface
             $game->addInformation(_('Der Warpkern ist bereits vollständig geladen'));
             return;
         }
-        $load = $ship->loadWarpCore(ceil(($this->getShip()->getWarpcoreCapacity() - $this->getShip()->getWarpcoreLoad()) / WARPCORE_LOAD));
+        $load = $ship->loadWarpCore(ceil(($ship->getWarpcoreCapacity() - $ship->getWarpcoreLoad()) / WARPCORE_LOAD));
         if (!$load) {
             $game->addInformation(_('Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt'));
             return;
