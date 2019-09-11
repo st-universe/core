@@ -1271,8 +1271,8 @@
 					<td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
 				</tr>
 				<tr>
-					<td style="width: 100%;">
-						<tal:block tal:condition="COLONY/getStorage" tal:repeat="good COLONY/getStorage">
+					<td style="width: 100%;" tal:define="COLONY_STORAGE COLONY/getBeamableStorage">
+						<tal:block tal:condition="COLONY_STORAGE" tal:repeat="good COLONY_STORAGE">
 							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -1282,7 +1282,7 @@
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
-						<tal:block tal:condition="not:COLONY/getStorage">
+						<tal:block tal:condition="not:COLONY_STORAGE">
 							Keine Waren vorhanden
 						</tal:block>
 					</td>

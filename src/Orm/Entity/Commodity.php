@@ -88,7 +88,7 @@ class Commodity implements CommodityInterface
 
     public function isBeamable(): bool
     {
-        return $this->getType() === CommodityTypeEnum::GOOD_TYPE_STANDARD;
+        return $this->getType() === CommodityTypeEnum::GOOD_TYPE_STANDARD && $this->getView() === true;
     }
 
     public function isSaveable(): bool

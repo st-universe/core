@@ -309,6 +309,19 @@ class ColonyData extends BaseTable {
 		return 'planetSurfaceTiles';
 	}
 
+    /**
+     * @return ColonyStorageInterface[]
+     */
+    public function getBeamableStorage(): array
+    {
+        return array_filter(
+            $this->getStorage(),
+            function (ColonyStorageInterface $storage): bool {
+                return $storage->getGood()->isBeamable() === true;
+            }
+        );
+    }
+
 	private $storage = NULL;
 
 	/**
