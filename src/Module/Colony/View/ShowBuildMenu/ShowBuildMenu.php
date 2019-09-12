@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildMenu;
 
-use Building;
 use BuildMenuWrapper;
 use ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ShowBuildMenu implements ViewControllerInterface
 {
@@ -22,14 +22,18 @@ final class ShowBuildMenu implements ViewControllerInterface
 
     private $showBuildMenuRequest;
 
+    private $buildingRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowBuildMenuRequestInterface $showBuildMenuRequest
+        ShowBuildMenuRequestInterface $showBuildMenuRequest,
+        BuildingRepositoryInterface $buildingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showBuildMenuRequest = $showBuildMenuRequest;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,12 +45,29 @@ final class ShowBuildMenu implements ViewControllerInterface
             $userId
         );
 
+        $colonyId = (int) $colony->getId();
+
         $this->colonyGuiHelper->register($colony, $game);
 
         $menus = [];
-        $menus[1]['buildings'] = Building::getBuildingMenuList($userId, $colony->getId(), 1);
-        $menus[2]['buildings'] = Building::getBuildingMenuList($userId, $colony->getId(), 2);
-        $menus[3]['buildings'] = Building::getBuildingMenuList($userId, $colony->getId(), 3);
+        $menus[1]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+            $colonyId,
+            $userId,
+            1,
+            0
+        );
+        $menus[2]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+            $colonyId,
+            $userId,
+            2,
+            0
+        );
+        $menus[3]['buildings'] = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
+            $colonyId,
+            $userId,
+            3,
+            0
+        );
 
         $game->showMacro('html/colonymacros.xhtml/cm_buildmenu');
 

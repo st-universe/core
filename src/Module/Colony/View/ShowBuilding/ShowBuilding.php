@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuilding;
 
-use Building;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ShowBuilding implements ViewControllerInterface
 {
@@ -20,14 +20,18 @@ final class ShowBuilding implements ViewControllerInterface
 
     private $buildingFieldAlternativeRepository;
 
+    private $buildingRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowBuildingRequestInterface $showBuildingRequest,
-        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository
+        BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
+        BuildingRepositoryInterface $buildingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showBuildingRequest = $showBuildingRequest;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +43,10 @@ final class ShowBuilding implements ViewControllerInterface
             $userId
         );
 
-        $building = new Building($this->showBuildingRequest->getBuildingId());
+        $building = $this->buildingRepository->find($this->showBuildingRequest->getBuildingId());
+        if ($building === null) {
+            return;
+        }
 
         $alternativeBuildings = $this->buildingFieldAlternativeRepository->getByBuildingId(
             (int) $building->getId()

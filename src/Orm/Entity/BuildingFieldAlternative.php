@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use BuildingData;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingFieldAlternativeRepository")
  * @Table(
@@ -27,6 +25,18 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 
     /** @Column(type="integer") * */
     private $alternate_buildings_id = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Building")
+     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $building;
+
+    /**
+     * @ManyToOne(targetEntity="Building")
+     * @JoinColumn(name="alternate_building_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $alternateBuilding;
 
     public function getId(): int
     {
@@ -69,13 +79,13 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
         return $this;
     }
 
-    public function getAlternativeBuilding(): BuildingData
+    public function getAlternativeBuilding(): BuildingInterface
     {
-        return ResourceCache()->getObject(CACHE_BUILDING, $this->getAlternativeBuildingId());
+        return $this->building;
     }
 
-    public function getBuilding(): BuildingData
+    public function getBuilding(): BuildingInterface
     {
-        return ResourceCache()->getObject(CACHE_BUILDING, $this->getBuildingId());
+        return $this->alternateBuilding;
     }
 }

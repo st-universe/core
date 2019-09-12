@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Colonize;
 
-use Building;
 use Colfields;
 use Colony;
 use request;
@@ -14,6 +13,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 
@@ -27,14 +27,18 @@ final class Colonize implements ActionControllerInterface
 
     private $researchedRepository;
 
+    private $buildingRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        BuildingRepositoryInterface $buildingRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -89,7 +93,7 @@ final class Colonize implements ActionControllerInterface
             return;
         }
 
-        $colony->colonize($userId, new Building($base_building->getBuildingId()), $field);
+        $colony->colonize($userId, $this->buildingRepository->find($base_building->getBuildingId()), $field);
         $ship->deactivateTraktorBeam();
         $ship->changeFleetLeader();
         $ship->remove();

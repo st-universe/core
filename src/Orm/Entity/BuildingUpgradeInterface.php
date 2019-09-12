@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Building;
 use Doctrine\Common\Collections\Collection;
 
 interface BuildingUpgradeInterface
@@ -29,7 +28,7 @@ interface BuildingUpgradeInterface
 
     public function setEnergyCost(int $energyCost): BuildingUpgradeInterface;
 
-    public function getBuilding(): Building;
+    public function getBuilding(): BuildingInterface;
 
     public function getUpgradeCosts(): Collection;
 }

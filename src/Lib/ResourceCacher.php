@@ -16,7 +16,6 @@ class ResourceCacher
         if ($this->resources === null) {
             $this->resources = new ArrayObject;
             $this->resources->offsetSet(CACHE_USER, new ArrayObject);
-            $this->resources->offsetSet(CACHE_BUILDING, new ArrayObject);
             $this->resources->offsetSet(CACHE_SHIP, new ArrayObject);
             $this->resources->offsetSet(CACHE_ALLIANCE, new ArrayObject);
             $this->resources->offsetSet(CACHE_COLONY, new ArrayObject);
@@ -53,9 +52,6 @@ class ResourceCacher
         switch ($obj) {
             case "user":
                 $newobj = "User";
-                break;
-            case "building":
-                $newobj = "Building";
                 break;
             case "ship":
                 $newobj = "Ship";

@@ -1,6 +1,8 @@
 <?php
 
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
+use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
@@ -137,11 +139,11 @@ class ColfieldData extends BaseTable {
 		return 'a';
 	}
 
-	/**
-	 * @return Building
-	 */
-	function getBuilding() {
-		return ResourceCache()->getObject("building",$this->getBuildingId());
+	public function getBuilding(): BuildingInterface {
+	    // @todo refactor
+		global $container;
+
+		return $container->get(BuildingRepositoryInterface::class)->find((int) $this->getBuildingId());
 	}
 
 	function getIntegrity() {
@@ -320,7 +322,9 @@ class Colfields extends ColfieldData {
 		$result = DB()->query("SELECT a.*,b.name FROM ".self::tablename." as a LEFT JOIN stu_buildings as b ON b.id=a.buildings_id WHERE ".$where." ORDER BY a.field_id ASC LIMIT 100");
 		$ret = array();
 		if (request::getInt('bid')) {
-			$building = new Building(request::getInt('bid'));
+			// @todo refactor
+			global $container;
+			$building = $container->get(BuildingRepositoryInterface::class)->find((int) request::getInt('bid'));
 		}
 		while($data = mysqli_fetch_assoc($result)) {
 			$val = new ColfieldData($data);

@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\Action\FirstColony;
 
 use AccessViolation;
-use Building;
 use Colony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
@@ -20,12 +19,16 @@ final class FirstColony implements ActionControllerInterface
 
     private $factionRepository;
 
+    private $buildingRepository;
+
     public function __construct(
         FirstColonyRequestInterface $firstColonyRequest,
-        FactionRepositoryInterface $factionRepository
+        FactionRepositoryInterface $factionRepository,
+        BuildingRepositoryInterface $buildingRepository
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
         $this->factionRepository = $factionRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,9 +51,8 @@ final class FirstColony implements ActionControllerInterface
             return;
         }
 
-        /** @var FactionInterface $faction */
         $faction = $this->factionRepository->find((int) $user->getFaction());
-        $colony->colonize($user->getId(), new Building($faction->getStartBuildingId()));
+        $colony->colonize($user->getId(), $this->buildingRepository->find($faction->getStartBuildingId()));
 
         $user->setActive(2);
         $user->save();

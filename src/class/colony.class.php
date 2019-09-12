@@ -4,6 +4,7 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
@@ -458,7 +459,7 @@ class ColonyData extends BaseTable {
 		return ResourceCache()->getObject('user',$this->getUserId());
 	}
 
-	public function colonize(int $userId, Building $building,$field=FALSE) {
+	public function colonize(int $userId, BuildingInterface $building,$field=FALSE) {
 		if (!$this->isFree()) {
 			return;
 		}

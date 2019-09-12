@@ -10,6 +10,7 @@ use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingFunction;
@@ -108,6 +109,11 @@ return [
         ContainerInterface $c
     ): AllianceRelationRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class);
+    },
+    BuildingRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BuildingRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Building::class);
     },
     BuildingCostRepositoryInterface::class => function (
         ContainerInterface $c

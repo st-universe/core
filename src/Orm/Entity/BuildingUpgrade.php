@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Building;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -41,6 +40,18 @@ class BuildingUpgrade implements BuildingUpgradeInterface
      * @OneToMany(targetEntity="BuildingUpgradeCost", mappedBy="upgrade")
      */
     private $upgradeCosts;
+
+    /**
+     * @ManyToOne(targetEntity="Building")
+     * @JoinColumn(name="upgrade_to", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $upgradeToBuilding;
+
+    /**
+     * @ManyToOne(targetEntity="Building")
+     * @JoinColumn(name="upgrade_from", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $upgradeFromBuilding;
 
     public function getId(): string
     {
@@ -107,9 +118,9 @@ class BuildingUpgrade implements BuildingUpgradeInterface
         return $this;
     }
 
-    public function getBuilding(): Building
+    public function getBuilding(): BuildingInterface
     {
-        return ResourceCache()->getObject(CACHE_BUILDING, $this->getUpgradeToBuildingId());
+        return $this->upgradeToBuilding;
     }
 
     public function getUpgradeCosts(): Collection

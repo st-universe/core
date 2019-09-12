@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use Building;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
@@ -39,7 +39,10 @@ class ColonyEpsProductionPreviewWrapper
     private function getPreview()
     {
         if (!isset($this->production[$this->getBuildingId()])) {
-            $building = new Building($this->buildingId);
+            // @todo refactor
+            global $container;
+
+            $building = $container->get(BuildingRepositoryInterface::class)->find((int) $this->buildingId);
             $this->production[$this->getBuildingId()] = $this->colony->getEpsProduction() + $building->getEpsProduction();
         }
         return $this->production[$this->getBuildingId()];

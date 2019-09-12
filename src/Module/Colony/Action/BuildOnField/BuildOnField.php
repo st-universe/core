@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildOnField;
 
-use Building;
 use ColfieldData;
 use Colfields;
 use ColonyData;
@@ -15,11 +14,11 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class BuildOnField implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_BUILD';
 
     private $colonyLoader;
@@ -28,14 +27,18 @@ final class BuildOnField implements ActionControllerInterface
 
     private $researchedRepository;
 
+    private $buildingRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        BuildingRepositoryInterface $buildingRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,10 +63,13 @@ final class BuildOnField implements ActionControllerInterface
         if ($field->getTerraformingId() > 0) {
             return;
         }
-        $building = new Building(request::indInt('bid'));
+        $building = $this->buildingRepository->find((int) request::indInt('bid'));
+        if ($building === null) {
+            return;
+        }
 
-        $buildingId = (int) $building->getId();
-        $researchId = (int) $building->getResearchId();
+        $buildingId = $building->getId();
+        $researchId = $building->getResearchId();
 
         if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($researchId, $userId) === false) {
             return;
