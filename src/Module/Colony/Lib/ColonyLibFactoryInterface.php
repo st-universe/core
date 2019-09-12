@@ -16,4 +16,8 @@ interface ColonyLibFactoryInterface
         array $shipList,
         int $ownerUserId
     ): OrbitFleetItemInterface;
+
+    public function createBuildingFunctionTal(
+        array $buildingFunctionIds
+    ): BuildingFunctionTalInterface;
 }

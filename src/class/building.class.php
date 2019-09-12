@@ -1,7 +1,6 @@
 <?php
 
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
-use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 use Stu\Orm\Entity\BuildingGoodInterface;
@@ -9,8 +8,6 @@ use Stu\Orm\Entity\PlanetFieldTypeBuildingInterface;
 use Stu\Orm\Repository\BuildingCostRepositoryInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
-use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
 class BuildingData extends BaseTable {
@@ -164,49 +161,25 @@ class BuildingData extends BaseTable {
 		return $this->goods;
 	}
 
-	private $functions = NULL;
+	private $functions;
 
 	/**
 	 * @return BuildingFunctionInterface[]
 	 */
-	public function getFunctions(): array {
-		if ($this->functions === NULL) {
+	public function getFunctions(): array
+	{
+		if ($this->functions === null) {
+			$this->functions = [];
+
 			// @todo refactor
 			global $container;
 
-			$this->functions = $container->get(BuildingFunctionRepositoryInterface::class)->getByBuilding((int) $this->getId());
+			$result = $container->get(BuildingFunctionRepositoryInterface::class)->getByBuilding((int) $this->getId());
+			foreach ($result as $function) {
+				$this->functions[$function->getFunction()] = $function;
+			}
 		}
 		return $this->functions;
-	}
-
-	private $functionList;
-
-	private function getFunctionList(): array
-	{
-		if ($this->functionList === null) {
-			$this->functionList = [];
-			foreach ($this->getFunctions() as $function) {
-				$this->functionList[$function->getFunction()] = $function;
-			}
-		}
-		return $this->functionList;
-	}
-
-	public function hasFunction($func) {
-		return array_key_exists($func,$this->getFunctionList());
-	}
-
-	public function isAcademy() {
-		return $this->hasFunction(BUILDING_FUNCTION_ACADEMY);
-	}
-
-	public function isShipyard() {
-		foreach ($this->getFunctions() as $func) {
-			if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
-				return $func;
-			}
-		}
-		return FALSE;
 	}
 
 	public function postDeactivation(ColonyData $colony): void {
@@ -241,51 +214,8 @@ class BuildingData extends BaseTable {
 		}
 	}
 
-	/**
-	 */
-	public function isAirfield() { #{{{
-		return $this->hasFunction(BUILDING_FUNCTION_AIRFIELD);
-	} # }}}
-
-	/**
-	 */
-	public function isFighterShipyard() { #{{{
-		return $this->hasFunction(BUILDING_FUNCTION_FIGHTER_SHIPYARD);
-	} # }}}
-
-	/**
-	 */
-	public function isModuleFab() { #{{{
-		foreach ($this->getFunctions() as $func) {
-			if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
-				return $func;
-			}
-		}
-		return FALSE;
-	} # }}}
-
-	/**
-	 */
-	public function isTorpedoFab() { #{{{
-		return $this->hasFunction(BUILDING_FUNCTION_TORPEDO_FAB);
-	} # }}}
-
-	public function getFunctionString() {
-		$func = array();
-		if ($this->isShipyard()) {
-			$func[] = "Schiffbau";
-		}
-		if ($this->isAcademy()) {
-			$func[] = "Crewausbildung";
-		}
-		if ($this->isAirfield()) {
-			$func[] = "Shuttlebau";
-		}
-		return implode(",",$func);
-	}
-
 	public function isRemoveAble(): bool {
-	    return $this->hasFunction(BUILDING_FUNCTION_CENTRAL) === false;
+		return !array_key_exists(BUILDING_FUNCTION_CENTRAL, $this->getFunctions());
 	}
 
 }

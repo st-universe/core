@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowField;
 
 use Colfields;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -24,16 +25,20 @@ final class ShowField implements ViewControllerInterface
 
     private $colonyShipQueueRepository;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ShowFieldRequestInterface $showFieldRequest,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->showFieldRequest = $showFieldRequest;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,5 +74,11 @@ final class ShowField implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->colonyShipQueueRepository->getByColony((int) $colony->getId()));
         $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
+        if ($field->hasBuilding()) {
+            $game->setTemplateVar(
+                'BUILDING_FUNCTION',
+                $this->colonyLibFactory->createBuildingFunctionTal($field->getBuilding()->getFunctions())
+            );
+        }
     }
 }

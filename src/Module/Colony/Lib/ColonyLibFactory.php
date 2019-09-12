@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use FleetData;
 use ShipData;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
@@ -29,5 +28,11 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $shipList,
             $ownerUserId
         );
+    }
+
+    public function createBuildingFunctionTal(
+        array $buildingFunctionIds
+    ): BuildingFunctionTalInterface {
+        return new BuildingFunctionTal($buildingFunctionIds);
     }
 }
