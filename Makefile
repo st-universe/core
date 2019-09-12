@@ -51,6 +51,7 @@ version_link:force
 
 migrateDatabase:force
 	vendor/bin/doctrine orm:schema-tool:update --force
+	vendor/bin/doctrine orm:generate-proxies
 
 showDatabaseChanges:force
 	vendor/bin/doctrine orm:schema-tool:update --dump-sql
