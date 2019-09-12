@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
@@ -163,7 +164,19 @@ class ColfieldData extends BaseTable {
 	}
 
 	function clearBuilding() {
-		$this->getBuilding()->onDestruction($this->getColonyId());
+		// @todo refactor
+		global $container;
+
+		$buildingFunctionActionMapper = $container->get(BuildingFunctionActionMapperInterface::class);
+
+	    foreach ($this->getBuilding()->getFunctions() as $function) {
+	    	$buildingFunctionId = $function->getFunction();
+
+	    	$handler = $buildingFunctionActionMapper->map($buildingFunctionId);
+	    	if ($handler !== null) {
+	    		$handler->destruct((int) $this->getColonyId(), $buildingFunctionId);
+		    }
+	    }
 		$this->setBuildingId(0);
 		$this->setIntegrity(0);
 		$this->setActive(0);

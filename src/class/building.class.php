@@ -1,5 +1,6 @@
 <?php
 
+use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingCostInterface;
 use Stu\Orm\Entity\BuildingFunctionInterface;
@@ -195,10 +196,6 @@ class BuildingData extends BaseTable {
 		return array_key_exists($func,$this->getFunctionList());
 	}
 
-	public function isColonyCentral() {
-		return $this->hasFunction(BUILDING_FUNCTION_CENTRAL);
-	}
-
 	public function isAcademy() {
 		return $this->hasFunction(BUILDING_FUNCTION_ACADEMY);
 	}
@@ -212,33 +209,37 @@ class BuildingData extends BaseTable {
 		return FALSE;
 	}
 
-	/**
-	 */
-	public function postDeactivation(ColonyData $colony) { #{{{
-		if (($func=$this->isShipyard())) {
-			// @todo refactor
-			global $container;
+	public function postDeactivation(ColonyData $colony): void {
+		// @todo refactor
+		global $container;
 
-			$container->get(ColonyShipQueueRepositoryInterface::class)->stopQueueByColonyAndBuildingFunction(
-				(int) $colony->getId(),
-				$func->getFunction()
-			);
+		$buildingFunctionActionMapper = $container->get(BuildingFunctionActionMapperInterface::class);
+
+		foreach ($this->getFunctions() as $function) {
+			$buildingFunctionId = $function->getFunction();
+
+			$handler = $buildingFunctionActionMapper->map($buildingFunctionId);
+			if ($handler !== null) {
+				$handler->deactivate((int) $colony->getId(), $buildingFunctionId);
+			}
 		}
-	} # }}}
+	}
 
-	/**
-	 */
-	public function postActivation(ColonyData $colony) { #{{{
-		if (($func=$this->isShipyard())) {
-			// @todo refactor
-			global $container;
+	public function postActivation(ColonyData $colony): void {
+		// @todo refactor
+		global $container;
 
-			$container->get(ColonyShipQueueRepositoryInterface::class)->restartQueueByColonyAndBuildingFunction(
-				(int) $colony->getId(),
-				$func->getFunction()
-			);
+		$buildingFunctionActionMapper = $container->get(BuildingFunctionActionMapperInterface::class);
+
+		foreach ($this->getFunctions() as $function) {
+			$buildingFunctionId = $function->getFunction();
+
+			$handler = $buildingFunctionActionMapper->map($buildingFunctionId);
+			if ($handler !== null) {
+				$handler->activate((int) $colony->getId(), $buildingFunctionId);
+			}
 		}
-	} # }}}
+	}
 
 	/**
 	 */
@@ -283,31 +284,9 @@ class BuildingData extends BaseTable {
 		return implode(",",$func);
 	}
 
-	/**
-	 */
-	public function isRemoveAble() { #{{{
-		if ($this->isColonyCentral()) {
-			return FALSE;
-		}
-		return TRUE;
-	} # }}}
-
-	/**
-	 */
-	public function onDestruction($colony_id) { #{{{
-		// @todo refactor
-		global $container;
-		// XXX we need a registry in here
-		if ($this->isAcademy()) {
-			$container->get(CrewTrainingRepositoryInterface::class)->truncateByColony((int) $colony_id);
-		}
-		if (($func = $this->isShipyard())) {
-		    $container->get(ColonyShipQueueRepositoryInterface::class)->truncateByColonyAndBuildingFunction(
-			    (int) $colony_id,
-			    $func->getFunction()
-		    );
-		}
-	} # }}}
+	public function isRemoveAble(): bool {
+	    return $this->hasFunction(BUILDING_FUNCTION_CENTRAL) === false;
+	}
 
 }
 class Building extends BuildingData {

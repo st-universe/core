@@ -115,6 +115,9 @@ $builder->addDefinitions(
     require_once __DIR__.'/../Module/Index/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__.'/../Module/Building/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__.'/../Module/Communication/services.php'
 );
 
