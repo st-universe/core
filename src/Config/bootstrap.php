@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use DI\ContainerBuilder;
+use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
@@ -45,6 +46,17 @@ $builder->addDefinitions([
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);
 
+        $cache = new ApcuCache();
+
+        $entityManagerConfiguration = Setup::createAnnotationMetadataConfiguration(
+            [__DIR__.'/../Orm/Entity/'],
+            $config->get('debug.debug_mode')
+        );
+        $entityManagerConfiguration->setAutoGenerateProxyClasses(false);
+        $entityManagerConfiguration->setProxyDir('/tmp');
+        $entityManagerConfiguration->setMetadataCacheImpl($cache);
+        $entityManagerConfiguration->setQueryCacheImpl($cache);
+
         $manager = EntityManager::create(
             [
                 'driver' => 'mysqli',
@@ -54,10 +66,7 @@ $builder->addDefinitions([
                 'host'  => $config->get('db.host'),
                 'charset' => 'utf8',
             ],
-            Setup::createAnnotationMetadataConfiguration(
-                [__DIR__.'/../Orm/Entity/'],
-                $config->get('debug.debug_mode')
-            )
+            $entityManagerConfiguration
         );
 
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
