@@ -49,6 +49,11 @@ dev-stop-db:force
 version_link:force
 	cd src && ln -s . version_dev
 
+clearCache:force
+	vendor/bin/doctrine orm:clear-cache:metadata
+	vendor/bin/doctrine orm:clear-cache:query
+	vendor/bin/doctrine orm:clear-cache:result
+
 migrateDatabase:force
 	vendor/bin/doctrine orm:schema-tool:update --force
 	vendor/bin/doctrine orm:generate-proxies
