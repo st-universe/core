@@ -34,7 +34,7 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 
     /**
      * @ManyToOne(targetEntity="Building")
-     * @JoinColumn(name="alternate_building_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="alternate_buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $alternateBuilding;
 
@@ -81,11 +81,11 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
 
     public function getAlternativeBuilding(): BuildingInterface
     {
-        return $this->building;
+        return $this->alternateBuilding;
     }
 
     public function getBuilding(): BuildingInterface
     {
-        return $this->alternateBuilding;
+        return $this->building;
     }
 }
