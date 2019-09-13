@@ -54,8 +54,9 @@ $builder->addDefinitions([
         );
         $entityManagerConfiguration->setAutoGenerateProxyClasses(false);
         $entityManagerConfiguration->setProxyDir('/tmp');
-        $entityManagerConfiguration->setMetadataCacheImpl($cache);
-        $entityManagerConfiguration->setQueryCacheImpl($cache);
+		// @todo disabled because cache invalidation does not work
+        //$entityManagerConfiguration->setMetadataCacheImpl($cache);
+        //$entityManagerConfiguration->setQueryCacheImpl($cache);
 
         $manager = EntityManager::create(
             [
