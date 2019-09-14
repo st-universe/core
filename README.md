@@ -16,3 +16,47 @@ composer
 - make dev-serve
 
 Danach sollte die Software via http://localhost:1337 erreichbar sein
+
+API
+---
+
+**Common - News**
+
+`GET /v1/common/news`
+
+Response
+```$json
+{
+    "statusCode": 200,
+    "data": [{
+        "headline":"Some headline",
+        "text":"Some text",
+        "date": 1565430813,
+        "links":[
+            "https://example.com"
+        ]
+    }]
+}
+```
+
+**Common - Login**
+
+`POST /v1/common/login`
+
+Request
+```$json
+{
+    "username": "john",
+    "password": "doe"
+}
+```
+
+Response
+```$json
+{
+    "statusCode": 200,
+    "data": {
+        "userId": 42
+    }
+}
+```
