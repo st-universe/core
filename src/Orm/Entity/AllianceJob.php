@@ -39,18 +39,6 @@ class AllianceJob implements AllianceJobInterface
         return $this->id;
     }
 
-    public function getAllianceId(): int
-    {
-        return $this->alliance_id;
-    }
-
-    public function setAllianceId(int $allianceId): AllianceJobInterface
-    {
-        $this->alliance_id = $allianceId;
-
-        return $this;
-    }
-
     public function getUserId(): int
     {
         return $this->user_id;

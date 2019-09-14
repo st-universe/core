@@ -63,21 +63,9 @@ class AllianceRelation implements AllianceRelationInterface
         return $this->alliance_id;
     }
 
-    public function setAllianceId(int $allianceId): AllianceRelationInterface
-    {
-        $this->alliance_id = $allianceId;
-        return $this;
-    }
-
-    public function getRecipientId(): int
+    public function getOpponentId(): int
     {
         return $this->recipient;
-    }
-
-    public function setRecipientId(int $recipientId): AllianceRelationInterface
-    {
-        $this->recipient = $recipientId;
-        return $this;
     }
 
     public function getDate(): int
@@ -94,11 +82,6 @@ class AllianceRelation implements AllianceRelationInterface
     public function isPending(): bool
     {
         return $this->getDate() === 0;
-    }
-
-    public function getOpponent(): AllianceInterface
-    {
-        return $this->opponent;
     }
 
     public function isWar(): bool
@@ -123,17 +106,28 @@ class AllianceRelation implements AllianceRelationInterface
         return $this->getAllianceId() == currentUser()->getAllianceId();
     }
 
-    /**
-     * @deprecated
-     */
-    public function getRecipient(): AllianceInterface
-    {
-        return $this->getOpponent();
-    }
-
     public function getAlliance(): AllianceInterface
     {
         return $this->alliance;
+    }
+
+    public function setAlliance(AllianceInterface $alliance): AllianceRelationInterface
+    {
+        $this->alliance = $alliance;
+
+        return $this;
+    }
+
+    public function getOpponent(): AllianceInterface
+    {
+        return $this->opponent;
+    }
+
+    public function setOpponent(AllianceInterface $opponent): AllianceRelationInterface
+    {
+        $this->opponent = $opponent;
+
+        return $this;
     }
 
     public function getTypeDescription(): string

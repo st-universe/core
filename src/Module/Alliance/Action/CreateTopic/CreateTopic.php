@@ -66,7 +66,7 @@ final class CreateTopic implements ActionControllerInterface
 
         $topic = $this->allianceBoardTopicRepository->prototype();
         $topic->setBoard($board);
-        $topic->setAllianceId((int)$alliance->getId());
+        $topic->setAlliance($alliance);
         $topic->setName($name);
         $topic->setUserId($userId);
         $topic->setLastPostDate($date);
@@ -80,7 +80,6 @@ final class CreateTopic implements ActionControllerInterface
         $post->setName($name);
         $post->setBoard($board);
         $post->setTopic($topic);
-        $post->setAllianceId((int) $alliance->getId());
         $post->setUserId($userId);
         $post->setDate($date);
 

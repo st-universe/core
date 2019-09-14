@@ -45,12 +45,12 @@ final class AcceptApplication implements ActionControllerInterface
         }
 
         $appl = $this->allianceJobRepository->find($this->acceptApplicationRequest->getApplicationId());
-        if ($appl === null || $appl->getAllianceId() != $alliance->getId()) {
+        if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
             new AccessViolation;
         }
 
         $applicant = $appl->getUser();
-        $applicant->setAllianceId($appl->getAllianceId());
+        $applicant->setAllianceId($alliance->getId());
         $applicant->save();
 
         $this->allianceJobRepository->delete($appl);

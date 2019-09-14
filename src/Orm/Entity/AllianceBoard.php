@@ -60,13 +60,6 @@ class AllianceBoard implements AllianceBoardInterface
         return $this->alliance_id;
     }
 
-    public function setAllianceId(int $allianceId): AllianceBoardInterface
-    {
-        $this->alliance_id = $allianceId;
-
-        return $this;
-    }
-
     public function getName(): string
     {
         return $this->name;

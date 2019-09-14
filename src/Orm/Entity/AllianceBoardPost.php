@@ -27,9 +27,6 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     /** @Column(type="integer") * */
     private $board_id = 0;
 
-    /** @Column(type="integer") * */
-    private $alliance_id = 0;
-
     /** @Column(type="string") */
     private $name = '';
 
@@ -79,18 +76,6 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     public function setBoardId(int $boardId): AllianceBoardPostInterface
     {
         $this->board_id = $boardId;
-
-        return $this;
-    }
-
-    public function getAllianceId(): int
-    {
-        return $this->alliance_id;
-    }
-
-    public function setAllianceId(int $allianceId): AllianceBoardPostInterface
-    {
-        $this->alliance_id = $allianceId;
 
         return $this;
     }

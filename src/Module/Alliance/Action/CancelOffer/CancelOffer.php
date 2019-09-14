@@ -53,9 +53,11 @@ final class CancelOffer implements ActionControllerInterface
 
         $text = sprintf(_('Die Allianz %s hat das Angebot zurückgezogen'), $alliance->getName());
 
-        PM::sendPM(USER_NOONE, $relation->getRecipient()->getFounder()->getUserId(), $text);
-        if ($relation->getRecipient()->getDiplomatic()) {
-            PM::sendPM(USER_NOONE, $relation->getRecipient()->getDiplomatic()->getUserId(), $text);
+        $opponent = $relation->getOpponent();
+
+        PM::sendPM(USER_NOONE, $opponent->getFounder()->getUserId(), $text);
+        if ($opponent->getDiplomatic()) {
+            PM::sendPM(USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
         }
         $game->addInformation(_('Das Angebot wurde zurückgezogen'));
     }

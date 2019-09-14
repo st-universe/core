@@ -50,6 +50,12 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     private $board;
 
     /**
+     * @ManyToOne(targetEntity="Alliance")
+     * @JoinColumn(name="alliance_id", referencedColumnName="id")
+     */
+    private $alliance;
+
+    /**
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
      */
     private $posts;
@@ -79,13 +85,6 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     public function getAllianceId(): int
     {
         return $this->alliance_id;
-    }
-
-    public function setAllianceId(int $allianceId): AllianceBoardTopicInterface
-    {
-        $this->alliance_id = $allianceId;
-
-        return $this;
     }
 
     public function getName(): string
@@ -183,5 +182,17 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     public function getPosts(): Collection
     {
         return $this->posts;
+    }
+
+    public function getAlliance(): AllianceInterface
+    {
+        return $this->alliance;
+    }
+
+    public function setAlliance(AllianceInterface $alliance): AllianceBoardTopicInterface
+    {
+        $this->alliance = $alliance;
+
+        return $this;
     }
 }

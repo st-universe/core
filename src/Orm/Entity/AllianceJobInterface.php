@@ -8,16 +8,6 @@ interface AllianceJobInterface
 {
     public function getId(): int;
 
-    /**
-     * @deprecated
-     */
-    public function getAllianceId(): int;
-
-    /**
-     * @deprecated
-     */
-    public function setAllianceId(int $allianceId): AllianceJobInterface;
-
     public function getUserId(): int;
 
     public function setUserId(int $userId): AllianceJobInterface;

@@ -12,11 +12,7 @@ interface AllianceRelationInterface
 
     public function getAllianceId(): int;
 
-    public function setAllianceId(int $allianceId): AllianceRelationInterface;
-
-    public function getRecipientId(): int;
-
-    public function setRecipientId(int $recipientId): AllianceRelationInterface;
+    public function getOpponentId(): int;
 
     public function getDate(): int;
 
@@ -24,17 +20,19 @@ interface AllianceRelationInterface
 
     public function isPending(): bool;
 
-    public function getOpponent(): AllianceInterface;
-
     public function isWar(): bool;
 
     public function getPossibleTypes(): array;
 
     public function offerIsSend(): bool;
 
-    public function getRecipient(): AllianceInterface;
-
     public function getAlliance(): AllianceInterface;
+
+    public function setAlliance(AllianceInterface $alliance): AllianceRelationInterface;
+
+    public function getOpponent(): AllianceInterface;
+
+    public function setOpponent(AllianceInterface $opponent): AllianceRelationInterface;
 
     public function getTypeDescription(): string;
 }

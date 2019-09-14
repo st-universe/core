@@ -16,10 +16,6 @@ interface AllianceBoardPostInterface
 
     public function setBoardId(int $boardId): AllianceBoardPostInterface;
 
-    public function getAllianceId(): int;
-
-    public function setAllianceId(int $allianceId): AllianceBoardPostInterface;
-
     public function getName(): string;
 
     public function setName(string $name): AllianceBoardPostInterface;

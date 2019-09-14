@@ -48,13 +48,13 @@ final class AcceptOffer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ($relation === null || $relation->getRecipientId() != $allianceId) {
+        if ($relation === null || $relation->getOpponentId() != $allianceId) {
             return;
         }
         if (!$relation->isPending()) {
             return;
         }
-        $rel = $this->allianceRelationRepository->getActiveByAlliancePair($relation->getAllianceId(), $relation->getRecipientId());
+        $rel = $this->allianceRelationRepository->getActiveByAlliancePair($relation->getAllianceId(), $relation->getOpponentId());
         if ($rel) {
             $this->allianceRelationRepository->delete($rel);
         }
@@ -79,7 +79,7 @@ final class AcceptOffer implements ActionControllerInterface
         );
 
         if ($relation->getAllianceId() == $allianceId) {
-            $this->allianceActionManager->sendMessage($relation->getRecipientId(), $text);
+            $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }

@@ -43,7 +43,7 @@ final class DeletePost implements ActionControllerInterface
         if ($post === null) {
             return;
         }
-        if ($post->getAllianceId() != $alliance->getId()) {
+        if ($post->getBoard()->getAllianceId() !== $alliance->getId()) {
             throw new AccessViolation();
         }
 

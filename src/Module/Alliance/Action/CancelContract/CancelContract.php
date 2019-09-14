@@ -47,7 +47,7 @@ final class CancelContract implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ($relation === null || ($relation->getRecipientId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
+        if ($relation === null || ($relation->getOpponentId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
             return;
         }
         if ($relation->getType() == ALLIANCE_RELATION_WAR) {
@@ -66,7 +66,7 @@ final class CancelContract implements ActionControllerInterface
         );
 
         if ($relation->getAllianceId() == $allianceId) {
-            $this->allianceActionManager->sendMessage($relation->getRecipientId(), $text);
+            $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }

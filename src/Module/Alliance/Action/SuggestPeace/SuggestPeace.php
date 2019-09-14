@@ -51,7 +51,7 @@ final class SuggestPeace implements ActionControllerInterface
             $game->addInformation(_('Der Allianz wird bereits ein Friedensabkommen angeboten'));
             return;
         }
-        if (!$relation || ($relation->getRecipientId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
+        if (!$relation || ($relation->getOpponentId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
             return;
         }
         if ($relation->getType() != ALLIANCE_RELATION_WAR) {
@@ -59,8 +59,8 @@ final class SuggestPeace implements ActionControllerInterface
         }
 
         $obj = $this->allianceRelationRepository->prototype();
-        $obj->setAllianceId($allianceId);
-        $obj->setRecipientId($opponentId);
+        $obj->setAlliance($alliance);
+        $obj->setOpponent($rel->getOpponent());
         $obj->setType(ALLIANCE_RELATION_PEACE);
 
         $this->allianceRelationRepository->save($obj);
@@ -71,7 +71,7 @@ final class SuggestPeace implements ActionControllerInterface
         );
 
         if ($relation->getAllianceId() == $allianceId) {
-            $this->allianceActionManager->sendMessage($relation->getRecipientId(), $text);
+            $this->allianceActionManager->sendMessage($relation->getOpponentId(), $text);
         } else {
             $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }

@@ -87,8 +87,8 @@ final class CreateRelation implements ActionControllerInterface
             }
         }
         $obj = $this->allianceRelationRepository->prototype();
-        $obj->setAllianceId($allianceId);
-        $obj->setRecipientId($opponentId);
+        $obj->setAlliance($alliance);
+        $obj->setOpponent($opp);
         $obj->setType($typeId);
 
         if ($typeId == ALLIANCE_RELATION_WAR) {

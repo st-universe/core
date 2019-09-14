@@ -15,8 +15,6 @@ interface AllianceBoardTopicInterface
 
     public function getAllianceId(): int;
 
-    public function setAllianceId(int $allianceId): AllianceBoardTopicInterface;
-
     public function getName(): string;
 
     public function setName(string $name): AllianceBoardTopicInterface;
@@ -46,4 +44,8 @@ interface AllianceBoardTopicInterface
     public function setBoard(AllianceBoardInterface $board): AllianceBoardTopicInterface;
 
     public function getPosts(): Collection;
+
+    public function getAlliance(): AllianceInterface;
+
+    public function setAlliance(AllianceInterface $alliance): AllianceBoardTopicInterface;
 }

@@ -58,7 +58,6 @@ final class CreatePost implements ActionControllerInterface
         $post->setText($text);
         $post->setBoard($topic->getBoard());
         $post->setTopic($topic);
-        $post->setAllianceId((int) $alliance->getId());
         $post->setUserId($userId);
         $post->setDate(time());
 

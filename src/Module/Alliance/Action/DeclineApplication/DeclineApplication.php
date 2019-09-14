@@ -41,7 +41,7 @@ final class DeclineApplication implements ActionControllerInterface
         }
 
         $appl = $this->allianceJobRepository->find($this->declineApplicationRequest->getApplicationId());
-        if ($appl === null || $appl->getAllianceId() != $alliance->getId()) {
+        if ($appl === null || $appl->getAlliance()->getId() !== $alliance->getId()) {
             new AccessViolation;
         }
 
