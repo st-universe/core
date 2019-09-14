@@ -94,8 +94,20 @@ abstract class Action
 
     protected function respond(ActionPayload $payload): ResponseInterface
     {
+        // @todo use custom emitter and enable cors
+
         $json = json_encode($payload);
         $this->response->getBody()->write($json);
-        return $this->response->withHeader('Content-Type', 'application/json');
+
+        return $this->response
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Credentials', 'true')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+            ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->withAddedHeader('Cache-Control', 'post-check=0, pre-check=0')
+            ->withHeader('Pragma', 'no-cache')
+        ;
     }
 }
