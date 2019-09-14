@@ -7,7 +7,7 @@
 			<form action="alliance.php" method="post">
 				<input type="hidden" name="SHOW_RELATIONS" value="1" />
 				<select name="oid">
-					<option tal:repeat="data ALLIANCE_LIST" tal:content="data/getNameWithoutMarkup" value="runtime" tal:attributes="value data/getId">NAME</option>
+					<option tal:repeat="data ALLIANCE_LIST" tal:content="bbcode2txt:data/getName" value="runtime" tal:attributes="value data/getId">NAME</option>
 				</select>
 				<select name="type">
 					<option value="runtime" tal:attributes="value php:ALLIANCE_RELATION_WAR">Krieg</option>

@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\DeclineApplication;
 
 use AccessViolation;
 use PM;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -19,20 +20,24 @@ final class DeclineApplication implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         DeclineApplicationRequestInterface $declineApplicationRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->declineApplicationRequest = $declineApplicationRequest;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$alliance->currentUserMayEdit()) {
-            throw new AccessViolation();
+        if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $game->getUser()->getId())) {
+            new AccessViolation;
         }
 
         $appl = $this->allianceJobRepository->find($this->declineApplicationRequest->getApplicationId());
@@ -44,7 +49,7 @@ final class DeclineApplication implements ActionControllerInterface
 
         $text = sprintf(
             _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
-            $alliance->getNameWithoutMarkup()
+            $alliance->getName()
         );
 
         PM::sendPM(USER_NOONE, $appl->getUserId(), $text);

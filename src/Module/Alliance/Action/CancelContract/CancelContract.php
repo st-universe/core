@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelContract;
 
 use AccessViolation;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -20,14 +21,18 @@ final class CancelContract implements ActionControllerInterface
 
     private $allianceRelationRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         CancelContractRequestInterface $cancelContractRequest,
         EntryCreatorInterface $entryCreator,
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->cancelContractRequest = $cancelContractRequest;
         $this->entryCreator = $entryCreator;
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +43,7 @@ final class CancelContract implements ActionControllerInterface
 
         $relation = $this->allianceRelationRepository->find($this->cancelContractRequest->getRelationId());
 
-        if (!$alliance->currentUserIsDiplomatic()) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $user->getId())) {
             throw new AccessViolation();
         }
 
@@ -56,14 +61,14 @@ final class CancelContract implements ActionControllerInterface
 
         $text = sprintf(
             _('Die Allianz %s hat das %s aufgelöst'),
-            $alliance->getNameWithoutMarkup(),
+            $alliance->getName(),
             $relation->getTypeDescription()
         );
 
         if ($relation->getAllianceId() == $allianceId) {
-            $relation->getOpponent()->sendMessage($text);
+            $this->allianceActionManager->sendMessage($relation->getRecipientId(), $text);
         } else {
-            $relation->getAlliance()->sendMessage($text);
+            $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
         $this->entryCreator->addAllianceEntry(

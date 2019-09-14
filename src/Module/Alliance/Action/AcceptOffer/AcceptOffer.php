@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptOffer;
 
 use AccessViolation;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -20,14 +21,18 @@ final class AcceptOffer implements ActionControllerInterface
 
     private $allianceRelationRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         AcceptOfferRequestInterface $acceptOfferRequest,
         EntryCreatorInterface $entryCreator,
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->acceptOfferRequest = $acceptOfferRequest;
         $this->entryCreator = $entryCreator;
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,7 @@ final class AcceptOffer implements ActionControllerInterface
 
         $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
 
-        if (!$alliance->currentUserIsDiplomatic()) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userIdyy)) {
             throw new AccessViolation();
         }
 
@@ -60,7 +65,7 @@ final class AcceptOffer implements ActionControllerInterface
         $text = sprintf(
             _("%s abgeschlossen!\nDie Allianz %s hat hat das Angebot angenommen"),
             $relation->getTypeDescription(),
-            $alliance->getNameWithoutMarkup()
+            $alliance->getName()
         );
 
         $this->entryCreator->addAllianceEntry(
@@ -74,9 +79,9 @@ final class AcceptOffer implements ActionControllerInterface
         );
 
         if ($relation->getAllianceId() == $allianceId) {
-            $relation->getOpponent()->sendMessage($text);
+            $this->allianceActionManager->sendMessage($relation->getRecipientId(), $text);
         } else {
-            $relation->getAlliance()->sendMessage($text);
+            $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
         $game->addInformation(_('Das Angebot wurden angemommen'));

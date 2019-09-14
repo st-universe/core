@@ -29,8 +29,8 @@
 					<img src="assets/rassen/${data/getFactionId}s.gif" tal:condition="data/getFactionId" />
 				</td>
 				<td>
-					<span tal:condition="data/getAcceptApplications">Ja</span>
-					<span tal:condition="not:data/getAcceptApplications">Nein</span>
+					<span tal:condition="data/acceptsApplications">Ja</span>
+					<span tal:condition="not:data/acceptsApplications">Nein</span>
 				</td>
 			</tr>
 		</table>

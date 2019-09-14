@@ -6,18 +6,30 @@ namespace Stu\Module\Alliance\View\Overview;
 
 use Alliance;
 use AllianceData;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceListItem;
+use Stu\Module\Alliance\Lib\AllianceListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
     private $allianceRelationRepository;
 
+    private $allianceActionManager;
+
+    private $allianceJobRepository;
+
     public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        AllianceActionManagerInterface $allianceActionManager,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->allianceActionManager = $allianceActionManager;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -26,8 +38,14 @@ final class Overview implements ViewControllerInterface
 
         if ($user->getAllianceId() > 0) {
             $alliance = $user->getAlliance();
+            $allianceId = (int) $alliance->getId();
+            $userId = $user->getId();
 
-            $result = $this->allianceRelationRepository->getActiveByAlliance((int) $alliance->getId());
+            $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
+            $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
+                    $allianceId,
+                    ALLIANCE_JOBS_FOUNDER
+                )->getUserId() === $game->getUser()->getId();
 
             $relations = [];
             foreach ($result as $key => $obj) {
@@ -54,7 +72,19 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
             $game->setTemplateVar('DESCRIPTION', $description);
             $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
-            $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$alliance->currentUserIsFounder());
+            $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
+            $game->setTemplateVar(
+                'CAN_EDIT',
+                $this->allianceActionManager->mayEdit($allianceId, $userId)
+            );
+            $game->setTemplateVar(
+                'CAN_MANAGE_FOREIGN_RELATIONS',
+                $this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)
+            );
+            $game->setTemplateVar(
+               'CAN_SIGNUP',
+                $user->maySignup($allianceId)
+            );
 
             $game->appendNavigationPart(
                 'alliance.php',
@@ -64,7 +94,15 @@ final class Overview implements ViewControllerInterface
             $game->appendNavigationPart('alliance.php?SHOW_LIST=1', _('Allianzliste'));
             $game->setTemplateFile('html/alliancelist.xhtml');
             $game->setPageTitle(_('Allianzliste'));
-            $game->setTemplateVar('ALLIANCE_LIST', Alliance::getList());
+            $game->setTemplateVar(
+                'ALLIANCE_LIST',
+                array_map(
+                    function (\AllianceData $alliance): AllianceListItemInterface {
+                        return new AllianceListItem($alliance);
+                    },
+                    Alliance::getList()
+                )
+            );
         }
     }
 

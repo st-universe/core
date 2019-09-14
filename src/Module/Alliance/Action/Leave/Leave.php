@@ -28,7 +28,12 @@ final class Leave implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $userId = $user->getId();
 
-        if ($alliance->currentUserIsFounder()) {
+        $foundJob = $this->allianceJobRepository->getSingleResultByAllianceAndType(
+            (int) $alliance->getId(),
+            ALLIANCE_JOBS_FOUNDER
+        );
+
+        if ($foundJob->getUserId() === $userId) {
             throw new AccessViolation();
         }
 
@@ -42,7 +47,7 @@ final class Leave implements ActionControllerInterface
             $user->getName()
         );
 
-        PM::sendPM($userId, $alliance->getFounder()->getUserId(), $text);
+        PM::sendPM($userId, $foundJob->getUserId(), $text);
         if ($alliance->getSuccessor()) {
             PM::sendPM($userId, $alliance->getSuccessor()->getUserId(), $text);
         }

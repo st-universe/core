@@ -29,10 +29,6 @@ class AllianceData extends BaseTable {
 		$this->addUpdateField('name','getName');
 	}
 
-	function getNameWithoutMarkup() {
-		return BBCode()->parse($this->getName())->getAsText();
-	}
-
 	function getHomepage() {
 		return $this->data['homepage'];
 	}
@@ -132,32 +128,6 @@ class AllianceData extends BaseTable {
 		return $this->members;
 	}
 
-	function getMemberCount() {
-		return count($this->getMembers());
-	}
-
-	function currentUserMayEdit() {
-		return ($this->getSuccessor() && currentUser()->getId() == $this->getSuccessor()->getUserId()) || currentUser()->getId() == $this->getFounder()->getUserId();
-	}
-
-	function mayEditFactionMode() {
-		if ($this->isNew()) {
-			return TRUE;
-		}
-		if ($this->getMemberCount() == 1) {
-			return TRUE;
-		}
-		if ($this->getFactionId() != 0) {
-			return TRUE;
-		}
-		foreach ($this->getMembers() as $key => $obj) {
-			if ($obj->getUser()->getFaction() != currentUser()->getFaction()) {
-				return FALSE;
-			}
-		}
-		return TRUE;
-	}
-
 	function setAcceptApplications($value) {
 		$this->data['accept_applications'] = $value;
 		$this->addUpdateField('accept_applications','getAcceptApplications');
@@ -165,41 +135,6 @@ class AllianceData extends BaseTable {
 
 	function getAcceptApplications() {
 		return $this->data['accept_applications'];
-	}
-
-	function currentUserMaySignup() {
-		// @todo refactor
-		global $container;
-
-		$pendingApplication = $container->get(AllianceJobRepositoryInterface::class)->getByUserAndAllianceAndType(
-			(int) currentUser()->getId(),
-			(int) $this->getId(),
-			ALLIANCE_JOBS_PENDING
-		);
-		if ($pendingApplication !== null) {
-			return FALSE;
-		}
-		return $this->getAcceptApplications() && !currentUser()->isInAlliance() && ($this->getFactionId() == 0 || currentUser()->getFaction() == $this->getFactionId());
-	}
-
-	private $pendingApplications = NULL;
-
-	function getPendingApplications() {
-		if ($this->pendingApplications === NULL) {
-		    // @todo refactor
-			global $container;
-
-			$this->pendingApplications = $container->get(AllianceJobRepositoryInterface::class)
-				->getByAllianceAndType(
-					(int) $this->getId(),
-					ALLIANCE_JOBS_PENDING
-				);
-		}
-		return $this->pendingApplications;
-	}
-
-	function currentUserIsFounder() {
-		return $this->getFounder()->getUserId() == currentUser()->getId();
 	}
 
 	function getAvatar() {
@@ -215,22 +150,6 @@ class AllianceData extends BaseTable {
 		return AVATAR_ALLIANCE_PATH."/".$this->getAvatar().".png";
 	}
 
-	function currentUserIsDiplomatic() {
-		if (!$this->getDiplomatic()) {
-			return $this->currentUserMayEdit();
-		}
-		return $this->currentUserMayEdit() || $this->getDiplomatic()->getUserId() == currentUser()->getId(); 
-	}
-
-	function sendMessage($text) {
-                PM::sendPM(USER_NOONE,$this->getFounder()->getUserId(),$text);
-                if ($this->getSuccessor()) {
-                        PM::sendPM(USER_NOONE,$this->getSuccessor()->getUserId(),$text);
-                }
-                if ($this->getDiplomatic()) {
-                        PM::sendPM(USER_NOONE,$this->getDiplomatic()->getUserId(),$text);
-                }
-	}
 }
 class Alliance extends AllianceData {
 

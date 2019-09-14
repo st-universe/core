@@ -39,6 +39,13 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         ]);
     }
 
+    public function getByAlliance(int $allianceId): array
+    {
+        return $this->findBy([
+            'alliance_id' => $allianceId,
+        ]);
+    }
+
     public function truncateByUser(int $userId): void
     {
         $this->getEntityManager()->createQuery(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Topic;
 
 use AccessViolation;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceBoardTopicInterface;
@@ -23,14 +24,18 @@ final class Topic implements ViewControllerInterface
 
     private $allianceBoardTopicRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         TopicRequestInterface $topicRequest,
         AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
-        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
+        AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->topicRequest = $topicRequest;
         $this->allianceBoardPostRepository = $allianceBoardPostRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -84,7 +89,10 @@ final class Topic implements ViewControllerInterface
                 $this->topicRequest->getPageMark()
             )
         );
-        $game->setTemplateVar('IS_MODERATOR', $alliance->currentUserMayEdit());
+        $game->setTemplateVar(
+            'IS_MODERATOR',
+            $this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())
+        );
     }
 
     private function getTopicNavigation(AllianceBoardTopicInterface $topic): array

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\AllianceList;
 
 use Alliance;
+use Stu\Module\Alliance\Lib\AllianceListItem;
+use Stu\Module\Alliance\Lib\AllianceListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 
@@ -28,7 +30,12 @@ final class AllianceList implements ViewControllerInterface
 
         $game->setTemplateVar(
             'ALLIANCE_LIST',
-            Alliance::getList()
+            array_map(
+                function (\AllianceData $alliance): AllianceListItemInterface {
+                    return new AllianceListItem($alliance);
+                },
+                Alliance::getList()
+            )
         );
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\SuggestPeace;
 
 use AccessViolation;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -17,24 +18,28 @@ final class SuggestPeace implements ActionControllerInterface
 
     private $allianceRelationRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         SuggestPeaceRequestInterface $suggestPeaceRequest,
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->suggestPeaceRequest = $suggestPeaceRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $relation = $this->allianceRelationRepository->find($this->suggestPeaceRequest->getRelationId());
         $alliance = $game->getUser()->getAlliance();
+        $allianceId = (int) $alliance->getId();
 
-        if ($relation === null || !$alliance->currentUserIsDiplomatic()) {
+        if ($relation === null || !$this->allianceActionManager->mayManageForeignRelations($allianceId, $game->getUser()->getId())) {
             throw new AccessViolation();
         }
 
-        $allianceId = (int) $alliance->getId();
         $opponentId = (int) ($relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId());
 
         $rel = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
@@ -62,13 +67,13 @@ final class SuggestPeace implements ActionControllerInterface
 
         $text = sprintf(
             _('Die Allianz %s hat Deiner Allianz ein Friedensabkommen angeboten'),
-            $alliance->getNameWithoutMarkup()
+            $alliance->getName()
         );
 
         if ($relation->getAllianceId() == $allianceId) {
-            $relation->getOpponent()->sendMessage($text);
+            $this->allianceActionManager->sendMessage($relation->getRecipientId(), $text);
         } else {
-            $relation->getAlliance()->sendMessage($text);
+            $this->allianceActionManager->sendMessage($relation->getAllianceId(), $text);
         }
 
         $game->addInformation(_('Der Frieden wurde angeboten'));

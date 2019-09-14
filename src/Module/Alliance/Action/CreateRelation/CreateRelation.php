@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use AccessViolation;
 use Alliance;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -21,14 +22,18 @@ final class CreateRelation implements ActionControllerInterface
 
     private $allianceRelationRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         CreateRelationRequestInterface $createRelationRequest,
         EntryCreatorInterface $entryCreator,
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->createRelationRequest = $createRelationRequest;
         $this->entryCreator = $entryCreator;
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,7 +42,7 @@ final class CreateRelation implements ActionControllerInterface
         $allianceId = (int) $alliance->getId();
         $userId = $game->getUser()->getId();
 
-        if (!$alliance->currentUserIsDiplomatic()) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)) {
             throw new AccessViolation();
         }
 
@@ -86,9 +91,9 @@ final class CreateRelation implements ActionControllerInterface
             $this->allianceRelationRepository->save($obj);
             $text = sprintf(
                 _('Die Allianz %s hat Deiner Allianz den Krieg erklärt'),
-                $alliance->getNameWithoutMarkup()
+                $alliance->getName()
             );
-            $opp->sendMessage($text);
+            $this->allianceActionManager->sendMessage($opponentId, $text);
 
             $this->entryCreator->addAllianceEntry(
                 sprintf(
@@ -99,7 +104,7 @@ final class CreateRelation implements ActionControllerInterface
                 $userId
             );
             $game->addInformation(
-                sprintf('Der Allianz %s wurde der Krieg erklärt', $opp->getNameWithoutMarkup())
+                sprintf('Der Allianz %s wurde der Krieg erklärt', $opp->getName())
             );
             return;
         }
@@ -107,9 +112,9 @@ final class CreateRelation implements ActionControllerInterface
 
         $text = sprintf(
             'Die Allianz %s hat Deiner Allianz ein Abkommen angeboten',
-            $alliance->getNameWithoutMarkup()
+            $alliance->getName()
         );
-        $opp->sendMessage($text);
+        $this->allianceActionManager->sendMessage($opponentId, $text);
 
         $game->addInformation(_('Das Abkommen wurde angeboten'));
     }

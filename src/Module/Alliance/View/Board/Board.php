@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Board;
 
 use AccessViolation;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceBoardInterface;
@@ -21,14 +22,18 @@ final class Board implements ViewControllerInterface
 
     private $allianceBoardRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         BoardRequestInterface $boardRequest,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
-        AllianceBoardRepositoryInterface $allianceBoardRepository
+        AllianceBoardRepositoryInterface $allianceBoardRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->boardRequest = $boardRequest;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
         $this->allianceBoardRepository = $allianceBoardRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,7 +74,7 @@ final class Board implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'EDITABLE',
-            $alliance->currentUserMayEdit()
+            $this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())
         );
         $game->setTemplateVar('BOARD_ID', $boardId);
     }

@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 use AccessViolation;
 use JBBCode\Parser;
 use PM;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -14,7 +15,6 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class EditDetails implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
     private $editDetailsRequest;
@@ -23,20 +23,25 @@ final class EditDetails implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         EditDetailsRequestInterface $editDetailsRequest,
         Parser $bbcodeParser,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->editDetailsRequest = $editDetailsRequest;
         $this->bbcodeParser = $bbcodeParser;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
+        $allianceId = (int)$alliance->getId();
 
         $name = $this->editDetailsRequest->getName();
         $faction_mode = $this->editDetailsRequest->getFactionMode();
@@ -44,13 +49,13 @@ final class EditDetails implements ActionControllerInterface
         $homepage = $this->editDetailsRequest->getHomepage();
         $acceptApplications = $this->editDetailsRequest->getAcceptApplications();
 
-        if (!$alliance->currentUserMayEdit()) {
+        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
             throw new AccessViolation();
         }
 
         $game->setView(Edit::VIEW_IDENTIFIER);
 
-        if ($alliance->mayEditFactionMode()) {
+        if ($this->allianceActionManager->mayEditFactionMode($alliance, (int) $user->getFaction())) {
             if ($faction_mode === 1) {
                 $alliance->setFactionId($user->getFaction());
             } else {
@@ -63,12 +68,15 @@ final class EditDetails implements ActionControllerInterface
             $alliance->setAcceptApplications(0);
 
             $result = $this->allianceJobRepository->getByAllianceAndType(
-                (int) $alliance->getId(),
+                $allianceId,
                 ALLIANCE_JOBS_PENDING
             );
 
-            foreach($result as $applicant) {
-                $text = "Deine Bewerbung bei der Allianz ".$alliance->getNameWithoutMarkup()." wurde abgelehnt";
+            foreach ($result as $applicant) {
+                $text = sprintf(
+                    _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
+                    $alliance->getName()
+                );
                 PM::sendPM(USER_NOONE, $applicant->getUserId(), $text);
 
                 $applicant->deleteFromDatabase();

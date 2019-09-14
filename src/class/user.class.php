@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Lib\ContactlistWrapper;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -399,6 +400,25 @@ class UserData extends BaseTable {
 	public function getPasswordToken() {
 		return $this->data['password_token'];
 	}
+
+	public function maySignup(int $allianceId): bool {
+		// @todo refactor
+		global $container;
+
+		$pendingApplication = $container->get(AllianceJobRepositoryInterface::class)->getByUserAndAllianceAndType(
+			$this->getId(),
+			$allianceId,
+			ALLIANCE_JOBS_PENDING
+		);
+		if ($pendingApplication !== null) {
+			return false;
+		}
+
+		$alliance = new Alliance($allianceId);
+
+		return $alliance->getAcceptApplications() && !$this->isInAlliance() && ($alliance->getFactionId() == 0 || $this->getFaction() == $alliance->getFactionId());
+	}
+
 }
 
 class User extends UserData {

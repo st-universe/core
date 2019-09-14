@@ -9,6 +9,7 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\AllianceList\AllianceList;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
 {
@@ -16,28 +17,31 @@ final class DeleteAlliance implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $allianceJobRepository;
+
     public function __construct(
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->allianceActionManager = $allianceActionManager;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
-
-        if (!$alliance->currentUserMayEdit()) {
-            new AccessViolation;
-        }
+        $allianceId = (int) $alliance->getId();
 
         $game->setView(AllianceList::VIEW_IDENTIFIER);
 
-        if (!$alliance->currentUserIsFounder()) {
+        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId, ALLIANCE_JOBS_FOUNDER);
+
+        if ($job->getUserId() !== $user->getId()) {
             throw new AccessViolation();
         }
 
-        $this->allianceActionManager->delete((int) $alliance->getId());
+        $this->allianceActionManager->delete($allianceId);
 
         $user->setAllianceId(0);
         $user->save();

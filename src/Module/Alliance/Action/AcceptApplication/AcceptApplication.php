@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\AcceptApplication;
 
 use AccessViolation;
 use PM;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -19,21 +20,27 @@ final class AcceptApplication implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         AcceptApplicationRequestInterface $acceptApplicationRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->acceptApplicationRequest = $acceptApplicationRequest;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(Applications::VIEW_IDENTIFIER);
 
+        $userId = $game->getUser()->getId();
+
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$alliance->currentUserMayEdit()) {
+        if (!$this->allianceActionManager->mayEdit((int) $alliance->getId(), $userId)) {
             throw new AccessViolation();
         }
 
@@ -42,17 +49,17 @@ final class AcceptApplication implements ActionControllerInterface
             new AccessViolation;
         }
 
-        $user = $appl->getUser();
-        $user->setAllianceId($appl->getAllianceId());
-        $user->save();
+        $applicant = $appl->getUser();
+        $applicant->setAllianceId($appl->getAllianceId());
+        $applicant->save();
 
         $this->allianceJobRepository->delete($appl);
 
         $text = sprintf(
             _('Deine Bewerbung wurde akzeptiert - Du bist jetzt Mitglied der Allianz %s'),
-            $alliance->getNameWithoutMarkup()
+            $alliance->getName()
         );
-        PM::sendPM($game->getUser()->getId(), $user->getId(), $text);
+        PM::sendPM($userId, $applicant->getId(), $text);
 
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
     }

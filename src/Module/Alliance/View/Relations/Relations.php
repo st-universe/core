@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\View\Relations;
 
 use AccessViolation;
 use Alliance;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -16,10 +17,14 @@ final class Relations implements ViewControllerInterface
 
     private $allianceRelationRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
-        AllianceRelationRepositoryInterface $allianceRelationRepository
+        AllianceRelationRepositoryInterface $allianceRelationRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -28,7 +33,7 @@ final class Relations implements ViewControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = (int) $alliance->getId();
 
-        if (!$alliance->currentUserIsDiplomatic()) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $user->getId())) {
             throw new AccessViolation();
         }
 

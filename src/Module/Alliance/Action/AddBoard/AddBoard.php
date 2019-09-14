@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AddBoard;
 
 use AccessViolation;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Boards\Boards;
@@ -18,19 +19,25 @@ final class AddBoard implements ActionControllerInterface
 
     private $allianceBoardRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         AddBoardRequestInterface $addBoardRequest,
-        AllianceBoardRepositoryInterface $allianceBoardRepository
+        AllianceBoardRepositoryInterface $allianceBoardRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->addBoardRequest = $addBoardRequest;
         $this->allianceBoardRepository = $allianceBoardRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
 
-        if (!$alliance->currentUserMayEdit()) {
+        $allianceId = (int) $alliance->getId();
+
+        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
             throw new AccessViolation();
         }
 
@@ -44,7 +51,7 @@ final class AddBoard implements ActionControllerInterface
         }
 
         $board = $this->allianceBoardRepository->prototype();
-        $board->setAllianceId((int) $alliance->getId());
+        $board->setAllianceId($allianceId);
         $board->setName($name);
 
         $this->allianceBoardRepository->save($board);

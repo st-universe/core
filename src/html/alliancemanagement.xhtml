@@ -27,7 +27,7 @@
 					</div>
 				</td>
 				<td>
-					<img src="assets/planets/${col/getColonyClass}.gif" title="runtime" tal:attributes="title col/getNameWithoutMarkup" tal:repeat="col data/getColonies" />
+					<img src="assets/planets/${col/getColonyClass}.gif" title="runtime" tal:attributes="title bbcode2txt:col/getName" tal:repeat="col data/getColonies" />
 				</td>
 				<td>
 					<div style="display: inline-block; padding-left: 10px; text-align: center;" tal:repeat="rump data/getShipRumpList">
@@ -41,7 +41,7 @@
 						<div id="promote${data/getId}" style="border-top: 1px solid #262323; margin-top: 10px; padding-top: 10px; display: none;">
 							<a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_DIPLOMATIC}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Außenminister</a><br /><br />
 							<a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_SUCCESSOR}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Vize-Präsident</a>
-							<tal:block tal:condition="ALLIANCE/currentUserIsFounder">
+							<tal:block tal:condition="USER_IS_FOUNDER">
 								<br /><br />
 								<a href="alliance.php?B_PROMOTE_USER=1&type=${php:ALLIANCE_JOBS_FOUNDER}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Präsident</a>
 							</tal:block>

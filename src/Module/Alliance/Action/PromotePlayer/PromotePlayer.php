@@ -37,8 +37,9 @@ final class PromotePlayer implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
+        $allianceId = (int) $alliance->getId();
 
-        if (!$alliance->currentUserMayEdit()) {
+        if (!$this->allianceActionManager->mayEdit($allianceId, $$userId)) {
             throw new AccessViolation();
         }
         $playerId = $this->promotePlayerRequest->getPlayerId();
@@ -68,17 +69,21 @@ final class PromotePlayer implements ActionControllerInterface
 
         switch ($type) {
             case ALLIANCE_JOBS_FOUNDER:
-                if (!$alliance->currentUserIsFounder()) {
+                $founderJob = $this->allianceJobRepository->getSingleResultByAllianceAndType(
+                    $allianceId,
+                    ALLIANCE_JOBS_FOUNDER
+                );
+                if ($founderJob->getUserId() === $userId) {
                     throw new AccessViolation();
                 }
                 $this->allianceActionManager->setJobForUser(
-                    (int) $alliance->getId(),
+                    $allianceId,
                     $userId,
                     ALLIANCE_JOBS_FOUNDER
                 );
                 $text = sprintf(
                     _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
-                    $alliance->getNameWithoutMarkup()
+                    $alliance->getName()
                 );
                 break;
             case ALLIANCE_JOBS_SUCCESSOR:
@@ -86,14 +91,14 @@ final class PromotePlayer implements ActionControllerInterface
                     throw new AccessViolation();
                 }
                 $this->allianceActionManager->setJobForUser(
-                    (int) $alliance->getId(),
+                    $allianceId,
                     $playerId,
                     ALLIANCE_JOBS_SUCCESSOR
                 );
 
                 $text = sprintf(
                     _('Du wurdest zum neuen Vize-Präsidenten der Allianz %s ernannt'),
-                    $alliance->getNameWithoutMarkup()
+                    $alliance->getName()
                 );
                 break;
             case ALLIANCE_JOBS_DIPLOMATIC:
@@ -101,14 +106,14 @@ final class PromotePlayer implements ActionControllerInterface
                     throw new AccessViolation();
                 }
                 $this->allianceActionManager->setJobForUser(
-                    (int) $alliance->getId(),
+                    $allianceId,
                     $playerId,
                     ALLIANCE_JOBS_DIPLOMATIC
                 );
 
                 $text = sprintf(
                     'Du wurdest zum neuen Außenminister der Allianz %s ernannt',
-                    $alliance->getNameWithoutMarkup()
+                    $alliance->getName()
                 );
                 break;
         }

@@ -23,6 +23,11 @@ interface AllianceJobRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): array;
 
+    /**
+     * @return AllianceJobInterface[]
+     */
+    public function getByAlliance(int $allianceId): array;
+
     public function truncateByUser(int $userId): void;
 
     public function truncateByAlliance(int $allianceId): void;

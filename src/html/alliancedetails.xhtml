@@ -8,13 +8,15 @@
 				<span tal:replace="structure bbcode:ALLIANCE/getName">NAME</span><br /><br />
 				Gegründet: ${datetime:ALLIANCE/getDate}
 				<div style="padding-top: 10px; width: 50%; float: left;">
-					<div tal:condition="ALLIANCE/currentUserMayEdit">
+					<div>
+						<tal:block tal:condition="CAN_EDIT">
 						<a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
 						<a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
 						<a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
+						</tal:block>
 						<a href="alliance.php?SHOW_LIST=1" class="linkbutton">Allianzliste</a>
 					</div>
-					<div style="margin-top: 10px;" tal:condition="ALLIANCE/currentUserMaySignup">
+					<div style="margin-top: 10px;" tal:condition="CAN_SIGNUP">
 						<a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Bewerben</a>
 					</div>
 					<div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
@@ -23,7 +25,7 @@
 				</div>
 				<div style="padding-top: 10px; width: 50%; text-align: right; float: left">
 					<a tal:condition="php:THIS.getUser().getAllianceId() EQ ALLIANCE.getId()" href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
-					<div style="margin-top: 10px" tal:condition="ALLIANCE/currentUserIsDiplomatic">
+					<div style="margin-top: 10px" tal:condition="CAN_MANAGE_FOREIGN_RELATIONS">
 						<a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
 					</div>
 				</div>

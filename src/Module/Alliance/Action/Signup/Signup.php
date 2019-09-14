@@ -32,14 +32,15 @@ final class Signup implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
         $alliance = new Alliance($this->signupRequest->getAllianceId());
+        $allianceId = (int) $alliance->getId();
 
-        if (!$alliance->currentUserMaySignup()) {
+        if (!$user->maySignup($allianceId)) {
             throw new AccessViolation();
         }
         $obj = $this->allianceJobRepository->prototype();
         $obj->setUserId($userId);
         $obj->setType(ALLIANCE_JOBS_PENDING);
-        $obj->setAllianceId((int) $alliance->getId());
+        $obj->setAllianceId($allianceId);
 
         $this->allianceJobRepository->save($obj);
 

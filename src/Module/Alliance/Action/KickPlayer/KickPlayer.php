@@ -37,10 +37,11 @@ final class KickPlayer implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
         $alliance = $user->getAlliance();
+        $allianceId = (int) $alliance->getId();
 
         $playerId = $this->kickPlayerRequest->getPlayerId();
 
-        if (!$alliance->currentUserMayEdit() || $playerId === $userId) {
+        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
             throw new AccessViolation();
         }
 
@@ -57,7 +58,7 @@ final class KickPlayer implements ActionControllerInterface
             $this->allianceJobRepository->truncateByUser($userId);
 
             $this->allianceActionManager->setJobForUser(
-                (int) $alliance->getId(),
+                $allianceId,
                 $userId,
                 ALLIANCE_JOBS_FOUNDER
             );
@@ -67,7 +68,7 @@ final class KickPlayer implements ActionControllerInterface
 
         $text = sprintf(
             _('Deine Mitgliedschaft in der Allianz %s wurde beendet'),
-            $alliance->getNameWithoutMarkup()
+            $alliance->getName()
         );
         PM::sendPM(USER_NOONE, $playerId, $text);
 
