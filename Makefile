@@ -61,4 +61,7 @@ migrateDatabase:force
 showDatabaseChanges:force
 	vendor/bin/doctrine orm:schema-tool:update --dump-sql
 
+tests:
+	composer run-script tests
+
 force:

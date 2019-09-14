@@ -7,7 +7,7 @@
       "src/admin"
     ],
     "psr-4": {
-      "Stu\\": "src/"
+      "Stu\\": ["src/", "tests/"]
     }
   },
   "require": {

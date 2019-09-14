@@ -16,21 +16,21 @@ final class Shipyard implements BuildingActionHandlerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
     }
 
-    public function destruct(int $building_function_id, int $colony_id): void
+    public function destruct(int $buildingFunctionId, int $colonyId): void
     {
         $this->colonyShipQueueRepository->truncateByColonyAndBuildingFunction(
-            $colony_id,
-            $building_function_id
+            $colonyId,
+            $buildingFunctionId
         );
     }
 
-    public function deactivate(int $building_function_id, int $colony_id): void
+    public function deactivate(int $buildingFunctionId, int $colonyId): void
     {
-        $this->colonyShipQueueRepository->stopQueueByColonyAndBuildingFunction($colony_id, $building_function_id);
+        $this->colonyShipQueueRepository->stopQueueByColonyAndBuildingFunction($colonyId, $buildingFunctionId);
     }
 
-    public function activate(int $building_function_id, int $colony_id): void
+    public function activate(int $buildingFunctionId, int $colonyId): void
     {
-        $this->colonyShipQueueRepository->restartQueueByColonyAndBuildingFunction($colony_id, $building_function_id);
+        $this->colonyShipQueueRepository->restartQueueByColonyAndBuildingFunction($colonyId, $buildingFunctionId);
     }
 }

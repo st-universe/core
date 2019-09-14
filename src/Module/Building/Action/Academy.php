@@ -16,16 +16,16 @@ final class Academy implements BuildingActionHandlerInterface
         $this->crewTrainingRepository = $crewTrainingRepository;
     }
 
-    public function destruct(int $building_function_id, int $colony_id): void
+    public function destruct(int $buildingFunctionId, int $colonyId): void
     {
-        $this->crewTrainingRepository->truncateByColony($colony_id);
+        $this->crewTrainingRepository->truncateByColony($colonyId);
     }
 
-    public function deactivate(int $building_function_id, int $colony_id): void
+    public function deactivate(int $buildingFunctionId, int $colonyId): void
     {
     }
 
-    public function activate(int $building_function_id, int $colony_id): void
+    public function activate(int $buildingFunctionId, int $colonyId): void
     {
     }
 }

@@ -6,9 +6,9 @@ namespace Stu\Module\Building\Action;
 
 interface BuildingActionHandlerInterface
 {
-    public function destruct(int $building_function_id, int $colony_id): void;
+    public function destruct(int $buildingFunctionId, int $colonyId): void;
 
-    public function deactivate(int $building_function_id, int $colony_id): void;
+    public function deactivate(int $buildingFunctionId, int $colonyId): void;
 
-    public function activate(int $building_function_id, int $colony_id): void;
+    public function activate(int $buildingFunctionId, int $colonyId): void;
 }
