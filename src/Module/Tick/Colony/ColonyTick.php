@@ -5,6 +5,7 @@ namespace Stu\Module\Tick\Colony;
 use ColfieldData;
 use Colfields;
 use ColonyData;
+use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use PM;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -272,7 +273,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->msg = [];
     }
 
-    private function mergeProduction(ColonyData $colony, array $commodityProduction): void
+    private function mergeProduction(ColonyData $colony, Collection $commodityProduction): void
     {
         $prod = $colony->getProductionRaw();
         foreach ($commodityProduction as $obj) {
