@@ -51,7 +51,7 @@ final class AddBoard implements ActionControllerInterface
         }
 
         $board = $this->allianceBoardRepository->prototype();
-        $board->setAllianceId($allianceId);
+        $board->setAlliance($alliance);
         $board->setName($name);
 
         $this->allianceBoardRepository->save($board);

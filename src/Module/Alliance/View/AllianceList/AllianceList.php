@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\AllianceList;
 
-use Alliance;
 use Stu\Module\Alliance\Lib\AllianceListItem;
 use Stu\Module\Alliance\Lib\AllianceListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_LIST';
+
+    private $allianceRepository;
+
+    public function __construct(
+        AllianceRepositoryInterface $allianceRepository
+    ) {
+        $this->allianceRepository = $allianceRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -31,10 +40,10 @@ final class AllianceList implements ViewControllerInterface
         $game->setTemplateVar(
             'ALLIANCE_LIST',
             array_map(
-                function (\AllianceData $alliance): AllianceListItemInterface {
+                function (AllianceInterface $alliance): AllianceListItemInterface {
                     return new AllianceListItem($alliance);
                 },
-                Alliance::getList()
+                $this->allianceRepository->findAllOrdered()
             )
         );
     }

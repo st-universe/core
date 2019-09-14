@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 /**
@@ -103,7 +104,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
             case DOCK_PRIVILEGE_USER:
                 return ResourceCache()->getObject('user', $this->getTargetId())->getName();
             case DOCK_PRIVILEGE_ALLIANCE:
-                return ResourceCache()->getObject('alliance', $this->getTargetId())->getName();
+                return $container->get(AllianceRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
             case DOCK_PRIVILEGE_FACTION:
                 return $container->get(FactionRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
 

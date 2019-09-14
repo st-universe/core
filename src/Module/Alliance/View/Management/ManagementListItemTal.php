@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
-use AllianceData;
 use Colony;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use UserData;
 
@@ -21,7 +21,7 @@ final class ManagementListItemTal
 
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,
-        AllianceData $alliance,
+        AllianceInterface $alliance,
         UserData $user,
         int $currentUserId
     ) {

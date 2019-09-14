@@ -22,4 +22,6 @@ interface DockingPrivilegeRepositoryInterface extends ObjectRepository
      * @return DockingPrivilegeInterface[]
      */
     public function getByShip(int $shipId): array;
+
+    public function truncateByTypeAndTarget(int $typeId, int $targetId): void;
 }

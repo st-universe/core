@@ -38,6 +38,12 @@ class AllianceBoard implements AllianceBoardInterface
      */
     private $posts;
 
+    /**
+     * @ManyToOne(targetEntity="Alliance")
+     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $alliance;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
@@ -73,11 +79,13 @@ class AllianceBoard implements AllianceBoardInterface
         return $this;
     }
 
-    public function getTopicCount(): int {
+    public function getTopicCount(): int
+    {
         return count($this->topics);
     }
 
-    public function getPostCount(): int {
+    public function getPostCount(): int
+    {
         return array_reduce(
             $this->topics->toArray(),
             function (int $sum, AllianceBoardTopicInterface $allianceBoardTopic): int {
@@ -87,7 +95,8 @@ class AllianceBoard implements AllianceBoardInterface
         );
     }
 
-    public function getLatestPost(): ?AllianceBoardPostInterface {
+    public function getLatestPost(): ?AllianceBoardPostInterface
+    {
         global $container;
 
         return $container->get(AllianceBoardPostRepositoryInterface::class)->getRecentByBoard($this->getId());
@@ -96,5 +105,17 @@ class AllianceBoard implements AllianceBoardInterface
     public function getTopics(): Collection
     {
         return $this->topics;
+    }
+
+    public function getAlliance(): AllianceInterface
+    {
+        return $this->alliance;
+    }
+
+    public function setAlliance(AllianceInterface $alliance): AllianceBoardInterface
+    {
+        $this->alliance = $alliance;
+
+        return $this;
     }
 }

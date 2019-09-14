@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use AccessViolation;
-use Alliance;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class CreateRelation implements ActionControllerInterface
 {
@@ -24,22 +24,26 @@ final class CreateRelation implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $allianceRepository;
+
     public function __construct(
         CreateRelationRequestInterface $createRelationRequest,
         EntryCreatorInterface $entryCreator,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->createRelationRequest = $createRelationRequest;
         $this->entryCreator = $entryCreator;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
         $userId = $game->getUser()->getId();
 
         if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)) {
@@ -49,7 +53,10 @@ final class CreateRelation implements ActionControllerInterface
         $opponentId = $this->createRelationRequest->getOpponentId();
         $typeId = $this->createRelationRequest->getRelationType();
 
-        $opp = new Alliance($opponentId);
+        $opp = $this->allianceRepository->find($opponentId);
+        if ($opp === null) {
+            return;
+        }
 
         $types = [
             ALLIANCE_RELATION_WAR => 1,

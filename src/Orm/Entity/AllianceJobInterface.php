@@ -2,15 +2,20 @@
 
 namespace Stu\Orm\Entity;
 
-use Alliance;
 use User;
 
 interface AllianceJobInterface
 {
     public function getId(): int;
 
+    /**
+     * @deprecated
+     */
     public function getAllianceId(): int;
 
+    /**
+     * @deprecated
+     */
     public function setAllianceId(int $allianceId): AllianceJobInterface;
 
     public function getUserId(): int;
@@ -21,7 +26,9 @@ interface AllianceJobInterface
 
     public function setType(int $type): AllianceJobInterface;
 
-    public function getAlliance(): Alliance;
+    public function getAlliance(): AllianceInterface;
+
+    public function setAlliance(AllianceInterface $alliance): AllianceJobInterface;
 
     public function getUser(): User;
 }

@@ -35,16 +35,29 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     public function existsForTargetAndTypeAndShip(int $targetId, int $privilegeType, int $shipId): bool
     {
         return $this->count([
-            'ships_id' => $shipId,
-            'target' => $targetId,
-            'privilege_type' => $privilegeType
-        ]) > 0;
+                'ships_id' => $shipId,
+                'target' => $targetId,
+                'privilege_type' => $privilegeType,
+            ]) > 0;
     }
 
     public function getByShip(int $shipId): array
     {
         return $this->findBy([
-            'ships_id' => $shipId
+            'ships_id' => $shipId,
         ]);
+    }
+
+    public function truncateByTypeAndTarget(int $typeId, int $targetId): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s dp WHERE dp.target = :targetId AND dp.privilege_type = :typeId',
+                DockingPrivilege::class
+            )
+        )->setParameters([
+            'typeId' => $typeId,
+            'targetId' => $targetId,
+        ])->execute();
     }
 }

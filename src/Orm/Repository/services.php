@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Stu\Orm\Entity\Alliance;
 use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
@@ -91,6 +92,11 @@ use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\Weapon;
 
 return [
+    AllianceRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AllianceRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Alliance::class);
+    },
     AllianceBoardRepositoryInterface::class => function (
         ContainerInterface $c
     ): AllianceBoardRepositoryInterface {

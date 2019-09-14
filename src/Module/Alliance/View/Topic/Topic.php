@@ -41,7 +41,6 @@ final class Topic implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $boardId = $this->topicRequest->getBoardId();
         $topicId = $this->topicRequest->getTopicId();
         $allianceId = $alliance->getId();
 
@@ -50,6 +49,8 @@ final class Topic implements ViewControllerInterface
         if ($topic === null || $topic->getAllianceId() != $allianceId) {
             throw new AccessViolation();
         }
+
+        $boardId = $topic->getBoardId();
 
         $game->setPageTitle(_('Allianzforum'));
 

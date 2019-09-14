@@ -1,8 +1,10 @@
 <?php
 
 use Stu\Lib\ContactlistWrapper;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -179,9 +181,12 @@ class UserData extends BaseTable {
 
 	private $alliance = NULL;
 
-	function getAlliance() {
+	function getAlliance(): ?AllianceInterface {
 		if ($this->alliance === NULL) {
-			$this->alliance = new Alliance($this->getAllianceId());
+			// @todo refactor
+			global $container;
+
+			$this->alliance = $container->get(AllianceRepositoryInterface::class)->find((int) $this->getAllianceId());
 		}
 		return $this->alliance;
 	}
@@ -414,7 +419,7 @@ class UserData extends BaseTable {
 			return false;
 		}
 
-		$alliance = new Alliance($allianceId);
+		$alliance = $container->get(AllianceRepositoryInterface::class)->find($allianceId);
 
 		return $alliance->getAcceptApplications() && !$this->isInAlliance() && ($alliance->getFactionId() == 0 || $this->getFaction() == $alliance->getFactionId());
 	}
@@ -459,6 +464,9 @@ class User extends UserData {
 		return new UserData($data);
 	}
 
+	/**
+	 * @return User[]
+	 */
 	static function getListBy($sql) {
 		$ret = array();
 		$result = DB()->query("SELECT * FROM ".parent::tablename." ".$sql);

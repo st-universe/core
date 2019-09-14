@@ -5,14 +5,14 @@ declare(strict_types=0);
 
 namespace Stu\Module\Alliance\Lib;
 
-use AllianceData;
+use Stu\Orm\Entity\AllianceInterface;
 
 final class AllianceListItem implements AllianceListItemInterface
 {
     private $alliance;
 
     public function __construct(
-        AllianceData $alliance
+        AllianceInterface $alliance
     ) {
         $this->alliance = $alliance;
     }

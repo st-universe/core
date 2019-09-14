@@ -8,8 +8,14 @@ interface AllianceBoardInterface
 {
     public function getId(): int;
 
+    /**
+     * @deprecated
+     */
     public function getAllianceId(): int;
 
+    /**
+     * @deprecated
+     */
     public function setAllianceId(int $allianceId): AllianceBoardInterface;
 
     public function getName(): string;
@@ -23,4 +29,8 @@ interface AllianceBoardInterface
     public function getLatestPost(): ?AllianceBoardPostInterface;
 
     public function getTopics(): Collection;
+
+    public function getAlliance(): AllianceInterface;
+
+    public function setAlliance(AllianceInterface $alliance): AllianceBoardInterface;
 }

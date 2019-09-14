@@ -2,9 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Alliance;
-use AllianceData;
-
 interface AllianceRelationInterface
 {
     public function getId(): int;
@@ -27,7 +24,7 @@ interface AllianceRelationInterface
 
     public function isPending(): bool;
 
-    public function getOpponent(): AllianceData;
+    public function getOpponent(): AllianceInterface;
 
     public function isWar(): bool;
 
@@ -35,9 +32,9 @@ interface AllianceRelationInterface
 
     public function offerIsSend(): bool;
 
-    public function getRecipient(): Alliance;
+    public function getRecipient(): AllianceInterface;
 
-    public function getAlliance(): Alliance;
+    public function getAlliance(): AllianceInterface;
 
     public function getTypeDescription(): string;
 }

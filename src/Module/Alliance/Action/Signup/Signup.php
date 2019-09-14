@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Signup;
 
 use AccessViolation;
-use Alliance;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Signup implements ActionControllerInterface
 {
@@ -19,19 +19,28 @@ final class Signup implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceRepository;
+
     public function __construct(
         SignupRequestInterface $signupRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->signupRequest = $signupRequest;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
-        $alliance = new Alliance($this->signupRequest->getAllianceId());
+
+        $alliance = $this->allianceRepository->find($this->signupRequest->getAllianceId());
+        if ($alliance === null) {
+            return;
+        }
+
         $allianceId = (int) $alliance->getId();
 
         if (!$user->maySignup($allianceId)) {
@@ -40,7 +49,7 @@ final class Signup implements ActionControllerInterface
         $obj = $this->allianceJobRepository->prototype();
         $obj->setUserId($userId);
         $obj->setType(ALLIANCE_JOBS_PENDING);
-        $obj->setAllianceId($allianceId);
+        $obj->setAlliance($alliance);
 
         $this->allianceJobRepository->save($obj);
 

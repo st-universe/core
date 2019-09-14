@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Alliance;
 use User;
 
 /**
@@ -28,6 +27,12 @@ class AllianceJob implements AllianceJobInterface
 
     /** @Column(type="smallint") * */
     private $type = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Alliance")
+     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $alliance;
 
     public function getId(): int
     {
@@ -70,9 +75,16 @@ class AllianceJob implements AllianceJobInterface
         return $this;
     }
 
-    public function getAlliance(): Alliance
+    public function getAlliance(): AllianceInterface
     {
-        return new Alliance($this->getAllianceId());
+        return $this->alliance;
+    }
+
+    public function setAlliance(AllianceInterface $alliance): AllianceJobInterface
+    {
+        $this->alliance = $alliance;
+
+        return $this;
     }
 
     public function getUser(): User

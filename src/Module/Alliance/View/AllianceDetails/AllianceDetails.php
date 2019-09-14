@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\AllianceDetails;
 
-use Alliance;
-use AllianceData;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class AllianceDetails implements ViewControllerInterface
 {
@@ -24,22 +24,30 @@ final class AllianceDetails implements ViewControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceRepository;
+
     public function __construct(
         AllianceDetailsRequestInterface $allianceDetailsRequest,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceActionManagerInterface $allianceActionManager,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->allianceDetailsRequest = $allianceDetailsRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $alliance = new Alliance($this->allianceDetailsRequest->getAllianceId());
-        $allianceId = (int) $alliance->getId();
+        $alliance = $this->allianceRepository->find($this->allianceDetailsRequest->getAllianceId());
+        if ($alliance === null) {
+            return;
+        }
+
+        $allianceId = $alliance->getId();
         $userId = $game->getUser()->getId();
 
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
@@ -103,7 +111,7 @@ final class AllianceDetails implements ViewControllerInterface
     /**
      * @todo refactor - duplicate of Overview::getReplacementVars
      */
-    private function getReplacementVars(AllianceData $alliance): array
+    private function getReplacementVars(AllianceInterface $alliance): array
     {
         $replacementVars = [];
         $replacementVars['$ALLIANCE_HOMEPAGE_LINK'] = '<a href="' . $alliance->getHomepage() . '" target="_blank">' . _('Zur Allianz Homepage') . '</a>';

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Relations;
 
 use AccessViolation;
-use Alliance;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Relations implements ViewControllerInterface
 {
@@ -19,12 +19,16 @@ final class Relations implements ViewControllerInterface
 
     private $allianceActionManager;
 
+    private $allianceRepository;
+
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,7 +61,7 @@ final class Relations implements ViewControllerInterface
             _('Diplomatie')
         );
         $game->setTemplateFile('html/alliancerelations.xhtml');
-        $game->setTemplateVar('ALLIANCE_LIST', Alliance::getList());
+        $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
     }
 }

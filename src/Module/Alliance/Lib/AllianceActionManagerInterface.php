@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use AllianceData;
+use Stu\Orm\Entity\AllianceInterface;
 
 interface AllianceActionManagerInterface
 {
@@ -18,5 +18,5 @@ interface AllianceActionManagerInterface
 
     public function sendMessage(int $allianceId, string $text): void;
 
-    public function mayEditFactionMode(AllianceData $alliance, int $factionId): bool;
+    public function mayEditFactionMode(AllianceInterface $alliance, int $factionId): bool;
 }

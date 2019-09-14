@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Alliance;
-use AllianceData;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRelationRepository")
  * @Table(
@@ -32,6 +29,18 @@ class AllianceRelation implements AllianceRelationInterface
 
     /** @Column(type="integer") * */
     private $date = 0;
+
+    /**
+     * @ManyToOne(targetEntity="Alliance")
+     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $alliance;
+
+    /**
+     * @ManyToOne(targetEntity="Alliance")
+     * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $opponent;
 
     public function getId(): int
     {
@@ -87,9 +96,9 @@ class AllianceRelation implements AllianceRelationInterface
         return $this->getDate() === 0;
     }
 
-    public function getOpponent(): AllianceData
+    public function getOpponent(): AllianceInterface
     {
-        return $this->getRecipient();
+        return $this->opponent;
     }
 
     public function isWar(): bool
@@ -114,14 +123,17 @@ class AllianceRelation implements AllianceRelationInterface
         return $this->getAllianceId() == currentUser()->getAllianceId();
     }
 
-    public function getRecipient(): Alliance
+    /**
+     * @deprecated
+     */
+    public function getRecipient(): AllianceInterface
     {
-        return new Alliance($this->getRecipientId());
+        return $this->getOpponent();
     }
 
-    public function getAlliance(): Alliance
+    public function getAlliance(): AllianceInterface
     {
-        return new Alliance($this->getAllianceId());
+        return $this->alliance;
     }
 
     public function getTypeDescription(): string

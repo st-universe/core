@@ -4,27 +4,30 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
-use AllianceData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class CreateAlliance implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_CREATE_ALLIANCE';
 
     private $createAllianceRequest;
 
     private $allianceJobRepository;
 
+    private $allianceRepository;
+
     public function __construct(
         CreateAllianceRequestInterface $createAllianceRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->createAllianceRequest = $createAllianceRequest;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,14 +45,15 @@ final class CreateAlliance implements ActionControllerInterface
             return;
         }
 
-        $alliance = new AllianceData;
+        $alliance = $this->allianceRepository->prototype();
         $alliance->setName($name);
         $alliance->setDescription($description);
         $alliance->setDate(time());
         if ($faction_mode === 1) {
-            $alliance->setFactionId($user->getFaction());
+            $alliance->setFactionId((int) $user->getFaction());
         }
-        $alliance->save();
+
+        $this->allianceRepository->save($alliance);
 
         $allianceId = $alliance->getId();
 
@@ -60,7 +64,7 @@ final class CreateAlliance implements ActionControllerInterface
 
         $job = $this->allianceJobRepository->prototype();
         $job->setType(ALLIANCE_JOBS_FOUNDER);
-        $job->setAllianceId((int) $allianceId);
+        $job->setAlliance($alliance);
         $job->setUserId($userId);
 
         $this->allianceJobRepository->save($job);
