@@ -5,12 +5,16 @@ namespace Stu\Module\Api\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
+use Opis\JsonSchema\{
+    Validator, ValidationResult, Schema
+};
 
 abstract class Action
 {
+    protected const SCHEMA_FILE = '';
+
     protected $logger;
 
     /**
@@ -33,8 +37,11 @@ abstract class Action
 //        $this->logger = $logger;
 //    }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        array $args
+    ): ResponseInterface {
         $this->request = $request;
         $this->response = $response;
         $this->args = $args;
@@ -58,10 +65,30 @@ abstract class Action
      */
     protected function getFormData()
     {
-        $input = json_decode(file_get_contents('php://input'), true);
+        $input = json_decode(file_get_contents('php://input'));
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new HttpBadRequestException($this->request, 'Malformed JSON input.');
+        }
+
+        $schema = Schema::fromJsonString(file_get_contents(static::SCHEMA_FILE));
+
+        $validator = new Validator();
+
+        /** @var ValidationResult $result */
+        $result = $validator->schemaValidation($input, $schema);
+
+        if (!$result->isValid()) {
+            $error = $result->getFirstError();
+
+            throw new HttpBadRequestException(
+                $this->request,
+                sprintf(
+                    '%s - %s',
+                    $error->keyword(),
+                    json_encode($error->keywordArgs())
+                )
+            );
         }
 
         return $input;
@@ -103,11 +130,11 @@ abstract class Action
             ->withHeader('Content-Type', 'application/json')
             ->withHeader('Access-Control-Allow-Credentials', 'true')
             ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Headers',
+                'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
             ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
             ->withAddedHeader('Cache-Control', 'post-check=0, pre-check=0')
-            ->withHeader('Pragma', 'no-cache')
-        ;
+            ->withHeader('Pragma', 'no-cache');
     }
 }

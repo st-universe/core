@@ -12,6 +12,8 @@ use Stu\Module\Api\Middleware\ActionError;
 
 final class Login extends Action
 {
+    protected const SCHEMA_FILE = __DIR__.'/login.json';
+
     private $session;
 
     public function __construct(
@@ -25,7 +27,7 @@ final class Login extends Action
         $data = $this->getFormData();
 
         try {
-            $this->session->login($data['username'], $data['password']);
+            $this->session->login($data->username, $data->password);
         } catch (LoginException $e) {
             return $this->respondWithError(
                 new ActionError(
