@@ -2,6 +2,8 @@
 
 use Lib\AllianceMemberWrapper;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 class AllianceData extends BaseTable {
 
@@ -92,20 +94,37 @@ class AllianceData extends BaseTable {
 
 	function getFounder() {
 		if ($this->founder === NULL) {
-			$this->founder = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_FOUNDER);
+			// @todo refactor
+			global $container;
+
+			$this->founder = $container->get(AllianceJobRepositoryInterface::class)
+				->getSingleResultByAllianceAndType(
+					(int) $this->getId(),
+					ALLIANCE_JOBS_FOUNDER
+				);
 		}
 		return $this->founder;
 	}
 
 	function setFounder($userId) {
-		$obj = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_FOUNDER);
+		// @todo refactor
+		global $container;
+
+		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
+
+		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
+			(int) $this->getId(),
+			ALLIANCE_JOBS_FOUNDER
+		);
 		if (!$obj) {
-			$obj = new AllianceJobsData;
+			$obj = $allianceJobRepo->prototype();
 			$obj->setType(ALLIANCE_JOBS_FOUNDER);
-			$obj->setAllianceId($this->getId());
+			$obj->setAllianceId((int) $this->getId());
 		}
-		$obj->setUserId($userId);
-		$obj->save();
+		$obj->setUserId((int) $userId);
+
+		$allianceJobRepo->save($obj);
+
 		$this->founder = $obj;
 	}
 
@@ -113,27 +132,52 @@ class AllianceData extends BaseTable {
 
 	function getSuccessor() {
 		if ($this->successor === NULL) {
-			$this->successor = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_SUCCESSOR);
+			// @todo refactor
+			global $container;
+
+			$this->successor = $container->get(AllianceJobRepositoryInterface::class)
+				->getSingleResultByAllianceAndType(
+					(int) $this->getId(),
+					ALLIANCE_JOBS_SUCCESSOR
+				);
 		}
 		return $this->successor;
 	}
 
 	function setSuccessor($userId) {
-		$obj = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_SUCCESSOR);
+		// @todo refactor
+		global $container;
+
+		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
+
+		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
+			(int) $this->getId(),
+			ALLIANCE_JOBS_SUCCESSOR
+		);
 		if (!$obj) {
-			$obj = new AllianceJobsData;
+		    $obj = $allianceJobRepo->prototype();
 			$obj->setType(ALLIANCE_JOBS_SUCCESSOR);
-			$obj->setAllianceId($this->getId());
+			$obj->setAllianceId((int) $this->getId());
 		}
-		$obj->setUserId($userId);
-		$obj->save();
+		$obj->setUserId((int) $userId);
+
+		$allianceJobRepo->save($obj);
+
 		$this->successor = $obj;
 	}
 
 	function delSuccessor() {
-		$obj = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_SUCCESSOR);
+		// @todo refactor
+		global $container;
+
+		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
+
+		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
+			(int) $this->getId(),
+			ALLIANCE_JOBS_SUCCESSOR
+		);
 		if ($obj) {
-			$obj->deleteFromDatabase();
+			$allianceJobRepo->delete($obj);
 		}
 	}
 
@@ -141,20 +185,39 @@ class AllianceData extends BaseTable {
 
 	function getDiplomatic() {
 		if ($this->diplomatic === NULL) {
-			$this->diplomatic = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_DIPLOMATIC);
+			// @todo refactor
+			global $container;
+
+			$this->diplomatic = $container->get(AllianceJobRepositoryInterface::class)
+				->getSingleResultByAllianceAndType(
+					(int) $this->getId(),
+					ALLIANCE_JOBS_DIPLOMATIC
+				);
+
 		}
 		return $this->diplomatic;
 	}
 
 	function setDiplomatic($userId) {
-		$obj = AllianceJobs::getByType($this->getId(),ALLIANCE_JOBS_DIPLOMATIC);
+		// @todo refactor
+		global $container;
+
+		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
+
+		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
+			(int) $this->getId(),
+			ALLIANCE_JOBS_DIPLOMATIC
+		);
+
 		if (!$obj) {
-			$obj = new AllianceJobsData;
+		    $obj = $allianceJobRepo->prototype();
 			$obj->setType(ALLIANCE_JOBS_DIPLOMATIC);
-			$obj->setAllianceId($this->getId());
+			$obj->setAllianceId((int) $this->getId());
 		}
-		$obj->setUserId($userId);
-		$obj->save();
+		$obj->setUserId((int) $userId);
+
+		$allianceJobRepo->save($obj);
+
 		$this->diplomatic = $obj;
 	}
 
@@ -205,7 +268,15 @@ class AllianceData extends BaseTable {
 	}
 
 	function currentUserMaySignup() {
-		if (AllianceJobs::hasPendingApplication(currentUser()->getId())) {
+		// @todo refactor
+		global $container;
+
+		$pendingApplication = $container->get(AllianceJobRepositoryInterface::class)->getByUserAndAllianceAndType(
+			(int) currentUser()->getId(),
+			(int) $this->getId(),
+			ALLIANCE_JOBS_PENDING
+		);
+		if ($pendingApplication !== null) {
 			return FALSE;
 		}
 		return $this->getAcceptApplications() && !currentUser()->isInAlliance() && ($this->getFactionId() == 0 || currentUser()->getFaction() == $this->getFactionId());
@@ -215,7 +286,14 @@ class AllianceData extends BaseTable {
 
 	function getPendingApplications() {
 		if ($this->pendingApplications === NULL) {
-			$this->pendingApplications = AllianceJobs::getList("type=".ALLIANCE_JOBS_PENDING." AND alliance_id=".$this->getId());
+		    // @todo refactor
+			global $container;
+
+			$this->pendingApplications = $container->get(AllianceJobRepositoryInterface::class)
+				->getByAllianceAndType(
+					(int) $this->getId(),
+					ALLIANCE_JOBS_PENDING
+				);
 		}
 		return $this->pendingApplications;
 	}
@@ -267,16 +345,17 @@ class AllianceData extends BaseTable {
 	/**
 	 */
 	public function delete() { #{{{
-		$list = AllianceJobs::getList('alliance_id='.$this->getId());
-		foreach($list as $key => $obj) {
-			$obj->deleteFromDatabase();
-		}
-		// @todo deletion by foreign key
 		// @todo refactor
 		global $container;
+
+		$allianceId = (int) $this->getId();
+
+		$container->get(AllianceJobRepositoryInterface::class)->truncateByAlliance($allianceId);
+		$container->get(AllianceRelationRepositoryInterface::class)->truncateByAlliances($allianceId);
+
 		$allianceBoardRepository = $container->get(AllianceBoardRepositoryInterface::class);
 
-		$list = $allianceBoardRepository->getByAlliance((int) $this->getId());
+		$list = $allianceBoardRepository->getByAlliance((int) $allianceId);
 		foreach ($list as $key => $obj) {
 			$allianceBoardRepository->delete($obj);
 		}

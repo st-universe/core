@@ -6,10 +6,10 @@ namespace Stu\Module\Alliance\Action\Signup;
 
 use AccessViolation;
 use Alliance;
-use AllianceJobsData;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class Signup implements ActionControllerInterface
 {
@@ -17,10 +17,14 @@ final class Signup implements ActionControllerInterface
 
     private $signupRequest;
 
+    private $allianceJobRepository;
+
     public function __construct(
-        SignupRequestInterface $signupRequest
+        SignupRequestInterface $signupRequest,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->signupRequest = $signupRequest;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,11 +36,12 @@ final class Signup implements ActionControllerInterface
         if (!$alliance->currentUserMaySignup()) {
             throw new AccessViolation();
         }
-        $obj = new AllianceJobsData();
+        $obj = $this->allianceJobRepository->prototype();
         $obj->setUserId($userId);
         $obj->setType(ALLIANCE_JOBS_PENDING);
-        $obj->setAllianceId($alliance->getId());
-        $obj->save();
+        $obj->setAllianceId((int) $alliance->getId());
+
+        $this->allianceJobRepository->save($obj);
 
         $text = sprintf(
             'Der Siedler %s hat sich für die Allianz beworben',

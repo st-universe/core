@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use AccessViolation;
-use AllianceJobs;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use User;
 
 final class KickPlayer implements ActionControllerInterface
@@ -17,10 +17,14 @@ final class KickPlayer implements ActionControllerInterface
 
     private $kickPlayerRequest;
 
+    private $allianceJobRepository;
+
     public function __construct(
-        KickPlayerRequestInterface $kickPlayerRequest
+        KickPlayerRequestInterface $kickPlayerRequest,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->kickPlayerRequest = $kickPlayerRequest;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,7 +52,8 @@ final class KickPlayer implements ActionControllerInterface
             $alliance->setFounder($userId);
             $alliance->delSuccessor();
         }
-        AllianceJobs::delByUser($playerId);
+
+        $this->allianceJobRepository->truncateByUser($playerId);
 
         $text = sprintf(
             _('Deine Mitgliedschaft in der Allianz %s wurde beendet'),

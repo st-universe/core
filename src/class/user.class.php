@@ -2,7 +2,6 @@
 
 use Stu\Lib\ContactlistWrapper;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
-use Stu\Orm\Repository\CrewRepository;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;

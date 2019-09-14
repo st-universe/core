@@ -2,12 +2,12 @@
 
 namespace Stu\Lib;
 
-use AllianceJobs;
 use Colony;
 use Contactlist;
 use Fleet;
 use PMCategory;
 use Ship;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
@@ -43,11 +43,18 @@ class UserDeletion
 
     public function handleAlliance()
     {
-        $alliance = AllianceJobs::getByFounder($this->getUser()->getId());
-        if ($alliance) {
-            $alliance->getAlliance()->handleFounderDeletion();
+        // @todo refactor
+        global $container;
+
+        $allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
+
+        foreach ($allianceJobRepo->getByUser((int) $this->getUser()->getId()) as $job) {
+            if ($job->getType() === ALLIANCE_JOBS_FOUNDER) {
+                $job->getAlliance()->handleFounderDeletion();
+            }
+
+            $allianceJobRepo->delete($job);
         }
-        AllianceJobs::delByUser('WHERE user_id=' . $this->getUser()->getId());
     }
 
     public function handleBuildplans()

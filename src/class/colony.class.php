@@ -8,7 +8,6 @@ use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
-use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;

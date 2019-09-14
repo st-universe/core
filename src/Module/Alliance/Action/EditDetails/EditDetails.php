@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\EditDetails;
 
 use AccessViolation;
-use AllianceJobs;
 use JBBCode\Parser;
+use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class EditDetails implements ActionControllerInterface
 {
@@ -20,12 +21,16 @@ final class EditDetails implements ActionControllerInterface
 
     private $bbcodeParser;
 
+    private $allianceJobRepository;
+
     public function __construct(
         EditDetailsRequestInterface $editDetailsRequest,
-        Parser $bbcodeParser
+        Parser $bbcodeParser,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->editDetailsRequest = $editDetailsRequest;
         $this->bbcodeParser = $bbcodeParser;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,7 +61,18 @@ final class EditDetails implements ActionControllerInterface
             $alliance->setAcceptApplications(1);
         } else {
             $alliance->setAcceptApplications(0);
-            AllianceJobs::truncatePendingMembers($alliance->getId());
+
+            $result = $this->allianceJobRepository->getByAllianceAndType(
+                (int) $alliance->getId(),
+                ALLIANCE_JOBS_PENDING
+            );
+
+            foreach($result as $applicant) {
+                $text = "Deine Bewerbung bei der Allianz ".$alliance->getNameWithoutMarkup()." wurde abgelehnt";
+                PM::sendPM(USER_NOONE, $applicant->getUserId(), $text);
+
+                $applicant->deleteFromDatabase();
+            }
         }
 
         if (mb_strlen(trim($this->bbcodeParser->parse($name)->getAsText())) < 5) {

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use AccessViolation;
-use AllianceJobs;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use User;
 
 final class PromotePlayer implements ActionControllerInterface
@@ -17,10 +17,14 @@ final class PromotePlayer implements ActionControllerInterface
 
     private $promotePlayerRequest;
 
+    private $allianceJobRepository;
+
     public function __construct(
-        PromotePlayerRequestInterface $promotePlayerRequest
+        PromotePlayerRequestInterface $promotePlayerRequest,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->promotePlayerRequest = $promotePlayerRequest;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,15 +44,21 @@ final class PromotePlayer implements ActionControllerInterface
         }
 
         $type = $this->promotePlayerRequest->getPromotionType();
+        $availablePromotions = [
+            ALLIANCE_JOBS_FOUNDER,
+            ALLIANCE_JOBS_SUCCESSOR,
+            ALLIANCE_JOBS_DIPLOMATIC,
+        ];
 
-        if (!array_key_exists($type, AllianceJobs::getPossibleTypes())) {
+        if (!in_array($type, $availablePromotions)) {
             throw new AccessViolation();
         }
         if ($alliance->getFounder()->getUserId() == $playerId) {
             throw new AccessViolation();
         }
 
-        AllianceJobs::delByUser($playerId);
+        $this->allianceJobRepository->truncateByUser($playerId);
+
         $text = '';
 
         switch ($type) {

@@ -5,14 +5,22 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Leave;
 
 use AccessViolation;
-use AllianceJobs;
 use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class Leave implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_LEAVE_ALLIANCE';
+
+    private $allianceJobRepository;
+
+    public function __construct(
+        AllianceJobRepositoryInterface $allianceJobRepository
+    ) {
+        $this->allianceJobRepository = $allianceJobRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -24,7 +32,8 @@ final class Leave implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        AllianceJobs::delByUser($userId);
+        $this->allianceJobRepository->truncateByUser($userId);
+
         $user->setAllianceId(0);
         $user->save();
 

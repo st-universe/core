@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 use Stu\Orm\Entity\AllianceBoard;
 use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
+use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCost;
@@ -104,6 +105,11 @@ return [
         ContainerInterface $c
     ): AllianceBoardTopicRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(AllianceBoardTopic::class);
+    },
+    AllianceJobRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AllianceJobRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AllianceJob::class);
     },
     AllianceRelationRepositoryInterface::class => function (
         ContainerInterface $c

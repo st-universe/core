@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
 use AllianceData;
-use AllianceJobs;
-use AllianceJobsData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Create\Create;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class CreateAlliance implements ActionControllerInterface
 {
@@ -18,10 +17,14 @@ final class CreateAlliance implements ActionControllerInterface
 
     private $createAllianceRequest;
 
+    private $allianceJobRepository;
+
     public function __construct(
-        CreateAllianceRequestInterface $createAllianceRequest
+        CreateAllianceRequestInterface $createAllianceRequest,
+        AllianceJobRepositoryInterface $allianceJobRepository
     ) {
         $this->createAllianceRequest = $createAllianceRequest;
+        $this->allianceJobRepository = $allianceJobRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,13 +56,14 @@ final class CreateAlliance implements ActionControllerInterface
         $user->setAllianceId($allianceId);
         $user->save();
 
-        AllianceJobs::delByUser($userId);
+        $this->allianceJobRepository->truncateByUser($userId);
 
-        $job = new AllianceJobsData();
+        $job = $this->allianceJobRepository->prototype();
         $job->setType(ALLIANCE_JOBS_FOUNDER);
-        $job->setAllianceId($allianceId);
+        $job->setAllianceId((int) $allianceId);
         $job->setUserId($userId);
-        $job->save();
+
+        $this->allianceJobRepository->save($job);
 
         $game->addInformation(_('Die Allianz wurde gegründet'));
     }
