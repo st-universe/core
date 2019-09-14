@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-class ModuleRumpWrapper1 extends \Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperBase
+class ModuleRumpWrapper1 extends ModuleRumpWrapperBase
 { #{{{
 
     /**

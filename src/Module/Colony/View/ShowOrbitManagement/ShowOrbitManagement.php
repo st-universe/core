@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitManagement;
 
-use Fleet;
 use Ship;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;

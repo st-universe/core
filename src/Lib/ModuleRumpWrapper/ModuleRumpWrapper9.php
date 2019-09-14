@@ -5,7 +5,7 @@ namespace Stu\Lib\ModuleRumpWrapper;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 
 
-class ModuleRumpWrapper9 extends \Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperBase
+class ModuleRumpWrapper9 extends ModuleRumpWrapperBase
 { #{{{
 
 	private $modules = null;

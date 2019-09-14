@@ -15,7 +15,6 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class DeactivateBuildingsEpsProducer implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_EPSRELATED_PROD';
 
     private $colonyLoader;

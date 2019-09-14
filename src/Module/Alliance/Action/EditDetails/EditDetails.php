@@ -63,9 +63,9 @@ final class EditDetails implements ActionControllerInterface
             }
         }
         if ($acceptApplications === 1) {
-            $alliance->setAcceptApplications(1);
+            $alliance->setAcceptApplications(true);
         } else {
-            $alliance->setAcceptApplications(0);
+            $alliance->setAcceptApplications(false);
 
             $result = $this->allianceJobRepository->getByAllianceAndType(
                 $allianceId,

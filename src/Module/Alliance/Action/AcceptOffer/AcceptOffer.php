@@ -44,7 +44,7 @@ final class AcceptOffer implements ActionControllerInterface
 
         $relation = $this->allianceRelationRepository->find($this->acceptOfferRequest->getRelationId());
 
-        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userIdyy)) {
+        if (!$this->allianceActionManager->mayManageForeignRelations($allianceId, $userId)) {
             throw new AccessViolation();
         }
 

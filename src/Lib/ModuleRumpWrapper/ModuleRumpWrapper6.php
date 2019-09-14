@@ -9,7 +9,7 @@ namespace Stu\Lib\ModuleRumpWrapper;
  * @version $Revision: 1.4 $
  * @access public
  */
-class ModuleRumpWrapper6 extends \Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperBase
+class ModuleRumpWrapper6 extends ModuleRumpWrapperBase
 { #{{{
 
     /**

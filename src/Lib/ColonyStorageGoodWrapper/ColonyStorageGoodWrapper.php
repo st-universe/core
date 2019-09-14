@@ -23,7 +23,7 @@ class ColonyStorageGoodWrapper
 	 */
 	public function __get($goodId)
 	{ #{{{
-		return new \Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodCountWrapper($this->storage, $goodId);
+		return new ColonyStorageGoodCountWrapper($this->storage, $goodId);
 	} # }}}
 
 	/**

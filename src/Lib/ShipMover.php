@@ -1,7 +1,6 @@
 <?php
 
 use Stu\Lib\DamageWrapper;
-use Stu\Orm\Entity\MapFieldTypeInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 

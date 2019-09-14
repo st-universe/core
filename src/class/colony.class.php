@@ -1,6 +1,8 @@
 <?php
 
+use Stu\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Lib\ColonyProductionPreviewWrapper;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -802,13 +804,13 @@ class ColonyData extends BaseTable {
 	} # }}}
 
 	public function getProductionPreview() {
-		return new \Stu\Lib\ColonyProductionPreviewWrapper($this->getProduction());
+		return new ColonyProductionPreviewWrapper($this->getProduction());
 	}
 
 	/**
 	 */
 	public function getEpsProductionPreview() { #{{{
-		return new \Stu\Lib\ColonyEpsProductionPreviewWrapper($this);
+		return new ColonyEpsProductionPreviewWrapper($this);
 		
 	} # }}}
 
