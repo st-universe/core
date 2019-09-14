@@ -130,6 +130,9 @@ $builder->addDefinitions(
 $builder->addDefinitions(
     require_once __DIR__.'/../Module/Communication/services.php'
 );
+$builder->addDefinitions(
+    require_once __DIR__.'/../Module/Api/services.php'
+);
 
 $builder->addDefinitions([
     'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',
