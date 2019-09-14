@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ac1055316ed0c4265281b59d1c7d496",
+    "content-hash": "98966ca317b5c85af65618723d4b7bb0",
     "packages": [
         {
             "name": "clue/graph",
@@ -1494,6 +1494,69 @@
                 "php"
             ],
             "time": "2019-09-01T07:51:21+00:00"
+        },
+        {
+            "name": "opis/json-schema",
+            "version": "1.0.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/json-schema.git",
+                "reference": "19868514d5e4c27553b21c7f0cf6388734c67d18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/json-schema/zipball/19868514d5e4c27553b21c7f0cf6388734c67d18",
+                "reference": "19868514d5e4c27553b21c7f0cf6388734c67d18",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "ext-bcmath": "*",
+                "ext-intl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "opis/string": "^1.4",
+                "phpunit/phpunit": "^6.5"
+            },
+            "suggest": {
+                "opis/string": "A standalone library for manipulating multibyte strings"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opis\\JsonSchema\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "Json Schema Validator",
+            "homepage": "http://www.opis.io/json-schema",
+            "keywords": [
+                "json",
+                "schema",
+                "validation",
+                "validator"
+            ],
+            "time": "2019-05-22T05:16:45+00:00"
         },
         {
             "name": "php-di/invoker",
@@ -5545,12 +5608,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "9fb8b20ee60aaf8863c27235f967c3a6a1703944"
+                "reference": "6e5b0b583e303d8458885438980ec5e4d50a9cf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/9fb8b20ee60aaf8863c27235f967c3a6a1703944",
-                "reference": "9fb8b20ee60aaf8863c27235f967c3a6a1703944",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/6e5b0b583e303d8458885438980ec5e4d50a9cf1",
+                "reference": "6e5b0b583e303d8458885438980ec5e4d50a9cf1",
                 "shasum": ""
             },
             "type": "library",
@@ -5562,7 +5625,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-09-13T10:39:34+00:00"
+            "time": "2019-09-14T19:36:57+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -5628,6 +5691,7 @@
         "ext-dom": "*",
         "ext-gd": "*",
         "ext-gettext": "*",
+        "ext-json": "*",
         "ext-mysqli": "*",
         "ext-xsl": "*",
         "php": "^7.3"
