@@ -52,15 +52,18 @@ final class ShowBuilding implements ViewControllerInterface
             (int) $building->getId()
         );
 
+        if ($alternativeBuildings === []) {
+            $useableFieldTypes = $building->getBuildableFields();
+        } else {
+            $useableFieldTypes = current($alternativeBuildings)->getBuilding()->getBuildableFields();
+        }
+
         $game->setPageTitle($building->getName());
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/colonymacros.xhtml/buildinginfo');
         $game->setTemplateVar('buildingdata', $building);
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('ALTERNATIVE_BUILDINGS', $alternativeBuildings);
-        $game->setTemplateVar(
-            'SINGLE_ALTERNATIVE_BUILDING',
-            $alternativeBuildings === [] ? null :  current($alternativeBuildings)
-        );
+        $game->setTemplateVar('USEABLE_FIELD_TYPES', $useableFieldTypes);
     }
 }

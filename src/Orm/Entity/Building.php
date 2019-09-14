@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use ColonyData;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
-use Stu\Orm\Repository\BuildingCostRepositoryInterface;
-use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
-use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
-use Stu\Orm\Repository\PlanetFieldTypeBuildingRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingRepository")
@@ -74,6 +72,33 @@ class Building implements BuildingInterface
 
     /** @Column(type="smallint") * */
     private $is_base = 0;
+
+    /**
+     * @OneToMany(targetEntity="BuildingCost", mappedBy="building")
+     */
+    private $costs;
+
+    /**
+     * @OneToMany(targetEntity="BuildingFunction", mappedBy="building", indexBy="function")
+     */
+    private $functions;
+
+    /**
+     * @OneToMany(targetEntity="BuildingGood", mappedBy="building")
+     */
+    private $commodities;
+
+    /**
+     * @OneToMany(targetEntity="PlanetFieldTypeBuilding", mappedBy="building", indexBy="type")
+     */
+    private $possibleFieldTypes;
+
+    public function __construct() {
+        $this->costs = new ArrayCollection();
+        $this->functions = new ArrayCollection();
+        $this->commodities = new ArrayCollection();
+        $this->possibleFieldTypes = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -301,75 +326,26 @@ class Building implements BuildingInterface
         return $this->getLimitColony() > 0;
     }
 
-    private $buildfields = null;
-
-    public function getBuildableFields(): array
+    public function getBuildableFields(): Collection
     {
-        if ($this->buildfields === null) {
-            $this->buildfields = [];
-            // @todo refactor
-            global $container;
-
-            $this->buildfields = array_map(
-                function (PlanetFieldTypeBuildingInterface $fieldTypeBuilding): int {
-                    return $fieldTypeBuilding->getFieldTypeId();
-                },
-                $container->get(PlanetFieldTypeBuildingRepositoryInterface::class)->getByBuilding((int)$this->getId())
-            );
-        }
-        return $this->buildfields;
+        return $this->possibleFieldTypes;
     }
 
-    private $costs = null;
-
-    /**
-     * @return BuildingCostInterface[]
-     */
-    public function getCosts(): array
+    public function getCosts(): Collection
     {
-        if ($this->costs === null) {
-            // @todo refactor
-            global $container;
-
-            $this->costs = $container->get(BuildingCostRepositoryInterface::class)->getByBuilding((int)$this->getId());
-        }
         return $this->costs;
     }
 
-    private $goods = null;
-
-    /**
-     * @return BuildingGoodInterface[]
-     */
-    public function getGoods(): array
+    public function getGoods(): Collection
     {
-        if ($this->goods === null) {
-            // @todo refactor
-            global $container;
-
-            $this->goods = $container->get(BuildingGoodRepositoryInterface::class)->getByBuilding((int)$this->getId());
-        }
-        return $this->goods;
+        return $this->commodities;
     }
-
-    private $functions;
 
     /**
      * @return BuildingFunctionInterface[]
      */
-    public function getFunctions(): array
+    public function getFunctions(): Collection
     {
-        if ($this->functions === null) {
-            $this->functions = [];
-
-            // @todo refactor
-            global $container;
-
-            $result = $container->get(BuildingFunctionRepositoryInterface::class)->getByBuilding((int)$this->getId());
-            foreach ($result as $function) {
-                $this->functions[$function->getFunction()] = $function;
-            }
-        }
         return $this->functions;
     }
 
@@ -409,6 +385,6 @@ class Building implements BuildingInterface
 
     public function isRemoveAble(): bool
     {
-        return !array_key_exists(BUILDING_FUNCTION_CENTRAL, $this->getFunctions());
+        return $this->getFunctions()->containsKey(BUILDING_FUNCTION_CENTRAL) === false;
     }
 }

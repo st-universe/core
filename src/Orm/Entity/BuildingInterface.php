@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use ColonyData;
+use Doctrine\Common\Collections\Collection;
 
 interface BuildingInterface
 {
@@ -86,22 +87,25 @@ interface BuildingInterface
 
     public function hasLimitColony(): bool;
 
-    public function getBuildableFields(): array;
+    /**
+     * @return PlanetFieldTypeBuildingInterface[]
+     */
+    public function getBuildableFields(): Collection;
 
     /**
      * @return BuildingCostInterface[]
      */
-    public function getCosts(): array;
+    public function getCosts(): Collection;
 
     /**
      * @return BuildingGoodInterface[]
      */
-    public function getGoods(): array;
+    public function getGoods(): Collection;
 
     /**
      * @return BuildingFunctionInterface[]
      */
-    public function getFunctions(): array;
+    public function getFunctions(): Collection;
 
     public function postDeactivation(ColonyData $colony): void;
 

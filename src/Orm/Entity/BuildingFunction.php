@@ -25,6 +25,12 @@ class BuildingFunction implements BuildingFunctionInterface
     /** @Column(type="smallint") */
     private $function = 0;
 
+    /**
+     * @ManyToOne(targetEntity="Building", inversedBy="buildingFunctions")
+     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $building;
+
     public function getId(): int
     {
         return $this->id;

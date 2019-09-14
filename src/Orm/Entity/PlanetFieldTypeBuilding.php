@@ -23,10 +23,10 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
     private $buildings_id = 0;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\PlanetFieldType")
-     * @JoinColumn(name="type_id", referencedColumnName="field_id", onDelete="CASCADE")
+     * @ManyToOne(targetEntity="Building", inversedBy="buildingPossibleFieldTypes")
+     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $fieldType;
+    private $building;
 
     public function getId(): int
     {
@@ -55,10 +55,5 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         $this->buildings_id = $buildingId;
 
         return $this;
-    }
-
-    public function getFieldType(): PlanetFieldTypeInterface
-    {
-        return $this->fieldType;
     }
 }

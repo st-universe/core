@@ -74,7 +74,7 @@ final class BuildOnField implements ActionControllerInterface
         if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($researchId, $userId) === false) {
             return;
         }
-        if (!in_array($field->getFieldType(), $building->getBuildableFields())) {
+        if ($building->getBuildableFields()->containsKey((int) $field->getFieldType()) === false) {
             return;
         }
         if ($building->hasLimitColony() && Colfields::countInstances('buildings_id=' . $buildingId . ' AND colonies_id=' . $colonyId) >= $building->getLimitColony()) {

@@ -295,9 +295,6 @@ class ColfieldData extends BaseTable {
 }
 class Colfields extends ColfieldData {
 
-	private const COLONY_SEPERATOR_DEFAULT = 10;
-	private const COLONY_SEPERATOR_MOON = 7;
-
 	function __construct($id=0) {
 		$result = DB()->query("SELECT * FROM ".$this->getTable()." WHERE id=".intval($id)." LIMIT 1",4);
 		if ($result == 0) {
@@ -315,10 +312,6 @@ class Colfields extends ColfieldData {
 	}
 
 	static function getFieldsBy($where,$isMoon=FALSE) {
-		$sep = static::COLONY_SEPERATOR_DEFAULT;
-		if ($isMoon) {
-			$sep = static::COLONY_SEPERATOR_MOON;
-		}
 		$result = DB()->query("SELECT a.*,b.name FROM ".self::tablename." as a LEFT JOIN stu_buildings as b ON b.id=a.buildings_id WHERE ".$where." ORDER BY a.field_id ASC LIMIT 100");
 		$ret = array();
 		if (request::getInt('bid')) {
@@ -328,7 +321,11 @@ class Colfields extends ColfieldData {
 		}
 		while($data = mysqli_fetch_assoc($result)) {
 			$val = new ColfieldData($data);
-			if (request::getInt('bid') && $val->getTerraformingId() == 0 && in_array($val->getFieldType(),$building->getBuildableFields())) {
+			if (
+				request::getInt('bid') &&
+				$val->getTerraformingId() == 0 &&
+				$building->getBuildableFields()->containsKey((int) $val->getFieldType())
+			) {
 				$val->setBuildMode(TRUE);
 			}
 			$ret[] = $val;
@@ -363,11 +360,6 @@ class Colfields extends ColfieldData {
 	}
 
 	static public function getFieldsByBuildingFunction($colonyId,$func,$active=FALSE) {
-		if (is_array($func)) {
-			$qry = '`function` IN ('.join(',',$func).')';
-		} else {
-			$qry = '`function`='.$func;
-		}
 		$result = DB()->query("SELECT * FROM ".self::tablename." WHERE colonies_id=".intval($colonyId)." AND aktiv".($active ? '=1' : '<2')." AND buildings_id IN (SELECT buildings_id FROM stu_buildings_functions WHERE `function`=".intval($func).")");
 		return self::_getList($result,'ColFieldData');
 	}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -52,6 +53,10 @@ class BuildingUpgrade implements BuildingUpgradeInterface
      * @JoinColumn(name="upgrade_from", referencedColumnName="id", onDelete="CASCADE")
      */
     private $upgradeFromBuilding;
+
+    public function __construct() {
+        $this->upgradeCosts = new ArrayCollection();
+    }
 
     public function getId(): string
     {

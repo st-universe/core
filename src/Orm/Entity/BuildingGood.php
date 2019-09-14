@@ -28,10 +28,16 @@ class BuildingGood implements BuildingGoodInterface
     private $count = 0;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
+     * @ManyToOne(targetEntity="Commodity")
      * @JoinColumn(name="goods_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $good;
+
+    /**
+     * @ManyToOne(targetEntity="Building", inversedBy="buildingCommodities")
+     * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $building;
 
     public function getId(): int
     {
