@@ -15,14 +15,6 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
-$afterMiddleware = function (Request $request, RequestHandler $handler) {
-    $response = $handler->handle($request);
-    $response->getBody()->write(json_encode($response->getBody()));
-    return $response;
-};
-
-$app->add($afterMiddleware);
-
 $app->group('/api/v1', function (RouteCollectorProxy $group): void {
     $group->get('/public/news', function (Request $request, Response $response, array $args): Response {
         $service = $this->get(GetNews::class);
