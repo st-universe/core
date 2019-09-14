@@ -48,13 +48,16 @@ final class AllianceDetails implements ViewControllerInterface
             $alliance->getDescription()
         );
 
+        $isInAlliance = $alliance->getId() == $game->getUser()->getAllianceId();
+
         $game->setPageTitle(_('Allianz anzeigen'));
         $game->setTemplateFile('html/alliancedetails.xhtml');
 
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
         $game->setTemplateVar('DESCRIPTION', $description);
-        $game->setTemplateVar('IS_IN_ALLIANCE', $alliance->getId() == $game->getUser()->getAllianceId());
+        $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
+        $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$alliance->currentUserIsFounder());
 
         if ($game->getUser()->getAllianceId() > 0) {
             $game->appendNavigationPart(
@@ -75,7 +78,7 @@ final class AllianceDetails implements ViewControllerInterface
     private function getReplacementVars(AllianceData $alliance): array
     {
         $replacementVars = [];
-        $replacementVars['$ALLIANCE_HOMEPAGE_LINK'] = '<a href="' . $alliance->getHomepageDisplay() . '" target="_blank">' . _('Zur Allianz Homepage') . '</a>';
+        $replacementVars['$ALLIANCE_HOMEPAGE_LINK'] = '<a href="' . $alliance->getHomepage() . '" target="_blank">' . _('Zur Allianz Homepage') . '</a>';
         $replacementVars['$ALLIANCE_BANNER'] = ($alliance->getAvatar() ? '<img src="' . $alliance->getFullAvatarpath() . '" />' : false);
         $replacementVars['$ALLIANCE_PRESIDENT'] = $alliance->getFounder()->getUser()->getName();
         $replacementVars['$ALLIANCE_VICEPRESIDENT'] = ($alliance->getSuccessor() ? $alliance->getSuccessor()->getUser()->getName() : _('Unbesetzt'));

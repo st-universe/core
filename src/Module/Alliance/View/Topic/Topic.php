@@ -84,7 +84,7 @@ final class Topic implements ViewControllerInterface
                 $this->topicRequest->getPageMark()
             )
         );
-        $game->setTemplateVar('IS_MODERATOR', $alliance->currentUserIsBoardModerator());
+        $game->setTemplateVar('IS_MODERATOR', $alliance->currentUserMayEdit());
     }
 
     private function getTopicNavigation(AllianceBoardTopicInterface $topic): array

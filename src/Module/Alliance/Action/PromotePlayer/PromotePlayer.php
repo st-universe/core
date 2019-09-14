@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use AccessViolation;
 use PM;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -19,12 +20,16 @@ final class PromotePlayer implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         PromotePlayerRequestInterface $promotePlayerRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->promotePlayerRequest = $promotePlayerRequest;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,7 +71,11 @@ final class PromotePlayer implements ActionControllerInterface
                 if (!$alliance->currentUserIsFounder()) {
                     throw new AccessViolation();
                 }
-                $alliance->setFounder($playerId);
+                $this->allianceActionManager->setJobForUser(
+                    (int) $alliance->getId(),
+                    $userId,
+                    ALLIANCE_JOBS_FOUNDER
+                );
                 $text = sprintf(
                     _('Du wurdest zum neuen Präsidenten der Allianz %s ernannt'),
                     $alliance->getNameWithoutMarkup()
@@ -76,7 +85,12 @@ final class PromotePlayer implements ActionControllerInterface
                 if ($userId === $playerId) {
                     throw new AccessViolation();
                 }
-                $alliance->setSuccessor($playerId);
+                $this->allianceActionManager->setJobForUser(
+                    (int) $alliance->getId(),
+                    $playerId,
+                    ALLIANCE_JOBS_SUCCESSOR
+                );
+
                 $text = sprintf(
                     _('Du wurdest zum neuen Vize-Präsidenten der Allianz %s ernannt'),
                     $alliance->getNameWithoutMarkup()
@@ -86,14 +100,18 @@ final class PromotePlayer implements ActionControllerInterface
                 if ($userId === $playerId) {
                     throw new AccessViolation();
                 }
-                $alliance->setDiplomatic($playerId);
+                $this->allianceActionManager->setJobForUser(
+                    (int) $alliance->getId(),
+                    $playerId,
+                    ALLIANCE_JOBS_DIPLOMATIC
+                );
+
                 $text = sprintf(
                     'Du wurdest zum neuen Außenminister der Allianz %s ernannt',
                     $alliance->getNameWithoutMarkup()
                 );
                 break;
         }
-        $alliance->truncateJobCache();
 
         PM::sendPM($userId, $playerId, $text);
 

@@ -17,7 +17,7 @@
 					<div style="margin-top: 10px;" tal:condition="ALLIANCE/currentUserMaySignup">
 						<a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Bewerben</a>
 					</div>
-					<div style="margin-top: 10px" tal:condition="ALLIANCE/currentUserCanLeave">
+					<div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
 						<a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}" class="linkbutton">Allianz verlassen</a>
 					</div>
 				</div>

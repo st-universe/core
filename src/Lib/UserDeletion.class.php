@@ -7,6 +7,7 @@ use Contactlist;
 use Fleet;
 use PMCategory;
 use Ship;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -47,10 +48,25 @@ class UserDeletion
         global $container;
 
         $allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
+        $allianceActionManager = $container->get(AllianceActionManagerInterface::class);
 
         foreach ($allianceJobRepo->getByUser((int) $this->getUser()->getId()) as $job) {
             if ($job->getType() === ALLIANCE_JOBS_FOUNDER) {
-                $job->getAlliance()->handleFounderDeletion();
+                $alliance = $job->getAlliance();
+
+                if ($alliance->getSuccessor() === null) {
+                    $allianceActionManager->delete((int) $alliance->getId());
+                } else {
+                    $successorUserId = $alliance->getSuccessor()->getUserId();
+
+                    $allianceJobRepo->truncateByUser($successorUserId);
+
+                    $allianceActionManager->setJobForUser(
+                        (int) $alliance->getId(),
+                        $successorUserId,
+                        ALLIANCE_JOBS_FOUNDER
+                    );
+                }
             }
 
             $allianceJobRepo->delete($job);

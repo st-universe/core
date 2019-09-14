@@ -6,6 +6,7 @@ namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use AccessViolation;
 use PM;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -19,12 +20,16 @@ final class KickPlayer implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $allianceActionManager;
+
     public function __construct(
         KickPlayerRequestInterface $kickPlayerRequest,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->kickPlayerRequest = $kickPlayerRequest;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,8 +54,13 @@ final class KickPlayer implements ActionControllerInterface
         $player->save();
 
         if ($alliance->getFounder()->getUserId() == $playerId) {
-            $alliance->setFounder($userId);
-            $alliance->delSuccessor();
+            $this->allianceJobRepository->truncateByUser($userId);
+
+            $this->allianceActionManager->setJobForUser(
+                (int) $alliance->getId(),
+                $userId,
+                ALLIANCE_JOBS_FOUNDER
+            );
         }
 
         $this->allianceJobRepository->truncateByUser($playerId);

@@ -1,9 +1,7 @@
 <?php
 
 use Lib\AllianceMemberWrapper;
-use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 
 class AllianceData extends BaseTable {
 
@@ -38,12 +36,6 @@ class AllianceData extends BaseTable {
 	function getHomepage() {
 		return $this->data['homepage'];
 	}
-	/**
-	 */
-	public function getHomepageDisplay() { #{{{
-		return stripslashes($this->getHomepage());
-	} # }}}
-
 
 	function setHomepage($value) {
 		$this->data['homepage'] = strip_tags($value);
@@ -57,19 +49,6 @@ class AllianceData extends BaseTable {
 	function setDescription($value) {
 		$this->data['description'] = strip_tags($value);
 		$this->addUpdateField('description','getDescription');
-	}
-
-	function setCSSClass($value) {
-		$this->data['cssclass'] = $value;
-	}
-
-	function getCSSClass() {
-		switch ($this->data['cssclass']) {
-			case 0:
-				return 'odd';
-			case 1:
-				return 'even';
-		}
 	}
 
 	function getFactionId() {
@@ -106,28 +85,6 @@ class AllianceData extends BaseTable {
 		return $this->founder;
 	}
 
-	function setFounder($userId) {
-		// @todo refactor
-		global $container;
-
-		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
-
-		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
-			(int) $this->getId(),
-			ALLIANCE_JOBS_FOUNDER
-		);
-		if (!$obj) {
-			$obj = $allianceJobRepo->prototype();
-			$obj->setType(ALLIANCE_JOBS_FOUNDER);
-			$obj->setAllianceId((int) $this->getId());
-		}
-		$obj->setUserId((int) $userId);
-
-		$allianceJobRepo->save($obj);
-
-		$this->founder = $obj;
-	}
-
 	private $successor = NULL;
 
 	function getSuccessor() {
@@ -142,43 +99,6 @@ class AllianceData extends BaseTable {
 				);
 		}
 		return $this->successor;
-	}
-
-	function setSuccessor($userId) {
-		// @todo refactor
-		global $container;
-
-		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
-
-		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
-			(int) $this->getId(),
-			ALLIANCE_JOBS_SUCCESSOR
-		);
-		if (!$obj) {
-		    $obj = $allianceJobRepo->prototype();
-			$obj->setType(ALLIANCE_JOBS_SUCCESSOR);
-			$obj->setAllianceId((int) $this->getId());
-		}
-		$obj->setUserId((int) $userId);
-
-		$allianceJobRepo->save($obj);
-
-		$this->successor = $obj;
-	}
-
-	function delSuccessor() {
-		// @todo refactor
-		global $container;
-
-		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
-
-		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
-			(int) $this->getId(),
-			ALLIANCE_JOBS_SUCCESSOR
-		);
-		if ($obj) {
-			$allianceJobRepo->delete($obj);
-		}
 	}
 
 	private $diplomatic = NULL;
@@ -198,31 +118,11 @@ class AllianceData extends BaseTable {
 		return $this->diplomatic;
 	}
 
-	function setDiplomatic($userId) {
-		// @todo refactor
-		global $container;
-
-		$allianceJobRepo = $container->get(AllianceJobRepositoryInterface::class);
-
-		$obj = $allianceJobRepo->getSingleResultByAllianceAndType(
-			(int) $this->getId(),
-			ALLIANCE_JOBS_DIPLOMATIC
-		);
-
-		if (!$obj) {
-		    $obj = $allianceJobRepo->prototype();
-			$obj->setType(ALLIANCE_JOBS_DIPLOMATIC);
-			$obj->setAllianceId((int) $this->getId());
-		}
-		$obj->setUserId((int) $userId);
-
-		$allianceJobRepo->save($obj);
-
-		$this->diplomatic = $obj;
-	}
-
 	private $members = NULL;
 
+	/**
+	 * @return AllianceMemberWrapper[]
+	 */
 	function getMembers() {
 		if ($this->members === NULL) {
 			foreach (User::getListBy('WHERE allys_id='.$this->getId()) as $user) {
@@ -302,16 +202,6 @@ class AllianceData extends BaseTable {
 		return $this->getFounder()->getUserId() == currentUser()->getId();
 	}
 
-	function currentUserCanLeave() {
-		return $this->getId() == currentUser()->getAllianceId() && !$this->currentUserIsFounder();
-	}
-
-	function truncateJobCache() {
-		$this->founder = NULL;
-		$this->successor = NULL;
-		$this->diplomatic = NULL;
-	}
-
 	function getAvatar() {
 		return $this->data['avatar'];
 	}
@@ -341,64 +231,6 @@ class AllianceData extends BaseTable {
                         PM::sendPM(USER_NOONE,$this->getDiplomatic()->getUserId(),$text);
                 }
 	}
-
-	/**
-	 */
-	public function delete() { #{{{
-		// @todo refactor
-		global $container;
-
-		$allianceId = (int) $this->getId();
-
-		$container->get(AllianceJobRepositoryInterface::class)->truncateByAlliance($allianceId);
-		$container->get(AllianceRelationRepositoryInterface::class)->truncateByAlliances($allianceId);
-
-		$allianceBoardRepository = $container->get(AllianceBoardRepositoryInterface::class);
-
-		$list = $allianceBoardRepository->getByAlliance((int) $allianceId);
-		foreach ($list as $key => $obj) {
-			$allianceBoardRepository->delete($obj);
-		}
-		$text = "Die Allianz ".$this->getNameWithoutMarkup()." wurde aufgelöst";
-		$list = $this->getMembers();
-		foreach ($list as $key => $obj) {
-			if ($this->getFounder()->getUserId() != $obj->getUserId()) {
-				PM::sendPM(USER_NOONE,$obj->getUserId(),$text);
-			}
-			$obj->getUser()->setAllianceId(0);
-			$obj->getUser()->save();
-		}
-		if ($this->getAvatar()) {
-			@unlink(APP_PATH.'/src/'.AVATAR_ALLIANCE_PATH.$this->getAvatar().".png");
-		}
-		$this->deleteFromDatabase();
-	} # }}}
-
-	/**
-	 */
-	public function handleFounderDeletion() { #{{{
-		if (!$this->getSuccessor()) {
-			$this->delete();
-			return;
-		}
-		$this->handleFounderChange();
-	} # }}}
-
-	/**
-	 */
-	public function handleFounderChange() { #{{{
-		$this->setFounder($this->getSuccessor()->getUserId());		
-		$this->delSuccessor();
-		$this->save();
-	} # }}}
-
-	/**
-	 */
-	public function currentUserIsBoardModerator() { #{{{
-		// XXX: for now, president and successor are enough
-		return $this->currentUserMayEdit();
-	} # }}}
-
 }
 class Alliance extends AllianceData {
 
@@ -416,7 +248,6 @@ class Alliance extends AllianceData {
 		$result = DB()->query("SELECT * FROM ".self::tablename." ORDER BY id");
 		while ($data = mysqli_fetch_assoc($result)) {
 			$ret[$data['id']] = new AllianceData($data);
-			$ret[$data['id']]->setCSSClass($i%2);
 			$i++;
 		}
 		return $ret;

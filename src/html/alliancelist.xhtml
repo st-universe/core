@@ -21,7 +21,7 @@
 				<th>Bewerbung</th>
 			</tr>
 			<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data ALLIANCE_LIST">
-				<td class="runtime" tal:attributes="class data/getCSSClass">
+				<td class="runtime">
 					<a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
 				</td>
 				<td class="runtime" tal:content="data/getMemberCount">COUNT</td>

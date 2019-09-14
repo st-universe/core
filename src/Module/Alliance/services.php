@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance;
 
+use Stu\Module\Alliance\Lib\AllianceActionManager;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplication;
 use Stu\Module\Alliance\Action\AcceptApplication\AcceptApplicationRequest;
@@ -107,6 +109,7 @@ use Stu\Module\Alliance\View\TopicSettings\TopicSettingsRequestInterface;
 use function DI\autowire;
 
 return [
+    AllianceActionManagerInterface::class => autowire(AllianceActionManager::class),
     AddBoardRequestInterface::class => autowire(AddBoardRequest::class),
     NewTopicRequestInterface::class => autowire(NewTopicRequest::class),
     BoardRequestInterface::class => autowire(BoardRequest::class),
