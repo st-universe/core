@@ -15,9 +15,9 @@
   "game": {
     "base_url": "https://change.me",
     "version": "VERSIONSTRING",
-    "language": "de_DE",
-    "registration": {
-      "magic_word": "changeme"
-    }
+    "language": "de_DE"
+  },
+  "api": {
+    "jwt_secret": "changeme"
   }
 }
