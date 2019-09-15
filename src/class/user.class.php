@@ -5,6 +5,7 @@ use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -232,13 +233,14 @@ class UserData extends BaseTable {
 	} # }}}
 
 	public function isFriend(&$userId) {
+		// @todo refactor
+		global $container;
+
 		$user = ResourceCache()->getUser($userId);
 		if ($this->getAllianceId() > 0) {
 			if ($this->getAllianceId() == $user->getAllianceId()) {
 				return TRUE;
 			}
-			// @todo refactor
-			global $container;
 
 			$result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
 				[ALLIANCE_RELATION_FRIENDS, ALLIANCE_RELATION_ALLIED],
@@ -249,10 +251,11 @@ class UserData extends BaseTable {
 				return true;
 			}
 		}
-		if (Contactlist::isFriendlyContact($this->getId(),$userId)) {
-			return TRUE;
-		}
-		return FALSE;
+		$contact = $container->get(ContactRepositoryInterface::class)->getByUserAndOpponent(
+			$this->getId(),
+			(int) $userId
+		);
+		return $contact !== null && $contact->isFriendly();
 	}
 
 	public function isAdmin() {

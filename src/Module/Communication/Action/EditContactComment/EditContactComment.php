@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\EditContactComment;
 
-use Contactlist;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class EditContactComment implements ActionControllerInterface
 {
@@ -14,20 +14,25 @@ final class EditContactComment implements ActionControllerInterface
 
     private $editContactCommentRequest;
 
+    private $contactRepository;
+
     public function __construct(
-        EditContactCommentRequestInterface $editContactCommentRequest
+        EditContactCommentRequestInterface $editContactCommentRequest,
+        ContactRepositoryInterface $contactRepository
     ) {
         $this->editContactCommentRequest = $editContactCommentRequest;
+        $this->contactRepository = $contactRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $contact = Contactlist::getById($this->editContactCommentRequest->getContactId());
-        if (!$contact || $contact->getUserId() != $game->getUser()->getId()) {
+        $contact = $this->contactRepository->find($this->editContactCommentRequest->getContactId());
+        if ($contact == null || $contact->getUserId() != $game->getUser()->getId()) {
             return;
         }
         $contact->setComment($this->editContactCommentRequest->getText());
-        $contact->save();
+
+        $this->contactRepository->save($contact);
 
         $game->addInformation(_('Kommentar wurde editiert'));
     }

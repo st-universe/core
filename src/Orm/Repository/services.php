@@ -26,6 +26,7 @@ use Stu\Orm\Entity\ColonyShipRepair;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
+use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewRace;
 use Stu\Orm\Entity\CrewTraining;
@@ -176,6 +177,11 @@ return [
         ContainerInterface $c
     ): CommodityRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Commodity::class);
+    },
+    ContactRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ContactRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Contact::class);
     },
     ColonyShipRepairRepositoryInterface::class => function (
         ContainerInterface $c

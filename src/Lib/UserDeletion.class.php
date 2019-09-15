@@ -3,12 +3,12 @@
 namespace Stu\Lib;
 
 use Colony;
-use Contactlist;
 use Fleet;
 use PMCategory;
 use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
@@ -96,7 +96,12 @@ class UserDeletion
 
     public function handleContactlist()
     {
-        Contactlist::truncate('WHERE user_id=' . $this->getUser()->getId() . ' OR recipient=' . $this->getUser()->getId());
+        // @todo refactor
+        global $container;
+
+        $userId = $this->getUser()->getId();
+
+        $container->get(ContactRepositoryInterface::class)->truncateByUserAndOpponent($userId, $userId);
     }
 
     public function handleCrew()
@@ -126,7 +131,8 @@ class UserDeletion
 
     public function handleIgnoreList()
     {
-        Contactlist::truncate('WHERE user_id=' . $this->getUser()->getId());
+        // @todo delete ignorelist
+        //Contactlist::truncate('WHERE user_id=' . $this->getUser()->getId());
     }
 
     public function handleKnPostings()

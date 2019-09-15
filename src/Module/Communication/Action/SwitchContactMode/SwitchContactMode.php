@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\SwitchContactMode;
 
-use Contactlist;
-use ContactlistData;
 use PM;
+use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowContactMode\ShowContactMode;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class SwitchContactMode implements ActionControllerInterface
 {
@@ -17,49 +17,59 @@ final class SwitchContactMode implements ActionControllerInterface
 
     private $switchContactModeRequest;
 
+    private $contactRepository;
+
     public function __construct(
-        SwitchContactModeRequestInterface $switchContactModeRequest
+        SwitchContactModeRequestInterface $switchContactModeRequest,
+        ContactRepositoryInterface $contactRepository
     ) {
         $this->switchContactModeRequest = $switchContactModeRequest;
+        $this->contactRepository = $contactRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateVar('div', $this->switchContactModeRequest->getContactDiv());
 
-        $contact = Contactlist::getById($this->switchContactModeRequest->getContactId());
+        $contact = $this->contactRepository->find($this->switchContactModeRequest->getContactId());
         $mode = $this->switchContactModeRequest->getModeId();
         $userId = $game->getUser()->getId();
 
-        if (!$contact || $contact->getUserId() != $userId) {
+        if ($contact === null || $contact->getUserId() != $userId) {
             return;
         }
         if (!array_key_exists($mode, getContactlistModes())) {
             return;
         }
-        if ($mode != $contact->getMode() && $mode == Contactlist::CONTACT_ENEMY) {
+        if ($mode != $contact->getMode() && $mode == ContactListModeEnum::CONTACT_ENEMY) {
             PM::sendPM(
                 $userId,
                 $contact->getRecipientId(),
                 _('Der Siedler betrachtet Dich von nun an als Feind')
             );
-            $obj = Contactlist::hasContact($contact->getRecipientId(), $userId);
-            if ($obj) {
+            $obj = $this->contactRepository->getByUserAndOpponent(
+                $contact->getRecipientId(),
+                $userId
+            );
+            if ($obj !== null) {
                 if (!$obj->isEnemy()) {
-                    $obj->setMode(Contactlist::CONTACT_ENEMY);
-                    $obj->save();
+                    $obj->setMode(ContactListModeEnum::CONTACT_ENEMY);
+
+                    $this->contactRepository->save($obj);
                 }
             } else {
-                $obj = new ContactlistData();
+                $obj = $this->contactRepository->prototype();
                 $obj->setUserId($contact->getRecipientId());
                 $obj->setRecipientId($userId);
-                $obj->setMode(Contactlist::CONTACT_ENEMY);
+                $obj->setMode(ContactListModeEnum::CONTACT_ENEMY);
                 $obj->setDate(time());
-                $obj->save();
+
+                $this->contactRepository->save($obj);
             }
         }
         $contact->setMode($mode);
-        $contact->save();
+
+        $this->contactRepository->save($contact);
 
         $game->setTemplateVar('contact', $contact);
         $game->setView(ShowContactMode::VIEW_IDENTIFIER);

@@ -4,6 +4,7 @@ use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
+use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -277,9 +278,10 @@ function printBackTrace() {
 /**
  */
 function getContactlistModes() { #{{{
-	return array(ContactlistData::CONTACT_FRIEND => array("mode" => ContactlistData::CONTACT_FRIEND,"name" => _("Freund")),
-		     ContactlistData::CONTACT_ENEMY => array("mode" => ContactlistData::CONTACT_ENEMY,"name" => _("Feind")),
-		     ContactlistData::CONTACT_NEUTRAL => array("mode" => ContactlistData::CONTACT_NEUTRAL,"name" => _("Neutral")));
+	return array(
+        ContactListModeEnum::CONTACT_FRIEND => array("mode" => ContactListModeEnum::CONTACT_FRIEND,"name" => _("Freund")),
+		     ContactListModeEnum::CONTACT_ENEMY => array("mode" => ContactListModeEnum::CONTACT_ENEMY,"name" => _("Feind")),
+		     ContactListModeEnum::CONTACT_NEUTRAL => array("mode" => ContactListModeEnum::CONTACT_NEUTRAL,"name" => _("Neutral")));
 } # }}}
 /**
  */
@@ -345,6 +347,24 @@ function BBCode(): Parser {
 	return $container->get(Parser::class);
 }
 
+function getContactListModeDescription(int $mode): string {
+    switch ($mode) {
+        case ContactListModeEnum::CONTACT_FRIEND:
+            return _('Freund');
+        case ContactListModeEnum::CONTACT_ENEMY:
+            return _('Feind');
+        case ContactListModeEnum::CONTACT_NEUTRAL:
+            return _('Neutral');
+    }
+    return '';
+}
+
+TalesRegistry::registerPrefix(
+    'clmodeDescription',
+    function ($src, $nothrow): string {
+        return 'getContactListModeDescription((int) '.TalesInternal::compileToPHPExpression($src,$nothrow).')';
+    }
+);
 TalesRegistry::registerPrefix(
     'isPositive',
     function($src, $nothrow): string {

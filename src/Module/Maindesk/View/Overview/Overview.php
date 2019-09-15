@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
-use ContactlistData;
+use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -81,7 +81,7 @@ final class Overview implements ViewControllerInterface
             User::getListBy(sprintf(
                 'WHERE id != %d AND (show_online_status=1 OR id IN (SELECT user_id FROM stu_contactlist WHERE mode = %d AND recipient = %d)) AND lastaction > %d ORDER BY RAND() LIMIT 15',
                 $userId,
-                ContactlistData::CONTACT_FRIEND,
+                ContactListModeEnum::CONTACT_FRIEND,
                 $userId,
                 (time() - USER_ONLINE_PERIOD)
             ))

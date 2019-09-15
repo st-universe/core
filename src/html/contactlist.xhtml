@@ -30,7 +30,15 @@
 								<img tal:condition="not:contact/getComment" src="assets/buttons/b_down1.gif" title="Kommentar" i18n:attributes="title" onclick="toggleTableRowVisible('contact_comment_${contact/getId}')" />
 							</td>
 						</tr>
-						<tr tal:attributes="style contact/getCommentStyle" id="contact_comment_${contact/getId}">
+						<tr tal:condition="contact/getComment" id="contact_comment_${contact/getId}">
+							<td colspan="4">
+								<span i18n:translate="">Kommentar</span>
+								<input type="text" style="width: 500px" name="comment_${contact/getId}" id="contact_comment_input_${contact/getId}" tal:attributes="value structure contact/getComment" />
+								<input type="button" class="button" value="speichern" onclick="saveContactComment(${contact/getId})" i18n:attributes="value" />
+								<input type="button" class="button" value="löschen" onclick="emptyContactComment(${contact/getId})" i18n:attributes="value" />
+							</td>
+						</tr>
+						<tr tal:condition="not:contact/getComment" style="display: none" id="contact_comment_${contact/getId}">
 							<td colspan="4">
 								<span i18n:translate="">Kommentar</span>
 								<input type="text" style="width: 500px" name="comment_${contact/getId}" id="contact_comment_input_${contact/getId}" tal:attributes="value structure contact/getComment" />

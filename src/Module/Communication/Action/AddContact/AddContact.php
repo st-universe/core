@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddContact;
 
-use Contactlist;
-use ContactlistData;
 use PM;
+use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 use User;
 
 final class AddContact implements ActionControllerInterface
@@ -17,10 +17,14 @@ final class AddContact implements ActionControllerInterface
 
     private $addContactRequest;
 
+    private $contactRepository;
+
     public function __construct(
-        AddContactRequestInterface $addContactRequest
+        AddContactRequestInterface $addContactRequest,
+        ContactRepositoryInterface $contactRepository
     ) {
         $this->addContactRequest = $addContactRequest;
+        $this->contactRepository = $contactRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,7 +46,7 @@ final class AddContact implements ActionControllerInterface
             $game->addInformation(_('Du kannst Dich nicht selbst auf die Kontaktliste setzen'));
             return;
         }
-        if (Contactlist::isOnList($userId, $recipient->getId()) == 1) {
+        if ($this->contactRepository->getByUserAndOpponent($userId, $recipient->getId()) !== null) {
             $game->addInformation(_('Dieser Spieler befindet sich bereits auf Deiner Kontaktliste'));
             return;
         }
@@ -52,13 +56,15 @@ final class AddContact implements ActionControllerInterface
         if (!array_key_exists($mode, getContactlistModes())) {
             return;
         }
-        $contact = new ContactlistData();
+        $contact = $this->contactRepository->prototype();
         $contact->setUserId($userId);
         $contact->setMode($mode);
         $contact->setRecipientId($recipient->getId());
         $contact->setDate(time());
-        $contact->save();
-        if ($mode == Contactlist::CONTACT_ENEMY) {
+
+        $this->contactRepository->save($contact);
+
+        if ($mode == ContactListModeEnum::CONTACT_ENEMY) {
             PM::sendPM($userId, $recipient->getId(), _('Der Spieler betrachtet Dich von nun an als Feind'));
         }
         $game->addInformation(_('Der Spieler wurde hinzugefügt'));

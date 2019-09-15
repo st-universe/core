@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowContactModeSwitch;
 
-use Contactlist;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class ShowContactModeSwitch implements ViewControllerInterface
 {
@@ -14,17 +14,21 @@ final class ShowContactModeSwitch implements ViewControllerInterface
 
     private $showContactModeSwitchRequest;
 
+    private $contactRepository;
+
     public function __construct(
-        ShowContactModeSwitchRequestInterface $showContactModeSwitchRequest
+        ShowContactModeSwitchRequestInterface $showContactModeSwitchRequest,
+        ContactRepositoryInterface $contactRepository
     ) {
         $this->showContactModeSwitchRequest = $showContactModeSwitchRequest;
+        $this->contactRepository = $contactRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $contact = new Contactlist($this->showContactModeSwitchRequest->getContactId());
+        $contact = $this->contactRepository->find($this->showContactModeSwitchRequest->getContactId());
 
-        if ($contact->getUserId() != $game->getUser()->getId()) {
+        if ($contact === null || $contact->getUserId() != $game->getUser()->getId()) {
             return;
         }
         $game->setPageTitle(_('Status'));

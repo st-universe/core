@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowWritePm;
 
-use Contactlist;
 use PM;
 use PMCategory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class ShowWritePm implements ViewControllerInterface
 {
@@ -16,10 +16,14 @@ final class ShowWritePm implements ViewControllerInterface
 
     private $showWritePmRequest;
 
+    private $contactRepository;
+
     public function __construct(
-        ShowWritePmRequestInterface $showWritePmRequest
+        ShowWritePmRequestInterface $showWritePmRequest,
+        ContactRepositoryInterface $contactRepository
     ) {
         $this->showWritePmRequest = $showWritePmRequest;
+        $this->contactRepository = $contactRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,7 +62,7 @@ final class ShowWritePm implements ViewControllerInterface
             $recipientId === 0 ? '' : $recipientId
         );
         $game->setTemplateVar('REPLY', $reply);
-        $game->setTemplateVar('CONTACT_LIST', Contactlist::getList($userId));
+        $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($userId));
         $game->setTemplateVar('CORRESPONDENCE', $correspondence);
         $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($userId));
     }

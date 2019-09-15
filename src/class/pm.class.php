@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Orm\Entity\ContactInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 
 class PMData extends Basetable {
@@ -151,9 +153,16 @@ class PMData extends Basetable {
 
 	private $sendercontact = NULL;
 
-	function senderIsContact() {
-		if ($this->sendercontact === NULL) {
-			$this->sendercontact = Contactlist::isOnList(currentUser()->getId(),$this->getSenderId());
+	function senderIsContact(): ?ContactInterface {
+		if ($this->sendercontact === null) {
+			// @todo refactor
+			global $container;
+
+			$this->sendercontact = $container->get(ContactRepositoryInterface::class)
+				->getByUserAndOpponent(
+					currentUser()->getId(),
+					(int) $this->getSenderId()
+				);
 		}
 		return $this->sendercontact;
 	}

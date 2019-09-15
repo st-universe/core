@@ -2,7 +2,7 @@
 
 namespace Stu\Lib;
 
-use Contactlist;
+use Stu\Orm\Repository\ContactRepositoryInterface;
 use UserData;
 
 class ContactlistWrapper
@@ -15,9 +15,15 @@ class ContactlistWrapper
         $this->user = $user;
     }
 
-    public function __get($userId)
+    public function __get($opponentId)
     {
-        return Contactlist::hasContact($this->user->getId(), $userId);
+        // @todo refactor
+        global $container;
+
+        return $container->get(ContactRepositoryInterface::class)->getByUserAndOpponent(
+            $this->user->getId(),
+            (int) $opponentId
+        );
     }
 
 }
