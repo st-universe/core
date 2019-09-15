@@ -81,8 +81,16 @@ final class ActivateTractorBeam implements ActionControllerInterface
             }
             $obj = new ShipSingleAttackCycle($attacker, $ship, $target->getFleetId(),$ship->getFleetId());
             $game->addInformationMergeDown($obj->getMessages());
-            PM::sendPM($userId, $target->getUserId(),
-                "Die " . $ship->getName() . " versucht die " . $target->getName() . " in Sektor " . $ship->getSectorString() . " mit dem Traktorstrahl zu erfassen. Folgende Aktionen wurden ausgeführt:\n" . infoToString($obj->getMessages()),
+            PM::sendPM(
+                $userId,
+                $target->getUserId(),
+                sprintf(
+                    "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen. Folgende Aktionen wurden ausgeführt:\n%s",
+                    $ship->getName(),
+                    $target->getName(),
+                    $ship->getSectorString(),
+                    implode(PHP_EOL, $obj->getMessages())
+                ),
                 PM_SPECIAL_SHIP);
         }
         if ($target->shieldIsActive()) {

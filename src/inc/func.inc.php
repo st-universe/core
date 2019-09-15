@@ -142,13 +142,6 @@ function renderEpsStatusBar(&$eps,&$maxeps) {
 	}
 	return $bar;
 }
-function bbHandleColor($action, $attributes, $content, $params, &$node_object) {
-        if (!isset ($attributes['default'])) {
-		return "";
-	}
-	$color = str_replace(array('&quot;','"'),'',stripslashes($attributes['default']));
-        return "<span style=\"color: ".$color."\">".$content."</span>";
-}
 function getOnlineStatus($online) {
 	if ($online) {
 		return "online";
@@ -190,12 +183,6 @@ function formatSeconds($time) {
 }
 function parseDateTime($value) {
 	return date("d.m.Y H:i",$value);
-}
-function parseDate($value) {
-	return date("d.m.Y",$value);
-}
-function infoToString(&$info) {
-	return implode("\n",$info);
 }
 function databaseScan($database_id,$user_id) {
 	if ($database_id == 0) {
