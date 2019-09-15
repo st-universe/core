@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ColfieldData;
-use Colfields;
 use Colony;
 use Ship;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipRepairRepository")
@@ -70,18 +69,27 @@ class ColonyShipRepair implements ColonyShipRepairInterface
         return $this->field_id;
     }
 
-    public function getField(): ColfieldData {
+    public function getField(): PlanetFieldInterface
+    {
         if ($this->field === null) {
-            $this->field = Colfields::getByColonyField($this->getFieldId(), $this->getColonyId());
+            // @todo refactor
+            global $container;
+
+            $this->field = $container->get(PlanetFieldRepositoryInterface::class)->getByColonyAndFieldId(
+                $this->getColonyId(),
+                $this->getFieldId()
+            );
         }
         return $this->field;
     }
 
-    public function getColony(): Colony {
+    public function getColony(): Colony
+    {
         return ResourceCache()->getObject(CACHE_COLONY, $this->getColonyId());
     }
 
-    public function getShip(): Ship {
+    public function getShip(): Ship
+    {
         return ResourceCache()->getObject(CACHE_SHIP, $this->getShipId());
     }
 }

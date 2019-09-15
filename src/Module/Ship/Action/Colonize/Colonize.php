@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Colonize;
 
-use Colfields;
 use Colony;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,6 +13,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
 
@@ -29,16 +29,20 @@ final class Colonize implements ActionControllerInterface
 
     private $buildingRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        BuildingRepositoryInterface $buildingRepository
+        BuildingRepositoryInterface $buildingRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
         $this->researchedRepository = $researchedRepository;
         $this->buildingRepository = $buildingRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,9 +57,14 @@ final class Colonize implements ActionControllerInterface
         );
 
         $colonyId = request::getIntFatal('colid');
-        $fieldId = request::getIntFatal('field');
+        $fieldId = (int) request::getIntFatal('field');
         $colony = new Colony($colonyId);
-        $field = new Colfields($fieldId);
+
+        $field = $this->planetFieldRepository->find($fieldId);
+
+        if ($field === null) {
+            return;
+        }
 
         if (!$ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
             return;

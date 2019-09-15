@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ColfieldData;
-use Colfields;
 use Colony;
 use ColonyData;
 
@@ -37,10 +35,16 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     private $finished = 0;
 
     /**
-     * @ManyToOne(targetEntity="Stu\Orm\Entity\Terraforming")
+     * @ManyToOne(targetEntity="Terraforming")
      * @JoinColumn(name="terraforming_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $terraforming;
+
+    /**
+     * @ManyToOne(targetEntity="PlanetField")
+     * @JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $field;
 
     public function getId(): int
     {
@@ -62,13 +66,6 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     public function getFieldId(): int
     {
         return $this->field_id;
-    }
-
-    public function setFieldId(int $fieldId): ColonyTerraformingInterface
-    {
-        $this->field_id = $fieldId;
-
-        return $this;
     }
 
     public function getTerraformingId(): int
@@ -107,15 +104,25 @@ class ColonyTerraforming implements ColonyTerraformingInterface
         return $this;
     }
 
-    public function getField(): ColfieldData {
-        return new Colfields($this->getFieldId());
+    public function getField(): PlanetFieldInterface
+    {
+        return $this->field;
     }
 
-    public function getColony(): ColonyData {
+    public function setField(PlanetFieldInterface $planetField): ColonyTerraformingInterface
+    {
+        $this->field = $planetField;
+
+        return $this;
+    }
+
+    public function getColony(): ColonyData
+    {
         return new Colony($this->getColonyId());
     }
 
-    public function getProgress(): int {
+    public function getProgress(): int
+    {
         $start = $this->getFinishDate() - $this->getTerraforming()->getDuration();
         return time() - $start;
     }

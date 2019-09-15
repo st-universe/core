@@ -56,7 +56,7 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s cs WHERE tc.colonies_id = :colonyId',
+                    'DELETE FROM %s cs WHERE cs.colonies_id = :colonyId',
                     ColonyStorage::class
                 )
             )

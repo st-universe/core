@@ -53,6 +53,7 @@ use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleSpecial;
 use Stu\Orm\Entity\News;
 use Stu\Orm\Entity\Note;
+use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\PlanetType;
@@ -327,6 +328,11 @@ return [
         ContainerInterface $c
     ): NoteRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Note::class);
+    },
+    PlanetFieldRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PlanetFieldRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PlanetField::class);
     },
     PlanetFieldTypeBuildingRepositoryInterface::class => function (
         ContainerInterface $c

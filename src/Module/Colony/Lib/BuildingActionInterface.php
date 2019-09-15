@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use ColfieldData;
 use ColonyData;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 
 interface BuildingActionInterface
 {
-    public function activate(ColonyData $colony, ColfieldData $field, GameControllerInterface $game): void;
+    public function activate(ColonyData $colony, PlanetFieldInterface $field, GameControllerInterface $game): void;
 
-    public function deactivate(ColonyData $colony, ColfieldData $field, GameControllerInterface $game): void;
+    public function deactivate(ColonyData $colony, PlanetFieldInterface $field, GameControllerInterface $game): void;
 }

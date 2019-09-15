@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
-use ColfieldData;
-use Colfields;
 use ColonyData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,8 +12,10 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\BuildingUpgradeCostInterface;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class UpgradeBuilding implements ActionControllerInterface
@@ -31,16 +31,20 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private $researchedRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,9 +57,9 @@ final class UpgradeBuilding implements ActionControllerInterface
         );
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        $field = Colfields::getByColonyField(
-            (int)request::indInt('fid'),
-            $colony->getId()
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
+            (int)request::indInt('fid')
         );
 
         // has to be string because of bigint issue
@@ -133,10 +137,11 @@ final class UpgradeBuilding implements ActionControllerInterface
             $building = $upgrade->getBuilding();
         }
 
-        $field->setBuildingId($building->getId());
-        $field->setBuildtime($building->getBuildtime());
+        $field->setBuilding($building);
+        $field->setActive($building->getBuildtime());
         $colony->save();
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
 
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
@@ -145,7 +150,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         );
     }
 
-    private function removeBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
+    private function removeBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -176,11 +181,13 @@ final class UpgradeBuilding implements ActionControllerInterface
             $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
     }
 
-    protected function deActivateBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -195,7 +202,9 @@ final class UpgradeBuilding implements ActionControllerInterface
         $colony->lowerWorkers($field->getBuilding()->getWorkers());
         $colony->lowerMaxBev($field->getBuilding()->getHousing());
         $field->setActive(0);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 

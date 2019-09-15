@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateBuilding;
 
-use Colfields;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateBuilding implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_ACTIVATE';
 
     private $colonyLoader;
 
+    private $planetFieldRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,10 +36,13 @@ final class ActivateBuilding implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $field = Colfields::getByColonyField(
-            (int) request::indInt('fid'),
-            $colony->getId()
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
+            (int) request::indInt('fid')
         );
+        if ($field === null) {
+            return;
+        }
 
         if (!$field->hasBuilding()) {
             return;
@@ -62,7 +68,9 @@ final class ActivateBuilding implements ActionControllerInterface
         $colony->upperWorkers($field->getBuilding()->getWorkers());
         $colony->upperMaxBev($field->getBuilding()->getHousing());
         $field->setActive(1);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $field->getBuilding()->postActivation($colony);
 

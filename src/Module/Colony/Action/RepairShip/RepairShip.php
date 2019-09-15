@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RepairShip;
 
-use Colfields;
 use request;
 use Ship;
 use Stu\Module\Control\ActionControllerInterface;
@@ -12,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
@@ -24,14 +24,18 @@ final class RepairShip implements ActionControllerInterface
 
     private $shipRumpBuildingFunctionRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository
+        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,10 +49,14 @@ final class RepairShip implements ActionControllerInterface
             $userId
         );
 
-        $field = Colfields::getByColonyField(
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
             (int)request::indInt('fid'),
-            $colony->getId()
         );
+
+        if ($field === null) {
+            return;
+        }
 
         $repairableShiplist = [];
         foreach ($colony->getOrbitShipList($userId) as $fleet) {

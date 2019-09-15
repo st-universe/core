@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use ColfieldData;
 use ColonyData;
 
 interface ColonyTerraformingInterface
@@ -14,8 +13,6 @@ interface ColonyTerraformingInterface
     public function setColonyId(int $colonyId): ColonyTerraformingInterface;
 
     public function getFieldId(): int;
-
-    public function setFieldId(int $fieldId): ColonyTerraformingInterface;
 
     public function getTerraformingId(): int;
 
@@ -29,7 +26,9 @@ interface ColonyTerraformingInterface
 
     public function setTerraforming(TerraformingInterface $terraforming): ColonyTerraformingInterface;
 
-    public function getField(): ColfieldData;
+    public function getField(): PlanetFieldInterface;
+
+    public function setField(PlanetFieldInterface $planetField): ColonyTerraformingInterface;
 
     public function getColony(): ColonyData;
 

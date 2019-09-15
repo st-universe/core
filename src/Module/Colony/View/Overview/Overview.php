@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\Overview;
 
-use Colfields;
 use Colony;
 use ColonyData;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
     private $colonyTerraformingRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,8 +37,6 @@ final class Overview implements ViewControllerInterface
             },
             $colonyList
         );
-
-        $buildingJobList = Colfields::getUnFinishedBuildingJobsByUser($userId);
 
         $game->appendNavigationPart(
             'colony.php',
@@ -53,7 +55,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'BUILDINGJOB_LIST',
-            $buildingJobList
+            $this->planetFieldRepository->getInConstructionByUser($userId)
         );
     }
 }

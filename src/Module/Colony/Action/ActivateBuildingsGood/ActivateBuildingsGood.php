@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\ActivateBuildingsGood;
 
-use Colfields;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,6 +11,7 @@ use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateBuildingsGood implements ActionControllerInterface
 {
@@ -24,14 +24,18 @@ final class ActivateBuildingsGood implements ActionControllerInterface
 
     private $commodityRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingActionInterface $buildingAction,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingAction = $buildingAction;
         $this->commodityRepository = $commodityRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,16 +47,16 @@ final class ActivateBuildingsGood implements ActionControllerInterface
 
         $colonyId = (int) $colony->getId();
 
-        $goodId = request::postIntFatal('good');
-        $fields = Colfields::getListBy(
-            "colonies_id=" . $colonyId . " AND buildings_id>0 AND aktiv=0 AND buildings_id IN (SELECT buildings_id FROM stu_buildings_goods WHERE goods_id=" . $goodId . " AND count<0)"
-        );
+        $goodId = (int) request::postIntFatal('good');
+
+        $fields = $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity($colonyId, $goodId);
 
         foreach ($fields as $field) {
             $this->buildingAction->activate($colony, $field, $game);
         }
 
-        $list = Colfields::getListBy('colonies_id=' . $colony->getId() . ' AND buildings_id>0');
+        $list = $this->planetFieldRepository->getByColonyWithBuilding($colonyId);
+
         usort($list, 'compareBuildings');
 
         $game->setTemplateVar('BUILDING_LIST', $list);

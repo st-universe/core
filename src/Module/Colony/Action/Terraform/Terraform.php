@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\Terraform;
 
-use Colfields;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,6 +11,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\TerraformingInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
 
 final class Terraform implements ActionControllerInterface
@@ -22,19 +22,21 @@ final class Terraform implements ActionControllerInterface
     private $colonyLoader;
 
     private $terraformingRepository;
-    /**
-     * @var ColonyTerraformingRepositoryInterface
-     */
+
     private $colonyTerraformingRepository;
+
+    private $planetFieldRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TerraformingRepositoryInterface $terraformingRepository,
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->terraformingRepository = $terraformingRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +51,13 @@ final class Terraform implements ActionControllerInterface
 
         $fieldId = (int)request::indInt('fid');
 
-        $field = Colfields::getByColonyField($fieldId, $colony->getId());
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
+            $fieldId
+        );
+        if ($field === null) {
+            return;
+        }
 
         if ($field->getBuildingId() > 0) {
             return;
@@ -108,14 +116,16 @@ final class Terraform implements ActionControllerInterface
 
         $obj = $this->colonyTerraformingRepository->prototype();
         $obj->setColonyId((int) $colony->getId());
-        $obj->setFieldId((int) $field->getId());
+        $obj->setField($field);
         $obj->setTerraforming($terraf);
         $obj->setFinishDate($time);
 
         $this->colonyTerraformingRepository->save($obj);
 
         $field->setTerraformingId($terraf->getId());
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),

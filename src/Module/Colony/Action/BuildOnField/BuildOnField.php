@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildOnField;
 
-use ColfieldData;
-use Colfields;
 use ColonyData;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,8 +11,10 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
 use Stu\Orm\Entity\BuildingCostInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class BuildOnField implements ActionControllerInterface
@@ -29,16 +29,20 @@ final class BuildOnField implements ActionControllerInterface
 
     private $buildingRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        BuildingRepositoryInterface $buildingRepository
+        BuildingRepositoryInterface $buildingRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->researchedRepository = $researchedRepository;
         $this->buildingRepository = $buildingRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,10 +59,11 @@ final class BuildOnField implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $field = Colfields::getByColonyField(
-            (int)request::indInt('fid'),
-            $colonyId
-        );
+        $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, (int)request::indInt('fid'));
+
+        if ($field === null) {
+            return;
+        }
 
         if ($field->getTerraformingId() > 0) {
             return;
@@ -77,14 +82,17 @@ final class BuildOnField implements ActionControllerInterface
         if ($building->getBuildableFields()->containsKey((int) $field->getFieldType()) === false) {
             return;
         }
-        if ($building->hasLimitColony() && Colfields::countInstances('buildings_id=' . $buildingId . ' AND colonies_id=' . $colonyId) >= $building->getLimitColony()) {
+        if (
+            $building->hasLimitColony() &&
+            $this->planetFieldRepository->getCountByColonyAndBuilding($colonyId, $buildingId) >= $building->getLimitColony()
+        ) {
             $game->addInformationf(
                 _('Dieses Gebäude kann auf dieser Kolonie nur %d mal gebaut werden'),
                 $building->getLimitColony()
             );
             return;
         }
-        if ($building->hasLimit() && Colfields::countInstances('buildings_id=' . $buildingId . ' AND colonies_id IN (SELECT id FROM stu_colonies WHERE user_id=' . $userId . ')') >= $building->getLimit()) {
+        if ($building->hasLimit() && $this->planetFieldRepository->getCountByBuildingAndUser($buildingId, $userId) >= $building->getLimit()) {
             $game->addInformationf(
                 _('Dieses Gebäude kann insgesamt nur %d mal gebaut werden'),
                 $building->getLimit()
@@ -186,10 +194,12 @@ final class BuildOnField implements ActionControllerInterface
         }
 
         $colony->lowerEps($building->getEpsCost());
-        $field->setBuildingId($building->getId());
-        $field->setBuildtime($building->getBuildtime());
+        $field->setBuilding($building);
+        $field->setActive(time() + $building->getBuildtime());
         $colony->save();
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $game->addInformationf(
             _('%s wird gebaut - Fertigstellung: %s'),
             $building->getName(),
@@ -197,7 +207,7 @@ final class BuildOnField implements ActionControllerInterface
         );
     }
 
-    private function removeBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
+    private function removeBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -228,11 +238,13 @@ final class BuildOnField implements ActionControllerInterface
             $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
     }
 
-    protected function deActivateBuilding(ColfieldData $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -247,7 +259,9 @@ final class BuildOnField implements ActionControllerInterface
         $colony->lowerWorkers($field->getBuilding()->getWorkers());
         $colony->lowerMaxBev($field->getBuilding()->getHousing());
         $field->setActive(0);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 

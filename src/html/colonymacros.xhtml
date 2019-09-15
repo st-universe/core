@@ -954,7 +954,7 @@
 		<div tal:attributes="class COLONY/getSurfaceTileCssClass">
 			<tal:block tal:repeat="field COLONY/getColonyFields">
 					<tal:block tal:condition="not:field/hasBuilding">
-					<div tal:condition="not:field/getTerraformingId" style="${style}" tal:attributes="class field/getCssClass"><div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/fields/${field/getFieldType}.gif" /></div></div></div>
+					<div tal:condition="not:field/getTerraformingId" style="${style}" tal:attributes="class field/getCssClass"><div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img onmouseover="fieldMouseOver(this,${field/getFieldId},0,${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/fields/${field/getFieldType}.gif" /></div></div></div>
 						</div>
 						<div tal:condition="field/getTerraformingId" style="${style};" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img class="action" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/terraform/${field/getTerraformingId}/${COLONY/getDayNightState}.png" /></div></div></div>
 						</div>
@@ -1118,7 +1118,7 @@
 						</div>
 					</div>
 					<div tal:condition="not:FIELD/hasBuilding">
-						<tal:block tal:condition="FIELD/hasTerraforming">
+						<tal:block tal:condition="FIELD/getTerraformingId">
 							<table class="use" style="width: 250px;">
 								<tr>
 									<th colspan="3" style="text-align: center;">
@@ -1145,7 +1145,7 @@
 								</tr>
 							</table>
 						</tal:block>
-						<tal:block tal:condition="not:FIELD/hasTerraforming">
+						<tal:block tal:condition="not:FIELD/getTerraformingId">
 							<div tal:condition="FIELD/getTerraformingOptions">
 								<table class="use" style="width: 250px;" tal:repeat="data FIELD/getTerraformingOptions">
 									<tr>

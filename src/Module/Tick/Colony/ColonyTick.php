@@ -2,16 +2,16 @@
 
 namespace Stu\Module\Tick\Colony;
 
-use ColfieldData;
-use Colfields;
 use ColonyData;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use PM;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Research\ResearchState;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
@@ -25,18 +25,22 @@ final class ColonyTick implements ColonyTickInterface
 
     private $moduleQueueRepository;
 
+    private $planetFieldRepository;
+
     private $msg = [];
 
     public function __construct(
         CommodityRepositoryInterface $commodityRepository,
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
-        ModuleQueueRepositoryInterface $moduleQueueRepository
+        ModuleQueueRepositoryInterface $moduleQueueRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function work(ColonyData $colony): void
@@ -93,7 +97,7 @@ final class ColonyTick implements ColonyTickInterface
         $colony->setEps($colony->getEps() + $colony->getEpsProduction());
     }
 
-    private function deactivateBuilding(ColonyData $colony, ColfieldData $field, int $commodityId): void
+    private function deactivateBuilding(ColonyData $colony, PlanetFieldInterface $field, int $commodityId): void
     {
         if ($commodityId === 0) {
             $ext = "Energie";
@@ -111,17 +115,25 @@ final class ColonyTick implements ColonyTickInterface
         $field->getBuilding()->postDeactivation($colony);
 
         $field->setActive(0);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
     }
 
-    private function getBuildingToDeactivateByGood(ColonyData $colony, int $commodityId): ColfieldData
+    private function getBuildingToDeactivateByGood(ColonyData $colony, int $commodityId): PlanetFieldInterface
     {
-        return Colfields::getBy("colonies_id=" . $colony->getId() . " AND aktiv=1 AND buildings_id IN (SELECT buildings_id FROM stu_buildings_goods WHERE goods_id=" . $commodityId . " AND count<0)");
+        $fields = $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
+            $colony->getId(),
+            $commodityId
+        );
+
+        return current($fields);
     }
 
-    private function getBuildingToDeactivateByEpsUsage(ColonyData $colony): ColfieldData
+    private function getBuildingToDeactivateByEpsUsage(ColonyData $colony): PlanetFieldInterface
     {
-        return Colfields::getBy("colonies_id=" . $colony->getId() . " AND aktiv=1 AND buildings_id IN (SELECT id FROM stu_buildings WHERE eps_proc<0)");
+        $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), 1);
+
+        return current($fields);
     }
 
     private function proceedStorage(ColonyData $colony): void

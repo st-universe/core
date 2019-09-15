@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use ColfieldData;
 use ColonyData;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildingAction implements BuildingActionInterface
 {
-    public function activate(ColonyData $colony, ColfieldData $field, GameControllerInterface $game): void
+    private $planetFieldRepository;
+
+    public function __construct(
+        PlanetFieldRepositoryInterface $planetFieldRepository
+    ) {
+        $this->planetFieldRepository = $planetFieldRepository;
+    }
+
+    public function activate(ColonyData $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -33,14 +42,16 @@ final class BuildingAction implements BuildingActionInterface
         $colony->upperWorkers($field->getBuilding()->getWorkers());
         $colony->upperMaxBev($field->getBuilding()->getHousing());
         $field->setActive(1);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $field->getBuilding()->postActivation($colony);
 
         $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde aktiviert");
     }
 
-    public function deactivate(ColonyData $colony, ColfieldData $field, GameControllerInterface $game): void
+    public function deactivate(ColonyData $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -55,7 +66,9 @@ final class BuildingAction implements BuildingActionInterface
         $colony->lowerWorkers($field->getBuilding()->getWorkers());
         $colony->lowerMaxBev($field->getBuilding()->getHousing());
         $field->setActive(0);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuildingManagement;
 
-use Colfields;
 use ColonyMenu;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ShowBuildingManagement implements ViewControllerInterface
 {
@@ -24,16 +24,20 @@ final class ShowBuildingManagement implements ViewControllerInterface
 
     private $commodityRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowBuildingManagementRequestInterface $showBuildingManagementRequest,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showBuildingManagementRequest = $showBuildingManagementRequest;
         $this->commodityRepository = $commodityRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,7 +51,7 @@ final class ShowBuildingManagement implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $list = Colfields::getListBy('colonies_id=' . $colony->getId() . ' AND buildings_id>0');
+        $list = $this->planetFieldRepository->getByColonyWithBuilding($colony->getId());
         usort($list, 'compareBuildings');
 
         $game->showMacro('html/colonymacros.xhtml/cm_building_mgmt');

@@ -4,6 +4,7 @@ namespace Stu\Module\Control;
 
 use Colony;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use PM;
 use PMCategory;
@@ -42,6 +43,8 @@ final class GameController implements GameControllerInterface
 
     private $gameConfigRepository;
 
+    private $entityManager;
+
     private $gameInformations = [];
 
     private $siteNavigation = [];
@@ -73,7 +76,8 @@ final class GameController implements GameControllerInterface
         DbInterface $db,
         GameTurnRepositoryInterface $gameTurnRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        GameConfigRepositoryInterface $gameConfigRepository
+        GameConfigRepositoryInterface $gameConfigRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -84,6 +88,7 @@ final class GameController implements GameControllerInterface
         $this->gameTurnRepository = $gameTurnRepository;
         $this->researchedRepository = $researchedRepository;
         $this->gameConfigRepository = $gameConfigRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -297,7 +302,7 @@ final class GameController implements GameControllerInterface
 
     public function redirectTo(string $href): void
     {
-        $this->db->commitTransaction();
+        $this->entityManager->commit();;
         header('Location: ' . $href);
         exit;
     }

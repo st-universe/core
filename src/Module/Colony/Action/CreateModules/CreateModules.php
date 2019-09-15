@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\CreateModules;
 
-use Colfields;
 use Exception;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -15,6 +14,7 @@ use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
 use Stu\Orm\Entity\ModuleCostInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class CreateModules implements ActionControllerInterface
 {
@@ -26,14 +26,18 @@ final class CreateModules implements ActionControllerInterface
 
     private $moduleQueueRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
-        ModuleQueueRepositoryInterface $moduleQueueRepository
+        ModuleQueueRepositoryInterface $moduleQueueRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,7 +55,12 @@ final class CreateModules implements ActionControllerInterface
 
         $modules = request::postArrayFatal('module');
         $func = request::postIntFatal('func');
-        if (count(Colfields::getFieldsByBuildingFunction($colonyId, $func)) == 0) {
+
+        if ($this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
+                $colonyId,
+                [$func],
+                [0,1]
+            ) === 0) {
             return;
         }
         $prod = array();

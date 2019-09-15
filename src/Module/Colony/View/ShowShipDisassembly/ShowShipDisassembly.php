@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipDisassembly;
 
-use Colfields;
 use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class ShowShipDisassembly implements ViewControllerInterface
@@ -22,14 +22,18 @@ final class ShowShipDisassembly implements ViewControllerInterface
 
     private $shipRumpBuildingFunctionRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository
+        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showShipDisassemblyRequest = $showShipDisassemblyRequest;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,10 +45,14 @@ final class ShowShipDisassembly implements ViewControllerInterface
             $userId
         );
 
-        $field = Colfields::getByColonyField(
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
             $this->showShipDisassemblyRequest->getFieldId(),
-            $colony->getId()
         );
+
+        if ($field === null) {
+            return;
+        }
 
         if ($colony->hasShipyard()) {
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowField;
 
-use Colfields;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -12,6 +11,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\ColonyShipRepairInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ShowField implements ViewControllerInterface
 {
@@ -27,18 +27,22 @@ final class ShowField implements ViewControllerInterface
 
     private $colonyLibFactory;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ShowFieldRequestInterface $showFieldRequest,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->showFieldRequest = $showFieldRequest;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,10 +53,15 @@ final class ShowField implements ViewControllerInterface
             $this->showFieldRequest->getColonyId(),
             $userId
         );
-        $field = Colfields::getByColonyField(
-            $this->showFieldRequest->getFieldId(),
-            $colony->getId()
+
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
+            $this->showFieldRequest->getFieldId()
         );
+
+        if ($field === null) {
+            return;
+        }
 
         $shipRepairProgress = $this->colonyShipRepairRepository->getByColonyField(
             (int) $colony->getId(),

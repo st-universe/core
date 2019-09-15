@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use ColfieldData;
-use Colfields;
 use PM;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickInterface
 {
+    private $planetFieldRepository;
+
+    public function __construct(
+        PlanetFieldRepositoryInterface $planetFieldRepository
+    ) {
+        $this->planetFieldRepository = $planetFieldRepository;
+    }
+
     public function work(): void
     {
-        $result = Colfields::getListBy("aktiv>1 AND aktiv<" . time());
-        foreach ($result as $key => $field) {
-            /**
-             * @var ColfieldData $field
-             */
-
+        $result = $this->planetFieldRepository->getByConstructionFinish(time());
+        foreach ($result as $field) {
             $field->setActive(0);
             if ($field->getBuilding()->isActivateAble() && $field->getColony()->getWorkless() >= $field->getBuilding()->getWorkers()) {
                 $field->setActive(1);
@@ -29,7 +32,9 @@ final class FinishBuildJobs implements ProcessTickInterface
             $field->getColony()->upperMaxEps($field->getBuilding()->getEpsStorage());
             $field->getColony()->save();
             $field->setIntegrity($field->getBuilding()->getIntegrity());
-            $field->save();
+
+            $this->planetFieldRepository->save($field);
+
             $txt = "Kolonie " . $field->getColony()->getNameWithoutMarkup() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
             PM::sendPM(USER_NOONE, $field->getColony()->getUserId(), $txt, PM_SPECIAL_COLONY);
         }

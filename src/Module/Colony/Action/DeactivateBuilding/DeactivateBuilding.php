@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeactivateBuilding;
 
-use Colfields;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class DeactivateBuilding implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE';
 
     private $colonyLoader;
 
+    private $planetFieldRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,10 +35,14 @@ final class DeactivateBuilding implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $field = Colfields::getByColonyField(
-            (int)request::indInt('fid'),
-            $colony->getId()
+        $field = $this->planetFieldRepository->getByColonyAndFieldId(
+            $colony->getId(),
+            (int)request::indInt('fid')
         );
+
+        if ($field === null) {
+            return;
+        }
 
         if (!$field->hasBuilding()) {
             return;
@@ -50,7 +57,9 @@ final class DeactivateBuilding implements ActionControllerInterface
         $colony->lowerWorkers($field->getBuilding()->getWorkers());
         $colony->lowerMaxBev($field->getBuilding()->getHousing());
         $field->setActive(0);
-        $field->save();
+
+        $this->planetFieldRepository->save($field);
+
         $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 

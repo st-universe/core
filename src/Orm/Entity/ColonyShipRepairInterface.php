@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use ColfieldData;
 use Colony;
 use Ship;
 
@@ -22,7 +21,7 @@ interface ColonyShipRepairInterface
 
     public function getFieldId(): int;
 
-    public function getField(): ColfieldData;
+    public function getField(): PlanetFieldInterface;
 
     public function getColony(): Colony;
 

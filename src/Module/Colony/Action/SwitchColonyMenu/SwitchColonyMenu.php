@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
-use Colfields;
 use Colony;
 use request;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
@@ -15,24 +14,26 @@ use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class SwitchColonyMenu implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
 
     private $colonyLoader;
-    /**
-     * @var BuildingFunctionRepositoryInterface
-     */
+
     private $buildingFunctionRepository;
+
+    private $planetFieldRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        BuildingFunctionRepositoryInterface $buildingFunctionRepository
+        BuildingFunctionRepositoryInterface $buildingFunctionRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -105,7 +106,11 @@ final class SwitchColonyMenu implements ActionControllerInterface
 
     private function hasSpecialBuilding(Colony $colony, $function)
     {
-        return count(Colfields::getFieldsByBuildingFunction($colony->getId(), $function)) > 0;
+        return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
+                $colony->getId(),
+                [$function],
+                [0,1]
+            );
     }
 
     public function performSessionCheck(): bool

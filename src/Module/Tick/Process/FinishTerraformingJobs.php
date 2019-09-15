@@ -6,15 +6,20 @@ namespace Stu\Module\Tick\Process;
 
 use PM;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishTerraformingJobs implements ProcessTickInterface
 {
     private $colonyTerraformingRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository
+        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function work(): void
@@ -25,8 +30,9 @@ final class FinishTerraformingJobs implements ProcessTickInterface
             $colony = $field->getColony();
 
             $colonyField->setFieldType($field->getTerraforming()->getToFieldTypeId());
-            $colonyField->setTerraformingId(0);
-            $colonyField->save();
+            $colonyField->setTerraformingId(null);
+
+            $this->planetFieldRepository->save($colonyField);
 
             $this->colonyTerraformingRepository->delete($field);
             $txt = "Kolonie " . $colony->getNameWithoutMarkup() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";

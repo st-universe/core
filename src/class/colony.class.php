@@ -9,9 +9,12 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
+use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
@@ -28,7 +31,7 @@ class ColonyData extends BaseTable {
 	}
 	
 	function getId() {
-		return $this->data['id'];
+		return (int) $this->data['id'];
 	}
 
 	function setId($value) {
@@ -158,6 +161,9 @@ class ColonyData extends BaseTable {
 
 		if ($stor->getAmount() <= $count) {
 		    $colonyStorageRepo->delete($stor);
+
+            $this->storage = null;
+
 			return;
 		}
 		$stor->setAmount($stor->getAmount() - $count);
@@ -294,12 +300,34 @@ class ColonyData extends BaseTable {
 	private $colfields = NULL;
 
 	function getColonyFields() {
-		if ($this->colfields === NULL) {
-			$this->colfields = Colfields::getFieldsBy('colonies_id='.$this->getId(),$this->getPlanetType()->getIsMoon());
-			if (count($this->colfields) == 0) {
+		if ($this->colfields === null) {
+		    // @todo refactor
+            global $container;
+
+            $this->colfields = $container->get(PlanetFieldRepositoryInterface::class)->getByColony($this->getId());
+
+			if ($this->colfields === []) {
 				$this->updateColonySurface();
-				$this->colfields = Colfields::getFieldsBy('colonies_id='.$this->getId(),$this->getPlanetType()->getIsMoon());
+
+                $this->colfields = $container->get(PlanetFieldRepositoryInterface::class)->getByColony($this->getId());
 			}
+
+			$buildingId = (int) request::getInt('bid', 0);
+            if ($buildingId > 0) {
+                $building = $container->get(BuildingRepositoryInterface::class)->find((int) request::getInt('bid'));
+
+                array_walk(
+                    $this->colfields,
+                    function (PlanetFieldInterface $field) use ($building): void {
+                        if (
+                            $field->getTerraformingId() == 0 &&
+                            $building->getBuildableFields()->containsKey((int) $field->getFieldType())
+                        ) {
+                            $field->setBuildMode(true);
+                        }
+                    }
+                );
+            }
 		}
 		return $this->colfields;
 	}
@@ -460,18 +488,33 @@ class ColonyData extends BaseTable {
 		return ResourceCache()->getObject('user',$this->getUserId());
 	}
 
-	public function colonize(int $userId, BuildingInterface $building,$field=FALSE) {
+	public function colonize(int $userId, BuildingInterface $building, ?PlanetFieldInterface $field = null) {
 		if (!$this->isFree()) {
 			return;
 		}
-		$this->updateColonySurface();
-		if (!$field) {
-			$field = Colfields::getBy('colonies_id='.$this->getId().' AND type='.COLONY_FIELDTYPE_MEADOW.' ORDER BY RAND()');
+        // @todo refactor
+        global $container;
+
+		$planetFieldRepo = $container->get(PlanetFieldRepositoryInterface::class);
+
+        $this->updateColonySurface();
+		if ($field === null) {
+
+            $list = $planetFieldRepo->getByColonyAndType(
+                $this->getId(),
+                COLONY_FIELDTYPE_MEADOW
+            );
+
+            shuffle($list);
+
+            $field = current($list);
 		}
-		$field->setBuildingId($building->getId());
+		$field->setBuilding($building);
 		$field->setIntegrity($building->getIntegrity());
 		$field->setActive(1);
-		$field->save();
+
+		$planetFieldRepo->save($field);
+
 		$this->upperMaxBev($building->getHousing());
 		$this->upperMaxEps($building->getEpsStorage());
 		$this->upperMaxStorage($building->getStorage());
@@ -666,20 +709,27 @@ class ColonyData extends BaseTable {
 			$this->setMask(base64_encode(serialize($surface)));
 			$this->save();
 		}
+
+		// @todo refactor
+        global $container;
+		$planetFieldRepo = $container->get(PlanetFieldRepositoryInterface::class);
+
+		$fields = $planetFieldRepo->getByColony($this->getId());
+
 		$surface = unserialize(base64_decode($this->getMask()));
-		$fields = Colfields::getListBy('colonies_id='.$this->getId());
 		$i = 0;
 		foreach ($surface as $key => $value) {
 			if (!array_key_exists($key,$fields)) {
-				$fields[$key] = new ColfieldData;
+				$fields[$key] = $planetFieldRepo->prototype();
 				$fields[$key]->setColonyId($this->getId());
 				$fields[$key]->setFieldId($i);
 			}
-			$fields[$key]->setFieldType($value);
-			$fields[$key]->setBuildingId(0);
+			$fields[$key]->setBuilding(null);
+			$fields[$key]->setIntegrity(0);
+			$fields[$key]->setFieldType((int) $value);
 			$fields[$key]->setActive(0);
-			$fields[$key]->setTerraformingId(0);
-			$fields[$key]->save();
+
+			$planetFieldRepo->save($fields[$key]);
 			$i++;
 		}
 		return $fields;
@@ -830,21 +880,40 @@ class ColonyData extends BaseTable {
 	/**
 	 */
 	public function hasAirfield() { #{{{
-		return count(Colfields::getFieldsByBuildingFunction($this->getId(),BUILDING_FUNCTION_AIRFIELD)) > 0;
+	    // @todo refactor
+        global $container;
+
+        return $container->get(PlanetFieldRepositoryInterface::class)->getCountByColonyAndBuildingFunctionAndState(
+            $this->getId(),
+            [BUILDING_FUNCTION_AIRFIELD],
+            [0,1]
+        ) > 0;
 	} # }}}
 
 	/**
 	 */
 	public function hasModuleFab() { #{{{
-		return count(Colfields::getFieldsByBuildingFunction($this->getId(),
-				BuildingFunctionTypeEnum::getModuleFabOptions())) > 0;
+        // @todo refactor
+        global $container;
+
+        return $container->get(PlanetFieldRepositoryInterface::class)->getCountByColonyAndBuildingFunctionAndState(
+                $this->getId(),
+                BuildingFunctionTypeEnum::getModuleFabOptions(),
+                [0,1]
+            ) > 0;
 	} # }}}
 
 	/**
 	 */
 	public function hasShipyard() { #{{{
-		return count(Colfields::getFieldsByBuildingFunction($this->getId(),
-				BuildingFunctionTypeEnum::getShipyardOptions())) > 0;
+        // @todo refactor
+        global $container;
+
+        return $container->get(PlanetFieldRepositoryInterface::class)->getCountByColonyAndBuildingFunctionAndState(
+                $this->getId(),
+                BuildingFunctionTypeEnum::getShipyardOptions(),
+                [0,1]
+            ) > 0;
 	} # }}}
 	
 	private $has_active_building_by_function = array();
@@ -853,7 +922,16 @@ class ColonyData extends BaseTable {
 	 */
 	public function hasActiveBuildingWithFunction($function_id) { #{{{
 		if (!isset($this->has_active_building_by_function[$function_id])) {
-			$this->has_active_building_by_function[$function_id] = count(Colfields::getFieldsByBuildingFunction($this->getId(),$function_id,TRUE)) > 0;
+		    // @todo refactor
+            global $container;
+
+            $this->has_active_building_by_function[$function_id] = $container
+                ->get(PlanetFieldRepositoryInterface::class)
+                ->getCountByColonyAndBuildingFunctionAndState(
+                    $this->getId(),
+                    [$function_id],
+                    [1]
+                );
 		}
 		return $this->has_active_building_by_function[$function_id];
 	} # }}}
