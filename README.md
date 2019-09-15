@@ -20,6 +20,9 @@ Danach sollte die Software via http://localhost:1337 erreichbar sein
 API
 ---
 
+Alle Namesspaces der API, mit Ausnahme von `common`, erwarten eine Authentifizierung mittels des über `common/login` zu bekommenden Tokens.
+Dieser Token muss mittels `Authorization`-Header und dem Inhalt `Bearer <TOKEN>` bei jedem Request übergeben werden.
+
 **Common - News**
 
 `GET /v1/common/news`
@@ -56,7 +59,7 @@ Response
 {
     "statusCode": 200,
     "data": {
-        "userId": 42
+        "token": "sample-token
     }
 }
 ```
