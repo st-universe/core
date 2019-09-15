@@ -122,7 +122,7 @@ final class Terraform implements ActionControllerInterface
 
         $this->colonyTerraformingRepository->save($obj);
 
-        $field->setTerraformingId($terraf->getId());
+        $field->setTerraforming($terraf);
 
         $this->planetFieldRepository->save($field);
 

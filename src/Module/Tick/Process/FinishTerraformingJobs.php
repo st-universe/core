@@ -30,7 +30,7 @@ final class FinishTerraformingJobs implements ProcessTickInterface
             $colony = $field->getColony();
 
             $colonyField->setFieldType($field->getTerraforming()->getToFieldTypeId());
-            $colonyField->setTerraformingId(null);
+            $colonyField->setTerraforming(null);
 
             $this->planetFieldRepository->save($colonyField);
 

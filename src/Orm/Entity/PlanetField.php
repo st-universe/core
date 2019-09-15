@@ -53,11 +53,17 @@ class PlanetField implements PlanetFieldInterface
      */
     private $building;
 
+    /**
+     * @ManyToOne(targetEntity="Terraforming")
+     * @JoinColumn(name="terraforming_id", referencedColumnName="id")
+     */
+    private $terraforming;
+
     private $buildmode = false;
 
     private $colony;
 
-    private $terraforming;
+    private $terraformingState;
 
     private $terraformingopts;
 
@@ -109,12 +115,6 @@ class PlanetField implements PlanetFieldInterface
     public function getTerraformingId(): ?int
     {
         return $this->terraforming_id;
-    }
-
-    public function setTerraformingId(?int $terraformingId): PlanetFieldInterface
-    {
-        $this->terraforming_id = $terraformingId;
-        return $this;
     }
 
     public function getIntegrity(): int
@@ -258,18 +258,30 @@ class PlanetField implements PlanetFieldInterface
         return $this->colony;
     }
 
-    public function getTerraforming(): ?ColonyTerraformingInterface
+    public function getTerraforming(): ?TerraformingInterface
     {
-        if ($this->terraforming === null) {
+        return $this->terraforming;
+    }
+
+    public function setTerraforming(?TerraformingInterface $terraforming): PlanetFieldInterface
+    {
+        $this->terraforming = $terraforming;
+
+        return $this;
+    }
+
+    public function getTerraformingState(): ?ColonyTerraformingInterface
+    {
+        if ($this->terraformingState === null) {
             // @todo refactor
             global $container;
 
-            $this->terraforming = $container->get(ColonyTerraformingRepositoryInterface::class)->getByColonyAndField(
+            $this->terraformingState = $container->get(ColonyTerraformingRepositoryInterface::class)->getByColonyAndField(
                 (int)$this->getColonyId(),
                 (int)$this->getId()
             );
         }
-        return $this->terraforming;
+        return $this->terraformingState;
     }
 
     public function getTerraformingOptions(): array
@@ -289,7 +301,7 @@ class PlanetField implements PlanetFieldInterface
     {
         if (!$this->hasBuilding()) {
             if ($this->getTerraformingId() !== null) {
-                return $this->getTerraforming()->getTerraforming()->getDescription() . " läuft bis " . parseDateTime($this->getTerraforming()->getFinishDate());
+                return $this->getTerraforming()->getDescription() . " läuft bis " . parseDateTime($this->getTerraformingState()->getFinishDate());
             }
             return $this->getFieldTypeName();
         }

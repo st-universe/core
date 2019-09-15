@@ -320,7 +320,7 @@ class ColonyData extends BaseTable {
                     $this->colfields,
                     function (PlanetFieldInterface $field) use ($building): void {
                         if (
-                            $field->getTerraformingId() == 0 &&
+                            $field->getTerraformingId() === null &&
                             $building->getBuildableFields()->containsKey((int) $field->getFieldType())
                         ) {
                             $field->setBuildMode(true);

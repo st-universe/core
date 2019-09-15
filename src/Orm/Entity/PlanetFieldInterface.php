@@ -24,8 +24,6 @@ interface PlanetFieldInterface
 
     public function getTerraformingId(): ?int;
 
-    public function setTerraformingId(?int $terraformingId): PlanetFieldInterface;
-
     public function getIntegrity(): int;
 
     public function setIntegrity(int $integrity): PlanetFieldInterface;
@@ -64,7 +62,11 @@ interface PlanetFieldInterface
 
     public function getColony(): Colony;
 
-    public function getTerraforming(): ?ColonyTerraformingInterface;
+    public function getTerraforming(): ?TerraformingInterface;
+
+    public function setTerraforming(?TerraformingInterface $terraforming): PlanetFieldInterface;
+
+    public function getTerraformingState(): ?ColonyTerraformingInterface;
 
     public function getTerraformingOptions(): array;
 

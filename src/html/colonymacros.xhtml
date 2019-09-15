@@ -1122,25 +1122,25 @@
 							<table class="use" style="width: 250px;">
 								<tr>
 									<th colspan="3" style="text-align: center;">
-										<span tal:content="FIELD/getTerraforming/getTerraforming/getDescription">DESCRIPTION</span> läuft
+										<span tal:content="FIELD/getTerraforming/getDescription">DESCRIPTION</span> läuft
 									</th>
 								</tr>
 								<tr>
 									<td style="width: 45px; text-align: center;">
-										<img src="assets/fields/${FIELD/getTerraforming/getTerraforming/getFromFieldTypeId}.gif" />
+										<img src="assets/fields/${FIELD/getTerraforming/getFromFieldTypeId}.gif" />
 									</td>
 									<td style="vertical-align: middle; width: 50px; text-align: center;">
 										<div>
-											Status: <span tal:replace="php:getPercentage(FIELD.getTerraforming().getProgress(),FIELD.getTerraforming().getTerraforming().getDuration())">PERCENTAGE</span>%</div>
-										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getTerraforming().getProgress(),FIELD.getTerraforming().getTerraforming().getDuration())">STATUSBAR</div>
+											Status: <span tal:replace="php:getPercentage(FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">PERCENTAGE</span>%</div>
+										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">STATUSBAR</div>
 									</td>
 									<td style="width: 45px; text-align: center;">
-										<img src="assets/fields/${FIELD/getTerraforming/getTerraforming/getToFieldTypeId}.gif" />
+										<img src="assets/fields/${FIELD/getTerraforming/getToFieldTypeId}.gif" />
 									</td>
 								</tr>
 								<tr>
 									<td colspan="3" style="text-align: center;">
-										Fertigstellung: <span tal:replace="datetime:FIELD/getTerraforming/getFinishDate">FINISH</span>	
+										Fertigstellung: <span tal:replace="datetime:FIELD/getTerraformingState/getFinishDate">FINISH</span>	
 									</td>
 								</tr>
 							</table>
