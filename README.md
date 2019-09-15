@@ -25,10 +25,10 @@ Dieser Token muss mittels `Authorization`-Header und dem Inhalt `Bearer <TOKEN>`
 
 **Common - News**
 
-`GET /v1/common/news`
+`GET /api/v1/common/news`
 
 Response
-```$json
+```json
 {
     "statusCode": 200,
     "data": [{
@@ -44,10 +44,10 @@ Response
 
 **Common - Login**
 
-`POST /v1/common/login`
+`POST /api/v1/common/login`
 
 Request
-```$json
+```json
 {
     "username": "john",
     "password": "doe"
@@ -55,11 +55,45 @@ Request
 ```
 
 Response
-```$json
+```json
 {
     "statusCode": 200,
     "data": {
-        "token": "sample-token
+        "token": "sample-token"
     }
+}
+```
+
+**Colony - Retrieve list**
+
+Returns a list of colony ids.
+
+`GET /api/v1/colony`
+
+Response
+```json
+{
+  "statusCode": 200,
+  "data": [
+    123,
+    456
+  ]
+}
+```
+
+**Colony - Retrieve single colony**
+
+Retrieve the basic data for the colony with the supplied id.
+
+`GET /api/v1/colony/<colonyId>`
+
+Response
+```json
+{
+  "statusCode": 200,
+  "data": {
+    "id": 123,
+    "name": "A fine colony"
+  }
 }
 ```
