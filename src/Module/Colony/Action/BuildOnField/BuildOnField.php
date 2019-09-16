@@ -142,7 +142,7 @@ final class BuildOnField implements ActionControllerInterface
             }
             if ($field->hasBuilding()) {
                 $result = array_filter(
-                    $currentBuildingCost,
+                    $currentBuildingCost->toArray(),
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
                         return $commodityId === $buildingCost->getGoodId();
                     }
