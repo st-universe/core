@@ -42,6 +42,26 @@ Response
 }
 ```
 
+**Common - Factions**
+
+`GET /api/v1/common/faction`
+
+Response
+```json
+{
+    "statusCode": 200,
+    "data": [
+        {
+            "id": 1,
+            "name": "Some faction name",
+            "description": "Faction description",
+            "player_limit": 20,
+            "player_amount": 5
+        }
+    ]
+}
+```
+
 **Common - Login**
 
 `POST /api/v1/common/login`
