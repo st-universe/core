@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\V1\Common\Faction;
 
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Stu\Module\Api\Middleware\Action;
+use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
@@ -19,9 +20,12 @@ final class GetFactions extends Action
         $this->factionRepository = $factionRepository;
     }
 
-    public function action(): ResponseInterface
-    {
-        return $this->respondWithData(
+    public function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface {
+        return $response->withData(
             array_map(
                 function (FactionInterface $faction): array {
                     return [

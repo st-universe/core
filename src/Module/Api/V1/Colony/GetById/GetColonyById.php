@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Api\V1\Colony\GetById;
 
 use Colony;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use Stu\Module\Api\Middleware\Action;
 use Stu\Module\Api\Middleware\ActionError;
+use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 
 final class GetColonyById extends Action
@@ -21,23 +22,25 @@ final class GetColonyById extends Action
         $this->session = $session;
     }
 
-    /**
-     * @return ResponseInterface
-     * @throws HttpBadRequestException
-     */
-    protected function action(): ResponseInterface
-    {
-        $colonyId = (int) $this->resolveArg('colonyId');
+    protected function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface {
+        $colonyId = (int) $args['colonyId'] ?? 0;
+        if ($colonyId === 0) {
+            throw new HttpBadRequestException($this->request, "Could not resolve argument `{$colonyId}`.");
+        }
 
         $colony = new Colony($colonyId);
 
         if ($colony->getUserId() != $this->session->getUser()->getId()) {
-            return $this->respondWithError(
-                new ActionError(ActionError::RESOURCE_NOT_FOUND)
+            return $response->withError(
+                ActionError::RESOURCE_NOT_FOUND
             );
         }
 
-        return $this->respondWithData([
+        return $response->withData([
             'id' => $colony->getId(),
             'name' => $colony->getName()
         ]);

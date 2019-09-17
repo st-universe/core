@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
+use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Opis\JsonSchema\{
     Validator, ValidationResult, Schema
 };
@@ -23,7 +24,7 @@ abstract class Action
     protected $request;
 
     /**
-     * @var ResponseInterface
+     * @var JsonResponseInterface
      */
     protected $response;
 
@@ -39,7 +40,7 @@ abstract class Action
 
     public function __invoke(
         ServerRequestInterface $request,
-        ResponseInterface $response,
+        JsonResponseInterface $response,
         array $args
     ): ResponseInterface {
         $this->request = $request;
@@ -47,17 +48,20 @@ abstract class Action
         $this->args = $args;
 
         try {
-            return $this->action();
+            return $this->action($request, $response, $args);
         } catch (\Exception $e) {
             throw new HttpNotFoundException($this->request, $e->getMessage());
         }
     }
 
     /**
-     * @return ResponseInterface
      * @throws HttpBadRequestException
      */
-    abstract protected function action(): ResponseInterface;
+    abstract protected function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface;
 
     /**
      * @return array|object
@@ -94,49 +98,4 @@ abstract class Action
         return $input;
     }
 
-    /**
-     * @return mixed
-     * @throws HttpBadRequestException
-     */
-    protected function resolveArg(string $name)
-    {
-        if (!isset($this->args[$name])) {
-            throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
-        }
-
-        return $this->args[$name];
-    }
-
-    protected function respondWithError(ActionError $error): ResponseInterface
-    {
-        $payload = new ActionPayload(200, null, $error);
-        return $this->respond($payload);
-    }
-
-    protected function respondWithData($data = null): ResponseInterface
-    {
-        $payload = new ActionPayload(200, $data);
-        return $this->respond($payload);
-    }
-
-    protected function respond(ActionPayload $payload): ResponseInterface
-    {
-        // @todo use custom emitter and enable cors
-
-        $json = json_encode($payload);
-        $this->response->getBody()->write($json);
-
-        return $this->response
-            ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Access-Control-Allow-Credentials', 'true')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader(
-                'Access-Control-Allow-Headers',
-                'X-Requested-With, Content-Type, Accept, Origin, Authorization'
-            )
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-            ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-            ->withAddedHeader('Cache-Control', 'post-check=0, pre-check=0')
-            ->withHeader('Pragma', 'no-cache');
-    }
 }

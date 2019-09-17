@@ -6,11 +6,12 @@ namespace Stu\Module\Api\V1\Common\Login;
 
 use Firebase\JWT\JWT;
 use Noodlehaus\ConfigInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Api\Middleware\Action;
 use Stu\Module\Api\Middleware\ActionError;
+use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 
 final class Login extends Action
 {
@@ -28,8 +29,11 @@ final class Login extends Action
         $this->config = $config;
     }
 
-    public function action(): ResponseInterface
-    {
+    public function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface {
         $data = $this->getFormData();
 
         try {
@@ -46,14 +50,13 @@ final class Login extends Action
                 $this->config->get('api.jwt_secret')
             );
         } catch (LoginException $e) {
-            return $this->respondWithError(
-                new ActionError(
-                    ActionError::VERIFICATION_ERROR
-                )
+            return $response->withError(
+                ActionError::VERIFICATION_ERROR,
+                $e->getMessage()
             );
         }
 
-        return $this->respondWithData([
+        return $response->withData([
             'token' => $token,
         ]);
     }

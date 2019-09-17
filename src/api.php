@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
+use Doctrine\ORM\EntityManagerInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Noodlehaus\ConfigInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Factory\AppFactory;
+use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Routing\RouteCollectorProxy;
+use Stu\Module\Api\Middleware\Emitter\ResponseEmitter;
+use Stu\Module\Api\Middleware\Response\ReponseFactory;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Api\V1\Colony\ColonyList\GetColonyList;
 use Stu\Module\Api\V1\Colony\GetById\GetColonyById;
@@ -17,9 +21,10 @@ use Stu\Module\Api\V1\Common\News\GetNews;
 
 require_once __DIR__ . '/inc/config.inc.php';
 
-AppFactory::setContainer($container);
-
-$app = AppFactory::create();
+$app = AppFactory::create(
+    new ReponseFactory(),
+    $container
+);
 
 $app->add(new Tuupola\Middleware\JwtAuthentication([
     'secret' => $container->get(ConfigInterface::class)->get('api.jwt_secret'),
@@ -51,4 +56,17 @@ $app->group('/api/v1/colony', function (RouteCollectorProxy $group): void {
     $group->get('/{colonyId}', GetColonyById::class);
 });
 
-$app->run();
+$serverRequestCreator = ServerRequestCreatorFactory::create();
+$request = $serverRequestCreator->createServerRequestFromGlobals();
+
+$entityManager = $container->get(EntityManagerInterface::class);
+
+$entityManager->beginTransaction();
+
+$response = $app->handle($request);
+
+$entityManager->commit();
+
+$responseEmitter = new ResponseEmitter();
+$responseEmitter->emit($response);
+

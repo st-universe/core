@@ -6,9 +6,9 @@ namespace Stu\Module\Api\V1\Colony\ColonyList;
 
 use Colony;
 use ColonyData;
-use Psr\Http\Message\ResponseInterface;
-use Slim\Exception\HttpBadRequestException;
+use Psr\Http\Message\ServerRequestInterface;
 use Stu\Module\Api\Middleware\Action;
+use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 
 final class GetColonyList extends Action
@@ -21,13 +21,12 @@ final class GetColonyList extends Action
         $this->session = $session;
     }
 
-    /**
-     * @return ResponseInterface
-     * @throws HttpBadRequestException
-     */
-    protected function action(): ResponseInterface
-    {
-        return $this->respondWithData(
+    protected function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface {
+        return $response->withData(
             array_map(
                 function (ColonyData $colony): int {
                     return (int) $colony->getId();
