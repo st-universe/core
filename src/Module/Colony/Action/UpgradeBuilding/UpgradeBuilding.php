@@ -138,7 +138,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         }
 
         $field->setBuilding($building);
-        $field->setActive($building->getBuildtime());
+        $field->setActive(time() + $building->getBuildtime());
         $colony->save();
 
         $this->planetFieldRepository->save($field);
