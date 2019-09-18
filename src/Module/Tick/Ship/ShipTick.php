@@ -3,12 +3,20 @@
 namespace Stu\Module\Tick\Ship;
 
 use ShipData;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 
 final class ShipTick implements ShipTickInterface
 {
+    private $privateMessageSender;
+
     private $msg = [];
+
+    public function __construct(
+        PrivateMessageSenderInterface $privateMessageSender
+    ) {
+        $this->privateMessageSender = $privateMessageSender;
+    }
 
     public function work(ShipData $ship): void
     {
@@ -45,7 +53,8 @@ final class ShipTick implements ShipTickInterface
         $this->sendMessages($ship);
     }
 
-    private function getSystemDescription(ShipSystemInterface $shipSystem): string {
+    private function getSystemDescription(ShipSystemInterface $shipSystem): string
+    {
         switch ($shipSystem->getSystemType()) {
             case SYSTEM_CLOAK:
                 return "Tarnung";
@@ -82,7 +91,8 @@ final class ShipTick implements ShipTickInterface
         foreach ($this->msg as $key => $msg) {
             $text .= $msg . "\n";
         }
-        PrivateMessageSender::sendPM(USER_NOONE, $ship->getUserId(), $text, PM_SPECIAL_SHIP);
+
+        $this->privateMessageSender->send(USER_NOONE, (int)$ship->getUserId(), $text, PM_SPECIAL_SHIP);
 
         $this->msg = [];
     }

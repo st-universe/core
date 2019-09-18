@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowPmCategory;
 
 use AccessViolation;
+use Stu\Module\Communication\Lib\PrivateMessageListItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\PrivateMessageInterface;
+use Stu\Orm\Repository\ContactRepositoryInterface;
+use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
@@ -22,14 +26,22 @@ final class ShowPmCategory implements ViewControllerInterface
 
     private $privateMessageRepository;
 
+    private $ignoreListRepository;
+
+    private $contactRepository;
+
     public function __construct(
         ShowPmCategoryRequestInterface $showPmCategoryRequest,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository
+        PrivateMessageRepositoryInterface $privateMessageRepository,
+        IgnoreListRepositoryInterface $ignoreListRepository,
+        ContactRepositoryInterface $contactRepository
     ) {
         $this->showPmCategoryRequest = $showPmCategoryRequest;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
+        $this->ignoreListRepository = $ignoreListRepository;
+        $this->contactRepository = $contactRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -84,7 +96,23 @@ final class ShowPmCategory implements ViewControllerInterface
         $game->setTemplateVar('CATEGORY', $category);
         $game->setTemplateVar(
             'PM_LIST',
-            $this->privateMessageRepository->getByUserAndFolder($userId, $categoryId, (int) $mark, static::PMLIMITER)
+            array_map(
+                function (PrivateMessageInterface $message) use ($userId): PrivateMessageListItem {
+                    return new PrivateMessageListItem(
+                        $this->privateMessageRepository,
+                        $this->contactRepository,
+                        $this->ignoreListRepository,
+                        $message,
+                        $userId
+                    );
+                },
+                $this->privateMessageRepository->getByUserAndFolder(
+                    $userId,
+                    $categoryId,
+                    (int) $mark,
+                    static::PMLIMITER
+                )
+            )
         );
         $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
         $game->setTemplateVar('PM_CATEGORIES', $this->privateMessageFolderRepository->getOrderedByUser($userId));

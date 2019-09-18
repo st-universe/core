@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DeactivateTractorBeam;
 
 use request;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -17,10 +17,14 @@ final class DeactivateTractorBeam implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $privateMessageSender;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,9 +45,12 @@ final class DeactivateTractorBeam implements ActionControllerInterface
             return;
         }
         if ($userId != $ship->getTraktorShip()->getUserId()) {
-            PrivateMessageSender::sendPM($userId, $ship->getTraktorShip()->getUserId(),
+            $this->privateMessageSender->send(
+                $userId,
+                (int)$ship->getTraktorShip()->getUserId(),
                 "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
-                PM_SPECIAL_SHIP);
+                PM_SPECIAL_SHIP
+            );
         }
         $ship->deactivateTraktorBeam();
         $game->addInformation("Der Traktorstrahl wurde deaktiviert");

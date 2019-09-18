@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
 use ShipSingleAttackCycle;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -19,10 +19,14 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $privateMessageSender;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -81,9 +85,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
             }
             $obj = new ShipSingleAttackCycle($attacker, $ship, $target->getFleetId(),$ship->getFleetId());
             $game->addInformationMergeDown($obj->getMessages());
-            PrivateMessageSender::sendPM(
+
+            $this->privateMessageSender->send(
                 $userId,
-                $target->getUserId(),
+                (int) $target->getUserId(),
                 sprintf(
                     "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen. Folgende Aktionen wurden ausgeführt:\n%s",
                     $ship->getName(),
@@ -105,9 +110,12 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $target->save();
         $ship->save();
         if ($userId != $target->getUserId()) {
-            PrivateMessageSender::sendPM($userId, $target->getUserId(),
+            $this->privateMessageSender->send(
+                $userId,
+                (int)$target->getUserId(),
                 "Die " . $target->getName() . " wurde in SeKtor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
-                PM_SPECIAL_SHIP);
+                PM_SPECIAL_SHIP
+            );
         }
         $game->addInformation("Der Traktorstrahl wurde auf die " . $target->getName() . " gerichtet");
     }

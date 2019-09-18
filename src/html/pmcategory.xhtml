@@ -40,7 +40,7 @@
                                 <a href="?WRITE_PM=1&reply=${post/getId}" onmouseover="cp('reply${post/getId}','buttons/msg2');" onmouseout="cp('reply${post/getId}','buttons/msg1');">
                                     <img src="assets/buttons/msg1.gif" name="reply${post/getId}" title="Antwort verfassen" />
                                 </a>
-                                <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id post/getSenderId" />
+                                <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id post/getSender/getId" />
                             </tal:block>
                             <img tal:condition="post/getReplied" src="assets/buttons/postein2.gif" title="Diese Nachricht wurde bereits beantwortet" />
                             <div class="iblock" style="padding-left: 15px;">
@@ -60,11 +60,11 @@
                                                     <tal:block tal:define="contact post/senderIsContact;div string:contact${post/getId}" metal:use-macro="html/commmacros.xhtml/clmodeview" />
                                                 </span>
                                 </tal:block>
-                                <tal:block tal:condition="not:post/senderIsContact" tal:define="obj THIS;divname string:selector_contact${post/getId};userid post/getSenderId;div string:contact${post/getId}" metal:use-macro="html/macros.xhtml/contactbutton" />
+                                <tal:block tal:condition="not:post/senderIsContact" tal:define="obj THIS;divname string:selector_contact${post/getId};userid post/getSender/getId;div string:contact${post/getId}" metal:use-macro="html/macros.xhtml/contactbutton" />
                             </tal:block>
                             <tal:block tal:condition="post/getSender/isContactable">
                                 <tal:block tal:condition="post/senderIsIgnored" metal:use-macro="html/macros.xhtml/ignoretext" />
-                                <tal:block tal:condition="not:post/senderIsIgnored" tal:define="userid post/getSenderId;div string:ignore${post/getId}" metal:use-macro="html/macros.xhtml/ignorebutton" />
+                                <tal:block tal:condition="not:post/senderIsIgnored" tal:define="userid post/getSender/getId;div string:ignore${post/getId}" metal:use-macro="html/macros.xhtml/ignorebutton" />
                             </tal:block>
                             <metal:macro tal:condition="not:CATEGORY/isPMOutDir" metal:use-macro="html/commmacros.xhtml/movepmcategories" />
                         </div>

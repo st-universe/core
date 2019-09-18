@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickInterface
 {
     private $planetFieldRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function work(): void
@@ -36,7 +40,8 @@ final class FinishBuildJobs implements ProcessTickInterface
             $this->planetFieldRepository->save($field);
 
             $txt = "Kolonie " . $field->getColony()->getNameWithoutMarkup() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
-            PrivateMessageSender::sendPM(USER_NOONE, $field->getColony()->getUserId(), $txt, PM_SPECIAL_COLONY);
+
+            $this->privateMessageSender->send(USER_NOONE, (int)$field->getColony()->getUserId(), $txt, PM_SPECIAL_COLONY);
         }
     }
 }

@@ -9,7 +9,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
@@ -47,6 +47,8 @@ final class GameController implements GameControllerInterface
 
     private $privateMessageFolderRepository;
 
+    private $privateMessageSender;
+
     private $gameInformations = [];
 
     private $siteNavigation = [];
@@ -80,7 +82,8 @@ final class GameController implements GameControllerInterface
         ResearchedRepositoryInterface $researchedRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -93,6 +96,7 @@ final class GameController implements GameControllerInterface
         $this->gameConfigRepository = $gameConfigRepository;
         $this->entityManager = $entityManager;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -183,7 +187,7 @@ final class GameController implements GameControllerInterface
 
     public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN)
     {
-        PrivateMessageSender::sendPM($sender_id, $recipient_id, join('<br />', $this->getInformation()), $category_id);
+        $this->privateMessageSender->send((int) $sender_id, (int) $recipient_id, join('<br />', $this->getInformation()), $category_id);
     }
 
     public function setTemplateVar(string $key, $variable): void

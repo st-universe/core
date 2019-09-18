@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\DeclineApplication;
 
 use AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -22,14 +22,18 @@ final class DeclineApplication implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $privateMessageSender;
+
     public function __construct(
         DeclineApplicationRequestInterface $declineApplicationRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->declineApplicationRequest = $declineApplicationRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,7 +56,7 @@ final class DeclineApplication implements ActionControllerInterface
             $alliance->getName()
         );
 
-        PrivateMessageSender::sendPM(USER_NOONE, $appl->getUserId(), $text);
+        $this->privateMessageSender->send(USER_NOONE, $appl->getUserId(), $text);
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 

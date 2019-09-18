@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\WritePm;
 
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
@@ -24,16 +25,20 @@ final class WritePm implements ActionControllerInterface
 
     private $privateMessageRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         WritePmRequestInterface $writePmRequest,
         IgnoreListRepositoryInterface $ignoreListRepository,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository
+        PrivateMessageRepositoryInterface $privateMessageRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->writePmRequest = $writePmRequest;
         $this->ignoreListRepository = $ignoreListRepository;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,17 +65,8 @@ final class WritePm implements ActionControllerInterface
             $game->addInformation("Der Text ist zu kurz");
             return;
         }
-        $cat = $this->privateMessageFolderRepository->getByUserAndSpecial((int) $recipient->getId(), PM_SPECIAL_MAIN);
 
-        $pm = $this->privateMessageRepository->prototype();
-        $pm->setText($text);
-        $pm->setRecipientId($recipient->getId());
-        $pm->setSenderId($userId);
-        $pm->setDate(time());
-        $pm->setCategory($cat);
-        $pm->copyPM();
-
-        $this->privateMessageRepository->save($pm);
+        $this->privateMessageSender->send($userId, $recipient->getId(), $text);
 
         $replyPm = $this->privateMessageRepository->find($this->writePmRequest->getReplyPmId());
 

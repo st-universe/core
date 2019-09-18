@@ -40,17 +40,7 @@ interface PrivateMessageInterface
 
     public function setCategory(PrivateMessageFolderInterface $folder): PrivateMessageInterface;
 
-    public function isMarkableAsNew(): bool;
-
     public function getSender(): User;
 
     public function getRecipient(): User;
-
-    public function copyPM(): void;
-
-    public function senderIsIgnored(): bool;
-
-    public function senderIsContact(): ?ContactInterface;
-
-    public function displayUserLinks(): bool;
 }

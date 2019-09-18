@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
@@ -22,14 +22,18 @@ final class AddKnPlotMember implements ActionControllerInterface
 
     private $rpgPlotRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         AddKnPlotMemberRequestInterface $addKnPlotMemberRequest,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->addKnPlotMemberRequest = $addKnPlotMemberRequest;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +63,7 @@ final class AddKnPlotMember implements ActionControllerInterface
 
         $this->rpgPlotMemberRepository->save($member);
 
-        PrivateMessageSender::sendPM(
+        $this->privateMessageSender->send(
             $game->getUser()->getId(),
             $recipient->getId(),
             sprintf(_('Du wurdest dem RPG-Plot \'%s\' als Schreiber hinzugefügt'), $plot->getTitle())

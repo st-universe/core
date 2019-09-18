@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\CancelOffer;
 
 use AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -21,14 +21,18 @@ final class CancelOffer implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $privateMessageSender;
+
     public function __construct(
         CancelOfferRequestInterface $cancelOfferRequest,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->cancelOfferRequest = $cancelOfferRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,9 +59,9 @@ final class CancelOffer implements ActionControllerInterface
 
         $opponent = $relation->getOpponent();
 
-        PrivateMessageSender::sendPM(USER_NOONE, $opponent->getFounder()->getUserId(), $text);
+        $this->privateMessageSender->send(USER_NOONE, $opponent->getFounder()->getUserId(), $text);
         if ($opponent->getDiplomatic()) {
-            PrivateMessageSender::sendPM(USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
+            $this->privateMessageSender->send(USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
         }
         $game->addInformation(_('Das Angebot wurde zurückgezogen'));
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TakeOffer;
 
 use AccessViolation;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -32,13 +32,16 @@ final class TakeOffer implements ActionControllerInterface
 
     private $tradeStorageRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository
+        TradeStorageRepositoryInterface $tradeStorageRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -46,6 +49,7 @@ final class TakeOffer implements ActionControllerInterface
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -135,7 +139,7 @@ final class TakeOffer implements ActionControllerInterface
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 
-        PrivateMessageSender::sendPM(
+        $this->privateMessageSender->send(
             $userId,
             $selectedOffer->getUserId(),
             sprintf(

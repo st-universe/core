@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\AcceptApplication;
 
 use AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -22,14 +22,18 @@ final class AcceptApplication implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $privateMessageSender;
+
     public function __construct(
         AcceptApplicationRequestInterface $acceptApplicationRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->acceptApplicationRequest = $acceptApplicationRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +63,8 @@ final class AcceptApplication implements ActionControllerInterface
             _('Deine Bewerbung wurde akzeptiert - Du bist jetzt Mitglied der Allianz %s'),
             $alliance->getName()
         );
-        PrivateMessageSender::sendPM($userId, $applicant->getId(), $text);
+
+        $this->privateMessageSender->send($userId, $applicant->getId(), $text);
 
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
     }

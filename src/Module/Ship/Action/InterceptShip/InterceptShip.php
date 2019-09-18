@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\InterceptShip;
 
 use request;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -17,10 +17,14 @@ final class InterceptShip implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $privateMessageSender;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -69,7 +73,8 @@ final class InterceptShip implements ActionControllerInterface
             $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
             $target->save();
         }
-        PrivateMessageSender::sendPM($userId, $target->getUserId(), $pm, PM_SPECIAL_SHIP);
+
+        $this->privateMessageSender->send($userId, (int)$target->getUserId(), $pm, PM_SPECIAL_SHIP);
         if ($ship->isInFleet()) {
             $ship->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
         } else {

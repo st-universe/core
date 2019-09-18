@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
 use ShipData;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -22,12 +22,16 @@ final class DockShip implements ActionControllerInterface
 
     private $dockingPrivilegeRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
+        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -88,8 +92,11 @@ final class DockShip implements ActionControllerInterface
         $ship->setDock($target->getId());
         $ship->save();
 
-        PrivateMessageSender::sendPm($userId, $target->getUserId(),
-            'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt', PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send(
+            $userId,
+            (int)$target->getUserId(),
+            'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt', PM_SPECIAL_SHIP
+        );
         $game->addInformation('Andockvorgang abgeschlossen');
     }
 

@@ -6,7 +6,7 @@ use ColonyData;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -27,6 +27,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private $planetFieldRepository;
 
+    private $privateMessageSender;
+
     private $msg = [];
 
     public function __construct(
@@ -34,13 +36,15 @@ final class ColonyTick implements ColonyTickInterface
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function work(ColonyData $colony): void
@@ -280,7 +284,8 @@ final class ColonyTick implements ColonyTickInterface
         foreach ($this->msg as $key => $msg) {
             $text .= $msg . "\n";
         }
-        PrivateMessageSender::sendPM(USER_NOONE, $colony->getUserId(), $text, PM_SPECIAL_COLONY);
+
+        $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $text, PM_SPECIAL_COLONY);
 
         $this->msg = [];
     }

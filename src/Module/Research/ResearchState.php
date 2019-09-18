@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
@@ -15,12 +15,16 @@ final class ResearchState implements ResearchStateInterface
 
     private $shipRumpUserRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
-        ShipRumpUserRepositoryInterface $shipRumpUserRepository
+        ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function finish(ResearchedInterface $state): void
@@ -28,7 +32,7 @@ final class ResearchState implements ResearchStateInterface
         $state->setActive(0);
         $state->setFinished(time());
 
-        PrivateMessageSender::sendPM(
+        $this->privateMessageSender->send(
             USER_NOONE,
             $state->getUser()->getId(),
             "Forschung '" . $state->getResearch()->getName() . "' wurde abgeschlossen",

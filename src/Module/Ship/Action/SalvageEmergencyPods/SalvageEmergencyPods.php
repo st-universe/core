@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use request;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -19,12 +19,16 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private $shipCrewRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,9 +53,15 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $ship->cancelRepair();
         $dummy_crew = current($target->getCrewList());
         if ($dummy_crew->getCrew()->getUserId() != $userId) {
-            PrivateMessageSender::sendPm($userId, $dummy_crew->getCrew()->getUserId(),
-                sprintf(_('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
-                    $target->getCrew()), PM_SPECIAL_SHIP);
+            $this->privateMessageSender->send(
+                $userId,
+                $dummy_crew->getCrew()->getUserId(),
+                sprintf(
+                    _('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
+                    $target->getCrew()
+                ),
+                PM_SPECIAL_SHIP
+            );
         }
         $this->shipCrewRepository->truncateByShip((int) $target->getId());
         $ship->lowerEps(1);

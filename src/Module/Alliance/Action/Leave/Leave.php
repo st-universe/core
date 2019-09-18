@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Leave;
 
 use AccessViolation;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -16,10 +16,14 @@ final class Leave implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,9 +51,9 @@ final class Leave implements ActionControllerInterface
             $user->getName()
         );
 
-        PrivateMessageSender::sendPM($userId, $foundJob->getUserId(), $text);
+        $this->privateMessageSender->send($userId, $foundJob->getUserId(), $text);
         if ($alliance->getSuccessor()) {
-            PrivateMessageSender::sendPM($userId, $alliance->getSuccessor()->getUserId(), $text);
+            $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 
         $game->setView('SHOW_LIST');

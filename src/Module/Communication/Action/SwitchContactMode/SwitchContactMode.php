@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\SwitchContactMode;
 
 use Stu\Module\Communication\Lib\ContactListModeEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowContactMode\ShowContactMode;
@@ -19,12 +19,16 @@ final class SwitchContactMode implements ActionControllerInterface
 
     private $contactRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         SwitchContactModeRequestInterface $switchContactModeRequest,
-        ContactRepositoryInterface $contactRepository
+        ContactRepositoryInterface $contactRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->switchContactModeRequest = $switchContactModeRequest;
         $this->contactRepository = $contactRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,7 +46,7 @@ final class SwitchContactMode implements ActionControllerInterface
             return;
         }
         if ($mode != $contact->getMode() && $mode == ContactListModeEnum::CONTACT_ENEMY) {
-            PrivateMessageSender::sendPM(
+            $this->privateMessageSender->send(
                 $userId,
                 $contact->getRecipientId(),
                 _('Der Siedler betrachtet Dich von nun an als Feind')

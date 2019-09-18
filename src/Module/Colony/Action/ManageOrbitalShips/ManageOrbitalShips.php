@@ -8,7 +8,7 @@ use Exception;
 use request;
 use Ship;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -19,7 +19,6 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
-
     public const ACTION_IDENTIFIER = 'B_MANAGE_ORBITAL_SHIPS';
 
     private $colonyLoader;
@@ -30,16 +29,20 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $shipCrewRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         CrewCreatorInterface $crewCreator,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->crewCreator = $crewCreator;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -101,9 +104,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getName(), $load
                     );
                     if (!$shipobj->ownedByCurrentUser()) {
-                        PrivateMessageSender::sendPM(
+                        $this->privateMessageSender->send(
                             $userId,
-                            $shipobj->getUserId(),
+                            (int)$shipobj->getUserId(),
                             sprintf(
                                 _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
                                 $colony->getName(),
@@ -173,9 +176,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load
                             );
                             if (!$shipobj->ownedByCurrentUser()) {
-                                PrivateMessageSender::sendPM(
+                                $this->privateMessageSender->send(
                                     $userId,
-                                    $shipobj->getUserId(),
+                                    (int)$shipobj->getUserId(),
                                     sprintf(
                                         _('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
                                         $colony->getName(),

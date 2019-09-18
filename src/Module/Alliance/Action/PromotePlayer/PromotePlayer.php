@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -22,14 +22,18 @@ final class PromotePlayer implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $privateMessageSender;
+
     public function __construct(
         PromotePlayerRequestInterface $promotePlayerRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->promotePlayerRequest = $promotePlayerRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -118,7 +122,7 @@ final class PromotePlayer implements ActionControllerInterface
                 break;
         }
 
-        PrivateMessageSender::sendPM($userId, $playerId, $text);
+        $this->privateMessageSender->send($userId, $playerId, $text);
 
         $game->addInformation(_('Das Mitglied wurde befördert'));
     }

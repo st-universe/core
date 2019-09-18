@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
@@ -25,18 +25,22 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     private $dockingPrivilegeRepository;
 
+    private $privateMessageSender;
+
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceBoardRepositoryInterface $allianceBoardRepository,
         AllianceRepositoryInterface $allianceRepository,
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
+        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceBoardRepository = $allianceBoardRepository;
         $this->allianceRepository = $allianceRepository;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void
@@ -67,7 +71,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
         foreach ($alliance->getMembers() as $userRelation) {
-            PrivateMessageSender::sendPM(USER_NOONE, $userRelation->getUserId(), $text);
+            $this->privateMessageSender->send(USER_NOONE, $userRelation->getUserId(), $text);
             $userRelation->getUser()->setAllianceId(0);
             $userRelation->getUser()->save();
         }
@@ -111,7 +115,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         );
 
         foreach ($jobList as $job) {
-            PrivateMessageSender::sendPM(USER_NOONE, $job->getUserId(), $text);
+            $this->privateMessageSender->send(USER_NOONE, $job->getUserId(), $text);
         }
     }
 

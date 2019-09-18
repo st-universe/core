@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use AccessViolation;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -22,14 +22,18 @@ final class KickPlayer implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $privateMessageSender;
+
     public function __construct(
         KickPlayerRequestInterface $kickPlayerRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->kickPlayerRequest = $kickPlayerRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,7 +74,8 @@ final class KickPlayer implements ActionControllerInterface
             _('Deine Mitgliedschaft in der Allianz %s wurde beendet'),
             $alliance->getName()
         );
-        PrivateMessageSender::sendPM(USER_NOONE, $playerId, $text);
+
+        $this->privateMessageSender->send(USER_NOONE, $playerId, $text);
 
         $game->addInformation(_('Der Siedler wurde rausgeworfen'));
     }

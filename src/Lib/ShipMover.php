@@ -1,7 +1,7 @@
 <?php
 
 use Stu\Lib\DamageWrapper;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
@@ -241,6 +241,12 @@ class ShipMover {
 				$method = FLY_LEFT;
 			}
 		}
+
+		// @todo
+		global $container;
+
+		$privateMessageSender = $container->get(PrivateMessageSenderInterface::class);
+
 		$i = 1;
 		while($i<=$this->getFieldCount()) {
 			if (!$ship->isInSystem() && !$ship->getWarpState()) {
@@ -291,9 +297,12 @@ class ShipMover {
 			if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost()+1) {
 				$msg[] = "Der Traktorstrahl auf die ".$ship->getTraktorShip()->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." aufgrund Energiemangels deaktiviert";
 				$ship->deactivateTraktorBeam();
-				PrivateMessageSender::sendPM($ship->getUserId(), $ship->getTraktorShip()->getUserId(),
+				$privateMessageSender->send(
+					(int) $ship->getUserId(),
+					(int) $ship->getTraktorShip()->getUserId(),
                     "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
-                    PM_SPECIAL_SHIP);
+                    PM_SPECIAL_SHIP
+				);
 			}
 			$this->flightDone = TRUE;
 			$this->flightFields++;

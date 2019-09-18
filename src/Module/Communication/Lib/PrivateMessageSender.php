@@ -1,37 +1,57 @@
 <?php
 
-// @todo fix and enable strict typing
-declare(strict_types=0);
+declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
-class PrivateMessageSender
+final class PrivateMessageSender implements PrivateMessageSenderInterface
 {
-    public static function sendPM($sender, $recipient, $text, $category = PM_SPECIAL_MAIN)
-    {
-        if ($sender == $recipient) {
+    private $privateMessageFolderRepository;
+
+    private $privateMessageRepository;
+
+    public function __construct(
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageRepositoryInterface $privateMessageRepository
+    ) {
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageRepository = $privateMessageRepository;
+    }
+
+    public function send(
+        int $senderId,
+        int $recipientId,
+        string $text,
+        int $category = PM_SPECIAL_MAIN
+    ): void {
+        if ($senderId == $recipientId) {
             return;
         }
-        // @todo refactor
-        global $container;
+        $folder = $this->privateMessageFolderRepository->getByUserAndSpecial((int)$recipientId, (int)$category);
 
-        $privateMessageFolderRepo = $container->get(PrivateMessageFolderRepositoryInterface::class);
-        $privateMessageRepo = $container->get(PrivateMessageRepositoryInterface::class);
-
-        $pm = $privateMessageRepo->prototype();
+        $pm = $this->privateMessageRepository->prototype();
         $pm->setDate(time());
-        $folder = $privateMessageFolderRepo->getByUserAndSpecial((int)$recipient, (int)$category);
         $pm->setCategory($folder);
         $pm->setText($text);
-        $pm->setRecipientId($recipient);
-        $pm->setSenderId($sender);
-        if ($sender != USER_NOONE) {
-            $pm->copyPM();
-        }
+        $pm->setRecipientId($recipientId);
+        $pm->setSenderId($senderId);
 
-        $privateMessageRepo->save($pm);
+        $this->privateMessageRepository->save($pm);
+
+        if ($senderId != USER_NOONE) {
+
+            $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($senderId, PM_SPECIAL_PMOUT);
+
+            $newobj = clone($pm);
+            $newobj->setSenderId($pm->getRecipientId());
+            $newobj->setRecipientId($pm->getSenderId());
+            $newobj->setCategory($folder);
+            $newobj->setNew(false);
+
+            $this->privateMessageRepository->save($newobj);
+        }
     }
 }

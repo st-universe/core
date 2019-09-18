@@ -7,11 +7,12 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 use AccessViolation;
 use JBBCode\Parser;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSender;
+use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class EditDetails implements ActionControllerInterface
 {
@@ -25,16 +26,24 @@ final class EditDetails implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $privateMessageSender;
+
+    private $allianceRepository;
+
     public function __construct(
         EditDetailsRequestInterface $editDetailsRequest,
         Parser $bbcodeParser,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        PrivateMessageSenderInterface $privateMessageSender,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->editDetailsRequest = $editDetailsRequest;
         $this->bbcodeParser = $bbcodeParser;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
+        $this->privateMessageSender = $privateMessageSender;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -77,7 +86,7 @@ final class EditDetails implements ActionControllerInterface
                     _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
                     $alliance->getName()
                 );
-                PrivateMessageSender::sendPM(USER_NOONE, $applicant->getUserId(), $text);
+                $this->privateMessageSender->send(USER_NOONE, $applicant->getUserId(), $text);
 
                 $applicant->deleteFromDatabase();
             }
@@ -96,7 +105,8 @@ final class EditDetails implements ActionControllerInterface
         $alliance->setName($name);
         $alliance->setHomepage($homepage);
         $alliance->setDescription($description);
-        $alliance->save();
+
+        $this->allianceRepository->save($alliance);
 
         $game->addInformation(_('Die Allianz wurde editiert'));
     }
