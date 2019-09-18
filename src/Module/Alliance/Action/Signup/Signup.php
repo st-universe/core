@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Signup;
 
 use AccessViolation;
-use PM;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -57,9 +57,9 @@ final class Signup implements ActionControllerInterface
             'Der Siedler %s hat sich für die Allianz beworben',
             $user->getName()
         );
-        PM::sendPM($userId, $alliance->getFounder()->getUserId(), $text);
+        PrivateMessageSender::sendPM($userId, $alliance->getFounder()->getUserId(), $text);
         if ($alliance->getSuccessor()) {
-            PM::sendPM($userId, $alliance->getSuccessor()->getUserId(), $text);
+            PrivateMessageSender::sendPM($userId, $alliance->getSuccessor()->getUserId(), $text);
         }
 
         $game->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));

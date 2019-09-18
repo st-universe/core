@@ -6,8 +6,8 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use AccessViolation;
 use JBBCode\Parser;
-use PM;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
@@ -77,7 +77,7 @@ final class EditDetails implements ActionControllerInterface
                     _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
                     $alliance->getName()
                 );
-                PM::sendPM(USER_NOONE, $applicant->getUserId(), $text);
+                PrivateMessageSender::sendPM(USER_NOONE, $applicant->getUserId(), $text);
 
                 $applicant->deleteFromDatabase();
             }

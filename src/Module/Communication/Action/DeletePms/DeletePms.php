@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeletePms;
 
-use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class DeletePms implements ActionControllerInterface
 {
@@ -14,20 +14,28 @@ final class DeletePms implements ActionControllerInterface
 
     private $deletePmsRequest;
 
+    private $privateMessageRepository;
+
     public function __construct(
-        DeletePmsRequestInterface $deletePmsRequest
+        DeletePmsRequestInterface $deletePmsRequest,
+        PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
         $this->deletePmsRequest = $deletePmsRequest;
+        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        foreach ($this->deletePmsRequest->getIgnoreIds() as $key => $val) {
-            $pm = PM::getPMById($val);
-            if (!$pm || !$pm->isOwnPM()) {
+        $userId = $game->getUser()->getId();
+
+        foreach ($this->deletePmsRequest->getIgnoreIds() as $messageId) {
+            $pm = $this->privateMessageRepository->find($messageId);
+
+            if ($pm === null || $pm->getRecipientId() !== $userId) {
                 continue;
             }
-            $pm->deleteFromDatabase();
+
+            $this->privateMessageRepository->delete($pm);
         }
         $game->addInformation(_('Die Nachrichten wurden gelöscht'));
     }

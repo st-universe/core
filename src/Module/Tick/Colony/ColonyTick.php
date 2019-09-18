@@ -5,8 +5,8 @@ namespace Stu\Module\Tick\Colony;
 use ColonyData;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use PM;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Research\ResearchState;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -280,7 +280,7 @@ final class ColonyTick implements ColonyTickInterface
         foreach ($this->msg as $key => $msg) {
             $text .= $msg . "\n";
         }
-        PM::sendPM(USER_NOONE, $colony->getUserId(), $text, PM_SPECIAL_COLONY);
+        PrivateMessageSender::sendPM(USER_NOONE, $colony->getUserId(), $text, PM_SPECIAL_COLONY);
 
         $this->msg = [];
     }

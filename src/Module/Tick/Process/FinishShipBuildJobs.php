@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use ColonyData;
-use PM;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
@@ -42,7 +42,7 @@ final class FinishShipBuildJobs implements ProcessTickInterface
             $this->colonyShipQueueRepository->delete($obj);
 
             $txt = _("Auf der Kolonie " . $colony->getNameWithoutMarkup() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
-            PM::sendPM(USER_NOONE, $colony->getUserId(), $txt, PM_SPECIAL_COLONY);
+            PrivateMessageSender::sendPM(USER_NOONE, $colony->getUserId(), $txt, PM_SPECIAL_COLONY);
         }
     }
 }

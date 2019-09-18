@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
-use PM;
 use request;
 use ShipSingleAttackCycle;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -81,7 +81,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             }
             $obj = new ShipSingleAttackCycle($attacker, $ship, $target->getFleetId(),$ship->getFleetId());
             $game->addInformationMergeDown($obj->getMessages());
-            PM::sendPM(
+            PrivateMessageSender::sendPM(
                 $userId,
                 $target->getUserId(),
                 sprintf(
@@ -105,7 +105,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $target->save();
         $ship->save();
         if ($userId != $target->getUserId()) {
-            PM::sendPM($userId, $target->getUserId(),
+            PrivateMessageSender::sendPM($userId, $target->getUserId(),
                 "Die " . $target->getName() . " wurde in SeKtor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
                 PM_SPECIAL_SHIP);
         }

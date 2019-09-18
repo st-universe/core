@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeactivateTractorBeam;
 
-use PM;
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -41,7 +41,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
             return;
         }
         if ($userId != $ship->getTraktorShip()->getUserId()) {
-            PM::sendPM($userId, $ship->getTraktorShip()->getUserId(),
+            PrivateMessageSender::sendPM($userId, $ship->getTraktorShip()->getUserId(),
                 "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
                 PM_SPECIAL_SHIP);
         }

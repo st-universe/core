@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
-use PM;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
@@ -28,7 +28,7 @@ final class ResearchState implements ResearchStateInterface
         $state->setActive(0);
         $state->setFinished(time());
 
-        PM::sendPM(
+        PrivateMessageSender::sendPM(
             USER_NOONE,
             $state->getUser()->getId(),
             "Forschung '" . $state->getResearch()->getName() . "' wurde abgeschlossen",

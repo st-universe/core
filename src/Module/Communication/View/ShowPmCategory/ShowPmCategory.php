@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowPmCategory;
 
 use AccessViolation;
-use PM;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class ShowPmCategory implements ViewControllerInterface
 {
@@ -20,12 +20,16 @@ final class ShowPmCategory implements ViewControllerInterface
 
     private $privateMessageFolderRepository;
 
+    private $privateMessageRepository;
+
     public function __construct(
         ShowPmCategoryRequestInterface $showPmCategoryRequest,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
         $this->showPmCategoryRequest = $showPmCategoryRequest;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -78,7 +82,10 @@ final class ShowPmCategory implements ViewControllerInterface
         $game->setPageTitle(sprintf(_('Ordner: %s'), $category->getDescription()));
 
         $game->setTemplateVar('CATEGORY', $category);
-        $game->setTemplateVar('PM_LIST', PM::getPMsBy($userId, (int) $category->getId(), $mark, static::PMLIMITER));
+        $game->setTemplateVar(
+            'PM_LIST',
+            $this->privateMessageRepository->getByUserAndFolder($userId, $categoryId, (int) $mark, static::PMLIMITER)
+        );
         $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
         $game->setTemplateVar('PM_CATEGORIES', $this->privateMessageFolderRepository->getOrderedByUser($userId));
     }

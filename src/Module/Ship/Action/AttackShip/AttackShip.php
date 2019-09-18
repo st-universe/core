@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\AttackShip;
 
-use PM;
 use request;
 use ShipAttackCycle;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -82,7 +82,7 @@ final class AttackShip implements ActionControllerInterface
         foreach ($obj->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
-        PM::sendPM($userId, $target_user_id, $pm, PM_SPECIAL_SHIP);
+        PrivateMessageSender::sendPM($userId, $target_user_id, $pm, PM_SPECIAL_SHIP);
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());

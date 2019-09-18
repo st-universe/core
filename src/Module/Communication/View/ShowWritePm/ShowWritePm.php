@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowWritePm;
 
-use PM;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class ShowWritePm implements ViewControllerInterface
 {
@@ -20,14 +20,18 @@ final class ShowWritePm implements ViewControllerInterface
 
     private $privateMessageFolderRepository;
 
+    private $privateMessageRepository;
+
     public function __construct(
         ShowWritePmRequestInterface $showWritePmRequest,
         ContactRepositoryInterface $contactRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
         $this->showWritePmRequest = $showWritePmRequest;
         $this->contactRepository = $contactRepository;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,8 +39,8 @@ final class ShowWritePm implements ViewControllerInterface
         $userId = $game->getUser()->getId();
         $recipientId = $this->showWritePmRequest->getRecipientId();
 
-        $pm = PM::getPMById($this->showWritePmRequest->getReplyPmId());
-        if (!$pm || $pm->getRecipientId() != $userId) {
+        $pm = $this->privateMessageRepository->find($this->showWritePmRequest->getReplyPmId());
+        if ($pm === null || $pm->getRecipientId() != $userId) {
             $reply = null;
             $correspondence = null;
         } else {
@@ -51,16 +55,10 @@ final class ShowWritePm implements ViewControllerInterface
                 PM_SPECIAL_MAIN
             );
 
-            $correspondence = PM::getObjectsBy(
-                sprintf(
-                    'WHERE (send_user IN (%d,%d) OR recip_user IN (%d,%d)) AND cat_id IN (%s,%s) ORDER BY date DESC LIMIT 10',
-                    $reply->getSenderId(),
-                    $reply->getRecipientId(),
-                    $reply->getSenderId(),
-                    $reply->getRecipientId(),
-                    $recipientFolder->getId(),
-                    $senderFolder->getId()
-                )
+            $correspondence = $this->privateMessageRepository->getOrderedCorrepondence(
+                [$reply->getSenderId(), $reply->getRecipientId()],
+                [$recipientFolder->getId(), $senderFolder->getId()],
+                10
             );
         }
 

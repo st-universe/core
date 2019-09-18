@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
-use PM;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
@@ -67,7 +67,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
         foreach ($alliance->getMembers() as $userRelation) {
-            PM::sendPM(USER_NOONE, $userRelation->getUserId(), $text);
+            PrivateMessageSender::sendPM(USER_NOONE, $userRelation->getUserId(), $text);
             $userRelation->getUser()->setAllianceId(0);
             $userRelation->getUser()->save();
         }
@@ -111,7 +111,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         );
 
         foreach ($jobList as $job) {
-            PM::sendPM(USER_NOONE, $job->getUserId(), $text);
+            PrivateMessageSender::sendPM(USER_NOONE, $job->getUserId(), $text);
         }
     }
 

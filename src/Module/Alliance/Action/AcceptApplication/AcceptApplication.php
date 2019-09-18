@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\AcceptApplication;
 
 use AccessViolation;
-use PM;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -59,7 +59,7 @@ final class AcceptApplication implements ActionControllerInterface
             _('Deine Bewerbung wurde akzeptiert - Du bist jetzt Mitglied der Allianz %s'),
             $alliance->getName()
         );
-        PM::sendPM($userId, $applicant->getId(), $text);
+        PrivateMessageSender::sendPM($userId, $applicant->getId(), $text);
 
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
     }

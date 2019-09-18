@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Tick\Ship;
 
-use PM;
 use ShipData;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Orm\Entity\ShipSystemInterface;
 
 final class ShipTick implements ShipTickInterface
@@ -82,7 +82,7 @@ final class ShipTick implements ShipTickInterface
         foreach ($this->msg as $key => $msg) {
             $text .= $msg . "\n";
         }
-        PM::sendPM(USER_NOONE, $ship->getUserId(), $text, PM_SPECIAL_SHIP);
+        PrivateMessageSender::sendPM(USER_NOONE, $ship->getUserId(), $text, PM_SPECIAL_SHIP);
 
         $this->msg = [];
     }

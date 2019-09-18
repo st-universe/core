@@ -6,10 +6,10 @@ use Colony;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
-use PM;
 use request;
 use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
@@ -183,7 +183,7 @@ final class GameController implements GameControllerInterface
 
     public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN)
     {
-        PM::sendPM($sender_id, $recipient_id, join('<br />', $this->getInformation()), $category_id);
+        PrivateMessageSender::sendPM($sender_id, $recipient_id, join('<br />', $this->getInformation()), $category_id);
     }
 
     public function setTemplateVar(string $key, $variable): void

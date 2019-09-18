@@ -12,7 +12,6 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
 
 final class ActivateBuildingsEpsProducer implements ActionControllerInterface
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
 use AccessViolation;
-use PM;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
@@ -52,7 +52,7 @@ final class DeclineApplication implements ActionControllerInterface
             $alliance->getName()
         );
 
-        PM::sendPM(USER_NOONE, $appl->getUserId(), $text);
+        PrivateMessageSender::sendPM(USER_NOONE, $appl->getUserId(), $text);
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 

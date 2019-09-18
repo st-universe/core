@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use PM;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -36,7 +36,7 @@ final class FinishTerraformingJobs implements ProcessTickInterface
 
             $this->colonyTerraformingRepository->delete($field);
             $txt = "Kolonie " . $colony->getNameWithoutMarkup() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
-            PM::sendPM(USER_NOONE, $colony->getUserId(), $txt, PM_SPECIAL_COLONY);
+            PrivateMessageSender::sendPM(USER_NOONE, $colony->getUserId(), $txt, PM_SPECIAL_COLONY);
         }
     }
 }

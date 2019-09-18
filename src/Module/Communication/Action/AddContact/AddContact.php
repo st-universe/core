@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddContact;
 
-use PM;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -65,7 +65,8 @@ final class AddContact implements ActionControllerInterface
         $this->contactRepository->save($contact);
 
         if ($mode == ContactListModeEnum::CONTACT_ENEMY) {
-            PM::sendPM($userId, $recipient->getId(), _('Der Spieler betrachtet Dich von nun an als Feind'));
+            PrivateMessageSender::sendPM($userId, $recipient->getId(),
+                _('Der Spieler betrachtet Dich von nun an als Feind'));
         }
         $game->addInformation(_('Der Spieler wurde hinzugefügt'));
 

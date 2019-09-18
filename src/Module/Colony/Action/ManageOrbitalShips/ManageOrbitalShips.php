@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use Exception;
-use PM;
 use request;
 use Ship;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -101,7 +101,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getName(), $load
                     );
                     if (!$shipobj->ownedByCurrentUser()) {
-                        PM::sendPM(
+                        PrivateMessageSender::sendPM(
                             $userId,
                             $shipobj->getUserId(),
                             sprintf(
@@ -173,7 +173,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load
                             );
                             if (!$shipobj->ownedByCurrentUser()) {
-                                PM::sendPM(
+                                PrivateMessageSender::sendPM(
                                     $userId,
                                     $shipobj->getUserId(),
                                     sprintf(

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DockShip;
 
-use PM;
 use request;
 use ShipData;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -88,7 +88,7 @@ final class DockShip implements ActionControllerInterface
         $ship->setDock($target->getId());
         $ship->save();
 
-        PM::sendPm($userId, $target->getUserId(),
+        PrivateMessageSender::sendPm($userId, $target->getUserId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt', PM_SPECIAL_SHIP);
         $game->addInformation('Andockvorgang abgeschlossen');
     }

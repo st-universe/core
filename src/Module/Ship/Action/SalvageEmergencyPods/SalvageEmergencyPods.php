@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
-use PM;
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -49,7 +49,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $ship->cancelRepair();
         $dummy_crew = current($target->getCrewList());
         if ($dummy_crew->getCrew()->getUserId() != $userId) {
-            PM::sendPm($userId, $dummy_crew->getCrew()->getUserId(),
+            PrivateMessageSender::sendPm($userId, $dummy_crew->getCrew()->getUserId(),
                 sprintf(_('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
                     $target->getCrew()), PM_SPECIAL_SHIP);
         }

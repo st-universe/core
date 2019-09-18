@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\PromotePlayer;
 
 use AccessViolation;
-use PM;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -118,7 +118,7 @@ final class PromotePlayer implements ActionControllerInterface
                 break;
         }
 
-        PM::sendPM($userId, $playerId, $text);
+        PrivateMessageSender::sendPM($userId, $playerId, $text);
 
         $game->addInformation(_('Das Mitglied wurde befördert'));
     }

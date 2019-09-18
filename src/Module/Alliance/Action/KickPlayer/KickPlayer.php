@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use AccessViolation;
-use PM;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -70,7 +70,7 @@ final class KickPlayer implements ActionControllerInterface
             _('Deine Mitgliedschaft in der Allianz %s wurde beendet'),
             $alliance->getName()
         );
-        PM::sendPM(USER_NOONE, $playerId, $text);
+        PrivateMessageSender::sendPM(USER_NOONE, $playerId, $text);
 
         $game->addInformation(_('Der Siedler wurde rausgeworfen'));
     }

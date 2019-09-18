@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\MovePm;
 
-use PM;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class MovePm implements ActionControllerInterface
 {
@@ -17,16 +17,22 @@ final class MovePm implements ActionControllerInterface
 
     private $privateMessageFolderRepository;
 
+    private $privateMessageRepository;
+
     public function __construct(
         MovePmRequestInterface $movePmRequest,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
         $this->movePmRequest = $movePmRequest;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
+
         $cat = $this->privateMessageFolderRepository->find($this->movePmRequest->getCategoryId());
 
         if ($cat === null || $cat->isPMOutDir()) {
@@ -34,18 +40,19 @@ final class MovePm implements ActionControllerInterface
         }
 
         $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
-        $pm = new PM($this->movePmRequest->getPmId());
+        $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
 
-        if ($destination === null || $destination->getUserId() != $game->getUser()->getId()) {
+        if ($destination === null || $destination->getUserId() !== $userId) {
             $game->addInformation(_('Dieser Ordner existiert nicht'));
             return;
         }
-        if (!$pm->isOwnPM()) {
+        if ($pm === null || $pm->getRecipientId() !== $userId) {
             $game->addInformation(_('Diese Nachricht existiert nicht'));
             return;
         }
-        $pm->setCategoryId($destination->getId());
-        $pm->save();
+        $pm->setCategory($destination);
+
+        $this->privateMessageRepository->save($pm);
 
         $game->addInformation(_('Die Nachricht wurde verscheben'));
     }

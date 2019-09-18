@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TakeOffer;
 
 use AccessViolation;
-use PM;
+use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
@@ -135,7 +135,7 @@ final class TakeOffer implements ActionControllerInterface
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 
-        PM::sendPM(
+        PrivateMessageSender::sendPM(
             $userId,
             $selectedOffer->getUserId(),
             sprintf(
