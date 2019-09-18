@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowWritePm;
 
 use PM;
-use PMCategory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class ShowWritePm implements ViewControllerInterface
 {
@@ -18,12 +18,16 @@ final class ShowWritePm implements ViewControllerInterface
 
     private $contactRepository;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
         ShowWritePmRequestInterface $showWritePmRequest,
-        ContactRepositoryInterface $contactRepository
+        ContactRepositoryInterface $contactRepository,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->showWritePmRequest = $showWritePmRequest;
         $this->contactRepository = $contactRepository;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,6 +41,16 @@ final class ShowWritePm implements ViewControllerInterface
             $correspondence = null;
         } else {
             $reply = $pm;
+
+            $recipientFolder = $this->privateMessageFolderRepository->getByUserAndSpecial(
+                (int) $reply->getRecipientId(),
+                PM_SPECIAL_MAIN
+            );
+            $senderFolder = $this->privateMessageFolderRepository->getByUserAndSpecial(
+                (int) $reply->getSenderId(),
+                PM_SPECIAL_MAIN
+            );
+
             $correspondence = PM::getObjectsBy(
                 sprintf(
                     'WHERE (send_user IN (%d,%d) OR recip_user IN (%d,%d)) AND cat_id IN (%s,%s) ORDER BY date DESC LIMIT 10',
@@ -44,8 +58,8 @@ final class ShowWritePm implements ViewControllerInterface
                     $reply->getRecipientId(),
                     $reply->getSenderId(),
                     $reply->getRecipientId(),
-                    PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $reply->getRecipientId())->getId(),
-                    PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $reply->getSenderId())->getId()
+                    $recipientFolder->getId(),
+                    $senderFolder->getId()
                 )
             );
         }
@@ -64,6 +78,6 @@ final class ShowWritePm implements ViewControllerInterface
         $game->setTemplateVar('REPLY', $reply);
         $game->setTemplateVar('CONTACT_LIST', $this->contactRepository->getOrderedByUser($userId));
         $game->setTemplateVar('CORRESPONDENCE', $correspondence);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($userId));
+        $game->setTemplateVar('PM_CATEGORIES', $this->privateMessageFolderRepository->getOrderedByUser($userId));
     }
 }

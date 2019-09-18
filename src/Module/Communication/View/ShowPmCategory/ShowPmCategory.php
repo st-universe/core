@@ -6,9 +6,9 @@ namespace Stu\Module\Communication\View\ShowPmCategory;
 
 use AccessViolation;
 use PM;
-use PMCategory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class ShowPmCategory implements ViewControllerInterface
 {
@@ -18,24 +18,28 @@ final class ShowPmCategory implements ViewControllerInterface
 
     private $showPmCategoryRequest;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
-        ShowPmCategoryRequestInterface $showPmCategoryRequest
+        ShowPmCategoryRequestInterface $showPmCategoryRequest,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->showPmCategoryRequest = $showPmCategoryRequest;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-        $category_id = $this->showPmCategoryRequest->getCategoryId();
+        $categoryId = $this->showPmCategoryRequest->getCategoryId();
 
         $mark = $this->showPmCategoryRequest->getListOffset();
 
-        if ($category_id === 0) {
-            $category = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $userId);
+        if ($categoryId === 0) {
+            $category = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, PM_SPECIAL_MAIN);
         } else {
-            $category = new PMCategory($category_id);
-            if ($category->getUserId() != $userId) {
+            $category = $this->privateMessageFolderRepository->find($categoryId);
+            if ($category === null || $category->getUserId() !== $userId) {
                 throw new AccessViolation();
             }
         }
@@ -76,6 +80,6 @@ final class ShowPmCategory implements ViewControllerInterface
         $game->setTemplateVar('CATEGORY', $category);
         $game->setTemplateVar('PM_LIST', PM::getPMsBy($userId, (int) $category->getId(), $mark, static::PMLIMITER));
         $game->setTemplateVar('PM_NAVIGATION', $pmNavigation);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($userId));
+        $game->setTemplateVar('PM_CATEGORIES', $this->privateMessageFolderRepository->getOrderedByUser($userId));
     }
 }

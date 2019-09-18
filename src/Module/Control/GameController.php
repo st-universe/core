@@ -7,7 +7,6 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use PM;
-use PMCategory;
 use request;
 use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
@@ -17,6 +16,7 @@ use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use UserData;
@@ -44,6 +44,8 @@ final class GameController implements GameControllerInterface
     private $gameConfigRepository;
 
     private $entityManager;
+
+    private $privateMessageFolderRepository;
 
     private $gameInformations = [];
 
@@ -77,7 +79,8 @@ final class GameController implements GameControllerInterface
         GameTurnRepositoryInterface $gameTurnRepository,
         ResearchedRepositoryInterface $researchedRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -89,6 +92,7 @@ final class GameController implements GameControllerInterface
         $this->researchedRepository = $researchedRepository;
         $this->gameConfigRepository = $gameConfigRepository;
         $this->entityManager = $entityManager;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -198,9 +202,23 @@ final class GameController implements GameControllerInterface
         $this->talPage->setVar('USER', $user);
 
         if ($user !== null) {
+            $userId = $user->getId();
+
+            $pmFolder = [
+                PM_SPECIAL_MAIN,
+                PM_SPECIAL_SHIP,
+                PM_SPECIAL_COLONY,
+                PM_SPECIAL_TRADE,
+            ];
+            $folder = [];
+
+            foreach ($pmFolder as $specialId) {
+                $folder[$specialId] = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $specialId);
+            }
+
             $this->talPage->setVar('CURRENT_RESEARCH', $this->researchedRepository->getCurrentResearch((int) $user->getId()));
             $this->talPage->setVar('USER_COLONIES', Colony::getListBy('user_id='.$user->getId().' ORDER BY id'));
-            $this->talPage->setVar('PM_NAVLET', PMCategory::getNavletCategories($user->getId()));
+            $this->talPage->setVar('PM_NAVLET', $folder);
         }
 
         $this->talPage->parse();

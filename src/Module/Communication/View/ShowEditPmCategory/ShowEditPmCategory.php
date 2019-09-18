@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowEditPmCategory;
 
 use AccessViolation;
-use PMCategory;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class ShowEditPmCategory implements ViewControllerInterface
 {
@@ -15,17 +15,21 @@ final class ShowEditPmCategory implements ViewControllerInterface
 
     private $showEditCategoryRequest;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
-        ShowEditCategoryRequestInterface $showEditCategoryRequest
+        ShowEditCategoryRequestInterface $showEditCategoryRequest,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->showEditCategoryRequest = $showEditCategoryRequest;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $category = new PMCategory($this->showEditCategoryRequest->getCategoryId());
+        $category = $this->privateMessageFolderRepository->find($this->showEditCategoryRequest->getCategoryId());
 
-        if ($category->getUserId() != $game->getUser()->getId()) {
+        if ($category === null || $category->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 

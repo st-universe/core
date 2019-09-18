@@ -69,9 +69,6 @@ function getStorageBar(&$bar,$file,$amount,&$sum) {
 	}
 	$sum -= $mod*$amount;
 }
-function comparePMCategories(&$a,&$b) {
-	return strcmp($a->getSort(), $b->getSort());
-}
 function compareBuildings(&$a,&$b) {
 	if ($a->getBuilding()->getId() == $b->getBuilding()->getId()) {
 		return $a->getId() > $b->getId();

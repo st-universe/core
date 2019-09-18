@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddPmCategory;
 
-use PMCategoryData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategoryList\ShowPmCategoryList;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class AddPmCategory implements ActionControllerInterface
 {
@@ -15,10 +15,14 @@ final class AddPmCategory implements ActionControllerInterface
 
     private $addPmCategoryRequest;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
-        AddPmCategoryRequestInterface $addPmCategoryRequest
+        AddPmCategoryRequestInterface $addPmCategoryRequest,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->addPmCategoryRequest = $addPmCategoryRequest;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -29,11 +33,12 @@ final class AddPmCategory implements ActionControllerInterface
         if (mb_strlen($name) < 1) {
             return;
         }
-        $cat = new PMCategoryData(array());
+        $cat = $this->privateMessageFolderRepository->prototype();
         $cat->setUserId($game->getUser()->getId());
         $cat->appendToSorting();
         $cat->setDescription($name);
-        $cat->save();
+
+        $this->privateMessageFolderRepository->save($cat);
 
         $game->setTemplateVar('CATEGORY', $cat);
     }

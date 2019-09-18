@@ -4,7 +4,6 @@ namespace Stu\Lib;
 
 use Colony;
 use Fleet;
-use PMCategory;
 use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -14,6 +13,7 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -195,8 +195,16 @@ class UserDeletion
 
     public function handlePMCategories()
     {
-        foreach (PMCategory::getObjectsBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
-            $obj->deepDelete();
+        // @todo refactor
+        global $container;
+
+        $privateMessageFolderRepo = $container->get(PrivateMessageFolderRepositoryInterface::class);
+
+        $result = $privateMessageFolderRepo->getOrderedByUser((int) $this->getUser()->getId());
+        foreach ($result as $folder) {
+            $folder->truncate();
+
+            $privateMessageFolderRepo->delete($folder);
         }
     }
 

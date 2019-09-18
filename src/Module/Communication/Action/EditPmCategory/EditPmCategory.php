@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\EditPmCategory;
 
 use AccessViolation;
-use PMCategory;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategoryList\ShowPmCategoryList;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class EditPmCategory implements ActionControllerInterface
 {
@@ -16,10 +16,14 @@ final class EditPmCategory implements ActionControllerInterface
 
     private $editPmCategoryRequest;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
-        EditPmCategoryRequestInterface $editPmCategoryRequest
+        EditPmCategoryRequestInterface $editPmCategoryRequest,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->editPmCategoryRequest = $editPmCategoryRequest;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,13 +35,14 @@ final class EditPmCategory implements ActionControllerInterface
             return;
         }
 
-        $cat = new PMCategory($this->editPmCategoryRequest->getCategoryId());
-        if ($cat->getUserId() != $game->getUser()->getId()) {
+        $cat = $this->privateMessageFolderRepository->find($this->editPmCategoryRequest->getCategoryId());
+        if ($cat === null || $cat->getUserId() != $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
         $cat->setDescription($name);
-        $cat->save();
+
+        $this->privateMessageFolderRepository->save($cat);
 
         $game->setTemplateVar('CATEGORY', $cat);
     }

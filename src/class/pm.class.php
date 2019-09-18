@@ -3,6 +3,7 @@
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 class PMData extends Basetable {
 
@@ -123,11 +124,16 @@ class PMData extends Basetable {
 	}
 
 	function copyPM() {
+		// @todo refactor
+		global $container;
+
+		$privateMessageFolderRepo = $container->get(PrivateMessageFolderRepositoryInterface::class);
+		$folder = $privateMessageFolderRepo->getByUserAndSpecial($this->getSenderId(), PM_SPECIAL_PMOUT);
+
 		$newobj = clone($this);
 		$newobj->setSenderId($this->getRecipientId());
 		$newobj->setRecipientId($this->getSenderId());
-		$cat = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_PMOUT,$this->getSenderId());
-		$newobj->setCategoryId($cat->getId());
+		$newobj->setCategoryId($folder->getId());
 		$newobj->setNew();
 		$newobj->save();
 	}
@@ -205,10 +211,15 @@ class PM extends PMData {
 		if ($sender == $recipient) {
 			return;
 		}
+		// @todo refactor
+		global $container;
+
+		$privateMessageFolderRepo = $container->get(PrivateMessageFolderRepositoryInterface::class);
+
 		$pm = new PMData();
 		$pm->setDate(time());
-		$cat = PMCategory::getOrGenSpecialCategory($category,$recipient);
-		$pm->setCategoryId($cat->getId());
+		$folder = $privateMessageFolderRepo->getByUserAndSpecial((int) $recipient, (int) $category);
+		$pm->setCategoryId($folder->getId());
 		$pm->setText($text);
 		$pm->setRecipientId($recipient);
 		$pm->setSenderId($sender);

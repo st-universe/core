@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Register;
 
 use Exception;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use User;
@@ -28,16 +30,20 @@ final class Register implements ActionControllerInterface
 
     private $factionRepository;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
         RegisterRequestInterface $registerRequest,
         ResearchRepositoryInterface $researchRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        FactionRepositoryInterface $factionRepository
+        FactionRepositoryInterface $factionRepository,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->registerRequest = $registerRequest;
         $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
         $this->factionRepository = $factionRepository;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -84,10 +90,21 @@ final class Register implements ActionControllerInterface
         $obj->setCreationDate(time());
         $obj->save();
 
+        // Create default pm categories
+        foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $categoryId => $label) {
+            $cat = $this->privateMessageFolderRepository->prototype();
+            $cat->setUserId($cat->getId());
+            $cat->setDescription(gettext($label));
+            $cat->setSpecial($categoryId);
+            $cat->setSort($categoryId);
+
+            $this->privateMessageFolderRepository->save($cat);
+        }
+
         /**
          * @var ResearchInterface $research
          */
-        $research = $this->researchRepository->find($this->getResearchStartId((int) $obj->getFaction()));
+        $research = $this->researchRepository->find($this->getResearchStartId((int)$obj->getFaction()));
 
         $db = $this->researchedRepository->prototype();
 
@@ -103,7 +120,8 @@ final class Register implements ActionControllerInterface
         $game->setView('SHOW_REGISTRATION_END');
     }
 
-    private function getResearchStartId(int $factionId): int {
+    private function getResearchStartId(int $factionId): int
+    {
         switch ($factionId) {
             case FACTION_FEDERATION:
                 return RESEARCH_START_FEDERATION;

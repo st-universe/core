@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowPlotKn;
 
-use PMCategory;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowPlotKn implements ViewControllerInterface
@@ -26,16 +26,20 @@ final class ShowPlotKn implements ViewControllerInterface
 
     private $rpgPlotRepository;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
         ShowPlotKnRequestInterface $showPlotKnRequest,
         KnTalFactoryInterface $knTalFactory,
         KnPostRepositoryInterface $knPostRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->showPlotKnRequest = $showPlotKnRequest;
         $this->knTalFactory = $knTalFactory;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -100,7 +104,10 @@ final class ShowPlotKn implements ViewControllerInterface
         $game->setTemplateVar('KN_POSTINGS', $list);
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('KN_OFFSET', $mark);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($game->getUser()->getId()));
+        $game->setTemplateVar(
+            'PM_CATEGORIES',
+            $this->privateMessageFolderRepository->getOrderedByUser($game->getUser()->getId())
+        );
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }
 }

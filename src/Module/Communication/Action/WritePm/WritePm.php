@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Action\WritePm;
 
 use PM;
-use PMCategory;
 use PMData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use User;
 
 final class WritePm implements ActionControllerInterface
@@ -21,12 +21,16 @@ final class WritePm implements ActionControllerInterface
 
     private $ignoreListRepository;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
         WritePmRequestInterface $writePmRequest,
-        IgnoreListRepositoryInterface $ignoreListRepository
+        IgnoreListRepositoryInterface $ignoreListRepository,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->writePmRequest = $writePmRequest;
         $this->ignoreListRepository = $ignoreListRepository;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,7 +57,7 @@ final class WritePm implements ActionControllerInterface
             $game->addInformation("Der Text ist zu kurz");
             return;
         }
-        $cat = PMCategory::getOrGenSpecialCategory(PM_SPECIAL_MAIN, $recipient->getId());
+        $cat = $this->privateMessageFolderRepository->getByUserAndSpecial((int) $recipient->getId(), PM_SPECIAL_MAIN);
 
         $pm = new PMData();
         $pm->setText($text);

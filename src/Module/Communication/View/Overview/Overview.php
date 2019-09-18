@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\Overview;
 
-use PMCategory;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -20,14 +20,18 @@ final class Overview implements ViewControllerInterface
 
     private $knPostRepository;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
         OverviewRequestInterface $overviewRequest,
         KnTalFactoryInterface $knTalFactory,
-        KnPostRepositoryInterface $knPostRepository
+        KnPostRepositoryInterface $knPostRepository,
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->overviewRequest = $overviewRequest;
         $this->knTalFactory = $knTalFactory;
         $this->knPostRepository = $knPostRepository;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -87,7 +91,10 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar('KN_OFFSET', $mark);
         $game->setTemplateVar('NEW_KN_POSTING_COUNT', $newKnPostCount);
         $game->setTemplateVar('USER_KN_MARK', $userKnMark);
-        $game->setTemplateVar('PM_CATEGORIES', PMCategory::getCategoryTree($game->getUser()->getId()));
+        $game->setTemplateVar(
+            'PM_CATEGORIES',
+            $this->privateMessageFolderRepository->getOrderedByUser($game->getUser()->getId())
+        );
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }
 }

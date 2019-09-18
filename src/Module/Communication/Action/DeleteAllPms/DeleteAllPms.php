@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\DeleteAllPms;
 
-use PMCategory;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class DeleteAllPms implements ActionControllerInterface
 {
@@ -14,21 +14,25 @@ final class DeleteAllPms implements ActionControllerInterface
 
     private $deleteAllPmsRequest;
 
+    private $privateMessageFolderRepository;
+
     public function __construct(
-        DeleteAllPmsRequestInterface $deleteAllPmsRequest
+        DeleteAllPmsRequestInterface $deleteAllPmsRequest,
+    PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
     ) {
         $this->deleteAllPmsRequest = $deleteAllPmsRequest;
+        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $cat = PMCategory::getById($this->deleteAllPmsRequest->getCategoryId());
-        if (!$cat || $cat->getUserId() != $game->getUser()->getId()) {
+        $folder = $this->privateMessageFolderRepository->find($this->deleteAllPmsRequest->getCategoryId());
+        if ($folder === null || $folder->getUserId() !== $game->getUser()->getId()) {
             return;
         }
-        $cat->truncate();
+        $folder->truncate();
 
-        $game->addInformation(_('Der Ordner wurden geleert'));
+        $game->addInformation(_('Der Ordner wurde geleert'));
     }
 
     public function performSessionCheck(): bool
