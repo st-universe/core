@@ -11,22 +11,25 @@ use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Api\Middleware\Action;
 use Stu\Module\Api\Middleware\ActionError;
+use Stu\Module\Api\Middleware\Request\JsonSchemaRequestInterface;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 
 final class Login extends Action
 {
-    protected const SCHEMA_FILE = __DIR__ . '/login.json';
-
     private $session;
+
+    private $jsonSchemaRequest;
 
     private $config;
 
     public function __construct(
         SessionInterface $session,
+        JsonSchemaRequestInterface $jsonSchemaRequest,
         ConfigInterface $config
     ) {
         $this->session = $session;
         $this->config = $config;
+        $this->jsonSchemaRequest = $jsonSchemaRequest;
     }
 
     public function action(
@@ -34,7 +37,7 @@ final class Login extends Action
         JsonResponseInterface $response,
         array $args
     ): JsonResponseInterface {
-        $data = $this->getFormData();
+        $data = $this->jsonSchemaRequest->getData($this);
 
         try {
             $this->session->login($data->username, $data->password);
@@ -59,5 +62,10 @@ final class Login extends Action
         return $response->withData([
             'token' => $token,
         ]);
+    }
+    
+    public function getJsonSchemaFile(): ?string
+    {
+        return __DIR__ . '/login.json';
     }
 }

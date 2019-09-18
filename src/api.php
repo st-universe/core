@@ -5,12 +5,15 @@ declare(strict_types=1);
 use Doctrine\ORM\EntityManagerInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Noodlehaus\ConfigInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Stu\Module\Api\Middleware\Emitter\ResponseEmitter;
+use Stu\Module\Api\Middleware\Request\JsonSchemaRequestInterface;
 use Stu\Module\Api\Middleware\Response\ReponseFactory;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Api\V1\Colony\ColonyList\GetColonyList;
@@ -44,6 +47,11 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
         $container->get(SessionInterface::class)->resumeSession($request);
     }
 ]));
+
+$app->add(function (ServerRequestInterface $request, RequestHandlerInterface $handler) use($container): ResponseInterface {
+    $container->get(JsonSchemaRequestInterface::class)->setRequest($request);
+    return $handler->handle($request);
+});
 
 $app->group('/api/v1/common', function (RouteCollectorProxy $group): void {
     $group->get('/news', GetNews::class);
