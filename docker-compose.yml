@@ -12,10 +12,10 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     networks:
       static-network:
-        ipv4_address: 172.31.128.2
+        ipv4_address: 172.40.128.2
 networks:
   static-network:
     ipam:
       config:
-        - subnet: 172.31.0.0/16
+        - subnet: 172.40.0.0/16
 

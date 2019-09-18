@@ -15,7 +15,10 @@ composer
 - make generators
 - make dev-serve
 
-Danach sollte die Software via http://localhost:1337 erreichbar sein
+Danach sollte die Software via http://localhost:1337 erreichbar sein. Ggf kann
+es sein, dass der Hostname (stu-db) nicht aufgelöst werden kann. In diesem
+Fall muss für die im `docker-compose.yml` File hinterlegte IP ein Eintrag in
+der Hosts-Datei des Betriebssystems gemacht werden.
 
 API
 ---

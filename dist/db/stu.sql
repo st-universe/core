@@ -454,7 +454,7 @@ CREATE TABLE `stu_buildplans` (
 
 LOCK TABLES `stu_buildplans` WRITE;
 /*!40000 ALTER TABLE `stu_buildplans` DISABLE KEYS */;
-INSERT INTO `stu_buildplans` VALUES (1,1501,1,'Icarus',1000,'',0,100),(2,1502,1,'T\'liss',1000,'',0,100),(3,1503,1,'NoName',1000,'',0,100),(4,901, 'Y-Klasse Frachter',1000,'',2,100),(5,902, 'RX-Klasse Frachter'),1000,'',2,100),(6,903, 'KG-Klasse Frachter',1000,'',2,100),(11,1101,1,'Raider',1000,'',5,100),(12,1102,1,'Dhelan',1000,'',5,100),(13,1103,1,'NuQ\'Duj',1000,'',5,100),(21,1201,1,'Peregrine',1000,'',5,100),(23,1203,1,'K\'Pak',1000,'',5,100),(32,1302,1,'V\'Rela',1000,'',5,100),(41,1401,1,'Danube',1000,'',5,100),(42,1402,1,'Atarra',1000,'',5,100),(43,1403,1,'K\'Toch',1000,'',5,100),(49,1491,1,'Venture',1000,'',5,100);
+INSERT INTO `stu_buildplans` VALUES (1,1501,1,'Icarus',1000,'',0,100),(2,1502,1,'T\'liss',1000,'',0,100),(3,1503,1,'NoName',1000,'',0,100),(4,901,1,'Y-Klasse Frachter',1000,'',2,100),(5,902,1,'RX-Klasse Frachter',1000,'',2,100),(6,903,1,'KG-Klasse Frachter',1000,'',2,100),(11,1101,1,'Raider',1000,'',5,100),(12,1102,1,'Dhelan',1000,'',5,100),(13,1103,1,'NuQ\'Duj',1000,'',5,100),(21,1201,1,'Peregrine',1000,'',5,100),(23,1203,1,'K\'Pak',1000,'',5,100),(32,1302,1,'V\'Rela',1000,'',5,100),(41,1401,1,'Danube',1000,'',5,100),(42,1402,1,'Atarra',1000,'',5,100),(43,1403,1,'K\'Toch',1000,'',5,100),(49,1491,1,'Venture',1000,'',5,100);
 /*!40000 ALTER TABLE `stu_buildplans` ENABLE KEYS */;
 UNLOCK TABLES;
 
