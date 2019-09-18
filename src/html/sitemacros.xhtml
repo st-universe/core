@@ -6,7 +6,7 @@
 			<script src="${THIS/getJavascriptPath}/html/js/prototype.js" type="text/javascript"><!-- prototype --></script>
 			<script src="${THIS/getJavascriptPath}/html/js/scriptaculous.js" type="text/javascript"><!-- script --></script>
 			<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/default.js"><!-- default js --></script>
-			<title tal:content="structure THIS/getPageTitle">TITLE</title>
+			<title tal:content="structure bbcode2txt:THIS/getPageTitle">TITLE</title>
 			<script language="JavaScript">
 				var gfx_path = 'assets';
 			</script>
@@ -87,7 +87,7 @@
 						<p i18n:translate="">Kolonien</p>
 						<div style="clear: both" tal:repeat="data USER_COLONIES">
 							<a style="display: block; float: left; margin-right: 10px"  href="colony.php?SHOW_COLONY=1&id=${data/getId}">
-								<img src="assets/planets/${data/getColonyClass}s.gif" title="runtime" tal:attributes="title data/getNameWithoutMarkup" />
+								<img src="assets/planets/${data/getColonyClass}s.gif" title="runtime" tal:attributes="title bbcode2txt:data/getName" />
 							</a>
 							<div>
 								<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" />

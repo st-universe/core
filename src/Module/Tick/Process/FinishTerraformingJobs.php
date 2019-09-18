@@ -39,7 +39,7 @@ final class FinishTerraformingJobs implements ProcessTickInterface
             $this->planetFieldRepository->save($colonyField);
 
             $this->colonyTerraformingRepository->delete($field);
-            $txt = "Kolonie " . $colony->getNameWithoutMarkup() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
+            $txt = "Kolonie " . $colony->getName() . ": " . $field->getTerraforming()->getDescription() . " auf Feld " . $colonyField->getFieldId() . " abgeschlossen";
 
             $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $txt, PM_SPECIAL_COLONY);
         }

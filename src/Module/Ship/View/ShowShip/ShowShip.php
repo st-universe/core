@@ -116,9 +116,9 @@ final class ShowShip implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $shipId),
-            $ship->getNameWithoutMarkup()
+            $ship->getName()
         );
-        $game->setPagetitle($ship->getNameWithoutMarkup());
+        $game->setPagetitle($ship->getName());
         $game->setTemplateFile('html/ship.xhtml');
 
         $game->setTemplateVar('SHIP', $ship);

@@ -280,7 +280,7 @@ final class ColonyTick implements ColonyTickInterface
         if ($this->msg === []) {
             return;
         }
-        $text = "Tickreport der Kolonie " . $colony->getNameWithoutMarkup() . "\n";
+        $text = "Tickreport der Kolonie " . $colony->getName() . "\n";
         foreach ($this->msg as $key => $msg) {
             $text .= $msg . "\n";
         }

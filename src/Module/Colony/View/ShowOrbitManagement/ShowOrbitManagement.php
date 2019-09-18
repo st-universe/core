@@ -82,7 +82,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             ),
-            $colony->getNameWithoutMarkup()
+            $colony->getName()
         );
         $game->appendNavigationPart(
             sprintf('?%s=1&id=%d',
@@ -90,7 +90,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
                 $colony->getId()),
             _('Orbitalmanagement')
         );
-        $game->setPagetitle(sprintf('%s Orbit', $colony->getNameWithoutMarkup()));
+        $game->setPagetitle(sprintf('%s Orbit', $colony->getName()));
         $game->setTemplateFile('html/orbitalmanagement.xhtml');
 
         $game->setTemplateVar('COLONY', $colony);

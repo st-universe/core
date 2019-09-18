@@ -39,7 +39,7 @@ final class FinishBuildJobs implements ProcessTickInterface
 
             $this->planetFieldRepository->save($field);
 
-            $txt = "Kolonie " . $field->getColony()->getNameWithoutMarkup() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
+            $txt = "Kolonie " . $field->getColony()->getName() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
 
             $this->privateMessageSender->send(USER_NOONE, (int)$field->getColony()->getUserId(), $txt, PM_SPECIAL_COLONY);
         }

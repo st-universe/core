@@ -71,10 +71,10 @@ final class ShowColony implements ViewControllerInterface
         );
         $game->appendNavigationPart(
             sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $colony->getId()),
-            $colony->getNameWithoutMarkup()
+            $colony->getName()
         );
         $game->setTemplateFile('html/colony.xhtml');
-        $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getNameWithoutMarkup()));
+        $game->setPagetitle(sprintf(_('Kolonie: %s'), $colony->getName()));
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar(

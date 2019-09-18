@@ -81,7 +81,7 @@ class ColonyData extends BaseTable {
 		$old = $this->getName();
 		$value = strip_tags($value);
 		$this->data['name'] = $value;
-		if (strlen($this->getNameWithoutMarkup()) < 3) {
+		if (strlen(BBCode()->parse($this->getName())) < 3) {
 			$this->name = $old;
 			return;
 		}
@@ -92,9 +92,6 @@ class ColonyData extends BaseTable {
 		return $this->data['name'];
 	}
 
-	function getNameWithoutMarkup() {
-		return BBCode()->parse($this->getName())->getAsText();
-	}
 	function getEps() {
 		return $this->data['eps'];
 	}

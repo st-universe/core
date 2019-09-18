@@ -73,7 +73,7 @@ class FleetData extends BaseTable {
 		$old = $this->getName();
 		$value = strip_tags($value);
 		$this->data['name'] = $value;
-		if (strlen($this->getNameWithoutMarkup()) < 3) {
+		if (strlen(BBCode()->parse($this->getName())) < 3) {
 			$this->data['name'] = $old;
 			return;
 		}
@@ -82,10 +82,6 @@ class FleetData extends BaseTable {
 
 	function getName() {
 		return $this->data['name'];
-	}
-
-	function getNameWithoutMarkup() {
-	        return BBCode()->parse($this->getName())->getAsText();
 	}
 
 	function deleteFromDb() {

@@ -45,7 +45,7 @@ final class FinishShipBuildJobs implements ProcessTickInterface
 
             $this->colonyShipQueueRepository->delete($obj);
 
-            $txt = _("Auf der Kolonie " . $colony->getNameWithoutMarkup() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
+            $txt = _("Auf der Kolonie " . $colony->getName() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
 
             $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $txt, PM_SPECIAL_COLONY);
         }

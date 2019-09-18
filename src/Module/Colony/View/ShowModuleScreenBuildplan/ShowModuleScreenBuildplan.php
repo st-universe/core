@@ -94,7 +94,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             ),
-            $colony->getNameWithoutMarkup());
+            $colony->getName());
 
         $game->appendNavigationPart(
             sprintf(

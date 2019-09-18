@@ -37,7 +37,7 @@
 										<td style="width: 35%; text-align: right;">
 											<tal:block tal:condition="fleet/getAvailableShips">
 												<select name="id" style="width: 150px;">
-													<option tal:repeat="data fleet/getAvailableShips" tal:attributes="value data/getId" tal:content="data/getNameWithoutMarkup">.</option>
+													<option tal:repeat="data fleet/getAvailableShips" tal:attributes="value data/getId" tal:content="bbcode2txt:data/getName">.</option>
 												</select>
 												<input type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" i18n:attributes="value" />
 											</tal:block>
