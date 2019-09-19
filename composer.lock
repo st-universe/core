@@ -5608,13 +5608,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "3f2c00980afc65fd9c99cfe46aec52e265a68fe9"
+                "reference": "6acbbb3eac24452109294698ba7821108b500e74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/3f2c00980afc65fd9c99cfe46aec52e265a68fe9",
-                "reference": "3f2c00980afc65fd9c99cfe46aec52e265a68fe9",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/6acbbb3eac24452109294698ba7821108b500e74",
+                "reference": "6acbbb3eac24452109294698ba7821108b500e74",
                 "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-json": "*",
+                "php": "^7.3"
             },
             "type": "library",
             "license": [
@@ -5625,7 +5630,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-09-17T16:58:13+00:00"
+            "time": "2019-09-17T17:29:45+00:00"
         },
         {
             "name": "webmozart/assert",
