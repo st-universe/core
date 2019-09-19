@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleScreen;
 
 use AccessViolation;
+use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -25,14 +27,18 @@ final class ShowModuleScreen implements ViewControllerInterface
 
     private $shipRumpRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowModuleScreenRequestInterface $showModuleScreenRequest,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showModuleScreenRequest = $showModuleScreenRequest;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -101,5 +107,6 @@ final class ShowModuleScreen implements ViewControllerInterface
         $game->setTemplateVar('MODULE_SLOTS', range(1, MODULE_TYPE_COUNT));
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         $game->setTemplateVar('PLAN', false);
+        $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($colony->getStorage()));
     }
 }

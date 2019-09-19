@@ -637,12 +637,6 @@ class ColonyData extends BaseTable {
 
 	/**
 	 */
-	public function hasStorage() { #{{{
-		return new ColonyStorageGoodWrapper($this->getStorage());
-	} # }}}
-
-	/**
-	 */
 	public function getNegativeEffect() { #{{{
 		return ceil($this->getPopulation()/70);
 	} # }}}

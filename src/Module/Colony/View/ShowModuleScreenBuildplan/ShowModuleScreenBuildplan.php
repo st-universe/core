@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
 use AccessViolation;
+use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
@@ -112,5 +113,6 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         $game->setTemplateVar('MODULE_SLOTS', range(1, MODULE_TYPE_COUNT));
+        $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($colony->getStorage()));
     }
 }
