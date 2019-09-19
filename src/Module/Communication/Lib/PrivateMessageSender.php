@@ -38,6 +38,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm->setText($text);
         $pm->setRecipientId($recipientId);
         $pm->setSenderId($senderId);
+        $pm->setNew(true);
 
         $this->privateMessageRepository->save($pm);
 
