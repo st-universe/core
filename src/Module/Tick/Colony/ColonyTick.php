@@ -183,7 +183,7 @@ final class ColonyTick implements ColonyTickInterface
 
         if ($current_research && $current_research->getActive()) {
             if (isset($production[$current_research->getResearch()->getGoodId()])) {
-                (new ResearchState($this->researchedRepository, $this->shipRumpUserRepository)
+                (new ResearchState($this->researchedRepository, $this->shipRumpUserRepository, $this->privateMessageSender)
                 )->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()
