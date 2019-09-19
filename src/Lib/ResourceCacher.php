@@ -18,7 +18,6 @@ class ResourceCacher
             $this->resources->offsetSet(CACHE_USER, new ArrayObject);
             $this->resources->offsetSet(CACHE_SHIP, new ArrayObject);
             $this->resources->offsetSet(CACHE_COLONY, new ArrayObject);
-            $this->resources->offsetSet(CACHE_FLEET, new ArrayObject);
         }
         return $this->resources;
     } # }}}
@@ -57,9 +56,6 @@ class ResourceCacher
                 break;
             case "colony":
                 $newobj = "Colony";
-                break;
-            case CACHE_FLEET:
-                $newobj = "Fleet";
                 break;
         }
         $this->registerResource($obj, $id, new $newobj($id));

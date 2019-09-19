@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Fleet;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class OrbitFleetItem implements OrbitFleetItemInterface
 {
@@ -30,7 +30,11 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
             return _('Einzelschiffe');
         }
 
-        return (new Fleet($this->fleetId))->getName();
+        // @todo refactor
+        global $container;
+        $fleetRepo = $container->get(FleetRepositoryInterface::class);
+
+        return $fleetRepo->find($this->fleetId)->getName();
     }
 
     public function getShips(): array

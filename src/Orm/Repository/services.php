@@ -36,6 +36,7 @@ use Stu\Orm\Entity\DatabaseType;
 use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Faction;
+use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
@@ -245,6 +246,11 @@ return [
         ContainerInterface $c
     ): FactionRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Faction::class);
+    },
+    FleetRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): FleetRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(Fleet::class);
     },
     GameConfigRepositoryInterface::class => function (
         ContainerInterface $c

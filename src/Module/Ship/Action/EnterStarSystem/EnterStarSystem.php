@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\EnterStarSystem;
 
-use Fleet;
 use request;
+use Ship;
 use ShipData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -74,7 +74,7 @@ final class EnterStarSystem implements ActionControllerInterface
         }
         if ($ship->isFleetLeader()) {
             $msg = array();
-            $result = Fleet::getShipsBy($ship->getFleetId(), array($ship->getId()));
+            $result = Ship::getShipsBy($ship->getFleetId(), [$ship->getId()]);
             foreach ($result as $key => $fleetShip) {
                 $wrapper = new SystemActivationWrapper($fleetShip);
                 $wrapper->setVar('eps', 1);

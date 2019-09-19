@@ -12,6 +12,7 @@ use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -244,7 +245,10 @@ class ShipData extends BaseTable {
 
 	function getFleet() {
 		if ($this->fleet === NULL && $this->isInFleet()) {
-			$this->fleet = ResourceCache()->getObject(CACHE_FLEET,$this->getFleetId());
+			// @todo refactor
+			global $container;
+
+			$this->fleet = $container->get(FleetRepositoryInterface::class)->find((int) $this->getFleetId());
 		}
 		return $this->fleet;
 	}
@@ -1742,5 +1746,20 @@ class Ship extends ShipData {
 	static public function countInstances($qry="") {
 		return DB()->query("SELECT COUNT(*) FROM ".self::tablename." ".$qry,1);
 	}
+
+	/**
+	 * @return ShipData[]
+	 */
+	public static function getShipsBy(&$fleetId, $without = [0])
+	{
+		$ret = [];
+		$result = DB()->query("SELECT * FROM stu_ships WHERE fleets_id=" . $fleetId . " AND id NOT IN (" . join(",",
+				$without) . ") ORDER BY id DESC,is_base DESC, id LIMIT 200");
+		while ($data = mysqli_fetch_assoc($result)) {
+			$ret[] = new ShipData($data);
+		}
+		return $ret;
+	}
 }
+
 ?>

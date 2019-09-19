@@ -145,7 +145,7 @@ class ShipMover {
 		$ships[] = &$this->getFirstShip();
 		$msg = array();
 		if ($this->isFleetMode()) {
-			$fleetShips = Fleet::getShipsBy($this->getFirstShip()->getFleetId(),array($this->getFirstShip()->getId()));
+			$fleetShips = Ship::getShipsBy($this->getFirstShip()->getFleetId(), [$this->getFirstShip()->getId()]);
 			$ships = array_merge($ships,$fleetShips);
 		}
 		if ($this->isFleetMode()) {

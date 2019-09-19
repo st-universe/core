@@ -4,19 +4,26 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\Overview;
 
-use Fleet;
 use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    private $fleetRepository;
+
+    public function __construct(
+        FleetRepositoryInterface $fleetRepository
+    ) {
+        $this->fleetRepository = $fleetRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $fleets = Fleet::getFleetsByUser($userId);
+        $fleets = $this->fleetRepository->getByUser($userId);
         $bases = Ship::getObjectsBy("WHERE user_id=" . $userId . " AND fleets_id=0 AND is_base=1 ORDER BY id");
         $ships = Ship::getObjectsBy("WHERE user_id=" . $userId . " AND fleets_id=0 AND is_base=0 ORDER BY id");
 

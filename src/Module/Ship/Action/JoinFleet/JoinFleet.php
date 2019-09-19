@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\JoinFleet;
 
 use AccessViolation;
-use Fleet;
 use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class JoinFleet implements ActionControllerInterface
 {
@@ -16,10 +16,14 @@ final class JoinFleet implements ActionControllerInterface
 
     private $joinFleetRequest;
 
+    private $fleetRepository;
+
     public function __construct(
-        JoinFleetRequestInterface $joinFleetRequest
+        JoinFleetRequestInterface $joinFleetRequest,
+        FleetRepositoryInterface $fleetRepository
     ) {
         $this->joinFleetRequest = $joinFleetRequest;
+        $this->fleetRepository = $fleetRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,8 +36,12 @@ final class JoinFleet implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        // @todo zusätzliche checks für flotten
-        $fleet = Fleet::getUserFleetById($this->joinFleetRequest->getFleetId(), $game->getUser()->getId());
+        $fleet = $this->fleetRepository->find($this->joinFleetRequest->getFleetId());
+
+        if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
+            throw new AccessViolation();
+        }
+
         if ($fleet->getFleetLeader() == $ship->getId()) {
             return;
         }

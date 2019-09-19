@@ -8,6 +8,7 @@ use AccessViolation;
 use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class DeleteFleet implements ActionControllerInterface
 {
@@ -15,10 +16,14 @@ final class DeleteFleet implements ActionControllerInterface
 
     private $deleteFleetRequest;
 
+    private $fleetRepository;
+
     public function __construct(
-        DeleteFleetRequestInterface $deleteFleetRequest
+        DeleteFleetRequestInterface $deleteFleetRequest,
+        FleetRepositoryInterface $fleetRepository
     ) {
         $this->deleteFleetRequest = $deleteFleetRequest;
+        $this->fleetRepository = $fleetRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,7 +41,9 @@ final class DeleteFleet implements ActionControllerInterface
         if (!$ship->isFleetLeader()) {
             return;
         }
-        $ship->getFleet()->deleteFromDb();
+
+        $this->fleetRepository->delete($ship->getFleet());
+
         $ship->unsetFleet();
         $ship->setFleetId(0);
         $ship->save();

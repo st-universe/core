@@ -255,7 +255,6 @@ define('GOOD_SATISFACTION_KLINGON_SECONDARY',1603);
 define("HISTORY_SHIP",1);
 define("HISTORY_ALLIANCE",3);
 
-define('CACHE_FLEET','fleet');
 define('CACHE_SHIP','ship');
 define('CACHE_USER','user');
 define('CACHE_ALLIANCE','alliance');

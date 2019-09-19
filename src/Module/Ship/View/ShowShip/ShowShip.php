@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowShip;
 
-use Fleet;
 use NavPanel;
 use request;
 use Stu\Module\Control\GameControllerInterface;
@@ -12,6 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use VisualNavPanel;
 
@@ -25,14 +25,18 @@ final class ShowShip implements ViewControllerInterface
 
     private $researchedRepository;
 
+    private $fleetRepository;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        FleetRepositoryInterface $fleetRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
         $this->researchedRepository = $researchedRepository;
+        $this->fleetRepository = $fleetRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -68,7 +72,7 @@ final class ShowShip implements ViewControllerInterface
         while ($data = mysqli_fetch_assoc($result)) {
             $obj = $this->shipLoader->getById((int) $data['id']);
             if (!array_key_exists($obj->getFleetId(), $fnbs)) {
-                $fnbs[$obj->getFleetId()]['fleet'] = new Fleet($obj->getFleetId());
+                $fnbs[$obj->getFleetId()]['fleet'] = $this->fleetRepository->find((int) $obj->getFleetId());
                 if ($this->session->hasSessionValue('hiddenfleets', $obj->getFleetId())) {
                     $fnbs[$obj->getFleetId()]['fleethide'] = true;
                 } else {

@@ -3,13 +3,13 @@
 namespace Stu\Lib;
 
 use Colony;
-use Fleet;
 use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
@@ -126,7 +126,10 @@ class UserDeletion
 
     public function handleFleets()
     {
-        Fleet::truncate('WHERE user_id=' . $this->getUser()->getId());
+        // @todo refactor
+        global $container;
+
+        $container->get(FleetRepositoryInterface::class)->truncateByUser((int) $this->getUser()->getId());
     }
 
     public function handleIgnoreList()

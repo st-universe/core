@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\RenameFleet;
 
-use Fleet;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class RenameFleet implements ActionControllerInterface
 {
@@ -14,10 +14,14 @@ final class RenameFleet implements ActionControllerInterface
 
     private $renameFleetRequest;
 
+    private $fleetRepository;
+
     public function __construct(
-        RenameFleetRequestInterface $renameFleetRequest
+        RenameFleetRequestInterface $renameFleetRequest,
+        FleetRepositoryInterface $fleetRepository
     ) {
         $this->renameFleetRequest = $renameFleetRequest;
+        $this->fleetRepository = $fleetRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -27,9 +31,15 @@ final class RenameFleet implements ActionControllerInterface
             return;
         }
 
-        $fleet = Fleet::getUserFleetById($this->renameFleetRequest->getFleetId(), $game->getUser()->getId());
+        $fleet = $this->fleetRepository->find($this->renameFleetRequest->getFleetId());
+
+        if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
+            throw new \AccessViolation();
+        }
+
         $fleet->setName($newName);
-        $fleet->save();
+
+        $this->fleetRepository->save($fleet);
 
         $game->addInformation(_('Der Name der Flotte wurde geändert'));
     }

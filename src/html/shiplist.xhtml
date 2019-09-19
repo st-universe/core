@@ -34,10 +34,10 @@
 											<input type="text" name="fleetname" style="width: 150px;" tal:attributes="value fleet/getName"  />
 											<input type="submit" value="Name ändern" i18n:attributes="value" name="B_FLEET_CHANGE_NAME" />
 										</td>
-										<td style="width: 35%; text-align: right;">
-											<tal:block tal:condition="fleet/getAvailableShips">
+										<td style="width: 35%; text-align: right;" tal:define="availableShips fleet/getAvailableShips" >
+											<tal:block tal:condition="availableShips">
 												<select name="id" style="width: 150px;">
-													<option tal:repeat="data fleet/getAvailableShips" tal:attributes="value data/getId" tal:content="bbcode2txt:data/getName">.</option>
+													<option tal:repeat="data availableShips" tal:attributes="value data/getId" tal:content="bbcode2txt:data/getName">.</option>
 												</select>
 												<input type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" i18n:attributes="value" />
 											</tal:block>
