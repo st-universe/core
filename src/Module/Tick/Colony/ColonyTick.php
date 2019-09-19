@@ -5,6 +5,7 @@ namespace Stu\Module\Tick\Colony;
 use ColonyData;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Research\ResearchState;
@@ -29,6 +30,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private $privateMessageSender;
 
+    private $colonyStorageManager;
+
     private $msg = [];
 
     public function __construct(
@@ -37,7 +40,8 @@ final class ColonyTick implements ColonyTickInterface
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -45,6 +49,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function work(ColonyData $colony): void
@@ -161,7 +166,11 @@ final class ColonyTick implements ColonyTickInterface
                     $emigrated = 1;
                 }
             }
-            $colony->lowerStorage($commodityId, abs($obj->getProduction()));
+            $this->colonyStorageManager->lowerStorage(
+                $colony,
+                $this->commodityRepository->find($commodityId),
+                abs($obj->getProduction())
+            );
             $sum -= abs($obj->getProduction());
         }
         foreach ($production as $commodityId => $obj) {
@@ -172,10 +181,18 @@ final class ColonyTick implements ColonyTickInterface
                 break;
             }
             if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
-                $colony->upperStorage($commodityId, $colony->getMaxStorage() - $sum);
+                $this->colonyStorageManager->upperStorage(
+                    $colony,
+                    $this->commodityRepository->find($commodityId),
+                    $colony->getMaxStorage() - $sum
+                );
                 break;
             }
-            $colony->upperStorage($commodityId, $obj->getProduction());
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $this->commodityRepository->find($commodityId),
+                $obj->getProduction()
+            );
             $sum += $obj->getProduction();
         }
 
@@ -215,7 +232,12 @@ final class ColonyTick implements ColonyTickInterface
     {
         foreach ($this->moduleQueueRepository->getByColony((int) $colony->getId()) as $queue) {
             if ($colony->hasActiveBuildingWithFunction($queue->getBuildingFunction())) {
-                $colony->upperStorage($queue->getModule()->getGoodId(), $queue->getAmount());
+                $this->colonyStorageManager->upperStorage(
+                    $colony,
+                    $queue->getModule()->getCommodity(),
+                    $queue->getAmount()
+                );
+
                 $this->msg[] = sprintf(
                     _('Es wurden %d %s hergestellt'),
                     $queue->getAmount(),

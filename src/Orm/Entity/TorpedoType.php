@@ -62,6 +62,12 @@ class TorpedoType implements TorpedoTypeInterface
      */
     private $productionCosts;
 
+    /**
+     * @ManyToOne(targetEntity="Commodity")
+     * @JoinColumn(name="good_id", referencedColumnName="id")
+     */
+    private $commodity;
+
     public function __construct() {
         $this->productionCosts = new ArrayCollection();
     }
@@ -221,5 +227,10 @@ class TorpedoType implements TorpedoTypeInterface
     public function getProductionCosts(): Collection
     {
         return $this->productionCosts;
+    }
+
+    public function getCommodity(): CommodityInterface
+    {
+        return $this->commodity;
     }
 }

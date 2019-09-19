@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BeamToColony;
 
 use Colony;
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -18,10 +19,14 @@ final class BeamToColony implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $colonyStorageManager;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->shipLoader = $shipLoader;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -133,9 +138,10 @@ final class BeamToColony implements ActionControllerInterface
             $count = (int) $count;
 
             $ship->lowerStorage($commodityId, $count);
-            $target->upperStorage($value, $count);
+
+            $this->colonyStorageManager->upperStorage($target, $commodity, $count);
+
             $ship->lowerEps(ceil($count / $transferAmount));
-            $target->setStorageSum($target->getStorageSum() + $count);
         }
         if ($target->getUserId() != $ship->getUserId()) {
             $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);

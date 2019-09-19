@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
 use request;
 use Ship;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -37,6 +38,8 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $shipRumpRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
@@ -44,7 +47,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         CrewCreatorInterface $crewCreator,
         ShipCreatorInterface $shipCreator,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
@@ -53,6 +57,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->shipCreator = $shipCreator;
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -114,7 +119,11 @@ final class StartAirfieldShip implements ActionControllerInterface
             return;
         }
 
-        $colony->lowerStorage($rump->getGoodId(), 1);
+        $this->colonyStorageManager->lowerStorage(
+            $colony,
+            $rump->getCommodity(),
+            1
+        );
 
         $ship = $this->shipCreator->createBy(
             (int) $userId,
@@ -135,7 +144,8 @@ final class StartAirfieldShip implements ActionControllerInterface
                 $ship->setTorpedoType($defaultTorpedoType->getId());
                 $ship->setTorpedoCount($count);
                 $ship->save();
-                $colony->lowerStorage($defaultTorpedoType->getGoodId(), $count);
+
+                $this->colonyStorageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
             }
         }
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
@@ -144,7 +154,6 @@ final class StartAirfieldShip implements ActionControllerInterface
             $ship->save();
         }
         $colony->lowerEps(10);
-        $colony->lowerStorage($rump->getGoodId(), 1);
         $colony->save();
 
         $databaseEntry = $colony->getSystem()->getDatabaseEntry();

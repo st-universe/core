@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
 use ColonyData;
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -33,18 +34,22 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
         $this->researchedRepository = $researchedRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -124,7 +129,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $this->removeBuilding($field, $colony, $game);
 
         foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
-            $colony->lowerStorage($obj->getGoodId(), $obj->getAmount());
+            $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());
         }
         // Check for alternative building
         $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
@@ -177,7 +182,8 @@ final class UpgradeBuilding implements ActionControllerInterface
             if ($amount <= 0) {
                 break;
             }
-            $colony->upperStorage($value->getGoodId(), $amount);
+            $this->colonyStorageManager->upperStorage($colony, $value->getGood(), $amount);
+
             $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();

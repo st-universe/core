@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildFighterShipyardRump;
 
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -19,12 +20,16 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
     private $shipRumpRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -82,10 +87,12 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
             }
         }
         foreach ($rump->getBuildingCosts() as $cost) {
-            $colony->lowerStorage($cost->getCommodityId(), $cost->getAmount());
+            $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount());
         }
         $colony->lowerEps($rump->getEpsCost());
-        $colony->upperStorage($rump->getGoodId(), 1);
+
+        $this->colonyStorageManager->upperStorage($colony, $rump->getCommodity(), 1);
+
         $colony->save();
         $game->addInformationf(_('%s-Klasse wurde gebaut'), $rump->getName());
     }

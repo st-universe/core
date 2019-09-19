@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Terraform;
 
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -27,16 +28,20 @@ final class Terraform implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TerraformingRepositoryInterface $terraformingRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->terraformingRepository = $terraformingRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -108,7 +113,7 @@ final class Terraform implements ActionControllerInterface
         }
 
         foreach ($terraf->getCosts() as $obj) {
-            $colony->lowerStorage($obj->getGoodId(),$obj->getAmount());
+            $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());
         }
         $colony->resetStorage();
         $colony->lowerEps($terraf->getEnergyCosts());

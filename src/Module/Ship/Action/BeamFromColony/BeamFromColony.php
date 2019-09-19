@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BeamFromColony;
 
 use Colony;
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -18,10 +19,14 @@ final class BeamFromColony implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $colonyStorageManager;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->shipLoader = $shipLoader;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -122,7 +127,8 @@ final class BeamFromColony implements ActionControllerInterface
                 ceil($count / $good->getGood()->getTransferCount())
             );
 
-            $target->lowerStorage($value, $count);
+            $this->colonyStorageManager->lowerStorage($target, $good->getGood(), (int) $count);
+
             $ship->upperStorage((int) $value, $count);
             $ship->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
             $ship->setStorageSum($ship->getStorageSum() + $count);

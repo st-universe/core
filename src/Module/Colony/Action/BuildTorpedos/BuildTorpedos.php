@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildTorpedos;
 
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -19,12 +20,16 @@ final class BuildTorpedos implements ActionControllerInterface
 
     private $torpedoTypeRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,9 +71,11 @@ final class BuildTorpedos implements ActionControllerInterface
                 continue;
             }
             foreach ($torp->getProductionCosts() as $id => $cost) {
-                $colony->lowerStorage($cost->getGoodId(), $cost->getAmount() * $count);
+                $this->colonyStorageManager->lowerStorage($colony, $cost->getGood(), $cost->getAmount() * $count);
             }
-            $colony->upperStorage($torp->getGoodId(), $count * $torp->getProductionAmount());
+
+            $this->colonyStorageManager->upperStorage($colony, $torp->getCommodity(), $count * $torp->getProductionAmount());
+
             $msg[] = sprintf(
                 _('Es wurden %d Torpedos des Typs %s hergestellt'),
                 $count * $torp->getProductionAmount(),

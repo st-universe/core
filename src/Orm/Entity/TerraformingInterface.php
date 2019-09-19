@@ -28,5 +28,8 @@ interface TerraformingInterface
 
     public function setDuration(int $duration): TerraformingInterface;
 
+    /**
+     * @return TerraformingCostInterface[]
+     */
     public function getCosts(): Collection;
 }

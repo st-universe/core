@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -25,16 +26,20 @@ final class CancelModuleCreation implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         ModuleRepositoryInterface $moduleRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->moduleRepository = $moduleRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -95,8 +100,8 @@ final class CancelModuleCreation implements ActionControllerInterface
             } else {
                 $gc = $count * $cost->getAmount();
             }
-            $colony->upperStorage($cost->getCommodity()->getId(), $gc);
-            $colony->setStorageSum($colony->getStorageSum() + $gc);
+
+            $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), (int)$gc);
         }
         $colony->save();
     }

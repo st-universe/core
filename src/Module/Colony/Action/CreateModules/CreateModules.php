@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\CreateModules;
 
 use Exception;
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -28,16 +29,20 @@ final class CreateModules implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -118,7 +123,7 @@ final class CreateModules implements ActionControllerInterface
                 continue;
             }
             foreach ($costs as $cost) {
-                $colony->lowerStorage($cost->getCommodity()->getId(), $cost->getAmount() * $count);
+                $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
             }
             $colony->lowerEps($count * $module->getEcost());
             $colony->save();

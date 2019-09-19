@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildShip;
 
 use Stu\Lib\ModuleScreen\ModuleSelector;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
@@ -38,6 +39,8 @@ final class BuildShip implements ActionControllerInterface
 
     private $shipRumpRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -45,7 +48,8 @@ final class BuildShip implements ActionControllerInterface
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
@@ -54,6 +58,7 @@ final class BuildShip implements ActionControllerInterface
         $this->moduleRepository = $moduleRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -149,7 +154,7 @@ final class BuildShip implements ActionControllerInterface
             }
         }
         foreach ($modules as $module) {
-            $colony->lowerStorage($module->getGoodId(), 1);
+            $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
         // @todo

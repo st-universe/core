@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RepairBuilding;
 
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -19,12 +20,16 @@ final class RepairBuilding implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -90,8 +95,9 @@ final class RepairBuilding implements ActionControllerInterface
             }
         }
         foreach ($costs as $cost) {
-            $colony->lowerStorage(
-                $cost->getGoodId(),
+            $this->colonyStorageManager->lowerStorage(
+                $colony,
+                $cost->getGood(),
                 (int) round(($cost->getAmount() / 100) * $integrity)
             );
         }

@@ -8,19 +8,25 @@ use Colony;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
-    /**
-     * @var PlanetFieldRepositoryInterface
-     */
     private $planetFieldRepository;
 
+    private $commodityRepository;
+
+    private $colonyStorageManager;
+
     public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        CommodityRepositoryInterface $commodityRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->commodityRepository = $commodityRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function colonize(
@@ -62,7 +68,15 @@ final class PlanetColonization implements PlanetColonizationInterface
         $colony->setName(_('Kolonie'));
         $colony->save();
 
-        $colony->upperStorage(CommodityTypeEnum::GOOD_BUILDING_MATERIALS, 150);
-        $colony->upperStorage(CommodityTypeEnum::GOOD_FOOD, 100);
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $this->commodityRepository->find(CommodityTypeEnum::GOOD_FOOD),
+            100
+        );
+        $this->colonyStorageManager->upperStorage(
+            $colony,
+            $this->commodityRepository->find(CommodityTypeEnum::GOOD_BUILDING_MATERIALS),
+            150
+        );
     }
 }

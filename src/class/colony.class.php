@@ -128,67 +128,12 @@ class ColonyData extends BaseTable {
 		return $this->data['max_storage'];
 	}
 
-	private $storagesum = NULL;
-
 	function getStorageSum() {
-		if ($this->storagesum === NULL) {
-			$this->storagesum = DB()->query("SELECT SUM(count) FROM stu_colonies_storage WHERE colonies_id=".$this->getId(),1);
-		}
-		return $this->storagesum;
-	}
-
-	function setStorageSum($value) {
-		$this->storagesum = $value;
+        return (int) DB()->query("SELECT SUM(count) FROM stu_colonies_storage WHERE colonies_id=".$this->getId(),1);
 	}
 
 	function storagePlaceLeft() {
 		return $this->getMaxStorage() > $this->getStorageSum();
-	}
-
-	public function lowerStorage($good_id,$count) {
-	    $stor = $this->getStorage()[$good_id] ?? null;
-		if ($stor === null) {
-			return;
-		}
-
-		// @todo refactor
-		global $container;
-		$colonyStorageRepo = $container->get(ColonyStorageRepositoryInterface::class);
-
-		if ($stor->getAmount() <= $count) {
-		    $colonyStorageRepo->delete($stor);
-
-            $this->storage = null;
-
-			return;
-		}
-		$stor->setAmount($stor->getAmount() - $count);
-
-		$colonyStorageRepo->save($stor);
-
-		$this->storage = null;
-	}
-
-	public function upperStorage($good_id,$count) {
-	    $stor = $this->getStorage()[$good_id] ?? null;
-
-		// @todo refactor
-		global $container;
-		$colonyStorageRepo = $container->get(ColonyStorageRepositoryInterface::class);
-
-		if ($stor === null) {
-			/** @var CommodityInterface $commodity */
-			$commodity = $container->get(CommodityRepositoryInterface::class)->find((int) $good_id);
-
-			$stor = $colonyStorageRepo->prototype();
-			$stor->setColonyId((int) $this->getId());
-			$stor->setGood($commodity);
-		}
-		$stor->setAmount($stor->getAmount() + $count);
-
-		$colonyStorageRepo->save($stor);
-
-		$this->storage = null;
 	}
 
 	function isInSystem() {
@@ -829,7 +774,6 @@ class ColonyData extends BaseTable {
 	 */
 	public function clearCache() { #{{{
 		$this->storage = NULL;
-		$this->storagesum = NULL;
 	} # }}}
 
 	/**

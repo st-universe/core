@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 use Exception;
 use request;
 use Ship;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -31,18 +33,26 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $colonyStorageManager;
+
+    private $commodityRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         CrewCreatorInterface $crewCreator,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ColonyStorageManagerInterface $colonyStorageManager,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->crewCreator = $crewCreator;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyStorageManager = $colonyStorageManager;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -155,6 +165,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / WARPCORE_LOAD);
                             }
                         }
+                        $load = (int) $load;
                         if ($load >= 1) {
                             if ($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() < $load) {
                                 $load = $storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount();
@@ -162,8 +173,16 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             if ($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() < $load) {
                                 $load = $storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount();
                             }
-                            $colony->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM, (int) $load);
-                            $colony->lowerStorage(CommodityTypeEnum::GOOD_ANTIMATTER, (int) $load);
+                            $this->colonyStorageManager->lowerStorage(
+                                $colony,
+                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_DEUTERIUM),
+                                $load
+                            );
+                            $this->colonyStorageManager->lowerStorage(
+                                $colony,
+                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_ANTIMATTER),
+                                $load
+                            );
                             if ($shipobj->getWarpcoreLoad() + $load * WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
                                 $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
                             } else {
@@ -241,7 +260,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         }
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
                         if ($load < 0) {
-                            $colony->upperStorage($torp_obj->getGoodId(), abs($load));
+                            $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
+
                             if ($shipobj->getTorpedoCount() == 0) {
                                 $shipobj->setTorpedoType(0);
                                 $shipobj->setTorpedos(0);
@@ -253,7 +273,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $torp_obj->getName()
                             );
                         } elseif ($load > 0) {
-                            $colony->lowerStorage($torp_obj->getGoodId(), $load);
+                            $this->colonyStorageManager->lowerStorage(
+                                $colony,
+                                $this->commodityRepository->find($torp_obj->getGoodId()),
+                                $load
+                            );
+
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
                                 $shipobj->getName(),
@@ -275,7 +300,13 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         }
                         $shipobj->setTorpedoType($type);
                         $shipobj->setTorpedoCount($count);
-                        $colony->lowerStorage($torp_obj->getGoodId(), $count);
+
+                        $this->colonyStorageManager->lowerStorage(
+                            $colony,
+                            $this->commodityRepository->find($torp_obj->getGoodId()),
+                            $count
+                        );
+
                         $msg[] = sprintf(
                             _('%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert'),
                             $shipobj->getName(),

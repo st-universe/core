@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\BeamTo;
 
 use request;
 use Ship;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -17,10 +18,14 @@ final class BeamTo implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $colonyStorageManager;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -110,7 +115,9 @@ final class BeamTo implements ActionControllerInterface
             );
             $colony->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
             $target->upperStorage((int) $value, $count);
-            $colony->lowerStorage($value, $count);
+
+            $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);
+
             $target->setStorageSum($target->getStorageSum() + $count);
         }
         if ($target->getUserId() != $userId) {

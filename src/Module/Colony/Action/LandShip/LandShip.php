@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\LandShip;
 
 use request;
 use Ship;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -18,10 +19,14 @@ final class LandShip implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $colonyStorageManager;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,13 +49,13 @@ final class LandShip implements ActionControllerInterface
             $game->addInformation(_('Kein Lagerraum verfügbar'));
             return;
         }
-        $colony->upperStorage($ship->getRump()->getGoodId(), 1);
-        $colony->setStorageSum($colony->getStorageSum() + 1);
+
+        $this->colonyStorageManager->upperStorage($colony, $ship->getRump()->getCommodity(), 1);
+
         foreach ($ship->getStorage() as $stor) {
-            $count = min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
+            $count = (int) min($stor->getAmount(), $colony->getMaxStorage() - $colony->getStorageSum());
             if ($count > 0) {
-                $colony->upperStorage($stor->getCommodityId(), $count);
-                $colony->setStorageSum($colony->getStorageSum() + $count);
+                $this->colonyStorageManager->upperStorage($colony, $stor->getCommodity(), $count);
             }
         }
         $colony->save();

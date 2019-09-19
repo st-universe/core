@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\RemoveBuilding;
 
 use ColonyData;
 use request;
+use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -21,12 +22,16 @@ final class RemoveBuilding implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -71,7 +76,8 @@ final class RemoveBuilding implements ActionControllerInterface
             if ($amount <= 0) {
                 break;
             }
-            $colony->upperStorage($value->getGoodId(), $amount);
+            $this->colonyStorageManager->upperStorage($colony, $value->getGood(), $amount);
+
             $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
         }
         $field->clearBuilding();
