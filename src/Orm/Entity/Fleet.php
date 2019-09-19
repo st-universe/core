@@ -13,6 +13,7 @@ use User;
  * @Table(
  *     name="stu_fleets",
  *     indexes={
+ *         @Index(name="user_idx", columns={"user_id"})
  *     }
  * )
  **/
