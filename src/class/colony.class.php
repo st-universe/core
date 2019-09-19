@@ -632,7 +632,7 @@ class ColonyData extends BaseTable {
 			return 0;
 		}
 		// TBD: depends on social things. return dummy for now
-		$im = ceil(($this->getMaxBev()-$this->getPopulation)/4);
+		$im = ceil(($this->getMaxBev()-$this->getPopulation())/4);
 		if ($this->getPopulation()+$im > $this->getMaxBev()) {
 			$im = $this->getMaxBev()-$this->getPopulation();
 		}
