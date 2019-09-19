@@ -73,7 +73,7 @@ class FleetData extends BaseTable {
 		$old = $this->getName();
 		$value = strip_tags($value);
 		$this->data['name'] = $value;
-		if (strlen(BBCode()->parse($this->getName())) < 3) {
+		if (strlen(BBCode()->parse($value)->getAsHTML($value)) < 3) {
 			$this->data['name'] = $old;
 			return;
 		}
