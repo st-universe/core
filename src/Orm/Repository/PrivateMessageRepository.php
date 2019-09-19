@@ -57,7 +57,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     ): iterable {
         return $this->findBy(
             ['recip_user' => $userId, 'cat_id' => $folderId],
-            [],
+            ['date' => 'desc'],
             $limit,
             $offset
         );
