@@ -7,6 +7,8 @@ namespace Stu\Module\Colony;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\PlanetColonization;
+use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
@@ -149,6 +151,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use function DI\autowire;
 
 return [
+    PlanetColonizationInterface::class => autowire(PlanetColonization::class),
     ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
     BuildingActionInterface::class => autowire(BuildingAction::class),
     ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),

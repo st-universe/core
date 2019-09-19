@@ -6,6 +6,7 @@ namespace Stu\Module\Maindesk\Action\FirstColony;
 
 use AccessViolation;
 use Colony;
+use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -21,14 +22,18 @@ final class FirstColony implements ActionControllerInterface
 
     private $buildingRepository;
 
+    private $planetColonization;
+
     public function __construct(
         FirstColonyRequestInterface $firstColonyRequest,
         FactionRepositoryInterface $factionRepository,
-        BuildingRepositoryInterface $buildingRepository
+        BuildingRepositoryInterface $buildingRepository,
+        PlanetColonizationInterface $planetColonization
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
         $this->factionRepository = $factionRepository;
         $this->buildingRepository = $buildingRepository;
+        $this->planetColonization = $planetColonization;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,15 +57,18 @@ final class FirstColony implements ActionControllerInterface
         }
 
         $faction = $this->factionRepository->find((int) $user->getFaction());
-        $colony->colonize($user->getId(), $this->buildingRepository->find($faction->getStartBuildingId()));
+
+        $this->planetColonization->colonize(
+            $colony,
+            $user->getId(),
+            $this->buildingRepository->find($faction->getStartBuildingId())
+        );
 
         $user->setActive(2);
         $user->save();
 
         // Database entries for planettype
         $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
-
-        DB()->commitTransaction();
 
         $game->redirectTo('./colony.php?id=' . $colony->getId());
     }

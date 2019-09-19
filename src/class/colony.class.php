@@ -6,7 +6,6 @@ use Stu\Lib\ColonyProductionPreviewWrapper;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -483,47 +482,6 @@ class ColonyData extends BaseTable {
 	 */
 	public function getUser() {
 		return ResourceCache()->getObject('user',$this->getUserId());
-	}
-
-	public function colonize(int $userId, BuildingInterface $building, ?PlanetFieldInterface $field = null) {
-		if (!$this->isFree()) {
-			return;
-		}
-        // @todo refactor
-        global $container;
-
-		$planetFieldRepo = $container->get(PlanetFieldRepositoryInterface::class);
-
-        $this->updateColonySurface();
-		if ($field === null) {
-
-            $list = $planetFieldRepo->getByColonyAndType(
-                $this->getId(),
-                COLONY_FIELDTYPE_MEADOW
-            );
-
-            shuffle($list);
-
-            $field = current($list);
-		}
-		$field->setBuilding($building);
-		$field->setIntegrity($building->getIntegrity());
-		$field->setActive(1);
-
-		$planetFieldRepo->save($field);
-
-		$this->upperMaxBev($building->getHousing());
-		$this->upperMaxEps($building->getEpsStorage());
-		$this->upperMaxStorage($building->getStorage());
-		$this->upperWorkers($building->getWorkers());
-		$this->lowerWorkless($building->getWorkers());
-		$this->upperWorkless($building->getHousing());
-		$this->setUserId($userId);
-		$this->upperEps($building->getEpsStorage());
-		$this->setName(_('Kolonie'));
-		$this->save();
-		$this->upperStorage(CommodityTypeEnum::GOOD_BUILDING_MATERIALS,150);
-		$this->upperStorage(CommodityTypeEnum::GOOD_FOOD,100);
 	}
 
 	function getBevFood() {
