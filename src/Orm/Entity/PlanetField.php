@@ -207,7 +207,7 @@ class PlanetField implements PlanetFieldInterface
         return 'a';
     }
 
-    public function getBuilding(): BuildingInterface
+    public function getBuilding(): ?BuildingInterface
     {
         return $this->building;
     }

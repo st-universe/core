@@ -52,7 +52,7 @@ interface PlanetFieldInterface
 
     public function getBuildingState(): string;
 
-    public function getBuilding(): BuildingInterface;
+    public function getBuilding(): ?BuildingInterface;
 
     public function setBuilding(?BuildingInterface $building): PlanetFieldInterface;
 

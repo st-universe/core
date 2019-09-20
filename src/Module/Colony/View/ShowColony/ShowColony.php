@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use ColonyMenu;
 use request;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -21,14 +22,18 @@ final class ShowColony implements ViewControllerInterface
 
     private $showColonyRequest;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowColonyRequestInterface $showColonyRequest
+        ShowColonyRequestInterface $showColonyRequest,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showColonyRequest = $showColonyRequest;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -86,5 +91,6 @@ final class ShowColony implements ViewControllerInterface
             new ColonyMenu($menuId)
         );
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip);
+        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

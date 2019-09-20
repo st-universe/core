@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowColonization;
 
 use Colony;
 use request;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -16,10 +17,14 @@ final class ShowColonization implements ViewControllerInterface
 
     private $shipLoader;
 
+    private $colonyLibFactory;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->shipLoader = $shipLoader;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,5 +46,6 @@ final class ShowColonization implements ViewControllerInterface
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

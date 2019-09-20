@@ -1,5 +1,5 @@
 <?php
-function getFieldName($value) {
+function getFieldName($value): string {
 switch ($value) {
 case 101:
 return _('Wiese');
@@ -623,6 +623,8 @@ case 6359:
 return _('Gasriese');
 case 6360:
 return _('Gasriese');
+    default:
+        return _('Unbekannt');
 }
 }
 ?>

@@ -951,8 +951,8 @@
 		</metal:macro>
 	</metal:block>
 	<metal:macro metal:define-macro="colonysurface" tal:define="style string:margin: 1px;; width: 42px;; height: 42px;;">
-		<div tal:attributes="class COLONY/getSurfaceTileCssClass">
-			<tal:block tal:repeat="field COLONY/getColonyFields">
+		<div tal:attributes="class COLONY_SURFACE/getSurfaceTileCssClass">
+			<tal:block tal:repeat="field COLONY_SURFACE/getSurface">
 					<tal:block tal:condition="not:field/hasBuilding">
 					<div tal:condition="not:field/getTerraformingId" style="${style}" tal:attributes="class field/getCssClass"><div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img onmouseover="fieldMouseOver(this,${field/getFieldId},0,${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/fields/${field/getFieldType}.gif" /></div></div></div>
 						</div>
@@ -1376,7 +1376,7 @@
 	</metal:block>
 	<metal:block metal:define-macro="colonyeps">
 		<input type="hidden" name="sstr" id="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
-		<stu:box tal:attributes="title COLONY/getEpsBoxTitleString">
+		<stu:box tal:attributes="title COLONY_SURFACE/getEpsBoxTitleString">
 			<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar EPS_BAR" tal:content="structure php:getStatusBar(bar.getVar(),bar.getValue())">BAR</span> ${COLONY/getEpsProductionDisplay}
 		</stu:box>
 	</metal:block>

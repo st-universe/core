@@ -3,14 +3,10 @@
 use Stu\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Lib\ColonyProductionPreviewWrapper;
-use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyStorageInterface;
-use Stu\Orm\Entity\CommodityInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
-use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -216,15 +212,6 @@ class ColonyData extends BaseTable {
 		return $this->getEpsProduction();
 	}
 
-	public function getEpsProductionCss() {
-		if ($this->getEpsProduction() > 0) {
-			return 'positive';
-		}
-		if ($this->getEpsProduction() < 0) {
-			return 'negative';
-		}
-	}
-
 	/**
 	 */
 	public function getEpsProductionForecast() { #{{{
@@ -236,49 +223,6 @@ class ColonyData extends BaseTable {
 		}
 		return $this->getEps()+$this->getEpsProduction();
 	} # }}}
-
-
-	private $colfields = NULL;
-
-	function getColonyFields() {
-		if ($this->colfields === null) {
-		    // @todo refactor
-            global $container;
-
-            $this->colfields = $container->get(PlanetFieldRepositoryInterface::class)->getByColony($this->getId());
-
-			if ($this->colfields === []) {
-				$this->updateColonySurface();
-
-                $this->colfields = $container->get(PlanetFieldRepositoryInterface::class)->getByColony($this->getId());
-			}
-
-			$buildingId = (int) request::getInt('bid', 0);
-            if ($buildingId > 0) {
-                $building = $container->get(BuildingRepositoryInterface::class)->find((int) request::getInt('bid'));
-
-                array_walk(
-                    $this->colfields,
-                    function (PlanetFieldInterface $field) use ($building): void {
-                        if (
-                            $field->getTerraformingId() === null &&
-                            $building->getBuildableFields()->containsKey((int) $field->getFieldType())
-                        ) {
-                            $field->setBuildMode(true);
-                        }
-                    }
-                );
-            }
-		}
-		return $this->colfields;
-	}
-
-	public function getSurfaceTileCssClass(): string {
-		if ($this->getPlanetType()->getIsMoon()) {
-			return 'moonSurfaceTiles';
-		}
-		return 'planetSurfaceTiles';
-	}
 
     /**
      * @return ColonyStorageInterface[]
@@ -828,13 +772,6 @@ class ColonyData extends BaseTable {
 		}
 		return $this->has_active_building_by_function[$function_id];
 	} # }}}
-
-	/**
-	 */
-	public function getEpsBoxTitleString() { #{{{
-		return sprintf(_('Energie: %d/%d (%d/Runde = %d)'),$this->getEps(),$this->getMaxEps(),$this->getEpsProductionDisplay(),$this->getEpsProductionForecast());
-	} # }}}
-
 
 }
 class Colony extends ColonyData {

@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowBuildMenu;
 
 use BuildMenuWrapper;
 use ColonyMenu;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -24,16 +25,20 @@ final class ShowBuildMenu implements ViewControllerInterface
 
     private $buildingRepository;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowBuildMenuRequestInterface $showBuildMenuRequest,
-        BuildingRepositoryInterface $buildingRepository
+        BuildingRepositoryInterface $buildingRepository,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showBuildMenuRequest = $showBuildMenuRequest;
         $this->buildingRepository = $buildingRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -75,5 +80,6 @@ final class ShowBuildMenu implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILD));
         $game->setTemplateVar('BUILD_MENUS', $menus);
         $game->setTemplateVar('BUILD_MENU', new BuildMenuWrapper());
+        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

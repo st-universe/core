@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowMisc;
 
 use ColonyMenu;
 use request;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -19,12 +20,16 @@ final class ShowMisc implements ViewControllerInterface
 
     private $colonyGuiHelper;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,5 +47,6 @@ final class ShowMisc implements ViewControllerInterface
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_OPTION));
+        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }
