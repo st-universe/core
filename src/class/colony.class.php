@@ -56,7 +56,6 @@ class ColonyData extends BaseTable {
 		$this->setFieldValue('colonies_classes_id',$value,'getColonyClass');
 	} # }}}
 
-
 	private $planettype = NULL;
 
 	public function getPlanetType(): PlanetTypeInterface {
@@ -70,16 +69,7 @@ class ColonyData extends BaseTable {
 	}
 
 	function setName($value) {
-		if ($value == $this->getName()) {
-			return; 
-		}
-		$old = $this->getName();
-		$value = strip_tags($value);
 		$this->data['name'] = $value;
-		if (strlen(BBCode()->parse($this->getName())) < 3) {
-			$this->name = $old;
-			return;
-		}
 		$this->addUpdateField('name','getName');
 	}
 
