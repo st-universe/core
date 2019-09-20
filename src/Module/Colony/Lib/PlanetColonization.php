@@ -19,14 +19,18 @@ final class PlanetColonization implements PlanetColonizationInterface
 
     private $colonyStorageManager;
 
+    private $colonyLibFactory;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityRepositoryInterface $commodityRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->commodityRepository = $commodityRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function colonize(
@@ -39,7 +43,8 @@ final class PlanetColonization implements PlanetColonizationInterface
             return;
         }
 
-        $colony->updateColonySurface();
+        $this->colonyLibFactory->createColonySurface($colony)->updateSurface();
+
         if ($field === null) {
 
             $list = $this->planetFieldRepository->getByColonyAndType(

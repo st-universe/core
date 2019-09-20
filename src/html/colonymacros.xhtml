@@ -81,9 +81,9 @@
                         <th colspan="4" i18n:translate="">Crewberechnung dieser Kolonie</th>
                     </tr>
                     <tr>
-                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
-                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
-                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY/getNegativeEffectDescription">PRIMARY</span></td>
+                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY_SURFACE/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
+                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY_SURFACE/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
+                        <td style="width: 25%" class="darkbg"><span tal:replace="COLONY_SURFACE/getNegativeEffectDescription">PRIMARY</span></td>
                         <td style="width: 25%" class="darkbg" i18n="translate">Erzeugte Crew</td>
                     </tr>
                     <tr>
@@ -468,7 +468,7 @@
                 </stu:box>
                 <br />
                 <stu:box title="Standort" i18n:attributes="title" style="text-align: center">
-                    <img src="assets/planets/${COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span i18n:translate="">Planet <span i18n:name="planetname" tal:replace="COLONY/getPlanetName"/></span> (${COLONY/getPosX}|${COLONY/getPosY})
+                    <img src="assets/planets/${COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span i18n:translate="">Planet <span i18n:name="planetname" tal:replace="COLONY/getPlanetName"/></span> (${COLONY/getSX}|${COLONY/getSY})
                     <span i18n:translate="">in Sternensystem</span>
                     <img src="assets/map/${COLONY/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" /> ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
                 </stu:box>
@@ -496,7 +496,7 @@
                         </td>
                         <td>
                             <span i18n:translate="">Wachstum</span><br />
-                            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Wachstum" /> ${COLONY/getBevGrowthSymbol}${COLONY/getImmigration}
+                            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFaction}.gif" title="Wachstum" /> ${IMMIGRATION_SYMBOL}${COLONY/getImmigration}
                         </td>
                     </tr>
                 </table>
@@ -920,10 +920,10 @@
 						<strong>Vorschau</strong>
 						<div tal:condition="building/getEpsProduction">
 							<img src="assets/buttons/e_trans2.gif" title="Energie" />
-							<span tal:content="COLONY/getEpsProductionPreview/${building/getId}/getDisplay" tal:attributes="class COLONY/getEpsProductionPreview/${building/getId}/getCSS">EPSDISPLAY</span>
+							<span tal:content="ENERGY_PRODUCTION_PREVIEW/${building/getId}/getDisplay" tal:attributes="class ENERGY_PRODUCTION_PREVIEW/${building/getId}/getCSS">EPSDISPLAY</span>
 							(<span tal:content="building/getEpsProductionDisplay" tal:attributes="class building/getEpsProductionCss">EPSDISPLAY</span>)
 						</div>
-						<div tal:repeat="data COLONY/getProductionPreview/${building/getId}">
+						<div tal:repeat="data COMMODITY_PRODUCTION_PREVIEW/${building/getId}">
 							<img src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
 							<span tal:attributes="class data/getCssClass" tal:content="data/getProductionDisplay">CNT</span>
 							<tal:block tal:condition="data/getPreviewProduction">
@@ -1385,10 +1385,10 @@
 			<tr>
 				<th>
 					<span i18n:translate="">Lager:</span> ${COLONY/getStorageSum}/${COLONY/getMaxStorage}
-					(<span tal:replace="COLONY/getStorageSumPercent">PERCENT</span>%)
+					(<span tal:replace="COLONY_SURFACE/getStorageSumPercent">PERCENT</span>%)
 				</th>
 				<td>
-					<span tal:content="COLONY/getProductionSumDisplay" tal:attributes="class COLONY/getProductionSumClass">SUM</span>
+					<span tal:content="COLONY/getProductionSumDisplay" tal:attributes="class COLONY_SURFACE/getProductionSumClass">SUM</span>
 				</td>
 			</tr>
 			<tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor STORAGE">

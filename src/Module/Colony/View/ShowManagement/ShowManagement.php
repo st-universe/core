@@ -68,11 +68,20 @@ final class ShowManagement implements ViewControllerInterface
             }
         }
 
+        $immigrationSymbol = '-';
+        if ($colony->getImmigration() > 0) {
+            $immigrationSymbol = '+';
+        }
+        if ($colony->getImmigration() == 0) {
+            $immigrationSymbol = '';
+        }
+
         $game->showMacro('html/colonymacros.xhtml/cm_management');
 
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_INFO));
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
     }
 }

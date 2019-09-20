@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowBuilding;
 
+use Stu\Lib\ColonyEpsProductionPreviewWrapper;
+use Stu\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -65,5 +67,13 @@ final class ShowBuilding implements ViewControllerInterface
         $game->setTemplateVar('COLONY', $colony);
         $game->setTemplateVar('ALTERNATIVE_BUILDINGS', $alternativeBuildings);
         $game->setTemplateVar('USEABLE_FIELD_TYPES', $useableFieldTypes);
+        $game->setTemplateVar(
+            'ENERGY_PRODUCTION_PREVIEW',
+            new ColonyEpsProductionPreviewWrapper($colony)
+        );
+        $game->setTemplateVar(
+            'COMMODITY_PRODUCTION_PREVIEW',
+		    new ColonyProductionPreviewWrapper($colony->getProduction())
+        );
     }
 }

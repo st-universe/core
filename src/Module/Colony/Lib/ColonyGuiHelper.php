@@ -107,7 +107,6 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
 
         $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_EFFECT);
-        $prod = $colony->getProduction();
         $effets = [];
         foreach ($goods as $value) {
             $commodityId = $value->getId();

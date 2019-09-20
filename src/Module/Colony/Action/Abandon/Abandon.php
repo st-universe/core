@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\Abandon;
 
 use AccessViolation;
 use Colony;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -24,16 +25,20 @@ final class Abandon implements ActionControllerInterface
 
     private $colonyShipQueueRepository;
 
+    private $colonyLibFactory;
+
     public function __construct(
         AbandonRequestInterface $abandonRequest,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->abandonRequest = $abandonRequest;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,7 +51,8 @@ final class Abandon implements ActionControllerInterface
 
         $colonyId = (int) $colony->getId();
 
-        $colony->updateColonySurface();
+        $this->colonyLibFactory->createColonySurface($colony)->updateSurface();
+
         $colony->setEps(0);
         $colony->setMaxEps(0);
         $colony->setMaxStorage(0);

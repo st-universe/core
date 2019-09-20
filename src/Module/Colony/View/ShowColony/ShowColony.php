@@ -70,6 +70,14 @@ final class ShowColony implements ViewControllerInterface
             }
         }
 
+        $immigrationSymbol = '-';
+        if ($colony->getImmigration() > 0) {
+            $immigrationSymbol = '+';
+        }
+        if ($colony->getImmigration() == 0) {
+            $immigrationSymbol = '';
+        }
+
         $game->appendNavigationPart(
             'colony.php',
             _('Kolonien')
@@ -92,5 +100,6 @@ final class ShowColony implements ViewControllerInterface
         );
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
     }
 }

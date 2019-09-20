@@ -1,8 +1,6 @@
 <?php
 
-use Stu\Lib\ColonyEpsProductionPreviewWrapper;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Lib\ColonyProductionPreviewWrapper;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\ColonyStorageInterface;
@@ -12,7 +10,6 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-use Stu\PlanetGenerator\PlanetGenerator;
 
 class ColonyData extends BaseTable {
 
@@ -114,8 +111,14 @@ class ColonyData extends BaseTable {
 		return $this->data['max_storage'];
 	}
 
-	function getStorageSum() {
-        return (int) DB()->query("SELECT SUM(count) FROM stu_colonies_storage WHERE colonies_id=".$this->getId(),1);
+	public function getStorageSum(): int {
+	    return array_reduce(
+            $this->getStorage(),
+            function (int $sum, ColonyStorageInterface $storage): int {
+                return $sum + $storage->getAmount();
+            },
+            1
+        );
 	}
 
 	function storagePlaceLeft() {
@@ -125,14 +128,6 @@ class ColonyData extends BaseTable {
 	function isInSystem() {
 		// true by default
 		return TRUE;
-	}
-
-	function getPosX() {
-		return $this->getSX();
-	}
-
-	function getPosY() {
-		return $this->getSY();
 	}
 
 	/**
@@ -242,10 +237,6 @@ class ColonyData extends BaseTable {
 		return $this->storage;
 	}
 
-	public function resetStorage() {
-		$this->storage = NULL;
-	}
-
 	private $productionRaw = NULL;
 	private $production = NULL;
 
@@ -305,16 +296,6 @@ class ColonyData extends BaseTable {
 			return $this->getProductionSum();
 		}
 		return '+'.$this->getProductionSum();
-	}
-
-	function getProductionSumClass() {
-		if ($this->getProductionSum() < 0) {
-			return 'negative';
-		}
-		if ($this->getProductionSum() > 0) {
-			return 'positive';
-		}
-		return '';
 	}
 
 	function getDayNightState() {
@@ -456,14 +437,6 @@ class ColonyData extends BaseTable {
 		$this->addUpdateField('max_storage','getMaxStorage');
 	}
 
-	function getSectorString() {
-		$str = $this->getPosX().'|'.$this->getPosY();
-		if ($this->isInSystem()) {
-			$str .= ' ('.$this->getSystem()->getName().'-System)';
-		}
-		return $str;
-	}
-
 	function getImmigration() {
 		if (!$this->getImmigrationState()) {
 			return 0;
@@ -480,16 +453,6 @@ class ColonyData extends BaseTable {
 			return 0;
 		}
 		return round($im/100*$this->getPlanetType()->getBevGrowthRate());
-	}
-
-	function getBevGrowthSymbol() {
-		if ($this->getImmigration() > 0) {
-			return "+";
-		}
-		if ($this->getImmigration() == 0) {
-			return "";
-		}
-		return "-";
 	}
 
 	function getGoodUseView() {
@@ -536,40 +499,7 @@ class ColonyData extends BaseTable {
 		$this->addUpdateField('immigrationstate','getImmigrationState');
 	}
 
-	public function updateColonySurface() {
-		if (!$this->getMask()) {
-			$generator = new PlanetGenerator();
-			$surface = $generator->generateColony($this->getColonyClass(),$this->getSystem()->getBonusFieldAmount());
-			$this->setMask(base64_encode(serialize($surface)));
-			$this->save();
-		}
-
-		// @todo refactor
-        global $container;
-		$planetFieldRepo = $container->get(PlanetFieldRepositoryInterface::class);
-
-		$fields = $planetFieldRepo->getByColony($this->getId());
-
-		$surface = unserialize(base64_decode($this->getMask()));
-		$i = 0;
-		foreach ($surface as $key => $value) {
-			if (!array_key_exists($key,$fields)) {
-				$fields[$key] = $planetFieldRepo->prototype();
-				$fields[$key]->setColonyId($this->getId());
-				$fields[$key]->setFieldId($i);
-			}
-			$fields[$key]->setBuilding(null);
-			$fields[$key]->setIntegrity(0);
-			$fields[$key]->setFieldType((int) $value);
-			$fields[$key]->setActive(0);
-
-			$planetFieldRepo->save($fields[$key]);
-			$i++;
-		}
-		return $fields;
-	}
-
-	/**
+    /**
 	 */
 	public function getNegativeEffect() { #{{{
 		return ceil($this->getPopulation()/70);
@@ -633,42 +563,6 @@ class ColonyData extends BaseTable {
 
 	/**
 	 */
-	public function getPositiveEffectPrimaryDescription() { #{{{
-		// XXX We need the other factions...
-		switch ($this->getUser()->getFaction()) {
-			case FACTION_FEDERATION:
-				return _('Zufriedenheit');
-			case FACTION_EMPIRE:
-				return _('Loyalität');
-		}
-	} # }}}
-
-	/**
-	 */
-	public function getPositiveEffectSecondaryDescription() { #{{{
-		// XXX We need the other factions...
-		switch ($this->getUser()->getFaction()) {
-			case FACTION_FEDERATION:
-				return _('Umweltkontrollen');
-			case FACTION_EMPIRE:
-				return _('Zerschmetterte Opposition');
-		}
-	} # }}}
-
-	/**
-	 */
-	public function getNegativeEffectDescription() { #{{{
-		// XXX We need the other factions...
-		switch ($this->getUser()->getFaction()) {
-			case FACTION_FEDERATION:
-				return _('Umweltverschmutzung');
-			case FACTION_EMPIRE:
-				return _('Opposition');
-		}
-	} # }}}
-
-	/**
-	 */
 	public function getCrewLimit() { #{{{
 		return floor(
 			min(
@@ -681,28 +575,12 @@ class ColonyData extends BaseTable {
 		);
 	} # }}}
 
-	public function getProductionPreview() {
-		return new ColonyProductionPreviewWrapper($this->getProduction());
+	public function clearCache(): void {
+        $this->storage = null;
+        $this->epsproduction = null;
+        $this->productionRaw = null;
+        $this->production = null;
 	}
-
-	/**
-	 */
-	public function getEpsProductionPreview() { #{{{
-		return new ColonyEpsProductionPreviewWrapper($this);
-		
-	} # }}}
-
-	/**
-	 */
-	public function getStorageSumPercent() { #{{{
-		return round(100/$this->getMaxStorage()*$this->getStorageSum(),2);
-	} # }}}
-
-	/**
-	 */
-	public function clearCache() { #{{{
-		$this->storage = NULL;
-	} # }}}
 
 	/**
 	 */

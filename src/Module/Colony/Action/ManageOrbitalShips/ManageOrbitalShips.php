@@ -79,6 +79,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $torp = request::postArray('torp');
         $torp_type = request::postArray('torp_type');
         $storage = $colony->getStorage();
+
+        $sectorString = $colony->getSX().'|'.$colony->getSY();
+        if ($colony->isInSystem()) {
+            $sectorString .= ' ('.$colony->getSystem()->getName().'-System)';
+        }
+
         foreach ($ships as $key => $ship) {
             /**
              * @var Ship $shipobj
@@ -120,7 +126,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             sprintf(
                                 _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
                                 $colony->getName(),
-                                $colony->getSectorString(),
+                                $sectorString,
                                 $shipobj->getName(),
                                 $load
                             ),
@@ -201,7 +207,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                     sprintf(
                                         _('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
                                         $colony->getName(),
-                                        $colony->getSectorString(),
+                                        $sectorString,
                                         $shipobj->getName(),
                                         $load
                                     ),

@@ -101,7 +101,7 @@ final class RepairBuilding implements ActionControllerInterface
                 (int) round(($cost->getAmount() / 100) * $integrity)
             );
         }
-        $colony->resetStorage();
+        $colony->clearCache();
 
         $colony->lowerEps($eps);
         $colony->save();
