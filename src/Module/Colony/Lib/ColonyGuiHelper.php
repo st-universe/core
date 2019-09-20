@@ -42,11 +42,12 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
 
     public function register(Colony $colony, GameControllerInterface $game)
     {
+        $energyProduction = $colony->getEpsProduction();
         $width = 360;
         $bars = array();
         $epsBar = [];
-        if ($colony->getEpsProduction() < 0) {
-            $prod = abs($colony->getEpsProduction());
+        if ($energyProduction < 0) {
+            $prod = abs($energyProduction);
             if ($colony->getEps() - $prod < 0) {
                 $bars[STATUSBAR_RED] = $colony->getEps();
                 $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
@@ -56,20 +57,19 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
                 $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
             }
         }
-        if ($colony->getEpsProduction() > 0) {
-            $prod = $colony->getEpsProduction();
-            if ($colony->getEps() + $prod > $colony->getMaxEps()) {
+        if ($energyProduction > 0) {
+            if ($colony->getEps() + $energyProduction > $colony->getMaxEps()) {
                 $bars[STATUSBAR_YELLOW] = $colony->getEps();
                 if ($colony->getEps() < $colony->getMaxEps()) {
                     $bars[STATUSBAR_GREEN] = $colony->getMaxEps() - $colony->getEps();
                 }
             } else {
                 $bars[STATUSBAR_YELLOW] = $colony->getEps();
-                $bars[STATUSBAR_GREEN] = $prod;
-                $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps() - $prod;
+                $bars[STATUSBAR_GREEN] = $energyProduction;
+                $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps() - $energyProduction;
             }
         }
-        if ($colony->getEpsProduction() == 0) {
+        if ($energyProduction == 0) {
             $bars[STATUSBAR_YELLOW] = $colony->getEps();
             $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
         }

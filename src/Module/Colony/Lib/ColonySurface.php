@@ -71,12 +71,24 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getEpsBoxTitleString(): string
     {
+        $energyProduction = $this->colony->getEpsProduction();
+
+        $forecast = $this->colony->getEps() + $energyProduction;
+
+        if ($this->colony->getEps() + $energyProduction < 0) {
+            $forecast = 0;
+        }
+        if ($this->colony->getEps() + $energyProduction > $this->colony->getMaxEps()) {
+            $forecast = $this->colony->getMaxEps();
+        }
+
         return sprintf(
             _('Energie: %d/%d (%d/Runde = %d)'),
             $this->colony->getEps(),
             $this->colony->getMaxEps(),
             $this->colony->getEpsProductionDisplay(),
-            $this->colony->getEpsProductionForecast());
+            $forecast
+        );
     }
 
     public function getPositiveEffectPrimaryDescription(): string

@@ -119,7 +119,6 @@ final class ColonyTick implements ColonyTickInterface
         $colony->upperWorkless($field->getBuilding()->getWorkers());
         $colony->lowerWorkers($field->getBuilding()->getWorkers());
         $colony->lowerMaxBev($field->getBuilding()->getHousing());
-        $colony->setEpsProduction($colony->getEpsProduction() - $field->getBuilding()->getEpsProduction());
         $this->mergeProduction($colony, $field->getBuilding()->getGoods());
         $field->getBuilding()->postDeactivation($colony);
 
@@ -207,7 +206,7 @@ final class ColonyTick implements ColonyTickInterface
                 );
             }
         }
-        if ($colony->hasOverpopulation()) {
+        if ($colony->getPopulation() > $colony->getMaxBev()) {
             $this->proceedEmigration($colony);
             return;
         }

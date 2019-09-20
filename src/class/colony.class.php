@@ -176,38 +176,18 @@ class ColonyData extends BaseTable {
 		return $this->system;
 	}
 
-	private $epsproduction = NULL;
-
 	function getEpsProduction() {
-		if ($this->epsproduction === NULL) {
-			$this->epsproduction = DB()->query("SELECT SUM(b.eps_proc) FROM stu_colonies_fielddata as a LEFT JOIN
-					     stu_buildings as b ON b.id=a.buildings_id WHERE a.aktiv=1 AND a.colonies_id=".$this->getId(),1);
-		}
-		return $this->epsproduction;
-	}
-
-	function setEpsProduction($value) {
-		$this->epsproduction = $value;
+        return (int) DB()->query("SELECT SUM(b.eps_proc) FROM stu_colonies_fielddata as a LEFT JOIN
+            stu_buildings as b ON b.id=a.buildings_id WHERE a.aktiv=1 AND a.colonies_id=".$this->getId(),1);
 	}
 
 	function getEpsProductionDisplay() {
-		if ($this->getEpsProduction() > 0) {
-			return '+'.$this->getEpsProduction();
+	    $energyProduction = $this->getEpsProduction();
+		if ($energyProduction > 0) {
+			return '+'.$energyProduction;
 		}
-		return $this->getEpsProduction();
+		return $energyProduction;
 	}
-
-	/**
-	 */
-	public function getEpsProductionForecast() { #{{{
-		if ($this->getEps() + $this->getEpsProduction() < 0) {
-			return 0;
-		}
-		if ($this->getEps() + $this->getEpsProduction() > $this->getMaxEps()) {
-			return $this->getMaxEps();
-		}
-		return $this->getEps()+$this->getEpsProduction();
-	} # }}}
 
     /**
      * @return ColonyStorageInterface[]
@@ -407,10 +387,6 @@ class ColonyData extends BaseTable {
 		return $this->getMaxBev()-$this->getPopulation();
 	}
 
-	public function hasOverpopulation() {
-		return $this->getPopulation() > $this->getMaxBev();
-	}
-
 	function upperMaxEps($value) {
 		$this->setMaxEps($this->getMaxEps()+$value);
 	}
@@ -577,7 +553,6 @@ class ColonyData extends BaseTable {
 
 	public function clearCache(): void {
         $this->storage = null;
-        $this->epsproduction = null;
         $this->productionRaw = null;
         $this->production = null;
 	}
