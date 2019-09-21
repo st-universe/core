@@ -8,6 +8,7 @@ use Ship;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Tick\Colony\ColonyTick;
+use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
@@ -383,7 +384,18 @@ class Colony implements ColonyInterface
     public function getProductionRaw(): array
     {
         if ($this->productionRaw === null) {
-            $this->productionRaw = ColonyProduction::getProductionByColony($this);
+            // @todo refactor
+            global $container;
+            $result = $container->get(BuildingGoodRepositoryInterface::class)->getProductionByColony(
+                $this->getId(),
+                $this->getPlanetType()->getId()
+            );
+
+            $this->productionRaw = [];
+            foreach ($result as $data) {
+                $this->productionRaw[$data['goods_id']] = new ColonyProduction($data);
+            }
+
         }
         return $this->productionRaw;
     }

@@ -2,7 +2,6 @@
 
 namespace Stu\Lib\ColonyProduction;
 
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
@@ -101,13 +100,4 @@ class ColonyProduction
         return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getGoodId());
     }
 
-    static function getProductionByColony(ColonyInterface $col)
-    {
-        $result = DB()->query('SELECT id as goods_id,id as global_goods_id,(SELECT SUM(a.count) FROM stu_buildings_goods as a LEFT JOIN stu_colonies_fielddata as b USING(buildings_id) WHERE a.goods_id=global_goods_id AND b.colonies_id=' . $col->getId() . ' AND b.aktiv=1) as gc,(SELECT count FROM stu_planets_goods WHERE goods_id=global_goods_id AND planet_classes_id=' . $col->getColonyClass() . ') as pc FROM stu_goods GROUP BY id HAVING gc!=0 OR pc!=0');
-        $ret = array();
-        while ($data = mysqli_fetch_assoc($result)) {
-            $ret[(int)$data['goods_id']] = new ColonyProduction($data);
-        }
-        return $ret;
-    }
 }
