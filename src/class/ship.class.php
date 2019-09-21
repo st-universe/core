@@ -51,16 +51,6 @@ class ShipData extends BaseTable {
 	}
 
 	function setName($value) {
-		if ($value == $this->getName()) {
-			return; 
-		}
-		$old = $this->getName();
-		$value = strip_tags($value);
-		$this->data['name'] = $value;
-		if (strlen(BBCode()->parse($this->getName())) < 3) {
-			$this->data['name'] = $old;
-			return;
-		}
 		$this->setFieldValue('name',$value,'getName');
 	}
 

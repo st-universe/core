@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\ChangeName;
 
+use JBBCode\Parser;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -16,10 +17,14 @@ final class ChangeName implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $bbCodeParser;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        Parser $bbCodeParser
     ) {
         $this->shipLoader = $shipLoader;
+        $this->bbCodeParser = $bbCodeParser;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,8 +38,14 @@ final class ChangeName implements ActionControllerInterface
             $userId
         );
 
-        $value = request::postString('shipname');
-        $ship->setName(tidyString($value));
+        $value = tidyString(strip_tags(request::postString('shipname')));
+
+        if (mb_strlen($this->bbCodeParser->parse($value)->getAsText()) < 3) {
+            $game->addInformation(_('Der Schiffname ist zu kurz (Minimum 3 Zeichen)'));
+            return;
+        }
+
+        $ship->setName($value);
         $ship->save();
         $game->addInformation("Der Schiffname wurde geändert");
     }
