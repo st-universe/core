@@ -109,7 +109,7 @@ final class ColonyTick implements ColonyTickInterface
             }
             break;
         }
-        $colony->setEps($colony->getEps() + $colony->getEpsProduction());
+        $colony->setEps(min($colony->getMaxEps(), $colony->getEps() + $colony->getEpsProduction()));
     }
 
     private function deactivateBuilding(ColonyInterface $colony, PlanetFieldInterface $field, int $commodityId): void
