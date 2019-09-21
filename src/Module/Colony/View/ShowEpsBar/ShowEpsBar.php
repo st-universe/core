@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowEpsBar;
 
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -19,14 +20,18 @@ final class ShowEpsBar implements ViewControllerInterface
 
     private $showEpsBarRequest;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowEpsBarRequestInterface $showEpsBarRequest
+        ShowEpsBarRequestInterface $showEpsBarRequest,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showEpsBarRequest = $showEpsBarRequest;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,5 +47,6 @@ final class ShowEpsBar implements ViewControllerInterface
 
         $game->showMacro('html/colonymacros.xhtml/colonyeps');
         $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

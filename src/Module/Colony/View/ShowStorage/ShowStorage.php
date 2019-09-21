@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowStorage;
 
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -19,14 +20,18 @@ final class ShowStorage implements ViewControllerInterface
 
     private $showStorageRequest;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
-        ShowStorageRequestInterface $showStorageRequest
+        ShowStorageRequestInterface $showStorageRequest,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showStorageRequest = $showStorageRequest;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,5 +47,6 @@ final class ShowStorage implements ViewControllerInterface
 
         $game->showMacro('html/colonymacros.xhtml/colonystorage');
         $game->setTemplateVar('COLONY', $colony);
+        $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }
