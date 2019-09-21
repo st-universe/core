@@ -7,9 +7,9 @@ namespace Stu\Module\Database\View\Category\Tal;
 use Ship;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\DatabaseUserInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-use UserData;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
 {
@@ -25,7 +25,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         DatabaseUserRepositoryInterface $databaseUserRepository,
         DatabaseEntryInterface $databaseEntry,
         StarSystemRepositoryInterface $starSystemRepository,
-        UserData $user
+        UserInterface $user
     ) {
         $this->databaseEntry = $databaseEntry;
         $this->databaseUserRepository = $databaseUserRepository;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeOfferRepository")
@@ -199,8 +199,11 @@ class TradeOffer implements TradeOfferInterface
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
-        return new User($this->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 }

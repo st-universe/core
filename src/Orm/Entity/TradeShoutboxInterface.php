@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface TradeShoutboxInterface
 {
     public function getId(): int;
@@ -24,5 +22,5 @@ interface TradeShoutboxInterface
 
     public function setMessage(string $message): TradeShoutboxInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 }

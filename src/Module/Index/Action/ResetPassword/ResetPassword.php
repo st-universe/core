@@ -9,7 +9,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Zend\Mail\Exception\RuntimeException;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
@@ -22,25 +22,33 @@ final class ResetPassword implements ActionControllerInterface
 
     private $config;
 
+    private $userRepository;
+
     public function __construct(
         ResetPasswordRequestInterface $resetPasswordRequest,
-        ConfigInterface $config
+        ConfigInterface $config,
+        UserRepositoryInterface $userRepository
     ) {
         $this->resetPasswordRequest = $resetPasswordRequest;
         $this->config = $config;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $token = $this->resetPasswordRequest->getToken();
-        $user = User::getByPasswordResetToken($token);
-        if ($user === false) {
+
+        $user = $this->userRepository->getByResetToken($token);
+
+        if ($user === null) {
             throw new InvalidParamException;
         }
         $password = generatePassword();
         $user->setPassword(sha1($password));
         $user->setPasswordToken('');
-        $user->save();
+
+        $this->userRepository->save($user);
+
         $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
         $game->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
 

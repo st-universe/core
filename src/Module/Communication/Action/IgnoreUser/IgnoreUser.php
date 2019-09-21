@@ -7,7 +7,7 @@ namespace Stu\Module\Communication\Action\IgnoreUser;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class IgnoreUser implements ActionControllerInterface
 {
@@ -17,21 +17,25 @@ final class IgnoreUser implements ActionControllerInterface
 
     private $ignoreListRepository;
 
+    private $userRepository;
+
     public function __construct(
         IgnoreUserRequestInterface $ignoreUserRequest,
-        IgnoreListRepositoryInterface $ignoreListRepository
+        IgnoreListRepositoryInterface $ignoreListRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->ignoreUserRequest = $ignoreUserRequest;
         $this->ignoreListRepository = $ignoreListRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $recipient = User::getUserById($this->ignoreUserRequest->getRecipientId());
+        $recipient = $this->userRepository->find($this->ignoreUserRequest->getRecipientId());
 
-        if (!$recipient) {
+        if ($recipient === null) {
             $game->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }

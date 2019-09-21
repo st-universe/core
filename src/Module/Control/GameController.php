@@ -12,6 +12,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
@@ -19,7 +20,6 @@ use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
-use UserData;
 
 final class GameController implements GameControllerInterface
 {
@@ -235,7 +235,7 @@ final class GameController implements GameControllerInterface
         $this->talPage->parse();
     }
 
-    public function getUser(): ?UserData
+    public function getUser(): ?UserInterface
     {
         return $this->session->getUser();
     }

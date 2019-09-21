@@ -9,6 +9,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Leave implements ActionControllerInterface
 {
@@ -18,12 +19,16 @@ final class Leave implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,12 +48,13 @@ final class Leave implements ActionControllerInterface
 
         $this->allianceJobRepository->truncateByUser($userId);
 
-        $user->setAllianceId(0);
-        $user->save();
+        $user->setAllianceId(null);
+
+        $this->userRepository->save($user);
 
         $text = sprintf(
             'Der Siedler %s hat die Allianz verlassen',
-            $user->getName()
+            $user->getUser()
         );
 
         $this->privateMessageSender->send($userId, $foundJob->getUserId(), $text);

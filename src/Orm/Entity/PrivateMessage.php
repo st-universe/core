@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageRepository")
@@ -143,14 +141,20 @@ class PrivateMessage implements PrivateMessageInterface
         return $this;
     }
 
-    public function getSender(): User
+    public function getSender(): UserInterface
     {
-        return new User($this->getSenderId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getSenderId());
     }
 
-    public function getRecipient(): User
+    public function getRecipient(): UserInterface
     {
-        return new User($this->getRecipientId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getRecipientId());
     }
 
 }

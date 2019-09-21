@@ -4,6 +4,7 @@ namespace Stu\Lib;
 
 use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -23,15 +24,15 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
-use User;
-use UserData;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 class UserDeletion
 {
 
+    public const USER_IDLE_TIME = 120960000;
     private $user;
 
-    public function __construct(UserData $user)
+    public function __construct(UserInterface $user)
     {
         $this->user = $user;
     }
@@ -277,12 +278,23 @@ class UserDeletion
 
     public static function handleIdleUsers()
     {
-        self::handle(User::getUserListIdle());
+        // @todo refactor
+        global $container;
+
+        self::handle(
+            $container->get(UserRepositoryInterface::class)->getIdlePlayer(
+                time() - UserDeletion::USER_IDLE_TIME,
+                getAdminUserIds()
+            )
+        );
     }
 
     public static function handleReset()
     {
-        self::handle(User::getUserListReset());
+        // @todo refactor
+        global $container;
+
+        self::handle($container->get(UserRepositoryInterface::class)->getActualPlayer());
     }
 
 }

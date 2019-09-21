@@ -11,7 +11,7 @@ use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class WritePm implements ActionControllerInterface
 {
@@ -27,18 +27,22 @@ final class WritePm implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         WritePmRequestInterface $writePmRequest,
         IgnoreListRepositoryInterface $ignoreListRepository,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->writePmRequest = $writePmRequest;
         $this->ignoreListRepository = $ignoreListRepository;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,8 +51,8 @@ final class WritePm implements ActionControllerInterface
         $recipientId = $this->writePmRequest->getRecipientId();
         $userId = $game->getUser()->getId();
 
-        $recipient = User::getUserById($recipientId);
-        if (!$recipient) {
+        $recipient = $this->userRepository->find($recipientId);
+        if ($recipient === null) {
             $game->addInformation("Dieser Siedler existiert nicht");
             return;
         }

@@ -3,7 +3,7 @@
 namespace Stu\Module\Control;
 
 use Stu\Orm\Entity\GameTurnInterface;
-use UserData;
+use Stu\Orm\Entity\UserInterface;
 
 interface GameControllerInterface
 {
@@ -38,7 +38,7 @@ interface GameControllerInterface
 
     public function setTemplateVar(string $key, $variable);
 
-    public function getUser(): ?UserData;
+    public function getUser(): ?UserInterface;
 
     public function getBenchmark(): float;
 

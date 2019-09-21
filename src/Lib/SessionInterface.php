@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
-use UserData;
+use Stu\Orm\Entity\UserInterface;
 
 interface SessionInterface
 {
@@ -12,7 +12,7 @@ interface SessionInterface
 
     public function checkLoginCookie(): void;
 
-    public function getUser(): ?UserData;
+    public function getUser(): ?UserInterface;
 
     public function logout(): void;
 

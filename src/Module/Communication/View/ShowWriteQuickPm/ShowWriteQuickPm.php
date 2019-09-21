@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowWriteQuickPm;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowWriteQuickPm implements ViewControllerInterface
 {
@@ -13,10 +14,14 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 
     private $showWriteQuickPmRequest;
 
+    private $userRepository;
+
     public function __construct(
-        ShowWriteQuickPmRequestInterface $showWriteQuickPmRequest
+        ShowWriteQuickPmRequestInterface $showWriteQuickPmRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->showWriteQuickPmRequest = $showWriteQuickPmRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -27,7 +32,7 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 
         $game->setTemplateVar(
             'RECIPIENT',
-            ResourceCache()->getObject("user", $this->showWriteQuickPmRequest->getRecipientId())
+            $this->userRepository->find($this->showWriteQuickPmRequest->getRecipientId())
         );
     }
 }

@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\DockingPrivilegeRepository")
@@ -102,7 +103,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
         global $container;
         switch ($this->getPrivilegeType()) {
             case DOCK_PRIVILEGE_USER:
-                return ResourceCache()->getObject('user', $this->getTargetId())->getName();
+                return $container->get(UserRepositoryInterface::class)->find((int)$this->getTargetId())->getUser();
             case DOCK_PRIVILEGE_ALLIANCE:
                 return $container->get(AllianceRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
             case DOCK_PRIVILEGE_FACTION:

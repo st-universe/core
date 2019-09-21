@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface IgnoreListInterface
 {
     public function getId(): int;
@@ -20,7 +18,7 @@ interface IgnoreListInterface
 
     public function setDate(int $date): IgnoreListInterface;
 
-    public function getRecipient(): User;
+    public function getRecipient(): UserInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 }

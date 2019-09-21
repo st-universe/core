@@ -9,6 +9,7 @@ use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -24,6 +25,7 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 class ShipData extends BaseTable {
@@ -282,11 +284,11 @@ class ShipData extends BaseTable {
 		return $this->data['user_id'];
 	}
 
-	/**
-	 * @return User
-	 */
-	function getUser() {
-		return ResourceCache()->getObject("user",$this->getUserId());
+	function getUser(): UserInterface {
+		// @todo refactor
+		global $container;
+
+		return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
 	}
 
 	function setUserId($value) {

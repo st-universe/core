@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 use JBBCode\Parser;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeUserName implements ActionControllerInterface
 {
@@ -16,12 +17,16 @@ final class ChangeUserName implements ActionControllerInterface
 
     private $bbcodeParser;
 
+    private $userRepository;
+
     public function __construct(
         ChangeUserNameRequestInterface $changeUserNameRequest,
-        Parser $bbcodeParser
+        Parser $bbcodeParser,
+        UserRepositoryInterface $userRepository
     ) {
         $this->changeUserNameRequest = $changeUserNameRequest;
         $this->bbcodeParser = $bbcodeParser;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,7 +61,8 @@ final class ChangeUserName implements ActionControllerInterface
 
         $user = $game->getUser();
         $user->setUser($value);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Dein Name wurde geändert'));
     }

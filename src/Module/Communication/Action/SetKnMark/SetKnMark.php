@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\Action\SetKnMark;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class SetKnMark implements ActionControllerInterface
 {
@@ -16,12 +17,16 @@ final class SetKnMark implements ActionControllerInterface
 
     private $knPostRepository;
 
+    private $userRepository;
+
     public function __construct(
         SetKnMarkRequestInterface $setKnMarkRequest,
-        KnPostRepositoryInterface $knPostRepository
+        KnPostRepositoryInterface $knPostRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->setKnMarkRequest = $setKnMarkRequest;
         $this->knPostRepository = $knPostRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,8 +39,9 @@ final class SetKnMark implements ActionControllerInterface
 
         $user = $game->getUser();
 
-        $user->setKNMark($posting->getId());
-        $user->save();
+        $user->setKnMark($posting->getId());
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Das Lesezeichen wurde gesetzt'));
     }

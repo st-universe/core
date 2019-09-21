@@ -4,10 +4,11 @@ namespace Stu\Lib;
 
 use DateTimeImmutable;
 use LoginException;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserIpTableRepositoryInterface;
-use User;
-use UserData;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Session implements SessionInterface
 {
@@ -18,19 +19,23 @@ final class Session implements SessionInterface
 
     private $sessionStringRepository;
 
+    private $userRepository;
+
     /**
-     * @var UserData|null
+     * @var UserInterface|null
      */
     private $user;
 
     public function __construct(
         DbInterface $db,
         UserIpTableRepositoryInterface $userIpTableRepository,
-        SessionStringRepositoryInterface $sessionStringRepository
+        SessionStringRepositoryInterface $sessionStringRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->db = $db;
         $this->userIpTableRepository = $userIpTableRepository;
         $this->sessionStringRepository = $sessionStringRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function createSession(bool $session_check = true): void
@@ -69,7 +74,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function getUser(): ?UserData
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }
@@ -78,16 +83,17 @@ final class Session implements SessionInterface
     {
         $this->destroyLoginCookies();
 
-        $result = User::getByLogin($userName);
-        if (!$result) {
+        $result = $this->userRepository->getByLogin($userName);
+        if ($result === null) {
             throw new \Stu\Lib\LoginException(_('Benutzername nicht gefunden'));
         }
         if ($result->getPassword() != sha1($password)) {
             throw new \Stu\Lib\LoginException(_('Das Passwort ist falsch'));
         }
         if ($result->getActive() == 0) {
-            $result->setActive(User::USER_ACTIVE);
-            $result->save();
+            $result->setActive(PlayerEnum::USER_ACTIVE);
+
+            $this->userRepository->save($result);
         }
         if ($result->getActive() == 4) {
             throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde gesperrt'));
@@ -95,10 +101,11 @@ final class Session implements SessionInterface
         if ($result->getDeletionMark() == 2) {
             throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
         }
-        if ($result->getVacationMode() == 1) {
-            $result->setVacationMode(0);
+        if ($result->isVacationMode()) {
+            $result->setVacationMode(false);
         }
-        $result->save();
+
+        $this->userRepository->save($result);
 
         $_SESSION['uid'] = $result->getId();
         $_SESSION['login'] = 1;
@@ -107,7 +114,7 @@ final class Session implements SessionInterface
 
         $this->sessionStringRepository->truncate($result->getId());
 
-        if (!$result->getSaveLogin()) {
+        if (!$result->isSaveLogin()) {
             setcookie('sstr', $this->buildCookieString($result), (time() + 86400 * 2));
         }
 
@@ -122,7 +129,7 @@ final class Session implements SessionInterface
         $this->userIpTableRepository->save($ipTableEntry);
     }
 
-    private function buildCookieString(UserData $user): string {
+    private function buildCookieString(UserInterface $user): string {
         return sha1($user->getId().$user->getEMail().$user->getCreationDate());
     }
 
@@ -154,8 +161,8 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        $result = User::getUserById($uid);
-        if (!$result) {
+        $result = $this->userRepository->find($uid);
+        if ($result === null) {
             $this->destroySession();
             return;
         }
@@ -172,10 +179,10 @@ final class Session implements SessionInterface
         if ($result->getDeletionMark() == 2) {
             throw new LoginException("Löschung");
         }
-        if ($result->getVacationMode() == 1) {
-            $result->setVacationMode(0);
+        if ($result->isVacationMode() === true) {
+            $result->setVacationMode(false);
         }
-        $result->save();
+        $this->userRepository->save($result);
 
         $_SESSION['uid'] = $result->getId();
         $_SESSION['login'] = 1;
@@ -213,13 +220,13 @@ final class Session implements SessionInterface
             $this->userIpTableRepository->save($ipTableEntry);
         }
 
-        $data = $this->db->query("SELECT * FROM stu_user WHERE id=" . $userId . " LIMIT 1", 4);
-        if ($data == 0) {
+        $user = $this->userRepository->find($userId);
+        if ($user === null) {
             $this->logout();
         }
         $_SESSION['login'] = 1;
 
-        $this->user = new UserData($data);
+        $this->user = $user;
     }
 
     /**
@@ -234,7 +241,7 @@ final class Session implements SessionInterface
         if (!array_key_exists($value, $data[$key])) {
             $data[$key][$value] = 1;
             $this->user->setSessionData(serialize($data));
-            $this->user->save();
+            $this->userRepository->save($this->user);
         }
     }
 
@@ -252,7 +259,7 @@ final class Session implements SessionInterface
         }
         unset($data[$key][$value]);
         $this->user->setSessionData(serialize($data));
-        $this->user->save();
+        $this->userRepository->save($this->user);
     }
 
     /**

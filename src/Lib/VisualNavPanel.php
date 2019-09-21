@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Entity\UserInterface;
+
 class VisualNavPanel
 {
 
@@ -9,7 +11,7 @@ class VisualNavPanel
 
     private $user;
 
-    function __construct(ShipData $ship, UserData $user)
+    function __construct(ShipData $ship, UserInterface $user)
     {
         $this->ship = $ship;
         $this->user = $user;

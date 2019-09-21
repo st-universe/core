@@ -10,7 +10,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KickPlayer implements ActionControllerInterface
 {
@@ -24,16 +24,20 @@ final class KickPlayer implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         KickPlayerRequestInterface $kickPlayerRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->kickPlayerRequest = $kickPlayerRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,14 +53,15 @@ final class KickPlayer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $player = new User($playerId);
+        $player = $this->userRepository->find($playerId);
 
-        if ($player->getAllianceId() != $alliance->getId()) {
+        if ($player === null || $player->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 
         $player->setAllianceId(0);
-        $player->save();
+
+        $this->userRepository->save($player);
 
         if ($alliance->getFounder()->getUserId() == $playerId) {
             $this->allianceJobRepository->truncateByUser($userId);

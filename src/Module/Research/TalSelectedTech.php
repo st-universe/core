@@ -6,9 +6,9 @@ namespace Stu\Module\Research;
 
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use UserData;
 
 final class TalSelectedTech implements TalSelectedTechInterface
 {
@@ -31,7 +31,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
         ResearchedRepositoryInterface $researchedRepository,
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
         ResearchInterface $research,
-        UserData $currentUser
+        UserInterface $currentUser
     ) {
         $this->research = $research;
         $this->currentUser = $currentUser;

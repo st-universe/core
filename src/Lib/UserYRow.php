@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
 class UserYRow extends YRow
 {
     private $user;
 
-    function __construct(UserData $user, $cury, $minx, $maxx, $systemId = 0)
+    function __construct(UserInterface $user, $cury, $minx, $maxx, $systemId = 0)
     {
         parent::__construct($cury, $minx, $maxx, $systemId);
         $this->user = $user;

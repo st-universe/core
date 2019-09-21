@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface TradeLicenseInterface
 {
     public function getId(): int;
@@ -20,7 +18,7 @@ interface TradeLicenseInterface
 
     public function setDate(int $date): TradeLicenseInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function getTradePost(): TradePostInterface;
 

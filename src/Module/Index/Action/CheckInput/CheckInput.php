@@ -6,7 +6,7 @@ namespace Stu\Module\Index\Action\CheckInput;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CheckInput implements ActionControllerInterface
 {
@@ -15,10 +15,14 @@ final class CheckInput implements ActionControllerInterface
 
     private $checkInputRequest;
 
+    private $userRepository;
+
     public function __construct(
-        CheckInputRequestInterface $checkInputRequest
+        CheckInputRequestInterface $checkInputRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->checkInputRequest = $checkInputRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,7 +39,7 @@ final class CheckInput implements ActionControllerInterface
                 if (strlen($value) < 6) {
                     break;
                 }
-                if (User::getByLogin($value)) {
+                if ($this->userRepository->getByLogin($value)) {
                     $state = REGISTER_STATE_DUP;
                     break;
                 }
@@ -45,7 +49,7 @@ final class CheckInput implements ActionControllerInterface
                 if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     break;
                 }
-                if (User::getByEmail($value)) {
+                if ($this->userRepository->getByEmail($value)) {
                     $state = REGISTER_STATE_DUP;
                     break;
                 }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
-use UserData;
 
 final class KnTalFactory implements KnTalFactoryInterface
 {
@@ -20,7 +20,7 @@ final class KnTalFactory implements KnTalFactoryInterface
 
     public function createKnPostTal(
         KnPostInterface $post,
-        UserData $user
+        UserInterface $user
     ): KnPostTalInterface {
         return new KnPostTal(
             $this->knCommentRepository,

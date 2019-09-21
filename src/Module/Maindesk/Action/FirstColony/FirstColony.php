@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
 {
@@ -26,18 +27,22 @@ final class FirstColony implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $userRepository;
+
     public function __construct(
         FirstColonyRequestInterface $firstColonyRequest,
         FactionRepositoryInterface $factionRepository,
         BuildingRepositoryInterface $buildingRepository,
         PlanetColonizationInterface $planetColonization,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
         $this->factionRepository = $factionRepository;
         $this->buildingRepository = $buildingRepository;
         $this->planetColonization = $planetColonization;
         $this->colonyRepository = $colonyRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -71,7 +76,8 @@ final class FirstColony implements ActionControllerInterface
         );
 
         $user->setActive(2);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         // Database entries for planettype
         $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());

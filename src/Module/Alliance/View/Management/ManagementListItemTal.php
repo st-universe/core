@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Management;
 
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use UserData;
 
 final class ManagementListItemTal
 {
@@ -25,7 +25,7 @@ final class ManagementListItemTal
         ShipRumpRepositoryInterface $shipRumpRepository,
         ColonyRepositoryInterface $colonyRepository,
         AllianceInterface $alliance,
-        UserData $user,
+        UserInterface $user,
         int $currentUserId
     ) {
         $this->user = $user;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
-use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,7 +12,7 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -29,13 +28,16 @@ final class Overview implements ViewControllerInterface
 
     private $colonyShipQueueRepository;
 
+    private $userRepository;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         KnPostRepositoryInterface $knPostRepository,
         KnTalFactoryInterface $knTalFactory,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
@@ -43,6 +45,7 @@ final class Overview implements ViewControllerInterface
         $this->knPostRepository = $knPostRepository;
         $this->knTalFactory = $knTalFactory;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -78,13 +81,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'RANDOM_ONLINE_USER',
-            User::getListBy(sprintf(
-                'WHERE id != %d AND (show_online_status=1 OR id IN (SELECT user_id FROM stu_contactlist WHERE mode = %d AND recipient = %d)) AND lastaction > %d ORDER BY RAND() LIMIT 15',
-                $userId,
-                ContactListModeEnum::CONTACT_FRIEND,
-                $userId,
-                (time() - USER_ONLINE_PERIOD)
-            ))
+            $this->userRepository->getOrderedByLastaction(15, $userId, time() - USER_ONLINE_PERIOD)
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',

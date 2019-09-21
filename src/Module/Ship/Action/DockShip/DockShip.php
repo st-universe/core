@@ -11,8 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
-use UserData;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -134,7 +134,7 @@ final class DockShip implements ActionControllerInterface
         $game->addInformationMerge($msg);
     }
 
-    private function checkPrivilegeFor(int $shipId, UserData $user): bool
+    private function checkPrivilegeFor(int $shipId, UserInterface $user): bool
     {
         $privileges = $this->dockingPrivilegeRepository->getByShip($shipId);
         if ($privileges === []) {

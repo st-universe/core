@@ -152,7 +152,6 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         _('%s: Die Crew wurde hochgebeamt'),
                         $shipobj->getName()
                     );
-                    $shipobj->getUser()->setFreeCrewCount($shipobj->getUser()->getFreeCrewCount() - $shipobj->getBuildplan()->getCrew());
                 }
             }
             if (isset($unman[$shipobj->getId()]) && $shipobj->currentUserCanUnMan()) {

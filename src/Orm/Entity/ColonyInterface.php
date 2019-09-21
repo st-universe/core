@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use User;
 
 interface ColonyInterface
 {
@@ -122,7 +121,7 @@ interface ColonyInterface
 
     public function isFree(): bool;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function getBevFood(): int;
 

@@ -6,10 +6,10 @@ namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
-use User;
 
 final class PrivateMessageListItem implements PrivateMessageListItemInterface
 {
@@ -43,7 +43,7 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         $this->currentUserId = $currentUserId;
     }
 
-    public function getSender(): User
+    public function getSender(): UserInterface
     {
         if ($this->sender === null) {
             $this->sender = $this->message->getSender();

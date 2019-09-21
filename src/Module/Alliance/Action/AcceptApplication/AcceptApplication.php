@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Applications\Applications;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AcceptApplication implements ActionControllerInterface
 {
@@ -24,16 +25,20 @@ final class AcceptApplication implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         AcceptApplicationRequestInterface $acceptApplicationRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->acceptApplicationRequest = $acceptApplicationRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,7 +60,8 @@ final class AcceptApplication implements ActionControllerInterface
 
         $applicant = $appl->getUser();
         $applicant->setAllianceId($alliance->getId());
-        $applicant->save();
+
+        $this->userRepository->save($applicant);
 
         $this->allianceJobRepository->delete($appl);
 

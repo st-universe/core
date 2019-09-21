@@ -10,7 +10,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PromotePlayer implements ActionControllerInterface
 {
@@ -24,16 +24,20 @@ final class PromotePlayer implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         PromotePlayerRequestInterface $promotePlayerRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceActionManagerInterface $allianceActionManager,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->promotePlayerRequest = $promotePlayerRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,9 +51,10 @@ final class PromotePlayer implements ActionControllerInterface
             throw new AccessViolation();
         }
         $playerId = $this->promotePlayerRequest->getPlayerId();
-        $player = new User($playerId);
 
-        if ($player->getAllianceId() != $alliance->getId()) {
+        $player = $this->userRepository->find($playerId);
+
+        if ($player === null || $player->getAllianceId() != $alliance->getId()) {
             throw new AccessViolation();
         }
 

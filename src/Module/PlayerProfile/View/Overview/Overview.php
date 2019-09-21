@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\View\Overview;
 
+use AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -21,23 +22,31 @@ final class Overview implements ViewControllerInterface
 
     private $contactRepository;
 
+    private $userRepository;
+
     public function __construct(
         OverviewRequestInterface $overviewRequest,
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        ContactRepositoryInterface $contactRepository
+        ContactRepositoryInterface $contactRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->overviewRequest = $overviewRequest;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->contactRepository = $contactRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $profile = new User($this->overviewRequest->getProfileId());
+        $profile = $this->userRepository->find($this->overviewRequest->getProfileId());
+
+        if ($profile === null) {
+            throw new AccessViolation();
+        }
 
         $profileId = $profile->getId();
 

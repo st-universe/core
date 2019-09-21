@@ -4,17 +4,17 @@ namespace Stu\Module\Database\View\Category\Tal;
 
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
-use UserData;
+use Stu\Orm\Entity\UserInterface;
 
 interface DatabaseCategoryTalFactoryInterface
 {
     public function createDatabaseCategoryTal(
         DatabaseCategoryInterface $databaseCategory,
-        UserData $user
+        UserInterface $user
     ): DatabaseCategoryTalInterface;
 
     public function createDatabaseCategoryEntryTal(
         DatabaseEntryInterface $databaseEntry,
-        UserData $user
+        UserInterface $user
     ): DatabaseCategoryEntryTalInterface;
 }

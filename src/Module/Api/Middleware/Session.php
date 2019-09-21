@@ -7,13 +7,24 @@ namespace Stu\Module\Api\Middleware;
 use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
-use User;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class Session implements SessionInterface {
+final class Session implements SessionInterface
+{
 
     private $user;
 
-    public function getUser(): User {
+    private $userRepository;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository
+    ) {
+        $this->userRepository = $userRepository;
+    }
+
+    public function getUser(): UserInterface
+    {
         if ($this->user === null) {
             throw new Exception('user not validated');
         }
@@ -29,6 +40,6 @@ final class Session implements SessionInterface {
             throw new HttpUnauthorizedException($request);
         }
 
-        $this->user = new User((int) $userData->uid);
+        $this->user = $this->userRepository->find((int)$userData->uid);
     }
 }

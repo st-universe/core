@@ -15,7 +15,6 @@ class ResourceCacher
     { #{{{
         if ($this->resources === null) {
             $this->resources = new ArrayObject;
-            $this->resources->offsetSet(CACHE_USER, new ArrayObject);
             $this->resources->offsetSet(CACHE_SHIP, new ArrayObject);
         }
         return $this->resources;
@@ -31,13 +30,6 @@ class ResourceCacher
 
     /**
      */
-    public function getUser($id)
-    { #{{{
-        return $this->getObject(CACHE_USER, $id);
-    } # }}}
-
-    /**
-     */
     public function isResourceCached($obj, $id)
     { #{{{
         return $this->getCache()->offsetGet($obj)->offsetExists($id);
@@ -47,9 +39,6 @@ class ResourceCacher
     private function addResource(&$obj, $id)
     {
         switch ($obj) {
-            case "user":
-                $newobj = "User";
-                break;
             case "ship":
                 $newobj = "Ship";
                 break;

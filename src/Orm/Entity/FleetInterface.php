@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Ship;
-use User;
 
 interface FleetInterface
 {
@@ -37,7 +36,7 @@ interface FleetInterface
 
     public function activateSystem(int $system): void;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function getPointSum(): int;
 }

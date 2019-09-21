@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeEmail;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeEmail implements ActionControllerInterface
 {
@@ -13,10 +14,14 @@ final class ChangeEmail implements ActionControllerInterface
 
     private $changeEmailRequest;
 
+    private $userRepository;
+
     public function __construct(
-        ChangeEmailRequestInterface $changeEmailRequest
+        ChangeEmailRequestInterface $changeEmailRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->changeEmailRequest = $changeEmailRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -30,7 +35,8 @@ final class ChangeEmail implements ActionControllerInterface
         $user = $game->getUser();
 
         $user->setEmail($value);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Deine E-Mailadresse wurde geändert'));
     }

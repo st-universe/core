@@ -8,8 +8,10 @@ use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 function dbSafe(&$string)
 {
@@ -335,8 +337,6 @@ function getDefaultTechs()
  */
 function isSystemUser($userId)
 { #{{{
-    $user = [USER_NOONE];
-    return in_array($userId, $user);
 } # }}}
 
 /**
@@ -380,12 +380,14 @@ function &DB()
     return $DB;
 }
 
-function currentUser(): User
+function currentUser(): UserInterface
 {
     static $currentUser = null;
     if ($currentUser === null) {
-        global $_SESSION;
-        $currentUser = ResourceCache()->getUser($_SESSION['uid']);
+        // @todo refactor
+        global $_SESSION, $container;
+
+        return $container->get(UserRepositoryInterface::class)->find((int)$_SESSION['uid']);
     }
     return $currentUser;
 }

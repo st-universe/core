@@ -9,7 +9,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Management implements ViewControllerInterface
 {
@@ -21,14 +21,18 @@ final class Management implements ViewControllerInterface
 
     private $colonyRepository;
 
+    private $userRepository;
+
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->shipRumpRepository = $shipRumpRepository;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +42,7 @@ final class Management implements ViewControllerInterface
         $allianceId = (int) $alliance->getId();
 
         $list = [];
-        foreach (User::getListBy('WHERE allys_id=' . $allianceId) as $member) {
+        foreach ($this->userRepository->getByAlliance($allianceId) as $member) {
             $list[] = new ManagementListItemTal(
                 $this->shipRumpRepository,
                 $this->colonyRepository,

@@ -95,13 +95,13 @@
                                 <th colspan="4">Accounteinstellungen</th>
                                 <tr>
                                         <td>
-                                                <input type="checkbox" name="email_not" value="1" tal:attributes="checked THIS/getUser/getEmailNotification" />
+                                                <input type="checkbox" name="email_not" value="1" tal:attributes="checked THIS/getUser/isEmailNotification" />
                                         </td>
                                         <td>
                                                 Emailbenachrichtigung bei privaten Nachrichten
                                         </td>
                                         <td>
-                                                <input type="checkbox" name="save_login" value="1" tal:attributes="checked THIS/getUser/getSaveLogin" />
+                                                <input type="checkbox" name="save_login" value="1" tal:attributes="checked THIS/getUser/isSaveLogin" />
                                         </td>
                                         <td>
                                                 Login nicht speichern (Ideal an fremden Computern)
@@ -109,13 +109,13 @@
                                 </tr>
                                 <tr>
                                         <td>
-                                                <input type="checkbox" name="storage_not" value="1" tal:attributes="checked THIS/getUser/getStorageNotification" />
+                                                <input type="checkbox" name="storage_not" value="1" tal:attributes="checked THIS/getUser/isStorageNotification" />
                                         </td>
                                         <td>
                                                 Nachricht bei vollen Lagern zum Tick
                                         </td>
                                         <td>
-                                                <input type="checkbox" name="show_online" value="1" tal:attributes="checked THIS/getUser/getShowOnlineState" />
+                                                <input type="checkbox" name="show_online" value="1" tal:attributes="checked THIS/getUser/isShowOnlineState" />
                                         </td>
                                         <td>
                                                 Online Status öffentlich

@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\UserList;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class UserList implements ViewControllerInterface
 {
@@ -28,11 +28,14 @@ final class UserList implements ViewControllerInterface
 
     private $userListRequest;
 
+    private $userRepository;
+
     public function __construct(
-        UserListRequestInterface $userListRequest
-    )
-    {
+        UserListRequestInterface $userListRequest,
+        UserRepositoryInterface $userRepository
+    ) {
         $this->userListRequest = $userListRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -51,21 +54,18 @@ final class UserList implements ViewControllerInterface
         $game->setPageTitle(_('/ Siedlerliste'));
         $game->setTemplateFile('html/userlist.xhtml');
 
-        $user_list = User::getListBy(
-            sprintf(
-                'WHERE id>100 ORDER BY %s %s LIMIT %d,%d',
-                static::SORT_FIELD_MAP[$sort_field],
-                static::SORT_ORDER_MAP[$sort_order],
-                $pagination,
-                static::LIST_LIMIT
-            )
+        $user_list = $this->userRepository->getList(
+            static::SORT_FIELD_MAP[$sort_field],
+            static::SORT_ORDER_MAP[$sort_order],
+            static::LIST_LIMIT,
+            $pagination
         );
 
         $game->setTemplateVar('NAVIGATION', $this->getUserListNavigation($game));
         $game->setTemplateVar('LIST', $user_list);
         $game->setTemplateVar('SORT_ORDER', $sort_field);
         $game->setTemplateVar('ORDER_BY', $sort_order);
-        $game->setTemplateVar('PAGINATION', $$pagination);
+        $game->setTemplateVar('PAGINATION', $pagination);
     }
 
     private function getUserListNavigation(GameControllerInterface $game): array
@@ -77,28 +77,28 @@ final class UserList implements ViewControllerInterface
         $maxcount = $game->getPlayerCount();
         $maxpage = ceil($maxcount / static::LIST_LIMIT);
         $curpage = floor($mark / static::LIST_LIMIT);
-        $ret = array();
+        $ret = [];
         if ($curpage != 0) {
-            $ret[] = array("page" => "<<", "mark" => 0, "cssclass" => "pages");
-            $ret[] = array("page" => "<", "mark" => ($mark - static::LIST_LIMIT), "cssclass" => "pages");
+            $ret[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
+            $ret[] = ["page" => "<", "mark" => ($mark - static::LIST_LIMIT), "cssclass" => "pages"];
         }
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
             if ($i > $maxpage || $i < 1) {
                 continue;
             }
-            $ret[] = array(
+            $ret[] = [
                 "page" => $i,
                 "mark" => ($i * static::LIST_LIMIT - static::LIST_LIMIT),
-                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
-            );
+                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages"),
+            ];
         }
         if ($curpage + 1 != $maxpage) {
-            $ret[] = array("page" => ">", "mark" => ($mark + static::LIST_LIMIT), "cssclass" => "pages");
-            $ret[] = array(
+            $ret[] = ["page" => ">", "mark" => ($mark + static::LIST_LIMIT), "cssclass" => "pages"];
+            $ret[] = [
                 "page" => ">>",
                 "mark" => $maxpage * static::LIST_LIMIT - static::LIST_LIMIT,
-                "cssclass" => "pages"
-            );
+                "cssclass" => "pages",
+            ];
         }
         return $ret;
     }

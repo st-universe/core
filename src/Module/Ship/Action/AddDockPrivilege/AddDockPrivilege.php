@@ -13,7 +13,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddDockPrivilege implements ActionControllerInterface
 {
@@ -27,16 +27,20 @@ final class AddDockPrivilege implements ActionControllerInterface
 
     private $allianceRepository;
 
+    private $userRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         FactionRepositoryInterface $factionRepository,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        AllianceRepositoryInterface $allianceRepository
+        AllianceRepositoryInterface $allianceRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->factionRepository = $factionRepository;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
         $this->allianceRepository = $allianceRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,7 +68,7 @@ final class AddDockPrivilege implements ActionControllerInterface
         $save = 0;
         switch ($type) {
             case DOCK_PRIVILEGE_USER:
-                if (!User::getUserById($target)) {
+                if ($this->userRepository->find((int) $target) === null) {
                     break;
                 }
                 $save = 1;

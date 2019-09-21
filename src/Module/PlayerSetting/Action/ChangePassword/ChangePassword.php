@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangePassword;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangePassword implements ActionControllerInterface
 {
@@ -13,10 +14,14 @@ final class ChangePassword implements ActionControllerInterface
 
     private $changePasswordRequest;
 
+    private $userRepository;
+
     public function __construct(
-        ChangePasswordRequestInterface $changePasswordRequest
+        ChangePasswordRequestInterface $changePasswordRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->changePasswordRequest = $changePasswordRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +54,8 @@ final class ChangePassword implements ActionControllerInterface
             return;
         }
         $user->setPassword(sha1($newPassword));
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Das Passwort wurde geändert'));
     }

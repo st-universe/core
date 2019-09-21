@@ -33,7 +33,7 @@ final class GetColonyById extends Action
     ): JsonResponseInterface {
         $colonyId = (int) $args['colonyId'] ?? 0;
         if ($colonyId === 0) {
-            throw new HttpBadRequestException($this->request, "Could not resolve argument `{$colonyId}`.");
+            throw new HttpBadRequestException($request, "Could not resolve argument `{$colonyId}`.");
         }
 
         $colony = $this->colonyRepository->find($colonyId);

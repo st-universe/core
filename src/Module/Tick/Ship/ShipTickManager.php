@@ -18,7 +18,7 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     public function work(): void
     {
-        $ships = Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user WHERE id!=' . USER_NOONE . ' AND npc_type IS NULL and plans_id > 0)');
+        $ships = Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user WHERE id > 100) AND plans_id > 0');
 
         foreach ($ships as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
@@ -44,7 +44,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function handleNPCShips(): void
     {
-        foreach (Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user where id!=' . USER_NOONE . ' AND npc_type IS NOT NULL)') as $ship) {
+        // @todo
+        foreach (Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user where id!=' . USER_NOONE . ' AND id < 100)') as $ship) {
             $eps = ceil($ship->getMaxEps() / 10);
             if ($eps + $ship->getEps() > $ship->getMaxEps()) {
                 $eps = $ship->getMaxEps() - $ship->getEps();

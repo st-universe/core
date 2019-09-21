@@ -9,6 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Create\Create;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CreateAlliance implements ActionControllerInterface
 {
@@ -19,15 +20,19 @@ final class CreateAlliance implements ActionControllerInterface
     private $allianceJobRepository;
 
     private $allianceRepository;
+    private $userRepository;
+
 
     public function __construct(
         CreateAllianceRequestInterface $createAllianceRequest,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceRepositoryInterface $allianceRepository
+        AllianceRepositoryInterface $allianceRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->createAllianceRequest = $createAllianceRequest;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRepository = $allianceRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,7 +63,8 @@ final class CreateAlliance implements ActionControllerInterface
         $allianceId = $alliance->getId();
 
         $user->setAllianceId($allianceId);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $this->allianceJobRepository->truncateByUser($userId);
 

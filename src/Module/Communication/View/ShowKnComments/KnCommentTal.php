@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KnCommentTal implements KnCommentTalInterface
 {
@@ -56,7 +57,10 @@ final class KnCommentTal implements KnCommentTalInterface
         if ($this->comment->getUserName()) {
             return $this->comment->getUserName();
         }
-        return ResourceCache()->getUser($this->getUserId())->getName();
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId())->getUser();
     }
 
     public function getUserAvatarPath(): string
@@ -64,7 +68,10 @@ final class KnCommentTal implements KnCommentTalInterface
         if ($this->comment->getUserName()) {
             return '';
         }
-        return ResourceCache()->getUser($this->getUserId())->getFullAvatarPath();
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId())->getFullAvatarPath();
     }
 
     public function isDeleteable(): bool

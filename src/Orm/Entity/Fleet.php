@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FleetRepository")
@@ -150,9 +150,12 @@ class Fleet implements FleetInterface
         }
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
-        return new User($this->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 
     public function getPointSum(): int

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Module\Communication\Lib\ContactListModeEnum;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ContactRepository")
@@ -96,14 +96,20 @@ class Contact implements ContactInterface
         return $this;
     }
 
-    public function getRecipient(): User
+    public function getRecipient(): UserInterface
     {
-        return new User($this->getRecipientId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getRecipientId());
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
-        return new User($this->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 
     public function isFriendly(): bool

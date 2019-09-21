@@ -6,7 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Lib\AllianceMemberWrapper;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRepository")
@@ -187,7 +187,10 @@ class Alliance implements AllianceInterface
     {
         if ($this->members === null) {
             // @todo refactor
-            foreach (User::getListBy('WHERE allys_id=' . $this->getId()) as $user) {
+            global $container;
+            $list = $container->get(UserRepositoryInterface::class)->getByAlliance($this->getId());
+
+            foreach ($list as $user) {
                 $this->members[$user->getId()] = new AllianceMemberWrapper($user, $this);
             }
         }

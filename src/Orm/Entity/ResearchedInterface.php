@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use UserData;
-
 interface ResearchedInterface
 {
     public function getId(): int;
@@ -24,7 +22,7 @@ interface ResearchedInterface
 
     public function getResearch(): ResearchInterface;
 
-    public function getUser(): UserData;
+    public function getUser(): UserInterface;
 
     public function getResearchId(): int;
 }

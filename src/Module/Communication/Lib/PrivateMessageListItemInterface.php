@@ -3,11 +3,11 @@
 namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Entity\ContactInterface;
-use User;
+use Stu\Orm\Entity\UserInterface;
 
 interface PrivateMessageListItemInterface
 {
-    public function getSender(): User;
+    public function getSender(): UserInterface;
 
     public function getDate(): int;
 

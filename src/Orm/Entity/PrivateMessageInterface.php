@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface PrivateMessageInterface
 {
     public function getId(): int;
@@ -40,7 +38,7 @@ interface PrivateMessageInterface
 
     public function setCategory(PrivateMessageFolderInterface $folder): PrivateMessageInterface;
 
-    public function getSender(): User;
+    public function getSender(): UserInterface;
 
-    public function getRecipient(): User;
+    public function getRecipient(): UserInterface;
 }

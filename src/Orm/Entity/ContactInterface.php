@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface ContactInterface
 {
     public function getId(): int;
@@ -28,9 +26,9 @@ interface ContactInterface
 
     public function setDate(int $date): ContactInterface;
 
-    public function getRecipient(): User;
+    public function getRecipient(): UserInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function isFriendly(): bool;
 

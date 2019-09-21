@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Repository\UserRepositoryInterface;
+
 abstract class DatabaseTopList
 {
 
     private $user_id = null;
 
-    function __construct($user_id)
+    function __construct(int $user_id)
     {
         $this->user_id = $user_id;
     }
@@ -19,6 +21,9 @@ abstract class DatabaseTopList
 
     public function getUser()
     {
-        return ResourceCache()->getUser($this->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->user_id);
     }
 }

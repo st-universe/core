@@ -2,7 +2,7 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<div style="width: 150px;" tal:condition="not:THIS/getUser/isInAlliance">
+		<div style="width: 150px;" tal:condition="not:THIS/getUser/getAllianceId">
 			<div class="divhead">Aktionen</div>
 			<div class="divbody" style="padding: 10px;">
 				<a href="?CREATE_ALLIANCE=1" class="linkbutton">Allianz gründen</a>

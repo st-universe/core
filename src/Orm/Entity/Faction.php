@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FactionRepository")
@@ -115,7 +115,9 @@ class Faction implements FactionInterface
     public function getPlayerAmount(): int
     {
         // @todo refactor
-        return User::getAmountByFaction($this->getId());
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->getAmountByFaction($this->getId());
     }
 
     public function hasFreePlayerSlots(): bool

@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use User;
 
 interface AllianceBoardTopicInterface
 {
@@ -31,7 +30,7 @@ interface AllianceBoardTopicInterface
 
     public function setSticky(bool $sticky): AllianceBoardTopicInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function getPages(): ?array;
 

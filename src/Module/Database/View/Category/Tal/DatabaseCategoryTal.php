@@ -6,7 +6,7 @@ namespace Stu\Module\Database\View\Category\Tal;
 
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
-use UserData;
+use Stu\Orm\Entity\UserInterface;
 
 final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 {
@@ -19,7 +19,7 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
     public function __construct(
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         DatabaseCategoryInterface $databaseCategory,
-        UserData $user
+        UserInterface $user
     ) {
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->databaseCategory = $databaseCategory;

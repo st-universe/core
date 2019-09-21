@@ -7,10 +7,10 @@ namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use User;
-use UserData;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KnPostTal implements KnPostTalInterface
 {
@@ -23,7 +23,7 @@ final class KnPostTal implements KnPostTalInterface
     public function __construct(
         KnCommentRepositoryInterface $knCommentRepository,
         KnPostInterface $post,
-        UserData $currentUser
+        UserInterface $currentUser
     ) {
         $this->post = $post;
         $this->currentUser = $currentUser;
@@ -35,9 +35,12 @@ final class KnPostTal implements KnPostTalInterface
         return $this->post->getId();
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
-        return new User($this->post->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->post->getUserId());
     }
 
     public function getUserId(): int

@@ -11,7 +11,7 @@ use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
-use UserData;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CrewCreator implements CrewCreatorInterface
 {
@@ -23,24 +23,25 @@ final class CrewCreator implements CrewCreatorInterface
 
     private $crewRepository;
 
+    private $userRepository;
+
     public function __construct(
         CrewRaceRepositoryInterface $crewRaceRepository,
         ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        CrewRepositoryInterface $crewRepository
+        CrewRepositoryInterface $crewRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->crewRaceRepository = $crewRaceRepository;
         $this->shipRumpCategoryRoleCrewRepository = $shipRumpCategoryRoleCrewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->crewRepository = $crewRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function create(int $userId): CrewInterface
     {
-        /**
-         * @var UserData $user
-         */
-        $user = ResourceCache()->getUser($userId);
+        $user = $this->userRepository->find($userId);
 
         $arr = [];
         $raceList = $this->crewRaceRepository->getByFaction((int)$user->getFaction());

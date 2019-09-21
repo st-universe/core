@@ -7,7 +7,7 @@ namespace Stu\Module\Index\View\ShowResetPassword;
 use InvalidParamException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShowResetPassword implements ViewControllerInterface
 {
@@ -15,16 +15,20 @@ final class ShowResetPassword implements ViewControllerInterface
 
     private $showResetPasswordRequest;
 
+    private $userRepository;
+
     public function __construct(
-        ShowResetPasswordRequestInterface $showResetPasswordRequest
+        ShowResetPasswordRequestInterface $showResetPasswordRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->showResetPasswordRequest = $showResetPasswordRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $user = User::getByPasswordResetToken($this->showResetPasswordRequest->getToken());
-        if ($user === false) {
+        $user = $this->userRepository->getByResetToken($this->showResetPasswordRequest->getToken());
+        if ($user === null) {
             throw new InvalidParamException;
         }
         $game->setTemplateFile('html/index_resetpassword.xhtml');

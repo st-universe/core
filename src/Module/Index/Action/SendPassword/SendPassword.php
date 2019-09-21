@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 use Zend\Mail\Exception\RuntimeException;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
@@ -22,12 +22,16 @@ final class SendPassword implements ActionControllerInterface
 
     private $config;
 
+    private $userRepository;
+
     public function __construct(
         SendPasswordRequestInterface $sendPasswordRequest,
-        ConfigInterface $config
+        ConfigInterface $config,
+        UserRepositoryInterface $userRepository
     ) {
         $this->sendPasswordRequest = $sendPasswordRequest;
         $this->config = $config;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,15 +44,16 @@ final class SendPassword implements ActionControllerInterface
             $game->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
-        $user = User::getByEmail($emailAddress);
-        if ($user === false) {
+        $user = $this->userRepository->getByEmail($emailAddress);
+        if ($user === null) {
             $game->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
 
         $token = sha1(time().$user->getLogin());
         $user->setPasswordToken($token);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $mail = new Message();
         $mail->addTo($user->getEmail());

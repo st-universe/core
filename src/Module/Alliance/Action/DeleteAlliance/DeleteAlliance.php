@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\AllianceList\AllianceList;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class DeleteAlliance implements ActionControllerInterface
 {
@@ -19,12 +20,16 @@ final class DeleteAlliance implements ActionControllerInterface
 
     private $allianceJobRepository;
 
+    private $userRepository;
+
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,8 +48,9 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $this->allianceActionManager->delete($allianceId);
 
-        $user->setAllianceId(0);
-        $user->save();
+        $user->setAllianceId(null);
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Die Allianz wurde gelöscht'));
     }

@@ -10,12 +10,12 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
-use User;
-use UserData;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Register implements ActionControllerInterface
 {
@@ -32,18 +32,22 @@ final class Register implements ActionControllerInterface
 
     private $privateMessageFolderRepository;
 
+    private $userRepository;
+
     public function __construct(
         RegisterRequestInterface $registerRequest,
         ResearchRepositoryInterface $researchRepository,
         ResearchedRepositoryInterface $researchedRepository,
         FactionRepositoryInterface $factionRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->registerRequest = $registerRequest;
         $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
         $this->factionRepository = $factionRepository;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,13 +64,13 @@ final class Register implements ActionControllerInterface
         if (mb_strlen($loginname) < 6) {
             return;
         }
-        if (User::getByLogin($loginname)) {
+        if ($this->userRepository->getByLogin($loginname)) {
             return;
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return;
         }
-        if (User::getByEmail($email)) {
+        if ($this->userRepository->getByEmail($email)) {
             return;
         }
         $factions = array_filter(
@@ -78,17 +82,19 @@ final class Register implements ActionControllerInterface
         if ($factions === []) {
             return;
         }
-        $obj = new UserData([]);
+        $obj = $this->userRepository->prototype();
         $obj->setLogin($loginname);
         $obj->setEmail($email);
         $obj->setFaction($factionId);
-        $obj->save();
+
+        $this->userRepository->save($obj);
+
         $obj->setUser('Siedler ' . $obj->getId());
         $obj->setTick(1);
         // @todo
         // $obj->setTick(rand(1,8));
         $obj->setCreationDate(time());
-        $obj->save();
+        $this->userRepository->save($obj);
 
         // Create default pm categories
         foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $categoryId => $label) {
@@ -145,11 +151,12 @@ final class Register implements ActionControllerInterface
         return false;
     }
 
-    private function sendRegistrationEmail(UserData $obj)
+    private function sendRegistrationEmail(UserInterface $obj)
     {
         $password = generatePassword();
         $obj->setPassword(sha1($password));
-        $obj->save();
+
+        $this->userRepository->save($obj);
 
         $text = "Hallo " . $obj->getLogin() . "!\n\r\n\r";
         $text .= "Vielen Dank für Deine Anmeldung bei Star Trek Universe. Du kannst Dich nun mit folgendem Passwort und Deinem gewählten Loginnamen einloggen.\n\r\n\r";

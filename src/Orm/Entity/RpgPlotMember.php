@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotMemberRepository")
@@ -71,9 +71,11 @@ class RpgPlotMember implements RpgPlotMemberInterface
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
         // @todo refactor
-        return new User($this->getUserId());
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 }

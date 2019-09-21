@@ -6,9 +6,9 @@ namespace Stu\Module\Database\View\Category\Tal;
 
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-use UserData;
 
 final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInterface
 {
@@ -26,7 +26,7 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
 
     public function createDatabaseCategoryTal(
         DatabaseCategoryInterface $databaseCategory,
-        UserData $user
+        UserInterface $user
     ): DatabaseCategoryTalInterface {
         return new DatabaseCategoryTal(
             $this,
@@ -37,7 +37,7 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
 
     public function createDatabaseCategoryEntryTal(
         DatabaseEntryInterface $databaseEntry,
-        UserData $user
+        UserInterface $user
     ): DatabaseCategoryEntryTalInterface {
         return new DatabaseCategoryEntryTal(
             $this->databaseUserRepository,

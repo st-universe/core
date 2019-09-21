@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use UserData;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity
@@ -87,11 +87,12 @@ class Researched implements ResearchedInterface
         return $this;
     }
 
-    public function getUser(): UserData
+    public function getUser(): UserInterface
     {
         // @todo refactor - use user entity
+        global $container;
 
-        return ResourceCache()->getObject('user', $this->getUserId());
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 
     public function getResearchId(): int

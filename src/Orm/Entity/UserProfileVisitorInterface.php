@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface UserProfileVisitorInterface
 {
     public function getId(): int;
@@ -20,7 +18,7 @@ interface UserProfileVisitorInterface
 
     public function setDate(int $date): UserProfileVisitorInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
-    public function getProfileUser(): User;
+    public function getProfileUser(): UserInterface;
 }

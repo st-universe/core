@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface AllianceJobInterface
 {
     public function getId(): int;
@@ -20,5 +18,5 @@ interface AllianceJobInterface
 
     public function setAlliance(AllianceInterface $alliance): AllianceJobInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 }

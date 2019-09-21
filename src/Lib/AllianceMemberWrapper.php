@@ -3,7 +3,7 @@
 namespace Lib;
 
 use Stu\Orm\Entity\AllianceInterface;
-use UserData;
+use Stu\Orm\Entity\UserInterface;
 
 class AllianceMemberWrapper
 {
@@ -11,7 +11,7 @@ class AllianceMemberWrapper
     private $user = null;
     private $alliance = null;
 
-    function __construct(UserData $user, AllianceInterface $alliance)
+    function __construct(UserInterface $user, AllianceInterface $alliance)
     {
         $this->user = $user;
         $this->alliance = $alliance;

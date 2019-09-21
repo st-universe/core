@@ -9,6 +9,7 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Edit\Edit;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class ChangeAvatar implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class ChangeAvatar implements ActionControllerInterface
 
     private $allianceActionManager;
 
+    private $allianceRepository;
+
     public function __construct(
-        AllianceActionManagerInterface $allianceActionManager
+        AllianceActionManagerInterface $allianceActionManager,
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->allianceActionManager = $allianceActionManager;
+        $this->allianceRepository = $allianceRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,7 +70,8 @@ final class ChangeAvatar implements ActionControllerInterface
         imagecopy($newImage, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
         imagepng($newImage, AVATAR_ALLIANCE_PATH_INTERNAL . $imageName . ".png");
         $alliance->setAvatar($imageName);
-        $alliance->save();
+
+        $this->allianceRepository->save($alliance);
 
         $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }

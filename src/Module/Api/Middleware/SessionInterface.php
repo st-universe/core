@@ -3,11 +3,11 @@
 namespace Stu\Module\Api\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
-use User;
+use Stu\Orm\Entity\UserInterface;
 
 interface SessionInterface
 {
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function resumeSession(ServerRequestInterface $request): void;
 }

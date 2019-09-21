@@ -12,6 +12,7 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
@@ -27,13 +28,16 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceBoardRepositoryInterface $allianceBoardRepository,
         AllianceRepositoryInterface $allianceRepository,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRelationRepository = $allianceRelationRepository;
@@ -41,6 +45,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $this->allianceRepository = $allianceRepository;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void
@@ -73,7 +78,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         foreach ($alliance->getMembers() as $userRelation) {
             $this->privateMessageSender->send(USER_NOONE, $userRelation->getUserId(), $text);
             $userRelation->getUser()->setAllianceId(0);
-            $userRelation->getUser()->save();
+
+            $this->userRepository->save($userRelation->getUser());
         }
         if ($alliance->getAvatar()) {
             @unlink(sprintf('%s/src/%s%s.png', APP_PATH, AVATAR_ALLIANCE_PATH, $alliance->getAvatar()));

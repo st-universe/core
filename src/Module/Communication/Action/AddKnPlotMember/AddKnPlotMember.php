@@ -10,7 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddKnPlotMember implements ActionControllerInterface
 {
@@ -23,17 +23,23 @@ final class AddKnPlotMember implements ActionControllerInterface
     private $rpgPlotRepository;
 
     private $privateMessageSender;
+    /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
 
     public function __construct(
         AddKnPlotMemberRequestInterface $addKnPlotMemberRequest,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->addKnPlotMemberRequest = $addKnPlotMemberRequest;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,8 +49,9 @@ final class AddKnPlotMember implements ActionControllerInterface
         if ($plot === null || $plot->getUserId() != $game->getUser()->getId() || !$plot->isActive()) {
             return;
         }
-        $recipient = User::getUserById($this->addKnPlotMemberRequest->getRecipientId());
-        if (!$recipient) {
+
+        $recipient = $this->userRepository->find($this->addKnPlotMemberRequest->getRecipientId());
+        if ($recipient === null) {
             $game->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }

@@ -11,7 +11,7 @@ use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
@@ -460,9 +460,12 @@ class Colony implements ColonyInterface
         return $this->getUserId() === USER_NOONE;
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
-        return new User($this->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 
     public function getBevFood(): int

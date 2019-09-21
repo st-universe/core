@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use UserData;
 
 final class TalFactory implements TalFactoryInterface
 {
@@ -25,7 +25,7 @@ final class TalFactory implements TalFactoryInterface
 
     public function createTalSelectedTech(
         ResearchInterface $research,
-        UserData $currentUser
+        UserInterface $currentUser
     ): TalSelectedTechInterface {
         return new TalSelectedTech(
             $this->researchedRepository,

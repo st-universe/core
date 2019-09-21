@@ -93,6 +93,7 @@ use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeStorage;
 use Stu\Orm\Entity\TradeTransfer;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\Weapon;
@@ -532,6 +533,11 @@ return [
         ContainerInterface $c
     ): TradeTransferRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TradeTransfer::class);
+    },
+    UserRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(User::class);
     },
     UserIpTableRepositoryInterface::class => function (
         ContainerInterface $c

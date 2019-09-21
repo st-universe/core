@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface TradeOfferInterface
 {
     public function getId(): int;
@@ -52,5 +50,5 @@ interface TradeOfferInterface
 
     public function setOfferedCommodity(CommodityInterface $offeredCommodity): TradeOfferInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 }

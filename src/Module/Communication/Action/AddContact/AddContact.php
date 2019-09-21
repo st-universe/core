@@ -9,7 +9,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddContact implements ActionControllerInterface
 {
@@ -21,14 +21,18 @@ final class AddContact implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $userRepository;
+
     public function __construct(
         AddContactRequestInterface $addContactRequest,
         ContactRepositoryInterface $contactRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        UserRepositoryInterface $userRepository
     ) {
         $this->addContactRequest = $addContactRequest;
         $this->contactRepository = $contactRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,12 +41,12 @@ final class AddContact implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $recipient = User::getUserById($this->addContactRequest->getRecipientId());
-        if (!$recipient) {
+        $recipient = $this->userRepository->find($this->addContactRequest->getRecipientId());
+        if ($recipient === null) {
             $game->addInformation(_('Dieser Spieler existiert nicht'));
             return;
         }
-        if (isSystemUser($recipient->getId())) {
+        if ($recipient->isContactable() === false) {
             $game->addInformation(_('Dieser Spieler kann nicht hinzugefügt werden'));
             return;
         }

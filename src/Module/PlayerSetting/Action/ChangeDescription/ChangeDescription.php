@@ -6,6 +6,7 @@ namespace Stu\Module\PlayerSetting\Action\ChangeDescription;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeDescription implements ActionControllerInterface
 {
@@ -13,10 +14,14 @@ final class ChangeDescription implements ActionControllerInterface
 
     private $changeDescriptionRequest;
 
+    private $userRepository;
+
     public function __construct(
-        ChangeDescriptionRequestInterface $changeDescriptionRequest
+        ChangeDescriptionRequestInterface $changeDescriptionRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->changeDescriptionRequest = $changeDescriptionRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -27,7 +32,8 @@ final class ChangeDescription implements ActionControllerInterface
         $user = $game->getUser();
 
         $user->setDescription($value);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Deine Beschreibung wurde geändert'));
     }

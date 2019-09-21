@@ -6,7 +6,8 @@ namespace Stu\Module\PlayerSetting\Action\ChangeSettings;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use UserData;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeSettings implements ActionControllerInterface
 {
@@ -14,10 +15,14 @@ final class ChangeSettings implements ActionControllerInterface
 
     private $changeSettingsRequest;
 
+    private $userRepository;
+
     public function __construct(
-        ChangeSettingsRequestInterface $changeSettingsRequest
+        ChangeSettingsRequestInterface $changeSettingsRequest,
+        UserRepositoryInterface $userRepository
     ) {
         $this->changeSettingsRequest = $changeSettingsRequest;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -25,24 +30,24 @@ final class ChangeSettings implements ActionControllerInterface
         $user = $game->getUser();
 
         $settings = [
-            function (UserData $user): void {
+            function (UserInterface $user): void {
                 $user->setEmailNotification(
-                    $this->changeSettingsRequest->getEmailNotification() === 1 ? 1 : 0
+                    $this->changeSettingsRequest->getEmailNotification() === 1 ? true : false
                 );
             },
-            function (UserData $user): void {
+            function (UserInterface $user): void {
                 $user->setSaveLogin(
-                    $this->changeSettingsRequest->getSaveLogin() === 1 ? 1 : 0
+                    $this->changeSettingsRequest->getSaveLogin() === 1 ? true : false
                 );
             },
-            function (UserData $user): void {
+            function (UserInterface $user): void {
                 $user->setStorageNotification(
-                    $this->changeSettingsRequest->getStorageNotification() === 1 ? 1 : 0
+                    $this->changeSettingsRequest->getStorageNotification() === 1 ? true : false
                 );
             },
-            function (UserData $user): void {
+            function (UserInterface $user): void {
                 $user->setShowOnlineState(
-                    $this->changeSettingsRequest->getShowOnlineState() === 1 ? 1 : 0
+                    $this->changeSettingsRequest->getShowOnlineState() === 1 ? true : false
                 );
             },
         ];
@@ -50,7 +55,7 @@ final class ChangeSettings implements ActionControllerInterface
             $callable($user);
         }
 
-        $user->save();
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Die Accounteinstellungen wurden aktualisiert'));
     }

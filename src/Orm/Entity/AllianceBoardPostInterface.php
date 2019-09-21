@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use User;
-
 interface AllianceBoardPostInterface
 {
     public function getId(): int;
@@ -32,7 +30,7 @@ interface AllianceBoardPostInterface
 
     public function setUserId(int $userId): AllianceBoardPostInterface;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function getTopic(): AllianceBoardTopicInterface;
 

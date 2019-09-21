@@ -3,13 +3,13 @@
 namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Entity\RpgPlotInterface;
-use User;
+use Stu\Orm\Entity\UserInterface;
 
 interface KnPostTalInterface
 {
     public function getId(): int;
 
-    public function getUser(): User;
+    public function getUser(): UserInterface;
 
     public function getUserId(): int;
 

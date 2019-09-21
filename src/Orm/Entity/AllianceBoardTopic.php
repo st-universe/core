@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
-use User;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceBoardTopicRepository")
@@ -135,9 +135,12 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): UserInterface
     {
-        return new User($this->getUserId());
+        // @todo refactor
+        global $container;
+
+        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 
     public function getPages(): ?array

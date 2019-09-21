@@ -6,11 +6,19 @@ namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ChangeAvatar implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
+    private $userRepository;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository
+    ) {
+        $this->userRepository = $userRepository;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -40,7 +48,8 @@ final class ChangeAvatar implements ActionControllerInterface
         imagepng($newImage, AVATAR_USER_PATH_INTERNAL . $imageName . ".png");
 
         $user->setAvatar($imageName);
-        $user->save();
+
+        $this->userRepository->save($user);
 
         $game->addInformation(_('Das Bild wurde erfolgreich hochgeladen'));
     }

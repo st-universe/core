@@ -11,6 +11,7 @@ use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AddKnPost implements ActionControllerInterface
 {
@@ -24,16 +25,20 @@ final class AddKnPost implements ActionControllerInterface
 
     private $rpgPlotRepository;
 
+    private $userRepository;
+
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -78,7 +83,8 @@ final class AddKnPost implements ActionControllerInterface
 
         if ($mark) {
             $user->setKNMark($post->getId());
-            $user->save();
+
+            $this->userRepository->save($user);
         }
 
         $game->setView(GameController::DEFAULT_VIEW);
