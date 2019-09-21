@@ -36,7 +36,6 @@ final class LoadWarpcoreMax implements ActionControllerInterface
         if (request::postString('fleet')) {
             $msg = array();
             $msg[] = _('Flottenbefehl ausgeführt: Aufladung des Warpkerns');
-            DB()->beginTransaction();
             foreach ($ship->getFleet()->getShips() as $key => $ship) {
                 if ($ship->getWarpcoreLoad() >= $ship->getWarpcoreCapacity()) {
                     continue;
@@ -50,7 +49,6 @@ final class LoadWarpcoreMax implements ActionControllerInterface
                 $game->addInformation(sprintf(_('%s: Der Warpkern wurde um %d Einheiten aufgeladen'), $ship->getName(),
                     $load));
             }
-            DB()->commitTransaction();
             $game->addInformationMerge($msg);
             return;
         }
