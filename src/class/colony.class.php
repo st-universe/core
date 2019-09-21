@@ -1,8 +1,8 @@
 <?php
 
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
@@ -13,9 +13,7 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 class ColonyData extends BaseTable {
 
-	public const PEOPLE_FOOD = 7;
-
-	const tablename = 'stu_colonies';
+    const tablename = 'stu_colonies';
 	protected $tablename = 'stu_colonies';
 
 	function __construct($data=array()) {
@@ -325,7 +323,7 @@ class ColonyData extends BaseTable {
 	}
 
 	function getBevFood() {
-		return ceil(($this->getWorkers()+$this->getWorkless())/static::PEOPLE_FOOD);
+		return ceil(($this->getWorkers()+$this->getWorkless())/ ColonyTick::PEOPLE_FOOD);
 	}
 
 	function upperMaxBev($value) {
@@ -557,45 +555,6 @@ class ColonyData extends BaseTable {
         $this->production = null;
 	}
 
-	/**
-	 */
-	public function hasAirfield() { #{{{
-	    // @todo refactor
-        global $container;
-
-        return $container->get(PlanetFieldRepositoryInterface::class)->getCountByColonyAndBuildingFunctionAndState(
-            $this->getId(),
-            [BUILDING_FUNCTION_AIRFIELD],
-            [0,1]
-        ) > 0;
-	} # }}}
-
-	/**
-	 */
-	public function hasModuleFab() { #{{{
-        // @todo refactor
-        global $container;
-
-        return $container->get(PlanetFieldRepositoryInterface::class)->getCountByColonyAndBuildingFunctionAndState(
-                $this->getId(),
-                BuildingFunctionTypeEnum::getModuleFabOptions(),
-                [0,1]
-            ) > 0;
-	} # }}}
-
-	/**
-	 */
-	public function hasShipyard() { #{{{
-        // @todo refactor
-        global $container;
-
-        return $container->get(PlanetFieldRepositoryInterface::class)->getCountByColonyAndBuildingFunctionAndState(
-                $this->getId(),
-                BuildingFunctionTypeEnum::getShipyardOptions(),
-                [0,1]
-            ) > 0;
-	} # }}}
-	
 	private $has_active_building_by_function = array();
 
 	/**

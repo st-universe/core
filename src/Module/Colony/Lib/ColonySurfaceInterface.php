@@ -21,4 +21,10 @@ interface ColonySurfaceInterface
     public function updateSurface(): array;
 
     public function getProductionSumClass(): string;
+
+    public function hasShipyard(): bool;
+
+    public function hasModuleFab(): bool;
+
+    public function hasAirfield(): bool;
 }

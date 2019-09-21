@@ -18,6 +18,7 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
+    public const PEOPLE_FOOD = 7;
     private $commodityRepository;
 
     private $researchedRepository;
@@ -276,7 +277,7 @@ final class ColonyTick implements ColonyTickInterface
     {
         if ($colony->getWorkless()) {
             if ($foodmissing > 0) {
-                $bev = $foodmissing * ColonyData::PEOPLE_FOOD;
+                $bev = $foodmissing * self::PEOPLE_FOOD;
                 if ($bev > $colony->getWorkless()) {
                     $bev = $colony->getWorkless();
                 }

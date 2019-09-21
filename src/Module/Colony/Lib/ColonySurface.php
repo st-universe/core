@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use ColonyData;
+use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -177,4 +178,30 @@ final class ColonySurface implements ColonySurfaceInterface
         return '';
     }
 
+    public function hasShipyard(): bool
+    {
+        return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
+                $this->colony->getId(),
+                BuildingFunctionTypeEnum::getShipyardOptions(),
+                [0, 1]
+            ) > 0;
+    }
+
+    public function hasModuleFab(): bool
+    {
+        return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
+                $this->colony->getId(),
+                BuildingFunctionTypeEnum::getModuleFabOptions(),
+                [0, 1]
+            ) > 0;
+    }
+
+    public function hasAirfield(): bool
+    {
+        return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
+                $this->colony->getId(),
+                [BUILDING_FUNCTION_AIRFIELD],
+                [0, 1]
+            ) > 0;
+    }
 }

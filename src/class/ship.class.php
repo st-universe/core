@@ -2,6 +2,7 @@
 
 
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -1568,7 +1569,12 @@ class ShipData extends BaseTable {
 		if (!$this->getCurrentColony()->ownedByCurrentUser()) {
 			return FALSE;
 		}
-		return $this->getCurrentColony()->hasAirfield();
+
+		// @todo refactor
+		global $container;
+		return $container->get(ColonyLibFactoryInterface::class)
+			->createColonySurface($this->getCurrentColony())
+			->hasAirfield();
 	} # }}}
 
 	/**

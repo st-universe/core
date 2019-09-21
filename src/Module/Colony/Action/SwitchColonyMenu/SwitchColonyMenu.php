@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
 use Colony;
 use request;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -26,14 +27,18 @@ final class SwitchColonyMenu implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingFunctionRepositoryInterface $buildingFunctionRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFunctionRepository = $buildingFunctionRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,6 +50,9 @@ final class SwitchColonyMenu implements ActionControllerInterface
             $userId
         );
         $menu = request::getIntFatal('menu');
+
+        $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
+
         switch ($menu) {
             case MENU_BUILD:
                 $game->setView("SHOW_BUILDMENU");
@@ -59,26 +67,26 @@ final class SwitchColonyMenu implements ActionControllerInterface
                 $game->setView("SHOW_BUILDING_MGMT");
                 return;
             case MENU_SHIPYARD:
-                if ($colony->hasShipyard()) {
+                if ($colonySurface->hasShipyard()) {
                     $game->setView(ShowShipyard::VIEW_IDENTIFIER);
                     $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
             case MENU_BUILDPLANS:
-                if ($colony->hasShipyard()) {
+                if ($colonySurface->hasShipyard()) {
                     $game->setView(ShowBuildPlans::VIEW_IDENTIFIER);
                     $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
             case MENU_AIRFIELD:
-                if ($colony->hasAirfield()) {
+                if ($colonySurface->hasAirfield()) {
                     $game->setView("SHOW_AIRFIELD");
                     return;
                 }
             case MENU_MODULEFAB:
-                if ($colony->hasModuleFab()) {
+                if ($colonySurface->hasModuleFab()) {
                     $game->setView('SHOW_MODULEFAB');
                     return;
                 }

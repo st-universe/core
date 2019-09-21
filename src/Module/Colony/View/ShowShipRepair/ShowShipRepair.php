@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
 use Ship;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -24,16 +25,20 @@ final class ShowShipRepair implements ViewControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyLibFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowShipRepairRequestInterface $showShipRepairRequest,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showShipRepairRequest = $showShipRepairRequest;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -54,7 +59,9 @@ final class ShowShipRepair implements ViewControllerInterface
             return;
         }
 
-        if ($colony->hasShipyard()) {
+        $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
+
+        if ($colonySurface->hasShipyard()) {
 
             $repairableShips = [];
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
