@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingGood;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
@@ -161,17 +162,18 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int
     {
-        return (int)$this->getEntityManager()->createNativeQuery(
-            'SELECT COUNT(f.id) FROM stu_colonies_fielddata f WHERE f.buildings_id = :buildingId AND f.colonies_id IN (
-                SELECT c.id FROM stu_colonies c WHERE c.user_id = :userId
-            )',
-            new ResultSetMapping()
-        )
-            ->setParameters([
-                'buildingId' => $buildingId,
-                'userId' => $userId,
-            ])
-            ->getSingleScalarResult();
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(f) FROM %s f WHERE f.buildings_id = :buildingId AND f.colonies_id IN (
+                    SELECT c.id FROM %s c WHERE c.user_id = :userId
+                )',
+                PlanetField::class,
+                Colony::class
+            )
+        )->setParameters([
+            'buildingId' => $buildingId,
+            'userId' => $userId,
+        ])->getSingleScalarResult();
     }
 
     public function getCountByColonyAndBuildingFunctionAndState(
@@ -181,7 +183,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     ): int {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(f.id) FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv IN(:state) AND f.buildings_id IN (
+                'SELECT COUNT(f) FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv IN(:state) AND f.buildings_id IN (
                     SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
                 )',
                 PlanetField::class,
@@ -196,14 +198,14 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
     public function getInConstructionByUser(int $userId): iterable
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult(PlanetField::class, 'f');
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT f.* FROM stu_colonies_fielddata f WHERE f.aktiv > 1 AND f.colonies_id IN (
-                SELECT c.id FROM stu_colonies c WHERE c.user_id = :userId
-            ) ORDER BY f.aktiv',
-            $rsm
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT f FROM %s f WHERE f.aktiv > 1 AND f.colonies_id IN (
+                    SELECT c.id FROM %s c WHERE c.user_id = :userId
+                ) ORDER BY f.aktiv',
+                PlanetField::class,
+                Colony::class
+            )
         )->setParameters([
             'userId' => $userId,
         ])->getResult();
