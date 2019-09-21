@@ -4,7 +4,7 @@
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<div style="width: 180px; float: left; text-align: center;">
 			<img src="runtime" style="width:150px;height:150px;" tal:attributes="src PROFILE/getFullAvatarPath" />
-			<div style="width: 100%;" tal:condition="not:PROFILE/isCurrentUser">
+			<div style="width: 100%;" tal:condition="not:IS_PROFILE_CURRENT_USER">
 				<br />
 				<br />
 				<div style="margin: auto; width: 530px;" class="divhead">Aktionen</div>
@@ -15,7 +15,7 @@
 								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id PROFILE/getId" />
 							</td>
 							<td style="text-align: center; width: 47%">
-								<tal:block tal:define="contact USER/getContact/${PROFILE/getId}; handle THIS/getUniqId">
+								<tal:block tal:define="contact CONTACT; handle THIS/getUniqId">
 									<tal:block tal:condition="contact">
 										<span tal:attributes="id handle">
 											<metal:macro tal:define="div handle" metal:use-macro="html/commmacros.xhtml/clmodeview" />

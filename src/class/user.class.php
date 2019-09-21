@@ -1,6 +1,5 @@
 <?php
 
-use Stu\Lib\ContactlistWrapper;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -228,12 +227,6 @@ class UserData extends BaseTable {
 		$this->setFieldValue('show_online_status',$value,'getShowOnlineState');
 	}
 
-	/**
-	 */
-	public function getContact() { #{{{
-		return new ContactlistWrapper($this);
-	} # }}}
-
 	public function isFriend(&$userId) {
 		// @todo refactor
 		global $container;
@@ -292,12 +285,6 @@ class UserData extends BaseTable {
 		}
 		return $this->sessiondata;
 	}
-
-	/**
-	 */
-	public function isCurrentUser() { #{{{
-		return $this->getId() == currentUser()->getId();
-	} # }}}
 
 	/**
 	 */
@@ -404,13 +391,6 @@ class UserData extends BaseTable {
 		}
 		return $this->crew_in_training;
 	} # }}}
-
-	public function generatePasswordToken() {
-		$tok = sha1(time().$this->getLogin());
-		$this->setPasswordToken($tok);
-		$this->save();
-		return $tok;
-	}
 
 	public function setPasswordToken($value) {
 		$this->setFieldValue('password_token',$value,'getPasswordToken');

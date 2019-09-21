@@ -45,7 +45,11 @@ final class SendPassword implements ActionControllerInterface
             $game->addInformation(_('Die eMail-Adresse ist nicht gültig'));
             return;
         }
-        $token = $user->generatePasswordToken();
+
+        $token = sha1(time().$user->getLogin());
+        $user->setPasswordToken($token);
+        $user->save();
+
         $mail = new Message();
         $mail->addTo($user->getEmail());
         $mail->setSubject(_('Star Trek Universe - Password vergessen'));
