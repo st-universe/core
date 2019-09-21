@@ -125,7 +125,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u WHERE u.id IN (
-                    SELECT cl.id FROM %s cl WHERE cl.mode = 1 AND cl.recipient = :userId
+                    SELECT cl.user_id FROM %s cl WHERE cl.mode = 1 AND cl.recipient = :userId
                 ) OR (u.allys_id IS NOT NULL AND u.allys_id = :allianceId) AND u.id != :userId
                 ORDER BY u.id',
                 User::class,
