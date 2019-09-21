@@ -34,20 +34,25 @@ class ColonyStorage implements ColonyStorageInterface
      */
     private $commodity;
 
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getColonyId(): int
+    public function getColony(): ColonyInterface
     {
-        return $this->colonies_id;
+        return $this->colony;
     }
 
-    public function setColonyId(int $colonyId): ColonyStorageInterface
+    public function setColony(ColonyInterface $colony): ColonyStorageInterface
     {
-        $this->colonies_id = $colonyId;
-
+        $this->colony = $colony;
         return $this;
     }
 

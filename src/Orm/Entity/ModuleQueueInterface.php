@@ -6,9 +6,9 @@ interface ModuleQueueInterface
 {
     public function getId(): int;
 
-    public function getColonyId(): int;
+    public function getColony(): ColonyInterface;
 
-    public function setColonyId(int $colonyId): ModuleQueueInterface;
+    public function setColony(ColonyInterface $colony): ModuleQueueInterface;
 
     public function getModuleId(): int;
 

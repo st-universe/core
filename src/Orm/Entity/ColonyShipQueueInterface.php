@@ -6,9 +6,9 @@ interface ColonyShipQueueInterface
 {
     public function getId(): int;
 
-    public function getColonyId(): int;
+    public function getColony(): ColonyInterface;
 
-    public function setColonyId(int $colonyId): ColonyShipQueueInterface;
+    public function setColony(ColonyInterface $colony): ColonyShipQueueInterface;
 
     public function getUserId(): int;
 

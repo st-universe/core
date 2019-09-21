@@ -36,20 +36,25 @@ class ModuleQueue implements ModuleQueueInterface
      */
     private $module;
 
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getColonyId(): int
+    public function getColony(): ColonyInterface
     {
-        return $this->colony_id;
+        return $this->colony;
     }
 
-    public function setColonyId(int $colonyId): ModuleQueueInterface
+    public function setColony(ColonyInterface $colony): ModuleQueueInterface
     {
-        $this->colony_id = $colonyId;
-
+        $this->colony = $colony;
         return $this;
     }
 

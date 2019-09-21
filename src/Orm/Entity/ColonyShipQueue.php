@@ -56,20 +56,25 @@ class ColonyShipQueue implements ColonyShipQueueInterface
      */
     private $shipRump;
 
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getColonyId(): int
+    public function getColony(): ColonyInterface
     {
-        return $this->colony_id;
+        return $this->colony;
     }
 
-    public function setColonyId(int $colonyId): ColonyShipQueueInterface
+    public function setColony(ColonyInterface $colony): ColonyShipQueueInterface
     {
-        $this->colony_id = $colonyId;
-
+        $this->colony = $colony;
         return $this;
     }
 

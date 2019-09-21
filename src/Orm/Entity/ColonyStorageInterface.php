@@ -6,9 +6,9 @@ interface ColonyStorageInterface
 {
     public function getId(): int;
 
-    public function getColonyId(): int;
+    public function getColony(): ColonyInterface;
 
-    public function setColonyId(int $colonyId): ColonyStorageInterface;
+    public function setColony(ColonyInterface $colony): ColonyStorageInterface;
 
     public function getGoodId(): int;
 
