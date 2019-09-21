@@ -983,7 +983,7 @@ class ShipData extends BaseTable {
 			$colonyRepository = $container->get(ColonyRepositoryInterface::class);
 
 			$this->currentColony = $colonyRepository->getByPosition(
-				(int)$this->getSystem(),
+				(int)$this->getSystemsId(),
 				(int)$this->getPosX(),
 				(int)$this->getPosY()
 			);

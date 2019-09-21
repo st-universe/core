@@ -75,7 +75,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     public function getByPosition(int $systemId, int $sx, int $sy): ?ColonyInterface
     {
         return $this->findOneBy([
-            'system_id' => $systemId,
+            'systems_id' => $systemId,
             'sx' => $sx,
             'sy' => $sy
         ]);
