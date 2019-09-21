@@ -185,7 +185,7 @@ class PlanetField implements PlanetFieldInterface
 
     public function hasBuilding(): bool
     {
-        return $this->getBuildingId() !== null;
+        return $this->getBuilding() !== null;
     }
 
     public function getCssClass(): string
