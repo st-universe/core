@@ -11,8 +11,6 @@ use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
-use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use User;
 
 /**
@@ -81,15 +79,23 @@ class Colony implements ColonyInterface
     /** @Column(type="boolean") */
     private $immigrationstate = true;
 
+    /**
+     * @ManyToOne(targetEntity="PlanetType")
+     * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
+     */
+    private $planetType;
+
+    /**
+     * @ManyToOne(targetEntity="StarSystem")
+     * @JoinColumn(name="systems_id", referencedColumnName="id")
+     */
+    private $starSystem;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
 
     private $positive_effect_primary;
-
-    private $planettype;
-
-    private $system;
 
     private $storage;
 
@@ -109,12 +115,6 @@ class Colony implements ColonyInterface
     public function getColonyClass(): int
     {
         return $this->colonies_classes_id;
-    }
-
-    public function setColonyClass(int $colonies_classes_id): ColonyInterface
-    {
-        $this->colonies_classes_id = $colonies_classes_id;
-        return $this;
     }
 
     public function getUserId(): int
@@ -153,12 +153,6 @@ class Colony implements ColonyInterface
     public function getSystemsId(): int
     {
         return $this->systems_id;
-    }
-
-    public function setSystemsId(int $systems_id): ColonyInterface
-    {
-        $this->systems_id = $systems_id;
-        return $this;
     }
 
     public function getName(): string
@@ -303,13 +297,13 @@ class Colony implements ColonyInterface
 
     public function getPlanetType(): PlanetTypeInterface
     {
-        if ($this->planettype === null) {
-            // @todo refactor
-            global $container;
+        return $this->planetType;
+    }
 
-            $this->planettype = $container->get(PlanetTypeRepositoryInterface::class)->find((int)$this->getColonyClass());
-        }
-        return $this->planettype;
+    public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface
+    {
+        $this->planetType = $planetType;
+        return $this;
     }
 
     public function getStorageSum(): int
@@ -336,13 +330,13 @@ class Colony implements ColonyInterface
 
     public function getSystem(): StarSystemInterface
     {
-        if ($this->system === null) {
-            // @todo refactor
-            global $container;
+        return $this->starSystem;
+    }
 
-            $this->system = $container->get(StarSystemRepositoryInterface::class)->find((int)$this->getSystemsId());
-        }
-        return $this->system;
+    public function setStarSystem(StarSystemInterface $starSystem): ColonyInterface
+    {
+        $this->starSystem = $starSystem;
+        return $this;
     }
 
     public function getEpsProduction(): int
@@ -466,7 +460,7 @@ class Colony implements ColonyInterface
 
     public function getUser(): User
     {
-        return ResourceCache()->getObject('user', $this->getUserId());
+        return new User($this->getUserId());
     }
 
     public function getBevFood(): int

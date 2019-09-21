@@ -11,8 +11,6 @@ interface ColonyInterface
 
     public function getColonyClass(): int;
 
-    public function setColonyClass(int $colonies_classes_id): ColonyInterface;
-
     public function getUserId(): int;
 
     public function setUserId(int $user_id): ColonyInterface;
@@ -26,8 +24,6 @@ interface ColonyInterface
     public function setSy(int $sy): ColonyInterface;
 
     public function getSystemsId(): int;
-
-    public function setSystemsId(int $systems_id): ColonyInterface;
 
     public function getName(): string;
 
@@ -84,6 +80,8 @@ interface ColonyInterface
 
     public function getPlanetType(): PlanetTypeInterface;
 
+    public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;
+
     public function getStorageSum(): int;
 
     public function storagePlaceLeft(): bool;
@@ -91,6 +89,8 @@ interface ColonyInterface
     public function isInSystem(): bool;
 
     public function getSystem(): StarSystemInterface;
+
+    public function setStarSystem(StarSystemInterface $starSystem): ColonyInterface;
 
     public function getEpsProduction(): int;
 
