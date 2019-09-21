@@ -114,8 +114,11 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    public function getCommodityConsumingByColonyAndCommodity(int $colonyId, int $commodityId, ?int $limit = null): iterable
-    {
+    public function getCommodityConsumingByColonyAndCommodity(
+        int $colonyId,
+        int $commodityId,
+        ?int $limit = null
+    ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
@@ -214,7 +217,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 PlanetField::class
             )
         )->setParameters([
-            'finishTime' => $finishTime
+            'finishTime' => $finishTime,
         ])->getResult();
     }
 
@@ -226,7 +229,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 PlanetField::class
             )
         )->setParameters([
-            'colonyId' => $colonyId
+            'colonyId' => $colonyId,
         ])->getResult();
     }
 
@@ -238,7 +241,21 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
                 PlanetField::class
             )
         )->setParameters([
-            'colonyId' => $colonyId
+            'colonyId' => $colonyId,
         ])->getResult();
+    }
+
+    public function getEnergyProductionByColony(int $colonyId): int
+    {
+       return (int)$this->getEntityManager()->createQuery(
+           sprintf(
+               'SELECT SUM(b.eps_proc) FROM %s cfd LEFT JOIN %s b WITH b.id = cfd.buildings_id WHERE
+                cfd.aktiv = 1 AND cfd.colonies_id = :colonyId',
+               PlanetField::class,
+               Building::class
+           )
+       )->setParameters([
+           'colonyId' => $colonyId
+       ])->getSingleScalarResult();
     }
 }

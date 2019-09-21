@@ -341,8 +341,10 @@ class Colony implements ColonyInterface
 
     public function getEpsProduction(): int
     {
-        return (int)DB()->query("SELECT SUM(b.eps_proc) FROM stu_colonies_fielddata as a LEFT JOIN
-            stu_buildings as b ON b.id=a.buildings_id WHERE a.aktiv=1 AND a.colonies_id=" . $this->getId(), 1);
+        // @todo refactor
+        global $container;
+
+        return $container->get(PlanetFieldRepositoryInterface::class)->getEnergyProductionByColony($this->getId());
     }
 
     /**
