@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class DisassembleShip implements ActionControllerInterface
@@ -22,14 +23,18 @@ final class DisassembleShip implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->shipLoader = $shipLoader;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +54,8 @@ final class DisassembleShip implements ActionControllerInterface
         }
 
         $colony->lowerEps(20);
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
 
         $ship_id = request::getIntFatal('ship_id');
 

@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use ColonyData;
 use Doctrine\Common\Collections\Collection;
 
 interface BuildingInterface
@@ -79,8 +78,6 @@ interface BuildingInterface
 
     public function getBuildingType(): int;
 
-    public function getEpsProductionDisplay(): string;
-
     public function getEpsProductionCss(): string;
 
     public function hasLimit(): bool;
@@ -107,9 +104,9 @@ interface BuildingInterface
      */
     public function getFunctions(): Collection;
 
-    public function postDeactivation(ColonyData $colony): void;
+    public function postDeactivation(ColonyInterface $colony): void;
 
-    public function postActivation(ColonyData $colony): void;
+    public function postActivation(ColonyInterface $colony): void;
 
     public function isRemoveAble(): bool;
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\UpgradeBuilding;
 
-use ColonyData;
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -13,9 +12,11 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\BuildingUpgradeCostInterface;
 use Stu\Orm\Entity\BuildingUpgradeInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -36,13 +37,16 @@ final class UpgradeBuilding implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingUpgradeRepositoryInterface $buildingUpgradeRepository,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         ResearchedRepositoryInterface $researchedRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingUpgradeRepository = $buildingUpgradeRepository;
@@ -50,6 +54,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $this->researchedRepository = $researchedRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -144,8 +149,8 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         $field->setBuilding($building);
         $field->setActive(time() + $building->getBuildtime());
-        $colony->save();
 
+        $this->colonyRepository->save($colony);
         $this->planetFieldRepository->save($field);
 
         $game->addInformationf(
@@ -155,7 +160,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         );
     }
 
-    private function removeBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
+    private function removeBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -189,11 +194,10 @@ final class UpgradeBuilding implements ActionControllerInterface
         $field->clearBuilding();
 
         $this->planetFieldRepository->save($field);
-
-        $colony->save();
+        $this->colonyRepository->save($colony);
     }
 
-    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -210,8 +214,8 @@ final class UpgradeBuilding implements ActionControllerInterface
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
+        $this->colonyRepository->save($colony);
 
-        $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
         $game->addInformationf(

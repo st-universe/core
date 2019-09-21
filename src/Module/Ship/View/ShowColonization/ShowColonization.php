@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowColonization;
 
-use Colony;
 use request;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonization implements ViewControllerInterface
 {
@@ -19,12 +19,16 @@ final class ShowColonization implements ViewControllerInterface
 
     private $colonyLibFactory;
 
+    private $colonyRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,8 +40,11 @@ final class ShowColonization implements ViewControllerInterface
             $userId
         );
 
-        $colonyId = request::getIntFatal('colid');
-        $colony = new Colony($colonyId);
+        $colony = $this->colonyRepository->find((int)request::getIntFatal('colid'));
+
+        if ($colony === null) {
+            return;
+        }
         // @todo add sanity checks
 
         $game->setPageTitle(_('Kolonie gründen'));

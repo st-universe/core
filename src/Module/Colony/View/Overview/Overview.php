@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\Overview;
 
-use Colony;
-use ColonyData;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -17,22 +19,30 @@ final class Overview implements ViewControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyLibFactory;
+
+    private $colonyRepository;
+
     public function __construct(
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyLibFactoryInterface $colonyLibFactory,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyLibFactory = $colonyLibFactory;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
 
-        $colonyList = Colony::getListBy(sprintf('user_id = %d', $userId));
+        $colonyList = $this->colonyRepository->getOrderedListByUser($userId);
 
         $colonyIdList = array_map(
-            function (ColonyData $colony): int {
+            function (ColonyInterface $colony): int {
                 return (int) $colony->getId();
             },
             $colonyList
@@ -47,7 +57,12 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'COLONY_LIST',
-            $colonyList
+            array_map(
+                function (ColonyInterface $colony): ColonyListItemInterface {
+                    return $this->colonyLibFactory->createColonyListItem($colony);
+                },
+                $colonyList
+            )
         );
         $game->setTemplateVar(
             'TERRAFORMING_LIST',

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Colony;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -21,20 +22,24 @@ final class PlanetColonization implements PlanetColonizationInterface
 
     private $colonyLibFactory;
 
+    private $colonyRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityRepositoryInterface $commodityRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->commodityRepository = $commodityRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function colonize(
-        Colony $colony,
+        ColonyInterface $colony,
         int $userId,
         BuildingInterface $building,
         ?PlanetFieldInterface $field = null
@@ -71,7 +76,8 @@ final class PlanetColonization implements PlanetColonizationInterface
         $colony->setUserId($userId);
         $colony->upperEps($building->getEpsStorage());
         $colony->setName(_('Kolonie'));
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
 
         $this->colonyStorageManager->upperStorage(
             $colony,

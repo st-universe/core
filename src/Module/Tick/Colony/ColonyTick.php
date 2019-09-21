@@ -2,14 +2,15 @@
 
 namespace Stu\Module\Tick\Colony;
 
-use ColonyData;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Research\ResearchState;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -33,6 +34,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     private $msg = [];
 
     public function __construct(
@@ -42,7 +45,8 @@ final class ColonyTick implements ColonyTickInterface
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -51,20 +55,21 @@ final class ColonyTick implements ColonyTickInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
-    public function work(ColonyData $colony): void
+    public function work(ColonyInterface $colony): void
     {
         $this->mainLoop($colony);
         $this->proceedStorage($colony);
 
-        $colony->save();
+        $this->colonyRepository->save($colony);
 
         $this->proceedModules($colony);
         $this->sendMessages($colony);
     }
 
-    private function mainLoop(ColonyData $colony)
+    private function mainLoop(ColonyInterface $colony)
     {
         $i = 1;
         $storage = $colony->getStorage();
@@ -107,7 +112,7 @@ final class ColonyTick implements ColonyTickInterface
         $colony->setEps($colony->getEps() + $colony->getEpsProduction());
     }
 
-    private function deactivateBuilding(ColonyData $colony, PlanetFieldInterface $field, int $commodityId): void
+    private function deactivateBuilding(ColonyInterface $colony, PlanetFieldInterface $field, int $commodityId): void
     {
         if ($commodityId === 0) {
             $ext = "Energie";
@@ -128,7 +133,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->planetFieldRepository->save($field);
     }
 
-    private function getBuildingToDeactivateByGood(ColonyData $colony, int $commodityId): PlanetFieldInterface
+    private function getBuildingToDeactivateByGood(ColonyInterface $colony, int $commodityId): PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
             $colony->getId(),
@@ -138,14 +143,14 @@ final class ColonyTick implements ColonyTickInterface
         return current($fields);
     }
 
-    private function getBuildingToDeactivateByEpsUsage(ColonyData $colony): PlanetFieldInterface
+    private function getBuildingToDeactivateByEpsUsage(ColonyInterface $colony): PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), 1);
 
         return current($fields);
     }
 
-    private function proceedStorage(ColonyData $colony): void
+    private function proceedStorage(ColonyInterface $colony): void
     {
         $emigrated = 0;
         $production = $this->proceedFood($colony);
@@ -228,7 +233,7 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function proceedModules(ColonyData $colony): void
+    private function proceedModules(ColonyInterface $colony): void
     {
         foreach ($this->moduleQueueRepository->getByColony((int) $colony->getId()) as $queue) {
             if ($colony->hasActiveBuildingWithFunction($queue->getBuildingFunction())) {
@@ -251,7 +256,7 @@ final class ColonyTick implements ColonyTickInterface
     /**
      * @return ColonyProduction[]
      */
-    private function proceedFood(ColonyData $colony): array
+    private function proceedFood(ColonyInterface $colony): array
     {
         $foodvalue = $colony->getBevFood();
         $prod = &$colony->getProductionRaw();
@@ -266,14 +271,14 @@ final class ColonyTick implements ColonyTickInterface
         return $prod;
     }
 
-    private function proceedImmigration(ColonyData $colony): void
+    private function proceedImmigration(ColonyInterface $colony): void
     {
         // @todo
         $im = $colony->getImmigration();
         $colony->upperWorkless($im);
     }
 
-    private function proceedEmigration(ColonyData $colony, $foodrelated = false, $foodmissing = false)
+    private function proceedEmigration(ColonyInterface $colony, $foodrelated = false, $foodmissing = false)
     {
         if ($colony->getWorkless()) {
             if ($foodmissing > 0) {
@@ -297,7 +302,7 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function sendMessages(ColonyData $colony): void
+    private function sendMessages(ColonyInterface $colony): void
     {
         if ($this->msg === []) {
             return;
@@ -312,7 +317,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->msg = [];
     }
 
-    private function mergeProduction(ColonyData $colony, Collection $commodityProduction): void
+    private function mergeProduction(ColonyInterface $colony, Collection $commodityProduction): void
     {
         $prod = $colony->getProductionRaw();
         foreach ($commodityProduction as $obj) {

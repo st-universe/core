@@ -2,8 +2,8 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use ColonyData;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 
@@ -16,7 +16,7 @@ class ModuleScreenTab
 
     public function __construct(
         int $moduleType,
-        ColonyData $colony,
+        ColonyInterface $colony,
         ShipRumpInterface $rump,
         ?ShipBuildplanInterface $buildplan = null
     ) {

@@ -15,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -37,6 +38,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $commodityRepository;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -44,7 +47,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ShipCrewRepositoryInterface $shipCrewRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyStorageManagerInterface $colonyStorageManager,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -53,6 +57,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->commodityRepository = $commodityRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -326,7 +331,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
             }
             $shipobj->save();
         }
-        $colony->save();
+        $this->colonyRepository->save($colony);
+
         $game->addInformationMerge($msg);
     }
 

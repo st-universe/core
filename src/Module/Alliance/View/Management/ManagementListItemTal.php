@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
-use Colony;
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use UserData;
 
 final class ManagementListItemTal
 {
     private $shipRumpRepository;
+
+    private $colonyRepository;
 
     private $alliance;
 
@@ -21,6 +23,7 @@ final class ManagementListItemTal
 
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,
+        ColonyRepositoryInterface $colonyRepository,
         AllianceInterface $alliance,
         UserData $user,
         int $currentUserId
@@ -29,6 +32,7 @@ final class ManagementListItemTal
         $this->currentUserId = $currentUserId;
         $this->alliance = $alliance;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function getId(): int
@@ -63,7 +67,7 @@ final class ManagementListItemTal
 
     public function getColonies(): array
     {
-        return Colony::getListBy('user_id=' . $this->user->getId());
+        return $this->colonyRepository->getOrderedListByUser($this->user->getId());
     }
 
     public function getShipRumpList(): array

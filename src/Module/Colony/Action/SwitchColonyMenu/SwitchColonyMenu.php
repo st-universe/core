@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
-use Colony;
 use request;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
@@ -14,6 +13,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -112,7 +112,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
         }
     }
 
-    private function hasSpecialBuilding(Colony $colony, $function)
+    private function hasSpecialBuilding(ColonyInterface $colony, $function)
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
                 $colony->getId(),

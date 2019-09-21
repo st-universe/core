@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Colony;
 use Ship;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -26,18 +25,17 @@ class ColonyShipRepair implements ColonyShipRepairInterface
     /** @Column(type="integer") * */
     private $field_id;
 
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
     private $field;
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setColonyId($colony_id): ColonyShipRepairInterface
-    {
-        $this->colony_id = $colony_id;
-
-        return $this;
     }
 
     public function getColonyId(): int
@@ -83,9 +81,15 @@ class ColonyShipRepair implements ColonyShipRepairInterface
         return $this->field;
     }
 
-    public function getColony(): Colony
+    public function getColony(): ColonyInterface
     {
-        return ResourceCache()->getObject(CACHE_COLONY, $this->getColonyId());
+        return $this->colony;
+    }
+
+    public function setColony(ColonyInterface $colony): ColonyShipRepairInterface
+    {
+        $this->colony = $colony;
+        return $this;
     }
 
     public function getShip(): Ship

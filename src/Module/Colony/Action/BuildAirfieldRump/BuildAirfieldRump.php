@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildAirfieldRump implements ActionControllerInterface
@@ -22,14 +23,18 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -94,7 +99,8 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
         $this->colonyStorageManager->upperStorage($colony, $rump->getCommodity(), 1);
 
-        $colony->save();
+        $this->colonyRepository->save($colony);
+
         $game->addInformationf(_('%s-Klasse wurde gebaut'), $rump->getName());
     }
 

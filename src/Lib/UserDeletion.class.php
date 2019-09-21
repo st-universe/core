@@ -2,7 +2,6 @@
 
 namespace Stu\Lib;
 
-use Colony;
 use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -88,10 +87,13 @@ class UserDeletion
 
     public function handleColonies()
     {
-        $result = Colony::getListBy('user_id=' . $this->getUser()->getId());
-        foreach ($result as $key => $obj) {
-            $obj->deepDelete();
-        }
+        /**
+         * @todo Re-implement colony abandoning
+         */
+//        $result = Colony::getListBy('user_id=' . $this->getUser()->getId());
+//        foreach ($result as $key => $obj) {
+//            $obj->deepDelete();
+//        }
     }
 
     public function handleContactlist()

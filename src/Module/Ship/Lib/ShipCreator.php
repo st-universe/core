@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use ColonyData;
 use ShipData;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
@@ -23,7 +23,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->shipSystemRepository = $shipSystemRepository;
     }
 
-    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyData $colony = null): ShipData
+    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipData
     {
         $ship = new ShipData();
         $ship->setUserId($userId);

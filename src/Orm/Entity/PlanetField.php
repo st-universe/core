@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Colony;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -59,9 +58,13 @@ class PlanetField implements PlanetFieldInterface
      */
     private $terraforming;
 
-    private $buildmode = false;
-
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
+     */
     private $colony;
+
+    private $buildmode = false;
 
     private $terraformingState;
 
@@ -77,12 +80,6 @@ class PlanetField implements PlanetFieldInterface
     public function getColonyId(): int
     {
         return $this->colonies_id;
-    }
-
-    public function setColonyId(int $colonyId): PlanetFieldInterface
-    {
-        $this->colonies_id = $colonyId;
-        return $this;
     }
 
     public function getFieldId(): int
@@ -250,12 +247,15 @@ class PlanetField implements PlanetFieldInterface
         $this->setActive(0);
     }
 
-    public function getColony(): Colony
+    public function getColony(): ColonyInterface
     {
-        if ($this->colony === null) {
-            $this->colony = new Colony($this->getColonyId());
-        }
         return $this->colony;
+    }
+
+    public function setColony(ColonyInterface $colony): PlanetFieldInterface
+    {
+        $this->colony = $colony;
+        return $this;
     }
 
     public function getTerraforming(): ?TerraformingInterface

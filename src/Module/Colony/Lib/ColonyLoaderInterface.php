@@ -2,11 +2,9 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use Colony;
+use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyLoaderInterface
 {
-    public function byId(int $colonyId): Colony;
-
-    public function byIdAndUser(int $colonyId, int $userId): Colony;
+    public function byIdAndUser(int $colonyId, int $userId): ColonyInterface;
 }

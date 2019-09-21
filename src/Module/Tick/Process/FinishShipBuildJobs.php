@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use ColonyData;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class FinishShipBuildJobs implements ProcessTickInterface
@@ -17,24 +17,25 @@ final class FinishShipBuildJobs implements ProcessTickInterface
 
     private $privateMessageSender;
 
+    private $colonyRepository;
+
     public function __construct(
         ShipCreatorInterface $shipCreator,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+    ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipCreator = $shipCreator;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function work(): void
     {
         $queue = $this->colonyShipQueueRepository->getFinishedJobs();
         foreach ($queue as $obj) {
-            /**
-             * @var ColonyData $colony
-             */
-            $colony = ResourceCache()->getObject('colony', $obj->getColonyId());
+            $colony = $this->colonyRepository->find($obj->getColonyId());
 
             $ship = $this->shipCreator->createBy(
                 (int) $obj->getUserId(),

@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
 {
@@ -20,12 +21,16 @@ final class BeamTo implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -113,7 +118,7 @@ final class BeamTo implements ActionControllerInterface
                 $good->getGood()->getName(),
                 $eps_usage
             );
-            $colony->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
+            $colony->lowerEps((int)ceil($count / $good->getGood()->getTransferCount()));
             $target->upperStorage((int) $value, $count);
 
             $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);
@@ -123,7 +128,8 @@ final class BeamTo implements ActionControllerInterface
         if ($target->getUserId() != $userId) {
             $game->sendInformation($target->getUserId(), $userId, PM_SPECIAL_TRADE);
         }
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
     }
 
     public function performSessionCheck(): bool

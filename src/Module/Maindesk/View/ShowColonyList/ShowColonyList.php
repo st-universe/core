@@ -5,17 +5,27 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\View\ShowColonyList;
 
 use AccessViolation;
-use Colony;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonyList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONYLIST';
 
+    private $colonyRepository;
+
+    public function __construct(
+        ColonyRepositoryInterface $colonyRepository
+    ) {
+        $this->colonyRepository = $colonyRepository;
+    }
+
     public function handle(GameControllerInterface $game): void
     {
-        if ((int)$game->getUser() !== 1) {
+        $user = $game->getUser();
+
+        if ((int)$user->getActive() !== 1) {
             throw new AccessViolation();
         }
         $game->setTemplateFile("html/maindesk_colonylist.xhtml");
@@ -30,7 +40,7 @@ final class ShowColonyList implements ViewControllerInterface
 
         $game->setTemplateVar(
             'FREE_PLANET_LIST',
-            Colony::getFreeColonyList($game->getUser()->getFaction())
+            $this->colonyRepository->getStartingByFaction((int)$user->getFaction())
         );
     }
 }

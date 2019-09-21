@@ -2,9 +2,11 @@
 
 use Stu\Lib\ContactlistWrapper;
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -353,9 +355,18 @@ class UserData extends BaseTable {
 	 */
 	public function getGlobalCrewLimit() { #{{{
 		if ($this->global_crew_limit === NULL) {
-			foreach (Colony::getListBy('user_id='.$this->getId()) as $key => $colony) {
-				$this->global_crew_limit += $colony->getCrewLimit();
-			}
+			// @todo refactor
+			global $container;
+
+			$colonyRepository = $container->get(ColonyRepositoryInterface::class);
+
+			$this->global_crew_limit = array_reduce(
+				$colonyRepository->getOrderedListByUser($this->getId()),
+				function (int $sum, ColonyInterface $colony): int {
+					return $colony->getCrewLimit() + $sum;
+				},
+				0
+			);
 		}
 		return $this->global_crew_limit;
 	} # }}}

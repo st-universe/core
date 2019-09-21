@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishBuildJobs implements ProcessTickInterface
@@ -13,35 +14,43 @@ final class FinishBuildJobs implements ProcessTickInterface
 
     private $privateMessageSender;
 
+    private $colonyRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function work(): void
     {
         $result = $this->planetFieldRepository->getByConstructionFinish(time());
         foreach ($result as $field) {
+            $colony = $field->getColony();
+
             $field->setActive(0);
-            if ($field->getBuilding()->isActivateAble() && $field->getColony()->getWorkless() >= $field->getBuilding()->getWorkers()) {
+            if ($field->getBuilding()->isActivateAble() && $colony->getWorkless() >= $field->getBuilding()->getWorkers()) {
                 $field->setActive(1);
-                $field->getColony()->upperWorkers($field->getBuilding()->getWorkers());
-                $field->getColony()->lowerWorkless($field->getBuilding()->getWorkers());
-                $field->getColony()->upperMaxBev($field->getBuilding()->getHousing());
+                $colony->upperWorkers($field->getBuilding()->getWorkers());
+                $colony->lowerWorkless($field->getBuilding()->getWorkers());
+                $colony->upperMaxBev($field->getBuilding()->getHousing());
             }
-            $field->getColony()->upperMaxStorage($field->getBuilding()->getStorage());
-            $field->getColony()->upperMaxEps($field->getBuilding()->getEpsStorage());
-            $field->getColony()->save();
+            $colony->upperMaxStorage($field->getBuilding()->getStorage());
+            $colony->upperMaxEps($field->getBuilding()->getEpsStorage());
+
+            $this->colonyRepository->save($colony);
+
             $field->setIntegrity($field->getBuilding()->getIntegrity());
 
             $this->planetFieldRepository->save($field);
 
-            $txt = "Kolonie " . $field->getColony()->getName() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
+            $txt = "Kolonie " . $colony->getName() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
 
-            $this->privateMessageSender->send(USER_NOONE, (int)$field->getColony()->getUserId(), $txt, PM_SPECIAL_COLONY);
+            $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $txt, PM_SPECIAL_COLONY);
         }
     }
 }

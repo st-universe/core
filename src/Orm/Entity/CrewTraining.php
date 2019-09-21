@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Colony;
 use User;
 
 /**
@@ -28,6 +27,12 @@ class CrewTraining implements CrewTrainingInterface
     /** @Column(type="integer") */
     private $colony_id = 0;
 
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
     public function getId(): int
     {
         return $this->id;
@@ -50,20 +55,19 @@ class CrewTraining implements CrewTrainingInterface
         return $this->colony_id;
     }
 
-    public function setColonyId(int $colonyId): CrewTrainingInterface
-    {
-        $this->colony_id = $colonyId;
-
-        return $this;
-    }
-
     public function getUser(): User
     {
         return new User($this->getUserId());
     }
 
-    public function getColony(): Colony
+    public function getColony(): ColonyInterface
     {
-        return new Colony($this->getColonyId());
+        return $this->colony;
+    }
+
+    public function setColony(ColonyInterface $colony): CrewTrainingInterface
+    {
+        $this->colony = $colony;
+        return $this;
     }
 }

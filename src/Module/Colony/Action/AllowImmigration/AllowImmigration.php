@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class AllowImmigration implements ActionControllerInterface
 {
@@ -19,12 +20,16 @@ final class AllowImmigration implements ActionControllerInterface
 
     private $colonyGuiHelper;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyGuiHelperInterface $colonyGuiHelper
+        ColonyGuiHelperInterface $colonyGuiHelper,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,8 +41,10 @@ final class AllowImmigration implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => MENU_OPTION]);
 
-        $colony->setImmigrationState(1);
-        $colony->save();
+        $colony->setImmigrationState(true);
+
+        $this->colonyRepository->save($colony);
+
         $game->addInformation(_('Die Einwanderung wurde erlaubt'));
     }
 

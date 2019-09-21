@@ -2,15 +2,11 @@
 
 namespace Stu\Orm\Entity;
 
-use Colony;
-
 interface PlanetFieldInterface
 {
     public function getId(): int;
 
     public function getColonyId(): int;
-
-    public function setColonyId(int $colonyId): PlanetFieldInterface;
 
     public function getFieldId(): int;
 
@@ -60,7 +56,9 @@ interface PlanetFieldInterface
 
     public function clearBuilding(): void;
 
-    public function getColony(): Colony;
+    public function getColony(): ColonyInterface;
+
+    public function setColony(ColonyInterface $colony): PlanetFieldInterface;
 
     public function getTerraforming(): ?TerraformingInterface;
 

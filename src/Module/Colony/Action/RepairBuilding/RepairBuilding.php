@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class RepairBuilding implements ActionControllerInterface
@@ -22,14 +23,18 @@ final class RepairBuilding implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +64,7 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
         $integrity = round((100 / $field->getBuilding()->getIntegrity()) * $field->getIntegrity());
-        $eps = round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
+        $eps = (int)round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
         if ($eps > $colony->getEps()) {
             $game->addInformationf(
                 _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
@@ -104,7 +109,9 @@ final class RepairBuilding implements ActionControllerInterface
         $colony->clearCache();
 
         $colony->lowerEps($eps);
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
+
         $field->setIntegrity($field->getBuilding()->getIntegrity());
 
         $this->planetFieldRepository->save($field);

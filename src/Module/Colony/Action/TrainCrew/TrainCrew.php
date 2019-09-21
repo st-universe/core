@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class TrainCrew implements ActionControllerInterface
@@ -19,12 +20,16 @@ final class TrainCrew implements ActionControllerInterface
 
     private $crewTrainingRepository;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        CrewTrainingRepositoryInterface $crewTrainingRepository
+        CrewTrainingRepositoryInterface $crewTrainingRepository,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->crewTrainingRepository = $crewTrainingRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,12 +81,14 @@ final class TrainCrew implements ActionControllerInterface
             $crew = $this->crewTrainingRepository->prototype();
 
             $crew->setUserId((int) $userId);
-            $crew->setColonyId((int) $colony->getId());
+            $crew->setColony($colony);
 
             $this->crewTrainingRepository->save($crew);
         }
         $colony->lowerWorkless($count);
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
+
         $game->addInformationf(_('Es werden %d Crew ausgebildet'), $count);
     }
 

@@ -2,14 +2,11 @@
 
 namespace Stu\Orm\Entity;
 
-use Colony;
 use Ship;
 
 interface ColonyShipRepairInterface
 {
     public function getId(): int;
-
-    public function setColonyId($colony_id): ColonyShipRepairInterface;
 
     public function getColonyId(): int;
 
@@ -23,7 +20,9 @@ interface ColonyShipRepairInterface
 
     public function getField(): PlanetFieldInterface;
 
-    public function getColony(): Colony;
+    public function getColony(): ColonyInterface;
+
+    public function setColony(ColonyInterface $colony): ColonyShipRepairInterface;
 
     public function getShip(): Ship;
 }

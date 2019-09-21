@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\TerraformingInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
@@ -30,18 +31,22 @@ final class Terraform implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TerraformingRepositoryInterface $terraformingRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->terraformingRepository = $terraformingRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -120,7 +125,7 @@ final class Terraform implements ActionControllerInterface
         $time = time() + $terraf->getDuration();
 
         $obj = $this->colonyTerraformingRepository->prototype();
-        $obj->setColonyId((int) $colony->getId());
+        $obj->setColony($colony);
         $obj->setField($field);
         $obj->setTerraforming($terraf);
         $obj->setFinishDate($time);
@@ -131,7 +136,8 @@ final class Terraform implements ActionControllerInterface
 
         $this->planetFieldRepository->save($field);
 
-        $colony->save();
+        $this->colonyRepository->save($colony);
+
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
             $terraf->getDescription(),

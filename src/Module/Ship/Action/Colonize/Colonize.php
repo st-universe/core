@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\Colonize;
 
-use Colony;
 use request;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -14,6 +13,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpColonizationBuildingRepositoryInterface;
@@ -34,13 +34,16 @@ final class Colonize implements ActionControllerInterface
 
     private $planetColonization;
 
+    private $colonyRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
         ResearchedRepositoryInterface $researchedRepository,
         BuildingRepositoryInterface $buildingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        PlanetColonizationInterface $planetColonization
+        PlanetColonizationInterface $planetColonization,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -48,6 +51,7 @@ final class Colonize implements ActionControllerInterface
         $this->buildingRepository = $buildingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->planetColonization = $planetColonization;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,13 +65,13 @@ final class Colonize implements ActionControllerInterface
             $userId
         );
 
-        $colonyId = request::getIntFatal('colid');
-        $fieldId = (int) request::getIntFatal('field');
-        $colony = new Colony($colonyId);
+        $colonyId = (int)request::getIntFatal('colid');
+        $fieldId = (int)request::getIntFatal('field');
 
+        $colony = $this->colonyRepository->find($colonyId);
         $field = $this->planetFieldRepository->find($fieldId);
 
-        if ($field === null) {
+        if ($field === null || $colony === null) {
             return;
         }
 

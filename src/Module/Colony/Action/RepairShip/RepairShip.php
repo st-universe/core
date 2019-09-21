@@ -93,7 +93,7 @@ final class RepairShip implements ActionControllerInterface
         }
 
         $obj = $this->colonyShipRepairRepository->prototype();
-        $obj->setColonyId($colony->getId());
+        $obj->setColony($colony);
         $obj->setShipId($ship_id);
         $obj->setFieldId((int) $field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);

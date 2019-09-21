@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Maindesk\Action\FirstColony;
 
 use AccessViolation;
-use Colony;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
@@ -24,16 +24,20 @@ final class FirstColony implements ActionControllerInterface
 
     private $planetColonization;
 
+    private $colonyRepository;
+
     public function __construct(
         FirstColonyRequestInterface $firstColonyRequest,
         FactionRepositoryInterface $factionRepository,
         BuildingRepositoryInterface $buildingRepository,
-        PlanetColonizationInterface $planetColonization
+        PlanetColonizationInterface $planetColonization,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
         $this->factionRepository = $factionRepository;
         $this->buildingRepository = $buildingRepository;
         $this->planetColonization = $planetColonization;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,13 +50,15 @@ final class FirstColony implements ActionControllerInterface
 
         $planetId = $this->firstColonyRequest->getPlanetId();
 
-        $colony = new Colony($planetId);
+        $colony = $this->colonyRepository->find($planetId);
 
-        if (!$colony->isFree()) {
+        if ($colony === null || !$colony->isFree()) {
             $game->addInformation(_('"Dieser Planet wurde bereits besiedelt'));
             return;
         }
-        if (!array_key_exists($planetId, Colony::getFreeColonyList($user->getFaction()))) {
+        $colonyList = $this->colonyRepository->getStartingByFaction((int) $user->getFaction());
+
+        if (!array_key_exists($planetId, $colonyList)) {
             return;
         }
 

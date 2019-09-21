@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Colony;
-use ColonyData;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyTerraformingRepository")
  * @Table(
@@ -46,6 +43,12 @@ class ColonyTerraforming implements ColonyTerraformingInterface
      */
     private $field;
 
+    /**
+     * @ManyToOne(targetEntity="Colony")
+     * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $colony;
+
     public function getId(): int
     {
         return $this->id;
@@ -54,13 +57,6 @@ class ColonyTerraforming implements ColonyTerraformingInterface
     public function getColonyId(): int
     {
         return $this->colonies_id;
-    }
-
-    public function setColonyId(int $colonyId): ColonyTerraformingInterface
-    {
-        $this->colonies_id = $colonyId;
-
-        return $this;
     }
 
     public function getFieldId(): int
@@ -116,9 +112,15 @@ class ColonyTerraforming implements ColonyTerraformingInterface
         return $this;
     }
 
-    public function getColony(): ColonyData
+    public function getColony(): ColonyInterface
     {
-        return new Colony($this->getColonyId());
+        return $this->colony;
+    }
+
+    public function setColony(ColonyInterface $colony): ColonyTerraformingInterface
+    {
+        $this->colony = $colony;
+        return $this;
     }
 
     public function getProgress(): int

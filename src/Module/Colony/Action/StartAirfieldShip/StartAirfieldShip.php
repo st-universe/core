@@ -15,6 +15,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
@@ -40,6 +41,8 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
@@ -48,7 +51,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         ShipCreatorInterface $shipCreator,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
@@ -58,6 +62,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -154,7 +159,8 @@ final class StartAirfieldShip implements ActionControllerInterface
             $ship->save();
         }
         $colony->lowerEps(10);
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
 
         $databaseEntry = $colony->getSystem()->getDatabaseEntry();
         if ($databaseEntry !== null) {

@@ -2,15 +2,11 @@
 
 namespace Stu\Orm\Entity;
 
-use ColonyData;
-
 interface ColonyTerraformingInterface
 {
     public function getId(): int;
 
     public function getColonyId(): int;
-
-    public function setColonyId(int $colonyId): ColonyTerraformingInterface;
 
     public function getFieldId(): int;
 
@@ -30,7 +26,9 @@ interface ColonyTerraformingInterface
 
     public function setField(PlanetFieldInterface $planetField): ColonyTerraformingInterface;
 
-    public function getColony(): ColonyData;
+    public function getColony(): ColonyInterface;
+
+    public function setColony(ColonyInterface $colony): ColonyTerraformingInterface;
 
     public function getProgress(): int;
 }

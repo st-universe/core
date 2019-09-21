@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowBeamToColony;
 
-use Colony;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowBeamToColony implements ViewControllerInterface
 {
@@ -16,10 +16,14 @@ final class ShowBeamToColony implements ViewControllerInterface
 
     private $shipLoader;
 
+    private $colonyRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,9 +35,10 @@ final class ShowBeamToColony implements ViewControllerInterface
             $userId
         );
 
-        $target = new Colony(request::getIntFatal('target'));
-        if ($ship->canInteractWith($target, true) === false) {
+        $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
+        if ($target === null || $ship->canInteractWith($target, true) === false) {
             // @todo ships cant interact
+            return;
         }
 
         $game->setPageTitle(_('Zu Kolonie beamen'));

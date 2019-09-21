@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use ColonyData;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildingAction implements BuildingActionInterface
 {
     private $planetFieldRepository;
 
+    private $colonyRepository;
+
     public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
-    public function activate(ColonyData $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
+    public function activate(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -44,14 +49,20 @@ final class BuildingAction implements BuildingActionInterface
         $field->setActive(1);
 
         $this->planetFieldRepository->save($field);
+        $this->colonyRepository->save($colony);
 
-        $colony->save();
         $field->getBuilding()->postActivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde aktiviert");
+        $colony->clearCache();
+
+        $game->addInformationf(
+            _('%s auf Feld %s wurde aktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 
-    public function deactivate(ColonyData $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
+    public function deactivate(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void
     {
         if (!$field->hasBuilding()) {
             return;
@@ -68,10 +79,16 @@ final class BuildingAction implements BuildingActionInterface
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
+        $this->colonyRepository->save($colony);
 
-        $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
-        $game->addInformation($field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " wurde deaktiviert");
+        $colony->clearCache();
+
+        $game->addInformationf(
+            _('%s auf Feld %s wurde deaktiviert'),
+            $field->getBuilding()->getName(),
+            $field->getFieldId()
+        );
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Tick\Colony;
 
-use ColonyData;
+use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyTickInterface
 {
-    public function work(ColonyData $colony): void;
+    public function work(ColonyInterface $colony): void;
 }

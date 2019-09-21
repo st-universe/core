@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use AccessViolation;
-use Colony;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
-/**
- * A temporary loader unless the ColonyRepository has arrived
- */
 final class ColonyLoader implements ColonyLoaderInterface
 {
+    private $colonyRepository;
 
-    public function byId(int $colonyId): Colony
-    {
-        return new Colony($colonyId);
+    public function __construct(
+        ColonyRepositoryInterface $colonyRepository
+    ) {
+        $this->colonyRepository = $colonyRepository;
     }
 
-    public function byIdAndUser(int $colonyId, int $userId): Colony
+    public function byIdAndUser(int $colonyId, int $userId): ColonyInterface
     {
-        $colony = $this->byId($colonyId);
-        if ((int) $colony->getUserId() !== $userId) {
+        $colony = $this->colonyRepository->find($colonyId);
+        if ($colony === null || $colony->getUserId() !== $userId) {
             throw new AccessViolation();
         }
         return $colony;

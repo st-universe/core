@@ -258,7 +258,6 @@ define("HISTORY_ALLIANCE",3);
 define('CACHE_SHIP','ship');
 define('CACHE_USER','user');
 define('CACHE_ALLIANCE','alliance');
-define('CACHE_COLONY','colony');
 
 define('ROLE_PHASERSHIP',1);
 define('ROLE_PULSESHIP',2);

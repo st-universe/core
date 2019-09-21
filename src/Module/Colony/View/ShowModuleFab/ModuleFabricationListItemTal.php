@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleFab;
 
-use ColonyData;
 use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
@@ -20,7 +20,7 @@ final class ModuleFabricationListItemTal
     public function __construct(
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         ModuleInterface $module,
-        ColonyData $colony
+        ColonyInterface $colony
     ) {
         $this->colony = $colony;
         $this->module = $module;

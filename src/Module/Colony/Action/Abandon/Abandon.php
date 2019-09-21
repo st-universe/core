@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Abandon;
 
 use AccessViolation;
-use Colony;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
@@ -27,25 +27,29 @@ final class Abandon implements ActionControllerInterface
 
     private $colonyLibFactory;
 
+    private $colonyRepository;
+
     public function __construct(
         AbandonRequestInterface $abandonRequest,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->abandonRequest = $abandonRequest;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $colony = new Colony($this->abandonRequest->getColonyId());
+        $colony = $this->colonyRepository->find($this->abandonRequest->getColonyId());
 
-        if ($colony->getUserId() != $game->getUser()->getId()) {
+        if ($colony === null || $colony->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
@@ -59,11 +63,12 @@ final class Abandon implements ActionControllerInterface
         $colony->setWorkers(0);
         $colony->setWorkless(0);
         $colony->setMaxBev(0);
-        $colony->setImmigrationState(1);
+        $colony->setImmigrationState(true);
         $colony->setPopulationLimit(0);
         $colony->setUserId(USER_NOONE);
         $colony->setName('');
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
 
         $this->colonyStorageRepository->truncateByColony($colonyId);
 

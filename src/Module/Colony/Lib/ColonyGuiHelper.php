@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use Colony;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Tuple;
 
@@ -40,7 +40,7 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         }
     }
 
-    public function register(Colony $colony, GameControllerInterface $game)
+    public function register(ColonyInterface $colony, GameControllerInterface $game)
     {
         $energyProduction = $colony->getEpsProduction();
         $width = 360;

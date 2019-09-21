@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
-use Colony;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
@@ -21,16 +21,20 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private $crewTrainingRepository;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         CrewCreatorInterface $crewCreator,
-        CrewTrainingRepositoryInterface $crewTrainingRepository
+        CrewTrainingRepositoryInterface $crewTrainingRepository,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->crewCreator = $crewCreator;
         $this->crewTrainingRepository = $crewTrainingRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function work(int $tickId): void
@@ -44,7 +48,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private function colonyLoop(int $tickId): void
     {
-        $colonyList = Colony::getListBy('user_id IN (SELECT id FROM stu_user WHERE user_id!=' . USER_NOONE . ' AND tick=' . $tickId . ')');
+        $colonyList = $this->colonyRepository->getByTick($tickId);
 
         foreach ($colonyList as $colony) {
             //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";

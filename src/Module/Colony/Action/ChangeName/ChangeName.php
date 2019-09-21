@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ChangeName implements ActionControllerInterface
 {
@@ -19,12 +20,16 @@ final class ChangeName implements ActionControllerInterface
 
     private $bbCodeParser;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        Parser $bbCodeParser
+        Parser $bbCodeParser,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->bbCodeParser = $bbCodeParser;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,7 +49,7 @@ final class ChangeName implements ActionControllerInterface
             return;
         }
         $colony->setName($value);
-        $colony->save();
+        $this->colonyRepository->save($colony);
 
         $game->addInformation(_('Der Koloniename wurde geändert'));
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildOnField;
 
-use ColonyData;
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -12,9 +11,11 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
 use Stu\Orm\Entity\BuildingCostInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
@@ -34,13 +35,16 @@ final class BuildOnField implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
         ResearchedRepositoryInterface $researchedRepository,
         BuildingRepositoryInterface $buildingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
@@ -48,6 +52,7 @@ final class BuildOnField implements ActionControllerInterface
         $this->buildingRepository = $buildingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -201,7 +206,8 @@ final class BuildOnField implements ActionControllerInterface
         $colony->lowerEps($building->getEpsCost());
         $field->setBuilding($building);
         $field->setActive(time() + $building->getBuildtime());
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
 
         $this->planetFieldRepository->save($field);
 
@@ -212,7 +218,7 @@ final class BuildOnField implements ActionControllerInterface
         );
     }
 
-    private function removeBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
+    private function removeBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -248,10 +254,10 @@ final class BuildOnField implements ActionControllerInterface
 
         $this->planetFieldRepository->save($field);
 
-        $colony->save();
+        $this->colonyRepository->save($colony);
     }
 
-    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -269,7 +275,8 @@ final class BuildOnField implements ActionControllerInterface
 
         $this->planetFieldRepository->save($field);
 
-        $colony->save();
+        $this->colonyRepository->save($colony);
+
         $field->getBuilding()->postDeactivation($colony);
 
         $game->addInformationf(

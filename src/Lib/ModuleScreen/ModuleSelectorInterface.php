@@ -2,7 +2,7 @@
 
 namespace Stu\Lib\ModuleScreen;
 
-use ColonyData;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 
@@ -31,7 +31,7 @@ interface ModuleSelectorInterface
 
     public function hasModuleSelected(): ModuleSelectWrapper;
 
-    public function getColony(): ColonyData;
+    public function getColony(): ColonyInterface;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
 }

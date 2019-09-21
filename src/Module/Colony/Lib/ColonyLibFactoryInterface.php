@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use ColonyData;
 use ShipData;
+use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyLibFactoryInterface
 {
@@ -23,7 +23,11 @@ interface ColonyLibFactoryInterface
     ): BuildingFunctionTalInterface;
 
     public function createColonySurface(
-        ColonyData $colony,
+        ColonyInterface $colony,
         ?int $buildingId = null
     ): ColonySurfaceInterface;
+
+    public function createColonyListItem(
+        ColonyInterface $colony
+    ): ColonyListItemInterface;
 }

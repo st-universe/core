@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\RemoveBuilding;
 
-use ColonyData;
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class RemoveBuilding implements ActionControllerInterface
@@ -24,14 +25,18 @@ final class RemoveBuilding implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -83,11 +88,10 @@ final class RemoveBuilding implements ActionControllerInterface
         $field->clearBuilding();
 
         $this->planetFieldRepository->save($field);
-
-        $colony->save();
+        $this->colonyRepository->save($colony);
     }
 
-    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyData $colony, GameControllerInterface $game)
+    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
     {
         if (!$field->hasBuilding()) {
             return;
@@ -104,8 +108,8 @@ final class RemoveBuilding implements ActionControllerInterface
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
+        $this->colonyRepository->save($colony);
 
-        $colony->save();
         $field->getBuilding()->postDeactivation($colony);
 
         $game->addInformationf(

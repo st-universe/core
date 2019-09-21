@@ -2,7 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Colony;
 use User;
 
 interface CrewTrainingInterface
@@ -15,9 +14,9 @@ interface CrewTrainingInterface
 
     public function getColonyId(): int;
 
-    public function setColonyId(int $colonyId): CrewTrainingInterface;
-
     public function getUser(): User;
 
-    public function getColony(): Colony;
+    public function getColony(): ColonyInterface;
+
+    public function setColony(ColonyInterface $colony): CrewTrainingInterface;
 }

@@ -197,7 +197,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         $rsm->addEntityResult(PlanetField::class, 'f');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT f.* FROM stu_colonies_fielddata f WHERE f.aktiv > 0 AND f.colonies_id IN (
+            'SELECT f.* FROM stu_colonies_fielddata f WHERE f.aktiv > 1 AND f.colonies_id IN (
                 SELECT c.id FROM stu_colonies c WHERE c.user_id = :userId
             ) ORDER BY f.aktiv',
             $rsm

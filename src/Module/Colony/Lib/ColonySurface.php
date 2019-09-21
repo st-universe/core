@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use ColonyData;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
 
@@ -17,6 +18,8 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private $buildingRepository;
 
+    private $colonyRepository;
+
     private $colony;
 
     private $buildingId;
@@ -24,13 +27,15 @@ final class ColonySurface implements ColonySurfaceInterface
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
-        ColonyData $colony,
+        ColonyRepositoryInterface $colonyRepository,
+        ColonyInterface $colony,
         ?int $buildingId = null
     ) {
         $this->colony = $colony;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
         $this->buildingId = $buildingId;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function getSurface(): array
@@ -82,12 +87,15 @@ final class ColonySurface implements ColonySurfaceInterface
         if ($this->colony->getEps() + $energyProduction > $this->colony->getMaxEps()) {
             $forecast = $this->colony->getMaxEps();
         }
+        if ($energyProduction > 0) {
+            $energyProduction = sprintf('+%d', $energyProduction);
+        }
 
         return sprintf(
-            _('Energie: %d/%d (%d/Runde = %d)'),
+            _('Energie: %d/%d (%s/Runde = %d)'),
             $this->colony->getEps(),
             $this->colony->getMaxEps(),
-            $this->colony->getEpsProductionDisplay(),
+            $energyProduction,
             $forecast
         );
     }
@@ -143,7 +151,8 @@ final class ColonySurface implements ColonySurfaceInterface
             $surface = $generator->generateColony($this->colony->getColonyClass(),
                 $this->colony->getSystem()->getBonusFieldAmount());
             $this->colony->setMask(base64_encode(serialize($surface)));
-            $this->colony->save();
+
+            $this->colonyRepository->save($this->colony);
         }
 
         $fields = $this->planetFieldRepository->getByColony($this->colony->getId());
@@ -153,7 +162,7 @@ final class ColonySurface implements ColonySurfaceInterface
         foreach ($surface as $key => $value) {
             if (!array_key_exists($key, $fields)) {
                 $fields[$key] = $this->planetFieldRepository->prototype();
-                $fields[$key]->setColonyId($this->colony->getId());
+                $fields[$key]->setColony($this->colony);
                 $fields[$key]->setFieldId($i);
             }
             $fields[$key]->setBuilding(null);
@@ -203,5 +212,11 @@ final class ColonySurface implements ColonySurfaceInterface
                 [BUILDING_FUNCTION_AIRFIELD],
                 [0, 1]
             ) > 0;
+    }
+
+    public function getDayNightState(): string
+    {
+        // @todo implement
+        return 't';
     }
 }

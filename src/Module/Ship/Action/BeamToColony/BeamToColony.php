@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\BeamToColony;
 
-use Colony;
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use SystemActivationWrapper;
 
 final class BeamToColony implements ActionControllerInterface
@@ -21,12 +21,16 @@ final class BeamToColony implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -60,8 +64,8 @@ final class BeamToColony implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        $target = new Colony(request::postIntFatal('target'));
-        if (!$ship->canInteractWith($target, true)) {
+        $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
+        if ($target === null || !$ship->canInteractWith($target, true)) {
             return;
         }
         if (!$target->storagePlaceLeft()) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ColonyData;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
@@ -297,14 +296,6 @@ class Building implements BuildingInterface
         return 0;
     }
 
-    public function getEpsProductionDisplay(): string
-    {
-        if ($this->getEpsProduction() < 0) {
-            return (string)$this->getEpsProduction();
-        }
-        return '+' . $this->getEpsProduction();
-    }
-
     public function getEpsProductionCss(): string
     {
         if ($this->getEpsProduction() < 0) {
@@ -349,7 +340,7 @@ class Building implements BuildingInterface
         return $this->functions;
     }
 
-    public function postDeactivation(ColonyData $colony): void
+    public function postDeactivation(ColonyInterface $colony): void
     {
         // @todo refactor
         global $container;
@@ -366,7 +357,7 @@ class Building implements BuildingInterface
         }
     }
 
-    public function postActivation(ColonyData $colony): void
+    public function postActivation(ColonyInterface $colony): void
     {
         // @todo refactor
         global $container;

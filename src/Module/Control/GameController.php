@@ -2,7 +2,6 @@
 
 namespace Stu\Module\Control;
 
-use Colony;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
@@ -13,6 +12,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -49,6 +49,8 @@ final class GameController implements GameControllerInterface
 
     private $privateMessageSender;
 
+    private $colonyRepository;
+
     private $gameInformations = [];
 
     private $siteNavigation = [];
@@ -83,7 +85,8 @@ final class GameController implements GameControllerInterface
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -97,6 +100,7 @@ final class GameController implements GameControllerInterface
         $this->entityManager = $entityManager;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -221,7 +225,10 @@ final class GameController implements GameControllerInterface
             }
 
             $this->talPage->setVar('CURRENT_RESEARCH', $this->researchedRepository->getCurrentResearch((int) $user->getId()));
-            $this->talPage->setVar('USER_COLONIES', Colony::getListBy('user_id='.$user->getId().' ORDER BY id'));
+            $this->talPage->setVar(
+                'USER_COLONIES',
+                $this->colonyRepository->getOrderedListByUser($user->getId())
+            );
             $this->talPage->setVar('PM_NAVLET', $folder);
         }
 
@@ -365,12 +372,12 @@ final class GameController implements GameControllerInterface
 
     public function getPlanetColonyCount(): int
     {
-        return (int) Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=0)');
+        return $this->colonyRepository->getAmountByUser($this->getUser()->getId());
     }
 
     public function getMoonColonyCount(): int
     {
-        return (int) Colony::countInstances('WHERE user_id=' . $this->getUser()->getId() . ' AND colonies_classes_id IN (SELECT id FROM stu_colonies_classes WHERE is_moon=1)');
+        return $this->colonyRepository->getAmountByUser($this->getUser()->getId(), true);
     }
 
     public function isAdmin(): bool

@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -28,18 +29,22 @@ final class CancelModuleCreation implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         ModuleRepositoryInterface $moduleRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->moduleRepository = $moduleRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -103,7 +108,7 @@ final class CancelModuleCreation implements ActionControllerInterface
 
             $this->colonyStorageManager->upperStorage($colony, $cost->getCommodity(), (int)$gc);
         }
-        $colony->save();
+        $this->colonyRepository->save($colony);
     }
 
     public function performSessionCheck(): bool

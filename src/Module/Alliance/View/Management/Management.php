@@ -7,6 +7,7 @@ namespace Stu\Module\Alliance\View\Management;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use User;
 
@@ -18,12 +19,16 @@ final class Management implements ViewControllerInterface
 
     private $allianceJobRepository;
 
+    private $colonyRepository;
+
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,
-        AllianceJobRepositoryInterface $allianceJobRepository
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipRumpRepository = $shipRumpRepository;
         $this->allianceJobRepository = $allianceJobRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,7 +39,13 @@ final class Management implements ViewControllerInterface
 
         $list = [];
         foreach (User::getListBy('WHERE allys_id=' . $allianceId) as $member) {
-            $list[] = new ManagementListItemTal($this->shipRumpRepository, $alliance, $member, $userId);
+            $list[] = new ManagementListItemTal(
+                $this->shipRumpRepository,
+                $this->colonyRepository,
+                $alliance,
+                $member,
+                $userId
+            );
         }
 
         $game->setPageTitle(_('Allianz verwalten'));

@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class SetPopulationLimit implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class SetPopulationLimit implements ActionControllerInterface
 
     private $colonyLoader;
 
+    private $colonyRepository;
+
     public function __construct(
-        ColonyLoaderInterface $colonyLoader
+        ColonyLoaderInterface $colonyLoader,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,7 +41,9 @@ final class SetPopulationLimit implements ActionControllerInterface
             return;
         }
         $colony->setPopulationLimit($limit);
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
+
         if ($limit > 0) {
             $game->addInformationf(_('Das Bevölkerungslimit wurde auf %d gesetzt'), $limit);
         }

@@ -1,0 +1,646 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Orm\Entity;
+
+use Ship;
+use Stu\Lib\ColonyProduction\ColonyProduction;
+use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Tick\Colony\ColonyTick;
+use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
+use User;
+
+/**
+ * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
+ * @Table(
+ *     name="stu_colonies",
+ *     indexes={
+ *         @Index(name="user_idx", columns={"user_id"}),
+ *         @Index(name="location_idx", columns={"systems_id","sx","sy"})
+ *     }
+ * )
+ **/
+class Colony implements ColonyInterface
+{
+    /** @Id @Column(type="integer") @GeneratedValue * */
+    private $id;
+
+    /** @Column(type="integer") */
+    private $colonies_classes_id = 0;
+
+    /** @Column(type="integer") */
+    private $user_id = 0;
+
+    /** @Column(type="smallint", length=3) */
+    private $sx = 0;
+
+    /** @Column(type="smallint", length=3) */
+    private $sy = 0;
+
+    /** @Column(type="integer") */
+    private $systems_id = 0;
+
+    /** @Column(type="string") */
+    private $name = '';
+
+    /** @Column(type="string", length=100) */
+    private $planet_name = '';
+
+    /** @Column(type="integer", length=5) */
+    private $bev_work = 0;
+
+    /** @Column(type="integer", length=5) */
+    private $bev_free = 0;
+
+    /** @Column(type="integer", length=5) */
+    private $bev_max = 0;
+
+    /** @Column(type="integer", length=5) */
+    private $eps = 0;
+
+    /** @Column(type="integer", length=5) */
+    private $max_eps = 0;
+
+    /** @Column(type="integer", length=5) */
+    private $max_storage = 0;
+
+    /** @Column(type="text", nullable=true) */
+    private $mask;
+
+    /** @Column(type="integer", nullable=true) */
+    private $database_id;
+
+    /** @Column(type="integer", length=5) */
+    private $populationlimit = 0;
+
+    /** @Column(type="boolean") */
+    private $immigrationstate = true;
+
+    private $has_active_building_by_function = [];
+
+    private $positive_effect_secondary;
+
+    private $positive_effect_primary;
+
+    private $planettype;
+
+    private $system;
+
+    private $storage;
+
+    private $productionRaw;
+
+    private $production;
+
+    private $productionsum;
+
+    private $shiplist;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getColonyClass(): int
+    {
+        return $this->colonies_classes_id;
+    }
+
+    public function setColonyClass(int $colonies_classes_id): ColonyInterface
+    {
+        $this->colonies_classes_id = $colonies_classes_id;
+        return $this;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(int $user_id): ColonyInterface
+    {
+        $this->user_id = $user_id;
+        return $this;
+    }
+
+    public function getSx(): int
+    {
+        return $this->sx;
+    }
+
+    public function setSx(int $sx): ColonyInterface
+    {
+        $this->sx = $sx;
+        return $this;
+    }
+
+    public function getSy(): int
+    {
+        return $this->sy;
+    }
+
+    public function setSy(int $sy): ColonyInterface
+    {
+        $this->sy = $sy;
+        return $this;
+    }
+
+    public function getSystemsId(): int
+    {
+        return $this->systems_id;
+    }
+
+    public function setSystemsId(int $systems_id): ColonyInterface
+    {
+        $this->systems_id = $systems_id;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): ColonyInterface
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getPlanetName(): string
+    {
+        return $this->planet_name;
+    }
+
+    public function setPlanetName(string $planet_name): ColonyInterface
+    {
+        $this->planet_name = $planet_name;
+        return $this;
+    }
+
+    public function getWorkers(): int
+    {
+        return $this->bev_work;
+    }
+
+    public function setWorkers(int $bev_work): ColonyInterface
+    {
+        $this->bev_work = $bev_work;
+        return $this;
+    }
+
+    public function getWorkless(): int
+    {
+        return $this->bev_free;
+    }
+
+    public function setWorkless(int $bev_free): ColonyInterface
+    {
+        $this->bev_free = $bev_free;
+        return $this;
+    }
+
+    public function getMaxBev(): int
+    {
+        return $this->bev_max;
+    }
+
+    public function setMaxBev(int $bev_max): ColonyInterface
+    {
+        $this->bev_max = $bev_max;
+        return $this;
+    }
+
+    public function getEps(): int
+    {
+        return $this->eps;
+    }
+
+    public function setEps(int $eps): ColonyInterface
+    {
+        $this->eps = $eps;
+        return $this;
+    }
+
+    public function getMaxEps(): int
+    {
+        return $this->max_eps;
+    }
+
+    public function setMaxEps(int $max_eps): ColonyInterface
+    {
+        $this->max_eps = $max_eps;
+        return $this;
+    }
+
+    public function getMaxStorage(): int
+    {
+        return $this->max_storage;
+    }
+
+    public function setMaxStorage(int $max_storage): ColonyInterface
+    {
+        $this->max_storage = $max_storage;
+        return $this;
+    }
+
+    public function getMask(): string
+    {
+        return $this->mask;
+    }
+
+    public function setMask(string $mask): ColonyInterface
+    {
+        $this->mask = $mask;
+        return $this;
+    }
+
+    public function getDatabaseId(): ?int
+    {
+        return $this->database_id;
+    }
+
+    public function setDatabaseId(?int $database_id)
+    {
+        $this->database_id = $database_id;
+        return $this;
+    }
+
+    public function getPopulationlimit(): int
+    {
+        return $this->populationlimit;
+    }
+
+    public function setPopulationlimit(int $populationlimit): ColonyInterface
+    {
+        $this->populationlimit = $populationlimit;
+        return $this;
+    }
+
+    public function getImmigrationstate(): bool
+    {
+        return $this->immigrationstate;
+    }
+
+    public function setImmigrationstate(bool $immigrationstate): ColonyInterface
+    {
+        $this->immigrationstate = $immigrationstate;
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function ownedByCurrentUser(): bool
+    {
+        return $this->getUserId() === currentUser()->getId();
+    }
+
+    public function getPlanetType(): PlanetTypeInterface
+    {
+        if ($this->planettype === null) {
+            // @todo refactor
+            global $container;
+
+            $this->planettype = $container->get(PlanetTypeRepositoryInterface::class)->find((int)$this->getColonyClass());
+        }
+        return $this->planettype;
+    }
+
+    public function getStorageSum(): int
+    {
+        return array_reduce(
+            $this->getStorage(),
+            function (int $sum, ColonyStorageInterface $storage): int {
+                return $sum + $storage->getAmount();
+            },
+            1
+        );
+    }
+
+    public function storagePlaceLeft(): bool
+    {
+        return $this->getMaxStorage() > $this->getStorageSum();
+    }
+
+    public function isInSystem(): bool
+    {
+        // true by default
+        return true;
+    }
+
+    public function getSystem(): StarSystemInterface
+    {
+        if ($this->system === null) {
+            // @todo refactor
+            global $container;
+
+            $this->system = $container->get(StarSystemRepositoryInterface::class)->find((int)$this->getSystemsId());
+        }
+        return $this->system;
+    }
+
+    public function getEpsProduction(): int
+    {
+        return (int)DB()->query("SELECT SUM(b.eps_proc) FROM stu_colonies_fielddata as a LEFT JOIN
+            stu_buildings as b ON b.id=a.buildings_id WHERE a.aktiv=1 AND a.colonies_id=" . $this->getId(), 1);
+    }
+
+    /**
+     * @return ColonyStorageInterface[]
+     */
+    public function getBeamableStorage(): array
+    {
+        return array_filter(
+            $this->getStorage(),
+            function (ColonyStorageInterface $storage): bool {
+                return $storage->getGood()->isBeamable() === true;
+            }
+        );
+    }
+
+    /**
+     * @return ColonyStorageInterface[]
+     */
+    function getStorage()
+    {
+        if ($this->storage === null) {
+            // @todo refactor
+            global $container;
+
+            $this->storage = $container->get(ColonyStorageRepositoryInterface::class)->getByColony((int)$this->getId());
+        }
+        return $this->storage;
+    }
+
+    /**
+     * @return ColonyProduction[]
+     */
+    public function getProductionRaw(): array
+    {
+        if ($this->productionRaw === null) {
+            $this->productionRaw = ColonyProduction::getProductionByColony($this);
+        }
+        return $this->productionRaw;
+    }
+
+    public function setProductionRaw(array $array): void
+    {
+        $this->productionRaw = $array;
+    }
+
+    public function getProduction(): array
+    {
+        if ($this->production === null) {
+            $this->production = $this->getProductionRaw();
+            if (array_key_exists(CommodityTypeEnum::GOOD_FOOD, $this->production)) {
+                if ($this->production[CommodityTypeEnum::GOOD_FOOD]->getProduction() - $this->getBevFood() == 0) {
+                    unset($this->production[CommodityTypeEnum::GOOD_FOOD]);
+                } else {
+                    $this->production[CommodityTypeEnum::GOOD_FOOD]->lowerProduction($this->getBevFood());
+                }
+            } else {
+                $obj = new ColonyProduction;
+                $obj->setProduction(-$this->getBevFood());
+                $obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
+                $this->production[CommodityTypeEnum::GOOD_FOOD] = $obj;
+            }
+        }
+        return $this->production;
+    }
+
+    public function getProductionSum(): int
+    {
+        if ($this->productionsum === null) {
+            $sum = 0;
+            foreach ($this->getProduction() as $key => $value) {
+                if ($value->getGood()->getType() == CommodityTypeEnum::GOOD_TYPE_EFFECT) {
+                    continue;
+                }
+                $sum += $value->getProduction();
+            }
+            $this->productionsum = $sum;
+        }
+        return $this->productionsum;
+    }
+
+    public function getOrbitShipList(int $userId): array
+    {
+        if ($this->shiplist === null) {
+            $this->shiplist = [];
+            $shiplist = Ship::getObjectsBy("WHERE systems_id=" . $this->getSystemsId() . " AND sx=" . $this->getSX() . " AND sy=" . $this->getSY() . " AND (user_id=" . $userId . " OR cloak=0) ORDER BY is_destroyed ASC, fleets_id DESC,id ASC");
+            foreach ($shiplist as $key => $obj) {
+                $this->shiplist[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
+                if (!array_key_exists('name', $this->shiplist[$obj->getFleetId()])) {
+                    if ($obj->getFleetId() == 0) {
+                        $this->shiplist[$obj->getFleetId()]['name'] = _('Einzelschiffe');
+                    } else {
+                        $this->shiplist[$obj->getFleetId()]['name'] = $obj->getFleet()->getName();
+                    }
+                }
+            }
+        }
+        return $this->shiplist;
+    }
+
+    public function isFree(): bool
+    {
+        return $this->getUserId() === USER_NOONE;
+    }
+
+    public function getUser(): User
+    {
+        return ResourceCache()->getObject('user', $this->getUserId());
+    }
+
+    public function getBevFood(): int
+    {
+        return (int)ceil(($this->getWorkers() + $this->getWorkless()) / ColonyTick::PEOPLE_FOOD);
+    }
+
+    public function upperMaxBev(int $value): void
+    {
+        $this->setMaxBev($this->getMaxBev() + $value);
+    }
+
+    public function lowerMaxBev(int $value): void
+    {
+        $this->setMaxBev($this->getMaxBev() - $value);
+    }
+
+    public function upperWorkers(int $value): void
+    {
+        $this->setWorkers($this->getWorkers() + $value);
+    }
+
+    public function lowerWorkers(int $value): void
+    {
+        $this->setWorkers($this->getWorkers() - $value);
+    }
+
+    public function upperWorkless(int $value): void
+    {
+        $this->setWorkless($this->getWorkless() + $value);
+    }
+
+    public function lowerWorkless(int $value): void
+    {
+        $this->setWorkless($this->getWorkless() - $value);
+    }
+
+    public function getPopulation(): int
+    {
+        return $this->getWorkers() + $this->getWorkless();
+    }
+
+    public function getFreeHousing(): int
+    {
+        return $this->getMaxBev() - $this->getPopulation();
+    }
+
+    public function upperMaxEps($value): void
+    {
+        $this->setMaxEps($this->getMaxEps() + $value);
+    }
+
+    public function lowerMaxEps($value): void
+    {
+        $this->setMaxEps($this->getMaxEps() - $value);
+    }
+
+    public function upperMaxStorage(int $value): void
+    {
+        $this->setMaxStorage($this->getMaxStorage() + $value);
+    }
+
+    public function lowerMaxStorage(int $value): void
+    {
+        $this->setMaxStorage($this->getMaxStorage() - $value);
+    }
+
+    public function getImmigration(): int
+    {
+        if ($this->getImmigrationState() === false) {
+            return 0;
+        }
+        // TBD: depends on social things. return dummy for now
+        $im = ceil(($this->getMaxBev() - $this->getPopulation()) / 4);
+        if ($this->getPopulation() + $im > $this->getMaxBev()) {
+            $im = $this->getMaxBev() - $this->getPopulation();
+        }
+        if ($this->getPopulationLimit() > 0 && $this->getPopulation() + $im > $this->getPopulationLimit()) {
+            $im = $this->getPopulationLimit() - $this->getPopulation();
+        }
+        if ($im < 0) {
+            return 0;
+        }
+        return (int)round($im / 100 * $this->getPlanetType()->getBevGrowthRate());
+    }
+
+    public function getNegativeEffect(): int
+    {
+        return (int)ceil($this->getPopulation() / 70);
+    }
+
+    public function getPositiveEffectPrimary(): int
+    {
+        if ($this->positive_effect_primary === null) {
+            $production = $this->getProduction();
+            // XXX we should use a faction-factory...
+            switch ($this->getUser()->getFaction()) {
+                case FACTION_FEDERATION:
+                    $key = GOOD_SATISFACTION_FED_PRIMARY;
+                    break;
+                case FACTION_ROMULAN:
+                    $key = GOOD_SATISFACTION_ROMULAN_PRIMARY;
+                    break;
+                case FACTION_KLINGON:
+                    $key = GOOD_SATISFACTION_KLINGON_PRIMARY;
+                    break;
+            }
+            $this->positive_effect_primary = 0;
+            if (!isset($production[$key])) {
+                return 0;
+            }
+            $this->positive_effect_primary += $production[$key]->getProduction();
+        }
+        return $this->positive_effect_primary;
+    }
+
+    public function getPositiveEffectSecondary(): int
+    {
+        if ($this->positive_effect_secondary === null) {
+            $production = $this->getProduction();
+            $this->positive_effect_secondary = 0;
+            // XXX we should use a faction-factory...
+            switch ($this->getUser()->getFaction()) {
+                case FACTION_FEDERATION:
+                    $key = GOOD_SATISFACTION_FED_SECONDARY;
+                    break;
+                case FACTION_ROMULAN:
+                    $key = GOOD_SATISFACTION_ROMULAN_SECONDARY;
+                    break;
+                case FACTION_KLINGON:
+                    $key = GOOD_SATISFACTION_KLINGON_SECONDARY;
+                    break;
+            }
+            if (!isset($production[$key])) {
+                return 0;
+            }
+            $this->positive_effect_secondary += $production[$key]->getProduction();
+        }
+        return $this->positive_effect_secondary;
+    }
+
+    public function getCrewLimit(): int
+    {
+        return (int)floor(
+            min(
+                max(
+                    $this->getPositiveEffectPrimary() - (4 * max(0,
+                            $this->getNegativeEffect() - $this->getPositiveEffectSecondary())),
+                    0
+                ),
+                $this->getWorkers()
+            ) / 5
+        );
+    }
+
+    public function clearCache(): void
+    {
+        $this->storage = null;
+        $this->productionRaw = null;
+        $this->production = null;
+    }
+
+    public function hasActiveBuildingWithFunction(int $function_id): bool
+    {
+        if (!isset($this->has_active_building_by_function[$function_id])) {
+            // @todo refactor
+            global $container;
+
+            $this->has_active_building_by_function[$function_id] = $container
+                ->get(PlanetFieldRepositoryInterface::class)
+                ->getCountByColonyAndBuildingFunctionAndState(
+                    $this->getId(),
+                    [$function_id],
+                    [1]
+                );
+        }
+        return $this->has_active_building_by_function[$function_id];
+    }
+
+    public function lowerEps(int $value): void
+    {
+        $this->setEps($this->getEps() - $value);
+    }
+
+    public function upperEps(int $value): void
+    {
+        $this->setEps($this->getEps() + $value);
+    }
+}

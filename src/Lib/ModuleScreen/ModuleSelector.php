@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
-use ColonyData;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
@@ -26,7 +26,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function __construct(
         $moduleType,
-        ColonyData $colony,
+        ColonyInterface $colony,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
@@ -136,7 +136,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return new ModuleSelectWrapper($this->buildplan);
     }
 
-    public function getColony(): ColonyData
+    public function getColony(): ColonyInterface
     {
         return $this->colony;
     }

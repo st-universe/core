@@ -13,6 +13,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\ModuleBuildingFunctionInterface;
 use Stu\Orm\Entity\ModuleCostInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -31,18 +32,22 @@ final class CreateModules implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->moduleBuildingFunctionRepository = $moduleBuildingFunctionRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -126,7 +131,8 @@ final class CreateModules implements ActionControllerInterface
                 $this->colonyStorageManager->lowerStorage($colony, $cost->getCommodity(), $cost->getAmount() * $count);
             }
             $colony->lowerEps($count * $module->getEcost());
-            $colony->save();
+
+            $this->colonyRepository->save($colony);
 
             if (($queue = $this->moduleQueueRepository->getByColonyAndModuleAndBuilding((int) $colonyId, (int) $module_id, (int) $func)) !== null) {
                 $queue->setAmount($queue->getAmount()+$count);

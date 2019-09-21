@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ActivateBuilding;
 
 use request;
+use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class ActivateBuilding implements ActionControllerInterface
@@ -19,12 +21,20 @@ final class ActivateBuilding implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $colonyRepository;
+
+    private $buildingAction;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ColonyRepositoryInterface $colonyRepository,
+        BuildingActionInterface $buildingAction
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->colonyRepository = $colonyRepository;
+        $this->buildingAction = $buildingAction;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,40 +54,10 @@ final class ActivateBuilding implements ActionControllerInterface
             return;
         }
 
-        if (!$field->hasBuilding()) {
-            return;
-        }
-        if (!$field->isActivateAble()) {
-            return;
-        }
-        if ($field->isActive()) {
-            return;
-        }
-        if ($field->hasHighDamage()) {
-            $game->addInformation(_('Das Gebäude kann aufgrund zu starker Beschädigung nicht aktiviert werden'));
-            return;
-        }
-        if ($colony->getWorkless() < $field->getBuilding()->getWorkers()) {
-            $game->addInformationf(
-                _('Zum aktivieren des Gebäudes werden %d Arbeiter benötigt'),
-                $field->getBuilding()->getWorkers()
-            );
-            return;
-        }
-        $colony->lowerWorkless($field->getBuilding()->getWorkers());
-        $colony->upperWorkers($field->getBuilding()->getWorkers());
-        $colony->upperMaxBev($field->getBuilding()->getHousing());
-        $field->setActive(1);
-
-        $this->planetFieldRepository->save($field);
-
-        $colony->save();
-        $field->getBuilding()->postActivation($colony);
-
-        $game->addInformationf(
-            _('%s auf Feld %d wurde aktiviert'),
-            $field->getBuilding()->getName(),
-            $field->getFieldId()
+        $this->buildingAction->activate(
+            $colony,
+            $field,
+            $game
         );
     }
 

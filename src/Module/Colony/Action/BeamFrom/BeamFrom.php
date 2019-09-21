@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamFrom implements ActionControllerInterface
 {
@@ -20,12 +21,16 @@ final class BeamFrom implements ActionControllerInterface
 
     private $colonyStorageManager;
 
+    private $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -124,12 +129,13 @@ final class BeamFrom implements ActionControllerInterface
 
             $this->colonyStorageManager->upperStorage($colony, $commodity, $count);
 
-            $colony->lowerEps(ceil($count / $transferAmount));
+            $colony->lowerEps((int)ceil($count / $transferAmount));
         }
         if ($target->getUser() != $userId) {
             $game->sendInformation($target->getUserId(), $userId, PM_SPECIAL_TRADE);
         }
-        $colony->save();
+
+        $this->colonyRepository->save($colony);
     }
 
     public function performSessionCheck(): bool

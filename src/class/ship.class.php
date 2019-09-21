@@ -10,6 +10,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
@@ -976,7 +977,16 @@ class ShipData extends BaseTable {
 
 	function getCurrentColony() {
 		if ($this->currentColony === NULL) {
-			$this->currentColony = Colony::getBy("systems_id=".$this->getSystemsId()." AND sx=".$this->getPosX()." AND sy=".$this->getPosY());
+			// @todo refactor
+			global $container;
+
+			$colonyRepository = $container->get(ColonyRepositoryInterface::class);
+
+			$this->currentColony = $colonyRepository->getByPosition(
+				(int)$this->getSystem(),
+				(int)$this->getPosX(),
+				(int)$this->getPosY()
+			);
 		}
 		return $this->currentColony;
 	}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use ColonyData;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -23,7 +23,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $this->commodityRepository = $commodityRepository;
     }
 
-    public function lowerStorage(ColonyData $colony, CommodityInterface $commodity, int $amount): void
+    public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
         $stor = $colony->getStorage()[$commodity->getId()] ?? null;
         if ($stor === null) {
@@ -42,7 +42,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $this->colonyStorageRepository->save($stor);
     }
 
-    public function upperStorage(ColonyData $colony, CommodityInterface $commodity, int $amount): void
+    public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
         $stor = $colony->getStorage()[$commodity->getId()] ?? null;
 
