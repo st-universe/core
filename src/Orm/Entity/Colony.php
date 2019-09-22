@@ -642,7 +642,7 @@ class Colony implements ColonyInterface
                     $this->getId(),
                     [$function_id],
                     [1]
-                );
+                ) > 0;
         }
         return $this->has_active_building_by_function[$function_id];
     }
