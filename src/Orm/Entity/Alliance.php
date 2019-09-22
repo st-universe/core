@@ -33,14 +33,20 @@ class Alliance implements AllianceInterface
     /** @Column(type="integer") */
     private $date = 0;
 
-    /** @Column(type="smallint") */
-    private $faction_id = 0;
+    /** @Column(type="integer", nullable=true) */
+    private $faction_id;
 
     /** @Column(type="boolean") */
     private $accept_applications = false;
 
     /** @Column(type="string", length=32) */
     private $avatar = '';
+
+    /**
+     * @ManyToOne(targetEntity="Faction")
+     * @JoinColumn(name="faction_id", referencedColumnName="id")
+     */
+    private $faction;
 
     private $founder;
 
@@ -99,14 +105,14 @@ class Alliance implements AllianceInterface
         return $this;
     }
 
-    public function getFactionId(): int
+    public function getFactionId(): ?int
     {
         return $this->faction_id;
     }
 
-    public function setFactionId(int $faction_id): AllianceInterface
+    public function setFaction(?FactionInterface $faction): AllianceInterface
     {
-        $this->faction_id = $faction_id;
+        $this->faction = $faction;
         return $this;
     }
 

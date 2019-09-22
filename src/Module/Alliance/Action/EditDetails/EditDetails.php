@@ -66,9 +66,9 @@ final class EditDetails implements ActionControllerInterface
 
         if ($this->allianceActionManager->mayEditFactionMode($alliance, (int) $user->getFactionId())) {
             if ($faction_mode === 1) {
-                $alliance->setFactionId($user->getFactionId());
+                $alliance->setFaction($user->getFaction());
             } else {
-                $alliance->setFactionId(0);
+                $alliance->setFaction(null);
             }
         }
         if ($acceptApplications === 1) {

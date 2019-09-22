@@ -42,7 +42,7 @@ final class Edit implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar(
             'CAN_EDIT_FACTION_MODE',
-            $this->allianceActionManager->mayEditFactionMode($alliance, $game->getUser()->getId())
+            $this->allianceActionManager->mayEditFactionMode($alliance, $game->getUser()->getFactionId())
         );
     }
 }
