@@ -22,7 +22,7 @@
 					<tr>
 						<td>
 							<div tal:condition="post/getUserId">
-								<img src="assets/rassen/${post/getUser/getFaction}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
+								<img src="assets/rassen/${post/getUser/getFactionId}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 							</div>
 							<div tal:condition="not:post/getUserId" tal:content="structure bbcode:post/getUserName">USER</div>
 						</td>

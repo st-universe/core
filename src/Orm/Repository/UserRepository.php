@@ -64,7 +64,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id NOT IN (:ignoreIds) AND u.lastaction < :idleTimeThreshold',
+                'SELECT u FROM %s u WHERE u.id > 100 AND u.id NOT IN (:ignoreIds) AND u.lastaction < :idleTimeThreshold',
                 User::class
             )
         )->setParameters([

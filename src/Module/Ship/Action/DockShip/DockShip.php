@@ -160,7 +160,7 @@ final class DockShip implements ActionControllerInterface
                     }
                     break;
                 case DOCK_PRIVILEGE_FACTION:
-                    if ($priv->getTargetId() == $user->getFaction()) {
+                    if ($priv->getTargetId() == $user->getFactionId()) {
                         if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
                             return false;
                         }

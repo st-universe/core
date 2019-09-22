@@ -173,21 +173,20 @@ class User implements UserInterface
         return $this->allys_id;
     }
 
-    public function setAllianceId(?int $allianceId): UserInterface
-    {
-        $this->allys_id = $allianceId;
-        return $this;
-    }
-
-    public function getFaction(): ?int
+    public function getFactionId(): ?int
     {
         return $this->race;
     }
 
-    public function setFaction(?int $factionId): UserInterface
+    public function setFaction(FactionInterface $faction): UserInterface
     {
-        $this->race = $factionId;
+        $this->faction = $faction;
         return $this;
+    }
+
+    public function getFaction():? FactionInterface
+    {
+        return $this->faction;
     }
 
     public function getActive(): int
@@ -377,7 +376,7 @@ class User implements UserInterface
     public function getFullAvatarPath(): string
     {
         if (!$this->getAvatar()) {
-            return "/assets/rassen/" . $this->getFaction() . "kn.png";
+            return "/assets/rassen/" . $this->getFactionId() . "kn.png";
         }
         return AVATAR_USER_PATH . "/" . $this->getAvatar() . ".png";
     }
@@ -406,13 +405,13 @@ class User implements UserInterface
 
     public function getAlliance(): ?AllianceInterface
     {
-        if ($this->alliance === null) {
-            // @todo refactor
-            global $container;
-
-            $this->alliance = $container->get(AllianceRepositoryInterface::class)->find((int)$this->getAllianceId());
-        }
         return $this->alliance;
+    }
+
+    public function setAlliance(?AllianceInterface $alliance): UserInterface
+    {
+        $this->alliance = $alliance;
+        return $this;
     }
 
     public function isFriend($userId): bool
@@ -559,6 +558,6 @@ class User implements UserInterface
 
         $alliance = $container->get(AllianceRepositoryInterface::class)->find($allianceId);
 
-        return $alliance->getAcceptApplications() && $this->getAllianceId() === 0 && ($alliance->getFactionId() == 0 || $this->getFaction() == $alliance->getFactionId());
+        return $alliance->getAcceptApplications() && $this->getAllianceId() === 0 && ($alliance->getFactionId() == 0 || $this->getFactionId() == $alliance->getFactionId());
     }
 }

@@ -48,7 +48,7 @@ final class Leave implements ActionControllerInterface
 
         $this->allianceJobRepository->truncateByUser($userId);
 
-        $user->setAllianceId(null);
+        $user->setAlliance(null);
 
         $this->userRepository->save($user);
 

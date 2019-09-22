@@ -59,7 +59,7 @@ final class KickPlayer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $player->setAllianceId(0);
+        $player->setAlliance(null);
 
         $this->userRepository->save($player);
 

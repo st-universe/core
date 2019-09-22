@@ -33,7 +33,7 @@
 				<th style="width: 50px;"></th>
 			</tr>
 			<tr tal:repeat="data LIST" class="runtime" tal:attributes="class string:row${repeat/data/odd}">
-				<td style="text-align: center;"><img src="assets/rassen/${data/getFaction}s.gif" /></td>
+				<td style="text-align: center;"><img src="assets/rassen/${data/getFactionId}s.gif" /></td>
 				<td tal:content="data/getId">ID</td>
 				<td>
 					<a href="userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>

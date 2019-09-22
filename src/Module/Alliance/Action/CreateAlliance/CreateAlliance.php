@@ -55,14 +55,12 @@ final class CreateAlliance implements ActionControllerInterface
         $alliance->setDescription($description);
         $alliance->setDate(time());
         if ($faction_mode === 1) {
-            $alliance->setFactionId((int) $user->getFaction());
+            $alliance->setFactionId((int) $user->getFactionId());
         }
 
         $this->allianceRepository->save($alliance);
 
-        $allianceId = $alliance->getId();
-
-        $user->setAllianceId($allianceId);
+        $user->setAlliance($alliance);
 
         $this->userRepository->save($user);
 

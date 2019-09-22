@@ -40,7 +40,7 @@ final class ShowColonyList implements ViewControllerInterface
 
         $game->setTemplateVar(
             'FREE_PLANET_LIST',
-            $this->colonyRepository->getStartingByFaction((int)$user->getFaction())
+            $this->colonyRepository->getStartingByFaction((int)$user->getFactionId())
         );
     }
 }

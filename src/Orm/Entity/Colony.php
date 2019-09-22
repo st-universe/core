@@ -562,7 +562,7 @@ class Colony implements ColonyInterface
         if ($this->positive_effect_primary === null) {
             $production = $this->getProduction();
             // XXX we should use a faction-factory...
-            switch ($this->getUser()->getFaction()) {
+            switch ($this->getUser()->getFactionId()) {
                 case FACTION_FEDERATION:
                     $key = GOOD_SATISFACTION_FED_PRIMARY;
                     break;
@@ -588,7 +588,7 @@ class Colony implements ColonyInterface
             $production = $this->getProduction();
             $this->positive_effect_secondary = 0;
             // XXX we should use a faction-factory...
-            switch ($this->getUser()->getFaction()) {
+            switch ($this->getUser()->getFactionId()) {
                 case FACTION_FEDERATION:
                     $key = GOOD_SATISFACTION_FED_SECONDARY;
                     break;

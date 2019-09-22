@@ -88,11 +88,11 @@
 					<table style="width: 100%">
 						<tr tal:repeat="data ALLIANCE/getMembers">
 							<td tal:condition="IS_IN_ALLIANCE" tal:attributes="class php:getOnlineStatus(data.getUser().isOnline())">
-								<img src="assets/rassen/${data/getUser/getFaction}s.gif" />
+								<img src="assets/rassen/${data/getUser/getFactionId}s.gif" />
 								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
 							</td>
 							<td tal:condition="not:IS_IN_ALLIANCE">
-								<img src="assets/rassen/${data/getUser/getFaction}s.gif" />
+								<img src="assets/rassen/${data/getUser/getFactionId}s.gif" />
 								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
 							</td>
 							<td style="width: 36px;" tal:define="id data/getUserId">

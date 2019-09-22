@@ -77,7 +77,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
         foreach ($alliance->getMembers() as $userRelation) {
             $this->privateMessageSender->send(USER_NOONE, $userRelation->getUserId(), $text);
-            $userRelation->getUser()->setAllianceId(0);
+            $userRelation->getUser()->setAlliance(null);
 
             $this->userRepository->save($userRelation->getUser());
         }
@@ -131,7 +131,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             return true;
         }
         foreach ($alliance->getMembers() as $key => $obj) {
-            if ($obj->getUser()->getFaction() !== $factionId) {
+            if ($obj->getUser()->getFactionId() !== $factionId) {
                 return false;
             }
         }

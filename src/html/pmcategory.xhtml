@@ -12,7 +12,7 @@
                 <div class="p100 pm" tal:repeat="post PM_LIST">
                     <div class="title">
                         <div class="iblock pm_sender">
-                            <img src="assets/rassen/${post/getSender/getFaction}s.gif" />
+                            <img src="assets/rassen/${post/getSender/getFactionId}s.gif" />
                             <span tal:condition="not:CATEGORY/isPMOutDir" i18n:translate="">Von:</span>
                             <span tal:condition="CATEGORY/isPMOutDir" i18n:translate="">An:</span>
                             <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)

@@ -48,7 +48,7 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $this->allianceActionManager->delete($allianceId);
 
-        $user->setAllianceId(null);
+        $user->setAlliance(null);
 
         $this->userRepository->save($user);
 

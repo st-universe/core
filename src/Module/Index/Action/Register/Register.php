@@ -85,7 +85,7 @@ final class Register implements ActionControllerInterface
         $obj = $this->userRepository->prototype();
         $obj->setLogin($loginname);
         $obj->setEmail($email);
-        $obj->setFaction($factionId);
+        $obj->setFaction(current($factions));
 
         $this->userRepository->save($obj);
 
@@ -110,7 +110,7 @@ final class Register implements ActionControllerInterface
         /**
          * @var ResearchInterface $research
          */
-        $research = $this->researchRepository->find($this->getResearchStartId((int)$obj->getFaction()));
+        $research = $this->researchRepository->find($this->getResearchStartId((int)$obj->getFactionId()));
 
         $db = $this->researchedRepository->prototype();
 

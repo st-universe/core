@@ -10,7 +10,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class FirstColony implements ActionControllerInterface
@@ -18,8 +17,6 @@ final class FirstColony implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
     private $firstColonyRequest;
-
-    private $factionRepository;
 
     private $buildingRepository;
 
@@ -31,14 +28,12 @@ final class FirstColony implements ActionControllerInterface
 
     public function __construct(
         FirstColonyRequestInterface $firstColonyRequest,
-        FactionRepositoryInterface $factionRepository,
         BuildingRepositoryInterface $buildingRepository,
         PlanetColonizationInterface $planetColonization,
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository
     ) {
         $this->firstColonyRequest = $firstColonyRequest;
-        $this->factionRepository = $factionRepository;
         $this->buildingRepository = $buildingRepository;
         $this->planetColonization = $planetColonization;
         $this->colonyRepository = $colonyRepository;
@@ -61,18 +56,16 @@ final class FirstColony implements ActionControllerInterface
             $game->addInformation(_('"Dieser Planet wurde bereits besiedelt'));
             return;
         }
-        $colonyList = $this->colonyRepository->getStartingByFaction((int) $user->getFaction());
+        $colonyList = $this->colonyRepository->getStartingByFaction((int) $user->getFactionId());
 
         if (!array_key_exists($planetId, $colonyList)) {
             return;
         }
 
-        $faction = $this->factionRepository->find((int) $user->getFaction());
-
         $this->planetColonization->colonize(
             $colony,
             $user->getId(),
-            $this->buildingRepository->find($faction->getStartBuildingId())
+            $this->buildingRepository->find($user->getFaction()->getStartBuildingId())
         );
 
         $user->setActive(2);

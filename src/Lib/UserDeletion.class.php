@@ -112,7 +112,7 @@ class UserDeletion
         // @todo refactor
         global $container;
 
-        $container->get(CrewRepositoryInterface::class)->truncateByUserId(
+        $container->get(CrewRepositoryInterface::class)->truncateByUser(
             (int) $this->getUser()->getId()
         );
     }

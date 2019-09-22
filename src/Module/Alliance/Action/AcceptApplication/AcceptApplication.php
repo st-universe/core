@@ -59,7 +59,7 @@ final class AcceptApplication implements ActionControllerInterface
         }
 
         $applicant = $appl->getUser();
-        $applicant->setAllianceId($alliance->getId());
+        $applicant->setAlliance($alliance);
 
         $this->userRepository->save($applicant);
 

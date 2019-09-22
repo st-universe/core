@@ -24,11 +24,11 @@ interface UserInterface
 
     public function getAllianceId(): ?int;
 
-    public function setAllianceId(?int $allianceId): UserInterface;
+    public function getFactionId(): ?int;
 
-    public function getFaction(): ?int;
+    public function setFaction(FactionInterface $faction): UserInterface;
 
-    public function setFaction(?int $factionId): UserInterface;
+    public function getFaction():? FactionInterface;
 
     public function getActive(): int;
 
@@ -106,6 +106,8 @@ interface UserInterface
     public function getFriends(): array;
 
     public function getAlliance(): ?AllianceInterface;
+
+    public function setAlliance(?AllianceInterface $alliance): UserInterface;
 
     public function isFriend($userId): bool;
 

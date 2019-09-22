@@ -42,7 +42,7 @@ final class ManagementListItemTal
 
     public function getFaction(): int
     {
-        return (int)$this->user->getFaction();
+        return (int)$this->user->getFactionId();
     }
 
     public function getName(): string

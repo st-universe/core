@@ -44,7 +44,7 @@ final class CrewCreator implements CrewCreatorInterface
         $user = $this->userRepository->find($userId);
 
         $arr = [];
-        $raceList = $this->crewRaceRepository->getByFaction((int)$user->getFaction());
+        $raceList = $this->crewRaceRepository->getByFaction((int)$user->getFactionId());
         foreach ($raceList as $obj) {
             $min = key($arr) + 1;
             $amount = range($min, $min + $obj->getChance());

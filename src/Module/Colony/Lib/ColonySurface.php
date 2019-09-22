@@ -103,7 +103,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getPositiveEffectPrimaryDescription(): string
     {
         // XXX We need the other factions...
-        switch ($this->colony->getUser()->getFaction()) {
+        switch ($this->colony->getUser()->getFactionId()) {
             case FACTION_FEDERATION:
                 return _('Zufriedenheit');
             case FACTION_ROMULAN:
@@ -116,7 +116,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getPositiveEffectSecondaryDescription(): string
     {
         // XXX We need the other factions...
-        switch ($this->colony->getUser()->getFaction()) {
+        switch ($this->colony->getUser()->getFactionId()) {
             case FACTION_FEDERATION:
                 return _('Umweltkontrollen');
             case FACTION_ROMULAN:
@@ -129,7 +129,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getNegativeEffectDescription(): string
     {
         // XXX We need the other factions...
-        switch ($this->colony->getUser()->getFaction()) {
+        switch ($this->colony->getUser()->getFactionId()) {
             case FACTION_FEDERATION:
                 return _('Umweltverschmutzung');
             case FACTION_ROMULAN:
