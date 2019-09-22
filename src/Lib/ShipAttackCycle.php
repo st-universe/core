@@ -79,7 +79,7 @@ class ShipAttackCycle {
 			if (!$this->getAttackShip() || !$this->getDefendShip()) {
 				return;
 			}
-			if ($this->getAttackShip()->getDestroyed() || $this->getDefendShip()->getDestroyed()) {
+			if ($this->getAttackShip()->getIsDestroyed() || $this->getDefendShip()->getIsDestroyed()) {
 				continue;
 			}
 			if ($this->getFirstStrike()) {
@@ -106,10 +106,10 @@ class ShipAttackCycle {
 			// Phaser
 			if ($this->getAttackShip()->phaserIsActive()) {
 				for ($i=1;$i<=$this->getAttackShip()->getRump()->getPhaserVolleys();$i++) {
-					if (!$this->getAttackShip()->phaserIsActive() || $this->getAttackShip()->getEps() < $this->getAttackShip()->getPhaserEpsCost()) {
+					if (!$this->getAttackShip()->phaserIsActive() || $this->getAttackShip()->getEps() < $this->getEnergyWeaponEnergyCosts()) {
 						break;
 					}
-					$this->getAttackShip()->lowerEps($this->getAttackShip()->getPhaserEpsCost());
+					$this->getAttackShip()->lowerEps($this->getEnergyWeaponEnergyCosts());
 					if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == FIRINGMODE_RANDOM) {
 						$this->redefineDefender();
 						if (!$this->getDefendShip()) {
@@ -129,7 +129,7 @@ class ShipAttackCycle {
 						$damage_wrapper->setIsPhaserDamage(TRUE);
 					}
 					$this->addMessageMerge($this->getDefendShip()->damage($damage_wrapper));
-					if ($this->getDefendShip()->isDestroyed()) {
+					if ($this->getDefendShip()->getIsDestroyed()) {
 						$this->getEntryCreator()->addShipEntry(
 						    'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
                             (int) $this->getAttackShip()->getUserId()
@@ -157,7 +157,7 @@ class ShipAttackCycle {
 				$this->endCycle($msg);
 				continue;
 			}
-			if ($this->getDefendShip()->isDestroyed()) {
+			if ($this->getDefendShip()->getIsDestroyed()) {
 				$this->redefineDefender();
 				if (!$this->getDefendShip()) {
 					$this->endCycle();
@@ -165,11 +165,14 @@ class ShipAttackCycle {
 				}
 			}
 			for ($i=1;$i<=$this->getAttackShip()->getRump()->getTorpedoVolleys();$i++) {
-				if (!$this->getAttackShip()->torpedoIsActive() || $this->getAttackShip()->getEps() < $this->getAttackShip()->getTorpedoEpsCost()) {
+				if (!$this->getAttackShip()->torpedoIsActive() || $this->getAttackShip()->getEps() < $this->getProjectileWeaponEnergyCosts()) {
 					break;
 				}
-				$this->getAttackShip()->lowerTorpedo();
-				$this->getAttackShip()->lowerEps($this->getAttackShip()->getTorpedoEpsCost());
+				$this->getAttackShip()->setTorpedoCount($this->getAttackShip()->getTorpedoCount() - 1);
+				if ($this->getAttackShip()->getTorpedoCount() == 0) {
+				    $this->getAttackShip()->setTorpedos(0);
+                }
+				$this->getAttackShip()->lowerEps($this->getProjectileWeaponEnergyCosts());
 				$this->redefineDefender();
 				$this->addMessage("Die ".$this->getAttackShip()->getName()." feuert einen ".$this->getAttackShip()->getTorpedo()->getName()." auf die ".$this->getDefendShip()->getName());
 				// higher evade chance for pulseships against 
@@ -189,7 +192,7 @@ class ShipAttackCycle {
 					$damage_wrapper->setIsTorpedoDamage(TRUE);
 				}
 				$this->addMessageMerge($this->getDefendShip()->damage($damage_wrapper));
-				if ($this->getDefendShip()->isDestroyed()) {
+				if ($this->getDefendShip()->getIsDestroyed()) {
 					$this->unsetDefender();
 
                     $this->getEntryCreator()->addShipEntry(
@@ -266,7 +269,7 @@ class ShipAttackCycle {
 		}
 		if ($count == 1) {
 			$arr = &current($this->getDefender());
-			if ($arr->isDestroyed()) {
+			if ($arr->getIsDestroyed()) {
 				return FALSE;
 			}
 			if ($arr->getDisabled()) {
@@ -284,7 +287,7 @@ class ShipAttackCycle {
 		$arr = &$this->getDefender();
 		shuffle($arr);
 		foreach ($arr as $key => $obj) {
-			if ($obj->isDestroyed()) {
+			if ($obj->getIsDestroyed()) {
 				unset($arr[$key]);
 				continue;
 			}
@@ -329,7 +332,7 @@ class ShipAttackCycle {
 		}
 		if ($count == 1) {
 			$arr = &current($this->getAttacker());
-			if ($arr->isDestroyed()) {
+			if ($arr->getIsDestroyed()) {
 				return FALSE;
 			}
 			if ($arr->getDisabled()) {
@@ -347,7 +350,7 @@ class ShipAttackCycle {
 		$arr = &$this->getAttacker();
 		shuffle($arr);
 		foreach ($arr as $key => $obj) {
-			if ($obj->isDestroyed() || $obj->getDisabled()) {
+			if ($obj->getIsDestroyed() || $obj->getDisabled()) {
 				unset($arr[$key]);
 				continue;
 			}
@@ -481,6 +484,16 @@ class ShipAttackCycle {
         return $container->get(WeaponRepositoryInterface::class)->findByModule(
             (int) $ship->getShipSystem(SYSTEM_PHASER)->getModuleId()
         );
+    }
+
+    public function getProjectileWeaponEnergyCosts(): int {
+        // @todo
+        return 1;
+    }
+
+    public function getEnergyWeaponEnergyCosts(): int {
+        // @todo
+        return 1;
     }
 }
 

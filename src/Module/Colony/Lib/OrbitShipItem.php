@@ -55,7 +55,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function isDestroyed(): bool
     {
-        return $this->ship->isDestroyed();
+        return $this->ship->getIsDestroyed();
     }
 
     public function ownedByUser(): bool

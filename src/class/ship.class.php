@@ -462,20 +462,6 @@ class ShipData extends BaseTable {
 		$ship->save();
 	} # }}}
 
-	public function isDestroyed() {
-		return $this->getDestroyed() == 1;
-	}
-
-	public function getDestroyed() {
-		return $this->destroyed;
-	}
-
-	private $destroyed = 0;
-
-	public function setDestroyed($value) {
-		$this->destroyed = $value;
-	}
-
 	/**
 	 */
 	public function setIsDestroyed($value) { # {{{
@@ -629,15 +615,6 @@ class ShipData extends BaseTable {
 
 	/**
 	 */
-	public function lowerTorpedo() { #{{{
-		$this->setTorpedoCount($this->getTorpedoCount()-1);
-		if ($this->getTorpedoCount() == 0) {
-			$this->setTorpedos(0);			
-		}
-	} # }}}
-
-	/**
-	 */
 	public function setFormerRumpsId($value) { # {{{
 		$this->setFieldValue('former_rumps_id',$value,'getFormerRumpsId');
 	} # }}}
@@ -648,14 +625,6 @@ class ShipData extends BaseTable {
 		return $this->data['former_rumps_id'];
 	} # }}}
 
-	private $damageTaken = 0;
-	
-	/**
-	 */
-	private function registerDamage($amount) { #{{{
-		$this->damageTaken += $amount;
-	} # }}}
-
 	/**
 	 */
 	public function damage(DamageWrapper $damage_wrapper) { #{{{
@@ -663,7 +632,6 @@ class ShipData extends BaseTable {
 		$msg = array();
 		if ($this->shieldIsActive()) {
 			$damage = $damage_wrapper->getDamageRelative($this,DAMAGE_MODE_SHIELDS);
-			$this->registerDamage($damage);
 			if ($damage > $this->getShield()) {
 				$msg[] = "- Schildschaden: ".$this->getShield();
 				$msg[] = "-- Schilde brechen zusammen!";
@@ -679,7 +647,6 @@ class ShipData extends BaseTable {
 		}
 		$disablemessage = FALSE;
 		$damage = $damage_wrapper->getDamageRelative($this,DAMAGE_MODE_HULL);
-		$this->registerDamage($damage); 
 		if ($this->getCanBeDisabled() && $this->getHuell()-$damage < round($this->getMaxHuell()/100*10)) {
 			$damage = round($this->getHuell()-$this->getMaxHuell()/100*10);
 			$disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
@@ -695,7 +662,7 @@ class ShipData extends BaseTable {
 		}
 		$msg[] = "- Hüllenschaden: ".$damage;
 		$msg[] = "-- Das Schiff wurde zerstört!";
-		$this->setDestroyed(1);
+		$this->setIsDestroyed(1);
 		return $msg;
 	} # }}}
 
@@ -925,18 +892,6 @@ class ShipData extends BaseTable {
 				return 'schilde_status';
 		}
 		return '';
-	}
-
-	/**
-	 */
-	public function getTorpedoEpsCost() { #{{{
-		// @todo
-		return 1;
-	} # }}}
-
-	public function getPhaserEpsCost() {
-		// @todo
-		return 1;
 	}
 
 	public function systemIsActivateable($system) {
