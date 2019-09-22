@@ -23,7 +23,7 @@
 				<br />
 			</div>
 		</tal:block>
-		<form action="ship.php" method="post" name="shipform">
+		<form action="ship.php" method="post" name="shipform" id="shipform">
 			<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
@@ -376,7 +376,8 @@
 								<img src="assets/buttons/warpk.gif" title="Warpkern" /> ${SHIP/getWarpcoreLoad}/${SHIP/getWarpcoreCapacity}
 							</td>
 							<td>
-								<input type="submit" class="button" name="B_LOAD_WARPCORE" value="Aufladen" /> <input type="submit" class="button" name="B_LOAD_WARPCORE_MAX" value="max" />
+								<input type="text" size="3" name="warpcoreload" id="warpcoreload" value="1" />
+								<input type="submit" class="button" name="B_LOAD_WARPCORE" value="Aufladen" id="loadwarpcorebutton" /> <input type="button" class="button" value="max" onClick="$('warpcoreload').value = 9999; $('loadwarpcorebutton').click()" />
 								<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" /> Flotte</span>
 							</td>
 						</tr>

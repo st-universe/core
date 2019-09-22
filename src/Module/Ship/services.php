@@ -67,7 +67,6 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
 use Stu\Module\Ship\Action\LoadWarpcore\LoadWarpcore;
-use Stu\Module\Ship\Action\LoadWarpcoreMax\LoadWarpcoreMax;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShipLeft\MoveShipLeft;
@@ -198,7 +197,6 @@ return [
         FleetAlertYellow::ACTION_IDENTIFIER => autowire(FleetAlertYellow::class),
         FleetAlertRed::ACTION_IDENTIFIER => autowire(FleetAlertRed::class),
         LoadWarpcore::ACTION_IDENTIFIER => autowire(LoadWarpcore::class),
-        LoadWarpcoreMax::ACTION_IDENTIFIER => autowire(LoadWarpcoreMax::class),
         EscapeTractorBeam::ACTION_IDENTIFIER => autowire(EscapeTractorBeam::class),
         Colonize::ACTION_IDENTIFIER => autowire(Colonize::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),

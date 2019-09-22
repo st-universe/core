@@ -198,7 +198,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             } else {
                                 $load = $load * WARPCORE_LOAD;
                             }
-                            $shipobj->upperWarpcoreLoad($load);
+                            $shipobj->setWarpcoreLoad($shipobj->getWarpcoreLoad() + $load);
                             $msg[] = sprintf(
                                 _('Der Warpkern der %s wurde um %d Einheiten aufgeladen'),
                                 $shipobj->getName(),

@@ -358,16 +358,6 @@ class ShipData extends BaseTable {
 		$this->setFieldValue('warpcore',$value,'getWarpcoreLoad');
 	}
 
-        /**
-         */
-        public function upperWarpcoreLoad($value) { #{{{
-                $this->setWarpcoreLoad($this->getWarpcoreLoad()+$value);
-        } # }}}
-
-	public function lowerWarpcoreLoad($value) {
-		$this->setWarpcoreLoad($this->getWarpcoreLoad()-$value);
-	}
-
 	public function getWarpcoreCapacity() {
 		return $this->getReactorOutput()*WARPCORE_CAPACITY_MULTIPLIER;
 	}
@@ -1496,44 +1486,6 @@ class ShipData extends BaseTable {
 	 */
 	public function currentUserCanUnMan() { #{{{
 		return $this->ownedByCurrentUser() && $this->getCrewCount() > 0;
-	} # }}}
-
-	/**
-	 */
-	public function loadWarpCore($count) { #{{{
-		$shipStorage = $this->getStorage();
-		foreach (array(CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER) as $commodityId) {
-		    $storage = $shipStorage[$commodityId] ?? null;
-		    if ($storage === null) {
-				return FALSE;
-			}
-			if ($storage->getAmount() < $count) {
-				$count = $storage->getAmount();
-			}
-		}
-		// @todo refactor
-		global $container;
-		$shipStorageManager = $container->get(ShipStorageManagerInterface::class);
-
-		$shipStorageManager->lowerStorage(
-			$this,
-			$shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
-			$count
-		);
-		$shipStorageManager->lowerStorage(
-			$this,
-			$shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
-			$count
-		);
-		if ($this->getWarpcoreLoad()+$count*WARPCORE_LOAD > $this->getWarpcoreCapacity()) {
-			$load = $this->getWarpcoreCapacity() - $this->getWarpcoreLoad();
-		} else {
-			$load = $count*WARPCORE_LOAD;
-		}
-		$this->upperWarpcoreLoad($load);
-		$this->save();
-
-		return $load;
 	} # }}}
 
 	/**

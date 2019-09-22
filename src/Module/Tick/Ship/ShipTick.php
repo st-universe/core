@@ -46,7 +46,7 @@ final class ShipTick implements ShipTickInterface
         $wkuse = $ship->getEpsUsage() + ($eps - $ship->getEps());
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$ship->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
         $ship->setEps($eps);
-        $ship->lowerWarpcoreLoad($wkuse);
+        $ship->setWarpcoreLoad($ship->getWarpcoreLoad() - $wkuse);
 
         $ship->save();
 
