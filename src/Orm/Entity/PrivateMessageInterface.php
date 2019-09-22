@@ -8,11 +8,7 @@ interface PrivateMessageInterface
 
     public function getSenderId(): int;
 
-    public function setSenderId(int $senderId): PrivateMessageInterface;
-
     public function getRecipientId(): int;
-
-    public function setRecipientId(int $recipientId): PrivateMessageInterface;
 
     public function getText(): string;
 
@@ -41,4 +37,8 @@ interface PrivateMessageInterface
     public function getSender(): UserInterface;
 
     public function getRecipient(): UserInterface;
+
+    public function setSender(UserInterface $user): PrivateMessageInterface;
+
+    public function setRecipient(UserInterface $recipient): PrivateMessageInterface;
 }

@@ -48,6 +48,18 @@ class PrivateMessage implements PrivateMessageInterface
      */
     private $category;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="send_user", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $sendingUser;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="recip_user", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $receivingUser;
+
     public function getId(): int
     {
         return $this->id;
@@ -58,21 +70,9 @@ class PrivateMessage implements PrivateMessageInterface
         return $this->send_user;
     }
 
-    public function setSenderId(int $senderId): PrivateMessageInterface
-    {
-        $this->send_user = $senderId;
-        return $this;
-    }
-
     public function getRecipientId(): int
     {
         return $this->recip_user;
-    }
-
-    public function setRecipientId(int $recipientId): PrivateMessageInterface
-    {
-        $this->recip_user = $recipientId;
-        return $this;
     }
 
     public function getText(): string
@@ -143,18 +143,24 @@ class PrivateMessage implements PrivateMessageInterface
 
     public function getSender(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->sendingUser;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getSenderId());
+    public function setSender(UserInterface $user): PrivateMessageInterface
+    {
+        $this->sendingUser = $user;
+        return $this;
     }
 
     public function getRecipient(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->receivingUser;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getRecipientId());
+    public function setRecipient(UserInterface $recipient): PrivateMessageInterface
+    {
+        $this->receivingUser = $recipient;
+        return $this;
     }
 
 }

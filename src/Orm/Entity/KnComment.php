@@ -40,6 +40,12 @@ class KnComment implements KnCommentInterface
      */
     private $post;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -62,10 +68,14 @@ class KnComment implements KnCommentInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): KnCommentInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): KnCommentInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

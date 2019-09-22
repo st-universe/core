@@ -14,32 +14,42 @@ class Note implements NoteInterface
     private $id;
 
     /** @Column(type="integer") * */
-    private $user_id;
+    private $user_id = 0;
 
     /** @Column(type="integer") * */
-    private $date;
+    private $date = 0;
 
     /** @Column(type="string") * */
-    private $title;
+    private $title = '';
 
     /** @Column(type="text") * */
-    private $text;
+    private $text = '';
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
 
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function setUserId(int $userId): NoteInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getUserId(): int
     {
         return $this->user_id;
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user): NoteInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function setDate(int $date): NoteInterface

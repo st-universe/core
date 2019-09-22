@@ -12,7 +12,9 @@ interface KnCommentInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): KnCommentInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): KnCommentInterface;
 
     public function getUsername(): string;
 

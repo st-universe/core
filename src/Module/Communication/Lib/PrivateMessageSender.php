@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\Lib;
 
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PrivateMessageSender implements PrivateMessageSenderInterface
 {
@@ -13,12 +14,16 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private $privateMessageRepository;
 
+    private $userRepository;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        PrivateMessageRepositoryInterface $privateMessageRepository
+        PrivateMessageRepositoryInterface $privateMessageRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function send(
@@ -36,8 +41,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm->setDate(time());
         $pm->setCategory($folder);
         $pm->setText($text);
-        $pm->setRecipientId($recipientId);
-        $pm->setSenderId($senderId);
+        $pm->setRecipient($this->userRepository->find($recipientId));
+        $pm->setSender($this->userRepository->find($senderId));
         $pm->setNew(true);
 
         $this->privateMessageRepository->save($pm);
@@ -47,8 +52,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($senderId, PM_SPECIAL_PMOUT);
 
             $newobj = clone($pm);
-            $newobj->setSenderId($pm->getRecipientId());
-            $newobj->setRecipientId($pm->getSenderId());
+            $newobj->setSender($pm->getRecipient());
+            $newobj->setRecipient($pm->getSender());
             $newobj->setCategory($folder);
             $newobj->setNew(false);
 

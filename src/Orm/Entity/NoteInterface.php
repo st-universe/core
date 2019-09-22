@@ -6,9 +6,11 @@ interface NoteInterface
 {
     public function getId(): int;
 
-    public function setUserId(int $userId): NoteInterface;
-
     public function getUserId(): int;
+
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): NoteInterface;
 
     public function setDate(int $date): NoteInterface;
 

@@ -147,10 +147,11 @@ class UserDeletion
         global $container;
 
         $knPostRepo = $container->get(KnPostRepositoryInterface::class);
+        $userRepo = $container->get(UserRepositoryInterface::class);
 
         foreach ($knPostRepo->getByUser((int) $this->getUser()->getId()) as $key => $obj) {
-            $obj->setUserName($this->getUser()->getName());
-            $obj->setUserId(0);
+            $obj->setUserName($this->getUser()->getUser());
+            $obj->setUser($userRepo->find(USER_NOONE));
 
             $knPostRepo->save($obj);
         }

@@ -26,7 +26,9 @@ interface KnPostInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): KnPostInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): KnPostInterface;
 
     public function getEditDate(): int;
 

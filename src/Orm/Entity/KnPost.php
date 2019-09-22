@@ -54,6 +54,12 @@ class KnPost implements KnPostInterface
      */
     private $rpgPlot;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -117,10 +123,14 @@ class KnPost implements KnPostInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): KnPostInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): KnPostInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

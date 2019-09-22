@@ -48,7 +48,7 @@ final class PostKnComment implements ActionControllerInterface
             return;
         }
         $obj = $this->knCommentRepository->prototype()
-            ->setUserId($game->getUser()->getId())
+            ->setUser($game->getUser())
             ->setDate(time())
             ->setPosting($post)
             ->setText($text);
