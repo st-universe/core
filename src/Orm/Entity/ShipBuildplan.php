@@ -47,6 +47,12 @@ class ShipBuildplan implements ShipBuildplanInterface
      */
     private $shipRump;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -69,10 +75,14 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): ShipBuildplanInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): ShipBuildplanInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

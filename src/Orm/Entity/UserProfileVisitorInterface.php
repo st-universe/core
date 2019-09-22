@@ -8,11 +8,7 @@ interface UserProfileVisitorInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): UserProfileVisitorInterface;
-
     public function getProfileUserId(): int;
-
-    public function setProfileUserId(int $profileUserId): UserProfileVisitorInterface;
 
     public function getDate(): int;
 
@@ -20,5 +16,9 @@ interface UserProfileVisitorInterface
 
     public function getUser(): UserInterface;
 
+    public function setUser(UserInterface $user): UserProfileVisitorInterface;
+
     public function getProfileUser(): UserInterface;
+
+    public function setProfileUser(UserInterface $profileUser): UserProfileVisitorInterface;
 }

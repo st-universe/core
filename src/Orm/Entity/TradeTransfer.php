@@ -36,6 +36,12 @@ class TradeTransfer implements TradeTransferInterface
      */
     private $tradePost;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -58,10 +64,14 @@ class TradeTransfer implements TradeTransferInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): TradeTransferInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): TradeTransferInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

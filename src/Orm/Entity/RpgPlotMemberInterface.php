@@ -12,11 +12,11 @@ interface RpgPlotMemberInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): RpgPlotMemberInterface;
-
     public function getRpgPlot(): RpgPlotInterface;
 
     public function setRpgPlot(RpgPlotInterface $rpgPlot): RpgPlotMemberInterface;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): RpgPlotMemberInterface;
 }

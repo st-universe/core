@@ -34,4 +34,10 @@ class UserMap implements UserMapInterface
         return $this->id;
     }
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
 }

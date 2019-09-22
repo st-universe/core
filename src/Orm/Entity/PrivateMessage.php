@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageRepository")
  * @Table(

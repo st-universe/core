@@ -404,7 +404,7 @@ final class GameController implements GameControllerInterface
         $string = bin2hex(random_bytes(15));
 
         $sessionStringEntry = $this->sessionStringRepository->prototype();
-        $sessionStringEntry->setUserId($this->getUser()->getId());
+        $sessionStringEntry->setUser($this->getUser());
         $sessionStringEntry->setDate(new DateTimeImmutable());
         $sessionStringEntry->setSessionString($string);
 

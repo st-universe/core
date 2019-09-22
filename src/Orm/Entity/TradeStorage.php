@@ -42,6 +42,12 @@ class TradeStorage implements TradeStorageInterface
      */
     private $commodity;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -52,10 +58,14 @@ class TradeStorage implements TradeStorageInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): TradeStorageInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): TradeStorageInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

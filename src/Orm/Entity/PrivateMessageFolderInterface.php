@@ -8,7 +8,9 @@ interface PrivateMessageFolderInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): PrivateMessageFolderInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): PrivateMessageFolderInterface;
 
     public function getDescription(): string;
 

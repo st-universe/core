@@ -53,7 +53,7 @@ final class ResearchState implements ResearchStateInterface
             return;
         }
         $entry = $this->shipRumpUserRepository->prototype();
-        $entry->setUserId($state->getUserId());
+        $entry->setUser($state->getUser());
         $entry->setShipRumpId($shipRumpId);
 
         $this->shipRumpUserRepository->save($entry);

@@ -22,13 +22,19 @@ class SessionString implements SessionStringInterface
     private $id;
 
     /** @Column(type="integer") * */
-    private $user_id;
+    private $user_id = 0;
 
     /** @Column(type="string") * */
-    private $sess_string;
+    private $sess_string = '';
 
     /** @Column(type="datetime", nullable=true) * */
     private $date;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
 
     public function getId(): int
     {
@@ -40,10 +46,9 @@ class SessionString implements SessionStringInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): SessionStringInterface
+    public function setUser(UserInterface $user): SessionStringInterface
     {
-        $this->user_id = $userId;
-
+        $this->user = $user;
         return $this;
     }
 

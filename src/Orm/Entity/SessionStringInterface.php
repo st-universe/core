@@ -12,7 +12,7 @@ interface SessionStringInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): SessionStringInterface;
+    public function setUser(UserInterface $user): SessionStringInterface;
 
     public function getSessionString(): string;
 

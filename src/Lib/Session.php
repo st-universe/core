@@ -120,7 +120,7 @@ final class Session implements SessionInterface
 
         // Login verzeichnen
         $ipTableEntry = $this->userIpTableRepository->prototype();
-        $ipTableEntry->setUserId((int) $result->getId());
+        $ipTableEntry->setUser($result);
         $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
         $ipTableEntry->setSessionId(session_id());
         $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));
@@ -194,7 +194,7 @@ final class Session implements SessionInterface
 
         // Login verzeichnen
         $ipTableEntry = $this->userIpTableRepository->prototype();
-        $ipTableEntry->setUserId((int) $result->getId());
+        $ipTableEntry->setUser($result);
         $ipTableEntry->setIp(getenv('REMOTE_ADDR'));
         $ipTableEntry->setSessionId(session_id());
         $ipTableEntry->setUserAgent(getenv('HTTP_USER_AGENT'));

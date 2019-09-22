@@ -12,13 +12,13 @@ interface TradeLicenseInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): TradeLicenseInterface;
-
     public function getDate(): int;
 
     public function setDate(int $date): TradeLicenseInterface;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): TradeLicenseInterface;
 
     public function getTradePost(): TradePostInterface;
 

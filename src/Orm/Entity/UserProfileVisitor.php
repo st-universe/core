@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserProfileVisitorRepository")
  * @Table(
@@ -29,6 +27,18 @@ class UserProfileVisitor implements UserProfileVisitorInterface
     /** @Column(type="integer") */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $opponent;
+
     public function getId(): int
     {
         return $this->id;
@@ -39,23 +49,9 @@ class UserProfileVisitor implements UserProfileVisitorInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): UserProfileVisitorInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getProfileUserId(): int
     {
         return $this->recipient;
-    }
-
-    public function setProfileUserId(int $profileUserId): UserProfileVisitorInterface
-    {
-        $this->recipient = $profileUserId;
-
-        return $this;
     }
 
     public function getDate(): int
@@ -72,17 +68,23 @@ class UserProfileVisitor implements UserProfileVisitorInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): UserProfileVisitorInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getProfileUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->opponent;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getProfileUserId());
+    public function setProfileUser(UserInterface $profileUser): UserProfileVisitorInterface
+    {
+        $this->opponent = $profileUser;
+        return $this;
     }
 }

@@ -34,7 +34,7 @@ final class AddPmCategory implements ActionControllerInterface
             return;
         }
         $cat = $this->privateMessageFolderRepository->prototype();
-        $cat->setUserId($game->getUser()->getId());
+        $cat->setUser($game->getUser());
         $cat->appendToSorting();
         $cat->setDescription($name);
 

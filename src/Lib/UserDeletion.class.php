@@ -180,6 +180,7 @@ class UserDeletion
 
         $rpgPlotMemberRepo = $container->get(RpgPlotMemberRepositoryInterface::class);
         $rpgPlotRepository = $container->get(RpgPlotRepositoryInterface::class);
+        $userRepository = $container->get(UserRepositoryInterface::class);
 
         foreach ($rpgPlotRepository->getByFoundingUser((int) $this->getUser()->getId()) as $obj) {
 
@@ -189,12 +190,12 @@ class UserDeletion
             }
             if ($obj->getMembers()) {
                 $member = current($obj->getMembers());
-                $obj->setUserId($member->getUserId());
+                $obj->setUser($member->getUser());
 
                 $rpgPlotRepository->save($obj);
                 return;
             }
-            $obj->setUserId(USER_NOONE);
+            $obj->setUser($userRepository->find(USER_NOONE));
 
             $rpgPlotRepository->save($obj);
         }

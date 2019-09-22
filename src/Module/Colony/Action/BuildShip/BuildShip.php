@@ -172,7 +172,7 @@ final class BuildShip implements ActionControllerInterface
                 $planname
             );
             $plan = $this->shipBuildplanRepository->prototype();
-            $plan->setUserId($userId);
+            $plan->setUser($game->getUser());
             $plan->setRump($rump);
             $plan->setName($planname);
             $plan->setSignature($signature);

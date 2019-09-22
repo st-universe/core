@@ -8,8 +8,6 @@ interface ResearchedInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): ResearchedInterface;
-
     public function getActive(): int;
 
     public function setActive(int $active): ResearchedInterface;
@@ -23,6 +21,8 @@ interface ResearchedInterface
     public function getResearch(): ResearchInterface;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ResearchedInterface;
 
     public function getResearchId(): int;
 }

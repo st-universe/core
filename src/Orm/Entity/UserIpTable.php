@@ -33,6 +33,12 @@ class UserIpTable implements UserIpTableInterface
     /** @Column(type="datetime", nullable=true) * */
     private $end;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -43,11 +49,15 @@ class UserIpTable implements UserIpTableInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): UserIpTableInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
-        return $this;
+    public function setUser(UserInterface $user): UserInterface
+    {
+        $this->user = $user;
+        return $this->user;
     }
 
     public function getIp(): string

@@ -30,6 +30,12 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     /** @Column(type="smallint") */
     private $special = 0;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -40,9 +46,14 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): PrivateMessageFolderInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user): PrivateMessageFolderInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

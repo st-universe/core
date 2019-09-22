@@ -51,7 +51,7 @@ final class StartResearch implements ActionControllerInterface
 
         $researched = $this->researchedRepository->prototype();
         $researched->setActive($research->getPoints());
-        $researched->setUserId($userId);
+        $researched->setUser($game->getUser());
         $researched->setResearch($research);
         $researched->setFinished(0);
 

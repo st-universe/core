@@ -105,7 +105,7 @@ final class TransferGoods implements ActionControllerInterface
 
         $transfer = $this->tradeTransferRepository->prototype();
         $transfer->setTradePost($tradepost);
-        $transfer->setUserId($userId);
+        $transfer->setUser($game->getUser());
         $transfer->setAmount($amount);
         $transfer->setDate(time());
 

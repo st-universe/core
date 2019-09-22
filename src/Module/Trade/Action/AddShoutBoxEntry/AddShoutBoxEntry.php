@@ -44,7 +44,7 @@ final class AddShoutBoxEntry implements ActionControllerInterface
         if (mb_strlen($msg) > 0) {
             $entry = $this->tradeShoutboxRepository
                 ->prototype()
-                ->setUserId($userId)
+                ->setUser($game->getUser())
                 ->setDate(time())
                 ->setTradeNetworkId($tradeNetworkId)
                 ->setMessage($msg);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity
  * @Table(name="stu_researched")
@@ -17,22 +15,28 @@ class Researched implements ResearchedInterface
     private $id;
 
     /** @Column(type="integer") * */
-    private $research_id;
+    private $research_id = 0;
 
     /** @Column(type="integer") * */
-    private $user_id;
+    private $user_id = 0;
 
     /** @Column(type="integer") * */
-    private $aktiv;
+    private $aktiv = 0;
 
     /** @Column(type="integer") * */
-    private $finished;
+    private $finished = 0;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
      */
     private $research;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
 
     public function getId(): int
     {
@@ -44,10 +48,14 @@ class Researched implements ResearchedInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): ResearchedInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): ResearchedInterface
+    {
+        $this->user = $user;
         return $this;
     }
 
@@ -85,14 +93,6 @@ class Researched implements ResearchedInterface
         $this->research = $research;
 
         return $this;
-    }
-
-    public function getUser(): UserInterface
-    {
-        // @todo refactor - use user entity
-        global $container;
-
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
     }
 
     public function getResearchId(): int

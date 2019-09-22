@@ -12,5 +12,7 @@ interface ShipRumpUserInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): ShipRumpUserInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ShipRumpUserInterface;
 }

@@ -16,7 +16,9 @@ interface ShipBuildplanInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): ShipBuildplanInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ShipBuildplanInterface;
 
     public function getName(): string;
 

@@ -8,8 +8,6 @@ interface TradeShoutboxInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): TradeShoutboxInterface;
-
     public function getTradeNetworkId(): int;
 
     public function setTradeNetworkId(int $tradeNetworkId): TradeShoutboxInterface;
@@ -23,4 +21,6 @@ interface TradeShoutboxInterface
     public function setMessage(string $message): TradeShoutboxInterface;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): TradeShoutboxInterface;
 }

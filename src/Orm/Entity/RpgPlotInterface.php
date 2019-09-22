@@ -10,7 +10,9 @@ interface RpgPlotInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): RpgPlotInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): RpgPlotInterface;
 
     public function getTitle(): string;
 
@@ -36,5 +38,8 @@ interface RpgPlotInterface
 
     public function getPostingCount(): int;
 
+    /**
+     * @return RpgPlotMemberInterface[]
+     */
     public function getMembers(): Collection;
 }

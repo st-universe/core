@@ -8,12 +8,15 @@ use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradePostStorageManager implements TradePostStorageManagerInterface
 {
     private $tradeStorageRepository;
 
     private $commodityRepository;
+
+    private $userRepository;
 
     private $tradePost;
 
@@ -26,11 +29,13 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
     public function __construct(
         TradeStorageRepositoryInterface $tradeStorageRepository,
         CommodityRepositoryInterface $commodityRepository,
+        UserRepositoryInterface $userRepository,
         TradePostInterface $tradePost,
         int $userId
     ) {
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->userRepository = $userRepository;
         $this->tradePost = $tradePost;
         $this->userId = $userId;
     }
@@ -80,7 +85,7 @@ final class TradePostStorageManager implements TradePostStorageManagerInterface
         $stor = $storage[$commodityId] ?? null;
         if ($stor === null) {
             $stor = $this->tradeStorageRepository->prototype();
-            $stor->setUserId($this->userId);
+            $stor->setUser($this->userRepository->find($this->userId));
             $stor->setGood($this->commodityRepository->find($commodityId));
             $stor->setTradePost($this->tradePost);
         }

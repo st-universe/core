@@ -100,7 +100,7 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
         $offer = $this->tradeOfferRepository->prototype();
-        $offer->setUserId($userId);
+        $offer->setUser($game->getUser());
         $offer->setTradePost($trade_post);
         $offer->setDate(time());
         $offer->setOfferedCommodity($this->commodityRepository->find($giveGoodId));

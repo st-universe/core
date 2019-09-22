@@ -37,6 +37,12 @@ class ShipCrew implements ShipCrewInterface
      */
     private $crew;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -83,10 +89,14 @@ class ShipCrew implements ShipCrewInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): ShipCrewInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): ShipCrewInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

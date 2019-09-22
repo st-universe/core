@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeLicenseRepository")
  * @Table(
@@ -35,6 +33,12 @@ class TradeLicense implements TradeLicenseInterface
      */
     private $tradePost;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -57,13 +61,6 @@ class TradeLicense implements TradeLicenseInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): TradeLicenseInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getDate(): int
     {
         return $this->date;
@@ -78,10 +75,13 @@ class TradeLicense implements TradeLicenseInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): TradeLicenseInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getTradePost(): TradePostInterface

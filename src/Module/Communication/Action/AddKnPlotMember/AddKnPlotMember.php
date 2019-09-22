@@ -65,7 +65,7 @@ final class AddKnPlotMember implements ActionControllerInterface
         }
 
         $member = $this->rpgPlotMemberRepository->prototype()
-            ->setUserId((int) $recipient->getId())
+            ->setUser($recipient)
             ->setRpgPlot($plot);
 
         $this->rpgPlotMemberRepository->save($member);

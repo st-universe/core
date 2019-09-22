@@ -8,7 +8,9 @@ interface TradeStorageInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): TradeStorageInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): TradeStorageInterface;
 
     public function getTradePostId(): int;
 

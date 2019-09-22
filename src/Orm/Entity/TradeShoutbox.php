@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TradeShoutboxRepository")
  * @Table(
@@ -32,6 +30,12 @@ class TradeShoutbox implements TradeShoutboxInterface
     /** @Column(type="string") */
     private $message = '';
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -40,13 +44,6 @@ class TradeShoutbox implements TradeShoutboxInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function setUserId(int $userId): TradeShoutboxInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
     }
 
     public function getTradeNetworkId(): int
@@ -87,9 +84,12 @@ class TradeShoutbox implements TradeShoutboxInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): TradeShoutboxInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 }

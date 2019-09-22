@@ -52,8 +52,8 @@ final class Overview implements ViewControllerInterface
 
         if ($profileId !== $userId && $this->userProfileVisitorRepository->isVisitRegistered($profileId, $userId) === false) {
             $obj = $this->userProfileVisitorRepository->prototype()
-                ->setProfileUserId($profileId)
-                ->setUserId($userId)
+                ->setProfileUser($profile)
+                ->setUser($game->getUser())
                 ->setDate(time());
 
             $this->userProfileVisitorRepository->save($obj);

@@ -117,7 +117,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         }
         $licence = $this->tradeLicenseRepository->prototype();
         $licence->setTradePost($tradepost);
-        $licence->setUserId($userId);
+        $licence->setUser($game->getUser());
         $licence->setDate(time());
 
         $this->tradeLicenseRepository->save($licence);

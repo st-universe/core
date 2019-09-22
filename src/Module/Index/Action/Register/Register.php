@@ -99,7 +99,7 @@ final class Register implements ActionControllerInterface
         // Create default pm categories
         foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $categoryId => $label) {
             $cat = $this->privateMessageFolderRepository->prototype();
-            $cat->setUserId($cat->getId());
+            $cat->setUser($obj);
             $cat->setDescription(gettext($label));
             $cat->setSpecial($categoryId);
             $cat->setSort($categoryId);
@@ -115,7 +115,7 @@ final class Register implements ActionControllerInterface
         $db = $this->researchedRepository->prototype();
 
         $db->setResearch($research);
-        $db->setUserId($obj->getId());
+        $db->setUser($obj);
         $db->setFinished(time());
         $db->setActive(0);
 

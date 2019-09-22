@@ -8,8 +8,6 @@ interface TradeOfferInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): TradeOfferInterface;
-
     public function getTradePostId(): int;
 
     public function setTradePostId(int $tradePostId): TradeOfferInterface;
@@ -51,4 +49,6 @@ interface TradeOfferInterface
     public function setOfferedCommodity(CommodityInterface $offeredCommodity): TradeOfferInterface;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): TradeOfferInterface;
 }

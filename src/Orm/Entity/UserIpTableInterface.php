@@ -12,7 +12,9 @@ interface UserIpTableInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): UserIpTableInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): UserInterface;
 
     public function getIp(): string;
 

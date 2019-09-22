@@ -32,9 +32,9 @@ final class CreateKnPlot implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
         $title = $this->createKnPlotRequest->getTitle();
         $description = $this->createKnPlotRequest->getText();
+        $user = $game->getUser();
 
         if (mb_strlen($title) < 6) {
             $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
@@ -44,13 +44,13 @@ final class CreateKnPlot implements ActionControllerInterface
         $plot = $this->rpgPlotRepository->prototype()
             ->setTitle($title)
             ->setDescription($description)
-            ->setUserId($userId)
+            ->setUser($user)
             ->setStartDate(time());
 
         $this->rpgPlotRepository->save($plot);
 
         $member = $this->rpgPlotMemberRepository->prototype()
-            ->setUserId($userId)
+            ->setUser($user)
             ->setRpgPlot($plot);
 
         $this->rpgPlotMemberRepository->save($member);

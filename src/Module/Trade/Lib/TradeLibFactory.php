@@ -10,6 +10,7 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 use Stu\Orm\Repository\TradeTransferRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradeLibFactory implements TradeLibFactoryInterface
 {
@@ -23,18 +24,22 @@ final class TradeLibFactory implements TradeLibFactoryInterface
 
     private $commodityRepository;
 
+    private $userRepository;
+
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeTransferRepositoryInterface $tradeTransferRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeTransferRepository = $tradeTransferRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function createTradeAccountTal(
@@ -58,6 +63,7 @@ final class TradeLibFactory implements TradeLibFactoryInterface
         return new TradePostStorageManager(
             $this->tradeStorageRepository,
             $this->commodityRepository,
+            $this->userRepository,
             $tradePost,
             $userId
         );

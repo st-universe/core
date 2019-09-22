@@ -24,6 +24,12 @@ class ShipRumpUser implements ShipRumpUserInterface
     /** @Column(type="integer") * */
     private $user_id = 0;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -46,10 +52,14 @@ class ShipRumpUser implements ShipRumpUserInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): ShipRumpUserInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): ShipRumpUserInterface
+    {
+        $this->user = $user;
         return $this;
     }
 }

@@ -49,6 +49,12 @@ class RpgPlot implements RpgPlotInterface
      */
     private $members;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -65,10 +71,14 @@ class RpgPlot implements RpgPlotInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): RpgPlotInterface
+    public function getUser(): UserInterface
     {
-        $this->user_id = $userId;
+        return $this->user;
+    }
 
+    public function setUser(UserInterface $user): RpgPlotInterface
+    {
+        $this->user = $user;
         return $this;
     }
 

@@ -20,7 +20,9 @@ interface ShipCrewInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): ShipCrewInterface;
+    public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ShipCrewInterface;
 
     public function getCrew(): CrewInterface;
 
