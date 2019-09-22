@@ -41,12 +41,9 @@ class Tuple
     }
 }
 
-function checkPosition(&$shipa, &$shipb)
+function checkPosition(ShipData $shipa, ShipData $shipb)
 {
-    if ($shipa->isInSystem()) {
-        if (!$shipb->isInSystem()) {
-            return false;
-        }
+    if ($shipa->getSystemsId() > 0) {
         if ($shipa->getSystemsId() != $shipb->getSystemsId()) {
             return false;
         }

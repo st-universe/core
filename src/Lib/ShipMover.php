@@ -15,7 +15,7 @@ class ShipMover {
 	private $fieldCount = NULL;
 	private $flightFields = 0;
 
-	function __construct(&$firstShip) {
+	function __construct(ShipData $firstShip) {
 		$this->firstShip = $firstShip;
 		$this->setDestination();
 		$this->determineFleetMode();
@@ -38,7 +38,7 @@ class ShipMover {
 		if ($posy < 1) {
 			$posy = 1;
 		}
-		if ($this->getFirstShip()->isInSystem()) {
+		if ($this->getFirstShip()->getSystemsId() > 0) {
 			$sys = $this->getFirstShip()->getSystem();
 			if ($posx > $sys->getMaxX()) {
 				$posx = $sys->getMaxX();
@@ -173,7 +173,7 @@ class ShipMover {
 	private function move(ShipData &$ship) {
 		$msg = array();
 		if (!$this->isFleetMode()) {
-			if (!$ship->isInSystem() && !$ship->isWarpAble()) {
+			if ($ship->getSystemsId() == 0 && !$ship->isWarpAble()) {
 				$this->addInformation(_("Dieses Schiff verfügt über keinen Warpantrieb"));
 				return FALSE;	
 			}
@@ -204,7 +204,7 @@ class ShipMover {
 			}
 			return;
 		}
-		if (!$this->isFleetMode() && !$ship->getWarpState() && !$ship->isInSystem()) {
+		if (!$this->isFleetMode() && !$ship->getWarpState() && $ship->getSystemsId() == 0) {
 			if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts()) {
 				$this->addInformation(sprintf(_("Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"),$ship->getName()));
 				return FALSE;
@@ -249,7 +249,7 @@ class ShipMover {
 
 		$i = 1;
 		while($i<=$this->getFieldCount()) {
-			if (!$ship->isInSystem() && !$ship->getWarpState()) {
+			if ($ship->getSystemsId() == 0 && !$ship->getWarpState()) {
 				if (!$ship->isWarpAble()) {
 					$ship->leaveFleet();
 					$msg[] = "Die ".$ship->getName()." verfügt über keinen Warpantrieb (".$ship->getPosX()."|".$ship->getPosY().")";
@@ -337,7 +337,7 @@ class ShipMover {
 			} else {
 				$ship->lowerEps($flight_ecost);
 			}
-			if ($field->getFieldType()->getSpecialDamage() && (($ship->isInSystem() && $field->getFieldType()->getSpecialDamageInnerSystem()) || (!$ship->isInSystem() && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
+			if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystemsId() > 0 && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystemsId() == 0 && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
 				if ($ship->isTraktorbeamActive()) {
 					$msg[] = "Die ".$ship->getTraktorShip()->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." beschädigt";
 					$damageMsg = $ship->getTraktorShip()->damage(new DamageWrapper($field->getFieldType()->getDamage()));
@@ -363,7 +363,7 @@ class ShipMover {
 
 	private $flightDone = FALSE;
 
-	private function getNextField(&$method,&$ship) {
+	private function getNextField(&$method, ShipData $ship) {
 		switch ($method) {
 			case FLY_RIGHT:
 				return $this->getFieldData($ship->getPosX()+1,$ship->getPosY());
@@ -381,22 +381,22 @@ class ShipMover {
 		$this->setDestY($posy);
 	}
 
-	function fly4(&$ship) {
+	function fly4(ShipData $ship) {
 		$ship->setPosY($ship->getPosY()+1);
 		$ship->setFlightDirection(1);
 	}
 
-	function fly3(&$ship) {
+	function fly3(ShipData $ship) {
 		$ship->setPosY($ship->getPosY()-1);
 		$ship->setFlightDirection(2);
 	}
 	
-	function fly1(&$ship) {
+	function fly1(ShipData $ship) {
 		$ship->setPosX($ship->getPosX()+1);
 		$ship->setFlightDirection(3);
 	}
 
-	function fly2(&$ship) {
+	function fly2(ShipData $ship) {
 		$ship->setPosX($ship->getPosX()-1);
 		$ship->setFlightDirection(4);
 	}
@@ -421,7 +421,7 @@ class ShipMover {
 				$sx = $destx;
 				$destx = $ox;
 			}
-			if (!$this->getFirstShip()->isInSystem()) {
+			if (!$this->getFirstShip()->getSystemsId() > 0) {
 				$result = $container->get(MapRepositoryInterface::class)->getByCoordinateRange(
 					$sx,
 					$destx,

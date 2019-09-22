@@ -280,10 +280,10 @@
 					<table class="tcal">
 						<tr>
 							<th style="width: 50%;">Informationen</th>
-							<tal:block tal:condition="SHIP/isInSystem">
+							<tal:block tal:condition="SHIP/getSystemsId">
 								<th>Sternensystem</th>
 							</tal:block>
-							<tal:block tal:condition="not:SHIP/isInSystem">
+							<tal:block tal:condition="not:SHIP/getSystemsId">
 								<th tal:condition="SHIP/isOverSystem">Sternensystem</th>
 							</tal:block>
 						</tr>
@@ -296,14 +296,14 @@
 									<a href="javascript:void(0);" onclick="editDockPrivileges()">Dockrechte</a>
 								</div>
 							</td>
-							<td tal:condition="SHIP/isInSystem">
+							<td tal:condition="SHIP/getSystemsId">
 								<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
 								<a href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 									<img src="assets/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
 								</a>
 							
 							</td>
-							<tal:block tal:condition="not:SHIP/isInSystem">
+							<tal:block tal:condition="not:SHIP/getSystemsId">
 								<td tal:condition="SHIP/isOverSystem">
 									<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
 									<a href="ship.php?B_ENTER_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">

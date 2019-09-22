@@ -36,7 +36,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $userId
         );
 
-        if (!$ship->isInSystem()) {
+        if ($ship->getSystemsId() == 0) {
             return;
         }
         $wrapper = new SystemActivationWrapper($ship);

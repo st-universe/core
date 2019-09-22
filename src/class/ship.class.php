@@ -70,21 +70,17 @@ class ShipData extends BaseTable {
 	}
 
 	function getPosX() {
-		if ($this->isInSystem()) {
+		if ($this->getSystemsId() > 0) {
 			return $this->getSX();
 		}
 		return $this->getCX();
 	}
 	
 	function getPosY() {
-		if ($this->isInSystem()) {
+		if ($this->getSystemsId() > 0) {
 			return $this->getSY();
 		}
 		return $this->getCY();
-	}
-
-	function isInSystem() {
-		return $this->getSystemsId()>0;
 	}
 
 	function getHuell() {
@@ -237,10 +233,6 @@ class ShipData extends BaseTable {
 		return $this->data['is_base'] > 0;
 	}
 
-	function getSlots() {
-		return $this->data['slots'];
-	}
-
 	function getUserId() {
 		return $this->data['user_id'];
 	}
@@ -286,7 +278,7 @@ class ShipData extends BaseTable {
 	}
 
 	function setPosX($value) {
-		if ($this->isInSystem()) {
+		if ($this->getSystemsId() > 0) {
 			$this->setSX($value);
 			return;
 		}
@@ -294,7 +286,7 @@ class ShipData extends BaseTable {
 	}
 	
 	function setPosY($value) {
-		if ($this->isInSystem()) {
+		if ($this->getSystemsId() > 0) {
 			$this->setSY($value);
 			return;
 		}
@@ -475,7 +467,7 @@ class ShipData extends BaseTable {
 	} # }}}
 	
 	function isOverSystem() {
-		if ($this->isInSystem()) {
+		if ($this->getSystemsId() > 0) {
 			return FALSE;
 		}
 		if ($this->system === NULL) {
@@ -491,7 +483,7 @@ class ShipData extends BaseTable {
 	}
 
 	function isWarpPossible() {
-		return $this->hasShipSystem(SYSTEM_WARPDRIVE) && !$this->isInSystem();
+		return $this->hasShipSystem(SYSTEM_WARPDRIVE) && $this->getSystemsId()  == 0;
 	}
 
 	function setEps($eps) {
@@ -746,7 +738,7 @@ class ShipData extends BaseTable {
 
 	function getSectorString() {
 		$str = $this->getPosX().'|'.$this->getPosY();
-		if ($this->isInSystem()) {
+		if ($this->getSystemsId() > 0) {
 			$str .= ' ('.$this->getSystem()->getName().'-System)';
 		}
 		return $str;
@@ -1029,7 +1021,7 @@ class ShipData extends BaseTable {
 		if ($this->mapfield === NULL) {
 			// @todo refactor
 			global $container;
-			if (!$this->isInSystem()) {
+			if ($this->getSystemsId() == 0) {
 			    $this->mapfield = $container->get(MapRepositoryInterface::class)->getByCoordinates(
 				    (int) $this->getCX(),
 				    (int) $this->getCY()

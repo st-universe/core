@@ -50,7 +50,7 @@ final class ShowShip implements ViewControllerInterface
 
         $shipId = $ship->getId();
 
-        if ($ship->isInSystem()) {
+        if ($ship->getSystemsId() > 0) {
             $coords_query = sprintf(
                 'systems_id = %d AND sx = %d AND sy = %d',
                 $ship->getSystemsId(),
