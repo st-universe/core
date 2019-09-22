@@ -242,7 +242,7 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    public function getMask(): string
+    public function getMask(): ?string
     {
         return $this->mask;
     }

@@ -54,7 +54,7 @@ interface ColonyInterface
 
     public function setMaxStorage(int $max_storage): ColonyInterface;
 
-    public function getMask(): string;
+    public function getMask(): ?string;
 
     public function setMask(string $mask): ColonyInterface;
 

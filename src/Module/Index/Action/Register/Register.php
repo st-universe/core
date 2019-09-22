@@ -110,7 +110,7 @@ final class Register implements ActionControllerInterface
         /**
          * @var ResearchInterface $research
          */
-        $research = $this->researchRepository->find($this->getResearchStartId((int)$obj->getFactionId()));
+        $research = $this->researchRepository->find($this->getResearchStartId($obj->getFaction()->getId()));
 
         $db = $this->researchedRepository->prototype();
 
