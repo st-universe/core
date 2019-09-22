@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Ship;
 
 use Ship;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 
 final class ShipTickManager implements ShipTickManagerInterface
 {
+    private $shipRemover;
+
     private $shipTick;
 
     public function __construct(
+        ShipRemoverInterface $shipRemover,
         ShipTickInterface $shipTick
     ) {
+        $this->shipRemover = $shipRemover;
         $this->shipTick = $shipTick;
     }
 
@@ -33,8 +38,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach (Ship::getObjectsBy('WHERE user_id=' . USER_NOONE . ' AND rumps_id IN (SELECT id FROM stu_rumps WHERE category_id=' . SHIP_CATEGORY_DEBRISFIELD . ')') as $ship) {
             $lower = rand(5, 15);
             if ($ship->getHuell() <= $lower) {
-                $ship->destroyTrumfield();
-                $ship->save();
+                $this->shipRemover->remove($ship);
                 continue;
             }
             $ship->lowerHuell($lower);

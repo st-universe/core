@@ -2,6 +2,7 @@
 
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 
 class ShipAttackCycle {
 
@@ -47,11 +48,11 @@ class ShipAttackCycle {
 		$this->firstStrike = $value;
 	}
 
-	private function getAttackShip() {
+	private function getAttackShip(): ShipData {
 		return $this->attackShip;
 	}
 
-	private function getDefendShip() {
+	private function getDefendShip(): ShipData {
 		return $this->defendShip;
 	}
 
@@ -60,6 +61,14 @@ class ShipAttackCycle {
         global $container;
 
         return $container->get(EntryCreatorInterface::class);
+    }
+
+    private function getShipRemover(): ShipRemoverInterface
+    {
+        // @todo refactor
+        global $container;
+
+        return $container->get(ShipRemoverInterface::class);
     }
 
     private function cycle() {
@@ -123,7 +132,7 @@ class ShipAttackCycle {
 						    'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
                             (int) $this->getAttackShip()->getUserId()
                         );
-						$this->getDefendShip()->destroy();
+						$this->getShipRemover()->destroy($this->getDefendShip());
 						$this->unsetDefender();
 						$this->redefineDefender();
 						if (!$this->getDefendShip()) {
@@ -185,7 +194,7 @@ class ShipAttackCycle {
                         'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
                         (int) $this->getAttackShip()->getUserId()
                     );
-					$this->getDefendShip()->destroy();
+                    $this->getShipRemover()->destroy($this->getDefendShip());
 					break;
 				}
 			}

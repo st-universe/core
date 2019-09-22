@@ -4,6 +4,7 @@ namespace Stu\Lib;
 
 use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -226,8 +227,12 @@ class UserDeletion
 
     public function handleShips()
     {
+        // @todo refactor
+        global $container;
+        $shipRemover = $container->get(ShipRemoverInterface::class);
+
         foreach (Ship::getObjectsBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
-            $obj->deepDelete();
+            $shipRemover->remove($obj);
         }
     }
 

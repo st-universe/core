@@ -47,20 +47,20 @@ final class EnterStarSystem implements ActionControllerInterface
         }
         switch ($ship->getFlightDirection()) {
             case 1:
-                $posx = rand(1, (int) $ship->getSystem()->getMaxX());
+                $posx = rand(1, (int)$ship->getSystem()->getMaxX());
                 $posy = 1;
                 break;
             case 2:
-                $posx = rand(1, (int) $ship->getSystem()->getMaxX());
+                $posx = rand(1, (int)$ship->getSystem()->getMaxX());
                 $posy = $ship->getSystem()->getMaxY();
                 break;
             case 3:
                 $posx = 1;
-                $posy = rand(1, (int) $ship->getSystem()->getMaxY());
+                $posy = rand(1, (int)$ship->getSystem()->getMaxY());
                 break;
             case 4:
                 $posx = $ship->getSystem()->getMaxX();
-                $posy = rand(1, (int) $ship->getSystem()->getMaxY());
+                $posy = rand(1, (int)$ship->getSystem()->getMaxY());
                 break;
         }
 
@@ -68,12 +68,13 @@ final class EnterStarSystem implements ActionControllerInterface
         $systemId = $system->getId();
 
         // @todo Beschädigung bei Systemeinflug
-        $ship->enterStarSystem($systemId, $posx, $posy);
+        $this->enterStarSystem($ship, $systemId, $posx, $posy);
         if ($ship->isTraktorbeamActive()) {
             $this->enterStarSystemTraktor($ship, $game);
         }
+
         if ($ship->isFleetLeader()) {
-            $msg = array();
+            $msg = [];
             $result = Ship::getShipsBy($ship->getFleetId(), [$ship->getId()]);
             foreach ($result as $key => $fleetShip) {
                 $wrapper = new SystemActivationWrapper($fleetShip);
@@ -82,7 +83,7 @@ final class EnterStarSystem implements ActionControllerInterface
                     $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
                     $ship->leaveFleet();
                 } else {
-                    $fleetShip->enterStarSystem($systemId, $posx, $posy);
+                    $this->enterStarSystem($fleetShip, $systemId, $posx, $posy);
                     if ($fleetShip->isTraktorbeamActive()) {
                         $this->enterStarSystemTraktor($fleetShip, $game);
                     }
@@ -110,12 +111,26 @@ final class EnterStarSystem implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;
         }
-        $ship->getTraktorShip()->enterStarSystem($ship->getSystem()->getId(), $ship->getPosX(), $ship->getPosY());
+        $this->enterStarSystem(
+            $ship->getTraktorShip(),
+            $ship->getSystem()->getId(),
+            $ship->getPosX(),
+            $ship->getPosY()
+        );
         // @todo Beschädigung bei Systemeinflug
         $ship->lowerEps(1);
         $ship->getTraktorShip()->save();
         $ship->save();
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit in das System gezogen");
+    }
+
+    private function enterStarSystem(ShipData $ship, int $systemId, int $posx, int $posy): void
+    {
+        $ship->setWarpState(0);
+        $ship->setSystemsId($systemId);
+        $ship->setSX($posx);
+        $ship->setSY($posy);
+        $ship->save();
     }
 
     public function performSessionCheck(): bool

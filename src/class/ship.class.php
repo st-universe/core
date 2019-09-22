@@ -35,7 +35,6 @@ class ShipData extends BaseTable {
 
 	function __construct(&$data=array()) {
 		$this->data = $data;
-		$this->getCrewlist();
 	}
 
 	function getId() {
@@ -791,11 +790,6 @@ class ShipData extends BaseTable {
 		return $msg;
 	} # }}}
 
-
-	public function destroyTrumfield() {
-		$this->remove();
-	}
-
 	function setRumpId($value) {
 		$this->data['rumps_id'] = $value;
 		$this->addUpdateField('rumps_id','getRumpId');
@@ -811,58 +805,17 @@ class ShipData extends BaseTable {
 		$this->disableWeapons();
 	} # }}}
 
-
-	public function destroy() {
-		$this->deactivateSystems();
-		$this->changeFleetLeader();
-		$this->setFormerRumpsId($this->getRumpId());
-		$this->setRumpId(TRUMFIELD_CLASS);
-		$this->setHuell(round($this->getMaxHuell()/20));
-		$this->setUserId(USER_NOONE);
-		$this->setBuildplanId(0);
-		$this->setShield(0);
-		$this->setEps(0);
-		$this->setFleetId(0);
-		$this->setAlertState(1);
-		$this->setWarpState(0);
-		$this->setDock(0);
-		$this->setName(_('Trümmer'));
-		$this->setIsDestroyed(1);
-		$this->cancelRepair();
-
-		// @todo refactor
-		global $container;
-
-		$container->get(ShipSystemRepositoryInterface::class)->truncateByShip((int) $this->getId());
-		// TBD: Torpedos löschen
-
-		$this->save();
-
-		// clearing the cache
-		$this->rump = NULL;
+	public function clearCache(): void
+	{
+		$this->rump = null;
 	}
 
 	/**
 	 */
 	public function changeFleetLeader() { #{{{
 		if ($this->isFleetLeader()) {
-			$this->getFleet()->autochangeLeader($this);;
+			$this->getFleet()->autochangeLeader($this);
 		}
-	} # }}}
-
-	/**
-	 */
-	public function remove() { #{{{
-		$this->changeFleetLeader();
-
-		// @todo refactor
-		global $container;
-
-		$container->get(ShipStorageRepositoryInterface::class)->truncateForShip((int) $this->getId());
-		$container->get(ShipCrewRepositoryInterface::class)->truncateByShip((int) $this->getId());
-		$container->get(ShipSystemRepositoryInterface::class)->truncateByShip((int) $this->getId());
-
-		$this->deleteFromDatabase();
 	} # }}}
 
 	function getFlightDirection() {
@@ -872,21 +825,6 @@ class ShipData extends BaseTable {
 	function setFlightDirection($value) {
 		$this->data['direction'] = $value;
 		$this->addUpdateField('direction','getFlightDirection');
-	}
-
-	function leaveStarSystem() {
-		$this->setWarpState(1);
-		$this->setSystemsId(0);
-		$this->setSX(0);
-		$this->setSY(0);
-	}
-
-	function enterStarSystem(&$systemId,&$posx,&$posy) {
-		$this->setWarpState(0);
-		$this->setSystemsId($systemId);
-		$this->setSX($posx);
-		$this->setSY($posy);
-		$this->save();
 	}
 
 	private $storage = NULL;
@@ -1549,14 +1487,6 @@ class ShipData extends BaseTable {
 	 */
 	public function canIntercept() { #{{{
 		return !$this->getTraktorMode();
-	} # }}}
-
-	/**
-	 */
-	public function deepDelete() { #{{{
-		$this->deactivateTraktorBeam();
-
-		$this->remove();
 	} # }}}
 
 	/**

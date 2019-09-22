@@ -92,6 +92,8 @@ use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRemover;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -116,6 +118,7 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
     DeleteFleetRequestInterface::class => autowire(DeleteFleetRequest::class),

@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
@@ -24,14 +25,18 @@ final class LandShip implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $shipRemover;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ShipRemoverInterface $shipRemover
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->shipRemover = $shipRemover;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,8 +71,9 @@ final class LandShip implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
+        $this->shipRemover->remove($ship);
+
         $game->addInformationf(_('Die %s ist gelandet'), $ship->getName());
-        $ship->remove();
     }
 
     public function performSessionCheck(): bool

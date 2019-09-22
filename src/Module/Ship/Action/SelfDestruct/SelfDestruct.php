@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class SelfDestruct implements ActionControllerInterface
@@ -19,12 +20,16 @@ final class SelfDestruct implements ActionControllerInterface
 
     private $entryCreator;
 
+    private $shipRemover;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        EntryCreatorInterface $entryCreator
+        EntryCreatorInterface $entryCreator,
+        ShipRemoverInterface $shipRemover
     ) {
         $this->shipLoader = $shipLoader;
         $this->entryCreator = $entryCreator;
+        $this->shipRemover = $shipRemover;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,8 +53,7 @@ final class SelfDestruct implements ActionControllerInterface
 //            sprintf(_('Die %s hat sich in Sektor %s selbst zerstört', $ship->getName(), $ship->getSectorString())),
 //            $userId
 //        );
-//        $ship->destroy();
-//        DB()->commitTransaction();
+//        $this->shipRemover->destroy($ship);
 //        $game->redirectTo('ship.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
     }
 

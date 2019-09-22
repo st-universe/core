@@ -46,7 +46,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
         $ship->cancelRepair();
-        $ship->leaveStarSystem();
+        $this->leaveStarSystem($ship);
         if ($ship->isTraktorbeamActive()) {
             $this->leaveStarSystemTraktor($ship, $game);
         }
@@ -60,9 +60,9 @@ final class LeaveStarSystem implements ActionControllerInterface
                     $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
                     $ship->leaveFleet();
                 } else {
-                    $fleetShip->leaveStarSystem();
+                    $this->leaveStarSystem($fleetShip);
                     if ($fleetShip->isTraktorbeamActive()) {
-                        $fleetShip->leaveStarSystemTraktor($fleetShip, $game);
+                        $this->leaveStarSystemTraktor($fleetShip, $game);
                     }
                 }
                 $fleetShip->save();
@@ -88,12 +88,20 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
-        $ship->getTraktorShip()->leaveStarSystem();
+        $this->leaveStarSystem($ship->getTraktorShip());
         $ship->lowerEps(1);
         $ship->getTraktorShip()->save();
         $ship->save();
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit aus dem System gezogen");
     }
+
+    private function leaveStarSystem(ShipData $ship): void {
+        $ship->setWarpState(1);
+        $ship->setSystemsId(0);
+        $ship->setSX(0);
+        $ship->setSY(0);
+    }
+
 
     public function performSessionCheck(): bool
     {
