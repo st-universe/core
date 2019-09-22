@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class BeamTo implements ActionControllerInterface
@@ -16,10 +17,14 @@ final class BeamTo implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipStorageManager;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipStorageManager = $shipStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -126,8 +131,11 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(sprintf(_('%d %s (Energieverbrauch: %d)'), $count, $commodity->getName(),
                 ceil($count / $transferAmount)));
 
-            $ship->lowerStorage($commodityId, $count);
-            $target->upperStorage($commodityId, $count);
+            $count = (int) $count;
+
+            $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
+            $this->shipStorageManager->upperStorage($target, $commodity, $count);
+
             $ship->lowerEps(ceil($count / $transferAmount));
             $target->setStorageSum($target->getStorageSum() + $count);
         }

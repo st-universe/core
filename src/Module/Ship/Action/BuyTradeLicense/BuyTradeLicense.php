@@ -9,6 +9,7 @@ use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -27,16 +28,20 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private $tradePostRepository;
 
+    private $shipStorageManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->shipStorageManager = $shipStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -86,7 +91,11 @@ final class BuyTradeLicense implements ActionControllerInterface
                 if ($storage === null || $storage->getAmount() < $tradepost->calculateLicenceCost()) {
                     return;
                 }
-                $obj->lowerStorage($commodityId, $tradepost->calculateLicenceCost());
+                $this->shipStorageManager->lowerStorage(
+                    $obj,
+                    $tradepost->getLicenceCostGood(),
+                    $tradepost->calculateLicenceCost()
+                );
                 break;
             case 'account':
                 /** @var TradePostInterface $targetTradepost */

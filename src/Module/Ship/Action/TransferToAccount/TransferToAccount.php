@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -26,16 +27,20 @@ final class TransferToAccount implements ActionControllerInterface
 
     private $tradePostRepository;
 
+    private $shipStorageManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->shipStorageManager = $shipStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -132,9 +137,9 @@ final class TransferToAccount implements ActionControllerInterface
             }
             $game->addInformationf(_('%d %s'), $count, $commodity->getName());
 
-            $ship->lowerStorage($commodityId, $count);
-
-            $storageManager->upperStorage((int) $value, (int) $count);
+            $count = (int) $count;
+            $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
+            $storageManager->upperStorage((int) $value, $count);
         }
     }
 

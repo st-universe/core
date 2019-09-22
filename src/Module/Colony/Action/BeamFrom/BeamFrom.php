@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamFrom implements ActionControllerInterface
@@ -23,14 +24,18 @@ final class BeamFrom implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $shipStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->shipStorageManager = $shipStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -125,8 +130,7 @@ final class BeamFrom implements ActionControllerInterface
                 $eps_usage
             );
 
-            $target->lowerStorage($commodityId, $count);
-
+            $this->shipStorageManager->lowerStorage($target, $commodity, $count);
             $this->colonyStorageManager->upperStorage($colony, $commodity, $count);
 
             $colony->lowerEps((int)ceil($count / $transferAmount));

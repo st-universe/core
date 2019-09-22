@@ -4,6 +4,7 @@
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -13,7 +14,6 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -808,6 +808,7 @@ class ShipData extends BaseTable {
 	public function clearCache(): void
 	{
 		$this->rump = null;
+		$this->storage = null;
 	}
 
 	/**
@@ -861,46 +862,6 @@ class ShipData extends BaseTable {
 
 	function getMaxStorage() {
 		return $this->getRump()->getStorage();
-	}
-
-	public function lowerStorage(int $good_id, int $count) {
-		$storage = $this->getStorage()[$good_id] ?? null;
-		if ($storage === null) {
-			return;
-		}
-		// @todo refactor
-		global $container;
-
-		$shipStorageRepository = $container->get(ShipStorageRepositoryInterface::class);
-		if ($storage->getAmount() <= $count) {
-
-			$shipStorageRepository->delete($storage);
-			$this->storage = null;
-			return;
-		}
-		$storage->setAmount($storage->getAmount() - $count);
-
-		$shipStorageRepository->save($storage);
-	}
-
-	public function upperStorage(int $good_id, int $count) {
-		// @todo refactor
-		global $container;
-
-		$shipStorageRepository = $container->get(ShipStorageRepositoryInterface::class);
-		$commodityRepository = $container->get(CommodityRepositoryInterface::class);
-
-		$storage = $this->getStorage()[$good_id] ?? null;
-
-		if ($storage === null) {
-			$storage = $shipStorageRepository->prototype()
-				->setShipId((int) $this->getId())
-				->setCommodity($commodityRepository->find($good_id));
-		}
-		$storage->setAmount($storage->getAmount() + $count);
-
-		$shipStorageRepository->save($storage);
-		$this->storage = null;
 	}
 
 	private $currentColony = NULL;
@@ -1550,8 +1511,20 @@ class ShipData extends BaseTable {
 				$count = $storage->getAmount();
 			}
 		}
-		$this->lowerStorage(CommodityTypeEnum::GOOD_DEUTERIUM,$count);
-		$this->lowerStorage(CommodityTypeEnum::GOOD_ANTIMATTER,$count);
+		// @todo refactor
+		global $container;
+		$shipStorageManager = $container->get(ShipStorageManagerInterface::class);
+
+		$shipStorageManager->lowerStorage(
+			$this,
+			$shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
+			$count
+		);
+		$shipStorageManager->lowerStorage(
+			$this,
+			$shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
+			$count
+		);
 		if ($this->getWarpcoreLoad()+$count*WARPCORE_LOAD > $this->getWarpcoreCapacity()) {
 			$load = $this->getWarpcoreCapacity() - $this->getWarpcoreLoad();
 		} else {

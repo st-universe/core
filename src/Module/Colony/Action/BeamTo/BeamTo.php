@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
@@ -23,14 +24,18 @@ final class BeamTo implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $shipStorageManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->shipStorageManager = $shipStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -119,8 +124,8 @@ final class BeamTo implements ActionControllerInterface
                 $eps_usage
             );
             $colony->lowerEps((int)ceil($count / $good->getGood()->getTransferCount()));
-            $target->upperStorage((int) $value, $count);
 
+            $this->shipStorageManager->upperStorage($target, $good->getGood(), $count);
             $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);
 
             $target->setStorageSum($target->getStorageSum() + $count);

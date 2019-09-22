@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -26,16 +27,20 @@ final class TransferFromAccount implements ActionControllerInterface
 
     private $tradePostRepository;
 
+    private $shipStorageManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        ShipStorageManagerInterface $shipStorageManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->shipStorageManager = $shipStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -104,12 +109,15 @@ final class TransferFromAccount implements ActionControllerInterface
             if ($count < 1 || $ship->getStorageSum() >= $ship->getMaxStorage()) {
                 continue;
             }
-            if (!$curGoods[$value]->getGood()->isBeamable()) {
-                $game->addInformation($curGoods[$value]->getGood()->getName() . " ist nicht beambar");
+
+            $commodity = $curGoods[$value]->getGood();
+
+            if (!$commodity->isBeamable()) {
+                $game->addInformation($commodity->getName() . " ist nicht beambar");
                 continue;
             }
-            if ($curGoods[$value]->getGood()->isIllegal($tradepost->getTradeNetwork())) {
-                $game->addInformation($curGoods[$value]->getGood()->getName() . ' ist in diesem Handelsnetzwerk illegal und kann nicht gehandelt werden');
+            if ($commodity->isIllegal($tradepost->getTradeNetwork())) {
+                $game->addInformation($commodity->getName() . ' ist in diesem Handelsnetzwerk illegal und kann nicht gehandelt werden');
                 continue;
             }
             if ($count > $curGoods[$value]->getAmount()) {
@@ -118,9 +126,12 @@ final class TransferFromAccount implements ActionControllerInterface
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
-            $storageManager->lowerStorage((int) $value, (int) $count);
 
-            $ship->upperStorage((int) $value, $count);
+            $count = (int) $count;
+
+            $storageManager->lowerStorage((int) $value, $count);
+            $this->shipStorageManager->upperStorage($ship, $commodity, $count);
+
             $ship->setStorageSum($ship->getStorageSum() + $count);
 
             $game->addInformation($count . " " . $curGoods[$value]->getGood()->getName());
