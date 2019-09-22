@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\CrewTrainingRepository")
  * @Table(
@@ -29,9 +27,15 @@ class CrewTraining implements CrewTrainingInterface
 
     /**
      * @ManyToOne(targetEntity="Colony")
-     * @JoinColumn(name="colony_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="colony_id", referencedColumnName="id")
      */
     private $colony;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
 
     public function getId(): int
     {
@@ -43,13 +47,6 @@ class CrewTraining implements CrewTrainingInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): CrewTrainingInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getColonyId(): int
     {
         return $this->colony_id;
@@ -57,10 +54,13 @@ class CrewTraining implements CrewTrainingInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): CrewTrainingInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getColony(): ColonyInterface

@@ -80,7 +80,7 @@ final class TrainCrew implements ActionControllerInterface
             $i++;
             $crew = $this->crewTrainingRepository->prototype();
 
-            $crew->setUserId((int) $userId);
+            $crew->setUser($game->getUser());
             $crew->setColony($colony);
 
             $this->crewTrainingRepository->save($crew);

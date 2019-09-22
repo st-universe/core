@@ -65,9 +65,9 @@ final class AddContact implements ActionControllerInterface
             return;
         }
         $contact = $this->contactRepository->prototype();
-        $contact->setUserId($userId);
+        $contact->setUser($game->getUser());
         $contact->setMode($mode);
-        $contact->setRecipientId($recipient->getId());
+        $contact->setRecipient($recipient);
         $contact->setDate(time());
 
         $this->contactRepository->save($contact);

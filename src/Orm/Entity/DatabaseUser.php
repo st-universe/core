@@ -33,6 +33,12 @@ class DatabaseUser implements DatabaseUserInterface
      */
     private $databaseEntry;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
     public function getId(): int
     {
         return $this->id;
@@ -50,16 +56,20 @@ class DatabaseUser implements DatabaseUserInterface
         return $this->databaseEntry;
     }
 
-    public function setUserId(int $userId): DatabaseUserInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getUserId(): int
     {
         return $this->user_id;
+    }
+
+    public function setUser(UserInterface $user): DatabaseUserInterface
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
     }
 
     public function setDate(int $date): DatabaseUserInterface

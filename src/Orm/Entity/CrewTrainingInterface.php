@@ -8,11 +8,11 @@ interface CrewTrainingInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): CrewTrainingInterface;
-
     public function getColonyId(): int;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): CrewTrainingInterface;
 
     public function getColony(): ColonyInterface;
 

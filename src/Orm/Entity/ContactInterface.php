@@ -8,11 +8,7 @@ interface ContactInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): ContactInterface;
-
     public function getRecipientId(): int;
-
-    public function setRecipientId(int $recipientId): ContactInterface;
 
     public function getMode(): int;
 
@@ -28,7 +24,11 @@ interface ContactInterface
 
     public function getRecipient(): UserInterface;
 
+    public function setRecipient(UserInterface $recipient): ContactInterface;
+
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ContactInterface;
 
     public function isFriendly(): bool;
 

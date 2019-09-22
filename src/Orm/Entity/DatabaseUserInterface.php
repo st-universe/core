@@ -10,9 +10,11 @@ interface DatabaseUserInterface
 
     public function getDatabaseEntry(): DatabaseEntryInterface;
 
-    public function setUserId(int $userId): DatabaseUserInterface;
-
     public function getUserId(): int;
+
+    public function setUser(UserInterface $user): DatabaseUserInterface;
+
+    public function getUser(): UserInterface;
 
     public function setDate(int $date): DatabaseUserInterface;
 

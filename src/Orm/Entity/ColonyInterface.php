@@ -12,8 +12,6 @@ interface ColonyInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $user_id): ColonyInterface;
-
     public function getSx(): int;
 
     public function setSx(int $sx): ColonyInterface;
@@ -122,6 +120,8 @@ interface ColonyInterface
     public function isFree(): bool;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ColonyInterface;
 
     public function getBevFood(): int;
 

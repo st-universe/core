@@ -238,9 +238,10 @@ function databaseScan($database_id, $user_id)
      */
     $entry = $container->get(DatabaseEntryRepositoryInterface::class)->find($database_id);
     $databaseUserRepository = $container->get(DatabaseUserRepositoryInterface::class);
+    $userRepository = $container->get(UserRepositoryInterface::class);
 
     $userEntry = $databaseUserRepository->prototype()
-        ->setUserId($user_id)
+        ->setUser($userRepository->find($user_id))
         ->setDatabaseEntry($entry)
         ->setDate(time());
 

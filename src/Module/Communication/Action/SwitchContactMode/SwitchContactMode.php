@@ -63,8 +63,8 @@ final class SwitchContactMode implements ActionControllerInterface
                 }
             } else {
                 $obj = $this->contactRepository->prototype();
-                $obj->setUserId($contact->getRecipientId());
-                $obj->setRecipientId($userId);
+                $obj->setUser($contact->getRecipient());
+                $obj->setRecipient($game->getUser());
                 $obj->setMode(ContactListModeEnum::CONTACT_ENEMY);
                 $obj->setDate(time());
 

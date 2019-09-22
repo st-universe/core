@@ -12,6 +12,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Abandon implements ActionControllerInterface
 {
@@ -29,13 +30,16 @@ final class Abandon implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $userRepository;
+
     public function __construct(
         AbandonRequestInterface $abandonRequest,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->abandonRequest = $abandonRequest;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
@@ -43,6 +47,7 @@ final class Abandon implements ActionControllerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,7 +70,7 @@ final class Abandon implements ActionControllerInterface
         $colony->setMaxBev(0);
         $colony->setImmigrationState(true);
         $colony->setPopulationLimit(0);
-        $colony->setUserId(USER_NOONE);
+        $colony->setUser($this->userRepository->find(USER_NOONE));
         $colony->setName('');
 
         $this->colonyRepository->save($colony);

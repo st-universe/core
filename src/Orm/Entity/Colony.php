@@ -11,7 +11,6 @@ use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
@@ -91,6 +90,12 @@ class Colony implements ColonyInterface
      */
     private $starSystem;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
@@ -120,12 +125,6 @@ class Colony implements ColonyInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): ColonyInterface
-    {
-        $this->user_id = $user_id;
-        return $this;
     }
 
     public function getSx(): int
@@ -462,10 +461,13 @@ class Colony implements ColonyInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): ColonyInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getBevFood(): int

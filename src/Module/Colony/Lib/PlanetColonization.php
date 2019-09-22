@@ -11,6 +11,7 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
@@ -24,18 +25,22 @@ final class PlanetColonization implements PlanetColonizationInterface
 
     private $colonyRepository;
 
+    private $userRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityRepositoryInterface $commodityRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->commodityRepository = $commodityRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function colonize(
@@ -73,7 +78,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         $colony->upperWorkers($building->getWorkers());
         $colony->lowerWorkless($building->getWorkers());
         $colony->upperWorkless($building->getHousing());
-        $colony->setUserId($userId);
+        $colony->setUser($this->userRepository->find($userId));
         $colony->upperEps($building->getEpsStorage());
         $colony->setName(_('Kolonie'));
 

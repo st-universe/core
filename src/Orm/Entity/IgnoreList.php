@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Orm\Repository\UserRepositoryInterface;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\IgnoreListRepository")
  * @Table(
@@ -29,6 +27,18 @@ class IgnoreList implements IgnoreListInterface
     /** @Column(type="integer") * */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $opponent;
+
     public function getId(): int
     {
         return $this->id;
@@ -39,23 +49,9 @@ class IgnoreList implements IgnoreListInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): IgnoreListInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getRecipientId(): int
     {
         return $this->recipient;
-    }
-
-    public function setRecipientId(int $recipientId): IgnoreListInterface
-    {
-        $this->recipient = $recipientId;
-
-        return $this;
     }
 
     public function getDate(): int
@@ -72,17 +68,23 @@ class IgnoreList implements IgnoreListInterface
 
     public function getRecipient(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->opponent;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getRecipientId());
+    public function setRecipient(UserInterface $recipient): IgnoreListInterface
+    {
+        $this->opponent = $recipient;
+        return $this;
     }
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): IgnoreListInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Module\Communication\Lib\ContactListModeEnum;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ContactRepository")
@@ -36,6 +35,18 @@ class Contact implements ContactInterface
     /** @Column(type="integer") */
     private $date = 0;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="recipient", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $opponent;
+
     public function getId(): int
     {
         return $this->id;
@@ -46,21 +57,9 @@ class Contact implements ContactInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): ContactInterface
-    {
-        $this->user_id = $userId;
-        return $this;
-    }
-
     public function getRecipientId(): int
     {
         return $this->recipient;
-    }
-
-    public function setRecipientId(int $recipientId): ContactInterface
-    {
-        $this->recipient = $recipientId;
-        return $this;
     }
 
     public function getMode(): int
@@ -98,18 +97,24 @@ class Contact implements ContactInterface
 
     public function getRecipient(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->opponent;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getRecipientId());
+    public function setRecipient(UserInterface $recipient): ContactInterface
+    {
+        $this->opponent = $recipient;
+        return $this;
     }
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): ContactInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function isFriendly(): bool

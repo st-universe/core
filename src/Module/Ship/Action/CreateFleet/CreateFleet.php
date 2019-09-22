@@ -44,7 +44,7 @@ final class CreateFleet implements ActionControllerInterface
 
         $fleet = $this->fleetRepository->prototype();
         $fleet->setFleetLeader($ship->getId());
-        $fleet->setUserId($game->getUser()->getId());
+        $fleet->setUser($game->getUser());
 
         $this->fleetRepository->save($fleet);
 

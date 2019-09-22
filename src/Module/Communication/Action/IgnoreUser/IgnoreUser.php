@@ -48,9 +48,9 @@ final class IgnoreUser implements ActionControllerInterface
             return;
         }
         $ignore = $this->ignoreListRepository->prototype();
-        $ignore->setUserId($userId);
+        $ignore->setUser($game->getUser());
         $ignore->setDate(time());
-        $ignore->setRecipientId((int) $recipient->getId());
+        $ignore->setRecipient($recipient);
 
         $this->ignoreListRepository->save($ignore);
 

@@ -6,7 +6,6 @@ namespace Stu\Orm\Entity;
 
 use Ship;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FleetRepository")
@@ -30,6 +29,12 @@ class Fleet implements FleetInterface
 
     /** @Column(type="integer") */
     private $ships_id = 0;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $user;
 
     /**
      * @var null|Ship[]
@@ -60,12 +65,6 @@ class Fleet implements FleetInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function setUserId(int $userId): FleetInterface
-    {
-        $this->user_id = $userId;
-        return $this;
     }
 
     public function getFleetLeader(): int
@@ -152,10 +151,13 @@ class Fleet implements FleetInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): FleetInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getPointSum(): int
