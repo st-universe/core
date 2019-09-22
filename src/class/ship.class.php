@@ -554,10 +554,6 @@ class ShipData extends BaseTable {
 		$this->addUpdateField('schilde','getShield');
 	}
 
-	function upperShields($value) {
-		$this->setShield($this->getShield()+$value);
-	}
-
 	function setHuell($value) {
 		$this->data['huelle'] = $value;
 		$this->addUpdateField('huelle','getHuell');
@@ -575,11 +571,6 @@ class ShipData extends BaseTable {
 	function setTorpedos($value) {
 		$this->data['wea_torp'] = $value;
 		$this->addUpdateField('wea_torp','torpedoIsActive');
-	}
-
-	function disableWeapons() {
-		$this->setPhaser(0);
-		$this->setTorpedos(0);
 	}
 
 	public function hasActiveWeapons() {
@@ -605,14 +596,6 @@ class ShipData extends BaseTable {
 
 	function upperEps($value) {
 		$this->setEps($this->getEps()+$value);
-	}
-
-	function lowerEBatt($value) {
-		$this->setEBatt($this->getEBatt()-$value);
-	}
-	
-	function upperEBatt($value) {
-		$this->setEBatt($this->getEBatt()+$value);
 	}
 
 	function setNbs($value) {
@@ -754,7 +737,8 @@ class ShipData extends BaseTable {
 		$this->setShieldState(0);
 		$this->setNbs(0);
 		$this->setLss(0);
-		$this->disableWeapons();
+		$this->setPhaser(0);
+		$this->setTorpedos(0);
 	} # }}}
 
 	public function clearCache(): void
@@ -762,14 +746,6 @@ class ShipData extends BaseTable {
 		$this->rump = null;
 		$this->storage = null;
 	}
-
-	/**
-	 */
-	public function changeFleetLeader() { #{{{
-		if ($this->isFleetLeader()) {
-			$this->getFleet()->autochangeLeader($this);
-		}
-	} # }}}
 
 	function getFlightDirection() {
 		return $this->data['direction'];
@@ -795,21 +771,14 @@ class ShipData extends BaseTable {
 		return $this->storage;
 	}
 
-	private $storageSum = NULL;
-
 	function getStorageSum() {
-		if ($this->storageSum === NULL) {
-			$this->storageSum = DB()->query("SELECT SUM(count) FROM stu_ships_storage WHERE ships_id=".$this->getId(),1);
-		}
-		return $this->storageSum;
-	}
-
-	function setStorageSum($value) {
-		$this->storageSum = $value;
-	}
-
-	function storagePlaceLeft() {
-		return $this->getMaxStorage() > $this->getStorageSum();
+	    return array_reduce(
+	    	$this->getStorage(),
+		    function (int $sum, ShipStorageInterface $storage): int {
+	    		return $sum + $storage->getAmount();
+		    },
+		    0
+	    );
 	}
 
 	function getMaxStorage() {
@@ -840,13 +809,6 @@ class ShipData extends BaseTable {
 			$str .= ' ('.$this->getSystem()->getName().'-System)';
 		}
 		return $str;
-	}
-
-	function enableSystemLeave() {
-		if (!$this->isInSystem()) {
-			return FALSE;
-		}
-		return TRUE;
 	}
 
 	function getDatabaseId() {
@@ -1040,19 +1002,6 @@ class ShipData extends BaseTable {
 			);
 		}
 		return $this->phaser;
-	}
-
-	protected function getLastModified() {
-		return $this->data['lastmodified'];
-	}
-
-	protected function setLastModified() {
-		$this->setFieldValue('lastmodified',time(),'getLastModified');
-	}
-
-	public function save() {
-		$this->setLastModified();
-		parent::save();
 	}
 
 	public function alertLevelBasedReaction() {
@@ -1280,10 +1229,6 @@ class ShipData extends BaseTable {
 		$this->setFieldValue('disabled',$value,'getDisabled');
 	}
 
-	public function isDisabled() {
-		return $this->getDisabled() > 0;
-	}
-
 	/**
 	 */
 	public function setCanBeDisabled($value) { # {{{
@@ -1420,16 +1365,7 @@ class ShipData extends BaseTable {
 	/**
 	 */
 	public function hasEscapePods() { #{{{
-		return $this->getRump()->isTrumfield() && $this->getCrew() > 0;
-	} # }}}
-
-	/**
-	 */
-	public function canLoadTorpedos() { #{{{
-		if ($this->isDestroyed()) {
-			return FALSE;
-		}
-		return $this->getMaxTorpedos();
+		return $this->getRump()->isTrumfield() && $this->getCrewCount() > 0;
 	} # }}}
 
 	/**

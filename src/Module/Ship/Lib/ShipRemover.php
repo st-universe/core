@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Ship;
 use ShipData;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -17,20 +19,28 @@ final class ShipRemover implements ShipRemoverInterface
 
     private $shipCrewRepository;
 
+    private $fleetRepository;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        FleetRepositoryInterface $fleetRepository
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->fleetRepository = $fleetRepository;
     }
 
     public function destroy(ShipData $ship): void
     {
         $ship->deactivateSystems();
-        $ship->changeFleetLeader();
+
+        if ($ship->isFleetLeader()) {
+            $this->changeFleetLeader($ship);
+        }
+
         $ship->setFormerRumpsId($ship->getRumpId());
         $ship->setRumpId(TRUMFIELD_CLASS);
         $ship->setHuell(round($ship->getMaxHuell()/20));
@@ -56,7 +66,9 @@ final class ShipRemover implements ShipRemoverInterface
 
     public function remove(ShipData $ship): void
     {
-        $ship->changeFleetLeader();
+        if ($ship->isFleetLeader()) {
+            $this->changeFleetLeader($ship);
+        }
         $ship->deactivateTraktorBeam();
 
         $this->shipStorageRepository->truncateForShip((int) $ship->getId());
@@ -64,5 +76,20 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
 
         $ship->deleteFromDatabase();
+    }
+
+    private function changeFleetLeader(ShipData $obj): void
+    {
+        $ship = Ship::getObjectBy("WHERE fleets_id=" . $obj->getId() . " AND id!=" . $obj->getId());
+        $fleet = $obj->getFleet();
+
+        if (!$ship) {
+            $this->fleetRepository->delete($fleet);
+            $obj->setFleetId(0);
+            return;
+        }
+        $obj->getFleet()->setFleetLeader($ship->getId());
+
+        $this->fleetRepository->save($fleet);
     }
 }

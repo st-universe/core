@@ -81,7 +81,7 @@ final class EpsTransfer implements ActionControllerInterface
             $load = $target->getMaxEbatt() - $target->getEbatt();
         }
         $ship->lowerEps($load * 3);
-        $target->upperEbatt($load);
+        $target->setEBatt($target->getEBatt() + $load);
         $target->save();
         $ship->save();
 

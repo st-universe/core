@@ -118,7 +118,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     $load = $colony->getEps();
                 }
                 if ($load > 0) {
-                    $shipobj->upperEBatt($load);
+                    $shipobj->setEBatt($shipobj->getEBatt() + $load);
                     $colony->lowerEps($load);
                     $msg[] = sprintf(
                         _('%s: Batterie um %d Einheiten aufgeladen'),
@@ -231,7 +231,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     );
                 }
             }
-            if (isset($torp[$shipobj->getId()]) && $shipobj->canLoadTorpedos()) {
+            if (isset($torp[$shipobj->getId()]) && $shipobj->getMaxTorpedos() > 0) {
                 if ($torp[$shipobj->getId()] == INDICATOR_MAX) {
                     $count = $shipobj->getMaxTorpedos();
                 } else {

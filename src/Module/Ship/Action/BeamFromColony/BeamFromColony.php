@@ -73,7 +73,7 @@ final class BeamFromColony implements ActionControllerInterface
         if ($target === null || !$ship->canInteractWith($target, true)) {
             return;
         }
-        if (!$ship->storagePlaceLeft()) {
+        if ($ship->getMaxStorage() <= $ship->getStorageSum()) {
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
@@ -142,7 +142,6 @@ final class BeamFromColony implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($ship, $good->getGood(), $count);
 
             $ship->lowerEps(ceil($count / $good->getGood()->getTransferCount()));
-            $ship->setStorageSum($ship->getStorageSum() + $count);
         }
         if ($target->getUserId() != $ship->getUserId()) {
             $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);

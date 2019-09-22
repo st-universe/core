@@ -69,7 +69,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }
-        if (!$ship->storagePlaceLeft()) {
+        if ($ship->getMaxStorage() <= $ship->getStorageSum()) {
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
@@ -143,7 +143,6 @@ final class BeamFrom implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
             $ship->lowerEps(ceil($count / $transferAmount));
-            $ship->setStorageSum($ship->getStorageSum() + $count);
         }
         if ($target->getUserId() != $ship->getUserId()) {
             $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);

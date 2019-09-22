@@ -65,7 +65,7 @@ final class UnloadBattery implements ActionControllerInterface
         if ($load + $ship->getEps() > $ship->getMaxEps()) {
             $load = $ship->getMaxEps() - $ship->getEps();
         }
-        $ship->lowerEBatt($load);
+        $ship->setEBatt($ship->getEBatt() - $load);
         $ship->upperEps($load);
         $ship->setEBattWaitingTime($load * 60);
         $ship->save();

@@ -98,10 +98,7 @@ class Fleet implements FleetInterface
 
     public function getLeadShip(): Ship
     {
-        if ($this->fleetLeader === null) {
-            $this->fleetLeader = new Ship($this->getFleetLeader());
-        }
-        return $this->fleetLeader;
+        return new Ship($this->getFleetLeader());
     }
 
     public function getAvailableShips(): iterable

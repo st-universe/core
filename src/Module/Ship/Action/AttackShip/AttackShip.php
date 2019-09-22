@@ -60,7 +60,7 @@ final class AttackShip implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        if ($ship->isDisabled()) {
+        if ($ship->getDisabled()) {
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }

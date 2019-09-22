@@ -58,7 +58,7 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }
-        if (!$target->storagePlaceLeft()) {
+        if ($target->getMaxStorage() <= $target->getStorageSum()) {
             $game->addInformationf(_('Der Lagerraum der %s ist voll'), $target->getName());
             return;
         }
@@ -127,8 +127,6 @@ final class BeamTo implements ActionControllerInterface
 
             $this->shipStorageManager->upperStorage($target, $good->getGood(), $count);
             $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);
-
-            $target->setStorageSum($target->getStorageSum() + $count);
         }
         if ($target->getUserId() != $userId) {
             $game->sendInformation($target->getUserId(), $userId, PM_SPECIAL_TRADE);

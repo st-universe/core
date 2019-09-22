@@ -267,7 +267,7 @@ class ShipAttackCycle {
 			if ($arr->isDestroyed()) {
 				return FALSE;
 			}
-			if ($arr->isDisabled()) {
+			if ($arr->getDisabled()) {
 				$this->addMessage(_("Die ".$arr->getName()." ist kampfunfähig"));
 				return FALSE;
 			}
@@ -286,7 +286,7 @@ class ShipAttackCycle {
 				unset($arr[$key]);
 				continue;
 			}
-			if ($obj->isDisabled()) {
+			if ($obj->getDisabled()) {
 				$this->addMessage(_("Die ".$obj->getName()." ist kampfunfähig"));
 				return FALSE;
 			}
@@ -330,7 +330,7 @@ class ShipAttackCycle {
 			if ($arr->isDestroyed()) {
 				return FALSE;
 			}
-			if ($arr->isDisabled()) {
+			if ($arr->getDisabled()) {
 				$this->addMessage(_("Die ".$arr->getName()." ist kampfunfähig"));
 				return FALSE;
 			}
@@ -345,11 +345,11 @@ class ShipAttackCycle {
 		$arr = &$this->getAttacker();
 		shuffle($arr);
 		foreach ($arr as $key => $obj) {
-			if ($obj->isDestroyed() || $obj->isDisabled()) {
+			if ($obj->isDestroyed() || $obj->getDisabled()) {
 				unset($arr[$key]);
 				continue;
 			}
-			if ($obj->isDisabled()) {
+			if ($obj->getDisabled()) {
 				$this->addMessage(_("Die ".$obj->getName()." ist kampfunfähig"));
 				unset($arr[$key]);
 				return FALSE;

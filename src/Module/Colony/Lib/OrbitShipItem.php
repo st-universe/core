@@ -65,7 +65,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function canLoadTorpedos(): bool
     {
-        return $this->ship->canLoadTorpedos();
+        return $this->ship->getMaxTorpedos() > 0;
     }
 
     public function getTorpedoCount(): int
