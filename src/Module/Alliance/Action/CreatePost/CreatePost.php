@@ -37,7 +37,6 @@ final class CreatePost implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $userId = $game->getUser()->getId();
 
         $text = $this->createPostRequest->getText();
         $topicId = $this->createPostRequest->getTopicId();
@@ -58,7 +57,7 @@ final class CreatePost implements ActionControllerInterface
         $post->setText($text);
         $post->setBoard($topic->getBoard());
         $post->setTopic($topic);
-        $post->setUserId($userId);
+        $post->setUser($game->getUser());
         $post->setDate(time());
 
         $this->allianceBoardPostRepository->save($post);

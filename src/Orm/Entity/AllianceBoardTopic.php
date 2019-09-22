@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceBoardTopicRepository")
@@ -54,6 +53,12 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
      * @JoinColumn(name="alliance_id", referencedColumnName="id")
      */
     private $alliance;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
 
     /**
      * @OneToMany(targetEntity="AllianceBoardPost", mappedBy="topic")
@@ -116,13 +121,6 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
         return $this->user_id;
     }
 
-    public function setUserId(int $userId): AllianceBoardTopicInterface
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
     public function getSticky(): bool
     {
         return $this->sticky;
@@ -137,10 +135,13 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): AllianceBoardTopicInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function getPages(): ?array

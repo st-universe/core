@@ -51,7 +51,7 @@ final class Signup implements ActionControllerInterface
             throw new AccessViolation();
         }
         $obj = $this->allianceJobRepository->prototype();
-        $obj->setUserId($userId);
+        $obj->setUser($user);
         $obj->setType(ALLIANCE_JOBS_PENDING);
         $obj->setAlliance($alliance);
 

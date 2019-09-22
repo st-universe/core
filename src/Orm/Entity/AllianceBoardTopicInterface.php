@@ -24,13 +24,13 @@ interface AllianceBoardTopicInterface
 
     public function getUserId(): int;
 
-    public function setUserId(int $userId): AllianceBoardTopicInterface;
-
     public function getSticky(): bool;
 
     public function setSticky(bool $sticky): AllianceBoardTopicInterface;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): AllianceBoardTopicInterface;
 
     public function getPages(): ?array;
 

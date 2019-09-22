@@ -40,7 +40,7 @@ final class CreateTopic implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $name = $this->createTopicRequest->getTopicTitle();
         $text = $this->createTopicRequest->getText();
@@ -68,7 +68,7 @@ final class CreateTopic implements ActionControllerInterface
         $topic->setBoard($board);
         $topic->setAlliance($alliance);
         $topic->setName($name);
-        $topic->setUserId($userId);
+        $topic->setUser($user);
         $topic->setLastPostDate($date);
 
         $this->allianceBoardTopicRepository->save($topic);
@@ -80,7 +80,7 @@ final class CreateTopic implements ActionControllerInterface
         $post->setName($name);
         $post->setBoard($board);
         $post->setTopic($topic);
-        $post->setUserId($userId);
+        $post->setUser($user);
         $post->setDate($date);
 
         $this->allianceBoardPostRepository->save($post);

@@ -59,7 +59,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             $obj->setType($jobTypeId);
             $obj->setAlliance($this->allianceRepository->find($allianceId));
         }
-        $obj->setUserId($userId);
+        $obj->setUser($this->userRepository->find($userId));
 
         $this->allianceJobRepository->save($obj);
     }

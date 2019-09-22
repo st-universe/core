@@ -69,7 +69,7 @@ final class CreateAlliance implements ActionControllerInterface
         $job = $this->allianceJobRepository->prototype();
         $job->setType(ALLIANCE_JOBS_FOUNDER);
         $job->setAlliance($alliance);
-        $job->setUserId($userId);
+        $job->setUser($user);
 
         $this->allianceJobRepository->save($job);
 
