@@ -3,6 +3,8 @@
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\WeaponInterface;
+use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 class ShipAttackCycle {
 
@@ -83,13 +85,13 @@ class ShipAttackCycle {
 			if ($this->getFirstStrike()) {
 				$this->setFirstStrike(0);
 			}
-			$msg = $this->getAttackShip()->alertLevelBasedReaction();
+			$msg = $this->alertLevelBasedReaction($this->getAttackShip());
 			if ($msg) {
 				$this->addMessage("Aktionen der ".$this->getAttackShip()->getName());
 				$this->addMessageMerge($msg);
 				$msg = array();
 			}
-			if (!$this->getAttackShip()->canFire()) {
+			if (!$this->canFire($this->getAttackShip())) {
 				$this->getAttackShip()->save();
 				continue;
 			}
@@ -108,20 +110,20 @@ class ShipAttackCycle {
 						break;
 					}
 					$this->getAttackShip()->lowerEps($this->getAttackShip()->getPhaserEpsCost());
-					if ($this->getAttackShip()->getPhaser()->getFiringMode() == FIRINGMODE_RANDOM) {
+					if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == FIRINGMODE_RANDOM) {
 						$this->redefineDefender();
 						if (!$this->getDefendShip()) {
 							$this->endCycle();
 							break;
 						}
 					}
-					$this->addMessage("Die ".$this->getAttackShip()->getName()." feuert mit einem ".$this->getAttackShip()->getPhaser()->getName()." auf die ".$this->getDefendShip()->getName());
+					$this->addMessage("Die ".$this->getAttackShip()->getName()." feuert mit einem ".$this->getEnergyWeapon($this->getAttackShip())->getName()." auf die ".$this->getDefendShip()->getName());
 					if ($this->getAttackShip()->getHitChance()*(100-$this->getDefendShip()->getEvadeChance()) < rand(1,10000)) {
 						$this->addMessage("Die ".$this->getDefendShip()->getName()." wurde verfehlt");
 						$this->endCycle();
 						continue;
 					}
-					$damage_wrapper = new DamageWrapper($this->getAttackShip()->getPhaserDamage(),$this->getAttackShip()); {
+					$damage_wrapper = new DamageWrapper($this->getEnergyWeaponDamage($this->getAttackShip()),$this->getAttackShip()); {
 						$damage_wrapper->setShieldDamageFactor($this->getAttackShip()->getRump()->getPhaserShieldDamageFactor());
 						$damage_wrapper->setHullDamageFactor($this->getAttackShip()->getRump()->getPhaserHullDamageFactor());
 						$damage_wrapper->setIsPhaserDamage(TRUE);
@@ -139,7 +141,7 @@ class ShipAttackCycle {
 							$this->endCycle();
 							break;
 						}
-						if ($this->getAttackShip()->getPhaser()->getFiringMode() == FIRINGMODE_FOCUS) {
+						if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == FIRINGMODE_FOCUS) {
 							$this->endCycle();
 							break;
 						}
@@ -181,7 +183,7 @@ class ShipAttackCycle {
 					$this->addMessage("Die ".$this->getDefendShip()->getName()." wurde verfehlt");
 					continue;
 				}
-				$damage_wrapper = new DamageWrapper($this->getAttackShip()->getTorpedoDamage(),$this->getAttackShip()); {
+				$damage_wrapper = new DamageWrapper($this->getProjectileWeaponDamage($this->getAttackShip()),$this->getAttackShip()); {
 					$damage_wrapper->setShieldDamageFactor($this->getAttackShip()->getTorpedo()->getShieldDamageFactor());
 					$damage_wrapper->setHullDamageFactor($this->getAttackShip()->getTorpedo()->getHullDamageFactor());
 					$damage_wrapper->setIsTorpedoDamage(TRUE);
@@ -394,6 +396,92 @@ class ShipAttackCycle {
 		return FALSE;
 	}
 
+	private function canFire(ShipData $ship): bool {
+		if ($ship->getEps() == 0) {
+			return false;
+		}
+		if (!$ship->nbsIsActive()) {
+			return false;
+		}
+		if (!$ship->hasActiveWeapons()) {
+			return false;
+		}
+		return true;
+	}
+
+    private function alertLevelBasedReaction(ShipData $ship): array {
+        $msg = array();
+        if ($ship->getCrew() == 0 || $ship->getRump()->isTrumfield()) {
+            return $msg;
+        }
+        if ($ship->getAlertState() == ALERT_GREEN) {
+            $ship->setAlertState(ALERT_YELLOW);
+            $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt";
+        }
+        if ($ship->getDock()) {
+            $ship->setDock(0);
+            $msg[] = "- Das Schiff hat abgedockt";
+        }
+        if ($ship->getWarpState() == 1) {
+            $ship->deactivateSystem(SYSTEM_WARPDRIVE);
+            $msg[] = "- Der Warpantrieb wurde deaktiviert";
+        }
+        if ($ship->cloakIsActive()) {
+            $ship->deactivateSystem(SYSTEM_CLOAK);
+            $msg[] = "- Die Tarnung wurde deaktiviert";
+        }
+        if (!$ship->shieldIsActive() && !$ship->traktorBeamToShip() && $ship->systemIsActivateable(SYSTEM_SHIELDS)) {
+            if ($ship->isTraktorbeamActive()) {
+                $ship->deactivateTraktorBeam();
+                $msg[] = "- Der Traktorstrahl wurde deaktiviert";
+            }
+            $ship->activateSystem(SYSTEM_SHIELDS);
+            $msg[] = "- Die Schilde wurden aktiviert";
+        }
+        if ($ship->systemIsActivateable(SYSTEM_NBS)) {
+            $ship->activateSystem(SYSTEM_NBS);
+            $msg[] = "- Die Nahbereichssensoren wurden aktiviert";
+        }
+        if ($ship->getAlertState() >= ALERT_YELLOW) {
+            if ($ship->systemIsActivateable(SYSTEM_PHASER)) {
+                $ship->activateSystem(SYSTEM_PHASER);
+                $msg[] = "- Die Strahlenwaffe wurde aktiviert";
+            }
+        }
+        return $msg;
+    }
+
+    private function getEnergyWeaponDamage(ShipData $ship): float {
+        if (!$ship->hasShipSystem(SYSTEM_PHASER)) {
+            return 0;
+        }
+        $basedamage= calculateModuleValue($ship->getRump(),$ship->getShipSystem(SYSTEM_PHASER)->getModule(),'getBaseDamage');
+        $variance = round($basedamage/100 * $this->getEnergyWeapon($ship)->getVariance());
+        $damage = rand($basedamage-$variance,$basedamage+$variance);
+        if (rand(1,100) <= $this->getEnergyWeapon($ship)->getCriticalChance()) {
+            return $damage*2;
+        }
+        return $damage;
+    }
+
+    private function getProjectileWeaponDamage(ShipData $ship): float {
+        $variance = round($ship->getTorpedo()->getBaseDamage()/100*$ship->getTorpedo()->getVariance());
+        $basedamage= calculateModuleValue($ship->getRump(),$ship->getShipSystem(SYSTEM_TORPEDO)->getModule(),FALSE,$ship->getTorpedo()->getBaseDamage());
+        $damage = rand($basedamage-$variance,$basedamage+$variance);
+        if (rand(1,100) <= $ship->getTorpedo()->getCriticalChance()) {
+            return $damage*2;
+        }
+        return $damage;
+    }
+
+    private function getEnergyWeapon(ShipData $ship): ?WeaponInterface {
+        // @todo refactor
+        global $container;
+
+        return $container->get(WeaponRepositoryInterface::class)->findByModule(
+            (int) $ship->getShipSystem(SYSTEM_PHASER)->getModuleId()
+        );
+    }
 }
 
 class ShipSingleAttackCycle extends ShipAttackCycle {

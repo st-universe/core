@@ -59,7 +59,7 @@ final class InterceptShip implements ActionControllerInterface
         if (!$ship->canIntercept()) {
             return;
         }
-        if ($ship->isDocked()) {
+        if ($ship->getDock()) {
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDock(0);
         }

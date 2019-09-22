@@ -137,7 +137,7 @@
 						</tal:block>
 					</tal:block>
 					<tal:block tal:condition="ship/isBase">
-						<a tal:condition="not:SHIP/isDocked" href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
+						<a tal:condition="not:SHIP/getDock" href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
 							<img src="assets/buttons/dock1.gif" name="dock_${ship/getId}" title="An die ${nameWithoutMarkup} andocken" />
 						</a>
 					</tal:block>

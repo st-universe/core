@@ -36,7 +36,7 @@ final class UndockShip implements ActionControllerInterface
             $msg = array();
             $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $ship->getDockedShip()->getName();;
             foreach ($ship->getFleet()->getShips() as $key => $ship) {
-                if (!$ship->isDocked()) {
+                if (!$ship->getDock()) {
                     continue;
                 }
                 if ($ship->getEps() < SYSTEM_ECOST_DOCK) {
@@ -51,7 +51,7 @@ final class UndockShip implements ActionControllerInterface
             $game->addInformationMerge($msg);
             return;
         }
-        if (!$ship->isDocked()) {
+        if (!$ship->getDock()) {
             return;
         }
         if ($ship->getEps() == 0) {

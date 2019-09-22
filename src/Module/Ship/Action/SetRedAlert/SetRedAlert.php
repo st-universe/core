@@ -68,7 +68,7 @@ final class SetRedAlert implements ActionControllerInterface
             return;
         }
         $ship->cancelRepair();
-        if ($ship->isDocked()) {
+        if ($ship->getDock()) {
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDock(0);
         }

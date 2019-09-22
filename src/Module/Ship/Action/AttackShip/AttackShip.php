@@ -64,7 +64,7 @@ final class AttackShip implements ActionControllerInterface
             $game->addInformation(_('Das Schiff ist kampfunfähig'));
             return;
         }
-        if ($ship->isDocked()) {
+        if ($ship->getDock()) {
             $ship->setDock(0);
         }
         $fleet = false;

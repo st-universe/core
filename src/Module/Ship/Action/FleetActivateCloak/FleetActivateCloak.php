@@ -47,7 +47,7 @@ final class FleetActivateCloak implements ActionControllerInterface
                 $ship->setShieldState(0);
                 $msg[] = $ship->getName() . _(": Schilde deaktiviert");
             }
-            if ($ship->isDocked()) {
+            if ($ship->getDock()) {
                 $ship->setDock(0);
                 $msg[] = $ship->getName() . _(": Abgedockt");
             }

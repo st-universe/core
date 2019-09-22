@@ -44,7 +44,7 @@ final class ActivateCloak implements ActionControllerInterface
             $ship->setShieldState(0);
             $game->addInformation("Schilde deaktiviert");
         }
-        if ($ship->isDocked()) {
+        if ($ship->getDock()) {
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDock(0);
         }

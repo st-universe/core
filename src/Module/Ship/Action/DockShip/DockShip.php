@@ -68,7 +68,7 @@ final class DockShip implements ActionControllerInterface
             $this->fleetDock($ship, $target, $game);
             return;
         }
-        if ($ship->isDocked()) {
+        if ($ship->getDock()) {
             return;
         }
         if ($ship->getEps() < SYSTEM_ECOST_DOCK) {
@@ -110,7 +110,7 @@ final class DockShip implements ActionControllerInterface
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
             }
-            if ($ship->isDocked()) {
+            if ($ship->getDock()) {
                 continue;
             }
             if ($ship->getEps() < SYSTEM_ECOST_DOCK) {

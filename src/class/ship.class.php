@@ -9,7 +9,6 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\ShipStorageInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
@@ -24,7 +23,6 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 class ShipData extends BaseTable {
 
@@ -849,18 +847,6 @@ class ShipData extends BaseTable {
 		return $this->getRump()->getBaseTorpedoStorage();
 	}
 
-	/**
-	 */
-	public function getTorpedoDamage() { #{{{
-		$variance = round($this->getTorpedo()->getBaseDamage()/100*$this->getTorpedo()->getVariance());
-		$basedamage= calculateModuleValue($this->getRump(),$this->getShipSystem(SYSTEM_TORPEDO)->getModule(),FALSE,$this->getTorpedo()->getBaseDamage());
-		$damage = rand($basedamage-$variance,$basedamage+$variance);
-		if (rand(1,100) <= $this->getTorpedo()->getCriticalChance()) {
-			return $damage*2;
-		}
-		return $damage;
-	} # }}}
-
 	private $buildplan = NULL;
 
 	public function getBuildplanId() {
@@ -965,19 +951,6 @@ class ShipData extends BaseTable {
 		return '';
 	}
 
-	public function getPhaserDamage() {
-		if (!$this->hasShipSystem(SYSTEM_PHASER)) {
-			return 0;
-		}
-		$basedamage= calculateModuleValue($this->getRump(),$this->getShipSystem(SYSTEM_PHASER)->getModule(),'getBaseDamage');
-		$variance = round($basedamage/100*$this->getPhaser()->getVariance());
-		$damage = rand($basedamage-$variance,$basedamage+$variance);
-		if (rand(1,100) <= $this->getPhaser()->getCriticalChance()) {
-			return $damage*2;
-		}
-		return $damage;
-	}
-
 	/**
 	 */
 	public function getTorpedoEpsCost() { #{{{
@@ -988,62 +961,6 @@ class ShipData extends BaseTable {
 	public function getPhaserEpsCost() {
 		// @todo
 		return 1;
-	}
-
-	private $phaser = NULL;
-
-	public function getPhaser(): ?WeaponInterface {
-		if ($this->phaser === NULL) {
-			// @todo refactor
-			global $container;
-
-			$this->phaser = $container->get(WeaponRepositoryInterface::class)->findByModule(
-				(int) $this->getShipSystem(SYSTEM_PHASER)->getModuleId()
-			);
-		}
-		return $this->phaser;
-	}
-
-	public function alertLevelBasedReaction() {
-		$msg = array();
-		if ($this->getCrew() == 0 || $this->getRump()->isTrumfield()) {
-			return $msg;
-		}
-		if ($this->getAlertState() == ALERT_GREEN) {
-			$this->setAlertState(ALERT_YELLOW);
-			$msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt";
-		}
-		if ($this->isDocked()) {
-			$this->setDock(0);
-			$msg[] = "- Das Schiff hat abgedockt";
-		}
-		if ($this->getWarpState() == 1) {
-			$this->deactivateSystem(SYSTEM_WARPDRIVE);
-			$msg[] = "- Der Warpantrieb wurde deaktiviert";
-		}
-		if ($this->cloakIsActive()) {
-			$this->deactivateSystem(SYSTEM_CLOAK);
-			$msg[] = "- Die Tarnung wurde deaktiviert";
-		}
-		if (!$this->shieldIsActive() && !$this->traktorBeamToShip() && $this->systemIsActivateable(SYSTEM_SHIELDS)) {
-			if ($this->isTraktorbeamActive()) {
-				$this->deactivateTraktorBeam();
-				$msg[] = "- Der Traktorstrahl wurde deaktiviert";
-			}
-			$this->activateSystem(SYSTEM_SHIELDS);
-			$msg[] = "- Die Schilde wurden aktiviert";
-		}
-		if ($this->systemIsActivateable(SYSTEM_NBS)) {
-			$this->activateSystem(SYSTEM_NBS);
-			$msg[] = "- Die Nahbereichssensoren wurden aktiviert";
-		}
-		if ($this->getAlertState() >= ALERT_YELLOW) {
-			if ($this->systemIsActivateable(SYSTEM_PHASER)) {
-				$this->activateSystem(SYSTEM_PHASER);
-				$msg[] = "- Die Strahlenwaffe wurde aktiviert";
-			}
-		}
-		return $msg;
 	}
 
 	public function systemIsActivateable($system) {
@@ -1085,19 +1002,6 @@ class ShipData extends BaseTable {
 		}
 		$cb = $this->getShipSystem($system)->getShipCallback();
 		$this->$cb(0);
-	}
-
-	public function canFire() {
-		if ($this->getEps() == 0) {
-			return FALSE;
-		}
-		if (!$this->nbsIsActive()) {
-			return FALSE;
-		}
-		if (!$this->hasActiveWeapons()) {
-			return FALSE;
-		}
-		return TRUE;
 	}
 
 	public function getBase() {
@@ -1146,10 +1050,6 @@ class ShipData extends BaseTable {
 		$this->setFieldValue('trade_post_id',$value,'getTradePostId');
 	}
 
-	public function isTradePost() {
-		return $this->getTradePostId() > 0;
-	}
-
 	public function getDock() {
 		return $this->data['dock'];
 	}
@@ -1158,16 +1058,12 @@ class ShipData extends BaseTable {
 		$this->setFieldValue('dock',$value,'getDock');
 	}
 
-	public function isDocked() {
-		return $this->getDock() > 0;
-	}
-
-	public function getDockedShip() {
+	public function getDockedShip(): ShipData {
 		return ResourceCache()->getObject('ship',$this->getDock());
 	}
 
 	public function dockedOnTradePost() {
-		return $this->isDocked() && $this->getDockedShip()->isTradePost();
+		return $this->getDock() && $this->getDockedShip()->getTradePostId() > 0;
 	}
 
 	private $dockPrivileges = NULL;
