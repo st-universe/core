@@ -400,7 +400,7 @@ class ShipAttackCycle {
 		if ($ship->getEps() == 0) {
 			return false;
 		}
-		if (!$ship->nbsIsActive()) {
+		if (!$ship->getNbs()) {
 			return false;
 		}
 		if (!$ship->hasActiveWeapons()) {
@@ -411,7 +411,7 @@ class ShipAttackCycle {
 
     private function alertLevelBasedReaction(ShipData $ship): array {
         $msg = array();
-        if ($ship->getCrew() == 0 || $ship->getRump()->isTrumfield()) {
+        if ($ship->getCrewCount() == 0 || $ship->getRump()->isTrumfield()) {
             return $msg;
         }
         if ($ship->getAlertState() == ALERT_GREEN) {

@@ -44,7 +44,6 @@ final class DeleteFleet implements ActionControllerInterface
 
         $this->fleetRepository->delete($ship->getFleet());
 
-        $ship->unsetFleet();
         $ship->setFleetId(0);
         $ship->save();
 

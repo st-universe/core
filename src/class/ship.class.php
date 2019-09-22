@@ -178,18 +178,6 @@ class ShipData extends BaseTable {
 		return $container->get(ShipCrewRepositoryInterface::class)->getAmountByShip((int) $this->getId());
 	} # }}}
 
-	public function getCrew() {
-		return count($this->getCrewlist());
-	}
-
-	function nbsIsActive() {
-		return $this->getNbs() == 1;
-	}
-	
-	function lssIsActive() {
-		return $this->getLss() == 1;
-	}
-
 	function getAlertState() {
 		return $this->data['alvl'];
 	}
@@ -217,7 +205,6 @@ class ShipData extends BaseTable {
 
 	public function leaveFleet() {
 		$this->setFleetId(0);
-		$this->unsetFleet();
 		$this->save();
 	}
 
@@ -233,13 +220,10 @@ class ShipData extends BaseTable {
 	private $fleet = NULL;
 
 	function getFleet() {
-		if ($this->fleet === NULL && $this->isInFleet()) {
-			// @todo refactor
-			global $container;
+		// @todo refactor
+		global $container;
 
-			$this->fleet = $container->get(FleetRepositoryInterface::class)->find((int) $this->getFleetId());
-		}
-		return $this->fleet;
+		return $container->get(FleetRepositoryInterface::class)->find((int) $this->getFleetId());
 	}
 
 	function isFleetLeader() {
@@ -247,14 +231,6 @@ class ShipData extends BaseTable {
 			return FALSE;
 		}
 		return $this->getFleet()->getFleetLeader() == $this->getId();
-	}
-
-	function setFleet(&$obj) {
-		$this->fleet = $obj;
-	}
-
-	function unsetFleet() {
-		$this->fleet = NULL;
 	}
 
 	function isBase() {

@@ -153,7 +153,7 @@ class ShipMover {
 				$this->addInformation(sprintf(_('Die %s hat nicht genug Energie für den Flug'),$this->getFirstShip()->getName()));
 				return;
 			}
-			if ($this->getFirstShip()->getBuildplan()->getCrew() > 0 && $this->getFirstShip()->getCrew() == 0) {
+			if ($this->getFirstShip()->getBuildplan()->getCrew() > 0 && $this->getFirstShip()->getCrewCount() == 0) {
 				$this->addInformation(sprintf(_('Es werden %d Crewmitglieder benötigt'),$this->getFirstShip()->getBuildplan()->getCrew()));
 				return;
 			}
@@ -181,7 +181,7 @@ class ShipMover {
 				$this->addInformation(sprintf(_('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),$ship->getName(),$ship->getRump()->getFlightEcost()));
 				return FALSE;
 			}
-			if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrew() == 0) {
+			if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
 				$this->addInformation(sprintf(_('Es werden %d Crewmitglieder benötigt'),$ship->getBuildplan()->getCrew()));
 				return FALSE;
 			}

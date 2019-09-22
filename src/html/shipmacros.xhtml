@@ -49,12 +49,12 @@
 					<img src="assets/buttons/batt.gif" title="Ersatzbatterie" i18n:attributes="title" /> <span tal:replace="ship/getEBatt">BATTERY</span>
 				</div>
 			</td>
-			<td tal:content="ship/getCrew" style="text-align: center;">CREW</td>
+			<td tal:content="ship/getCrewCount" style="text-align: center;">CREW</td>
 			<td>
-				<img src="assets/buttons/kss2.gif" tal:condition="ship/nbsIsActive" title="Nahbereichssensoren aktiviert" />
-				<img src="assets/buttons/kss1.gif" tal:condition="not:ship/nbsIsActive" title="Nahbereichssensoren deaktiviert" />
-				<img src="assets/buttons/lss2.gif" tal:condition="ship/lssIsActive" title="Langstreckensensoren aktiviert" />
-				<img src="assets/buttons/lss1.gif" tal:condition="not:ship/lssIsActive" title="Langstreckensensoren deaktiviert" />
+				<img src="assets/buttons/kss2.gif" tal:condition="ship/getNbs" title="Nahbereichssensoren aktiviert" />
+				<img src="assets/buttons/kss1.gif" tal:condition="not:ship/getNbs" title="Nahbereichssensoren deaktiviert" />
+				<img src="assets/buttons/lss2.gif" tal:condition="ship/getLss" title="Langstreckensensoren aktiviert" />
+				<img src="assets/buttons/lss1.gif" tal:condition="not:ship/getLss" title="Langstreckensensoren deaktiviert" />
 				<img src="assets/buttons/act_phaser2.gif" tal:condition="ship/phaserIsActive" title="Strahlenwaffe aktiviert" />
 				<img src="assets/buttons/act_phaser1.gif" tal:condition="not:ship/phaserIsActive" title="Strahlenwaffe deaktiviert" />
 				<img src="assets/buttons/act_torp2.gif" tal:condition="ship/torpedoIsActive" title="Torpedobänke aktiviert" />
@@ -527,7 +527,7 @@
 				</tr>
 				<tr>
 					<td style="width: 450px;">
-						<span i18n:translate="">In dem Trümmerfeld befinden sich <span i18n:name="escapepods" tal:replace="targetShip/getCrew"/> Rettungskapseln</span><br /><br />
+						<span i18n:translate="">In dem Trümmerfeld befinden sich <span i18n:name="escapepods" tal:replace="targetShip/getCrewCount"/> Rettungskapseln</span><br /><br />
 						<stu:hidden name="target" tal:attributes="value targetShip/getId" />
 						<stu:submit name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" i18n:attributes="value" />
 					</td>

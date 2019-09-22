@@ -49,7 +49,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrew() == 0) {
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
                 $ship->getBuildplan()->getCrew()

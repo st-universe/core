@@ -8,7 +8,7 @@ class SystemActivationWrapper
     private $ship = null;
     private $errormsg = null;
 
-    function __construct(&$ship)
+    function __construct(ShipData $ship)
     {
         $this->ship = $ship;
     }
@@ -35,7 +35,7 @@ class SystemActivationWrapper
                 return;
             }
         }
-        if ($this->getShip()->getBuildplan()->getCrew() > 0 && $this->getShip()->getCrew() == 0) {
+        if ($this->getShip()->getBuildplan()->getCrew() > 0 && $this->getShip()->getCrewCount() == 0) {
             if ($this->getShip()->getBuildplan()->getCrew() == 1) {
                 $this->errormsg = _("Es wird 1 Crewmitglied benötigt");
             } else {

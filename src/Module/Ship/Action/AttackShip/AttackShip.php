@@ -39,7 +39,7 @@ final class AttackShip implements ActionControllerInterface
             $userId
         );
         $target = $this->shipLoader->getById(request::postIntFatal('target'));
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrew() == 0) {
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
                 $ship->getBuildplan()->getCrew()
