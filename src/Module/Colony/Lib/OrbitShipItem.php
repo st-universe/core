@@ -7,17 +7,22 @@ namespace Stu\Module\Colony\Lib;
 
 use ShipData;
 use Stu\Orm\Entity\TorpedoTypeInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class OrbitShipItem implements OrbitShipItemInterface
 {
+    private $torpedoTypeRepository;
+
     private $ship;
 
     private $userId;
 
     public function __construct(
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         ShipData $ship,
         int $userId
     ) {
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->ship = $ship;
         $this->userId = $userId;
     }
@@ -80,7 +85,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function getPossibleTorpedoTypes(): array
     {
-        return $this->ship->getPossibleTorpedoTypes();
+        return $this->torpedoTypeRepository->getByLevel($this->ship->getRump()->getTorpedoLevel());
     }
 
     public function getEbatt(): int

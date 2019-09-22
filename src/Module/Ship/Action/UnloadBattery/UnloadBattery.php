@@ -39,7 +39,7 @@ final class UnloadBattery implements ActionControllerInterface
             $game->addInformation($wrapper->getError());
             return;
         }
-        if (!$ship->hasEmergencyBattery()) {
+        if ($ship->getMaxEbatt() == 0) {
             return;
         }
         if (!$ship->getEBatt()) {

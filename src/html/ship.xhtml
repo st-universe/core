@@ -63,7 +63,7 @@
 					</td>
 					<td style="text-align: center;">
 						${SHIP/getEps}/${SHIP/getMaxEps}
-						<span tal:attributes="class SHIP/getEffectiveEpsProductionClass">${SHIP/getEffectiveEpsProductionDisplay}${SHIP/getEffectiveEpsProduction}</span>
+						<span>${addPlusCharacter:SHIP/getEffectiveEpsProduction}</span>
 						(<span tal:content="SHIP/getEpsUsage" class="neg">USAGE</span>/<span class="neg" tal:content="SHIP/getWarpcoreUsage">CORE</span>)
 					</td>
 					<td style="text-align: center;">
@@ -393,7 +393,7 @@
 							</td>
 						</tr>
 					</table>
-					<table class="tcal" tal:condition="SHIP/hasEmergencyBattery">
+					<table class="tcal" tal:condition="SHIP/getMaxEbatt">
 						<tr>
 							<th>
 								<img src="assets/buttons/batt.gif" title="Ersatzbatterie" /> Ersatzbatterie ${SHIP/getEBatt} / ${SHIP/getMaxEBatt}

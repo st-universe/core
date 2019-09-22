@@ -3,8 +3,6 @@
 
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Commodity\CommodityTypeEnum;
-use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -369,15 +367,11 @@ class ShipData extends BaseTable {
 		return $this->getReactorOutput();
 	}
 	
-	public function getEpsProduction() {
-		return $this->getReactorCapacity();
-	}
-
 	private $effectiveEpsProduction = NULL;
 
 	public function getEffectiveEpsProduction() {
 		if ($this->effectiveEpsProduction === NULL) {
-			$prod = $this->getEpsProduction()-$this->getEpsUsage();
+			$prod = $this->getReactorCapacity()-$this->getEpsUsage();
 			if ($prod <= 0) {
 				return $prod;
 			}
@@ -387,23 +381,6 @@ class ShipData extends BaseTable {
 			$this->effectiveEpsProduction = $prod;
 		}
 		return $this->effectiveEpsProduction;
-	}
-
-	public function getEffectiveEpsProductionClass() {
-		if ($this->getEffectiveEpsProduction() > 0) {
-			return 'pos';
-		}
-		if ($this->getEffectiveEpsProduction() < 0) {
-			return 'neg';
-		}
-		return '';
-	}
-
-	public function getEffectiveEpsProductionDisplay() {
-		if ($this->getEffectiveEpsProduction() > 0) {
-			return '+';
-		}
-		return '';
 	}
 
 	public function getWarpcoreUsage() {
@@ -417,10 +394,6 @@ class ShipData extends BaseTable {
 	function setWarpState($value) {
 		$this->data['warp'] = $value;
 		$this->addUpdateField('warp','getWarpState');
-	}
-
-	function hasEmergencyBattery() {
-		return $this->getMaxEbatt() > 0;
 	}
 
 	function isEBattUseable() {
@@ -443,18 +416,11 @@ class ShipData extends BaseTable {
 	/**
 	 */
 	public function setCloakable($value) { # {{{
-		$this->setFieldValue('cloakable',$value,'getCloakable');
+		$this->setFieldValue('cloakable',$value,'isCloakable');
 	} # }}}
 
-	/**
-	 */
-	public function getCloakable() { # {{{
-		return $this->data['cloakable'];
-	} # }}}
-
-	
 	function isWarpAble() {
-		// XXX: TBD damaged warp coils
+		// @todo TBD damaged warp coils
 		return TRUE;
 	}
 
@@ -588,10 +554,6 @@ class ShipData extends BaseTable {
 		$this->addUpdateField('schilde','getShield');
 	}
 
-	function lowerShields($value) {
-		$this->setShield($this->getShield()-$value);
-	}
-	
 	function upperShields($value) {
 		$this->setShield($this->getShield()+$value);
 	}
@@ -1421,21 +1383,6 @@ class ShipData extends BaseTable {
 
 	/**
 	 */
-	public function regenerateShields(&$time) { #{{{
-		if ($this->getCrewCount() < $this->getBuildplan()->getCrew()) {
-			return;
-		}
-		$rate = $this->getShieldRegenerationRate();
-		if ($this->getShield()+$rate > $this->getMaxShield()) {
-			$rate = $this->getMaxShield()-$this->getShield();
-		}
-		$this->upperShields($rate);
-		$this->setShieldRegenerationTimer($time);
-		$this->save();
-	} # }}}
-
-	/**
-	 */
 	public function canIntercept() { #{{{
 		return !$this->getTraktorMode();
 	} # }}}
@@ -1478,39 +1425,11 @@ class ShipData extends BaseTable {
 
 	/**
 	 */
-	public function currentUserCanMan() { #{{{
-		return $this->ownedByCurrentUser() && $this->getBuildplan()->getCrew() > 0 && $this->getCrewCount() == 0;
-	} # }}}
-
-	/**
-	 */
-	public function currentUserCanUnMan() { #{{{
-		return $this->ownedByCurrentUser() && $this->getCrewCount() > 0;
-	} # }}}
-
-	/**
-	 */
 	public function canLoadTorpedos() { #{{{
 		if ($this->isDestroyed()) {
 			return FALSE;
 		}
 		return $this->getMaxTorpedos();
-	} # }}}
-
-	private $torpedo_types = NULL;
-	
-	/**
-	 */
-	public function getPossibleTorpedoTypes() { #{{{
-		if ($this->torpedo_types === NULL) {
-			// @todo refactor
-			global $container;
-
-			$this->torpedo_types = $container
-				->get(TorpedoTypeRepositoryInterface::class)
-				->getByLevel($this->getRump()->getTorpedoLevel());
-		}
-		return $this->torpedo_types;
 	} # }}}
 
 	/**

@@ -10,6 +10,7 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
@@ -21,16 +22,20 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private $colonyRepository;
 
+    private $torpedoTypeRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         CommodityRepositoryInterface $commodityRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
         $this->commodityRepository = $commodityRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function createOrbitShipItem(
@@ -38,6 +43,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         int $ownerUserId
     ): OrbitShipItemInterface {
         return new OrbitShipItem(
+            $this->torpedoTypeRepository,
             $ship,
             $ownerUserId
         );

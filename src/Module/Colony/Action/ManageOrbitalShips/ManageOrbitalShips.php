@@ -139,7 +139,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     }
                 }
             }
-            if (isset($man[$shipobj->getId()]) && $shipobj->currentUserCanMan()) {
+            if (
+                isset($man[$shipobj->getId()]) &&
+                $shipobj->getCrewCount() == 0 && $shipobj->getBuildplan()->getCrew() > 0 && $shipobj->getUserId() == $userId
+            ) {
                 if ($shipobj->getBuildplan()->getCrew() > $shipobj->getUser()->getFreeCrewCount()) {
                     $msg[] = sprintf(
                         _('%s: Nicht genügend Crew vorhanden (%d benötigt)'),
@@ -154,7 +157,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     );
                 }
             }
-            if (isset($unman[$shipobj->getId()]) && $shipobj->currentUserCanUnMan()) {
+            if (
+                isset($unman[$shipobj->getId()]) && $shipobj->getUserId() == $userId && $shipobj->getCrewCount() > 0
+            ) {
                 $this->shipCrewRepository->truncateByShip((int) $shipobj->getId());
                 $msg[] = sprintf(
                     _('%s: Die Crew wurde runtergebeamt'), $shipobj->getName()

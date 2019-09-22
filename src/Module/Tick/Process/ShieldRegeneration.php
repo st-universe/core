@@ -19,7 +19,16 @@ final class ShieldRegeneration implements ProcessTickInterface
             /**
              * @var ShipData $obj
              */
-            $obj->regenerateShields($time);
+            if ($obj->getCrewCount() < $obj->getBuildplan()->getCrew()) {
+                return;
+            }
+            $rate = $obj->getShieldRegenerationRate();
+            if ($obj->getShield()+$rate > $obj->getMaxShield()) {
+                $rate = $obj->getMaxShield()-$obj->getShield();
+            }
+            $obj->setShield($obj->getShield() + $rate);
+            $obj->setShieldRegenerationTimer($time);
+            $obj->save();
         }
     }
 }

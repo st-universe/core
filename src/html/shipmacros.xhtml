@@ -38,7 +38,7 @@
 			</td>
 			<td>
 				${ship/getEps}/${ship/getMaxEps}
-				<span tal:attributes="class ship/getEffectiveEpsProductionClass">${ship/getEffectiveEpsProductionDisplay}${ship/getEffectiveEpsProduction}</span>
+				<span>${addPlusCharacter:ship/getEffectiveEpsProduction}</span>
 				(<span tal:content="ship/getEpsUsage" class="neg">USAGE</span>/<span class="neg" tal:content="ship/getWarpcoreUsage">CORE</span>)
 			</td>
 			<td>

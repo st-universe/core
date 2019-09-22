@@ -23,7 +23,7 @@ final class ShipTick implements ShipTickInterface
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew()) {
             return;
         }
-        $eps = $ship->getEps() + $ship->getEpsProduction();
+        $eps = $ship->getEps() + $ship->getReactorCapacity();
         if ($ship->getEpsUsage() > $eps) {
             foreach ($ship->getActiveSystems() as $system) {
                 //echo "- eps: ".$eps." - usage: ".$ship->getEpsUsage()."\n";
