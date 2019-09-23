@@ -4,21 +4,18 @@ use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
+use Stu\Lib\ModuleScreen\ModuleSelectorWrapperInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-
-function dbSafe(&$string)
-{
-    return addslashes(str_replace("\"", "", $string));
-}
 
 class Tuple
 {
@@ -83,7 +80,7 @@ function getStorageBar(&$bar, $file, $amount, &$sum)
     $sum -= $mod * $amount;
 }
 
-function compareBuildings(&$a, &$b)
+function compareBuildings(PlanetFieldInterface$a, PlanetFieldInterface $b)
 {
     if ($a->getBuilding()->getId() == $b->getBuilding()->getId()) {
         return $a->getId() > $b->getId();
@@ -252,7 +249,7 @@ function databaseScan($database_id, $user_id)
 
 /**
  */
-function calculateModuleValue($rump, $module, $callback = 'aggi', $value = false)
+function calculateModuleValue(ShipRumpInterface $rump, ModuleInterface $module, $callback = 'aggi', $value = false)
 { #{{{
     if (!$value) {
         $value = $rump->$callback();
@@ -281,7 +278,7 @@ function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module)
 
 /**
  */
-function calculateEvadeChance($rump, $module)
+function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module)
 { #{{{
     $base = $rump->getEvadeChance();
     if ($rump->getModuleLevel() > $module->getLevel()) {
@@ -333,15 +330,11 @@ function getDefaultTechs()
         RESEARCH_START_EMPIRE,
     ];
 } # }}}
-/**
- */
-function isSystemUser($userId)
-{ #{{{
-} # }}}
+
 
 /**
  */
-function getModuleLevelClass(ShipRumpInterface $rump, $module)
+function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module)
 { #{{{
     if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {
         return 'module_positive';
