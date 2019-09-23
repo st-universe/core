@@ -75,10 +75,10 @@ class GetInfoTest extends MockeryTestCase
         $response->shouldReceive('withData')
             ->with([
                 'id' => $userId,
-                'factionId' => $factionId,
+                'faction_id' => $factionId,
                 'name' => $name,
-                'allianceId' => $allianceId,
-                'avatarPath' => $avatarPath
+                'alliance_id' => $allianceId,
+                'avatar_path' => $avatarPath
             ])
             ->once()
             ->andReturnSelf();

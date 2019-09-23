@@ -26,23 +26,38 @@ API
 Alle Namesspaces der API, mit Ausnahme von `common`, erwarten eine Authentifizierung mittels des über `common/login` zu bekommenden Tokens.
 Dieser Token muss mittels `Authorization`-Header und dem Inhalt `Bearer <TOKEN>` bei jedem Request übergeben werden.
 
+Alle regulären Responses sind nach dem gleichen Prinzip aufgebaut:
+```metadata json
+{
+    "statusCode": int,
+    "data": ...
+}
+```
+
+Ist ein Fehler vorgefallen, sieht die Response wie folgt aus:
+```metadata json
+{
+    "statusCode": int,
+    "error": ...
+}
+```
+
 **Common - News**
 
 `GET /api/v1/common/news`
 
 Response
-```json
-{
-    "statusCode": 200,
-    "data": [{
-        "headline":"Some headline",
-        "text":"Some text",
-        "date": 1565430813,
-        "links":[
-            "https://example.com"
-        ]
-    }]
-}
+```metadata json
+
+[
+  {
+    "headline": strinh,
+    "text": string,
+    "date": int,
+    "links": string[]
+  }
+]
+
 ```
 
 **Common - Factions**
@@ -50,19 +65,16 @@ Response
 `GET /api/v1/common/faction`
 
 Response
-```json
-{
-    "statusCode": 200,
-    "data": [
-        {
-            "id": 1,
-            "name": "Some faction name",
-            "description": "Faction description",
-            "player_limit": 20,
-            "player_amount": 5
-        }
-    ]
-}
+```metadata json
+[
+    {
+        "id": int,
+        "name": string,
+        "description": string,
+        "player_limit": int,
+        "player_amount": int
+    }
+]
 ```
 
 **Common - Login**
@@ -70,20 +82,17 @@ Response
 `POST /api/v1/common/login`
 
 Request
-```json
+```metadata json
 {
-    "username": "john",
-    "password": "doe"
+    "username": string
+    "password": string
 }
 ```
 
 Response
-```json
+```metadata json
 {
-    "statusCode": 200,
-    "data": {
-        "token": "sample-token"
-    }
+    "token": string
 }
 ```
 
@@ -94,14 +103,8 @@ Returns a list of colony ids.
 `GET /api/v1/colony`
 
 Response
-```json
-{
-  "statusCode": 200,
-  "data": [
-    123,
-    456
-  ]
-}
+```metadata json
+int[]
 ```
 
 **Colony - Retrieve single colony**
@@ -111,13 +114,10 @@ Retrieve the basic data for the colony with the supplied id.
 `GET /api/v1/colony/<colonyId>`
 
 Response
-```json
+```metadata json
 {
-  "statusCode": 200,
-  "data": {
-    "id": 123,
-    "name": "A fine colony"
-  }
+    "id": int,
+    "name": string
 }
 ```
 
@@ -128,15 +128,13 @@ Retrieve the details of the current player.
 `GET /api/v1/player`
 
 Response
-```json
+```metadata json
 {
-    "statusCode": 200,
-    "data": {
-        "id": 105,
-        "factionId": 1,
-        "name": "Siedler 105",
-        "allianceId": 7,
-        "avatarPath": "/assets/rassen/1kn.png"
-    }
+    "id": int,
+    "faction_id": int,
+    "name": string,
+    "alliance_id": ?int,
+    "avatar_path": string
 }
 ```
+

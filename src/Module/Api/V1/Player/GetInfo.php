@@ -28,10 +28,10 @@ final class GetInfo extends Action
 
         return $response->withData([
             'id' => $user->getId(),
-            'factionId' => $user->getFaction()->getId(),
+            'faction_id' => $user->getFaction()->getId(),
             'name' => $user->getUser(),
-            'allianceId' => $user->getAllianceId(),
-            'avatarPath' => $user->getFullAvatarPath()
+            'alliance_id' => $user->getAllianceId(),
+            'avatar_path' => $user->getFullAvatarPath()
         ]);
     }
 }
