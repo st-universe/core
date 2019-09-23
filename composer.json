@@ -2,7 +2,6 @@
   "name": "usox/stu3",
   "autoload": {
     "classmap": [
-      "src/class",
       "src/Lib",
       "src/admin"
     ],
