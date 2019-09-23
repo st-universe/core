@@ -30,7 +30,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $senderId,
         int $recipientId,
         string $text,
-        int $category = PM_SPECIAL_MAIN
+        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
     ): void {
         if ($senderId == $recipientId) {
             return;
@@ -49,7 +49,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         if ($senderId != USER_NOONE) {
 
-            $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($senderId, PM_SPECIAL_PMOUT);
+            $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($senderId,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT);
 
             $newobj = clone($pm);
             $newobj->setSender($pm->getRecipient());

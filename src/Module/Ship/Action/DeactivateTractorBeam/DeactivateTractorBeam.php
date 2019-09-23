@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DeactivateTractorBeam;
 
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -49,7 +50,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
                 $userId,
                 (int)$ship->getTraktorShip()->getUserId(),
                 "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
-                PM_SPECIAL_SHIP
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
         $ship->deactivateTraktorBeam();

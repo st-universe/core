@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -43,7 +44,8 @@ final class FinishShipBuildJobs implements ProcessTickInterface
 
             $txt = _("Auf der Kolonie " . $colony->getName() . " wurde ein Schiff der " . $ship->getRump()->getName() . "-Klasse fertiggestellt");
 
-            $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $txt, PM_SPECIAL_COLONY);
+            $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $txt,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
         }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -310,7 +311,7 @@ class ShipMover {
 					(int) $ship->getUserId(),
 					(int) $ship->getTraktorShip()->getUserId(),
                     "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
-                    PM_SPECIAL_SHIP
+					PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
 				);
 			}
 			$this->flightDone = TRUE;

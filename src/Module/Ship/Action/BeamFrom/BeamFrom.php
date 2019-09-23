@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BeamFrom;
 
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -153,7 +154,8 @@ final class BeamFrom implements ActionControllerInterface
             $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
         }
         if ($target->getUserId() != $ship->getUserId()) {
-            $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);
+            $game->sendInformation($target->getUserId(), $ship->getUserId(),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
         }
 
         $this->shipRepository->save($ship);

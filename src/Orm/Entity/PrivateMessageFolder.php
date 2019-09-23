@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageFolderRepository")
  * @Table(
@@ -108,16 +110,16 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
 
     public function isPMOutDir(): bool
     {
-        return $this->getSpecial() == PM_SPECIAL_PMOUT;
+        return $this->getSpecial() == PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT;
     }
 
     public function isDropable(): bool
     {
         switch ($this->getSpecial()) {
-            case PM_SPECIAL_SHIP:
-            case PM_SPECIAL_COLONY:
-            case PM_SPECIAL_TRADE:
-            case PM_SPECIAL_PMOUT:
+            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP:
+            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY:
+            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE:
+            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT:
                 return false;
         }
         return true;

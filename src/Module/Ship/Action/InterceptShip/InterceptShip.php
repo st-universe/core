@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\InterceptShip;
 
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -83,7 +84,8 @@ final class InterceptShip implements ActionControllerInterface
             $this->shipRepository->save($target);
         }
 
-        $this->privateMessageSender->send($userId, (int)$target->getUserId(), $pm, PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send($userId, (int)$target->getUserId(), $pm,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
         if ($ship->getFleetId()) {
             $ship->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
         } else {

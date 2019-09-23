@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
 use ShipAttackCycle;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -94,7 +95,8 @@ final class AttackShip implements ActionControllerInterface
         foreach ($obj->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
-        $this->privateMessageSender->send($userId, (int)$target_user_id, $pm, PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send($userId, (int)$target_user_id, $pm,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());

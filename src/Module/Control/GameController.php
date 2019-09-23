@@ -8,6 +8,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
@@ -189,7 +190,8 @@ final class GameController implements GameControllerInterface
         return $this->gameInformations;
     }
 
-    public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PM_SPECIAL_MAIN)
+    public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+    )
     {
         $this->privateMessageSender->send((int) $sender_id, (int) $recipient_id, join('<br />', $this->getInformation()), $category_id);
     }
@@ -213,10 +215,10 @@ final class GameController implements GameControllerInterface
             $userId = $user->getId();
 
             $pmFolder = [
-                PM_SPECIAL_MAIN,
-                PM_SPECIAL_SHIP,
-                PM_SPECIAL_COLONY,
-                PM_SPECIAL_TRADE,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             ];
             $folder = [];
 

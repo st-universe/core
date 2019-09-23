@@ -8,6 +8,7 @@ use Exception;
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -139,7 +140,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $shipobj->getName(),
                                 $load
                             ),
-                            PM_SPECIAL_TRADE);
+                            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
                     }
                 }
             }
@@ -224,7 +225,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                         $shipobj->getName(),
                                         $load
                                     ),
-                                    PM_SPECIAL_TRADE);
+                                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
                             }
                         }
                     }

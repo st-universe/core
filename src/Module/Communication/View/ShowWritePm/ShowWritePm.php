@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowWritePm;
 
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
@@ -48,11 +49,11 @@ final class ShowWritePm implements ViewControllerInterface
 
             $recipientFolder = $this->privateMessageFolderRepository->getByUserAndSpecial(
                 (int) $reply->getRecipientId(),
-                PM_SPECIAL_MAIN
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
             );
             $senderFolder = $this->privateMessageFolderRepository->getByUserAndSpecial(
                 (int) $reply->getSenderId(),
-                PM_SPECIAL_MAIN
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
             );
 
             $correspondence = $this->privateMessageRepository->getOrderedCorrepondence(

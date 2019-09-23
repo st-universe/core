@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
 use ShipSingleAttackCycle;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -104,7 +105,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
                     $ship->getSectorString(),
                     implode(PHP_EOL, $obj->getMessages())
                 ),
-                PM_SPECIAL_SHIP);
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
         }
         if ($target->getShieldState()) {
             $game->addInformation("Die " . $target->getName() . " kann aufgrund der aktiven Schilde nicht erfasst werden");
@@ -124,7 +125,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
                 $userId,
                 (int)$target->getUserId(),
                 "Die " . $target->getName() . " wurde in SeKtor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
-                PM_SPECIAL_SHIP
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
         $game->addInformation("Der Traktorstrahl wurde auf die " . $target->getName() . " gerichtet");

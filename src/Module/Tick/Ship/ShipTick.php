@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Ship;
 
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -97,7 +98,8 @@ final class ShipTick implements ShipTickInterface
             $text .= $msg . "\n";
         }
 
-        $this->privateMessageSender->send(USER_NOONE, (int)$ship->getUserId(), $text, PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send(USER_NOONE, (int)$ship->getUserId(), $text,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
 
         $this->msg = [];
     }

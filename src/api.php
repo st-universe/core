@@ -21,6 +21,7 @@ use Stu\Module\Api\V1\Common\Faction\GetFactions;
 use Stu\Module\Api\V1\Common\Login\Login;
 use Stu\Module\Api\V1\Common\News\GetNews;
 use Stu\Module\Api\V1\Player\GetInfo;
+use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
 
 require_once __DIR__ . '/inc/config.inc.php';
 
@@ -66,6 +67,7 @@ $app->group('/api/v1/colony', function (RouteCollectorProxy $group): void {
 
 $app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
     $group->get('', GetInfo::class);
+    $group->get('/newpms', GetNewPrivateMessages::class);
 });
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();

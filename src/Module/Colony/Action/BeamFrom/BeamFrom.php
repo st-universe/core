@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\BeamFrom;
 
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -143,7 +144,7 @@ final class BeamFrom implements ActionControllerInterface
             $colony->lowerEps((int)ceil($count / $transferAmount));
         }
         if ($target->getUser() != $userId) {
-            $game->sendInformation($target->getUserId(), $userId, PM_SPECIAL_TRADE);
+            $game->sendInformation($target->getUserId(), $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
         }
 
         $this->colonyRepository->save($colony);

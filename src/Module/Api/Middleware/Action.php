@@ -27,4 +27,10 @@ abstract class Action
     public function getJsonSchemaFile(): ?string {
         return null;
     }
+
+    abstract protected function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface;
 }

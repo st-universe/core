@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Communication\View\ShowPmCategory;
 
 use AccessViolation;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageListItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -52,7 +53,8 @@ final class ShowPmCategory implements ViewControllerInterface
         $mark = $this->showPmCategoryRequest->getListOffset();
 
         if ($categoryId === 0) {
-            $category = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, PM_SPECIAL_MAIN);
+            $category = $this->privateMessageFolderRepository->getByUserAndSpecial($userId,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN);
         } else {
             $category = $this->privateMessageFolderRepository->find($categoryId);
             if ($category === null || $category->getUserId() !== $userId) {

@@ -138,3 +138,22 @@ Response
 }
 ```
 
+**Player - Retrieve new private message count**
+
+Retrieve the amount of new private messages for all system folders.
+
+* 1 = General/Player-to-player messages
+* 2 = Ship related messages
+* 3 = Colony related messages
+* 4 = Trade related messages
+
+`GET /api/v1/player/newpms`
+
+Response
+```metadata json
+{
+    "folder_special_id": int,
+    "new_pm_amount": int
+}
+```
+

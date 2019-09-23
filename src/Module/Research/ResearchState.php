@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -36,7 +37,7 @@ final class ResearchState implements ResearchStateInterface
             USER_NOONE,
             $state->getUser()->getId(),
             "Forschung '" . $state->getResearch()->getName() . "' wurde abgeschlossen",
-            PM_SPECIAL_COLONY
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
         );
 
         $this->createDatabaseEntries($state);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -68,7 +69,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     _('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
                     $target->getCrewCount()
                 ),
-                PM_SPECIAL_SHIP
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
         $this->shipCrewRepository->truncateByShip((int) $target->getId());

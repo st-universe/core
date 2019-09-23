@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\EpsTransfer;
 
 use request;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -98,7 +99,7 @@ final class EpsTransfer implements ActionControllerInterface
             $userId,
             (int)$target->getUserId(),
             "Die " . $ship->getName() . " transferiert in SeKtor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
-            PM_SPECIAL_TRADE
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
         $game->addInformation(sprintf(_('Es wurde %d Energie zur %s transferiert'), $load, $target->getName()));
     }

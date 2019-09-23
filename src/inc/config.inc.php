@@ -61,13 +61,6 @@ define("BUILDMENU_SCROLLOFFSET",6);
 
 define('INDICATOR_MAX','m');
 
-// Special PM Categories
-define("PM_SPECIAL_MAIN",1);
-define("PM_SPECIAL_SHIP",2);
-define("PM_SPECIAL_COLONY",3);
-define("PM_SPECIAL_TRADE",4);
-define("PM_SPECIAL_PMOUT",5);
-
 // Map
 define("MAP_MAX_X",120);
 define("MAP_MAX_Y",120);

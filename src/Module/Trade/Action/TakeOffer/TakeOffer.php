@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TakeOffer;
 
 use AccessViolation;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -149,7 +150,7 @@ final class TakeOffer implements ActionControllerInterface
                 $selectedOffer->getWantedGoodCount() * $amount,
                 $selectedOffer->getWantedCommodity()->getName()
             ),
-            PM_SPECIAL_TRADE
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );
     }
 

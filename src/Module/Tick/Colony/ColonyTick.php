@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Orm\Entity\ColonyInterface;
@@ -312,7 +313,8 @@ final class ColonyTick implements ColonyTickInterface
             $text .= $msg . "\n";
         }
 
-        $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $text, PM_SPECIAL_COLONY);
+        $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $text,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
 
         $this->msg = [];
     }
