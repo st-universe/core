@@ -72,7 +72,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy AND cloak = 0
+                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy AND s.cloak = 0
                 ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
                 Ship::class
             )
