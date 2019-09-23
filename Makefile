@@ -1,5 +1,5 @@
 # DEFAULT
-PHONY=init init-production tests update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs i18nextract version_link migrateDatabase showDatabaseChanges
+PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs i18nextract version_link migrateDatabase showDatabaseChanges
 
 all:init dirs
 
@@ -25,6 +25,9 @@ init-production:force
 
 tests:force
 	./vendor/bin/phpunit tests
+
+coverage:force
+	./vendor/bin/phpunit -c phpunit-coverage.xml tests
 
 update:force
 	composer update

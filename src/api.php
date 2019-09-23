@@ -20,6 +20,7 @@ use Stu\Module\Api\V1\Colony\GetById\GetColonyById;
 use Stu\Module\Api\V1\Common\Faction\GetFactions;
 use Stu\Module\Api\V1\Common\Login\Login;
 use Stu\Module\Api\V1\Common\News\GetNews;
+use Stu\Module\Api\V1\Player\GetInfo;
 
 require_once __DIR__ . '/inc/config.inc.php';
 
@@ -59,8 +60,12 @@ $app->group('/api/v1/common', function (RouteCollectorProxy $group): void {
 });
 
 $app->group('/api/v1/colony', function (RouteCollectorProxy $group): void {
-    $group->get('/', GetColonyList::class);
+    $group->get('', GetColonyList::class);
     $group->get('/{colonyId}', GetColonyById::class);
+});
+
+$app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
+    $group->get('', GetInfo::class);
 });
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();

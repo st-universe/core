@@ -120,3 +120,23 @@ Response
   }
 }
 ```
+
+**Player - Retrieve current player**
+
+Retrieve the details of the current player.
+
+`GET /api/v1/player`
+
+Response
+```json
+{
+    "statusCode": 200,
+    "data": {
+        "id": 105,
+        "factionId": 1,
+        "name": "Siedler 105",
+        "allianceId": 7,
+        "avatarPath": "/assets/rassen/1kn.png"
+    }
+}
+```

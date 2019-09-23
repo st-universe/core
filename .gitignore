@@ -16,3 +16,4 @@ src/html/avatare
 backup
 .phpunit.result.cache
 src/api/
+build
