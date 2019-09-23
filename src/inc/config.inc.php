@@ -2,7 +2,6 @@
 
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
-use Stu\Lib\ResourceCacher;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
@@ -369,11 +368,3 @@ function &get_debug_error() {
 
 require_once 'func.inc.php';
 include_once("generated/fieldtypesname.inc.php");
-
-function &ResourceCache() {
-    static $ResourceCache = NULL;
-    if ($ResourceCache === NULL) {
-        $ResourceCache = new ResourceCacher();
-    }
-    return $ResourceCache;
-}
