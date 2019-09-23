@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\LandShip;
 
 use request;
-use Ship;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,6 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LandShip implements ActionControllerInterface
 {
@@ -27,16 +27,20 @@ final class LandShip implements ActionControllerInterface
 
     private $shipRemover;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,11 +52,8 @@ final class LandShip implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
-        /**
-         * @var Ship $ship
-         */
-        $ship = ResourceCache()->getObject('ship', request::getIntFatal('shipid'));
-        if (!$ship->ownedByCurrentUser() || !$ship->canLandOnCurrentColony()) {
+        $ship = $this->shipRepository->find(request::getIntFatal('shipid'));
+        if (!$ship->getUserId() !== $game->getUser()->getId() || !$ship->canLandOnCurrentColony()) {
             return;
         }
         if (!$colony->storagePlaceLeft()) {

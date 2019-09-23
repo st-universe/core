@@ -5,7 +5,7 @@ declare(strict_types=0);
 
 namespace Stu\Module\Colony\Lib;
 
-use ShipData;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
@@ -19,7 +19,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function __construct(
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        ShipData $ship,
+        ShipInterface $ship,
         int $userId
     ) {
         $this->torpedoTypeRepository = $torpedoTypeRepository;

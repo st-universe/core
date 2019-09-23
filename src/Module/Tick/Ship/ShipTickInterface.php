@@ -2,9 +2,9 @@
 
 namespace Stu\Module\Tick\Ship;
 
-use ShipData;
+use Stu\Orm\Entity\ShipInterface;
 
 interface ShipTickInterface
 {
-    public function work(ShipData $ship): void;
+    public function work(ShipInterface $ship): void;
 }

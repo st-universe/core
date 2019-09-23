@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetActivateTorpedo implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetActivateTorpedo implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,7 +41,7 @@ final class FleetActivateTorpedo implements ActionControllerInterface
         $msg = array();
         $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Torpedobänke";
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if (!$ship->hasTorpedo() || $ship->torpedoIsActive()) {
+            if (!$ship->hasTorpedo() || $ship->getTorpedos()) {
                 continue;
             }
             if (!$ship->getTorpedoCount()) {
@@ -47,9 +52,10 @@ final class FleetActivateTorpedo implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            $ship->lowerEps(SYSTEM_ECOST_TORPEDO);
-            $ship->setTorpedos(1);
-            $ship->save();
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_TORPEDO);
+            $ship->setTorpedos(true);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }

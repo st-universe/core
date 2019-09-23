@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LoadWarpcore;
 
 use request;
-use ShipData;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LoadWarpcore implements ActionControllerInterface
 {
@@ -21,12 +22,16 @@ final class LoadWarpcore implements ActionControllerInterface
 
     private $shipStorageManager;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipStorageManagerInterface $shipStorageManager
+        ShipStorageManagerInterface $shipStorageManager,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStorageManager = $shipStorageManager;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +54,7 @@ final class LoadWarpcore implements ActionControllerInterface
                 if ($ship->getWarpcoreLoad() >= $ship->getWarpcoreCapacity()) {
                     continue;
                 }
-                $load = $ship->loadWarpCore($load);
+                $load = $this->loadWarpCore($ship, $load);
                 if (!$load) {
                     $game->addInformation(sprintf(_('%s: Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt'),
                         $ship->getName()));
@@ -65,7 +70,7 @@ final class LoadWarpcore implements ActionControllerInterface
             $game->addInformation(_('Der Warpkern ist bereits vollständig geladen'));
             return;
         }
-        $load = $ship->loadWarpCore($load);
+        $load = $this->loadWarpCore($ship, $load);
         if (!$load) {
             $game->addInformation(_('Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt'));
             return;
@@ -73,7 +78,7 @@ final class LoadWarpcore implements ActionControllerInterface
         $game->addInformation(sprintf(_('Der Warpkern wurde um %d Einheiten aufgeladen'), $load));
     }
 
-    public function loadWarpCore(ShipData $ship, int $count): ?int
+    public function loadWarpCore(ShipInterface $ship, int $count): ?int
     {
         $shipStorage = $ship->getStorage();
         foreach ([CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER] as $commodityId) {
@@ -101,7 +106,8 @@ final class LoadWarpcore implements ActionControllerInterface
             $load = $count * WARPCORE_LOAD;
         }
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() + $load);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
 
         return $load;
     }

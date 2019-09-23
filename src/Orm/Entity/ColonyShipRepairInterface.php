@@ -2,15 +2,11 @@
 
 namespace Stu\Orm\Entity;
 
-use Ship;
-
 interface ColonyShipRepairInterface
 {
     public function getId(): int;
 
     public function getColonyId(): int;
-
-    public function setShipId(int $ship_id): ColonyShipRepairInterface;
 
     public function getShipId(): int;
 
@@ -24,5 +20,7 @@ interface ColonyShipRepairInterface
 
     public function setColony(ColonyInterface $colony): ColonyShipRepairInterface;
 
-    public function getShip(): Ship;
+    public function getShip(): ShipInterface;
+
+    public function setShip(ShipInterface $ship): ColonyShipRepairInterface;
 }

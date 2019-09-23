@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
-use ShipData;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
@@ -39,7 +39,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     }
 
     public function createOrbitShipItem(
-        ShipData $ship,
+        ShipInterface $ship,
         int $ownerUserId
     ): OrbitShipItemInterface {
         return new OrbitShipItem(

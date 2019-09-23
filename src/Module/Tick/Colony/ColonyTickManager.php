@@ -8,6 +8,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ColonyTickManager implements ColonyTickManagerInterface
 {
@@ -23,18 +24,22 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private $colonyRepository;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         CrewCreatorInterface $crewCreator,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->crewCreator = $crewCreator;
         $this->crewTrainingRepository = $crewTrainingRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function work(int $tickId): void
@@ -92,7 +97,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
                 $this->colonyShipRepairRepository->delete($obj);
             }
-            $obj->getShip()->save();
+            $this->shipRepository->save($obj->getShip());
         }
     }
 

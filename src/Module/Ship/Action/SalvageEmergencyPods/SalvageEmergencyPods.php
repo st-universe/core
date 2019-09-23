@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
 {
@@ -21,14 +22,18 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,9 +45,12 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $userId
         );
 
-        $target = ResourceCache()->getObject(CACHE_SHIP, request::postIntFatal('target'));
+        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        if ($target === null) {
+            return;
+        }
         $ship->canInteractWith($target);
-        if ($target->getCrew() == 0) {
+        if ($target->getCrewCount() == 0) {
             $game->addInformation(_('Keine Rettungskapseln vorhanden'));
             return;
         }
@@ -58,14 +66,17 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 $dummy_crew->getCrew()->getUserId(),
                 sprintf(
                     _('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
-                    $target->getCrew()
+                    $target->getCrewCount()
                 ),
                 PM_SPECIAL_SHIP
             );
         }
         $this->shipCrewRepository->truncateByShip((int) $target->getId());
-        $ship->lowerEps(1);
-        $ship->save();
+
+        $ship->setEps($ship->getEps() - 1);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation(_('Die Rettungskapseln wurden geborgen'));
     }
 

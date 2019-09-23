@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class AttackShip implements ActionControllerInterface
 {
@@ -20,12 +21,16 @@ final class AttackShip implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +43,10 @@ final class AttackShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipLoader->getById(request::postIntFatal('target'));
+        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        if ($target === null) {
+            return;
+        }
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
@@ -75,7 +83,7 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $attacker = &$ship;
         }
-        if ($target->isInFleet()) {
+        if ($target->getFleetId()) {
             $defender = $target->getFleet()->getShips();
             $fleet = true;
         } else {

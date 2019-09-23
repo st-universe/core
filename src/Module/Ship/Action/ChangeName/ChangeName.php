@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ChangeName implements ActionControllerInterface
 {
@@ -19,12 +20,16 @@ final class ChangeName implements ActionControllerInterface
 
     private $bbCodeParser;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        Parser $bbCodeParser
+        Parser $bbCodeParser,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->bbCodeParser = $bbCodeParser;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,7 +51,9 @@ final class ChangeName implements ActionControllerInterface
         }
 
         $ship->setName($value);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Der Schiffname wurde geändert");
     }
 

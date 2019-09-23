@@ -2,7 +2,9 @@
 
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 class ShipMover {
@@ -15,7 +17,7 @@ class ShipMover {
 	private $fieldCount = NULL;
 	private $flightFields = 0;
 
-	function __construct(ShipData $firstShip) {
+	function __construct(ShipInterface $firstShip) {
 		$this->firstShip = $firstShip;
 		$this->setDestination();
 		$this->determineFleetMode();
@@ -59,7 +61,7 @@ class ShipMover {
 	}
 
 	function determineFleetMode() {
-		if (!$this->getFirstShip()->isInFleet()) {
+		if (!$this->getFirstShip()->getFleetId()) {
 			return;
 		}
 		// check ob das erste schiff auch das flaggschiff ist
@@ -73,7 +75,7 @@ class ShipMover {
 		$this->fleetMode = $value;
 	}
 
-	function getFirstShip(): ShipData {
+	function getFirstShip(): ShipInterface {
 		return $this->firstShip;
 	}
 
@@ -145,8 +147,15 @@ class ShipMover {
 		$ships[] = &$this->getFirstShip();
 		$msg = array();
 		if ($this->isFleetMode()) {
-			$fleetShips = Ship::getShipsBy($this->getFirstShip()->getFleetId(), [$this->getFirstShip()->getId()]);
-			$ships = array_merge($ships,$fleetShips);
+			$ships = array_merge(
+				$ships,
+				array_filter(
+					$this->getFirstShip()->getFleet()->getShips()->toArray(),
+					function (ShipInterface $ship): bool {
+						return $ship->getId() !== $this->getFirstShip()->getId();
+					}
+				)
+			);
 		}
 		if ($this->isFleetMode()) {
 			if ($this->getFirstShip()->getEps() == 0) {
@@ -170,7 +179,7 @@ class ShipMover {
 		}
 	}
 
-	private function move(ShipData &$ship) {
+	private function move(ShipInterface $ship) {
 		$msg = array();
 		if (!$this->isFleetMode()) {
 			if ($ship->getSystemsId() == 0 && !$ship->isWarpAble()) {
@@ -216,7 +225,7 @@ class ShipMover {
 					$this->addInformation(sprintf(_("Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert"),$ship->getTraktorShip()->getName(),$ship->getPosX(),$ship->getPosY()));
 				} else {
 					$ship->getTraktorShip()->activateSystem(SYSTEM_WARPDRIVE,FALSE);
-					$ship->lowerEps($ship->getTraktorShip()->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts());
+					$ship->setEps($ship->getEps() - $ship->getTraktorShip()->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts());
 				}
 			}
 		}
@@ -308,16 +317,16 @@ class ShipMover {
 			$this->flightFields++;
 			$met = 'fly'.$method;
 			$this->$met($ship);
-			if (!$this->isFleetMode() && $ship->isInFleet()) {
+			if (!$this->isFleetMode() && $ship->getFleetId()) {
 				$ship->leaveFleet();
 				$msg[] = "Die ".$ship->getName()." hat die Flotte verlassen (".$ship->getPosX()."|".$ship->getPosY().")";
 			}
 			if ($ship->isTraktorbeamActive()) {
-				if ($ship->getTraktorShip()->isInFleet()) {
+				if ($ship->getTraktorShip()->getFleetId()) {
 					$msg[] = sprintf(_('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),$ship->getTraktorShip()->getName());
 					$ship->deactivateTraktorBeam();
 				} else {
-					$ship->lowerEps($ship->getTraktorShip()->getRump()->getFlightEcost());
+					$ship->setEps($ship->getEps() - $ship->getTraktorShip()->getRump()->getFlightEcost());
 					$this->$met($ship->getTraktorShip());
 				}
 			}
@@ -335,7 +344,7 @@ class ShipMover {
 					$msg = array_merge($msg,$damageMsg);
 				}
 			} else {
-				$ship->lowerEps($flight_ecost);
+				$ship->setEps($ship->getEps() - $flight_ecost);
 			}
 			if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystemsId() > 0 && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystemsId() == 0 && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
 				if ($ship->isTraktorbeamActive()) {
@@ -348,22 +357,26 @@ class ShipMover {
 				$msg = array_merge($msg,$damageMsg);
 			}
 		}
+		// @todo refactor
+		global $container;
+		$shipRepo = $container->get(ShipRepositoryInterface::class);
+
 		if ($this->flightDone) {
 			if (!$this->isFleetMode()) {
 				$this->addInformation("Die ".$ship->getName()." fliegt in Sektor ".$ship->getPosX()."|".$ship->getPosY()." ein");
 			}
 			if ($ship->isTraktorbeamActive()) {
 				$this->addInformation("Die ".$ship->getTraktorShip()->getName()." wurde per Traktorstrahl mitgezogen");
-				$ship->getTraktorShip()->save();	
+				$shipRepo->save($ship->getTraktorShip());
 			}
 		}
-		$ship->save();
+		$shipRepo->save($ship);
 		return $msg;
 	}
 
 	private $flightDone = FALSE;
 
-	private function getNextField(&$method, ShipData $ship) {
+	private function getNextField(&$method, ShipInterface $ship) {
 		switch ($method) {
 			case FLY_RIGHT:
 				return $this->getFieldData($ship->getPosX()+1,$ship->getPosY());
@@ -381,22 +394,22 @@ class ShipMover {
 		$this->setDestY($posy);
 	}
 
-	function fly4(ShipData $ship) {
+	function fly4(ShipInterface $ship) {
 		$ship->setPosY($ship->getPosY()+1);
 		$ship->setFlightDirection(1);
 	}
 
-	function fly3(ShipData $ship) {
+	function fly3(ShipInterface $ship) {
 		$ship->setPosY($ship->getPosY()-1);
 		$ship->setFlightDirection(2);
 	}
 	
-	function fly1(ShipData $ship) {
+	function fly1(ShipInterface $ship) {
 		$ship->setPosX($ship->getPosX()+1);
 		$ship->setFlightDirection(3);
 	}
 
-	function fly2(ShipData $ship) {
+	function fly2(ShipInterface $ship) {
 		$ship->setPosX($ship->getPosX()-1);
 		$ship->setFlightDirection(4);
 	}

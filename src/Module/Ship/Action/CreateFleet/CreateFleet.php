@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\CreateFleet;
 
 use AccessViolation;
-use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class CreateFleet implements ActionControllerInterface
 {
@@ -18,24 +18,25 @@ final class CreateFleet implements ActionControllerInterface
 
     private $fleetRepository;
 
+    private $shipRepository;
+
     public function __construct(
         CreateFleetRequestInterface $createFleetRequest,
-        FleetRepositoryInterface $fleetRepository
+        FleetRepositoryInterface $fleetRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->createFleetRequest = $createFleetRequest;
         $this->fleetRepository = $fleetRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        /**
-         * @var Ship $ship
-         */
-        $ship = Ship::getById($this->createFleetRequest->getShipId());
-        if (!$ship->ownedByCurrentUser()) {
+        $ship = $this->shipRepository->find($this->createFleetRequest->getShipId());
+        if ($ship === null || $ship->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
-        if ($ship->isInFleet()) {
+        if ($ship->getFleetId()) {
             return;
         }
         if ($ship->isBase()) {
@@ -43,13 +44,14 @@ final class CreateFleet implements ActionControllerInterface
         }
 
         $fleet = $this->fleetRepository->prototype();
-        $fleet->setFleetLeader($ship->getId());
+        $fleet->setLeadShip($ship);
         $fleet->setUser($game->getUser());
 
         $this->fleetRepository->save($fleet);
 
-        $ship->setFleetId($fleet->getId());
-        $ship->save();
+        $ship->setFleet($fleet);
+
+        $this->shipRepository->save($ship);
 
         $game->addInformation(_('Die Flotte wurde erstellt'));
     }

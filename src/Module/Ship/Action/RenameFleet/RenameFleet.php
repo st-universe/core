@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\RenameFleet;
 
+use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -34,7 +35,7 @@ final class RenameFleet implements ActionControllerInterface
         $fleet = $this->fleetRepository->find($this->renameFleetRequest->getFleetId());
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
-            throw new \AccessViolation();
+            throw new AccessViolation();
         }
 
         $fleet->setName($newName);

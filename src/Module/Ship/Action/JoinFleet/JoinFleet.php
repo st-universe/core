@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\JoinFleet;
 
 use AccessViolation;
-use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class JoinFleet implements ActionControllerInterface
 {
@@ -18,21 +18,22 @@ final class JoinFleet implements ActionControllerInterface
 
     private $fleetRepository;
 
+    private $shipRepository;
+
     public function __construct(
         JoinFleetRequestInterface $joinFleetRequest,
-        FleetRepositoryInterface $fleetRepository
+        FleetRepositoryInterface $fleetRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->joinFleetRequest = $joinFleetRequest;
         $this->fleetRepository = $fleetRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        /**
-         * @var Ship $ship
-         */
-        $ship = Ship::getById($this->joinFleetRequest->getShipId());
-        if (!$ship->ownedByCurrentUser()) {
+        $ship = $this->shipRepository->find($this->joinFleetRequest->getShipId());
+        if ($ship === null || $ship->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
@@ -42,7 +43,7 @@ final class JoinFleet implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        if ($fleet->getFleetLeader() == $ship->getId()) {
+        if ($fleet->getLeadShip()->getId() === $ship->getId()) {
             return;
         }
         if (!checkPosition($fleet->getLeadShip(), $ship)) {
@@ -52,8 +53,9 @@ final class JoinFleet implements ActionControllerInterface
             $game->addInformation(sprintf(_('Es sind maximal %d Schiffspunkte pro Flotte möglich'), POINTS_PER_FLEET));
             return;
         }
-        $ship->setFleetId($fleet->getId());
-        $ship->save();
+        $ship->setFleet($fleet);
+
+        $this->shipRepository->save($ship);
 
         $game->addInformation(sprintf(
             _('Die %s ist der Flotte %s beigetreten'),

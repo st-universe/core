@@ -12,6 +12,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class BeamToColony implements ActionControllerInterface
@@ -26,16 +27,20 @@ final class BeamToColony implements ActionControllerInterface
 
     private $shipStorageManager;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        ShipStorageManagerInterface $shipStorageManager
+        ShipStorageManagerInterface $shipStorageManager,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -149,12 +154,13 @@ final class BeamToColony implements ActionControllerInterface
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $this->colonyStorageManager->upperStorage($target, $commodity, $count);
 
-            $ship->lowerEps(ceil($count / $transferAmount));
+            $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
         }
         if ($target->getUserId() != $ship->getUserId()) {
             $game->sendInformation($target->getUserId(), $ship->getUserId(), PM_SPECIAL_TRADE);
         }
-        $ship->save();
+
+        $this->shipRepository->save($ship);
     }
 
     public function performSessionCheck(): bool

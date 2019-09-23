@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetActivateNbs implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetActivateNbs implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,9 +48,11 @@ final class FleetActivateNbs implements ActionControllerInterface
                 $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
                 continue;
             }
-            $ship->setNbs(1);
-            $ship->lowerEps(SYSTEM_ECOST_NBS);
-            $ship->save();
+            $ship->setNbs(true);
+
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_NBS);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }

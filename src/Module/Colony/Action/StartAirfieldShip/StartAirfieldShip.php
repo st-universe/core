@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
 use request;
-use Ship;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,6 +17,7 @@ use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class StartAirfieldShip implements ActionControllerInterface
@@ -43,6 +43,8 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
@@ -52,7 +54,8 @@ final class StartAirfieldShip implements ActionControllerInterface
         ColonyStorageRepositoryInterface $colonyStorageRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
@@ -63,6 +66,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -86,13 +90,10 @@ final class StartAirfieldShip implements ActionControllerInterface
 
         $rump = $this->shipRumpRepository->find($rump_id);
 
-        if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE) && Ship::countInstances(
-                sprintf(
-                    'WHERE user_id = %d AND rumps_id IN (SELECT rumps_id FROM stu_rumps_specials WHERE special = %d)',
-                    $userId,
-                    ShipRumpSpecialAbilityEnum::COLONIZE
-                )
-            ) > 0) {
+        if (
+            $rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE) &&
+            $this->shipRepository->getAmountByUserAndSpecialAbility($userId, ShipRumpSpecialAbilityEnum::COLONIZE) > 0
+        ) {
             $game->addInformation(_('Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden'));
             return;
         }
@@ -148,7 +149,8 @@ final class StartAirfieldShip implements ActionControllerInterface
                 }
                 $ship->setTorpedoType($defaultTorpedoType->getId());
                 $ship->setTorpedoCount($count);
-                $ship->save();
+
+                $this->shipRepository->save($ship);
 
                 $this->colonyStorageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
             }
@@ -156,7 +158,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
             $ship->setEps($ship->getMaxEps());
             $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
-            $ship->save();
+            $this->shipRepository->save($ship);
         }
         $colony->lowerEps(10);
 

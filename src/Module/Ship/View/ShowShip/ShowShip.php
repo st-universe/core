@@ -13,6 +13,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use VisualNavPanel;
 
 final class ShowShip implements ViewControllerInterface
@@ -27,16 +28,20 @@ final class ShowShip implements ViewControllerInterface
 
     private $fleetRepository;
 
+    private $shipRepository;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
         ResearchedRepositoryInterface $researchedRepository,
-        FleetRepositoryInterface $fleetRepository
+        FleetRepositoryInterface $fleetRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
         $this->researchedRepository = $researchedRepository;
         $this->fleetRepository = $fleetRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,7 +75,7 @@ final class ShowShip implements ViewControllerInterface
         );
         $fnbs = [];
         while ($data = mysqli_fetch_assoc($result)) {
-            $obj = $this->shipLoader->getById((int) $data['id']);
+            $obj = $this->shipRepository->find((int) $data['id']);
             if (!array_key_exists($obj->getFleetId(), $fnbs)) {
                 $fnbs[$obj->getFleetId()]['fleet'] = $this->fleetRepository->find((int) $obj->getFleetId());
                 if ($this->session->hasSessionValue('hiddenfleets', $obj->getFleetId())) {
@@ -91,7 +96,7 @@ final class ShowShip implements ViewControllerInterface
         );
         $nbs = [];
         while ($data = mysqli_fetch_assoc($result)) {
-            $nbs[] = ResourceCache()->getObject('ship', $data['id']);
+            $nbs[] = $this->shipRepository->find((int)$data['id']);
         }
 
         $result = DB()->query(
@@ -103,7 +108,7 @@ final class ShowShip implements ViewControllerInterface
         );
         $singleShipsNbs = array();
         while ($data = mysqli_fetch_assoc($result)) {
-            $singleShipsNbs[] = ResourceCache()->getObject('ship', $data['id']);
+            $singleShipsNbs[] = $this->shipRepository->find((int)$data['id']);
         }
         $colony = $ship->getCurrentColony();
         $canColonize = false;

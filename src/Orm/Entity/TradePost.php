@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Ship;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
@@ -45,6 +44,12 @@ class TradePost implements TradePostInterface
 
     /** @Column(type="integer") * */
     private $storage = 0;
+
+    /**
+     * @OneToOne(targetEntity="Ship", inversedBy="trade_post")
+     * @JoinColumn(name="ship_id", referencedColumnName="id")
+     */
+    private $ship;
 
     public function getId(): int
     {
@@ -147,9 +152,9 @@ class TradePost implements TradePostInterface
         return $this;
     }
 
-    public function getShip(): Ship
+    public function getShip(): ShipInterface
     {
-        return new Ship($this->getShipId());
+        return $this->ship;
     }
 
     public function calculateLicenceCost(): int

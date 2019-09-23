@@ -2,8 +2,8 @@
 
 namespace Stu\Module\Trade\Lib;
 
-use Ship;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
 
 interface TradeAccountTalInterface
@@ -11,7 +11,7 @@ interface TradeAccountTalInterface
 
     public function getId(): int;
 
-    public function getShip(): Ship;
+    public function getShip(): ShipInterface;
 
     public function getTradePostDescription(): string;
 

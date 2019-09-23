@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowBeamTo;
 
 use request;
-use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowBeamTo implements ViewControllerInterface
 {
@@ -16,10 +16,14 @@ final class ShowBeamTo implements ViewControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -31,9 +35,13 @@ final class ShowBeamTo implements ViewControllerInterface
             $userId
         );
 
-        $target = new Ship(request::getIntFatal('target'));
+        $target = $this->shipRepository->find(request::getIntFatal('target'));
+        if ($target === null) {
+            return;
+        }
         if ($ship->canInteractWith($target) === false) {
             // @todo ships cant interact
+            return;
         }
 
         $game->setPageTitle(_('Zu Schiff beamen'));

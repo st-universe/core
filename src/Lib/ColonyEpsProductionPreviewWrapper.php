@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 class ColonyEpsProductionPreviewWrapper
 {
     private $colony = null;
 
-    function __construct(&$colony)
+    function __construct(ColonyInterface $colony)
     {
         $this->colony = $colony;
     }

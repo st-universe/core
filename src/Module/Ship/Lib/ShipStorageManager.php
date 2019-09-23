@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use ShipData;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 
 final class ShipStorageManager implements ShipStorageManagerInterface
@@ -18,7 +18,7 @@ final class ShipStorageManager implements ShipStorageManagerInterface
         $this->shipStorageRepository = $shipStorageRepository;
     }
 
-    public function lowerStorage(ShipData $ship, CommodityInterface $commodity, int $amount): void
+    public function lowerStorage(ShipInterface $ship, CommodityInterface $commodity, int $amount): void
     {
         $storage = $ship->getStorage()[$commodity->getId()] ?? null;
         if ($storage === null) {
@@ -36,7 +36,7 @@ final class ShipStorageManager implements ShipStorageManagerInterface
         $this->shipStorageRepository->save($storage);
     }
 
-    public function upperStorage(ShipData $ship, CommodityInterface $commodity, int $amount): void
+    public function upperStorage(ShipInterface $ship, CommodityInterface $commodity, int $amount): void
     {
         $storage = $ship->getStorage()[$commodity->getId()] ?? null;
 

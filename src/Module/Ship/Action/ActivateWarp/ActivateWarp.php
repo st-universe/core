@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class ActivateWarp implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class ActivateWarp implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,16 +60,22 @@ final class ActivateWarp implements ActionControllerInterface
             if ($ship->getEps() == 0) {
                 $game->addInformation("Der Traktorstrahl zur " . $ship->getTraktorShip()->getName() . " wurde aufgrund von Energiemangel deaktiviert");
                 $ship->getTraktorShip()->unsetTraktor();
-                $ship->getTraktorShip()->save();
+
+                $this->shipRepository->save($ship->getTraktorShip());
+
                 $ship->unsetTraktor();
             } else {
-                $ship->getTraktorShip()->setWarpState(1);
-                $ship->getTraktorShip()->save();
-                $ship->lowerEps(1);
+                $ship->getTraktorShip()->setWarpState(true);
+
+                $this->shipRepository->save($ship->getTraktorShip());
+
+                $ship->setEps($ship->getEps() - 1);
             }
         }
-        $ship->setWarpState(1);
-        $ship->save();
+        $ship->setWarpState(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Die " . $ship->getName() . " hat den Warpantrieb aktiviert");
     }
 

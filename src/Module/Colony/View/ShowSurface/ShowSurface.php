@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowSurface;
 
+use request;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -42,7 +43,7 @@ final class ShowSurface implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/colonysurface');
         $game->setTemplateVar(
             'COLONY_SURFACE',
-            $this->colonyLibFactory->createColonySurface($colony, \request::getInt('bid', null))
+            $this->colonyLibFactory->createColonySurface($colony, request::getInt('bid', null))
         );
     }
 }

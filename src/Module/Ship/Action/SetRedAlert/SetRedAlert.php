@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SetRedAlert;
 
 use request;
-use ShipData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class SetRedAlert implements ActionControllerInterface
@@ -18,10 +19,14 @@ final class SetRedAlert implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,14 +47,15 @@ final class SetRedAlert implements ActionControllerInterface
         $this->activateShields($ship, $game);
 
         $game->addInformation("Die Alarmstufe wurde auf Rot geändert");
-        $ship->save();
+
+        $this->shipRepository->save($ship);
     }
 
-    private function activateShields(ShipData $ship, GameControllerInterface $game): void {
+    private function activateShields(ShipInterface $ship, GameControllerInterface $game): void {
         if ($ship->getShieldState()) {
             return;
         }
-        if ($ship->cloakIsActive()) {
+        if ($ship->getCloakState()) {
             $game->addInformation("Die Tarnung ist aktiviert");
             return;
         }
@@ -72,13 +78,15 @@ final class SetRedAlert implements ActionControllerInterface
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDock(0);
         }
-        $ship->setShieldState(1);
-        $ship->save();
+        $ship->setShieldState(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Schilde aktiviert");
     }
 
-    private function activatePhaser(ShipData $ship, GameControllerInterface $game): void {
-        if (!$ship->hasPhaser() || $ship->phaserIsActive()) {
+    private function activatePhaser(ShipInterface $ship, GameControllerInterface $game): void {
+        if (!$ship->hasPhaser() || $ship->getPhaser()) {
             return;
         }
         $wrapper = new SystemActivationWrapper($ship);
@@ -87,13 +95,15 @@ final class SetRedAlert implements ActionControllerInterface
             $game->addInformation($wrapper->getError());
             return;
         }
-        $ship->setPhaser(1);
-        $ship->save();
+        $ship->setPhaser(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Strahlenwaffe aktiviert");
     }
 
-    private function activateTorpedo(ShipData $ship, GameControllerInterface $game): void {
-        if (!$ship->hasTorpedo() || $ship->torpedoIsActive()) {
+    private function activateTorpedo(ShipInterface $ship, GameControllerInterface $game): void {
+        if (!$ship->hasTorpedo() || $ship->getTorpedos()) {
             return;
         }
         if ($ship->getTorpedoCount() == 0) {
@@ -106,8 +116,10 @@ final class SetRedAlert implements ActionControllerInterface
             $game->addInformation($wrapper->getError());
             return;
         }
-        $ship->setTorpedos(1);
-        $ship->save();
+        $ship->setTorpedos(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Torpedobänke aktiviert");
     }
 

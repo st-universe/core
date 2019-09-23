@@ -57,8 +57,8 @@
 						${SHIP/getHuell}/${SHIP/getMaxHuell}
 					</td>
 					<td style="text-align: center;">
-						<span tal:condition="SHIP/shieldIsActive" class="activeshield" tal:content="string:${SHIP/getShield}/${SHIP/getMaxShield}">..</span>
-						<span tal:condition="not:SHIP/shieldIsActive">${SHIP/getShield}/${SHIP/getMaxShield}</span>
+						<span tal:condition="SHIP/getShieldState" class="activeshield" tal:content="string:${SHIP/getShield}/${SHIP/getMaxShield}">..</span>
+						<span tal:condition="not:SHIP/getShieldState">${SHIP/getShield}/${SHIP/getMaxShield}</span>
 						(+<span tal:replace="SHIP/getShieldRegenerationRate">REGENERATIONRATE</span>)
 					</td>
 					<td style="text-align: center;">
@@ -153,27 +153,27 @@
 						</tr>
 						<tr>
 							<td colspan="2">
-								<a href="?B_DEACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/shieldIsActive" onmouseover="cp('shld','buttons/shldac1');" onmouseout="cp('shld','buttons/shldac2');">
+								<a href="?B_DEACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getShieldState" onmouseover="cp('shld','buttons/shldac1');" onmouseout="cp('shld','buttons/shldac2');">
 									<img src="assets/buttons/shldac2.gif" name="shld" /> Schilde deaktivieren
 								</a>
-								<a href="?B_ACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/shieldIsActive" onmouseover="cp('shld','buttons/shldac2');" onmouseout="cp('shld','buttons/shldac1');">
+								<a href="?B_ACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getShieldState" onmouseover="cp('shld','buttons/shldac2');" onmouseout="cp('shld','buttons/shldac1');">
 									<img src="assets/buttons/shldac1.gif" name="shld" /> Schilde aktivieren
 								</a>
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasPhaser">
 							<td colspan="2">
-								<a href="?B_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/phaserIsActive" onmouseover="cp('actphaser','buttons/act_phaser1');" onmouseout="cp('actphaser','buttons/act_phaser2');">
+								<a href="?B_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser1');" onmouseout="cp('actphaser','buttons/act_phaser2');">
 									<img src="assets/buttons/act_phaser2.gif" name="actphaser" /> Strahlenwaffe deaktivieren</a>
-								<a href="?B_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/phaserIsActive" onmouseover="cp('actphaser','buttons/act_phaser2');" onmouseout="cp('actphaser','buttons/act_phaser1');">
+								<a href="?B_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser2');" onmouseout="cp('actphaser','buttons/act_phaser1');">
 									<img src="assets/buttons/act_phaser1.gif" name="actphaser" /> Strahlenwaffe aktivieren</a>
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasTorpedo">
 							<td>
-								<a href="?B_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/torpedoIsActive" onmouseover="cp('acttorp','buttons/act_torp1');" onmouseout="cp('acttorp','buttons/act_torp2');">
+								<a href="?B_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp1');" onmouseout="cp('acttorp','buttons/act_torp2');">
 									<img src="assets/buttons/act_torp2.gif" name="acttorp" /> Torpedobänke deaktivieren</a>
-								<a href="?B_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/torpedoIsActive" onmouseover="cp('acttorp','buttons/act_torp2');" onmouseout="cp('acttorp','buttons/act_torp1');">
+								<a href="?B_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp2');" onmouseout="cp('acttorp','buttons/act_torp1');">
 									<img src="assets/buttons/act_torp1.gif" name="acttorp" /> Torpedobänke aktivieren</a>
 							</td>
 							<td>
@@ -183,8 +183,8 @@
 						<tal:block tal:condition="SHIP/isCloakAble">
 							<tr>
 								<td colspan="2">
-									<stu:imagelink image="tarn" description="Tarnung aktivieren" href="?B_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/cloakIsActive" />
-									<stu:revimagelink image="tarn" description="Tarnung deaktivieren" href="?B_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/cloakIsActive" />
+									<stu:imagelink image="tarn" description="Tarnung aktivieren" href="?B_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getCloakState" />
+									<stu:revimagelink image="tarn" description="Tarnung deaktivieren" href="?B_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getCloakState" />
 								</td>
 							</tr>
 						</tal:block>
@@ -479,7 +479,7 @@
 									<td colspan="2">
 										<span tal:replace="php:count(data['ships'])">COUNT</span> Schiffe
 										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<tal:block tal:condition="not:SHIP/isInFleet">
+											<tal:block tal:condition="not:SHIP/getFleetId">
 												(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/fleet/getId}">+</a>)
 											</tal:block>
 										</tal:block>
@@ -487,7 +487,7 @@
 									<td colspan="3">
 										<span tal:condition="not:data/fleet/ownedByCurrentUser" tal:content="structure bbcode:data/fleet/getName">NAME</span>
 										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<a href="?SHOW_SHIP=1&id=${data/fleet/getFleetLeader}" tal:content="structure bbcode:data/fleet/getName">NAME</a>
+											<a href="?SHOW_SHIP=1&id=${data/fleet/getLeadShip/getId}" tal:content="structure bbcode:data/fleet/getName">NAME</a>
 										</tal:block>
 										<span id="hidefleet${data/fleet/getId}">
 											(<a href="javascript:void(0);" onclick="hideFleet(${data/fleet/getId});">zuklappen</a>)
@@ -519,7 +519,7 @@
 									<td colspan="2">
 										<span tal:replace="php:count(data['ships'])">COUNT</span> Schiffe
 										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<tal:block tal:condition="not:SHIP/isInFleet">
+											<tal:block tal:condition="not:SHIP/getFleetId">
 												(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/fleet/getId}">+</a>)
 											</tal:block>
 										</tal:block>
@@ -527,7 +527,7 @@
 									<td colspan="3">
 										<span tal:condition="not:data/fleet/ownedByCurrentUser" tal:content="structure data/fleet/getName">NAME</span>
 										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<a href="?SHOW_SHIP=1&id=${data/fleet/getFleetLeader}" tal:content="structure data/fleet/getName">NAME</a>
+											<a href="?SHOW_SHIP=1&id=${data/fleet/getLeadShip/getId}" tal:content="structure data/fleet/getName">NAME</a>
 										</tal:block>
 										<span style="display: none;" id="hidefleet${data/fleet/getId}">
 											(<a href="javascript:void(0);" onclick="hideFleet(${data/fleet/getId});">zuklappen</a>)

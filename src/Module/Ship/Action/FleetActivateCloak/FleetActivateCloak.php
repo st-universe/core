@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetActivateCloak implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetActivateCloak implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,17 +48,18 @@ final class FleetActivateCloak implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            if ($ship->shieldIsActive()) {
-                $ship->setShieldState(0);
+            if ($ship->getShieldState()) {
+                $ship->setShieldState(false);
                 $msg[] = $ship->getName() . _(": Schilde deaktiviert");
             }
             if ($ship->getDock()) {
                 $ship->setDock(0);
                 $msg[] = $ship->getName() . _(": Abgedockt");
             }
-            $ship->lowerEps(SYSTEM_ECOST_CLOAK);
-            $ship->setCloak(1);
-            $ship->save();
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_CLOAK);
+            $ship->setCloakState(true);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }

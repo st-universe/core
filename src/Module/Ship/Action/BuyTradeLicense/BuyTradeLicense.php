@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use request;
-use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -13,6 +12,7 @@ use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 
@@ -30,18 +30,22 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private $shipStorageManager;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        ShipStorageManagerInterface $shipStorageManager
+        ShipStorageManagerInterface $shipStorageManager,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,7 +68,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         if (!checkPosition($ship, $tradepost->getShip())) {
             return;
         }
-        $targetId = request::getIntFatal('target');
+        $targetId = (int) request::getIntFatal('target');
         $mode = request::getStringFatal('method');
 
         if ($this->tradeLicenseRepository->getAmountByUser($userId) >= MAX_TRADELICENCE_COUNT) {
@@ -76,9 +80,8 @@ final class BuyTradeLicense implements ActionControllerInterface
         }
         switch ($mode) {
             case 'ship':
-                /** @var Ship $obj */
-                $obj = ResourceCache()->getObject('ship', $targetId);
-                if (!$obj->ownedByCurrentUser()) {
+                $obj = $this->shipRepository->find($targetId);
+                if ($obj === null || $obj->getUserId() !== $userId) {
                     return;
                 }
                 if (!checkPosition($tradepost->getShip(), $obj)) {

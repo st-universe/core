@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LeaveStarSystem;
 
 use request;
-use Ship;
-use ShipData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class LeaveStarSystem implements ActionControllerInterface
@@ -19,10 +19,14 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,8 +56,14 @@ final class LeaveStarSystem implements ActionControllerInterface
         }
         if ($ship->isFleetLeader()) {
             $msg = array();
-            $result = Ship::getShipsBy($ship->getFleetId(), [$ship->getId()]);
+            $result = array_filter(
+                $ship->getFleet()->getShips()->toArray(),
+                function (ShipInterface $fleetShip) use ($ship): bool {
+                    return $ship->getId() !== $fleetShip;
+                }
+            );
             foreach ($result as $key => $fleetShip) {
+                /** @var ShipInterface $fleetShip */
                 $wrapper = new SystemActivationWrapper($fleetShip);
                 $wrapper->setVar('eps', 1);
                 if ($wrapper->getError()) {
@@ -65,38 +75,44 @@ final class LeaveStarSystem implements ActionControllerInterface
                         $this->leaveStarSystemTraktor($fleetShip, $game);
                     }
                 }
-                $fleetShip->save();
+
+                $this->shipRepository->save($fleetShip);
             }
             $game->addInformation("Die Flotte hat das Sternensystem verlassen");
             $game->addInformationMerge($msg);
         } else {
-            if ($ship->isInFleet()) {
+            if ($ship->getFleetId()) {
                 $ship->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Sternensystem wurde verlassen");
         }
-        $ship->save();
+
+        $this->shipRepository->save($ship);
     }
 
-    private function leaveStarSystemTraktor(ShipData $ship, GameControllerInterface $game): void
+    private function leaveStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
     {
         if ($ship->getEps() < 1) {
             $ship->getTraktorShip()->unsetTraktor();
-            $ship->getTraktorShip()->save();
+
+            $this->shipRepository->save($ship->getTraktorShip());
+
             $ship->unsetTraktor();
             $game->addInformation("Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
         $this->leaveStarSystem($ship->getTraktorShip());
-        $ship->lowerEps(1);
-        $ship->getTraktorShip()->save();
-        $ship->save();
+        $ship->setEps($ship->getEps() - 1);
+
+        $this->shipRepository->save($ship->getTraktorShip());
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit aus dem System gezogen");
     }
 
-    private function leaveStarSystem(ShipData $ship): void {
-        $ship->setWarpState(1);
+    private function leaveStarSystem(ShipInterface $ship): void {
+        $ship->setWarpState(true);
         $ship->setSystemsId(0);
         $ship->setSX(0);
         $ship->setSY(0);

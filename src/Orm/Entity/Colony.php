@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Ship;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyRepository")
@@ -439,7 +439,16 @@ class Colony implements ColonyInterface
     {
         if ($this->shiplist === null) {
             $this->shiplist = [];
-            $shiplist = Ship::getObjectsBy("WHERE systems_id=" . $this->getSystemsId() . " AND sx=" . $this->getSX() . " AND sy=" . $this->getSY() . " AND (user_id=" . $userId . " OR cloak=0) ORDER BY is_destroyed ASC, fleets_id DESC,id ASC");
+
+            // @todo refactor
+            global $container;
+
+            $shiplist = $container->get(ShipRepositoryInterface::class)->getByInnerSystemLocation(
+                $this->getSystemsId(),
+                $this->getSx(),
+                $this->getSy()
+            );
+
             foreach ($shiplist as $key => $obj) {
                 $this->shiplist[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
                 if (!array_key_exists('name', $this->shiplist[$obj->getFleetId()])) {

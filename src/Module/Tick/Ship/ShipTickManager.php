@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
-use Ship;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipTickManager implements ShipTickManagerInterface
 {
@@ -13,19 +13,21 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private $shipTick;
 
+    private $shipRepository;
+
     public function __construct(
         ShipRemoverInterface $shipRemover,
-        ShipTickInterface $shipTick
+        ShipTickInterface $shipTick,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipRemover = $shipRemover;
         $this->shipTick = $shipTick;
+        $this->shipRepository = $shipRepository;
     }
 
     public function work(): void
     {
-        $ships = Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user WHERE id > 100) AND plans_id > 0');
-
-        foreach ($ships as $ship) {
+        foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
             $this->shipTick->work($ship);
         }
@@ -35,27 +37,29 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function lowerTrumfieldHuell(): void
     {
-        foreach (Ship::getObjectsBy('WHERE user_id=' . USER_NOONE . ' AND rumps_id IN (SELECT id FROM stu_rumps WHERE category_id=' . SHIP_CATEGORY_DEBRISFIELD . ')') as $ship) {
+        foreach ($this->shipRepository->getDebrisFields() as $ship) {
             $lower = rand(5, 15);
             if ($ship->getHuell() <= $lower) {
                 $this->shipRemover->remove($ship);
                 continue;
             }
-            $ship->lowerHuell($lower);
-            $ship->save();
+            $ship->setHuell($ship->getHuell() - $lower);
+
+            $this->shipRepository->save($ship);
         }
     }
 
     private function handleNPCShips(): void
     {
         // @todo
-        foreach (Ship::getObjectsBy('WHERE user_id IN (SELECT id FROM stu_user where id!=' . USER_NOONE . ' AND id < 100)') as $ship) {
+        foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
             $eps = ceil($ship->getMaxEps() / 10);
             if ($eps + $ship->getEps() > $ship->getMaxEps()) {
                 $eps = $ship->getMaxEps() - $ship->getEps();
             }
-            $ship->upperEps($eps);
-            $ship->save();
+            $ship->setEps($ship->getEps() + $eps);
+
+            $this->shipRepository->save($ship);
         }
     }
 }

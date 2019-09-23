@@ -8,6 +8,7 @@ use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInterface
@@ -16,12 +17,16 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
 
     private $starSystemRepository;
 
+    private $shipRepository;
+
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,
-        StarSystemRepositoryInterface $starSystemRepository
+        StarSystemRepositoryInterface $starSystemRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->databaseUserRepository = $databaseUserRepository;
         $this->starSystemRepository = $starSystemRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function createDatabaseCategoryTal(
@@ -43,6 +48,7 @@ final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInte
             $this->databaseUserRepository,
             $databaseEntry,
             $this->starSystemRepository,
+            $this->shipRepository,
             $user
         );
     }

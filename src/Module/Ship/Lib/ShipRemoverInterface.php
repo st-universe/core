@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use ShipData;
+use Stu\Orm\Entity\ShipInterface;
 
 interface ShipRemoverInterface
 {
@@ -10,10 +10,10 @@ interface ShipRemoverInterface
     /**
      * Destroys a ship and replaces it by a nice debrisfield
      */
-    public function destroy(ShipData $ship): void;
+    public function destroy(ShipInterface $ship): void;
 
     /**
      * Actually removes the ship entity including all references
      */
-    public function remove(ShipData $ship): void;
+    public function remove(ShipInterface $ship): void;
 }

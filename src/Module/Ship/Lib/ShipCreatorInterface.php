@@ -2,10 +2,10 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use ShipData;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 interface ShipCreatorInterface
 {
-    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipData;
+    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface;
 }

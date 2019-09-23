@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
-use Ship;
-use ShipData;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickInterface
 {
+    private $shipRepository;
+
+    public function __construct(
+        ShipRepositoryInterface $shipRepository
+    ) {
+        $this->shipRepository = $shipRepository;
+    }
+
     public function work(): void
     {
-        $time = strtotime(date("d.m.Y H:i", time()));
-        $result = Ship::getObjectsBy(
-            'WHERE rumps_id NOT IN (SELECT id FROM stu_rumps WHERE category_id=' . SHIP_CATEGORY_DEBRISFIELD . ') AND schilde<max_schilde AND shield_regeneration_timer<=' . ($time - SHIELD_REGENERATION_TIME)
-        );
+        $time = time();
+        $result = $this->shipRepository->getSuitableForShildRegeneration($time - SHIELD_REGENERATION_TIME);
         foreach ($result as $key => $obj) {
-            /**
-             * @var ShipData $obj
-             */
             if ($obj->getCrewCount() < $obj->getBuildplan()->getCrew()) {
                 return;
             }
             $rate = $obj->getShieldRegenerationRate();
-            if ($obj->getShield()+$rate > $obj->getMaxShield()) {
-                $rate = $obj->getMaxShield()-$obj->getShield();
+            if ($obj->getShield() + $rate > $obj->getMaxShield()) {
+                $rate = $obj->getMaxShield() - $obj->getShield();
             }
             $obj->setShield($obj->getShield() + $rate);
             $obj->setShieldRegenerationTimer($time);
-            $obj->save();
+
+            $this->shipRepository->save($obj);
         }
     }
 }

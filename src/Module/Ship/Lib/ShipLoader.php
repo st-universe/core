@@ -5,22 +5,24 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use AccessViolation;
-use Ship;
-use ShipData;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipLoader implements ShipLoaderInterface
 {
+    private $shipRepository;
 
-    public function getById($shipId): ShipData
-    {
-        return Ship::getById($shipId);
+    public function __construct(
+        ShipRepositoryInterface $shipRepository
+    ) {
+        $this->shipRepository = $shipRepository;
     }
 
-    public function getByIdAndUser(int $shipId, int $userId): ShipData
+    public function getByIdAndUser(int $shipId, int $userId): ShipInterface
     {
-        $ship = $this->getById($shipId);
+        $ship = $this->shipRepository->find($shipId);
 
-        if ($ship->getUserId() != $userId) {
+        if ($ship === null || $ship->getUserId() != $userId) {
             throw new AccessViolation();
         }
 

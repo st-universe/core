@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BeamTo;
 
 use request;
-use Ship;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,6 +12,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
 {
@@ -26,16 +26,20 @@ final class BeamTo implements ActionControllerInterface
 
     private $shipStorageManager;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        ShipStorageManagerInterface $shipStorageManager
+        ShipStorageManagerInterface $shipStorageManager,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,8 +57,11 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        $target = new Ship(request::postIntFatal('target'));
-        if ($target->shieldIsActive() && $target->getUserId() != $userId) {
+        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        if ($target === null) {
+            return;
+        }
+        if ($target->getShieldState() && $target->getUserId() != $userId) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }

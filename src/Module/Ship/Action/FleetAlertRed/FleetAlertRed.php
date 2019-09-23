@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetAlertRed implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetAlertRed implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,7 +40,8 @@ final class FleetAlertRed implements ActionControllerInterface
 
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
             $ship->setAlertState(ALERT_RED);
-            $ship->save();
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformation(_('Flottenbefehl ausgeführt: Alarmstufe Rot'));
     }

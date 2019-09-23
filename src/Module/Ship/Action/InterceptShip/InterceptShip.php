@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class InterceptShip implements ActionControllerInterface
 {
@@ -19,12 +20,16 @@ final class InterceptShip implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,7 +42,10 @@ final class InterceptShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipLoader->getById(request::indInt('target'));
+        $target = $this->shipRepository->find(request::indInt('target'));
+        if ($target === null) {
+            return;
+        }
         if (!checkPosition($target, $ship)) {
             return;
         }
@@ -63,7 +71,7 @@ final class InterceptShip implements ActionControllerInterface
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDock(0);
         }
-        if ($target->isInFleet()) {
+        if ($target->getFleetId()) {
             $target->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
             $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
             $pm = "Die Flotte " . $target->getFleet()->getName() . " wurde von der " . $ship->getName() . " abgefangen";
@@ -71,15 +79,17 @@ final class InterceptShip implements ActionControllerInterface
             $target->deactivateSystem(SYSTEM_WARPDRIVE);
             $game->addInformation("Die " . $target->getName() . "  wurde abgefangen");
             $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
-            $target->save();
+
+            $this->shipRepository->save($target);
         }
 
         $this->privateMessageSender->send($userId, (int)$target->getUserId(), $pm, PM_SPECIAL_SHIP);
-        if ($ship->isInFleet()) {
+        if ($ship->getFleetId()) {
             $ship->getFleet()->deactivateSystem(SYSTEM_WARPDRIVE);
         } else {
             $ship->deactivateSystem(SYSTEM_WARPDRIVE);
-            $ship->save();
+
+            $this->shipRepository->save($ship);
         }
         // @todo TBD Red alert
     }

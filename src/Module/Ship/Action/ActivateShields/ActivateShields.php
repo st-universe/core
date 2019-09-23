@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class ActivateShields implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class ActivateShields implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,7 +39,7 @@ final class ActivateShields implements ActionControllerInterface
             $userId
         );
 
-        if ($ship->cloakIsActive()) {
+        if ($ship->getCloakState()) {
             $game->addInformation("Die Tarnung ist aktiviert");
             return;
         }
@@ -57,8 +62,10 @@ final class ActivateShields implements ActionControllerInterface
             $game->addInformation('Das Schiff hat abgedockt');
             $ship->setDock(0);
         }
-        $ship->setShieldState(1);
-        $ship->save();
+        $ship->setShieldState(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Schilde aktiviert");
     }
 

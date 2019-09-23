@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use Exception;
 use request;
-use Ship;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -18,6 +17,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
@@ -40,6 +40,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -48,7 +50,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyStorageManagerInterface $colonyStorageManager,
         CommodityRepositoryInterface $commodityRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -58,6 +61,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->commodityRepository = $commodityRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -91,11 +95,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
         }
 
         foreach ($ships as $key => $ship) {
-            /**
-             * @var Ship $shipobj
-             */
-            $shipobj = ResourceCache()->getObject('ship', intval($ship));
-            if ($shipobj->cloakIsActive()) {
+            $shipobj = $this->shipRepository->find((int) $ship);
+            if ($shipobj === null) {
+                continue;
+            }
+            if ($shipobj->getCloakState()) {
                 continue;
             }
             if (!checkColonyPosition($colony, $shipobj)) {
@@ -279,7 +283,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
                             if ($shipobj->getTorpedoCount() == 0) {
                                 $shipobj->setTorpedoType(0);
-                                $shipobj->setTorpedos(0);
+                                $shipobj->setTorpedos(false);
                             }
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
@@ -333,7 +337,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     // nothing
                 }
             }
-            $shipobj->save();
+
+            $this->shipRepository->save($shipobj);
         }
         $this->colonyRepository->save($colony);
 

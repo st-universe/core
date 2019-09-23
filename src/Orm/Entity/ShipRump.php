@@ -6,8 +6,8 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Ship;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
@@ -544,7 +544,7 @@ class ShipRump implements ShipRumpInterface
         global $container;
 
         return $container->get(ShipBuildplanRepositoryInterface::class)->getCountByRumpAndUser(
-            (int)$this->getId(),
+            $this->getId(),
             currentUser()->getId()
         );
     }
@@ -552,7 +552,12 @@ class ShipRump implements ShipRumpInterface
     public function getShipCount(): int
     {
         // @todo refactor
-        return (int) Ship::countInstances('WHERE rumps_id=' . $this->getId() . ' AND user_id=' . currentUser()->getId());
+        global $container;
+
+        return $container->get(ShipRepositoryInterface::class)->getAmountByUserAndRump(
+            currentUser()->getId(),
+            $this->getId()
+        );
     }
 
     /**

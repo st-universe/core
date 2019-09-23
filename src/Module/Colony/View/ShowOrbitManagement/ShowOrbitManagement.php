@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowOrbitManagement;
 
-use Ship;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowOrbitManagement implements ViewControllerInterface
 {
@@ -21,14 +21,18 @@ final class ShowOrbitManagement implements ViewControllerInterface
 
     private $colonyLibFactory;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowOrbitManagementRequestInterface $showOrbitManagementRequest,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showOrbitManagementRequest = $showOrbitManagementRequest;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,14 +44,10 @@ final class ShowOrbitManagement implements ViewControllerInterface
             $userId
         );
 
-        $shipList = Ship::getObjectsBy(
-            sprintf(
-                "WHERE systems_id=%s AND sx=%s AND sy=%s AND (user_id=%s OR cloak=0) ORDER BY is_destroyed ASC, fleets_id DESC,id ASC",
-                $colony->getSystemsId(),
-                $colony->getSX(),
-                $colony->getSY(),
-                $userId
-            )
+        $shipList = $this->shipRepository->getByInnerSystemLocation(
+            $colony->getSystemsId(),
+            $colony->getSX(),
+            $colony->getSY()
         );
 
         $groupedList = [];

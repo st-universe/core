@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class EpsTransfer implements ActionControllerInterface
 {
@@ -19,12 +20,16 @@ final class EpsTransfer implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,7 +62,10 @@ final class EpsTransfer implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        $target = $this->shipLoader->getById(request::postIntFatal('target'));
+        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        if ($target === null) {
+            return;
+        }
         if (!$ship->canInteractWith($target)) {
             return;
         }
@@ -80,10 +88,11 @@ final class EpsTransfer implements ActionControllerInterface
         if ($load + $target->getEbatt() > $target->getMaxEbatt()) {
             $load = $target->getMaxEbatt() - $target->getEbatt();
         }
-        $ship->lowerEps($load * 3);
+        $ship->setEps($ship->getEps() - $load * 3);
         $target->setEBatt($target->getEBatt() + $load);
-        $target->save();
-        $ship->save();
+
+        $this->shipRepository->save($target);
+        $this->shipRepository->save($ship);
 
         $this->privateMessageSender->send(
             $userId,

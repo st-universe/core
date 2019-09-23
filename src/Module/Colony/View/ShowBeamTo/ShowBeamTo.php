@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBeamTo;
 
 use AccessViolation;
-use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowBeamTo implements ViewControllerInterface
 {
@@ -18,12 +18,16 @@ final class ShowBeamTo implements ViewControllerInterface
 
     private $showBeamToRequest;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShowBeamToRequestInterface $showBeamToRequest
+        ShowBeamToRequestInterface $showBeamToRequest,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showBeamToRequest = $showBeamToRequest;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,9 +39,12 @@ final class ShowBeamTo implements ViewControllerInterface
             $userId
         );
 
-        $target = new Ship($this->showBeamToRequest->getShipId());
+        $target = $this->shipRepository->find($this->showBeamToRequest->getShipId());
+        if ($target === null) {
+            return;
+        }
 
-        if (!checkPosition($colony,$target) || ($target->cloakIsActive() && !$target->ownedByCurrentUser())) {
+        if (!checkColonyPosition($colony,$target) || ($target->getCloakState() && !$target->ownedByCurrentUser())) {
             throw new AccessViolation();
         }
 

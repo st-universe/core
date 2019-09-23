@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class VisualNavPanel
 {
-
     private $ship;
 
     private $user;
 
-    function __construct(ShipData $ship, UserInterface $user)
+    function __construct(ShipInterface $ship, UserInterface $user)
     {
         $this->ship = $ship;
         $this->user = $user;
@@ -43,26 +44,27 @@ class VisualNavPanel
         } else {
             DB()->query("DELETE FROM stu_user_map WHERE user_id=" .$this->user ->getId() . " AND cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range) . "");
         }
+        // @todo refactor
+        global $container;
 
-        return DB()->query("SELECT cx as posx,cy as posy,
-			(SELECT count(*) FROM stu_ships WHERE cx=posx and cy=posy and cloak=0) as shipcount,
-			(SELECT count(*) FROM stu_ships where cx=posx AND cy=posy AND cloak=1) as cloakcount,
-			(SELECT type FROM stu_map_ftypes where id=field_id) as type,
-			field_id,bordertype_id,region_id FROM stu_map WHERE cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range) . " ORDER BY cy,cx");
-        return DB()->query("SELECT cx as posx,cy as posy,field_id,bordertype_id,region_id,shipcount,cloakcount,type FROM stu_views_lss WHERE cx IN (" . $r_x . ") AND cy IN (" . $r_y . ") ORDER BY cy,cx");
+        return $container->get(ShipRepositoryInterface::class)->getSensorResultOuterSystem(
+            $cx,
+            $cy,
+            $range
+        );
     }
 
     function getInnerSystemResult()
     {
-        $cx = $this->getShip()->getSX();
-        $cy = $this->getShip()->getSY();
-        $range = $this->getShip()->getSensorRange();
+        // @todo refactor
+        global $container;
 
-        return DB()->query("SELECT sx as posx,sy as posy,systems_id as sysid,
-			(SELECT count(*) FROM stu_ships WHERE sx=posx and sy=posy and cloak=0 AND systems_id=sysid) as shipcount,
-			(SELECT count(*) FROM stu_ships where sx=posx AND sy=posy AND cloak=1 AND systems_id=sysid) as cloakcount,
-			(SELECT type FROM stu_map_ftypes where id=field_id) as type,
-			field_id FROM stu_sys_map WHERE systems_id=" . $this->getShip()->getSystemsId() . " AND sx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND sy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range) . " ORDER BY sy,sx");
+        return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
+            $this->getShip()->getSystem()->getId(),
+            $this->getShip()->getSx(),
+            $this->getShip()->getSy(),
+            $this->getShip()->getSensorRange()
+        );
     }
 
     function loadLSS()
@@ -75,7 +77,7 @@ class VisualNavPanel
         $cx = $this->getShip()->getPosX();
         $cy = $this->getShip()->getPosY();
         $y = 0;
-        while ($data = mysqli_fetch_assoc($result)) {
+        foreach ($result as $data) {
             if ($data['posy'] < 1) {
                 continue;
             }

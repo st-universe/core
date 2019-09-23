@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class UnloadBattery implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class UnloadBattery implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,9 +71,11 @@ final class UnloadBattery implements ActionControllerInterface
             $load = $ship->getMaxEps() - $ship->getEps();
         }
         $ship->setEBatt($ship->getEBatt() - $load);
-        $ship->upperEps($load);
+        $ship->setEps($ship->getEps() + $load);
         $ship->setEBattWaitingTime($load * 60);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Die Batterie wurde um " . $load . " Einheiten entladen");
     }
 

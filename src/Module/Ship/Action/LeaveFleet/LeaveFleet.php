@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LeaveFleet;
 
 use AccessViolation;
-use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LeaveFleet implements ActionControllerInterface
 {
@@ -15,30 +15,32 @@ final class LeaveFleet implements ActionControllerInterface
 
     private $leaveFleetRequest;
 
+    private $shipRepository;
+
     public function __construct(
-        LeaveFleetRequestInterface $leaveFleetRequest
+        LeaveFleetRequestInterface $leaveFleetRequest,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->leaveFleetRequest = $leaveFleetRequest;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        /**
-         * @var Ship $ship
-         */
-        $ship = Ship::getById($this->leaveFleetRequest->getShipId());
-        if (!$ship->ownedByCurrentUser()) {
+        $ship = $this->shipRepository->find($this->leaveFleetRequest->getShipId());
+        if ($ship === null || $ship->getUserId() !== $game->getUser()->getId()) {
             throw new AccessViolation();
         }
 
-        if (!$ship->isInFleet()) {
+        if (!$ship->getFleetId()) {
             return;
         }
         if ($ship->isFleetLeader()) {
             return;
         }
-        $ship->leaveFleet();
-        $ship->save();
+        $ship->setFleet(null);
+
+        $this->shipRepository->save($ship);
 
         $game->addInformation(
             sprintf(_('Die %s hat die Flotte verlassen'), $ship->getName())

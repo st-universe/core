@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetActivateShields implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetActivateShields implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -35,15 +40,15 @@ final class FleetActivateShields implements ActionControllerInterface
 
         $msg = array();
         $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Schilde";
-        foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if ($ship->shieldIsActive()) {
+        foreach ($ship->getFleet()->getShips() as $ship) {
+            if ($ship->getShieldState()) {
                 continue;
             }
             if ($ship->getShield() < 1) {
                 $msg[] = $ship->getName() . _(": Die Schilde sind nicht aufgeladen");
                 continue;
             }
-            if ($ship->cloakIsActive()) {
+            if ($ship->getCloakState()) {
                 $msg[] = $ship->getName() . ": Die Tarnung ist aktiviert";
                 continue;
             }
@@ -56,9 +61,10 @@ final class FleetActivateShields implements ActionControllerInterface
                 $ship->setDock(0);
             }
             $ship->cancelRepair();
-            $ship->lowerEps(SYSTEM_ECOST_SHIELDS);
-            $ship->setShieldState(1);
-            $ship->save();
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_SHIELDS);
+            $ship->setShieldState(true);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }

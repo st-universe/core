@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetDeactivateShields implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetDeactivateShields implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,8 +39,9 @@ final class FleetDeactivateShields implements ActionControllerInterface
         );
 
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            $ship->setShieldState(0);
-            $ship->save();
+            $ship->setShieldState(false);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformation("Flottenbefehl ausgeführt: Deaktivierung der Schilde");
     }

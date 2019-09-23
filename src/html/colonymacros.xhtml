@@ -561,7 +561,7 @@
 										<img src="assets/buttons/modul_2.gif" />
 									</th>
 									<td style="text-align: center; vertical-align: middle;">
-										<span tal:replace="structure php:renderShieldStatusBar(data.shieldIsActive(),data.getShield(),data.getMaxShield())">SCHILDE</span>
+										<span tal:replace="structure php:renderShieldStatusBar(data.getShieldState(),data.getShield(),data.getMaxShield())">SCHILDE</span>
 									</td>
 									<td style="text-align: center;">
 										${data/getShield}

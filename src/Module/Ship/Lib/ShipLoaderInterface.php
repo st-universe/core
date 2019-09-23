@@ -2,11 +2,9 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use ShipData;
+use Stu\Orm\Entity\ShipInterface;
 
 interface ShipLoaderInterface
 {
-    public function getById($shipId): ShipData;
-
-    public function getByIdAndUser(int $shipId, int $userId): ShipData;
+    public function getByIdAndUser(int $shipId, int $userId): ShipInterface;
 }

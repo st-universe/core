@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Ship;
-use ShipData;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
@@ -21,19 +21,23 @@ final class ShipRemover implements ShipRemoverInterface
 
     private $fleetRepository;
 
+    private $shipRepository;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        FleetRepositoryInterface $fleetRepository
+        FleetRepositoryInterface $fleetRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->fleetRepository = $fleetRepository;
+        $this->shipRepository = $shipRepository;
     }
 
-    public function destroy(ShipData $ship): void
+    public function destroy(ShipInterface $ship): void
     {
         $ship->deactivateSystems();
 
@@ -41,30 +45,30 @@ final class ShipRemover implements ShipRemoverInterface
             $this->changeFleetLeader($ship);
         }
 
-        $ship->setFormerRumpsId($ship->getRumpId());
+        $ship->setFormerRumpId($ship->getRumpId());
         $ship->setRumpId(TRUMFIELD_CLASS);
-        $ship->setHuell(round($ship->getMaxHuell()/20));
+        $ship->setHuell((int) round($ship->getMaxHuell()/20));
         $ship->setUserId(USER_NOONE);
         $ship->setBuildplanId(0);
         $ship->setShield(0);
         $ship->setEps(0);
         $ship->setFleetId(0);
         $ship->setAlertState(1);
-        $ship->setWarpState(0);
+        $ship->setWarpState(false);
         $ship->setDock(0);
         $ship->setName(_('Trümmer'));
-        $ship->setIsDestroyed(1);
+        $ship->setIsDestroyed(true);
         $ship->cancelRepair();
 
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
         // @todo Torpedos löschen
 
-        $ship->save();
+        $this->shipRepository->save($ship);
 
         $ship->clearCache();
     }
 
-    public function remove(ShipData $ship): void
+    public function remove(ShipInterface $ship): void
     {
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader($ship);
@@ -75,20 +79,28 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipCrewRepository->truncateByShip((int) $ship->getId());
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
 
-        $ship->deleteFromDatabase();
+        $this->shipRepository->delete($ship);
     }
 
-    private function changeFleetLeader(ShipData $obj): void
+    private function changeFleetLeader(ShipInterface $obj): void
     {
-        $ship = Ship::getObjectBy("WHERE fleets_id=" . $obj->getId() . " AND id!=" . $obj->getId());
         $fleet = $obj->getFleet();
+
+        $ship = current(
+            array_filter(
+                $obj->getFleet()->getShips()->toArray(),
+                function (ShipInterface $ship) use ($obj): bool {
+                    return $ship->getId() !== $obj->getId();
+                }
+            )
+        );
 
         if (!$ship) {
             $this->fleetRepository->delete($fleet);
             $obj->setFleetId(0);
             return;
         }
-        $obj->getFleet()->setFleetLeader($ship->getId());
+        $obj->getFleet()->setLeadShip($ship);
 
         $this->fleetRepository->save($fleet);
     }

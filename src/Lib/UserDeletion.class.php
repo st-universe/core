@@ -2,7 +2,6 @@
 
 namespace Stu\Lib;
 
-use Ship;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -20,6 +19,7 @@ use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeShoutboxRepositoryInterface;
@@ -230,8 +230,9 @@ class UserDeletion
         // @todo refactor
         global $container;
         $shipRemover = $container->get(ShipRemoverInterface::class);
+        $shipRepo = $container->get(ShipRepositoryInterface::class);
 
-        foreach (Ship::getObjectsBy('WHERE user_id=' . $this->getUser()->getId()) as $key => $obj) {
+        foreach ($shipRepo->getByUser($this->getUser()->getId()) as $obj) {
             $shipRemover->remove($obj);
         }
     }

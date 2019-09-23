@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Entity
  * @Table(name="stu_database_categories")
@@ -29,7 +27,6 @@ class DatabaseCategory implements DatabaseCategoryInterface
     private $sort;
 
     /**
-     * @var ArrayCollection
      * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
      */
     private $entries;

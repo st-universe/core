@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class UndockShip implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class UndockShip implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,8 +50,9 @@ final class UndockShip implements ActionControllerInterface
                 }
                 $ship->cancelRepair();
                 $ship->setDock(0);
-                $ship->lowerEps(SYSTEM_ECOST_DOCK);
-                $ship->save();
+                $ship->setEps($ship->getEps() - SYSTEM_ECOST_DOCK);
+
+                $this->shipRepository->save($ship);
             }
             $game->addInformationMerge($msg);
             return;
@@ -59,9 +65,10 @@ final class UndockShip implements ActionControllerInterface
             return;
         }
         $ship->cancelRepair();
-        $ship->lowerEps(1);
+        $ship->setEps($ship->getEps() - 1);
         $ship->setDock(0);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
 
         $game->addInformation('Abdockvorgang abgeschlossen');
     }

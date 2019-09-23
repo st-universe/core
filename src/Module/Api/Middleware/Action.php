@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\Middleware;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpNotFoundException;
@@ -18,7 +19,7 @@ abstract class Action
 
         try {
             return $this->action($request, $response, $args);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         }
     }

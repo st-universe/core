@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class ActivateTorpedo implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class ActivateTorpedo implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -33,7 +38,7 @@ final class ActivateTorpedo implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        if (!$ship->hasTorpedo() || $ship->torpedoIsActive()) {
+        if (!$ship->hasTorpedo() || $ship->getTorpedos()) {
             return;
         }
         if ($ship->getTorpedoCount() == 0) {
@@ -46,8 +51,10 @@ final class ActivateTorpedo implements ActionControllerInterface
             $game->addInformation($wrapper->getError());
             return;
         }
-        $ship->setTorpedos(1);
-        $ship->save();
+        $ship->setTorpedos(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Torpedobänke aktiviert");
     }
 

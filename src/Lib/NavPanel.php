@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Entity\ShipInterface;
+
 class NavPanel
 {
 
     private $ship;
 
-    function __construct(&$ship)
+    function __construct(ShipInterface $ship)
     {
         $this->ship = $ship;
     }

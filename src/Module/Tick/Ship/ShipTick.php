@@ -2,23 +2,28 @@
 
 namespace Stu\Module\Tick\Ship;
 
-use ShipData;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipTick implements ShipTickInterface
 {
     private $privateMessageSender;
 
+    private $shipRepository;
+
     private $msg = [];
 
     public function __construct(
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRepository = $shipRepository;
     }
 
-    public function work(ShipData $ship): void
+    public function work(ShipInterface $ship): void
     {
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew()) {
             return;
@@ -48,7 +53,7 @@ final class ShipTick implements ShipTickInterface
         $ship->setEps($eps);
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() - $wkuse);
 
-        $ship->save();
+        $this->shipRepository->save($ship);
 
         $this->sendMessages($ship);
     }
@@ -82,7 +87,7 @@ final class ShipTick implements ShipTickInterface
         return '';
     }
 
-    private function sendMessages(ShipData $ship): void
+    private function sendMessages(ShipInterface $ship): void
     {
         if ($this->msg === []) {
             return;

@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetActivateWarp implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetActivateWarp implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,28 +51,32 @@ final class FleetActivateWarp implements ActionControllerInterface
                     continue;
                 }
                 $ship->setDock(0);
-                $ship->lowerEps(SYSTEM_ECOST_DOCK);
-                $ship->save();
+                $ship->setEps($ship->getEps() - SYSTEM_ECOST_DOCK);
+
+                $this->shipRepository->save($ship);
             }
             if ($ship->getEps() < SYSTEM_ECOST_WARP) {
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            $ship->lowerEps(SYSTEM_ECOST_WARP);
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_WARP);
             if ($ship->traktorBeamFromShip()) {
                 if ($ship->getEps() < SYSTEM_ECOST_TRACTOR) {
                     $msg[] = $ship->getName() . _(": Traktorstrahl aufgrund von Energiemangel deaktiviert");
                     $ship->getTraktorShip()->unsetTraktor();
-                    $ship->getTraktorShip()->save();
+
+                    $this->shipRepository->save($ship->getTraktorShip());
                     $ship->unsetTraktor();
                 } else {
-                    $ship->getTraktorShip()->setWarpState(1);
-                    $ship->getTraktorShip()->save();
-                    $ship->lowerEps(1);
+                    $ship->getTraktorShip()->setWarpState(true);
+
+                    $this->shipRepository->save($ship->getTraktorShip());
+                    $ship->setEps($ship->getEps() - 1);
                 }
             }
-            $ship->setWarpState(1);
-            $ship->save();
+            $ship->setWarpState(true);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }

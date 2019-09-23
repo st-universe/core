@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RepairShip;
 
 use request;
-use Ship;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
@@ -26,16 +27,20 @@ final class RepairShip implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $shipRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,7 +66,7 @@ final class RepairShip implements ActionControllerInterface
         $repairableShiplist = [];
         foreach ($colony->getOrbitShipList($userId) as $fleet) {
             /**
-             * @var Ship $ship
+             * @var ShipInterface $ship
              */
             foreach ($fleet['ships'] as $ship_id => $ship) {
                 if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
@@ -76,11 +81,8 @@ final class RepairShip implements ActionControllerInterface
             }
         }
 
-        /**
-         * @var Ship $ship
-         */
-        $ship = ResourceCache()->getObject(CACHE_SHIP, (int) request::getIntFatal('ship_id'));
-        if (!array_key_exists($ship->getId(), $repairableShiplist)) {
+        $ship = $this->shipRepository->find((int) request::getIntFatal('ship_id'));
+        if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
         if (!$ship->canBeRepaired()) {
@@ -94,12 +96,13 @@ final class RepairShip implements ActionControllerInterface
 
         $obj = $this->colonyShipRepairRepository->prototype();
         $obj->setColony($colony);
-        $obj->setShipId($ship_id);
+        $obj->setShip($ship);
         $obj->setFieldId((int) $field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
         $ship->setState(SHIP_STATE_REPAIR);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
 
         $jobs = $this->colonyShipRepairRepository->getByColonyField(
             (int) $colony->getId(),

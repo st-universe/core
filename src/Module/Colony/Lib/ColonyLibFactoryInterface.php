@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Colony\Lib;
 
-use ShipData;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 interface ColonyLibFactoryInterface
 {
     public function createOrbitShipItem(
-        ShipData $ship,
+        ShipInterface $ship,
         int $ownerUserId
     ): OrbitShipItemInterface;
 

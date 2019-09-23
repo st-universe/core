@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
-use ShipData;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -24,14 +25,18 @@ final class DockShip implements ActionControllerInterface
 
     private $privateMessageSender;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,7 +49,10 @@ final class DockShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipLoader->getById(request::indInt('target'));
+        $target = $this->shipRepository->find(request::indInt('target'));
+        if ($target === null) {
+            return;
+        }
         if (!checkPosition($target, $ship)) {
             return;
         }
@@ -79,18 +87,19 @@ final class DockShip implements ActionControllerInterface
             $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
-        if ($ship->shieldIsActive()) {
+        if ($ship->getShieldState()) {
             $game->addInformation("Die Schilde wurden deaktiviert");
-            $ship->setShieldState(0);
+            $ship->setShieldState(false);
         }
-        if ($ship->cloakIsActive()) {
+        if ($ship->getCloakState()) {
             $game->addInformation("Das Schiff ist getarnt");
             return;
         }
         $ship->cancelRepair();
-        $ship->lowerEps(1);
+        $ship->setEps($ship->getEps() - 1);
         $ship->setDock($target->getId());
-        $ship->save();
+
+        $this->shipRepository->save($ship);
 
         $this->privateMessageSender->send(
             $userId,
@@ -100,7 +109,7 @@ final class DockShip implements ActionControllerInterface
         $game->addInformation('Andockvorgang abgeschlossen');
     }
 
-    private function fleetDock(ShipData $ship, ShipData $target, GameControllerInterface $game): void
+    private function fleetDock(ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): void
     {
         $msg = [];
         $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
@@ -117,18 +126,20 @@ final class DockShip implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            if ($ship->cloakIsActive()) {
+            if ($ship->getCloakState()) {
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
             $ship->cancelRepair();
-            if ($ship->shieldIsActive()) {
+            if ($ship->getShieldState()) {
                 $msg[] = $ship->getName() . _(': Schilde deaktiviert');
-                $ship->setShieldState(0);
+                $ship->setShieldState(false);
             }
             $ship->setDock($target->getId());
-            $ship->lowerEps(SYSTEM_ECOST_DOCK);
-            $ship->save();
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_DOCK);
+
+            $this->shipRepository->save($ship);
+
             $freeSlots--;
         }
         $game->addInformationMerge($msg);

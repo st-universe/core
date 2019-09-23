@@ -5,8 +5,10 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\DbInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
@@ -41,7 +43,7 @@ class Tuple
     }
 }
 
-function checkPosition(ShipData $shipa, ShipData $shipb)
+function checkPosition(ShipInterface $shipa, ShipInterface $shipb)
 {
     if ($shipa->getSystemsId() > 0) {
         if ($shipa->getSystemsId() != $shipb->getSystemsId()) {
@@ -58,7 +60,7 @@ function checkPosition(ShipData $shipa, ShipData $shipb)
     return true;
 }
 
-function checkColonyPosition($col, $ship)
+function checkColonyPosition(ColonyInterface $col, ShipInterface $ship)
 {
     if ($col->getSystemsId() != $ship->getSystemsId()) {
         return false;

@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SetGreenAlert implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class SetGreenAlert implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,7 +39,9 @@ final class SetGreenAlert implements ActionControllerInterface
         );
 
         $ship->setAlertState(1);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Die Alarmstufe wurde auf Grün geändert");
     }
 

@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
+use Stu\Orm\Entity\ShipInterface;
+
 class SystemActivationWrapper
 {
 
     private $ship = null;
     private $errormsg = null;
 
-    function __construct(ShipData $ship)
+    function __construct(ShipInterface $ship)
     {
         $this->ship = $ship;
     }

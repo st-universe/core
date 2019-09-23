@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use ShipData;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
@@ -15,17 +16,21 @@ final class ShipCreator implements ShipCreatorInterface
 
     private $shipSystemRepository;
 
+    private $shipRepository;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipSystemRepositoryInterface $shipSystemRepository
+        ShipSystemRepositoryInterface $shipSystemRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
+        $this->shipRepository = $shipRepository;
     }
 
-    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipData
+    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
     {
-        $ship = new ShipData();
+        $ship = $this->shipRepository->prototype();
         $ship->setUserId($userId);
         $ship->setBuildplanId($shipBuildplanId);
         $ship->setRumpId($shipRumpId);
@@ -38,17 +43,18 @@ final class ShipCreator implements ShipCreatorInterface
                 }
             }
         }
-        $ship->setMaxEbatt(round($ship->getMaxEps() / 3));
+        $ship->setMaxEbatt((int)round($ship->getMaxEps() / 3));
         $ship->setName($ship->getRump()->getName());
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
-        $ship->save();
+
+        $this->shipRepository->save($ship);
         if ($colony) {
             $ship->setSX($colony->getSX());
             $ship->setSY($colony->getSY());
             $ship->setSystemsId($colony->getSystemsId());
-            $ship->setCX($colony->getSystem()->getCX(), true);
-            $ship->setCY($colony->getSystem()->getCY(), true);
-            $ship->save();
+            $ship->setCX($colony->getSystem()->getCX());
+            $ship->setCY($colony->getSystem()->getCY());
+            $this->shipRepository->save($ship);
         }
 
         $this->createByModuleList(

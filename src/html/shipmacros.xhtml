@@ -32,8 +32,8 @@
 				${ship/getHuell}/${ship/getMaxHuell}
 			</td>
 			<td>
-				<span tal:condition="ship/shieldIsActive" class="activeshield" tal:content="string:${ship/getShield}/${ship/getMaxShield}">..</span>
-				<span tal:condition="not:ship/shieldIsActive">${ship/getShield}/${ship/getMaxShield}</span>
+				<span tal:condition="ship/getShieldState" class="activeshield" tal:content="string:${ship/getShield}/${ship/getMaxShield}">..</span>
+				<span tal:condition="not:ship/getShieldState">${ship/getShield}/${ship/getMaxShield}</span>
 				(+<span tal:replace="ship/getShieldRegenerationRate">REGENERATIONRATE</span>)
 			</td>
 			<td>
@@ -55,17 +55,17 @@
 				<img src="assets/buttons/kss1.gif" tal:condition="not:ship/getNbs" title="Nahbereichssensoren deaktiviert" />
 				<img src="assets/buttons/lss2.gif" tal:condition="ship/getLss" title="Langstreckensensoren aktiviert" />
 				<img src="assets/buttons/lss1.gif" tal:condition="not:ship/getLss" title="Langstreckensensoren deaktiviert" />
-				<img src="assets/buttons/act_phaser2.gif" tal:condition="ship/phaserIsActive" title="Strahlenwaffe aktiviert" />
-				<img src="assets/buttons/act_phaser1.gif" tal:condition="not:ship/phaserIsActive" title="Strahlenwaffe deaktiviert" />
-				<img src="assets/buttons/act_torp2.gif" tal:condition="ship/torpedoIsActive" title="Torpedobänke aktiviert" />
-				<img src="assets/buttons/act_torp1.gif" tal:condition="not:ship/torpedoIsActive" title="Torpedobände deaktiviert" />
+				<img src="assets/buttons/act_phaser2.gif" tal:condition="ship/getPhaser" title="Strahlenwaffe aktiviert" />
+				<img src="assets/buttons/act_phaser1.gif" tal:condition="not:ship/getPhaser" title="Strahlenwaffe deaktiviert" />
+				<img src="assets/buttons/act_torp2.gif" tal:condition="ship/getTorpedos" title="Torpedobänke aktiviert" />
+				<img src="assets/buttons/act_torp1.gif" tal:condition="not:ship/getTorpedos" title="Torpedobände deaktiviert" />
 				<tal:block tal:condition="ship/isCloakAble">
-					<img src="assets/buttons/tarn2.gif" tal:condition="ship/cloakIsActive" title="Tarnung aktiviert" />
-					<img src="assets/buttons/tarn1.gif" tal:condition="not:ship/cloakIsActive" title="Tarnung deaktiviert" />
+					<img src="assets/buttons/tarn2.gif" tal:condition="ship/getCloakState" title="Tarnung aktiviert" />
+					<img src="assets/buttons/tarn1.gif" tal:condition="not:ship/getCloakState" title="Tarnung deaktiviert" />
 				</tal:block>
 			</td>
 			<td style="text-align: center;">
-				<tal:block tal:condition="ship/isInFleet">
+				<tal:block tal:condition="ship/getFleetId">
 					<a href="?B_DELETE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="ship/isFleetLeader" onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag3')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag2')">
 						<img src="assets/buttons/fl_flag2.gif" name="fleet_${ship/getId}" title="Flotte auflösen" />
 					</a>
@@ -73,7 +73,7 @@
 						<img src="assets/buttons/fl_raus1.gif" name="fleet_${ship/getId}" title="Flotte verlassen" />
 					</a>
 				</tal:block>
-				<tal:block tal:condition="not:ship/isInFleet">
+				<tal:block tal:condition="not:ship/getFleetId">
 					<a href="?B_NEW_FLEET=1&id=${ship/getId}" tal:condition="not:ship/isBase" onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag2')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag1')">
 						<img src="assets/buttons/fl_flag1.gif" name="fleet_${ship/getId}" title="Flotte erstellen" />
 					</a>
@@ -160,7 +160,7 @@
 					</a>
 					<span style="width: 100%; color: #474791;">Warpantrieb aktiv</span>
 				</tal:block>
-				<div style="width: 100%; color: #404040;" tal:condition="SHIP/cloakIsActive">Tarnung aktiv</div>	
+				<div style="width: 100%; color: #404040;" tal:condition="SHIP/getCloakState">Tarnung aktiv</div>	
 			</td>
 		</tal:block>
 		<td style="width: 200px; background-color: #000000 ! important;">
@@ -170,7 +170,7 @@
 		<tal:block tal:condition="not:ship/getRump/isTrumfield">
 			<td style="width: 160px;">
 				<span tal:replace="ship/getHuell"></span>/<span tal:replace="ship/getMaxHuell"></span>
-				<tal:block tal:condition="ship/shieldIsActive">
+				<tal:block tal:condition="ship/getShieldState">
 					(<span class="activeshield">${ship/getShield}</span>)
 				</tal:block>
 			</td>
@@ -560,7 +560,7 @@
 							<img src="assets/buttons/modul_2.gif" />
 						</th>
 						<td style="text-align: center; vertical-align: middle;">
-							<span tal:replace="structure php:renderShieldStatusBar(SHIP.shieldIsActive(),SHIP.getShield(),SHIP.getMaxShield())">SCHILDE</span>
+							<span tal:replace="structure php:renderShieldStatusBar(SHIP.getShieldState(),SHIP.getShield(),SHIP.getMaxShield())">SCHILDE</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
 							${SHIP/getShield}
@@ -621,7 +621,6 @@
 				<span i18n:translate="">Ersatzbatterie:</span> ${SHIP/getEBatt}<br />
 				<span i18n:translate="">Trefferchance (eff.):</span> ${SHIP/getHitChance}%<br />
 				<span i18n:translate="">Ausweichchance (eff.):</span> ${SHIP/getEvadeChance}%<br />
-				<span i18n:translate="">Basisschaden:</span> ${SHIP/getBaseDamage}<br />
 				<span i18n:translate="">Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
 				<span i18n:translate="">Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
 				<span i18n:translate="">Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />

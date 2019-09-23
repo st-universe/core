@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
-use Ship;
+use Doctrine\Common\Collections\Collection;
 
 interface FleetInterface
 {
@@ -14,21 +14,20 @@ interface FleetInterface
 
     public function getUserId(): int;
 
-    public function getFleetLeader(): int;
-
-    public function setFleetLeader(int $leaderShipId): FleetInterface;
-
+    /**
+     * @return ShipInterface[]
+     */
     public function getShips(): iterable;
 
     public function getShipCount(): int;
 
     public function ownedByCurrentUser(): bool;
 
-    public function getLeadShip(): Ship;
+    public function getLeadShip(): ShipInterface;
+
+    public function setLeadShip(ShipInterface $ship): FleetInterface;
 
     public function getAvailableShips(): iterable;
-
-    public function autochangeLeader(Ship $obj): void;
 
     public function deactivateSystem(int $system): void;
 

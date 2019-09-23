@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
@@ -110,6 +111,6 @@ class DockingPrivilege implements DockingPrivilegeInterface
                 return $container->get(FactionRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
 
         }
-        return ResourceCache()->getObject('ship', $this->getTargetId())->getName();
+        return $container->get(ShipRepositoryInterface::class)->find($this->getTargetId())->getName();
     }
 }

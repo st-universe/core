@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\Overview;
 
-use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
     private $fleetRepository;
 
+    private $shipRepository;
+
     public function __construct(
-        FleetRepositoryInterface $fleetRepository
+        FleetRepositoryInterface $fleetRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->fleetRepository = $fleetRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -24,8 +28,8 @@ final class Overview implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $fleets = $this->fleetRepository->getByUser($userId);
-        $bases = Ship::getObjectsBy("WHERE user_id=" . $userId . " AND fleets_id=0 AND is_base=1 ORDER BY id");
-        $ships = Ship::getObjectsBy("WHERE user_id=" . $userId . " AND fleets_id=0 AND is_base=0 ORDER BY id");
+        $bases = $this->shipRepository->getByUserAndFleetAndBase($userId, null, true);
+        $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
 
         $game->appendNavigationPart(
             'ship.php',

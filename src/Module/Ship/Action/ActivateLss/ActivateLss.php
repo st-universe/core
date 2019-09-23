@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class ActivateLss implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class ActivateLss implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,8 +44,10 @@ final class ActivateLss implements ActionControllerInterface
             $game->addInformation($wrapper->getError());
             return;
         }
-        $ship->setLss(1);
-        $ship->save();
+        $ship->setLss(true);
+
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Langstreckensensoren aktiviert");
     }
 

@@ -6,12 +6,12 @@ namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 
 use AccessViolation;
 use request;
-use Ship;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
@@ -30,18 +30,22 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private $tradeStorageRepository;
 
+    private $shipRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
-        TradeStorageRepositoryInterface $tradeStorageRepository
+        TradeStorageRepositoryInterface $tradeStorageRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,8 +80,11 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
             $game->setTemplateVar(
                 'DOCKED_SHIPS_FOR_LICENSE',
-                Ship::getObjectsBy(
-                    'WHERE user_id=' . $userId . ' AND dock=' . $tradepost->getShipId() . ' AND id IN (SELECT ships_id FROM stu_ships_storage WHERE goods_id=' . $licenseCostGood->getId() . ' AND count>=' . $licenseCost . ')'
+                $this->shipRepository->getWithTradeLicensePayment(
+                    $userId,
+                    $tradepost->getShipId(),
+                    $licenseCostGood->getId(),
+                    $licenseCost
                 )
             );
             $game->setTemplateVar(

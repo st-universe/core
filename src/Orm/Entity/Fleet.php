@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Ship;
-use Stu\Orm\Repository\FleetRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\FleetRepository")
@@ -37,14 +38,20 @@ class Fleet implements FleetInterface
     private $user;
 
     /**
-     * @var null|Ship[]
+     * @OneToMany(targetEntity="Ship", mappedBy="fleet")
      */
     private $shiplist;
 
     /**
-     * @var null|Ship
+     * @OneToOne(targetEntity="Ship")
+     * @JoinColumn(name="ships_id", referencedColumnName="id")
      */
     private $fleetLeader;
+
+    public function __construct()
+    {
+        $this->shiplist = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -67,28 +74,14 @@ class Fleet implements FleetInterface
         return $this->user_id;
     }
 
-    public function getFleetLeader(): int
-    {
-        return $this->ships_id;
-    }
-
-    public function setFleetLeader(int $leaderShipId): FleetInterface
-    {
-        $this->ships_id = $leaderShipId;
-        return $this;
-    }
-
     public function getShips(): iterable
     {
-        if ($this->shiplist === null) {
-            $this->shiplist = Ship::getObjectsBy("WHERE fleets_id=" . $this->getId() . " ORDER BY is_base DESC, id LIMIT 200");
-        }
         return $this->shiplist;
     }
 
     public function getShipCount(): int
     {
-        return Ship::countInstances("WHERE fleets_id=" . $this->getId());
+        return $this->getShips()->count();
     }
 
     public function ownedByCurrentUser(): bool
@@ -96,38 +89,39 @@ class Fleet implements FleetInterface
         return currentUser()->getId() === $this->getUserId();
     }
 
-    public function getLeadShip(): Ship
+    public function getLeadShip(): ShipInterface
     {
-        return new Ship($this->getFleetLeader());
+        return $this->fleetLeader;
+    }
+
+    public function setLeadShip(ShipInterface $ship): FleetInterface
+    {
+        $this->fleetLeader = $ship;
+        return $this;
     }
 
     public function getAvailableShips(): iterable
     {
-        return Ship::getObjectsBy(
-        "WHERE user_id=" . currentUser()->getId() . " AND fleets_id=0
-            AND ((systems_id=0 AND cx=" . $this->getLeadShip()->getCX() . " AND cy=" . $this->getLeadShip()->getCY() . ") OR
-            (systems_id>0 AND sx=" . $this->getLeadShip()->getSX() . " AND sy=" . $this->getLeadShip()->getSY() . " AND
-            systems_id=" . $this->getLeadShip()->getSystemsId() . ")) AND id!=" . $this->getLeadShip()->getId() . " AND is_base=0"
-        );
-    }
-
-    public function autochangeLeader(Ship $obj): void
-    {
         // @todo refactor
         global $container;
 
-        $fleetRepo = $container->get(FleetRepositoryInterface::class);
+        return array_filter(
+            $container->get(ShipRepositoryInterface::class)->getByUser($this->getUserId()),
+            function (ShipInterface $ship): bool {
+                if ($ship->isBase() || $ship->getFleet() !== null) {
+                    return false;
+                }
+                $leader = $this->getLeadShip();
 
-        $ship = Ship::getObjectBy("WHERE fleets_id=" . $this->getId() . " AND id!=" . $obj->getId());
-        if (!$ship) {
-            $fleetRepo->delete($this);
-            $obj->setFleetId(0);
-            return;
-        }
-        $this->setFleetLeader($ship->getId());
-        $this->fleetLeader = null;
-
-        $fleetRepo->save($this);
+                if ($leader->getSystemsId() !== $ship->getSystemsId()) {
+                    return false;
+                }
+                if ($leader->getSystemsId() > 0) {
+                    return $ship->getSx() === $leader->getSX() && $ship->getSy() === $leader->getSY();
+                }
+                return $ship->getCx() === $leader->getCX() && $ship->getCy() === $leader->getCY();
+            }
+        );
     }
 
     public function deactivateSystem(int $system): void

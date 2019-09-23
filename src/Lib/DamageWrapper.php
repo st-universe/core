@@ -13,6 +13,8 @@
 
 namespace Stu\Lib;
 
+use Stu\Orm\Entity\ShipInterface;
+
 /**
  * @author Daniel Jakob <wolverine@stuniverse.de>
  * @version $Revision: 1.4 $
@@ -129,7 +131,7 @@ class DamageWrapper
 
 	/**
 	 */
-	private function calculateDamageShields($target)
+	private function calculateDamageShields(ShipInterface $target)
 	{ #{{{
 		$damage = round($this->getDamage() / 100 * $this->getShieldDamageFactor());
 		// paratrinic shields
@@ -146,7 +148,7 @@ class DamageWrapper
 
 	/**
 	 */
-	private function calculateDamageHull($target)
+	private function calculateDamageHull(ShipInterface $target)
 	{ #{{{
 		$damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
 		// ablative huell plating

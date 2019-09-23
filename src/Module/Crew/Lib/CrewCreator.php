@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
-use ShipData;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\CrewRaceInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRaceRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -74,7 +74,7 @@ final class CrewCreator implements CrewCreatorInterface
         return $crew;
     }
 
-    public function createShipCrew(ShipData $ship): void
+    public function createShipCrew(ShipInterface $ship): void
     {
         for ($i = CREW_TYPE_FIRST; $i <= CREW_TYPE_LAST; $i++) {
             $j = 1;

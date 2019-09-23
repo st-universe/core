@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetDeactivateWarp implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetDeactivateWarp implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,11 +43,13 @@ final class FleetDeactivateWarp implements ActionControllerInterface
                 continue;
             }
             if ($ship->traktorBeamFromShip()) {
-                $ship->getTraktorShip()->setWarpState(1);
-                $ship->getTraktorShip()->save();
+                $ship->getTraktorShip()->setWarpState(false);
+
+                $this->shipRepository->save($ship->getTraktorShip());
             }
-            $ship->setWarpState(0);
-            $ship->save();
+            $ship->setWarpState(false);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformation(_('Flottenbefehl ausgeführt: Deaktivierung des Warpantriebs'));
     }

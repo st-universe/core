@@ -2,8 +2,6 @@
 
 namespace Stu\Orm\Entity;
 
-use Ship;
-
 interface TradePostInterface
 {
     public function getId(): int;
@@ -40,7 +38,7 @@ interface TradePostInterface
 
     public function setStorage(int $storage): TradePostInterface;
 
-    public function getShip(): Ship;
+    public function getShip(): ShipInterface;
 
     public function calculateLicenceCost(): int;
 

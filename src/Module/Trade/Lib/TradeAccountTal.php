@@ -5,8 +5,8 @@ declare(strict_types=0);
 
 namespace Stu\Module\Trade\Lib;
 
-use Ship;
 use Stu\Orm\Entity\CommodityInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Entity\TradeStorageInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -51,7 +51,7 @@ final class TradeAccountTal implements TradeAccountTalInterface
         return $this->tradePost->getId();
     }
 
-    public function getShip(): Ship
+    public function getShip(): ShipInterface
     {
         return $this->tradePost->getShip();
     }

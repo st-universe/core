@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\EnterStarSystem;
 
 use request;
-use Ship;
-use ShipData;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use SystemActivationWrapper;
 
 final class EnterStarSystem implements ActionControllerInterface
@@ -19,10 +19,14 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -75,8 +79,14 @@ final class EnterStarSystem implements ActionControllerInterface
 
         if ($ship->isFleetLeader()) {
             $msg = [];
-            $result = Ship::getShipsBy($ship->getFleetId(), [$ship->getId()]);
-            foreach ($result as $key => $fleetShip) {
+            $result = array_filter(
+                $ship->getFleet()->getShips()->toArray(),
+                function (ShipInterface $fleetShip) use ($ship): bool {
+                    return $ship->getId() !== $fleetShip;
+                }
+            );
+            foreach ($result as $fleetShip) {
+                /** @var ShipInterface $fleetShip */
                 $wrapper = new SystemActivationWrapper($fleetShip);
                 $wrapper->setVar('eps', 1);
                 if ($wrapper->getError()) {
@@ -88,25 +98,29 @@ final class EnterStarSystem implements ActionControllerInterface
                         $this->enterStarSystemTraktor($fleetShip, $game);
                     }
                 }
-                $fleetShip->save();
+
+                $this->shipRepository->save($fleetShip);
             }
             $game->addInformation("Die Flotte fliegt in das " . $system->getName() . "-System ein");
             $game->addInformationMerge($msg);
         } else {
-            if ($ship->isInFleet()) {
+            if ($ship->getFleetId()) {
                 $ship->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
             $game->addInformation("Das Schiff fliegt in das " . $system->getName() . "-System ein");
         }
-        $ship->save();
+
+        $this->shipRepository->save($ship);
     }
 
-    private function enterStarSystemTraktor(ShipData $ship, GameControllerInterface $game): void
+    private function enterStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
     {
         if ($ship->getEps() < 1) {
             $ship->getTraktorShip()->unsetTraktor();
-            $ship->getTraktorShip()->save();
+
+            $this->shipRepository->save($ship->getTraktorShip());
+
             $ship->unsetTraktor();
             $game->addInformation("Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;
@@ -118,19 +132,22 @@ final class EnterStarSystem implements ActionControllerInterface
             $ship->getPosY()
         );
         // @todo Beschädigung bei Systemeinflug
-        $ship->lowerEps(1);
-        $ship->getTraktorShip()->save();
-        $ship->save();
+        $ship->setEps($ship->getEps() - 1);
+
+        $this->shipRepository->save($ship->getTraktorShip());
+        $this->shipRepository->save($ship);
+
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit in das System gezogen");
     }
 
-    private function enterStarSystem(ShipData $ship, int $systemId, int $posx, int $posy): void
+    private function enterStarSystem(ShipInterface $ship, int $systemId, int $posx, int $posy): void
     {
-        $ship->setWarpState(0);
+        $ship->setWarpState(false);
         $ship->setSystemsId($systemId);
         $ship->setSX($posx);
         $ship->setSY($posy);
-        $ship->save();
+
+        $this->shipRepository->save($ship);
     }
 
     public function performSessionCheck(): bool

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
-use Ship;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 
@@ -65,7 +65,7 @@ final class ShowShipRepair implements ViewControllerInterface
 
             $repairableShips = [];
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
-                /** @var Ship $ship */
+                /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship_id => $ship) {
                     if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
                         continue;

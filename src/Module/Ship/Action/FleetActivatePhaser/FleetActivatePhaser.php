@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class FleetActivatePhaser implements ActionControllerInterface
 {
@@ -16,10 +17,14 @@ final class FleetActivatePhaser implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -36,16 +41,17 @@ final class FleetActivatePhaser implements ActionControllerInterface
         $msg = array();
         $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Strahlenwaffen";
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if (!$ship->hasPhaser() || $ship->phaserIsActive()) {
+            if (!$ship->hasPhaser() || $ship->getPhaser()) {
                 continue;
             }
             if ($ship->getEps() < SYSTEM_ECOST_PHASER) {
                 $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
                 continue;
             }
-            $ship->lowerEps(SYSTEM_ECOST_PHASER);
-            $ship->setPhaser(1);
-            $ship->save();
+            $ship->setEps($ship->getEps() - SYSTEM_ECOST_PHASER);
+            $ship->setPhaser(true);
+
+            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }
