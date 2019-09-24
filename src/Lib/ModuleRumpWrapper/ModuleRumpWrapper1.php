@@ -20,7 +20,7 @@ class ModuleRumpWrapper1 extends ModuleRumpWrapperBase
     public function getCallBacks()
     { #{{{
         $callbacks = array(
-            'setMaxHuelle' => $this->getValue(),
+            'setMaxHuell' => $this->getValue(),
             'setHuell' => $this->getValue()
         );
         return $callbacks;
