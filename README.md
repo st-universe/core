@@ -29,7 +29,6 @@ Dieser Token muss mittels `Authorization`-Header und dem Inhalt `Bearer <TOKEN>`
 Alle regulären Responses sind nach dem gleichen Prinzip aufgebaut:
 ```metadata json
 {
-    "statusCode": int,
     "data": ...
 }
 ```
@@ -37,10 +36,11 @@ Alle regulären Responses sind nach dem gleichen Prinzip aufgebaut:
 Ist ein Fehler vorgefallen, sieht die Response wie folgt aus:
 ```metadata json
 {
-    "statusCode": int,
+    "errorCode": int,
     "error": ...
 }
 ```
+Die StatusCodes können dem `ErrorCodeEnum` entnommen werden
 
 **Common - News**
 
@@ -94,6 +94,24 @@ Response
 {
     "token": string
 }
+```
+
+**Common - Register new player**
+
+`POST /api/v1/common/player/new`
+
+Request
+```metadata json
+{
+    "loginName": string,
+    "emailAddress": string,
+    "factionId": int
+}
+```
+
+Response
+```metadata json
+true
 ```
 
 **Colony - Retrieve list**
