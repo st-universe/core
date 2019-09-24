@@ -1426,12 +1426,19 @@ class Ship implements ShipInterface
 
     public function canInteractWith($target, bool $colony = false): bool
     {
-        if (!checkPosition($this,
-                $target) || $this->getCloakState() || ($colony && $target->getId() == $this->getId())) {
-            new ObjectNotFoundException($target->getId());
+        if ($this->getCloakState()) {
+            throw new ObjectNotFoundException($target->getId());
         }
-        if ($colony) {
+        if ($colony === true) {
+            if (!checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
+                new ObjectNotFoundException($target->getId());
+            }
             return true;
+
+        } else {
+            if (!checkPosition($this, target)) {
+                new ObjectNotFoundException($target->getId());
+            }
         }
         if ($target->getShieldState() && $target->getUserId() != $this->getUserId()) {
             return false;
