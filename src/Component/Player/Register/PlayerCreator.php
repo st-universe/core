@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Register;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
-use Stu\Component\Player\Register\Exception\RegistrationEmailSenderInterface;
+use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 

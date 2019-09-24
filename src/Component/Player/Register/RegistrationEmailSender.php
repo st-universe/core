@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Player\Register\Exception;
+namespace Stu\Component\Player\Register;
 
 use Stu\Orm\Entity\UserInterface;
 
