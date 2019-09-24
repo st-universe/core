@@ -32,7 +32,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $userId
         );

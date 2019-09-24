@@ -28,7 +28,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );

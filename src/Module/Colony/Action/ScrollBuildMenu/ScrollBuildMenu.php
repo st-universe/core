@@ -9,6 +9,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildMenuPart\ShowBuildMenuPart;
+use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 
 final class ScrollBuildMenu implements ActionControllerInterface
@@ -44,13 +45,14 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset % BUILDMENU_SCROLLOFFSET != 0) {
             $offset = floor($offset / BUILDMENU_SCROLLOFFSET);
         }
+        /** @var BuildingInterface[] $ret */
         $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
             (int) $colony->getId(),
             $userId,
             $menu,
             (int) $offset
         );
-        if (count($ret) == 0) {
+        if ($ret === []) {
             $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
                 (int) $colony->getId(),
                 $userId,

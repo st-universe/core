@@ -59,7 +59,7 @@ final class Signup implements ActionControllerInterface
 
         $text = sprintf(
             'Der Siedler %s hat sich für die Allianz beworben',
-            $user->getName()
+            $user->getUser()
         );
 
         $this->privateMessageSender->send($userId, $alliance->getFounder()->getUserId(), $text);

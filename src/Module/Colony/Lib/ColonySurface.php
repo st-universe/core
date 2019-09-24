@@ -111,6 +111,7 @@ final class ColonySurface implements ColonySurfaceInterface
             case FACTION_KLINGON:
                 return _('Ehre');
         }
+        return '';
     }
 
     public function getPositiveEffectSecondaryDescription(): string
@@ -124,6 +125,7 @@ final class ColonySurface implements ColonySurfaceInterface
             case FACTION_KLINGON:
                 return _('Irgendwas mit Kahless');
         }
+        return '';
     }
 
     public function getNegativeEffectDescription(): string
@@ -137,6 +139,7 @@ final class ColonySurface implements ColonySurfaceInterface
             case FACTION_KLINGON:
                 return _('Abtrünnige');
         }
+        return '';
     }
 
     public function getStorageSumPercent(): float
