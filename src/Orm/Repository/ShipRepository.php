@@ -134,7 +134,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.is_destroyed = 0 AND s.schilde<s.max_schilde AND s.shield_regeneration_imer <= :regenerationThreshold',
+                'SELECT s FROM %s s WHERE s.is_destroyed = 0 AND s.schilde<s.max_schilde AND s.shield_regeneration_timer <= :regenerationThreshold',
                 Ship::class
             )
         )->setParameters([
