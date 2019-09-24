@@ -46,6 +46,7 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setMaxEbatt((int)round($ship->getMaxEps() / 3));
         $ship->setName($ship->getRump()->getName());
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
+        $ship->setAlertState(ALERT_GREEN);
 
         $this->shipRepository->save($ship);
         if ($colony) {
