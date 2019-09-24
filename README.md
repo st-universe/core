@@ -36,8 +36,10 @@ Alle regulären Responses sind nach dem gleichen Prinzip aufgebaut:
 Ist ein Fehler vorgefallen, sieht die Response wie folgt aus:
 ```metadata json
 {
-    "errorCode": ?int,
-    "error": "string"
+    "error": {
+        "errorCode": ?int,
+        "error": "string"
+    }
 }
 ```
 Die StatusCodes können dem `ErrorCodeEnum` entnommen werden
