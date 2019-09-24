@@ -67,7 +67,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
 
         foreach ($groupedList as $fleetId => $shipList) {
             $list[] = $this->colonyLibFactory->createOrbitFleetItem(
-                $fleetId,
+                (int) $fleetId,
                 $shipList,
                 $userId
             );
