@@ -20,6 +20,7 @@ use Stu\Module\Api\V1\Colony\GetById\GetColonyById;
 use Stu\Module\Api\V1\Common\Faction\GetFactions;
 use Stu\Module\Api\V1\Common\Login\Login;
 use Stu\Module\Api\V1\Common\News\GetNews;
+use Stu\Module\Api\V1\Common\Register\Register;
 use Stu\Module\Api\V1\Player\GetInfo;
 use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
 
@@ -58,6 +59,8 @@ $app->group('/api/v1/common', function (RouteCollectorProxy $group): void {
     $group->get('/news', GetNews::class);
     $group->post('/login', Login::class);
     $group->get('/faction', GetFactions::class);
+
+    $group->post('/player/new', Register::class);
 });
 
 $app->group('/api/v1/colony', function (RouteCollectorProxy $group): void {

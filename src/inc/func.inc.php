@@ -327,7 +327,6 @@ function getDefaultTechs()
         RESEARCH_START_KLINGON,
         RESEARCH_START_CARDASSIAN,
         RESEARCH_START_FERENGI,
-        RESEARCH_START_EMPIRE,
     ];
 } # }}}
 

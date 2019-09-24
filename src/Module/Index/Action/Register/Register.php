@@ -64,10 +64,10 @@ final class Register implements ActionControllerInterface
         if (mb_strlen($loginname) < 6) {
             return;
         }
-        if ($this->userRepository->getByLogin($loginname)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return;
         }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if ($this->userRepository->getByLogin($loginname)) {
             return;
         }
         if ($this->userRepository->getByEmail($email)) {
@@ -144,7 +144,6 @@ final class Register implements ActionControllerInterface
         }
         throw new Exception('Invalid faction');
     }
-
 
     public function performSessionCheck(): bool
     {
