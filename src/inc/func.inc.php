@@ -249,18 +249,18 @@ function databaseScan($database_id, $user_id)
 
 /**
  */
-function calculateModuleValue(ShipRumpInterface $rump, ModuleInterface $module, $callback = 'aggi', $value = false)
+function calculateModuleValue(ShipRumpInterface $rump, ModuleInterface $module, $callback = 'aggi', $value = false): int
 { #{{{
     if (!$value) {
         $value = $rump->$callback();
     }
     if ($rump->getModuleLevel() > $module->getLevel()) {
-        return round($value - $value / 100 * $module->getDowngradeFactor());
+        return (int)round($value - $value / 100 * $module->getDowngradeFactor());
     }
     if ($rump->getModuleLevel() < $module->getLevel()) {
-        return round($value + $value / 100 * $module->getUpgradeFactor());
+        return (int)round($value + $value / 100 * $module->getUpgradeFactor());
     }
-    return $value;
+    return (int)$value;
 } # }}}
 
 /**
@@ -278,7 +278,7 @@ function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module)
 
 /**
  */
-function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module)
+function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module): int
 { #{{{
     $base = $rump->getEvadeChance();
     if ($rump->getModuleLevel() > $module->getLevel()) {
@@ -288,7 +288,7 @@ function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module)
     } else {
         return $base;
     }
-    return round((1 - $value) * 100);
+    return (int)round((1 - $value) * 100);
 } # }}}
 
 function printBackTrace()

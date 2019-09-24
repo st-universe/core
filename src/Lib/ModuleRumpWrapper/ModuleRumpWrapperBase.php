@@ -4,37 +4,29 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
-/**
- * @author Daniel Jakob <wolverine@stuniverse.de>
- * @version $Revision: 1.4 $
- * @access public
- */
-class ModuleRumpWrapperBase
-{ #{{{
+use Stu\Orm\Entity\BuildplanModuleInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
 
-    private $module = null;
-    protected $rump = null;
+abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
+{
+
+    protected $modules;
+
+    protected $rump;
 
     /**
+     * @param ShipRumpInterface $rump
+     * @param BuildplanModuleInterface[] $modules
      */
-    function __construct($rump, $module)
-    { #{{{
-        $this->module = $module;
+    public function __construct(ShipRumpInterface $rump, array $modules)
+    {
+        $this->modules = $modules;
         $this->rump = $rump;
-    } # }}}
+    }
 
-    /**
-     */
-    protected function getRump()
-    { #{{{
-        return $this->rump;
-    } # }}}
-
-    /**
-     */
-    public function getModule()
-    { #{{{
-        return $this->module;
-    } # }}}
+    public function getModule(): iterable
+    {
+        return $this->modules;
+    }
 
 }

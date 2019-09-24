@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
 
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
@@ -41,8 +42,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s) FROM %s s WHERE s.user_id = :userId AND s.rumps_id IN (
-                    SELECT rumps_id FROM %s rs WHERE rs.special = :specialAbilityId
-                )'
+                    SELECT rs.rumps_id FROM %s rs WHERE rs.special = :specialAbilityId
+                )',
+                Ship::class,
+                ShipRumpSpecial::class
             )
         )->setParameters([
             'userId' => $userId,
