@@ -59,6 +59,8 @@ final class ShowShipDisassembly implements ViewControllerInterface
             return;
         }
 
+        $fieldFunctions = $field->getBuilding()->getFunctions()->toArray();
+
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
 
         if ($colonySurface->hasShipyard()) {
@@ -71,7 +73,7 @@ final class ShowShipDisassembly implements ViewControllerInterface
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
-                        if (array_key_exists($rump_rel->getBuildingFunction(), $field->getBuilding()->getFunctions())) {
+                        if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
                             $repairableShips[$ship->getId()] = $ship;
                             break;
                         }

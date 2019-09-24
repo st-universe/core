@@ -63,6 +63,8 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
 
+        $fieldFunctions = $field->getBuilding()->getFunctions()->toArray();
+
         $repairableShiplist = [];
         foreach ($colony->getOrbitShipList($userId) as $fleet) {
             /**
@@ -73,7 +75,7 @@ final class RepairShip implements ActionControllerInterface
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
-                    if (array_key_exists($rump_rel->getBuildingFunction(), $field->getBuilding()->getFunctions())) {
+                    if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
                         $repairableShiplist[$ship->getId()] = $ship;
                         break;
                     }
