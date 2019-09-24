@@ -43,11 +43,14 @@ final class DeleteFleet implements ActionControllerInterface
             return;
         }
 
+	    foreach ($ship->getFleet()->getShips() as $fleetShip) {
+	        $fleetShip->setFleet(null);
+
+	        $this->shipRepository->save($fleetShip);
+        }
+
         $this->fleetRepository->delete($ship->getFleet());
 
-        $ship->setFleet(null);
-
-        $this->shipRepository->save($ship);
 
         $game->addInformation(_('Die Flotte wurde aufgelöst'));
     }

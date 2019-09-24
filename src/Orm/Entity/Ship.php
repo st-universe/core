@@ -829,7 +829,7 @@ class Ship implements ShipInterface
 
     public function isFleetLeader(): bool
     {
-        if (!$this->getFleetId()) {
+        if ($this->fleet === null) {
             return false;
         }
         return $this->getFleet()->getLeadShip()->getId() === $this->getId();
