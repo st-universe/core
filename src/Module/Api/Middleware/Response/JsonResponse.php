@@ -9,11 +9,10 @@ use Slim\Psr7\Response;
 final class JsonResponse extends Response implements JsonResponseInterface
 {
 
-    public function withData($data, ?int $status = 200): JsonResponseInterface
+    public function withData($data): JsonResponseInterface
     {
         parent::getBody()->write(
             json_encode([
-                'statusCode' => $status,
                 'data' => $data
             ])
         );
@@ -21,13 +20,12 @@ final class JsonResponse extends Response implements JsonResponseInterface
         return $this;
     }
 
-    public function withError(string $type, ?string $description = null, ?int $status = 200): JsonResponseInterface
+    public function withError(int $errorCode, ?string $description = null): JsonResponseInterface
     {
         parent::getBody()->write(
             json_encode([
-                'statusCode' => $status,
                 'error' => [
-                    'type' => $type,
+                    'code' => $errorCode,
                     'description' => $description,
                 ]
             ])

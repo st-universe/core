@@ -39,11 +39,17 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
         '/api/v1/common',
     ],
     'error' => function (ResponseInterface $response, array $arguments): void {
-        $data['statusCode'] = StatusCodeInterface::STATUS_UNAUTHORIZED;
-        $data['error'] = $arguments['message'];
+        $error = [
+            'error' => [
+                'errorCode' => null,
+                'error' => 'Unauthorized'
+            ]
+        ];
+
         $response->withHeader('Content-Type', 'application/json')
+            ->withStatus(StatusCodeInterface::STATUS_UNAUTHORIZED)
             ->getBody()
-            ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+            ->write(json_encode($error, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     },
     'before' => function (ServerRequestInterface $request, array $arguments) use ($container): void {
         $container->get(SessionInterface::class)->resumeSession($request);
