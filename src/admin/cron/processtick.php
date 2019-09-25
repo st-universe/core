@@ -1,6 +1,6 @@
 <?php
 
-use Stu\Lib\DbInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Tick\Process\ProcessTickInterface;
 
 require_once __DIR__.'/../../inc/config.inc.php';
@@ -10,7 +10,7 @@ require_once __DIR__.'/../../inc/config.inc.php';
  */
 $handlerList = $container->get('process_tick_handler');
 
-$db = $container->get(DbInterface::class);
+$db = $container->get(EntityManagerInterface::class);
 
 $db->beginTransaction();
 
@@ -18,4 +18,4 @@ foreach ($handlerList as $process) {
     $process->work();
 }
 
-$db->commitTransaction();
+$db->commit();

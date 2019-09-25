@@ -96,6 +96,7 @@ use Stu\Orm\Entity\TradeStorage;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserIpTable;
+use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\Weapon;
 
@@ -549,6 +550,11 @@ return [
         ContainerInterface $c
     ): UserIpTableRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class);
+    },
+    UserMapRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserMapRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserMap::class);
     },
     UserProfileVisitorRepositoryInterface::class => function (
         ContainerInterface $c

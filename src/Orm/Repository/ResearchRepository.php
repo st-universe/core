@@ -40,4 +40,34 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             ->setParameter('factionId', sprintf('%%%d', $factionId))
             ->getResult();
     }
+
+    public function getPlanetColonyLimitByUser(int $userId): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT SUM(r.upper_planetlimit) FROM %s r WHERE r.id IN (
+                    SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = 0
+                )',
+                Research::class,
+                Researched::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])->getSingleScalarResult();
+    }
+
+    public function getMoonColonyLimitByUser(int $userId): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT SUM(r.upper_moonlimit) FROM %s r WHERE r.id IN (
+                    SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = 0
+                )',
+                Research::class,
+                Researched::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])->getSingleScalarResult();
+    }
 }

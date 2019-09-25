@@ -7,20 +7,19 @@ namespace Stu\Module\Database\View\DiscovererRating;
 use DatabaseTopListDiscover;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Lib\DbInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class DiscovererRanking implements ViewControllerInterface
 {
 
     public const VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
 
-    private $db;
+    private $databaseUserRepository;
 
     public function __construct(
-        DbInterface $db
-    )
-    {
-        $this->db = $db;
+        DatabaseUserRepositoryInterface $databaseUserRepository
+    ) {
+        $this->databaseUserRepository = $databaseUserRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,14 +39,11 @@ final class DiscovererRanking implements ViewControllerInterface
 
     private function getTopResearchUser()
     {
-        $list = [];
-        $result = $this->db->query(
-            'SELECT a.user_id,SUM(c.points) as points FROM stu_database_user as a LEFT JOIN stu_database_entrys as b ON b.id=a.database_id LEFT JOIN stu_database_categories as c ON c.id=b.category_id GROUP BY a.user_id ORDER BY points DESC LIMIT 10'
+        return array_map(
+            function (array $data): DatabaseTopListDiscover {
+                return new DatabaseTopListDiscover($data);
+            },
+            $this->databaseUserRepository->getTopList()
         );
-        while ($entry = mysqli_fetch_assoc($result)) {
-            $list[] = new DatabaseTopListDiscover($entry);
-        }
-
-        return $list;
     }
 }

@@ -4,5 +4,5 @@ namespace Stu\Orm\Entity;
 
 interface UserMapInterface
 {
-    public function getId(): int;
+    public function getId(): string;
 }

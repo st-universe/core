@@ -3,7 +3,6 @@
 use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
-use Stu\Lib\DbInterface;
 use Stu\Lib\ModuleScreen\ModuleSelectorWrapperInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -361,16 +360,6 @@ function jsquote($str)
         $str
     );
 } #}}}
-
-function &DB()
-{
-    static $DB = null;
-    if ($DB === null) {
-        global $container;
-        return $container->get(DbInterface::class);
-    }
-    return $DB;
-}
 
 function currentUser(): UserInterface
 {

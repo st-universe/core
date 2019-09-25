@@ -66,4 +66,8 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return UserInterface[]
      */
     public function getOrderedByLastaction(int $limit, int $ignoreUserId, int $lastActionThreshold): iterable;
+
+    public function getActiveAmount(): int;
+
+    public function getActiveAmountRecentlyOnline(int $threshold): int;
 }

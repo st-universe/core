@@ -6,7 +6,6 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use request;
-use Stu\Lib\DbInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -20,7 +19,9 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class GameController implements GameControllerInterface
 {
@@ -36,8 +37,6 @@ final class GameController implements GameControllerInterface
 
     private $config;
 
-    private $db;
-
     private $gameTurnRepository;
 
     private $researchedRepository;
@@ -51,6 +50,10 @@ final class GameController implements GameControllerInterface
     private $privateMessageSender;
 
     private $colonyRepository;
+
+    private $userRepository;
+
+    private $researchRepository;
 
     private $gameInformations = [];
 
@@ -80,21 +83,21 @@ final class GameController implements GameControllerInterface
         TalPageInterface $talPage,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         ConfigInterface $config,
-        DbInterface $db,
         GameTurnRepositoryInterface $gameTurnRepository,
         ResearchedRepositoryInterface $researchedRepository,
         GameConfigRepositoryInterface $gameConfigRepository,
         EntityManagerInterface $entityManager,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        UserRepositoryInterface $userRepository,
+        ResearchRepositoryInterface $researchRepository
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->talPage = $talPage;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->config = $config;
-        $this->db = $db;
         $this->gameTurnRepository = $gameTurnRepository;
         $this->researchedRepository = $researchedRepository;
         $this->gameConfigRepository = $gameConfigRepository;
@@ -102,6 +105,8 @@ final class GameController implements GameControllerInterface
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyRepository = $colonyRepository;
+        $this->userRepository = $userRepository;
+        $this->researchRepository = $researchRepository;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -256,7 +261,7 @@ final class GameController implements GameControllerInterface
     public function getPlayerCount(): int
     {
         if ($this->playercount === null) {
-            $this->playercount = (int) $this->db->query("SELECT COUNT(*) FROM stu_user WHERE id>100", 1);
+            return $this->userRepository->getActiveAmount();
         }
         return $this->playercount;
     }
@@ -308,7 +313,7 @@ final class GameController implements GameControllerInterface
 
     public function getQueryCount(): int
     {
-        return (int) $this->db->getQueryCount();
+        return 666;
     }
 
     public function getDebugNotices(): array
@@ -358,18 +363,12 @@ final class GameController implements GameControllerInterface
 
     public function getPlanetColonyLimit(): int
     {
-        return (int) $this->db->query(
-            'SELECT SUM(upper_planetlimit)+1 FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
-            1
-        );
+        return $this->researchRepository->getPlanetColonyLimitByUser($this->getUser()->getId());
     }
 
     public function getMoonColonyLimit(): int
     {
-        return (int) $this->db->query(
-            'SELECT SUM(upper_moonlimit) FROM stu_research WHERE id IN (SELECT research_id FROM stu_researched WHERE user_id=' . $this->getUser()->getId() . ' ANd aktiv=0)',
-            1
-        );
+        return $this->researchRepository->getMoonColonyLimitByUser($this->getUser()->getId());
     }
 
     public function getPlanetColonyCount(): int
@@ -475,8 +474,7 @@ final class GameController implements GameControllerInterface
             $this->gameStats = [
                 'turn' => $this->getCurrentRound(),
                 'player' => $this->getPlayerCount(),
-                'playeronline' => $this->db->query("SELECT COUNT(*) FROM stu_user WHERE id>100 AND lastaction>" . time() . "-300",
-                    1),
+                'playeronline' => $this->userRepository->getActiveAmountRecentlyOnline(time() - 300),
             ];
         }
         return $this->gameStats;

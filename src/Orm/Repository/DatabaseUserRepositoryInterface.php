@@ -16,4 +16,6 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
     public function prototype(): DatabaseUserInterface;
 
     public function save(DatabaseUserInterface $entry): void;
+
+    public function getTopList(): array;
 }

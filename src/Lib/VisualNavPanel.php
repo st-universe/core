@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\UserMapRepositoryInterface;
 
 class VisualNavPanel
 {
@@ -39,13 +40,25 @@ class VisualNavPanel
         $cy = $this->getShip()->getCY();
         $range = $this->getShip()->getSensorRange();
 
-        if ($this->user->getMapType() == MAPTYPE_INSERT) {
-            DB()->query("INSERT IGNORE INTO stu_user_map (id,user_id,cx,cy,map_id) SELECT uuid()," .$this->user ->getId() . " as user_id,cx,cy,id as map_id FROM stu_map WHERE cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range));
-        } else {
-            DB()->query("DELETE FROM stu_user_map WHERE user_id=" .$this->user ->getId() . " AND cx BETWEEN " . ($cx - $range) . " AND " . ($cx + $range) . " AND cy BETWEEN " . ($cy - $range) . " AND " . ($cy + $range) . "");
-        }
         // @todo refactor
         global $container;
+        $repo = $container->get(UserMapRepositoryInterface::class);
+
+        if ($this->user->getMapType() === MAPTYPE_INSERT) {
+            $repo->insertMapFieldsForUser(
+                $this->user->getId(),
+                $cx,
+                $cy,
+                $range
+            );
+        } else {
+            $repo->deleteMapFieldsForUser(
+                $this->user->getId(),
+                $cx,
+                $cy,
+                $range
+            );
+        }
 
         return $container->get(ShipRepositoryInterface::class)->getSensorResultOuterSystem(
             $cx,

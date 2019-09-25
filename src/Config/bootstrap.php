@@ -16,15 +16,11 @@ use Psr\Container\ContainerInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Lib\Db;
-use Stu\Lib\DbInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use function DI\autowire;
-use function DI\create;
-use function DI\get;
 
 $builder = new ContainerBuilder();
 
@@ -38,10 +34,6 @@ $builder->addDefinitions([
             ]
         );
     },
-    DbInterface::class => create(Db::class)
-        ->constructor(
-            get(ConfigInterface::class)
-        ),
     SessionInterface::class => autowire(Session::class),
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);

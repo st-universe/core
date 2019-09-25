@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Tal\TalPageInterface;
 
 class AccessViolation extends STUException {
@@ -54,15 +55,16 @@ class ObjectNotFoundException extends STUException  {
 
 class STUException extends Exception {
 	function __construct() {
-		DB()->rollbackTransaction();
+        // @todo refactor
+
+        global $container;
+
+        $container->get(EntityManagerInterface::class)->rollback();
 		if (isCommandLineCall()) {
 			print_r($this->getError());
 			exit;
 		}
 		ob_clean();
-		// @todo refactor
-
-		global $container;
 		$tpl = $container->get(TalPageInterface::class);
 		$tpl->setTemplate('html/defaultexception.xhtml');
 		$tpl->setVar('THIS',$this);

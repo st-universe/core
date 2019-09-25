@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Stu\Orm\Repository\UserMapRepository")
  * @Table(
  *     name="stu_user_map",
  *     indexes={
+ *     },
+ *     uniqueConstraints={
+ *         @UniqueConstraint(name="user_coordinates_idx", columns={"user_id", "cx", "cy"})
  *     }
  * )
  **/
@@ -29,7 +32,7 @@ class UserMap implements UserMapInterface
     /** @Column(type="integer") * */
     private $map_id = 0;
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }

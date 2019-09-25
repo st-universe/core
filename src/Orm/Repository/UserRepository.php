@@ -156,4 +156,26 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             ->setMaxResults($limit)
             ->getResult();
     }
+
+    public function getActiveAmount(): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100',
+                User::class
+            )
+        )->getSingleScalarResult();
+    }
+
+    public function getActiveAmountRecentlyOnline(int $threshold): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100 AND u.lastaction < :threshold',
+                User::class
+            )
+        )->setParameters([
+            'threshold' => $threshold
+        ])->getSingleScalarResult();
+    }
 }

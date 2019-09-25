@@ -2,25 +2,31 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Lib\DbInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class DatabaseOptimization implements MaintenanceHandlerInterface
 {
 
-    private $db;
+    private $entityManager;
 
     public function __construct(
-        DbInterface $db
+        EntityManagerInterface $entityManager
     ) {
-        $this->db = $db;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(): void
     {
-        $result = array_column(mysqli_fetch_all($this->db->query('SHOW TABLES')), 0);
+        $connection = $this->entityManager->getConnection();
+        $tableList = $connection->getSchemaManager()->listTables();
 
-        foreach ($result as $table_name) {
-            $this->db->query("OPTIMIZE TABLE " . $table_name);
+        foreach ($tableList as $table_name) {
+            $connection->query(
+                sprintf(
+                    'OPTIMIZE TABLE %s',
+                    $table_name->getName()
+                )
+            );
         }
     }
 }

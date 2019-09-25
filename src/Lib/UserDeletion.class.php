@@ -273,9 +273,6 @@ class UserDeletion
             $handler->handleShips();
             $handler->handleTrade();
 
-            DB()->query('DELETE FROM stu_user_map WHERE user_id='.$user->getId());
-            DB()->query('DELETE FROM stu_user_iptable WHERE user_id='.$user->getId());
-
             // @todo refactor
             global $container;
 

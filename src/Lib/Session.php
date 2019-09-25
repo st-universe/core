@@ -13,8 +13,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class Session implements SessionInterface
 {
 
-    private $db;
-
     private $userIpTableRepository;
 
     private $sessionStringRepository;
@@ -27,12 +25,10 @@ final class Session implements SessionInterface
     private $user;
 
     public function __construct(
-        DbInterface $db,
         UserIpTableRepositoryInterface $userIpTableRepository,
         SessionStringRepositoryInterface $sessionStringRepository,
         UserRepositoryInterface $userRepository
     ) {
-        $this->db = $db;
         $this->userIpTableRepository = $userIpTableRepository;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->userRepository = $userRepository;
@@ -211,7 +207,11 @@ final class Session implements SessionInterface
 
         $userId = (int) $_SESSION['uid'];
 
-        $this->db->query("UPDATE stu_user SET lastaction='" . time() . "' WHERE id=" . $userId . " LIMIT 1");
+        $user = $this->userRepository->find($userId);
+        $user->setLastaction(time());
+
+        $this->userRepository->save($user);
+
 
         $ipTableEntry = $this->userIpTableRepository->findBySessionId(session_id());
         if ($ipTableEntry !== null) {
@@ -220,7 +220,6 @@ final class Session implements SessionInterface
             $this->userIpTableRepository->save($ipTableEntry);
         }
 
-        $user = $this->userRepository->find($userId);
         if ($user === null) {
             $this->logout();
         }
