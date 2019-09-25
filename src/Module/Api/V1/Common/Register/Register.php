@@ -47,9 +47,8 @@ final class Register extends Action
         );
         if ($factions === []) {
             return $response->withError(
-                'BAD REQUEST',
-                'No suitable faction transmitted',
-                ErrorCodeEnum::INVALID_FACTION
+                ErrorCodeEnum::INVALID_FACTION,
+                'No suitable faction transmitted'
             );
         }
 
@@ -61,9 +60,8 @@ final class Register extends Action
             );
         } catch (RegistrationException $e) {
             return $response->withError(
-                'BAD REQUEST',
-                $e->getMessage(),
-                $e->getCode()
+                $e->getCode(),
+                $e->getMessage()
             );
         }
 

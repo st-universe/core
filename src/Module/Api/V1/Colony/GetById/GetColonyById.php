@@ -6,6 +6,7 @@ namespace Stu\Module\Api\V1\Colony\GetById;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
+use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Module\Api\Middleware\Action;
 use Stu\Module\Api\Middleware\ActionError;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
@@ -40,7 +41,8 @@ final class GetColonyById extends Action
 
         if ($colony === null || $colony->getUserId() !== $this->session->getUser()->getId()) {
             return $response->withError(
-                ActionError::RESOURCE_NOT_FOUND
+                ErrorCodeEnum::NOT_FOUND,
+                'Not found'
             );
         }
 

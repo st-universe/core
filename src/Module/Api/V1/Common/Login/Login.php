@@ -7,6 +7,7 @@ namespace Stu\Module\Api\V1\Common\Login;
 use Firebase\JWT\JWT;
 use Noodlehaus\ConfigInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Api\Middleware\Action;
@@ -54,7 +55,7 @@ final class Login extends Action
             );
         } catch (LoginException $e) {
             return $response->withError(
-                ActionError::VERIFICATION_ERROR,
+                ErrorCodeEnum::AUTHENTICATION_FAILED,
                 $e->getMessage()
             );
         }
