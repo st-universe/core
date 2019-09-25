@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Module\Api\Middleware\Action;
-use Stu\Module\Api\Middleware\ActionError;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;

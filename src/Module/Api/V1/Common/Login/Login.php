@@ -11,7 +11,6 @@ use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Api\Middleware\Action;
-use Stu\Module\Api\Middleware\ActionError;
 use Stu\Module\Api\Middleware\Request\JsonSchemaRequestInterface;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 
