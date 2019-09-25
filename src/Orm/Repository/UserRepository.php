@@ -171,7 +171,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100 AND u.lastaction < :threshold',
+                'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100 AND u.lastaction > :threshold',
                 User::class
             )
         )->setParameters([
