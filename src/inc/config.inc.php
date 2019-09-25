@@ -113,12 +113,12 @@ define("MAX_TRADELICENCE_COUNT",6);
 define("MODULE_TYPE_COUNT",9);
 
 // Base Techs
-define('RESEARCH_START_FEDERATION',1001);                                                                                                                                                                                   
-define('RESEARCH_START_ROMULAN',1002);                                                                                                                                                                                      
-define('RESEARCH_START_KLINGON',1003);                                                                                                                                                                                      
-define('RESEARCH_START_CARDASSIAN',1004);                                                                                                                                                                                   
-define('RESEARCH_START_FERENGI',1005);                                                                                                                                                                                      
-define('RESEARCH_START_EMPIRE',1006); 
+define('RESEARCH_START_FEDERATION',1001);
+define('RESEARCH_START_ROMULAN',1002);
+define('RESEARCH_START_KLINGON',1003);
+define('RESEARCH_START_CARDASSIAN',1004);
+define('RESEARCH_START_FERENGI',1005);
+define('RESEARCH_START_EMPIRE',1006);
 
 // Maindesk link
 define('MAINDESK', '/maindesk.php');
@@ -332,32 +332,20 @@ define('BUILDMENU_INFRASTRUCTURE',3);
 
 ini_set('date.timezone', 'Europe/Berlin');
 
-function debug_notice($text) {
-    get_debug_error()->addDebugNotice($text);
+if (DEBUG_MODE === true) {
+    error_reporting(E_ALL);
+//    error_reporting(E_ALL & ~E_NOTICE);
+} else {
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
 
-function error_notice($errno, $errtxt, $errfile, $errline) {
-    switch ($errno) {
-        case E_PARSE:
-        case E_ERROR:
-        case E_WARNING:
-        case E_USER_ERROR:
-        case E_USER_WARNING:
-        case E_USER_NOTICE:
-            get_debug_error()->addErrorNotice($errtxt,$errfile,$errline);
-            break;
-    }
-}
+$whoops = new \Whoops\Run;
 
-set_error_handler('error_notice');
+$handler = new \Whoops\Handler\PrettyPageHandler();
+$handler->setPageTitle('Error - Star Trek Universe');
 
-function &get_debug_error() {
-    static $debug_error = NULL;
-    if ($debug_error === NULL) {
-        $debug_error = new ErrorCollector;
-    }
-    return $debug_error;
-}
+$whoops->prependHandler($handler);
+$whoops->register();
 
 require_once 'func.inc.php';
 include_once("generated/fieldtypesname.inc.php");

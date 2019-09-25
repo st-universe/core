@@ -25,7 +25,7 @@ class request
         return self::getvars()[$key] ?? self::postvars()[$key] ?? false;
     }
 
-    public static function getVarByMethod(&$method, &$var, $fatal = false)
+    public static function getVarByMethod($method, $var, $fatal = false)
     {
         if (!@array_key_exists($var, $method)) {
             if ($fatal === true) {
@@ -111,7 +111,7 @@ class request
         return self::returnArray(self::getVarByMethod(self::postvars(), $var));
     }
 
-    public static function returnInt(&$result)
+    public static function returnInt($result)
     {
         if (!$result || $result < 0) {
             return 0;
@@ -119,7 +119,7 @@ class request
         return intval($result);
     }
 
-    public static function returnArray(&$result)
+    public static function returnArray($result)
     {
         if (!is_array($result)) {
             return array();
