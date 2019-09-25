@@ -68,7 +68,7 @@ final class ShowShip implements ViewControllerInterface
 
         $result = DB()->query(
             sprintf(
-                'SELECT id FROM stu_ships WHERE id != %d AND is_base=0 AND fleets_id>0 AND cloak=0 AND %s',
+                'SELECT id FROM stu_ships WHERE id != %d AND is_base=0 AND fleets_id is not null AND cloak=0 AND %s',
                 $shipId,
                 $coords_query
             )
@@ -101,7 +101,7 @@ final class ShowShip implements ViewControllerInterface
 
         $result = DB()->query(
             sprintf(
-                'SELECT id FROM stu_ships WHERE id != %d AND is_base=0 AND fleets_id=0 AND cloak=0 AND %s',
+                'SELECT id FROM stu_ships WHERE id != %d AND is_base=0 AND fleets_id is null AND cloak=0 AND %s',
                 $shipId,
                 $coords_query
             )
