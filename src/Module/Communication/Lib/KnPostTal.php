@@ -1,7 +1,6 @@
 <?php
 
-// @todo activate strict typing
-declare(strict_types=0);
+declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
@@ -9,8 +8,6 @@ use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
-use Stu\Orm\Repository\RpgPlotRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KnPostTal implements KnPostTalInterface
 {
@@ -35,12 +32,9 @@ final class KnPostTal implements KnPostTalInterface
         return $this->post->getId();
     }
 
-    public function getUser(): UserInterface
+    public function getUser(): ?UserInterface
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(UserRepositoryInterface::class)->find($this->post->getUserId());
+        return $this->post->getUser();
     }
 
     public function getUserId(): int
@@ -78,12 +72,9 @@ final class KnPostTal implements KnPostTalInterface
         return $this->post->getPlotId();
     }
 
-    public function getRPGPlot(): RpgPlotInterface
+    public function getRPGPlot(): ?RpgPlotInterface
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(RpgPlotRepositoryInterface::class)->find($this->getPlotId());
+        return $this->post->getRpgPlot();
     }
 
     public function getCommentCount(): int
@@ -103,6 +94,6 @@ final class KnPostTal implements KnPostTalInterface
 
     public function isNewerThanMark(): bool
     {
-        return $this->getId() > currentUser()->getKNMark();
+        return $this->getId() > $this->currentUser->getKNMark();
     }
 }

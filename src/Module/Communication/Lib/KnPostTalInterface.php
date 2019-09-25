@@ -9,7 +9,7 @@ interface KnPostTalInterface
 {
     public function getId(): int;
 
-    public function getUser(): UserInterface;
+    public function getUser(): ?UserInterface;
 
     public function getUserId(): int;
 
@@ -25,7 +25,7 @@ interface KnPostTalInterface
 
     public function getPlotId(): ?int;
 
-    public function getRPGPlot(): RpgPlotInterface;
+    public function getRPGPlot(): ?RpgPlotInterface;
 
     public function getCommentCount(): int;
 
