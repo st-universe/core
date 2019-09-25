@@ -126,7 +126,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'userId' => $userId,
             'tradePostShipId' => $tradePostShipId,
             'commodityId' => $commodityId,
-            'amount' => $amount
+            'amount' => $amount,
         ])->getResult();
     }
 
@@ -138,14 +138,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Ship::class
             )
         )->setParameters([
-            'regenerationThreshold' => $regenerationThreshold
+            'regenerationThreshold' => $regenerationThreshold,
         ])->getResult();
     }
 
     public function getDebrisFields(): iterable
     {
         return $this->findBy([
-            'is_destroyed' => true
+            'is_destroyed' => true,
         ]);
     }
 
@@ -195,7 +195,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange): iterable
     {
         $rsm = new ResultSetMapping();
@@ -217,6 +216,78 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $cx + $sensorRange,
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
+        ])->getResult();
+    }
+
+    public function getFleetScannerResults(
+        int $starSystemId,
+        int $sx,
+        int $sy,
+        int $cx,
+        int $cy,
+        int $ignoreId
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.cx = :cx AND s.cy = :cy AND
+                s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NOT NULL AND s.cloak = 0 AND s.is_base = 0 AND s.id != :ignoreId',
+                Ship::class
+            )
+        )->setParameters([
+            'starSystemId' => $starSystemId,
+            'sx' => $sx,
+            'sy' => $sy,
+            'cx' => $cx,
+            'cy' => $cy,
+            'ignoreId' => $ignoreId
+        ])->getResult();
+    }
+
+    public function getBaseScannerResults(
+        int $starSystemId,
+        int $sx,
+        int $sy,
+        int $cx,
+        int $cy,
+        int $ignoreId
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.cx = :cx AND s.cy = :cy AND
+                s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = 0 AND s.is_base = 1 AND s.id != :ignoreId',
+                Ship::class
+            )
+        )->setParameters([
+            'starSystemId' => $starSystemId,
+            'sx' => $sx,
+            'sy' => $sy,
+            'cx' => $cx,
+            'cy' => $cy,
+            'ignoreId' => $ignoreId
+        ])->getResult();
+    }
+
+    public function getSingleShipScannerResults(
+        int $starSystemId,
+        int $sx,
+        int $sy,
+        int $cx,
+        int $cy,
+        int $ignoreId
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.cx = :cx AND s.cy = :cy AND
+                s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = 0 AND s.is_base = 0 AND s.id != :ignoreId',
+                Ship::class
+            )
+        )->setParameters([
+            'starSystemId' => $starSystemId,
+            'sx' => $sx,
+            'sy' => $sy,
+            'cx' => $cx,
+            'cy' => $cy,
+            'ignoreId' => $ignoreId
         ])->getResult();
     }
 }

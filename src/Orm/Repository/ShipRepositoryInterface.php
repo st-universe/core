@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
 
 /**
@@ -80,4 +81,40 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange): iterable;
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
+    public function getFleetScannerResults(
+        int $starSystemId,
+        int $sx,
+        int $sy,
+        int $cx,
+        int $cy,
+        int $ignoreId
+    ): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
+    public function getBaseScannerResults(
+        int $starSystemId,
+        int $sx,
+        int $sy,
+        int $cx,
+        int $cy,
+        int $ignoreId
+    ): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
+    public function getSingleShipScannerResults(
+        int $starSystemId,
+        int $sx,
+        int $sy,
+        int $cx,
+        int $cy,
+        int $ignoreId
+    ): iterable;
 }

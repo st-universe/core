@@ -55,61 +55,46 @@ final class ShowShip implements ViewControllerInterface
 
         $shipId = $ship->getId();
 
-        if ($ship->getSystemsId() > 0) {
-            $coords_query = sprintf(
-                'systems_id = %d AND sx = %d AND sy = %d',
-                $ship->getSystemsId(),
-                $ship->getPosX(),
-                $ship->getPosY()
-            );
-        } else {
-            $coords_query = sprintf('systems_id=0 AND cx = %d AND cy = %d', $ship->getPosX(), $ship->getPosY());
-        }
-
-        $result = DB()->query(
-            sprintf(
-                'SELECT id FROM stu_ships WHERE id != %d AND is_base=0 AND fleets_id is not null AND cloak=0 AND %s',
-                $shipId,
-                $coords_query
-            )
+        $result = $this->shipRepository->getFleetScannerResults(
+            $ship->getSystemsId(),
+            $ship->getSx(),
+            $ship->getSy(),
+            $ship->getCx(),
+            $ship->getCy(),
+            $ship->getId()
         );
+
+        $nbs = $this->shipRepository->getBaseScannerResults(
+            $ship->getSystemsId(),
+            $ship->getSx(),
+            $ship->getSy(),
+            $ship->getCx(),
+            $ship->getCy(),
+            $ship->getId()
+        );
+
+        $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
+            $ship->getSystemsId(),
+            $ship->getSx(),
+            $ship->getSy(),
+            $ship->getCx(),
+            $ship->getCy(),
+            $ship->getId()
+        );
+
         $fnbs = [];
-        while ($data = mysqli_fetch_assoc($result)) {
-            $obj = $this->shipRepository->find((int) $data['id']);
-            if (!array_key_exists($obj->getFleetId(), $fnbs)) {
-                $fnbs[$obj->getFleetId()]['fleet'] = $this->fleetRepository->find((int) $obj->getFleetId());
-                if ($this->session->hasSessionValue('hiddenfleets', $obj->getFleetId())) {
-                    $fnbs[$obj->getFleetId()]['fleethide'] = true;
+        foreach ($result as $data) {
+            if (!array_key_exists($data->getFleetId(), $fnbs)) {
+                $fnbs[$data->getFleetId()]['fleet'] = $data->getFleet();
+                if ($this->session->hasSessionValue('hiddenfleets', $data->getFleetId())) {
+                    $fnbs[$data->getFleetId()]['fleethide'] = true;
                 } else {
-                    $fnbs[$obj->getFleetId()]['fleethide'] = false;
+                    $fnbs[$data->getFleetId()]['fleethide'] = false;
                 }
             }
-            $fnbs[$obj->getFleetId()]['ships'][] = $obj;
+            $fnbs[$data->getFleetId()]['ships'][] = $data;
         }
 
-        $result = DB()->query(
-            sprintf(
-                'SELECT id FROM stu_ships WHERE id != %d AND is_base=1 AND cloak=0 AND %s',
-                $shipId,
-                $coords_query
-            )
-        );
-        $nbs = [];
-        while ($data = mysqli_fetch_assoc($result)) {
-            $nbs[] = $this->shipRepository->find((int)$data['id']);
-        }
-
-        $result = DB()->query(
-            sprintf(
-                'SELECT id FROM stu_ships WHERE id != %d AND is_base=0 AND fleets_id is null AND cloak=0 AND %s',
-                $shipId,
-                $coords_query
-            )
-        );
-        $singleShipsNbs = array();
-        while ($data = mysqli_fetch_assoc($result)) {
-            $singleShipsNbs[] = $this->shipRepository->find((int)$data['id']);
-        }
         $colony = $ship->getCurrentColony();
         $canColonize = false;
         if ($colony && $ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
