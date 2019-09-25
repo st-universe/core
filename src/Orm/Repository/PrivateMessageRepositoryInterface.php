@@ -36,4 +36,10 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
         int $offset,
         int $limit
     ): iterable;
+
+    public function getAmountByFolder(int $folderId): int;
+
+    public function getNewAmountByFolder(int $folderId): int;
+
+    public function truncateByFolder(int $folderId): void;
 }

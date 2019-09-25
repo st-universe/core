@@ -153,9 +153,12 @@ class Fleet implements FleetInterface
 
     public function getPointSum(): int
     {
-        return (int)DB()->query(
-            'SELECT SUM(c.points) FROM stu_ships as a LEFT JOIN stu_rumps as b ON (b.id=a.rumps_id) LEFT JOIN stu_rumps_categories as c ON (c.id=b.category_id) WHERE a.fleets_id=' . $this->getId(),
-            1
+        return array_reduce(
+            $this->shiplist->toArray(),
+            function (int $sum, ShipInterface $ship): int {
+                return $sum + $ship->getRump()->getShipRumpCategory()->getPoints();
+            },
+            0
         );
     }
 }

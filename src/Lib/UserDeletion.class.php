@@ -14,6 +14,7 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\NoteRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -208,10 +209,11 @@ class UserDeletion
         global $container;
 
         $privateMessageFolderRepo = $container->get(PrivateMessageFolderRepositoryInterface::class);
+        $privateMessageRepo = $container->get(PrivateMessageRepositoryInterface::class);
 
         $result = $privateMessageFolderRepo->getOrderedByUser((int) $this->getUser()->getId());
         foreach ($result as $folder) {
-            $folder->truncate();
+            $privateMessageRepo->truncateByFolder($folder->getId());
 
             $privateMessageFolderRepo->delete($folder);
         }

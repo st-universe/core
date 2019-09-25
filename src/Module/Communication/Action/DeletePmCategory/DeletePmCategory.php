@@ -7,6 +7,7 @@ namespace Stu\Module\Communication\Action\DeletePmCategory;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class DeletePmCategory implements ActionControllerInterface
 {
@@ -16,27 +17,31 @@ final class DeletePmCategory implements ActionControllerInterface
 
     private $privateMessageFolderRepository;
 
+    private $privateMessageRepository;
+
     public function __construct(
         DeletePmCategoryRequestInterface $deletePmCategoryRequest,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        PrivateMessageRepositoryInterface $privateMessageRepository
     ) {
         $this->deletePmCategoryRequest = $deletePmCategoryRequest;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->privateMessageRepository = $privateMessageRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $cat = $this->privateMessageFolderRepository->find($this->deletePmCategoryRequest->getCategoryId());
+        $folder = $this->privateMessageFolderRepository->find($this->deletePmCategoryRequest->getCategoryId());
         if (
-            $cat === null ||
-            $cat->getUserId() != $game->getUser()->getId() ||
-            !$cat->isDeleteAble()
+            $folder === null ||
+            $folder->getUserId() != $game->getUser()->getId() ||
+            !$folder->isDeleteAble()
         ) {
             return;
         }
-        $cat->truncate();
+        $this->privateMessageRepository->truncateByFolder($folder->getId());
 
-        $this->privateMessageFolderRepository->delete($cat);
+        $this->privateMessageFolderRepository->delete($folder);
 
         $game->addInformation(_('Der Ordner wurde gelöscht'));
     }

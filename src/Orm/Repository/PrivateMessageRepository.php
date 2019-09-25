@@ -62,4 +62,28 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             $offset
         );
     }
+
+    public function getAmountByFolder(int $folderId): int
+    {
+        return $this->count([
+            'cat_id' => $folderId
+        ]);
+    }
+
+    public function getNewAmountByFolder(int $folderId): int
+    {
+        return $this->count([
+            'cat_id' => $folderId,
+            'new' => 1
+        ]);
+    }
+
+    public function truncateByFolder(int $folderId): void
+    {
+        $this->getEntityManager()->createQuery(
+            'DELETE FROM %s pm WHERE pm.cat_id = :folderId'
+        )->setParameters([
+            'folderId' => $folderId
+        ])->execute();
+    }
 }

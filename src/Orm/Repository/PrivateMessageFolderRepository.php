@@ -47,4 +47,16 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
             'special' => $specialId
         ]);
     }
+
+    public function getMaxOrderIdByUser(int $userId): int
+    {
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT MAX(pmf.sort) FROM %s pmf WHERE pmf.user_id = :userId',
+                PrivateMessageFolder::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])->getSingleScalarResult();
+    }
 }

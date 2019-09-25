@@ -22,4 +22,6 @@ interface PrivateMessageFolderRepositoryInterface extends ObjectRepository
     public function getOrderedByUser(int $userId): iterable;
 
     public function getByUserAndSpecial(int $userId, int $specialId): ?PrivateMessageFolderInterface;
+
+    public function getMaxOrderIdByUser(int $userId): int;
 }

@@ -35,6 +35,4 @@ interface PrivateMessageFolderInterface
     public function isDropable(): bool;
 
     public function isDeleteAble(): bool;
-
-    public function truncate(): void;
 }

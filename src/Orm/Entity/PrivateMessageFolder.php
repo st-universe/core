@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PrivateMessageFolderRepository")
@@ -94,17 +96,30 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
 
     public function getCategoryCount(): int
     {
-        return (int) DB()->query("SELECT COUNT(id) FROM stu_pms WHERE cat_id=" . $this->getId(), 1);
+        // @todo refactor
+        global $container;
+
+        return $container->get(PrivateMessageRepositoryInterface::class)->getAmountByFolder(
+            $this->getId(),
+        );
     }
 
     public function getCategoryCountNew(): int
     {
-        return (int) DB()->query("SELECT COUNT(id) FROM stu_pms WHERE new=1 AND cat_id=" . $this->getId(), 1);
+        // @todo refactor
+        global $container;
+
+        return $container->get(PrivateMessageRepositoryInterface::class)->getNewAmountByFolder(
+            $this->getId(),
+        );
     }
 
     public function appendToSorting(): void
     {
-        $sort = (int) DB()->query("SELECT MAX(sort) FROM stu_pm_cats WHERE user_id=" . $this->getUserId(), 1);
+        // @todo refactor
+        global $container;
+
+        $sort = $container->get(PrivateMessageFolderRepositoryInterface::class)->getMaxOrderIdByUser($this->getUserId());
         $this->setSort($sort + 1);
     }
 
@@ -130,8 +145,4 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
         return $this->getSpecial() === 0;
     }
 
-    public function truncate(): void
-    {
-        DB()->query("DELETE FROM stu_pms WHERE cat_id=" . $this->getId());
-    }
 }
