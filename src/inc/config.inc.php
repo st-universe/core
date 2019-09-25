@@ -333,8 +333,8 @@ define('BUILDMENU_INFRASTRUCTURE',3);
 ini_set('date.timezone', 'Europe/Berlin');
 
 if (DEBUG_MODE === true) {
-    error_reporting(E_ALL);
-//    error_reporting(E_ALL & ~E_NOTICE);
+//    error_reporting(E_ALL);
+    error_reporting(E_ALL & ~E_NOTICE);
 } else {
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
