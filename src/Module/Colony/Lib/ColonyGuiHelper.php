@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Lib;
 
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Tuple;
@@ -49,29 +50,29 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
         if ($energyProduction < 0) {
             $prod = abs($energyProduction);
             if ($colony->getEps() - $prod < 0) {
-                $bars[STATUSBAR_RED] = $colony->getEps();
-                $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
+                $bars[StatusBarColorEnum::STATUSBAR_RED] = $colony->getEps();
+                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
             } else {
-                $bars[STATUSBAR_YELLOW] = $colony->getEps() - $prod;
-                $bars[STATUSBAR_RED] = $prod;
-                $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
+                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps() - $prod;
+                $bars[StatusBarColorEnum::STATUSBAR_RED] = $prod;
+                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
             }
         }
         if ($energyProduction > 0) {
             if ($colony->getEps() + $energyProduction > $colony->getMaxEps()) {
-                $bars[STATUSBAR_YELLOW] = $colony->getEps();
+                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps();
                 if ($colony->getEps() < $colony->getMaxEps()) {
-                    $bars[STATUSBAR_GREEN] = $colony->getMaxEps() - $colony->getEps();
+                    $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $colony->getMaxEps() - $colony->getEps();
                 }
             } else {
-                $bars[STATUSBAR_YELLOW] = $colony->getEps();
-                $bars[STATUSBAR_GREEN] = $energyProduction;
-                $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps() - $energyProduction;
+                $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps();
+                $bars[StatusBarColorEnum::STATUSBAR_GREEN] = $energyProduction;
+                $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps() - $energyProduction;
             }
         }
         if ($energyProduction == 0) {
-            $bars[STATUSBAR_YELLOW] = $colony->getEps();
-            $bars[STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
+            $bars[StatusBarColorEnum::STATUSBAR_YELLOW] = $colony->getEps();
+            $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxEps() - $colony->getEps();
         }
         foreach ($bars as $color => $value) {
             if ($colony->getMaxEps() < $value) {

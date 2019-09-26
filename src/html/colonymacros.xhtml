@@ -1,7 +1,7 @@
 <html xmlns:stu="stu">
 	<metal:macro metal:define-macro="colonyimage">
 		<tal:block tal:condition="colony/ownedByCurrentUser">
-			<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}"><metal:macro metal:use-macro="colonyimage_base" /></a>	
+			<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}"><metal:macro metal:use-macro="colonyimage_base" /></a>
 		</tal:block>
 		<tal:block tal:condition="not:colony/ownedByCurrentUser">
 			<metal:macro metal:use-macro="colonyimage_base" />
@@ -21,7 +21,7 @@
 			var sstr = '${THIS/getSessionString}';
 			var colonyid = ${COLONY/getId};
 			var scrollOffset = 6;
-		</script> 
+		</script>
 		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/colony.js"><!-- stuniverse --></script>
 	</metal:block>
 	<metal:block metal:define-macro="buildmenu">
@@ -544,7 +544,7 @@
 									<img src="assets/buttons/modul_1.gif" />
 								</th>
 								<td style="vertical-align: middle; text-align: center;">
-									<span tal:replace="structure php:renderHuellStatusBar(data.getHuell(),data.getMaxHuell())">EPS</span> 
+									<span tal:replace="structure php:renderHuellStatusBar(data.getHuell(),data.getMaxHuell())">EPS</span>
 								</td>
 								<td style="text-align: center;">
 									${data/getHuell}
@@ -983,7 +983,7 @@
 							<span i18n:translate="">auf</span> ${FIELD/getFieldTypeName}
 						</div>
 						<div>
-							<div style="display: table-cell; padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">STATUSBAR</div>
+							<div style="display: table-cell; padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(\Stu\Module\Tal\StatusBarColorEnum::STATUSBAR_GREEN,FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">STATUSBAR</div>
 							<div style="display: table-cell; vertical-align: middle; padding-left: 5px;">
 								<span i18n:translate="">Baustatus</span>: <span tal:replace="php:getPercentage(FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">PERCENTAGE</span>%<br />
 							</div>
@@ -1095,7 +1095,7 @@
 										<img src="assets/buildings/${FIELD/getBuilding/getId}/0at.png" />
 									</td>
 									<td style="text-align: center; vertical-align: middle">
-										=&gt;	
+										=&gt;
 									</td>
 									<td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
 										<img src="assets/buildings/${data/getUpgradeToBuildingId}/0at.png" />
@@ -1132,7 +1132,7 @@
 									<td style="vertical-align: middle; width: 50px; text-align: center;">
 										<div>
 											Status: <span tal:replace="php:getPercentage(FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">PERCENTAGE</span>%</div>
-										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(STATUSBAR_GREEN,FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">STATUSBAR</div>
+										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(\Stu\Module\Tal\StatusBarColorEnum::STATUSBAR_GREEN,FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">STATUSBAR</div>
 									</td>
 									<td style="width: 45px; text-align: center;">
 										<img src="assets/fields/${FIELD/getTerraforming/getToFieldTypeId}.gif" />
@@ -1140,7 +1140,7 @@
 								</tr>
 								<tr>
 									<td colspan="3" style="text-align: center;">
-										Fertigstellung: <span tal:replace="datetime:FIELD/getTerraformingState/getFinishDate">FINISH</span>	
+										Fertigstellung: <span tal:replace="datetime:FIELD/getTerraformingState/getFinishDate">FINISH</span>
 									</td>
 								</tr>
 							</table>
@@ -1234,7 +1234,7 @@
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getRump/getName">RUMP</td>
 				<tal:block tal:condition="not:data/getStopDate">
 					<td style="text-align: center; vertical-align: middle">
-						<span tal:replace="structure php:getPercentageStatusBar(STATUSBAR_GREEN,data.getBuildtime()-(data.getFinishDate()-time()),data.getBuildtime())">STATUSBAR</span>
+						<span tal:replace="structure php:getPercentageStatusBar(\Stu\Module\Tal\StatusBarColorEnum::STATUSBAR_GREEN,data.getBuildtime()-(data.getFinishDate()-time()),data.getBuildtime())">STATUSBAR</span>
 					</td>
 					<td style="text-align: center; vertical-align: middle">
 						<span tal:replace="datetime:data/getFinishDate">DATE</span>

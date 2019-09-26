@@ -48,8 +48,6 @@ define("GENERATED_DIR", $webrootPath."/src/inc/generated/");
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $webrootPath);
 
-define('DEBUG_MODE', $config->get('debug.debug_mode'));
-
 define('SHIELD_REGENERATION_TIME',900);
 
 define('SHIP_CATEGORY_DEBRISFIELD',7);
@@ -76,16 +74,6 @@ define("USER_NOONE",1);
 define("TRUMFIELD_CLASS",8);
 
 define("USER_ONLINE_PERIOD",300);
-
-// Tick
-
-// Barcolors
-define("STATUSBAR_YELLOW",'aaaa00');
-define("STATUSBAR_GREEN",'00aa00');
-define("STATUSBAR_GREY",'777777');
-define("STATUSBAR_RED",'ff0000');
-define("STATUSBAR_BLUE",'0070cf');
-define("STATUSBAR_DARKBLUE",'004682');
 
 // Starmap
 define("MAPTYPE_INSERT",1);

@@ -5,6 +5,7 @@ use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Lib\ModuleScreen\ModuleSelectorWrapperInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -97,9 +98,9 @@ function tidyString(&$string)
 function renderResearchStatusBar($points, &$maxpoints)
 {
     $pro = getPercentage($points, $maxpoints);
-    $bar = getStatusBar(STATUSBAR_BLUE, ceil($pro / 2) * 2, 'Fortschritt: ' . $points . '/' . $maxpoints);
+    $bar = getStatusBar(StatusBarColorEnum::STATUSBAR_BLUE, ceil($pro / 2) * 2, 'Fortschritt: ' . $points . '/' . $maxpoints);
     if ($pro < 100) {
-        $bar .= getStatusBar(STATUSBAR_GREY, floor((100 - $pro) / 2) * 2, 'Fortschritt: ' . $points . '/' . $maxpoints);
+        $bar .= getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2) * 2, 'Fortschritt: ' . $points . '/' . $maxpoints);
     }
     return $bar;
 }
@@ -107,10 +108,10 @@ function renderResearchStatusBar($points, &$maxpoints)
 function renderShieldStatusBar(&$active, &$shields, &$maxshields)
 {
     $pro = getPercentage($shields, $maxshields);
-    $bar = getStatusBar(($active == 1 ? STATUSBAR_BLUE : STATUSBAR_DARKBLUE), ceil($pro / 2),
+    $bar = getStatusBar(($active == 1 ? StatusBarColorEnum::STATUSBAR_BLUE : StatusBarColorEnum::STATUSBAR_DARKBLUE), ceil($pro / 2),
         'Schilde: ' . $shields . '/' . $maxshields);
     if ($pro < 100) {
-        $bar .= getStatusBar(STATUSBAR_GREY, floor((100 - $pro) / 2), 'Schilde: ' . $shields . '/' . $maxshields);
+        $bar .= getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2), 'Schilde: ' . $shields . '/' . $maxshields);
     }
     return $bar;
 }
@@ -125,7 +126,7 @@ function getPercentageStatusBar($color, $amount, $maxamount)
     $pro = getPercentage($amount, $maxamount);
     $bar = getStatusBar($color, ceil($pro / 2), 'Status: ' . $pro . '%');
     if ($pro < 100) {
-        $bar .= getStatusBar(STATUSBAR_GREY, floor((100 - $pro) / 2), 'Status: ' . $pro . '%');
+        $bar .= getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2), 'Status: ' . $pro . '%');
     }
     return $bar;
 }
@@ -141,9 +142,9 @@ function getPercentage($val, $maxval)
 function renderHuellStatusBar(&$huell, &$maxhuell)
 {
     $pro = getPercentage($huell, $maxhuell);
-    $bar = getStatusBar(STATUSBAR_GREEN, ceil($pro / 2), 'Hülle: ' . $huell . '/' . $maxhuell);
+    $bar = getStatusBar(StatusBarColorEnum::STATUSBAR_GREEN, ceil($pro / 2), 'Hülle: ' . $huell . '/' . $maxhuell);
     if ($pro < 100) {
-        $bar .= getStatusBar(STATUSBAR_GREY, floor((100 - $pro) / 2), 'Hülle: ' . $huell . '/' . $maxhuell);
+        $bar .= getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2), 'Hülle: ' . $huell . '/' . $maxhuell);
     }
     return $bar;
 }
@@ -151,9 +152,9 @@ function renderHuellStatusBar(&$huell, &$maxhuell)
 function renderStorageStatusBar(&$storage, &$maxstorage)
 {
     $pro = getPercentage($storage, $maxstorage);
-    $bar = getStatusBar(STATUSBAR_GREEN, ceil($pro / 2), 'Lager: ' . $storage . '/' . $maxstorage . ' (' . $pro . '%)');
+    $bar = getStatusBar(StatusBarColorEnum::STATUSBAR_GREEN, ceil($pro / 2), 'Lager: ' . $storage . '/' . $maxstorage . ' (' . $pro . '%)');
     if ($pro < 100) {
-        $bar .= getStatusBar(STATUSBAR_GREY, floor((100 - $pro) / 2),
+        $bar .= getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2),
             'Lager: ' . $storage . '/' . $maxstorage . ' (' . $pro . '%)');
     }
     return $bar;
@@ -162,9 +163,9 @@ function renderStorageStatusBar(&$storage, &$maxstorage)
 function renderEpsStatusBar(&$eps, &$maxeps)
 {
     $pro = getPercentage($eps, $maxeps);
-    $bar = getStatusBar(STATUSBAR_YELLOW, ceil($pro / 2), 'Energie: ' . $eps . '/' . $maxeps);
+    $bar = getStatusBar(StatusBarColorEnum::STATUSBAR_YELLOW, ceil($pro / 2), 'Energie: ' . $eps . '/' . $maxeps);
     if ($pro < 100) {
-        $bar .= getStatusBar(STATUSBAR_GREY, floor((100 - $pro) / 2), 'Energie: ' . $eps . '/' . $maxeps);
+        $bar .= getStatusBar(StatusBarColorEnum::STATUSBAR_GREY, floor((100 - $pro) / 2), 'Energie: ' . $eps . '/' . $maxeps);
     }
     return $bar;
 }
