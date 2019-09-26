@@ -8,7 +8,7 @@ interface AllianceListItemInterface
 
     public function getName(): string;
 
-    public function getFactionId(): int;
+    public function getFactionId(): ?int;
 
     public function getMemberCount(): int;
 

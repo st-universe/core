@@ -27,7 +27,7 @@ final class AllianceListItem implements AllianceListItemInterface
         return $this->alliance->getName();
     }
 
-    public function getFactionId(): int
+    public function getFactionId(): ?int
     {
         return $this->alliance->getFactionId();
     }
