@@ -5,12 +5,17 @@ use Psr\Container\ContainerInterface;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
+ini_set('date.timezone', 'Europe/Berlin');
+
 $benchmark_start = microtime();
+
 
 /**
  * @var ContainerInterface $container
  */
 $container = require_once __DIR__.'/../Config/bootstrap.php';
+
+require_once __DIR__ . '/../Config/ErrorHandler.php';
 
 /**
  */
@@ -330,22 +335,6 @@ define('BUILDMENU_SOCIAL',1);
 define('BUILDMENU_INDUSTRY',2);
 define('BUILDMENU_INFRASTRUCTURE',3);
 
-ini_set('date.timezone', 'Europe/Berlin');
-
-if (DEBUG_MODE === true) {
-//    error_reporting(E_ALL);
-    error_reporting(E_ALL & ~E_NOTICE);
-} else {
-    error_reporting(E_ERROR | E_WARNING | E_PARSE);
-}
-
-$whoops = new \Whoops\Run;
-
-$handler = new \Whoops\Handler\PrettyPageHandler();
-$handler->setPageTitle('Error - Star Trek Universe');
-
-$whoops->prependHandler($handler);
-$whoops->register();
 
 require_once 'func.inc.php';
 include_once("generated/fieldtypesname.inc.php");

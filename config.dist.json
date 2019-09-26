@@ -10,6 +10,7 @@
   },
   "debug": {
     "debug_mode": false,
+    "logfile_path": "/path/to/log",
     "loglevel": 7
   },
   "game": {
