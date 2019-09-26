@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use ObjectNotFoundException;
+use AccessViolation;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
@@ -1427,17 +1427,17 @@ class Ship implements ShipInterface
     public function canInteractWith($target, bool $colony = false): bool
     {
         if ($this->getCloakState()) {
-            throw new ObjectNotFoundException($target->getId());
+            throw new AccessViolation($target->getId());
         }
         if ($colony === true) {
             if (!checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
-                new ObjectNotFoundException($target->getId());
+                new AccessViolation($target->getId());
             }
             return true;
 
         } else {
             if (!checkPosition($this, target)) {
-                new ObjectNotFoundException($target->getId());
+                new AccessViolation($target->getId());
             }
         }
         if ($target->getShieldState() && $target->getUserId() != $this->getUserId()) {
