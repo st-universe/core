@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\View\ShowOverall;
 
 use AccessViolation;
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
@@ -21,14 +22,18 @@ final class ShowOverall implements ViewControllerInterface
 
     private $mapRepository;
 
+    private $config;
+
     public function __construct(
         MapBorderTypeRepositoryInterface $mapBorderTypeRepository,
         MapFieldTypeRepositoryInterface $mapFieldTypeRepository,
-        MapRepositoryInterface $mapRepository
+        MapRepositoryInterface $mapRepository,
+        ConfigInterface $config
     ) {
         $this->mapBorderTypeRepository = $mapBorderTypeRepository;
         $this->mapFieldTypeRepository = $mapFieldTypeRepository;
         $this->mapRepository = $mapRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,7 +66,9 @@ final class ShowOverall implements ViewControllerInterface
                 $curx += 15;
                 continue;
             }
-                $types[$data->getFieldId()] = imagecreatefromgif(APP_PATH . 'src/assets/map/' . $data->getFieldType()->getType(). '.gif');
+                $types[$data->getFieldId()] = imagecreatefromgif(
+                    $this->config->get('game.webroot') . '/assets/map/' . $data->getFieldType()->getType(). '.gif'
+                );
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;
         }

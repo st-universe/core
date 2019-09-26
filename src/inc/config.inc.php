@@ -38,16 +38,15 @@ function isAdmin($user_id) { #{{{
 	return in_array($user_id,getAdminUserIds());
 } # }}}
 
-$global_path = __DIR__.'/../../';
-
 $config = $container->get(ConfigInterface::class);
 
-define("APP_PATH", $global_path);
-// Generator dirs
-define("GENERATOR_DIR",APP_PATH."/src/admin/generators/");
-define("GENERATED_DIR",APP_PATH."/src/inc/generated/");
+$webrootPath = $config->get('game.webroot');
 
-set_include_path(get_include_path() . PATH_SEPARATOR . APP_PATH);
+// Generator dirs
+define("GENERATOR_DIR", $webrootPath."/src/admin/generators/");
+define("GENERATED_DIR", $webrootPath."/src/inc/generated/");
+
+set_include_path(get_include_path() . PATH_SEPARATOR . $webrootPath);
 
 define('DEBUG_MODE', $config->get('debug.debug_mode'));
 
@@ -59,8 +58,8 @@ define('SHIP_CATEGORY_DEBRISFIELD',7);
 
 define("AVATAR_USER_PATH", "/html/avatare/user/");
 define("AVATAR_ALLIANCE_PATH", "/html/avatare/alliance/");
-define("AVATAR_USER_PATH_INTERNAL", APP_PATH.'/src/'.AVATAR_USER_PATH);
-define("AVATAR_ALLIANCE_PATH_INTERNAL", APP_PATH.'/src/'.AVATAR_ALLIANCE_PATH);
+define("AVATAR_USER_PATH_INTERNAL", $webrootPath.'/'.AVATAR_USER_PATH);
+define("AVATAR_ALLIANCE_PATH_INTERNAL", $webrootPath.'/'.AVATAR_ALLIANCE_PATH);
 
 define("BUILDMENU_SCROLLOFFSET",6);
 

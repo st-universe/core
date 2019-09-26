@@ -22,7 +22,7 @@ if ($config->get('debug.debug_mode') === true) {
 } else {
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-    $whoops->prependHandler(function (Exception $e, $inspector, $run) {
+    $whoops->prependHandler(function (Throwable $e, $inspector, $run) {
         require_once __DIR__ . '/../html/error.html';
     });
 }
@@ -32,7 +32,7 @@ $logger->pushHandler(
     new Monolog\Handler\StreamHandler($config->get('debug.logfile_path'))
 );
 
-$whoops->prependHandler(function (Exception $e, $inspector, $run) use($logger) {
+$whoops->prependHandler(function (Throwable $e, $inspector, $run) use($logger) {
     $logger->error(
         $e->getMessage(),
         [

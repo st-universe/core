@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
@@ -30,6 +31,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     private $userRepository;
 
+    private $config;
+
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
@@ -37,7 +40,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         AllianceRepositoryInterface $allianceRepository,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ConfigInterface $config
     ) {
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRelationRepository = $allianceRelationRepository;
@@ -46,6 +50,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
+        $this->config = $config;
     }
 
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void
@@ -82,7 +87,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             $this->userRepository->save($userRelation->getUser());
         }
         if ($alliance->getAvatar()) {
-            @unlink(sprintf('%s/src/%s%s.png', APP_PATH, AVATAR_ALLIANCE_PATH, $alliance->getAvatar()));
+            @unlink(sprintf('%s/%s%s.png', $this->config->get('game.webroot'), AVATAR_ALLIANCE_PATH, $alliance->getAvatar()));
         }
 
         $this->allianceRepository->delete($alliance);

@@ -34,7 +34,7 @@ final class TalPage implements TalPageInterface
 
             $tr->setLanguage($this->config->get('game.language'));
 
-            $tr->addDomain('stu', APP_PATH . '/lang');
+            $tr->addDomain('stu', $this->config->get('game.webroot') . '/lang');
             $tr->useDomain('stu');
 
             $this->template = new PhpTal\PHPTAL();
@@ -65,7 +65,7 @@ final class TalPage implements TalPageInterface
     private function parseXslt(): string
     {
         $xslDom = new DomDocument();
-        $xslDom->load(APP_PATH . 'src/html/xslt/default.xslt');
+        $xslDom->load($this->config->get('game.webroot') . '/html/xslt/default.xslt');
 
         $xmlDom = new DomDocument();
         $file = str_replace('&', '&amp;', $this->getTemplate()->execute());

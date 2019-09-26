@@ -14,6 +14,7 @@
     "loglevel": 7
   },
   "game": {
+    "webroot": "/path/to/webroot",
     "base_url": "https://change.me",
     "version": "VERSIONSTRING",
     "language": "de_DE"
