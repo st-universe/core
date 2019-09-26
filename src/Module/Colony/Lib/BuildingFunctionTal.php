@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\BuildingFunctionInterface;
 
@@ -22,22 +23,22 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
 
     public function isTorpedoFab(): bool
     {
-        return $this->hasFunction(BUILDING_FUNCTION_TORPEDO_FAB);
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_TORPEDO_FAB);
     }
 
     public function isAirfield(): bool
     {
-        return $this->hasFunction(BUILDING_FUNCTION_AIRFIELD);
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_AIRFIELD);
     }
 
     public function isFighterShipyard(): bool
     {
-        return $this->hasFunction(BUILDING_FUNCTION_FIGHTER_SHIPYARD);
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD);
     }
 
     public function isAcademy(): bool
     {
-        return $this->hasFunction(BUILDING_FUNCTION_ACADEMY);
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY);
     }
 
     public function isShipyard(): bool

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Building\Action;
 
 use Psr\Container\ContainerInterface;
+use Stu\Component\Building\BuildingEnum;
 
 final class BuildingFunctionActionMapper implements BuildingFunctionActionMapperInterface
 {
@@ -19,12 +20,12 @@ final class BuildingFunctionActionMapper implements BuildingFunctionActionMapper
     public function map(int $buildingFunctionId): ?BuildingActionHandlerInterface
     {
         $map = [
-            BUILDING_FUNCTION_ACADEMY => Academy::class,
-            BUILDING_FUNCTION_FIGHTER_SHIPYARD => Shipyard::class,
-            BUILDING_FUNCTION_ESCORT_SHIPYARD => Shipyard::class,
-            BUILDING_FUNCTION_FRIGATE_SHIPYARD => Shipyard::class,
-            BUILDING_FUNCTION_CRUISER_SHIPYARD => Shipyard::class,
-            BUILDING_FUNCTION_DESTROYER_SHIPYARD => Shipyard::class,
+            BuildingEnum::BUILDING_FUNCTION_ACADEMY => Academy::class,
+            BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD => Shipyard::class,
+            BuildingEnum::BUILDING_FUNCTION_ESCORT_SHIPYARD => Shipyard::class,
+            BuildingEnum::BUILDING_FUNCTION_FRIGATE_SHIPYARD => Shipyard::class,
+            BuildingEnum::BUILDING_FUNCTION_CRUISER_SHIPYARD => Shipyard::class,
+            BuildingEnum::BUILDING_FUNCTION_DESTROYER_SHIPYARD => Shipyard::class,
         ];
 
         $handler = $map[$buildingFunctionId] ?? null;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Database\View\DatabaseEntry;
 
 use AccessViolation;
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Category;
@@ -110,16 +111,16 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_object_id = $entry->getObjectId();
 
         switch ($entry->getTypeObject()->getId()) {
-            case DATABASE_TYPE_POI:
+            case DatabaseEntryTypeEnum::DATABASE_TYPE_POI:
                 $game->setTemplateVar('POI', $this->shipRepository->find($entry_object_id));
                 break;
-            case DATABASE_TYPE_MAP:
+            case DatabaseEntryTypeEnum::DATABASE_TYPE_MAP:
                 $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
                 break;
-            case DATABASE_TYPE_SHIPRUMP:
+            case DatabaseEntryTypeEnum::DATABASE_TYPE_SHIPRUMP:
                 $game->setTemplateVar('RUMP', $this->shipRumpRepository->find($entry_object_id));
                 break;
-            case DATABASE_TYPE_STARSYSTEM:
+            case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:
                 $starSystem = $this->starSystemRepository->find($entry_object_id);
                 $fields = [];
                 foreach ($starSystem->getFields() as $obj) {

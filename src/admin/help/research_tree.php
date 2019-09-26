@@ -1,9 +1,10 @@
 <?php
 
+use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
-require_once __DIR__.'/../../inc/config.inc.php';
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $graph = new Fhaculty\Graph\Graph();
 
@@ -12,8 +13,10 @@ $researchDependencyRepository = $container->get(ResearchDependencyRepositoryInte
 
 $research_list = $researchRepository->getForFaction(1);
 
-$dependencies = $researchDependencyRepository->getByMode([RESEARCH_MODE_REQUIRE, RESEARCH_MODE_REQUIRE_SOME]);
-$excludes = $researchDependencyRepository->getByMode([RESEARCH_MODE_EXCLUDE]);
+$dependencies = $researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_REQUIRE,
+    ResearchEnum::RESEARCH_MODE_REQUIRE_SOME
+]);
+$excludes = $researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
 
 $vertexes = [];
 

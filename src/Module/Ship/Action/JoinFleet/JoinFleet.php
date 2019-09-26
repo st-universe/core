@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\JoinFleet;
 
 use AccessViolation;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -49,8 +50,9 @@ final class JoinFleet implements ActionControllerInterface
         if (!checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
-        if ($fleet->getPointSum() + $ship->getRump()->getShipRumpCategory()->getPoints() > POINTS_PER_FLEET) {
-            $game->addInformation(sprintf(_('Es sind maximal %d Schiffspunkte pro Flotte möglich'), POINTS_PER_FLEET));
+        if ($fleet->getPointSum() + $ship->getRump()->getShipRumpCategory()->getPoints() > GameEnum::POINTS_PER_FLEET) {
+            $game->addInformation(sprintf(_('Es sind maximal %d Schiffspunkte pro Flotte möglich'),
+                GameEnum::POINTS_PER_FLEET));
             return;
         }
         $ship->setFleet($fleet);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LoadWarpcore;
 
 use request;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -100,10 +101,10 @@ final class LoadWarpcore implements ActionControllerInterface
             $shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
             $count
         );
-        if ($ship->getWarpcoreLoad() + $count * WARPCORE_LOAD > $ship->getWarpcoreCapacity()) {
+        if ($ship->getWarpcoreLoad() + $count * ShipEnum::WARPCORE_LOAD > $ship->getWarpcoreCapacity()) {
             $load = $ship->getWarpcoreCapacity() - $ship->getWarpcoreLoad();
         } else {
-            $load = $count * WARPCORE_LOAD;
+            $load = $count * ShipEnum::WARPCORE_LOAD;
         }
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() + $load);
 

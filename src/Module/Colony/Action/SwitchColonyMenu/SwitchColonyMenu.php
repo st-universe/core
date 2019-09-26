@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\SwitchColonyMenu;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\View\ShowBuildPlans\ShowBuildPlans;
 use Stu\Module\Control\ActionControllerInterface;
@@ -54,58 +56,58 @@ final class SwitchColonyMenu implements ActionControllerInterface
         $colonySurface = $this->colonyLibFactory->createColonySurface($colony);
 
         switch ($menu) {
-            case MENU_BUILD:
+            case ColonyEnum::MENU_BUILD:
                 $game->setView("SHOW_BUILDMENU");
                 return;
-            case MENU_OPTION:
+            case ColonyEnum::MENU_OPTION:
                 $game->setView("SHOW_MISC");
                 return;
-            case MENU_SOCIAL:
+            case ColonyEnum::MENU_SOCIAL:
                 $game->setView("SHOW_SOCIAL");
                 return;
-            case MENU_BUILDINGS:
+            case ColonyEnum::MENU_BUILDINGS:
                 $game->setView("SHOW_BUILDING_MGMT");
                 return;
-            case MENU_SHIPYARD:
+            case ColonyEnum::MENU_SHIPYARD:
                 if ($colonySurface->hasShipyard()) {
                     $game->setView(ShowShipyard::VIEW_IDENTIFIER);
                     $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
-            case MENU_BUILDPLANS:
+            case ColonyEnum::MENU_BUILDPLANS:
                 if ($colonySurface->hasShipyard()) {
                     $game->setView(ShowBuildPlans::VIEW_IDENTIFIER);
                     $func = $this->buildingFunctionRepository->find((int) request::getIntFatal('func'));
                     $game->setTemplateVar('FUNC', $func);
                     return;
                 }
-            case MENU_AIRFIELD:
+            case ColonyEnum::MENU_AIRFIELD:
                 if ($colonySurface->hasAirfield()) {
                     $game->setView("SHOW_AIRFIELD");
                     return;
                 }
-            case MENU_MODULEFAB:
+            case ColonyEnum::MENU_MODULEFAB:
                 if ($colonySurface->hasModuleFab()) {
                     $game->setView('SHOW_MODULEFAB');
                     return;
                 }
-            case MENU_FIGHTER_SHIPYARD:
-                if ($this->hasSpecialBuilding($colony, BUILDING_FUNCTION_FIGHTER_SHIPYARD)) {
+            case ColonyEnum::MENU_FIGHTER_SHIPYARD:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD)) {
                     $game->setView(ShowFighterShipyard::VIEW_IDENTIFIER);
                     return;
                 }
-            case MENU_TORPEDOFAB:
-                if ($this->hasSpecialBuilding($colony, BUILDING_FUNCTION_TORPEDO_FAB)) {
+            case ColonyEnum::MENU_TORPEDOFAB:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_TORPEDO_FAB)) {
                     $game->setView("SHOW_TORPEDO_FAB");
                     return;
                 }
-            case MENU_ACADEMY:
-                if ($this->hasSpecialBuilding($colony, BUILDING_FUNCTION_ACADEMY)) {
+            case ColonyEnum::MENU_ACADEMY:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
                     $game->setView(ShowAcademy::VIEW_IDENTIFIER);
                     return;
                 }
-            case MENU_INFO:
+            case ColonyEnum::MENU_INFO:
             default:
                 $game->setView("SHOW_MANAGEMENT");
                 return;

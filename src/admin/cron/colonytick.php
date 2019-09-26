@@ -3,7 +3,7 @@
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 
-require_once __DIR__.'/../../inc/config.inc.php';
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $db = $container->get(EntityManagerInterface::class);
 

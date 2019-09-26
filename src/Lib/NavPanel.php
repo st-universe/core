@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Stu\Component\Map\MapEnum;
 use Stu\Orm\Entity\ShipInterface;
 
 class NavPanel
@@ -42,8 +43,8 @@ class NavPanel
             );
         }
         return array(
-            "mx" => MAP_MAX_X,
-            "my" => MAP_MAX_Y
+            "mx" => MapEnum::MAP_MAX_X,
+            "my" => MapEnum::MAP_MAX_Y
         );
     }
 

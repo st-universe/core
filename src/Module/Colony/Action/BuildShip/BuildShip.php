@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
@@ -94,16 +95,16 @@ final class BuildShip implements ActionControllerInterface
         $modules = array();
         $sigmod = array();
         $crewcount = 100;
-        for ($i = 1; $i <= MODULE_TYPE_COUNT; $i++) {
+        for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);
-            if ($i != MODULE_TYPE_SPECIAL && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0 && count($module) == 0) {
+            if ($i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0 && count($module) == 0) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     ModuleTypeDescriptionMapper::getDescription($i)
                 );
                 return;
             }
-            if ($i === MODULE_TYPE_SPECIAL) {
+            if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 foreach ($module as $key) {
                     /** @var ModuleInterface[] $modules */
                     $modules[$key] = $this->moduleRepository->find((int) $key);

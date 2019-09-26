@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use ColonyMenu;
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -47,7 +49,7 @@ final class ShowColony implements ViewControllerInterface
 
         $this->colonyGuiHelper->register($colony, $game);
 
-        $menuId = $game->getViewContext()['COLONY_MENU'] ?? MENU_INFO;
+        $menuId = $game->getViewContext()['COLONY_MENU'] ?? ColonyEnum::MENU_INFO;
 
         $firstOrbitShip = null;
 

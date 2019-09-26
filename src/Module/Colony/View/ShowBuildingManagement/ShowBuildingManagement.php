@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBuildingManagement;
 
 use ColonyMenu;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -62,7 +64,7 @@ final class ShowBuildingManagement implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/cm_building_mgmt');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILDINGS));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_BUILDINGS));
         $game->setTemplateVar('BUILDING_LIST', $list);
         $game->setTemplateVar('USEABLE_GOOD_LIST', $this->commodityRepository->getByBuildingsOnColony((int) $colony->getId()));
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowByPosition;
 
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use UserYRow;
@@ -42,9 +43,9 @@ final class ShowByPosition implements ViewControllerInterface
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);
         $game->setTemplateVar('HAS_NAV_LEFT', $xCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MAP_MAX_X);
+        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X);
         $game->setTemplateVar('HAS_NAV_UP', $yCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MAP_MAX_Y);
+        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y);
 
         $game->setTemplateVar(
             'NAV_UP',

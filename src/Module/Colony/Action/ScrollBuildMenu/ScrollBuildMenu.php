@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\ScrollBuildMenu;
 
 use request;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -42,8 +43,8 @@ final class ScrollBuildMenu implements ActionControllerInterface
         if ($offset < 0) {
             $offset = 0;
         }
-        if ($offset % BUILDMENU_SCROLLOFFSET != 0) {
-            $offset = floor($offset / BUILDMENU_SCROLLOFFSET);
+        if ($offset % ColonyEnum::BUILDMENU_SCROLLOFFSET != 0) {
+            $offset = floor($offset / ColonyEnum::BUILDMENU_SCROLLOFFSET);
         }
         /** @var BuildingInterface[] $ret */
         $ret = $this->buildingRepository->getByColonyAndUserAndBuildMenu(
@@ -57,9 +58,9 @@ final class ScrollBuildMenu implements ActionControllerInterface
                 (int) $colony->getId(),
                 $userId,
                 $menu,
-                (int) ($offset - BUILDMENU_SCROLLOFFSET)
+                (int) ($offset - ColonyEnum::BUILDMENU_SCROLLOFFSET)
             );
-            $offset -= BUILDMENU_SCROLLOFFSET;
+            $offset -= ColonyEnum::BUILDMENU_SCROLLOFFSET;
         }
         $arr['buildings'] = &$ret;
         $game->setTemplateVar('menu', $arr);

@@ -1,17 +1,19 @@
 <?php
 
+use Stu\Component\Database\DatabaseCategoryTypeEnum;
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemTypeRepositoryInterface;
 
-include_once(__DIR__.'/../../inc/config.inc.php');
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $starSystemTypeRepo = $container->get(StarSystemTypeRepositoryInterface::class);
 
 $repository = $container->get(DatabaseEntryRepositoryInterface::class);
-$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DATABASE_TYPE_STARSYSTEM_TYPE);
-$category = $container->get(DatabaseCategoryRepositoryInterface::class)->find(DATABASE_CATEGORY_STAR_SYSTEM_TYPE);
+$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM_TYPE);
+$category = $container->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE);
 
 $result = $starSystemTypeRepo->getWithoutDatabaseEntry();
 foreach ($result as $key => $obj) {

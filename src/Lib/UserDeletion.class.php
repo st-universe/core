@@ -2,6 +2,8 @@
 
 namespace Stu\Lib;
 
+use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -53,7 +55,7 @@ class UserDeletion
         $allianceActionManager = $container->get(AllianceActionManagerInterface::class);
 
         foreach ($allianceJobRepo->getByUser((int) $this->getUser()->getId()) as $job) {
-            if ($job->getType() === ALLIANCE_JOBS_FOUNDER) {
+            if ($job->getType() === AllianceEnum::ALLIANCE_JOBS_FOUNDER) {
                 $alliance = $job->getAlliance();
 
                 if ($alliance->getSuccessor() === null) {
@@ -66,7 +68,7 @@ class UserDeletion
                     $allianceActionManager->setJobForUser(
                         (int) $alliance->getId(),
                         $successorUserId,
-                        ALLIANCE_JOBS_FOUNDER
+                        AllianceEnum::ALLIANCE_JOBS_FOUNDER
                     );
                 }
             }
@@ -153,7 +155,7 @@ class UserDeletion
 
         foreach ($knPostRepo->getByUser((int) $this->getUser()->getId()) as $key => $obj) {
             $obj->setUserName($this->getUser()->getUser());
-            $obj->setUser($userRepo->find(USER_NOONE));
+            $obj->setUser($userRepo->find(GameEnum::USER_NOONE));
 
             $knPostRepo->save($obj);
         }
@@ -197,7 +199,7 @@ class UserDeletion
                 $rpgPlotRepository->save($obj);
                 return;
             }
-            $obj->setUser($userRepository->find(USER_NOONE));
+            $obj->setUser($userRepository->find(GameEnum::USER_NOONE));
 
             $rpgPlotRepository->save($obj);
         }
@@ -291,7 +293,7 @@ class UserDeletion
         self::handle(
             $container->get(UserRepositoryInterface::class)->getIdlePlayer(
                 time() - UserDeletion::USER_IDLE_TIME,
-                getAdminUserIds()
+                [101]
             )
         );
     }

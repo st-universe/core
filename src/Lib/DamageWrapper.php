@@ -13,6 +13,8 @@
 
 namespace Stu\Lib;
 
+use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRoleEnum;
 use Stu\Orm\Entity\ShipInterface;
 
 /**
@@ -123,7 +125,7 @@ class DamageWrapper
 	 */
 	public function getDamageRelative($target, $mode)
 	{ #{{{
-		if ($mode === DAMAGE_MODE_HULL) {
+		if ($mode === ShipEnum::DAMAGE_MODE_HULL) {
 			return $this->calculateDamageHull($target);
 		}
 		return $this->calculateDamageShields($target);
@@ -135,7 +137,7 @@ class DamageWrapper
 	{ #{{{
 		$damage = round($this->getDamage() / 100 * $this->getShieldDamageFactor());
 		// paratrinic shields
-		if ($this->getSource() && $target->getRump()->getRoleId() == ROLE_TORPEDOSHIP && $this->getSource()->getRump()->getRoleId() != ROLE_PULSESHIP) {
+		if ($this->getSource() && $target->getRump()->getRoleId() == ShipRoleEnum::ROLE_TORPEDOSHIP && $this->getSource()->getRump()->getRoleId() != ShipRoleEnum::ROLE_PULSESHIP) {
 			$damage = round($damage * 0.6);
 		}
 		if ($damage < $target->getShield()) {
@@ -152,8 +154,8 @@ class DamageWrapper
 	{ #{{{
 		$damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
 		// ablative huell plating
-		trigger_error($this->getIsPhaserDamage() . " - " . $target->getRump()->getRoleId() . " - " . ROLE_PHASERSHIP);
-		if ($this->getIsPhaserDamage() === true && $target->getRump()->getRoleId() == ROLE_PHASERSHIP) {
+		trigger_error($this->getIsPhaserDamage() . " - " . $target->getRump()->getRoleId() . " - " . ShipRoleEnum::ROLE_PHASERSHIP);
+		if ($this->getIsPhaserDamage() === true && $target->getRump()->getRoleId() == ShipRoleEnum::ROLE_PHASERSHIP) {
 			trigger_error('damage before ablative hull plating: ' . $damage);
 			$damage = round($damage * 0.6);
 			trigger_error('damage after ablative hull plating: ' . $damage);

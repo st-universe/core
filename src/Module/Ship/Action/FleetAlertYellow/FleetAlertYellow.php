@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetAlertYellow;
 
 use request;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -39,7 +40,7 @@ final class FleetAlertYellow implements ActionControllerInterface
         );
 
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            $ship->setAlertState(ALERT_YELLOW);
+            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
 
             $this->shipRepository->save($ship);
         }

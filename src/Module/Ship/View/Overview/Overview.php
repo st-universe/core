@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\Overview;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -38,7 +39,7 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Schiffe'));
         $game->setTemplateFile('html/shiplist.xhtml');
 
-        $game->setTemplateVar('MAX_POINTS_PER_FLEET', POINTS_PER_FLEET);
+        $game->setTemplateVar('MAX_POINTS_PER_FLEET', GameEnum::POINTS_PER_FLEET);
         $game->setTemplateVar(
             'SHIPS_AVAILABLE',
             $fleets !== [] || $ships !== [] || $bases !== []

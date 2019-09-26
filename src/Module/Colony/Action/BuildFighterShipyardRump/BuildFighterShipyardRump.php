@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildFighterShipyardRump;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -52,7 +53,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
-            BUILDING_FUNCTION_FIGHTER_SHIPYARD
+            BuildingEnum::BUILDING_FUNCTION_FIGHTER_SHIPYARD
         );
 
         if (!array_key_exists($rumpId, $availableShipRumps)) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateTorpedo;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -48,11 +49,11 @@ final class FleetActivateTorpedo implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(": Keine Torpedos geladen");
                 continue;
             }
-            if ($ship->getEps() < SYSTEM_ECOST_TORPEDO) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_TORPEDO) {
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_TORPEDO);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_TORPEDO);
             $ship->setTorpedos(true);
 
             $this->shipRepository->save($ship);

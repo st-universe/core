@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
 use AccessViolation;
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,12 +20,16 @@ final class ChangeAvatar implements ActionControllerInterface
 
     private $allianceRepository;
 
+    private $config;
+
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,
-        AllianceRepositoryInterface $allianceRepository
+        AllianceRepositoryInterface $allianceRepository,
+        ConfigInterface $config
     ) {
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceRepository = $allianceRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,7 +57,14 @@ final class ChangeAvatar implements ActionControllerInterface
             return;
         }
         if ($alliance->getAvatar()) {
-            @unlink(AVATAR_ALLIANCE_PATH_INTERNAL . $alliance->getAvatar() . '.png');
+            @unlink(
+                sprintf(
+                    '%s%s/%s.png',
+                    $this->config->get('game.webroot'),
+                    $this->config->get('game.user_avatar_path'),
+                    $alliance->getAvatar()
+                )
+            );
         }
         $imageName = md5($alliance->getId() . "_" . time());
 
@@ -68,7 +80,15 @@ final class ChangeAvatar implements ActionControllerInterface
         }
         $newImage = imagecreatetruecolor(imagesx($img), imagesy($img));
         imagecopy($newImage, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
-        imagepng($newImage, AVATAR_ALLIANCE_PATH_INTERNAL . $imageName . ".png");
+        imagepng(
+            $newImage,
+            sprintf(
+                '%s%s/%s.png',
+                $this->config->get('game.webroot'),
+                $this->config->get('game.user_avatar_path'),
+                $imageName
+            )
+        );
         $alliance->setAvatar($imageName);
 
         $this->allianceRepository->save($alliance);

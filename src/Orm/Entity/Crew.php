@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Crew\CrewEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\CrewRepository")
  * @Table(
@@ -105,7 +107,7 @@ class Crew implements CrewInterface
 
     public function getGenderShort(): string
     {
-        if ($this->getGender() == CREW_GENDER_MALE) {
+        if ($this->getGender() == CrewEnum::CREW_GENDER_MALE) {
             return 'm';
         }
         return 'w';
@@ -114,17 +116,17 @@ class Crew implements CrewInterface
     public function getTypeDescription(): string
     {
         switch ($this->getType()) {
-            case CREW_TYPE_CREWMAN:
+            case CrewEnum::CREW_TYPE_CREWMAN:
                 return "Crewman";
-            case CREW_TYPE_SECURITY:
+            case CrewEnum::CREW_TYPE_SECURITY:
                 return "Sicherheit";
-            case CREW_TYPE_SCIENCE:
+            case CrewEnum::CREW_TYPE_SCIENCE:
                 return "Wissenschaft";
-            case CREW_TYPE_TECHNICAL:
+            case CrewEnum::CREW_TYPE_TECHNICAL:
                 return "Technik";
-            case CREW_TYPE_NAVIGATION:
+            case CrewEnum::CREW_TYPE_NAVIGATION:
                 return "Navigation";
-            case CREW_TYPE_COMMAND:
+            case CrewEnum::CREW_TYPE_COMMAND:
                 return "Kommando";
         }
         return '';

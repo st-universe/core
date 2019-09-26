@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBuildPlans;
 
 use ColonyMenu;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -60,7 +62,7 @@ final class ShowBuildPlans implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/cm_buildplans');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILDPLANS));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_BUILDPLANS));
         $game->setTemplateVar(
             'AVAILABLE_BUILDPLANS',
             $this->shipBuildplanRepository->getByUserAndBuildingFunction(

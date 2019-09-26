@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateAlliance;
 
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Create\Create;
@@ -67,7 +68,7 @@ final class CreateAlliance implements ActionControllerInterface
         $this->allianceJobRepository->truncateByUser($userId);
 
         $job = $this->allianceJobRepository->prototype();
-        $job->setType(ALLIANCE_JOBS_FOUNDER);
+        $job->setType(AllianceEnum::ALLIANCE_JOBS_FOUNDER);
         $job->setAlliance($alliance);
         $job->setUser($user);
 

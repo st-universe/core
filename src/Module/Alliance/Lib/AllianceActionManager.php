@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Lib;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
@@ -76,18 +79,24 @@ final class AllianceActionManager implements AllianceActionManagerInterface
             return;
         }
 
-        $this->dockingPrivilegeRepository->truncateByTypeAndTarget(DOCK_PRIVILEGE_ALLIANCE, $allianceId);
+        $this->dockingPrivilegeRepository->truncateByTypeAndTarget(ShipEnum::DOCK_PRIVILEGE_ALLIANCE, $allianceId);
 
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
         foreach ($alliance->getMembers() as $userRelation) {
-            $this->privateMessageSender->send(USER_NOONE, $userRelation->getUserId(), $text);
+            $this->privateMessageSender->send(GameEnum::USER_NOONE, $userRelation->getUserId(), $text);
             $userRelation->getUser()->setAlliance(null);
 
             $this->userRepository->save($userRelation->getUser());
         }
         if ($alliance->getAvatar()) {
-            @unlink(sprintf('%s/%s%s.png', $this->config->get('game.webroot'), AVATAR_ALLIANCE_PATH, $alliance->getAvatar()));
+            @unlink(
+                sprintf(
+                    '%s/%s/%s.png',
+                    $this->config->get('game.webroot'),
+                    $this->config->get('game.alliance_avatar_path'),
+                    $alliance->getAvatar())
+            );
         }
 
         $this->allianceRepository->delete($alliance);
@@ -96,8 +105,9 @@ final class AllianceActionManager implements AllianceActionManagerInterface
     public function mayEdit(int $allianceId, int $userId): bool
     {
         $successor = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
-            ALLIANCE_JOBS_SUCCESSOR);
-        $founder = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId, ALLIANCE_JOBS_FOUNDER);
+            AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
+        $founder = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
+            AllianceEnum::ALLIANCE_JOBS_FOUNDER);
 
         return (
                 $successor !== null && $userId === $successor->getUserId()
@@ -106,7 +116,8 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
     public function mayManageForeignRelations(int $allianceId, int $userId): bool
     {
-        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId, ALLIANCE_JOBS_DIPLOMATIC);
+        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
+            AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
 
         if ($job === null || $job->getUserId() !== $userId) {
             return $this->mayEdit($allianceId, $userId);
@@ -121,12 +132,12 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $jobList = array_filter(
             $this->allianceJobRepository->getByAlliance($allianceId),
             function (AllianceJobInterface $job): bool {
-                return $job->getType() !== ALLIANCE_JOBS_PENDING;
+                return $job->getType() !== AllianceEnum::ALLIANCE_JOBS_PENDING;
             }
         );
 
         foreach ($jobList as $job) {
-            $this->privateMessageSender->send(USER_NOONE, $job->getUserId(), $text);
+            $this->privateMessageSender->send(GameEnum::USER_NOONE, $job->getUserId(), $text);
         }
     }
 

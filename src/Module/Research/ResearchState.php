@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ResearchedInterface;
@@ -34,7 +35,7 @@ final class ResearchState implements ResearchStateInterface
         $state->setFinished(time());
 
         $this->privateMessageSender->send(
-            USER_NOONE,
+            GameEnum::USER_NOONE,
             $state->getUser()->getId(),
             "Forschung '" . $state->getResearch()->getName() . "' wurde abgeschlossen",
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateNbs;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -44,13 +45,13 @@ final class FleetActivateNbs implements ActionControllerInterface
             if ($ship->getNbs()) {
                 continue;
             }
-            if ($ship->getEps() < SYSTEM_ECOST_NBS) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_NBS) {
                 $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
                 continue;
             }
             $ship->setNbs(true);
 
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_NBS);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_NBS);
 
             $this->shipRepository->save($ship);
         }

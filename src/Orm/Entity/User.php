@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Noodlehaus\ConfigInterface;
+use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -378,12 +382,22 @@ class User implements UserInterface
         if (!$this->getAvatar()) {
             return "/assets/rassen/" . $this->getFactionId() . "kn.png";
         }
-        return AVATAR_USER_PATH . "/" . $this->getAvatar() . ".png";
+
+        // @todo refactor
+        global $container;
+
+        $config = $container->get(ConfigInterface::class);
+
+        return sprintf(
+            '%s/%s.png',
+            $config->get('game.user_avatar_path'),
+            $this->getAvatar()
+        );
     }
 
     public function isOnline(): bool
     {
-        if ($this->getLastAction() < time() - USER_ONLINE_PERIOD) {
+        if ($this->getLastAction() < time() - GameEnum::USER_ONLINE_PERIOD) {
             return false;
         }
         return true;
@@ -426,7 +440,7 @@ class User implements UserInterface
             }
 
             $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
-                [ALLIANCE_RELATION_FRIENDS, ALLIANCE_RELATION_ALLIED],
+                [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED],
                 (int)$user->getAllianceId,
                 (int)$this->getAllianceId()
             );
@@ -443,7 +457,7 @@ class User implements UserInterface
 
     public function isAdmin(): bool
     {
-        return isAdmin($this->getId());
+        return in_array($this->getId(), [101]);
     }
 
     public function getSessionDataUnserialized(): array
@@ -459,7 +473,7 @@ class User implements UserInterface
 
     public function isContactable(): bool
     {
-        return in_array($this->getId(), [USER_NOONE]);
+        return in_array($this->getId(), [GameEnum::USER_NOONE]);
     }
 
     public function getFreeCrewCount(): int
@@ -482,7 +496,7 @@ class User implements UserInterface
             $this->crew_count_debris = $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
                     (int)$this->getId(),
-                    SHIP_CATEGORY_DEBRISFIELD
+                    ShipEnum::SHIP_CATEGORY_DEBRISFIELD
                 );
         }
         return $this->crew_count_debris;
@@ -550,7 +564,7 @@ class User implements UserInterface
         $pendingApplication = $container->get(AllianceJobRepositoryInterface::class)->getByUserAndAllianceAndType(
             $this->getId(),
             $allianceId,
-            ALLIANCE_JOBS_PENDING
+            AllianceEnum::ALLIANCE_JOBS_PENDING
         );
         if ($pendingApplication !== null) {
             return false;

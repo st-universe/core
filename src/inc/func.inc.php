@@ -3,6 +3,7 @@
 use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
+use Stu\Component\Research\ResearchEnum;
 use Stu\Lib\ModuleScreen\ModuleSelectorWrapperInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -322,11 +323,11 @@ function getContactlistModes()
 function getDefaultTechs()
 { #{{{
     return [
-        RESEARCH_START_FEDERATION,
-        RESEARCH_START_ROMULAN,
-        RESEARCH_START_KLINGON,
-        RESEARCH_START_CARDASSIAN,
-        RESEARCH_START_FERENGI,
+        ResearchEnum::RESEARCH_START_FEDERATION,
+        ResearchEnum::RESEARCH_START_ROMULAN,
+        ResearchEnum::RESEARCH_START_KLINGON,
+        ResearchEnum::RESEARCH_START_CARDASSIAN,
+        ResearchEnum::RESEARCH_START_FERENGI,
     ];
 } # }}}
 

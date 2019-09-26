@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -81,7 +82,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'RANDOM_ONLINE_USER',
-            $this->userRepository->getOrderedByLastaction(15, $userId, time() - USER_ONLINE_PERIOD)
+            $this->userRepository->getOrderedByLastaction(15, $userId, time() - GameEnum::USER_ONLINE_PERIOD)
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\Management;
 
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -63,14 +64,14 @@ final class Management implements ViewControllerInterface
         );
         $game->setTemplateFile('html/alliancemanagement.xhtml');
         $game->setTemplateVar('ALLIANCE', $alliance);
-        $game->setTemplateVar('ALLIANCE_JOB_DIPLOMATIC', ALLIANCE_JOBS_DIPLOMATIC);
-        $game->setTemplateVar('ALLIANCE_JOB_SUCCESSOR', ALLIANCE_JOBS_SUCCESSOR);
+        $game->setTemplateVar('ALLIANCE_JOB_DIPLOMATIC', AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
+        $game->setTemplateVar('ALLIANCE_JOB_SUCCESSOR', AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
         $game->setTemplateVar('MEMBER_LIST', $list);
         $game->setTemplateVar(
             'USER_IS_FOUNDER',
             $this->allianceJobRepository->getSingleResultByAllianceAndType(
                 $allianceId,
-                ALLIANCE_JOBS_FOUNDER
+                AllianceEnum::ALLIANCE_JOBS_FOUNDER
             )->getUserId() === $userId
         );
     }

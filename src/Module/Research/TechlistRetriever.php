@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -46,10 +47,10 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
         $dependencies = [];
         $dependencies_result = $this->researchDependencyRepository->getByMode(
-            [RESEARCH_MODE_REQUIRE, RESEARCH_MODE_REQUIRE_SOME]
+            [ResearchEnum::RESEARCH_MODE_REQUIRE, ResearchEnum::RESEARCH_MODE_REQUIRE_SOME]
         );
         $excludes = [];
-        $exclude_result = $this->researchDependencyRepository->getByMode([RESEARCH_MODE_EXCLUDE]);
+        $exclude_result = $this->researchDependencyRepository->getByMode([ResearchEnum::RESEARCH_MODE_EXCLUDE]);
 
         foreach ($dependencies_result as $dependency) {
             $research_id = $dependency->getResearchId();
@@ -86,7 +87,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
                 if (!isset($grouped_list[$dependency->getMode()])) {
                     $grouped_list[$dependency->getMode()] = array();
                 }
-                if ($dependency->getMode() != RESEARCH_MODE_EXCLUDE) {
+                if ($dependency->getMode() != ResearchEnum::RESEARCH_MODE_EXCLUDE) {
                     $grouped_list[$dependency->getMode()][] = $dependency;
                 }
             }

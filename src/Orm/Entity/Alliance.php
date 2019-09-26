@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Lib\AllianceMemberWrapper;
+use Noodlehaus\ConfigInterface;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -140,7 +142,16 @@ class Alliance implements AllianceInterface
 
     public function getFullAvatarPath(): string
     {
-        return AVATAR_ALLIANCE_PATH . "/" . $this->getAvatar() . ".png";
+        // @todo refactor
+        global $container;
+
+        $config = $container->get(ConfigInterface::class);
+
+        return sprintf(
+            '%s/%s.png',
+            $config->get('game.alliance_avatar_path'),
+            $this->getAvatar()
+        );
     }
 
     public function getFounder(): AllianceJobInterface
@@ -152,7 +163,7 @@ class Alliance implements AllianceInterface
             $this->founder = $container->get(AllianceJobRepositoryInterface::class)
                 ->getSingleResultByAllianceAndType(
                     $this->getId(),
-                    ALLIANCE_JOBS_FOUNDER
+                    AllianceEnum::ALLIANCE_JOBS_FOUNDER
                 );
         }
         return $this->founder;
@@ -167,7 +178,7 @@ class Alliance implements AllianceInterface
             $this->successor = $container->get(AllianceJobRepositoryInterface::class)
                 ->getSingleResultByAllianceAndType(
                     $this->getId(),
-                    ALLIANCE_JOBS_SUCCESSOR
+                    AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
                 );
         }
         return $this->successor;
@@ -182,7 +193,7 @@ class Alliance implements AllianceInterface
             $this->diplomatic = $container->get(AllianceJobRepositoryInterface::class)
                 ->getSingleResultByAllianceAndType(
                     $this->getId(),
-                    ALLIANCE_JOBS_DIPLOMATIC
+                    AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC
                 );
 
         }

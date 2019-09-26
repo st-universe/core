@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Alliance\AllianceEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRelationRepository")
  * @Table(
@@ -86,17 +88,17 @@ class AllianceRelation implements AllianceRelationInterface
 
     public function isWar(): bool
     {
-        return $this->getType() === ALLIANCE_RELATION_WAR;
+        return $this->getType() === AllianceEnum::ALLIANCE_RELATION_WAR;
     }
 
     public function getPossibleTypes(): array
     {
         $ret = [];
-        if ($this->getType() != ALLIANCE_RELATION_FRIENDS) {
-            $ret[] = ["name" => "Freundschaft", "value" => ALLIANCE_RELATION_FRIENDS];
+        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_FRIENDS) {
+            $ret[] = ["name" => "Freundschaft", "value" => AllianceEnum::ALLIANCE_RELATION_FRIENDS];
         }
-        if ($this->getType() != ALLIANCE_RELATION_ALLIED) {
-            $ret[] = ["name" => "Bündnis", "value" => ALLIANCE_RELATION_ALLIED];
+        if ($this->getType() != AllianceEnum::ALLIANCE_RELATION_ALLIED) {
+            $ret[] = ["name" => "Bündnis", "value" => AllianceEnum::ALLIANCE_RELATION_ALLIED];
         }
         return $ret;
     }
@@ -133,13 +135,13 @@ class AllianceRelation implements AllianceRelationInterface
     public function getTypeDescription(): string
     {
         switch ($this->getType()) {
-            case ALLIANCE_RELATION_WAR:
+            case AllianceEnum::ALLIANCE_RELATION_WAR:
                 return 'Krieg';
-            case ALLIANCE_RELATION_PEACE:
+            case AllianceEnum::ALLIANCE_RELATION_PEACE:
                 return 'Friedensabkommen';
-            case ALLIANCE_RELATION_FRIENDS:
+            case AllianceEnum::ALLIANCE_RELATION_FRIENDS:
                 return 'Freundschaftabkommen';
-            case ALLIANCE_RELATION_ALLIED:
+            case AllianceEnum::ALLIANCE_RELATION_ALLIED:
                 return 'Bündnis';
         }
         return '';

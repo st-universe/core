@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\View\ShowBuildMenuPart;
 
 use BuildMenuWrapper;
 use ColonyMenu;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -72,7 +74,7 @@ final class ShowBuildMenuPart implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/buildmenu');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_BUILD));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_BUILD));
         $game->setTemplateVar('BUILD_MENUS', $menus);
         $game->setTemplateVar('BUILD_MENU', new BuildMenuWrapper());
     }

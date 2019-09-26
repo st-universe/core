@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -59,7 +60,7 @@ final class PlanetColonization implements PlanetColonizationInterface
 
             $list = $this->planetFieldRepository->getByColonyAndType(
                 $colony->getId(),
-                COLONY_FIELDTYPE_MEADOW
+                ColonyEnum::COLONY_FIELDTYPE_MEADOW
             );
 
             shuffle($list);

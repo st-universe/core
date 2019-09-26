@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\ModuleScreen;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
@@ -58,7 +59,7 @@ class ModuleScreenTab
      */
     public function isMandatory()
     {
-        if ($this->getModuleType() === MODULE_TYPE_SPECIAL) {
+        if ($this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
             return false;
         }
         return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() > 0;

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ShipRump;
@@ -84,7 +85,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
-                'categoryId' => DATABASE_TYPE_SHIPRUMP
+                'categoryId' => DatabaseEntryTypeEnum::DATABASE_TYPE_SHIPRUMP
             ])
             ->getResult();
     }

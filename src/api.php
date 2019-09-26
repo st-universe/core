@@ -24,7 +24,7 @@ use Stu\Module\Api\V1\Common\Register\Register;
 use Stu\Module\Api\V1\Player\GetInfo;
 use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
 
-require_once __DIR__ . '/inc/config.inc.php';
+require_once __DIR__ . '/Config/Bootstrap.php';
 
 $app = AppFactory::create(
     new ReponseFactory(),

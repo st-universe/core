@@ -22,6 +22,8 @@ use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use function DI\autowire;
 
+require_once __DIR__.'/../../vendor/autoload.php';
+
 $builder = new ContainerBuilder();
 
 $builder->addDefinitions([
@@ -139,4 +141,18 @@ $builder->addDefinitions(
 $builder->addDefinitions(
     require_once __DIR__.'/../Orm/Repository/services.php',
 );
-return $builder->build();
+
+/**
+ * @var ContainerInterface $container
+ */
+$container = $builder->build();
+
+require_once __DIR__ . '/../Config/ErrorHandler.php';
+
+$config = $container->get(ConfigInterface::class);
+
+ini_set('date.timezone', 'Europe/Berlin');
+set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));
+
+require_once __DIR__ . '/../inc/func.inc.php';
+include_once __DIR__ . '/../inc/generated/fieldtypesname.inc.php';

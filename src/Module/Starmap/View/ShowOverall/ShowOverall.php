@@ -6,6 +6,7 @@ namespace Stu\Module\Starmap\View\ShowOverall;
 
 use AccessViolation;
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
@@ -42,7 +43,7 @@ final class ShowOverall implements ViewControllerInterface
             throw new AccessViolation();
         }
         $types = [];
-        $img = imagecreatetruecolor(MAP_MAX_X * 15, MAP_MAX_Y * 15);
+        $img = imagecreatetruecolor(MapEnum::MAP_MAX_X * 15, MapEnum::MAP_MAX_Y * 15);
 
         // mapfields
         $startY = 1;

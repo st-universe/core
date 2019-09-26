@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateWarp;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -46,22 +47,22 @@ final class FleetActivateWarp implements ActionControllerInterface
             }
             // @todo warpantrieb beschaedigt
             if ($ship->getDock()) {
-                if ($ship->getEps() < SYSTEM_ECOST_DOCK) {
+                if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(': Nicht genügend Energie zum Abdocken vorhanden');
                     continue;
                 }
                 $ship->setDock(0);
-                $ship->setEps($ship->getEps() - SYSTEM_ECOST_DOCK);
+                $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
                 $this->shipRepository->save($ship);
             }
-            if ($ship->getEps() < SYSTEM_ECOST_WARP) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_WARP) {
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_WARP);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_WARP);
             if ($ship->traktorBeamFromShip()) {
-                if ($ship->getEps() < SYSTEM_ECOST_TRACTOR) {
+                if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_TRACTOR) {
                     $msg[] = $ship->getName() . _(": Traktorstrahl aufgrund von Energiemangel deaktiviert");
                     $ship->getTraktorShip()->unsetTraktor();
 

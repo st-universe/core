@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowShipyard;
 
 use ColonyMenu;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -51,7 +53,7 @@ final class ShowShipyard implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/cm_shipyard');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_SHIPYARD));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_SHIPYARD));
 
         $game->setTemplateVar(
             'BUILDABLE_SHIPS',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowSection;
 
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use UserYRow;
@@ -53,9 +54,9 @@ final class ShowSection implements ViewControllerInterface
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);
         $game->setTemplateVar('HAS_NAV_LEFT', $xCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MAP_MAX_X);
+        $game->setTemplateVar('HAS_NAV_RIGHT', $xCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_X);
         $game->setTemplateVar('HAS_NAV_UP', $yCoordinate > 1);
-        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MAP_MAX_Y);
+        $game->setTemplateVar('HAS_NAV_DOWN', $yCoordinate * static::FIELDS_PER_SECTION < MapEnum::MAP_MAX_Y);
         $game->setTemplateVar(
             'NAV_UP',
             sprintf(
@@ -72,7 +73,7 @@ final class ShowSection implements ViewControllerInterface
                 "?%s=1&x=%d&y=%d&sec=%d",
                 static::VIEW_IDENTIFIER,
                 $xCoordinate,
-                $yCoordinate + 1 > MAP_MAX_Y / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
+                $yCoordinate + 1 > MapEnum::MAP_MAX_Y / self::FIELDS_PER_SECTION ? $yCoordinate : $yCoordinate + 1,
                 $section_id + 6
             )
         );
@@ -91,7 +92,7 @@ final class ShowSection implements ViewControllerInterface
             sprintf(
                 '?%s=1&x=%d&y=%d&sec=%d',
                 static::VIEW_IDENTIFIER,
-                $xCoordinate + 1 > MAP_MAX_X / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
+                $xCoordinate + 1 > MapEnum::MAP_MAX_X / self::FIELDS_PER_SECTION ? $xCoordinate : $xCoordinate + 1,
                 $yCoordinate,
                 $section_id + 1
             )

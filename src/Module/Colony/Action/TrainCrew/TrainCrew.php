@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\TrainCrew;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -55,7 +56,7 @@ final class TrainCrew implements ActionControllerInterface
         }
 
         $count = request::postStringFatal('crewcount');
-        if ($count == INDICATOR_MAX) {
+        if ($count == 'm') {
             $count = $trainableCrewPerTick;
         } else {
             if ($count > $trainableCrewPerTick) {
@@ -67,7 +68,7 @@ final class TrainCrew implements ActionControllerInterface
         if ($count <= 0) {
             return;
         }
-        if (!$colony->hasActiveBuildingWithFunction(BUILDING_FUNCTION_ACADEMY)) {
+        if (!$colony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
             $game->addInformation(_('Es befindet sich keine aktivierte Akademie auf diesen Planeten'));
             return;
         }

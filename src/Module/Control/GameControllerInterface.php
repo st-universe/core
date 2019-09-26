@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Control;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -35,14 +36,12 @@ interface GameControllerInterface
 
     public function getInformation(): array;
 
-    public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+    public function sendInformation($recipient_id, $sender_id = GameEnum::USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
     );
 
     public function setTemplateVar(string $key, $variable);
 
     public function getUser(): ?UserInterface;
-
-    public function getBenchmark(): float;
 
     public function getPlayerCount(): int;
 

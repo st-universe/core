@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
@@ -522,7 +523,7 @@ class ShipRump implements ShipRumpInterface
 
     public function isTrumfield(): bool
     {
-        return $this->getCategoryId() === SHIP_CATEGORY_DEBRISFIELD;
+        return $this->getCategoryId() === ShipEnum::SHIP_CATEGORY_DEBRISFIELD;
     }
 
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface

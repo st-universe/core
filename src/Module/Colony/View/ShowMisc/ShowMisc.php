@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\View\ShowMisc;
 
 use ColonyMenu;
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -46,7 +48,7 @@ final class ShowMisc implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/cm_misc');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_OPTION));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_OPTION));
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

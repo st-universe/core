@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickInterface
@@ -19,7 +20,7 @@ final class ShieldRegeneration implements ProcessTickInterface
     public function work(): void
     {
         $time = time();
-        $result = $this->shipRepository->getSuitableForShildRegeneration($time - SHIELD_REGENERATION_TIME);
+        $result = $this->shipRepository->getSuitableForShildRegeneration($time - ShipEnum::SHIELD_REGENERATION_TIME);
         foreach ($result as $key => $obj) {
             if ($obj->getCrewCount() < $obj->getBuildplan()->getCrew()) {
                 return;

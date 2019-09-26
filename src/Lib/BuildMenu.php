@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Stu\Component\Building\BuildingEnum;
+
 class BuildMenu
 {
 
@@ -19,11 +21,11 @@ class BuildMenu
     public function getName()
     {
         switch ($this->menuId) {
-            case BUILDMENU_SOCIAL:
+            case BuildingEnum::BUILDMENU_SOCIAL:
                 return _('Soziales');
-            case BUILDMENU_INDUSTRY:
+            case BuildingEnum::BUILDMENU_INDUSTRY:
                 return _('Industrie');
-            case BUILDMENU_INFRASTRUCTURE;
+            case BuildingEnum::BUILDMENU_INFRASTRUCTURE;
                 return _('Infrastruktur');
         }
     }

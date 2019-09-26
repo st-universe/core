@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Applications;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -47,7 +48,7 @@ final class Applications implements ViewControllerInterface
             'APPLICATIONS',
 			$this->allianceJobRepository->getByAllianceAndType(
                 (int) $alliance->getId(),
-                ALLIANCE_JOBS_PENDING
+                AllianceEnum::ALLIANCE_JOBS_PENDING
             )
         );
     }

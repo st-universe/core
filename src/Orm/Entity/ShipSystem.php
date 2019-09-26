@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Exception;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipSystemRepository")
@@ -124,19 +125,19 @@ class ShipSystem implements ShipSystemInterface
     {
         // @todo refactor
         switch ($this->getSystemType()) {
-            case SYSTEM_CLOAK:
+            case ShipSystemTypeEnum::SYSTEM_CLOAK:
                 return "setCloak";
-            case SYSTEM_NBS:
+            case ShipSystemTypeEnum::SYSTEM_NBS:
                 return "setNbs";
-            case SYSTEM_LSS:
+            case ShipSystemTypeEnum::SYSTEM_LSS:
                 return "setLss";
-            case SYSTEM_PHASER:
+            case ShipSystemTypeEnum::SYSTEM_PHASER:
                 return "setPhaser";
-            case SYSTEM_TORPEDO:
+            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
                 return "setTorpedos";
-            case SYSTEM_WARPDRIVE:
+            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
                 return 'setWarpState';
-            case SYSTEM_SHIELDS:
+            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
                 return 'setShieldState';
         }
         throw new Exception('Invalid system');

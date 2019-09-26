@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Stu\Component\Map\MapEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -44,7 +45,7 @@ class VisualNavPanel
         global $container;
         $repo = $container->get(UserMapRepositoryInterface::class);
 
-        if ($this->user->getMapType() === MAPTYPE_INSERT) {
+        if ($this->user->getMapType() === MapEnum::MAPTYPE_INSERT) {
             $repo->insertMapFieldsForUser(
                 $this->user->getId(),
                 $cx,
@@ -122,7 +123,7 @@ class VisualNavPanel
                 $min++;
                 continue;
             }
-            if ($this->getShip()->getSystemsId() == 0 && $min > MAP_MAX_X) {
+            if ($this->getShip()->getSystemsId() == 0 && $min > MapEnum::MAP_MAX_X) {
                 break;
             }
             if ($this->getShip()->getSystemsId() > 0 && $min > $this->getShip()->getSystem()->getMaxX()) {

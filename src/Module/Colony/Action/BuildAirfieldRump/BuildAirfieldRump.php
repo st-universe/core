@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildAirfieldRump;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -52,7 +53,7 @@ final class BuildAirfieldRump implements ActionControllerInterface
 
         $availableShipRumps = $this->shipRumpRepository->getBuildableByUserAndBuildingFunction(
             $userId,
-            BUILDING_FUNCTION_AIRFIELD
+            BuildingEnum::BUILDING_FUNCTION_AIRFIELD
         );
 
         if (!array_key_exists($rumpId, $availableShipRumps)) {

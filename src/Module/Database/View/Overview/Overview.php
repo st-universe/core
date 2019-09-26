@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Overview;
 
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
@@ -31,19 +32,19 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'RUMP_LIST',
-            $this->databaseCategoryRepository->getByTypeId(DATABASE_TYPE_SHIPRUMP)
+            $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_SHIPRUMP)
         );
         $game->setTemplateVar(
             'RPG_SHIP_LIST',
-            $this->databaseCategoryRepository->getByTypeId(DATABASE_TYPE_RPGSHIPS)
+            $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_RPGSHIPS)
         );
         $game->setTemplateVar(
             'POI_LIST',
-            $this->databaseCategoryRepository->getByTypeId(DATABASE_TYPE_POI)
+            $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_POI)
         );
         $game->setTemplateVar(
             'MAP_LIST',
-            $this->databaseCategoryRepository->getByTypeId(DATABASE_TYPE_MAP)
+            $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_MAP)
         );
     }
 }

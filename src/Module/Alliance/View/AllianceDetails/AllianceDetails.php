@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\AllianceDetails;
 
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -53,7 +54,7 @@ final class AllianceDetails implements ViewControllerInterface
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
         $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $allianceId,
-            ALLIANCE_JOBS_FOUNDER
+                AllianceEnum::ALLIANCE_JOBS_FOUNDER
         )->getUserId() === $game->getUser()->getId();
 
         $relations = [];

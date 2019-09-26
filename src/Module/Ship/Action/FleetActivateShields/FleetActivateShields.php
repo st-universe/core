@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateShields;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -52,7 +53,7 @@ final class FleetActivateShields implements ActionControllerInterface
                 $msg[] = $ship->getName() . ": Die Tarnung ist aktiviert";
                 continue;
             }
-            if ($ship->getEps() < SYSTEM_ECOST_SHIELDS) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_SHIELDS) {
                 $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
                 continue;
             }
@@ -61,7 +62,7 @@ final class FleetActivateShields implements ActionControllerInterface
                 $ship->setDock(0);
             }
             $ship->cancelRepair();
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_SHIELDS);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_SHIELDS);
             $ship->setShieldState(true);
 
             $this->shipRepository->save($ship);

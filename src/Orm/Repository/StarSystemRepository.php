@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -30,7 +31,7 @@ final class StarSystemRepository extends EntityRepository implements StarSystemR
                 )
             )
             ->setParameters([
-                'categoryId' => DATABASE_CATEGORY_STARSYSTEM,
+                'categoryId' => DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM,
             ])
             ->getResult();
     }

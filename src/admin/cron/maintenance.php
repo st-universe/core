@@ -4,7 +4,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Tick\Maintenance\Maintenance;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
-require_once __DIR__.'/../../inc/config.inc.php';
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $entityManager = $container->get(EntityManagerInterface::class);
 

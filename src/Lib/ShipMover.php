@@ -1,5 +1,9 @@
 <?php
 
+use Stu\Component\Map\MapEnum;
+use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -50,11 +54,11 @@ class ShipMover {
 				$posy = $sys->getMaxY();
 			}
 		} else {
-			if ($posx > MAP_MAX_X) {
-				$posx = MAP_MAX_X;
+			if ($posx > MapEnum::MAP_MAX_X) {
+				$posx = MapEnum::MAP_MAX_X;
 			}
-			if ($posy > MAP_MAX_Y) {
-				$posy = MAP_MAX_Y;
+			if ($posy > MapEnum::MAP_MAX_Y) {
+				$posy = MapEnum::MAP_MAX_Y;
 			}
 		}
 		$this->setDestX($posx);
@@ -185,7 +189,7 @@ class ShipMover {
 		if (!$this->isFleetMode()) {
 			if ($ship->getSystemsId() == 0 && !$ship->isWarpAble()) {
 				$this->addInformation(_("Dieses Schiff verfügt über keinen Warpantrieb"));
-				return FALSE;	
+				return FALSE;
 			}
 			if ($ship->getEps() < $ship->getRump()->getFlightEcost()) {
 				$this->addInformation(sprintf(_('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),$ship->getName(),$ship->getRump()->getFlightEcost()));
@@ -197,7 +201,7 @@ class ShipMover {
 			}
 		}
 		$ship->setDock(0);
-		if ($ship->getState() == SHIP_STATE_REPAIR) {
+		if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
 			$ship->cancelRepair();
 			$this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'),$ship->getId()));
 		}
@@ -215,18 +219,18 @@ class ShipMover {
 			return;
 		}
 		if (!$this->isFleetMode() && !$ship->getWarpState() && $ship->getSystemsId() == 0) {
-			if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts()) {
+			if ($ship->getEps() < $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts()) {
 				$this->addInformation(sprintf(_("Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"),$ship->getName()));
 				return FALSE;
 			}
-			$ship->activateSystem(SYSTEM_WARPDRIVE);
+			$ship->activateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 			if ($ship->getTraktorMode() == 1) {
 				if ($ship->getEps() < $ship->getTraktorShip()->getEpsUsage()) {
 					$ship->deactivateTraktorBeam();
 					$this->addInformation(sprintf(_("Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert"),$ship->getTraktorShip()->getName(),$ship->getPosX(),$ship->getPosY()));
 				} else {
-					$ship->getTraktorShip()->activateSystem(SYSTEM_WARPDRIVE,FALSE);
-					$ship->setEps($ship->getEps() - $ship->getTraktorShip()->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts());
+					$ship->getTraktorShip()->activateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE,FALSE);
+					$ship->setEps($ship->getEps() - $ship->getTraktorShip()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts());
 				}
 			}
 		}
@@ -237,18 +241,18 @@ class ShipMover {
 			$oldy = $ship->getPosY();
 			$cury = $oldy;
 			if ($this->getDestY() > $oldy) {
-				$method = FLY_DOWN;
+				$method = ShipEnum::FLY_DOWN;
 			} else {
-				$method = FLY_UP;
+				$method = ShipEnum::FLY_UP;
 			}
 		}
 		if ($this->getDestY() == $ship->getPosY()) {
 			$oldx = $ship->getPosX();
 			$curx = $oldx;
 			if ($this->getDestX() > $oldx) {
-				$method = FLY_RIGHT;
+				$method = ShipEnum::FLY_RIGHT;
 			} else {
-				$method = FLY_LEFT;
+				$method = ShipEnum::FLY_LEFT;
 			}
 		}
 
@@ -265,17 +269,17 @@ class ShipMover {
 					$msg[] = "Die ".$ship->getName()." verfügt über keinen Warpantrieb (".$ship->getPosX()."|".$ship->getPosY().")";
 					break;
 				}
-				if (!$ship->getShipSystem(SYSTEM_WARPDRIVE)->isActivateable()) {
+				if (!$ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->isActivateable()) {
 					$ship->leaveFleet();
 					$msg[] = "Die ".$ship->getName()." kann den Warpantrieb nicht aktivieren (".$ship->getPosX()."|".$ship->getPosY().")";
 					break;
 				}
-				if ($ship->getEps() < $ship->getShipSystem(SYSTEM_WARPDRIVE)->getEnergyCosts()) {
+				if ($ship->getEps() < $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts()) {
 					$ship->leaveFleet();
 					$msg[] = "Die ".$ship->getName()." kann den Warpantrieb aufgrund Energiemangel nicht aktivieren (".$ship->getPosX()."|".$ship->getPosY().")";
 					break;
 				}
-				$ship->activateSystem(SYSTEM_WARPDRIVE);
+				$ship->activateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 				$msg[] = "Die ".$ship->getName()." aktiviert den Warpantrieb";
 			}
 			$nextfield = $this->getNextField($method,$ship);
@@ -379,13 +383,13 @@ class ShipMover {
 
 	private function getNextField(&$method, ShipInterface $ship) {
 		switch ($method) {
-			case FLY_RIGHT:
+			case ShipEnum::FLY_RIGHT:
 				return $this->getFieldData($ship->getPosX()+1,$ship->getPosY());
-			case FLY_LEFT:
+			case ShipEnum::FLY_LEFT:
 				return $this->getFieldData($ship->getPosX()-1,$ship->getPosY());
-			case FLY_UP:
+			case ShipEnum::FLY_UP:
 				return $this->getFieldData($ship->getPosX(),$ship->getPosY()-1);
-			case FLY_DOWN:
+			case ShipEnum::FLY_DOWN:
 				return $this->getFieldData($ship->getPosX(),$ship->getPosY()+1);
 		}
 	}
@@ -404,7 +408,7 @@ class ShipMover {
 		$ship->setPosY($ship->getPosY()-1);
 		$ship->setFlightDirection(2);
 	}
-	
+
 	function fly1(ShipInterface $ship) {
 		$ship->setPosX($ship->getPosX()+1);
 		$ship->setFlightDirection(3);

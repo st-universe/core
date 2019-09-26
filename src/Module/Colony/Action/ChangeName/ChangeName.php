@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\Action\ChangeName;
 
 use JBBCode\Parser;
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -39,7 +41,7 @@ final class ChangeName implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', MENU_OPTION]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_OPTION]);
 
         $value = request::postStringFatal('colname');
         $value = tidyString(strip_tags($value));

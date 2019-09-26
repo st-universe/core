@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Research\ResearchEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -14,11 +16,11 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
     private const START_TECH_LIST = [
-        FACTION_FEDERATION => RESEARCH_START_FEDERATION,
-        FACTION_ROMULAN => RESEARCH_START_ROMULAN,
-        FACTION_KLINGON => RESEARCH_START_KLINGON,
-        FACTION_CARDASSIAN => RESEARCH_START_CARDASSIAN,
-        FACTION_FERENGI => RESEARCH_START_FERENGI,
+        FactionEnum::FACTION_FEDERATION => ResearchEnum::RESEARCH_START_FEDERATION,
+        FactionEnum::FACTION_ROMULAN => ResearchEnum::RESEARCH_START_ROMULAN,
+        FactionEnum::FACTION_KLINGON => ResearchEnum::RESEARCH_START_KLINGON,
+        FactionEnum::FACTION_CARDASSIAN => ResearchEnum::RESEARCH_START_CARDASSIAN,
+        FactionEnum::FACTION_FERENGI => ResearchEnum::RESEARCH_START_FERENGI,
     ];
 
     private $privateMessageFolderRepository;

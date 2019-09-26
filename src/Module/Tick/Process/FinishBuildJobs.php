@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Process;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -51,7 +52,7 @@ final class FinishBuildJobs implements ProcessTickInterface
 
             $txt = "Kolonie " . $colony->getName() . ": " . $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " fertiggestellt";
 
-            $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $txt,
+            $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$colony->getUserId(), $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
         }
     }

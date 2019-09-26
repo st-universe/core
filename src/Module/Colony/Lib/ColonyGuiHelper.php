@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -24,17 +26,17 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
     public function getColonyMenu(int $menuId): string
     {
         switch ($menuId) {
-            case MENU_OPTION:
+            case ColonyEnum::MENU_OPTION:
                 return 'cm_misc';
-            case MENU_BUILD:
+            case ColonyEnum::MENU_BUILD:
                 return 'cm_buildmenu';
-            case MENU_SOCIAL:
+            case ColonyEnum::MENU_SOCIAL:
                 return 'cm_social';
-            case MENU_BUILDINGS:
+            case ColonyEnum::MENU_BUILDINGS:
                 return 'cm_building_mgmt';
-            case MENU_AIRFIELD:
+            case ColonyEnum::MENU_AIRFIELD:
                 return 'cm_airfield';
-            case MENU_MODULEFAB:
+            case ColonyEnum::MENU_MODULEFAB:
                 return 'cm_modulefab';
             default:
                 return 'cm_management';

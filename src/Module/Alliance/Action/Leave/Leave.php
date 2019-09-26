@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Leave;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -39,7 +40,7 @@ final class Leave implements ActionControllerInterface
 
         $foundJob = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             (int) $alliance->getId(),
-            ALLIANCE_JOBS_FOUNDER
+            AllianceEnum::ALLIANCE_JOBS_FOUNDER
         );
 
         if ($foundJob->getUserId() === $userId) {

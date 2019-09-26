@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Abandon;
 
 use AccessViolation;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -70,7 +71,7 @@ final class Abandon implements ActionControllerInterface
         $colony->setMaxBev(0);
         $colony->setImmigrationState(true);
         $colony->setPopulationLimit(0);
-        $colony->setUser($this->userRepository->find(USER_NOONE));
+        $colony->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $colony->setName('');
 
         $this->colonyRepository->save($colony);

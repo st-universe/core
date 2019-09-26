@@ -1,15 +1,17 @@
 <?php
 
+use Stu\Component\Database\DatabaseCategoryTypeEnum;
+use Stu\Component\Database\DatabaseEntryTypeEnum;
 use Stu\Orm\Repository\DatabaseCategoryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
 use Stu\Orm\Repository\DatabaseTypeRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-include_once(__DIR__.'/../../inc/config.inc.php');
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $repository = $container->get(DatabaseEntryRepositoryInterface::class);
-$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DATABASE_TYPE_POI);
-$category = $container->get(DatabaseCategoryRepositoryInterface::class)->find(DATABASE_CATEGORY_TRADEPOST);
+$type = $container->get(DatabaseTypeRepositoryInterface::class)->find(DatabaseEntryTypeEnum::DATABASE_TYPE_POI);
+$category = $container->get(DatabaseCategoryRepositoryInterface::class)->find(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST);
 $shipRepo = $container->get(ShipRepositoryInterface::class);
 
 $result = $shipRepo->getTradePostsWithoutDatabaseEntry();

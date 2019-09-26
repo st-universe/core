@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -29,7 +30,7 @@ class UserYRow extends YRow
 
             /** @var ExploreableStarMap $item */
             foreach ($result as $item) {
-                if ($mapType == MAPTYPE_INSERT) {
+                if ($mapType == MapEnum::MAPTYPE_INSERT) {
                     if ($item->getUserId() === null) {
                         $item->setHide(true);
                     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
@@ -67,7 +68,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
                 MapRegionSettlement::class
             )
         )->setParameters([
-            'userId' => USER_NOONE,
+            'userId' => GameEnum::USER_NOONE,
             'factionId' => $factionId
         ])->getResult();
     }
@@ -100,7 +101,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             Colony::class
             )
         )->setParameters([
-            'userId' => USER_NOONE,
+            'userId' => GameEnum::USER_NOONE,
         ])->getResult();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -102,7 +103,7 @@ class ModuleSelector implements ModuleSelectorInterface
         global $container;
         if ($this->modules === null) {
             $this->modules = [];
-            if ($this->getModuleType() == MODULE_TYPE_SPECIAL) {
+            if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeAndRump(
                     (int)$this->getColony()->getId(),
                     (int)$this->getModuleType(),

@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Orm\Entity\Building;
 
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
@@ -39,7 +40,7 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 'userId' => $userId,
                 'colonyId' => $colonyId,
                 'offset' => $offset,
-                'scrollOffset' => BUILDMENU_SCROLLOFFSET,
+                'scrollOffset' => ColonyEnum::BUILDMENU_SCROLLOFFSET,
             ])
             ->getResult();
     }

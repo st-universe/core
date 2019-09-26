@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelContract;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -50,7 +51,7 @@ final class CancelContract implements ActionControllerInterface
         if ($relation === null || ($relation->getOpponentId() != $allianceId && $relation->getAllianceId() != $allianceId)) {
             return;
         }
-        if ($relation->getType() == ALLIANCE_RELATION_WAR) {
+        if ($relation->getType() == AllianceEnum::ALLIANCE_RELATION_WAR) {
             return;
         }
         if ($relation->isPending()) {

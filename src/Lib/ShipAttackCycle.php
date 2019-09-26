@@ -1,5 +1,8 @@
 <?php
 
+use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\ShipRoleEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -105,7 +108,7 @@ class ShipAttackCycle {
 				continue;
 			}
 			if ($this->getDefendShip()->getWarpState()) {
-				$this->getDefendShip()->deactivateSystem(SYSTEM_WARPDRIVE);
+				$this->getDefendShip()->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 			}
 			$this->getDefendShip()->cancelRepair();
 			$this->getAttackShip()->cancelRepair();
@@ -186,7 +189,7 @@ class ShipAttackCycle {
 				$this->addMessage("Die ".$this->getAttackShip()->getName()." feuert einen ".$this->getAttackShip()->getTorpedo()->getName()." auf die ".$this->getDefendShip()->getName());
 				// higher evade chance for pulseships against
 				// torpedo ships
-				if ($this->getAttackShip()->getRump()->getRoleId() == ROLE_TORPEDOSHIP && $this->getDefendShip()->getRump()->getRoleId() == ROLE_PULSESHIP) {
+				if ($this->getAttackShip()->getRump()->getRoleId() == ShipRoleEnum::ROLE_TORPEDOSHIP && $this->getDefendShip()->getRump()->getRoleId() == ShipRoleEnum::ROLE_PULSESHIP) {
 					$hitchance = round($this->getAttackShip()->getHitChance()*0.65);
 				} else {
 					$hitchance = $this->getAttackShip()->getHitChance();
@@ -436,8 +439,8 @@ class ShipAttackCycle {
         if ($ship->getCrewCount() == 0 || $ship->getRump()->isTrumfield()) {
             return $msg;
         }
-        if ($ship->getAlertState() == ALERT_GREEN) {
-            $ship->setAlertState(ALERT_YELLOW);
+        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
+            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
             $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt";
         }
         if ($ship->getDock()) {
@@ -445,28 +448,28 @@ class ShipAttackCycle {
             $msg[] = "- Das Schiff hat abgedockt";
         }
         if ($ship->getWarpState() == 1) {
-            $ship->deactivateSystem(SYSTEM_WARPDRIVE);
+            $ship->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
             $msg[] = "- Der Warpantrieb wurde deaktiviert";
         }
         if ($ship->getCloakState()) {
-            $ship->deactivateSystem(SYSTEM_CLOAK);
+            $ship->deactivateSystem(ShipSystemTypeEnum::SYSTEM_CLOAK);
             $msg[] = "- Die Tarnung wurde deaktiviert";
         }
-        if (!$ship->getShieldState() && !$ship->traktorBeamToShip() && $ship->systemIsActivateable(SYSTEM_SHIELDS)) {
+        if (!$ship->getShieldState() && !$ship->traktorBeamToShip() && $ship->systemIsActivateable(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
             if ($ship->isTraktorbeamActive()) {
                 $ship->deactivateTraktorBeam();
                 $msg[] = "- Der Traktorstrahl wurde deaktiviert";
             }
-            $ship->activateSystem(SYSTEM_SHIELDS);
+            $ship->activateSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS);
             $msg[] = "- Die Schilde wurden aktiviert";
         }
-        if ($ship->systemIsActivateable(SYSTEM_NBS)) {
-            $ship->activateSystem(SYSTEM_NBS);
+        if ($ship->systemIsActivateable(ShipSystemTypeEnum::SYSTEM_NBS)) {
+            $ship->activateSystem(ShipSystemTypeEnum::SYSTEM_NBS);
             $msg[] = "- Die Nahbereichssensoren wurden aktiviert";
         }
-        if ($ship->getAlertState() >= ALERT_YELLOW) {
-            if ($ship->systemIsActivateable(SYSTEM_PHASER)) {
-                $ship->activateSystem(SYSTEM_PHASER);
+        if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_YELLOW) {
+            if ($ship->systemIsActivateable(ShipSystemTypeEnum::SYSTEM_PHASER)) {
+                $ship->activateSystem(ShipSystemTypeEnum::SYSTEM_PHASER);
                 $msg[] = "- Die Strahlenwaffe wurde aktiviert";
             }
         }
@@ -474,10 +477,10 @@ class ShipAttackCycle {
     }
 
     private function getEnergyWeaponDamage(ShipInterface $ship): float {
-        if (!$ship->hasShipSystem(SYSTEM_PHASER)) {
+        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return 0;
         }
-        $basedamage= calculateModuleValue($ship->getRump(),$ship->getShipSystem(SYSTEM_PHASER)->getModule(),'getBaseDamage');
+        $basedamage= calculateModuleValue($ship->getRump(),$ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModule(),'getBaseDamage');
         $variance = round($basedamage/100 * $this->getEnergyWeapon($ship)->getVariance());
         $damage = rand($basedamage-$variance,$basedamage+$variance);
         if (rand(1,100) <= $this->getEnergyWeapon($ship)->getCriticalChance()) {
@@ -488,7 +491,7 @@ class ShipAttackCycle {
 
     private function getProjectileWeaponDamage(ShipInterface $ship): float {
         $variance = round($ship->getTorpedo()->getBaseDamage()/100*$ship->getTorpedo()->getVariance());
-        $basedamage= calculateModuleValue($ship->getRump(),$ship->getShipSystem(SYSTEM_TORPEDO)->getModule(),FALSE,$ship->getTorpedo()->getBaseDamage());
+        $basedamage= calculateModuleValue($ship->getRump(),$ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule(),FALSE,$ship->getTorpedo()->getBaseDamage());
         $damage = rand($basedamage-$variance,$basedamage+$variance);
         if (rand(1,100) <= $ship->getTorpedo()->getCriticalChance()) {
             return $damage*2;
@@ -501,7 +504,7 @@ class ShipAttackCycle {
         global $container;
 
         return $container->get(WeaponRepositoryInterface::class)->findByModule(
-            (int) $ship->getShipSystem(SYSTEM_PHASER)->getModuleId()
+            (int) $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModuleId()
         );
     }
 

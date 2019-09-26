@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
 use ShipSingleAttackCycle;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -86,7 +87,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Die " . $target->getName() . " befindet sich in der selben Flotte wie die " . $ship->getName());
             return;
         }
-        if (($target->getAlertState() == ALERT_YELLOW || $target->getAlertState() == ALERT_RED) && !$target->getUser()->isFriend($userId)) {
+        if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED) && !$target->getUser()->isFriend($userId)) {
             if ($target->getFleetId()) {
                 $attacker = $target->getFleet()->getShips();
             } else {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Lib;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -47,7 +48,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         $this->privateMessageRepository->save($pm);
 
-        if ($senderId != USER_NOONE) {
+        if ($senderId != GameEnum::USER_NOONE) {
 
             $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($senderId,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT);

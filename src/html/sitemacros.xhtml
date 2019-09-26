@@ -304,7 +304,7 @@
 
 <tal:block metal:define-macro="benchmark">
 	<br style="clear: both;" /><br />
-	<div style="margin-top: 20px; color: #C0C0C0;">Runtime: <span tal:replace="THIS/getBenchmark">..</span>s (Too much :[)<br />
+  <div>
 	Memory consumption: <span tal:replace="THIS/getMemoryUsage">...</span> MB<br />
 	Datenbankqueries: <span tal:replace="THIS/getQueryCount">...</span></div>
 </tal:block>

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Register;
 
 use Exception;
+use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Research\ResearchEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -129,18 +131,18 @@ final class Register implements ActionControllerInterface
     private function getResearchStartId(int $factionId): int
     {
         switch ($factionId) {
-            case FACTION_FEDERATION:
-                return RESEARCH_START_FEDERATION;
-            case FACTION_ROMULAN:
-                return RESEARCH_START_ROMULAN;
-            case FACTION_KLINGON:
-                return RESEARCH_START_KLINGON;
-            case FACTION_CARDASSIAN:
-                return RESEARCH_START_CARDASSIAN;
-            case FACTION_FERENGI:
-                return RESEARCH_START_FERENGI;
-            case FACTION_EMPIRE:
-                return RESEARCH_START_EMPIRE;
+            case FactionEnum::FACTION_FEDERATION:
+                return ResearchEnum::RESEARCH_START_FEDERATION;
+            case FactionEnum::FACTION_ROMULAN:
+                return ResearchEnum::RESEARCH_START_ROMULAN;
+            case FactionEnum::FACTION_KLINGON:
+                return ResearchEnum::RESEARCH_START_KLINGON;
+            case FactionEnum::FACTION_CARDASSIAN:
+                return ResearchEnum::RESEARCH_START_CARDASSIAN;
+            case FactionEnum::FACTION_FERENGI:
+                return ResearchEnum::RESEARCH_START_FERENGI;
+            case FactionEnum::FACTION_EMPIRE:
+                return ResearchEnum::RESEARCH_START_EMPIRE;
         }
         throw new Exception('Invalid faction');
     }

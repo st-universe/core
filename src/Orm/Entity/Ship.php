@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use AccessViolation;
+use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
@@ -874,7 +877,7 @@ class Ship implements ShipInterface
 
     public function getWarpcoreCapacity(): int
     {
-        return $this->getReactorOutput() * WARPCORE_CAPACITY_MULTIPLIER;
+        return $this->getReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
     }
 
     public function getReactorCapacity(): int
@@ -988,7 +991,7 @@ class Ship implements ShipInterface
 
     public function isWarpPossible(): bool
     {
-        return $this->hasShipSystem(SYSTEM_WARPDRIVE) && $this->getSystemsId() == 0;
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystemsId() == 0;
     }
 
     public function getTorpedo(): ?TorpedoTypeInterface
@@ -1007,7 +1010,7 @@ class Ship implements ShipInterface
         $this->setShieldRegenerationTimer(time());
         $msg = [];
         if ($this->getShieldState()) {
-            $damage = $damage_wrapper->getDamageRelative($this, DAMAGE_MODE_SHIELDS);
+            $damage = $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage > $this->getShield()) {
                 $msg[] = "- Schildschaden: " . $this->getShield();
                 $msg[] = "-- Schilde brechen zusammen!";
@@ -1022,7 +1025,7 @@ class Ship implements ShipInterface
             return $msg;
         }
         $disablemessage = false;
-        $damage = $damage_wrapper->getDamageRelative($this, DAMAGE_MODE_HULL);
+        $damage = $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_HULL);
         if ($this->getCanBeDisabled() && $this->getHuell() - $damage < round($this->getMaxHuell() / 100 * 10)) {
             $damage = round($this->getHuell() - $this->getMaxHuell() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
@@ -1179,19 +1182,19 @@ class Ship implements ShipInterface
     private function getShipField(ShipSystemInterface $shipSystem): string
     {
         switch ($shipSystem->getSystemType()) {
-            case SYSTEM_CLOAK:
+            case ShipSystemTypeEnum::SYSTEM_CLOAK:
                 return 'cloak';
-            case SYSTEM_NBS:
+            case ShipSystemTypeEnum::SYSTEM_NBS:
                 return 'nbs';
-            case SYSTEM_LSS:
+            case ShipSystemTypeEnum::SYSTEM_LSS:
                 return 'lss';
-            case SYSTEM_PHASER:
+            case ShipSystemTypeEnum::SYSTEM_PHASER:
                 return 'wea_phaser';
-            case SYSTEM_TORPEDO:
+            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
                 return 'wea_torp';
-            case SYSTEM_WARPDRIVE:
+            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
                 return 'warp';
-            case SYSTEM_SHIELDS:
+            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
                 return 'schilde_status';
         }
         return '';
@@ -1212,7 +1215,7 @@ class Ship implements ShipInterface
             return false;
         }
         switch ($system) {
-            case SYSTEM_SHIELDS:
+            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
                 if ($this->getShield() == 0) {
                     return false;
                 }
@@ -1408,8 +1411,8 @@ class Ship implements ShipInterface
 
     public function cancelRepair(): void
     {
-        if ($this->getState() == SHIP_STATE_REPAIR) {
-            $this->setState(SHIP_STATE_NONE);
+        if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
+            $this->setState(ShipStateEnum::SHIP_STATE_NONE);
 
             // @todo inject
             global $container;
@@ -1480,17 +1483,17 @@ class Ship implements ShipInterface
 
     public function hasPhaser(): bool
     {
-        return $this->hasShipSystem(SYSTEM_PHASER);
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
 
     public function hasTorpedo(): bool
     {
-        return $this->hasShipSystem(SYSTEM_TORPEDO);
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO);
     }
 
     public function hasWarpcore(): bool
     {
-        return $this->hasShipSystem(SYSTEM_WARPCORE);
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE);
     }
 
     public function getMaxTorpedos(): int

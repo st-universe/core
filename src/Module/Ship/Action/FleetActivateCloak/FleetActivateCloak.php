@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateCloak;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -44,7 +45,7 @@ final class FleetActivateCloak implements ActionControllerInterface
             if (!$ship->isCloakable()) {
                 continue;
             }
-            if ($ship->getEps() < SYSTEM_ECOST_CLOAK) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_CLOAK) {
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
@@ -56,7 +57,7 @@ final class FleetActivateCloak implements ActionControllerInterface
                 $ship->setDock(0);
                 $msg[] = $ship->getName() . _(": Abgedockt");
             }
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_CLOAK);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_CLOAK);
             $ship->setCloakState(true);
 
             $this->shipRepository->save($ship);

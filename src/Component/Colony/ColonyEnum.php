@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Component\Colony;
+
+final class ColonyEnum
+{
+
+    public const GOOD_SATISFACTION_FED_PRIMARY = 1001;
+    public const GOOD_SATISFACTION_ROMULAN_PRIMARY = 1002;
+    public const GOOD_SATISFACTION_KLINGON_PRIMARY = 1003;
+    public const GOOD_SATISFACTION_FED_SECONDARY = 1601;
+    public const GOOD_SATISFACTION_ROMULAN_SECONDARY = 1602;
+    public const GOOD_SATISFACTION_KLINGON_SECONDARY = 1603;
+
+    public const COLONY_FIELDTYPE_MEADOW = 101;
+
+    public const COLONY_CLASS_SPECIAL_RING = 1;
+
+    public const BUILDMENU_SCROLLOFFSET = 6;
+
+    public const MENU_BUILDPLANS = 9;
+    public const MENU_BUILDINGS = 5;
+    public const MENU_TORPEDOFAB = 11;
+    public const MENU_BUILD = 1;
+    public const MENU_OPTION = 3;
+    public const MENU_ACADEMY = 12;
+    public const MENU_INFO = 2;
+    public const MENU_SOCIAL = 4;
+    public const MENU_SHIPYARD = 8;
+    public const MENU_MODULEFAB = 7;
+    public const MENU_FIGHTER_SHIPYARD = 10;
+    public const MENU_AIRFIELD = 6;
+}

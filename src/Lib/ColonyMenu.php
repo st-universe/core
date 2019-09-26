@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
+
 class ColonyMenu
 {
 
@@ -25,7 +28,7 @@ class ColonyMenu
         if ($this->getMenuType() == $value) {
             return "selected";
         }
-        if ($value == MENU_INFO && $this->getMenuType() == 0 && $this->selectedColonyMenu === null) {
+        if ($value == ColonyEnum::MENU_INFO && $this->getMenuType() == 0 && $this->selectedColonyMenu === null) {
             return 'selected';
         }
         return false;

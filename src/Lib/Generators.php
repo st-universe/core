@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace Stu\Lib;
 
+use Noodlehaus\ConfigInterface;
+
 class Generators
 {
 
-    static function generate()
+    static function generate(ConfigInterface $config)
     {
-        $files = dir(GENERATOR_DIR);
+        $path = sprintf(
+            '%s/src/admin/generators/',
+            $config->get('game.webroot')
+        );
+
+        $files = dir($path);
         while (false !== ($entry = $files->read())) {
-            if (!is_file(GENERATOR_DIR . $entry)) {
+            if (!is_file($path . $entry)) {
                 continue;
             }
-            include_once(GENERATOR_DIR . $entry);
+            include_once($path . $entry);
         }
     }
 

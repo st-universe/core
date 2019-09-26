@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteAlliance;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -40,7 +41,8 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $game->setView(AllianceList::VIEW_IDENTIFIER);
 
-        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId, ALLIANCE_JOBS_FOUNDER);
+        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
+            AllianceEnum::ALLIANCE_JOBS_FOUNDER);
 
         if ($job->getUserId() !== $user->getId()) {
             throw new AccessViolation();

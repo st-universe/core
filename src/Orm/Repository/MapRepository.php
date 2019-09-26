@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Map\MapEnum;
 use Stu\Module\Starmap\Lib\ExploreableStarMap;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapInterface;
@@ -23,8 +24,8 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 )
             )
             ->setParameters([
-                'mapMaxX' => MAP_MAX_X,
-                'mapMaxY' => MAP_MAX_Y
+                'mapMaxX' => MapEnum::MAP_MAX_X,
+                'mapMaxY' => MapEnum::MAP_MAX_Y
             ])
             ->getResult();
     }

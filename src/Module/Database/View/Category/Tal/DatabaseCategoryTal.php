@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Tal;
 
+use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseCategoryInterface;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -28,12 +29,12 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 
     public function isCategoryStarSystems(): bool
     {
-        return $this->databaseCategory->getId() == DATABASE_CATEGORY_STARSYSTEM;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM;
     }
 
     public function isCategoryTradePosts(): bool
     {
-        return $this->databaseCategory->getId() == DATABASE_CATEGORY_TRADEPOST;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST;
     }
 
     public function displayDefaultList(): bool

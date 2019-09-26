@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\KickPlayer;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -69,7 +71,7 @@ final class KickPlayer implements ActionControllerInterface
             $this->allianceActionManager->setJobForUser(
                 $allianceId,
                 $userId,
-                ALLIANCE_JOBS_FOUNDER
+                AllianceEnum::ALLIANCE_JOBS_FOUNDER
             );
         }
 
@@ -80,7 +82,7 @@ final class KickPlayer implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(USER_NOONE, $playerId, $text);
+        $this->privateMessageSender->send(GameEnum::USER_NOONE, $playerId, $text);
 
         $game->addInformation(_('Der Siedler wurde rausgeworfen'));
     }

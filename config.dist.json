@@ -17,7 +17,9 @@
     "webroot": "/path/to/webroot",
     "base_url": "https://change.me",
     "version": "VERSIONSTRING",
-    "language": "de_DE"
+    "language": "de_DE",
+    "user_avatar_path": "html/avatare/user/",
+    "alliance_avatar_path": "html/avatare/alliance/"
   },
   "api": {
     "jwt_secret": "changeme",

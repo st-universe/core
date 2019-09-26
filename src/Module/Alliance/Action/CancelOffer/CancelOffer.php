@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CancelOffer;
 
 use AccessViolation;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -59,9 +60,9 @@ final class CancelOffer implements ActionControllerInterface
 
         $opponent = $relation->getOpponent();
 
-        $this->privateMessageSender->send(USER_NOONE, $opponent->getFounder()->getUserId(), $text);
+        $this->privateMessageSender->send(GameEnum::USER_NOONE, $opponent->getFounder()->getUserId(), $text);
         if ($opponent->getDiplomatic()) {
-            $this->privateMessageSender->send(USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
+            $this->privateMessageSender->send(GameEnum::USER_NOONE, $opponent->getDiplomatic()->getUserId(), $text);
         }
         $game->addInformation(_('Das Angebot wurde zurückgezogen'));
     }

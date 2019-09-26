@@ -2,6 +2,8 @@
 
 namespace Stu\Lib;
 
+use Noodlehaus\ConfigInterface;
+
 abstract class DefaultGenerator
 {
 
@@ -22,12 +24,27 @@ abstract class DefaultGenerator
 
     private function deleteFile()
     {
-        unlink(GENERATED_DIR . $this->file);
+        // @todo
+        global $container;
+
+        @unlink(
+            sprintf(
+                '%s/src/inc/generated/',
+                $container->get(ConfigInterface::class)->get('game.webroot')
+            )
+        );
     }
 
     private function generateFile()
     {
-        $this->filepointer = fopen(GENERATED_DIR . $this->file, "a+");
+        // @todo
+        global $container;
+
+        $path = sprintf(
+            '%s/src/inc/generated/',
+            $container->get(ConfigInterface::class)->get('game.webroot')
+        );
+        $this->filepointer = fopen($path, "a+");
     }
 
     private function writePrefix()

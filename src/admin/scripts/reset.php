@@ -1,12 +1,13 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Lib\UserDeletion;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-include_once(__DIR__.'/../../inc/config.inc.php');
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $entityManager = $container->get(EntityManagerInterface::class);
 
@@ -24,7 +25,7 @@ $entityManager->getConnection()->query(
 $user = $userRepo->prototype();
 $user->setLogin('wolverine');
 $user->setUser('Wolverine');
-$user->setFaction($factionRepo->find(FACTION_FEDERATION));
+$user->setFaction($factionRepo->find(FactionEnum::FACTION_FEDERATION));
 $user->setActive(PlayerEnum::USER_ACTIVE);
 
 $userRepo->save($user);

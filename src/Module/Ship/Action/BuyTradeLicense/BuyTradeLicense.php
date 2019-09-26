@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -71,7 +72,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $targetId = (int) request::getIntFatal('target');
         $mode = request::getStringFatal('method');
 
-        if ($this->tradeLicenseRepository->getAmountByUser($userId) >= MAX_TRADELICENCE_COUNT) {
+        if ($this->tradeLicenseRepository->getAmountByUser($userId) >= GameEnum::MAX_TRADELICENCE_COUNT) {
             return;
         }
 

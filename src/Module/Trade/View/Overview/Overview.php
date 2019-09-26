@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\Overview;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -38,7 +39,7 @@ final class Overview implements ViewControllerInterface
             'TRADE_LICENSE_COUNT',
             $this->tradeLicenseRepository->getAmountByUser($userId)
         );
-        $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', MAX_TRADELICENCE_COUNT);
+        $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENCE_COUNT);
         $game->setTemplateVar('OFFER_LIST', $this->tradeOfferRepository->getByUserLicenses($userId));
     }
 }

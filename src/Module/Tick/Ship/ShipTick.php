@@ -2,6 +2,8 @@
 
 namespace Stu\Module\Tick\Ship;
 
+use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -62,27 +64,27 @@ final class ShipTick implements ShipTickInterface
     private function getSystemDescription(ShipSystemInterface $shipSystem): string
     {
         switch ($shipSystem->getSystemType()) {
-            case SYSTEM_CLOAK:
+            case ShipSystemTypeEnum::SYSTEM_CLOAK:
                 return "Tarnung";
-            case SYSTEM_NBS:
+            case ShipSystemTypeEnum::SYSTEM_NBS:
                 return "Nahbereichssensoren";
-            case SYSTEM_LSS:
+            case ShipSystemTypeEnum::SYSTEM_LSS:
                 return "Langstreckensensoren";
-            case SYSTEM_PHASER:
+            case ShipSystemTypeEnum::SYSTEM_PHASER:
                 return "Strahlenwaffe";
-            case SYSTEM_TORPEDO:
+            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
                 return "Torpedobänke";
-            case SYSTEM_WARPDRIVE:
+            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
                 return "Warpantrieb";
-            case SYSTEM_EPS:
+            case ShipSystemTypeEnum::SYSTEM_EPS:
                 return _("Energiesystem");
-            case SYSTEM_IMPULSEDRIVE:
+            case ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE:
                 return _("Impulsantrieb");
-            case SYSTEM_COMPUTER:
+            case ShipSystemTypeEnum::SYSTEM_COMPUTER:
                 return _('Computer');
-            case SYSTEM_WARPCORE:
+            case ShipSystemTypeEnum::SYSTEM_WARPCORE:
                 return _('Warpkern');
-            case SYSTEM_SHIELDS:
+            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
                 return _('Schilde');
         }
         return '';
@@ -98,7 +100,7 @@ final class ShipTick implements ShipTickInterface
             $text .= $msg . "\n";
         }
 
-        $this->privateMessageSender->send(USER_NOONE, (int)$ship->getUserId(), $text,
+        $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$ship->getUserId(), $text,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
 
         $this->msg = [];

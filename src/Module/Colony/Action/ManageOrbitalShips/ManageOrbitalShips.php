@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use Exception;
 use request;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
@@ -177,12 +178,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     array_key_exists(CommodityTypeEnum::GOOD_ANTIMATTER, $storage)
                 ) {
                     if ($shipobj->getWarpcoreLoad() < $shipobj->getWarpcoreCapacity()) {
-                        if ($wk[$shipobj->getId()] == INDICATOR_MAX) {
-                            $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / WARPCORE_LOAD);
+                        if ($wk[$shipobj->getId()] == 'm') {
+                            $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
                         } else {
-                            $load = ceil(intval($wk[$shipobj->getId()]) / WARPCORE_LOAD);
-                            if ($load * WARPCORE_LOAD > $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) {
-                                $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / WARPCORE_LOAD);
+                            $load = ceil(intval($wk[$shipobj->getId()]) / ShipEnum::WARPCORE_LOAD);
+                            if ($load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) {
+                                $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
                             }
                         }
                         $load = (int) $load;
@@ -203,10 +204,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $this->commodityRepository->find(CommodityTypeEnum::GOOD_ANTIMATTER),
                                 $load
                             );
-                            if ($shipobj->getWarpcoreLoad() + $load * WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
+                            if ($shipobj->getWarpcoreLoad() + $load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
                                 $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
                             } else {
-                                $load = $load * WARPCORE_LOAD;
+                                $load = $load * ShipEnum::WARPCORE_LOAD;
                             }
                             $shipobj->setWarpcoreLoad($shipobj->getWarpcoreLoad() + $load);
                             $msg[] = sprintf(
@@ -237,7 +238,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 }
             }
             if (isset($torp[$shipobj->getId()]) && $shipobj->getMaxTorpedos() > 0) {
-                if ($torp[$shipobj->getId()] == INDICATOR_MAX) {
+                if ($torp[$shipobj->getId()] == 'm') {
                     $count = $shipobj->getMaxTorpedos();
                 } else {
                     $count = intval($torp[$shipobj->getId()]);

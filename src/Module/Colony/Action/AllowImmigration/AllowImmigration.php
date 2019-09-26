@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\AllowImmigration;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
@@ -39,7 +41,7 @@ final class AllowImmigration implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => MENU_OPTION]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_OPTION]);
 
         $colony->setImmigrationState(true);
 

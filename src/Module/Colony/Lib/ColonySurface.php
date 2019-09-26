@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -104,11 +106,11 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
-            case FACTION_FEDERATION:
+            case FactionEnum::FACTION_FEDERATION:
                 return _('Zufriedenheit');
-            case FACTION_ROMULAN:
+            case FactionEnum::FACTION_ROMULAN:
                 return _('Loyalität');
-            case FACTION_KLINGON:
+            case FactionEnum::FACTION_KLINGON:
                 return _('Ehre');
         }
         return '';
@@ -118,11 +120,11 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
-            case FACTION_FEDERATION:
+            case FactionEnum::FACTION_FEDERATION:
                 return _('Umweltkontrollen');
-            case FACTION_ROMULAN:
+            case FactionEnum::FACTION_ROMULAN:
                 return _('Zerschmetterte Opposition');
-            case FACTION_KLINGON:
+            case FactionEnum::FACTION_KLINGON:
                 return _('Irgendwas mit Kahless');
         }
         return '';
@@ -132,11 +134,11 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
-            case FACTION_FEDERATION:
+            case FactionEnum::FACTION_FEDERATION:
                 return _('Umweltverschmutzung');
-            case FACTION_ROMULAN:
+            case FactionEnum::FACTION_ROMULAN:
                 return _('Opposition');
-            case FACTION_KLINGON:
+            case FactionEnum::FACTION_KLINGON:
                 return _('Abtrünnige');
         }
         return '';
@@ -212,7 +214,7 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
                 $this->colony->getId(),
-                [BUILDING_FUNCTION_AIRFIELD],
+                [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
                 [0, 1]
             ) > 0;
     }

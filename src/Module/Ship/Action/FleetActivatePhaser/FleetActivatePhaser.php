@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivatePhaser;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -44,11 +45,11 @@ final class FleetActivatePhaser implements ActionControllerInterface
             if (!$ship->hasPhaser() || $ship->getPhaser()) {
                 continue;
             }
-            if ($ship->getEps() < SYSTEM_ECOST_PHASER) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_PHASER) {
                 $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
                 continue;
             }
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_PHASER);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_PHASER);
             $ship->setPhaser(true);
 
             $this->shipRepository->save($ship);

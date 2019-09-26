@@ -6,6 +6,8 @@ namespace Stu\Module\Colony\View\ShowManagement;
 
 use ColonyMenu;
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -79,7 +81,7 @@ final class ShowManagement implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/cm_management');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_INFO));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_INFO));
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);

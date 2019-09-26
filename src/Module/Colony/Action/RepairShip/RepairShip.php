@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\RepairShip;
 
 use request;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -71,7 +72,7 @@ final class RepairShip implements ActionControllerInterface
              * @var ShipInterface $ship
              */
             foreach ($fleet['ships'] as $ship_id => $ship) {
-                if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
+                if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
@@ -91,7 +92,7 @@ final class RepairShip implements ActionControllerInterface
             $game->addInformation(_('Das Schiff kann nicht repariert werden'));
             return;
         }
-        if ($ship->getState() == SHIP_STATE_REPAIR) {
+        if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
             $game->addInformation(_('Das Schiff wird bereits repariert'));
             return;
         }
@@ -102,7 +103,7 @@ final class RepairShip implements ActionControllerInterface
         $obj->setFieldId((int) $field->getFieldId());
         $this->colonyShipRepairRepository->save($obj);
 
-        $ship->setState(SHIP_STATE_REPAIR);
+        $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR);
 
         $this->shipRepository->save($ship);
 

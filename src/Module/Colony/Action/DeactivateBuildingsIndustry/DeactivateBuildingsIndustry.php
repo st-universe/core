@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\DeactivateBuildingsIndustry;
 
 use request;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
@@ -60,7 +62,7 @@ final class DeactivateBuildingsIndustry implements ActionControllerInterface
         $game->setTemplateVar('BUILDING_LIST', $list);
         $game->setTemplateVar('USEABLE_GOOD_LIST', $this->commodityRepository->getByBuildingsOnColony($colonyId));
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => MENU_BUILDINGS]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_BUILDINGS]);
     }
 
     public function performSessionCheck(): bool

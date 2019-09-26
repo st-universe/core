@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeleteAvatar;
 
 use AccessViolation;
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -19,12 +20,16 @@ final class DeleteAvatar implements ActionControllerInterface
 
     private $allianceRepository;
 
+    private $config;
+
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,
-        AllianceRepositoryInterface $allianceRepository
+        AllianceRepositoryInterface $allianceRepository,
+        ConfigInterface $config
     ) {
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceRepository = $allianceRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,14 @@ final class DeleteAvatar implements ActionControllerInterface
         $game->setView(Edit::VIEW_IDENTIFIER);
 
         if ($alliance->getAvatar()) {
-            @unlink(AVATAR_ALLIANCE_PATH_INTERNAL . $alliance->getAvatar() . '.png');
+            @unlink(
+                sprintf(
+                    '%s%s/%s.png',
+                    $this->config->get('game.webroot'),
+                    $this->config->get('game.user_avatar_path'),
+                    $alliance->getAvatar()
+                )
+            );
             $alliance->setAvatar('');
 
             $this->allianceRepository->save($alliance);

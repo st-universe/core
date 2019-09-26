@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Component\Building;
+
+final class BuildingEnum
+{
+
+    public const BUILDING_FUNCTION_CENTRAL = 1;
+    public const BUILDING_FUNCTION_AIRFIELD = 4;
+    public const BUILDING_FUNCTION_FIGHTER_SHIPYARD = 5;
+    public const BUILDING_FUNCTION_ESCORT_SHIPYARD = 6;
+    public const BUILDING_FUNCTION_FRIGATE_SHIPYARD = 7;
+    public const BUILDING_FUNCTION_CRUISER_SHIPYARD = 8;
+    public const BUILDING_FUNCTION_TORPEDO_FAB = 9;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL1 = 10;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL2 = 11;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL3 = 12;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL1 = 13;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL2 = 14;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE2_LVL3 = 15;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL1 = 16;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL2 = 17;
+    public const BUILDING_FUNCTION_MODULEFAB_TYPE3_LVL3 = 18;
+    public const BUILDING_FUNCTION_ACADEMY = 20;
+    public const BUILDING_FUNCTION_DESTROYER_SHIPYARD = 21;
+    public const BUILDING_FUNCTION_REPAIR_SHIPYARD = 22;
+
+    public const BUILDMENU_SOCIAL = 1;
+    public const BUILDMENU_INDUSTRY = 2;
+    public const BUILDMENU_INFRASTRUCTURE = 3;
+}

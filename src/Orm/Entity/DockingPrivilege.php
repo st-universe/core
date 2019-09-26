@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -87,7 +88,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
     public function getPrivilegeModeString(): string
     {
         // @todo refactor
-        if ($this->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_ALLOW) {
+        if ($this->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW) {
             return _('Erlaubt');
         }
         return _('Verboten');
@@ -95,7 +96,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
 
     public function isDockingAllowed(): bool
     {
-        return $this->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_ALLOW;
+        return $this->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW;
     }
 
     public function getTargetName(): string
@@ -103,11 +104,11 @@ class DockingPrivilege implements DockingPrivilegeInterface
         // @todo refactor
         global $container;
         switch ($this->getPrivilegeType()) {
-            case DOCK_PRIVILEGE_USER:
+            case ShipEnum::DOCK_PRIVILEGE_USER:
                 return $container->get(UserRepositoryInterface::class)->find((int)$this->getTargetId())->getUser();
-            case DOCK_PRIVILEGE_ALLIANCE:
+            case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
                 return $container->get(AllianceRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
-            case DOCK_PRIVILEGE_FACTION:
+            case ShipEnum::DOCK_PRIVILEGE_FACTION:
                 return $container->get(FactionRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
 
         }

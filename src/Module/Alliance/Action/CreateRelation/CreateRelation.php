@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\CreateRelation;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -59,10 +60,10 @@ final class CreateRelation implements ActionControllerInterface
         }
 
         $types = [
-            ALLIANCE_RELATION_WAR => 1,
-            ALLIANCE_RELATION_PEACE => 1,
-            ALLIANCE_RELATION_FRIENDS => 1,
-            ALLIANCE_RELATION_ALLIED => 1
+            AllianceEnum::ALLIANCE_RELATION_WAR => 1,
+            AllianceEnum::ALLIANCE_RELATION_PEACE => 1,
+            AllianceEnum::ALLIANCE_RELATION_FRIENDS => 1,
+            AllianceEnum::ALLIANCE_RELATION_ALLIED => 1
         ];
 
         if (!array_key_exists($typeId, $types)) {
@@ -82,7 +83,7 @@ final class CreateRelation implements ActionControllerInterface
             if ($rel->getType() == $typeId) {
                 return;
             }
-            if ($rel->getType() == ALLIANCE_RELATION_WAR && $typeId != ALLIANCE_RELATION_PEACE) {
+            if ($rel->getType() == AllianceEnum::ALLIANCE_RELATION_WAR && $typeId != AllianceEnum::ALLIANCE_RELATION_PEACE) {
                 return;
             }
         }
@@ -91,7 +92,7 @@ final class CreateRelation implements ActionControllerInterface
         $obj->setOpponent($opp);
         $obj->setType($typeId);
 
-        if ($typeId == ALLIANCE_RELATION_WAR) {
+        if ($typeId == AllianceEnum::ALLIANCE_RELATION_WAR) {
             $this->allianceRelationRepository->truncateByAlliances($allianceId, $opponentId);
 
             $obj->setDate(time());

@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -123,11 +124,11 @@ final class GameController implements GameControllerInterface
 
     private function maintenanceView(): void
     {
-        if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_TICK) {
+        if ($this->getGameState() == GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
             $this->setPageTitle("Rundenwechsel aktiv");
             $this->setTemplateFile('html/tick.xhtml');
         }
-        if ($this->getGameState() == CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
+        if ($this->getGameState() == GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
             $this->setPageTitle("Wartungsmodus");
             $this->setTemplateFile('html/maintenance.xhtml');
         }
@@ -135,7 +136,7 @@ final class GameController implements GameControllerInterface
 
     public function getGameState(): string
     {
-        return $this->getGameConfig()[CONFIG_GAMESTATE]->getValue();
+        return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
     public function setTemplateFile(string $tpl): void
@@ -195,7 +196,7 @@ final class GameController implements GameControllerInterface
         return $this->gameInformations;
     }
 
-    public function sendInformation($recipient_id, $sender_id = USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+    public function sendInformation($recipient_id, $sender_id = GameEnum::USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
     )
     {
         $this->privateMessageSender->send((int) $sender_id, (int) $recipient_id, join('<br />', $this->getInformation()), $category_id);
@@ -210,7 +211,7 @@ final class GameController implements GameControllerInterface
     {
         $user = $this->getUser();
 
-        if ($this->getGameState() != CONFIG_GAMESTATE_VALUE_ONLINE) {
+        if ($this->getGameState() != GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE) {
             $this->maintenanceView();
         }
         $this->talPage->setVar('THIS', $this);
@@ -245,17 +246,6 @@ final class GameController implements GameControllerInterface
     public function getUser(): ?UserInterface
     {
         return $this->session->getUser();
-    }
-
-    public function getBenchmark(): float
-    {
-        global $benchmark_start;
-
-        $start = explode(' ', $benchmark_start);
-        $s_timer = $start[1] + $start[0];
-        $end = explode(' ', microtime());
-        $e_timer = $end[1] + $end[0];
-        return round($e_timer - $s_timer, 6);
     }
 
     public function getPlayerCount(): int
@@ -483,11 +473,11 @@ final class GameController implements GameControllerInterface
     public function getGameStateTextual(): string
     {
         switch ($this->getGameState()) {
-            case CONFIG_GAMESTATE_VALUE_ONLINE:
+            case GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE:
                 return _('Online');
-            case CONFIG_GAMESTATE_VALUE_MAINTENANCE:
+            case GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE:
                 return _('Wartung');
-            case CONFIG_GAMESTATE_VALUE_TICK:
+            case GameEnum::CONFIG_GAMESTATE_VALUE_TICK:
                 return _('Tick');
         }
         return '';

@@ -2,6 +2,7 @@
 
 namespace Stu\Module\Tick\Maintenance;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Maintenance\MaintenanceHandlerInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
@@ -24,8 +25,8 @@ final class Maintenance
 
     private function startMaintenance()
     {
-        $option = $this->gameConfigRepository->getByOption(CONFIG_GAMESTATE);
-        $option->setValue(CONFIG_GAMESTATE_VALUE_MAINTENANCE);
+        $option = $this->gameConfigRepository->getByOption(GameEnum::CONFIG_GAMESTATE);
+        $option->setValue(GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE);
 
         $this->gameConfigRepository->save($option);
     }
@@ -43,8 +44,8 @@ final class Maintenance
 
     private function finishMaintenance()
     {
-        $option = $this->gameConfigRepository->getByOption(CONFIG_GAMESTATE);
-        $option->setValue(CONFIG_GAMESTATE_VALUE_ONLINE);
+        $option = $this->gameConfigRepository->getByOption(GameEnum::CONFIG_GAMESTATE);
+        $option->setValue(GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE);
 
         $this->gameConfigRepository->save($option);
     }

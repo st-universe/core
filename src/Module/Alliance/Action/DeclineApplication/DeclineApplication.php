@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\DeclineApplication;
 
 use AccessViolation;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -56,7 +57,7 @@ final class DeclineApplication implements ActionControllerInterface
             $alliance->getName()
         );
 
-        $this->privateMessageSender->send(USER_NOONE, $appl->getUserId(), $text);
+        $this->privateMessageSender->send(GameEnum::USER_NOONE, $appl->getUserId(), $text);
 
         $game->setView(Applications::VIEW_IDENTIFIER);
 

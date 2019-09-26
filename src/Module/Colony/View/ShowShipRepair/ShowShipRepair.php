@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowShipRepair;
 
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -69,7 +70,7 @@ final class ShowShipRepair implements ViewControllerInterface
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship_id => $ship) {
-                    if (!$ship->canBeRepaired() || $ship->getState() == SHIP_STATE_REPAIR) {
+                    if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {

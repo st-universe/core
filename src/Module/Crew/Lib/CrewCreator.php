@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
+use Stu\Component\Crew\CrewEnum;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\CrewRaceInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -59,7 +60,7 @@ final class CrewCreator implements CrewCreatorInterface
         /** @var CrewRaceInterface $race */
         $race = $this->crewRaceRepository->find((int)$arr[array_rand($arr)]);
 
-        $gender = rand(1, 100) > $race->getMaleRatio() ? CREW_GENDER_FEMALE : CREW_GENDER_MALE;
+        $gender = rand(1, 100) > $race->getMaleRatio() ? CrewEnum::CREW_GENDER_FEMALE : CrewEnum::CREW_GENDER_MALE;
 
         $crew = $this->crewRepository->prototype();
 
@@ -67,7 +68,7 @@ final class CrewCreator implements CrewCreatorInterface
         $crew->setName('Crew');
         $crew->setRace($race);
         $crew->setGender($gender);
-        $crew->setType(CREW_TYPE_CREWMAN);
+        $crew->setType(CrewEnum::CREW_TYPE_CREWMAN);
 
         $this->crewRepository->save($crew);
 
@@ -76,9 +77,9 @@ final class CrewCreator implements CrewCreatorInterface
 
     public function createShipCrew(ShipInterface $ship): void
     {
-        for ($i = CREW_TYPE_FIRST; $i <= CREW_TYPE_LAST; $i++) {
+        for ($i = CrewEnum::CREW_TYPE_FIRST; $i <= CrewEnum::CREW_TYPE_LAST; $i++) {
             $j = 1;
-            if ($i == CREW_TYPE_CREWMAN) {
+            if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
                 $percentage = $ship->getBuildPlan()->getCrewPercentage();
                 // @todo refactor
                 switch ($percentage) {

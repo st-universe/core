@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSocial;
 
 use ColonyMenu;
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -49,7 +51,7 @@ final class ShowSocial implements ViewControllerInterface
         $game->showMacro('html/colonymacros.xhtml/cm_social');
 
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(MENU_SOCIAL));
+        $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_SOCIAL));
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
     }
 }

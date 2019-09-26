@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
+use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -80,7 +82,7 @@ final class DockShip implements ActionControllerInterface
         if ($ship->getDock()) {
             return;
         }
-        if ($ship->getEps() < SYSTEM_ECOST_DOCK) {
+        if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
         }
@@ -124,7 +126,7 @@ final class DockShip implements ActionControllerInterface
             if ($ship->getDock()) {
                 continue;
             }
-            if ($ship->getEps() < SYSTEM_ECOST_DOCK) {
+            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                 $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                 continue;
             }
@@ -138,7 +140,7 @@ final class DockShip implements ActionControllerInterface
                 $ship->setShieldState(false);
             }
             $ship->setDock($target->getId());
-            $ship->setEps($ship->getEps() - SYSTEM_ECOST_DOCK);
+            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
             $this->shipRepository->save($ship);
 
@@ -156,25 +158,25 @@ final class DockShip implements ActionControllerInterface
         $allowed = false;
         foreach ($privileges as $key => $priv) {
             switch ($priv->getPrivilegeType()) {
-                case DOCK_PRIVILEGE_USER:
+                case ShipEnum::DOCK_PRIVILEGE_USER:
                     if ($priv->getTargetId() == $user->getId()) {
-                        if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
+                        if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
                             return false;
                         }
                         $allowed = true;
                     }
                     break;
-                case DOCK_PRIVILEGE_ALLIANCE:
+                case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
                     if ($priv->getTargetId() == $user->getAllianceId()) {
-                        if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
+                        if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
                             return false;
                         }
                         $allowed = true;
                     }
                     break;
-                case DOCK_PRIVILEGE_FACTION:
+                case ShipEnum::DOCK_PRIVILEGE_FACTION:
                     if ($priv->getTargetId() == $user->getFactionId()) {
-                        if ($priv->getPrivilegeMode() == DOCK_PRIVILEGE_MODE_DENY) {
+                        if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
                             return false;
                         }
                         $allowed = true;

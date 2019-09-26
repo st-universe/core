@@ -3,6 +3,7 @@
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -313,7 +314,7 @@ final class ColonyTick implements ColonyTickInterface
             $text .= $msg . "\n";
         }
 
-        $this->privateMessageSender->send(USER_NOONE, (int)$colony->getUserId(), $text,
+        $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$colony->getUserId(), $text,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
 
         $this->msg = [];

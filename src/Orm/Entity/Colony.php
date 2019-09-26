@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Colony\ColonyEnum;
+use Stu\Component\Faction\FactionEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Tick\Colony\ColonyTick;
@@ -465,7 +468,7 @@ class Colony implements ColonyInterface
 
     public function isFree(): bool
     {
-        return $this->getUserId() === USER_NOONE;
+        return $this->getUserId() === GameEnum::USER_NOONE;
     }
 
     public function getUser(): UserInterface
@@ -574,14 +577,14 @@ class Colony implements ColonyInterface
             $production = $this->getProduction();
             // XXX we should use a faction-factory...
             switch ($this->getUser()->getFactionId()) {
-                case FACTION_FEDERATION:
-                    $key = GOOD_SATISFACTION_FED_PRIMARY;
+                case FactionEnum::FACTION_FEDERATION:
+                    $key = ColonyEnum::GOOD_SATISFACTION_FED_PRIMARY;
                     break;
-                case FACTION_ROMULAN:
-                    $key = GOOD_SATISFACTION_ROMULAN_PRIMARY;
+                case FactionEnum::FACTION_ROMULAN:
+                    $key = ColonyEnum::GOOD_SATISFACTION_ROMULAN_PRIMARY;
                     break;
-                case FACTION_KLINGON:
-                    $key = GOOD_SATISFACTION_KLINGON_PRIMARY;
+                case FactionEnum::FACTION_KLINGON:
+                    $key = ColonyEnum::GOOD_SATISFACTION_KLINGON_PRIMARY;
                     break;
             }
             $this->positive_effect_primary = 0;
@@ -600,14 +603,14 @@ class Colony implements ColonyInterface
             $this->positive_effect_secondary = 0;
             // XXX we should use a faction-factory...
             switch ($this->getUser()->getFactionId()) {
-                case FACTION_FEDERATION:
-                    $key = GOOD_SATISFACTION_FED_SECONDARY;
+                case FactionEnum::FACTION_FEDERATION:
+                    $key = ColonyEnum::GOOD_SATISFACTION_FED_SECONDARY;
                     break;
-                case FACTION_ROMULAN:
-                    $key = GOOD_SATISFACTION_ROMULAN_SECONDARY;
+                case FactionEnum::FACTION_ROMULAN:
+                    $key = ColonyEnum::GOOD_SATISFACTION_ROMULAN_SECONDARY;
                     break;
-                case FACTION_KLINGON:
-                    $key = GOOD_SATISFACTION_KLINGON_SECONDARY;
+                case FactionEnum::FACTION_KLINGON:
+                    $key = ColonyEnum::GOOD_SATISFACTION_KLINGON_SECONDARY;
                     break;
             }
             if (!isset($production[$key])) {

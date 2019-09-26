@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
+use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -74,7 +76,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             if ($obj->getUser()->getGlobalCrewLimit() - $obj->getUser()->getUsedCrewCount() - $obj->getUser()->getFreeCrewCount() <= 0) {
                 continue;
             }
-            if (!$obj->getColony()->hasActiveBuildingWithFunction(BUILDING_FUNCTION_ACADEMY)) {
+            if (!$obj->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
                 continue;
             }
             $this->crewCreator->create((int) $obj->getUserId());
@@ -93,7 +95,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             $obj->getShip()->setHuell($obj->getShip()->getHuell() + $obj->getShip()->getRepairRate());
             if (!$obj->getShip()->canBeRepaired()) {
                 $obj->getShip()->setHuell($obj->getShip()->getMaxHuell());
-                $obj->getShip()->setState(SHIP_STATE_NONE);
+                $obj->getShip()->setState(ShipStateEnum::SHIP_STATE_NONE);
 
                 $this->colonyShipRepairRepository->delete($obj);
             }

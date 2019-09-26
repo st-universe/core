@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Colony\ColonyEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetTypeRepository")
  * @Table(
@@ -156,6 +158,6 @@ class PlanetType implements PlanetTypeInterface
 
     public function hasRing(): bool
     {
-        return $this->getSpecialId() == COLONY_CLASS_SPECIAL_RING;
+        return $this->getSpecialId() == ColonyEnum::COLONY_CLASS_SPECIAL_RING;
     }
 }

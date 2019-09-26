@@ -6,6 +6,8 @@ namespace Stu\Module\Alliance\Action\EditDetails;
 
 use AccessViolation;
 use JBBCode\Parser;
+use Stu\Component\Alliance\AllianceEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -78,7 +80,7 @@ final class EditDetails implements ActionControllerInterface
 
             $result = $this->allianceJobRepository->getByAllianceAndType(
                 $allianceId,
-                ALLIANCE_JOBS_PENDING
+                AllianceEnum::ALLIANCE_JOBS_PENDING
             );
 
             foreach ($result as $applicant) {
@@ -86,7 +88,7 @@ final class EditDetails implements ActionControllerInterface
                     _('Deine Bewerbung bei der Allianz %s wurde abgelehnt'),
                     $alliance->getName()
                 );
-                $this->privateMessageSender->send(USER_NOONE, $applicant->getUserId(), $text);
+                $this->privateMessageSender->send(GameEnum::USER_NOONE, $applicant->getUserId(), $text);
 
                 $applicant->deleteFromDatabase();
             }

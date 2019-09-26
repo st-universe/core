@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Starmap\View\ShowByPosition;
 
+use Stu\Component\Map\MapEnum;
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
 final class ShowByPositionRequest implements ShowByPositionRequestInterface
@@ -14,7 +15,7 @@ final class ShowByPositionRequest implements ShowByPositionRequestInterface
     {
         return $this->getCoordinate(
             $this->queryParameter('x')->int()->required(),
-            MAP_MAX_X
+            MapEnum::MAP_MAX_X
         );
     }
 
@@ -22,7 +23,7 @@ final class ShowByPositionRequest implements ShowByPositionRequestInterface
     {
         return $this->getCoordinate(
             $this->queryParameter('y')->int()->required(),
-            MAP_MAX_Y
+            MapEnum::MAP_MAX_Y
         );
     }
 

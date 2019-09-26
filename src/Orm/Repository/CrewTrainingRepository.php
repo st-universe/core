@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\CrewTraining;
 use Stu\Orm\Entity\CrewTrainingInterface;
 
@@ -69,7 +70,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
                 $rsm
             )
             ->setParameters([
-                'idNoOne' => USER_NOONE,
+                'idNoOne' => GameEnum::USER_NOONE,
                 'tickId' => $tickId
             ])
             ->getResult();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Research\ResearchEnum;
 
 final class ResearchDependencyRepository extends EntityRepository implements ResearchDependencyRepositoryInterface
 {
@@ -19,7 +20,7 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
     {
         return $this->findBy([
             'research_id' => $researchId,
-            'mode' => RESEARCH_MODE_EXCLUDE
+            'mode' => ResearchEnum::RESEARCH_MODE_EXCLUDE
         ]);
     }
 
@@ -27,7 +28,7 @@ final class ResearchDependencyRepository extends EntityRepository implements Res
     {
         return $this->findBy([
             'depends_on' => $researchId,
-            'mode' => [RESEARCH_MODE_REQUIRE, RESEARCH_MODE_REQUIRE_SOME]
+            'mode' => [ResearchEnum::RESEARCH_MODE_REQUIRE, ResearchEnum::RESEARCH_MODE_REQUIRE_SOME]
         ]);
     }
 }

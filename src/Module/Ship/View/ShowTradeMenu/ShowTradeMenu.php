@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowTradeMenu;
 
 use AccessViolation;
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -79,7 +80,7 @@ final class ShowTradeMenu implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'CAN_BUY_LICENSE',
-            $this->tradeLicenseRepository->getAmountByUser($userId) < MAX_TRADELICENCE_COUNT
+            $this->tradeLicenseRepository->getAmountByUser($userId) < GameEnum::MAX_TRADELICENCE_COUNT
         );
     }
 }

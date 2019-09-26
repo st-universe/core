@@ -3,6 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Map\MapEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
@@ -33,7 +34,7 @@ final class MapCycle implements MaintenanceHandlerInterface
     public function handle(): void
     {
         $fieldcount = $this->mapRepository->count([]);
-        $list = $this->userRepository->getByMappingType(MAPTYPE_INSERT);
+        $list = $this->userRepository->getByMappingType(MapEnum::MAPTYPE_INSERT);
         foreach ($list as $user) {
             if ($this->userMapRepository->getAmountByUser($user->getId()) >= $fieldcount) {
                 $this->cycle($user);
@@ -43,7 +44,7 @@ final class MapCycle implements MaintenanceHandlerInterface
 
     private function cycle(UserInterface $user)
     {
-        $user->setMapType(MAPTYPE_DELETE);
+        $user->setMapType(MapEnum::MAPTYPE_DELETE);
 
         $this->userRepository->save($user);
 

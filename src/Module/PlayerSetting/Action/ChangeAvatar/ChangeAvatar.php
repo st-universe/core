@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -14,10 +15,14 @@ final class ChangeAvatar implements ActionControllerInterface
 
     private $userRepository;
 
+    private $config;
+
     public function __construct(
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ConfigInterface $config
     ) {
         $this->userRepository = $userRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,7 +50,15 @@ final class ChangeAvatar implements ActionControllerInterface
         $img = imagecreatefrompng($file['tmp_name']);
         $newImage = imagecreatetruecolor(150, 150);
         imagecopy($newImage, $img, 0, 0, 0, 0, 150, 150);
-        imagepng($newImage, AVATAR_USER_PATH_INTERNAL . $imageName . ".png");
+        imagepng(
+            $newImage,
+            sprintf(
+                '%s%s%s.png',
+                $this->config->get('game.webroot'),
+                $this->config->get('game.user_avatar_path'),
+                $imageName
+            )
+        );
 
         $user->setAvatar($imageName);
 

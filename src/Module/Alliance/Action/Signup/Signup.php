@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\Action\Signup;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -52,7 +53,7 @@ final class Signup implements ActionControllerInterface
         }
         $obj = $this->allianceJobRepository->prototype();
         $obj->setUser($user);
-        $obj->setType(ALLIANCE_JOBS_PENDING);
+        $obj->setType(AllianceEnum::ALLIANCE_JOBS_PENDING);
         $obj->setAlliance($alliance);
 
         $this->allianceJobRepository->save($obj);

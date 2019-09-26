@@ -41,7 +41,7 @@ class STUException extends Exception {
         global $container;
 
         $container->get(EntityManagerInterface::class)->rollback();
-		if (isCommandLineCall()) {
+		if ($this->isCommandLineCall()) {
 			print_r($this->getError());
 			exit;
 		}
@@ -52,6 +52,13 @@ class STUException extends Exception {
 		$tpl->parse();
 		exit;
 	}
+
+    function isCommandLineCall() {
+        if (!$_SERVER['SERVER_NAME']) {
+            return true;
+        }
+        return false;
+    }
 
 	private $error = NULL;
 

@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 
 /**
@@ -376,6 +377,6 @@ class Building implements BuildingInterface
 
     public function isRemoveAble(): bool
     {
-        return $this->getFunctions()->containsKey(BUILDING_FUNCTION_CENTRAL) === false;
+        return $this->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_CENTRAL) === false;
     }
 }

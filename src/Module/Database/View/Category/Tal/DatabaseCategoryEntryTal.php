@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\Category\Tal;
 
+use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\DatabaseUserInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -51,10 +52,10 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     public function getObject()
     {
         switch ($this->databaseEntry->getCategory()->getId()) {
-            case DATABASE_CATEGORY_STARSYSTEM:
+            case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM:
                 return $this->starSystemRepository->find($this->databaseEntry->getObjectId());
                 break;
-            case DATABASE_CATEGORY_TRADEPOST:
+            case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST:
                 return $this->shipRepository->find($this->databaseEntry->getObjectId());
                 break;
         }

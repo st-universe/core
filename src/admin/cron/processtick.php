@@ -3,7 +3,7 @@
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Tick\Process\ProcessTickInterface;
 
-require_once __DIR__.'/../../inc/config.inc.php';
+require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 /**
  * @var ProcessTickInterface[] $handlerList
