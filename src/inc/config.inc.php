@@ -79,10 +79,6 @@ define("USER_ONLINE_PERIOD",300);
 define("MAPTYPE_INSERT",1);
 define("MAPTYPE_DELETE",2);
 
-// Ship
-define("SLOT_COUNT",5);
-define("SLOT_EMPTY",0);
-
 define("SYSTEM_ECOST_NBS",1);
 define("SYSTEM_ECOST_SHIELDS",1);
 define("SYSTEM_ECOST_CLOAK",2);
@@ -153,29 +149,6 @@ define("BUILDING_FUNCTION_REPAIR_SHIPYARD",22);
 
 define('COLONY_FIELDTYPE_MEADOW',101);
 
-define('PLANET_TYPE_M',201);
-define('PLANET_TYPE_MV',202);
-define('PLANET_TYPE_L',203);
-define('PLANET_TYPE_LF',204);
-define('PLANET_TYPE_O',205);
-define('PLANET_TYPE_K',207);
-define('PLANET_TYPE_H',211);
-define('PLANET_TYPE_P',213);
-define('PLANET_TYPE_PT',214);
-define('PLANET_TYPE_X',215);
-
-define('MOON_TYPE_M',301);
-define('MOON_TYPE_MV',302);
-define('MOON_TYPE_L',303);
-define('MOON_TYPE_LF',304);
-define('MOON_TYPE_O',305);
-define('MOON_TYPE_K',307);
-define('MOON_TYPE_H',311);
-define('MOON_TYPE_P',313);
-define('MOON_TYPE_PT',314);
-define('MOON_TYPE_X',315);
-define('MOON_TYPE_D',330);
-
 define('COLONY_CLASS_SPECIAL_RING',1);
 
 define("CREW_GENDER_MALE",1);
@@ -236,12 +209,6 @@ define('GOOD_SATISFACTION_FED_SECONDARY',1601);
 define('GOOD_SATISFACTION_ROMULAN_SECONDARY',1602);
 define('GOOD_SATISFACTION_KLINGON_SECONDARY',1603);
 
-define("HISTORY_SHIP",1);
-define("HISTORY_ALLIANCE",3);
-
-define('CACHE_SHIP','ship');
-define('CACHE_ALLIANCE','alliance');
-
 define('ROLE_PHASERSHIP',1);
 define('ROLE_PULSESHIP',2);
 define('ROLE_TORPEDOSHIP',3);
@@ -268,18 +235,6 @@ define("SYSTEM_NBS",9);
 define("SYSTEM_WARPDRIVE",10);
 define("SYSTEM_SHIELDS",11);
 
-define('SYSTEM_TYPE_DWARF_ORANGE',900);
-define('SYSTEM_TYPE_DWARF_BLUE',901);
-define('SYSTEM_TYPE_DWARF_RED',902);
-define('SYSTEM_TYPE_DWARF_YELLOW',903);
-define('SYSTEM_TYPE_BINARY_DO_DO',900900);
-define('SYSTEM_TYPE_BINARY_DO_DB',900901);
-define('SYSTEM_TYPE_BINARY_DB_DB',901901);
-define('SYSTEM_TYPE_BLACKHOLE_SMALL',990);
-
-define('FIRINGMODE_RANDOM',1);
-define('FIRINGMODE_FOCUS',2);
-
 define("MENU_INFO",2);
 define("MENU_BUILD",1);
 define("MENU_SOCIAL",4);
@@ -292,10 +247,6 @@ define('MENU_MODULEFAB',7);
 define('MENU_FIGHTER_SHIPYARD',10);
 define('MENU_TORPEDOFAB',11);
 define('MENU_ACADEMY',12);
-
-define("REGISTER_STATE_OK","OK");
-define("REGISTER_STATE_NOK","NA");
-define("REGISTER_STATE_DUP","DUP");
 
 define("RESEARCH_MODE_EXCLUDE",0);
 define("RESEARCH_MODE_REQUIRE",1);
@@ -315,8 +266,6 @@ define("MODULE_TYPE_COMPUTER",6);
 define("MODULE_TYPE_PHASER",7);
 define("MODULE_TYPE_TORPEDO",8);
 define("MODULE_TYPE_SPECIAL",9);
-
-define("GAME_VERSION", $config->get('game.version'));
 
 define('BUILDMENU_SOCIAL',1);
 define('BUILDMENU_INDUSTRY',2);

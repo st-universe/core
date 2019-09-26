@@ -8,6 +8,8 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class EntryCreator implements EntryCreatorInterface
 {
+    public const HISTORY_ALLIANCE = 3;
+    public const HISTORY_SHIP = 1;
     private $historyRepository;
 
     public function __construct(
@@ -20,14 +22,14 @@ final class EntryCreator implements EntryCreatorInterface
         string $text,
         int $userId = USER_NOONE
     ): void {
-        $this->addEntry(HISTORY_SHIP, $text, $userId);
+        $this->addEntry(self::HISTORY_SHIP, $text, $userId);
     }
 
     public function addAllianceEntry(
         string $text,
         int $userId = USER_NOONE
     ): void {
-        $this->addEntry(HISTORY_ALLIANCE, $text, $userId);
+        $this->addEntry(self::HISTORY_ALLIANCE, $text, $userId);
     }
 
     private function addEntry(

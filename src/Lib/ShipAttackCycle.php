@@ -10,7 +10,9 @@ use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 class ShipAttackCycle {
 
-	private $attacker = array();
+    public const FIRINGMODE_FOCUS = 2;
+    public const FIRINGMODE_RANDOM = 1;
+    private $attacker = array();
 	private $defender = array();
 	private $firstStrike = 1;
 	private $attackShip = NULL;
@@ -107,7 +109,7 @@ class ShipAttackCycle {
 			}
 			$this->getDefendShip()->cancelRepair();
 			$this->getAttackShip()->cancelRepair();
-			
+
 			//--------------------------------------
 
 			// Phaser
@@ -117,7 +119,7 @@ class ShipAttackCycle {
 						break;
 					}
 					$this->getAttackShip()->setEps($this->getAttackShip()->getEps() - $this->getEnergyWeaponEnergyCosts());
-					if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == FIRINGMODE_RANDOM) {
+					if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == self::FIRINGMODE_RANDOM) {
 						$this->redefineDefender();
 						if (!$this->getDefendShip()) {
 							$this->endCycle();
@@ -148,7 +150,7 @@ class ShipAttackCycle {
 							$this->endCycle();
 							break;
 						}
-						if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == FIRINGMODE_FOCUS) {
+						if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == self::FIRINGMODE_FOCUS) {
 							$this->endCycle();
 							break;
 						}
@@ -182,7 +184,7 @@ class ShipAttackCycle {
 				$this->getAttackShip()->setEps($this->getAttackShip()->getEps() - $this->getProjectileWeaponEnergyCosts());
 				$this->redefineDefender();
 				$this->addMessage("Die ".$this->getAttackShip()->getName()." feuert einen ".$this->getAttackShip()->getTorpedo()->getName()." auf die ".$this->getDefendShip()->getName());
-				// higher evade chance for pulseships against 
+				// higher evade chance for pulseships against
 				// torpedo ships
 				if ($this->getAttackShip()->getRump()->getRoleId() == ROLE_TORPEDOSHIP && $this->getDefendShip()->getRump()->getRoleId() == ROLE_PULSESHIP) {
 					$hitchance = round($this->getAttackShip()->getHitChance()*0.65);
@@ -395,7 +397,7 @@ class ShipAttackCycle {
 	private function getUsedShips($key) {
 		return $this->usedShips[$key];
 	}
-	
+
 	private function getUsedShipCount($key) {
 		return count($this->getUsedShips($key));
 	}
