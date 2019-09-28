@@ -947,7 +947,7 @@ class Ship implements ShipInterface
         // @todo refactor
         global $container;
 
-        return $container->get(ShipRepositoryInterface::class)->save($this->getTraktorShip());
+        return $container->get(ShipRepositoryInterface::class)->find($this->getTraktorShipId());
     }
 
     public function unsetTraktor(): void

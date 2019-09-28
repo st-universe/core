@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateShields;
 
 use request;
+use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +23,16 @@ final class FleetActivateShields implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,33 +46,28 @@ final class FleetActivateShields implements ActionControllerInterface
             $userId
         );
 
-        $msg = array();
+        $msg = [];
         $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Schilde";
         foreach ($ship->getFleet()->getShips() as $ship) {
-            if ($ship->getShieldState()) {
-                continue;
-            }
-            if ($ship->getShield() < 1) {
-                $msg[] = $ship->getName() . _(": Die Schilde sind nicht aufgeladen");
-                continue;
-            }
-            if ($ship->getCloakState()) {
-                $msg[] = $ship->getName() . ": Die Tarnung ist aktiviert";
-                continue;
-            }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_SHIELDS) {
-                $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
-                continue;
-            }
-            if ($ship->getDockedTo()) {
-                $msg[] = $ship->getName() . _(": Abgedockt");
-                $ship->setDockedTo(null);
-            }
-            $ship->cancelRepair();
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_SHIELDS);
-            $ship->setShieldState(true);
+            $error = null;
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+            } catch (InsufficientEnergyException $e) {
+                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
+            } catch (ActivationConditionsNotMetException $e) {
+                $error = _('Die Schilde konnten nicht aktiviert werden');
+            } finally {
+                if ($error !== null) {
 
-            $this->shipRepository->save($ship);
+                    $msg[] = sprintf(
+                        '%s: %s',
+                        $ship->getName(),
+                        $error
+                    );
+                } else {
+                    $this->shipRepository->save($ship);
+                }
+            }
         }
         $game->addInformationMerge($msg);
     }
