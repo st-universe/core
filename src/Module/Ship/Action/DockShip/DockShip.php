@@ -79,7 +79,7 @@ final class DockShip implements ActionControllerInterface
             $this->fleetDock($ship, $target, $game);
             return;
         }
-        if ($ship->getDock()) {
+        if ($ship->getDockedTo()) {
             return;
         }
         if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
@@ -100,7 +100,7 @@ final class DockShip implements ActionControllerInterface
         }
         $ship->cancelRepair();
         $ship->setEps($ship->getEps() - 1);
-        $ship->setDock($target->getId());
+        $ship->setDockedTo($target);
 
         $this->shipRepository->save($ship);
 
@@ -123,7 +123,7 @@ final class DockShip implements ActionControllerInterface
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
             }
-            if ($ship->getDock()) {
+            if ($ship->getDockedTo()) {
                 continue;
             }
             if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
@@ -139,7 +139,8 @@ final class DockShip implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Schilde deaktiviert');
                 $ship->setShieldState(false);
             }
-            $ship->setDock($target->getId());
+            $ship->setDockedTo($target);
+
             $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
             $this->shipRepository->save($ship);

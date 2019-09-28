@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use Stu\Lib\DamageWrapper;
 
 interface ShipInterface
@@ -115,10 +117,6 @@ interface ShipInterface
     public function getTraktormode(): int;
 
     public function setTraktormode(int $traktormode): ShipInterface;
-
-    public function getDock(): int;
-
-    public function setDock(int $dock): ShipInterface;
 
     public function getNbs(): bool;
 
@@ -312,8 +310,6 @@ interface ShipInterface
 
     public function getCrewBySlot($slot): array;
 
-    public function getDockedShip(): ?ShipInterface;
-
     public function dockedOnTradePost(): bool;
 
     public function getDockPrivileges(): array;
@@ -361,4 +357,10 @@ interface ShipInterface
     public function hasWarpcore(): bool;
 
     public function getMaxTorpedos(): int;
+
+    public function getDockedShips(): Collection;
+
+    public function getDockedTo(): ?ShipInterface;
+
+    public function setDockedTo(?ShipInterface $dockedTo): ShipInterface;
 }

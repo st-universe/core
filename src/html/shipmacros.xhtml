@@ -21,7 +21,7 @@
 			</td>
 			<td>
 				<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:content="structure bbcode:ship/getName">.</a>
-			</td>	
+			</td>
 			<td style="text-align: center;">
 				<img src="assets/buttons/alert${ship/getAlertState}.gif" title="Alarmstufe" />
 			</td>
@@ -83,7 +83,7 @@
 	</metal:macro>
 	<metal:macro metal:define-macro="shipimage" phptal:cache="1d per ship/getRumpId">
 		<tal:block tal:condition="ship/ownedByCurrentUser">
-			<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><img src="assets/ships/${ship/getRumpId}.gif" title="Zum Schiff wechseln" border="0" /></a>	
+			<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><img src="assets/ships/${ship/getRumpId}.gif" title="Zum Schiff wechseln" border="0" /></a>
 		</tal:block>
 		<tal:block tal:condition="not:ship/ownedByCurrentUser">
 			<img src="assets/ships/${ship/getRumpId}.gif" />
@@ -137,13 +137,13 @@
 						</tal:block>
 					</tal:block>
 					<tal:block tal:condition="ship/isBase">
-						<a tal:condition="not:SHIP/getDock" href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
+						<a tal:condition="not:SHIP/getDockedTo" href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
 							<img src="assets/buttons/dock1.gif" name="dock_${ship/getId}" title="An die ${nameWithoutMarkup} andocken" />
 						</a>
 					</tal:block>
 				</tal:block>
 				<tal:block tal:condition="ship/getWarpState">
-					<span style="width: 100%; color: #474791;">Im Warp</span>	
+					<span style="width: 100%; color: #474791;">Im Warp</span>
 				</tal:block>
 			</td>
 		</tal:block>
@@ -160,7 +160,7 @@
 					</a>
 					<span style="width: 100%; color: #474791;">Warpantrieb aktiv</span>
 				</tal:block>
-				<div style="width: 100%; color: #404040;" tal:condition="SHIP/getCloakState">Tarnung aktiv</div>	
+				<div style="width: 100%; color: #404040;" tal:condition="SHIP/getCloakState">Tarnung aktiv</div>
 			</td>
 		</tal:block>
 		<td style="width: 200px; background-color: #000000 ! important;">
@@ -189,7 +189,7 @@
 		<script language="Javascript">
 			var sstr = '${THIS/getSessionString}';
 			var shipid = ${SHIP/getId};
-		</script> 
+		</script>
 		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/ship.js"><!-- stuniverse --></script>
 	</metal:block>
 	<metal:block metal:define-macro="show_ship_alvl">
@@ -514,8 +514,8 @@
 				<tr>
 					<td style="width: 450px;">
 						<div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
-							<img src="assets/system/${data/getSystemType}.gif" />	
-							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span> 
+							<img src="assets/system/${data/getSystemType}.gif" />
+							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span>
 							${data/getStatus}%
 						</div>
 					</td>
@@ -545,7 +545,7 @@
 							<img src="assets/buttons/modul_1.gif" />
 						</th>
 						<td style="vertical-align: middle; text-align: center;">
-							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span> 
+							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
 							${SHIP/getHuell}
@@ -632,8 +632,8 @@
 			<div class="divhead" i18n:translate="">Systemstatus</div>
 			<div class="divbody">
 				<div tal:repeat="data SHIP/getSystems">
-					<img src="assets/system/${data/getSystemType}.gif" />	
-					<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span> 
+					<img src="assets/system/${data/getSystemType}.gif" />
+					<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span>
 					${data/getStatus}%
 				</div>
 			</div>
@@ -696,7 +696,7 @@
 					<select id="dockmode">
 						<option value="1">Erlauben</option>
 						<option value="2">Verbieten</option>
-					</select>	
+					</select>
 				</td>
 			</tr>
 			<tr>
@@ -774,7 +774,7 @@
 										</tal:block>
 									</td>
 								</tr>
-							</table>	
+							</table>
 						</metal:macro>
 						<metal:macro metal:define-macro="transferfromaccount">
 							<br />
@@ -800,7 +800,7 @@
 										</tal:block>
 									</td>
 								</tr>
-							</table>	
+							</table>
 						</metal:macro>
 						<metal:macro metal:use-macro="transfertoaccount" />
 					</div>
@@ -826,7 +826,7 @@
 								Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt: <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
 								Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem Frachtraum des Schiffes beglichen werden.<br /><br />
 								<input class="button" type="button" value="Bezahlmethode wählen" onclick="tradeMenuChoosePayment(${TRADEPOST/getId});" />
-							
+
 							</td>
 						</tr>
 					</table>
@@ -871,7 +871,7 @@
 						<div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
 							- <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})" tal:content="structure acc/getTradePost/getName">NAME</a>
 						</div>
-					</div>	
+					</div>
 				</td>
 			</tr>
 		</table>

@@ -15,7 +15,7 @@
 									<td>
 										<div tal:repeat="result FIGHT_RESULTS" tal:content="structure bbcode:result">LINE</div>
 									</td>
-								</tr>	
+								</tr>
 							</table>
 						</div>
 					</metal:macro>
@@ -136,11 +136,11 @@
 								<td tal:condition="entry/getRow" style="width: 30px;" tal:attributes="class entry/getCSSClass" tal:content="entry/getRow" phptal:cache="1d per entry/getRow">.</td>
 								<td tal:condition="not:entry/getRow" tal:attributes="class entry/getCSSClass" style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
 									<tal:block tal:condition="entry/isClickable">
-										<div class="lssobj" onclick="moveToPosition(${entry/getPosX},${entry/getPosY});" tal:content="entry/getDisplayCount">.</div>	
-									</tal:block>	
+										<div class="lssobj" onclick="moveToPosition(${entry/getPosX},${entry/getPosY});" tal:content="entry/getDisplayCount">.</div>
+									</tal:block>
 									<tal:block tal:condition="not:entry/isClickable">
-										<div tal:content="entry/getDisplayCount">.</div>	
-									</tal:block>	
+										<div tal:content="entry/getDisplayCount">.</div>
+									</tal:block>
 								</td>
 							</tal:block>
 						</tr>
@@ -258,7 +258,7 @@
 							</tr>
 						</table>
 					</tal:block>
-					<tal:block tal:condition="SHIP/getDock">
+					<tal:block tal:condition="SHIP/getDockedTo">
 					<br />
 					<table class="tcal">
 						<tr>
@@ -269,7 +269,7 @@
 								<a href="?B_UNDOCK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock','buttons/dock1')" onmouseout="cp('dock','buttons/dock2')">
 									<img src="assets/buttons/dock2.gif" title="Abdocken" name="dock" />
 								</a>
-								<a tal:condition="SHIP/dockedOnTradepost" href="javascript:void(0);" onclick="openTradeMenu(${SHIP/getDockedShip/getTradePostId});" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
+								<a tal:condition="SHIP/dockedOnTradepost" href="javascript:void(0);" onclick="openTradeMenu(${SHIP/getDockedTo/getTradePostId});" onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
 									<img src="assets/buttons/menu_trade0.gif" title="Handel" name="trade" />
 								</a>
 							</td>
@@ -301,7 +301,7 @@
 								<a href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 									<img src="assets/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
 								</a>
-							
+
 							</td>
 							<tal:block tal:condition="not:SHIP/getSystemsId">
 								<td tal:condition="SHIP/isOverSystem">
@@ -329,7 +329,7 @@
 										<span tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser">
 											<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 											<span tal:condition="not:SHIP/getCurrentColony/isFree" tal:replace="structure bbcode:SHIP/getCurrentColony/getName">NAME</span>
-										</span>	
+										</span>
 										<div>
 											<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id SHIP/getCurrentColony/getUserId;handle bbcode2txt:SHIP/getCurrentColony/getUser/getName" />
 											<span tal:replace="structure bbcode:SHIP/getCurrentColony/getUser/getName">USERNAME</span>
@@ -338,7 +338,7 @@
 									<tal:block tal:condition="SHIP/getCurrentColony/isFree">
 										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 										<span tal:replace="SHIP/getCurrentColony/getPlanetType/getName">PLANETTYPE</span>
-									</tal:block> 
+									</tal:block>
 								</td>
 								<td style="width: 50%;">
 									<div tal:condition="not:SHIP/getCurrentColony/isFree" style="margin-top: 5px;">
@@ -348,7 +348,7 @@
 										<a href="javascript:void(0);" onclick="showBFromColonyWindow(${SHIP/getCurrentColony/getId});" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
 											<img src="assets/buttons/b_up1.gif" name="beamto" title="Von der Kolonie beamen" />
 										</a>
-									</div>	
+									</div>
 									<tal:block tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser">
 										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 										<a onclick="showColonization(${SHIP/getCurrentColony/getId});" href="javascript:void(0);" tal:condition="CAN_COLONIZE_CURRENT_COLONY">
@@ -435,7 +435,7 @@
 					</table>
 				</td>
 			</tr>
-		</table>	
+		</table>
 		<br />
 		</form>
 		<table class="tcal">
@@ -451,7 +451,7 @@
 				<table class="tcal">
 					<tr>
 						<td>Es befinden sich keine Schiffe in diesem Sektor</td>
-					</tr>	
+					</tr>
 				</table>
 			</tal:block>
 			<tal:block tal:condition="HAS_NBS">

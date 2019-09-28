@@ -52,9 +52,9 @@ final class ActivateWarp implements ActionControllerInterface
             $game->addInformation($wrapper->getError());
             return;
         }
-        if ($ship->getDock()) {
+        if ($ship->getDockedTo()) {
             $game->addInformation('Das Schiff hat abgedockt');
-            $ship->setDock(0);
+            $ship->setDockedTo(null);
         }
         if ($ship->traktorBeamFromShip()) {
             if ($ship->getEps() == 0) {

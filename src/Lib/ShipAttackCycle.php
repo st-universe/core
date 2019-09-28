@@ -443,8 +443,8 @@ class ShipAttackCycle {
             $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
             $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt";
         }
-        if ($ship->getDock()) {
-            $ship->setDock(0);
+        if ($ship->getDockedTo()) {
+            $ship->setDockedTo(null);
             $msg[] = "- Das Schiff hat abgedockt";
         }
         if ($ship->getWarpState() == 1) {

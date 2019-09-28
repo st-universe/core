@@ -69,9 +69,9 @@ final class InterceptShip implements ActionControllerInterface
         if (!$ship->canIntercept()) {
             return;
         }
-        if ($ship->getDock()) {
+        if ($ship->getDockedTo()) {
             $game->addInformation('Das Schiff hat abgedockt');
-            $ship->setDock(0);
+            $ship->setDockedTo(null);
         }
         if ($target->getFleetId()) {
             $target->getFleet()->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);

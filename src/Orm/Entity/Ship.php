@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use AccessViolation;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -120,8 +122,8 @@ class Ship implements ShipInterface
     /** @Column(type="smallint", length=1) */
     private $traktormode = 0;
 
-    /** @Column(type="integer") */
-    private $dock = 0;
+    /** @Column(type="integer", nullable=true) */
+    private $dock;
 
     /** @Column(type="boolean") */
     private $nbs = false;
@@ -197,6 +199,17 @@ class Ship implements ShipInterface
      */
     private $trade_post;
 
+    /**
+     * @ManyToOne(targetEntity="Ship", inversedBy="dockerShips")
+     * @JoinColumn(name="dock", referencedColumnName="id")
+     */
+    private $dockedTo;
+
+    /**
+     * @OneToMany(targetEntity="Ship", mappedBy="dockedTo")
+     */
+    private $dockedShips;
+
     private $torpedo;
 
     private $activeSystems;
@@ -224,6 +237,11 @@ class Ship implements ShipInterface
     private $system;
 
     private $crew;
+
+    public function __construct()
+    {
+        $this->dockedShips = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -524,17 +542,6 @@ class Ship implements ShipInterface
     public function setTraktormode(int $traktormode): ShipInterface
     {
         $this->traktormode = $traktormode;
-        return $this;
-    }
-
-    public function getDock(): int
-    {
-        return $this->dock;
-    }
-
-    public function setDock(int $dock): ShipInterface
-    {
-        $this->dock = $dock;
         return $this;
     }
 
@@ -1280,17 +1287,9 @@ class Ship implements ShipInterface
         );
     }
 
-    public function getDockedShip(): ?ShipInterface
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipRepositoryInterface::class)->find($this->getDock());
-    }
-
     public function dockedOnTradePost(): bool
     {
-        return $this->getDock() && $this->getDockedShip()->getTradePostId() > 0;
+        return $this->getDockedTo() && $this->getDockedTo()->getTradePostId() > 0;
     }
 
     public function getDockPrivileges(): array
@@ -1316,10 +1315,9 @@ class Ship implements ShipInterface
         return $this->getRump()->getDockingSlots() - $this->getDockedShipCount();
     }
 
-    // @todo fix
     public function getDockedShipCount(): int
     {
-        return Ship::countInstances('WHERE dock=' . $this->getId());
+        return $this->dockedShips->count();
     }
 
     // @todo interface
@@ -1499,5 +1497,21 @@ class Ship implements ShipInterface
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage();
+    }
+
+    public function getDockedShips(): Collection
+    {
+        return $this->dockedShips;
+    }
+
+    public function getDockedTo(): ?ShipInterface
+    {
+        return $this->dockedTo;
+    }
+
+    public function setDockedTo(?ShipInterface $dockedTo): ShipInterface
+    {
+        $this->dockedTo = $dockedTo;
+        return $this;
     }
 }

@@ -200,7 +200,7 @@ class ShipMover {
 				return FALSE;
 			}
 		}
-		$ship->setDock(0);
+		$ship->setDockedTo(null);
 		if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
 			$ship->cancelRepair();
 			$this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'),$ship->getId()));

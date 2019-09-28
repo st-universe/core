@@ -58,9 +58,9 @@ final class ActivateShields implements ActionControllerInterface
             return;
         }
         $ship->cancelRepair();
-        if ($ship->getDock()) {
+        if ($ship->getDockedTo()) {
             $game->addInformation('Das Schiff hat abgedockt');
-            $ship->setDock(0);
+            $ship->setDockedTo(null);
         }
         $ship->setShieldState(true);
 

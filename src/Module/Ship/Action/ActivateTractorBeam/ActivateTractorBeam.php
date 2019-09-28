@@ -54,7 +54,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Die Schilde sind aktiviert");
             return;
         }
-        if ($ship->getDock()) {
+        if ($ship->getDockedTo()) {
             $game->addInformation("Das Schiff ist angedockt");
             return;
         }

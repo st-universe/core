@@ -40,9 +40,9 @@ final class UndockShip implements ActionControllerInterface
         );
         if ($ship->isFleetLeader()) {
             $msg = array();
-            $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $ship->getDockedShip()->getName();;
+            $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $ship->getDockedTo()->getName();;
             foreach ($ship->getFleet()->getShips() as $key => $ship) {
-                if (!$ship->getDock()) {
+                if (!$ship->getDockedTo()) {
                     continue;
                 }
                 if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
@@ -50,7 +50,7 @@ final class UndockShip implements ActionControllerInterface
                     continue;
                 }
                 $ship->cancelRepair();
-                $ship->setDock(0);
+                $ship->setDockedTo(null);
                 $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
                 $this->shipRepository->save($ship);
@@ -58,7 +58,7 @@ final class UndockShip implements ActionControllerInterface
             $game->addInformationMerge($msg);
             return;
         }
-        if (!$ship->getDock()) {
+        if (!$ship->getDockedTo()) {
             return;
         }
         if ($ship->getEps() == 0) {
@@ -67,7 +67,7 @@ final class UndockShip implements ActionControllerInterface
         }
         $ship->cancelRepair();
         $ship->setEps($ship->getEps() - 1);
-        $ship->setDock(0);
+        $ship->setDockedTo(null);
 
         $this->shipRepository->save($ship);
 

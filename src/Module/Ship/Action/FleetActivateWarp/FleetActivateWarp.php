@@ -46,12 +46,12 @@ final class FleetActivateWarp implements ActionControllerInterface
                 continue;
             }
             // @todo warpantrieb beschaedigt
-            if ($ship->getDock()) {
+            if ($ship->getDockedTo()) {
                 if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(': Nicht genügend Energie zum Abdocken vorhanden');
                     continue;
                 }
-                $ship->setDock(0);
+                $ship->setDockedTo(null);
                 $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
                 $this->shipRepository->save($ship);

@@ -57,9 +57,9 @@ final class FleetActivateShields implements ActionControllerInterface
                 $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
                 continue;
             }
-            if ($ship->getDock()) {
+            if ($ship->getDockedTo()) {
                 $msg[] = $ship->getName() . _(": Abgedockt");
-                $ship->setDock(0);
+                $ship->setDockedTo(null);
             }
             $ship->cancelRepair();
             $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_SHIELDS);
