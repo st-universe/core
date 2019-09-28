@@ -939,7 +939,7 @@ class Ship implements ShipInterface
         // @todo refactor
         global $container;
 
-        return $container->get(ShipRepositoryInterface::class)->save($this->getTraktorShipId());
+        return $container->get(ShipRepositoryInterface::class)->save($this->getTraktorShip());
     }
 
     public function unsetTraktor(): void
@@ -1439,7 +1439,7 @@ class Ship implements ShipInterface
             return true;
 
         } else {
-            if (!checkPosition($this, target)) {
+            if (!checkPosition($this, $target)) {
                 new AccessViolation($target->getId());
             }
         }
