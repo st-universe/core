@@ -21,7 +21,7 @@
 				</tr>
 				<tr tal:repeat="colony COLONY_LIST" tal:attributes="class string:row${repeat/colony/odd}">
 					<td style="text-align: center;">
-						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}"><metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /></a>	
+						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}"><metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /></a>
 					</td>
 					<td style="vertical-align: middle;" tal:define="system colony/getSystem">
 						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%" tal:content="structure bbcode:colony/getName">.</a>
@@ -42,11 +42,11 @@
 						${colony/getStorageSum}/${colony/getMaxStorage} (${addPlusCharacter:colony/getProductionSum})<br />
 						<div tal:repeat="stor colony/getGoodUseView">
 							<img src="assets/goods/${stor/good/getId}.gif" title="runtime" tal:attributes="title stor/good/getName" />
-							<span style="color: #FF0000;" tal:content="stor/production/getProduction">COUNT</span> (<span tal:replace="stor/turnsleft">TURNS</span> Runden)
+							<span style="color: #FF0000;" tal:content="stor/production">COUNT</span> (<span tal:replace="stor/turnsleft">TURNS</span> Runden)
 						</div>
 					</td>
 				</tr>
-			</table>		
+			</table>
 			<br />
 			<div style="float: left; width: 49%;">
 				<div tal:condition="BUILDINGJOB_LIST">

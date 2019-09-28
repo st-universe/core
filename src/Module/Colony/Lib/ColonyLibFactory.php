@@ -24,18 +24,22 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private $torpedoTypeRepository;
 
+    private $commodityConsumption;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         CommodityRepositoryInterface $commodityRepository,
         ColonyRepositoryInterface $colonyRepository,
-        TorpedoTypeRepositoryInterface $torpedoTypeRepository
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository,
+        CommodityConsumptionInterface $commodityConsumption
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
         $this->commodityRepository = $commodityRepository;
         $this->colonyRepository = $colonyRepository;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
+        $this->commodityConsumption = $commodityConsumption;
     }
 
     public function createOrbitShipItem(
@@ -84,7 +88,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ColonyInterface $colony
     ): ColonyListItemInterface {
         return new ColonyListItem(
-            $this->commodityRepository,
+            $this->commodityConsumption,
             $colony
         );
     }

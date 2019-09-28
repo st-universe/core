@@ -118,13 +118,47 @@ true
 
 **Colony - Retrieve list**
 
-Returns a list of colony ids.
+Retrieve all vital info forthe colony list.
 
 `GET /api/v1/colony`
 
 Response
 ```metadata json
-int[]
+{
+    "id": int,
+    "name": string,
+    "location": {
+        "planetName": string,
+        "systemName": string,
+        "systemType": int,
+        "systemCx": int,
+        "systemCy": int,
+        "sx": int,
+        "sy": int
+    },
+    "population": {
+        "working": int,
+        "workless": int,
+        "freeHousing": int,
+        "maximumHousing": int 
+    },
+    "energy": {
+        "currentAmount": int,
+        "maximumAmount": int,
+        "production": int
+    },
+    "storage": {
+        "currentAmount": int,
+        "maximumAmount": int,
+        "commodityConsumption": [
+            {
+                "commodityId": int,
+                "production": int,
+                "turnsLeft": int
+            }
+        ]
+    }
+}
 ```
 
 **Colony - Retrieve single colony**

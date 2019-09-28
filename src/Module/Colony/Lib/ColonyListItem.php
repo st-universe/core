@@ -8,20 +8,19 @@ namespace Stu\Module\Colony\Lib;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Entity\StarSystemInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
 {
-    private $commodityRepository;
-
     private $colony;
 
+    private $commodityConsumption;
+
     public function __construct(
-        CommodityRepositoryInterface $commodityRepository,
+        CommodityConsumptionInterface $commodityConsumption,
         ColonyInterface $colony
     ) {
+        $this->commodityConsumption = $commodityConsumption;
         $this->colony = $colony;
-        $this->commodityRepository = $commodityRepository;
     }
 
     public function getId(): int
@@ -105,23 +104,6 @@ final class ColonyListItem implements ColonyListItemInterface
 
     public function getGoodUseView(): array
     {
-        $stor = $this->colony->getStorage();
-        $prod = $this->colony->getProduction();
-        $ret = [];
-        foreach ($prod as $commodityId => $productionItem) {
-            $proc = $productionItem->getProduction();
-            if ($proc >= 0) {
-                continue;
-            }
-            $ret[$commodityId]['good'] = $this->commodityRepository->find((int)$productionItem->getGoodId());
-            $ret[$commodityId]['production'] = $productionItem;
-            if (!array_key_exists($commodityId, $stor)) {
-                $ret[$commodityId]['storage'] = 0;
-            } else {
-                $ret[$commodityId]['storage'] = $stor[$commodityId]->getAmount();
-            }
-            $ret[$commodityId]['turnsleft'] = floor($ret[$commodityId]['storage'] / abs($proc));
-        }
-        return $ret;
+        return $this->commodityConsumption->getConsumption($this->colony);
     }
 }
