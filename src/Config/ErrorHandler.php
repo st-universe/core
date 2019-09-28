@@ -37,7 +37,8 @@ $whoops->prependHandler(function (Throwable $e, $inspector, $run) use($logger) {
         $e->getMessage(),
         [
             'file' => $e->getFile(),
-            'line' => $e->getLine()
+            'line' => $e->getLine(),
+            'trace' => $e->getTrace()
         ]
     );
 });
