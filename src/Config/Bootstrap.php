@@ -6,6 +6,9 @@ namespace Stu\Config;
 
 use DI\ContainerBuilder;
 use Doctrine\Common\Cache\ApcuCache;
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Proxy\AbstractProxyFactory;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
@@ -40,17 +43,19 @@ $builder->addDefinitions([
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);
 
-        $cache = new ApcuCache();
-
-        $entityManagerConfiguration = Setup::createAnnotationMetadataConfiguration(
-            [__DIR__.'/../Orm/Entity/'],
-            $config->get('debug.debug_mode')
-        );
-        $entityManagerConfiguration->setAutoGenerateProxyClasses(false);
-        $entityManagerConfiguration->setProxyDir('/tmp');
-		// @todo disabled because cache invalidation does not work
-        //$entityManagerConfiguration->setMetadataCacheImpl($cache);
-        //$entityManagerConfiguration->setQueryCacheImpl($cache);
+        $emConfig = new Configuration();
+        if ($config->get('debug.debug_mode') === true) {
+            $emConfig->setMetadataCacheImpl(new ArrayCache());
+            $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_ALWAYS);
+        } else {
+            $emConfig->setMetadataCacheImpl(new ArrayCache());
+            //$emConfig->setMetadataCacheImpl(new ApcuCache());
+            $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
+        }
+        $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
+        $emConfig->setMetadataDriverImpl($driverImpl);
+        $emConfig->setProxyDir('/tmp/');
+        $emConfig->setProxyNamespace('Stu\Orm\Proxy');
 
         $manager = EntityManager::create(
             [
@@ -61,7 +66,7 @@ $builder->addDefinitions([
                 'host'  => $config->get('db.host'),
                 'charset' => 'utf8',
             ],
-            $entityManagerConfiguration
+            $emConfig
         );
 
         $manager->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'integer');
