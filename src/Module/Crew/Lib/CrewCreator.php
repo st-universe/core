@@ -77,6 +77,8 @@ final class CrewCreator implements CrewCreatorInterface
 
     public function createShipCrew(ShipInterface $ship): void
     {
+        $userId = $ship->getUser()->getId();
+
         for ($i = CrewEnum::CREW_TYPE_FIRST; $i <= CrewEnum::CREW_TYPE_LAST; $i++) {
             $j = 1;
             if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
@@ -102,8 +104,9 @@ final class CrewCreator implements CrewCreatorInterface
             );
             while ($j <= $config->$slot()) {
                 $j++;
-                if (($crew = $this->crewRepository->getFreeByUserAndType((int) $ship->getUserId(), $i)) === null) {
-                    $crew = $this->crewRepository->getFreeByUser((int) $ship->getUserId());
+                if (($crew = $this->crewRepository->getFreeByUserAndType($userId, $i)) === null) {
+                    $crew = $this->crewRepository->getFreeByUser($userId);
+
                 }
                 $sc = $this->shipCrewRepository->prototype();
                 $sc->setCrew($crew);

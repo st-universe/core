@@ -7,6 +7,7 @@ namespace Stu\Orm\Entity;
 use AccessViolation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -214,6 +215,12 @@ class Ship implements ShipInterface
      */
     private $dockingPrivileges;
 
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
     private $torpedo;
 
     private $activeSystems;
@@ -252,12 +259,6 @@ class Ship implements ShipInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): ShipInterface
-    {
-        $this->user_id = $user_id;
-        return $this;
     }
 
     public function getRumpId(): int
@@ -824,7 +825,7 @@ class Ship implements ShipInterface
 
     public function ownedByCurrentUser(): bool
     {
-        return $this->getUserId() == currentUser()->getId();
+        return $this->getUser()->getId() == currentUser()->getId();
     }
 
     public function getFleet(): ?FleetInterface
@@ -848,10 +849,13 @@ class Ship implements ShipInterface
 
     public function getUser(): UserInterface
     {
-        // @todo refactor
-        global $container;
+        return $this->user;
+    }
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId());
+    public function setUser(UserInterface $user): ShipInterface
+    {
+        $this->user = $user;
+        return $this;
     }
 
     public function setPosX(int $value): void
@@ -1264,7 +1268,7 @@ class Ship implements ShipInterface
 
     public function isInterceptAble(): bool
     {
-        return $this->getUserId() != currentUser()->getId() && $this->getWarpState();
+        return $this->getUser()->getId() != currentUser()->getId() && $this->getWarpState();
     }
 
     public function getMapCX(): int
@@ -1434,7 +1438,7 @@ class Ship implements ShipInterface
                 new AccessViolation($target->getId());
             }
         }
-        if ($target->getShieldState() && $target->getUserId() != $this->getUserId()) {
+        if ($target->getShieldState() && $target->getUserId() != $this->getUser()->getId()) {
             return false;
         }
         return true;

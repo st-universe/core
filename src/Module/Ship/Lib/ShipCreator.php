@@ -22,6 +22,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
 {
@@ -31,20 +32,24 @@ final class ShipCreator implements ShipCreatorInterface
 
     private $shipRepository;
 
+    private $userRepository;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipRepository = $shipRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
     {
         $ship = $this->shipRepository->prototype();
-        $ship->setUserId($userId);
+        $ship->setUser($this->userRepository->find($userId));
         $ship->setBuildplanId($shipBuildplanId);
         $ship->setRumpId($shipRumpId);
 

@@ -7,11 +7,13 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipRemover implements ShipRemoverInterface
 {
@@ -25,18 +27,22 @@ final class ShipRemover implements ShipRemoverInterface
 
     private $shipRepository;
 
+    private $userRepository;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function destroy(ShipInterface $ship): void
@@ -50,7 +56,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setFormerRumpId($ship->getRumpId());
         $ship->setRumpId(ShipEnum::TRUMFIELD_CLASS);
         $ship->setHuell((int) round($ship->getMaxHuell()/20));
-        $ship->setUserId(GameEnum::USER_NOONE);
+        $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplanId(0);
         $ship->setShield(0);
         $ship->setEps(0);

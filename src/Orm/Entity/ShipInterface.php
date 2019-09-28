@@ -3,16 +3,16 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use Stu\Lib\DamageWrapper;
 
 interface ShipInterface
 {
     public function getId(): int;
 
+    /**
+     * @deprecated
+     */
     public function getUserId(): int;
-
-    public function setUserId(int $user_id): ShipInterface;
 
     public function getRumpId(): int;
 
@@ -221,6 +221,8 @@ interface ShipInterface
     public function isFleetLeader(): bool;
 
     public function getUser(): UserInterface;
+
+    public function setUser(UserInterface $user): ShipInterface;
 
     public function setPosX(int $value): void;
 
