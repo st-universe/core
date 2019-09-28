@@ -36,20 +36,15 @@ class DockingPrivilege implements DockingPrivilegeInterface
     /** @Column(type="smallint") * */
     private $privilege_mode = 0;
 
+    /**
+     * @ManyToOne(targetEntity="Ship", inversedBy="dockingPrivileges")
+     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ship;
+
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getShipId(): int
-    {
-        return $this->ships_id;
-    }
-
-    public function setShipId(int $shipId): DockingPrivilegeInterface
-    {
-        $this->ships_id = $shipId;
-        return $this;
     }
 
     public function getTargetId(): int
@@ -113,5 +108,16 @@ class DockingPrivilege implements DockingPrivilegeInterface
 
         }
         return $container->get(ShipRepositoryInterface::class)->find($this->getTargetId())->getName();
+    }
+
+    public function getShip(): ShipInterface
+    {
+        return $this->ship;
+    }
+
+    public function setShip(ShipInterface $ship): DockingPrivilegeInterface
+    {
+        $this->ship = $ship;
+        return $this;
     }
 }

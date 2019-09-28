@@ -15,7 +15,6 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -200,7 +199,7 @@ class Ship implements ShipInterface
     private $trade_post;
 
     /**
-     * @ManyToOne(targetEntity="Ship", inversedBy="dockerShips")
+     * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
      * @JoinColumn(name="dock", referencedColumnName="id")
      */
     private $dockedTo;
@@ -210,6 +209,11 @@ class Ship implements ShipInterface
      */
     private $dockedShips;
 
+    /**
+     * @OneToMany(targetEntity="DockingPrivilege", mappedBy="ship")
+     */
+    private $dockingPrivileges;
+
     private $torpedo;
 
     private $activeSystems;
@@ -217,8 +221,6 @@ class Ship implements ShipInterface
     private $epsUsage;
 
     private $systems;
-
-    private $dockPrivileges;
 
     private $mapfield;
 
@@ -230,8 +232,6 @@ class Ship implements ShipInterface
 
     private $storage;
 
-    private $traktorship;
-
     private $effectiveEpsProduction;
 
     private $system;
@@ -241,6 +241,7 @@ class Ship implements ShipInterface
     public function __construct()
     {
         $this->dockedShips = new ArrayCollection();
+        $this->dockingPrivileges = new ArrayCollection();
     }
 
     public function getId(): int
@@ -1292,17 +1293,9 @@ class Ship implements ShipInterface
         return $this->getDockedTo() && $this->getDockedTo()->getTradePostId() > 0;
     }
 
-    public function getDockPrivileges(): array
+    public function getDockPrivileges(): Collection
     {
-        if ($this->dockPrivileges === null) {
-            // @todo refactor
-            global $container;
-
-            $this->dockPrivileges = $container->get(DockingPrivilegeRepositoryInterface::class)->getByShip(
-                (int)$this->getId()
-            );
-        }
-        return $this->dockPrivileges;
+        return $this->dockingPrivileges;
     }
 
     public function hasFreeDockingSlots(): bool

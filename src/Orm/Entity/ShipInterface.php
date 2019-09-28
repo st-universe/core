@@ -312,7 +312,7 @@ interface ShipInterface
 
     public function dockedOnTradePost(): bool;
 
-    public function getDockPrivileges(): array;
+    public function getDockPrivileges(): Collection;
 
     public function hasFreeDockingSlots(): bool;
 

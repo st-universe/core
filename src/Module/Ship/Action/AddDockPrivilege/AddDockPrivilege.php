@@ -94,7 +94,7 @@ final class AddDockPrivilege implements ActionControllerInterface
             $dock->setPrivilegeMode($mode);
             $dock->setPrivilegeType($type);
             $dock->setTargetId($target);
-            $dock->setShipId((int) $ship->getId());
+            $dock->setShip($ship);
 
             $this->dockingPrivilegeRepository->save($dock);
         }

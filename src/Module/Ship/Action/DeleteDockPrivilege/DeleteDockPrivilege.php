@@ -42,7 +42,7 @@ final class DeleteDockPrivilege implements ActionControllerInterface
         $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         $privilege = $this->dockingPrivilegeRepository->find((int) request::getIntFatal('privilegeid'));
 
-        if ($privilege->getShipId() != $ship->getId()) {
+        if ($privilege->getShip()->getId() !== $ship->getId()) {
             return;
         }
 

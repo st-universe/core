@@ -6,10 +6,6 @@ interface DockingPrivilegeInterface
 {
     public function getId(): int;
 
-    public function getShipId(): int;
-
-    public function setShipId(int $shipId): DockingPrivilegeInterface;
-
     public function getTargetId(): int;
 
     public function setTargetId(int $targetId): DockingPrivilegeInterface;
@@ -27,4 +23,8 @@ interface DockingPrivilegeInterface
     public function isDockingAllowed(): bool;
 
     public function getTargetName(): string;
+
+    public function getShip(): ShipInterface;
+
+    public function setShip(ShipInterface $ship): DockingPrivilegeInterface;
 }
