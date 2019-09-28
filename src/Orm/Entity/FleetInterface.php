@@ -17,7 +17,7 @@ interface FleetInterface
     /**
      * @return ShipInterface[]
      */
-    public function getShips(): iterable;
+    public function getShips(): Collection;
 
     public function getShipCount(): int;
 

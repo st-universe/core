@@ -65,7 +65,7 @@
 				</tal:block>
 			</td>
 			<td style="text-align: center;">
-				<tal:block tal:condition="ship/getFleetId">
+				<tal:block tal:condition="ship/getFleet">
 					<a href="?B_DELETE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="ship/isFleetLeader" onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag3')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag2')">
 						<img src="assets/buttons/fl_flag2.gif" name="fleet_${ship/getId}" title="Flotte auflösen" />
 					</a>
@@ -73,7 +73,7 @@
 						<img src="assets/buttons/fl_raus1.gif" name="fleet_${ship/getId}" title="Flotte verlassen" />
 					</a>
 				</tal:block>
-				<tal:block tal:condition="not:ship/getFleetId">
+				<tal:block tal:condition="not:ship/getFleet">
 					<a href="?B_NEW_FLEET=1&id=${ship/getId}" tal:condition="not:ship/isBase" onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag2')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag1')">
 						<img src="assets/buttons/fl_flag1.gif" name="fleet_${ship/getId}" title="Flotte erstellen" />
 					</a>

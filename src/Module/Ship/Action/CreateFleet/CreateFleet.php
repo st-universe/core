@@ -48,6 +48,8 @@ final class CreateFleet implements ActionControllerInterface
         $fleet->setUser($game->getUser());
         $fleet->setName(_('Flotte'));
 
+        $fleet->getShips()->add($ship);
+
         $this->fleetRepository->save($fleet);
 
         $ship->setFleet($fleet);

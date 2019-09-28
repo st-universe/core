@@ -74,7 +74,7 @@ class Fleet implements FleetInterface
         return $this->user_id;
     }
 
-    public function getShips(): iterable
+    public function getShips(): Collection
     {
         return $this->shiplist;
     }
