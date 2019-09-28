@@ -44,13 +44,12 @@ $builder->addDefinitions([
         $config = $c->get(ConfigInterface::class);
 
         $emConfig = new Configuration();
+        $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
         if ($config->get('debug.debug_mode') === true) {
             $emConfig->setMetadataCacheImpl(new ArrayCache());
-            $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_ALWAYS);
         } else {
             $emConfig->setMetadataCacheImpl(new ArrayCache());
             //$emConfig->setMetadataCacheImpl(new ApcuCache());
-            $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
         }
         $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
         $emConfig->setMetadataDriverImpl($driverImpl);
