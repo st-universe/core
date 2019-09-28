@@ -22,7 +22,7 @@ class NavPanel
 
     function getShipPosition()
     {
-        if ($this->getShip()->getSystemsId() > 0) {
+        if ($this->getShip()->getSystem() !== null) {
             return array(
                 "cx" => $this->getShip()->getSX(),
                 "cy" => $this->getShip()->getSY()
@@ -36,10 +36,11 @@ class NavPanel
 
     function getMapBorders()
     {
-        if ($this->getShip()->getSystemsId() > 0) {
+        $starSystem = $this->getShip()->getSystem();
+        if ($starSystem !== null) {
             return array(
-                "mx" => $this->getShip()->getSystem()->getMaxX(),
-                "my" => $this->getShip()->getSystem()->getMaxY()
+                "mx" => $starSystem->getMaxX(),
+                "my" => $starSystem->getMaxY()
             );
         }
         return array(

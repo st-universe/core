@@ -56,7 +56,7 @@ final class ShowShip implements ViewControllerInterface
         $shipId = $ship->getId();
 
         $result = $this->shipRepository->getFleetScannerResults(
-            $ship->getSystemsId(),
+            $ship->getSystem(),
             $ship->getSx(),
             $ship->getSy(),
             $ship->getCx(),
@@ -65,7 +65,7 @@ final class ShowShip implements ViewControllerInterface
         );
 
         $nbs = $this->shipRepository->getBaseScannerResults(
-            $ship->getSystemsId(),
+            $ship->getSystem(),
             $ship->getSx(),
             $ship->getSy(),
             $ship->getCx(),
@@ -74,7 +74,7 @@ final class ShowShip implements ViewControllerInterface
         );
 
         $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
-            $ship->getSystemsId(),
+            $ship->getSystem(),
             $ship->getSx(),
             $ship->getSy(),
             $ship->getCx(),

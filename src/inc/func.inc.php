@@ -43,8 +43,8 @@ class Tuple
 
 function checkPosition(ShipInterface $shipa, ShipInterface $shipb)
 {
-    if ($shipa->getSystemsId() > 0) {
-        if ($shipa->getSystemsId() != $shipb->getSystemsId()) {
+    if ($shipa->getSystem() !== null) {
+        if ($shipb->getSystem() === null || $shipa->getSystem()->getId() !== $shipb->getSystem()->getId()) {
             return false;
         }
         if ($shipa->getSX() != $shipb->getSX() || $shipa->getSY() != $shipb->getSY()) {
@@ -60,7 +60,7 @@ function checkPosition(ShipInterface $shipa, ShipInterface $shipb)
 
 function checkColonyPosition(ColonyInterface $col, ShipInterface $ship)
 {
-    if ($col->getSystemsId() != $ship->getSystemsId()) {
+    if ($col->getSystemsId() != $ship->getSystem()->getId()) {
         return false;
     }
     if ($col->getSX() != $ship->getSX() || $col->getSY() != $ship->getSY()) {

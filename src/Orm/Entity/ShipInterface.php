@@ -26,9 +26,7 @@ interface ShipInterface
 
     public function setFleetId(?int $fleetId): ShipInterface;
 
-    public function getSystemsId(): int;
-
-    public function setSystemsId(int $starSystemId): ShipInterface;
+    public function getSystemsId(): ?int;
 
     public function getCx(): int;
 
@@ -202,7 +200,10 @@ interface ShipInterface
 
     public function setState(int $state): ShipInterface;
 
-    public function getCrewlist(): array;
+    /**
+     * @return ShipCrewInterface[]
+     */
+    public function getCrewlist(): Collection;
 
     public function getPosX(): int;
 
@@ -230,6 +231,8 @@ interface ShipInterface
 
     public function getSystem(): ?StarSystemInterface;
 
+    public function setSystem(?StarSystemInterface $starSystem): ShipInterface;
+
     public function getWarpcoreCapacity(): int;
 
     public function getReactorCapacity(): int;
@@ -254,7 +257,7 @@ interface ShipInterface
 
     public function deactivateTraktorBeam(): void;
 
-    public function isOverSystem();
+    public function isOverSystem(): ?StarSystemInterface;
 
     public function isWarpPossible(): bool;
 

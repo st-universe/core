@@ -40,7 +40,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $userId
         );
 
-        if ($ship->getSystemsId() == 0) {
+        if ($ship->getSystem() === null) {
             return;
         }
         $wrapper = new SystemActivationWrapper($ship);
@@ -113,7 +113,7 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private function leaveStarSystem(ShipInterface $ship): void {
         $ship->setWarpState(true);
-        $ship->setSystemsId(0);
+        $ship->setSystem(null);
         $ship->setSX(0);
         $ship->setSY(0);
     }

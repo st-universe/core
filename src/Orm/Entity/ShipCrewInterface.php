@@ -6,10 +6,6 @@ interface ShipCrewInterface
 {
     public function getId(): int;
 
-    public function getShidId(): int;
-
-    public function setShipId(int $shipId): ShipCrewInterface;
-
     public function getCrewId(): int;
 
     public function setCrewId(int $crewId): ShipCrewInterface;
@@ -27,4 +23,8 @@ interface ShipCrewInterface
     public function getCrew(): CrewInterface;
 
     public function setCrew(CrewInterface $crew): ShipCrewInterface;
+
+    public function getShip(): ShipInterface;
+
+    public function setShip(ShipInterface $ship): ShipCrewInterface;
 }

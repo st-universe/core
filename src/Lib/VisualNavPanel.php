@@ -83,7 +83,7 @@ class VisualNavPanel
 
     function loadLSS()
     {
-        if ($this->getShip()->getSystemsId() > 0) {
+        if ($this->getShip()->getSystem() !== null) {
             $result = $this->getInnerSystemResult();
         } else {
             $result = $this->getOuterSystemResult();
@@ -123,10 +123,10 @@ class VisualNavPanel
                 $min++;
                 continue;
             }
-            if ($this->getShip()->getSystemsId() == 0 && $min > MapEnum::MAP_MAX_X) {
+            if ($this->getShip()->getSystem() === null && $min > MapEnum::MAP_MAX_X) {
                 break;
             }
-            if ($this->getShip()->getSystemsId() > 0 && $min > $this->getShip()->getSystem()->getMaxX()) {
+            if ($this->getShip()->getSystem() !== null && $min > $this->getShip()->getSystem()->getMaxX()) {
                 break;
             }
             $row[]['value'] = $min;

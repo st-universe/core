@@ -10,6 +10,7 @@ use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
+use Stu\Orm\Entity\StarSystemInterface;
 
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
@@ -220,7 +221,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     public function getFleetScannerResults(
-        int $starSystemId,
+        ?StarSystemInterface $starSystem,
         int $sx,
         int $sy,
         int $cx,
@@ -234,7 +235,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Ship::class
             )
         )->setParameters([
-            'starSystemId' => $starSystemId,
+            'starSystemId' => $starSystem,
             'sx' => $sx,
             'sy' => $sy,
             'cx' => $cx,
@@ -244,7 +245,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     public function getBaseScannerResults(
-        int $starSystemId,
+        ?StarSystemInterface $starSystem,
         int $sx,
         int $sy,
         int $cx,
@@ -258,7 +259,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Ship::class
             )
         )->setParameters([
-            'starSystemId' => $starSystemId,
+            'starSystemId' => $starSystem,
             'sx' => $sx,
             'sy' => $sy,
             'cx' => $cx,
@@ -268,7 +269,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     public function getSingleShipScannerResults(
-        int $starSystemId,
+        ?StarSystemInterface $starSystem,
         int $sx,
         int $sy,
         int $cx,
@@ -282,7 +283,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Ship::class
             )
         )->setParameters([
-            'starSystemId' => $starSystemId,
+            'starSystemId' => $starSystem,
             'sx' => $sx,
             'sy' => $sy,
             'cx' => $cx,

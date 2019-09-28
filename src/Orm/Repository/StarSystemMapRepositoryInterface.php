@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
 interface StarSystemMapRepositoryInterface extends ObjectRepository
@@ -22,7 +23,7 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
      * @return StarSystemMapInterface[]
      */
     public function getByCoordinateRange(
-        int $starSystemId,
+        StarSystemInterface $starSystem,
         int $startSx,
         int $endSx,
         int $startSy,

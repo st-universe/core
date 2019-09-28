@@ -45,7 +45,7 @@ class ShipMover {
 		if ($posy < 1) {
 			$posy = 1;
 		}
-		if ($this->getFirstShip()->getSystemsId() > 0) {
+		if ($this->getFirstShip()->getSystem() !== null) {
 			$sys = $this->getFirstShip()->getSystem();
 			if ($posx > $sys->getMaxX()) {
 				$posx = $sys->getMaxX();
@@ -187,7 +187,7 @@ class ShipMover {
 	private function move(ShipInterface $ship) {
 		$msg = array();
 		if (!$this->isFleetMode()) {
-			if ($ship->getSystemsId() == 0 && !$ship->isWarpAble()) {
+			if ($ship->getSystem() === null && !$ship->isWarpAble()) {
 				$this->addInformation(_("Dieses Schiff verfügt über keinen Warpantrieb"));
 				return FALSE;
 			}
@@ -218,7 +218,7 @@ class ShipMover {
 			}
 			return;
 		}
-		if (!$this->isFleetMode() && !$ship->getWarpState() && $ship->getSystemsId() == 0) {
+		if (!$this->isFleetMode() && !$ship->getWarpState() && $ship->getSystem() === null) {
 			if ($ship->getEps() < $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts()) {
 				$this->addInformation(sprintf(_("Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"),$ship->getName()));
 				return FALSE;
@@ -263,7 +263,7 @@ class ShipMover {
 
 		$i = 1;
 		while($i<=$this->getFieldCount()) {
-			if ($ship->getSystemsId() == 0 && !$ship->getWarpState()) {
+			if ($ship->getSystem() === null && !$ship->getWarpState()) {
 				if (!$ship->isWarpAble()) {
 					$ship->leaveFleet();
 					$msg[] = "Die ".$ship->getName()." verfügt über keinen Warpantrieb (".$ship->getPosX()."|".$ship->getPosY().")";
@@ -351,7 +351,7 @@ class ShipMover {
 			} else {
 				$ship->setEps($ship->getEps() - $flight_ecost);
 			}
-			if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystemsId() > 0 && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystemsId() == 0 && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
+			if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
 				if ($ship->isTraktorbeamActive()) {
 					$msg[] = "Die ".$ship->getTraktorShip()->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." beschädigt";
 					$damageMsg = $ship->getTraktorShip()->damage(new DamageWrapper($field->getFieldType()->getDamage()));
@@ -439,7 +439,7 @@ class ShipMover {
 				$sx = $destx;
 				$destx = $ox;
 			}
-			if (!$this->getFirstShip()->getSystemsId() > 0) {
+			if ($this->getFirstShip()->getSystem() === null) {
 				$result = $container->get(MapRepositoryInterface::class)->getByCoordinateRange(
 					$sx,
 					$destx,
@@ -452,7 +452,7 @@ class ShipMover {
 				}
 			} else {
 				$result = $container->get(StarSystemMapRepositoryInterface::class)->getByCoordinateRange(
-					(int) $ship->getSystemsId(),
+					$ship->getSystem(),
 					$sx,
 					$destx,
 					$sy,

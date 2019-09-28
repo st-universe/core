@@ -10,6 +10,7 @@ use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -60,7 +61,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             return;
         }
         $ship->cancelRepair();
-        $dummy_crew = current($target->getCrewList());
+
+        /** @var ShipCrewInterface $dummy_crew */
+        $dummy_crew = $target->getCrewList()->current();
         if ($dummy_crew->getCrew()->getUserId() != $userId) {
             $this->privateMessageSender->send(
                 $userId,

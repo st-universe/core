@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
@@ -31,7 +32,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
     }
 
     public function getByCoordinateRange(
-        int $starSystemId,
+        StarSystemInterface $starSystem,
         int $startSx,
         int $endSx,
         int $startSy,
@@ -47,7 +48,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 )
             )
             ->setParameters([
-                'starSystemId' => $starSystemId,
+                'starSystemId' => $starSystem,
                 'startSx' => $startSx,
                 'endSx' => $endSx,
                 'startSy' => $startSy,

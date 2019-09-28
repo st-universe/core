@@ -7,7 +7,6 @@ namespace Stu\Orm\Entity;
 use AccessViolation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -26,7 +25,6 @@ use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -53,7 +51,7 @@ class Ship implements ShipInterface
     /** @Column(type="integer", nullable=true) */
     private $fleets_id;
 
-    /** @Column(type="integer") */
+    /** @Column(type="integer", nullable=true) */
     private $systems_id = 0;
 
     /** @Column(type="integer", length=5) */
@@ -221,6 +219,17 @@ class Ship implements ShipInterface
      */
     private $user;
 
+    /**
+     * @OneToMany(targetEntity="ShipCrew", mappedBy="ship")
+     */
+    private $crew;
+
+    /**
+     * @ManyToOne(targetEntity="StarSystem")
+     * @JoinColumn(name="systems_id", referencedColumnName="id")
+     */
+    private $starSystem;
+
     private $torpedo;
 
     private $activeSystems;
@@ -241,14 +250,13 @@ class Ship implements ShipInterface
 
     private $effectiveEpsProduction;
 
-    private $system;
-
-    private $crew;
+    private $isOverStarSystem;
 
     public function __construct()
     {
         $this->dockedShips = new ArrayCollection();
         $this->dockingPrivileges = new ArrayCollection();
+        $this->crew = new ArrayCollection();
     }
 
     public function getId(): int
@@ -294,15 +302,9 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getSystemsId(): int
+    public function getSystemsId(): ?int
     {
         return $this->systems_id;
-    }
-
-    public function setSystemsId(int $starSystemId): ShipInterface
-    {
-        $this->systems_id = $starSystemId;
-        return $this;
     }
 
     public function getCx(): int
@@ -778,20 +780,14 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getCrewlist(): array
+    public function getCrewlist(): Collection
     {
-        if ($this->crew === null) {
-            // @todo refactor
-            global $container;
-
-            $this->crew = $container->get(ShipCrewRepositoryInterface::class)->getByShip((int)$this->getId());
-        }
         return $this->crew;
     }
 
     public function getPosX(): int
     {
-        if ($this->getSystemsId() > 0) {
+        if ($this->starSystem !== null) {
             return $this->getSX();
         }
         return $this->getCX();
@@ -799,7 +795,7 @@ class Ship implements ShipInterface
 
     public function getPosY(): int
     {
-        if ($this->getSystemsId() > 0) {
+        if ($this->starSystem !== null) {
             return $this->getSY();
         }
         return $this->getCY();
@@ -807,10 +803,7 @@ class Ship implements ShipInterface
 
     public function getCrewCount(): int
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipCrewRepositoryInterface::class)->getAmountByShip((int)$this->getId());
+        return $this->getCrewlist()->count();
     }
 
     public function leaveFleet(): void
@@ -860,7 +853,7 @@ class Ship implements ShipInterface
 
     public function setPosX(int $value): void
     {
-        if ($this->getSystemsId() > 0) {
+        if ($this->starSystem !== null) {
             $this->setSX($value);
             return;
         }
@@ -869,7 +862,7 @@ class Ship implements ShipInterface
 
     public function setPosY($value): void
     {
-        if ($this->getSystemsId() > 0) {
+        if ($this->starSystem !== null) {
             $this->setSY($value);
             return;
         }
@@ -878,13 +871,13 @@ class Ship implements ShipInterface
 
     public function getSystem(): ?StarSystemInterface
     {
-        if ($this->system === null) {
-            // @todo refactor
-            global $container;
+        return $this->starSystem;
+    }
 
-            $this->system = $container->get(StarSystemRepositoryInterface::class)->find((int)$this->getSystemsId());
-        }
-        return $this->system;
+    public function setSystem(?StarSystemInterface $starSystem): ShipInterface
+    {
+        $this->starSystem = $starSystem;
+        return $this;
     }
 
     public function getWarpcoreCapacity(): int
@@ -983,27 +976,29 @@ class Ship implements ShipInterface
         $shipRepo->save($this);
         $shipRepo->save($ship);
     }
+
     // @todo interface
-    public function isOverSystem()
+
+    public function isOverSystem(): ?StarSystemInterface
     {
-        if ($this->getSystemsId() > 0) {
-            return false;
+        if ($this->starSystem !== null) {
+            return null;
         }
-        if ($this->system === null) {
+        if ($this->isOverStarSystem === null) {
             // @todo refactor
             global $container;
 
-            $this->system = $container->get(StarSystemRepositoryInterface::class)->getByCoordinates(
+            $this->isOverStarSystem = $container->get(StarSystemRepositoryInterface::class)->getByCoordinates(
                 (int)$this->getCX(),
                 (int)$this->getCY()
             );
         }
-        return $this->system;
+        return $this->isOverStarSystem;
     }
 
     public function isWarpPossible(): bool
     {
-        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystemsId() == 0;
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->starSystem === null;
     }
 
     public function getTorpedo(): ?TorpedoTypeInterface
@@ -1096,9 +1091,9 @@ class Ship implements ShipInterface
             $colonyRepository = $container->get(ColonyRepositoryInterface::class);
 
             $this->currentColony = $colonyRepository->getByPosition(
-                (int)$this->getSystemsId(),
-                (int)$this->getPosX(),
-                (int)$this->getPosY()
+                $this->starSystem,
+                $this->getPosX(),
+                $this->getPosY()
             );
         }
         return $this->currentColony;
@@ -1107,8 +1102,8 @@ class Ship implements ShipInterface
     public function getSectorString(): string
     {
         $str = $this->getPosX() . '|' . $this->getPosY();
-        if ($this->getSystemsId() > 0) {
-            $str .= ' (' . $this->getSystem()->getName() . '-System)';
+        if ($this->starSystem !== null) {
+            $str .= ' (' . $this->starSystem->getName() . '-System)';
         }
         return $str;
     }
@@ -1323,19 +1318,19 @@ class Ship implements ShipInterface
         if ($this->mapfield === null) {
             // @todo refactor
             global $container;
-            if ($this->getSystemsId() == 0) {
+            if ($this->starSystem === null) {
                 $this->mapfield = $container->get(MapRepositoryInterface::class)->getByCoordinates(
-                    (int)$this->getCX(),
-                    (int)$this->getCY()
+                    $this->getCX(),
+                    $this->getCY()
                 );
             } else {
                 // @todo refactor
                 global $container;
 
                 $this->mapfield = $container->get(StarSystemMapRepositoryInterface::class)->getByCoordinates(
-                    (int)$this->getSystemsId(),
-                    (int)$this->getSX(),
-                    (int)$this->getSY()
+                    $this->starSystem->getId(),
+                    $this->getSX(),
+                    $this->getSY()
                 );
             }
         }

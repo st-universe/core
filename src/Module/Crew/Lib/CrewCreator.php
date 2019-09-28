@@ -110,7 +110,7 @@ final class CrewCreator implements CrewCreatorInterface
                 }
                 $sc = $this->shipCrewRepository->prototype();
                 $sc->setCrew($crew);
-                $sc->setShipId((int) $ship->getId());
+                $sc->setShip($ship);
                 $sc->setUser($ship->getUser());
                 $sc->setSlot($i);
 

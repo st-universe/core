@@ -101,7 +101,7 @@ final class ShipCreator implements ShipCreatorInterface
         if ($colony) {
             $ship->setSX($colony->getSX());
             $ship->setSY($colony->getSY());
-            $ship->setSystemsId($colony->getSystemsId());
+            $ship->setSystem($colony->getSystem());
             $ship->setCX($colony->getSystem()->getCX());
             $ship->setCY($colony->getSystem()->getCY());
             $this->shipRepository->save($ship);

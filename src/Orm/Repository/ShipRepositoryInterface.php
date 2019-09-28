@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 
 /**
  * @method null|ShipInterface find(integer $id)
@@ -86,7 +87,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return ShipInterface[]
      */
     public function getFleetScannerResults(
-        int $starSystemId,
+        ?StarSystemInterface $starSystem,
         int $sx,
         int $sy,
         int $cx,
@@ -98,7 +99,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return ShipInterface[]
      */
     public function getBaseScannerResults(
-        int $starSystemId,
+        ?StarSystemInterface $starSystem,
         int $sx,
         int $sy,
         int $cx,
@@ -110,7 +111,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return ShipInterface[]
      */
     public function getSingleShipScannerResults(
-        int $starSystemId,
+        ?StarSystemInterface $starStarSystem,
         int $sx,
         int $sy,
         int $cx,
