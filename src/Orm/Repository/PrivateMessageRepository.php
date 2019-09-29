@@ -39,7 +39,8 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT pm FROM %s pm WHERE (pm.send_user IN (:sendUserIds) OR pm.recip_user IN (:recipUserIds)) AND
-                pm.cat_id IN (:folderIds) ORDER BY pm.date DESC'
+                pm.cat_id IN (:folderIds) ORDER BY pm.date DESC',
+                PrivateMessage::class
             )
         )->setParameters([
             'sendUserIds' => $userIdPair,
