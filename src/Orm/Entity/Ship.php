@@ -24,7 +24,6 @@ use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
-use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -52,7 +51,7 @@ class Ship implements ShipInterface
     private $fleets_id;
 
     /** @Column(type="integer", nullable=true) */
-    private $systems_id = 0;
+    private $systems_id;
 
     /** @Column(type="integer", length=5) */
     private $cx = 0;
@@ -138,8 +137,8 @@ class Ship implements ShipInterface
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
 
-    /** @Column(type="smallint", length=3) */
-    private $torpedo_type = 0;
+    /** @Column(type="integer", length=3, nullable=true) */
+    private $torpedo_type;
 
     /** @Column(type="smallint", length=4) */
     private $torpedo_count = 0;
@@ -230,6 +229,10 @@ class Ship implements ShipInterface
      */
     private $starSystem;
 
+    /**
+     * @ManyToOne(targetEntity="TorpedoType")
+     * @JoinColumn(name="torpedo_type", referencedColumnName="id")
+     */
     private $torpedo;
 
     private $activeSystems;
@@ -604,17 +607,6 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getTorpedoType(): int
-    {
-        return $this->torpedo_type;
-    }
-
-    public function setTorpedoType(int $torpedoTypeId): ShipInterface
-    {
-        $this->torpedo_type = $torpedoTypeId;
-        return $this;
-    }
-
     public function getTorpedoCount(): int
     {
         return $this->torpedo_count;
@@ -977,8 +969,6 @@ class Ship implements ShipInterface
         $shipRepo->save($ship);
     }
 
-    // @todo interface
-
     public function isOverSystem(): ?StarSystemInterface
     {
         if ($this->getSystem() !== null) {
@@ -1003,13 +993,13 @@ class Ship implements ShipInterface
 
     public function getTorpedo(): ?TorpedoTypeInterface
     {
-        if ($this->torpedo === null) {
-            // @todo refactor
-            global $container;
-
-            $this->torpedo = $container->get(TorpedoTypeRepositoryInterface::class)->find((int)$this->getTorpedoType());
-        }
         return $this->torpedo;
+    }
+
+    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ShipInterface
+    {
+        $this->torpedo = $torpedoType;
+        return $this;
     }
 
     public function damage(DamageWrapper $damage_wrapper): array

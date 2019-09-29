@@ -136,10 +136,6 @@ interface ShipInterface
 
     public function setFormerRumpId(int $formerShipRumpId): ShipInterface;
 
-    public function getTorpedoType(): int;
-
-    public function setTorpedoType(int $torpedoTypeId): ShipInterface;
-
     public function getTorpedoCount(): int;
 
     public function setTorpedoCount(int $torpedoAmount): ShipInterface;
@@ -262,6 +258,8 @@ interface ShipInterface
     public function isWarpPossible(): bool;
 
     public function getTorpedo(): ?TorpedoTypeInterface;
+
+    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ShipInterface;
 
     public function damage(DamageWrapper $damage_wrapper): array;
 

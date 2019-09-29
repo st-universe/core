@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 
+/**
+ * @method null|TorpedoTypeInterface find(integer $id)
+ */
 interface TorpedoTypeRepositoryInterface extends ObjectRepository
 {
     /**

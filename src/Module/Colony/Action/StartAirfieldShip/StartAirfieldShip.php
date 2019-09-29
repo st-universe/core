@@ -147,7 +147,7 @@ final class StartAirfieldShip implements ActionControllerInterface
                 if ($count > $storage[$defaultTorpedoType->getGoodId()]->getAmount()) {
                     $count = $storage[$defaultTorpedoType->getGoodId()]->getAmount();
                 }
-                $ship->setTorpedoType($defaultTorpedoType->getId());
+                $ship->setTorpedo($defaultTorpedoType);
                 $ship->setTorpedoCount($count);
 
                 $this->shipRepository->save($ship);

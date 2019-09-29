@@ -264,7 +264,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $count = $shipobj->getMaxTorpedos();
                     }
                     if ($shipobj->getTorpedoCount() > 0) {
-                        $torp_obj = $possibleTorpedoTypes[(int) $shipobj->getTorpedoType()];
+                        $torp_obj = $possibleTorpedoTypes[$shipobj->getTorpedo()->getId()];
                         $load = $count - $shipobj->getTorpedoCount();
                         if ($load > 0) {
                             if (!array_key_exists($torp_obj->getGoodId(), $storage)) {
@@ -284,7 +284,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
 
                             if ($shipobj->getTorpedoCount() == 0) {
-                                $shipobj->setTorpedoType(0);
+                                $shipobj->setTorpedo(null);
                                 $shipobj->setTorpedos(false);
                             }
                             $msg[] = sprintf(
@@ -319,7 +319,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if ($count > $shipobj->getMaxTorpedos()) {
                             $count = $shipobj->getMaxTorpedos();
                         }
-                        $shipobj->setTorpedoType($type);
+                        $shipobj->setTorpedo($torp_obj);
                         $shipobj->setTorpedoCount($count);
 
                         $this->colonyStorageManager->lowerStorage(
