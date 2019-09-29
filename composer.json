@@ -16,6 +16,7 @@
     "ext-gettext": "*",
     "ext-json": "*",
     "ext-mysqli": "*",
+    "ext-redis": "*",
     "ext-xsl": "*",
     "php": "^7.3",
     "hassankhan/config": "^2.0",

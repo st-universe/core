@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f711251c98fffa91017f41ba5efc6d8",
+    "content-hash": "272b4dfc63a5b173b29160e9c468d4a8",
     "packages": [
         {
             "name": "clue/graph",
@@ -5889,6 +5889,7 @@
         "ext-gettext": "*",
         "ext-json": "*",
         "ext-mysqli": "*",
+        "ext-redis": "*",
         "ext-xsl": "*",
         "php": "^7.3"
     },

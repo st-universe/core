@@ -165,11 +165,6 @@ final class GameController implements GameControllerInterface
         return $this->macro;
     }
 
-    public function getMemoryUsage()
-    {
-        return round((memory_get_peak_usage() / 1024) / 1024, 3);
-    }
-
     public function addInformationf(string $text, ...$args): void
     {
         $this->addInformation(vsprintf(
@@ -309,11 +304,6 @@ final class GameController implements GameControllerInterface
     public function getQueryCount(): int
     {
         return 666;
-    }
-
-    public function getDebugNotices(): array
-    {
-        return get_debug_error()->getDebugNotices();
     }
 
     public function getExecuteJS(): array

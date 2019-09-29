@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Stu\Config;
 
 use DI\ContainerBuilder;
-use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\RedisCache;
 use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Setup;
 use JBBCode\Parser;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
+use Redis;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,11 +47,20 @@ $builder->addDefinitions([
         $emConfig = new Configuration();
         $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
         if ($config->get('debug.debug_mode') === true) {
-            $emConfig->setMetadataCacheImpl(new ArrayCache());
+            $cacheDriver = new ArrayCache();
         } else {
-            $emConfig->setMetadataCacheImpl(new ArrayCache());
-            //$emConfig->setMetadataCacheImpl(new ApcuCache());
+            $redis = new Redis();
+            $redis->connect(
+                $config->get('cache.redis_host'),
+                $config->get('cache.redis_port')
+            );
+
+            $cacheDriver = new RedisCache();
+            $cacheDriver->setRedis($redis);
         }
+        $emConfig->setMetadataCacheImpl($cacheDriver);
+        $emConfig->setQueryCacheImpl($cacheDriver);
+
         $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
         $emConfig->setMetadataDriverImpl($driverImpl);
         $emConfig->setProxyDir('/tmp/');

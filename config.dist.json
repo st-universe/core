@@ -8,6 +8,10 @@
     "backup_dir": "change/me",
     "backup_cycle_time": 2592000
   },
+  "cache": {
+    "redis_host": "localhost",
+    "redis_post": 6379
+  },
   "debug": {
     "debug_mode": false,
     "logfile_path": "/path/to/log",

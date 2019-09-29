@@ -24,8 +24,6 @@ interface GameControllerInterface
 
     public function getMacro(): string;
 
-    public function getMemoryUsage();
-
     public function addInformationf(string $text, ...$args): void;
 
     public function addInformation(string $msg, bool $override = false): void;
@@ -58,8 +56,6 @@ interface GameControllerInterface
     public function setPageTitle(string $title): void;
 
     public function getQueryCount(): int;
-
-    public function getDebugNotices(): array;
 
     public function getExecuteJS(): array;
 

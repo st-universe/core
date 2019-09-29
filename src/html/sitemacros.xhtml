@@ -250,9 +250,6 @@
 	</html>
 </metal:block>
 <metal:macro metal:define-macro="sitefooter">
-	<tal:block tal:condition="THIS/isDebugMode">
-		<tal:block metal:use-macro="benchmark" />
-	</tal:block>
 </metal:macro>
 <metal:block metal:define-macro="ajaxwindow">
 	<stu:root>
@@ -305,13 +302,6 @@
 		</stu:body>
 	</stu:root>
 </metal:block>
-
-<tal:block metal:define-macro="benchmark">
-	<br style="clear: both;" /><br />
-  <div>
-	Memory consumption: <span tal:replace="THIS/getMemoryUsage">...</span> MB<br />
-	Datenbankqueries: <span tal:replace="THIS/getQueryCount">...</span></div>
-</tal:block>
 
 <tal:block metal:define-macro="navigation">
 	<stu:navigation_item url="colony.php" title="Kolonien" icon_url="planets" i18n:attributes="title" />
