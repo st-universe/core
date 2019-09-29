@@ -281,7 +281,7 @@ class UserDeletion
             $container->get(SessionStringRepositoryInterface::class)->truncate((int) $user->getId());
             $container->get(UserProfileVisitorRepositoryInterface::class)->truncateByUser((int) $user->getId());
 
-            $user->deleteFromDatabase();
+            $container->get(UserRepositoryInterface::class)->delete($user);
         }
     }
 
