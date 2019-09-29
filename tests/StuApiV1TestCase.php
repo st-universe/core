@@ -24,7 +24,7 @@ class StuApiV1TestCase extends StuTestCase
     /**
      * @var null|Action
      */
-    private $handler;
+    protected $handler;
 
     protected function setUpApiHandler(Action $handler): void
     {

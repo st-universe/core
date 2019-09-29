@@ -26,6 +26,7 @@ use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
 use Stu\Module\Api\V1\Player\Research\CancelResearch;
 use Stu\Module\Api\V1\Player\Research\CurrentResearch;
 use Stu\Module\Api\V1\Player\Research\ResearchList;
+use Stu\Module\Api\V1\Player\Research\StartResearch;
 
 require_once __DIR__ . '/Config/Bootstrap.php';
 
@@ -84,6 +85,7 @@ $app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
     $group->get('/research/current', CurrentResearch::class);
     $group->get('/research', ResearchList::class);
     $group->post('/research/cancel', CancelResearch::class);
+    $group->post('/research/start', StartResearch::class);
 });
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();

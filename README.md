@@ -271,3 +271,21 @@ Response
 ```metadata json
 true
 ```
+
+**Player - Start new research**
+
+Starts a new research and cancels the current one (if available).
+
+`POST /api/v1/player/research/start`
+
+Request
+```metadata json
+{
+    "researchId": int
+}
+```
+
+Response
+```metadata json
+true
+```
