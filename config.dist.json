@@ -10,7 +10,7 @@
   },
   "cache": {
     "redis_host": "localhost",
-    "redis_post": 6379
+    "redis_port": 6379
   },
   "debug": {
     "debug_mode": false,
