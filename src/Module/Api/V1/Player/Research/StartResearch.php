@@ -15,6 +15,8 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class StartResearch extends Action
 {
+    public const JSON_SCHEMA_FILE = __DIR__ . '/StartResearch.json';
+
     private $session;
 
     private $researchedRepository;
@@ -66,10 +68,5 @@ final class StartResearch extends Action
         $this->researchedRepository->save($researched);
 
         return $response->withData(true);
-    }
-
-    public function getJsonSchemaFile(): ?string
-    {
-        return __DIR__ . '/StartResearch.json';
     }
 }

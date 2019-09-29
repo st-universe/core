@@ -16,6 +16,8 @@ use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 
 final class Login extends Action
 {
+    public const JSON_SCHEMA_FILE = __DIR__ . '/login.json';
+
     private $session;
 
     private $jsonSchemaRequest;
@@ -62,10 +64,5 @@ final class Login extends Action
         return $response->withData([
             'token' => $token,
         ]);
-    }
-    
-    public function getJsonSchemaFile(): ?string
-    {
-        return __DIR__ . '/login.json';
     }
 }

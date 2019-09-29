@@ -16,6 +16,8 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class Register extends Action
 {
+    public const JSON_SCHEMA_FILE = __DIR__ . '/register.json';
+
     private $jsonSchemaRequest;
 
     private $createPlayer;
@@ -66,10 +68,5 @@ final class Register extends Action
         }
 
         return $response->withData(true);
-    }
-
-    public function getJsonSchemaFile(): ?string
-    {
-        return __DIR__ . '/register.json';
     }
 }

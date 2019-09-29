@@ -11,6 +11,9 @@ use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 
 abstract class Action
 {
+    /** @var null|string */
+    public const JSON_SCHEMA_FILE = null;
+
     public function __invoke(
         ServerRequestInterface $request,
         JsonResponseInterface $response,
@@ -22,10 +25,6 @@ abstract class Action
         } catch (Exception $e) {
             throw new HttpNotFoundException($request, $e->getMessage());
         }
-    }
-
-    public function getJsonSchemaFile(): ?string {
-        return null;
     }
 
     abstract protected function action(

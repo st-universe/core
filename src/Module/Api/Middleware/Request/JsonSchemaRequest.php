@@ -28,20 +28,20 @@ final class JsonSchemaRequest implements JsonSchemaRequestInterface
         if ($this->request === null) {
            throw new HttpInternalServerErrorException(null, 'Request not set');
         }
-        
-        $jsonSchemaFile = $action->getJsonSchemaFile();
-        
+
+        $jsonSchemaFile = $action::JSON_SCHEMA_FILE;
+
         if ($jsonSchemaFile === null) {
             throw new HttpInternalServerErrorException($this->request, 'No schema found');
         }
-        
+
         $input = json_decode(file_get_contents('php://input'));
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new HttpBadRequestException($this->request, 'Malformed JSON input.');
         }
 
-        $schema = Schema::fromJsonString(file_get_contents($action->getJsonSchemaFile()));
+        $schema = Schema::fromJsonString(file_get_contents($jsonSchemaFile));
 
         $validator = new Validator();
 
