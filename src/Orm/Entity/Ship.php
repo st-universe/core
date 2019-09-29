@@ -28,6 +28,8 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
  * @Table(
  *     name="stu_ships",
  *     indexes={
+ *         @Index(name="outer_system_location_idx", columns={"systems_id","cx","cy"}),
+ *         @Index(name="inner_system_location_idx", columns={"systems_id","sx","sy"})
  *     }
  * )
  **/
