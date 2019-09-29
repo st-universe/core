@@ -1,7 +1,13 @@
 language: php
+
 php:
-  - '7.3'
+  - 7.3
   - nightly
+
+matrix:
+  allow_failures:
+  - php: nightly
+
 before_script: make init
 
 before_install:
