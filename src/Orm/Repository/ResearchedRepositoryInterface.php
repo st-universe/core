@@ -9,6 +9,9 @@ interface ResearchedRepositoryInterface extends ObjectRepository
 {
     public function hasUserFinishedResearch(int $researchId, int $userId): bool;
 
+    /**
+     * @return ResearchedInterface[]
+     */
     public function getListByUser(int $userId): array;
 
     public function getCurrentResearch(int $userId): ?ResearchedInterface;

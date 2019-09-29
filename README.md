@@ -225,11 +225,39 @@ Response without research
 Response wit research
 ```metadata json
 {
-    "tech" => [
-        "id" => int,
-        "name" => string,
-        "points" => int
+    "tech": [
+        "id": int,
+        "name": string,
+        "points": int
     ],
     "pointsLeft": int
 }
+```
+
+**Player - Retrieve research list**
+
+Retrieves all avaiable and all finished researches.
+
+`GET /api/v1/player/research`
+
+Response
+```metadata json
+    "available": [
+        {
+            "researchId": int,
+            "name": string,
+            "points": int,
+            "commodity": {
+                "commodityId": int,
+                "name": string
+            }
+        }
+    ],
+    "finished": [
+        {
+            "researchId": int,
+            "name": string,
+            "finishDate": int   
+        }
+    ]
 ```

@@ -24,6 +24,7 @@ use Stu\Module\Api\V1\Common\Register\Register;
 use Stu\Module\Api\V1\Player\GetInfo;
 use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
 use Stu\Module\Api\V1\Player\Research\CurrentResearch;
+use Stu\Module\Api\V1\Player\Research\ResearchList;
 
 require_once __DIR__ . '/Config/Bootstrap.php';
 
@@ -80,6 +81,7 @@ $app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
     $group->get('/newpms', GetNewPrivateMessages::class);
 
     $group->get('/research/current', CurrentResearch::class);
+    $group->get('/research', ResearchList::class);
 });
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();
