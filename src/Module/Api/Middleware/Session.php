@@ -26,7 +26,7 @@ final class Session implements SessionInterface
     public function getUser(): UserInterface
     {
         if ($this->user === null) {
-            throw new Exception('user not validated');
+            throw new Exception('User not validated');
         }
 
         return $this->user;

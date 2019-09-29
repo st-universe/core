@@ -20,17 +20,17 @@ final class Register extends Action
 
     private $jsonSchemaRequest;
 
-    private $createPlayer;
+    private $playerCreator;
 
     private $factionRepository;
 
     public function __construct(
         JsonSchemaRequestInterface $jsonSchemaRequest,
-        PlayerCreatorInterface $createPlayer,
+        PlayerCreatorInterface $playerCreator,
         FactionRepositoryInterface $factionRepository
     ) {
         $this->jsonSchemaRequest = $jsonSchemaRequest;
-        $this->createPlayer = $createPlayer;
+        $this->playerCreator = $playerCreator;
         $this->factionRepository = $factionRepository;
     }
 
@@ -55,7 +55,7 @@ final class Register extends Action
         }
 
         try {
-            $this->createPlayer->create(
+            $this->playerCreator->create(
                 $data->loginName,
                 $data->emailAddress,
                 current($factions)

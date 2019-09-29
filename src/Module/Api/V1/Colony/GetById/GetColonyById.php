@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Api\V1\Colony\GetById;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\HttpBadRequestException;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Module\Api\Middleware\Action;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
@@ -32,9 +31,6 @@ final class GetColonyById extends Action
         array $args
     ): JsonResponseInterface {
         $colonyId = (int) $args['colonyId'] ?? 0;
-        if ($colonyId === 0) {
-            throw new HttpBadRequestException($request, "Could not resolve argument `{$colonyId}`.");
-        }
 
         $colony = $this->colonyRepository->find($colonyId);
 
@@ -46,7 +42,7 @@ final class GetColonyById extends Action
         }
 
         return $response->withData([
-            'id' => $colony->getId(),
+            'colonyId' => $colony->getId(),
             'name' => $colony->getName()
         ]);
     }

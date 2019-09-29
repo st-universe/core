@@ -170,7 +170,7 @@ Retrieve the basic data for the colony with the supplied id.
 Response
 ```metadata json
 {
-    "id": int,
+    "colonyId": int,
     "name": string
 }
 ```
