@@ -25,6 +25,7 @@ use Stu\Module\Api\V1\Player\GetInfo;
 use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
 use Stu\Module\Api\V1\Player\Research\CancelResearch;
 use Stu\Module\Api\V1\Player\Research\CurrentResearch;
+use Stu\Module\Api\V1\Player\Research\GetResearch;
 use Stu\Module\Api\V1\Player\Research\ResearchList;
 use Stu\Module\Api\V1\Player\Research\StartResearch;
 
@@ -84,6 +85,7 @@ $app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
 
     $group->get('/research/current', CurrentResearch::class);
     $group->get('/research', ResearchList::class);
+    $group->get('/research/{researchId}', GetResearch::class);
     $group->post('/research/cancel', CancelResearch::class);
     $group->post('/research/start', StartResearch::class);
 });

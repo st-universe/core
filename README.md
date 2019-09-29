@@ -289,3 +289,21 @@ Response
 ```metadata json
 true
 ```
+
+**Player - Get research information**
+
+`GET /api/v1/player/research/<researchId>`
+
+Response
+```metadata json
+{
+    "researchId": int,
+    "name": string,
+    "description": string,
+    "points": int,
+    "commodity": {
+        "commodityId": int,
+        "name": string
+    }
+}
+```

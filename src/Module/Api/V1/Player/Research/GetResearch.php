@@ -1,0 +1,67 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Api\V1\Player\Research;
+
+use Psr\Http\Message\ServerRequestInterface;
+use Stu\Component\ErrorHandling\ErrorCodeEnum;
+use Stu\Module\Api\Middleware\Action;
+use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
+use Stu\Module\Api\Middleware\SessionInterface;
+use Stu\Module\Research\TechlistRetrieverInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
+
+final class GetResearch extends Action
+{
+    private $session;
+
+    private $techlistRetriever;
+
+    private $researchedRepository;
+
+    public function __construct(
+        SessionInterface $session,
+        TechlistRetrieverInterface $techlistRetriever,
+        ResearchedRepositoryInterface $researchedRepository
+    ) {
+        $this->session = $session;
+        $this->techlistRetriever = $techlistRetriever;
+        $this->researchedRepository = $researchedRepository;
+    }
+
+    protected function action(
+        ServerRequestInterface $request,
+        JsonResponseInterface $response,
+        array $args
+    ): JsonResponseInterface {
+        $userId = $this->session->getUser()->getId();
+        $researchId = (int)$args['researchId'];
+
+        $tech = $this->techlistRetriever->getResearchList($userId)[$researchId] ?? null;
+
+        if ($tech === null) {
+            $researched = $this->researchedRepository->getFor($researchId, $userId);
+
+            if ($researched === null) {
+                return $response->withError(
+                    ErrorCodeEnum::NOT_FOUND,
+                    'Research not found'
+                );
+            }
+
+            $tech = $researched->getResearch();
+        }
+
+        return $response->withData([
+            'researchId' => $tech->getId(),
+            'name' => $tech->getName(),
+            'description' => $tech->getDescription(),
+            'points' => $tech->getPoints(),
+            'commodity' => [
+                'commodityId' => $tech->getGood()->getId(),
+                'name' => $tech->getGood()->getName()
+            ]
+        ]);
+    }
+}

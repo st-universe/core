@@ -21,6 +21,8 @@ class StuApiV1TestCase extends StuTestCase
      */
     protected $response;
 
+    protected $args = [];
+
     /**
      * @var null|Action
      */
@@ -37,7 +39,7 @@ class StuApiV1TestCase extends StuTestCase
     protected function performAssertion() {
         $this->assertSame(
             $this->response,
-            call_user_func($this->handler, $this->request, $this->response, [])
+            call_user_func($this->handler, $this->request, $this->response, $this->args)
         );
     }
 }
