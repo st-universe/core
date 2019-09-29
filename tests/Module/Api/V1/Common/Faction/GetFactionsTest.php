@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\V1\Common\Faction;
 
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Orm\Entity\FactionInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
+use Stu\StuApiV1TestCase;
 
-class GetFactionsTest extends MockeryTestCase
+class GetFactionsTest extends StuApiV1TestCase
 {
 
     /**
@@ -20,24 +17,19 @@ class GetFactionsTest extends MockeryTestCase
      */
     private $factionRepository;
 
-    /**
-     * @var null|GetFactions
-     */
-    private $handler;
-
     public function setUp(): void
     {
-        $this->factionRepository = Mockery::mock(FactionRepositoryInterface::class);
+        $this->factionRepository = $this->mock(FactionRepositoryInterface::class);
 
-        $this->handler = new GetFactions(
-            $this->factionRepository
+        $this->setUpApiHandler(
+            new GetFactions(
+                $this->factionRepository
+            )
         );
     }
 
     public function testActionRespondsWithData(): void {
-        $faction = Mockery::mock(FactionInterface::class);
-        $request = Mockery::mock(ServerRequestInterface::class);
-        $response = Mockery::mock(JsonResponseInterface::class);
+        $faction = $this->mock(FactionInterface::class);
 
         $id = 12345;
         $name = 'some-name';
@@ -71,7 +63,7 @@ class GetFactionsTest extends MockeryTestCase
             ->once()
             ->andReturn([$faction]);
 
-        $response->shouldReceive('withData')
+        $this->response->shouldReceive('withData')
             ->with([
                 [
                     'id' => $id,
@@ -84,9 +76,6 @@ class GetFactionsTest extends MockeryTestCase
             ->once()
             ->andReturnSelf();
 
-        $this->assertSame(
-            $response,
-            call_user_func($this->handler, $request, $response, [])
-        );
+        $this->performAssertion();
     }
 }

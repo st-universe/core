@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\V1\Player;
 
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\StuApiV1TestCase;
 
-class GetInfoTest extends MockeryTestCase
+class GetInfoTest extends StuApiV1TestCase
 {
 
     /**
@@ -20,25 +17,20 @@ class GetInfoTest extends MockeryTestCase
      */
     private $session;
 
-    /**
-     * @var null|GetInfo
-     */
-    private $handler;
-
     public function setUp(): void
     {
-        $this->session = Mockery::mock(SessionInterface::class);
+        $this->session = $this->mock(SessionInterface::class);
 
-        $this->handler = new GetInfo(
-            $this->session
+        parent::setUpApiHandler(
+            new GetInfo(
+                $this->session
+            )
         );
     }
 
     public function testActionReturnsPlayerData(): void
     {
-        $user = Mockery::mock(UserInterface::class);
-        $request = Mockery::mock(ServerRequestInterface::class);
-        $response = Mockery::mock(JsonResponseInterface::class);
+        $user = $this->mock(UserInterface::class);
 
         $userId = 666;
         $factionId = 42;
@@ -72,7 +64,7 @@ class GetInfoTest extends MockeryTestCase
             ->once()
             ->andReturn($name);
 
-        $response->shouldReceive('withData')
+        $this->response->shouldReceive('withData')
             ->with([
                 'id' => $userId,
                 'faction_id' => $factionId,
@@ -83,9 +75,6 @@ class GetInfoTest extends MockeryTestCase
             ->once()
             ->andReturnSelf();
 
-        $this->assertSame(
-            $response,
-            call_user_func($this->handler, $request, $response, [])
-        );
+        $this->performAssertion();
     }
 }

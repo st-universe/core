@@ -1,6 +1,8 @@
 # DEFAULT
 PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs i18nextract version_link migrateDatabase showDatabaseChanges
 
+SUITE=
+
 all:init dirs
 
 dirs:force
@@ -24,10 +26,10 @@ init-production:force
 	composer install -a --no-dev
 
 tests:force
-	./vendor/bin/phpunit tests
+	./vendor/bin/phpunit tests $$SUITE
 
 coverage:force
-	./vendor/bin/phpunit -c phpunit-coverage.xml tests
+	./vendor/bin/phpunit -c phpunit-coverage.xml tests $$SUITE
 
 update:force
 	composer update

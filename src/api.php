@@ -23,6 +23,7 @@ use Stu\Module\Api\V1\Common\News\GetNews;
 use Stu\Module\Api\V1\Common\Register\Register;
 use Stu\Module\Api\V1\Player\GetInfo;
 use Stu\Module\Api\V1\Player\GetNewPrivateMessages;
+use Stu\Module\Api\V1\Player\Research\CurrentResearch;
 
 require_once __DIR__ . '/Config/Bootstrap.php';
 
@@ -77,6 +78,8 @@ $app->group('/api/v1/colony', function (RouteCollectorProxy $group): void {
 $app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
     $group->get('', GetInfo::class);
     $group->get('/newpms', GetNewPrivateMessages::class);
+
+    $group->get('/research/current', CurrentResearch::class);
 });
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();

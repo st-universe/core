@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Api\V1\Player;
 
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
+use Stu\StuApiV1TestCase;
 
-class GetNewPrivateMessagesTest extends MockeryTestCase
+class GetNewPrivateMessagesTest extends StuApiV1TestCase
 {
     /**
      * @var null|MockInterface|SessionInterface
@@ -26,19 +24,16 @@ class GetNewPrivateMessagesTest extends MockeryTestCase
      */
     private $privateMessageFolderRepository;
 
-    /**
-     * @var null|GetNewPrivateMessages
-     */
-    private $handler;
-
     public function setUp(): void
     {
-        $this->session = Mockery::mock(SessionInterface::class);
-        $this->privateMessageFolderRepository = Mockery::mock(PrivateMessageFolderRepositoryInterface::class);
+        $this->session = $this->mock(SessionInterface::class);
+        $this->privateMessageFolderRepository = $this->mock(PrivateMessageFolderRepositoryInterface::class);
 
-        $this->handler = new GetNewPrivateMessages(
-            $this->session,
-            $this->privateMessageFolderRepository
+        $this->setUpApiHandler(
+            new GetNewPrivateMessages(
+                $this->session,
+                $this->privateMessageFolderRepository
+            )
         );
     }
 
@@ -46,9 +41,7 @@ class GetNewPrivateMessagesTest extends MockeryTestCase
     {
         $userId = 666;
 
-        $request = Mockery::mock(ServerRequestInterface::class);
-        $response = Mockery::mock(JsonResponseInterface::class);
-        $folder = Mockery::mock(PrivateMessageFolderInterface::class);
+        $folder = $this->mock(PrivateMessageFolderInterface::class);
 
         $this->session->shouldReceive('getUser->getId')
             ->withNoArgs()
@@ -78,14 +71,11 @@ class GetNewPrivateMessagesTest extends MockeryTestCase
             $folders[] = ['folder_special_id' => $folderSpecialId, 'new_pm_amount' => 0];
         }
 
-        $response->shouldReceive('withData')
+        $this->response->shouldReceive('withData')
             ->with($folders)
             ->once()
             ->andReturnSelf();
 
-        $this->assertSame(
-            $response,
-            call_user_func($this->handler, $request, $response, [])
-        );
+        $this->performAssertion();
     }
 }

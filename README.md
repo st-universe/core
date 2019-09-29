@@ -211,3 +211,25 @@ Response
 }
 ```
 
+**Player - Retrieve the current research state**
+
+`GET /api/v1/player/research/current`
+
+Response without research
+```metadata json
+{
+    null
+}
+```
+
+Response wit research
+```metadata json
+{
+    "tech" => [
+        "id" => int,
+        "name" => string,
+        "points" => int
+    ],
+    "pointsLeft": int
+}
+```
