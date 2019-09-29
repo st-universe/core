@@ -81,7 +81,8 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     public function truncateByFolder(int $folderId): void
     {
         $this->getEntityManager()->createQuery(
-            'DELETE FROM %s pm WHERE pm.cat_id = :folderId'
+            'DELETE FROM %s pm WHERE pm.cat_id = :folderId',
+            PrivateMessage::class
         )->setParameters([
             'folderId' => $folderId
         ])->execute();
