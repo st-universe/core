@@ -14,10 +14,6 @@ interface ShipInterface
      */
     public function getUserId(): int;
 
-    public function getBuildplanId(): int;
-
-    public function setBuildplanId(int $buildPlanId): ShipInterface;
-
     public function getFleetId(): ?int;
 
     public function setFleetId(?int $fleetId): ShipInterface;
@@ -272,7 +268,9 @@ interface ShipInterface
 
     public function getSectorString(): string;
 
-    public function getBuildplan(): ShipBuildplanInterface;
+    public function getBuildplan(): ?ShipBuildplanInterface;
+
+    public function setBuildplan(?ShipBuildplanInterface $shipBuildplan): ShipInterface;
 
     public function getEpsUsage(): int;
 

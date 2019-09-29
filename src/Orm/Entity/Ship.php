@@ -16,7 +16,6 @@ use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
@@ -44,8 +43,8 @@ class Ship implements ShipInterface
     /** @Column(type="integer") */
     private $rumps_id = 0;
 
-    /** @Column(type="integer") */
-    private $plans_id = 0;
+    /** @Column(type="integer", nullable=true) */
+    private $plans_id;
 
     /** @Column(type="integer", nullable=true) */
     private $fleets_id;
@@ -246,13 +245,17 @@ class Ship implements ShipInterface
      */
     private $rump;
 
+    /**
+     * @ManyToOne(targetEntity="ShipBuildplan")
+     * @JoinColumn(name="plans_id", referencedColumnName="id")
+     */
+    private $buildplan;
+
     private $activeSystems;
 
     private $epsUsage;
 
     private $mapfield;
-
-    private $buildplan;
 
     private $currentColony;
 
@@ -278,17 +281,6 @@ class Ship implements ShipInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function getBuildplanId(): int
-    {
-        return $this->plans_id;
-    }
-
-    public function setBuildplanId(int $buildPlanId): ShipInterface
-    {
-        $this->plans_id = $buildPlanId;
-        return $this;
     }
 
     public function getFleetId(): ?int
@@ -1095,17 +1087,15 @@ class Ship implements ShipInterface
         return $str;
     }
 
-    public function getBuildplan(): ShipBuildplanInterface
+    public function getBuildplan(): ?ShipBuildplanInterface
     {
-        if ($this->buildplan === null) {
-            // @todo refactor
-            global $container;
-
-            $this->buildplan = $container->get(ShipBuildplanRepositoryInterface::class)->find(
-                (int)$this->getBuildplanId()
-            );
-        }
         return $this->buildplan;
+    }
+
+    public function setBuildplan(?ShipBuildplanInterface $shipBuildplan): ShipInterface
+    {
+        $this->buildplan = $shipBuildplan;
+        return $this;
     }
 
     public function getEpsUsage(): int

@@ -20,6 +20,7 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
@@ -37,25 +38,29 @@ final class ShipCreator implements ShipCreatorInterface
 
     private $shipRumpRepository;
 
+    private $shipBuildplanRepository;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
     {
         $ship = $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
-        $ship->setBuildplanId($shipBuildplanId);
+        $ship->setBuildplan($this->shipBuildplanRepository->find($shipBuildplanId));
         $ship->setRump($this->shipRumpRepository->find($shipRumpId));
 
         $moduleTypeList = [
@@ -114,7 +119,7 @@ final class ShipCreator implements ShipCreatorInterface
 
         $this->createByModuleList(
             $ship,
-            $this->buildplanModuleRepository->getByBuildplan((int)$ship->getBuildplanId())
+            $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
 
         return $ship;
