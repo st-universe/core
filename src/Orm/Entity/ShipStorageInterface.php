@@ -6,10 +6,6 @@ interface ShipStorageInterface
 {
     public function getId(): int;
 
-    public function getShipId(): int;
-
-    public function setShipId(int $shipId): ShipStorageInterface;
-
     public function getCommodityId(): int;
 
     public function setCommodityId(int $commodityId): ShipStorageInterface;
@@ -21,4 +17,8 @@ interface ShipStorageInterface
     public function getCommodity(): CommodityInterface;
 
     public function setCommodity(CommodityInterface $commodity): ShipStorageInterface;
+
+    public function getShip(): ShipInterface;
+
+    public function setShip(ShipInterface $ship): ShipStorageInterface;
 }

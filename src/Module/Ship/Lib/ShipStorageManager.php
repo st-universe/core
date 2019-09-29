@@ -25,9 +25,9 @@ final class ShipStorageManager implements ShipStorageManagerInterface
             return;
         }
 
-        $ship->clearCache();
-
         if ($storage->getAmount() <= $amount) {
+            $ship->getStorage()->removeElement($storage);
+
             $this->shipStorageRepository->delete($storage);
             return;
         }
@@ -42,13 +42,13 @@ final class ShipStorageManager implements ShipStorageManagerInterface
 
         if ($storage === null) {
             $storage = $this->shipStorageRepository->prototype()
-                ->setShipId((int)$ship->getId())
+                ->setShip($ship)
                 ->setCommodity($commodity);
+
+            $ship->getStorage()->add($storage);
         }
         $storage->setAmount($storage->getAmount() + $amount);
 
         $this->shipStorageRepository->save($storage);
-
-        $ship->clearCache();
     }
 }

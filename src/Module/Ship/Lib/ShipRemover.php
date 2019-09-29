@@ -77,8 +77,6 @@ final class ShipRemover implements ShipRemoverInterface
         // @todo Torpedos löschen
 
         $this->shipRepository->save($ship);
-
-        $ship->clearCache();
     }
 
     public function remove(ShipInterface $ship): void

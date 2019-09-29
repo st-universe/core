@@ -89,7 +89,7 @@ final class TransferToAccount implements ActionControllerInterface
 
         $shipStorage = $ship->getStorage();
 
-        if ($shipStorage === []) {
+        if ($shipStorage->isEmpty()) {
             $game->addInformation(_("Keine Waren zum Transferieren vorhanden"));
             return;
         }

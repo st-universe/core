@@ -34,21 +34,15 @@ class ShipStorage implements ShipStorageInterface
      */
     private $commodity;
 
+    /**
+     * @ManyToOne(targetEntity="Ship", inversedBy="storage")
+     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ship;
+
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getShipId(): int
-    {
-        return $this->ships_id;
-    }
-
-    public function setShipId(int $shipId): ShipStorageInterface
-    {
-        $this->ships_id = $shipId;
-
-        return $this;
     }
 
     public function getCommodityId(): int
@@ -87,4 +81,14 @@ class ShipStorage implements ShipStorageInterface
         return $this;
     }
 
+    public function getShip(): ShipInterface
+    {
+        return $this->ship;
+    }
+
+    public function setShip(ShipInterface $ship): ShipStorageInterface
+    {
+        $this->ship = $ship;
+        return $this;
+    }
 }

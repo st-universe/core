@@ -258,7 +258,7 @@ interface ShipInterface
     /**
      * @return ShipStorageInterface[] Indexed by commodityId
      */
-    public function getStorage(): array;
+    public function getStorage(): Collection;
 
     public function getStorageSum(): int;
 
@@ -345,8 +345,6 @@ interface ShipInterface
     public function hasActiveWeapons(): bool;
 
     public function deactivateSystems(): void;
-
-    public function clearCache(): void;
 
     public function getRump(): ShipRumpInterface;
 

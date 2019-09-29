@@ -75,7 +75,7 @@ final class BeamFrom implements ActionControllerInterface
 
         $targetStorage = $target->getStorage();
 
-        if ($targetStorage === []) {
+        if ($targetStorage->isEmpty()) {
             $game->addInformation(_('Keine Waren zum Beamen vorhanden'));
             return;
         }

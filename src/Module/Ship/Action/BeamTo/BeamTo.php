@@ -83,7 +83,7 @@ final class BeamTo implements ActionControllerInterface
 
         $shipStorage = $ship->getStorage();
 
-        if ($shipStorage === []) {
+        if ($shipStorage->isEmpty()) {
             $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }

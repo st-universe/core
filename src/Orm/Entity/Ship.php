@@ -18,7 +18,6 @@ use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
@@ -251,6 +250,11 @@ class Ship implements ShipInterface
      */
     private $buildplan;
 
+    /**
+     * @OneToMany(targetEntity="ShipStorage", mappedBy="ship", indexBy="goods_id")
+     */
+    private $storage;
+
     private $activeSystems;
 
     private $epsUsage;
@@ -258,8 +262,6 @@ class Ship implements ShipInterface
     private $mapfield;
 
     private $currentColony;
-
-    private $storage;
 
     private $effectiveEpsProduction;
 
@@ -271,6 +273,7 @@ class Ship implements ShipInterface
         $this->dockingPrivileges = new ArrayCollection();
         $this->crew = new ArrayCollection();
         $this->systems = new ArrayCollection();
+        $this->storage = new ArrayCollection();
     }
 
     public function getId(): int
@@ -1031,24 +1034,15 @@ class Ship implements ShipInterface
         return $msg;
     }
 
-    /**
-     * @return ShipStorageInterface[] Indexed by commodityId
-     */
-    public function getStorage(): array
+    public function getStorage(): Collection
     {
-        if ($this->storage === null) {
-            // @todo refactor
-            global $container;
-
-            $this->storage = $container->get(ShipStorageRepositoryInterface::class)->getByShip((int)$this->getId());
-        }
         return $this->storage;
     }
 
     public function getStorageSum(): int
     {
         return array_reduce(
-            $this->getStorage(),
+            $this->getStorage()->getValues(),
             function (int $sum, ShipStorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
@@ -1419,11 +1413,6 @@ class Ship implements ShipInterface
         $this->setLss(false);
         $this->setPhaser(false);
         $this->setTorpedos(false);
-    }
-
-    public function clearCache(): void
-    {
-        $this->storage = null;
     }
 
     public function getRump(): ShipRumpInterface
