@@ -36,6 +36,35 @@ $app = AppFactory::create(
     $container
 );
 
+$apiErrorHandler = function (
+    ServerRequestInterface $request,
+    Throwable $exception,
+    bool $displayErrorDetails,
+    bool $logErrors,
+    bool $logErrorDetails
+) use ($app) {
+    $payload = [
+        'error' => [
+            'errorcode' => null,
+            'error' => $exception->getMessage(),
+        ]
+    ];
+
+    $response = $app->getResponseFactory()
+        ->createResponse()
+        ->withHeader('Content-Type', 'application/json')
+        ->withStatus($exception->getCode());
+
+    $response->getBody()->write(
+        json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+    );
+
+    return $response;
+};
+
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+$errorMiddleware->setDefaultErrorHandler($apiErrorHandler);
+
 $app->add(new Tuupola\Middleware\JwtAuthentication([
     'secret' => $container->get(ConfigInterface::class)->get('api.jwt_secret'),
     'secure' => true,

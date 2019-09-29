@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\Middleware;
 
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\HttpNotFoundException;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 
 abstract class Action
@@ -20,11 +18,7 @@ abstract class Action
         array $args
     ): ResponseInterface {
 
-        try {
-            return $this->action($request, $response, $args);
-        } catch (Exception $e) {
-            throw new HttpNotFoundException($request, $e->getMessage());
-        }
+        return $this->action($request, $response, $args);
     }
 
     abstract protected function action(
