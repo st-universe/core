@@ -282,7 +282,10 @@ interface ShipInterface
 
     public function lowerEpsUsage($value): int;
 
-    public function getSystems(): array;
+    /**
+     * @return ShipSystemInterface[]
+     */
+    public function getSystems(): Collection;
 
     public function hasShipSystem($system): bool;
 

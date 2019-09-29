@@ -21,7 +21,6 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
-use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
@@ -235,11 +234,14 @@ class Ship implements ShipInterface
      */
     private $torpedo;
 
+    /**
+     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type")
+     */
+    private $systems;
+
     private $activeSystems;
 
     private $epsUsage;
-
-    private $systems;
 
     private $mapfield;
 
@@ -260,6 +262,7 @@ class Ship implements ShipInterface
         $this->dockedShips = new ArrayCollection();
         $this->dockingPrivileges = new ArrayCollection();
         $this->crew = new ArrayCollection();
+        $this->systems = new ArrayCollection();
     }
 
     public function getId(): int
@@ -1127,29 +1130,19 @@ class Ship implements ShipInterface
         $this->epsUsage -= $value;
     }
 
-    public function getSystems(): array
+    public function getSystems(): Collection
     {
-        if ($this->systems === null) {
-            // @todo refactor
-            global $container;
-
-            $this->systems = [];
-            foreach ($container->get(ShipSystemRepositoryInterface::class)->getByShip((int)$this->getId()) as $system) {
-                $this->systems[$system->getSystemType()] = $system;
-            }
-        }
         return $this->systems;
     }
 
     public function hasShipSystem($system): bool
     {
-        return array_key_exists($system, $this->getSystems());
+        return $this->getSystems()->containsKey($system);
     }
 
     public function getShipSystem($system): ShipSystemInterface
     {
-        $arr = &$this->getSystems();
-        return $arr[$system];
+        return $this->getSystems()->get($system);
     }
 
     /**

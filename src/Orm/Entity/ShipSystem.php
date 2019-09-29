@@ -39,6 +39,12 @@ class ShipSystem implements ShipSystemInterface
      */
     private $module;
 
+    /**
+     * @ManyToOne(targetEntity="Ship")
+     * @JoinColumn(name="ships_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ship;
+
     public function getId(): int
     {
         return $this->id;
