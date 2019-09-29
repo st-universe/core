@@ -11,6 +11,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -29,13 +30,16 @@ final class ShipRemover implements ShipRemoverInterface
 
     private $userRepository;
 
+    private $shipRumpRepository;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
@@ -43,6 +47,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function destroy(ShipInterface $ship): void
@@ -53,8 +58,8 @@ final class ShipRemover implements ShipRemoverInterface
             $this->changeFleetLeader($ship);
         }
 
-        $ship->setFormerRumpId($ship->getRumpId());
-        $ship->setRumpId(ShipEnum::TRUMFIELD_CLASS);
+        $ship->setFormerRumpId($ship->getRump()->getId());
+        $ship->setRump($this->shipRumpRepository->find(ShipEnum::TRUMFIELD_CLASS));
         $ship->setHuell((int) round($ship->getMaxHuell()/20));
         $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplanId(0);

@@ -19,7 +19,6 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -239,13 +238,17 @@ class Ship implements ShipInterface
      */
     private $systems;
 
+    /**
+     * @ManyToOne(targetEntity="ShipRump")
+     * @JoinColumn(name="rumps_id", referencedColumnName="id")
+     */
+    private $rump;
+
     private $activeSystems;
 
     private $epsUsage;
 
     private $mapfield;
-
-    private $rump;
 
     private $buildplan;
 
@@ -273,17 +276,6 @@ class Ship implements ShipInterface
     public function getUserId(): int
     {
         return $this->user_id;
-    }
-
-    public function getRumpId(): int
-    {
-        return $this->rumps_id;
-    }
-
-    public function setRumpId(int $shipRumpId): ShipInterface
-    {
-        $this->rumps_id = $shipRumpId;
-        return $this;
     }
 
     public function getBuildplanId(): int
@@ -1439,19 +1431,18 @@ class Ship implements ShipInterface
 
     public function clearCache(): void
     {
-        $this->rump = null;
         $this->storage = null;
     }
 
     public function getRump(): ShipRumpInterface
     {
-        if ($this->rump === null) {
-            // @todo refactor
-            global $container;
-
-            $this->rump = $container->get(ShipRumpRepositoryInterface::class)->find((int)$this->getRumpId());
-        }
         return $this->rump;
+    }
+
+    public function setRump(ShipRumpInterface $shipRump): ShipInterface
+    {
+        $this->rump = $shipRump;
+        return $this;
     }
 
     public function hasPhaser(): bool

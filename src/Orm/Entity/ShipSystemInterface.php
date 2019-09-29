@@ -6,10 +6,6 @@ interface ShipSystemInterface
 {
     public function getId(): int;
 
-    public function getShipId(): int;
-
-    public function setShipId(int $shipId): ShipSystemInterface;
-
     public function getSystemType(): int;
 
     public function setSystemType(int $systemType): ShipSystemInterface;
@@ -33,4 +29,8 @@ interface ShipSystemInterface
     public function setModule(ModuleInterface $module): ShipSystemInterface;
 
     public function getShipCallback(): string;
+
+    public function getShip(): ShipInterface;
+
+    public function setShip(ShipInterface $ship): ShipSystemInterface;
 }

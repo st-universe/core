@@ -111,7 +111,7 @@ final class Colonize implements ActionControllerInterface
         }
         $game->checkDatabaseItem($colony->getPlanetType()->getDatabaseId());
 
-        $base_building = $this->shipRumpColonizationBuildingRepository->findByShipRump((int) $ship->getRumpId());
+        $base_building = $this->shipRumpColonizationBuildingRepository->findByShipRump($ship->getRump());
         if ($base_building === null) {
             return;
         }

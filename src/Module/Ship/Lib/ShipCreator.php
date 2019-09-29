@@ -21,6 +21,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -34,16 +35,20 @@ final class ShipCreator implements ShipCreatorInterface
 
     private $userRepository;
 
+    private $shipRumpRepository;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipRepositoryInterface $shipRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
@@ -51,7 +56,7 @@ final class ShipCreator implements ShipCreatorInterface
         $ship = $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
         $ship->setBuildplanId($shipBuildplanId);
-        $ship->setRumpId($shipRumpId);
+        $ship->setRump($this->shipRumpRepository->find($shipRumpId));
 
         $moduleTypeList = [
             ShipModuleTypeEnum::MODULE_TYPE_HULL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
@@ -108,14 +113,14 @@ final class ShipCreator implements ShipCreatorInterface
         }
 
         $this->createByModuleList(
-            $ship->getId(),
+            $ship,
             $this->buildplanModuleRepository->getByBuildplan((int)$ship->getBuildplanId())
         );
 
         return $ship;
     }
 
-    private function createByModuleList(int $shipId, array $modules): void
+    private function createByModuleList(ShipInterface $ship, array $modules): void
     {
         $systems = array();
         foreach ($modules as $key => $module) {
@@ -151,7 +156,7 @@ final class ShipCreator implements ShipCreatorInterface
         }
         foreach ($systems as $sysId => $module) {
             $obj = $this->shipSystemRepository->prototype();
-            $obj->setShipId((int) $shipId);
+            $obj->setShip($ship);
             $obj->setSystemType((int) $sysId);
             if ($module !== 0) {
                 $obj->setModule($module);

@@ -72,7 +72,7 @@ final class ShowShipDisassembly implements ViewControllerInterface
                     if ($ship->getUserId() != $userId) {
                         continue;
                     }
-                    foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
+                    foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
                         if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
                             $repairableShips[$ship->getId()] = $ship;
                             break;

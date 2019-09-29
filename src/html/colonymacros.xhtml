@@ -1229,7 +1229,7 @@
 			</tr>
 			<tr tal:repeat="data SHIP_BUILD_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center; vertical-align: middle;">
-					<img src="assets/ships/${data/getRumpId}.gif" />
+					<img src="assets/ships/${data/getRump/getId}.gif" />
 				</td>
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getRump/getName">RUMP</td>
 				<tal:block tal:condition="not:data/getStopDate">
@@ -1251,7 +1251,7 @@
 			</tr>
 			<tr tal:repeat="data SHIP_REPAIR_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
 				<td style="text-align: center; vertical-align: middle;">
-					<img src="assets/ships/${data/getShip/getRumpId}.gif" />
+					<img src="assets/ships/${data/getShip/getRump/getId}.gif" />
 				</td>
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getShip/getRump/getName">RUMP</td>
 				<td style="text-align: center; vertical-align: middle">

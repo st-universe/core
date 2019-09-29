@@ -4,11 +4,12 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipRumpBuildingFunctionInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
 
 interface ShipRumpBuildingFunctionRepositoryInterface extends ObjectRepository
 {
     /**
      * @return ShipRumpBuildingFunctionInterface[]
      */
-    public function getByShipRump(int $shipRumpid): array;
+    public function getByShipRump(ShipRumpInterface $shipRump): array;
 }

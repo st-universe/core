@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\ShipRumpInterface;
 
 final class ShipRumpBuildingFunctionRepository extends EntityRepository implements ShipRumpBuildingFunctionRepositoryInterface
 {
-    public function getByShipRump(int $shipRumpid): array
+    public function getByShipRump(ShipRumpInterface $shipRump): array
     {
         return $this->findBy([
-            'rump_id' => $shipRumpid
+            'rump_id' => $shipRump
         ]);
     }
 }

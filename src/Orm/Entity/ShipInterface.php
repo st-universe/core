@@ -14,10 +14,6 @@ interface ShipInterface
      */
     public function getUserId(): int;
 
-    public function getRumpId(): int;
-
-    public function setRumpId(int $shipRumpId): ShipInterface;
-
     public function getBuildplanId(): int;
 
     public function setBuildplanId(int $buildPlanId): ShipInterface;
@@ -355,6 +351,8 @@ interface ShipInterface
     public function clearCache(): void;
 
     public function getRump(): ShipRumpInterface;
+
+    public function setRump(ShipRumpInterface $shipRump): ShipInterface;
 
     public function hasPhaser(): bool;
 

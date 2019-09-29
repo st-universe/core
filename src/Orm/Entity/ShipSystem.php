@@ -50,18 +50,6 @@ class ShipSystem implements ShipSystemInterface
         return $this->id;
     }
 
-    public function getShipId(): int
-    {
-        return $this->ships_id;
-    }
-
-    public function setShipId(int $shipId): ShipSystemInterface
-    {
-        $this->ships_id = $shipId;
-
-        return $this;
-    }
-
     public function getSystemType(): int
     {
         return $this->system_type;
@@ -149,4 +137,14 @@ class ShipSystem implements ShipSystemInterface
         throw new Exception('Invalid system');
     }
 
+    public function getShip(): ShipInterface
+    {
+        return $this->ship;
+    }
+
+    public function setShip(ShipInterface $ship): ShipSystemInterface
+    {
+        $this->ship = $ship;
+        return $this;
+    }
 }

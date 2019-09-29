@@ -73,7 +73,7 @@ final class ShowShipRepair implements ViewControllerInterface
                     if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
                         continue;
                     }
-                    foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump((int) $ship->getRumpId()) as $rump_rel) {
+                    foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
                         if (array_key_exists($rump_rel->getBuildingFunction(), $fieldFunctions)) {
                             $repairableShips[$ship->getId()] = $ship;
                             break;
