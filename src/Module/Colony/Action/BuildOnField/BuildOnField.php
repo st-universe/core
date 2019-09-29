@@ -125,7 +125,7 @@ final class BuildOnField implements ActionControllerInterface
                 );
 
                 if (
-                    !array_key_exists($commodityId, $storage) &&
+                    !$storage->containsKey($commodityId) &&
                     $result === []
                 ) {
                     $game->addInformationf(
@@ -136,7 +136,7 @@ final class BuildOnField implements ActionControllerInterface
                     return;
                 }
             } else {
-                if (!array_key_exists($commodityId, $storage)) {
+                if (!$storage->containsKey($commodityId)) {
                     $game->addInformationf(
                         _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                         $obj->getAmount(),
@@ -145,7 +145,7 @@ final class BuildOnField implements ActionControllerInterface
                     return;
                 }
             }
-            if (!isset($storage[$commodityId])) {
+            if (!$storage->containsKey($commodityId)) {
                 $amount = 0;
             } else {
                 $amount = $storage[$commodityId]->getAmount();

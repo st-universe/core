@@ -73,7 +73,7 @@ final class BeamTo implements ActionControllerInterface
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
         $storage = $colony->getStorage();
-        if ($storage === []) {
+        if ($storage->isEmpty()) {
             $game->addInformation(_('Keine Waren zum Beamen vorhanden'));
             return;
         }

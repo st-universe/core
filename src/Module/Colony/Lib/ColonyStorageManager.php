@@ -33,6 +33,8 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $colony->clearCache();
 
         if ($stor->getAmount() <= $amount) {
+            $colony->getStorage()->removeElement($stor);
+
             $this->colonyStorageRepository->delete($stor);
 
             return;
@@ -50,6 +52,8 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
             $stor = $this->colonyStorageRepository->prototype();
             $stor->setColony($colony);
             $stor->setGood($commodity);
+
+            $colony->getStorage()->add($stor);
         }
         $stor->setAmount($stor->getAmount() + $amount);
 

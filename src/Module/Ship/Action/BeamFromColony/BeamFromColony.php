@@ -85,7 +85,7 @@ final class BeamFromColony implements ActionControllerInterface
         }
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
-        if ($target->getStorage() === []) {
+        if ($target->getStorage()->isEmpty()) {
             $game->addInformation(_("Keine Waren zum Beamen vorhanden"));
             return;
         }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
@@ -11,7 +13,6 @@ use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Tick\Colony\ColonyTick;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
-use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -99,13 +100,16 @@ class Colony implements ColonyInterface
      */
     private $user;
 
+    /**
+     * @OneToMany(targetEntity="ColonyStorage", mappedBy="colony", indexBy="goods_id")
+     */
+    private $storage;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
 
     private $positive_effect_primary;
-
-    private $storage;
 
     private $productionRaw;
 
@@ -114,6 +118,10 @@ class Colony implements ColonyInterface
     private $productionsum;
 
     private $shiplist;
+
+    public function __construct() {
+        $this->storage = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -311,7 +319,7 @@ class Colony implements ColonyInterface
     public function getStorageSum(): int
     {
         return array_reduce(
-            $this->getStorage(),
+            $this->getStorage()->getValues(),
             function (int $sum, ColonyStorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
@@ -355,24 +363,15 @@ class Colony implements ColonyInterface
     public function getBeamableStorage(): array
     {
         return array_filter(
-            $this->getStorage(),
+            $this->getStorage()->getValues(),
             function (ColonyStorageInterface $storage): bool {
                 return $storage->getGood()->isBeamable() === true;
             }
         );
     }
 
-    /**
-     * @return ColonyStorageInterface[]
-     */
-    function getStorage()
+    public function getStorage(): Collection
     {
-        if ($this->storage === null) {
-            // @todo refactor
-            global $container;
-
-            $this->storage = $container->get(ColonyStorageRepositoryInterface::class)->getByColony((int)$this->getId());
-        }
         return $this->storage;
     }
 
@@ -637,7 +636,6 @@ class Colony implements ColonyInterface
 
     public function clearCache(): void
     {
-        $this->storage = null;
         $this->productionRaw = null;
         $this->production = null;
     }

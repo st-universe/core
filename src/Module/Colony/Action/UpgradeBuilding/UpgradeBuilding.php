@@ -102,7 +102,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         /** @var BuildingUpgradeCostInterface $obj */
         foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
-            if (!array_key_exists($obj->getGoodId(), $storage)) {
+            if (!$storage->containsKey($obj->getGoodId())) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),

@@ -81,7 +81,7 @@ final class RepairBuilding implements ActionControllerInterface
             $amount = round(($cost->getAmount() / 100) * $integrity);
             $commodityId = $cost->getGoodId();
 
-            if (!array_key_exists($commodityId, $storage)) {
+            if (!$storage->containsKey($commodityId)) {
                 $game->addInformationf(
                     _('Es werden %d %s benötigt - Es ist jedoch keines vorhanden'),
                     $amount,

@@ -5,6 +5,7 @@ declare(strict_types=0);
 
 namespace Stu\Module\Colony\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -88,7 +89,7 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getMaxStorage();
     }
 
-    public function getStorage(): array
+    public function getStorage(): Collection
     {
         return $this->colony->getStorage();
     }

@@ -64,7 +64,7 @@ final class BuildTorpedos implements ActionControllerInterface
                 continue;
             }
             foreach ($torp->getProductionCosts() as $id => $cost) {
-                if (!$storage[$cost->getGoodId()]) {
+                if (!$storage->containsKey($cost->getGoodId())) {
                     $count = 0;
                     break;
                 }

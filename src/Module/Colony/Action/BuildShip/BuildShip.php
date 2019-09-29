@@ -145,7 +145,7 @@ final class BuildShip implements ActionControllerInterface
         }
         $storage = $colony->getStorage();
         foreach ($modules as $module) {
-            if (!array_key_exists($module->getGoodId(), $storage)) {
+            if (!$storage->containsKey($module->getGoodId())) {
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }

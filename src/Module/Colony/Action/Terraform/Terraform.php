@@ -98,7 +98,7 @@ final class Terraform implements ActionControllerInterface
 
         foreach ($terraf->getCosts() as $obj) {
             $commodityId = $obj->getGoodId();
-            if (!array_key_exists($commodityId, $storage)) {
+            if (!$storage->containsKey($commodityId)) {
                 $game->addInformationf(
                     _('Es werden %s %s benötigt - Es ist jedoch keines vorhanden'),
                     $obj->getAmount(),

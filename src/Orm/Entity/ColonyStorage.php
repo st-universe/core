@@ -35,7 +35,7 @@ class ColonyStorage implements ColonyStorageInterface
     private $commodity;
 
     /**
-     * @ManyToOne(targetEntity="Colony")
+     * @ManyToOne(targetEntity="Colony", inversedBy="storage")
      * @JoinColumn(name="colonies_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $colony;

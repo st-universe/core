@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 
 interface ColonyInterface
@@ -99,7 +100,7 @@ interface ColonyInterface
     /**
      * @return ColonyStorageInterface[]
      */
-    function getStorage();
+    public function getStorage(): Collection;
 
     /**
      * @return ColonyProduction[]
