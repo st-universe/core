@@ -242,22 +242,32 @@ Retrieves all avaiable and all finished researches.
 
 Response
 ```metadata json
-    "available": [
-        {
-            "researchId": int,
-            "name": string,
-            "points": int,
-            "commodity": {
-                "commodityId": int,
-                "name": string
-            }
+"available": [
+    {
+        "researchId": int,
+        "name": string,
+        "points": int,
+        "commodity": {
+            "commodityId": int,
+            "name": string
         }
-    ],
-    "finished": [
-        {
-            "researchId": int,
-            "name": string,
-            "finishDate": int   
-        }
-    ]
+    }
+],
+"finished": [
+    {
+        "researchId": int,
+        "name": string,
+        "finishDate": int   
+    }
+]
+```
+
+**Player - Cancel current research**
+
+`POST /api/v1/player/research/cancel`
+
+Response
+
+```metadata json
+true
 ```
