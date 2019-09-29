@@ -23,6 +23,7 @@ use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
+use Ubench;
 use function DI\autowire;
 
 require_once __DIR__.'/../../vendor/autoload.php';
@@ -77,7 +78,13 @@ $builder->addDefinitions([
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());
         return $parser;
-    }
+    },
+    Ubench::class => function (ContainerInterface $c): Ubench {
+        $bench = new Ubench();
+        $bench->start();
+
+        return $bench;
+    },
 ]);
 
 $builder->addDefinitions(

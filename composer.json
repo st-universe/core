@@ -10,6 +10,7 @@
     }
   },
   "require": {
+    "devster/ubench": "^2",
     "ext-dom": "*",
     "ext-gd": "*",
     "ext-gettext": "*",

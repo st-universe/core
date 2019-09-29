@@ -23,6 +23,7 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Ubench;
 
 final class GameController implements GameControllerInterface
 {
@@ -55,6 +56,8 @@ final class GameController implements GameControllerInterface
     private $userRepository;
 
     private $researchRepository;
+
+    private $benchmark;
 
     private $gameInformations = [];
 
@@ -92,7 +95,8 @@ final class GameController implements GameControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
-        ResearchRepositoryInterface $researchRepository
+        ResearchRepositoryInterface $researchRepository,
+        Ubench $benchmark
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -108,6 +112,7 @@ final class GameController implements GameControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
         $this->researchRepository = $researchRepository;
+        $this->benchmark = $benchmark;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -491,5 +496,16 @@ final class GameController implements GameControllerInterface
     public function getLoginError(): string
     {
         return $this->loginError;
+    }
+
+    public function getBenchmarkResult(): array
+    {
+        $this->benchmark->end();
+
+        return [
+            'executionTime' => $this->benchmark->getTime(),
+            'memoryUsage' => $this->benchmark->getMemoryUsage(),
+            'memoryPeakUsage' => $this->benchmark->getMemoryPeak()
+        ];
     }
 }

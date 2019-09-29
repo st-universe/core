@@ -115,7 +115,11 @@
 					<div style="margin: 5px">
 						<span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
 						<span i18n:translate="">Läuft seit: <span i18n:name="turnstartdate" tal:replace="datetime:THIS/getCurrentRound/getStart" /></span><br /><br />
-						<span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span>
+            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span><br />
+              <tal:block tal:define="benchmark THIS/getBenchmarkResult">
+                <span i18n:translate="">Renderdauer: <span i18n:name="executionTime" tal:replace="benchmark/executionTime" /></span><br />
+                <span i18n:translate="">Speicher-Peak: <span i18n:name="memoryPeakUsage" tal:replace="benchmark/memoryPeakUsage" /></span>
+              </tal:block>
 					</div>
 				</div>
 			</stu:sidebar_right>
