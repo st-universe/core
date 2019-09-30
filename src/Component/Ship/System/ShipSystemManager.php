@@ -7,6 +7,8 @@ namespace Stu\Component\Ship\System;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ShipSystemManager implements ShipSystemManagerInterface
@@ -27,7 +29,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     {
         $system = $this->lookupSystem($shipSystemId);
 
-        $this->checkConditions($ship, $system);
+        $this->checkConditions($ship, $system, $shipSystemId);
 
         $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
 
@@ -47,14 +49,28 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if ($system === null){
             throw new InvalidSystemException();
         }
+
         return $system;
     }
 
-    private function checkConditions(ShipInterface $ship, ShipSystemTypeInterface $system): void
-    {
+    private function checkConditions(
+        ShipInterface $ship,
+        ShipSystemTypeInterface $system,
+        int $shipSystemId
+    ): void {
+        $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
+        if ($shipSystem === null) {
+            throw new SystemNotFoundException();
+        }
+
+        if ($shipSystem->isActivateable() === false) {
+            throw new SystemDamagedException();
+        }
+
         if ($ship->getEps() < $system->getEnergyUsageForActivation()) {
             throw new InsufficientEnergyException();
         }
+
         if ($system->checkActivationConditions($ship) === false) {
             throw new ActivationConditionsNotMetException();
         }

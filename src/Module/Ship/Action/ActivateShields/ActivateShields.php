@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\ActivateShields;
 use request;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -50,6 +51,9 @@ final class ActivateShields implements ActionControllerInterface
             $this->shipRepository->save($ship);
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(_('Nicht genügend Energie zur Aktivierung vorhanden'));
+            return;
+        } catch (SystemDamagedException $e) {
+            $game->addInformation(_('Die Schilde konnten aufgrund beschädigter Schildemitter nicht aktiviert werden'));
             return;
         } catch (ActivationConditionsNotMetException $e) {
             $game->addInformation(_('Die Schilde konnten nicht aktiviert werden'));
