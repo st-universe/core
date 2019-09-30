@@ -1103,15 +1103,18 @@ class Ship implements ShipInterface
     public function getEpsUsage(): int
     {
         if ($this->epsUsage === null) {
-            $this->epsUsage = 0;
-            foreach ($this->getActiveSystems() as $key => $obj) {
-                $this->epsUsage += $obj->getEnergyCosts();
-            }
+            $this->epsUsage = array_reduce(
+                $this->getActiveSystems(),
+                function (int $sum, ShipSystemInterface $shipSystem): int {
+                    return $sum + 1;
+                },
+                0
+            );
         }
         return $this->epsUsage;
     }
 
-    public function lowerEpsUsage($value): int
+    public function lowerEpsUsage($value): void
     {
         $this->epsUsage -= $value;
     }
@@ -1139,64 +1142,35 @@ class Ship implements ShipInterface
         if ($this->activeSystems !== null) {
             return $this->activeSystems;
         }
-        $ret = [];
-        foreach ($this->getSystems() as $key => $obj) {
-            if (!$this->isActiveSystem($obj)) {
-                continue;
+
+        $this->activeSystems = [];
+        foreach ($this->getSystems() as $obj) {
+            if ($this->isActiveSystem($obj)) {
+                $this->activeSystems[] = $obj;
             }
-            $ret[$key] = $obj;
         }
-        return $this->activeSystems = $ret;
+        return $this->activeSystems;
     }
 
-    // @todo fix
-    public function isActiveSystem($system): bool
-    {
-        return $this->data[$this->getShipField($system)] >= 1;
-    }
-
-    private function getShipField(ShipSystemInterface $shipSystem): string
+    private function isActiveSystem(ShipSystemInterface $shipSystem): bool
     {
         switch ($shipSystem->getSystemType()) {
             case ShipSystemTypeEnum::SYSTEM_CLOAK:
-                return 'cloak';
+                return $this->getCloakState() === true;
             case ShipSystemTypeEnum::SYSTEM_NBS:
-                return 'nbs';
+                return $this->getNbs() === true;
             case ShipSystemTypeEnum::SYSTEM_LSS:
-                return 'lss';
+                return $this->getLss() === true;
             case ShipSystemTypeEnum::SYSTEM_PHASER:
-                return 'wea_phaser';
+                return $this->getPhaser() === true;
             case ShipSystemTypeEnum::SYSTEM_TORPEDO:
-                return 'wea_torp';
+                return $this->getTorpedos() === true;
             case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
-                return 'warp';
+                return $this->getWarpState() === true;
             case ShipSystemTypeEnum::SYSTEM_SHIELDS:
-                return 'schilde_status';
+                return $this->getShieldState() === true;
         }
-        return '';
-    }
-
-    public function systemIsActivateable(int $system): bool
-    {
-        if (!$this->hasShipSystem($system)) {
-            return false;
-        }
-        if (!$this->getShipSystem($system)->isActivateable()) {
-            return false;
-        }
-        if ($this->getShipSystem($system)->getEnergyCosts() > $this->getEps()) {
-            return false;
-        }
-        if (array_key_exists($system, $this->getActiveSystems())) {
-            return false;
-        }
-        switch ($system) {
-            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
-                if ($this->getShield() == 0) {
-                    return false;
-                }
-        }
-        return true;
+        return false;
     }
 
     public function displayNbsActions(): bool

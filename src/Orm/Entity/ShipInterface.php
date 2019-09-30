@@ -274,7 +274,7 @@ interface ShipInterface
 
     public function getEpsUsage(): int;
 
-    public function lowerEpsUsage($value): int;
+    public function lowerEpsUsage($value): void;
 
     /**
      * @return ShipSystemInterface[]
@@ -289,10 +289,6 @@ interface ShipInterface
      * @return ShipSystemInterface[]
      */
     public function getActiveSystems(): array;
-
-    public function isActiveSystem($system): bool;
-
-    public function systemIsActivateable(int $system): bool;
 
     public function displayNbsActions(): bool;
 
