@@ -3,6 +3,8 @@
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
@@ -185,6 +187,12 @@ class ShipMover {
 	}
 
 	private function move(ShipInterface $ship) {
+        // @todo
+        global $container;
+
+        $privateMessageSender = $container->get(PrivateMessageSenderInterface::class);
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+
 		$msg = array();
 		if (!$this->isFleetMode()) {
 			if ($ship->getSystem() === null && !$ship->isWarpAble()) {
@@ -219,20 +227,12 @@ class ShipMover {
 			return;
 		}
 		if (!$this->isFleetMode() && !$ship->getWarpState() && $ship->getSystem() === null) {
-			if ($ship->getEps() < $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts()) {
-				$this->addInformation(sprintf(_("Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"),$ship->getName()));
-				return FALSE;
-			}
-			$ship->activateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-			if ($ship->getTraktorMode() == 1) {
-				if ($ship->getEps() < $ship->getTraktorShip()->getEpsUsage()) {
-					$ship->deactivateTraktorBeam();
-					$this->addInformation(sprintf(_("Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert"),$ship->getTraktorShip()->getName(),$ship->getPosX(),$ship->getPosY()));
-				} else {
-					$ship->getTraktorShip()->activateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE,FALSE);
-					$ship->setEps($ship->getEps() - $ship->getTraktorShip()->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts());
-				}
-			}
+		    try {
+		        $shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            } catch (ShipSystemException $e) {
+                $this->addInformation(sprintf(_("Die %s kann den Warpantrieb nicht aktivieren"), $ship->getName()));
+                return false;
+            }
 		}
 		if ($this->getDestX() == $ship->getPosX() && $this->getDestY() == $ship->getPosY()) {
 			return;
@@ -256,31 +256,24 @@ class ShipMover {
 			}
 		}
 
-		// @todo
-		global $container;
-
-		$privateMessageSender = $container->get(PrivateMessageSenderInterface::class);
-
 		$i = 1;
 		while($i<=$this->getFieldCount()) {
 			if ($ship->getSystem() === null && !$ship->getWarpState()) {
-				if (!$ship->isWarpAble()) {
-					$ship->leaveFleet();
-					$msg[] = "Die ".$ship->getName()." verfügt über keinen Warpantrieb (".$ship->getPosX()."|".$ship->getPosY().")";
-					break;
-				}
-				if (!$ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->isActivateable()) {
-					$ship->leaveFleet();
-					$msg[] = "Die ".$ship->getName()." kann den Warpantrieb nicht aktivieren (".$ship->getPosX()."|".$ship->getPosY().")";
-					break;
-				}
-				if ($ship->getEps() < $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->getEnergyCosts()) {
-					$ship->leaveFleet();
-					$msg[] = "Die ".$ship->getName()." kann den Warpantrieb aufgrund Energiemangel nicht aktivieren (".$ship->getPosX()."|".$ship->getPosY().")";
-					break;
-				}
-				$ship->activateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-				$msg[] = "Die ".$ship->getName()." aktiviert den Warpantrieb";
+                try {
+                    $shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+
+                    $msg[] = "Die ".$ship->getName()." aktiviert den Warpantrieb";
+                } catch (ShipSystemException $e) {
+                    $ship->leaveFleet();
+
+                    $msg[] = sprintf(
+                        _('Die %s kann den Warpantrieb nicht aktivieren (%s|%s)'),
+                        $ship->getName(),
+                        $ship->getPosX(),
+                        $ship->getPosY()
+                    );
+                    break;
+                }
 			}
 			$nextfield = $this->getNextField($method,$ship);
 			$flight_ecost = $ship->getRump()->getFlightEcost()+$nextfield->getFieldType()->getEnergyCosts();

@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 use Exception;
 use request;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
@@ -44,6 +45,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -53,7 +56,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         CommodityRepositoryInterface $commodityRepository,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -64,6 +68,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->commodityRepository = $commodityRepository;
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -170,7 +175,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $msg[] = sprintf(
                     _('%s: Die Crew wurde runtergebeamt'), $shipobj->getName()
                 );
-                $shipobj->deactivateSystems();
+
+                $this->shipSystemManager->deactivateAll($shipobj);
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
                 if (

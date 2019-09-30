@@ -29,10 +29,6 @@ interface FleetInterface
 
     public function getAvailableShips(): iterable;
 
-    public function deactivateSystem(int $system): void;
-
-    public function activateSystem(int $system): void;
-
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): FleetInterface;

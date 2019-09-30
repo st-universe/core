@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -32,6 +33,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private $shipRumpRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
@@ -39,7 +42,8 @@ final class ShipRemover implements ShipRemoverInterface
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
@@ -48,11 +52,12 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipRepository = $shipRepository;
         $this->userRepository = $userRepository;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function destroy(ShipInterface $ship): void
     {
-        $ship->deactivateSystems();
+        $this->shipSystemManager->deactivateAll($ship);
 
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader($ship);

@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateNbs;
 
 use request;
+use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +25,16 @@ final class FleetActivateNbs implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,21 +48,30 @@ final class FleetActivateNbs implements ActionControllerInterface
             $userId
         );
 
-        $msg = array();
+        $msg = [];
         $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Nahbereichssensoren";
-        foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if ($ship->getNbs()) {
-                continue;
-            }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_NBS) {
-                $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
-                continue;
-            }
-            $ship->setNbs(true);
+        foreach ($ship->getFleet()->getShips() as $ship) {
+            $error = null;
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_NBS);
+            } catch (InsufficientEnergyException $e) {
+                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
+            } catch (SystemDamagedException $e) {
+                $error = _('Die Sensoren sind beschädigt und können nicht aktiviert werden');
+            } catch (ShipSystemException $e) {
+                $error = _('Die Sensoren konnten nicht aktiviert werden');
+            } finally {
+                if ($error !== null) {
 
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_NBS);
-
-            $this->shipRepository->save($ship);
+                    $msg[] = sprintf(
+                        '%s: %s',
+                        $ship->getName(),
+                        $error
+                    );
+                } else {
+                    $this->shipRepository->save($ship);
+                }
+            }
         }
         $game->addInformationMerge($msg);
     }

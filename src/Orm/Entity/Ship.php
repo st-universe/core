@@ -1191,27 +1191,6 @@ class Ship implements ShipInterface
         return true;
     }
 
-    public function activateSystem(int $system, bool $use_eps = true): void
-    {
-        if (!$this->hasShipSystem($system)) {
-            return;
-        }
-        $cb = $this->getShipSystem($system)->getShipCallback();
-        $this->$cb(1);
-        if ($use_eps) {
-            $this->setEps($this->getEps() - $this->getShipSystem($system)->getEnergyCosts());
-        }
-    }
-
-    public function deactivateSystem(int $system): void
-    {
-        if (!$this->hasShipSystem($system)) {
-            return;
-        }
-        $cb = $this->getShipSystem($system)->getShipCallback();
-        $this->$cb(0);
-    }
-
     public function displayNbsActions(): bool
     {
         return $this->getCloakState() == 0 && $this->getWarpstate() == 0;
@@ -1403,16 +1382,6 @@ class Ship implements ShipInterface
     public function hasActiveWeapons(): bool
     {
         return $this->getPhaser() || $this->getTorpedos();
-    }
-
-    public function deactivateSystems(): void
-    {
-        $this->deactivateTraktorBeam();
-        $this->setShieldState(false);
-        $this->setNbs(false);
-        $this->setLss(false);
-        $this->setPhaser(false);
-        $this->setTorpedos(false);
     }
 
     public function getRump(): ShipRumpInterface

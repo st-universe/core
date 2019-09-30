@@ -2,6 +2,8 @@
 
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRoleEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
@@ -85,6 +87,7 @@ class ShipAttackCycle {
         global $container;
 
         $shipRepo = $container->get(ShipRepositoryInterface::class);
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
 
 		while ($this->hasReadyAttacker() || $this->hasReadyDefender()) {
 			$this->defineContrabants();
@@ -108,7 +111,7 @@ class ShipAttackCycle {
 				continue;
 			}
 			if ($this->getDefendShip()->getWarpState()) {
-				$this->getDefendShip()->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+			    $shipSystemManager->deactivate($this->getDefendShip(), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 			}
 			$this->getDefendShip()->cancelRepair();
 			$this->getAttackShip()->cancelRepair();
@@ -435,6 +438,11 @@ class ShipAttackCycle {
 	}
 
     private function alertLevelBasedReaction(ShipInterface $ship): array {
+	    // @todo
+        global $container;
+
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+
         $msg = array();
         if ($ship->getCrewCount() == 0 || $ship->getRump()->isTrumfield()) {
             return $msg;
@@ -448,29 +456,31 @@ class ShipAttackCycle {
             $msg[] = "- Das Schiff hat abgedockt";
         }
         if ($ship->getWarpState() == 1) {
-            $ship->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
             $msg[] = "- Der Warpantrieb wurde deaktiviert";
         }
         if ($ship->getCloakState()) {
-            $ship->deactivateSystem(ShipSystemTypeEnum::SYSTEM_CLOAK);
+            $shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
             $msg[] = "- Die Tarnung wurde deaktiviert";
         }
-        if (!$ship->getShieldState() && !$ship->traktorBeamToShip() && $ship->systemIsActivateable(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
-            if ($ship->isTraktorbeamActive()) {
-                $ship->deactivateTraktorBeam();
-                $msg[] = "- Der Traktorstrahl wurde deaktiviert";
-            }
-            $ship->activateSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS);
+        try {
+            $shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+
             $msg[] = "- Die Schilde wurden aktiviert";
+        } catch (ShipSystemException $e) {
         }
-        if ($ship->systemIsActivateable(ShipSystemTypeEnum::SYSTEM_NBS)) {
-            $ship->activateSystem(ShipSystemTypeEnum::SYSTEM_NBS);
+        try {
+            $shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_NBS);
+
             $msg[] = "- Die Nahbereichssensoren wurden aktiviert";
+        } catch (ShipSystemException $e) {
         }
         if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_YELLOW) {
-            if ($ship->systemIsActivateable(ShipSystemTypeEnum::SYSTEM_PHASER)) {
-                $ship->activateSystem(ShipSystemTypeEnum::SYSTEM_PHASER);
-                $msg[] = "- Die Strahlenwaffe wurde aktiviert";
+            try {
+                $shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_PHASER);
+
+                $msg[] = "- Die Energiewaffe wurde aktiviert";
+            } catch (ShipSystemException $e) {
             }
         }
         return $msg;

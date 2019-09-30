@@ -3,6 +3,7 @@
 namespace Stu\Module\Tick\Ship;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -18,12 +19,16 @@ final class ShipTick implements ShipTickInterface
 
     private $msg = [];
 
+    private $shipSystemManager;
+
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function work(ShipInterface $ship): void
@@ -37,8 +42,9 @@ final class ShipTick implements ShipTickInterface
                 //echo "- eps: ".$eps." - usage: ".$ship->getEpsUsage()."\n";
                 if ($eps - $ship->getEpsUsage() - $system->getEnergyCosts() < 0) {
                     //echo "-- hit system: ".$system->getDescription()."\n";
-                    $cb = $system->getShipCallback();
-                    $ship->$cb(0);
+
+                    $this->shipSystemManager->deactivate($ship, $system->getSystemType());
+
                     $ship->lowerEpsUsage($system->getEnergyCosts());
                     $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
                 }

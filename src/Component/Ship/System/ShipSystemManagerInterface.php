@@ -21,4 +21,6 @@ interface ShipSystemManagerInterface
     public function activate(ShipInterface $ship, int $shipSystemId): void;
 
     public function deactivate(ShipInterface $ship, int $shipSystemId): void;
+
+    public function deactivateAll(ShipInterface $ship): void;
 }

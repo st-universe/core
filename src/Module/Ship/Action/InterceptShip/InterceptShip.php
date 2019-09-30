@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\InterceptShip;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -24,14 +25,18 @@ final class InterceptShip implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -74,11 +79,17 @@ final class InterceptShip implements ActionControllerInterface
             $ship->setDockedTo(null);
         }
         if ($target->getFleetId()) {
-            $target->getFleet()->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            foreach ($target->getFleet()->getShips() as $fleetShip) {
+                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+
+                $this->shipRepository->save($fleetShip);
+            }
+
             $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
             $pm = "Die Flotte " . $target->getFleet()->getName() . " wurde von der " . $ship->getName() . " abgefangen";
         } else {
-            $target->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $this->shipSystemManager->deactivate($target, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+
             $game->addInformation("Die " . $target->getName() . "  wurde abgefangen");
             $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
 
@@ -88,9 +99,13 @@ final class InterceptShip implements ActionControllerInterface
         $this->privateMessageSender->send($userId, (int)$target->getUserId(), $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
         if ($ship->getFleetId()) {
-            $ship->getFleet()->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            foreach ($ship->getFleet()->getShips() as $fleetShip) {
+                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+
+                $this->shipRepository->save($fleetShip);
+            }
         } else {
-            $ship->deactivateSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 
             $this->shipRepository->save($ship);
         }

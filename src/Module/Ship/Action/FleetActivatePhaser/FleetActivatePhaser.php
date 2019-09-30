@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivatePhaser;
 
 use request;
+use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +25,16 @@ final class FleetActivatePhaser implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,19 +49,29 @@ final class FleetActivatePhaser implements ActionControllerInterface
         );
 
         $msg = array();
-        $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Strahlenwaffen";
-        foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if (!$ship->hasPhaser() || $ship->getPhaser()) {
-                continue;
-            }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_PHASER) {
-                $msg[] = $ship->getName() . ": Nicht genügend Energie vorhanden";
-                continue;
-            }
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_PHASER);
-            $ship->setPhaser(true);
+        $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Energiewaffe";
+        foreach ($ship->getFleet()->getShips() as $ship) {
+            $error = null;
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_PHASER);
+            } catch (InsufficientEnergyException $e) {
+                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
+            } catch (SystemDamagedException $e) {
+                $error = _('Die Energiewaffe ist beschädigt und kann nicht aktiviert werden');
+            } catch (ShipSystemException $e) {
+                $error = _('Die Energiewaffe konnte nicht aktiviert werden');
+            } finally {
+                if ($error !== null) {
 
-            $this->shipRepository->save($ship);
+                    $msg[] = sprintf(
+                        '%s: %s',
+                        $ship->getName(),
+                        $error
+                    );
+                } else {
+                    $this->shipRepository->save($ship);
+                }
+            }
         }
         $game->addInformationMerge($msg);
     }

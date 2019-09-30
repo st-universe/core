@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateCloak;
 
 use request;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +24,16 @@ final class FleetActivateCloak implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,28 +47,30 @@ final class FleetActivateCloak implements ActionControllerInterface
             $userId
         );
 
-        $msg = array();
+        $msg = [];
         $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Tarnung";
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if (!$ship->isCloakable()) {
-                continue;
-            }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_CLOAK) {
-                $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
-                continue;
-            }
-            if ($ship->getShieldState()) {
-                $ship->setShieldState(false);
-                $msg[] = $ship->getName() . _(": Schilde deaktiviert");
-            }
-            if ($ship->getDockedTo()) {
-                $ship->setDockedTo(null);
-                $msg[] = $ship->getName() . _(": Abgedockt");
-            }
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_CLOAK);
-            $ship->setCloakState(true);
+            $error = null;
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
+            } catch (InsufficientEnergyException $e) {
+                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
+            } catch (SystemDamagedException $e) {
+                $error = _('Die Tarnung ist beschädigt und kann nicht aktiviert werden');
+            } catch (ShipSystemException $e) {
+                $error = _('Die Tarnung konnte nicht aktiviert werden');
+            } finally {
+                if ($error !== null) {
 
-            $this->shipRepository->save($ship);
+                    $msg[] = sprintf(
+                        '%s: %s',
+                        $ship->getName(),
+                        $error
+                    );
+                } else {
+                    $this->shipRepository->save($ship);
+                }
+            }
         }
         $game->addInformationMerge($msg);
     }

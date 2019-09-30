@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateWarp;
 
 use request;
+use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +25,16 @@ final class FleetActivateWarp implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,45 +48,30 @@ final class FleetActivateWarp implements ActionControllerInterface
             $userId
         );
 
-        $msg = array();
-        $msg[] = "Flottenbefehl ausgeführt: Aktivierung des Warpantriebs";
-        foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if (!$ship->isWarpable()) {
-                continue;
-            }
-            // @todo warpantrieb beschaedigt
-            if ($ship->getDockedTo()) {
-                if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
-                    $msg[] = $ship->getName() . _(': Nicht genügend Energie zum Abdocken vorhanden');
-                    continue;
-                }
-                $ship->setDockedTo(null);
-                $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
+        $msg = [];
+        $msg[] = _('Flottenbefehl ausgeführt: Aktivierung des Warpantriebs');
+        foreach ($ship->getFleet()->getShips() as $ship) {
+            $error = null;
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            } catch (InsufficientEnergyException $e) {
+                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
+            } catch (SystemDamagedException $e) {
+                $error = _('Der Warpantrieb ist beschädigt und konnte nicht aktiviert werden');
+            } catch (ShipSystemException $e) {
+                $error = _('Der Warpantrieb konnte nicht aktiviert werden');
+            } finally {
+                if ($error !== null) {
 
-                $this->shipRepository->save($ship);
-            }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_WARP) {
-                $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
-                continue;
-            }
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_WARP);
-            if ($ship->traktorBeamFromShip()) {
-                if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_TRACTOR) {
-                    $msg[] = $ship->getName() . _(": Traktorstrahl aufgrund von Energiemangel deaktiviert");
-                    $ship->getTraktorShip()->unsetTraktor();
-
-                    $this->shipRepository->save($ship->getTraktorShip());
-                    $ship->unsetTraktor();
+                    $msg[] = sprintf(
+                        '%s: %s',
+                        $ship->getName(),
+                        $error
+                    );
                 } else {
-                    $ship->getTraktorShip()->setWarpState(true);
-
-                    $this->shipRepository->save($ship->getTraktorShip());
-                    $ship->setEps($ship->getEps() - 1);
+                    $this->shipRepository->save($ship);
                 }
             }
-            $ship->setWarpState(true);
-
-            $this->shipRepository->save($ship);
         }
         $game->addInformationMerge($msg);
     }

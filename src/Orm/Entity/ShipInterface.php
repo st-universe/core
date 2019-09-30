@@ -294,10 +294,6 @@ interface ShipInterface
 
     public function systemIsActivateable(int $system): bool;
 
-    public function activateSystem(int $system, bool $use_eps = true): void;
-
-    public function deactivateSystem(int $system): void;
-
     public function displayNbsActions(): bool;
 
     public function traktorbeamNotPossible(): bool;
@@ -343,8 +339,6 @@ interface ShipInterface
     public function canInteractWith($target, bool $colony = false): bool;
 
     public function hasActiveWeapons(): bool;
-
-    public function deactivateSystems(): void;
 
     public function getRump(): ShipRumpInterface;
 

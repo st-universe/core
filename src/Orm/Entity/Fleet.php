@@ -125,22 +125,6 @@ class Fleet implements FleetInterface
         );
     }
 
-    public function deactivateSystem(int $system): void
-    {
-        foreach ($this->getShips() as $ship) {
-            $ship->deactivateSystem($system);
-            $ship->save();
-        }
-    }
-
-    public function activateSystem(int $system): void
-    {
-        foreach ($this->getShips() as $ship) {
-            $ship->activateSystem($system);
-            $ship->save();
-        }
-    }
-
     public function getUser(): UserInterface
     {
         return $this->user;

@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivateWarp;
 
 use request;
+use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class ActivateWarp implements ActionControllerInterface
 {
@@ -20,12 +25,16 @@ final class ActivateWarp implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,44 +48,25 @@ final class ActivateWarp implements ActionControllerInterface
             $userId
         );
 
-        if ($ship->getWarpState()) {
+        try {
+            $this->shipSystemManager->activate(
+                $ship,
+                ShipSystemTypeEnum::SYSTEM_WARPDRIVE
+            );
+
+            $this->shipRepository->save($ship);
+        } catch (InsufficientEnergyException $e) {
+            $game->addInformation(_('Nicht genügend Energie zur Aktivierung vorhanden'));
+            return;
+        } catch (SystemDamagedException $e) {
+            $game->addInformation(_('Der Warpantrieb ist beschädigt und kann nicht aktiviert werden'));
+            return;
+        } catch (ShipSystemException $e) {
+            $game->addInformation(_('Der Warpantrieb konnte nicht aktiviert werden'));
             return;
         }
-        if (!$ship->isWarpAble()) {
-            return;
-        }
-        // @todo arpantrieb beschädigt
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
-            return;
-        }
-        if ($ship->getDockedTo()) {
-            $game->addInformation('Das Schiff hat abgedockt');
-            $ship->setDockedTo(null);
-        }
-        if ($ship->traktorBeamFromShip()) {
-            if ($ship->getEps() == 0) {
-                $game->addInformation("Der Traktorstrahl zur " . $ship->getTraktorShip()->getName() . " wurde aufgrund von Energiemangel deaktiviert");
-                $ship->getTraktorShip()->unsetTraktor();
 
-                $this->shipRepository->save($ship->getTraktorShip());
-
-                $ship->unsetTraktor();
-            } else {
-                $ship->getTraktorShip()->setWarpState(true);
-
-                $this->shipRepository->save($ship->getTraktorShip());
-
-                $ship->setEps($ship->getEps() - 1);
-            }
-        }
-        $ship->setWarpState(true);
-
-        $this->shipRepository->save($ship);
-
-        $game->addInformation("Die " . $ship->getName() . " hat den Warpantrieb aktiviert");
+        $game->addInformation(_('Der Warpantrieb wurde aktiviert'));
     }
 
     public function performSessionCheck(): bool
