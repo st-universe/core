@@ -6,7 +6,9 @@ namespace Stu\Module\Trade;
 
 use Stu\Component\Ship\System\CloakShipSystem;
 use Stu\Component\Ship\System\EnergyWeaponShipSystem;
+use Stu\Component\Ship\System\LongRangeScannerShipSystem;
 use Stu\Component\Ship\System\NearFieldScannerShipSystem;
+use Stu\Component\Ship\System\ProjectileWeaponShipSystem;
 use Stu\Component\Ship\System\ShieldShipSystem;
 use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -23,6 +25,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_NBS => autowire(NearFieldScannerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_PHASER => autowire(EnergyWeaponShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_CLOAK => autowire(CloakShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_TORPEDO => autowire(ProjectileWeaponShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_LSS => autowire(LongRangeScannerShipSystem::class),
         ]
     )
 ];

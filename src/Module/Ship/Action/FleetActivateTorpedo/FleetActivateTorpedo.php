@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateTorpedo;
 
 use request;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -20,12 +24,16 @@ final class FleetActivateTorpedo implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,23 +48,29 @@ final class FleetActivateTorpedo implements ActionControllerInterface
         );
 
         $msg = array();
-        $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Torpedobänke";
+        $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Projektilwaffe";
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            if (!$ship->hasTorpedo() || $ship->getTorpedos()) {
-                continue;
-            }
-            if (!$ship->getTorpedoCount()) {
-                $msg[] = $ship->getName() . _(": Keine Torpedos geladen");
-                continue;
-            }
-            if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_TORPEDO) {
-                $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
-                continue;
-            }
-            $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_TORPEDO);
-            $ship->setTorpedos(true);
+            $error = null;
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO);
+            } catch (InsufficientEnergyException $e) {
+                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
+            } catch (SystemDamagedException $e) {
+                $error = _('Die Projektilwaffe ist beschädigt und kann nicht aktiviert werden');
+            } catch (ShipSystemException $e) {
+                $error = _('Die Projektilwaffe konnte nicht aktiviert werden');
+            } finally {
+                if ($error !== null) {
 
-            $this->shipRepository->save($ship);
+                    $msg[] = sprintf(
+                        '%s: %s',
+                        $ship->getName(),
+                        $error
+                    );
+                } else {
+                    $this->shipRepository->save($ship);
+                }
+            }
         }
         $game->addInformationMerge($msg);
     }

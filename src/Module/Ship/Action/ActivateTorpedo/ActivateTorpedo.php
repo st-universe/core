@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivateTorpedo;
 
 use request;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class ActivateTorpedo implements ActionControllerInterface
 {
@@ -20,12 +24,16 @@ final class ActivateTorpedo implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,24 +46,28 @@ final class ActivateTorpedo implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        if (!$ship->hasTorpedo() || $ship->getTorpedos()) {
+
+        try {
+            $this->shipSystemManager->activate(
+                $ship,
+                ShipSystemTypeEnum::SYSTEM_TORPEDO
+            );
+
+            $this->shipRepository->save($ship);
+        } catch (InsufficientEnergyException $e) {
+            $game->addInformation(_('Nicht genügend Energie zur Aktivierung vorhanden'));
+            return;
+        } catch (SystemDamagedException $e) {
+            $game->addInformation(_('Die Projektilwaffe ist beschädigt und kann nicht aktiviert werden'));
+            return;
+        } catch (ShipSystemException $e) {
+            $game->addInformation(_('Die Projektilwaffe kann nicht aktiviert werden'));
             return;
         }
-        if ($ship->getTorpedoCount() == 0) {
-            $game->addInformation("Das Schiff hat keine Torpedos geladen");
-            return;
-        }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
-            return;
-        }
-        $ship->setTorpedos(true);
 
         $this->shipRepository->save($ship);
 
-        $game->addInformation("Torpedobänke aktiviert");
+        $game->addInformation("Projektilwaffe aktiviert");
     }
 
     public function performSessionCheck(): bool
