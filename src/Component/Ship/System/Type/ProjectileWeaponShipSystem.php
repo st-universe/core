@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Ship\System;
+namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ProjectileWeaponShipSystem implements ShipSystemTypeInterface

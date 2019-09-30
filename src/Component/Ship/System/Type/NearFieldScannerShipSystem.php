@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Ship\System;
+namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class CloakShipSystem implements ShipSystemTypeInterface
+final class NearFieldScannerShipSystem implements ShipSystemTypeInterface
 {
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getCloakState() === false && $ship->isCloakable() === true
+        return $ship->getNbs() === false
         ;
     }
 
@@ -22,14 +23,11 @@ final class CloakShipSystem implements ShipSystemTypeInterface
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->deactivateTraktorBeam();
-        $ship->setDockedTo(null);
-        $ship->setShieldState(false);
-        $ship->setCloakState(true);
+        $ship->setNbs(true);
     }
 
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->setCloakState(false);
+        $ship->setNbs(false);
     }
 }

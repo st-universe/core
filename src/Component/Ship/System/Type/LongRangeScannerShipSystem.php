@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Ship\System;
+namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class EnergyWeaponShipSystem implements ShipSystemTypeInterface
+final class LongRangeScannerShipSystem implements ShipSystemTypeInterface
 {
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getPhaser() === false
+        return $ship->getLss() === false
         ;
     }
 
@@ -22,11 +23,11 @@ final class EnergyWeaponShipSystem implements ShipSystemTypeInterface
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->setPhaser(true);
+        $ship->setLss(true);
     }
 
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->setPhaser(false);
+        $ship->setLss(false);
     }
 }

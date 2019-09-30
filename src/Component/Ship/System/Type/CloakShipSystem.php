@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stu\Component\Ship\System;
+namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class ShieldShipSystem implements ShipSystemTypeInterface
+final class CloakShipSystem implements ShipSystemTypeInterface
 {
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getCloakState() === false
-            && $ship->getShieldState() === false
-            && $ship->getTraktorShip() === null
-            && $ship->getShield() > 0
+        return $ship->getCloakState() === false && $ship->isCloakable() === true
         ;
     }
 
@@ -25,13 +23,14 @@ final class ShieldShipSystem implements ShipSystemTypeInterface
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->cancelRepair();
+        $ship->deactivateTraktorBeam();
         $ship->setDockedTo(null);
-        $ship->setShieldState(true);
+        $ship->setShieldState(false);
+        $ship->setCloakState(true);
     }
 
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->setShieldState(false);
+        $ship->setCloakState(false);
     }
 }
