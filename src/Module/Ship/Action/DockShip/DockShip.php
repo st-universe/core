@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
@@ -30,16 +31,20 @@ final class DockShip implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -90,14 +95,13 @@ final class DockShip implements ActionControllerInterface
             $game->addInformation('Zur Zeit sind alle Dockplätze belegt');
             return;
         }
-        if ($ship->getShieldState()) {
-            $game->addInformation("Die Schilde wurden deaktiviert");
-            $ship->setShieldState(false);
-        }
         if ($ship->getCloakState()) {
             $game->addInformation("Das Schiff ist getarnt");
             return;
         }
+
+        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+
         $ship->cancelRepair();
         $ship->setEps($ship->getEps() - 1);
         $ship->setDockedTo($target);
@@ -118,7 +122,7 @@ final class DockShip implements ActionControllerInterface
         $msg = [];
         $msg[] = _("Flottenbefehl ausgeführt: Andocken an ") . $target->getName();;
         $freeSlots = $target->getFreeDockingSlotCount();
-        foreach ($ship->getFleet()->getShips() as $key => $ship) {
+        foreach ($ship->getFleet()->getShips() as $ship) {
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
@@ -135,10 +139,8 @@ final class DockShip implements ActionControllerInterface
                 continue;
             }
             $ship->cancelRepair();
-            if ($ship->getShieldState()) {
-                $msg[] = $ship->getName() . _(': Schilde deaktiviert');
-                $ship->setShieldState(false);
-            }
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+
             $ship->setDockedTo($target);
 
             $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);

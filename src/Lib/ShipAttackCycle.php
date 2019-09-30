@@ -185,7 +185,7 @@ class ShipAttackCycle {
 				}
 				$this->getAttackShip()->setTorpedoCount($this->getAttackShip()->getTorpedoCount() - 1);
 				if ($this->getAttackShip()->getTorpedoCount() == 0) {
-				    $this->getAttackShip()->setTorpedos(0);
+				    $shipSystemManager->deactivate($this->getAttackShip(), ShipSystemTypeEnum::SYSTEM_TORPEDO);
                 }
 				$this->getAttackShip()->setEps($this->getAttackShip()->getEps() - $this->getProjectileWeaponEnergyCosts());
 				$this->redefineDefender();

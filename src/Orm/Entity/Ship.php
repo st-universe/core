@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -996,6 +997,11 @@ class Ship implements ShipInterface
 
     public function damage(DamageWrapper $damage_wrapper): array
     {
+        // @todo refactor
+        global $container;
+
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+
         $this->setShieldRegenerationTimer(time());
         $msg = [];
         if ($this->getShieldState()) {
@@ -1003,7 +1009,9 @@ class Ship implements ShipInterface
             if ($damage > $this->getShield()) {
                 $msg[] = "- Schildschaden: " . $this->getShield();
                 $msg[] = "-- Schilde brechen zusammen!";
-                $this->setShieldState(false);
+
+                $shipSystemManager->deactivate($this, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+
                 $this->setShield(0);
             } else {
                 $this->setShield($this->getShield() - $damage);

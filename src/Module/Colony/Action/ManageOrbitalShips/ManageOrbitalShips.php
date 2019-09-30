@@ -8,6 +8,7 @@ use Exception;
 use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
@@ -291,7 +292,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
                             if ($shipobj->getTorpedoCount() == 0) {
                                 $shipobj->setTorpedo(null);
-                                $shipobj->setTorpedos(false);
+
+                                $this->shipSystemManager->deactivate($shipobj, ShipSystemTypeEnum::SYSTEM_TORPEDO);
                             }
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),

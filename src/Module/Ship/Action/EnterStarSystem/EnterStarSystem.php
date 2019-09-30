@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\EnterStarSystem;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -21,12 +23,16 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -74,6 +80,8 @@ final class EnterStarSystem implements ActionControllerInterface
                 break;
         }
 
+        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+
         // @todo Beschädigung bei Systemeinflug
         $this->enterStarSystem($ship, $system, $posx, $posy);
         if ($ship->isTraktorbeamActive()) {
@@ -101,6 +109,8 @@ final class EnterStarSystem implements ActionControllerInterface
                     $fleetShip->leaveFleet();
                     continue;
                 }
+
+                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 
                 $this->enterStarSystem($fleetShip, $system, $posx, $posy);
                 if ($fleetShip->isTraktorbeamActive()) {
@@ -152,7 +162,6 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private function enterStarSystem(ShipInterface $ship, StarSystemInterface $starSystem, int $posx, int $posy): void
     {
-        $ship->setWarpState(false);
         $ship->setSystem($starSystem);
         $ship->setSX($posx);
         $ship->setSY($posy);
