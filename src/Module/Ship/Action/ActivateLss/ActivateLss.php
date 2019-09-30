@@ -15,7 +15,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class ActivateLss implements ActionControllerInterface
 {

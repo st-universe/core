@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivatePhaser;
 
 use request;
-use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
@@ -16,7 +15,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class ActivatePhaser implements ActionControllerInterface
 {

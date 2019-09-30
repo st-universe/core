@@ -8,7 +8,6 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

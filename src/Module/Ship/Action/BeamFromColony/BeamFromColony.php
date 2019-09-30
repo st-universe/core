@@ -14,7 +14,6 @@ use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class BeamFromColony implements ActionControllerInterface
 {
@@ -54,9 +53,9 @@ final class BeamFromColony implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $wrapper = new SystemActivationWrapper($ship);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
+
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+            $game->addInformation(_('Das Schiff hat keine Crew'));
             return;
         }
         if ($ship->getEps() == 0) {

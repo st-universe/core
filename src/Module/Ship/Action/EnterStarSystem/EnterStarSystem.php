@@ -12,7 +12,6 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class EnterStarSystem implements ActionControllerInterface
 {
@@ -46,31 +45,34 @@ final class EnterStarSystem implements ActionControllerInterface
         if (!$system) {
             return;
         }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+            $game->addInformation(_('Das Schiff hat keine Crew'));
             return;
         }
-        switch ($ship->getFlightDirection()) {
+
+        $flightDirection = $ship->getFlightDirection();
+        if ($flightDirection === 0) {
+            $flightDirection = rand(1,4);
+        }
+
+        switch ($flightDirection) {
             case 1:
-                $posx = rand(1, (int)$system->getMaxX());
+                $posx = rand(1, $system->getMaxX());
                 $posy = 1;
                 break;
             case 2:
-                $posx = rand(1, (int)$system->getMaxX());
+                $posx = rand(1, $system->getMaxX());
                 $posy = $system->getMaxY();
                 break;
             case 3:
                 $posx = 1;
-                $posy = rand(1, (int)$system->getMaxY());
+                $posy = rand(1, $system->getMaxY());
                 break;
             case 4:
                 $posx = $system->getMaxX();
-                $posy = rand(1, (int)$system->getMaxY());
+                $posy = rand(1, $system->getMaxY());
                 break;
         }
-
 
         // @todo Beschädigung bei Systemeinflug
         $this->enterStarSystem($ship, $system, $posx, $posy);
@@ -80,25 +82,32 @@ final class EnterStarSystem implements ActionControllerInterface
 
         if ($ship->isFleetLeader()) {
             $msg = [];
+
+            /** @var ShipInterface[] $result */
             $result = array_filter(
                 $ship->getFleet()->getShips()->toArray(),
                 function (ShipInterface $fleetShip) use ($ship): bool {
-                    return $ship->getId() !== $fleetShip;
+                    return $ship !== $fleetShip;
                 }
             );
             foreach ($result as $fleetShip) {
-                /** @var ShipInterface $fleetShip */
-                $wrapper = new SystemActivationWrapper($fleetShip);
-                $wrapper->setVar('eps', 1);
-                if ($wrapper->getError()) {
-                    $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
-                    $ship->leaveFleet();
-                } else {
-                    $this->enterStarSystem($fleetShip, $system, $posx, $posy);
-                    if ($fleetShip->isTraktorbeamActive()) {
-                        $this->enterStarSystemTraktor($fleetShip, $game);
-                    }
+                if ($fleetShip->getBuildplan()->getCrew() > 0 && $fleetShip->getCrewCount() === 0) {
+                    $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Keine Crew";
+                    $fleetShip->leaveFleet();
+                    continue;
                 }
+                if ($fleetShip->getEps() === 0) {
+                    $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Energiemangel";
+                    $fleetShip->leaveFleet();
+                    continue;
+                }
+
+                $this->enterStarSystem($fleetShip, $system, $posx, $posy);
+                if ($fleetShip->isTraktorbeamActive()) {
+                    $this->enterStarSystemTraktor($fleetShip, $game);
+                }
+
+                $fleetShip->setEps($fleetShip->getEps() - 1);
 
                 $this->shipRepository->save($fleetShip);
             }

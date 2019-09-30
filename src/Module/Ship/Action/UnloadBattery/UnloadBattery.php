@@ -10,7 +10,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class UnloadBattery implements ActionControllerInterface
 {
@@ -39,11 +38,11 @@ final class UnloadBattery implements ActionControllerInterface
             $userId
         );
 
-        $wrapper = new SystemActivationWrapper($ship);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+            $game->addInformation(_('Das Schiff hat keine Crew'));
             return;
         }
+
         if ($ship->getMaxEbatt() == 0) {
             return;
         }

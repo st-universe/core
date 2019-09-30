@@ -17,13 +17,6 @@ final class ShipSystemTypeEnum
     public const SYSTEM_NBS = 9;
     public const SYSTEM_WARPDRIVE = 10;
     public const SYSTEM_SHIELDS = 11;
-    public const SYSTEM_ECOST_NBS = 1;
-    public const SYSTEM_ECOST_SHIELDS = 1;
-    public const SYSTEM_ECOST_CLOAK = 2;
-    public const SYSTEM_ECOST_LSS = 1;
-    public const SYSTEM_ECOST_PHASER = 1;
-    public const SYSTEM_ECOST_TORPEDO = 1;
+
     public const SYSTEM_ECOST_DOCK = 1;
-    public const SYSTEM_ECOST_TRACTOR = 1;
-    public const SYSTEM_ECOST_WARP = 1;
 }

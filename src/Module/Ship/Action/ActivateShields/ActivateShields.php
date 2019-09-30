@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivateShields;
 
 use request;
-use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;

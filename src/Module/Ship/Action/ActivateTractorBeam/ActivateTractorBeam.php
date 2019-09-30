@@ -14,7 +14,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -58,12 +57,22 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Das Schiff ist angedockt");
             return;
         }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 2);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
+
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+            $game->addInformation(_('Das Schiff hat keine Crew'));
             return;
         }
+
+        $energyCosts = 2;
+
+        if ($ship->getEps() < $energyCosts) {
+            $game->addInformationf(
+                _('Es wird %s Energie benötigt'),
+                $energyCosts
+            );
+            return;
+        }
+
         $target = $this->shipRepository->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
@@ -117,6 +126,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $ship->setTraktorShipId($target->getId());
         $target->setTraktorMode(2);
         $target->setTraktorShipId($ship->getId());
+        $ship->setEps($ship->getEps() - $energyCosts);
 
         $this->shipRepository->save($target);
         $this->shipRepository->save($ship);

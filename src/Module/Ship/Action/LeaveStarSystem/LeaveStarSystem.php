@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LeaveStarSystem;
 
 use request;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class LeaveStarSystem implements ActionControllerInterface
 {
@@ -21,12 +25,16 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,49 +51,61 @@ final class LeaveStarSystem implements ActionControllerInterface
         if ($ship->getSystem() === null) {
             return;
         }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
+        try {
+            $this->shipSystemManager->activate(
+                $ship,
+                ShipSystemTypeEnum::SYSTEM_WARPDRIVE
+            );
+
+            $this->shipRepository->save($ship);
+        } catch (InsufficientEnergyException $e) {
+            $game->addInformation(_('Nicht genügend Energie zur Aktivierung vorhanden'));
+            return;
+        } catch (SystemDamagedException $e) {
+            $game->addInformation(_('Der Warpantrieb ist beschädigt und kann nicht aktiviert werden'));
+            return;
+        } catch (ShipSystemException $e) {
+            $game->addInformation(_('Der Warpantrieb konnte nicht aktiviert werden'));
             return;
         }
-        $ship->cancelRepair();
+
         $this->leaveStarSystem($ship);
         if ($ship->isTraktorbeamActive()) {
             $this->leaveStarSystemTraktor($ship, $game);
         }
         if ($ship->isFleetLeader()) {
             $msg = array();
+
+            /** @var ShipInterface[] $result */
             $result = array_filter(
                 $ship->getFleet()->getShips()->toArray(),
                 function (ShipInterface $fleetShip) use ($ship): bool {
-                    return $ship->getId() !== $fleetShip;
+                    return $ship !== $fleetShip;
                 }
             );
-            foreach ($result as $key => $fleetShip) {
-                /** @var ShipInterface $fleetShip */
-                $wrapper = new SystemActivationWrapper($fleetShip);
-                $wrapper->setVar('eps', 1);
-                if ($wrapper->getError()) {
-                    $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: " . $wrapper->getError();
-                    $ship->leaveFleet();
-                } else {
-                    $this->leaveStarSystem($fleetShip);
-                    if ($fleetShip->isTraktorbeamActive()) {
-                        $this->leaveStarSystemTraktor($fleetShip, $game);
-                    }
+            foreach ($result as $fleetShip) {
+                try {
+                    $this->shipSystemManager->activate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                } catch (ShipSystemException $e) {
+                    $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: Warpantrieb kann nicht aktiviert werden";
+                    $fleetShip->leaveFleet();
+                }
+
+                $this->leaveStarSystem($fleetShip);
+                if ($fleetShip->isTraktorbeamActive()) {
+                    $this->leaveStarSystemTraktor($fleetShip, $game);
                 }
 
                 $this->shipRepository->save($fleetShip);
             }
-            $game->addInformation("Die Flotte hat das Sternensystem verlassen");
+            $game->addInformation("Die Flotte hat das Sternsystem verlassen");
             $game->addInformationMerge($msg);
         } else {
             if ($ship->getFleetId()) {
                 $ship->leaveFleet();
                 $game->addInformation("Das Schiff hat die Flotte verlassen");
             }
-            $game->addInformation("Das Sternensystem wurde verlassen");
+            $game->addInformation("Das Sternsystem wurde verlassen");
         }
 
         $this->shipRepository->save($ship);
@@ -112,7 +132,6 @@ final class LeaveStarSystem implements ActionControllerInterface
     }
 
     private function leaveStarSystem(ShipInterface $ship): void {
-        $ship->setWarpState(true);
         $ship->setSystem(null);
         $ship->setSX(0);
         $ship->setSY(0);

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SetRedAlert;
 
 use request;
+use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use SystemActivationWrapper;
 
 final class SetRedAlert implements ActionControllerInterface
 {
@@ -21,12 +22,16 @@ final class SetRedAlert implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -40,87 +45,26 @@ final class SetRedAlert implements ActionControllerInterface
             $userId
         );
 
-        $ship->setAlertState(3);
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+            $game->addInformation(_('Das Schiff hat keine Crew'));
+            return;
+        }
 
-        $this->activatePhaser($ship, $game);
-        $this->activateTorpedo($ship, $game);
-        $this->activateShields($ship, $game);
+        $ship->setAlertState(ShipAlertStateEnum::ALERT_RED);
+
+        $alertSystems = [
+            ShipSystemTypeEnum::SYSTEM_PHASER,
+            ShipSystemTypeEnum::SYSTEM_TORPEDO,
+            ShipSystemTypeEnum::SYSTEM_SHIELDS,
+        ];
+
+        foreach ($alertSystems as $systemId) {
+            $this->shipSystemManager->activate($ship, $systemId);
+        }
+
+        $this->shipRepository->save($ship);
 
         $game->addInformation("Die Alarmstufe wurde auf Rot geändert");
-
-        $this->shipRepository->save($ship);
-    }
-
-    private function activateShields(ShipInterface $ship, GameControllerInterface $game): void {
-        if ($ship->getShieldState()) {
-            return;
-        }
-        if ($ship->getCloakState()) {
-            $game->addInformation("Die Tarnung ist aktiviert");
-            return;
-        }
-        if ($ship->isTraktorbeamActive()) {
-            $game->addInformation(_("Der Traktorstrahl ist aktiviert"));
-            return;
-        }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
-            return;
-        }
-        if ($ship->getShield() <= 1) {
-            $game->addInformation("Schilde sind nicht aufgeladen");
-            return;
-        }
-        $ship->cancelRepair();
-        if ($ship->getDockedTo()) {
-            $game->addInformation('Das Schiff hat abgedockt');
-            $ship->setDockedTo(null);
-        }
-        $ship->setShieldState(true);
-
-        $this->shipRepository->save($ship);
-
-        $game->addInformation("Schilde aktiviert");
-    }
-
-    private function activatePhaser(ShipInterface $ship, GameControllerInterface $game): void {
-        if (!$ship->hasPhaser() || $ship->getPhaser()) {
-            return;
-        }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
-            return;
-        }
-        $ship->setPhaser(true);
-
-        $this->shipRepository->save($ship);
-
-        $game->addInformation("Strahlenwaffe aktiviert");
-    }
-
-    private function activateTorpedo(ShipInterface $ship, GameControllerInterface $game): void {
-        if (!$ship->hasTorpedo() || $ship->getTorpedos()) {
-            return;
-        }
-        if ($ship->getTorpedoCount() == 0) {
-            $game->addInformation("Das Schiff hat keine Torpedos geladen");
-            return;
-        }
-        $wrapper = new SystemActivationWrapper($ship);
-        $wrapper->setVar('eps', 1);
-        if ($wrapper->getError()) {
-            $game->addInformation($wrapper->getError());
-            return;
-        }
-        $ship->setTorpedos(true);
-
-        $this->shipRepository->save($ship);
-
-        $game->addInformation("Torpedobänke aktiviert");
     }
 
     public function performSessionCheck(): bool
