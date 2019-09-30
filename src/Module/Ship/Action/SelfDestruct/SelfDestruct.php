@@ -43,18 +43,22 @@ final class SelfDestruct implements ActionControllerInterface
             $userId
         );
 
-        $code = request::postString('destructioncode');
+        $code = trim(request::postString('destructioncode'));
 
-        $game->addInformation('Das Selbstzerstörungssystem ist außer Betrieb.');
-        // @todo repair
-        return;
+        if ($code !== substr(md5($ship->getName()), 0, 6)) {
+            $game->addInformation(_('Der Selbstzerstörungscode war fehlerhaft'));
+            return;
+        }
 
-//        $this->entryCreator->addShipEntry(
-//            sprintf(_('Die %s hat sich in Sektor %s selbst zerstört', $ship->getName(), $ship->getSectorString())),
-//            $userId
-//        );
-//        $this->shipRemover->destroy($ship);
-//        $game->redirectTo('ship.php?B_SELFDESTRUCT=1&sstr=' . $this->getSessionString());
+        $this->entryCreator->addShipEntry(
+            sprintf(
+                _('Die %s hat sich in Sektor %s selbst zerstört'), $ship->getName(), $ship->getSectorString()
+            ),
+            $userId
+        );
+        $this->shipRemover->destroy($ship);
+
+        $game->redirectTo('/ship.php');
     }
 
     public function performSessionCheck(): bool

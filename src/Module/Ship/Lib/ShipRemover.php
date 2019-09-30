@@ -69,7 +69,6 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setBuildplan(null);
         $ship->setShield(0);
         $ship->setEps(0);
-        $ship->setFleetId(0);
         $ship->setAlertState(1);
         $ship->setDockedTo(null);
         $ship->setName(_('Trümmer'));
@@ -104,14 +103,18 @@ final class ShipRemover implements ShipRemoverInterface
             array_filter(
                 $obj->getFleet()->getShips()->toArray(),
                 function (ShipInterface $ship) use ($obj): bool {
-                    return $ship->getId() !== $obj->getId();
+                    return $ship !== $obj;
                 }
             )
         );
 
+        $obj->setFleet(null);
+
+        $this->shipRepository->save($obj);
+
         if (!$ship) {
             $this->fleetRepository->delete($fleet);
-            $obj->setFleetId(0);
+
             return;
         }
         $obj->getFleet()->setLeadShip($ship);

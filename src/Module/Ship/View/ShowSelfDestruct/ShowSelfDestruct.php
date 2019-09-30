@@ -30,8 +30,7 @@ final class ShowSelfDestruct implements ViewControllerInterface
             $userId
         );
 
-        // @todo repair
-        $code = 'gehtned';
+        $code = substr(md5($ship->getName()), 0, 6);
 
         $game->setPageTitle(_('Selbstzerstörung'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
