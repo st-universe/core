@@ -3729,16 +3729,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "4eff936d83eb809bde2c57a3cea0ee9643769031"
+                "reference": "b3453f75fd23d9fd41685f2148f4abeacabc6405"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/4eff936d83eb809bde2c57a3cea0ee9643769031",
-                "reference": "4eff936d83eb809bde2c57a3cea0ee9643769031",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/b3453f75fd23d9fd41685f2148f4abeacabc6405",
+                "reference": "b3453f75fd23d9fd41685f2148f4abeacabc6405",
                 "shasum": ""
             },
             "require": {
@@ -3752,7 +3752,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -3790,7 +3790,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2019-08-07T15:01:07+00:00"
+            "time": "2019-09-30T08:30:27+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5799,12 +5799,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "0159cfd3f86a79554b450e260de16f2d1f421752"
+                "reference": "8410cce5eb7d5a4e566fd1bbda0c053a50b9ca06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/0159cfd3f86a79554b450e260de16f2d1f421752",
-                "reference": "0159cfd3f86a79554b450e260de16f2d1f421752",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/8410cce5eb7d5a4e566fd1bbda0c053a50b9ca06",
+                "reference": "8410cce5eb7d5a4e566fd1bbda0c053a50b9ca06",
                 "shasum": ""
             },
             "require": {
@@ -5821,7 +5821,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-09-28T11:29:21+00:00"
+            "time": "2019-09-29T16:52:51+00:00"
         },
         {
             "name": "webmozart/assert",
