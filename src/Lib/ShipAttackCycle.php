@@ -53,11 +53,11 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 		$this->firstStrike = $value;
 	}
 
-	private function getAttackShip(): ShipInterface {
+	private function getAttackShip(): ?ShipInterface {
 		return $this->attackShip;
 	}
 
-	private function getDefendShip(): ShipInterface {
+	private function getDefendShip(): ?ShipInterface {
 		return $this->defendShip;
 	}
 
@@ -249,7 +249,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 			$this->defendShip = $this->getRandomDefender();
 			return;
 		}
-		$this->defendShip = FALSE;
+		$this->defendShip = null;
 	} # }}}
 
 	private function defineContrabants() {
@@ -284,16 +284,16 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 	private function getRandomDefender() {
 		$count = count($this->getDefender());
 		if ($count == 0) {
-			return FALSE;
+			return null;
 		}
 		if ($count == 1) {
 			$arr = &current($this->getDefender());
 			if ($arr->getIsDestroyed()) {
-				return FALSE;
+				return null;
 			}
 			if ($arr->getDisabled()) {
 				$this->addMessage(_("Die ".$arr->getName()." ist kampfunfähig"));
-				return FALSE;
+				return null;
 			}
 			return $arr;
 		}
@@ -312,14 +312,14 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 			}
 			if ($obj->getDisabled()) {
 				$this->addMessage(_("Die ".$obj->getName()." ist kampfunfähig"));
-				return FALSE;
+				return null;
 			}
 			if (!$this->hasShot('defender',$obj->getId())) {
 				$this->setHasShot('defender',$obj->getId());
 				return $obj;
 			}
 		}
-		return FALSE;
+		return null;
 	}
 
 	/**
@@ -347,16 +347,16 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 	private function getRandomAttacker() {
 		$count = count($this->getAttacker());
 		if ($count == 0) {
-			return FALSE;
+			return null;
 		}
 		if ($count == 1) {
 			$arr = &current($this->getAttacker());
 			if ($arr->getIsDestroyed()) {
-				return FALSE;
+				return null;
 			}
 			if ($arr->getDisabled()) {
 				$this->addMessage(_("Die ".$arr->getName()." ist kampfunfähig"));
-				return FALSE;
+				return null;
 			}
 			return $arr;
 		}
@@ -376,14 +376,14 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 			if ($obj->getDisabled()) {
 				$this->addMessage(_("Die ".$obj->getName()." ist kampfunfähig"));
 				unset($arr[$key]);
-				return FALSE;
+				return null;
 			}
 			if (!$this->hasShot('attacker',$obj->getId())) {
 				$this->setHasShot('attacker',$obj->getId());
 				return $obj;
 			}
 		}
-		return FALSE;
+		return null;
 	}
 
 	private function hasShot($key,$value) {
