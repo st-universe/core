@@ -98,7 +98,7 @@ class User implements UserInterface
     private $password_token = '';
 
     /**
-     * @ManyToOne(targetEntity="Alliance")
+     * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
      */
     private $alliance;

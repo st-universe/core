@@ -171,14 +171,6 @@ function renderEpsStatusBar(&$eps, &$maxeps)
     return $bar;
 }
 
-function getOnlineStatus($online)
-{
-    if ($online) {
-        return "online";
-    }
-    return "offline";
-}
-
 function generatePassword($length = 6)
 {
 

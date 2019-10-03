@@ -86,8 +86,8 @@
 				</div>
 				<div class="divbody">
 					<table style="width: 100%">
-						<tr tal:repeat="data ALLIANCE/getMembers">
-							<td tal:condition="IS_IN_ALLIANCE" tal:attributes="class php:getOnlineStatus(data.getUser().isOnline())">
+						<tr tal:repeat="data MEMBERS">
+							<td tal:condition="IS_IN_ALLIANCE" tal:attributes="class data/getOnlineStateCssClass">
 								<img src="assets/rassen/${data/getUser/getFactionId}s.gif" />
 								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
 							</td>
@@ -96,8 +96,8 @@
 								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
 							</td>
 							<td style="width: 36px;" tal:define="id data/getUserId">
-								<metal:block metal:use-macro="html/macros.xhtml/userprofile" />	
-								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />	
+								<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
 							</td>
 						</tr>
 					</table>

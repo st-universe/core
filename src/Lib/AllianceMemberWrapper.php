@@ -36,4 +36,12 @@ class AllianceMemberWrapper
     {
         return $this->getUser()->getId();
     }
+
+    public function getOnlineStateCssClass(): string
+    {
+        if ($this->user->isOnline()) {
+            return 'online';
+        }
+        return 'offline';
+    }
 }

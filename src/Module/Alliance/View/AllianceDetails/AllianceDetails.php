@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\View\AllianceDetails;
 
+use Lib\AllianceMemberWrapper;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\AllianceInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -94,6 +96,15 @@ final class AllianceDetails implements ViewControllerInterface
         $game->setTemplateVar(
             'CAN_SIGNUP',
             $game->getUser()->maySignup($allianceId)
+        );
+        $game->setTemplateVar(
+            'MEMBERS',
+            array_map(
+                function (UserInterface $user) use ($alliance): AllianceMemberWrapper {
+                    return new AllianceMemberWrapper($user, $alliance);
+                },
+                $alliance->getMembers()->toArray()
+            )
         );
 
         if ($game->getUser()->getAllianceId() > 0) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Lib\AllianceMemberWrapper;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\AllianceRepository")
@@ -50,13 +50,21 @@ class Alliance implements AllianceInterface
      */
     private $faction;
 
+    /**
+     * @OneToMany(targetEntity="User", mappedBy="alliance")
+     */
+    private $members;
+
     private $founder;
 
     private $successor;
 
     private $diplomatic;
 
-    private $members;
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -200,17 +208,8 @@ class Alliance implements AllianceInterface
         return $this->diplomatic;
     }
 
-    public function getMembers(): array
+    public function getMembers(): Collection
     {
-        if ($this->members === null) {
-            // @todo refactor
-            global $container;
-            $list = $container->get(UserRepositoryInterface::class)->getByAlliance($this->getId());
-
-            foreach ($list as $user) {
-                $this->members[$user->getId()] = new AllianceMemberWrapper($user, $this);
-            }
-        }
         return $this->members;
     }
 }

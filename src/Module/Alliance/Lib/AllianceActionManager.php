@@ -146,7 +146,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         if ($alliance->getFactionId() != 0) {
             return true;
         }
-        foreach ($alliance->getMembers() as $key => $obj) {
+        foreach ($alliance->getMembers() as $obj) {
             if ($obj->getUser()->getFactionId() !== $factionId) {
                 return false;
             }

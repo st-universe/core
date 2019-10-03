@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Entity;
 
-use Lib\AllianceMemberWrapper;
+use Doctrine\Common\Collections\Collection;
 
 interface AllianceInterface
 {
@@ -45,7 +45,7 @@ interface AllianceInterface
     public function getDiplomatic(): ?AllianceJobInterface;
 
     /**
-     * @return AllianceMemberWrapper[]
+     * @return UserInterface[]
      */
-    public function getMembers(): array;
+    public function getMembers(): Collection;
 }

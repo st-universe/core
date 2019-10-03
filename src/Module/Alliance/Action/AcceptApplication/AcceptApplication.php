@@ -70,6 +70,8 @@ final class AcceptApplication implements ActionControllerInterface
             $alliance->getName()
         );
 
+        $alliance->getMembers()->add($appl->getUser());
+
         $this->privateMessageSender->send($userId, $applicant->getId(), $text);
 
         $game->addInformation(_('Die Bewerbung wurde angenommen'));
