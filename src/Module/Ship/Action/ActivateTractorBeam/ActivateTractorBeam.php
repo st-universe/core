@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
-use ShipSingleAttackCycle;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -25,14 +25,18 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipAttackCycle;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipAttackCycleInterface $shipAttackCycle
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
+        $this->shipAttackCycle = $shipAttackCycle;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -100,21 +104,21 @@ final class ActivateTractorBeam implements ActionControllerInterface
             if ($target->getFleetId()) {
                 $attacker = $target->getFleet()->getShips();
             } else {
-                $attacker = $target;
+                $attacker = [$target->getId() => $target];
             }
-            $obj = new ShipSingleAttackCycle($attacker, $ship);
-            $obj->cycle();
-            $game->addInformationMergeDown($obj->getMessages());
+            $this->shipAttackCycle->init($attacker, [$ship->getId() => $ship], true);
+            $this->shipAttackCycle->cycle();
+            $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
 
             $this->privateMessageSender->send(
                 $userId,
-                (int) $target->getUserId(),
+                $target->getUser()->getId(),
                 sprintf(
                     "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen. Folgende Aktionen wurden ausgeführt:\n%s",
                     $ship->getName(),
                     $target->getName(),
                     $ship->getSectorString(),
-                    implode(PHP_EOL, $obj->getMessages())
+                    implode(PHP_EOL, $this->shipAttackCycle->getMessages())
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
         }
@@ -132,10 +136,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->shipRepository->save($target);
         $this->shipRepository->save($ship);
 
-        if ($userId != $target->getUserId()) {
+        if ($userId != $target->getUser()->getId()) {
             $this->privateMessageSender->send(
                 $userId,
-                (int)$target->getUserId(),
+                $target->getUser()->getId(),
                 "Die " . $target->getName() . " wurde in SeKtor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );

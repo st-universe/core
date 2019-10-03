@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
+use Stu\Module\Ship\Lib\ShipAttackCycle;
+use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
 use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
@@ -119,6 +121,7 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
-use ShipAttackCycle;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -24,14 +24,18 @@ final class AttackShip implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $shipAttackCycle;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipAttackCycleInterface $shipAttackCycle
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
+        $this->shipAttackCycle = $shipAttackCycle;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +63,7 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUserId() == $userId) {
+        if ($target->getUser()->getId() == $userId) {
             return;
         }
         if ($target->getRump()->isTrumfield()) {
@@ -90,11 +94,11 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $defender = [$target->getId() => $target];
         }
-        $shipAttackCycle = new ShipAttackCycle($attacker, $defender);
-        $shipAttackCycle->cycle();
+        $this->shipAttackCycle->init($attacker, $defender);
+        $this->shipAttackCycle->cycle();
 
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
-        foreach ($shipAttackCycle->getMessages() as $key => $value) {
+        foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
@@ -105,9 +109,9 @@ final class AttackShip implements ActionControllerInterface
         );
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $shipAttackCycle->getMessages());
+            $game->setTemplateVar('FIGHT_RESULTS', $this->shipAttackCycle->getMessages());
         } else {
-            $game->addInformationMerge($shipAttackCycle->getMessages());
+            $game->addInformationMerge($this->shipAttackCycle->getMessages());
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
