@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
@@ -29,7 +31,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
      * @return ShipInterface[]
      */
     private $defender = [];
-    private $firstStrike = 1;
+    private $firstStrike = true;
     private $attackShip = null;
     private $defendShip = null;
     private $messages = [];
@@ -61,27 +63,14 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->weaponRepository = $weaponRepository;
     }
 
-    /**
-     * @return ShipInterface[]
-     */
     private function getAttacker(): array
     {
         return $this->attacker;
     }
 
-    private function getDefender()
+    private function getDefender(): array
     {
         return $this->defender;
-    }
-
-    private function getFirstStrike()
-    {
-        return $this->firstStrike;
-    }
-
-    private function setFirstStrike($value)
-    {
-        $this->firstStrike = $value;
     }
 
     private function getAttackShip(): ?ShipInterface
@@ -97,6 +86,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     /**
      * @param ShipInterface[] $attackingShips indexed by ship id
      * @param ShipInterface $defendingShips indexed by ship id
+     * @param bool $singleMode
      */
     public function init(
         array $attackingShips,
@@ -108,79 +98,97 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->singleMode = $singleMode;
     }
 
-    public function cycle()
+    public function cycle(): void
     {
         while ($this->hasReadyAttacker() || $this->hasReadyDefender()) {
             $this->defineContrabants();
-            if (!$this->getAttackShip() || !$this->getDefendShip()) {
+
+            $attackShip = $this->getAttackShip();
+            $defendShip = $this->getDefendShip();
+
+            if (!$attackShip || !$defendShip) {
                 return;
             }
-            if ($this->getAttackShip()->getIsDestroyed() || $this->getDefendShip()->getIsDestroyed()) {
+            if ($attackShip->getIsDestroyed() || $defendShip->getIsDestroyed()) {
                 continue;
             }
-            if ($this->getFirstStrike()) {
-                $this->setFirstStrike(0);
+            if ($this->firstStrike === true) {
+                $this->firstStrike = false;
             }
-            $msg = $this->alertLevelBasedReaction($this->getAttackShip());
+
+            $msg = $this->alertLevelBasedReaction($attackShip);
+
             if ($msg) {
-                $this->addMessage("Aktionen der " . $this->getAttackShip()->getName());
+                $this->addMessage("Aktionen der " . $attackShip->getName());
                 $this->addMessageMerge($msg);
                 $msg = [];
             }
-            if (!$this->canFire($this->getAttackShip())) {
-                $this->shipRepository->save($this->getAttackShip());
+            if (!$this->canFire($attackShip)) {
+                $this->shipRepository->save($attackShip);
                 continue;
             }
-            if ($this->getDefendShip()->getWarpState()) {
-                $this->shipSystemManager->deactivate($this->getDefendShip(), ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            if ($defendShip->getWarpState()) {
+                $this->shipSystemManager->deactivate($defendShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
             }
-            $this->getDefendShip()->cancelRepair();
-            $this->getAttackShip()->cancelRepair();
+            $defendShip->cancelRepair();
+            $attackShip->cancelRepair();
 
             //--------------------------------------
 
             // Phaser
-            if ($this->getAttackShip()->getPhaser()) {
-                for ($i = 1; $i <= $this->getAttackShip()->getRump()->getPhaserVolleys(); $i++) {
-                    if (!$this->getAttackShip()->getPhaser() || $this->getAttackShip()->getEps() < $this->getEnergyWeaponEnergyCosts()) {
+            if ($attackShip->getPhaser()) {
+                for ($i = 1; $i <= $attackShip->getRump()->getPhaserVolleys(); $i++) {
+                    if (!$attackShip->getPhaser() || $attackShip->getEps() < $this->getEnergyWeaponEnergyCosts()) {
                         break;
                     }
-                    $this->getAttackShip()->setEps($this->getAttackShip()->getEps() - $this->getEnergyWeaponEnergyCosts());
-                    if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == self::FIRINGMODE_RANDOM) {
+                    $attackShip->setEps($attackShip->getEps() - $this->getEnergyWeaponEnergyCosts());
+                    if ($this->getEnergyWeapon($attackShip)->getFiringMode() === self::FIRINGMODE_RANDOM) {
+
                         $this->redefineDefender();
-                        if (!$this->getDefendShip()) {
+
+                        $defendShip = $this->getDefendShip();
+
+                        if (!$defendShip) {
                             $this->endCycle();
                             break;
                         }
                     }
-                    $this->addMessage("Die " . $this->getAttackShip()->getName() . " feuert mit einem " . $this->getEnergyWeapon($this->getAttackShip())->getName() . " auf die " . $this->getDefendShip()->getName());
-                    if ($this->getAttackShip()->getHitChance() * (100 - $this->getDefendShip()->getEvadeChance()) < rand(1,
-                            10000)) {
-                        $this->addMessage("Die " . $this->getDefendShip()->getName() . " wurde verfehlt");
+
+                    $this->addMessage("Die " . $attackShip->getName() . " feuert mit einem " . $this->getEnergyWeapon($attackShip)->getName() . " auf die " . $defendShip->getName());
+
+                    if (
+                        $attackShip->getHitChance() * (100 - $defendShip->getEvadeChance()) < rand(1, 10000)
+                    ) {
+                        $this->addMessage("Die " . $defendShip->getName() . " wurde verfehlt");
                         $this->endCycle();
                         continue;
                     }
-                    $damage_wrapper = new DamageWrapper($this->getEnergyWeaponDamage($this->getAttackShip()),
-                        $this->getAttackShip());
-                    {
-                        $damage_wrapper->setShieldDamageFactor($this->getAttackShip()->getRump()->getPhaserShieldDamageFactor());
-                        $damage_wrapper->setHullDamageFactor($this->getAttackShip()->getRump()->getPhaserHullDamageFactor());
-                        $damage_wrapper->setIsPhaserDamage(true);
-                    }
-                    $this->addMessageMerge($this->getDefendShip()->damage($damage_wrapper));
-                    if ($this->getDefendShip()->getIsDestroyed()) {
+                    $damage_wrapper = new DamageWrapper(
+                        $this->getEnergyWeaponDamage($attackShip),
+                        $attackShip
+                    );
+                    $damage_wrapper->setShieldDamageFactor($attackShip->getRump()->getPhaserShieldDamageFactor());
+                    $damage_wrapper->setHullDamageFactor($attackShip->getRump()->getPhaserHullDamageFactor());
+                    $damage_wrapper->setIsPhaserDamage(true);
+
+                    $this->addMessageMerge($defendShip->damage($damage_wrapper));
+
+                    if ($defendShip->getIsDestroyed()) {
                         $this->entryCreator->addShipEntry(
-                            'Die ' . $this->getDefendShip()->getName() . ' wurde in Sektor ' . $this->getDefendShip()->getSectorString() . ' von der ' . $this->getAttackShip()->getName() . ' zerstört',
-                            $this->getAttackShip()->getUser()->getId()
+                            'Die ' . $defendShip->getName() . ' wurde in Sektor ' . $defendShip->getSectorString() . ' von der ' . $attackShip->getName() . ' zerstört',
+                            $attackShip->getUser()->getId()
                         );
-                        $this->shipRemover->destroy($this->getDefendShip());
+
+                        $this->shipRemover->destroy($defendShip);
+
                         $this->unsetDefender();
                         $this->redefineDefender();
+
                         if (!$this->getDefendShip()) {
                             $this->endCycle();
                             break;
                         }
-                        if ($this->getEnergyWeapon($this->getAttackShip())->getFiringMode() == self::FIRINGMODE_FOCUS) {
+                        if ($this->getEnergyWeapon($attackShip)->getFiringMode() === self::FIRINGMODE_FOCUS) {
                             $this->endCycle();
                             break;
                         }
@@ -192,55 +200,66 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 break;
             }
             // Torpedo
-            if (!$this->getAttackShip()->getTorpedos()) {
+            if (!$attackShip->getTorpedos()) {
                 $this->endCycle($msg);
                 continue;
             }
             if ($this->getDefendShip()->getIsDestroyed()) {
+
                 $this->redefineDefender();
+
                 if (!$this->getDefendShip()) {
                     $this->endCycle();
                     break;
                 }
             }
-            for ($i = 1; $i <= $this->getAttackShip()->getRump()->getTorpedoVolleys(); $i++) {
-                if (!$this->getAttackShip()->getTorpedos() || $this->getAttackShip()->getEps() < $this->getProjectileWeaponEnergyCosts()) {
+
+            for ($i = 1; $i <= $attackShip->getRump()->getTorpedoVolleys(); $i++) {
+                if (!$attackShip->getTorpedos() || $attackShip->getEps() < $this->getProjectileWeaponEnergyCosts()) {
                     break;
                 }
-                $this->getAttackShip()->setTorpedoCount($this->getAttackShip()->getTorpedoCount() - 1);
-                if ($this->getAttackShip()->getTorpedoCount() == 0) {
-                    $this->shipSystemManager->deactivate($this->getAttackShip(), ShipSystemTypeEnum::SYSTEM_TORPEDO);
+                $attackShip->setTorpedoCount($attackShip->getTorpedoCount() - 1);
+
+                if ($attackShip->getTorpedoCount() === 0) {
+                    $this->shipSystemManager->deactivate($attackShip, ShipSystemTypeEnum::SYSTEM_TORPEDO);
                 }
-                $this->getAttackShip()->setEps($this->getAttackShip()->getEps() - $this->getProjectileWeaponEnergyCosts());
+
+                $attackShip->setEps($attackShip->getEps() - $this->getProjectileWeaponEnergyCosts());
+
                 $this->redefineDefender();
-                $this->addMessage("Die " . $this->getAttackShip()->getName() . " feuert einen " . $this->getAttackShip()->getTorpedo()->getName() . " auf die " . $this->getDefendShip()->getName());
+
+                $defendShip = $this->getDefendShip();
+
+                $this->addMessage("Die " . $attackShip->getName() . " feuert einen " . $attackShip->getTorpedo()->getName() . " auf die " . $defendShip->getName());
                 // higher evade chance for pulseships against
                 // torpedo ships
-                if ($this->getAttackShip()->getRump()->getRoleId() == ShipRoleEnum::ROLE_TORPEDOSHIP && $this->getDefendShip()->getRump()->getRoleId() == ShipRoleEnum::ROLE_PULSESHIP) {
-                    $hitchance = round($this->getAttackShip()->getHitChance() * 0.65);
+                if ($attackShip->getRump()->getRoleId() === ShipRoleEnum::ROLE_TORPEDOSHIP && $defendShip->getRump()->getRoleId() === ShipRoleEnum::ROLE_PULSESHIP) {
+                    $hitchance = round($attackShip->getHitChance() * 0.65);
                 } else {
-                    $hitchance = $this->getAttackShip()->getHitChance();
+                    $hitchance = $attackShip->getHitChance();
                 }
                 if ($hitchance * (100 - $this->getDefendShip()->getEvadeChance()) < rand(1, 10000)) {
                     $this->addMessage("Die " . $this->getDefendShip()->getName() . " wurde verfehlt");
                     continue;
                 }
-                $damage_wrapper = new DamageWrapper($this->getProjectileWeaponDamage($this->getAttackShip()),
-                    $this->getAttackShip());
-                {
-                    $damage_wrapper->setShieldDamageFactor($this->getAttackShip()->getTorpedo()->getShieldDamageFactor());
-                    $damage_wrapper->setHullDamageFactor($this->getAttackShip()->getTorpedo()->getHullDamageFactor());
-                    $damage_wrapper->setIsTorpedoDamage(true);
-                }
-                $this->addMessageMerge($this->getDefendShip()->damage($damage_wrapper));
-                if ($this->getDefendShip()->getIsDestroyed()) {
+                $damage_wrapper = new DamageWrapper(
+                    $this->getProjectileWeaponDamage($attackShip),
+                    $attackShip
+                );
+                $damage_wrapper->setShieldDamageFactor($attackShip->getTorpedo()->getShieldDamageFactor());
+                $damage_wrapper->setHullDamageFactor($attackShip->getTorpedo()->getHullDamageFactor());
+                $damage_wrapper->setIsTorpedoDamage(true);
+
+                $this->addMessageMerge($defendShip->damage($damage_wrapper));
+
+                if ($defendShip->getIsDestroyed()) {
                     $this->unsetDefender();
 
                     $this->entryCreator->addShipEntry(
-                        'Die ' . $this->getDefendShip()->getName() . ' wurde in Sektor ' . $this->getDefendShip()->getSectorString() . ' von der ' . $this->getAttackShip()->getName() . ' zerstört',
-                        $this->getAttackShip()->getUser()->getId()
+                        'Die ' . $defendShip->getName() . ' wurde in Sektor ' . $defendShip->getSectorString() . ' von der ' . $attackShip->getName() . ' zerstört',
+                        $attackShip->getUser()->getId()
                     );
-                    $this->shipRemover->destroy($this->getDefendShip());
+                    $this->shipRemover->destroy($defendShip);
                     break;
                 }
             }
@@ -248,9 +267,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         }
     }
 
-    /**
-     */
-    private function endCycle(&$msg = [])
+    private function endCycle(&$msg = []): void
     {
         $this->addMessageMerge($msg);
 
@@ -260,9 +277,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         }
     }
 
-    /**
-     */
-    private function redefineDefender()
+    private function redefineDefender(): void
     {
         $this->shipRepository->save($this->getDefendShip());
 
@@ -277,26 +292,26 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->defendShip = null;
     }
 
-    private function defineContrabants()
+    private function defineContrabants(): void
     {
-        if ($this->getFirstStrike() || $this->isSingleMode()) {
+        if ($this->firstStrike || $this->singleMode) {
             $this->attackShip = $this->getRandomReadyAttacker();
             $this->defendShip = $this->getRandomDefender();
-            return true;
+            return;
         }
         $attReady = $this->hasReadyAttacker();
         $defReady = $this->hasReadyDefender();
         if ($attReady && !$defReady) {
             $this->attackShip = $this->getRandomReadyAttacker();
             $this->defendShip = $this->getRandomDefender();
-            return true;
+            return;
         }
         if (!$attReady && $defReady) {
             $this->attackShip = $this->getRandomReadyDefender();
             $this->defendShip = $this->getRandomAttacker();
-            return true;
+            return;
         }
-        // XXX: TBD
+        // @todo
         if (rand(1, 2) == 1) {
             $this->attackShip = $this->getRandomReadyAttacker();
             $this->defendShip = $this->getRandomDefender();
@@ -304,17 +319,17 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             $this->attackShip = $this->getRandomReadyDefender();
             $this->defendShip = $this->getRandomAttacker();
         }
-        return true;
+        return;
     }
 
-    private function getRandomDefender()
+    private function getRandomDefender(): ?ShipInterface
     {
         $count = count($this->getDefender());
         if ($count == 0) {
             return null;
         }
         if ($count == 1) {
-            $arr = &current($this->getDefender());
+            $arr = current($this->getDefender());
             if ($arr->getIsDestroyed()) {
                 return null;
             }
@@ -329,7 +344,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         return $defender[$key];
     }
 
-    private function getRandomReadyDefender()
+    private function getRandomReadyDefender(): ?ShipInterface
     {
         $arr = $this->getDefender();
         shuffle($arr);
@@ -350,9 +365,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         return null;
     }
 
-    /**
-     */
-    private function unsetDefender()
+    private function unsetDefender(): void
     {
         if (array_key_exists($this->getDefendShip()->getId(), $this->getAttacker())) {
             $arr = $this->getAttacker();
@@ -375,7 +388,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         return $this->getUsedShipCount('defender') < count($this->getDefender());
     }
 
-    private function getRandomAttacker()
+    private function getRandomAttacker(): ?ShipInterface
     {
         $count = count($this->getAttacker());
         if ($count == 0) {
@@ -397,7 +410,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         return $attacker[$key];
     }
 
-    private function getRandomReadyAttacker()
+    private function getRandomReadyAttacker(): ?ShipInterface
     {
         $arr = &$this->getAttacker();
         shuffle($arr);
@@ -419,44 +432,39 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         return null;
     }
 
-    private function hasShot($key, $value)
+    private function hasShot($key, $value): bool
     {
         return array_key_exists($value, $this->getUsedShips($key));
     }
 
-    private function setHasShot($key, $value)
+    private function setHasShot($key, $value): void
     {
         $this->usedShips[$key][$value] = true;
     }
 
-    private function getUsedShips($key)
+    private function getUsedShips($key): array
     {
         return $this->usedShips[$key];
     }
 
-    private function getUsedShipCount($key)
+    private function getUsedShipCount($key): int
     {
         return count($this->getUsedShips($key));
     }
 
-    private function addMessageMerge($msg)
+    private function addMessageMerge($msg): void
     {
         $this->messages = array_merge($this->getMessages(), $msg);
     }
 
-    private function addMessage($msg)
+    private function addMessage($msg): void
     {
         $this->messages[] = $msg;
     }
 
-    public function getMessages()
+    public function getMessages(): array
     {
         return $this->messages;
-    }
-
-    protected function isSingleMode()
-    {
-        return $this->singleMode;
     }
 
     private function canFire(ShipInterface $ship): bool
@@ -523,9 +531,12 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return 0;
         }
-        $basedamage = calculateModuleValue($ship->getRump(),
-            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModule(), 'getBaseDamage');
-        $variance = round($basedamage / 100 * $this->getEnergyWeapon($ship)->getVariance());
+        $basedamage = calculateModuleValue(
+            $ship->getRump(),
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModule(),
+            'getBaseDamage'
+        );
+        $variance = (int) round($basedamage / 100 * $this->getEnergyWeapon($ship)->getVariance());
         $damage = rand($basedamage - $variance, $basedamage + $variance);
         if (rand(1, 100) <= $this->getEnergyWeapon($ship)->getCriticalChance()) {
             return $damage * 2;
@@ -535,10 +546,13 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private function getProjectileWeaponDamage(ShipInterface $ship): float
     {
-        $variance = round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
-        $basedamage = calculateModuleValue($ship->getRump(),
-            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule(), false,
-            $ship->getTorpedo()->getBaseDamage());
+        $variance = (int) round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
+        $basedamage = calculateModuleValue(
+            $ship->getRump(),
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule(),
+            false,
+            $ship->getTorpedo()->getBaseDamage()
+        );
         $damage = rand($basedamage - $variance, $basedamage + $variance);
         if (rand(1, 100) <= $ship->getTorpedo()->getCriticalChance()) {
             return $damage * 2;
