@@ -1,12 +1,4 @@
 <html xmlns:stu="stu">
-	<metal:macro metal:define-macro="colonyimage">
-		<tal:block tal:condition="colony/ownedByCurrentUser">
-			<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}"><metal:macro metal:use-macro="colonyimage_base" /></a>
-		</tal:block>
-		<tal:block tal:condition="not:colony/ownedByCurrentUser">
-			<metal:macro metal:use-macro="colonyimage_base" />
-		</tal:block>
-	</metal:macro>
 	<metal:macro metal:define-macro="colonyimage_base">
 		<div tal:condition="colony/getPlanetType/hasRing" class="planet_ring" style="background-image: url(assets/planets/${colony/getPlanetType/getId}.gif)">
 			<img src="assets/planets/${colony/getPlanetType/getId}r.png"/>
@@ -527,7 +519,7 @@
 			</tal:block>
 		</ul>
 	</metal:block>
-	<metal:block metal:define-macro="shipselector"><li><table class="use" style="width: 595px;" onmouseover="shipSelectorHover(this)" onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this,${data/ownedByCurrentUser});">
+	<metal:block metal:define-macro="shipselector"><li><table class="use" style="width: 595px;" onmouseover="shipSelectorHover(this)" onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this);">
 				<tr>
 					<td class="darkbg" colspan="4">
 						<span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span tal:replace="structure bbcode:data/getUser/getName">USERNAME</span>

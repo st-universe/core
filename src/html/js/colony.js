@@ -157,7 +157,7 @@ function switchToShip(obj) {
 	}
 	goToUrl(link[0].href);
 }
-function shipSelectorChoose(obj,owner) {
+function shipSelectorChoose(obj) {
 	if (!$('shiplist')) {
 		switchToShip(obj);
 		return;
@@ -197,21 +197,21 @@ function triggerBeamFrom() {
 function initBuildmenuMouseEvent() {
 	onmousewheel($('buildmenu1'),function(delta) {
 			scrollBuildmenuByMouse(1,delta);
-			}); 
+			});
 	onmousewheel($('buildmenu2'),function(delta) {
 			scrollBuildmenuByMouse(2,delta);
-			}); 
+			});
 	onmousewheel($('buildmenu3'),function(delta) {
 			scrollBuildmenuByMouse(3,delta);
-			}); 
+			});
 }
 function scrollBuildmenuByMouse(menu,delta) {
 	offset = parseInt($('buildmenu'+menu+'_offset').value);
 	if (delta < 0) {
-		buildMenuScrollDown(menu,offset);		
+		buildMenuScrollDown(menu,offset);
 	}
 	if (delta > 0) {
-		buildMenuScrollUp(menu,offset);		
+		buildMenuScrollUp(menu,offset);
 	}
 }
 currentTab = false;
