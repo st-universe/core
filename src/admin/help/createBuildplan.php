@@ -106,7 +106,7 @@ if ($rumpId !== 0) {
             $modules = $moduleRepo->getByTypeAndLevel(
                 $moduleTypeId,
                 $rump->getShipRumpRole()->getId(),
-                [$min_level, $max_level]
+                range($min_level, $max_level)
             );
 
             foreach ($modules as $module) {
