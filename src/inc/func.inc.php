@@ -3,7 +3,6 @@
 use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
-use Stu\Component\Research\ResearchEnum;
 use Stu\Lib\ModuleScreen\ModuleSelectorWrapperInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
@@ -208,11 +207,6 @@ function formatSeconds($time)
     return $ret;
 }
 
-function parseDateTime($value)
-{
-    return date("d.m.Y H:i", $value);
-}
-
 function databaseScan($database_id, $user_id)
 {
     if ($database_id == 0) {
@@ -284,22 +278,6 @@ function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module):
     return (int)round((1 - $value) * 100);
 } # }}}
 
-function printBackTrace()
-{
-    echo '<div style="background-color:rgb(240,240,240)">';
-    foreach (debug_backtrace() as $bt) {
-        printf('<pre>%s%s%s(%s) </pre>'
-            . '<blockquote>%s:%d</blockquote>',
-            isset($bt['class']) ? $bt['class'] : "",
-            isset($bt['type']) ? $bt['type'] : "",
-            $bt['function'], join(", ", array_map("strval", $bt['args'])),
-            $bt['file'], $bt['line']
-        );
-
-    }
-    echo "</div>";
-}
-
 /**
  */
 function getContactlistModes()
@@ -308,18 +286,6 @@ function getContactlistModes()
         ContactListModeEnum::CONTACT_FRIEND => ["mode" => ContactListModeEnum::CONTACT_FRIEND, "name" => _("Freund")],
         ContactListModeEnum::CONTACT_ENEMY => ["mode" => ContactListModeEnum::CONTACT_ENEMY, "name" => _("Feind")],
         ContactListModeEnum::CONTACT_NEUTRAL => ["mode" => ContactListModeEnum::CONTACT_NEUTRAL, "name" => _("Neutral")],
-    ];
-} # }}}
-/**
- */
-function getDefaultTechs()
-{ #{{{
-    return [
-        ResearchEnum::RESEARCH_START_FEDERATION,
-        ResearchEnum::RESEARCH_START_ROMULAN,
-        ResearchEnum::RESEARCH_START_KLINGON,
-        ResearchEnum::RESEARCH_START_CARDASSIAN,
-        ResearchEnum::RESEARCH_START_FERENGI,
     ];
 } # }}}
 

@@ -108,7 +108,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         }
 
         // @todo check if needed. default tech should already be known
-        foreach (getDefaultTechs() as $research_id) {
+        foreach ($this->getDefaultTechs() as $research_id) {
             if (isset($list_result[$research_id])) {
                 unset($list_result[$research_id]);
             }
@@ -131,5 +131,16 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         );
 
         return $result;
+    }
+
+    private function getDefaultTechs(): array
+    {
+        return [
+            ResearchEnum::RESEARCH_START_FEDERATION,
+            ResearchEnum::RESEARCH_START_ROMULAN,
+            ResearchEnum::RESEARCH_START_KLINGON,
+            ResearchEnum::RESEARCH_START_CARDASSIAN,
+            ResearchEnum::RESEARCH_START_FERENGI,
+        ];
     }
 }

@@ -301,7 +301,11 @@ class PlanetField implements PlanetFieldInterface
     {
         if (!$this->hasBuilding()) {
             if ($this->getTerraformingId() !== null) {
-                return $this->getTerraforming()->getDescription() . " läuft bis " . parseDateTime($this->getTerraformingState()->getFinishDate());
+                return sprintf(
+                    "%s läuft bis %s",
+                    $this->getTerraforming()->getDescription(),
+                    date('d.m.Y H:i', $this->getTerraformingState()->getFinishDate())
+                );
             }
             return $this->getFieldTypeName();
         }

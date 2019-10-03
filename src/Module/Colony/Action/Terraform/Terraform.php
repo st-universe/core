@@ -141,7 +141,7 @@ final class Terraform implements ActionControllerInterface
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),
             $terraf->getDescription(),
-            parseDateTime($time)
+            date('d.m.Y H:i', $time)
         );
     }
 
