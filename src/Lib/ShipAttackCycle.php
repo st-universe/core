@@ -34,7 +34,6 @@ class ShipAttackCycle implements ShipAttackCycleInterface
     ) {
         $this->attacker = $attacker;
         $this->defender = $defender;
-		$this->cycle();
 	}
 
 	private function getAttacker() {
@@ -141,7 +140,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 					if ($this->getDefendShip()->getIsDestroyed()) {
 						$this->getEntryCreator()->addShipEntry(
 						    'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
-                            (int) $this->getAttackShip()->getUserId()
+                            $this->getAttackShip()->getUser()->getId()
                         );
 						$this->getShipRemover()->destroy($this->getDefendShip());
 						$this->unsetDefender();
@@ -206,7 +205,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 
                     $this->getEntryCreator()->addShipEntry(
                         'Die '.$this->getDefendShip()->getName().' wurde in Sektor '.$this->getDefendShip()->getSectorString().' von der '.$this->getAttackShip()->getName().' zerstört',
-                        (int) $this->getAttackShip()->getUserId()
+                        $this->getAttackShip()->getUser()->getId()
                     );
                     $this->getShipRemover()->destroy($this->getDefendShip());
 					break;
@@ -218,7 +217,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 
 	/**
 	 */
-	private function endCycle(&$msg=array()) { #{{{
+	private function endCycle(&$msg=array()) {
         // @todo refactor
         global $container;
 
@@ -229,11 +228,11 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 		if ($this->getDefendShip()) {
 		    $shipRepo->save($this->getDefendShip());
 		}
-	} # }}}
+	}
 
 	/**
 	 */
-	private function redefineDefender() { #{{{
+	private function redefineDefender() {
         // @todo refactor
         global $container;
 
@@ -250,7 +249,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 			return;
 		}
 		$this->defendShip = null;
-	} # }}}
+	}
 
 	private function defineContrabants() {
 		if ($this->getFirstStrike() || $this->isSingleMode()) {
@@ -324,7 +323,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 
 	/**
 	 */
-	private function unsetDefender() { #{{{
+	private function unsetDefender() {
 		if (array_key_exists($this->getDefendShip()->getId(),$this->getAttacker())) {
 			$arr = $this->getAttacker();
 			unset($arr[$this->getDefendShip()->getId()]);
@@ -334,7 +333,7 @@ class ShipAttackCycle implements ShipAttackCycleInterface
 		$arr = $this->getDefender();
 		unset($arr[$this->getDefendShip()->getId()]);
 		$this->defender = $arr;
-	} # }}}
+	}
 
 	private function hasReadyAttacker() {
 		return $this->getUsedShipCount('attacker') < count($this->getAttacker());
