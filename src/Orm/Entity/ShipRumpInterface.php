@@ -144,10 +144,6 @@ interface ShipRumpInterface
 
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
 
-    public function getBuildplanCount(): int;
-
-    public function getShipCount(): int;
-
     /**
      * @return ShipRumpCostInterface[]
      */

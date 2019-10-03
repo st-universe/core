@@ -6,10 +6,14 @@ namespace Stu\Module\Colony\Lib;
 
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
@@ -26,13 +30,19 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private $commodityConsumption;
 
+    private $shipRepository;
+
+    private $shipBuildplanRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         CommodityRepositoryInterface $commodityRepository,
         ColonyRepositoryInterface $colonyRepository,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
-        CommodityConsumptionInterface $commodityConsumption
+        CommodityConsumptionInterface $commodityConsumption,
+        ShipRepositoryInterface $shipRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
@@ -40,6 +50,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->colonyRepository = $colonyRepository;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->commodityConsumption = $commodityConsumption;
+        $this->shipRepository = $shipRepository;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
     }
 
     public function createOrbitShipItem(
@@ -90,6 +102,18 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         return new ColonyListItem(
             $this->commodityConsumption,
             $colony
+        );
+    }
+
+    public function createBuildableRumpItem(
+        ShipRumpInterface $shipRump,
+        UserInterface $currentUser
+    ): BuildableRumpListItemInterface {
+        return new BuildableRumpListItem(
+            $this->shipRepository,
+            $this->shipBuildplanRepository,
+            $shipRump,
+            $currentUser
         );
     }
 }

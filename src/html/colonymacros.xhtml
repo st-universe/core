@@ -804,12 +804,12 @@
 			    </tr>
 			    <tr tal:condition="BUILDABLE_SHIPS">
 				<td>
-				    <div tal:repeat="rump BUILDABLE_SHIPS" style="width: 196px; height:100px; float: left;">
-					<a class="std" href="?SHOW_MODULE_SCREEN=1&id=${COLONY/getId}&rump=${rump/getId}" style="height: 100px; width: 196px; text-align: center; text-decoration: none; display: block;">
+				    <div tal:repeat="rump BUILDABLE_SHIPS" style="width: 196px; height:120px; float: left;">
+					<a class="std" href="?SHOW_MODULE_SCREEN=1&id=${COLONY/getId}&rump=${rump/getId}" style="height: 120px; width: 196px; text-align: center; text-decoration: none; display: block;">
 					    <img src="assets/ships/${rump/getId}.gif" tal:attributes="title rump/getName" style="padding-top: 5px;" /><br />
 					    ${rump/getName}<br /><br />
-					    <span i18n:translate="">Typ</span>: <span tal:replace="rump/getShipRumpCategory/getName">TYPE</span><br />
-					    <span i18n:translate="">Im Einsatz</span>: <span tal:replace="rump/getShipCount">COUNT</span><br />
+					    <span i18n:translate="">Typ</span>: <span tal:replace="rump/getCategoryName">TYPE</span><br />
+					    <span i18n:translate="">Im Einsatz</span>: <span tal:replace="rump/getActiveShipCount">COUNT</span><br />
 					    <span i18n:translate="">Baupläne</span>: <span tal:replace="rump/getBuildplanCount">BUILDPLANS</span>
 					</a>
 				    </div>

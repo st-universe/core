@@ -1283,7 +1283,7 @@ class Ship implements ShipInterface
         if (!$this->getCurrentColony()) {
             return false;
         }
-        if (!$this->getCurrentColony()->ownedByCurrentUser()) {
+        if (!$this->getCurrentColony()->getUser() !== $this->getUser()) {
             return false;
         }
 

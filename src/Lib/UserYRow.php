@@ -26,7 +26,7 @@ class UserYRow extends YRow
             $this->fields = [];
 
             $result = $container->get(MapRepositoryInterface::class)->getExplored($this->user->getId(), (int) $this->minx, (int) $this->maxx, (int) $this->row);
-            $mapType = currentUser()->getMapType();
+            $mapType = $this->user->getMapType();
 
             /** @var ExploreableStarMap $item */
             foreach ($result as $item) {

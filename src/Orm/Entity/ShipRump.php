@@ -539,28 +539,6 @@ class ShipRump implements ShipRumpInterface
         return $this->module_levels;
     }
 
-    public function getBuildplanCount(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipBuildplanRepositoryInterface::class)->getCountByRumpAndUser(
-            $this->getId(),
-            currentUser()->getId()
-        );
-    }
-
-    public function getShipCount(): int
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipRepositoryInterface::class)->getAmountByUserAndRump(
-            currentUser()->getId(),
-            $this->getId()
-        );
-    }
-
     /**
      * @return ShipRumpCostInterface[]
      */
