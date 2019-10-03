@@ -79,30 +79,36 @@ final class AttackShip implements ActionControllerInterface
         $fleet = false;
         $target_user_id = $target->getUserId();
         if ($ship->isFleetLeader()) {
-            $attacker = $ship->getFleet()->getShips();
+            $attacker = $ship->getFleet()->getShips()->toArray();
             $fleet = true;
         } else {
-            $attacker = &$ship;
+            $attacker = [$ship->getId() => $ship];
         }
         if ($target->getFleetId()) {
-            $defender = $target->getFleet()->getShips();
+            $defender = $target->getFleet()->getShips()->toArray();
             $fleet = true;
         } else {
-            $defender = &$target;
+            $defender = [$target->getId() => $target];
         }
-        $obj = new ShipAttackCycle($attacker, $defender, $ship->getFleetId(), $target->getFleetId());
+        $shipAttackCycle = new ShipAttackCycle($attacker, $defender);
+        $shipAttackCycle->cycle();
+
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
-        foreach ($obj->getMessages() as $key => $value) {
+        foreach ($shipAttackCycle->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
-        $this->privateMessageSender->send($userId, (int)$target_user_id, $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send(
+            $userId,
+            (int)$target_user_id,
+            $pm,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());
+            $game->setTemplateVar('FIGHT_RESULTS', $shipAttackCycle->getMessages());
         } else {
-            $game->addInformationMerge($obj->getMessages());
-            $game->setTemplateVar('FIGHT_RESULTS', $obj->getMessages());
+            $game->addInformationMerge($shipAttackCycle->getMessages());
+            $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }
 

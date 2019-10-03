@@ -38,7 +38,7 @@ class Fleet implements FleetInterface
     private $user;
 
     /**
-     * @OneToMany(targetEntity="Ship", mappedBy="fleet")
+     * @OneToMany(targetEntity="Ship", mappedBy="fleet", indexBy="id")
      */
     private $shiplist;
 

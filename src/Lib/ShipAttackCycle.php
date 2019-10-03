@@ -13,33 +13,27 @@ use Stu\Orm\Entity\WeaponInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
 
-class ShipAttackCycle {
+class ShipAttackCycle implements ShipAttackCycleInterface
+{
 
     public const FIRINGMODE_FOCUS = 2;
     public const FIRINGMODE_RANDOM = 1;
-    private $attacker = array();
-	private $defender = array();
+
+    private $attacker;
+
+	private $defender = [];
 	private $firstStrike = 1;
 	private $attackShip = NULL;
 	private $defendShip = NULL;
 	private $messages = array();
 	private $usedShips = array('attacker' => array(),'defender' => array());
-	private $attackFleetId = NULL;
-	private $defendFleetId = NULL;
 
-	function __construct(&$attacker,&$defender,&$attackFleetId,&$defendFleetId) {
-		if (is_object($attacker)) {
-			$this->attacker[$attacker->getId()] = &$attacker;
-		} else {
-			$this->attacker = &$attacker;
-		}
-		if (is_object($defender)) {
-			$this->defender[$defender->getId()] = &$defender;
-		} else {
-			$this->defender = &$defender;
-		}
-		$this->attackFleetId = $attackFleetId;
-		$this->defendFleetId = $defendFleetId;
+	public function __construct(
+	    array $attacker,
+        array $defender
+    ) {
+        $this->attacker = $attacker;
+        $this->defender = $defender;
 		$this->cycle();
 	}
 
@@ -82,7 +76,7 @@ class ShipAttackCycle {
         return $container->get(ShipRemoverInterface::class);
     }
 
-    private function cycle() {
+    public function cycle() {
 	    // @todo refactor
         global $container;
 
@@ -247,12 +241,12 @@ class ShipAttackCycle {
 
         $shipRepo->save($this->getDefendShip());
 
-		if (array_key_exists($this->getDefendShip()->getId(),$this->getAttacker())) {
-			$this->defendShip = &$this->getRandomAttacker();
+		if (array_key_exists($this->getDefendShip()->getId(), $this->getAttacker())) {
+			$this->defendShip = $this->getRandomAttacker();
 			return;
 		}
-		if (!array_key_exists($this->getAttackShip()->getId(),$this->getDefender())) {
-			$this->defendShip = &$this->getRandomDefender();
+		if (!array_key_exists($this->getAttackShip()->getId(), $this->getDefender())) {
+			$this->defendShip = $this->getRandomDefender();
 			return;
 		}
 		$this->defendShip = FALSE;
@@ -260,29 +254,29 @@ class ShipAttackCycle {
 
 	private function defineContrabants() {
 		if ($this->getFirstStrike() || $this->isSingleMode()) {
-			$this->attackShip = &$this->getRandomReadyAttacker();
-			$this->defendShip = &$this->getRandomDefender();
+			$this->attackShip = $this->getRandomReadyAttacker();
+			$this->defendShip = $this->getRandomDefender();
 			return TRUE;
 		}
 		$attReady = $this->hasReadyAttacker();
 		$defReady = $this->hasReadyDefender();
 		if ($attReady && !$defReady) {
-			$this->attackShip = &$this->getRandomReadyAttacker();
-			$this->defendShip = &$this->getRandomDefender();
+			$this->attackShip = $this->getRandomReadyAttacker();
+			$this->defendShip = $this->getRandomDefender();
 			return TRUE;
 		}
 		if (!$attReady && $defReady) {
-			$this->attackShip = &$this->getRandomReadyDefender();
-			$this->defendShip = &$this->getRandomAttacker();
+			$this->attackShip = $this->getRandomReadyDefender();
+			$this->defendShip = $this->getRandomAttacker();
 			return TRUE;
 		}
 		// XXX: TBD
 		if (rand(1,2) == 1) {
-			$this->attackShip = &$this->getRandomReadyAttacker();
-			$this->defendShip = &$this->getRandomDefender();
+			$this->attackShip = $this->getRandomReadyAttacker();
+			$this->defendShip = $this->getRandomDefender();
 		} else {
-			$this->attackShip = &$this->getRandomReadyDefender();
-			$this->defendShip = &$this->getRandomAttacker();
+			$this->attackShip = $this->getRandomReadyDefender();
+			$this->defendShip = $this->getRandomAttacker();
 		}
 		return TRUE;
 	}
@@ -304,12 +298,12 @@ class ShipAttackCycle {
 			return $arr;
 		}
 		$key = array_rand($this->getDefender());
-		$defender = &$this->getDefender();
+		$defender = $this->getDefender();
 		return $defender[$key];
 	}
 
 	private function getRandomReadyDefender() {
-		$arr = &$this->getDefender();
+		$arr = $this->getDefender();
 		shuffle($arr);
 		foreach ($arr as $key => $obj) {
 			if ($obj->getIsDestroyed()) {
@@ -332,14 +326,14 @@ class ShipAttackCycle {
 	 */
 	private function unsetDefender() { #{{{
 		if (array_key_exists($this->getDefendShip()->getId(),$this->getAttacker())) {
-			$arr = &$this->getAttacker();
+			$arr = $this->getAttacker();
 			unset($arr[$this->getDefendShip()->getId()]);
-			$this->attacker = &$arr;
+			$this->attacker = $arr;
 			return;
 		}
-		$arr = &$this->getDefender();
+		$arr = $this->getDefender();
 		unset($arr[$this->getDefendShip()->getId()]);
-		$this->defender = &$arr;
+		$this->defender = $arr;
 	} # }}}
 
 	private function hasReadyAttacker() {
