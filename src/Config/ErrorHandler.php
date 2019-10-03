@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Noodlehaus\ConfigInterface;
+use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -22,9 +23,14 @@ if ($config->get('debug.debug_mode') === true) {
 } else {
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-    $whoops->prependHandler(function (Throwable $e, $inspector, $run) {
-        require_once __DIR__ . '/../html/error.html';
-    });
+    if (Whoops\Util\Misc::isCommandLine()) {
+        $handler = new PlainTextHandler();
+    } else {
+        $handler = function (Throwable $e, $inspector, $run) {
+            require_once __DIR__ . '/../html/error.html';
+        };
+    }
+    $whoops->prependHandler($handler);
 }
 
 $logger = new Monolog\Logger('stu');
