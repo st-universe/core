@@ -76,7 +76,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
     {
         $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
@@ -136,7 +137,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         _('%s: Batterie um %d Einheiten aufgeladen'),
                         $shipobj->getName(), $load
                     );
-                    if (!$shipobj->ownedByCurrentUser()) {
+                    if ($shipobj->getUser() !== $$user) {
                         $this->privateMessageSender->send(
                             $userId,
                             (int)$shipobj->getUserId(),
@@ -222,7 +223,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $shipobj->getName(),
                                 $load
                             );
-                            if (!$shipobj->ownedByCurrentUser()) {
+                            if ($shipobj->getUser() !== $user) {
                                 $this->privateMessageSender->send(
                                     $userId,
                                     (int)$shipobj->getUserId(),
@@ -257,7 +258,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     if ($count == $shipobj->getTorpedoCount()) {
                         throw new Exception;
                     }
-                    if (!$shipobj->ownedByCurrentUser() && $count <= $shipobj->getTorpedoCount()) {
+                    if ($shipobj->getUser() !== $user && $count <= $shipobj->getTorpedoCount()) {
                         throw new Exception;
                     }
                     $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());

@@ -793,7 +793,7 @@ class Ship implements ShipInterface
 
     public function leaveFleet(): void
     {
-        $this->setFleetId(0);
+        $this->setFleet(null);
 
         // @todo refactor
         global $container;
@@ -1283,7 +1283,7 @@ class Ship implements ShipInterface
         if (!$this->getCurrentColony()) {
             return false;
         }
-        if (!$this->getCurrentColony()->getUser() !== $this->getUser()) {
+        if ($this->getCurrentColony()->getUser() !== $this->getUser()) {
             return false;
         }
 

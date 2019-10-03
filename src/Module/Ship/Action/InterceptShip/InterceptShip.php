@@ -68,7 +68,7 @@ final class InterceptShip implements ActionControllerInterface
         if (!$target->getWarpState()) {
             return;
         }
-        if ($target->ownedByCurrentUser()) {
+        if ($target->getUser() === $game->getUser()) {
             return;
         }
         if (!$ship->canIntercept()) {

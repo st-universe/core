@@ -32,7 +32,8 @@ final class ShowBeamFrom implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
             $this->showBeamFromRequest->getColonyId(),
@@ -44,7 +45,7 @@ final class ShowBeamFrom implements ViewControllerInterface
            return;
         }
 
-        if (!checkColonyPosition($colony,$target) || ($target->getCloakState() && !$target->ownedByCurrentUser())) {
+        if (!checkColonyPosition($colony,$target) || ($target->getCloakState() && $target->getUser() !== $user)) {
             throw new AccessViolation();
         }
 
