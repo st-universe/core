@@ -137,7 +137,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         _('%s: Batterie um %d Einheiten aufgeladen'),
                         $shipobj->getName(), $load
                     );
-                    if ($shipobj->getUser() !== $$user) {
+                    if ($shipobj->getUser() !== $user) {
                         $this->privateMessageSender->send(
                             $userId,
                             (int)$shipobj->getUserId(),
