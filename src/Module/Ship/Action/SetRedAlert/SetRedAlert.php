@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\SetRedAlert;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -59,7 +60,11 @@ final class SetRedAlert implements ActionControllerInterface
         ];
 
         foreach ($alertSystems as $systemId) {
-            $this->shipSystemManager->activate($ship, $systemId);
+            try {
+                $this->shipSystemManager->activate($ship, $systemId);
+            } catch (ShipSystemException $e) {
+                continue;
+            }
         }
 
         $this->shipRepository->save($ship);
