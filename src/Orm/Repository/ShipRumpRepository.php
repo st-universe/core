@@ -111,4 +111,12 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             ])
             ->getResult();
     }
+
+    public function getList(): iterable
+    {
+        return $this->findBy(
+            [],
+            ['id' => 'desc']
+        );
+    }
 }

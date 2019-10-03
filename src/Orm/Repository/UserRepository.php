@@ -178,4 +178,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             'threshold' => $threshold
         ])->getSingleScalarResult();
     }
+
+    public function getNpcList(): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u WHERE u.id BETWEEN 10 AND 99 ORDER BY u.id',
+                User::class
+            )
+        )->getResult();
+    }
 }

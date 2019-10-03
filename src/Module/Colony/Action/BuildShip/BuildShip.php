@@ -161,7 +161,7 @@ final class BuildShip implements ActionControllerInterface
         // @todo
         $buildtime = 3600;
         $signature = ShipBuildplan::createSignature($sigmod);
-        $plan = $this->shipBuildplanRepository->getByUserAndSignature($userId, $signature);
+        $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
             $planname = sprintf(
                 _('Bauplan %s %s'),

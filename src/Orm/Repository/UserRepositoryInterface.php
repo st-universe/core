@@ -70,4 +70,9 @@ interface UserRepositoryInterface extends ObjectRepository
     public function getActiveAmount(): int;
 
     public function getActiveAmountRecentlyOnline(int $threshold): int;
+
+    /**
+     * @return UserInterface[]
+     */
+    public function getNpcList(): iterable;
 }

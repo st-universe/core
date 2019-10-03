@@ -1005,7 +1005,7 @@ class Ship implements ShipInterface
         $this->setShieldRegenerationTimer(time());
         $msg = [];
         if ($this->getShieldState()) {
-            $damage = $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_SHIELDS);
+            $damage = (int) $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_SHIELDS);
             if ($damage > $this->getShield()) {
                 $msg[] = "- Schildschaden: " . $this->getShield();
                 $msg[] = "-- Schilde brechen zusammen!";
@@ -1022,9 +1022,9 @@ class Ship implements ShipInterface
             return $msg;
         }
         $disablemessage = false;
-        $damage = $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_HULL);
+        $damage = (int) $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_HULL);
         if ($this->getCanBeDisabled() && $this->getHuell() - $damage < round($this->getMaxHuell() / 100 * 10)) {
-            $damage = round($this->getHuell() - $this->getMaxHuell() / 100 * 10);
+            $damage = (int) round($this->getHuell() - $this->getMaxHuell() / 100 * 10);
             $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
             $this->setDisabled(true);
         }

@@ -17,7 +17,7 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
 
     public function getCountByRumpAndUser(int $rumpId, int $userId): int;
 
-    public function getByUserAndSignature(int $userId, string $signature): ?ShipBuildplanInterface;
+    public function getByUserShipRumpAndSignature(int $userId, int $shipRumpId, string $signature): ?ShipBuildplanInterface;
 
     public function prototype(): ShipBuildplanInterface;
 

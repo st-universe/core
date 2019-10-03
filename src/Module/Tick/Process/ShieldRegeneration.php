@@ -23,7 +23,7 @@ final class ShieldRegeneration implements ProcessTickInterface
         $result = $this->shipRepository->getSuitableForShildRegeneration($time - ShipEnum::SHIELD_REGENERATION_TIME);
         foreach ($result as $key => $obj) {
             if ($obj->getCrewCount() < $obj->getBuildplan()->getCrew()) {
-                return;
+                continue;
             }
             $rate = $obj->getShieldRegenerationRate();
             if ($obj->getShield() + $rate > $obj->getMaxShield()) {

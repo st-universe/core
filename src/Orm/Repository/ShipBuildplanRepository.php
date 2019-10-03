@@ -38,10 +38,15 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
-    public function getByUserAndSignature(int $userId, string $signature): ?ShipBuildplanInterface
+    public function getByUserShipRumpAndSignature(
+        int $userId,
+        int $shipRumpId,
+        string $signature
+    ): ?ShipBuildplanInterface
     {
         return $this->findOneBy([
             'user_id' => $userId,
+            'rump_id' => $shipRumpId,
             'signature' => $signature
         ]);
     }

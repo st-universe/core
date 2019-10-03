@@ -5,12 +5,15 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ModuleInterface;
 
+/**
+ * @method null|ModuleInterface find(integer $id)
+ */
 interface ModuleRepositoryInterface extends ObjectRepository
 {
     /**
      * @return ModuleInterface[]
      */
-    public function getBySpecialTypeAndRump(
+    public function getBySpecialTypeColonyAndRump(
         int $colonyId,
         int $moduleTypeId,
         int $shipRumpId,
@@ -20,10 +23,19 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @return ModuleInterface[]
      */
-    public function getByTypeAndLevel(
+    public function getByTypeColonyAndLevel(
         int $colonyId,
         int $moduleTypeId,
         int $shipRumpRoleId,
         array $moduleLevel
     ): array;
+
+    /**
+     * @return ModuleInterface[]
+     */
+    public function getByTypeAndLevel(
+        int $moduleTypeId,
+        int $shipRumpRoleId,
+        array $moduleLevel
+    ): iterable;
 }

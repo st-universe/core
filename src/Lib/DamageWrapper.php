@@ -154,11 +154,8 @@ class DamageWrapper
 	{ #{{{
 		$damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
 		// ablative huell plating
-		trigger_error($this->getIsPhaserDamage() . " - " . $target->getRump()->getRoleId() . " - " . ShipRoleEnum::ROLE_PHASERSHIP);
 		if ($this->getIsPhaserDamage() === true && $target->getRump()->getRoleId() == ShipRoleEnum::ROLE_PHASERSHIP) {
-			trigger_error('damage before ablative hull plating: ' . $damage);
 			$damage = round($damage * 0.6);
-			trigger_error('damage after ablative hull plating: ' . $damage);
 		}
 		return $damage;
 	} # }}}

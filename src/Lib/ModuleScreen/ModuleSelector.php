@@ -104,7 +104,7 @@ class ModuleSelector implements ModuleSelectorInterface
         if ($this->modules === null) {
             $this->modules = [];
             if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeAndRump(
+                $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeColonyAndRump(
                     (int)$this->getColony()->getId(),
                     (int)$this->getModuleType(),
                     $this->getRump()->getId(),
@@ -118,7 +118,7 @@ class ModuleSelector implements ModuleSelectorInterface
                 $min_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Min'}();
                 $max_level = $mod_level->{'getModuleLevel' . $this->getModuleType() . 'Max'}();
 
-                $modules = $container->get(ModuleRepositoryInterface::class)->getByTypeAndLevel(
+                $modules = $container->get(ModuleRepositoryInterface::class)->getByTypeColonyAndLevel(
                     (int)$this->getColony()->getId(),
                     (int)$this->getModuleType(),
                     $this->getRump()->getShipRumpRole()->getId(),
