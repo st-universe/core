@@ -57,6 +57,8 @@ final class JoinFleet implements ActionControllerInterface
         }
         $ship->setFleet($fleet);
 
+        $fleet->getShips()->add($ship);
+
         $this->shipRepository->save($ship);
 
         $game->addInformation(sprintf(
