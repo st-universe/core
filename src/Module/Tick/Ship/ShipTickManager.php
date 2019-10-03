@@ -53,7 +53,7 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
-            $eps = ceil($ship->getMaxEps() / 10);
+            $eps = (int)ceil($ship->getMaxEps() / 10);
             if ($eps + $ship->getEps() > $ship->getMaxEps()) {
                 $eps = $ship->getMaxEps() - $ship->getEps();
             }
