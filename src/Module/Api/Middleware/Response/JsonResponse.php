@@ -26,7 +26,7 @@ final class JsonResponse extends Response implements JsonResponseInterface
             json_encode([
                 'error' => [
                     'code' => $errorCode,
-                    'description' => $description,
+                    'error' => $description,
                 ]
             ])
         );
