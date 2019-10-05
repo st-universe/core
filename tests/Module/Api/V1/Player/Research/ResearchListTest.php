@@ -45,6 +45,7 @@ class ResearchListTest extends StuApiV1TestCase
         $availableResearchPoints = 33;
         $availableResearchCommodityId = 21;
         $availableResearchCommodityName = 'elefant-dumplings';
+        $availableResearchDescription = 'once upon a time...';
 
         $finishedResearchId = 31;
         $finishedResearchName = 'some-finished-research';
@@ -73,6 +74,10 @@ class ResearchListTest extends StuApiV1TestCase
             ->withNoArgs()
             ->once()
             ->andReturn($availableResearchCommodityName);
+        $availableResearch->shouldReceive('getDescription')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($availableResearchDescription);
 
         $finishedState->shouldReceive('getResearch->getId')
             ->withNoArgs()
@@ -107,6 +112,7 @@ class ResearchListTest extends StuApiV1TestCase
                     [
                         'researchId' => $availableResearchId,
                         'name' => $availableResearchName,
+                        'description' => $availableResearchDescription,
                         'points' => $availableResearchPoints,
                         'commodity' => [
                             'commodityId' => $availableResearchCommodityId,

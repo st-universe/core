@@ -40,6 +40,7 @@ final class ResearchList extends Action
                         return [
                             'researchId' => $tech->getId(),
                             'name' => $tech->getName(),
+                            'description' => $tech->getDescription(),
                             'points' => $tech->getPoints(),
                             'commodity' => [
                                 'commodityId' => $tech->getGood()->getId(),

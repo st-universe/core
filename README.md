@@ -246,6 +246,7 @@ Response
     {
         "researchId": int,
         "name": string,
+        "description": string,
         "points": int,
         "commodity": {
             "commodityId": int,

@@ -90,6 +90,10 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
     }
 ]));
 
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
 $app->add(function (ServerRequestInterface $request, RequestHandlerInterface $handler) use($container): ResponseInterface {
     $container->get(JsonSchemaRequestInterface::class)->setRequest($request);
     return $handler->handle($request);
