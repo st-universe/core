@@ -308,3 +308,12 @@ Response
     }
 }
 ```
+
+**Player - Logout**
+
+`POST /api/v1/player/logout`
+
+Response
+```metadata json
+true
+```

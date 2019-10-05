@@ -19,6 +19,7 @@ use Stu\Module\Api\V1\Colony\ColonyList\GetColonyList;
 use Stu\Module\Api\V1\Colony\GetById\GetColonyById;
 use Stu\Module\Api\V1\Common\Faction\GetFactions;
 use Stu\Module\Api\V1\Common\Login\Login;
+use Stu\Module\Api\V1\Player\Logout;
 use Stu\Module\Api\V1\Common\News\GetNews;
 use Stu\Module\Api\V1\Common\Register\Register;
 use Stu\Module\Api\V1\Player\GetInfo;
@@ -115,6 +116,7 @@ $app->group('/api/v1/colony', function (RouteCollectorProxy $group): void {
 $app->group('/api/v1/player', function (RouteCollectorProxy $group): void {
     $group->get('', GetInfo::class);
     $group->get('/newpms', GetNewPrivateMessages::class);
+    $group->post('/logout', Logout::class);
 
     $group->get('/research/current', CurrentResearch::class);
     $group->get('/research', ResearchList::class);

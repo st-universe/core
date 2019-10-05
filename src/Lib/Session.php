@@ -129,10 +129,11 @@ final class Session implements SessionInterface
         return sha1($user->getId().$user->getEMail().$user->getCreationDate());
     }
 
-    private function destroySession(): void
+    private function destroySession(?UserInterface $user = null): void
     {
-        if ($this->user !== null) {
-            $this->sessionStringRepository->truncate($this->user->getId());
+        if ($this->user !== null || $user !== null) {
+            $user = $this->user ?? $user;
+            $this->sessionStringRepository->truncate($user->getId());
         }
         $this->destroyLoginCookies();
         setCookie(session_name(), '', time() - 42000);
@@ -146,9 +147,9 @@ final class Session implements SessionInterface
         setCookie('sstr', 0);
     }
 
-    public function logout(): void
+    public function logout(?UserInterface $user = null): void
     {
-        $this->destroySession();
+        $this->destroySession($user);
     }
 
     private function performCookieLogin(int $uid, string $sstr): void

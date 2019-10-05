@@ -14,7 +14,7 @@ interface SessionInterface
 
     public function getUser(): ?UserInterface;
 
-    public function logout(): void;
+    public function logout(?UserInterface $user = null): void;
 
     public function storeSessionData($key, $value): void;
 
