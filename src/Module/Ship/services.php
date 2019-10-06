@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
+use Stu\Module\Ship\Lib\Battle\ApplyDamage;
+use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhase;
+use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhase;
+use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycle;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Control\GameController;
@@ -121,6 +127,9 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    ApplyDamageInterface::class => autowire(ApplyDamage::class),
+    EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
+    ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),

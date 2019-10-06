@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -40,8 +41,6 @@ final class AttackShip implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -107,6 +106,14 @@ final class AttackShip implements ActionControllerInterface
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
+
+        if ($ship->getIsDestroyed()) {
+
+            $game->addInformationMerge($this->shipAttackCycle->getMessages());
+            return;
+        }
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
             $game->setTemplateVar('FIGHT_RESULTS', $this->shipAttackCycle->getMessages());
