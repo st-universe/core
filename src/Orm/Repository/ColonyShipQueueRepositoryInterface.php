@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipQueueInterface;
 
 interface ColonyShipQueueRepositoryInterface
@@ -33,7 +34,7 @@ interface ColonyShipQueueRepositoryInterface
      */
     public function getFinishedJobs(): array;
 
-    public function truncateByColony(int $colonyId): void;
+    public function truncateByColony(ColonyInterface $colony): void;
 
     public function truncateByColonyAndBuildingFunction(int $colonyId, int $buildingFunctionId): void;
 }

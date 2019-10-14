@@ -16,7 +16,7 @@ interface ColonyTerraformingRepositoryInterface extends ObjectRepository
     /**
      * @return ColonyTerraformingInterface[]
      */
-    public function getByColony(array $colonyIds): array;
+    public function getByColony(array $colonyies): array;
 
     public function getByColonyAndField(int $colonyId, int $fieldId): ?ColonyTerraformingInterface;
 

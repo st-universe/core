@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\Abandon;
 
 use AccessViolation;
-use Stu\Component\Game\GameEnum;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
-use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
-use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Abandon implements ActionControllerInterface
 {
@@ -21,34 +16,18 @@ final class Abandon implements ActionControllerInterface
 
     private $abandonRequest;
 
-    private $colonyTerraformingRepository;
-
-    private $colonyStorageRepository;
-
-    private $colonyShipQueueRepository;
-
-    private $colonyLibFactory;
-
     private $colonyRepository;
 
-    private $userRepository;
+    private $colonyResetter;
 
     public function __construct(
         AbandonRequestInterface $abandonRequest,
-        ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        ColonyStorageRepositoryInterface $colonyStorageRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        ColonyLibFactoryInterface $colonyLibFactory,
         ColonyRepositoryInterface $colonyRepository,
-        UserRepositoryInterface $userRepository
+        ColonyResetterInterface $colonyResetter
     ) {
         $this->abandonRequest = $abandonRequest;
-        $this->colonyTerraformingRepository = $colonyTerraformingRepository;
-        $this->colonyStorageRepository = $colonyStorageRepository;
-        $this->colonyShipQueueRepository = $colonyShipQueueRepository;
-        $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
-        $this->userRepository = $userRepository;
+        $this->colonyResetter = $colonyResetter;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,30 +38,7 @@ final class Abandon implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $colonyId = (int) $colony->getId();
-
-        $this->colonyLibFactory->createColonySurface($colony)->updateSurface();
-
-        $colony->setEps(0);
-        $colony->setMaxEps(0);
-        $colony->setMaxStorage(0);
-        $colony->setWorkers(0);
-        $colony->setWorkless(0);
-        $colony->setMaxBev(0);
-        $colony->setImmigrationState(true);
-        $colony->setPopulationLimit(0);
-        $colony->setUser($this->userRepository->find(GameEnum::USER_NOONE));
-        $colony->setName('');
-
-        $this->colonyRepository->save($colony);
-
-        $this->colonyStorageRepository->truncateByColony($colonyId);
-
-        foreach ($this->colonyTerraformingRepository->getByColony([$colonyId]) as $fieldTerraforming) {
-            $this->colonyTerraformingRepository->delete($fieldTerraforming);
-        }
-
-        $this->colonyShipQueueRepository->truncateByColony($colonyId);
+        $this->colonyResetter->reset($colony);
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
     }

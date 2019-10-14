@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyShipQueue;
 use Stu\Orm\Entity\ColonyShipQueueInterface;
 
@@ -102,17 +103,17 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
             ->getResult();
     }
 
-    public function truncateByColony(int $colonyId): void
+    public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s sq WHERE sq.colony_id = :colonyId',
+                    'DELETE FROM %s sq WHERE sq.colony_id = :colony',
                     ColonyShipQueue::class
                 )
             )
             ->setParameters([
-                'colonyId' => $colonyId
+                'colony' => $colony
             ])
             ->execute();
     }

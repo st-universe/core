@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\ColonyStorageInterface;
 use Stu\Orm\Entity\Commodity;
@@ -51,16 +52,16 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
             ->getResult();
     }
 
-    public function truncateByColony(int $colonyId): void
+    public function truncateByColony(ColonyInterface $colony): void
     {
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'DELETE FROM %s cs WHERE cs.colonies_id = :colonyId',
+                    'DELETE FROM %s cs WHERE cs.colonies_id = :colony',
                     ColonyStorage::class
                 )
             )
-            ->setParameter('colonyId', $colonyId)
+            ->setParameter('colony', $colony)
             ->execute();
     }
 }

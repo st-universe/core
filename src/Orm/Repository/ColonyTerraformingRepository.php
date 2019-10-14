@@ -31,10 +31,10 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         $em->flush($terraforming);
     }
 
-    public function getByColony(array $colonyIds): array
+    public function getByColony(array $colonies): array
     {
         return $this->findBy([
-            'colonies_id' => $colonyIds
+            'colonies_id' => $colonies
         ]);
     }
 

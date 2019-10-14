@@ -7,6 +7,8 @@ namespace Stu\Module\Colony;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyResetter;
+use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Colony\Lib\ColonyStorageManager;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\CommodityConsumption;
@@ -155,6 +157,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use function DI\autowire;
 
 return [
+    ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
     ColonyStorageManagerInterface::class => autowire(ColonyStorageManager::class),
     PlanetColonizationInterface::class => autowire(PlanetColonization::class),

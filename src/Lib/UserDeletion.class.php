@@ -5,9 +5,11 @@ namespace Stu\Lib;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
@@ -92,13 +94,15 @@ class UserDeletion
 
     public function handleColonies()
     {
-        /**
-         * @todo Re-implement colony abandoning
-         */
-//        $result = Colony::getListBy('user_id=' . $this->getUser()->getId());
-//        foreach ($result as $key => $obj) {
-//            $obj->deepDelete();
-//        }
+        // @todo refactor
+        global $container;
+
+        $colonyResetter = $container->get(ColonyResetterInterface::class);
+        $list = $container->get(ColonyRepositoryInterface::class)->getOrderedListByUser($this->getUser()->getId());
+
+        foreach ($list as $colony) {
+            $colonyResetter->reset($colony);
+        }
     }
 
     public function handleContactlist()

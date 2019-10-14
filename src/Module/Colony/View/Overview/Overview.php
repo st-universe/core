@@ -41,13 +41,6 @@ final class Overview implements ViewControllerInterface
 
         $colonyList = $this->colonyRepository->getOrderedListByUser($userId);
 
-        $colonyIdList = array_map(
-            function (ColonyInterface $colony): int {
-                return (int) $colony->getId();
-            },
-            $colonyList
-        );
-
         $game->appendNavigationPart(
             'colony.php',
             _('Kolonien')
@@ -66,7 +59,7 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'TERRAFORMING_LIST',
-            $this->colonyTerraformingRepository->getByColony($colonyIdList)
+            $this->colonyTerraformingRepository->getByColony($colonyList)
         );
         $game->setTemplateVar(
             'BUILDINGJOB_LIST',
