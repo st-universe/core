@@ -50,7 +50,7 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
 
     /**
      * @ManyToOne(targetEntity="Alliance")
-     * @JoinColumn(name="alliance_id", referencedColumnName="id")
+     * @JoinColumn(name="alliance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $alliance;
 

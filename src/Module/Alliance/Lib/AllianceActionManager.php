@@ -83,11 +83,11 @@ final class AllianceActionManager implements AllianceActionManagerInterface
 
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
-        foreach ($alliance->getMembers() as $userRelation) {
-            $this->privateMessageSender->send(GameEnum::USER_NOONE, $userRelation->getUserId(), $text);
-            $userRelation->getUser()->setAlliance(null);
+        foreach ($alliance->getMembers() as $user) {
+            $this->privateMessageSender->send(GameEnum::USER_NOONE, $user->getId(), $text);
+            $user->setAlliance(null);
 
-            $this->userRepository->save($userRelation->getUser());
+            $this->userRepository->save($user);
         }
         if ($alliance->getAvatar()) {
             @unlink(

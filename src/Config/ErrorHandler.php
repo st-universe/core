@@ -15,8 +15,12 @@ if ($config->get('debug.debug_mode') === true) {
 //    error_reporting(E_ALL);
     error_reporting(E_ALL & ~E_NOTICE);
 
-    $handler = new PrettyPageHandler();
-    $handler->setPageTitle('Error - Star Trek Universe');
+    if (Whoops\Util\Misc::isCommandLine()) {
+        $handler = new PlainTextHandler();
+    } else {
+        $handler = new PrettyPageHandler();
+        $handler->setPageTitle('Error - Star Trek Universe');
+    }
 
     $whoops->prependHandler($handler);
 
@@ -38,7 +42,7 @@ $logger->pushHandler(
     new Monolog\Handler\StreamHandler($config->get('debug.logfile_path'))
 );
 
-$whoops->prependHandler(function (Throwable $e, $inspector, $run) use($logger) {
+$whoops->prependHandler(function (Throwable $e, $inspector, $run) use ($logger) {
     $logger->error(
         $e->getMessage(),
         [
@@ -47,5 +51,6 @@ $whoops->prependHandler(function (Throwable $e, $inspector, $run) use($logger) {
             'trace' => $e->getTrace()
         ]
     );
+
 });
 $whoops->register();

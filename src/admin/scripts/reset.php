@@ -1,7 +1,7 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Component\Faction\FactionEnum;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Lib\UserDeletion;
 use Stu\Orm\Repository\FactionRepositoryInterface;
@@ -10,25 +10,30 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $entityManager = $container->get(EntityManagerInterface::class);
+$userRepo = $container->get(UserRepositoryInterface::class);
+$factionRepo = $container->get(FactionRepositoryInterface::class);
+$config = $container->get(ConfigInterface::class);
+$playerCreator = $container->get(PlayerCreatorInterface::class);
 
 $entityManager->beginTransaction();
 
-UserDeletion::handleReset();
+try {
+    UserDeletion::handleReset();
+} catch (Throwable $t) {
+    $entityManager->rollback();
 
-$userRepo = $container->get(UserRepositoryInterface::class);
-$factionRepo = $container->get(FactionRepositoryInterface::class);
+    throw $t;
+}
 
 $entityManager->getConnection()->query(
-    'ALTER TABLE stu_user AUTO_INCREMENT=101'
+    sprintf(
+        'ALTER TABLE stu_user AUTO_INCREMENT = %d',
+        $config->get('game.admin.id')
+    )
 );
-
-$playerCreator = $container->get(PlayerCreatorInterface::class);
 
 $playerCreator->create(
-    'wolverine',
-    'stu@usox.org',
-    $factionRepo->find(FactionEnum::FACTION_FEDERATION)
+    $config->get('game.admin.username'),
+    $config->get('game.admin.email'),
+    $factionRepo->find($config->get('game.admin.faction'))
 );
-
-
-$entityManager->commit();

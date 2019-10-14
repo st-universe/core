@@ -196,14 +196,12 @@ class UserDeletion
             if ($item !== null) {
                 $rpgPlotMemberRepo->delete($item);
             }
-            if ($obj->getMembers()) {
-                $member = current($obj->getMembers());
+            if ($obj->getMembers()->count() > 0) {
+                $member = $obj->getMembers()->current();
                 $obj->setUser($member->getUser());
-
-                $rpgPlotRepository->save($obj);
-                return;
+            } else {
+                $obj->setUser($userRepository->find(GameEnum::USER_NOONE));
             }
-            $obj->setUser($userRepository->find(GameEnum::USER_NOONE));
 
             $rpgPlotRepository->save($obj);
         }
@@ -263,12 +261,10 @@ class UserDeletion
         foreach ($userlist as $key => $user) {
             $handler = new UserDeletion($user);
             $handler->handleAlliance();
-            $handler->handleBuildplans();
             $handler->handleColonies();
             $handler->handleContactlist();
             $handler->handleCrew();
             $handler->handleDatabaseEntries();
-            $handler->handleFleets();
             $handler->handleIgnoreList();
             $handler->handleKnPostings();
             $handler->handleKnComments();
@@ -277,6 +273,8 @@ class UserDeletion
             $handler->handlePMCategories();
             $handler->handleResearch();
             $handler->handleShips();
+            $handler->handleBuildplans();
+            $handler->handleFleets();
             $handler->handleTrade();
 
             // @todo refactor

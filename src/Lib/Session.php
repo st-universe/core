@@ -86,7 +86,7 @@ final class Session implements SessionInterface
         if ($result->getPassword() != sha1($password)) {
             throw new \Stu\Lib\LoginException(_('Das Passwort ist falsch'));
         }
-        if ($result->getActive() == 0) {
+        if ($result->getActive() === 0) {
             $result->setActive(PlayerEnum::USER_ACTIVE);
 
             $this->userRepository->save($result);
