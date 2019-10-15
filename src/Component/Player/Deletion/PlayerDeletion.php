@@ -10,7 +10,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerDeletion implements PlayerDeletionInterface
 {
-
     public const USER_IDLE_TIME = 120960000;
 
     private $userRepository;
@@ -31,25 +30,21 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     public function handleDeleteable(): void
     {
-        array_walk(
-            $this->userRepository->getDeleteable(
-                time() - PlayerDeletion::USER_IDLE_TIME,
-                [101]
-            ),
-            function (UserInterface $user): void {
-                $this->delete($user);
-            }
+        $list = $this->userRepository->getDeleteable(
+            time() - PlayerDeletion::USER_IDLE_TIME,
+            [101]
         );
+
+        foreach ($list as $player) {
+            $this->delete($player);
+        }
     }
 
     public function handleReset(): void
     {
-        array_walk(
-            $this->userRepository->getActualPlayer(),
-            function (UserInterface $user): void {
-                $this->delete($user);
-            }
-        );
+        foreach ($this->userRepository->getActualPlayer() as $player) {
+            $this->delete($player);
+        }
     }
 
     private function delete(UserInterface $user): void
