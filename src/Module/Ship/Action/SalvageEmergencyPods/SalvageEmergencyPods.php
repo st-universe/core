@@ -64,10 +64,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
         /** @var ShipCrewInterface $dummy_crew */
         $dummy_crew = $target->getCrewList()->current();
-        if ($dummy_crew->getCrew()->getUserId() != $userId) {
+        if ($dummy_crew->getCrew()->getUser()->getId() !== $userId) {
             $this->privateMessageSender->send(
                 $userId,
-                $dummy_crew->getCrew()->getUserId(),
+                $dummy_crew->getCrew()->getUser()->getId(),
                 sprintf(
                     _('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
                     $target->getCrewCount()

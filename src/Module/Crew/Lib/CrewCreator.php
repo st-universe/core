@@ -64,7 +64,7 @@ final class CrewCreator implements CrewCreatorInterface
 
         $crew = $this->crewRepository->prototype();
 
-        $crew->setUserId((int) $userId);
+        $crew->setUser($user);
         $crew->setName('Crew');
         $crew->setRace($race);
         $crew->setGender($gender);

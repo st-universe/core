@@ -42,7 +42,7 @@ final class RenameCrew implements ActionControllerInterface
 
         $crew = $this->crewRepository->find((int) $crew_id);
 
-        if ($crew === null || $crew->getUserId() != $userId) {
+        if ($crew === null || $crew->getUser()->getId() !== $userId) {
             throw new AccessViolation();
         }
 

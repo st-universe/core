@@ -18,9 +18,9 @@ interface CrewInterface
 
     public function setName(string $name): CrewInterface;
 
-    public function getUserId(): int;
+    public function getUser(): UserInterface;
 
-    public function setUserId(int $userId): CrewInterface;
+    public function setUser(UserInterface $user): CrewInterface;
 
     public function getRaceId(): int;
 

@@ -24,7 +24,6 @@ return [
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),
-            autowire(Handler\CrewDeletionHandler::class),
             autowire(Handler\KnPostingDeletionHandler::class),
             autowire(Handler\RpgPlotDeletionHandler::class),
             autowire(Handler\ShipDeletionHandler::class),
