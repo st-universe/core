@@ -2,13 +2,13 @@
 
 namespace Stu\Module\Maintenance;
 
-use Stu\Lib\UserDeletion;
+use Stu\Component\Player\Deletion\PlayerDeletion;
 
 final class IdleUserDeletion implements MaintenanceHandlerInterface
 {
 
     public function handle(): void
     {
-        UserDeletion::handleIdleUsers();
+        PlayerDeletion::handleIdleUsers();
     }
 }

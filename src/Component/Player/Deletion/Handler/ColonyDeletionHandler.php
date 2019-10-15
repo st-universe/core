@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Component\Player\Deletion\Handler;
+
+use Stu\Module\Colony\Lib\ColonyResetterInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
+
+final class ColonyDeletionHandler implements PlayerDeletionHandlerInteface
+{
+    private $colonyResetter;
+
+    private $colonyRepository;
+
+    public function __construct(
+        ColonyResetterInterface $colonyResetter,
+        ColonyRepositoryInterface $colonyRepository
+    ) {
+        $this->colonyResetter = $colonyResetter;
+        $this->colonyRepository = $colonyRepository;
+    }
+
+    public function delete(UserInterface $user): void
+    {
+        foreach ($this->colonyRepository->getOrderedListByUser($user->getId()) as $colony) {
+            $this->colonyResetter->reset($colony);
+        }
+    }
+}
