@@ -6,7 +6,7 @@ namespace Stu\Component\Player\Deletion;
 
 interface PlayerDeletionInterface
 {
-    public function handleIdleUsers(): void;
+    public function handleDeleteable(): void;
 
     public function handleReset(): void;
 }

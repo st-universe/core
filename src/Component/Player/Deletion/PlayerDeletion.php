@@ -29,10 +29,10 @@ final class PlayerDeletion implements PlayerDeletionInterface
         $this->deletionHandler = $deletionHandler;
     }
 
-    public function handleIdleUsers(): void
+    public function handleDeleteable(): void
     {
         array_walk(
-            $this->userRepository->getIdlePlayer(
+            $this->userRepository->getDeleteable(
                 time() - PlayerDeletion::USER_IDLE_TIME,
                 [101]
             ),

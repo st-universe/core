@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
@@ -58,18 +59,22 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         )->getResult();
     }
 
-    public function getIdlePlayer(
+    public function getDeleteable(
         int $idleTimeThreshold,
         array $ignoreIds
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100 AND u.id NOT IN (:ignoreIds) AND u.lastaction < :idleTimeThreshold',
+                'SELECT u FROM %s u WHERE u.id > 100 AND
+                         u.id NOT IN (:ignoreIds) AND (
+                             u.lastaction < :idleTimeThreshold OR u.delmark = :deletionMark
+                         )',
                 User::class
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
-            'ignoreIds' => $ignoreIds
+            'ignoreIds' => $ignoreIds,
+            'deletionMark' => PlayerEnum::DELETION_CONFIRMED
         ])->getResult();
     }
 

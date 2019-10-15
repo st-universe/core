@@ -86,12 +86,12 @@ final class Session implements SessionInterface
         if ($result->getPassword() != sha1($password)) {
             throw new \Stu\Lib\LoginException(_('Das Passwort ist falsch'));
         }
-        if ($result->getActive() === 0) {
+        if ($result->getActive() === PlayerEnum::USER_NEW) {
             $result->setActive(PlayerEnum::USER_ACTIVE);
 
             $this->userRepository->save($result);
         }
-        if ($result->getActive() == 4) {
+        if ($result->getActive() == PlayerEnum::USER_LOCKED) {
             throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde gesperrt'));
         }
         if ($result->getDeletionMark() == 2) {
@@ -167,10 +167,10 @@ final class Session implements SessionInterface
             $this->destroySession();
             return;
         }
-        if ($result->getActive() == 0) {
+        if ($result->getActive() == PlayerEnum::USER_NEW) {
             throw new LoginException("Aktivierung");
         }
-        if ($result->getActive() == 4) {
+        if ($result->getActive() == PlayerEnum::USER_LOCKED) {
             throw new LoginException("Gesperrt");
         }
         if ($result->getDeletionMark() == 2) {
@@ -209,6 +209,11 @@ final class Session implements SessionInterface
         $userId = (int) $_SESSION['uid'];
 
         $user = $this->userRepository->find($userId);
+
+        if ($user === null) {
+            $this->logout();
+            return;
+        }
         $user->setLastaction(time());
 
         $this->userRepository->save($user);

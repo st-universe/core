@@ -24,20 +24,11 @@ return [
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),
-            autowire(Handler\ContactlistDeletionHandler::class),
             autowire(Handler\CrewDeletionHandler::class),
-            autowire(Handler\DatabaseDeletionHandler::class),
-            autowire(Handler\IgnorelistDeletionHandler::class),
             autowire(Handler\KnPostingDeletionHandler::class),
-            autowire(Handler\KnCommentDeletionHandler::class),
-            autowire(Handler\NotesDeletionHandler::class),
             autowire(Handler\RpgPlotDeletionHandler::class),
-            autowire(Handler\PmCategoryDeletionHandler::class),
-            autowire(Handler\ResearchDeletionHandler::class),
             autowire(Handler\ShipDeletionHandler::class),
-            autowire(Handler\BuildplanDeletionHandler::class),
             autowire(Handler\FleetDeletionHandler::class),
-            autowire(Handler\TradeDeletionHandler::class),
             autowire(Handler\UserDeletionHandler::class)
         ]
     ),

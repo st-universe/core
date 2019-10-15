@@ -28,7 +28,7 @@ interface UserRepositoryInterface extends ObjectRepository
     /**
      * @return UserInterface[]
      */
-    public function getIdlePlayer(
+    public function getDeleteable(
         int $idleTimeThreshold,
         array $ignoreIds
     ): iterable;
