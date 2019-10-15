@@ -78,7 +78,7 @@ final class GetColonyList extends Action
                         ]
                     ];
                 },
-                $this->colonyRepository->getOrderedListByUser($this->session->getUser()->getId())
+                $this->colonyRepository->getOrderedListByUser($this->session->getUser())
             )
         );
     }

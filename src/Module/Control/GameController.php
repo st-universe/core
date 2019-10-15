@@ -235,7 +235,7 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH', $this->researchedRepository->getCurrentResearch((int) $user->getId()));
             $this->talPage->setVar(
                 'USER_COLONIES',
-                $this->colonyRepository->getOrderedListByUser($user->getId())
+                $this->colonyRepository->getOrderedListByUser($user)
             );
             $this->talPage->setVar('PM_NAVLET', $folder);
         }

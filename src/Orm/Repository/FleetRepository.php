@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
 {
@@ -31,15 +32,15 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em->flush($fleet);
     }
 
-    public function truncateByUser(int $userId): void
+    public function truncateByUser(UserInterface $user): void
     {
         $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s f WHERE f.user_id = :userId',
+                'DELETE FROM %s f WHERE f.user_id = :user',
                 Fleet::class
             )
         )
-            ->setParameters(['userId' => $userId])
+            ->setParameters(['user' => $user])
             ->execute();
     }
 

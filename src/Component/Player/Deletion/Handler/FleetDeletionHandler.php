@@ -19,6 +19,6 @@ final class FleetDeletionHandler implements PlayerDeletionHandlerInteface
 
     public function delete(UserInterface $user): void
     {
-        $this->fleetRepository->truncateByUser($user->getId());
+        $this->fleetRepository->truncateByUser($user);
     }
 }

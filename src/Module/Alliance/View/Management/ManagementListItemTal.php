@@ -67,7 +67,7 @@ final class ManagementListItemTal
 
     public function getColonies(): array
     {
-        return $this->colonyRepository->getOrderedListByUser($this->user->getId());
+        return $this->colonyRepository->getOrderedListByUser($this->user);
     }
 
     public function getShipRumpList(): array

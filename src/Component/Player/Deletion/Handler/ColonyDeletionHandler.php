@@ -24,7 +24,7 @@ final class ColonyDeletionHandler implements PlayerDeletionHandlerInteface
 
     public function delete(UserInterface $user): void
     {
-        foreach ($this->colonyRepository->getOrderedListByUser($user->getId()) as $colony) {
+        foreach ($this->colonyRepository->getOrderedListByUser($user) as $colony) {
             $this->colonyResetter->reset($colony);
         }
     }

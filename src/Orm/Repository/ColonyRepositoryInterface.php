@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|ColonyInterface find(integer $id)
@@ -29,7 +30,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
     /**
      * @return ColonyInterface[]
      */
-    public function getOrderedListByUser(int $userId): iterable;
+    public function getOrderedListByUser(UserInterface $user): iterable;
 
     /**
      * @return ColonyInterface[]

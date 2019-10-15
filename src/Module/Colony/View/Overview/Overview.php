@@ -39,7 +39,7 @@ final class Overview implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $colonyList = $this->colonyRepository->getOrderedListByUser($userId);
+        $colonyList = $this->colonyRepository->getOrderedListByUser($game->getUser());
 
         $game->appendNavigationPart(
             'colony.php',

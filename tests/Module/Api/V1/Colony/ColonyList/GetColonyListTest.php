@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\StuApiV1TestCase;
 
@@ -46,8 +47,8 @@ class GetColonyListTest extends StuApiV1TestCase
     public function testActionReturnsList(): void
     {
         $colony = $this->mock(ColonyInterface::class);
+        $user = $this->mock(UserInterface::class);
 
-        $userId = 815;
         $colonyId = 666;
         $colonyName = 'some-colony-name';
         $planetName = 'some-planet-name';
@@ -70,10 +71,10 @@ class GetColonyListTest extends StuApiV1TestCase
         $consumptionProduction = -666;
         $consumptionTurnsLeft = 4;
 
-        $this->session->shouldReceive('getUser->getId')
+        $this->session->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($userId);
+            ->andReturn($user);
 
         $colony->shouldReceive('getId')
             ->withNoArgs()
@@ -159,7 +160,7 @@ class GetColonyListTest extends StuApiV1TestCase
             ]);
 
         $this->colonyRepository->shouldReceive('getOrderedListByUser')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([$colony]);
 

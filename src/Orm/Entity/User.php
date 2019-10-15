@@ -516,7 +516,7 @@ class User implements UserInterface
             $colonyRepository = $container->get(ColonyRepositoryInterface::class);
 
             $this->global_crew_limit = (int)array_reduce(
-                $colonyRepository->getOrderedListByUser($this->getId()),
+                $colonyRepository->getOrderedListByUser($this),
                 function (int $sum, ColonyInterface $colony): int {
                     return $colony->getCrewLimit() + $sum;
                 },

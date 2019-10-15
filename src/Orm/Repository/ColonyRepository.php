@@ -12,6 +12,7 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PlanetType;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class ColonyRepository extends EntityRepository implements ColonyRepositoryInterface
 {
@@ -83,10 +84,10 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         ]);
     }
 
-    public function getOrderedListByUser(int $userId): iterable
+    public function getOrderedListByUser(UserInterface $user): iterable
     {
         return $this->findBy(
-            ['user_id' => $userId],
+            ['user_id' => $user],
             ['id' => 'asc']
         );
     }
