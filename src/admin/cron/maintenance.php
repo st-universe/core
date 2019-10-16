@@ -8,12 +8,8 @@ require_once __DIR__ . '/../../Config/Bootstrap.php';
 
 $entityManager = $container->get(EntityManagerInterface::class);
 
-$entityManager->beginTransaction();
-
 $maintenance = new Maintenance(
     $container->get(GameConfigRepositoryInterface::class),
     $container->get('maintenance_handler')
 );
 $maintenance->handle();
-
-$entityManager->commit();
