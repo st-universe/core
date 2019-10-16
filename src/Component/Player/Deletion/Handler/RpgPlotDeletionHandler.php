@@ -35,7 +35,7 @@ final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInteface
 
         foreach ($this->rpgPlotRepository->getByFoundingUser($userId) as $obj) {
 
-            $item = $this->rpgPlotMemberRepository->getByPlotAndUser((int)$obj->getId(), $userId);
+            $item = $this->rpgPlotMemberRepository->getByPlotAndUser($obj->getId(), $userId);
             if ($item !== null) {
                 $this->rpgPlotMemberRepository->delete($item);
             }

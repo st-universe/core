@@ -108,7 +108,7 @@ final class Session implements SessionInterface
 
         $this->user = $result;
 
-        $this->sessionStringRepository->truncate($result->getId());
+        $this->sessionStringRepository->truncate($result);
 
         if (!$result->isSaveLogin()) {
             setcookie('sstr', $this->buildCookieString($result), (time() + 86400 * 2));
@@ -133,7 +133,7 @@ final class Session implements SessionInterface
     {
         if ($this->user !== null || $user !== null) {
             $user = $this->user ?? $user;
-            $this->sessionStringRepository->truncate($user->getId());
+            $this->sessionStringRepository->truncate($user);
         }
         $this->destroyLoginCookies();
         setCookie(session_name(), '', time() - 42000);
@@ -186,7 +186,7 @@ final class Session implements SessionInterface
 
         $this->user = $result;
 
-        $this->sessionStringRepository->truncate($result->getId());
+        $this->sessionStringRepository->truncate($result);
         session_start();
 
         // Login verzeichnen

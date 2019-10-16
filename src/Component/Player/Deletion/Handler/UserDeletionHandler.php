@@ -30,8 +30,8 @@ final class UserDeletionHandler implements PlayerDeletionHandlerInteface
 
     public function delete(UserInterface $user): void
     {
-        $this->sessionStringRepository->truncate($user->getId());
-        $this->userProfileVisitorRepository->truncateByUser($user->getId());
+        $this->sessionStringRepository->truncate($user);
+        $this->userProfileVisitorRepository->truncateByUser($user);
         $this->userRepository->delete($user);
     }
 }

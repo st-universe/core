@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserProfileVisitor;
 use Stu\Orm\Entity\UserProfileVisitorInterface;
 
@@ -47,15 +48,15 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
             ->getResult();
     }
 
-    public function truncateByUser(int $userId): void
+    public function truncateByUser(UserInterface $user): void
     {
         $q = $this->getEntityManager()->createQuery(
             sprintf(
-                'DELETE FROM %s p WHERE p.user_id = :userId',
+                'DELETE FROM %s p WHERE p.user_id = :user',
                 UserProfileVisitor::class
             )
         );
-        $q->setParameter('userId', $userId);
+        $q->setParameter('userId', $user);
         $q->execute();
     }
 }

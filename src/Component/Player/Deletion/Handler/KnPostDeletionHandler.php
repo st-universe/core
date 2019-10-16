@@ -9,7 +9,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class KnPostingDeletionHandler implements PlayerDeletionHandlerInteface
+final class KnPostDeletionHandler implements PlayerDeletionHandlerInteface
 {
     private $knPostRepository;
 
@@ -28,7 +28,7 @@ final class KnPostingDeletionHandler implements PlayerDeletionHandlerInteface
         $gameFallbackUser = $this->userRepository->find(GameEnum::USER_NOONE);
 
         foreach ($this->knPostRepository->getByUser($user->getId()) as $obj) {
-            $obj->setUserName($user->getUser());
+            $obj->setUsername($user->getUser());
             $obj->setUser($gameFallbackUser);
 
             $this->knPostRepository->save($obj);

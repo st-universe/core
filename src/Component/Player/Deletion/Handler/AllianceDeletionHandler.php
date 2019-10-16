@@ -29,15 +29,17 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInteface
             if ($job->getType() === AllianceEnum::ALLIANCE_JOBS_FOUNDER) {
                 $alliance = $job->getAlliance();
 
-                if ($alliance->getSuccessor() === null) {
+                $successor = $alliance->getSuccessor();
+
+                if ($successor === null) {
                     $this->allianceActionManager->delete($alliance->getId());
                 } else {
-                    $successorUserId = $alliance->getSuccessor()->getUserId();
+                    $successorUserId = $successor->getUserId();
 
                     $this->allianceJobRepository->truncateByUser($successorUserId);
 
                     $this->allianceActionManager->setJobForUser(
-                        (int)$alliance->getId(),
+                        $alliance->getId(),
                         $successorUserId,
                         AllianceEnum::ALLIANCE_JOBS_FOUNDER
                     );

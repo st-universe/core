@@ -2,6 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserProfileVisitorInterface;
 
 interface UserProfileVisitorRepositoryInterface
@@ -17,5 +18,5 @@ interface UserProfileVisitorRepositoryInterface
      */
     public function getRecent(int $userId): array;
 
-    public function truncateByUser(int $userId): void;
+    public function truncateByUser(UserInterface $user): void;
 }
