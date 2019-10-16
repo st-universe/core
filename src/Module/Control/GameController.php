@@ -450,7 +450,7 @@ final class GameController implements GameControllerInterface
 
     public function isRegistrationPossible(): bool
     {
-        return true;
+        return $this->config->get('game.registration_enabled');
     }
 
     public function getGameStats(): array

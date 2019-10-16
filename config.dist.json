@@ -24,6 +24,7 @@
     "language": "de_DE",
     "user_avatar_path": "html/avatare/user/",
     "alliance_avatar_path": "html/avatare/alliance/",
+    "registration_enabled": false,
     "admin": {
       "id": 101,
       "username": "adminuser",
