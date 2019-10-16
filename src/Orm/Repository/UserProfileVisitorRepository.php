@@ -56,7 +56,7 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
                 UserProfileVisitor::class
             )
         );
-        $q->setParameter('userId', $user);
+        $q->setParameter('user', $user);
         $q->execute();
     }
 }

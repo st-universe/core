@@ -8,6 +8,9 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Index\Action\CheckInput\CheckInput;
 use Stu\Module\Index\Action\CheckInput\CheckInputRequest;
 use Stu\Module\Index\Action\CheckInput\CheckInputRequestInterface;
+use Stu\Module\Index\Action\DeletionConfirmation\DeletionConfirmation;
+use Stu\Module\Index\Action\DeletionConfirmation\DeletionConfirmationRequest;
+use Stu\Module\Index\Action\DeletionConfirmation\DeletionConfirmationRequestInterface;
 use Stu\Module\Index\Action\Login\Login;
 use Stu\Module\Index\Action\Login\LoginRequest;
 use Stu\Module\Index\Action\Login\LoginRequestInterface;
@@ -33,6 +36,7 @@ use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequestInterface;
 use function DI\autowire;
 
 return [
+    DeletionConfirmationRequestInterface::class => autowire(DeletionConfirmationRequest::class),
     CheckInputRequestInterface::class => autowire(CheckInputRequest::class),
     RegisterRequestInterface::class => autowire(RegisterRequest::class),
     LoginRequestInterface::class => autowire(LoginRequest::class),
@@ -46,6 +50,7 @@ return [
         SendPassword::ACTION_IDENTIFIER => autowire(SendPassword::class),
         ResetPassword::ACTION_IDENTIFIER => autowire(ResetPassword::class),
         Logout::ACTION_IDENTIFIER => autowire(Logout::class),
+        DeletionConfirmation::ACTION_IDENTIFIER => autowire(DeletionConfirmation::class),
     ],
     'INDEX_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

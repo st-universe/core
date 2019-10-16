@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api;
 
+use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
+use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterface;
 use Stu\Component\Player\Deletion\Handler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
@@ -19,6 +21,7 @@ use function DI\create;
 use function DI\get;
 
 return [
+    RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
         get(UserRepositoryInterface::class),
         [
