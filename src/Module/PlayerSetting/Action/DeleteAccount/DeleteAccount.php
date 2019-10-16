@@ -24,7 +24,9 @@ final class DeleteAccount implements ActionControllerInterface
     {
         $this->requestDeletionConfirmation->request($game->getUser());
 
-        $game->addInformation(_('Dein Account wurde zur Löschung vorgemerkt'));
+        $game->addInformation(
+            _('Dein Account wurde zur Löschung vorgemerkt. Zur engültigen Bestätigung wurde Dir eine Email geschickt.')
+        );
     }
 
     public function performSessionCheck(): bool
