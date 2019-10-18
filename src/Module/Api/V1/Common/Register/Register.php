@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api\V1\Common\Register;
 
+use Noodlehaus\ConfigInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
@@ -24,14 +25,18 @@ final class Register extends Action
 
     private $factionRepository;
 
+    private $config;
+
     public function __construct(
         JsonSchemaRequestInterface $jsonSchemaRequest,
         PlayerCreatorInterface $playerCreator,
-        FactionRepositoryInterface $factionRepository
+        FactionRepositoryInterface $factionRepository,
+        ConfigInterface $config
     ) {
         $this->jsonSchemaRequest = $jsonSchemaRequest;
         $this->playerCreator = $playerCreator;
         $this->factionRepository = $factionRepository;
+        $this->config = $config;
     }
 
     public function action(
@@ -39,6 +44,13 @@ final class Register extends Action
         JsonResponseInterface $response,
         array $args
     ): JsonResponseInterface {
+        if ($this->config->get('game.registration_enabled') === false) {
+            return $response->withError(
+                ErrorCodeEnum::REGISTRATION_NOT_PERMITTED,
+                'The registration of new player is disabled'
+            );
+        }
+
         $data = $this->jsonSchemaRequest->getData($this);
 
         $factions = array_filter(

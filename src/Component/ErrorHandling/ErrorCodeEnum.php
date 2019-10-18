@@ -12,4 +12,5 @@ final class ErrorCodeEnum
     public const INVALID_FACTION = 100004;
     public const AUTHENTICATION_FAILED = 100005;
     public const NOT_FOUND = 100006;
+    public const REGISTRATION_NOT_PERMITTED = 1000007;
 }

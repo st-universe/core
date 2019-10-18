@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Api\V1\Common\Register;
 
 use Mockery\MockInterface;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\ErrorHandling\ErrorCodeEnum;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
@@ -31,19 +32,44 @@ class RegisterTest extends StuApiV1TestCase
      */
     private $factionRepository;
 
+    /**
+     * @var null|MockInterface|ConfigInterface
+     */
+    private $config;
+
     public function setUp(): void
     {
         $this->jsonSchemaRequest = $this->mock(JsonSchemaRequestInterface::class);
         $this->playerCreator = $this->mock(PlayerCreatorInterface::class);
         $this->factionRepository = $this->mock(FactionRepositoryInterface::class);
+        $this->config = $this->mock(ConfigInterface::class);
 
         $this->setUpApiHandler(
             new Register(
                 $this->jsonSchemaRequest,
                 $this->playerCreator,
-                $this->factionRepository
+                $this->factionRepository,
+                $this->config
             )
         );
+    }
+
+    public function testActionThrowsErrorIgRegistrationIsDisabled(): void
+    {
+        $this->config->shouldReceive('get')
+            ->with('game.registration_enabled')
+            ->once()
+            ->andReturnFalse();
+
+        $this->response->shouldReceive('withError')
+            ->with(
+                ErrorCodeEnum::REGISTRATION_NOT_PERMITTED,
+                'The registration of new player is disabled'
+            )
+            ->once()
+            ->andReturnSelf();
+
+        $this->performAssertion();
     }
 
     public function testActionThrowsErrorOnInvalidFaction(): void
@@ -52,13 +78,18 @@ class RegisterTest extends StuApiV1TestCase
 
         $faction = $this->mock(FactionInterface::class);
 
+        $this->config->shouldReceive('get')
+            ->with('game.registration_enabled')
+            ->once()
+            ->andReturnTrue();
+
         $faction->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn(42);
 
         $this->jsonSchemaRequest->shouldReceive('getData')
-            ->With($this->handler)
+            ->with($this->handler)
             ->once()
             ->andReturn((object) ['factionId' => $factionId]);
 
@@ -68,7 +99,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturn([$faction]);
 
         $this->response->shouldReceive('withError')
-            ->With(
+            ->with(
                 ErrorCodeEnum::INVALID_FACTION,
                 'No suitable faction transmitted'
             )
@@ -84,6 +115,11 @@ class RegisterTest extends StuApiV1TestCase
 
         $faction = $this->mock(FactionInterface::class);
 
+        $this->config->shouldReceive('get')
+            ->with('game.registration_enabled')
+            ->once()
+            ->andReturnTrue();
+
         $faction->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -94,7 +130,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturnFalse();
 
         $this->jsonSchemaRequest->shouldReceive('getData')
-            ->With($this->handler)
+            ->with($this->handler)
             ->once()
             ->andReturn((object) ['factionId' => $factionId]);
 
@@ -104,7 +140,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturn([$faction]);
 
         $this->response->shouldReceive('withError')
-            ->With(
+            ->with(
                 ErrorCodeEnum::INVALID_FACTION,
                 'No suitable faction transmitted'
             )
@@ -122,6 +158,11 @@ class RegisterTest extends StuApiV1TestCase
 
         $faction = $this->mock(FactionInterface::class);
 
+        $this->config->shouldReceive('get')
+            ->with('game.registration_enabled')
+            ->once()
+            ->andReturnTrue();
+
         $faction->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -132,7 +173,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturnTrue();
 
         $this->jsonSchemaRequest->shouldReceive('getData')
-            ->With($this->handler)
+            ->with($this->handler)
             ->once()
             ->andReturn((object) [
                 'factionId' => $factionId,
@@ -151,7 +192,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andThrow(new LoginNameInvalidException());
 
         $this->response->shouldReceive('withError')
-            ->With(
+            ->with(
                 ErrorCodeEnum::LOGIN_NAME_INVALID,
                 'The provided login name is invalid (invalid characters or invalid length)'
             )
@@ -169,6 +210,11 @@ class RegisterTest extends StuApiV1TestCase
 
         $faction = $this->mock(FactionInterface::class);
 
+        $this->config->shouldReceive('get')
+            ->with('game.registration_enabled')
+            ->once()
+            ->andReturnTrue();
+
         $faction->shouldReceive('getId')
             ->withNoArgs()
             ->once()
@@ -179,7 +225,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturnTrue();
 
         $this->jsonSchemaRequest->shouldReceive('getData')
-            ->With($this->handler)
+            ->with($this->handler)
             ->once()
             ->andReturn((object) [
                 'factionId' => $factionId,
@@ -197,7 +243,7 @@ class RegisterTest extends StuApiV1TestCase
             ->once();
 
         $this->response->shouldReceive('withData')
-            ->With(true)
+            ->with(true)
             ->once()
             ->andReturnSelf();
 

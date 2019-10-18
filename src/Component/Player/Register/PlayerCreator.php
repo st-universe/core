@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
@@ -42,6 +43,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         if ($this->userRepository->getByLogin($loginName) || $this->userRepository->getByEmail($emailAddress)) {
             throw new PlayerDuplicateException();
         }
+
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);
         $player->setEmail($emailAddress);
