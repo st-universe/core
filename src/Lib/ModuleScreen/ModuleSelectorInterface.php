@@ -34,4 +34,6 @@ interface ModuleSelectorInterface
     public function getColony(): ColonyInterface;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
+
+    public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string;
 }

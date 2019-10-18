@@ -279,19 +279,6 @@ function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module):
 } # }}}
 
 /**
- */
-function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module)
-{ #{{{
-    if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {
-        return 'module_positive';
-    }
-    if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() < $module->getModule()->getLevel()) {
-        return 'module_negative';
-    }
-    return '';
-} # }}}
-
-/**
  *
  */
 function jsquote($str)

@@ -4,7 +4,7 @@
 		<metal:macro metal:use-macro="html/colonymacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="colony.php" method="post" name="colmanform">
-			<stu:hidden name="id" tal:attributes="value COLONY/getId" />	
+			<stu:hidden name="id" tal:attributes="value COLONY/getId" />
 			<stu:hidden name="rump" tal:attributes="value RUMP/getId" />
 			<stu:hidden name="SHOW_MODULE_SCREEN" value="1" />
 			<stu:hidden name="module_level" tal:attributes="value RUMP/getModuleLevel" />
@@ -128,7 +128,7 @@
 					</td>
 				</tr>
 				<tr tal:repeat="module THIS/getAvailableModules" class="runtime">
-					<td style="width: 3px;" tal:attributes="class php:getModuleLevelClass(rump,module)"></td>
+					<td style="width: 3px;" tal:attributes="class php:THIS.getModuleLevelClass(rump,module)"></td>
 					<td style="width: 50px;">
 						<input type="radio" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
 						<img src="assets/goods/${module/getModule/getGoodId}.gif" />

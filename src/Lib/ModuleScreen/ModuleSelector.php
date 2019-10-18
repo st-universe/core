@@ -147,4 +147,14 @@ class ModuleSelector implements ModuleSelectorInterface
         return $this->buildplan;
     }
 
+    public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string
+    {
+        if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {
+            return 'module_positive';
+        }
+        if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() < $module->getModule()->getLevel()) {
+            return 'module_negative';
+        }
+        return '';
+    }
 }
