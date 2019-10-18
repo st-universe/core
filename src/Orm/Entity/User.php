@@ -37,7 +37,7 @@ class User implements UserInterface
     /** @Column(type="string", length=20) */
     private $login = '';
 
-    /** @Column(type="string", length=100) */
+    /** @Column(type="string", length=255) */
     private $pass = '';
 
     /** @Column(type="string", length=200) */

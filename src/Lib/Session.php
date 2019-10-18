@@ -81,11 +81,33 @@ final class Session implements SessionInterface
 
         $result = $this->userRepository->getByLogin($userName);
         if ($result === null) {
-            throw new \Stu\Lib\LoginException(_('Benutzername nicht gefunden'));
+            throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
         }
-        if ($result->getPassword() != sha1($password)) {
-            throw new \Stu\Lib\LoginException(_('Das Passwort ist falsch'));
+
+        $password_hash = $result->getPassword();
+
+        $password_info = password_get_info($password_hash);
+
+        if ($password_info['algo'] === 0) {
+            // @todo remove old password handling. This is just temporary
+            if ($password_hash !== sha1($password)) {
+                throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
+            }
+            $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
+
+            $this->userRepository->save($result);
+        } else {
+            if (!password_verify($password, $password_hash)) {
+                throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
+            }
+
+            if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
+                $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
+
+                $this->userRepository->save($result);
+            }
         }
+
         if ($result->getActive() === PlayerEnum::USER_NEW) {
             $result->setActive(PlayerEnum::USER_ACTIVE);
 
