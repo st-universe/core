@@ -9,6 +9,7 @@ use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
@@ -39,6 +40,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private $colonyRepository;
 
+    private $createDatabaseEntry;
+
     private $msg = [];
 
     public function __construct(
@@ -49,7 +52,8 @@ final class ColonyTick implements ColonyTickInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        CreateDatabaseEntryInterface $createDatabaseEntry
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -59,6 +63,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->createDatabaseEntry = $createDatabaseEntry;
     }
 
     public function work(ColonyInterface $colony): void
@@ -208,7 +213,12 @@ final class ColonyTick implements ColonyTickInterface
 
         if ($current_research && $current_research->getActive()) {
             if (isset($production[$current_research->getResearch()->getGoodId()])) {
-                (new ResearchState($this->researchedRepository, $this->shipRumpUserRepository, $this->privateMessageSender)
+                (new ResearchState(
+                    $this->researchedRepository,
+                    $this->shipRumpUserRepository,
+                    $this->privateMessageSender,
+                    $this->createDatabaseEntry
+                )
                 )->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()
