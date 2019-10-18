@@ -61,7 +61,7 @@ final class AddContact implements ActionControllerInterface
 
         $mode = $this->addContactRequest->getModeId();
 
-        if (!array_key_exists($mode, getContactlistModes())) {
+        if (!array_key_exists($mode, $game->getContactlistModes())) {
             return;
         }
         $contact = $this->contactRepository->prototype();

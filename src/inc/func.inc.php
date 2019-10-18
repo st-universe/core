@@ -280,18 +280,6 @@ function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module):
 
 /**
  */
-function getContactlistModes()
-{ #{{{
-    return [
-        ContactListModeEnum::CONTACT_FRIEND => ["mode" => ContactListModeEnum::CONTACT_FRIEND, "name" => _("Freund")],
-        ContactListModeEnum::CONTACT_ENEMY => ["mode" => ContactListModeEnum::CONTACT_ENEMY, "name" => _("Feind")],
-        ContactListModeEnum::CONTACT_NEUTRAL => ["mode" => ContactListModeEnum::CONTACT_NEUTRAL, "name" => _("Neutral")],
-    ];
-} # }}}
-
-
-/**
- */
 function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module)
 { #{{{
     if ($rump->getModuleLevels()->{'getModuleLevel' . $module->getModule()->getType()}() > $module->getModule()->getLevel()) {

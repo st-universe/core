@@ -8,6 +8,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Tal\TalPageInterface;
@@ -496,6 +497,21 @@ final class GameController implements GameControllerInterface
             'executionTime' => $this->benchmark->getTime(),
             'memoryUsage' => $this->benchmark->getMemoryUsage(),
             'memoryPeakUsage' => $this->benchmark->getMemoryPeak()
+        ];
+    }
+
+    public function getContactlistModes(): array
+    {
+        return [
+            ContactListModeEnum::CONTACT_FRIEND => [
+                'mode' => ContactListModeEnum::CONTACT_FRIEND, 'name' => _('Freund')
+            ],
+            ContactListModeEnum::CONTACT_ENEMY => [
+                'mode' => ContactListModeEnum::CONTACT_ENEMY, 'name' => _('Feind')
+            ],
+            ContactListModeEnum::CONTACT_NEUTRAL => [
+                'mode' => ContactListModeEnum::CONTACT_NEUTRAL, 'name' => _('Neutral')
+            ],
         ];
     }
 }

@@ -98,4 +98,8 @@ interface GameControllerInterface
     public function setLoginError(string $error): void;
 
     public function getLoginError(): string;
+
+    public function getBenchmarkResult(): array;
+
+    public function getContactlistModes(): array;
 }

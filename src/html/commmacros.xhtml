@@ -2,7 +2,7 @@
 	<metal:block metal:define-macro="initial_js">
 		<script language="Javascript">
 			var sstr = '${THIS/getSessionString}';
-		</script> 
+		</script>
 		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/comm.js"><!-- stuniverse --></script>
 	</metal:block>
 
@@ -16,7 +16,7 @@
 					<a href="?SHOW_KN=1&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 				</td>
 			</tr>
-		</table>	
+		</table>
 	</metal:macro>
 
 	<metal:macro metal:define-macro="plotknnavigation">
@@ -26,7 +26,7 @@
 					<a href="?SHOW_PLOTKN=1&plotid=${PLOT/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 				</td>
 			</tr>
-		</table>	
+		</table>
 	</metal:macro>
 
 	<metal:macro metal:define-macro="pmnavigation">
@@ -36,7 +36,7 @@
 					<a href="?SHOW_PM_CAT=1&pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 				</td>
 			</tr>
-		</table>	
+		</table>
 	</metal:macro>
 
 	<tal:block metal:define-macro="pmcategorylist">
@@ -54,9 +54,9 @@
                     </a>
                 </div>
 			</li>
-		</tal:block> 
+		</tal:block>
 	</tal:block>
-	
+
 	<metal:macro metal:define-macro="pmcategorylist_ajax">
 		<tal:block metal:use-macro="html/commmacros.xhtml/catsortjs" />
 		<metal:macro metal:use-macro="pmcategorylist" />
@@ -90,7 +90,7 @@
 			<tr>
 				<td>
 					<ul id="catlist" class="pm_categories">
-						<tal:block metal:use-macro="html/commmacros.xhtml/pmcategorylist" />	
+						<tal:block metal:use-macro="html/commmacros.xhtml/pmcategorylist" />
 					</ul>
 					<tal:block metal:use-macro="html/commmacros.xhtml/catsortjs" />
 					<br style="clear: both;" /><br />
@@ -127,14 +127,14 @@
 		<form name="newcat">
 			<table class="tcal">
 				<tr>
-					<td>Name</td>	
+					<td>Name</td>
 					<td><input type="text" style="width: 100px;" name="catname" id="catname" /></td>
 				</tr>
 				<tr>
 					<td colspan="2"><input type="button" class="button" value="Anlegen" onclick="addNewCategory();" /></td>
 				</tr>
 			</table>
-		
+
 		</form>
 	</metal:macro>
 
@@ -142,7 +142,7 @@
 		<form name="editcat" method="post" action="comm.php">
 			<table class="tcal">
 				<tr>
-					<td>Name</td>	
+					<td>Name</td>
 					<td>
 						<input type="text" style="width: 100px;" value="runtime" id="catname" tal:attributes="value PM_CATEGORY/getDescription" name="catname" />
 						<input type="button" class="button" value="Ändern" onclick="changeCategoryName();" />
@@ -169,20 +169,20 @@
 		<select name="movecat_${post/getId}">
 			<tal:block tal:repeat="cat PM_CATEGORIES">
 				<option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescription">DESCRIPTION</option>
-			</tal:block> 
+			</tal:block>
 		</select>
 		<input type="button" class="button" onclick="movePm(${post/getId});" value="Verschieben" />
 	</metal:macro>
 
 	<tal:block metal:define-macro="clmodeselector">
 		<select name="runtime" tal:attributes="name divname;id divname">
-			<option tal:repeat="item php:getContactlistModes()" tal:attributes="value item/mode" tal:content="item/name">NAME</option>
+			<option tal:repeat="item THIS/getContactlistModes" tal:attributes="value item/mode" tal:content="item/name">NAME</option>
 		</select>
 	</tal:block>
 
 	<tal:block metal:define-macro="clmodeswitch">
 		<table class="tcal">
-			<tr tal:repeat="contactoption php:getContactlistModes()">
+			<tr tal:repeat="contactoption THIS/getContactlistModes">
 				<td>
 					<div tal:condition="not:php:contact.getMode() EQ repeat.contactoption.key"
 					     tal:attributes="class string:cltype${contactoption/mode}"
