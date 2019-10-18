@@ -11,6 +11,7 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
@@ -60,6 +61,8 @@ final class GameController implements GameControllerInterface
 
     private $benchmark;
 
+    private $createDatabaseEntry;
+
     private $gameInformations = [];
 
     private $siteNavigation = [];
@@ -97,7 +100,8 @@ final class GameController implements GameControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
         ResearchRepositoryInterface $researchRepository,
-        Ubench $benchmark
+        Ubench $benchmark,
+        CreateDatabaseEntryInterface $createDatabaseEntry
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -114,6 +118,7 @@ final class GameController implements GameControllerInterface
         $this->userRepository = $userRepository;
         $this->researchRepository = $researchRepository;
         $this->benchmark = $benchmark;
+        $this->createDatabaseEntry = $createDatabaseEntry;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -377,7 +382,15 @@ final class GameController implements GameControllerInterface
         $userId = $this->getUser()->getId();
 
         if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
-            $this->achievements[] = databaseScan($databaseEntryId, $userId);
+            $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($this->getUser(), $databaseEntryId);
+
+            if ($entry !== null) {
+                $this->achievements[] = sprintf(
+                    _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
+                    $entry->getDescription(),
+                    $entry->getCategory()->getPoints()
+                );
+            }
         }
     }
 

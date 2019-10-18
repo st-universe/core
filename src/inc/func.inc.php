@@ -3,18 +3,14 @@
 use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
-use Stu\Lib\ModuleScreen\ModuleSelectorWrapperInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\DatabaseEntryInterface;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\DatabaseEntryRepositoryInterface;
-use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 class Tuple
@@ -205,33 +201,6 @@ function formatSeconds($time)
         $ret .= ' ' . $time . 's';
     }
     return $ret;
-}
-
-function databaseScan($database_id, $user_id)
-{
-    if ($database_id == 0) {
-        return;
-    }
-
-    // @todo refactor
-    global $container;
-
-    /**
-     * @var DatabaseEntryInterface $entry
-     */
-    $entry = $container->get(DatabaseEntryRepositoryInterface::class)->find($database_id);
-    $databaseUserRepository = $container->get(DatabaseUserRepositoryInterface::class);
-    $userRepository = $container->get(UserRepositoryInterface::class);
-
-    $userEntry = $databaseUserRepository->prototype()
-        ->setUser($userRepository->find($user_id))
-        ->setDatabaseEntry($entry)
-        ->setDate(time());
-
-    $databaseUserRepository->save($userEntry);
-
-    return sprintf(_("Neuer Datenbankeintrag: %s (+%d Punkte)"), $entry->getDescription(),
-        $entry->getCategory()->getPoints());
 }
 
 /**

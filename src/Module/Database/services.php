@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Database;
 
 use Stu\Module\Control\GameController;
+use Stu\Module\Database\Lib\CreateDatabaseEntry;
+use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Database\View\Category\CategoryRequest;
 use Stu\Module\Database\View\Category\CategoryRequestInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactory;
@@ -21,6 +23,7 @@ use Stu\Module\Database\View\Overview\Overview;
 use function DI\autowire;
 
 return [
+    CreateDatabaseEntryInterface::class => autowire(CreateDatabaseEntry::class),
     DatabaseCategoryTalFactoryInterface::class => autowire(DatabaseCategoryTalFactory::class),
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),

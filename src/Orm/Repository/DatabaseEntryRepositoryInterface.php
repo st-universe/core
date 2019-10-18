@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\DatabaseEntryInterface;
 
+/**
+ * @method null|DatabaseEntryInterface find(integer $id)
+ */
 interface DatabaseEntryRepositoryInterface extends ObjectRepository
 {
     public function getByCategoryId(int $categoryId): array;

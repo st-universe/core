@@ -7,6 +7,7 @@ namespace Stu\Module\Research;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
@@ -19,14 +20,18 @@ final class ResearchState implements ResearchStateInterface
 
     private $privateMessageSender;
 
+    private $createDatabaseEntry;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        CreateDatabaseEntryInterface $createDatabaseEntry
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->createDatabaseEntry = $createDatabaseEntry;
     }
 
     public function finish(ResearchedInterface $state): void
@@ -64,7 +69,7 @@ final class ResearchState implements ResearchStateInterface
     private function createDatabaseEntries(ResearchedInterface $state): void
     {
         foreach ($state->getResearch()->getDatabaseEntryIds() as $entry) {
-            databaseScan($entry, $state->getUserId());
+            $this->createDatabaseEntry->createDatabaseEntryForUser($state->getUser(), $entry);
         }
     }
 
