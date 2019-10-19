@@ -64,18 +64,6 @@ function checkColonyPosition(ColonyInterface $col, ShipInterface $ship)
     return true;
 }
 
-function getStorageBar(&$bar, $file, $amount, &$sum)
-{
-    if ($sum < $amount) {
-        return;
-    }
-    $mod = floor($sum / $amount);
-    for ($i = 1; $i <= $mod; $i++) {
-        $bar[] = new Tuple($file . '_' . $amount, false);
-    }
-    $sum -= $mod * $amount;
-}
-
 function compareBuildings(PlanetFieldInterface$a, PlanetFieldInterface $b)
 {
     if ($a->getBuilding()->getId() == $b->getBuilding()->getId()) {
