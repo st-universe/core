@@ -41,7 +41,7 @@ final class SuggestPeace implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $opponentId = (int) ($relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId());
+        $opponentId = $relation->getOpponent()->getId() == $allianceId ? $relation->getAlliance()->getId() : $relation->getOpponent()->getId();
 
         $rel = $this->allianceRelationRepository->getActiveByTypeAndAlliancePair(
             [AllianceEnum::ALLIANCE_RELATION_PEACE],
@@ -61,7 +61,7 @@ final class SuggestPeace implements ActionControllerInterface
 
         $obj = $this->allianceRelationRepository->prototype();
         $obj->setAlliance($alliance);
-        $obj->setOpponent($rel->getOpponent());
+        $obj->setOpponent($relation->getOpponent());
         $obj->setType(AllianceEnum::ALLIANCE_RELATION_PEACE);
 
         $this->allianceRelationRepository->save($obj);

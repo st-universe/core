@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Relations;
 
 use AccessViolation;
+use Stu\Component\Alliance\AllianceEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
+use Stu\Module\Alliance\Lib\AllianceRelationItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -45,11 +47,14 @@ final class Relations implements ViewControllerInterface
 
         $relations = [];
         foreach ($result as $key => $obj) {
-            $relations[$key] = [
-                'relation' => $obj,
-                'opponent' => $obj->getOpponentId() == $alliance->getId() ? $obj->getAlliance() : $obj->getOpponent()
-            ];
+            $relations[$key] = new AllianceRelationItem($obj, $user);
         }
+
+        $possibleRelationTypes = [
+            AllianceEnum::ALLIANCE_RELATION_WAR => _('Krieg'),
+            AllianceEnum::ALLIANCE_RELATION_FRIENDS => _('Freundschaft'),
+            AllianceEnum::ALLIANCE_RELATION_ALLIED => _('Bündnis'),
+        ];
 
         $game->setPageTitle(_('Diplomatie'));
         $game->appendNavigationPart(
@@ -63,5 +68,6 @@ final class Relations implements ViewControllerInterface
         $game->setTemplateFile('html/alliancerelations.xhtml');
         $game->setTemplateVar('ALLIANCE_LIST', $this->allianceRepository->findAllOrdered());
         $game->setTemplateVar('RELATIONS', $relations);
+        $game->setTemplateVar('POSSIBLE_RELATION_TYPES', $possibleRelationTypes);
     }
 }

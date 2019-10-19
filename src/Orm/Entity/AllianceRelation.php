@@ -103,11 +103,6 @@ class AllianceRelation implements AllianceRelationInterface
         return $ret;
     }
 
-    public function offerIsSend(): bool
-    {
-        return $this->getAllianceId() == currentUser()->getAllianceId();
-    }
-
     public function getAlliance(): AllianceInterface
     {
         return $this->alliance;

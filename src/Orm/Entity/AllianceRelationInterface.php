@@ -24,8 +24,6 @@ interface AllianceRelationInterface
 
     public function getPossibleTypes(): array;
 
-    public function offerIsSend(): bool;
-
     public function getAlliance(): AllianceInterface;
 
     public function setAlliance(AllianceInterface $alliance): AllianceRelationInterface;
