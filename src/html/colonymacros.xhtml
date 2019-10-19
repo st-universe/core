@@ -31,7 +31,7 @@
 		<ul class="menu" style="width: 190px;">
 			<li tal:repeat="building menu/buildings">
 			<div onclick="openBuildingInfo(${building/getId})">
-				<img src="assets/buildings/${building/getId}/${building/getBuildingType}at.png" /><br />
+				<img src="assets/generated/buildings/${building/getId}/${building/getBuildingType}at.png" /><br />
 				<span tal:replace="building/getName">runtime</span>
 			</div>
 			</li>
@@ -879,7 +879,7 @@
 				<tr>
 					<td class="center" style="vertical-align: top; width: 100px;">
 						<br />
-						<img src="assets/buildings/${building/getId}/0at.png" />
+						<img src="assets/generated/buildings/${building/getId}/0at.png" />
 						<br /><br />
 						<strong i18n:translate="">Baubar</strong><br />
 						<img src="#" tal:repeat="field USEABLE_FIELD_TYPES" tal:attributes="src string:assets/fields/${field/getFieldTypeId}.gif; title php:getFieldName(field.getFieldTypeId())" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
@@ -952,8 +952,8 @@
 						</div>
 					</tal:block>
 					<tal:block tal:condition="field/hasBuilding">
-					<div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})"><div><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" /></div></div></div></div>
-					<div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px; background-image: url(assets/buildings/${field/getPictureType}${COLONY_SURFACE/getDayNightState}.png)"><div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${COLONY_SURFACE/getDayNightState}.png" /></div></div></div></div>
+					<div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})"><div><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" /></div></div></div></div>
+					<div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/fields/${field/getFieldType}.gif); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},${field/getBuildingId});" id="field${field/getFieldId}"><div onmouseover="fieldMouseOver(this,${field/getFieldId},${field/getBuildingId},${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${COLONY_SURFACE/getDayNightState}.png)"><div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${COLONY_SURFACE/getDayNightState}.png" /></div></div></div></div>
 					</tal:block>
 			</tal:block>
 		</div>
@@ -964,9 +964,9 @@
 				<td>
 					<div style="width: 100%;" tal:condition="FIELD/isInConstruction">
 						<div style="background-image: url(assets/fields/${FIELD/getFieldType}.gif); width: 40px; height: 40px; display: table-cell;">
-							<div style="width: 40px; height: 40px; background-image: url(assets/buildings/${FIELD/getPictureType}${COLONY_SURFACE/getDayNightState}.png)">
+							<div style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${FIELD/getPictureType}${COLONY_SURFACE/getDayNightState}.png)">
 								<div style="height: 40px; overflow: hidden; width: ${FIELD/getOverlayWidth}px;">
-									<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString" src="assets/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}a${COLONY_SURFACE/getDayNightState}.png" />
+									<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString" src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}a${COLONY_SURFACE/getDayNightState}.png" />
 								</div>
 							</div>
 						</div>
@@ -996,7 +996,7 @@
 						<div tal:condition="FIELD/hasBuilding">
 							<div style="display: table-cell">
 								<div style="background-image: url(assets/fields/${FIELD/getFieldType}.gif); width: 40px; height: 40px;">
-									<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString" src="assets/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}${FIELD/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" />
+									<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title FIELD/getTitleString" src="assets/generated/buildings/${FIELD/getBuildingId}/${FIELD/getBuilding/getBuildingType}${FIELD/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" />
 								</div>
 							</div>
 							<div style="text-align: left; padding-left: 5px; display: table-cell; vertical-align: top;">
@@ -1084,13 +1084,13 @@
 								</tr>
 								<tr>
 									<td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
-										<img src="assets/buildings/${FIELD/getBuilding/getId}/0at.png" />
+										<img src="assets/generated/buildings/${FIELD/getBuilding/getId}/0at.png" />
 									</td>
 									<td style="text-align: center; vertical-align: middle">
 										=&gt;
 									</td>
 									<td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
-										<img src="assets/buildings/${data/getUpgradeToBuildingId}/0at.png" />
+										<img src="assets/generated/buildings/${data/getUpgradeToBuildingId}/0at.png" />
 									</td>
 									<td style="text-align: left;">
 										<strong>Kosten</strong><br />
