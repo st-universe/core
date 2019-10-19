@@ -222,6 +222,11 @@ final class ColonySurface implements ColonySurfaceInterface
     public function getDayNightState(): string
     {
         // @todo implement
-        return 't';
+        $hour = date('G');
+
+        if ($hour > 7 && $hour < 19) {
+            return 't';
+        }
+        return 'n';
     }
 }
