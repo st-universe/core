@@ -30,6 +30,14 @@
       "username": "adminuser",
       "email": "admin@example.com",
       "faction": 1
+    },
+    "imprint": {
+      "name": "Max Mustermann",
+      "address": "123 Fake street",
+      "zip": "0815",
+      "city": "Musterhausen",
+      "country": "Mustercountry",
+      "email": "max@example.com"
     }
   },
   "api": {
