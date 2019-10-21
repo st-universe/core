@@ -1744,16 +1744,16 @@
         },
         {
             "name": "php-di/php-di",
-            "version": "6.0.9",
+            "version": "6.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/PHP-DI.git",
-                "reference": "00a5eb0f0dd94deabb71acfbf44c37b80d53d0a1"
+                "reference": "a6c813bf6b0d0bdeade3ac5a920e2c2a5b1a6ce3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/00a5eb0f0dd94deabb71acfbf44c37b80d53d0a1",
-                "reference": "00a5eb0f0dd94deabb71acfbf44c37b80d53d0a1",
+                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/a6c813bf6b0d0bdeade3ac5a920e2c2a5b1a6ce3",
+                "reference": "a6c813bf6b0d0bdeade3ac5a920e2c2a5b1a6ce3",
                 "shasum": ""
             },
             "require": {
@@ -1803,7 +1803,7 @@
                 "ioc",
                 "psr11"
             ],
-            "time": "2019-07-08T07:24:22+00:00"
+            "time": "2019-10-21T11:58:24+00:00"
         },
         {
             "name": "php-di/phpdoc-reader",
@@ -5748,12 +5748,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "8da9497c449b7a96c67ef8157ed2568e493bf8f1"
+                "reference": "d1b7213a2a1fce75f76e892fe01b10446e9dc694"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/8da9497c449b7a96c67ef8157ed2568e493bf8f1",
-                "reference": "8da9497c449b7a96c67ef8157ed2568e493bf8f1",
+                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/d1b7213a2a1fce75f76e892fe01b10446e9dc694",
+                "reference": "d1b7213a2a1fce75f76e892fe01b10446e9dc694",
                 "shasum": ""
             },
             "require": {
@@ -5770,7 +5770,7 @@
                 "source": "https://github.com/usox/stu3-assets/tree/master",
                 "issues": "https://github.com/usox/stu3-assets/issues"
             },
-            "time": "2019-10-19T08:49:19+00:00"
+            "time": "2019-10-20T10:47:08+00:00"
         },
         {
             "name": "webmozart/assert",
