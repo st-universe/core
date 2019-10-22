@@ -61,9 +61,9 @@ final class KickPlayer implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $player->setAlliance(null);
-
         $alliance->getMembers()->removeElement($player);
+
+        $player->setAlliance(null);
 
         $this->userRepository->save($player);
 
