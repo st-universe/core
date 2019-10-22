@@ -70,7 +70,7 @@ function fieldMouseOver(obj,field,building,fieldtype) {
 		if (obj.parentNode.parentNode.parentNode.parentNode.className == 'cfb') {
 			oldimg = obj.src;
 			obj.parentNode.style.backgroundImage = 'url('+oldimg+')';
-			obj.src = gfx_path+"/buildings/"+selectedbuilding+"/0at.png";
+			obj.src = gfx_path+"/generated/buildings/"+selectedbuilding+"/0at.png";
 		}
 	}
 	if (buildmode == 1 && $('building_preview_'+fieldtype)) {
