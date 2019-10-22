@@ -572,6 +572,6 @@ class User implements UserInterface
 
         $alliance = $container->get(AllianceRepositoryInterface::class)->find($allianceId);
 
-        return $alliance->getAcceptApplications() && $this->getAllianceId() === 0 && ($alliance->getFactionId() == 0 || $this->getFactionId() == $alliance->getFactionId());
+        return $alliance->getAcceptApplications() && $this->getAlliance() === null && ($alliance->getFactionId() == 0 || $this->getFactionId() == $alliance->getFactionId());
     }
 }
