@@ -24,6 +24,10 @@
     "language": "de_DE",
     "user_avatar_path": "html/avatare/user/",
     "alliance_avatar_path": "html/avatare/alliance/",
+    "invitation": {
+      "tokens_per_user": 2,
+      "ttl": 86400
+    },
     "registration_enabled": false,
     "admin": {
       "id": 101,

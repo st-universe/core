@@ -78,6 +78,30 @@
                 <br />
                 <form action="options.php" method="post">
                         <table class="tcal">
+                          <tr>
+                            <th colspan="3">Einladungen</th>
+                          </tr>
+                          <tr tal:condition="INVITATIONS">
+                            <td style="width: 10%" class="th">Datum</td>
+                            <td style="width: 50%" class="th" i18n:translate="">Link</td>
+                            <td class="th" i18n:translate="">Spieler</td>
+                          </tr>
+                          <tr style="height: 70px" tal:repeat="data INVITATIONS">
+                            <td tal:content="datetime:data/getDate">DATE</td>
+                            <td>
+                              <input type="text" style="width: 650px;" tal:attributes="value data/getLink; readonly data/getInvitedUser" />
+                            </td>
+                            <td tal:condition="data/getInvitedUser" tal:content="bbcode:data/getInvitedUser/getName"></td>
+                            <td tal:condition="not:data/getInvitedUser"></td>
+                          </tr>
+                          <tr tal:condition="INVITATION_POSSIBLE">
+                            <td colspan="3"><input type="submit" value="Einladungslink erstellen" name="B_REQUEST_INVITATION_TOKEN" class="button" /></td>
+                          </tr>
+                        </table>
+                </form>
+                <br />
+                <form action="options.php" method="post">
+                        <table class="tcal">
                                 <tr>
                                         <th>Siedlerbeschreibung</th>
                                 </tr>
@@ -85,7 +109,7 @@
                                         <td><stu:textarea name="description" style="width: 100%; height: 200px;" tal:content="structure USER/getDescription"></stu:textarea></td>
                                 </tr>
                                 <tr>
-                                        <td colspan="2"><input type="submit" value="ändern" name="B_CHANGE_DESCRIPTION" class="button" /></td>
+                                        <td><input type="submit" value="ändern" name="B_CHANGE_DESCRIPTION" class="button" /></td>
                                 </tr>
                         </table>
                 </form>

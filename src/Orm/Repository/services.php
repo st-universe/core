@@ -95,6 +95,7 @@ use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeStorage;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\User;
+use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
@@ -550,6 +551,11 @@ return [
         ContainerInterface $c
     ): UserIpTableRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserIpTable::class);
+    },
+    UserInvitationRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserInvitationRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserInvitation::class);
     },
     UserMapRepositoryInterface::class => function (
         ContainerInterface $c

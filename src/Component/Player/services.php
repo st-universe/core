@@ -9,6 +9,8 @@ use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterf
 use Stu\Component\Player\Deletion\Handler;
 use Stu\Component\Player\Deletion\PlayerDeletion;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Component\Player\Invitation\InvitePlayer;
+use Stu\Component\Player\Invitation\InvitePlayerInterface;
 use Stu\Component\Player\Register\PlayerCreator;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Component\Player\Register\RegistrationEmailSender;
@@ -21,6 +23,7 @@ use function DI\create;
 use function DI\get;
 
 return [
+    InvitePlayerInterface::class => autowire(InvitePlayer::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
         get(UserRepositoryInterface::class),
