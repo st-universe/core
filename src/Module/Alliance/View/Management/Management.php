@@ -66,6 +66,7 @@ final class Management implements ViewControllerInterface
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_JOB_DIPLOMATIC', AllianceEnum::ALLIANCE_JOBS_DIPLOMATIC);
         $game->setTemplateVar('ALLIANCE_JOB_SUCCESSOR', AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
+        $game->setTemplateVar('ALLIANCE_JOB_FOUNDER', AllianceEnum::ALLIANCE_JOBS_FOUNDER);
         $game->setTemplateVar('MEMBER_LIST', $list);
         $game->setTemplateVar(
             'USER_IS_FOUNDER',
