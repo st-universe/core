@@ -48,7 +48,7 @@ final class PromotePlayer implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = (int) $alliance->getId();
 
-        if (!$this->allianceActionManager->mayEdit($allianceId, $$userId)) {
+        if (!$this->allianceActionManager->mayEdit($allianceId, $userId)) {
             throw new AccessViolation();
         }
         $playerId = $this->promotePlayerRequest->getPlayerId();
