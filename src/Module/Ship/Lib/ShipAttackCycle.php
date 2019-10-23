@@ -161,7 +161,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 $readyAttacker = array_filter(
                     $attackerPool,
                     function (ShipInterface $ship): bool {
-                        return !array_key_exists($ship->getId(), $this->usedShips['attacker']) && $this->canFire($ship);;
+                        return !array_key_exists($ship->getId(), $this->usedShips['attacker']) && $this->canFire($ship);
                     }
                 );
                 $readyDefender = array_filter(

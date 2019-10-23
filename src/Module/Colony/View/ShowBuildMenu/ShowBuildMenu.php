@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\View\ShowBuildMenu;
 
 use BuildMenuWrapper;
 use ColonyMenu;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;

@@ -6,6 +6,9 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMapInterface;
 
+/**
+ * @method null|StarSystemMapInterface find(integer $id)
+ */
 interface StarSystemMapRepositoryInterface extends ObjectRepository
 {
     /**
@@ -29,4 +32,6 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
         int $startSy,
         int $endSy
     ): array;
+
+    public function save(StarSystemMapInterface $starSystemMap): void;
 }

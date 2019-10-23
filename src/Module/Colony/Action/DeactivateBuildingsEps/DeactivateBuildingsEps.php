@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\DeactivateBuildingsEps;
 
 use request;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

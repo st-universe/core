@@ -312,6 +312,9 @@ interface ShipInterface
 
     public function getDockedShipCount(): int;
 
+    /**
+     * @return StarSystemMapInterface|MapInterface
+     */
     public function getCurrentMapField();
 
     public function getShieldRegenerationRate(): int;

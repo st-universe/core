@@ -41,7 +41,8 @@ final class EditSystemField implements ActionControllerInterface
         $selectedField = $this->starSystemMapRepository->find($this->editSystemFieldRequest->getFieldId());
         $type = $this->mapFieldTypeRepository->find($this->editSystemFieldRequest->getFieldType());
         $selectedField->setFieldId($type->getId());
-        $selectedField->save();
+
+        $this->starSystemMapRepository->save($selectedField);
 
         $game->setView(Noop::VIEW_IDENTIFIER);
     }

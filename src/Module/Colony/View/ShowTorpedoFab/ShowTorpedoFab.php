@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowTorpedoFab;
 
 use ColonyMenu;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;

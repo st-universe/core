@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBuildingManagement;
 
 use ColonyMenu;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;

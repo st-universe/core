@@ -56,4 +56,12 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ])
             ->getResult();
     }
+
+    public function save(StarSystemMapInterface $starSystemMap): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($starSystemMap);
+        $em->flush($starSystemMap);
+    }
 }
