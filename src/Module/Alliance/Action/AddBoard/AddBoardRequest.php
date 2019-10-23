@@ -12,9 +12,9 @@ final class AddBoardRequest implements AddBoardRequestInterface
 
     public function getBoardName(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('board')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 
 }

@@ -12,16 +12,16 @@ final class CreateAllianceRequest implements CreateAllianceRequestInterface
 
     public function getName(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('name')->string()->required()
-        )));
+        );
     }
 
     public function getDescription(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('description')->string()->required()
-        )));
+        );
     }
 
     public function getFactionMode(): int

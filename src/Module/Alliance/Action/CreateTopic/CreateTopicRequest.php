@@ -17,15 +17,15 @@ final class CreateTopicRequest implements CreateTopicRequestInterface
 
     public function getTopicTitle(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('tname')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 
     public function getText(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('ttext')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 }

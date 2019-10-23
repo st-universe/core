@@ -22,8 +22,8 @@ final class CreatePostRequest implements CreatePostRequestInterface
 
     public function getText(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('ttext')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 }

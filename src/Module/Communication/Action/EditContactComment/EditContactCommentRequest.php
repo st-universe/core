@@ -17,8 +17,8 @@ final class EditContactCommentRequest implements EditContactCommentRequestInterf
 
     public function getText(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter(sprintf('comment_%d', $this->getContactId()))->string()->trim()->defaultsToIfEmpty('')
-        ));
+        );
     }
 }

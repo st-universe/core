@@ -70,13 +70,6 @@ function compareBuildings(PlanetFieldInterface$a, PlanetFieldInterface $b)
     return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
 }
 
-/**
- */
-function tidyString(&$string)
-{ #{{{
-    return str_replace(['<', '>', '&gt;', '&lt;'], '', $string);
-} # }}}
-
 function renderResearchStatusBar($points, &$maxpoints)
 {
     $pro = getPercentage($points, $maxpoints);

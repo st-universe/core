@@ -6,7 +6,6 @@ namespace Stu\Module\Colony\Action\ChangeName;
 
 use JBBCode\Parser;
 use request;
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,14 +23,18 @@ final class ChangeName implements ActionControllerInterface
 
     private $colonyRepository;
 
+    private $changeNameRequest;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         Parser $bbCodeParser,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ChangeNameRequestInterface $changeNameRequest
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->bbCodeParser = $bbCodeParser;
         $this->colonyRepository = $colonyRepository;
+        $this->changeNameRequest = $changeNameRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,8 +46,7 @@ final class ChangeName implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_OPTION]);
 
-        $value = request::postStringFatal('colname');
-        $value = tidyString(strip_tags($value));
+        $value = $this->changeNameRequest->getName();
 
         if (mb_strlen($this->bbCodeParser->parse($value)->getAsText()) < 3) {
             $game->addInformation(_('Der Name ist zu kurz (Minium: 3 Zeichen)'));

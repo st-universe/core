@@ -22,15 +22,15 @@ final class EditKnPostRequest implements EditKnPostRequestInterface
 
     public function getText(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('text')->string()->trim()->required()
-        ));
+        );
     }
 
     public function getTitle(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
-        ));
+        );
     }
 }

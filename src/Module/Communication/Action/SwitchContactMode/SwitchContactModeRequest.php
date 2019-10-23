@@ -22,6 +22,6 @@ final class SwitchContactModeRequest implements SwitchContactModeRequestInterfac
 
     public function getContactDiv(): string
     {
-        return tidyString($this->queryParameter('cldiv')->string()->defaultsToIfEmpty(''));
+        return $this->tidyString($this->queryParameter('cldiv')->string()->defaultsToIfEmpty(''));
     }
 }

@@ -17,19 +17,15 @@ final class SaveNoteRequest implements SaveNoteRequestInterface
 
     public function getTitle(): string
     {
-        return strip_tags(
-            tidyString(
-                $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
-            )
+        return $this->tidyString(
+            $this->queryParameter('title')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 
     public function getText(): string
     {
-        return strip_tags(
-            tidyString(
-                $this->queryParameter('text')->string()->trim()->defaultsToIfEmpty('')
-            )
+        return $this->tidyString(
+            $this->queryParameter('text')->string()->trim()->defaultsToIfEmpty('')
         );
     }
 

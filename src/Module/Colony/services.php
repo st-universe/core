@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony;
 
+use Stu\Module\Colony\Action\ChangeName\ChangeNameRequest;
+use Stu\Module\Colony\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -157,6 +159,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use function DI\autowire;
 
 return [
+    ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
     ColonyStorageManagerInterface::class => autowire(ColonyStorageManager::class),

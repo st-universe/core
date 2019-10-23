@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship;
 
+use Stu\Module\Ship\Action\ChangeName\ChangeNameRequest;
+use Stu\Module\Ship\Action\ChangeName\ChangeNameRequestInterface;
+use Stu\Module\Ship\Action\RenameCrew\RenameCrewRequest;
+use Stu\Module\Ship\Action\RenameCrew\RenameCrewRequestInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamage;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhase;
@@ -127,6 +131,8 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
+    ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),

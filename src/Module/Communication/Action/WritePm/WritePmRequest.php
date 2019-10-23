@@ -17,9 +17,9 @@ final class WritePmRequest implements WritePmRequestInterface
 
     public function getText(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('text')->string()->trim()->required()
-        ));
+        );
     }
 
     public function getReplyPmId(): int

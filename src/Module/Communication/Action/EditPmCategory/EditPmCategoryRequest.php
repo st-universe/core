@@ -17,6 +17,6 @@ final class EditPmCategoryRequest implements EditPmCategoryRequestInterface
 
     public function getName(): string
     {
-        return tidyString($this->queryParameter('catname')->string()->defaultsToIfEmpty(''));
+        return $this->tidyString($this->queryParameter('catname')->string()->defaultsToIfEmpty(''));
     }
 }

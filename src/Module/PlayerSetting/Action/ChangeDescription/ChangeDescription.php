@@ -27,7 +27,6 @@ final class ChangeDescription implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $value = $this->changeDescriptionRequest->getDescription();
-        $value = strip_tags(tidyString($value));
 
         $user = $game->getUser();
 

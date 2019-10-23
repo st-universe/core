@@ -17,15 +17,15 @@ final class EditKnPlotRequest implements EditKnPlotRequestInterface
 
     public function getText(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('description')->string()->trim()->required()
-        ));
+        );
     }
 
     public function getTitle(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('title')->string()->trim()->required()
-        ));
+        );
     }
 }

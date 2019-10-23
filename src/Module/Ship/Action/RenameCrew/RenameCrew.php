@@ -20,12 +20,16 @@ final class RenameCrew implements ActionControllerInterface
 
     private $crewRepository;
 
+    private $renameCrewRequest;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        CrewRepositoryInterface $crewRepository
+        CrewRepositoryInterface $crewRepository,
+        RenameCrewRequestInterface $renameCrewRequest
     ) {
         $this->shipLoader = $shipLoader;
         $this->crewRepository = $crewRepository;
+        $this->renameCrewRequest = $renameCrewRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -46,9 +50,9 @@ final class RenameCrew implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $name = request::getString('rn_crew_' . $crew->getId() . '_value');
+        $name = $this->renameCrewRequest->getName($crew->getId());
         if (mb_strlen(trim($name)) > 0) {
-            $crew->setName(tidyString($name));
+            $crew->setName($name);
 
             $this->crewRepository->save($crew);
         }

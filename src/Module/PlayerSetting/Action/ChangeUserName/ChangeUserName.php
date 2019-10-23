@@ -31,7 +31,7 @@ final class ChangeUserName implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $value = strip_tags(tidyString($this->changeUserNameRequest->getName()));
+        $value = $this->changeUserNameRequest->getName();
         $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
 
         if (mb_strlen($valueWithoutMarkup) < 6) {

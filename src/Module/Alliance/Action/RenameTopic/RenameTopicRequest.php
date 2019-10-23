@@ -17,8 +17,8 @@ final class RenameTopicRequest implements RenameTopicRequestInterface
 
     public function getTitle(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('tname')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 }

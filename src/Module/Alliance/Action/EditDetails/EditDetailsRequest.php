@@ -12,23 +12,23 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
 
     public function getName(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('name')->string()->required()
-        )));
+        );
     }
 
     public function getHomepage(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('homepage')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 
     public function getDescription(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('description')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 
     public function getFactionMode(): int

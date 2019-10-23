@@ -24,4 +24,15 @@ trait CustomControllerHelperTrait
     {
         return new CustomRequestParserFactory($request, $config);
     }
+
+    protected function tidyString($string): string
+    {
+        return trim(
+            str_replace(
+                ['<', '>', '&gt;', '&lt;'],
+                '',
+                strip_tags($string)
+            )
+        );
+    }
 }

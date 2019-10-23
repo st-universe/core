@@ -22,14 +22,18 @@ final class ChangeName implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $changeNameRequest;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         Parser $bbCodeParser,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ChangeNameRequestInterface $changeNameRequest
     ) {
         $this->shipLoader = $shipLoader;
         $this->bbCodeParser = $bbCodeParser;
         $this->shipRepository = $shipRepository;
+        $this->changeNameRequest = $changeNameRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,7 +47,7 @@ final class ChangeName implements ActionControllerInterface
             $userId
         );
 
-        $value = tidyString(strip_tags(request::postString('shipname')));
+        $value = $this->changeNameRequest->getName();
 
         if (mb_strlen($this->bbCodeParser->parse($value)->getAsText()) < 3) {
             $game->addInformation(_('Der Schiffname ist zu kurz (Minimum 3 Zeichen)'));

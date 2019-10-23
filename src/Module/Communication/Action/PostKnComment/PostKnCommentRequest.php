@@ -17,8 +17,8 @@ final class PostKnCommentRequest implements PostKnCommentRequestInterface
 
     public function getText(): string
     {
-        return tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('comment')->string()->trim()->defaultsToIfEmpty('')
-        ));
+        );
     }
 }

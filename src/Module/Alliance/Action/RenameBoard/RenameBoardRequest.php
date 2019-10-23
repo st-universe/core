@@ -17,8 +17,8 @@ final class RenameBoardRequest implements RenameBoardRequestInterface
 
     public function getTitle(): string
     {
-        return trim(tidyString(strip_tags(
+        return $this->tidyString(
             $this->queryParameter('tname')->string()->defaultsToIfEmpty('')
-        )));
+        );
     }
 }
