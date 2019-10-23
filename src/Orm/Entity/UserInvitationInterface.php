@@ -23,4 +23,6 @@ interface UserInvitationInterface
     public function getToken(): string;
 
     public function setToken(string $token): UserInvitationInterface;
+
+    public function isValid(int $ttl): bool;
 }

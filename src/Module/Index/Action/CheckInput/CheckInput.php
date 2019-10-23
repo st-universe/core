@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\CheckInput;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CheckInput implements ActionControllerInterface
@@ -20,12 +22,20 @@ final class CheckInput implements ActionControllerInterface
 
     private $userRepository;
 
+    private $userInvitationRepository;
+
+    private $config;
+
     public function __construct(
         CheckInputRequestInterface $checkInputRequest,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        UserInvitationRepositoryInterface $userInvitationRepository,
+        ConfigInterface $config
     ) {
         $this->checkInputRequest = $checkInputRequest;
         $this->userRepository = $userRepository;
+        $this->userInvitationRepository = $userInvitationRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,6 +68,15 @@ final class CheckInput implements ActionControllerInterface
                 }
                 $state = self::REGISTER_STATE_OK;
                 break;
+            case 'token':
+                $invitation = $this->userInvitationRepository->getByToken($value);
+
+                if ($invitation === null || !$invitation->isValid($this->config->get('game.invitation.ttl'))) {
+                    break;
+                }
+                $state = self::REGISTER_STATE_OK;
+                break;
+
         }
         echo $state;
         exit;

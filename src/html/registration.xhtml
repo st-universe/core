@@ -21,11 +21,18 @@
 					<span id="emailok" style="display: none; color: Green;">OK</span>
 					<div id="emaildup" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist bereits registriert</div>
 				</div>
+        <br />
+        <div class="divhead">Einladungs-Code</div>
+        <div class="divbody">
+          <input tal:attributes="value TOKEN" type="text" class="text" size="25" name="token" id="token" onblur="checkToken(this,this.value)" />
+          <span id="tokenerror" style="display: none; color: #FF0000;">Fehler</span>
+          <span id="tokenok" style="display: none; color: Green;">OK</span>
+        </div>
 				<br />
 				<div class="divhead">Regeln</div>
 				<div class="divbody">
-					<input type="checkbox" onclick="$('asberror').hide()" id="asb" name="asb" />Ich akzeptiere die <a href="http://wiki.stuniverse.de/Spielregeln">Spielregeln</a>.
-					<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln wurden nicht akzeptiert</div>
+					<input type="checkbox" onclick="$('asberror').hide()" id="asb" name="asb" />Ich habe die <a href="http://wiki.stuniverse.de/Spielregeln">Spielregeln</a> und den Datenschutzhinweis gelesen und bin damit einverstanden.
+					<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln/der Datenschutzhinweis wurde(n) nicht akzeptiert</div>
 				</div>
 				<br />
 				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_REGISTER" value="Registrieren" class="button" onclick="checkSubmit();" />

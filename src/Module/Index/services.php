@@ -30,12 +30,15 @@ use Stu\Module\Index\View\ShowHelp\ShowHelp;
 use Stu\Module\Index\View\ShowImprint\ShowImprint;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Module\Index\View\ShowRegistration\ShowRegistration;
+use Stu\Module\Index\View\ShowRegistration\ShowRegistrationRequest;
+use Stu\Module\Index\View\ShowRegistration\ShowRegistrationRequestInterface;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPassword;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequest;
 use Stu\Module\Index\View\ShowResetPassword\ShowResetPasswordRequestInterface;
 use function DI\autowire;
 
 return [
+    ShowRegistrationRequestInterface::class => autowire(ShowRegistrationRequest::class),
     DeletionConfirmationRequestInterface::class => autowire(DeletionConfirmationRequest::class),
     CheckInputRequestInterface::class => autowire(CheckInputRequest::class),
     RegisterRequestInterface::class => autowire(RegisterRequest::class),

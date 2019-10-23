@@ -9,4 +9,6 @@ interface RegisterRequestInterface
     public function getEmailAddress(): string;
 
     public function getFactionId(): int;
+
+    public function getToken(): string;
 }

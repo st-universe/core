@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\Register;
 
 use Exception;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Research\ResearchEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
@@ -17,6 +18,7 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
+use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Register implements ActionControllerInterface
@@ -36,13 +38,19 @@ final class Register implements ActionControllerInterface
 
     private $userRepository;
 
+    private $userInvitationRepository;
+
+    private $config;
+
     public function __construct(
         RegisterRequestInterface $registerRequest,
         ResearchRepositoryInterface $researchRepository,
         ResearchedRepositoryInterface $researchedRepository,
         FactionRepositoryInterface $factionRepository,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        UserInvitationRepositoryInterface $userInvitationRepository,
+        ConfigInterface $config
     ) {
         $this->registerRequest = $registerRequest;
         $this->researchRepository = $researchRepository;
@@ -50,6 +58,8 @@ final class Register implements ActionControllerInterface
         $this->factionRepository = $factionRepository;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->userRepository = $userRepository;
+        $this->userInvitationRepository = $userInvitationRepository;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,9 +67,17 @@ final class Register implements ActionControllerInterface
         $loginname = $this->registerRequest->getLoginName();
         $email = $this->registerRequest->getEmailAddress();
         $factionId = $this->registerRequest->getFactionId();
+        $token = $this->registerRequest->getToken();
+
         if (!$game->isRegistrationPossible()) {
             return;
         }
+
+        $invitation = $this->userInvitationRepository->getByToken($token);
+        if (!$invitation->isValid($this->config->get('game.invitation.ttl'))) {
+            return;
+        }
+
         if (!preg_match('=^[a-zA-Z0-9]+$=i', $loginname)) {
             return;
         }
@@ -97,6 +115,10 @@ final class Register implements ActionControllerInterface
         // $obj->setTick(rand(1,8));
         $obj->setCreationDate(time());
         $this->userRepository->save($obj);
+
+        $invitation->setInvitedUser($obj);
+
+        $this->userInvitationRepository->save($invitation);
 
         // Create default pm categories
         foreach (PrivateMessageFolderSpecialEnum::DEFAULT_CATEGORIES as $categoryId => $label) {

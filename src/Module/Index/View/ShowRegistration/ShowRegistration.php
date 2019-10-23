@@ -12,11 +12,15 @@ final class ShowRegistration implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_REGISTRATION';
 
+    private $showRegistrationRequest;
+
     private $factionRepository;
 
     public function __construct(
+        ShowRegistrationRequestInterface $showRegistrationRequest,
         FactionRepositoryInterface $factionRepository
     ) {
+        $this->showRegistrationRequest = $showRegistrationRequest;
         $this->factionRepository = $factionRepository;
     }
 
@@ -27,5 +31,6 @@ final class ShowRegistration implements ViewControllerInterface
 
         $game->setTemplateVar('REGISTRATION_POSSIBLE', $game->isRegistrationPossible());
         $game->setTemplateVar('POSSIBLE_FACTIONS', $this->factionRepository->getByChooseable(true));
+        $game->setTemplateVar('TOKEN', $this->showRegistrationRequest->getToken());
     }
 }

@@ -11,7 +11,8 @@ use DateTimeInterface;
  * @Table(
  *     name="stu_user_invitations",
  *     indexes={
- *         @Index(name="user_idx", columns={"user_id"})
+ *         @Index(name="user_idx", columns={"user_id"}),
+ *         @Index(name="token_idx", columns={"token"})
  *     }
  * )
  **/
@@ -92,5 +93,9 @@ class UserInvitation implements UserInvitationInterface
     {
         $this->token = $token;
         return $this;
+    }
+
+    public function isValid(int $ttl): bool {
+        return $this->getInvitedUser() === null && time() < $this->getDate()->getTimestamp() + $ttl;
     }
 }

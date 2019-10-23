@@ -62,6 +62,17 @@ function checkLogin(el,value) {
 	$('loginok').show();
 	return true;
 }
+function checkToken(el,value) {
+  var varcheck = regVarCheck('token',value);
+  if (varcheck == 0) {
+    $('tokenok').hide();
+    $('tokenerror').show();
+    return false;
+  }
+  $('tokenerror').hide();
+  $('tokenok').show();
+  return true;
+}
 function checkSubmit() {
 	if (faction < 1 || faction > 6) {
 		$('factionerror').show();
@@ -74,6 +85,9 @@ function checkSubmit() {
 	if (!checkEmail('dummy',$('email').value)) {
 		return;
 	}
+  if (!checkToken('dummy',$('token').value)) {
+    return;
+  }
 	if (!$('asb').checked) {
 		$('asberror').show();
 		return;

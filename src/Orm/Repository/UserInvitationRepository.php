@@ -30,4 +30,11 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
             'user_id' => $user
         ]);
     }
+
+    public function getByToken(string $token): ?UserInvitationInterface
+    {
+        return $this->findOneBy([
+            'token' => $token
+        ]);
+    }
 }

@@ -18,4 +18,6 @@ interface UserInvitationRepositoryInterface extends ObjectRepository
     public function save(UserInvitationInterface $userInvitation): void;
 
     public function getInvitationsByUser(UserInterface $user): array;
+
+    public function getByToken(string $token): ?UserInvitationInterface;
 }

@@ -89,7 +89,8 @@
                           <tr style="height: 70px" tal:repeat="data INVITATIONS">
                             <td tal:content="datetime:data/getDate">DATE</td>
                             <td>
-                              <input type="text" style="width: 650px;" tal:attributes="value data/getLink; readonly data/getInvitedUser" />
+                              <div tal:condition="not:data/isValid">Nicht mehr gültig</div>
+                              <input tal:condition="data/isValid" type="text" style="width: 650px;" readonly="readonly" tal:attributes="value data/getLink" />
                             </td>
                             <td tal:condition="data/getInvitedUser" tal:content="bbcode:data/getInvitedUser/getName"></td>
                             <td tal:condition="not:data/getInvitedUser"></td>

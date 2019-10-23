@@ -11,4 +11,6 @@ interface InvitationItemInterface
     public function getInvitedUser(): ?UserInterface;
 
     public function getDate(): int;
+
+    public function isValid(): bool;
 }

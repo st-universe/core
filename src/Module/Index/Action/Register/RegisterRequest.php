@@ -24,4 +24,11 @@ final class RegisterRequest implements RegisterRequestInterface
     {
         return $this->queryParameter('factionid')->int()->required();
     }
+
+    public function getToken(): string
+    {
+        $token = $this->queryParameter('token')->string()->defaultsToIfEmpty('');
+
+        return preg_replace('/[\W_]+/', '', $token);
+    }
 }

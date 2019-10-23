@@ -25,7 +25,7 @@ final class InvitationItem implements InvitationItemInterface
     public function getLink(): string
     {
         return sprintf(
-            '%s/?INVITE=1&token=%s',
+            '%s/?SHOW_REGISTRATION=1&token=%s',
             $this->config->get('game.base_url'),
             $this->userInvitation->getToken()
         );
@@ -39,5 +39,12 @@ final class InvitationItem implements InvitationItemInterface
     public function getDate(): int
     {
         return $this->userInvitation->getDate()->getTimestamp();
+    }
+
+    public function isValid(): bool
+    {
+        return $this->userInvitation->isValid(
+            $this->config->get('game.invitation.ttl')
+        );
     }
 }
