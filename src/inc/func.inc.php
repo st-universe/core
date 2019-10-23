@@ -1,9 +1,7 @@
 <?php
 
-use JBBCode\Parser;
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
-use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ModuleInterface;
@@ -171,26 +169,6 @@ function generatePassword($length = 6)
     return substr(implode('', $dummy), 0, $length);
 }
 
-function formatSeconds($time)
-{
-    $h = floor($time / 3600);
-    $time -= $h * 3600;
-    $m = floor($time / 60);
-    $time -= $m * 60;
-
-    $ret = '';
-    if ($h > 0) {
-        $ret .= $h . 'h';
-    }
-    if ($m > 0) {
-        $ret .= ' ' . $m . 'm';
-    }
-    if ($time > 0) {
-        $ret .= ' ' . $time . 's';
-    }
-    return $ret;
-}
-
 /**
  */
 function calculateModuleValue(ShipRumpInterface $rump, ModuleInterface $module, $callback = 'aggi', $value = false): int
@@ -235,24 +213,6 @@ function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module):
     return (int)round((1 - $value) * 100);
 } # }}}
 
-/**
- *
- */
-function jsquote($str)
-{ #{{{
-    return str_replace(
-        [
-            "\\",
-            "'",
-        ],
-        [
-            "\\\\",
-            "\\'",
-        ],
-        $str
-    );
-} #}}}
-
 function currentUser(): UserInterface
 {
     static $currentUser = null;
@@ -265,44 +225,16 @@ function currentUser(): UserInterface
     return $currentUser;
 }
 
-function BBCode(): Parser
-{
-    global $container;
-
-    return $container->get(Parser::class);
-}
-
-function getContactListModeDescription(int $mode): string
-{
-    switch ($mode) {
-        case ContactListModeEnum::CONTACT_FRIEND:
-            return _('Freund');
-        case ContactListModeEnum::CONTACT_ENEMY:
-            return _('Feind');
-        case ContactListModeEnum::CONTACT_NEUTRAL:
-            return _('Neutral');
-    }
-    return '';
-}
-
-function addPlusCharacter(int $value): string
-{
-   if ($value <= 0) {
-       return (string) $value;
-   }
-   return sprintf('+%d', $value);
-}
-
 TalesRegistry::registerPrefix(
     'clmodeDescription',
     function ($src, $nothrow): string {
-        return 'getContactListModeDescription((int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return '\Stu\Module\Tal\TalHelper::getContactListModeDescription((int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );
 TalesRegistry::registerPrefix(
     'addPlusCharacter',
     function ($src, $nothrow): string {
-        return 'addPlusCharacter((int)' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return '\Stu\Module\Tal\TalHelper::addPlusCharacter((int)' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );
 TalesRegistry::registerPrefix(
@@ -321,19 +253,19 @@ TalesRegistry::registerPrefix(
 TalesRegistry::registerPrefix(
     'bbcode',
     function ($src, $nothrow): string {
-        return 'BBCode()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml()';
+        return '\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml()';
     }
 );
 TalesRegistry::registerPrefix(
     'bbcode2txt',
     function ($src, $nothrow): string {
-        return 'BBCode()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsText()';
+        return '\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsText()';
     }
 );
 TalesRegistry::registerPrefix(
     'jsquote',
     function ($src, $nothrow): string {
-        return 'jsquote(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return '\Stu\Module\Tal\TalHelper::jsquote(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );
 TalesRegistry::registerPrefix(
@@ -357,6 +289,6 @@ TalesRegistry::registerPrefix(
 TalesRegistry::registerPrefix(
     'formatSeconds',
     function ($src, $nothrow): string {
-        return 'formatSeconds(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return '\Stu\Module\Tal\TalHelper::formatSeconds(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );

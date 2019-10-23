@@ -21,6 +21,8 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Tal\TalHelper;
+use Stu\Module\Tal\TalHelperInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
