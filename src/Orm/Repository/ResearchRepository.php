@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\Researched;
+use Stu\Orm\Entity\ResearchInterface;
 
 final class ResearchRepository extends EntityRepository implements ResearchRepositoryInterface
 {
@@ -69,5 +70,13 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         )->setParameters([
             'userId' => $userId
         ])->getSingleScalarResult();
+    }
+
+    public function save(ResearchInterface $research): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($research);
+        $em->flush($research);
     }
 }

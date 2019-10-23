@@ -3,8 +3,12 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use phpDocumentor\Reflection\Types\Integer;
 use Stu\Orm\Entity\ResearchInterface;
 
+/**
+ * @method null|ResearchInterface find(Integer $id)
+ */
 interface ResearchRepositoryInterface extends ObjectRepository
 {
     /**
@@ -20,4 +24,6 @@ interface ResearchRepositoryInterface extends ObjectRepository
     public function getPlanetColonyLimitByUser(int $userId): int;
 
     public function getMoonColonyLimitByUser(int $userId): int;
+
+    public function save(ResearchInterface $research): void;
 }
