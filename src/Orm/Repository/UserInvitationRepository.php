@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Repository;
 
+use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserInvitation;
@@ -36,5 +37,19 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
         return $this->findOneBy([
             'token' => $token
         ]);
+    }
+
+    public function truncateExpiredTokens(DateTimeInterface $ttl): void
+    {
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ui WHERE ui.date < :ttl AND ui.invited_user_id IS NULL',
+                UserInvitation::class
+            )
+        )
+        ->setParameters([
+            'ttl' => $ttl
+        ])
+        ->execute();
     }
 }
