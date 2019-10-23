@@ -70,7 +70,8 @@ final class Register extends Action
             $this->playerCreator->create(
                 $data->loginName,
                 $data->emailAddress,
-                current($factions)
+                current($factions),
+                $data->token
             );
         } catch (RegistrationException $e) {
             return $response->withError(

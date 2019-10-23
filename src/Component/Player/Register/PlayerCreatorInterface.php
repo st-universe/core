@@ -10,5 +10,10 @@ interface PlayerCreatorInterface
     /**
      * @throws RegistrationException
      */
-    public function create(string $loginName, string $emailAddress, FactionInterface $faction): void;
+    public function create(
+        string $loginName,
+        string $emailAddress,
+        FactionInterface $faction,
+        string $token
+    ): void;
 }

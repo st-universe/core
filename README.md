@@ -107,7 +107,8 @@ Request
 {
     "loginName": string,
     "emailAddress": string,
-    "factionId": int
+    "factionId": int,
+    "token": string
 }
 ```
 

@@ -6,9 +6,11 @@ namespace Stu\Component\Player\Register;
 
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
+use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerCreator implements PlayerCreatorInterface
@@ -19,17 +21,30 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private $registrationEmailSender;
 
+    private $userInvitationRepository;
+
+    private $config;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         PlayerDefaultsCreatorInterface $playerDefaultsCreator,
-        RegistrationEmailSenderInterface $registrationEmailSender
+        RegistrationEmailSenderInterface $registrationEmailSender,
+        UserInvitationRepositoryInterface $userInvitationRepository,
+        ConfigInterface $config
     ) {
         $this->userRepository = $userRepository;
         $this->playerDefaultsCreator = $playerDefaultsCreator;
         $this->registrationEmailSender = $registrationEmailSender;
+        $this->userInvitationRepository = $userInvitationRepository;
+        $this->config = $config;
     }
 
-    public function create(string $loginName, string $emailAddress, FactionInterface $faction): void
+    public function create(
+        string $loginName,
+        string $emailAddress,
+        FactionInterface $faction,
+        string $token
+    ): void
     {
         if (
             !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||
@@ -44,12 +59,22 @@ final class PlayerCreator implements PlayerCreatorInterface
             throw new PlayerDuplicateException();
         }
 
+        $invitation = $this->userInvitationRepository->getByToken($token);
+
+        if ($invitation === null || !$invitation->isValid($this->config->get('game.invitation.ttl'))) {
+            throw new InvitationTokenInvalidException();
+        }
+
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);
         $player->setEmail($emailAddress);
         $player->setFaction($faction);
 
         $this->userRepository->save($player);
+
+        $invitation->setInvitedUser($player);
+
+        $this->userInvitationRepository->save($invitation);
 
         $player->setUser('Siedler ' . $player->getId());
         $player->setTick(1);

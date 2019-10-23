@@ -155,6 +155,7 @@ class RegisterTest extends StuApiV1TestCase
         $factionId = 666;
         $loginName = 'some-name';
         $emailAddress = 'some-email-address';
+        $token = 'some-token';
 
         $faction = $this->mock(FactionInterface::class);
 
@@ -178,7 +179,8 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturn((object) [
                 'factionId' => $factionId,
                 'loginName' => $loginName,
-                'emailAddress' => $emailAddress
+                'emailAddress' => $emailAddress,
+                'token' => $token
             ]);
 
         $this->factionRepository->shouldReceive('getByChooseable')
@@ -187,7 +189,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturn([$faction]);
 
         $this->playerCreator->shouldReceive('create')
-            ->with($loginName, $emailAddress, $faction)
+            ->with($loginName, $emailAddress, $faction, $token)
             ->once()
             ->andThrow(new LoginNameInvalidException());
 
@@ -207,6 +209,7 @@ class RegisterTest extends StuApiV1TestCase
         $factionId = 666;
         $loginName = 'some-name';
         $emailAddress = 'some-email-address';
+        $token = 'some-token';
 
         $faction = $this->mock(FactionInterface::class);
 
@@ -230,7 +233,8 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturn((object) [
                 'factionId' => $factionId,
                 'loginName' => $loginName,
-                'emailAddress' => $emailAddress
+                'emailAddress' => $emailAddress,
+                'token' => $token
             ]);
 
         $this->factionRepository->shouldReceive('getByChooseable')
@@ -239,7 +243,7 @@ class RegisterTest extends StuApiV1TestCase
             ->andReturn([$faction]);
 
         $this->playerCreator->shouldReceive('create')
-            ->with($loginName, $emailAddress, $faction)
+            ->with($loginName, $emailAddress, $faction, $token)
             ->once();
 
         $this->response->shouldReceive('withData')
