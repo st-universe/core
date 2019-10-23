@@ -10,7 +10,7 @@ use Stu\Module\Communication\Lib\ContactListModeEnum;
 final class TalHelper implements TalHelperInterface
 {
 
-    public static function addPlusCharacter(int $value): string
+    public static function addPlusCharacter(string $value): string
     {
         if ($value <= 0) {
             return (string) $value;
