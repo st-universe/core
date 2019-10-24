@@ -44,8 +44,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         string $emailAddress,
         FactionInterface $faction,
         string $token
-    ): void
-    {
+    ): void {
         if (
             !preg_match('/^[a-zA-Z0-9]+$/i', $loginName) ||
             mb_strlen($loginName) < 6

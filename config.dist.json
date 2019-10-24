@@ -29,6 +29,7 @@
       "ttl": 86400
     },
     "registration_enabled": false,
+    "email_sender_address": "some@e.mail",
     "admin": {
       "id": 101,
       "username": "adminuser",
