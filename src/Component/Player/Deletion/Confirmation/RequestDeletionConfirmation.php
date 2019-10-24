@@ -33,17 +33,21 @@ final class RequestDeletionConfirmation implements RequestDeletionConfirmationIn
         $user->setDeletionMark(PlayerEnum::DELETION_REQUESTED);
         $user->setPasswordToken($token);
 
+        $body = <<<EOT
+        Hallo\n\n
+        Du hast eine Accountlöschung in Star Trek Universe angefordert.\n\n
+        Bitte bestätige die Löschung mittels Klick auf folgenden Link:\n
+        %s/?CONFIRM_ACCOUNT_DELETION=1&token=%s\n
+        Das STU-Team\n\n,
+        EOT;
+
         $mail = new Message();
         $mail->addTo($user->getEmail());
         $mail->setSubject(_('Star Trek Universe - Accountlöschung'));
-        $mail->setFrom('automailer@stuniverse.de');
+        $mail->setFrom($this->config->get('game.email_sender_address'));
         $mail->setBody(
             sprintf(
-                "Hallo\n\r\n\r
-                Du hast eine Accountlöschung in Star Trek Universe angefordert.\n\r\n\r
-                Bitte bestätige die Löschung mittels Klick auf folgenden Link:\n\r
-                %s/?CONFIRM_ACCOUNT_DELETION=1&token=%s\n\r
-                Das STU-Team\r\n\r\n",
+                $body,
                 $this->config->get('game.base_url'),
                 $token,
             )
