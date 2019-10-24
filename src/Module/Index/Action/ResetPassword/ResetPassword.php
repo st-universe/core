@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\ResetPassword;
 
+use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use InvalidParamException;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -24,14 +25,18 @@ final class ResetPassword implements ActionControllerInterface
 
     private $userRepository;
 
+    private $passwordGenerator;
+
     public function __construct(
         ResetPasswordRequestInterface $resetPasswordRequest,
         ConfigInterface $config,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        PasswordGeneratorInterface $passwordGenerator
     ) {
         $this->resetPasswordRequest = $resetPasswordRequest;
         $this->config = $config;
         $this->userRepository = $userRepository;
+        $this->passwordGenerator = $passwordGenerator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,8 +48,9 @@ final class ResetPassword implements ActionControllerInterface
         if ($user === null) {
             throw new InvalidParamException;
         }
-        $password = generatePassword();
-        $user->setPassword(sha1($password));
+        $password = $this->passwordGenerator->generatePassword();
+
+        $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $user->setPasswordToken('');
 
         $this->userRepository->save($user);

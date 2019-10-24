@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
+use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\EmailAddressInvalidException;
 use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
@@ -25,18 +26,22 @@ final class PlayerCreator implements PlayerCreatorInterface
 
     private $config;
 
+    private $passwordGenerator;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         PlayerDefaultsCreatorInterface $playerDefaultsCreator,
         RegistrationEmailSenderInterface $registrationEmailSender,
         UserInvitationRepositoryInterface $userInvitationRepository,
-        ConfigInterface $config
+        ConfigInterface $config,
+        PasswordGeneratorInterface $passwordGenerator
     ) {
         $this->userRepository = $userRepository;
         $this->playerDefaultsCreator = $playerDefaultsCreator;
         $this->registrationEmailSender = $registrationEmailSender;
         $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
+        $this->passwordGenerator = $passwordGenerator;
     }
 
     public function create(
@@ -75,14 +80,12 @@ final class PlayerCreator implements PlayerCreatorInterface
 
         $this->userInvitationRepository->save($invitation);
 
+        $password = $this->passwordGenerator->generatePassword();
+
         $player->setUser('Siedler ' . $player->getId());
         $player->setTick(1);
-        // @todo
-        // $player->setTick(rand(1,8));
         $player->setCreationDate(time());
-
-        $password = generatePassword();
-        $player->setPassword(sha1($password));
+        $player->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
         $this->userRepository->save($player);
 

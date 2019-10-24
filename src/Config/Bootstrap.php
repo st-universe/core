@@ -11,6 +11,8 @@ use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
+use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
@@ -21,12 +23,11 @@ use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Tal\TalHelper;
-use Stu\Module\Tal\TalHelperInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
 use function DI\autowire;
+use function foo\func;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
@@ -95,6 +96,19 @@ $builder->addDefinitions([
         $bench->start();
 
         return $bench;
+    },
+    PasswordGeneratorInterface::class => function (): PasswordGeneratorInterface {
+        $generator = new ComputerPasswordGenerator();
+
+        $generator
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_UPPER_CASE, true)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_LOWER_CASE, true)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_NUMBERS, true)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_LENGTH, 10)
+        ;
+
+        return $generator;
     },
 ]);
 
