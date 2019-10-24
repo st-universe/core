@@ -58,17 +58,23 @@ final class ResetPassword implements ActionControllerInterface
         $game->setView(ShowLostPassword::VIEW_IDENTIFIER);
         $game->addInformation(_('Es wurde ein neues Passwort generiert und an die eMail-Adresse geschickt'));
 
+        $body = <<<EOT
+        Hallo.\n\n
+        Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
+        Das Star Trek Universe Team\n
+        
+        %s,
+        EOT;
+
         $mail = new Message();
         $mail->addTo($user->getEmail());
         $mail->setSubject(_('Star Trek Universe - Neues Passwort'));
-        $mail->setFrom('automailer@stuniverse.de');
+        $mail->setFrom($this->config->get('game.email_sender_address'));
         $mail->setBody(
-            sprintf("Hallo.\n\n
-Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
-Das Star Trek Universe Team\n
-%s",
+            sprintf(
+                $body,
                 $password,
-                $this->config->get('game.base_path'),
+                $this->config->get('game.base_url'),
             )
         );
         try {
