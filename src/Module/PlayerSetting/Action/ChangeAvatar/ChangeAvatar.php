@@ -53,7 +53,7 @@ final class ChangeAvatar implements ActionControllerInterface
         imagepng(
             $newImage,
             sprintf(
-                '%s%s%s.png',
+                '%s/%s/%s.png',
                 $this->config->get('game.webroot'),
                 $this->config->get('game.user_avatar_path'),
                 $imageName
