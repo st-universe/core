@@ -12,7 +12,7 @@ final class EnergyWeaponShipSystem implements ShipSystemTypeInterface
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getPhaser() === false
+        return $ship->getPhaser() === false && $ship->getCloakState() === false
         ;
     }
 

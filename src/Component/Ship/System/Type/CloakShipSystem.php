@@ -12,8 +12,7 @@ final class CloakShipSystem implements ShipSystemTypeInterface
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getCloakState() === false && $ship->isCloakable() === true
-        ;
+        return $ship->getCloakState() === false && $ship->isCloakable() === true;
     }
 
     public function getEnergyUsageForActivation(): int
