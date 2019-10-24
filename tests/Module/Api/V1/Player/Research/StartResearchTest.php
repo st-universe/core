@@ -57,7 +57,6 @@ class StartResearchTest extends StuApiV1TestCase
 
     public function testActionFailsWithInvalidResearchId(): void
     {
-        $userId = 666;
         $researchId = 42;
 
         $user = $this->mock(UserInterface::class);
@@ -67,18 +66,13 @@ class StartResearchTest extends StuApiV1TestCase
             ->once()
             ->andReturn($user);
 
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
-
         $this->jsonSchemaRequest->shouldReceive('getData')
             ->with($this->handler)
             ->once()
             ->andReturn((object) ['researchId' => $researchId]);
 
         $this->techlistRetriever->shouldReceive('getResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([]);
 
@@ -120,7 +114,7 @@ class StartResearchTest extends StuApiV1TestCase
             ->andReturn((object) ['researchId' => $researchId]);
 
         $this->techlistRetriever->shouldReceive('getResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([$researchId => $research]);
 

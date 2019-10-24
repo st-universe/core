@@ -34,14 +34,14 @@ final class StartResearch implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = (int)$game->getUser()->getId();
+        $user = $game->getUser();
         $researchId = $this->startResearchRequest->getResearchId();
 
-        $research = $this->techlistRetriever->getResearchList($userId)[$researchId] ?? null;
+        $research = $this->techlistRetriever->getResearchList($user)[$researchId] ?? null;
         if ($research === null) {
             throw new AccessViolation();
         }
-        $current_research = $this->researchedRepository->getCurrentResearch($userId);
+        $current_research = $this->researchedRepository->getCurrentResearch($user->getId());
 
         if ($current_research) {
             $this->researchedRepository->delete($current_research);

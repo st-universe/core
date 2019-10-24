@@ -31,7 +31,7 @@ final class ResearchList extends Action
         JsonResponseInterface $response,
         array $args
     ): JsonResponseInterface {
-        $userId = $this->session->getUser()->getId();
+        $user = $this->session->getUser();
 
         return $response->withData([
             'available' => array_values(
@@ -48,7 +48,7 @@ final class ResearchList extends Action
                             ],
                         ];
                     },
-                    $this->techlistRetriever->getResearchList($userId)
+                    $this->techlistRetriever->getResearchList($user)
                 )
             ),
             'finished' => array_map(
@@ -59,7 +59,7 @@ final class ResearchList extends Action
                         'finishDate' => $researchedTech->getFinished()
                     ];
                 },
-                $this->techlistRetriever->getFinishedResearchList($userId)
+                $this->techlistRetriever->getFinishedResearchList($user)
             )
         ]);
     }

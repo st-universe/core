@@ -6,6 +6,8 @@ namespace Stu\Module\Research;
 
 use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
@@ -18,31 +20,35 @@ final class TechlistRetriever implements TechlistRetrieverInterface
 
     private $researchedRepository;
 
+    private $factionRepository;
+
     public function __construct(
         ResearchRepositoryInterface $researchRepository,
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        FactionRepositoryInterface $factionRepository
     ) {
         $this->researchRepository = $researchRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->factionRepository = $factionRepository;
     }
 
-    public function getResearchList(int $userId): array
+    public function getResearchList(UserInterface $user): array
     {
         $finished_list = array_map(
             function (ResearchedInterface $researched): int {
                 return $researched->getResearch()->getId();
             },
             array_filter(
-                $this->getFinishedResearchList($userId),
+                $this->getFinishedResearchList($user),
                 function (ResearchedInterface $researched): bool {
                     return $researched->getFinished() > 0;
                 }
             )
         );
 
-        $result = $this->researchRepository->getAvailableResearch($userId);
+        $result = $this->researchRepository->getAvailableResearch($user->getId());
         $list_result = [];
 
         $dependencies = [];
@@ -107,19 +113,22 @@ final class TechlistRetriever implements TechlistRetrieverInterface
             $list_result[$key] = $obj;
         }
 
-        // @todo check if needed. default tech should already be known
-        foreach ($this->getDefaultTechs() as $research_id) {
-            if (isset($list_result[$research_id])) {
-                unset($list_result[$research_id]);
+        foreach ($this->factionRepository->findAll() as $faction) {
+            $startResearch = $faction->getStartResearch();
+            if ($startResearch !== null) {
+                $startResearchId = $startResearch->getId();
+                if (isset($list_result[$startResearchId])) {
+                    unset($list_result[$startResearchId]);
+                }
             }
         }
 
         return $list_result;
     }
 
-    public function getFinishedResearchList(int $userId): array
+    public function getFinishedResearchList(UserInterface $user): array
     {
-        $result = $this->researchedRepository->getListByUser($userId);
+        $result = $this->researchedRepository->getListByUser($user->getId());
         usort(
             $result,
             function (ResearchedInterface $a, ResearchedInterface $b): int {
@@ -131,16 +140,5 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         );
 
         return $result;
-    }
-
-    private function getDefaultTechs(): array
-    {
-        return [
-            ResearchEnum::RESEARCH_START_FEDERATION,
-            ResearchEnum::RESEARCH_START_ROMULAN,
-            ResearchEnum::RESEARCH_START_KLINGON,
-            ResearchEnum::RESEARCH_START_CARDASSIAN,
-            ResearchEnum::RESEARCH_START_FERENGI,
-        ];
     }
 }

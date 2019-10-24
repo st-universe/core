@@ -38,12 +38,12 @@ final class ShowResearch implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = (int)$game->getUser()->getId();
+        $user = $game->getUser();
         $researchId = $this->showResearchRequest->getResearchId();
 
-        $research = $this->techlistRetriever->getResearchList($userId)[$researchId] ?? null;
+        $research = $this->techlistRetriever->getResearchList($user)[$researchId] ?? null;
         if ($research === null) {
-            $result = $this->researchedRepository->getFor($researchId, $userId);
+            $result = $this->researchedRepository->getFor($researchId, $user->getId());
 
             if ($result === null) {
                 throw new AccessViolation();

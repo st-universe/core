@@ -21,7 +21,7 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = (int) $game->getUser()->getId();
+        $user = $game->getUser();
 
         $game->appendNavigationPart(
             'research.php',
@@ -32,11 +32,11 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'RESEARCH_LIST',
-            $this->techlistRetriever->getResearchList($userId)
+            $this->techlistRetriever->getResearchList($user)
         );
         $game->setTemplateVar(
             'FINISHED_LIST',
-            $this->techlistRetriever->getFinishedResearchList($userId)
+            $this->techlistRetriever->getFinishedResearchList($user)
         );
     }
 }

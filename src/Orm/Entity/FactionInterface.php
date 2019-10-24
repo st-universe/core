@@ -33,4 +33,8 @@ interface FactionInterface
     public function getPlayerAmount(): int;
 
     public function hasFreePlayerSlots(): bool;
+
+    public function getStartResearch(): ?ResearchInterface;
+
+    public function setStartResearch(?ResearchInterface $start_research): FactionInterface;
 }

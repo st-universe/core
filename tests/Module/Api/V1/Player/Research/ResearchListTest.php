@@ -9,6 +9,7 @@ use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\StuApiV1TestCase;
 
 class ResearchListTest extends StuApiV1TestCase
@@ -38,8 +39,6 @@ class ResearchListTest extends StuApiV1TestCase
 
     public function testActionRetrievesList(): void
     {
-        $userId = 666;
-
         $availableResearchId = 42;
         $availableResearchName = 'some-available-research';
         $availableResearchPoints = 33;
@@ -53,6 +52,7 @@ class ResearchListTest extends StuApiV1TestCase
 
         $availableResearch = $this->mock(ResearchInterface::class);
         $finishedState = $this->mock(ResearchedInterface::class);
+        $user = $this->mock(UserInterface::class);
 
         $availableResearch->shouldReceive('getId')
             ->withNoArgs()
@@ -92,17 +92,17 @@ class ResearchListTest extends StuApiV1TestCase
             ->once()
             ->andReturn($finishedResearchDate);
 
-        $this->session->shouldReceive('getUser->getId')
+        $this->session->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($userId);
+            ->andReturn($user);
 
         $this->techlistRetriever->shouldReceive('getResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([$availableResearch]);
         $this->techlistRetriever->shouldReceive('getFinishedResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([$finishedState]);
 

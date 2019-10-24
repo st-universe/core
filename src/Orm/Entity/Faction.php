@@ -35,6 +35,15 @@ class Faction implements FactionInterface
     /** @Column(type="integer") * */
     private $start_building_id = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $start_research_id;
+
+    /**
+     * @ManyToOne(targetEntity="Research")
+     * @JoinColumn(name="start_research_id", referencedColumnName="id")
+     */
+    private $start_research;
+
     public function getId(): int
     {
         return $this->id;
@@ -123,5 +132,16 @@ class Faction implements FactionInterface
     public function hasFreePlayerSlots(): bool
     {
         return $this->getPlayerLimit() === 0 || $this->getPlayerAmount() < $this->getPlayerLimit();
+    }
+
+    public function getStartResearch(): ?ResearchInterface
+    {
+        return $this->start_research;
+    }
+
+    public function setStartResearch(?ResearchInterface $start_research): FactionInterface
+    {
+        $this->start_research = $start_research;
+        return $this;
     }
 }

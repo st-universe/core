@@ -35,13 +35,13 @@ final class GetResearch extends Action
         JsonResponseInterface $response,
         array $args
     ): JsonResponseInterface {
-        $userId = $this->session->getUser()->getId();
+        $user = $this->session->getUser();
         $researchId = (int)$args['researchId'];
 
-        $tech = $this->techlistRetriever->getResearchList($userId)[$researchId] ?? null;
+        $tech = $this->techlistRetriever->getResearchList($user)[$researchId] ?? null;
 
         if ($tech === null) {
-            $researched = $this->researchedRepository->getFor($researchId, $userId);
+            $researched = $this->researchedRepository->getFor($researchId, $user->getId());
 
             if ($researched === null) {
                 return $response->withError(

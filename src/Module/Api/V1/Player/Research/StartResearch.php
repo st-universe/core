@@ -43,18 +43,17 @@ final class StartResearch extends Action
         array $args
     ): JsonResponseInterface {
         $user = $this->session->getUser();
-        $userId = $user->getId();
 
         $researchId = $this->jsonSchemaRequest->getData($this)->researchId;
 
-        $research = $this->techlistRetriever->getResearchList($userId)[$researchId] ?? null;
+        $research = $this->techlistRetriever->getResearchList($user)[$researchId] ?? null;
         if ($research === null) {
             return $response->withError(
                 ErrorCodeEnum::NOT_FOUND,
                 'Research not found'
             );
         }
-        $current_research = $this->researchedRepository->getCurrentResearch($userId);
+        $current_research = $this->researchedRepository->getCurrentResearch($user->getId());
 
         if ($current_research !== null) {
             $this->researchedRepository->delete($current_research);

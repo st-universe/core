@@ -7,6 +7,7 @@ use Stu\Orm\Entity\FactionInterface;
 
 /**
  * @method null|FactionInterface find(integer $id)
+ * @method FactionInterface[] findAll()
  */
 interface FactionRepositoryInterface extends ObjectRepository
 {

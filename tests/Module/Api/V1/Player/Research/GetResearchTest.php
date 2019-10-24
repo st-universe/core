@@ -10,10 +10,11 @@ use Stu\Module\Api\Middleware\SessionInterface;
 use Stu\Module\Research\TechlistRetrieverInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\StuApiV1TestCase;
 
-class GetResearcHTest extends StuApiV1TestCase
+class GetResearchTest extends StuApiV1TestCase
 {
     /**
      * @var null|MockInterface|SessionInterface
@@ -47,18 +48,25 @@ class GetResearcHTest extends StuApiV1TestCase
 
     public function testActionReturnsErrorOnInvalidResearchId(): void
     {
+        $user = $this->mock(UserInterface::class);
+
         $researchId = 666;
         $userId = 42;
 
-        $this->session->shouldReceive('getUser->getId')
+        $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
 
+        $this->session->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $this->args = ['researchId' => (string)$researchId];
 
         $this->techlistRetriever->shouldReceive('getResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([]);
 
@@ -85,16 +93,22 @@ class GetResearcHTest extends StuApiV1TestCase
 
         $researched = $this->mock(ResearchedInterface::class);
         $tech = $this->mock(ResearchInterface::class);
+        $user = $this->mock(UserInterface::class);
 
-        $this->session->shouldReceive('getUser->getId')
+        $user->shouldReceive('getId')
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
 
+        $this->session->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($user);
+
         $this->args = ['researchId' => (string)$researchId];
 
         $this->techlistRetriever->shouldReceive('getResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([]);
 
@@ -116,21 +130,21 @@ class GetResearcHTest extends StuApiV1TestCase
     public function testActionReturnsData(): void
     {
         $researchId = 666;
-        $userId = 42;
 
         $tech = $this->mock(ResearchInterface::class);
+        $user = $this->mock(UserInterface::class);
 
         $this->buildResponse($tech);
 
-        $this->session->shouldReceive('getUser->getId')
+        $this->session->shouldReceive('getUser')
             ->withNoArgs()
             ->once()
-            ->andReturn($userId);
+            ->andReturn($user);
 
         $this->args = ['researchId' => (string)$researchId];
 
         $this->techlistRetriever->shouldReceive('getResearchList')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([$researchId => $tech]);
 
