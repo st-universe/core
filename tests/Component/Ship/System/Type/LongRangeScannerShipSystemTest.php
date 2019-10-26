@@ -48,6 +48,14 @@ class LongRangeScannerShipSystemTest extends StuTestCase
         );
     }
 
+    public function testGetEnergyUsageForActivationReturnsValue(): void
+    {
+        $this->assertSame(
+            1,
+            $this->system->getEnergyUsageForActivation()
+        );
+    }
+
     public function testActivateActivates(): void
     {
         $ship = $this->mock(ShipInterface::class);
