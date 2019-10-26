@@ -11,6 +11,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -30,27 +31,39 @@ final class ShowShip implements ViewControllerInterface
 
     private $shipRepository;
 
+    private $colonyRepository;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
         ResearchedRepositoryInterface $researchedRepository,
         FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
         $this->researchedRepository = $researchedRepository;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
+        $ownsCurrentColony = false;
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
+        );
+
+        $colony = $this->colonyRepository->getByPosition(
+            $ship->getSystem(),
+            $ship->getPosX(),
+            $ship->getPosY()
         );
 
         $shipId = $ship->getId();
@@ -95,13 +108,15 @@ final class ShowShip implements ViewControllerInterface
             $fnbs[$data->getFleetId()]['ships'][] = $data;
         }
 
-        $colony = $ship->getCurrentColony();
         $canColonize = false;
-        if ($colony && $ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
-            $researchId = (int) $colony->getPlanetType()->getResearchId();
+        if ($colony) {
+            if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
+            $researchId = (int)$colony->getPlanetType()->getResearchId();
             $canColonize = $colony->isFree() && (
-                $researchId === 0 || ($this->researchedRepository->hasUserFinishedResearch($researchId, $userId))
-            );
+                    $researchId === 0 || ($this->researchedRepository->hasUserFinishedResearch($researchId, $userId))
+                );
+            }
+            $ownsCurrentColony = $colony->getUser() === $user;
         }
 
         $game->appendNavigationPart(
@@ -126,5 +141,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('STATION_NBS', $nbs);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
+        $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
+        $game->setTemplateVar('CURRENT_COLONY', $colony);
     }
 }

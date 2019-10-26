@@ -71,11 +71,6 @@ interface ColonyInterface
 
     public function setImmigrationstate(bool $immigrationstate): ColonyInterface;
 
-    /**
-     * @deprecated
-     */
-    public function ownedByCurrentUser(): bool;
-
     public function getPlanetType(): PlanetTypeInterface;
 
     public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;

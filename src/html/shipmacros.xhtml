@@ -363,11 +363,11 @@
 	<metal:block metal:define-macro="show_ship_beamto_colony">
 		<form action="ship.php" method="post">
 			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
-			<input type="hidden" name="target" tal:attributes="value SHIP/getCurrentColony/getId" />
+			<input type="hidden" name="target" tal:attributes="value targetColony/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
-					<td colspan="2">Ziel: <span tal:replace="structure bbcode:SHIP/getCurrentColony/getName">...</span></td>
+					<td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
 				</tr>
 				<tr>
 					<td style="width: 100%;">
@@ -396,16 +396,16 @@
 							</tr>
 							<tr>
 								<td style="text-align: center; height: 10%;">
-									<a href="javascript:void(0);" onclick="triggerBeamFromColony(${SHIP/getCurrentColony/getId})" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
+									<a href="javascript:void(0);" onclick="triggerBeamFromColony(${targetColony/getId})" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
 										<img src="assets/buttons/b_down1.gif" name="beamtrigger" title="Beammodus wechseln" />
 									</a>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: center;">
-									<img tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser" src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
-									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?SHOW_COLONY=1&id=${targetShip/getId}">
-										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
+									<img tal:condition="not:OWNS_TARGET" src="assets/planets/${targetColony/getColonyClass}.gif" />
+									<a tal:condition="OWNS_TARGET" href="colony.php?SHOW_COLONY=1&id=${targetColony/getId}">
+										<img src="assets/planets/${targetColony/getColonyClass}.gif" />
 									</a>
 								</td>
 							</tr>
@@ -423,15 +423,15 @@
 	<metal:block metal:define-macro="show_ship_beamfrom_colony">
 		<form action="ship.php" method="post">
 			<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
-			<input type="hidden" name="target" tal:attributes="value SHIP/getCurrentColony/getId" />
+			<input type="hidden" name="target" tal:attributes="value targetColony/getId" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<table class="tcal">
 				<tr>
-					<td colspan="2">Ziel: <span tal:replace="structure bbcode:SHIP/getCurrentColony/getName">...</span></td>
+					<td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
 				</tr>
 				<tr>
 					<td style="width: 100%;">
-						<tal:block tal:condition="SHIP/getCurrentColony/getStorage" tal:repeat="good SHIP/getCurrentColony/getBeamableStorage">
+						<tal:block tal:condition="targetColony/getStorage" tal:repeat="good targetColony/getBeamableStorage">
 							<input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
 							<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 								<metal:block metal:use-macro="html/macros.xhtml/goodentry" />
@@ -441,7 +441,7 @@
 							</div>
 							<br tal:condition="repeat/good/odd" style="clear: both;" />
 						</tal:block>
-						<tal:block tal:condition="not:SHIP/getCurrentColony/getStorage">
+						<tal:block tal:condition="not:targetColony/getStorage">
 							Keine Waren vorhanden
 						</tal:block>
 					</td>
@@ -456,16 +456,16 @@
 							</tr>
 							<tr>
 								<td style="text-align: center; height: 10%;">
-									<a href="javascript:void(0);" onclick="triggerBeamToColony(${SHIP/getCurrentColony/getId})" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
+									<a href="javascript:void(0);" onclick="triggerBeamToColony(${targetColony/getId})" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
 										<img src="assets/buttons/b_up1.gif" name="beamtrigger" title="Beammodus wechseln" />
 									</a>
 								</td>
 							</tr>
 							<tr>
 								<td style="text-align: center;">
-									<img tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser" src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
-									<a tal:condition="SHIP/getCurrentColony/ownedByCurrentUser" href="colony.php?SHOW_COLONY=1&id=${targetShip/getId}">
-										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" />
+									<img tal:condition="not:OWNS_TARGET" src="assets/planets/${targetColony/getColonyClass}.gif" />
+									<a tal:condition="OWNS_TARGET" href="colony.php?SHOW_COLONY=1&id=${targetColony/getId}">
+										<img src="assets/planets/${targetColony/getColonyClass}.gif" />
 									</a>
 								</td>
 							</tr>

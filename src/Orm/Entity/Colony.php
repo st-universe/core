@@ -297,14 +297,6 @@ class Colony implements ColonyInterface
         return $this;
     }
 
-    /**
-     * @deprecated
-     */
-    public function ownedByCurrentUser(): bool
-    {
-        return $this->getUserId() === currentUser()->getId();
-    }
-
     public function getPlanetType(): PlanetTypeInterface
     {
         return $this->planetType;

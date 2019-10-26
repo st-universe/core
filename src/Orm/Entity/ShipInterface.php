@@ -264,8 +264,6 @@ interface ShipInterface
 
     public function getMaxStorage(): int;
 
-    public function getCurrentColony(): ?ColonyInterface;
-
     public function getSectorString(): string;
 
     public function getBuildplan(): ?ShipBuildplanInterface;

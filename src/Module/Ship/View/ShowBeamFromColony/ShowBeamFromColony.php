@@ -28,11 +28,11 @@ final class ShowBeamFromColony implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $user->getId()
         );
 
         $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
@@ -45,7 +45,8 @@ final class ShowBeamFromColony implements ViewControllerInterface
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/show_ship_beamfrom_colony');
 
-        $game->setTemplateVar('targetShip', $target);
+        $game->setTemplateVar('targetColony', $target);
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('OWNS_TARGET', $target->getUser() === $user);
     }
 }

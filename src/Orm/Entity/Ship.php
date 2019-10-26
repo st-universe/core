@@ -1063,23 +1063,6 @@ class Ship implements ShipInterface
         return $this->getRump()->getStorage();
     }
 
-    public function getCurrentColony(): ?ColonyInterface
-    {
-        if ($this->currentColony === null) {
-            // @todo refactor
-            global $container;
-
-            $colonyRepository = $container->get(ColonyRepositoryInterface::class);
-
-            $this->currentColony = $colonyRepository->getByPosition(
-                $this->getSystem(),
-                $this->getPosX(),
-                $this->getPosY()
-            );
-        }
-        return $this->currentColony;
-    }
-
     public function getSectorString(): string
     {
         $str = $this->getPosX() . '|' . $this->getPosY();
@@ -1280,17 +1263,26 @@ class Ship implements ShipInterface
         if (!$this->getRump()->getGoodId()) {
             return false;
         }
-        if (!$this->getCurrentColony()) {
+        // @todo refactor
+        global $container;
+
+        $colonyRepository = $container->get(ColonyRepositoryInterface::class);
+
+        $currentColony = $colonyRepository->getByPosition(
+            $this->getSystem(),
+            $this->getPosX(),
+            $this->getPosY()
+        );
+
+        if ($currentColony === null) {
             return false;
         }
-        if ($this->getCurrentColony()->getUser() !== $this->getUser()) {
+        if ($currentColony->getUser() !== $this->getUser()) {
             return false;
         }
 
-        // @todo refactor
-        global $container;
         return $container->get(ColonyLibFactoryInterface::class)
-            ->createColonySurface($this->getCurrentColony())
+            ->createColonySurface($currentColony)
             ->hasAirfield();
     }
 

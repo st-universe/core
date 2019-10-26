@@ -313,50 +313,50 @@
 							</tal:block>
 						</tr>
 					</table>
-					<tal:block tal:condition="SHIP/getCurrentColony">
+					<tal:block tal:condition="CURRENT_COLONY">
 						<br />
 						<table class="tcal">
 							<tr>
-								<th colspan="2" tal:content="SHIP/getCurrentColony/getPlanetName">PLANETNAME</th>
+								<th colspan="2" tal:content="CURRENT_COLONY/getPlanetName">PLANETNAME</th>
 							</tr>
 							<tr>
 								<td style="width: 50%;">
-									<a href="colony.php?SHOW_COLONY=1&id=${SHIP/getCurrentColony/getId}" tal:condition="SHIP/getCurrentColony/ownedByCurrentUser">
-										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
-										<span tal:replace="structure bbcode:SHIP/getCurrentColony/getName">NAME</span>
+									<a href="colony.php?SHOW_COLONY=1&id=${CURRENT_COLONY/getId}" tal:condition="OWNS_CURRENT_COLONY">
+										<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+										<span tal:replace="structure bbcode:CURRENT_COLONY/getName">NAME</span>
 									</a>
-									<tal:block tal:condition="not:SHIP/getCurrentColony/isFree">
-										<span tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser">
-											<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
-											<span tal:condition="not:SHIP/getCurrentColony/isFree" tal:replace="structure bbcode:SHIP/getCurrentColony/getName">NAME</span>
+									<tal:block tal:condition="not:CURRENT_COLONY/isFree">
+										<span tal:condition="not:OWNS_CURRENT_COLONY">
+											<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+											<span tal:condition="not:CURRENT_COLONY/isFree" tal:replace="structure bbcode:CURRENT_COLONY/getName">NAME</span>
 										</span>
 										<div>
-											<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id SHIP/getCurrentColony/getUserId;handle bbcode2txt:SHIP/getCurrentColony/getUser/getName" />
-											<span tal:replace="structure bbcode:SHIP/getCurrentColony/getUser/getName">USERNAME</span>
+											<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id CURRENT_COLONY/getUserId;handle bbcode2txt:CURRENT_COLONY/getUser/getName" />
+											<span tal:replace="structure bbcode:CURRENT_COLONY/getUser/getName">USERNAME</span>
 										</div>
 									</tal:block>
-									<tal:block tal:condition="SHIP/getCurrentColony/isFree">
-										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
-										<span tal:replace="SHIP/getCurrentColony/getPlanetType/getName">PLANETTYPE</span>
+									<tal:block tal:condition="CURRENT_COLONY/isFree">
+										<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+										<span tal:replace="CURRENT_COLONY/getPlanetType/getName">PLANETTYPE</span>
 									</tal:block>
 								</td>
 								<td style="width: 50%;">
-									<div tal:condition="not:SHIP/getCurrentColony/isFree" style="margin-top: 5px;">
-										<a href="javascript:void(0);" onclick="showBToColonyWindow(${SHIP/getCurrentColony/getId});" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
+									<div tal:condition="not:CURRENT_COLONY/isFree" style="margin-top: 5px;">
+										<a href="javascript:void(0);" onclick="showBToColonyWindow(${CURRENT_COLONY/getId});" onmouseover="cp('beamfrom','buttons/b_down2')" onmouseout="cp('beamfrom','buttons/b_down1')">
 											<img src="assets/buttons/b_down1.gif" name="beamfrom" title="Zu der Kolonie beamen" />
 										</a>
-										<a href="javascript:void(0);" onclick="showBFromColonyWindow(${SHIP/getCurrentColony/getId});" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
+										<a href="javascript:void(0);" onclick="showBFromColonyWindow(${CURRENT_COLONY/getId});" onmouseover="cp('beamto','buttons/b_up2')" onmouseout="cp('beamto','buttons/b_up1')">
 											<img src="assets/buttons/b_up1.gif" name="beamto" title="Von der Kolonie beamen" />
 										</a>
 									</div>
-									<tal:block tal:condition="not:SHIP/getCurrentColony/ownedByCurrentUser">
-										<img src="assets/planets/${SHIP/getCurrentColony/getColonyClass}.gif" style="width: 15px; height: 15px;" />
-										<a onclick="showColonization(${SHIP/getCurrentColony/getId});" href="javascript:void(0);" tal:condition="CAN_COLONIZE_CURRENT_COLONY">
+									<tal:block tal:condition="not:OWNS_CURRENT_COLONY">
+										<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" />
+										<a onclick="showColonization(${CURRENT_COLONY/getId});" href="javascript:void(0);" tal:condition="CAN_COLONIZE_CURRENT_COLONY">
 											Kolonie gründen
 										</a>
 									</tal:block>
 									<div tal:condition="SHIP/canLandOnCurrentColony">
-										<a href="colony.php?B_LAND_SHIP=1&id=${SHIP/getCurrentColony/getId}&shipid=${SHIP/getId}&sstr=${THIS/getSessionString}" i18n:translate="">Landen</a>
+										<a href="colony.php?B_LAND_SHIP=1&id=${CURRENT_COLONY/getId}&shipid=${SHIP/getId}&sstr=${THIS/getSessionString}" i18n:translate="">Landen</a>
 									</div>
 								</td>
 							</tr>
