@@ -12,7 +12,10 @@ final class ProjectileWeaponShipSystem implements ShipSystemTypeInterface
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getTorpedos() === false && $ship->getTorpedoCount() > 0
+        return
+            $ship->getTorpedos() === false &&
+            $ship->getTorpedoCount() > 0  &&
+            $ship->getCloakState() === false
         ;
     }
 

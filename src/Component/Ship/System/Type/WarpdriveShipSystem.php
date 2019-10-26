@@ -36,13 +36,15 @@ final class WarpdriveShipSystem implements ShipSystemTypeInterface
         $ship->setWarpState(true);
 
         if ($ship->traktorBeamFromShip()) {
-            if ($ship->getEps() >= $this->getEnergyUsageForActivation()) {
-                $ship->getTraktorShip()->cancelRepair();
-                $ship->getTraktorShip()->setWarpState(true);
+            if ($ship->getEps() > $this->getEnergyUsageForActivation()) {
+                $traktorShip = $ship->getTraktorShip();
+
+                $traktorShip->cancelRepair();
+                $traktorShip->setWarpState(true);
 
                 $ship->setEps($ship->getEps() - $this->getEnergyUsageForActivation());
 
-                $this->shipRepository->save($ship->getTraktorShip());
+                $this->shipRepository->save($traktorShip);
             } else {
                 $ship->deactivateTraktorBeam();
             }
@@ -54,9 +56,11 @@ final class WarpdriveShipSystem implements ShipSystemTypeInterface
         $ship->setWarpState(false);
 
         if ($ship->traktorBeamFromShip()) {
-            $ship->getTraktorShip()->setWarpState(true);
+            $traktorShip = $ship->getTraktorShip();
 
-            $this->shipRepository->save($ship->getTraktorShip());
+            $traktorShip->setWarpState(false);
+
+            $this->shipRepository->save($traktorShip);
         }
     }
 }
