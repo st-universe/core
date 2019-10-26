@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -23,4 +24,15 @@ interface FleetRepositoryInterface extends ObjectRepository
      * @return FleetInterface[]
      */
     public function getByUser(int $userId): iterable;
+
+    /**
+     * @return FleetInterface[]
+     */
+    public function getByPositition(
+        ?StarSystemInterface $starSystem,
+        int $cx,
+        int $cy,
+        int $sx,
+        int $sy
+    ): iterable;
 }

@@ -474,36 +474,36 @@
 					</tal:block>
 					<tal:block tal:condition="FLEET_NBS">
 						<tal:block tal:repeat="data FLEET_NBS">
-							<tal:block tal:condition="not:data/fleethide">
+							<tal:block tal:condition="not:data/isHidden">
 								<tr>
 									<td colspan="2">
-										<span tal:replace="php:count(data['ships'])">COUNT</span> Schiffe
-										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
+										<span tal:replace="data/getVisibleShips/count">COUNT</span> Schiffe
+										<tal:block tal:condition="data/showManagement">
 											<tal:block tal:condition="not:SHIP/getFleetId">
-												(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/fleet/getId}">+</a>)
+												(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}">+</a>)
 											</tal:block>
 										</tal:block>
 									</td>
 									<td colspan="3">
-										<span tal:condition="not:data/fleet/ownedByCurrentUser" tal:content="structure bbcode:data/fleet/getName">NAME</span>
-										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<a href="?SHOW_SHIP=1&id=${data/fleet/getLeadShip/getId}" tal:content="structure bbcode:data/fleet/getName">NAME</a>
+										<span tal:condition="not:data/showManagement" tal:content="structure bbcode:data/getName">NAME</span>
+										<tal:block tal:condition="data/showManagement">
+											<a href="?SHOW_SHIP=1&id=${data/getLeadShip/getId}" tal:content="structure bbcode:data/getName">NAME</a>
 										</tal:block>
-										<span id="hidefleet${data/fleet/getId}">
-											(<a href="javascript:void(0);" onclick="hideFleet(${data/fleet/getId});">zuklappen</a>)
+										<span id="hidefleet${data/getId}">
+											(<a href="javascript:void(0);" onclick="hideFleet(${data/getId});">zuklappen</a>)
 										</span>
-										<span style="display: none;" id="showfleet${data/fleet/getId}">
-											(<a href="javascript:void(0);" onclick="showFleet(${data/fleet/getId});">aufklappen</a>)
+										<span style="display: none;" id="showfleet${data/getId}">
+											(<a href="javascript:void(0);" onclick="showFleet(${data/getId});">aufklappen</a>)
 										</span>
 									</td>
 									<td>
-										<div id="fleetuser${data/fleet/getId}" style="display: none;">
-											<stu:jsimagelink onclick="openPmWindow(${data/fleet/getUserId})" image="msg" title="Nachricht an ${bbcode2txt:data/fleet/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/fleet/getUser/getName">USERNAME</span> (${data/fleet/getUserId})
+										<div id="fleetuser${data/getId}" style="display: none;">
+											<stu:jsimagelink onclick="openPmWindow(${data/getUser/getId})" image="msg" title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/getUser/getName">USERNAME</span> (${data/getUser/getId})
 										</div>
 									</td>
 								</tr>
-								<tal:block tal:repeat="ship data/ships">
-									<tr tal:attributes="class string:row${repeat/ship/odd} fleet${data/fleet/getId}">
+								<tal:block tal:repeat="ship data/getVisibleShips">
+									<tr tal:attributes="class string:row${repeat/ship/odd} fleet${data/getId}">
 										<form id="nbsf_${ship/getId}" method="post" action="ship.php">
 											<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 											<input type="hidden" name="target" tal:attributes="value ship/getId" />
@@ -514,36 +514,36 @@
 									</tr>
 								</tal:block>
 							</tal:block>
-							<tal:block tal:condition="data/fleethide">
+							<tal:block tal:condition="data/isHidden">
 								<tr>
 									<td colspan="2">
-										<span tal:replace="php:count(data['ships'])">COUNT</span> Schiffe
-										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
+										<span tal:replace="data/getVisibleShips/count">COUNT</span> Schiffe
+										<tal:block tal:condition="data/showManagement">
 											<tal:block tal:condition="not:SHIP/getFleetId">
-												(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/fleet/getId}">+</a>)
+												(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}">+</a>)
 											</tal:block>
 										</tal:block>
 									</td>
 									<td colspan="3">
-										<span tal:condition="not:data/fleet/ownedByCurrentUser" tal:content="structure data/fleet/getName">NAME</span>
-										<tal:block tal:condition="data/fleet/ownedByCurrentUser">
-											<a href="?SHOW_SHIP=1&id=${data/fleet/getLeadShip/getId}" tal:content="structure data/fleet/getName">NAME</a>
+										<span tal:condition="not:data/showManagement" tal:content="structure data/getName">NAME</span>
+										<tal:block tal:condition="data/showManagement">
+											<a href="?SHOW_SHIP=1&id=${data/getLeadShip/getId}" tal:content="structure data/getName">NAME</a>
 										</tal:block>
-										<span style="display: none;" id="hidefleet${data/fleet/getId}">
-											(<a href="javascript:void(0);" onclick="hideFleet(${data/fleet/getId});">zuklappen</a>)
+										<span style="display: none;" id="hidefleet${data/getId}">
+											(<a href="javascript:void(0);" onclick="hideFleet(${data/getId});">zuklappen</a>)
 										</span>
-										<span id="showfleet${data/fleet/getId}">
-											(<a href="javascript:void(0);" onclick="showFleet(${data/fleet/getId});">aufklappen</a>)
+										<span id="showfleet${data/getId}">
+											(<a href="javascript:void(0);" onclick="showFleet(${data/getId});">aufklappen</a>)
 										</span>
 									</td>
 									<td>
-										<div id="fleetuser${data/fleet/getId}">
-											<stu:jsimagelink onclick="openPmWindow(${data/fleet/getUserId})" image="msg" title="Nachricht an ${bbcode2txt:data/fleet/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/fleet/getUser/getName">USERNAME</span> (${data/fleet/getUserId})
+										<div id="fleetuser${data/getId}">
+											<stu:jsimagelink onclick="openPmWindow(${data/getUser/getId})" image="msg" title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/getUser/getName">USERNAME</span> (${data/getUser/getId})
 										</div>
 									</td>
 								</tr>
-								<tal:block tal:repeat="ship data/ships">
-									<tr tal:attributes="class string:row${repeat/ship/odd} fleet${data/fleet/getId}" style="display: none;">
+								<tal:block tal:repeat="ship data/getVisibleShips">
+									<tr tal:attributes="class string:row${repeat/ship/odd} fleet${data/getId}" style="display: none;">
 										<form id="nbsf_${ship/getId}" method="post" action="ship.php">
 											<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 											<input type="hidden" name="target" tal:attributes="value ship/getId" />

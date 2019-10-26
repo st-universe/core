@@ -21,8 +21,6 @@ interface FleetInterface
 
     public function getShipCount(): int;
 
-    public function ownedByCurrentUser(): bool;
-
     public function getLeadShip(): ShipInterface;
 
     public function setLeadShip(ShipInterface $ship): FleetInterface;

@@ -84,11 +84,6 @@ class Fleet implements FleetInterface
         return $this->getShips()->count();
     }
 
-    public function ownedByCurrentUser(): bool
-    {
-        return currentUser()->getId() === $this->getUserId();
-    }
-
     public function getLeadShip(): ShipInterface
     {
         return $this->fleetLeader;

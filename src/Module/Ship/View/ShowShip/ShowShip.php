@@ -9,6 +9,7 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Ship\Lib\FleetNfsItem;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -68,15 +69,6 @@ final class ShowShip implements ViewControllerInterface
 
         $shipId = $ship->getId();
 
-        $result = $this->shipRepository->getFleetScannerResults(
-            $ship->getSystem(),
-            $ship->getSx(),
-            $ship->getSy(),
-            $ship->getCx(),
-            $ship->getCy(),
-            $ship->getId()
-        );
-
         $nbs = $this->shipRepository->getBaseScannerResults(
             $ship->getSystem(),
             $ship->getSx(),
@@ -95,17 +87,21 @@ final class ShowShip implements ViewControllerInterface
             $ship->getId()
         );
 
+        $fleets = $this->fleetRepository->getByPositition(
+            $ship->getSystem(),
+            $ship->getCx(),
+            $ship->getCy(),
+            $ship->getSx(),
+            $ship->getSy()
+        );
+
         $fnbs = [];
-        foreach ($result as $data) {
-            if (!array_key_exists($data->getFleetId(), $fnbs)) {
-                $fnbs[$data->getFleetId()]['fleet'] = $data->getFleet();
-                if ($this->session->hasSessionValue('hiddenfleets', $data->getFleetId())) {
-                    $fnbs[$data->getFleetId()]['fleethide'] = true;
-                } else {
-                    $fnbs[$data->getFleetId()]['fleethide'] = false;
-                }
-            }
-            $fnbs[$data->getFleetId()]['ships'][] = $data;
+        foreach ($fleets as $fleet) {
+            $fnbs[] = new FleetNfsItem(
+                $this->session,
+                $fleet,
+                $ship
+            );
         }
 
         $canColonize = false;

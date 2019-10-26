@@ -220,32 +220,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-    public function getFleetScannerResults(
-        ?StarSystemInterface $starSystem,
-        int $sx,
-        int $sy,
-        int $cx,
-        int $cy,
-        int $ignoreId
-    ): iterable {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s WHERE (
-                    (s.systems_id IS NULL AND :starSystemId IS NULL) OR s.systems_id = :starSystemId
-                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NOT NULL
-                AND s.cloak = 0 AND s.is_base = 0 AND s.id != :ignoreId',
-                Ship::class
-            )
-        )->setParameters([
-            'starSystemId' => $starSystem,
-            'sx' => $sx,
-            'sy' => $sy,
-            'cx' => $cx,
-            'cy' => $cy,
-            'ignoreId' => $ignoreId
-        ])->getResult();
-    }
-
     public function getBaseScannerResults(
         ?StarSystemInterface $starSystem,
         int $sx,

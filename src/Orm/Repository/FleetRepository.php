@@ -7,6 +7,8 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
@@ -50,5 +52,31 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
             ['user_id' => $userId],
             ['id' => 'desc']
         );
+    }
+
+    public function getByPositition(
+        ?StarSystemInterface $starSystem,
+        int $cx,
+        int $cy,
+        int $sx,
+        int $sy
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT f FROM %s f LEFT JOIN %s s WITH s.id = f.ships_id WHERE 
+                (s.starSystem = :starSystem OR (s.starSystem IS NULL AND :starSystem is NULL))
+                AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.is_base = 0',
+                Fleet::class,
+                Ship::class
+            )
+        )
+            ->setParameters([
+                'starSystem' => $starSystem,
+                'cx' => $cx,
+                'cy' => $cy,
+                'sx' => $sx,
+                'sy' => $sy
+            ])
+            ->getResult();
     }
 }
