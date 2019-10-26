@@ -801,11 +801,6 @@ class Ship implements ShipInterface
         $container->get(ShipRepositoryInterface::class)->save($this);
     }
 
-    public function ownedByCurrentUser(): bool
-    {
-        return $this->getUser()->getId() == currentUser()->getId();
-    }
-
     public function getFleet(): ?FleetInterface
     {
         return $this->fleet;
@@ -1168,7 +1163,7 @@ class Ship implements ShipInterface
 
     public function isInterceptAble(): bool
     {
-        return $this->getUser()->getId() != currentUser()->getId() && $this->getWarpState();
+        return $this->getWarpState();
     }
 
     public function getMapCX(): int
@@ -1288,7 +1283,7 @@ class Ship implements ShipInterface
 
     public function canBeAttacked(): bool
     {
-        return !$this->ownedByCurrentUser() && !$this->getRump()->isTrumfield();
+        return !$this->getRump()->isTrumfield();
     }
 
     public function canAttack(): bool

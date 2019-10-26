@@ -82,12 +82,7 @@
 		</tr>
 	</metal:macro>
 	<metal:macro metal:define-macro="shipimage">
-		<tal:block tal:condition="ship/ownedByCurrentUser">
-			<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><img src="assets/ships/${ship/getRump/getId}.gif" title="Zum Schiff wechseln" border="0" /></a>
-		</tal:block>
-		<tal:block tal:condition="not:ship/ownedByCurrentUser">
 			<img src="assets/ships/${ship/getRump/getId}.gif" />
-		</tal:block>
 	</metal:macro>
 	<metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
 		<input type="hidden" name="id" tal:attributes="value SHIP/getId" />
@@ -283,8 +278,8 @@
 							</tr>
 							<tr>
 								<td style="text-align: center;">
-									<img tal:condition="not:targetShip/ownedByCurrentUser" src="assets/ships/${targetShip/getRump/getId}.gif" />
-									<a tal:condition="targetShip/ownedByCurrentUser" href="?SHOW_SHIP=1&id=${targetShip/getId}">
+									<img tal:condition="not:OWNS_TARGET" src="assets/ships/${targetShip/getRump/getId}.gif" />
+									<a tal:condition="OWNS_TARGET" href="?SHOW_SHIP=1&id=${targetShip/getId}">
 										<img src="assets/ships/${targetShip/getRump/getId}.gif" />
 									</a>
 								</td>
@@ -343,8 +338,8 @@
 							</tr>
 							<tr>
 								<td style="text-align: center;">
-									<img tal:condition="not:targetShip/ownedByCurrentUser" src="assets/ships/${targetShip/getRump/getId}.gif" />
-									<a tal:condition="targetShip/ownedByCurrentUser" href="?SHOW_SHIP=1&id=${targetShip/getId}">
+									<img tal:condition="not:OWNS_TARGET" src="assets/ships/${targetShip/getRump/getId}.gif" />
+									<a tal:condition="OWNS_TARGET" href="?SHOW_SHIP=1&id=${targetShip/getId}">
 										<img src="assets/ships/${targetShip/getRump/getId}.gif" />
 									</a>
 								</td>

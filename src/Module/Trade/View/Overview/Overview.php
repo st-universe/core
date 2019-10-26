@@ -7,6 +7,9 @@ namespace Stu\Module\Trade\View\Overview;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Trade\Lib\TradeOfferItem;
+use Stu\Module\Trade\Lib\TradeOfferItemInterface;
+use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
@@ -26,7 +29,8 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $game->appendNavigationPart(
             'trade.php',
@@ -40,6 +44,14 @@ final class Overview implements ViewControllerInterface
             $this->tradeLicenseRepository->getAmountByUser($userId)
         );
         $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENCE_COUNT);
-        $game->setTemplateVar('OFFER_LIST', $this->tradeOfferRepository->getByUserLicenses($userId));
+        $game->setTemplateVar(
+            'OFFER_LIST',
+            array_map(
+                function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
+                    return new TradeOfferItem($tradeOffer, $user);
+                },
+                $this->tradeOfferRepository->getByUserLicenses($userId)
+            )
+        );
     }
 }

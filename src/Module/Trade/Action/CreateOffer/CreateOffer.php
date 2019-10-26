@@ -45,6 +45,8 @@ final class CreateOffer implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowAccounts::VIEW_IDENTIFIER);
+
         $userId = $game->getUser()->getId();
 
         $storage = $this->tradeStorageRepository->find($this->createOfferRequest->getStorageId());

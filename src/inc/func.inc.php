@@ -189,18 +189,6 @@ function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module):
     return (int)round((1 - $value) * 100);
 } # }}}
 
-function currentUser(): UserInterface
-{
-    static $currentUser = null;
-    if ($currentUser === null) {
-        // @todo refactor
-        global $_SESSION, $container;
-
-        return $container->get(UserRepositoryInterface::class)->find((int)$_SESSION['uid']);
-    }
-    return $currentUser;
-}
-
 TalesRegistry::registerPrefix(
     'clmodeDescription',
     function ($src, $nothrow): string {

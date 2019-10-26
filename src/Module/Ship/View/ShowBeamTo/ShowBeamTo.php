@@ -28,11 +28,11 @@ final class ShowBeamTo implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $user->getId()
         );
 
         $target = $this->shipRepository->find(request::getIntFatal('target'));
@@ -50,5 +50,6 @@ final class ShowBeamTo implements ViewControllerInterface
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('OWNS_TARGET', $ship->getUser() === $user);
     }
 }

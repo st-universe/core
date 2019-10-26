@@ -201,8 +201,6 @@ interface ShipInterface
 
     public function leaveFleet(): void;
 
-    public function ownedByCurrentUser(): bool;
-
     public function getFleet(): ?FleetInterface;
 
     public function setFleet(?FleetInterface $fleet): ShipInterface;
