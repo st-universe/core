@@ -510,7 +510,6 @@
 					<td style="width: 450px;">
 						<div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
 							<img src="assets/system/${data/getSystemType}.gif" />
-							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span>
 							${data/getStatus}%
 						</div>
 					</td>
@@ -540,7 +539,7 @@
 							<img src="assets/buttons/modul_1.gif" />
 						</th>
 						<td style="vertical-align: middle; text-align: center;">
-							<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span>
+							<span tal:replace="structure HULL_STATUS_BAR">EPS</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
 							${SHIP/getHuell}
@@ -555,7 +554,7 @@
 							<img src="assets/buttons/modul_2.gif" />
 						</th>
 						<td style="text-align: center; vertical-align: middle;">
-							<span tal:replace="structure php:renderShieldStatusBar(SHIP.getShieldState(),SHIP.getShield(),SHIP.getMaxShield())">SCHILDE</span>
+							<span tal:replace="structure SHIELD_STATUS_BAR">SCHILDE</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
 							${SHIP/getShield}
@@ -570,7 +569,7 @@
 							<img src="assets/buttons/modul_8.gif" />
 						</th>
 						<td style="vertical-align: middle; text-align: center;">
-							<span tal:replace="structure php:renderEpsStatusBar(SHIP.getEps(),SHIP.getMaxEps())">EPS</span>
+							<span tal:replace="structure EPS_STATUS_BAR">EPS</span>
 						</td>
 						<td style="text-align: center; width: 60px;">
 							${SHIP/getEps}
@@ -628,7 +627,6 @@
 			<div class="divbody">
 				<div tal:repeat="data SHIP/getSystems">
 					<img src="assets/system/${data/getSystemType}.gif" />
-					<span tal:replace="structure php:renderHuellStatusBar(SHIP.getHuell(),SHIP.getMaxHuell())">EPS</span>
 					${data/getStatus}%
 				</div>
 			</div>

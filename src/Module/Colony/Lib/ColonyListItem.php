@@ -6,6 +6,8 @@ declare(strict_types=0);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetTypeInterface;
 use Stu\Orm\Entity\StarSystemInterface;
@@ -106,5 +108,25 @@ final class ColonyListItem implements ColonyListItemInterface
     public function getGoodUseView(): array
     {
         return $this->commodityConsumption->getConsumption($this->colony);
+    }
+
+    public function getStorageStatusBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Lager'))
+            ->setMaxValue($this->colony->getMaxStorage())
+            ->setValue($this->colony->getStorageSum())
+            ->render();
+    }
+
+    public function getEpsStatusBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->setLabel(_('Energie'))
+            ->setMaxValue($this->colony->getMaxEps())
+            ->setValue($this->colony->getEps())
+            ->render();
     }
 }

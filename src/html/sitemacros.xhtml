@@ -36,7 +36,7 @@
 				<div class="header_box header_box_research border_box action"  tal:condition="CURRENT_RESEARCH" onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;">
 					<div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
 					<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
-					<span tal:replace="structure php:renderResearchStatusBar(CURRENT_RESEARCH.getResearch().getPoints()-CURRENT_RESEARCH.getActive(),CURRENT_RESEARCH.getResearch().getPoints())">STATUSBAR</span>
+					<span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
 				</div>
 				<div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('research.php')">
 					<img style="width: 30px; height: 30px;" src="assets/buttons/menu_forsch0.gif" title="Forschung" i18n:attributes="title" />
@@ -87,15 +87,15 @@
 						<p i18n:translate="">Kolonien</p>
 						<div style="clear: both" tal:repeat="data USER_COLONIES">
 							<a style="display: block; float: left; margin-right: 10px"  href="colony.php?SHOW_COLONY=1&id=${data/getId}">
-								<img src="assets/planets/${data/getColonyClass}s.gif" title="runtime" tal:attributes="title bbcode2txt:data/getName" />
+								<img src="assets/planets/${data/getPlanetType/getId}s.gif" title="runtime" tal:attributes="title bbcode2txt:data/getName" />
 							</a>
 							<div>
 								<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" />
-								<span tal:content="structure php:renderEpsStatusBar(data.getEps(),data.getMaxEps())">EPS</span>
+								<span tal:content="structure data/getEpsStatusBar">EPS</span>
 							</div>
 							<div>
 								<img src="assets/buttons/lager.gif" title="Lagerraum" style="width: 12px; height: 12px;" />
-								<span tal:content="structure php:renderStorageStatusBar(data.getStorageSum(),data.getMaxStorage())">STORAGE</span>
+								<span tal:content="structure data/getStorageStatusBar">STORAGE</span>
 							</div>
 						</div>
 					</div>

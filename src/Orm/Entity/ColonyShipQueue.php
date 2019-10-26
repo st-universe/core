@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipQueueRepository")
  * @Table(
@@ -172,5 +175,18 @@ class ColonyShipQueue implements ColonyShipQueueInterface
         $this->shipBuildplan = $shipBuildplan;
 
         return $this;
+    }
+
+    /**
+     * @todo temporary, remove it.
+     */
+    public function getStatusBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Fortschritt'))
+            ->setMaxValue($this->getBuildtime())
+            ->setValue($this->getBuildtime() - $this->getFinishDate() - time())
+            ->render();
     }
 }

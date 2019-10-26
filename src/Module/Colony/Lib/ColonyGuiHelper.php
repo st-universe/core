@@ -8,6 +8,7 @@ use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 
@@ -81,10 +82,12 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             if ($value <= 0) {
                 continue;
             }
-            $epsBar[] = [
-                'color' => $color,
-                'value' => round($width / 100 * (100 / $colony->getMaxEps() * $value))
-            ];
+            $epsBar[] = sprintf(
+                '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
+                $color,
+                round($width / 100 * (100 / $colony->getMaxEps() * $value)),
+                _('Energieproduktion')
+            );
         }
 
         $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_STANDARD);
@@ -119,7 +122,10 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             $effets[$commodityId]['production'] = $prod[$commodityId];
         }
 
-        $game->setTemplateVar('EPS_BAR', $epsBar);
+        $game->setTemplateVar(
+            'EPS_STATUS_BAR',
+            $epsBar
+        );
         $game->setTemplateVar('STORAGE', $storage);
         $game->setTemplateVar('EFFECTS', $effets);
     }

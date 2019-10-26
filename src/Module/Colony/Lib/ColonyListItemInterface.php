@@ -45,4 +45,8 @@ interface ColonyListItemInterface
     public function getProductionSum(): int;
 
     public function getGoodUseView(): array;
+
+    public function getStorageStatusBar(): string;
+
+    public function getEpsStatusBar(): string;
 }

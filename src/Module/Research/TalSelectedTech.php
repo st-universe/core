@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -126,5 +128,16 @@ final class TalSelectedTech implements TalSelectedTechInterface
     public function isResearchFinished(): bool
     {
         return $this->getResearchState()->getFinished() > 0;
+    }
+
+    public function getStatusBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
+            ->setLabel(_('Forschung'))
+            ->setMaxValue($this->research->getPoints())
+            ->setValue($this->getResearchState()->getActive())
+            ->setSizeModifier(2)
+            ->render();
     }
 }

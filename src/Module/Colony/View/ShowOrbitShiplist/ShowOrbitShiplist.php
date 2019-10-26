@@ -7,6 +7,9 @@ namespace Stu\Module\Colony\View\ShowOrbitShiplist;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Tal\OrbitShipItem;
+use Stu\Module\Tal\OrbitShipItemInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 final class ShowOrbitShiplist implements ViewControllerInterface
 {
@@ -33,10 +36,25 @@ final class ShowOrbitShiplist implements ViewControllerInterface
             $userId
         );
 
+        $orbitShipList = [];
+
+        foreach ($colony->getOrbitShipList($userId) as $entry) {
+            $entry['ships'] = array_map(
+                function (ShipInterface $ship): OrbitShipItemInterface {
+                    return new OrbitShipItem($ship);
+                },
+                $entry['ships']
+            );
+            $orbitShipList[] = $entry;
+        }
+
         $game->setPageTitle(_('Schiffe im Orbit'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/colonymacros.xhtml/orbitshiplist');
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('ORBIT_SHIP_LIST', $colony->getOrbitShipList($userId));
+        $game->setTemplateVar(
+            'ORBIT_SHIP_LIST',
+            $orbitShipList
+        );
     }
 }

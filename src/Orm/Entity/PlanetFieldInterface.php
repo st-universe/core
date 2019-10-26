@@ -81,4 +81,8 @@ interface PlanetFieldInterface
     public function isColonizeAble(): bool;
 
     public function hasUpgradeOrTerraformingOption(): bool;
+
+    public function getConstructionStatusBar(): string;
+
+    public function getTerraformingStatusBar(): string;
 }

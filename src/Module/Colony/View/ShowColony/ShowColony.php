@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Tal\OrbitShipItem;
 
 final class ShowColony implements ViewControllerInterface
 {
@@ -99,7 +100,7 @@ final class ShowColony implements ViewControllerInterface
             'COLONY_MENU_SELECTOR',
             new ColonyMenu($menuId)
         );
-        $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip);
+        $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
     }

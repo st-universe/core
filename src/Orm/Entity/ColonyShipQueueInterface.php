@@ -41,4 +41,6 @@ interface ColonyShipQueueInterface
     public function getShipBuildplan(): ShipBuildplanInterface;
 
     public function setShipBuildplan(ShipBuildplanInterface $shipBuildplan): ColonyShipQueueInterface;
+
+    public function getStatusBar(): string;
 }

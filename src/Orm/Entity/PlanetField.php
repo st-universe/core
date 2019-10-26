@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
 use Stu\Orm\Repository\TerraformingRepositoryInterface;
@@ -334,7 +336,8 @@ class PlanetField implements PlanetFieldInterface
 
     public function getOverlayWidth(): int
     {
-        $perc = getPercentage($this->getBuildProgress(), $this->getBuilding()->getBuildtime());
+        $buildtime = $this->getBuilding()->getBuildtime();
+        $perc = max(0, @round((100 / $buildtime) * min($this->getBuildProgress(), $buildtime)));
         return (int) round((40 / 100) * $perc);
     }
 
@@ -366,5 +369,31 @@ class PlanetField implements PlanetFieldInterface
     public function hasUpgradeOrTerraformingOption(): bool
     {
         return (!$this->isInConstruction() && count($this->getPossibleUpgrades()) > 0) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());
+    }
+
+    /**
+     * @todo temporary, remove it.
+     */
+    public function getConstructionStatusBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Fortschritt'))
+            ->setMaxValue($this->getBuilding()->getBuildtime())
+            ->setValue($this->getBuildProgress())
+            ->render();
+    }
+
+    /**
+     * @todo temporary, remove it.
+     */
+    public function getTerraformingStatusBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Fortschritt'))
+            ->setMaxValue($this->getTerraforming()->getDuration())
+            ->setValue($this->getTerraformingState()->getProgress())
+            ->render();
     }
 }

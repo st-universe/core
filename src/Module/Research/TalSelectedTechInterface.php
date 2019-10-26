@@ -35,4 +35,6 @@ interface TalSelectedTechInterface
     public function getDonePoints(): int;
 
     public function isResearchFinished(): bool;
+
+    public function getStatusBar(): string;
 }

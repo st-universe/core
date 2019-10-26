@@ -8,11 +8,16 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Communication\Lib\ContactListModeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalPageInterface;
+use Stu\Module\Tal\TalStatusBar;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -63,6 +68,8 @@ final class GameController implements GameControllerInterface
 
     private $createDatabaseEntry;
 
+    private $colonyLibFactory;
+
     private $gameInformations = [];
 
     private $siteNavigation = [];
@@ -101,7 +108,8 @@ final class GameController implements GameControllerInterface
         UserRepositoryInterface $userRepository,
         ResearchRepositoryInterface $researchRepository,
         Ubench $benchmark,
-        CreateDatabaseEntryInterface $createDatabaseEntry
+        CreateDatabaseEntryInterface $createDatabaseEntry,
+        ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -119,6 +127,7 @@ final class GameController implements GameControllerInterface
         $this->researchRepository = $researchRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
+        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -238,10 +247,29 @@ final class GameController implements GameControllerInterface
                 $folder[$specialId] = $this->privateMessageFolderRepository->getByUserAndSpecial($userId, $specialId);
             }
 
-            $this->talPage->setVar('CURRENT_RESEARCH', $this->researchedRepository->getCurrentResearch((int) $user->getId()));
+            $researchStatusBar = '';
+            $currentResearch = $this->researchedRepository->getCurrentResearch($user->getId());
+
+            if ($currentResearch !== null) {
+                $researchStatusBar = (new TalStatusBar())
+                    ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
+                    ->setLabel(_('Forschung'))
+                    ->setMaxValue($currentResearch->getResearch()->getPoints())
+                    ->setValue($currentResearch->getActive())
+                    ->setSizeModifier(2)
+                    ->render();
+            }
+
+            $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
+            $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar(
                 'USER_COLONIES',
-                $this->colonyRepository->getOrderedListByUser($user)
+                array_map(
+                    function (ColonyInterface $colony): ColonyListItemInterface {
+                        return $this->colonyLibFactory->createColonyListItem($colony);
+                    },
+                    $this->colonyRepository->getOrderedListByUser($user)
+                )
             );
             $this->talPage->setVar('PM_NAVLET', $folder);
         }

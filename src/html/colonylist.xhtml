@@ -34,11 +34,11 @@
 						<span tal:replace="colony/getPopulation">POPULATION</span>/<span tal:replace="colony/getHousing">HOUSING</span> (<span tal:replace="colony/getImmigration">IMMIGRATION</span>)
 					</td>
 					<td style="vertical-align: middle;">
-						<span tal:content="structure php:renderEpsStatusBar(colony.getEps(),colony.getMaxEps())">EPS</span>
+						<span tal:content="structure colony/getEpsStatusBar">EPS</span>
 						${colony/getEps}/${colony/getMaxEps} (<span tal:replace="addPlusCharacter:colony/getEpsProduction">PROD</span>)
 					</td>
 					<td style="vertical-align: middle;">
-						<span tal:content="structure php:renderStorageStatusBar(colony.getStorageSum(),colony.getMaxStorage())">STORAGE</span>
+						<span tal:content="structure colony/getStorageStatusBar">STORAGE</span>
 						${colony/getStorageSum}/${colony/getMaxStorage} (${addPlusCharacter:colony/getProductionSum})<br />
 						<div tal:repeat="stor colony/getGoodUseView">
 							<img src="assets/goods/${stor/good/getId}.gif" title="runtime" tal:attributes="title stor/good/getName" />

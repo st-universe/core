@@ -49,7 +49,7 @@
 					<br />
 					<div style="width: 100%; text-align: center">
 						<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung" />
-						<span tal:replace="structure php:renderResearchStatusBar(SELECTED_RESEARCH.getPoints()-SELECTED_RESEARCH.getResearchState().getActive(),SELECTED_RESEARCH.getPoints())">STATUSBAR</span>
+						<span tal:replace="structure SELECTED_RESEARCH/getStatusBar">STATUSBAR</span>
 						Status:<span tal:replace="SELECTED_RESEARCH/getDonePoints">COUNT</span>/<span tal:replace="SELECTED_RESEARCH/getPoints">MAXCOUNT</span>
 					</div>
 					<div class="fabutton_red">

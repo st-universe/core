@@ -522,7 +522,7 @@
 	<metal:block metal:define-macro="shipselector"><li><table class="use" style="width: 595px;" onmouseover="shipSelectorHover(this)" onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this);">
 				<tr>
 					<td class="darkbg" colspan="4">
-						<span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span tal:replace="structure bbcode:data/getUser/getName">USERNAME</span>
+						<span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span tal:replace="structure bbcode:data/getUserName">USERNAME</span>
 					</td>
 				</tr>
 				<tr>
@@ -536,16 +536,16 @@
 									<img src="assets/buttons/modul_1.gif" />
 								</th>
 								<td style="vertical-align: middle; text-align: center;">
-									<span tal:replace="structure php:renderHuellStatusBar(data.getHuell(),data.getMaxHuell())">EPS</span>
+									<span tal:replace="structure data/getHullStatusBar">HULL</span>
 								</td>
 								<td style="text-align: center;">
-									${data/getHuell}
+									${data/getHull}
 								</td>
 							</tr>
 						</table>
 					</td>
-					<td colspan="2" tal:condition="data/getIsDestroyed"></td>
-					<tal:block tal:condition="not:data/getIsDestroyed">
+					<td colspan="2" tal:condition="data/isDestroyed"></td>
+					<tal:block tal:condition="not:data/isDestroyed">
 						<td style="width: 150px;">
 							<table class="tcal">
 								<tr>
@@ -553,7 +553,7 @@
 										<img src="assets/buttons/modul_2.gif" />
 									</th>
 									<td style="text-align: center; vertical-align: middle;">
-										<span tal:replace="structure php:renderShieldStatusBar(data.getShieldState(),data.getShield(),data.getMaxShield())">SCHILDE</span>
+										<span tal:replace="structure data/getShieldStatusBar">SCHILDE</span>
 									</td>
 									<td style="text-align: center;">
 										${data/getShield}
@@ -568,7 +568,7 @@
 										<img src="assets/buttons/modul_8.gif" />
 									</th>
 									<td style="vertical-align: middle; text-align: center;">
-										<span tal:replace="structure php:renderEpsStatusBar(data.getEps(),data.getMaxEps())">EPS</span>
+										<span tal:replace="structure data/getEpsStatusBar">EPS</span>
 									</td>
 									<td style="text-align: center;">
 										${data/getEps}
@@ -975,14 +975,11 @@
 							<span i18n:translate="">auf</span> ${FIELD/getFieldTypeName}
 						</div>
 						<div>
-							<div style="display: table-cell; padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(\Stu\Module\Tal\StatusBarColorEnum::STATUSBAR_GREEN,FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">STATUSBAR</div>
+							<div style="display: table-cell; padding-top: 5px;" tal:content="structure FIELD/getConstructionStatusBar">STATUSBAR</div>
 							<div style="display: table-cell; vertical-align: middle; padding-left: 5px;">
-								<span i18n:translate="">Baustatus</span>: <span tal:replace="php:getPercentage(FIELD.getBuildProgress(),FIELD.getBuilding().getBuildTime())">PERCENTAGE</span>%<br />
+                <span i18n:translate="">Fertigstellung</span>: <span tal:replace="datetime:FIELD/getBuildtime">DATE</span>
 							</div>
 						</div>
-						<tal:block tal:condition="FIELD/isInConstruction">
-							<span i18n:translate="">Fertigstellung</span>: <span tal:replace="datetime:FIELD/getBuildtime">DATE</span>
-						</tal:block>
 					</div>
 					<div tal:condition="not:FIELD/isInConstruction">
 						<div tal:condition="not: FIELD/hasBuilding">
@@ -1122,9 +1119,7 @@
 										<img src="assets/generated/fields/${FIELD/getTerraforming/getFromFieldTypeId}.png" />
 									</td>
 									<td style="vertical-align: middle; width: 50px; text-align: center;">
-										<div>
-											Status: <span tal:replace="php:getPercentage(FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">PERCENTAGE</span>%</div>
-										<div style="padding-top: 5px;" tal:content="structure php:getPercentageStatusBar(\Stu\Module\Tal\StatusBarColorEnum::STATUSBAR_GREEN,FIELD.getTerraformingState().getProgress(),FIELD.getTerraforming().getDuration())">STATUSBAR</div>
+										<div style="padding-top: 5px;" tal:content="structure FIELD/getTerraformingStatusBar">STATUSBAR</div>
 									</td>
 									<td style="width: 45px; text-align: center;">
 										<img src="assets/generated/fields/${FIELD/getTerraforming/getToFieldTypeId}.png" />
@@ -1226,7 +1221,7 @@
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getRump/getName">RUMP</td>
 				<tal:block tal:condition="not:data/getStopDate">
 					<td style="text-align: center; vertical-align: middle">
-						<span tal:replace="structure php:getPercentageStatusBar(\Stu\Module\Tal\StatusBarColorEnum::STATUSBAR_GREEN,data.getBuildtime()-(data.getFinishDate()-time()),data.getBuildtime())">STATUSBAR</span>
+						<span tal:replace="structure data/getStatusBar">STATUSBAR</span>
 					</td>
 					<td style="text-align: center; vertical-align: middle">
 						<span tal:replace="datetime:data/getFinishDate">DATE</span>
@@ -1247,7 +1242,7 @@
 				</td>
 				<td style="text-align: center; vertical-align: middle" tal:content="data/getShip/getRump/getName">RUMP</td>
 				<td style="text-align: center; vertical-align: middle">
-					<img src="assets/buttons/modul_1.gif" title="Hülle" i18n:attributes="title" style="width: 12px; height: 12px;" /> <span tal:content="structure php:renderHuellStatusBar(data.getShip().getHuell(),data.getShip().getMaxHuell())">BAR</span> ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
+					<img src="assets/buttons/modul_1.gif" title="Hülle" i18n:attributes="title" style="width: 12px; height: 12px;" /> ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
 				</td>
 			</tr>
 		</table>
@@ -1369,7 +1364,7 @@
 	<metal:block metal:define-macro="colonyeps">
 		<input type="hidden" name="sstr" id="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
 		<stu:box tal:attributes="title COLONY_SURFACE/getEpsBoxTitleString">
-			<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar EPS_BAR" tal:content="structure php:getStatusBar(bar['color'],bar['value'])">BAR</span> ${addPlusCharacter:COLONY/getEpsProduction}
+			<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar EPS_STATUS_BAR" tal:content="structure bar">BAR</span> ${addPlusCharacter:COLONY/getEpsProduction}
 		</stu:box>
 	</metal:block>
 	<metal:block metal:define-macro="colonystorage">
