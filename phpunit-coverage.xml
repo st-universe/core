@@ -28,6 +28,9 @@
             <directory suffix=".php">src/Module</directory>
             <directory suffix=".php">src/Lib</directory>
             <directory suffix=".php">src/Orm</directory>
+            <exclude>
+              <directory suffix="services.php">src</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
