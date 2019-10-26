@@ -8,31 +8,6 @@ use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
-
-class Tuple
-{
-
-    private $var = null;
-    private $value = null;
-
-    function __construct($var, $value)
-    {
-        $this->var = $var;
-        $this->value = $value;
-    }
-
-    function getVar()
-    {
-        return $this->var;
-    }
-
-    function getValue()
-    {
-        return $this->value;
-    }
-}
 
 function checkPosition(ShipInterface $shipa, ShipInterface $shipb)
 {

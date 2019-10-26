@@ -10,7 +10,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Tuple;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
@@ -82,10 +81,11 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             if ($value <= 0) {
                 continue;
             }
-            $epsBar[] = new Tuple($color,
-                round($width / 100 * (100 / $colony->getMaxEps() * $value)));
+            $epsBar[] = [
+                'color' => $color,
+                'value' => round($width / 100 * (100 / $colony->getMaxEps() * $value))
+            ];
         }
-
 
         $goods = $this->commodityRepository->getByType(CommodityTypeEnum::GOOD_TYPE_STANDARD);
         $stor = $colony->getStorage();

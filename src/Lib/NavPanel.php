@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Stu\Component\Map\MapEnum;
+use Stu\Lib\NavPanelButton;
 use Stu\Orm\Entity\ShipInterface;
 
 class NavPanel
@@ -53,9 +54,9 @@ class NavPanel
     {
         $coords = $this->getShipPosition();
         if ($coords['cx'] - 1 < 1) {
-            return new Tuple("-", "disabled");
+            return new NavPanelButton("-", true);
         }
-        return new Tuple(($coords['cx'] - 1) . "|" . $coords['cy'], "");
+        return new NavPanelButton(($coords['cx'] - 1) . "|" . $coords['cy']);
     }
 
     function getRight()
@@ -63,18 +64,18 @@ class NavPanel
         $coords = $this->getShipPosition();
         $borders = $this->getMapBorders();
         if ($coords['cx'] + 1 > $borders['mx']) {
-            return new Tuple("-", "disabled");
+            return new NavPanelButton("-", true);
         }
-        return new Tuple(($coords['cx'] + 1) . "|" . $coords['cy'], "");
+        return new NavPanelButton(($coords['cx'] + 1) . "|" . $coords['cy']);
     }
 
     function getUp()
     {
         $coords = $this->getShipPosition();
         if ($coords['cy'] - 1 < 1) {
-            return new Tuple("-", "disabled");
+            return new NavPanelButton("-", true);
         }
-        return new Tuple($coords['cx'] . "|" . ($coords['cy'] - 1), "");
+        return new NavPanelButton($coords['cx'] . "|" . ($coords['cy'] - 1));
     }
 
     function getDown()
@@ -82,8 +83,8 @@ class NavPanel
         $coords = $this->getShipPosition();
         $borders = $this->getMapBorders();
         if ($coords['cy'] + 1 > $borders['my']) {
-            return new Tuple("-", "disabled");
+            return new NavPanelButton("-", true);
         }
-        return new Tuple($coords['cx'] . "|" . ($coords['cy'] + 1), "");
+        return new NavPanelButton($coords['cx'] . "|" . ($coords['cy'] + 1));
     }
 }

@@ -1369,7 +1369,7 @@
 	<metal:block metal:define-macro="colonyeps">
 		<input type="hidden" name="sstr" id="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
 		<stu:box tal:attributes="title COLONY_SURFACE/getEpsBoxTitleString">
-			<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar EPS_BAR" tal:content="structure php:getStatusBar(bar.getVar(),bar.getValue())">BAR</span> ${addPlusCharacter:COLONY/getEpsProduction}
+			<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span tal:repeat="bar EPS_BAR" tal:content="structure php:getStatusBar(bar['color'],bar['value'])">BAR</span> ${addPlusCharacter:COLONY/getEpsProduction}
 		</stu:box>
 	</metal:block>
 	<metal:block metal:define-macro="colonystorage">

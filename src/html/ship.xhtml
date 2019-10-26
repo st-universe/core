@@ -104,23 +104,23 @@
 						</tr>
 						<tr>
 							<td colspan="3" style="text-align: center;">
-								<input type="submit" class="button" name="B_MOVE_UP" style="width: 100px;" tal:attributes="value NAV_PANEL/getUp/getVar; disabled NAV_PANEL/getUp/getValue" />
+								<input type="submit" class="button" name="B_MOVE_UP" style="width: 100px;" tal:attributes="value NAV_PANEL/getUp/getLabel; disabled NAV_PANEL/getUp/isDisabled" />
 							</td>
 						</tr>
 						<tr>
 							<td style="text-align: center;">
-								<input type="submit" class="button" name="B_MOVE_LEFT" style="width: 100px;" tal:attributes="value NAV_PANEL/getLeft/getVar; disabled NAV_PANEL/getLeft/getValue" />
+								<input type="submit" class="button" name="B_MOVE_LEFT" style="width: 100px;" tal:attributes="value NAV_PANEL/getLeft/getLabel; disabled NAV_PANEL/getLeft/isDisabled" />
 							</td>
 							<td style="width: 100px; text-align: center; font-weight: bold;">
 								<input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();" name="navapp" style="text-align: center;" size="7" value="${SHIP/getPosX}|${SHIP/getPosY}" />
 							</td>
 							<td style="text-align: center;">
-								<input type="submit" class="button" style="width: 100px;" name="B_MOVE_RIGHT" tal:attributes="value NAV_PANEL/getRight/getVar; disabled NAV_PANEL/getRight/getValue" />
+								<input type="submit" class="button" style="width: 100px;" name="B_MOVE_RIGHT" tal:attributes="value NAV_PANEL/getRight/getLabel; disabled NAV_PANEL/getRight/isDisabled" />
 							</td>
 						</tr>
 						<tr>
 							<td colspan="3" style="text-align: center;">
-								<input type="submit" class="button" style="width: 100px;" name="B_MOVE_DOWN" tal:attributes="value NAV_PANEL/getDown/getVar; disabled NAV_PANEL/getDown/getValue" />
+								<input type="submit" class="button" style="width: 100px;" name="B_MOVE_DOWN" tal:attributes="value NAV_PANEL/getDown/getLabel; disabled NAV_PANEL/getDown/isDisabled" />
 							</td>
 						</tr>
 					</table>
