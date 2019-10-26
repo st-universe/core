@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -18,12 +19,16 @@ final class ShowScan implements ViewControllerInterface
 
     private $shipRepository;
 
+    private $positionChecker;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,7 +47,7 @@ final class ShowScan implements ViewControllerInterface
         $game->setPageTitle(_('Scan'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/show_ship_scan');
-        if (!checkPosition($ship, $target)) {
+        if (!$this->positionChecker->checkPosition($ship, $target)) {
             $game->addInformation(_('Das Schiff befindet sich nicht in diesem Sektor'));
             return;
         }

@@ -14,6 +14,10 @@ use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\ModuleValueCalculator;
+use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
+use Stu\Module\Ship\Lib\PositionChecker;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycle;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Control\GameController;
@@ -131,6 +135,8 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
+    PositionCheckerInterface::class => autowire(PositionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),

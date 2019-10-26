@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\InterceptShip;
 use request;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,16 +28,20 @@ final class InterceptShip implements ActionControllerInterface
 
     private $shipSystemManager;
 
+    private $positionChecker;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,7 +58,7 @@ final class InterceptShip implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!checkPosition($target, $ship)) {
+        if (!$this->positionChecker->checkPosition($target, $ship)) {
             return;
         }
 

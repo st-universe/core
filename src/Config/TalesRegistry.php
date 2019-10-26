@@ -1,46 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Stu\Config;
+
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Entity\ShipInterface;
-
-function checkPosition(ShipInterface $shipa, ShipInterface $shipb)
-{
-    if ($shipa->getSystem() !== null) {
-        if ($shipb->getSystem() === null || $shipa->getSystem()->getId() !== $shipb->getSystem()->getId()) {
-            return false;
-        }
-        if ($shipa->getSX() != $shipb->getSX() || $shipa->getSY() != $shipb->getSY()) {
-            return false;
-        }
-        return true;
-    }
-    if ($shipa->getCX() != $shipb->getCX() || $shipa->getCY() != $shipb->getCY()) {
-        return false;
-    }
-    return true;
-}
-
-function checkColonyPosition(ColonyInterface $col, ShipInterface $ship)
-{
-    if ($col->getSystemsId() != $ship->getSystem()->getId()) {
-        return false;
-    }
-    if ($col->getSX() != $ship->getSX() || $col->getSY() != $ship->getSY()) {
-        return false;
-    }
-    return true;
-}
-
-function compareBuildings(PlanetFieldInterface$a, PlanetFieldInterface $b)
-{
-    if ($a->getBuilding()->getId() == $b->getBuilding()->getId()) {
-        return $a->getId() > $b->getId();
-    }
-    return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
-}
 
 TalesRegistry::registerPrefix(
     'clmodeDescription',
@@ -109,3 +74,4 @@ TalesRegistry::registerPrefix(
         return '\Stu\Module\Tal\TalHelper::formatSeconds(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );
+

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -26,16 +27,20 @@ final class AttackShip implements ActionControllerInterface
 
     private $shipAttackCycle;
 
+    private $positionChecker;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
-        ShipAttackCycleInterface $shipAttackCycle
+        ShipAttackCycleInterface $shipAttackCycle,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,7 +62,7 @@ final class AttackShip implements ActionControllerInterface
             );
             return;
         }
-        if (!checkPosition($target, $ship)) {
+        if (!$this->positionChecker->checkPosition($target, $ship)) {
             return;
         }
 

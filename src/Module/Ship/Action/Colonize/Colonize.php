@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Colonize;
 
 use request;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -39,6 +40,8 @@ final class Colonize implements ActionControllerInterface
 
     private $shipRemover;
 
+    private $positionChecker;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
@@ -47,7 +50,8 @@ final class Colonize implements ActionControllerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         PlanetColonizationInterface $planetColonization,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -57,6 +61,7 @@ final class Colonize implements ActionControllerInterface
         $this->planetColonization = $planetColonization;
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -95,7 +100,7 @@ final class Colonize implements ActionControllerInterface
         if ($colony->getId() != $field->getColonyId()) {
             return;
         }
-        if (!checkColonyPosition($colony, $ship)) {
+        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
         if ($colony->getPlanetType()->getIsMoon()) {

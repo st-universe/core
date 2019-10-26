@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\JoinFleet;
 
 use AccessViolation;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -21,14 +22,18 @@ final class JoinFleet implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $positionChecker;
+
     public function __construct(
         JoinFleetRequestInterface $joinFleetRequest,
         FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->joinFleetRequest = $joinFleetRequest;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -47,7 +52,7 @@ final class JoinFleet implements ActionControllerInterface
         if ($fleet->getLeadShip()->getId() === $ship->getId()) {
             return;
         }
-        if (!checkPosition($fleet->getLeadShip(), $ship)) {
+        if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
         if ($fleet->getPointSum() + $ship->getRump()->getShipRumpCategory()->getPoints() > GameEnum::POINTS_PER_FLEET) {

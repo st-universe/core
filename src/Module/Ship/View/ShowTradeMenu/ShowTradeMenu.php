@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\View\ShowTradeMenu;
 use AccessViolation;
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -22,23 +23,25 @@ final class ShowTradeMenu implements ViewControllerInterface
     private $shipLoader;
 
     private $tradeLicenseRepository;
-    /**
-     * @var TradeLibFactoryInterface
-     */
+
     private $tradeLibFactory;
 
     private $tradePostRepository;
+
+    private $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
-        TradePostRepositoryInterface $tradePostRepository
+        TradePostRepositoryInterface $tradePostRepository,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeLibFactory = $tradeLibFactory;
         $this->tradePostRepository = $tradePostRepository;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,7 +61,7 @@ final class ShowTradeMenu implements ViewControllerInterface
             return;
         }
 
-        if (!checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->positionChecker->checkPosition($ship, $tradepost->getShip())) {
             new AccessViolation();
         }
 

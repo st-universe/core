@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,16 +28,20 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
     private $shipAttackCycle;
 
+    private $positionChecker;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
-        ShipAttackCycleInterface $shipAttackCycle
+        ShipAttackCycleInterface $shipAttackCycle,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -85,7 +90,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Das Trümmerfeld kann nicht erfasst werden");
             return;
         }
-        if (!checkPosition($ship, $target)) {
+        if (!$this->positionChecker->checkPosition($ship, $target)) {
             return;
         }
         if ($target->isBase()) {

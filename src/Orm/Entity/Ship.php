@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
+use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -1328,18 +1329,19 @@ class Ship implements ShipInterface
 
     public function canInteractWith($target, bool $colony = false): bool
     {
+        $positionChecker = new PositionChecker();
         if ($this->getCloakState()) {
-            throw new AccessViolation($target->getId());
+            throw new AccessViolation();
         }
         if ($colony === true) {
-            if (!checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
-                new AccessViolation($target->getId());
+            if (!$positionChecker->checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
+                new AccessViolation();
             }
             return true;
 
         } else {
-            if (!checkPosition($this, $target)) {
-                new AccessViolation($target->getId());
+            if (!$positionChecker->checkPosition($this, $target)) {
+                new AccessViolation();
             }
         }
         if ($target->getShieldState() && $target->getUserId() != $this->getUser()->getId()) {

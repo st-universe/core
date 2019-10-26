@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BuyTradeLicense;
 
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -33,13 +34,16 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     private $shipRepository;
 
+    private $positionChecker;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
@@ -47,6 +51,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         $this->tradePostRepository = $tradePostRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -66,7 +71,7 @@ final class BuyTradeLicense implements ActionControllerInterface
             return;
         }
 
-        if (!checkPosition($ship, $tradepost->getShip())) {
+        if (!$this->positionChecker->checkPosition($ship, $tradepost->getShip())) {
             return;
         }
         $targetId = (int) request::getIntFatal('target');
@@ -85,7 +90,7 @@ final class BuyTradeLicense implements ActionControllerInterface
                 if ($obj === null || $obj->getUserId() !== $userId) {
                     return;
                 }
-                if (!checkPosition($tradepost->getShip(), $obj)) {
+                if (!$this->positionChecker->checkPosition($tradepost->getShip(), $obj)) {
                     return;
                 }
 

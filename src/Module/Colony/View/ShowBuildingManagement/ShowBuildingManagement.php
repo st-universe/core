@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -58,7 +59,13 @@ final class ShowBuildingManagement implements ViewControllerInterface
         $this->colonyGuiHelper->register($colony, $game);
 
         $list = $this->planetFieldRepository->getByColonyWithBuilding($colony->getId());
-        usort($list, 'compareBuildings');
+
+        usort(
+            $list,
+            function (PlanetFieldInterface $a, PlanetFieldInterface $b): int {
+                return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
+            }
+        );
 
         $game->showMacro('html/colonymacros.xhtml/cm_building_mgmt');
 

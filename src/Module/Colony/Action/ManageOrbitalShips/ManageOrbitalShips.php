@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
@@ -48,6 +49,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private $shipSystemManager;
 
+    private $positionChecker;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -58,7 +61,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
         CommodityRepositoryInterface $commodityRepository,
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -70,6 +74,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -111,7 +116,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
             if ($shipobj->getCloakState()) {
                 continue;
             }
-            if (!checkColonyPosition($colony, $shipobj)) {
+            if (!$this->positionChecker->checkColonyPosition($colony, $shipobj)) {
                 continue;
             }
             if ($shipobj->getIsDestroyed()) {

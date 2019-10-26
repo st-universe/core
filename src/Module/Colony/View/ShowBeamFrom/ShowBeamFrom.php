@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowBeamFrom;
 
 use AccessViolation;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -20,14 +21,18 @@ final class ShowBeamFrom implements ViewControllerInterface
 
     private $shipRepository;
 
+    private $positionChecker;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShowBeamFromRequestInterface $showBeamFromRequest,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->showBeamFromRequest = $showBeamFromRequest;
         $this->shipRepository = $shipRepository;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -45,7 +50,7 @@ final class ShowBeamFrom implements ViewControllerInterface
            return;
         }
 
-        if (!checkColonyPosition($colony,$target) || ($target->getCloakState() && $target->getUser() !== $user)) {
+        if (!$this->positionChecker->checkColonyPosition($colony,$target) || ($target->getCloakState() && $target->getUser() !== $user)) {
             throw new AccessViolation();
         }
 

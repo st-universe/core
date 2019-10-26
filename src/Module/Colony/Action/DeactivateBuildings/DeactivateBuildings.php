@@ -11,6 +11,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
@@ -57,7 +58,12 @@ final class DeactivateBuildings implements ActionControllerInterface
 
         $list = $this->planetFieldRepository->getByColonyWithBuilding($colonyId);
 
-        usort($list, 'compareBuildings');
+        usort(
+            $list,
+            function (PlanetFieldInterface $a, PlanetFieldInterface $b): int {
+                return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
+            }
+        );
 
         $game->setTemplateVar('BUILDING_LIST', $list);
         $game->setTemplateVar('USEABLE_GOOD_LIST', $this->commodityRepository->getByBuildingsOnColony($colonyId));

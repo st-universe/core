@@ -27,7 +27,6 @@ use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
 use function DI\autowire;
-use function foo\func;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 
@@ -193,5 +192,5 @@ $config = $container->get(ConfigInterface::class);
 ini_set('date.timezone', 'Europe/Berlin');
 set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));
 
-require_once __DIR__ . '/../inc/func.inc.php';
+require_once __DIR__ . '/TalesRegistry.php';
 include_once __DIR__ . '/../inc/generated/fieldtypesname.inc.php';
