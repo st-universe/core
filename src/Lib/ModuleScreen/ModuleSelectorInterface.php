@@ -2,6 +2,7 @@
 
 namespace Stu\Lib\ModuleScreen;
 
+use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -36,4 +37,6 @@ interface ModuleSelectorInterface
     public function getBuildplan(): ?ShipBuildplanInterface;
 
     public function getModuleLevelClass(ShipRumpInterface $rump, ModuleSelectorWrapperInterface $module): string;
+
+    public function getModuleValueCalculator(): ModuleValueCalculatorInterface;
 }

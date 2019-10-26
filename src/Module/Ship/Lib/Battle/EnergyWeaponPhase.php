@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
@@ -29,18 +30,22 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
 
     private $applyDamage;
 
+    private $moduleValueCalculator;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         WeaponRepositoryInterface $weaponRepository,
         EntryCreatorInterface $entryCreator,
         ShipRemoverInterface $shipRemover,
-        ApplyDamageInterface $applyDamage
+        ApplyDamageInterface $applyDamage,
+        ModuleValueCalculatorInterface $moduleValueCalculator
     ) {
         $this->shipRepository = $shipRepository;
         $this->weaponRepository = $weaponRepository;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
         $this->applyDamage = $applyDamage;
+        $this->moduleValueCalculator = $moduleValueCalculator;
     }
 
     public function fire(
@@ -106,7 +111,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return 0;
         }
-        $basedamage = calculateModuleValue(
+        $basedamage = $this->moduleValueCalculator->calculateModuleValue(
             $ship->getRump(),
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModule(),
             'getBaseDamage'

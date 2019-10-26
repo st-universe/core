@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Lib\ModuleScreen;
 
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Module\Ship\Lib\ModuleValueCalculator;
+use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -156,5 +158,10 @@ class ModuleSelector implements ModuleSelectorInterface
             return 'module_negative';
         }
         return '';
+    }
+
+    public function getModuleValueCalculator(): ModuleValueCalculatorInterface
+    {
+        return new ModuleValueCalculator();
     }
 }

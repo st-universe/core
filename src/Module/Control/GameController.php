@@ -255,7 +255,7 @@ final class GameController implements GameControllerInterface
                     ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
                     ->setLabel(_('Forschung'))
                     ->setMaxValue($currentResearch->getResearch()->getPoints())
-                    ->setValue($currentResearch->getActive())
+                    ->setValue($currentResearch->getResearch()->getPoints() - $currentResearch->getActive())
                     ->setSizeModifier(2)
                     ->render();
             }

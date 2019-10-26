@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -11,7 +12,7 @@ final class ModuleRumpWrapperWarpcore extends ModuleRumpWrapperBase implements M
 
     public function getValue(): int
     {
-        return calculateModuleValue(
+        return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             current($this->modules)->getModule(),
             null,

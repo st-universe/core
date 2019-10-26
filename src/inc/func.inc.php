@@ -3,10 +3,8 @@
 use PhpTal\Php\TalesInternal;
 use PhpTal\TalesRegistry;
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
 
 function checkPosition(ShipInterface $shipa, ShipInterface $shipb)
 {
@@ -43,50 +41,6 @@ function compareBuildings(PlanetFieldInterface$a, PlanetFieldInterface $b)
     }
     return strcmp($a->getBuilding()->getName(), $b->getBuilding()->getName());
 }
-
-/**
- */
-function calculateModuleValue(ShipRumpInterface $rump, ModuleInterface $module, $callback = 'aggi', $value = false): int
-{ #{{{
-    if (!$value) {
-        $value = $rump->$callback();
-    }
-    if ($rump->getModuleLevel() > $module->getLevel()) {
-        return (int)round($value - $value / 100 * $module->getDowngradeFactor());
-    }
-    if ($rump->getModuleLevel() < $module->getLevel()) {
-        return (int)round($value + $value / 100 * $module->getUpgradeFactor());
-    }
-    return (int)$value;
-} # }}}
-
-/**
- */
-function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module)
-{ #{{{
-    if ($rump->getModuleLevel() > $module->getLevel()) {
-        return '-' . $module->getDowngradeFactor() . '%';
-    }
-    if ($rump->getModuleLevel() < $module->getLevel()) {
-        return '+' . $module->getUpgradeFactor() . '%';
-    }
-    return _('Normal');
-} # }}}
-
-/**
- */
-function calculateEvadeChance(ShipRumpInterface $rump, ModuleInterface $module): int
-{ #{{{
-    $base = $rump->getEvadeChance();
-    if ($rump->getModuleLevel() > $module->getLevel()) {
-        $value = (1 - $base / 100) * 1 / (1 - $module->getDowngradeFactor() / 100);
-    } elseif ($rump->getModuleLevel() < $module->getLevel()) {
-        $value = (1 - $base / 100) * 1 / (1 + $module->getUpgradeFactor() / 100);
-    } else {
-        return $base;
-    }
-    return (int)round((1 - $value) * 100);
-} # }}}
 
 TalesRegistry::registerPrefix(
     'clmodeDescription',

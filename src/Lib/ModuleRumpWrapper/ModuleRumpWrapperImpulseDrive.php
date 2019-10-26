@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
@@ -11,7 +12,9 @@ final class ModuleRumpWrapperImpulseDrive extends ModuleRumpWrapperBase implemen
 
     public function getValue(): int
     {
-        return calculateEvadeChance($this->rump, current($this->modules)->getModule());
+        $moduleValueCalculator = new ModuleValueCalculator();
+
+        return $moduleValueCalculator->calculateEvadeChance($this->rump, current($this->modules)->getModule());
     }
 
     public function apply(ShipInterface $ship): void

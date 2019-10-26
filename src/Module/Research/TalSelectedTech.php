@@ -136,7 +136,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
             ->setColor(StatusBarColorEnum::STATUSBAR_BLUE)
             ->setLabel(_('Forschung'))
             ->setMaxValue($this->research->getPoints())
-            ->setValue($this->getResearchState()->getActive())
+            ->setValue($this->research->getPoints() - $this->getResearchState()->getActive())
             ->setSizeModifier(2)
             ->render();
     }

@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -23,16 +24,20 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 
     private $applyDamage;
 
+    private $moduleValueCalculator;
+
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
         EntryCreatorInterface $entryCreator,
         ShipRemoverInterface $shipRemover,
-        ApplyDamageInterface $applyDamage
+        ApplyDamageInterface $applyDamage,
+        ModuleValueCalculatorInterface $moduleValueCalculator
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
         $this->applyDamage = $applyDamage;
+        $this->moduleValueCalculator = $moduleValueCalculator;
     }
 
     public function fire(
@@ -103,7 +108,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
     private function getProjectileWeaponDamage(ShipInterface $ship): float
     {
         $variance = (int) round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
-        $basedamage = calculateModuleValue(
+        $basedamage = $this->moduleValueCalculator->calculateModuleValue(
             $ship->getRump(),
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->getModule(),
             false,
