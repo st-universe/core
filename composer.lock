@@ -2004,16 +2004,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.4",
+            "version": "v4.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4"
+                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/97e59c7a16464196a8b9c77c47df68e4a39a45c4",
-                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
+                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
                 "shasum": ""
             },
             "require": {
@@ -2021,6 +2021,7 @@
                 "php": ">=7.0"
             },
             "require-dev": {
+                "ircmaxell/php-yacc": "0.0.4",
                 "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
             },
             "bin": [
@@ -2051,7 +2052,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-09-01T07:51:21+00:00"
+            "time": "2019-10-25T18:33:07+00:00"
         },
         {
             "name": "opis/json-schema",
@@ -3594,12 +3595,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/usox/stu3-planet-generator.git",
-                "reference": "ef5957fe49a00638bb266900a310bb68ab199c30"
+                "reference": "c846bb45849dca0fc9e12d419796e6e2776ffb5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-planet-generator/zipball/ef5957fe49a00638bb266900a310bb68ab199c30",
-                "reference": "ef5957fe49a00638bb266900a310bb68ab199c30",
+                "url": "https://api.github.com/repos/usox/stu3-planet-generator/zipball/c846bb45849dca0fc9e12d419796e6e2776ffb5e",
+                "reference": "c846bb45849dca0fc9e12d419796e6e2776ffb5e",
                 "shasum": ""
             },
             "require": {
@@ -3625,7 +3626,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-08-29T17:57:46+00:00"
+            "time": "2019-10-27T10:55:09+00:00"
         },
         {
             "name": "usox/stu3-starsystem-generator",
