@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Config;
 
+use Cache\Adapter\PHPArray\ArrayCachePool;
+use Cache\Adapter\Redis\RedisCachePool;
+use Cache\Bridge\Doctrine\DoctrineCacheBridge;
 use DI\ContainerBuilder;
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\Cache\RedisCache;
 use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -16,6 +17,7 @@ use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
 use Noodlehaus\Config;
 use Noodlehaus\ConfigInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Redis;
 use Stu\Lib\StuBbCodeDefinitionSet;
@@ -42,14 +44,11 @@ $builder->addDefinitions([
             ]
         );
     },
-    SessionInterface::class => autowire(Session::class),
-    EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
+    CacheItemPoolInterface::class => function (ContainerInterface $c): CacheItemPoolInterface {
         $config = $c->get(ConfigInterface::class);
 
-        $emConfig = new Configuration();
-        $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
         if ($config->get('debug.debug_mode') === true) {
-            $cacheDriver = new ArrayCache();
+            return new ArrayCachePool();
         } else {
             $redis = new Redis();
             $redis->connect(
@@ -57,9 +56,16 @@ $builder->addDefinitions([
                 $config->get('cache.redis_port')
             );
 
-            $cacheDriver = new RedisCache();
-            $cacheDriver->setRedis($redis);
+            return new RedisCachePool($redis);
         }
+    },
+    SessionInterface::class => autowire(Session::class),
+    EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
+        $config = $c->get(ConfigInterface::class);
+        $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
+
+        $emConfig = new Configuration();
+        $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
         $emConfig->setMetadataCacheImpl($cacheDriver);
         $emConfig->setQueryCacheImpl($cacheDriver);
 
