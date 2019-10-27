@@ -199,4 +199,3 @@ ini_set('date.timezone', 'Europe/Berlin');
 set_include_path(get_include_path() . PATH_SEPARATOR . $config->get('game.webroot'));
 
 require_once __DIR__ . '/TalesRegistry.php';
-include_once __DIR__ . '/../inc/generated/fieldtypesname.inc.php';

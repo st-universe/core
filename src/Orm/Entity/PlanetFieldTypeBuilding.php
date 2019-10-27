@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeBuildingRepository")
  * @Table(
@@ -55,5 +57,13 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
         $this->buildings_id = $buildingId;
 
         return $this;
+    }
+
+    public function getFieldTypeDescription(): string
+    {
+        // @todo remove
+        global $container;
+
+        return $container->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($this->getFieldTypeId());
     }
 }

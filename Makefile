@@ -6,10 +6,7 @@ SUITE=
 all:init dirs
 
 dirs:force
-	for a in src/admin/backup src/inc/generated src/html/avatare/user src/html/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
-
-generators:force
-	for a in fieldnamedefines.inc.php; do php -f src/admin/generators/"$$a" $(ENV); done
+	for a in src/admin/backup src/html/avatare/user src/html/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
 
 i18nextract:force
 	xgettext --no-location --no-wrap --from-code UTF-8 **/*.php -o php.pot

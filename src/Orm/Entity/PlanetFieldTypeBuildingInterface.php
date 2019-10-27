@@ -13,4 +13,6 @@ interface PlanetFieldTypeBuildingInterface
     public function getBuildingId(): int;
 
     public function setBuildingId(int $buildingId): PlanetFieldTypeBuildingInterface;
+
+    public function getFieldTypeDescription(): string;
 }

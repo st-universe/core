@@ -17,6 +17,8 @@ use Stu\Module\Colony\Lib\CommodityConsumption;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
 use Stu\Module\Colony\Lib\PlanetColonization;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetriever;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
@@ -159,6 +161,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use function DI\autowire;
 
 return [
+    PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),

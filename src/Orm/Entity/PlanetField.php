@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
+use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
@@ -145,7 +146,10 @@ class PlanetField implements PlanetFieldInterface
 
     public function getFieldTypeName(): string
     {
-        return getFieldName($this->getFieldType());
+        // @todo remove
+        global $container;
+
+        return $container->get(PlanetFieldTypeRetrieverInterface::class)->getDescription($this->getFieldType());
     }
 
     public function getBuildtime(): int

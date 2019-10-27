@@ -882,7 +882,7 @@
 						<img src="assets/generated/buildings/${building/getId}/0at.png" />
 						<br /><br />
 						<strong i18n:translate="">Baubar</strong><br />
-						<img src="#" tal:repeat="field USEABLE_FIELD_TYPES" tal:attributes="src string:assets/generated/fields/${field/getFieldTypeId}.png; title php:getFieldName(field.getFieldTypeId())" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
+						<img src="#" tal:repeat="field USEABLE_FIELD_TYPES" tal:attributes="src string:assets/generated/fields/${field/getFieldTypeId}.png; title field/getFieldTypeDescription" style="width: 15px; height: 15px; margin-right: 4px; margin-bottom: 4px;" />
 					</td>
 					<td style="vertical-align: top; width: 110px;">
 						<strong>Baukosten</strong><br />
