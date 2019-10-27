@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fc4b36a26ec674d3c5b837173e82944",
+    "content-hash": "a7d8140c2c41c79ff921bf5bfcc7f7a1",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -3009,6 +3009,84 @@
             "time": "2019-10-05T21:24:58+00:00"
         },
         {
+            "name": "st-universe/planet-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/st-universe/planet-generator.git",
+                "reference": "17ec8c8d26bb0735d6c0bf1ed9ae98e10a5c1bfb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/17ec8c8d26bb0735d6c0bf1ed9ae98e10a5c1bfb",
+                "reference": "17ec8c8d26bb0735d6c0bf1ed9ae98e10a5c1bfb",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "mockery/mockery": "^1.1",
+                "phpunit/phpunit": "^7.3",
+                "usox/stu3-assets": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "./example/assets": [
+                        "usox/stu3-assets"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stu\\PlanetGenerator\\": "src/PlanetGenerator"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-10-27T12:06:27+00:00"
+        },
+        {
+            "name": "st-universe/starsystem-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/st-universe/starsystem-generator.git",
+                "reference": "1ddd8395915b323b5ea0c3c36ac094706ea9eef6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/st-universe/starsystem-generator/zipball/1ddd8395915b323b5ea0c3c36ac094706ea9eef6",
+                "reference": "1ddd8395915b323b5ea0c3c36ac094706ea9eef6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "mnsami/composer-custom-directory-installer": "1.1.*",
+                "mockery/mockery": "^1.1",
+                "phpunit/phpunit": "^7.3",
+                "usox/stu3-assets": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "./example/assets": [
+                        "usox/stu3-assets"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stu\\StarsystemGenerator\\": "src/StarsystemGenerator"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-10-27T12:12:09+00:00"
+        },
+        {
             "name": "symfony/console",
             "version": "v4.3.5",
             "source": {
@@ -3588,84 +3666,6 @@
                 "psr-7"
             ],
             "time": "2019-07-01T08:28:35+00:00"
-        },
-        {
-            "name": "usox/stu3-planet-generator",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/usox/stu3-planet-generator.git",
-                "reference": "c846bb45849dca0fc9e12d419796e6e2776ffb5e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-planet-generator/zipball/c846bb45849dca0fc9e12d419796e6e2776ffb5e",
-                "reference": "c846bb45849dca0fc9e12d419796e6e2776ffb5e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3"
-            },
-            "require-dev": {
-                "mnsami/composer-custom-directory-installer": "1.1.*",
-                "mockery/mockery": "^1.1",
-                "phpunit/phpunit": "^7.3",
-                "usox/stu3-assets": "dev-master"
-            },
-            "type": "library",
-            "extra": {
-                "installer-paths": {
-                    "./example/assets": [
-                        "usox/stu3-assets"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Stu\\PlanetGenerator\\": "src/PlanetGenerator"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-10-27T10:55:09+00:00"
-        },
-        {
-            "name": "usox/stu3-starsystem-generator",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/usox/stu3-starsystem-generator.git",
-                "reference": "f587a96490e8a898b4dd63144cd3afc38a8b31b2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-starsystem-generator/zipball/f587a96490e8a898b4dd63144cd3afc38a8b31b2",
-                "reference": "f587a96490e8a898b4dd63144cd3afc38a8b31b2",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3"
-            },
-            "require-dev": {
-                "mnsami/composer-custom-directory-installer": "1.1.*",
-                "mockery/mockery": "^1.1",
-                "phpunit/phpunit": "^7.3",
-                "usox/stu3-assets": "dev-master"
-            },
-            "type": "library",
-            "extra": {
-                "installer-paths": {
-                    "./example/assets": [
-                        "usox/stu3-assets"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Stu\\StarsystemGenerator\\": "src/StarsystemGenerator"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-08-29T19:51:21+00:00"
         },
         {
             "name": "zendframework/zend-loader",
@@ -6338,8 +6338,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "usox/stu3-planet-generator": 20,
-        "usox/stu3-starsystem-generator": 20,
+        "st-universe/planet-generator": 20,
+        "st-universe/starsystem-generator": 20,
         "usox/stu3-assets": 20
     },
     "prefer-stable": false,
