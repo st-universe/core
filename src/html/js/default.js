@@ -338,7 +338,6 @@ function showAchievement(text) {
         elem.show();
 }
 function nodelistToString(list) {
-        console.log(list);
         if (!RadioNodeList.prototype.isPrototypeOf(list)) {
                 if (list.checked) {
                         return list.value
@@ -357,4 +356,8 @@ function nodelistToString(list) {
                         return node.value;
                 })
                 .join(',');
+}
+function snafu(colonyId, action, mode, sstr) {
+  commodityId = $('commodityselector').getValue();
+  goToUrl('/colony.php?id='+colonyId+'&'+action+'=1&mode='+mode+'&selection='+commodityId+'&sstr='+sstr);
 }

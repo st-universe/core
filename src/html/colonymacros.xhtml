@@ -384,7 +384,7 @@
                 <div style="float: left; width: 300px;">
                     <div class="divhead">Gebäudewahl</div>
                     <div class="divbody">
-                        <select style="width: 100%; height: 370px;" multiple="multiple" name="selfields[]">
+                        <select style="width: 100%; height: 370px;" multiple="multiple" name="selection[]">
                             <tal:block tal:repeat="data BUILDING_LIST">
 				    <tal:block tal:condition="data/isActivateable">
 				    	<option style="padding-top: 2px; padding-left: 2px;" tal:attributes="value data/getFieldId" tal:condition="data/isActive" tal:content="string:${data/getBuilding/getName} (an)">NAME</option>
@@ -392,6 +392,7 @@
 				    </tal:block>
                             </tal:block>
                         </select>
+                        <input type="hidden" name="mode" value="2" />
                         <div style="margin-top: 10px; width: 50%; float: left;">
                             <input type="submit" value="Aktivieren" name="B_MULTIPLE_ACTIVATION" />
                         </div>
@@ -405,12 +406,12 @@
                     <div class="divhead">Gebäudegruppen</div>
                     <div class="divbody">
                         <img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 10px; height: 10px;" /> <strong>Energie</strong><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_EPSRELATED_USER=1&sstr=${THIS/getSessionString}">Verbraucher aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_EPSRELATED_USER=1&sstr=${THIS/getSessionString}">Verbraucher deaktivieren</a><br /><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_EPSRELATED_PROD=1&sstr=${THIS/getSessionString}">Produzenten aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_EPSRELATED_PROD=1&sstr=${THIS/getSessionString}">Produzenten deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_ACTIVATION=1&mode=1&sstr=${THIS/getSessionString}">Verbraucher aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_DEACTIVATION=1&mode=1&sstr=${THIS/getSessionString}">Verbraucher deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_ACTIVATION=1&mode=3&sstr=${THIS/getSessionString}">Produzenten aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_DEACTIVATION=1&mode=3&sstr=${THIS/getSessionString}">Produzenten deaktivieren</a><br /><br />
                         <img src="assets/buttons/lager.gif" title="Warenbezogen" style="width: 10px; height: 10px;" /> <strong>Warenbezogen</strong><br />
-                        Ware wählen: <select name="good" style="height: 17px;">
+                        Ware wählen: <select name="good" style="height: 17px;" id="commodityselector">
                         <option class="goodselect_option" tal:repeat="data USEABLE_GOOD_LIST" tal:attributes="value data/getId" tal:content="data/getName" style=" background-image: url(assets/goods/${data/getId}.gif);">NAME</option>
                     </select><br /><br />
                         <table class="tcal">
@@ -420,22 +421,22 @@
                             </tr>
                             <tr>
                                 <td style="text-align: center;">
-                                    <input type="submit" value="aktivieren" name="B_ACTIVATE_GOODRELATED_PROD" /><br /><br />
-                                    <input type="submit" value="deaktivieren" name="B_DEACTIVATE_GOODRELATED_PROD" />
+                                  <input type="button" value="aktivieren" onclick="snafu(${COLONY/getId},'B_MULTIPLE_ACTIVATION', 7, '${THIS/getSessionString}')" /><br /><br />
+                                    <input type="button" value="deaktivieren" onclick="snafu(${COLONY/getId},'B_MULTIPLE_DEACTIVATION', 7, '${THIS/getSessionString}')" />
 
                                 </td>
                                 <td style="text-align: center;">
-                                    <input type="submit" value="aktivieren" name="B_ACTIVATE_GOODRELATED_USER" /><br /><br />
-                                    <input type="submit" value="deaktivieren" name="B_DEACTIVATE_GOODRELATED_USER" />
+                                    <input type="button" value="aktivieren" onclick="snafu(${COLONY/getId},'B_MULTIPLE_ACTIVATION', 6, '${THIS/getSessionString}')" /><br /><br />
+                                    <input type="button" value="deaktivieren" onclick="snafu(${COLONY/getId},'B_MULTIPLE_DEACTIVATION', 6, '${THIS/getSessionString}')" />
                                 </td>
                             </tr>
                         </table>
                         <br />
                         <img src="assets/buttons/lager.gif" title="Bevölkerungsbezogen" style="width: 10px; height: 10px;" /> <strong>Bevölkerungsbezogen</strong><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_BEVRELATED=1&sstr=${THIS/getSessionString}">Wohngebäude aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_BEVRELATED=1&sstr=${THIS/getSessionString}">Wohngebäude deaktivieren</a><br /><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_ACTIVATE_WORKRELATED=1&sstr=${THIS/getSessionString}">Arbeitgeber aktivieren</a><br />
-                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_DEACTIVATE_WORKRELATED=1&sstr=${THIS/getSessionString}">Arbeitgeber deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_ACTIVATION=1&mode=5&sstr=${THIS/getSessionString}">Wohngebäude aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_DEACTIVATION=1&mode=5&sstr=${THIS/getSessionString}">Wohngebäude deaktivieren</a><br /><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_ACTIVATION=1&mode=4&sstr=${THIS/getSessionString}">Arbeitgeber aktivieren</a><br />
+                        <span style="color: rgb(206, 206, 206);">&gt;</span> <a href="?id=${COLONY/getId}&B_MULTIPLE_DEACTIVATION=1&mode=4&sstr=${THIS/getSessionString}">Arbeitgeber deaktivieren</a><br /><br />
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\ActivateBuildings;
 
 use request;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
@@ -28,16 +29,20 @@ final class ActivateBuildings implements ActionControllerInterface
 
     private $planetFieldRepository;
 
+    private $buildingMassActionConfiguration;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingActionInterface $buildingAction,
         CommodityRepositoryInterface $commodityRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        BuildingMassActionConfigurationInterface $buildingMassActionConfiguration
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingAction = $buildingAction;
         $this->commodityRepository = $commodityRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->buildingMassActionConfiguration = $buildingMassActionConfiguration;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,11 +54,23 @@ final class ActivateBuildings implements ActionControllerInterface
 
         $colonyId = (int) $colony->getId();
 
-        foreach (request::postArrayFatal('selfields') as $key) {
-            $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, (int) $key);
-            if ($field !== null) {
-                $this->buildingAction->activate($colony, $field, $game);
+        $mode = request::indInt('mode');
+        $selection = request::getvars()['selection'] ?? request::postvars()['selection'] ?? null;
+
+        $config = $this->buildingMassActionConfiguration->getConfigurations()[$mode] ?? null;
+
+        if ($config === null) {
+            return;
+        }
+
+        /** @var PlanetFieldInterface[] $fields */
+        $fields = $config($colony, $selection);
+
+        foreach ($fields as $field) {
+            if ($field->isActive()) {
+                continue;
             }
+            $this->buildingAction->activate($colony, $field, $game);
         }
 
         $list = $this->planetFieldRepository->getByColonyWithBuilding($colonyId);

@@ -7,6 +7,8 @@ namespace Stu\Module\Colony;
 use Stu\Module\Colony\Action\ChangeName\ChangeNameRequest;
 use Stu\Module\Colony\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
+use Stu\Module\Colony\Lib\BuildingMassActionConfiguration;
+use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyResetter;
@@ -29,12 +31,6 @@ use Stu\Module\Colony\Action\Abandon\AbandonRequest;
 use Stu\Module\Colony\Action\Abandon\AbandonRequestInterface;
 use Stu\Module\Colony\Action\ActivateBuilding\ActivateBuilding;
 use Stu\Module\Colony\Action\ActivateBuildings\ActivateBuildings;
-use Stu\Module\Colony\Action\ActivateBuildingsEps\ActivateBuildingsEps;
-use Stu\Module\Colony\Action\ActivateBuildingsEpsProducer\ActivateBuildingsEpsProducer;
-use Stu\Module\Colony\Action\ActivateBuildingsGood\ActivateBuildingsGood;
-use Stu\Module\Colony\Action\ActivateBuildingsGoodProducer\ActivateBuildingsGoodProducer;
-use Stu\Module\Colony\Action\ActivateBuildingsIndustry\ActivateBuildingsIndustry;
-use Stu\Module\Colony\Action\ActivateBuildingsResidentials\ActivateBuildingsResidentials;
 use Stu\Module\Colony\Action\AllowImmigration\AllowImmigration;
 use Stu\Module\Colony\Action\BeamFrom\BeamFrom;
 use Stu\Module\Colony\Action\BeamTo\BeamTo;
@@ -48,12 +44,6 @@ use Stu\Module\Colony\Action\ChangeName\ChangeName;
 use Stu\Module\Colony\Action\CreateModules\CreateModules;
 use Stu\Module\Colony\Action\DeactivateBuilding\DeactivateBuilding;
 use Stu\Module\Colony\Action\DeactivateBuildings\DeactivateBuildings;
-use Stu\Module\Colony\Action\DeactivateBuildingsEps\DeactivateBuildingsEps;
-use Stu\Module\Colony\Action\DeactivateBuildingsEpsProducer\DeactivateBuildingsEpsProducer;
-use Stu\Module\Colony\Action\DeactivateBuildingsGood\DeactivateBuildingsGood;
-use Stu\Module\Colony\Action\DeactivateBuildingsGoodProducer\DeactivateBuildingsGoodProducer;
-use Stu\Module\Colony\Action\DeactivateBuildingsIndustry\DeactivateBuildingsIndustry;
-use Stu\Module\Colony\Action\DeactivateBuildingsResidentials\DeactivateBuildingsResidentials;
 use Stu\Module\Colony\Action\DeleteBuildPlan\DeleteBuildPlan;
 use Stu\Module\Colony\Action\DenyImmigration\DenyImmigration;
 use Stu\Module\Colony\Action\LandShip\LandShip;
@@ -161,6 +151,7 @@ use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
 use function DI\autowire;
 
 return [
+    BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
@@ -232,18 +223,6 @@ return [
         UpgradeBuilding::ACTION_IDENTIFIER => autowire(UpgradeBuilding::class),
         ActivateBuildings::ACTION_IDENTIFIER => autowire(ActivateBuildings::class),
         DeactivateBuildings::ACTION_IDENTIFIER => autowire(DeactivateBuildings::class),
-        ActivateBuildingsEps::ACTION_IDENTIFIER => autowire(ActivateBuildingsEps::class),
-        DeactivateBuildingsEps::ACTION_IDENTIFIER => autowire(DeactivateBuildingsEps::class),
-        ActivateBuildingsEpsProducer::ACTION_IDENTIFIER => autowire(ActivateBuildingsEpsProducer::class),
-        DeactivateBuildingsEpsProducer::ACTION_IDENTIFIER => autowire(DeactivateBuildingsEpsProducer::class),
-        ActivateBuildingsGood::ACTION_IDENTIFIER => autowire(ActivateBuildingsGood::class),
-        DeactivateBuildingsGood::ACTION_IDENTIFIER => autowire(DeactivateBuildingsGood::class),
-        ActivateBuildingsGoodProducer::ACTION_IDENTIFIER => autowire(ActivateBuildingsGoodProducer::class),
-        DeactivateBuildingsGoodProducer::ACTION_IDENTIFIER => autowire(DeactivateBuildingsGoodProducer::class),
-        ActivateBuildingsResidentials::ACTION_IDENTIFIER => autowire(ActivateBuildingsResidentials::class),
-        DeactivateBuildingsResidentials::ACTION_IDENTIFIER => autowire(DeactivateBuildingsResidentials::class),
-        ActivateBuildingsIndustry::ACTION_IDENTIFIER => autowire(ActivateBuildingsIndustry::class),
-        DeactivateBuildingsIndustry::ACTION_IDENTIFIER => autowire(DeactivateBuildingsIndustry::class),
         DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
     ],
     'COLONY_VIEWS' => [

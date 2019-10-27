@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingGood;
@@ -57,7 +56,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc < 0
                 )',
                 PlanetField::class,
@@ -74,7 +73,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc > 0
                 )',
                 PlanetField::class,
@@ -89,7 +88,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.bev_pro > 0
                 )',
                 PlanetField::class,
@@ -104,7 +103,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.bev_use > 0
                 )',
                 PlanetField::class,
@@ -122,7 +121,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count < 0
                 )',
                 PlanetField::class,
@@ -140,8 +139,8 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv = 1 AND f.buildings_id IN (
-                    SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count < 0
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                    SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count > 0
                 )',
                 PlanetField::class,
                 BuildingGood::class
