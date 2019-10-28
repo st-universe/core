@@ -45,7 +45,7 @@
   "require-dev": {
     "phpunit/phpunit": "^8",
     "mockery/mockery": "^1.1",
-    "usox/stu3-assets": "dev-master",
+    "st-universe/assets": "dev-master",
     "friendsofphp/php-cs-fixer": "^2.15"
   },
   "config": {
@@ -59,14 +59,14 @@
   "extra": {
     "installer-paths": {
       "./src/assets": [
-        "usox/stu3-assets"
+        "st-universe/assets"
       ]
     }
   },
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@github.com:usox/stu3-assets.git"
+      "url": "git@github.com:st-universe/assets.git"
     }
   ]
 }

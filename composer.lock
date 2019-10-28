@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7d8140c2c41c79ff921bf5bfcc7f7a1",
+    "content-hash": "3b6bd3be4e208372f7ae4848d1be3acf",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -577,16 +577,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.8.0",
+            "version": "v1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
+                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
-                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d4374ae95b36062d02ef310100ed33d78738d76c",
+                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c",
                 "shasum": ""
             },
             "require": {
@@ -622,16 +622,16 @@
             ],
             "authors": [
                 {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Benjamin Eberlei",
                     "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
                 },
                 {
                     "name": "Jonathan Wage",
@@ -648,7 +648,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2018-08-21T18:01:43+00:00"
+            "time": "2019-10-28T09:31:32+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -4966,16 +4966,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.4.1",
+            "version": "8.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "366a4a0f2b971fd43b7c351d621e8dd7d7131869"
+                "reference": "a142a7e66c0ea7b5b6c04ee27f08d10d1137cd9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/366a4a0f2b971fd43b7c351d621e8dd7d7131869",
-                "reference": "366a4a0f2b971fd43b7c351d621e8dd7d7131869",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a142a7e66c0ea7b5b6c04ee27f08d10d1137cd9b",
+                "reference": "a142a7e66c0ea7b5b6c04ee27f08d10d1137cd9b",
                 "shasum": ""
             },
             "require": {
@@ -5045,7 +5045,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-10-07T12:57:41+00:00"
+            "time": "2019-10-28T10:39:51+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5663,6 +5663,36 @@
             "time": "2016-10-03T07:35:21+00:00"
         },
         {
+            "name": "st-universe/assets",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/st-universe/assets.git",
+                "reference": "93088991268cda9a412e467337a896774e01160c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/93088991268cda9a412e467337a896774e01160c",
+                "reference": "93088991268cda9a412e467337a896774e01160c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-json": "*",
+                "php": "^7.3"
+            },
+            "type": "library",
+            "license": [
+                "proprietary"
+            ],
+            "description": "STU Assets",
+            "support": {
+                "source": "https://github.com/st-universe/assets/tree/master",
+                "issues": "https://github.com/st-universe/assets/issues"
+            },
+            "time": "2019-10-28T16:17:33+00:00"
+        },
+        {
             "name": "symfony/event-dispatcher",
             "version": "v4.3.5",
             "source": {
@@ -6255,36 +6285,6 @@
             "time": "2019-06-13T22:48:21+00:00"
         },
         {
-            "name": "usox/stu3-assets",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/usox/stu3-assets.git",
-                "reference": "20bc9907ba4dda13da3b3b87eff76e531cfca7d8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/usox/stu3-assets/zipball/20bc9907ba4dda13da3b3b87eff76e531cfca7d8",
-                "reference": "20bc9907ba4dda13da3b3b87eff76e531cfca7d8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "ext-json": "*",
-                "php": "^7.3"
-            },
-            "type": "library",
-            "license": [
-                "proprietary"
-            ],
-            "description": "STU3 Assets",
-            "support": {
-                "source": "https://github.com/usox/stu3-assets/tree/master",
-                "issues": "https://github.com/usox/stu3-assets/issues"
-            },
-            "time": "2019-10-24T21:32:00+00:00"
-        },
-        {
             "name": "webmozart/assert",
             "version": "1.5.0",
             "source": {
@@ -6340,7 +6340,7 @@
     "stability-flags": {
         "st-universe/planet-generator": 20,
         "st-universe/starsystem-generator": 20,
-        "usox/stu3-assets": 20
+        "st-universe/assets": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
