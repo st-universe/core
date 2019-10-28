@@ -33,7 +33,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Das alte Passwort wurde nicht angegeben'));
             return;
         }
-        if (sha1($currentPassword) !== $user->getPassword()) {
+        if (!password_verify($currentPassword, $user->getPassword())) {
             $game->addInformation(_('Das alte Passwort ist falsch'));
             return;
         }
