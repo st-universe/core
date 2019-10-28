@@ -98,8 +98,6 @@ final class ShipRemover implements ShipRemoverInterface
 
     private function changeFleetLeader(ShipInterface $obj): void
     {
-        $fleet = $obj->getFleet();
-
         $ship = current(
             array_filter(
                 $obj->getFleet()->getShips()->toArray(),
@@ -112,6 +110,7 @@ final class ShipRemover implements ShipRemoverInterface
         $fleet = $obj->getFleet();
 
         $obj->setFleet(null);
+        $fleet->getShips()->removeElement($obj);
 
         $this->shipRepository->save($obj);
 
