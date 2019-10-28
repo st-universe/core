@@ -33,7 +33,7 @@ $entityManager->getConnection()->query(
     )
 );
 
-$playerCreator->create(
+$playerCreator->createPlayer(
     $config->get('game.admin.username'),
     $config->get('game.admin.email'),
     $factionRepo->find($config->get('game.admin.faction'))

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b6bd3be4e208372f7ae4848d1be3acf",
+    "content-hash": "1566f34cdde9b1fe14d2e5bf5b40041e",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -3014,12 +3014,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/planet-generator.git",
-                "reference": "17ec8c8d26bb0735d6c0bf1ed9ae98e10a5c1bfb"
+                "reference": "9a5ac6356e8301796c76f8e501a204e47a2a02ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/17ec8c8d26bb0735d6c0bf1ed9ae98e10a5c1bfb",
-                "reference": "17ec8c8d26bb0735d6c0bf1ed9ae98e10a5c1bfb",
+                "url": "https://api.github.com/repos/st-universe/planet-generator/zipball/9a5ac6356e8301796c76f8e501a204e47a2a02ce",
+                "reference": "9a5ac6356e8301796c76f8e501a204e47a2a02ce",
                 "shasum": ""
             },
             "require": {
@@ -3029,13 +3029,13 @@
                 "mnsami/composer-custom-directory-installer": "1.1.*",
                 "mockery/mockery": "^1.1",
                 "phpunit/phpunit": "^7.3",
-                "usox/stu3-assets": "dev-master"
+                "st-universe/assets": "dev-master"
             },
             "type": "library",
             "extra": {
                 "installer-paths": {
                     "./example/assets": [
-                        "usox/stu3-assets"
+                        "st-universe/assets"
                     ]
                 }
             },
@@ -3045,7 +3045,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-10-27T12:06:27+00:00"
+            "time": "2019-10-28T18:52:43+00:00"
         },
         {
             "name": "st-universe/starsystem-generator",
@@ -3053,12 +3053,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/starsystem-generator.git",
-                "reference": "1ddd8395915b323b5ea0c3c36ac094706ea9eef6"
+                "reference": "4f19d037a8ecc5b7d36a3381b37a49369f2fd66a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/starsystem-generator/zipball/1ddd8395915b323b5ea0c3c36ac094706ea9eef6",
-                "reference": "1ddd8395915b323b5ea0c3c36ac094706ea9eef6",
+                "url": "https://api.github.com/repos/st-universe/starsystem-generator/zipball/4f19d037a8ecc5b7d36a3381b37a49369f2fd66a",
+                "reference": "4f19d037a8ecc5b7d36a3381b37a49369f2fd66a",
                 "shasum": ""
             },
             "require": {
@@ -3068,13 +3068,13 @@
                 "mnsami/composer-custom-directory-installer": "1.1.*",
                 "mockery/mockery": "^1.1",
                 "phpunit/phpunit": "^7.3",
-                "usox/stu3-assets": "dev-master"
+                "st-universe/assets": "dev-master"
             },
             "type": "library",
             "extra": {
                 "installer-paths": {
                     "./example/assets": [
-                        "usox/stu3-assets"
+                        "st-universe/assets"
                     ]
                 }
             },
@@ -3084,7 +3084,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-10-27T12:12:09+00:00"
+            "time": "2019-10-28T19:20:30+00:00"
         },
         {
             "name": "symfony/console",

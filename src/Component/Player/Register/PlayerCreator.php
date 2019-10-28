@@ -11,6 +11,7 @@ use Stu\Component\Player\Register\Exception\InvitationTokenInvalidException;
 use Stu\Component\Player\Register\Exception\LoginNameInvalidException;
 use Stu\Component\Player\Register\Exception\PlayerDuplicateException;
 use Stu\Orm\Entity\FactionInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -69,16 +70,28 @@ final class PlayerCreator implements PlayerCreatorInterface
             throw new InvitationTokenInvalidException();
         }
 
+        $player = $this->createPlayer(
+            $loginName,
+            $emailAddress,
+            $faction
+        );
+
+        $invitation->setInvitedUser($player);
+
+        $this->userInvitationRepository->save($invitation);
+    }
+
+    public function createPlayer(
+        string $loginName,
+        string $emailAddress,
+        FactionInterface $faction
+    ): UserInterface {
         $player = $this->userRepository->prototype();
         $player->setLogin($loginName);
         $player->setEmail($emailAddress);
         $player->setFaction($faction);
 
         $this->userRepository->save($player);
-
-        $invitation->setInvitedUser($player);
-
-        $this->userInvitationRepository->save($invitation);
 
         $password = $this->passwordGenerator->generatePassword();
 
@@ -91,5 +104,7 @@ final class PlayerCreator implements PlayerCreatorInterface
 
         $this->playerDefaultsCreator->createDefault($player);
         $this->registrationEmailSender->send($player, $password);
+
+        return $player;
     }
 }
