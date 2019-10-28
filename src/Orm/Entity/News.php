@@ -85,6 +85,9 @@ class News implements NewsInterface
 
     public function getLinks(): array
     {
+        if ($this->getRefs() === '') {
+            return [];
+        }
         return explode("\n", $this->getRefs());
     }
 }
