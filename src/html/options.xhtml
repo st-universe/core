@@ -92,7 +92,7 @@
                               <div tal:condition="not:data/isValid">Nicht mehr gültig</div>
                               <input tal:condition="data/isValid" type="text" style="width: 650px;" readonly="readonly" tal:attributes="value data/getLink" />
                             </td>
-                            <td tal:condition="data/getInvitedUser" tal:content="bbcode:data/getInvitedUser/getName"></td>
+                            <td tal:condition="data/getInvitedUser" tal:content="structure bbcode:data/getInvitedUser/getName"></td>
                             <td tal:condition="not:data/getInvitedUser"></td>
                           </tr>
                           <tr tal:condition="INVITATION_POSSIBLE">
