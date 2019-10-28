@@ -109,6 +109,8 @@ final class ShipRemover implements ShipRemoverInterface
             )
         );
 
+        $fleet = $obj->getFleet();
+
         $obj->setFleet(null);
 
         $this->shipRepository->save($obj);
@@ -118,7 +120,7 @@ final class ShipRemover implements ShipRemoverInterface
 
             return;
         }
-        $obj->getFleet()->setLeadShip($ship);
+        $fleet->setLeadShip($ship);
 
         $this->fleetRepository->save($fleet);
     }
