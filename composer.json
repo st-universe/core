@@ -1,5 +1,5 @@
 {
-  "name": "usox/stu3",
+  "name": "st-universe/core",
   "autoload": {
     "classmap": [
       "src/Lib",
