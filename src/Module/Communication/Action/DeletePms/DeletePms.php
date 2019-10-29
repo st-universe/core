@@ -26,12 +26,12 @@ final class DeletePms implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
-        foreach ($this->deletePmsRequest->getIgnoreIds() as $messageId) {
+        foreach ($this->deletePmsRequest->getDeletionIds() as $messageId) {
             $pm = $this->privateMessageRepository->find($messageId);
 
-            if ($pm === null || $pm->getRecipientId() !== $userId) {
+            if ($pm === null || $pm->getRecipient() !== $user) {
                 continue;
             }
 

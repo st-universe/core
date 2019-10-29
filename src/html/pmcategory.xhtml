@@ -44,7 +44,7 @@
                             </tal:block>
                             <img tal:condition="post/getReplied" src="assets/buttons/postein2.gif" title="Diese Nachricht wurde bereits beantwortet" />
                             <div class="iblock" style="padding-left: 15px;">
-                                <a href="?SHOW_PM_CAT=1&B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&deleted[]=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2')" onmouseout="cp('del${post/getId}','buttons/x1')">
+                                <a href="?SHOW_PM_CAT=1&B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&delete_single=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2')" onmouseout="cp('del${post/getId}','buttons/x1')">
                                     <img src="assets/buttons/x1.gif" name="del${post/getId}" title="Nachricht löschen" />
                                 </a>
                             </div>
