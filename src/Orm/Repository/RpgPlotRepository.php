@@ -44,7 +44,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT p FROM %s p WHERE p.end_date = 0 AND p.id IN (
+                    'SELECT p FROM %s p WHERE p.end_date IS NULL AND p.id IN (
                         SELECT pm.plot_id FROM %s pm WHERE pm.user_id = :userId
                     ) ORDER BY p.start_date DESC',
                     RpgPlot::class,
