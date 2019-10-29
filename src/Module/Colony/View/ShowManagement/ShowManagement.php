@@ -84,7 +84,7 @@ final class ShowManagement implements ViewControllerInterface
         $game->setTemplateVar('COLONY_MENU_SELECTOR', new ColonyMenu(ColonyEnum::MENU_INFO));
         $game->setTemplateVar(
             'FIRST_ORBIT_SHIP',
-            new OrbitShipItem($firstOrbitShip)
+            $firstOrbitShip === null ? null : new OrbitShipItem($firstOrbitShip)
         );
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
