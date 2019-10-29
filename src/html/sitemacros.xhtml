@@ -19,110 +19,72 @@
 		</stu:siteheader>
 		<stu:body onload="startUp();">
 			<div id="overDiv">...</div>
-			<stu:header>
-				<div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php');">
-					<div style="margin: 5px">
-						<img src="runtime" style="margin-right: 5px; width: 50px; height: 50px;" align="left" tal:attributes="src THIS/getUser/getFullAvatarPath" />
-						<span tal:replace="structure bbcode:THIS/getUser/getName" /><br />
-						<span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
+      <div style="display: grid; grid-template-columns: 120px auto; grid-template-rows: 80px auto; height: 100%">
+        <stu:header>
+          <div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php');">
+            <div style="margin: 5px">
+              <img src="runtime" style="margin-right: 5px; width: 50px; height: 50px;" align="left" tal:attributes="src THIS/getUser/getFullAvatarPath" />
+              <span tal:replace="structure bbcode:THIS/getUser/getName" /><br />
+              <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 
-						<stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
-						<stu:imagelink href="comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
-					</div>
-				</div>
-				<div class="header_box header_box_pm border_box" id="navlet_newpm">
-					<metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
-				</div>
-				<div class="header_box header_box_research border_box action"  tal:condition="CURRENT_RESEARCH" onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;">
-					<div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
-					<img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
-					<span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
-				</div>
-				<div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('research.php')">
-					<img style="width: 30px; height: 30px;" src="assets/buttons/menu_forsch0.gif" title="Forschung" i18n:attributes="title" />
-					<div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
-				</div>
-				<div class="header_box header_box_logout border_box action" onclick="goToUrl('index.php?B_LOGOUT=1')">
-					<div>
-						<img style="width: 30px; height: 30px;" src="assets/buttons/menu_logout0.gif" title="Logout" i18n:attributes="title" />
-						<div style="margin-top: 5px" i18n:translate="">Logout</div>
-					</div>
-				</div>
-				<div class="header_box header_box_help border_box action" onclick="goToUrl('docu/')">
-					<div>
-						<img style="width: 30px; height: 30px;" src="assets/buttons/menu_doku0.gif" title="Hilfe" i18n:attributes="title" />
-						<div style="margin-top: 5px" i18n:translate="">Hilfe</div>
-					</div>
-				</div>
-				<div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')">
-					<div>
-						<img style="width: 30px; height: 30px;" src="assets/buttons/menu_option0.gif" title="Einstellungen" i18n:attributes="title" />
-						<div style="margin-top: 5px" i18n:translate="">Einstellungen</div>
-					</div>
-				</div>
-			</stu:header>
-			<stu:sidebar_left>
-				<div style="width: 100%; padding-left: 10px; padding-right: 10px">
-					<tal:block metal:use-macro="navigation" />
-					<div class="border_box navigation_item_servertime">
-						<img title="Serverzeit" i18n:attributes="title" style="width: 15px; height: 15px;" src="assets/buttons/time.gif" />
-						<span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
-					</div>
-				</div>
-			</stu:sidebar_left>
-			<stu:content>
-				<stu:content_inner>
-					<tal:block metal:define-slot="body">
-					...
-					</tal:block>
-					<script type="text/javascript">
-						setTimeout('updatePMNavlet()',60000);
-					</script>
-					<metal:macro metal:use-macro="sitefooter" />
-				</stu:content_inner>
-			</stu:content>
-			<stu:sidebar_right>
-				<metal:macro metal:define-macro="colonylist">
-					<div id="colonylist_navlet" class="border_box navigation_item_planets" tal:condition="USER_COLONIES">
-						<p i18n:translate="">Kolonien</p>
-						<div style="clear: both" tal:repeat="data USER_COLONIES">
-							<a style="display: block; float: left; margin-right: 10px"  href="colony.php?SHOW_COLONY=1&id=${data/getId}">
-								<img src="assets/planets/${data/getPlanetType/getId}s.gif" title="runtime" tal:attributes="title bbcode2txt:data/getName" />
-							</a>
-							<div>
-								<img src="assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" />
-								<span tal:content="structure data/getEpsStatusBar">EPS</span>
-							</div>
-							<div>
-								<img src="assets/buttons/lager.gif" title="Lagerraum" style="width: 12px; height: 12px;" />
-								<span tal:content="structure data/getStorageStatusBar">STORAGE</span>
-							</div>
-						</div>
-					</div>
-				</metal:macro>
-				<metal:macro metal:define-macro="navigation_item_friends">
-					<div id="navigation_item_friends" class="border_box navigation_item_planets">
-						<p i18n:translate="">Freunde</p>
-						<div>
-							<metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures" tal:define="userlist THIS/getUser/getFriends" />
-						</div>
-					</div>
-				</metal:macro>
-				<metal:macro metal:use-macro="colonylist" />
-				<metal:macro metal:use-macro="navigation_item_friends" />
-				<div class="navigation_item_meta border_box">
-					<p i18n:translate="">Meta</p>
-					<div style="margin: 5px">
-						<span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-						<span i18n:translate="">Läuft seit: <span i18n:name="turnstartdate" tal:replace="datetime:THIS/getCurrentRound/getStart" /></span><br /><br />
-            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span><br />
-              <tal:block tal:define="benchmark THIS/getBenchmarkResult">
-                <span i18n:translate="">Renderdauer: <span i18n:name="executionTime" tal:replace="benchmark/executionTime" /></span><br />
-                <span i18n:translate="">Speicher-Peak: <span i18n:name="memoryPeakUsage" tal:replace="benchmark/memoryPeakUsage" /></span>
-              </tal:block>
-					</div>
-				</div>
-			</stu:sidebar_right>
+              <stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
+              <stu:imagelink href="comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
+            </div>
+          </div>
+          <div class="header_box header_box_pm border_box" id="navlet_newpm">
+            <metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
+          </div>
+          <div class="header_box header_box_research border_box action"  tal:condition="CURRENT_RESEARCH" onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;">
+            <div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
+            <img style="width: 12px; height: 12px;" src="assets/buttons/menu_forsch1.gif" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
+            <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
+          </div>
+          <div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('research.php')">
+            <img style="width: 30px; height: 30px;" src="assets/buttons/menu_forsch0.gif" title="Forschung" i18n:attributes="title" />
+            <div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
+          </div>
+          <div class="header_box header_box_logout border_box action" onclick="goToUrl('index.php?B_LOGOUT=1')">
+            <div>
+              <img style="width: 30px; height: 30px;" src="assets/buttons/menu_logout0.gif" title="Logout" i18n:attributes="title" />
+              <div style="margin-top: 5px" i18n:translate="">Logout</div>
+            </div>
+          </div>
+          <div class="header_box header_box_help border_box action" onclick="goToUrl('docu/')">
+            <div>
+              <img style="width: 30px; height: 30px;" src="assets/buttons/menu_doku0.gif" title="Hilfe" i18n:attributes="title" />
+              <div style="margin-top: 5px" i18n:translate="">Hilfe</div>
+            </div>
+          </div>
+          <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')">
+            <div>
+              <img style="width: 30px; height: 30px;" src="assets/buttons/menu_option0.gif" title="Einstellungen" i18n:attributes="title" />
+              <div style="margin-top: 5px" i18n:translate="">Einstellungen</div>
+            </div>
+          </div>
+        </stu:header>
+        <stu:sidebar_left>
+          <div style="width: 100%; padding-left: 10px; padding-right: 10px">
+            <tal:block metal:use-macro="navigation" />
+            <div class="border_box navigation_item_servertime">
+              <img title="Serverzeit" i18n:attributes="title" style="width: 15px; height: 15px;" src="assets/buttons/time.gif" />
+              <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
+              <span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
+              <span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span><br />
+            </div>
+          </div>
+        </stu:sidebar_left>
+        <stu:content>
+          <stu:content_inner>
+            <tal:block metal:define-slot="body">
+              ...
+            </tal:block>
+            <script type="text/javascript">
+                setTimeout('updatePMNavlet()',60000);
+            </script>
+            <metal:macro metal:use-macro="sitefooter" />
+          </stu:content_inner>
+        </stu:content>
+      </div>
 		</stu:body>
 	</stu:root>
 </metal:block>

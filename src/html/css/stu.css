@@ -740,7 +740,7 @@ div.top_box {
 }
 
 div.navigation_item {
-    width: 80px;
+    width: 100px;
     text-align: center;
     height: 70px;
     padding: 10px 0 4px 0;
@@ -773,12 +773,9 @@ div.navigation_item_friends {
 }
 
 div.navigation_item_meta {
-    width: 160px;
-    margin-bottom: 15px;
+    width: 100px;
+    margin-top: 15px;
     font-size: 80%;
-    position: absolute;
-    bottom: 120px;
-    right: 20px;
 }
 
 div.navigation_item:hover,

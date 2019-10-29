@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:stu="stu" version="1.0" exclude-result-prefixes="stu"> 
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:stu="stu" version="1.0" exclude-result-prefixes="stu">
 
 	<xsl:output omit-xml-declaration="yes" method="xml" />
     <xsl:template match="stu:root">
@@ -21,22 +21,22 @@
 	</xsl:template>
 
 	<xsl:template match="stu:header">
-		<div style="height: 80px; width: 100%; position: fixed; top: 0; left: 0; background-color: #121220; z-Index: 111111111">
+		<div style="height: 80px; width: 100%; background-color: #121220; z-Index: 111111111; grid-column: 1 / span 2;">
                        	<xsl:apply-templates />
-			<div style="margin: 70px 199px 0 101px; height: 10px; width: auto; border-width: 1px; border-bottom: 0; border-style: solid; border-color: #4b4b4b; background-color: #000000; border-radius: 3px 3px 0 0;">
+			<div style="margin: 70px 0px 0 119px; height: 10px; width: auto; border-width: 1px; border-bottom: 0; border-right: 0; border-style: solid; border-color: #4b4b4b; background-color: #000000; border-radius: 3px 3px 0 0;">
 				<xsl:text> </xsl:text>
 			</div>
 		</div>
 	</xsl:template>
 
 	<xsl:template match="stu:sidebar_left">
-		<div style="width: 100px; position: fixed; top: 80px; background-color: #121220; height: 100%; border-right: 1px solid #4b4b4b">
+		<div style="width: 120px; background-color: #121220; height: 100%; border-right: 1px solid #4b4b4b">
                        	<xsl:apply-templates />
 		</div>
 	</xsl:template>
 
 	<xsl:template match="stu:sidebar_right">
-		<div style="width: 200px ; position: fixed; top: 80px; right: 0; background-color: #121220; height: 100%; border-left: 1px solid #4b4b4b">
+		<div style="width: 200px ; background-color: #121220; height: 100%; border-left: 1px solid #4b4b4b">
 			<div style="width: auto; margin-left: 20px; margin-right: 20px">
                        		<xsl:apply-templates />
 			</div>
@@ -44,7 +44,7 @@
 	</xsl:template>
 
 	<xsl:template match="stu:content">
-		<div style="width: auto; margin: 75px 200px 0 100px;">
+		<div style="width: 100%;">
                        	<xsl:apply-templates />
 		</div>
 	</xsl:template>
@@ -112,7 +112,7 @@
 				<xsl:attribute name="checked">checked</xsl:attribute>
 			</xsl:if>
 		</input>
-	</xsl:template>	
+	</xsl:template>
 	<xsl:template match="stu:submit">
 		<input type="submit" style="cursor: pointer;" name="{@name}" value="{@value}" />
 	</xsl:template>
@@ -124,7 +124,7 @@
 					<img src="assets/goods/{@goodid}.gif" onclick="$('{$id}').value={@count}" style="cursor: pointer;" title="{@name}" />
 				</td>
 				<td style="width: 60px; vertical-align: middle;">
-					<xsl:value-of select="@count" /> 
+					<xsl:value-of select="@count" />
 				</td>
 				<td>
 					<input type="text" size="3" id="{$id}" name="count[]" />
