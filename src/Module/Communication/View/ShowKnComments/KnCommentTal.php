@@ -1,30 +1,24 @@
 <?php
 
-// @todo activate strict typing
-declare(strict_types=0);
+declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
 use Stu\Orm\Entity\KnCommentInterface;
-use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class KnCommentTal implements KnCommentTalInterface
 {
     private $comment;
 
-    private $post;
-
-    private $userId;
+    private $currentUser;
 
     public function __construct(
         KnCommentInterface $comment,
-        KnPostInterface $post,
-        int $userId
+        UserInterface $currentUser
     ) {
         $this->comment = $comment;
-        $this->post = $post;
-        $this->userId = $userId;
+        $this->currentUser = $currentUser;
     }
 
     public function getId(): int
@@ -34,7 +28,7 @@ final class KnCommentTal implements KnCommentTalInterface
 
     public function getPostId(): int
     {
-        return $this->comment->getPostId();
+        return $this->comment->getPosting()->getId();
     }
 
     public function getText(): string
@@ -49,18 +43,17 @@ final class KnCommentTal implements KnCommentTalInterface
 
     public function getUserId(): int
     {
-        return $this->comment->getUserId();
+        return $this->comment->getUser()->getId();
     }
 
     public function getDisplayUserName(): string
     {
-        if ($this->comment->getUserName()) {
-            return $this->comment->getUserName();
+        $commentUserName = $this->comment->getUserName();
+        if ($commentUserName) {
+            return $commentUserName;
         }
-        // @todo refactor
-        global $container;
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId())->getUser();
+        return $this->comment->getUser()->getUser();
     }
 
     public function getUserAvatarPath(): string
@@ -68,14 +61,12 @@ final class KnCommentTal implements KnCommentTalInterface
         if ($this->comment->getUserName()) {
             return '';
         }
-        // @todo refactor
-        global $container;
 
-        return $container->get(UserRepositoryInterface::class)->find($this->getUserId())->getFullAvatarPath();
+        return $this->comment->getUser()->getFullAvatarPath();
     }
 
     public function isDeleteable(): bool
     {
-        return $this->getUserId() === $this->userId || $this->post->getUserId() === $this->userId;
+        return $this->comment->getUser() === $this->currentUser || $this->comment->getPosting()->getUser() === $this->currentUser;
     }
 }

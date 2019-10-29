@@ -7,7 +7,7 @@ namespace Stu;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 
-class StuTestCase extends MockeryTestCase
+abstract class StuTestCase extends MockeryTestCase
 {
     protected function mock(...$args): MockInterface
     {

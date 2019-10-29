@@ -27,7 +27,7 @@ final class ShowKnComments implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
 
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->showKnCommentsRequest->getKnPostId());
@@ -38,7 +38,7 @@ final class ShowKnComments implements ViewControllerInterface
 
         $list = [];
         foreach ($post->getComments() as $comment) {
-            $list[] = new KnCommentTal($comment, $post, $userId);
+            $list[] = new KnCommentTal($comment, $user);
         }
 
         $game->setPageTitle(sprintf(_('Kommentare für Beitrag %d'), $post->getId()));
