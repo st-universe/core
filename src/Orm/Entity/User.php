@@ -473,7 +473,7 @@ class User implements UserInterface
 
     public function isContactable(): bool
     {
-        return in_array($this->getId(), [GameEnum::USER_NOONE]);
+        return !in_array($this->getId(), [GameEnum::USER_NOONE]);
     }
 
     public function getFreeCrewCount(): int

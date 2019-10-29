@@ -38,6 +38,7 @@ final class AddContact implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateVar('div', $this->addContactRequest->getContactDiv());
+        $game->setTemplateVar('contact', null);
 
         $userId = $game->getUser()->getId();
 
