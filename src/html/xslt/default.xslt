@@ -23,7 +23,7 @@
 	<xsl:template match="stu:header">
 		<div style="height: 80px; width: 100%; background-color: #121220; z-Index: 111111111; grid-column: 1 / span 2;">
                        	<xsl:apply-templates />
-			<div style="margin: 70px 0px 0 119px; height: 10px; width: auto; border-width: 1px; border-bottom: 0; border-right: 0; border-style: solid; border-color: #4b4b4b; background-color: #000000; border-radius: 3px 3px 0 0;">
+			<div style="margin: 80px 0px 0 119px; height: 10px; width: auto; border-width: 1px; border-bottom: 0; border-right: 0; border-style: solid; border-color: #4b4b4b; background-color: #000000; border-radius: 3px 3px 0 0;">
 				<xsl:text> </xsl:text>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 	</xsl:template>
 
 	<xsl:template match="stu:content_inner">
-		<div style="width: 100%;  padding: 5px 5px 0 5px">
+		<div style="width: 100%;  padding: 10px 5px 0 5px">
                        	<xsl:apply-templates />
 		</div>
 	</xsl:template>
