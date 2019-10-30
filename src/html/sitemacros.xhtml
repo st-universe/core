@@ -19,16 +19,22 @@
 		</stu:siteheader>
 		<stu:body onload="startUp();">
 			<div id="overDiv">...</div>
-      <div style="display: grid; grid-template-columns: 120px auto; grid-template-rows: 80px auto; height: 100%">
+      <div class="container" style="display: grid; grid-template-columns: 120px auto; grid-template-rows: 80px auto; height: 100%">
         <stu:header>
           <div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php');">
             <div style="margin: 5px">
-              <img src="runtime" style="margin-right: 5px; width: 50px; height: 50px;" align="left" tal:attributes="src THIS/getUser/getFullAvatarPath" />
-              <span tal:replace="structure bbcode:THIS/getUser/getName" /><br />
-              <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
+              <div class="user_box_grid">
+                <div class="user_box_avatar">
+                  <img src="runtime" style="margin-right: 5px; width: 50px; height: 50px;" align="left" tal:attributes="src THIS/getUser/getFullAvatarPath" />
+                </div>
+                <div class="user_box_details">
+                  <span tal:replace="structure bbcode:THIS/getUser/getName" /><br />
+                  <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 
-              <stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
-              <stu:imagelink href="comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
+                  <stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
+                  <stu:imagelink href="comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
+                </div>
+              </div>
             </div>
           </div>
           <div class="header_box header_box_pm border_box" id="navlet_newpm">

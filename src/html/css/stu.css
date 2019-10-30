@@ -1002,3 +1002,41 @@ div.moduleScreenGrid {
     display: grid;
     grid-template-columns: auto 300px;
 }
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  div.container {
+    width: 1000px;
+  }
+
+  div.header_box_user {
+    width: 300px;
+    margin: 5px 0 0 10px;
+  }
+
+  div.user_box_grid {
+    display: grid;
+    grid-template-columns: 50px auto;
+    width: 100%;
+  }
+}
+@media (max-width: 1025px) {
+  div.container {
+    width: 1000px;
+  }
+
+  div.header_box_user {
+    width: 100px;
+    margin: 5px 0 0 10px;
+  }
+
+  div.user_box_details {
+    display: none;
+  }
+
+  div.user_box_grid {
+    display: grid;
+    grid-template-columns: 100%;
+    width: 100%;
+    justify-items: center;
+  }
+}
