@@ -32,19 +32,22 @@ final class PrivateMessageRepository extends EntityRepository implements Private
     }
 
     public function getOrderedCorrepondence(
-        array $userIdPair,
+        int $senderUserId,
+        int $recipientUserId,
         array $folderIds,
         int $limit
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT pm FROM %s pm WHERE (pm.send_user IN (:sendUserIds) OR pm.recip_user IN (:recipUserIds)) AND
+                'SELECT pm FROM %s pm WHERE (
+                    (pm.send_user = :sendUserId AND pm.recip_user = :recipUserId) OR
+                    (pm.send_user = :recipUserId AND pm.recip_user = :sendUserId)) AND
                 pm.cat_id IN (:folderIds) ORDER BY pm.date DESC',
                 PrivateMessage::class
             )
         )->setParameters([
-            'sendUserIds' => $userIdPair,
-            'recipUserIds' => $userIdPair,
+            'sendUserId' => $senderUserId,
+            'recipUserId' => $recipientUserId,
             'folderIds' => $folderIds
         ])->setMaxResults($limit)
             ->getResult();

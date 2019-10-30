@@ -57,7 +57,8 @@ final class ShowWritePm implements ViewControllerInterface
             );
 
             $correspondence = $this->privateMessageRepository->getOrderedCorrepondence(
-                [$reply->getSenderId(), $reply->getRecipientId()],
+                $reply->getSenderId(),
+                $reply->getRecipientId(),
                 [$recipientFolder->getId(), $senderFolder->getId()],
                 10
             );
