@@ -41,7 +41,8 @@ final class EditKnPlot implements ActionControllerInterface
             $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
             return;
         }
-        $plot->save();
+
+        $this->rpgPlotRepository->save($plot);
 
         $game->addInformation(_('Der Plot wurde editiert'));
 

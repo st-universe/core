@@ -34,7 +34,8 @@ final class EndKnPlot implements ActionControllerInterface
             return;
         }
         $plot->setEndDate(time());
-        $plot->save();
+
+        $this->rpgPlotRepository->save($plot);
 
         $game->addInformation(_('Der Plot wurde beendet'));
     }
