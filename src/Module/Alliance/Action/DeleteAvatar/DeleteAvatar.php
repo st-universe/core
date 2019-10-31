@@ -48,7 +48,7 @@ final class DeleteAvatar implements ActionControllerInterface
                 sprintf(
                     '%s%s/%s.png',
                     $this->config->get('game.webroot'),
-                    $this->config->get('game.user_avatar_path'),
+                    $this->config->get('game.alliance_avatar_path'),
                     $alliance->getAvatar()
                 )
             );
