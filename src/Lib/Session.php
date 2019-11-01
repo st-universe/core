@@ -4,6 +4,7 @@ namespace Stu\Lib;
 
 use DateTimeImmutable;
 use LoginException;
+use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
@@ -19,6 +20,8 @@ final class Session implements SessionInterface
 
     private $userRepository;
 
+    private $loginValidation;
+
     /**
      * @var UserInterface|null
      */
@@ -27,11 +30,13 @@ final class Session implements SessionInterface
     public function __construct(
         UserIpTableRepositoryInterface $userIpTableRepository,
         SessionStringRepositoryInterface $sessionStringRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        LoginValidationInterface $loginValidation
     ) {
         $this->userIpTableRepository = $userIpTableRepository;
         $this->sessionStringRepository = $sessionStringRepository;
         $this->userRepository = $userRepository;
+        $this->loginValidation = $loginValidation;
     }
 
     public function createSession(bool $session_check = true): void
@@ -119,6 +124,10 @@ final class Session implements SessionInterface
         if ($result->getDeletionMark() == 2) {
             throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
         }
+        if ($this->loginValidation->validate($result) === false) {
+            throw new \Stu\Lib\LoginException(_('Login fehlgeschlagen'));
+        }
+
         if ($result->isVacationMode()) {
             $result->setVacationMode(false);
         }

@@ -99,6 +99,7 @@ use Stu\Orm\Entity\UserInvitation;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserMap;
 use Stu\Orm\Entity\UserProfileVisitor;
+use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\Weapon;
 
 return [
@@ -566,6 +567,11 @@ return [
         ContainerInterface $c
     ): UserProfileVisitorRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(UserProfileVisitor::class);
+    },
+    UserTagRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): UserTagRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(UserTag::class);
     },
     WeaponRepositoryInterface::class => function (
         ContainerInterface $c

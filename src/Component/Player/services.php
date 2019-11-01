@@ -17,12 +17,16 @@ use Stu\Component\Player\Register\RegistrationEmailSender;
 use Stu\Component\Player\Register\RegistrationEmailSenderInterface;
 use Stu\Component\Player\Register\PlayerDefaultsCreator;
 use Stu\Component\Player\Register\PlayerDefaultsCreatorInterface;
+use Stu\Component\Player\Validation\LoginValidation;
+use Stu\Component\Player\Validation\LoginValidationInterface;
+use Stu\Component\Player\Validation\Validators\IpIntelValidator;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use function DI\autowire;
 use function DI\create;
 use function DI\get;
 
 return [
+    IpIntelValidator::class => autowire(IpIntelValidator::class),
     InvitePlayerInterface::class => autowire(InvitePlayer::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),
     PlayerDeletionInterface::class => create(PlayerDeletion::class)->constructor(
@@ -37,6 +41,9 @@ return [
             autowire(Handler\UserDeletionHandler::class)
         ]
     ),
+    LoginValidationInterface::class => create(LoginValidation::class)->constructor([
+        autowire(IpIntelValidator::class)
+    ]),
     PlayerCreatorInterface::class => autowire(PlayerCreator::class),
     PlayerDefaultsCreatorInterface::class => autowire(PlayerDefaultsCreator::class),
     RegistrationEmailSenderInterface::class => autowire(RegistrationEmailSender::class),

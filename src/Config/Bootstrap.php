@@ -7,6 +7,7 @@ namespace Stu\Config;
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Cache\Adapter\Redis\RedisCachePool;
 use Cache\Bridge\Doctrine\DoctrineCacheBridge;
+use Curl\Curl;
 use DI\ContainerBuilder;
 use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
@@ -28,6 +29,8 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Tal\TalPage;
 use Stu\Module\Tal\TalPageInterface;
 use Ubench;
+use Usox\IpIntel\IpIntel;
+use Usox\IpIntel\IpIntelInterface;
 use function DI\autowire;
 
 require_once __DIR__.'/../../vendor/autoload.php';
@@ -114,6 +117,14 @@ $builder->addDefinitions([
         ;
 
         return $generator;
+    },
+    IpIntelInterface::class => function (ContainerInterface $c): IpIntelInterface {
+        return new IpIntel(
+            new Curl(),
+            $c->get(ConfigInterface::class)->get('security.validation.ip_intel_email_address'),
+            null,
+            2
+        );
     },
 ]);
 

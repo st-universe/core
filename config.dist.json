@@ -17,6 +17,13 @@
     "logfile_path": "/path/to/log",
     "loglevel": 7
   },
+  "security": {
+    "validation": {
+      "ip_intel_email_address": "change.me",
+      "ip_intel_validation_propability": 1,
+      "ip_intel_validation_propability_score": 1
+    }
+  },
   "game": {
     "webroot": "/path/to/webroot",
     "base_url": "https://change.me",

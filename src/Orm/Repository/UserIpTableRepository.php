@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserIpTable;
 use Stu\Orm\Entity\UserIpTableInterface;
 
@@ -22,6 +23,18 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
 
         $em->persist($userIpTable);
         $em->flush($userIpTable);
+    }
+
+    public function findMostRecentByUser(UserInterface $user): ?UserIpTableInterface
+    {
+        return $this->findOneBy(
+            [
+                'user' => $user
+            ],
+            [
+                'id' => 'desc'
+            ]
+        );
     }
 
     public function findBySessionId(string $sessionId): ?UserIpTableInterface
