@@ -1012,14 +1012,36 @@ div.userList {
 }
 
 div.userList div.userListItem {
-  margin: 7px;
+  border: 1px solid #262323;
+  margin: 10px;
   padding: 5px;
   width: 500px;
   display: inline-grid;
-  grid-template-columns: 60px auto;
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
+  grid-template-columns: 70px auto;
+  grid-column-gap: 10px;
   background-color: #171616;
+}
+
+img.userListItemImage {
+  width: 70px;
+  height: 70px;
+}
+
+div.userListItemButtons {
+  padding-top: 5px;
+}
+
+div.userListItem div.userListItemName {
+  font-size: 120%;
+  padding-bottom: 3px;
+}
+
+div.userListItemName,
+div.userListItemAllianceName {
+  width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 div.userListSortItem {
