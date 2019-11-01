@@ -37,7 +37,9 @@
     <div class="userList">
       <div class="userListItem" tal:repeat="data LIST">
         <div>
-          <img tal:attributes="src data/getFullAvatarPath" style="width: 60px; height: 60px"/>
+          <a href="userprofile.php?uid=${data/getId}">
+            <img tal:attributes="src data/getFullAvatarPath" style="width: 60px; height: 60px"/>
+          </a>
         </div>
         <div>
           <div>
