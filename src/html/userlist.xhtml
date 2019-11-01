@@ -9,43 +9,53 @@
 						<a href="?SHOW_SETTLERLIST=1&mark=${item/mark}&order=${ORDER_BY}&way=${SORT_ORDER}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 					</td>
 				</tr>
-			</table>	
+			</table>
 		</metal:macro>
+    <div style="width: 620px;">
+      <div class="divhead">Sortierung</div>
+      <div class="divbody">
+        <div class="userListSortItem">
+          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=up"><img src="assets/buttons/pup.gif" /></a>
+          <span i18n:translate="">Fraktion</span>
+          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=down"><img src="assets/buttons/pdown.gif" /></a>
+        </div>
+        <div class="userListSortItem">
+          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=up"><img src="assets/buttons/pup.gif" /></a>
+          <span i18n:translate="">Id</span>
+          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=down"><img src="assets/buttons/pdown.gif" /></a>
+        </div>
+        <div class="userListSortItem">
+          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=up"><img src="assets/buttons/pup.gif" /></a>
+          <span i18n:translate="">Allianz</span>
+          <a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=down"><img src="assets/buttons/pdown.gif" /></a>
+        </div>
+      </div>
+    </div>
+    <br />
 		<metal:macro metal:use-macro="ulnav" />
 		<br />
-		<table class="tcal">
-			<tr>
-				<th style="width: 20px;">
-					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=up"><img src="assets/buttons/pup.gif" /></a>
-					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=fac&way=down"><img src="assets/buttons/pdown.gif" /></a>
-				</th>
-				<th style="width: 50px;">
-					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=up"><img src="assets/buttons/pup.gif" /></a>
-					ID
-					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=id&way=down"><img src="assets/buttons/pdown.gif" /></a>
-				</th>
-				<th style="width: 650px;">Name</th>
-				<th>
-					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=up"><img src="assets/buttons/pup.gif" /></a>
-					Allianz
-					<a href="?SHOW_SETTLERLIST=1&mark=${PAGINATION}&order=alliance&way=down"><img src="assets/buttons/pdown.gif" /></a>
-				</th>
-				<th style="width: 50px;"></th>
-			</tr>
-			<tr tal:repeat="data LIST" class="runtime" tal:attributes="class string:row${repeat/data/odd}">
-				<td style="text-align: center;"><img src="assets/rassen/${data/getFactionId}s.gif" /></td>
-				<td tal:content="data/getId">ID</td>
-				<td>
-					<a href="userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
-				</td>
-				<td tal:condition="data/getAllianceId"><a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}" tal:content="structure bbcode:data/getAlliance/getName">ALLIANCE</a></td>
-				<td tal:condition="not:data/getAllianceId">&nbsp;</td>
-				<td tal:define="id data/getId" style="text-align: center;">
-					<metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
-					<metal:macro metal:use-macro="html/macros.xhtml/pmwindow" />
-				</td>
-			</tr>
-		</table>
+    <div class="userList">
+      <div class="userListItem" tal:repeat="data LIST">
+        <div>
+          <img tal:attributes="src data/getFullAvatarPath" style="width: 60px; height: 60px"/>
+        </div>
+        <div>
+          <div>
+            <a href="userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
+          </div>
+          <div>
+            <a tal:condition="data/getAlliance" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}" tal:content="structure bbcode:data/getAlliance/getName">ALLIANCE</a>
+            <span tal:condition="not:data/getAlliance">-</span>
+          </div>
+          <div tal:define="id data/getId">
+            <img src="assets/rassen/${data/getFactionId}s.gif" />
+            <metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
+            <metal:macro metal:use-macro="html/macros.xhtml/pmwindow" />
+            ID: <tal:block tal:replace="data/getId">ID</tal:block>
+          </div>
+        </div>
+      </div>
+    </div>
 		<br />
 		<metal:macro metal:use-macro="ulnav" />
 	</tal:block>

@@ -25,7 +25,7 @@ final class UserListRequest implements UserListRequestInterface
         /**
          * @var string $param
          */
-        $param = $this->queryParameter('order')->oneOf(['up', 'down'])->defaultsTo('down');
+        $param = $this->queryParameter('way')->oneOf(['up', 'down'])->defaultsTo('down');
 
         return $param;
     }

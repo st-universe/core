@@ -1007,6 +1007,27 @@ div.moduleScreenGrid {
     grid-template-columns: auto 300px;
 }
 
+div.userList {
+  width: 100%;
+}
+
+div.userList div.userListItem {
+  margin: 7px;
+  padding: 5px;
+  width: 500px;
+  display: inline-grid;
+  grid-template-columns: 60px auto;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  background-color: #171616;
+}
+
+div.userListSortItem {
+  width: 200px;
+  display: inline-block;
+  text-align: center;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
   div.container {
     width: 1000px;
