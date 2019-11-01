@@ -234,16 +234,19 @@
 		<div id="writecomment" style="display: none;">
 			<table class="tcal">
 				<tr>
-					<th i18n:translate="">Kommentar schreiben</th>
+					<th colspan="2" i18n:translate="">Kommentar schreiben</th>
 				</tr>
 				<tr>
-					<td>
+					<td colspan="2">
 						<stu:textarea style="width: 100%; height: 100px;" name="comment" />
 					</td>
 				</tr>
 				<tr>
+          <td style="width: 200px">
+            <span id="commentTextLength">0</span>/250 <span i18n:translate="">Zeichen</span>
+          </td>
 					<td style="text-align: right;">
-						<input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken" i18n:attributes="value" />
+						<input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken" i18n:attributes="value" id="postCommentButton" />
 					</td>
 				</tr>
 			</table>
@@ -272,5 +275,24 @@
 			<br tal:condition="not:repeat/data/end" />
 		</tal:block>
 		<div class="divhead" tal:condition="not:COMMENTS" style="text-align: center;">Keine Kommentare vorhanden</div>
+    <script type="text/javascript">
+      $('comment').addEventListener(
+        "keyup",
+        function() {
+          limit = 250;
+
+          var length = this.value.length;
+          $('commentTextLength').innerHTML = length;
+          if (length > limit) {
+            $('commentTextLength').addClassName('error');
+            $('postCommentButton').disabled = true;
+          } else {
+            $('commentTextLength').removeClassName('error');
+            $('postCommentButton').disabled = false;
+          }
+        },
+        false
+      );
+    </script>
 	</metal:macro>
 </html>

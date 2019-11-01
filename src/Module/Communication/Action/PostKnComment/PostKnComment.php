@@ -14,6 +14,7 @@ use Stu\Orm\Repository\KnPostRepositoryInterface;
 final class PostKnComment implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_POST_COMMENT';
+    private const CAHRACTER_LIMIT = 250;
 
     private $postKnCommentRequest;
 
@@ -45,6 +46,9 @@ final class PostKnComment implements ActionControllerInterface
         $text = $this->postKnCommentRequest->getText();
 
         if (mb_strlen($text) < 3) {
+            return;
+        }
+        if (mb_strlen($text) > static::CAHRACTER_LIMIT) {
             return;
         }
         $obj = $this->knCommentRepository->prototype()

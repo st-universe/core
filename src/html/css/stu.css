@@ -924,6 +924,10 @@ div.achievementbox div.closebutton {
     width: 100%;
 }
 
+.error {
+  color: #8d001b;
+}
+
 table.border {
     border-collapse: separate;
     border-spacing: 1px;
