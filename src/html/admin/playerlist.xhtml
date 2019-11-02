@@ -1,0 +1,41 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="../sitemacros.xhtml/admindefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
+    <div class="userList">
+      <tal:block tal:repeat="user LIST">
+        <div class="userListItem" tal:define="data user/getUser">
+          <div>
+            <a href="/userprofile.php?uid=${data/getId}">
+              <img class="userListItemImage" tal:attributes="src data/getFullAvatarPath"/>
+            </a>
+          </div>
+          <div>
+            <div class="userListItemName">
+              <a href="/userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
+            </div>
+            <div class="uerListItemAllianceName">
+              <a tal:condition="data/getAlliance" href="/alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}" tal:content="structure bbcode:data/getAlliance/getName">ALLIANCE</a>
+              <span tal:condition="not:data/getAlliance">-</span>
+            </div>
+            <div class="userListItemButtons" tal:define="id data/getId">
+              <img src="/assets/rassen/${data/getFactionId}s.gif" />
+              <metal:macro metal:use-macro="../macros.xhtml/userprofile" />
+              <metal:macro metal:use-macro="../macros.xhtml/pmwindow" />
+              ID: <tal:block tal:replace="data/getId">ID</tal:block>
+            </div>
+            <div class="userBoxDetailAddendum">
+              <div>
+                <img title="Zuletzt online" src="/assets/buttons/time.gif" /> <span tal:content="datetime:data/getLastAction">DATE</span>
+              </div>
+              <div>
+                <div tal:repeat="tag user/getTags" tal:content="tag/label" class="userTag userTag${tag/typeId}">LABEL</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tal:block>
+    </div>
+	</tal:block>
+</tal:block>
+</html>

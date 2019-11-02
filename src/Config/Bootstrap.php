@@ -180,6 +180,9 @@ $builder->addDefinitions(
     require_once __DIR__.'/../Module/Communication/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__.'/../Module/Admin/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__.'/../Module/Api/services.php'
 );
 $builder->addDefinitions(

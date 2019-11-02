@@ -53,7 +53,13 @@ final class TalPage implements TalPageInterface
 
     public function setTemplate(string $file): void
     {
-        $this->getTemplate()->setTemplate($file);
+        $this->getTemplate()->setTemplate(
+            sprintf(
+                '%s/%s',
+                $this->config->get('game.webroot'),
+                $file
+            )
+        );
     }
 
     public function parse(bool $returnResult = false)

@@ -377,7 +377,7 @@ final class GameController implements GameControllerInterface
 
     public function getJavascriptPath(): string
     {
-        return sprintf('version_%s', $this->getGameVersion());
+        return sprintf('/version_%s', $this->getGameVersion());
     }
 
     public function getPlanetColonyLimit(): int

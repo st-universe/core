@@ -58,14 +58,14 @@
 	<xsl:template match="stu:navigation_item">
 		<xsl:variable name="linkid"><xsl:value-of select="generate-id()" /></xsl:variable>
 		<div class="navigation_item border_box" onclick="goToUrl('{@url}')" onmouseover="cp('{$linkid}','buttons/menu_{@icon_url}1')" onmouseout="cp('{$linkid}','buttons/menu_{@icon_url}0')">
-			<img src="assets/buttons/menu_{@icon_url}0.gif" height="30" width="30" id="{$linkid}" />
+      <img src="/assets/buttons/menu_{@icon_url}0.gif" height="30" width="30" id="{$linkid}" />
 			<div style="margin-top: 5px"><xsl:value-of select="@title" /></div>
 		</div>
 	</xsl:template>
 
 	<xsl:template match="stu:jsimagelink">
 		<xsl:variable name="linkid"><xsl:value-of select="generate-id()" /></xsl:variable>
-		<a href="javascript:void(0);" onclick="{@onclick}" title="{@title}" onmouseover="cp('{$linkid}','buttons/{@image}2')" onmouseout="cp('{$linkid}','buttons/{@image}1')"><img src="assets/buttons/{@image}1.gif" name="{$linkid}" /><xsl:if test="@description" >&#xA0;<xsl:value-of select="@description" /></xsl:if></a>
+    <a href="javascript:void(0);" onclick="{@onclick}" title="{@title}" onmouseover="cp('{$linkid}','buttons/{@image}2')" onmouseout="cp('{$linkid}','buttons/{@image}1')"><img src="/assets/buttons/{@image}1.gif" name="{$linkid}" /><xsl:if test="@description" >&#xA0;<xsl:value-of select="@description" /></xsl:if></a>
 	</xsl:template>
 	<xsl:template match="stu:imagelink">
 		<xsl:variable name="linkid"><xsl:value-of select="generate-id()" /></xsl:variable>
@@ -76,14 +76,14 @@
 			</xsl:choose>
 		</xsl:variable>
 		<a href="{@href}" onmouseover="cp('{$linkid}','buttons/{@image}2')" onmouseout="cp('{$linkid}','buttons/{@image}1')">
-			<img src="assets/buttons/{@image}1.gif" name="{$linkid}" title="{$title}" />
+      <img src="/assets/buttons/{@image}1.gif" name="{$linkid}" title="{$title}" />
 			<xsl:if test="@description">&#xA0;<xsl:value-of select="@description" /></xsl:if>
 		</a>
 	</xsl:template>
 	<xsl:template match="stu:revimagelink">
 		<xsl:variable name="linkid"><xsl:value-of select="generate-id()" /></xsl:variable>
 		<a href="{@href}" onmouseover="cp('{$linkid}','buttons/{@image}1')" onmouseout="cp('{$linkid}','buttons/{@image}2')">
-			<img src="assets/buttons/{@image}2.gif" name="{$linkid}" />&#xA0;<xsl:value-of select="@description" />
+      <img src="/assets/buttons/{@image}2.gif" name="{$linkid}" />&#xA0;<xsl:value-of select="@description" />
 		</a>
 	</xsl:template>
 	<xsl:template match="stu:textarea">

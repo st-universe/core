@@ -5,11 +5,19 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserTag;
 use Stu\Orm\Entity\UserTagInterface;
 
 final class UserTagRepository extends EntityRepository implements UserTagRepositoryInterface
 {
+
+    public function getByUser(UserInterface $user): iterable
+    {
+        return $this->findBy([
+            'user' => $user
+        ]);
+    }
 
     public function prototype(): UserTagInterface
     {
