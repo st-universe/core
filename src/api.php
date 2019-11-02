@@ -136,6 +136,8 @@ $response = $app->handle($request);
 
 $entityManager->commit();
 
-$responseEmitter = new ResponseEmitter();
+$responseEmitter = new ResponseEmitter(
+    $container->get(ConfigInterface::class)
+);
 $responseEmitter->emit($response);
 
