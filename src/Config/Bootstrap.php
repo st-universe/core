@@ -74,7 +74,10 @@ $builder->addDefinitions([
 
         $driverImpl = $emConfig->newDefaultAnnotationDriver(__DIR__ . '/../Orm/Entity/');
         $emConfig->setMetadataDriverImpl($driverImpl);
-        $emConfig->setProxyDir('/tmp/');
+        $emConfig->setProxyDir(sprintf(
+            '%s/../OrmProxy/',
+            $config->get('game.webroot')
+        ));
         $emConfig->setProxyNamespace('Stu\Orm\Proxy');
 
         $manager = EntityManager::create(
