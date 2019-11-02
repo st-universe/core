@@ -9,6 +9,7 @@ use Stu\Orm\Entity\RpgPlotInterface;
 
 /**
  * @method null|RpgPlotInterface find(integer $id)
+ * @method RpgPlotInterface[] findAll()
  */
 interface RpgPlotRepositoryInterface extends ObjectRepository
 {

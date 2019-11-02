@@ -5,6 +5,10 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\HistoryInterface;
 
+/**
+ * @method null|HistoryInterface find(integer $id)
+ * @method array|HistoryInterface[] findAll()
+ */
 interface HistoryRepositoryInterface extends ObjectRepository
 {
     /**
@@ -22,4 +26,6 @@ interface HistoryRepositoryInterface extends ObjectRepository
     public function prototype(): HistoryInterface;
 
     public function save(HistoryInterface $history): void;
+
+    public function delete(HistoryInterface $history): void;
 }

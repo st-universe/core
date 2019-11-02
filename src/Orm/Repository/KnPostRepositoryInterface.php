@@ -5,6 +5,10 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\KnPostInterface;
 
+/**
+ * @method null|KnPostInterface find(integer $id)
+ * @method KnPostInterface[] findAll()
+ */
 interface KnPostRepositoryInterface extends ObjectRepository
 {
     public function prototype(): KnPostInterface;

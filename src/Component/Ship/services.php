@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade;
+namespace Stu\Module\Ship;
 
 use Stu\Component\Ship\System\Type\CloakShipSystem;
 use Stu\Component\Ship\System\Type\EnergyWeaponShipSystem;

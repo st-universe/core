@@ -9,6 +9,7 @@ use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|ColonyInterface find(integer $id)
+ * @method ColonyInterface[] findAll()
  */
 interface ColonyRepositoryInterface extends ObjectRepository
 {

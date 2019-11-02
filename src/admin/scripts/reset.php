@@ -2,7 +2,7 @@
 
 use Doctrine\ORM\EntityManagerInterface;
 use Noodlehaus\ConfigInterface;
-use Stu\Component\Player\Deletion\PlayerDeletionInterface;
+use Stu\Component\Admin\Reset\ResetManagerInterface;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -13,13 +13,13 @@ $entityManager = $container->get(EntityManagerInterface::class);
 $userRepo = $container->get(UserRepositoryInterface::class);
 $factionRepo = $container->get(FactionRepositoryInterface::class);
 $config = $container->get(ConfigInterface::class);
-$playerDeletion = $container->get(PlayerDeletionInterface::class);
 $playerCreator = $container->get(PlayerCreatorInterface::class);
+$resetManager = $container->get(ResetManagerInterface::class);
 
 $entityManager->beginTransaction();
 
 try {
-    $playerDeletion->handleReset();
+    $resetManager->performReset();
 } catch (Throwable $t) {
     $entityManager->rollback();
 

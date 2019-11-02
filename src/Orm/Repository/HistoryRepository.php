@@ -47,4 +47,12 @@ final class HistoryRepository extends EntityRepository implements HistoryReposit
         $em->persist($history);
         $em->flush($history);
     }
+
+    public function delete(HistoryInterface $history): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($history);
+        $em->flush($history);
+    }
 }

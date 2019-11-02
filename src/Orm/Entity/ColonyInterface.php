@@ -57,7 +57,7 @@ interface ColonyInterface
 
     public function getMask(): ?string;
 
-    public function setMask(string $mask): ColonyInterface;
+    public function setMask(?string $mask): ColonyInterface;
 
     public function getDatabaseId(): ?int;
 
