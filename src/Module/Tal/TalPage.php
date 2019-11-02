@@ -41,7 +41,7 @@ final class TalPage implements TalPageInterface
             $this->template->setPhpCodeDestination(sprintf(
                 '%s/stu/%s/tal',
                 $this->config->get('game.temp_dir'),
-                $this->config->get('version')
+                $this->config->get('game.version')
             ));
             $this->template->setForceReparse((bool) $this->config->get('debug.debug_mode'));
             $this->template->setTranslator($tr);
