@@ -38,6 +38,11 @@ final class TalPage implements TalPageInterface
             $tr->useDomain('stu');
 
             $this->template = new PhpTal\PHPTAL();
+            $this->template->setPhpCodeDestination(sprintf(
+                '%s/stu/%s/tal',
+                $this->config->get('game.temp_dir'),
+                $this->config->get('version')
+            ));
             $this->template->setForceReparse((bool) $this->config->get('debug.debug_mode'));
             $this->template->setTranslator($tr);
             $this->template->allowPhpModifier();

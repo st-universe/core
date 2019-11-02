@@ -26,6 +26,7 @@
   },
   "game": {
     "webroot": "/path/to/webroot",
+    "temp_dir": "/tmp",
     "base_url": "https://change.me",
     "version": "VERSIONSTRING",
     "language": "de_DE",
