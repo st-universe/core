@@ -1074,6 +1074,11 @@ div.allianceListItem div.allianceListItemBanner {
   width: 500px;
 }
 
+div.allianceListItem div.allianceListItemBanner img {
+  width: 500px;
+  max-height:110px;
+}
+
 div.allianceListItem div.allianceListItemMembers {
   grid-row-start: span 2;
   width: 100%;
