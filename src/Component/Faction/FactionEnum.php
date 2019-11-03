@@ -12,5 +12,5 @@ final class FactionEnum
     public const FACTION_KLINGON = 3;
     public const FACTION_CARDASSIAN = 4;
     public const FACTION_FERENGI = 5;
-    public const FACTION_EMPIRE = 6;
+    public const FACTION_PAKLED = 6;
 }
