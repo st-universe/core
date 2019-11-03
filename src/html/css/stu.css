@@ -1075,7 +1075,7 @@ div.allianceListItem div.allianceListItemBanner {
 }
 
 div.allianceListItem div.allianceListItemBanner img {
-  width: 500px;
+  max-width: 500px;
   max-height:110px;
 }
 
