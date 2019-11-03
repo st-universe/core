@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -32,6 +33,11 @@ $rumpId = request::indInt('rumpId');
 if ($rumpId !== 0) {
     $rump = $shipRumpRepo->find($rumpId);
 
+    $specialModuleTypes = [
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
+    ];
+
     $moduleTypes = [
         ShipModuleTypeEnum::MODULE_TYPE_HULL,
         ShipModuleTypeEnum::MODULE_TYPE_SHIELDS,
@@ -43,11 +49,12 @@ if ($rumpId !== 0) {
         ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
     ];
     $moduleList = request::postArray('mod');
+    $moduleSpecialList = request::postArray('special_mod');
 
     if (count($moduleList) === count($moduleTypes)) {
         $user = $userRepo->find($userId);
 
-        $signature = ShipBuildplan::createSignature($moduleList);
+        $signature = ShipBuildplan::createSignature(array_merge($moduleList, $moduleSpecialList));
         $plan = $buildplanRepo->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
 
         if ($plan === null) {
@@ -68,6 +75,19 @@ if ($rumpId !== 0) {
             $buildplanRepo->save($plan);
 
             foreach ($moduleList as $moduleId) {
+                $module = $moduleRepo->find($moduleId);
+
+                $mod = $buildplanModuleRepo->prototype();
+                $mod->setModuleType($module->getType());
+                $mod->setBuildplanId($plan->getId());
+                $mod->setModule($module);
+
+                $buildplanModuleRepo->save($mod);
+            }
+
+            $moduleSpecialList = request::postArray('special_mod');
+
+            foreach ($moduleSpecialList as $moduleId) {
                 $module = $moduleRepo->find($moduleId);
 
                 $mod = $buildplanModuleRepo->prototype();
@@ -123,8 +143,21 @@ if ($rumpId !== 0) {
             echo '<br /><br />';
         }
 
+        $specialModules = $moduleRepo->getBySpecialTypeIds($specialModuleTypes);
+
+        foreach ($specialModules as $module) {
+            printf(
+                '<div>
+                    <input type="checkbox" name="special_mod[%d]" value="%d" /> %s
+                </div>',
+                $module->getId(),
+                $module->getId(),
+                $module->getName()
+            );
+        }
+
         printf(
-            '<input type="submit" value="Bauplan erstellen" /></form>'
+            '<br /><input type="submit" value="Bauplan erstellen" /></form>'
         );
     }
 

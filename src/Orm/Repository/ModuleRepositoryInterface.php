@@ -38,4 +38,6 @@ interface ModuleRepositoryInterface extends ObjectRepository
         int $shipRumpRoleId,
         array $moduleLevel
     ): iterable;
+
+    public function getBySpecialTypeIds(array $specialTypeIds): iterable;
 }

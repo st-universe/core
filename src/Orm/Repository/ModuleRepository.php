@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Module;
+use Stu\Orm\Entity\ModuleSpecial;
 
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
@@ -83,6 +84,21 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
                 'levelList' => $moduleLevel
             ])
             ->getResult();
+    }
+
+    public function getBySpecialTypeIds(array $specialTypeIds): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT m FROM %s m WHERE m.id IN (
+                    SELECT ms.module_id FROM %s ms WHERE ms.special_id IN (:specialTypeIds)
+                )',
+                Module::class,
+                ModuleSpecial::class
+            )
+        )->setParameters([
+            'specialTypeIds' => $specialTypeIds
+        ])->getResult();
     }
 
     private function getResultSetMapping(): ResultSetMapping {
