@@ -112,12 +112,21 @@ final class Overview implements ViewControllerInterface
             $game->setTemplateFile('html/alliancelist.xhtml');
             $game->setPageTitle(_('Allianzliste'));
             $game->setTemplateVar(
-                'ALLIANCE_LIST',
+                'ALLIANCE_LIST_OPEN',
                 array_map(
                     function (AllianceInterface $alliance): AllianceListItemInterface {
                         return new AllianceListItem($alliance);
                     },
-                    $this->allianceRepository->findAllOrdered()
+                    $this->allianceRepository->findByApplicationState(true)
+                )
+            );
+            $game->setTemplateVar(
+                'ALLIANCE_LIST_CLOSED',
+                array_map(
+                    function (AllianceInterface $alliance): AllianceListItemInterface {
+                        return new AllianceListItem($alliance);
+                    },
+                    $this->allianceRepository->findByApplicationState(false)
                 )
             );
         }

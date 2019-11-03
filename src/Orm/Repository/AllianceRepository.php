@@ -33,6 +33,17 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
 
     public function findAllOrdered(): array
     {
-        return $this->findBy([], ['id' => 'asc']);
+        return $this->findBy(
+            [],
+            ['id' => 'asc']
+        );
+    }
+
+    public function findByApplicationState(bool $acceptApplications): array
+    {
+        return $this->findBy(
+            ['accept_applications' => $acceptApplications],
+            ['id' => 'asc']
+        );
     }
 }

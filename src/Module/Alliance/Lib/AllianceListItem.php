@@ -1,7 +1,6 @@
 <?php
 
-// @todo enable strict typing
-declare(strict_types=0);
+declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Lib;
 
@@ -40,5 +39,20 @@ final class AllianceListItem implements AllianceListItemInterface
     public function acceptsApplications(): bool
     {
         return $this->alliance->getAcceptApplications() == 1;
+    }
+
+    public function hasAvatar(): bool
+    {
+        return $this->alliance->getAvatar() !== '';
+    }
+
+    public function getAvatarPath(): string
+    {
+        return $this->alliance->getFullAvatarPath();
+    }
+
+    public function getMembers(): iterable
+    {
+        return $this->alliance->getMembers();
     }
 }

@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AllianceInterface;
 
 /**
- * @method null|AllianceInterface find(integer$id)
+ * @method null|AllianceInterface find(integer $id)
  */
 interface AllianceRepositoryInterface extends ObjectRepository
 {
@@ -19,4 +19,6 @@ interface AllianceRepositoryInterface extends ObjectRepository
     public function delete(AllianceInterface $post): void;
 
     public function findAllOrdered(): array;
+
+    public function findByApplicationState(bool $acceptApplications): array;
 }
