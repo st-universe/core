@@ -74,9 +74,7 @@
               <div id="kn_rating_${post/getId}" tal:condition="not:post/userHasRated">
                 <span class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</span> <span class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</span>
               </div>
-              <div tal:condition="post/userHasRated">
-                <metal:macro metal:use-macro="html/commmacros.xhtml/knrating" />
-              </div>
+              <div tal:condition="post/userHasRated" tal:content="structure post/getRatingBar">STATUS</div>
             </td>
 					</tr>
 				</table>

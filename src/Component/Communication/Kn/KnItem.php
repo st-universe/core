@@ -6,6 +6,8 @@ namespace Stu\Component\Communication\Kn;
 
 use JBBCode\Parser;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -111,5 +113,16 @@ final class KnItem implements KnItemInterface {
     public function getRating(): int
     {
         return array_sum($this->post->getRatings());
+    }
+
+    public function getRatingBar(): string
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->setLabel(_('Bewertung'))
+            ->setMaxValue(count($this->post->getRatings()))
+            ->setValue(array_sum($this->post->getRatings()))
+            ->render();
+
     }
 }

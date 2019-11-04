@@ -28,10 +28,10 @@ final class RateKnPost implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowKnRating::VIEW_IDENTIFIER);
-
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->knPostRequest->getPostId());
+
+        $game->setView(ShowKnRating::VIEW_IDENTIFIER, ['knPost' => $post]);
 
         if ($post === null) {
             return;

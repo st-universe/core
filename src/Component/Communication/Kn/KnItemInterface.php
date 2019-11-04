@@ -38,4 +38,6 @@ interface KnItemInterface {
     public function userHasRated(): bool;
 
     public function getRating(): int;
+
+    public function getRatingBar(): string;
 }
