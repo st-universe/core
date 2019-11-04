@@ -34,4 +34,8 @@ interface KnItemInterface {
     public function getUserName(): string;
 
     public function isNewerThanMark(): bool;
+
+    public function userHasRated(): bool;
+
+    public function getRating(): int;
 }

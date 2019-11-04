@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication;
 
+use Stu\Module\Communication\Action\RateKnPost\RateKnPost;
+use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequest;
+use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequestInterface;
 use Stu\Module\Communication\Lib\KnTalFactory;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
 use Stu\Module\Control\GameController;
 use Stu\Module\Communication\Action\AddContact\AddContact;
 use Stu\Module\Communication\Action\AddContact\AddContactRequest;
@@ -134,6 +138,7 @@ use Stu\Module\Communication\View\ShowWriteQuickPm\ShowWriteQuickPmRequestInterf
 use function DI\autowire;
 
 return [
+    RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
     KnTalFactoryInterface::class => autowire(KnTalFactory::class),
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
@@ -200,6 +205,7 @@ return [
         DeleteKnPlotMember::ACTION_IDENTIFIER => autowire(DeleteKnPlotMember::class),
         CreateKnPlot::ACTION_IDENTIFIER => autowire(CreateKnPlot::class),
         EndKnPlot::ACTION_IDENTIFIER => autowire(EndKnPlot::class),
+        RateKnPost::ACTION_IDENTIFIER => autowire(RateKnPost::class),
     ],
     'COMMUNICATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -225,5 +231,6 @@ return [
         ShowContactModeSwitch::VIEW_IDENTIFIER => autowire(ShowContactModeSwitch::class),
         ShowContactMode::VIEW_IDENTIFIER => autowire(ShowContactMode::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+        ShowKnRating::VIEW_IDENTIFIER => autowire(ShowKnRating::class),
     ]
 ];

@@ -129,3 +129,13 @@ function emptyContactComment(contactId) {
 	$('contact_comment_input_'+contactId).value='';
 	saveContactComment(contactId)
 }
+function rateKnPost(postId, rating) {
+	ajaxPostUpdate(
+		'kn_rating_'+postId,
+		'comm.php?B_RATE_KN_POST=1',
+		{
+			'postid': postId,
+			'rating': rating
+		}
+	);
+}

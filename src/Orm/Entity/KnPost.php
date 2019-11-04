@@ -43,6 +43,9 @@ class KnPost implements KnPostInterface
     /** @Column(type="integer", nullable=true) */
     private $plot_id;
 
+    /** @Column(type="json") */
+    private $ratings = [];
+
     /**
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
      */
@@ -177,5 +180,16 @@ class KnPost implements KnPostInterface
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function getRatings(): array
+    {
+        return $this->ratings;
+    }
+
+    public function setRatings(array $ratings): KnPostInterface
+    {
+        $this->ratings = $ratings;
+        return $this;
     }
 }

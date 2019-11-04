@@ -102,4 +102,14 @@ final class KnItem implements KnItemInterface {
     {
         return $this->getId() > $this->currentUser->getKNMark();
     }
+
+    public function userHasRated(): bool
+    {
+        return array_key_exists($this->currentUser->getId(), $this->post->getRatings());
+    }
+
+    public function getRating(): int
+    {
+        return array_sum($this->post->getRatings());
+    }
 }

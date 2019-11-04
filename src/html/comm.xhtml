@@ -38,7 +38,7 @@
 								<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
 							</tal:block>
 						</td>
-						<td style="vertical-align: top;">
+						<td style="vertical-align: top;" colspan="2">
 							<div tal:content="structure nl2br:post/getText">TEXT</div>
 							<tal:block tal:condition="post/getEditDate">
 								<br /><br />
@@ -70,6 +70,14 @@
 							<span class="negative" tal:condition="post/isNewerThanMark">(ID: ${post/getID})</span>
 							<span tal:condition="not:post/isNewerThanMark">(ID: ${post/getID})</span>
 						</td>
+            <td style="width: 100px; text-align: right">
+              <div id="kn_rating_${post/getId}" tal:condition="not:post/userHasRated">
+                <span class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</span> <span class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</span>
+              </div>
+              <div tal:condition="post/userHasRated">
+                <metal:macro metal:use-macro="html/commmacros.xhtml/knrating" />
+              </div>
+            </td>
 					</tr>
 				</table>
 				<br />

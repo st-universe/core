@@ -46,4 +46,8 @@ interface KnPostInterface
      * @return KnCommentInterface[]
      */
     public function getComments(): Collection;
+
+    public function getRatings(): array;
+
+    public function setRatings(array $ratings): KnPostInterface;
 }

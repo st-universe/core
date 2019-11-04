@@ -1118,6 +1118,29 @@ div.userTag1 {
   background-color: #8b001e;
 }
 
+span.knRatingPositive {
+  cursor: pointer;
+  padding: 1px 7px 1px 7px;
+  color: #035600;
+  border: 1px solid #035600;
+  margin-left: 10px;
+}
+
+span.knRatingNegative {
+  cursor: pointer;
+  padding: 1px 7px 1px 7px;
+  color: #8b001e;
+  border: 1px solid #8b001e;
+}
+
+span.knRatingNegative:hover {
+  background-color: #ce002f;
+}
+
+span.knRatingPositive:hover {
+  background-color: #048000;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
   div.container {
     width: 1000px;
