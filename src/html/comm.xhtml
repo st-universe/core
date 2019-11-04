@@ -21,25 +21,25 @@
 					</tr>
 					<tr>
 						<td>
-							<div tal:condition="post/getUserId">
+							<div tal:condition="post/getUser">
 								<img src="assets/rassen/${post/getUser/getFactionId}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 							</div>
-							<div tal:condition="not:post/getUserId" tal:content="structure bbcode:post/getUserName">USER</div>
+							<div tal:condition="not:post/getUser" tal:content="structure bbcode:post/getUserName">USER</div>
 						</td>
-						<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
+						<th tal:content="datetime:post/getDate" style="width: 140px;">DATE</th>
 					</tr>
 				</table>
 				<table class="tcal">
 					<tr>
 						<td style="width: 150px; text-align: center; vertical-align: top;">
-							<tal:block tal:condition="post/getUserId">
+							<tal:block tal:condition="post/getUser">
 								<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
 								<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
 								<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
 							</tal:block>
 						</td>
 						<td style="vertical-align: top;">
-							<div tal:content="structure nl2br:bbcode2txt:post/getText">TEXT</div>
+							<div tal:content="structure nl2br:post/getText">TEXT</div>
 							<tal:block tal:condition="post/getEditDate">
 								<br /><br />
 								<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
@@ -59,7 +59,7 @@
 									<stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
 								</tal:block>
 							</div>
-							<div tal:condition="post/displayUserLinks" style="text-align: right; float: left; width: 50%" tal:define="id post/getUserId">
+							<div tal:condition="post/displayUserLinks" style="text-align: right; float: left; width: 50%" tal:define="id post/getUser">
 								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
 								<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
 							</div>

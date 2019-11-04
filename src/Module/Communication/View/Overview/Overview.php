@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\Overview;
 
-use Stu\Module\Communication\Lib\KnTalFactoryInterface;
+use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
@@ -16,22 +18,22 @@ final class Overview implements ViewControllerInterface
 
     private $overviewRequest;
 
-    private $knTalFactory;
-
     private $knPostRepository;
 
     private $privateMessageFolderRepository;
 
+    private $knFactory;
+
     public function __construct(
         OverviewRequestInterface $overviewRequest,
-        KnTalFactoryInterface $knTalFactory,
         KnPostRepositoryInterface $knPostRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
+        KnFactoryInterface $knFactory
     ) {
         $this->overviewRequest = $overviewRequest;
-        $this->knTalFactory = $knTalFactory;
         $this->knPostRepository = $knPostRepository;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->knFactory = $knFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,16 +78,22 @@ final class Overview implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
         }
 
-        $list = [];
-        foreach ($this->knPostRepository->getBy($this->overviewRequest->getKnOffset(), static::KNLIMITER) as $post) {
-            $list[] = $this->knTalFactory->createKnPostTal($post, $user);
-        }
-
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setTemplateFile('html/comm.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
-        $game->setTemplateVar('KN_POSTINGS', $list);
+        $game->setTemplateVar(
+            'KN_POSTINGS',
+            array_map(
+                function (KnPostInterface $knPost) use ($user): KnItemInterface {
+                    return $this->knFactory->createKnItem(
+                        $knPost,
+                        $user
+                    );
+                },
+                $this->knPostRepository->getBy($this->overviewRequest->getKnOffset(), static::KNLIMITER)
+            )
+        );
         $game->setTemplateVar('HAS_NEW_KN_POSTINGS', $this->knPostRepository->getAmountSince($userKnMark));
         $game->setTemplateVar('KN_START', $knStart);
         $game->setTemplateVar('KN_OFFSET', $mark);

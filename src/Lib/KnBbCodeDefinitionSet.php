@@ -7,9 +7,8 @@ namespace Stu\Lib;
 use JBBCode\CodeDefinition;
 use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
-use JBBCode\validators\CssColorValidator;
 
-final class StuBbCodeDefinitionSet implements CodeDefinitionSet
+final class KnBbCodeDefinitionSet implements CodeDefinitionSet
 {
     /** @var CodeDefinition[] The default code definitions in this set. */
     protected $definitions = [];
@@ -28,10 +27,7 @@ final class StuBbCodeDefinitionSet implements CodeDefinitionSet
         /* [u] underline tag */
         $builder = new CodeDefinitionBuilder('u', '<u>{param}</u>');
         $this->definitions[] = $builder->build();
-        /* [color] color tag */
-        $builder = new CodeDefinitionBuilder('color', '<span style="color: {option}">{param}</span>');
-        $builder->setUseOption(true)->setOptionValidator(new CssColorValidator());
-        $this->definitions[] = $builder->build();
+
     }
 
     /**
