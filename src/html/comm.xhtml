@@ -59,7 +59,7 @@
 									<stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
 								</tal:block>
 							</div>
-							<div tal:condition="post/displayUserLinks" style="text-align: right; float: left; width: 50%" tal:define="id post/getUser">
+							<div tal:condition="post/displayUserLinks" style="text-align: right; float: left; width: 50%" tal:define="id post/getUser/getId">
 								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
 								<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
 							</div>
