@@ -23,8 +23,10 @@
               <div style="display: grid; grid-template-columns: 200px auto; grid-template-rows: 300px auto">
                 <div>
                   <div style="margin-left: 20px; margin-right: 20px;">
-                    <div class="negative" tal:condition="post/isNewerThanMark" tal:content="datetime:post/getDate" style="text-align: center; width: 100%">DATE</div>
-                    <div tal:condition="not: post/isNewerThanMark" tal:content="datetime:post/getDate" style="text-align: center; width: 100%">DATE</div>
+                    <div style="padding-top: 15px; padding-bottom: 15px">
+                      <div class="negative" tal:condition="post/isNewerThanMark" tal:content="datetime:post/getDate" style="text-align: center; width: 100%">DATE</div>
+                      <div tal:condition="not: post/isNewerThanMark" tal:content="datetime:post/getDate" style="text-align: center; width: 100%">DATE</div>
+                    </div>
                     <div style="padding-bottom: 15px">
                       <img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
                     </div>
