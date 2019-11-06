@@ -1123,7 +1123,7 @@ div.knRatingPositive {
   padding: 1px 7px 1px 7px;
   color: #035600;
   border: 1px solid #035600;
-  margin-left: 10px;
+  margin-left: 5px;
   display: inline-block;
 }
 
@@ -1132,6 +1132,7 @@ div.knRatingNegative {
   padding: 1px 9px 1px 8px;
   color: #8b001e;
   border: 1px solid #8b001e;
+  margin-right: 5px;
   display: inline-block;
 }
 

@@ -70,7 +70,7 @@
                 <span class="negative" tal:condition="post/isNewerThanMark">(ID: ${post/getID})</span>
                 <span tal:condition="not:post/isNewerThanMark">(ID: ${post/getID})</span>
               </td>
-              <td style="width: 100px; text-align: right">
+              <td style="width: 130px; text-align: right">
                 <div id="kn_rating_${post/getId}" tal:define="hasRated post/userHasRated">
                   <div tal:condition="not:hasRated" class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</div>
                   <div style="display: inline-block" tal:content="structure post/getRatingBar">STATUS</div>
