@@ -20,7 +20,16 @@
               <div tal:condition="not:post/getUser" tal:content="structure bbcode:post/getUserName">USER</div>
             </div>
             <div class="box_body" style="margin: 0; padding: 0;">
-              <div style="display: grid; grid-template-columns: 200px auto; grid-template-rows: 300px auto">
+              <div style="display: grid; grid-template-columns: auto 200px; grid-template-rows: 300px auto">
+                <div style="grid-row-start: span 2; background-color: #161515;">
+                  <div style="padding: 10px;">
+                    <span tal:content="post/getTitle" style="font-size: 130%; font-weight: bold">TITLE</span>
+                    <span tal:condition="post/getPlotId">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}" target="_blank">Zum Plot</a>)</span>
+                    <br />
+                    <br />
+                    <span tal:content="structure nl2br:post/getText">TEXT</span>
+                  </div>
+                </div>
                 <div>
                   <div style="margin-left: 20px; margin-right: 20px;">
                     <div style="padding-top: 15px; padding-bottom: 15px">
@@ -46,15 +55,6 @@
                         <stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
                       </tal:block>
                     </div>
-                  </div>
-                </div>
-                <div style="grid-row-start: span 2; background-color: #161515;">
-                  <div style="padding: 10px;">
-                    <span tal:content="post/getTitle" style="font-size: 130%; font-weight: bold">TITLE</span>
-                    <span tal:condition="post/getPlotId">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}" target="_blank">Zum Plot</a>)</span>
-                    <br />
-                    <br />
-                    <span tal:content="structure nl2br:post/getText">TEXT</span>
                   </div>
                 </div>
                 <div style="align-self: end;">
