@@ -1,144 +1,145 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
-		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<div style="width: 75%; float: left; margin-right: 1%">
-                <tal:block tal:condition="not:KN_POSTINGS">
-                    <div class="divhead" i18n:translate="">Meldung</div>
-                    <div class="divbody" i18n:translate="">Keine Beiträge vorhanden</div>
+  <metal:macro metal:fill-slot="body">
+    <metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+    <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+    <div style="width: 75%; float: left; margin-right: 1%">
+      <tal:block tal:condition="not:KN_POSTINGS">
+        <div class="divhead" i18n:translate="">Meldung</div>
+        <div class="divbody" i18n:translate="">Keine Beiträge vorhanden</div>
+      </tal:block>
+      <tal:block tal:condition="KN_POSTINGS">
+        <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
+        <br />
+        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
+          <table class="tcal">
+            <tr tal:condition="post/getTitle">
+              <th colspan="2">
+                <span tal:replace="structure post/getTitle">TITLE</span>
+                <span tal:condition="post/getPlotId">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}">Plot anzeigen</a>)</span>
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <div tal:condition="post/getUser">
+                  <img src="assets/rassen/${post/getUser/getFactionId}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
+                </div>
+                <div tal:condition="not:post/getUser" tal:content="structure bbcode:post/getUserName">USER</div>
+              </td>
+              <th tal:content="datetime:post/getDate" style="width: 140px;">DATE</th>
+            </tr>
+          </table>
+          <table class="tcal">
+            <tr>
+              <td style="width: 150px; text-align: center; vertical-align: top;">
+                <tal:block tal:condition="post/getUser">
+                  <img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
+                  <span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
+                  <span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
                 </tal:block>
-                <tal:block tal:condition="KN_POSTINGS">
-                    <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
-                    <br />
-			<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
-				<table class="tcal">
-					<tr tal:condition="post/getTitle">
-						<th colspan="2">
-							<span tal:replace="structure post/getTitle">TITLE</span>
-							<span tal:condition="post/getPlotId">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}">Plot anzeigen</a>)</span>
-						</th>
-					</tr>
-					<tr>
-						<td>
-							<div tal:condition="post/getUser">
-								<img src="assets/rassen/${post/getUser/getFactionId}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
-							</div>
-							<div tal:condition="not:post/getUser" tal:content="structure bbcode:post/getUserName">USER</div>
-						</td>
-						<th tal:content="datetime:post/getDate" style="width: 140px;">DATE</th>
-					</tr>
-				</table>
-				<table class="tcal">
-					<tr>
-						<td style="width: 150px; text-align: center; vertical-align: top;">
-							<tal:block tal:condition="post/getUser">
-								<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
-								<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
-								<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
-							</tal:block>
-						</td>
-						<td style="vertical-align: top;" colspan="2">
-							<div tal:content="structure nl2br:post/getText">TEXT</div>
-							<tal:block tal:condition="post/getEditDate">
-								<br /><br />
-								<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
-							</tal:block>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div style="float: left; width: 50%">
-								<a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2')" onmouseout="cp('mark${post/getId}','buttons/lese1')">
-									<img src="assets/buttons/lese1.gif" title="Lesezeichen setzen" name="mark${post/getId}" />
-								</a>
-								<tal:block tal:condition="post/isEditAble">
-									<a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2')" onmouseout="cp('edit${post/getId}','buttons/knedit1')">
-										<img src="assets/buttons/knedit1.gif" title="Beitrag editieren" name="edit${post/getId}" />
-									</a>
-									<stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
-								</tal:block>
-							</div>
-							<div tal:condition="post/displayUserLinks" style="text-align: right; float: left; width: 50%" tal:define="id post/getUser/getId">
-								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
-								<metal:block metal:use-macro="html/macros.xhtml/userprofile" />
-							</div>
-						</td>
-						<td>
-							<a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount} <span i18n:translate="">Kommentare</span></a>
-							<span>zu diesem Eintrag</span>
-							<span class="negative" tal:condition="post/isNewerThanMark">(ID: ${post/getID})</span>
-							<span tal:condition="not:post/isNewerThanMark">(ID: ${post/getID})</span>
-						</td>
-            <td style="width: 100px; text-align: right">
-              <div id="kn_rating_${post/getId}" tal:condition="not:post/userHasRated">
-                <span class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</span> <span class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</span>
-              </div>
-              <div tal:condition="post/userHasRated" tal:content="structure post/getRatingBar">STATUS</div>
-            </td>
-					</tr>
-				</table>
-				<br />
-			</div>
-                    <br />
-                    <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
+              </td>
+              <td style="vertical-align: top;" colspan="2">
+                <div tal:content="structure nl2br:post/getText">TEXT</div>
+                <tal:block tal:condition="post/getEditDate">
+                  <br /><br />
+                  <span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
                 </tal:block>
-			</div>
-			<div style="width: 24%; float: left">
-                <stu:box title="Kommunikationsnetzwerk" i18n:attributes="title">
-                    <stu:imagelink href="?WRITE_KN=1" description="Beitrag schreiben" i18n:attributes="description" image="knedit" />
-                    <br /><br />
-                    <strong i18n:translate="">Übersicht</strong><br />
-                    <ul>
-                        <li tal:condition="HAS_NEW_KN_POSTINGS">
-                            <span style="color: #cecece">&gt;</span> <a href="?mark=${USER_KN_MARK}"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
-                        </li>
-                        <li>
-                            <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)
-                        </li>
-                    </ul>
-                    <div class="seperator"> </div>
-                    <ul>
-                        <li>
-                            <strong>RPG Plots</strong>
-                        </li>
-                        <li>
-                            <span style="color: #cecece">&gt;</span> <a href="?SHOW_MYPLOTS=1">Liste meiner Plots</a>
-                        </li>
-                        <li>
-                            <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller Plots</a>
-                        </li>
-                        <li>
-                            <span style="color: #cecece">&gt;</span>  <a href="?SHOW_CREATE_PLOT=1">Neuen Plot erstellen</a>
-                        </li>
-                    </ul>
-                </stu:box>
-                <br />
-                <stu:box title="Private Nachrichten" i18n:attributes="title">
-                    <stu:imagelink href="?WRITE_PM=1" description="Nachricht schreiben" i18n:attributes="description" image="knedit" />
-                    <br />
-                    <br />
-                    <strong i18n:translate="">Ordner</strong>
-                    <ul id="catlist" class="pm_categories">
-                        <li tal:repeat="cat PM_CATEGORIES" style="width: 100%; display: block;">
-                            <span style="color: #cecece">&gt;</span>
-                            <a href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
-                            (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
-                        </li>
-                    </ul>
-                </stu:box>
-                <br />
-                <stu:box title="Kontakte" i18n:attributes="title">
-                    <ul>
-                        <li>
-                            <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1" i18n:translate="">Alle Kontakte</a>
-                        </li>
-                        <li>
-                            <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1" i18n:translate="">Ignorierte Siedler</a>
-                        </li>
-                    </ul>
-                </stu:box>
-		</div>
-	</metal:macro>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="float: left; width: 50%">
+                  <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2')" onmouseout="cp('mark${post/getId}','buttons/lese1')">
+                    <img src="assets/buttons/lese1.gif" title="Lesezeichen setzen" name="mark${post/getId}" />
+                  </a>
+                  <tal:block tal:condition="post/isEditAble">
+                    <a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2')" onmouseout="cp('edit${post/getId}','buttons/knedit1')">
+                      <img src="assets/buttons/knedit1.gif" title="Beitrag editieren" name="edit${post/getId}" />
+                    </a>
+                    <stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
+                  </tal:block>
+                </div>
+                <div tal:condition="post/displayUserLinks" style="text-align: right; float: left; width: 50%" tal:define="id post/getUser/getId">
+                  <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
+                  <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+                </div>
+              </td>
+              <td>
+                <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount} <span i18n:translate="">Kommentare</span></a>
+                <span>zu diesem Eintrag</span>
+                <span class="negative" tal:condition="post/isNewerThanMark">(ID: ${post/getID})</span>
+                <span tal:condition="not:post/isNewerThanMark">(ID: ${post/getID})</span>
+              </td>
+              <td style="width: 100px; text-align: right">
+                <div id="kn_rating_${post/getId}" tal:define="hasRated post/userHasRated">
+                  <div tal:condition="not:hasRated" class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</div>
+                  <div style="display: inline-block" tal:content="structure post/getRatingBar">STATUS</div>
+                  <div tal:condition="not:hasRated" class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</div>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <br />
+        </div>
+        <br />
+        <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
+      </tal:block>
+    </div>
+    <div style="width: 24%; float: left">
+      <stu:box title="Kommunikationsnetzwerk" i18n:attributes="title">
+        <stu:imagelink href="?WRITE_KN=1" description="Beitrag schreiben" i18n:attributes="description" image="knedit" />
+        <br /><br />
+        <strong i18n:translate="">Übersicht</strong><br />
+        <ul>
+          <li tal:condition="HAS_NEW_KN_POSTINGS">
+            <span style="color: #cecece">&gt;</span> <a href="?mark=${USER_KN_MARK}"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
+          </li>
+          <li>
+            <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)
+          </li>
+        </ul>
+        <div class="seperator"> </div>
+        <ul>
+          <li>
+            <strong>RPG Plots</strong>
+          </li>
+          <li>
+            <span style="color: #cecece">&gt;</span> <a href="?SHOW_MYPLOTS=1">Liste meiner Plots</a>
+          </li>
+          <li>
+            <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller Plots</a>
+          </li>
+          <li>
+            <span style="color: #cecece">&gt;</span>  <a href="?SHOW_CREATE_PLOT=1">Neuen Plot erstellen</a>
+          </li>
+        </ul>
+      </stu:box>
+      <br />
+      <stu:box title="Private Nachrichten" i18n:attributes="title">
+        <stu:imagelink href="?WRITE_PM=1" description="Nachricht schreiben" i18n:attributes="description" image="knedit" />
+        <br />
+        <br />
+        <strong i18n:translate="">Ordner</strong>
+        <ul id="catlist" class="pm_categories">
+          <li tal:repeat="cat PM_CATEGORIES" style="width: 100%; display: block;">
+            <span style="color: #cecece">&gt;</span>
+            <a href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
+            (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
+          </li>
+        </ul>
+      </stu:box>
+      <br />
+      <stu:box title="Kontakte" i18n:attributes="title">
+        <ul>
+          <li>
+            <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1" i18n:translate="">Alle Kontakte</a>
+          </li>
+          <li>
+            <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1" i18n:translate="">Ignorierte Siedler</a>
+          </li>
+        </ul>
+      </stu:box>
+    </div>
+  </metal:macro>
 </metal:macro>
 </html>
