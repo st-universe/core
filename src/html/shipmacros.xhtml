@@ -903,9 +903,9 @@
 				<div style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass">
 					<div>
 						<div>
-							<img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.gif" />
+							<img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" />
 							<a tal:condition="field/isColonizeAble" href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
-								<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.gif" />
+								<img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" />
 							</a>
 						</div>
 					</div>
@@ -916,7 +916,7 @@
 			<br />
 			<div class="divhead" i18n:translate="">Kolonisierbare Felder</div>
 			<div class="divbody">
-				<img src="assets/generated/fields/${field}.gif" tal:repeat="field currentColony/getPlanetType/getColonizeableFields" />
+				<img src="assets/generated/fields/${field}.png" tal:repeat="field currentColony/getPlanetType/getColonizeableFields" />
 			</div>
 		</tal:block>
 	</metal:macro>
