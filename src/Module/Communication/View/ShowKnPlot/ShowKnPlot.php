@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnPlot;
 
+use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -23,36 +26,30 @@ final class ShowKnPlot implements ViewControllerInterface
 
     private $rpgPlotRepository;
 
+    private $knFactory;
+
     public function __construct(
         ShowKnPlotRequestInterface $showKnPlotRequest,
         KnPostRepositoryInterface $knPostRepository,
         KnTalFactoryInterface $knTalFactory,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        KnFactoryInterface $knFactory
     ) {
         $this->showKnPlotRequest = $showKnPlotRequest;
         $this->knPostRepository = $knPostRepository;
         $this->knTalFactory = $knTalFactory;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->knFactory = $knFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
 
-        /** @var RpgPlotInterface $plot */
         $plot = $this->rpgPlotRepository->find($this->showKnPlotRequest->getPlotId());
 
         if ($plot === null) {
             return;
-        }
-
-        $list = [];
-
-        foreach ($this->knPostRepository->getByPlot((int) $plot->getId(), null, null) as $post) {
-            $list[] = $this->knTalFactory->createKnPostTal(
-                $post,
-                $user
-            );
         }
 
         $game->setTemplateFile('html/plotdetails.xhtml');
@@ -71,6 +68,17 @@ final class ShowKnPlot implements ViewControllerInterface
 
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('MAY_EDIT', $plot->getUserId() == $game->getUser()->getId());
-        $game->setTemplateVar('POSTS', $list);
+        $game->setTemplateVar(
+            'POSTS',
+            array_map(
+                function (KnPostInterface $knPost) use ($user): KnItemInterface {
+                    return $this->knFactory->createKnItem(
+                        $knPost,
+                        $user
+                    );
+                },
+                $this->knPostRepository->getByPlot($plot, null, null)
+            )
+        );
     }
 }

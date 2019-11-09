@@ -1158,6 +1158,35 @@ span.knh3 {
   font-size: 110%;
 }
 
+div.knGrid {
+  display: grid;
+  grid-template-columns: auto 200px;
+  grid-template-rows: 300px auto
+}
+
+div.knGridText {
+  grid-row-start: span 2;
+  background-color: #161515;
+}
+
+div.knGridUser {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 15px;
+}
+
+div.knGridUser div.segment,
+div.knGridRating div.segment
+{
+  padding-bottom: 15px;
+  text-align: center;
+  width: 100%;
+}
+
+div.knGridRating {
+  align-self: end;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
   div.container {
     width: 1000px;

@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnPost;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
 
 final class KnPostRepository extends EntityRepository implements KnPostRepositoryInterface
 {
@@ -48,10 +49,10 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             );
     }
 
-    public function getByPlot(int $plotId, ?int $offset, ?int $limit): array
+    public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array
     {
         return $this->findBy(
-            ['plot_id' => $plotId],
+            ['plot_id' => $plot],
             ['date' => 'desc'],
             $limit,
             $offset

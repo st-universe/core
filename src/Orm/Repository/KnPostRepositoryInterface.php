@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\KnPostInterface;
+use Stu\Orm\Entity\RpgPlotInterface;
 
 /**
  * @method null|KnPostInterface find(integer $id)
@@ -30,7 +31,7 @@ interface KnPostRepositoryInterface extends ObjectRepository
     /**
      * @return KnPostInterface[]
      */
-    public function getByPlot(int $plotId, ?int $offset, ?int $limit): array;
+    public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array;
 
     public function getAmount(): int;
 

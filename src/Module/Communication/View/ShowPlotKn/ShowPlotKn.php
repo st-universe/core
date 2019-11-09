@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowPlotKn;
 
-use Stu\Module\Communication\Lib\KnTalFactoryInterface;
+use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ShowPlotKn implements ViewControllerInterface
@@ -20,26 +21,22 @@ final class ShowPlotKn implements ViewControllerInterface
 
     private $showPlotKnRequest;
 
-    private $knTalFactory;
-
     private $knPostRepository;
 
     private $rpgPlotRepository;
 
-    private $privateMessageFolderRepository;
+    private $knFactory;
 
     public function __construct(
         ShowPlotKnRequestInterface $showPlotKnRequest,
-        KnTalFactoryInterface $knTalFactory,
         KnPostRepositoryInterface $knPostRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository
+        KnFactoryInterface $knFactory
     ) {
         $this->showPlotKnRequest = $showPlotKnRequest;
-        $this->knTalFactory = $knTalFactory;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
+        $this->knFactory = $knFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,15 +76,6 @@ final class ShowPlotKn implements ViewControllerInterface
             $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
         }
 
-        $list = [];
-
-        foreach ($this->knPostRepository->getByPlot((int) $plot->getId(), $mark, static::KNLIMITER) as $post) {
-            $list[] = $this->knTalFactory->createKnPostTal(
-                $post,
-                $user
-            );
-        }
-
         $game->setTemplateFile('html/plotkn.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart('comm.php?SHOW_PLOTLIST=1', _('Plots'));
@@ -101,13 +89,20 @@ final class ShowPlotKn implements ViewControllerInterface
         );
         $game->setPageTitle("Plot: " . $plot->getTitle());
 
-        $game->setTemplateVar('KN_POSTINGS', $list);
+        $game->setTemplateVar(
+            'KN_POSTINGS',
+            array_map(
+                function (KnPostInterface $knPost) use ($user): KnItemInterface {
+                    return $this->knFactory->createKnItem(
+                        $knPost,
+                        $user
+                    );
+                },
+                $this->knPostRepository->getByPlot($plot, $mark, static::KNLIMITER)
+            )
+        );
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('KN_OFFSET', $mark);
-        $game->setTemplateVar(
-            'PM_CATEGORIES',
-            $this->privateMessageFolderRepository->getOrderedByUser($game->getUser()->getId())
-        );
         $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
     }
 }

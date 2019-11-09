@@ -3,40 +3,7 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<metal:macro metal:use-macro="html/commmacros.xhtml/plotknnavigation" />
-		<br />
-		<div tal:repeat="post KN_POSTINGS">
-			<table class="tcal">
-				<tr>
-					<th colspan="2" tal:content="structure post/getTitle">TITLE</th>
-				</tr>
-				<tr>
-					<td>
-						<img src="assets/rassen/${post/getUser/getFactionId}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
-					</td>
-					<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
-				</tr>
-			</table>
-			<table class="tcal">
-				<tr>
-					<td style="width: 150px; text-align: center; vertical-align: top;">
-						<img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
-						<span style="color: Red;" tal:condition="not:post/getUser/isOnline">Offline</span>
-						<span style="color: Green;" tal:condition="post/getUser/isOnline">Online</span>
-					</td>
-					<td style="vertical-align: top;">
-						<span tal:content="structure nl2br:post/getText">TEXT</span>
-						<tal:block tal:condition="post/getEditDate">
-							<br /><br /><br />
-							<span class="knedit">Letzte Bearbeitung: ${datetime:post/getEditDate}</span>
-						</tal:block>
-					</td>
-				</tr>
-			</table>
-			<br />
-		</div>	
-		<br />
-		<metal:macro metal:use-macro="html/commmacros.xhtml/plotknnavigation" />
-	</metal:macro>
+    <metal:macro metal:use-macro="html/commmacros.xhtml/kn" />
+  </metal:macro>
 </metal:macro>
 </html>
