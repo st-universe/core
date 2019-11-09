@@ -6,11 +6,9 @@ namespace Stu\Module\Communication\View\ShowKnPlot;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
-use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
-use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
@@ -22,8 +20,6 @@ final class ShowKnPlot implements ViewControllerInterface
 
     private $knPostRepository;
 
-    private $knTalFactory;
-
     private $rpgPlotRepository;
 
     private $knFactory;
@@ -31,13 +27,11 @@ final class ShowKnPlot implements ViewControllerInterface
     public function __construct(
         ShowKnPlotRequestInterface $showKnPlotRequest,
         KnPostRepositoryInterface $knPostRepository,
-        KnTalFactoryInterface $knTalFactory,
         RpgPlotRepositoryInterface $rpgPlotRepository,
         KnFactoryInterface $knFactory
     ) {
         $this->showKnPlotRequest = $showKnPlotRequest;
         $this->knPostRepository = $knPostRepository;
-        $this->knTalFactory = $knTalFactory;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->knFactory = $knFactory;
     }

@@ -7,8 +7,6 @@ namespace Stu\Module\Communication;
 use Stu\Module\Communication\Action\RateKnPost\RateKnPost;
 use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequest;
 use Stu\Module\Communication\Action\RateKnPost\RateKnPostRequestInterface;
-use Stu\Module\Communication\Lib\KnTalFactory;
-use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Communication\Lib\PrivateMessageSender;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Communication\View\ShowKnRating\ShowKnRating;
@@ -140,7 +138,6 @@ use function DI\autowire;
 return [
     RateKnPostRequestInterface::class => autowire(RateKnPostRequest::class),
     PrivateMessageSenderInterface::class => autowire(PrivateMessageSender::class),
-    KnTalFactoryInterface::class => autowire(KnTalFactory::class),
     OverviewRequestInterface::class => autowire(OverviewRequest::class),
     SetKnMarkRequestInterface::class => autowire(SetKnMarkRequest::class),
     ShowWriteQuickPmRequestInterface::class => autowire(ShowWriteQuickPmRequest::class),

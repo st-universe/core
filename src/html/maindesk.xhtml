@@ -37,8 +37,8 @@
 										</a>
 									</td>
 									<td>
-										<span tal:condition="data/getPlotId" i18n:translate="">Plot:</span>
-										<span tal:condition="not:data/getPlotId" i18n:translate="">Titel:</span>
+										<span tal:condition="data/getPlot" i18n:translate="">Plot:</span>
+										<span tal:condition="not:data/getPlot" i18n:translate="">Titel:</span>
 										<a href="comm.php?SHOW_KN=1&mark=0" tal:content="structure data/getTitle">TITLE</a>
 									</td>
 								</tr>
@@ -126,7 +126,7 @@
 					</div>
 				</td>
 			</tr>
-		</table>	
+		</table>
 	</tal:block>
 </tal:block>
 </html>

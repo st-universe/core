@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\View\Overview;
 
+use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Communication\Lib\KnTalFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
@@ -25,40 +27,34 @@ final class Overview implements ViewControllerInterface
 
     private $knPostRepository;
 
-    private $knTalFactory;
-
     private $colonyShipQueueRepository;
 
     private $userRepository;
+
+    private $knFactory;
 
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         KnPostRepositoryInterface $knPostRepository,
-        KnTalFactoryInterface $knTalFactory,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        KnFactoryInterface $knFactory
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->knPostRepository = $knPostRepository;
-        $this->knTalFactory = $knTalFactory;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->userRepository = $userRepository;
+        $this->knFactory = $knFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
-
-        $list = [];
-
-        foreach ($this->knPostRepository->getNewerThenMark((int) $user->getKNMark()) as $post) {
-            $list[] = $this->knTalFactory->createKnPostTal($post, $user);
-        }
 
         $game->appendNavigationPart(
             'maindesk.php',
@@ -69,12 +65,23 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'DISPLAY_FIRST_COLONY_DIALOGUE',
-            (int)$user->getActive() === 1
+            $user->getActive() === 1
         );
-        $game->setTemplateVar('NEW_KN_POSTINGS', $list);
+        $game->setTemplateVar(
+            'NEW_KN_POSTINGS',
+            array_map(
+                function (KnPostInterface $knPost) use ($user): KnItemInterface {
+                    return $this->knFactory->createKnItem(
+                        $knPost,
+                        $user
+                    );
+                },
+                $this->knPostRepository->getNewerThenMark($user->getKNMark())
+            )
+        );
         $game->setTemplateVar(
             'NEW_KN_POSTING_COUNT',
-            $this->knPostRepository->getAmountSince((int) $user->getKNMark())
+            $this->knPostRepository->getAmountSince($user->getKNMark())
         );
         $game->setTemplateVar(
             'RECENT_PROFILE_VISITORS',
