@@ -25,8 +25,6 @@ final class MoveShipUp implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -42,6 +40,12 @@ final class MoveShipUp implements ActionControllerInterface
         request::setVar('posx', $ship->getPosX());
         $mover = new ShipMover($ship);
         $game->addInformationMerge($mover->getInformations());
+
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool
