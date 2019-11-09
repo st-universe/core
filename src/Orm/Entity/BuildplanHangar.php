@@ -26,6 +26,9 @@ class BuildplanHangar implements BuildplanHangarInterface
     /** @Column(type="integer", nullable=true) * */
     private $default_torpedo_type_id;
 
+    /** @Column(type="integer") * */
+    private $start_energy_costs;
+
     /**
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="default_torpedo_type_id", referencedColumnName="id", onDelete="CASCADE")
@@ -87,5 +90,16 @@ class BuildplanHangar implements BuildplanHangarInterface
     public function getBuildplan(): ShipBuildplanInterface
     {
         return $this->buildplan;
+    }
+
+    public function setStartEnergyCosts(int $startEnergyCosts): BuildplanHangarInterface
+    {
+        $this->start_energy_costs = $startEnergyCosts;
+        return $this;
+    }
+
+    public function getStartEnergyCosts(): int
+    {
+        return $this->start_energy_costs;
     }
 }

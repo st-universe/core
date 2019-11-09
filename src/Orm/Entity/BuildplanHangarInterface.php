@@ -21,4 +21,8 @@ interface BuildplanHangarInterface
     public function getDefaultTorpedoType(): ?TorpedoTypeInterface;
 
     public function getBuildplan(): ShipBuildplanInterface;
+
+    public function setStartEnergyCosts(int $startEnergyCosts): BuildplanHangarInterface;
+
+    public function getStartEnergyCosts(): int;
 }
