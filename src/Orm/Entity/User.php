@@ -574,4 +574,8 @@ class User implements UserInterface
 
         return $alliance->getAcceptApplications() && $this->getAlliance() === null && ($alliance->getFactionId() == 0 || $this->getFactionId() == $alliance->getFactionId());
     }
+
+    public function isNpc(): bool {
+        return $this->getId() < 100;
+    }
 }

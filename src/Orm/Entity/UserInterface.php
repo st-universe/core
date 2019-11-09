@@ -132,4 +132,6 @@ interface UserInterface
     public function getInTrainingCrewCount(): int;
 
     public function maySignup(int $allianceId): bool;
+
+    public function isNpc(): bool;
 }
