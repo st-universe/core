@@ -24,7 +24,7 @@
                 <div style="grid-row-start: span 2; background-color: #161515;">
                   <div style="padding: 10px;">
                     <span tal:content="post/getTitle" class="knh1">TITLE</span>
-                    <span tal:condition="post/getPlotId">(<a href="?SHOW_PLOT=1&plotid=${post/getPlotId}" target="_blank">Zum Plot</a>)</span>
+                    <span tal:condition="post/getPlot">(<a href="?SHOW_PLOT=1&plotid=${post/getPlot/getId}" target="_blank">Zum Plot</a>)</span>
                     <br />
                     <br />
                     <span tal:content="structure nl2br:post/getText">TEXT</span>
@@ -39,7 +39,7 @@
                     <div style="padding-bottom: 15px">
                       <img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
                     </div>
-                    <div tal:condition="post/displayUserLinks" style="padding-bottom: 15px; text-align: center; width: 100%" tal:define="id post/getUser/getId">
+                    <div tal:condition="post/displayContactLinks" style="padding-bottom: 15px; text-align: center; width: 100%" tal:define="id post/getUser/getId">
                       <img src="assets/rassen/${post/getUser/getFactionId}s.gif" />
                       <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
                       <metal:block metal:use-macro="html/macros.xhtml/userprofile" />

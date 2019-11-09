@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\KnComment;
 use Stu\Orm\Entity\KnCommentInterface;
+use Stu\Orm\Entity\KnPostInterface;
 
 final class KnCommentRepository extends EntityRepository implements KnCommentRepositoryInterface
 {
@@ -18,9 +19,9 @@ final class KnCommentRepository extends EntityRepository implements KnCommentRep
             );
     }
 
-    public function getAmountByPost(int $postId): int
+    public function getAmountByPost(KnPostInterface $post): int
     {
-        return $this->count(['post_id' => $postId]);
+        return $this->count(['post_id' => $post]);
     }
 
     public function prototype(): KnCommentInterface

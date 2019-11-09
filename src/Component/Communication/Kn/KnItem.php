@@ -74,22 +74,17 @@ final class KnItem implements KnItemInterface {
         return $this->getDate() > time() - 600 && $this->post->getUser() === $this->currentUser;
     }
 
-    public function getPlotId(): ?int
-    {
-        return $this->post->getPlotId();
-    }
-
-    public function getRPGPlot(): ?RpgPlotInterface
+    public function getPlot(): ?RpgPlotInterface
     {
         return $this->post->getRpgPlot();
     }
 
     public function getCommentCount(): int
     {
-        return $this->knCommentRepository->getAmountByPost((int)$this->getId());
+        return $this->knCommentRepository->getAmountByPost($this->post);
     }
 
-    public function displayUserLinks(): bool
+    public function displayContactLinks(): bool
     {
         $user = $this->post->getUser();
         return $user !== $this->currentUser && $user->getId() !== GameEnum::USER_NOONE;
@@ -97,12 +92,12 @@ final class KnItem implements KnItemInterface {
 
     public function getUserName(): string
     {
-        return $this->post->getUserName();
+        return $this->post->getUsername();
     }
 
     public function isNewerThanMark(): bool
     {
-        return $this->getId() > $this->currentUser->getKNMark();
+        return $this->post->getId() > $this->currentUser->getKnMark();
     }
 
     public function userHasRated(): bool
@@ -117,7 +112,8 @@ final class KnItem implements KnItemInterface {
 
     public function getRatingBar(): string
     {
-        $ratingAmount = count($this->post->getRatings());
+        $ratings = $this->post->getRatings();
+        $ratingAmount = count($ratings);
 
         if ($ratingAmount === 0) {
             return '';
@@ -127,7 +123,7 @@ final class KnItem implements KnItemInterface {
             ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
             ->setLabel(_('Bewertung'))
             ->setMaxValue($ratingAmount)
-            ->setValue(array_sum($this->post->getRatings()))
+            ->setValue(array_sum($ratings))
             ->render();
 
     }

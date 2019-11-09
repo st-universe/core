@@ -79,7 +79,7 @@ final class KnPostTal implements KnPostTalInterface
 
     public function getCommentCount(): int
     {
-        return $this->knCommentRepository->getAmountByPost((int)$this->getId());
+        return $this->knCommentRepository->getAmountByPost($this->post);
     }
 
     public function displayUserLinks(): bool

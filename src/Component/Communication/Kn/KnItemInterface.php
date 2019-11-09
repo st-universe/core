@@ -23,13 +23,11 @@ interface KnItemInterface {
 
     public function isEditAble(): bool;
 
-    public function getPlotId(): ?int;
-
-    public function getRPGPlot(): ?RpgPlotInterface;
+    public function getPlot(): ?RpgPlotInterface;
 
     public function getCommentCount(): int;
 
-    public function displayUserLinks(): bool;
+    public function displayContactLinks(): bool;
 
     public function getUserName(): string;
 

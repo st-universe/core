@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\KnCommentInterface;
+use Stu\Orm\Entity\KnPostInterface;
 
 interface KnCommentRepositoryInterface extends ObjectRepository
 {
@@ -12,7 +13,7 @@ interface KnCommentRepositoryInterface extends ObjectRepository
      */
     public function getByPost(int $postId): array;
 
-    public function getAmountByPost(int $postId): int;
+    public function getAmountByPost(KnPostInterface $post): int;
 
     public function prototype(): KnCommentInterface;
 
