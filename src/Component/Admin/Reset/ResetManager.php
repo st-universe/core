@@ -9,6 +9,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ResetManager implements ResetManagerInterface
@@ -25,13 +26,16 @@ final class ResetManager implements ResetManagerInterface
 
     private $rpgPlotRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,
         KnPostRepositoryInterface $knPostRepository,
         HistoryRepositoryInterface $historyRepository,
         GameTurnRepositoryInterface $gameTurnRepository,
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->playerDeletion = $playerDeletion;
         $this->colonyRepository = $colonyRepository;
@@ -39,6 +43,7 @@ final class ResetManager implements ResetManagerInterface
         $this->historyRepository = $historyRepository;
         $this->gameTurnRepository = $gameTurnRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function performReset(): void
@@ -59,6 +64,8 @@ final class ResetManager implements ResetManagerInterface
     {
         foreach ($this->colonyRepository->findAll() as $colony) {
             $colony->setMask(null);
+
+            $this->planetFieldRepository->truncateByColony($colony);
 
             $this->colonyRepository->save($colony);
         }

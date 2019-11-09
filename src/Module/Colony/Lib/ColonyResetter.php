@@ -10,6 +10,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyResetter implements ColonyResetterInterface
@@ -26,13 +27,16 @@ final class ColonyResetter implements ColonyResetterInterface
 
     private $colonyShipQueueRepository;
 
+    private $planetFieldRepository;
+
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyStorageRepositoryInterface $colonyStorageRepository,
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
-        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository
+        ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        PlanetFieldRepositoryInterface $planetFieldRepository
     ) {
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
@@ -40,6 +44,7 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+        $this->planetFieldRepository = $planetFieldRepository;
     }
 
     public function reset(
@@ -67,5 +72,6 @@ final class ColonyResetter implements ColonyResetterInterface
         }
 
         $this->colonyShipQueueRepository->truncateByColony($colony);
+        $this->planetFieldRepository->truncateByColony($colony);
     }
 }

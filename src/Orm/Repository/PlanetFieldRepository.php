@@ -9,6 +9,7 @@ use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingGood;
 use Stu\Orm\Entity\Colony;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
@@ -20,20 +21,20 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return new PlanetField();
     }
 
-    public function save(PlanetFieldInterface $post): void
+    public function save(PlanetFieldInterface $planetField): void
     {
         $em = $this->getEntityManager();
 
-        $em->persist($post);
-        $em->flush($post);
+        $em->persist($planetField);
+        $em->flush($planetField);
     }
 
-    public function delete(PlanetFieldInterface $post): void
+    public function delete(PlanetFieldInterface $planetField): void
     {
         $em = $this->getEntityManager();
 
-        $em->remove($post);
-        $em->flush($post);
+        $em->remove($planetField);
+        $em->flush($planetField);
     }
 
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface
@@ -248,15 +249,27 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
     public function getEnergyProductionByColony(int $colonyId): int
     {
-       return (int)$this->getEntityManager()->createQuery(
-           sprintf(
-               'SELECT SUM(b.eps_proc) FROM %s cfd LEFT JOIN %s b WITH b.id = cfd.buildings_id WHERE
+        return (int)$this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT SUM(b.eps_proc) FROM %s cfd LEFT JOIN %s b WITH b.id = cfd.buildings_id WHERE
                 cfd.aktiv = 1 AND cfd.colonies_id = :colonyId',
-               PlanetField::class,
-               Building::class
+                PlanetField::class,
+                Building::class
+            )
+        )->setParameters([
+            'colonyId' => $colonyId,
+        ])->getSingleScalarResult();
+    }
+
+    public function truncateByColony(ColonyInterface $colony): void
+    {
+       $this->getEntityManager()->createQuery(
+           sprintf(
+               'DELETE FROM %s pf WHERE pf.colonies_id = :colonyId',
+               PlanetField::class
            )
-       )->setParameters([
-           'colonyId' => $colonyId
-       ])->getSingleScalarResult();
+       )
+           ->setParameters(['colonyId' => $colony])
+           ->execute();
     }
 }

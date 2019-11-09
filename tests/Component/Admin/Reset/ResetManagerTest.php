@@ -16,6 +16,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\StuTestCase;
 
@@ -53,6 +54,11 @@ class ResetManagerTest extends StuTestCase
     private $rpgPlotRepository;
 
     /**
+     * @var null|MockInterface|PlanetFieldRepositoryInterface
+     */
+    private $planetFieldRepository;
+
+    /**
      * @var null|MockInterface|ResetManagerInterface
      */
     private $manager;
@@ -65,6 +71,7 @@ class ResetManagerTest extends StuTestCase
         $this->historyRepository = $this->mock(HistoryRepositoryInterface::class);
         $this->gameTurnRepository = $this->mock(GameTurnRepositoryInterface::class);
         $this->rpgPlotRepository = $this->mock(RpgPlotRepositoryInterface::class);
+        $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
 
         $this->manager = new ResetManager(
             $this->playerDeletion,
@@ -72,7 +79,8 @@ class ResetManagerTest extends StuTestCase
             $this->knPostRepository,
             $this->historyRepository,
             $this->gameTurnRepository,
-            $this->rpgPlotRepository
+            $this->rpgPlotRepository,
+            $this->planetFieldRepository
         );
     }
 
@@ -89,6 +97,10 @@ class ResetManagerTest extends StuTestCase
             ->once()
             ->andReturn([$colony]);
         $this->colonyRepository->shouldReceive('save')
+            ->with($colony)
+            ->once();
+
+        $this->planetFieldRepository->shouldReceive('truncateByColony')
             ->with($colony)
             ->once();
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Orm\Entity\ColonyInterface;
@@ -15,9 +14,11 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\StuTestCase;
 
-class ColonyResetterTest extends MockeryTestCase
+class ColonyResetterTest extends StuTestCase
 {
     /**
      * @var MockInterface|null|ColonyRepositoryInterface
@@ -50,6 +51,11 @@ class ColonyResetterTest extends MockeryTestCase
     private $colonyShipQueueRepository;
 
     /**
+     * @var null|MockInterface|PlanetFieldRepositoryInterface
+     */
+    private $planetFieldRepository;
+
+    /**
      * @var null|ColonyResetter
      */
     private $resetter;
@@ -62,6 +68,7 @@ class ColonyResetterTest extends MockeryTestCase
         $this->colonyStorageRepository = Mockery::mock(ColonyStorageRepositoryInterface::class);
         $this->colonyTerraformingRepository = Mockery::mock(ColonyTerraformingRepositoryInterface::class);
         $this->colonyShipQueueRepository = Mockery::mock(ColonyShipQueueRepositoryInterface::class);
+        $this->planetFieldRepository = $this->mock(PlanetFieldRepositoryInterface::class);
 
         $this->resetter = new ColonyResetter(
             $this->colonyRepository,
@@ -69,7 +76,8 @@ class ColonyResetterTest extends MockeryTestCase
             $this->colonyLibFactory,
             $this->colonyStorageRepository,
             $this->colonyTerraformingRepository,
-            $this->colonyShipQueueRepository
+            $this->colonyShipQueueRepository,
+            $this->planetFieldRepository
         );
     }
 
@@ -152,6 +160,10 @@ class ColonyResetterTest extends MockeryTestCase
            ->once();
 
        $this->colonyShipQueueRepository->shouldReceive('truncateByColony')
+           ->with($colony)
+           ->once();
+
+       $this->planetFieldRepository->shouldReceive('truncateByColony')
            ->with($colony)
            ->once();
 

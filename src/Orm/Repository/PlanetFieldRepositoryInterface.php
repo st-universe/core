@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 
 /**
@@ -12,9 +13,9 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
 {
     public function prototype(): PlanetFieldInterface;
 
-    public function save(PlanetFieldInterface $post): void;
+    public function save(PlanetFieldInterface $planetField): void;
 
-    public function delete(PlanetFieldInterface $post): void;
+    public function delete(PlanetFieldInterface $planetField): void;
 
     public function getByColonyAndFieldId(int $colonyId, int $fieldId): ?PlanetFieldInterface;
 
@@ -84,4 +85,6 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getByColony(int $colonyId): iterable;
 
     public function getEnergyProductionByColony(int $colonyId): int;
+
+    public function truncateByColony(ColonyInterface $colony): void;
 }
