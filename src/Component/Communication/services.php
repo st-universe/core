@@ -8,7 +8,7 @@ use JBBCode\Parser;
 use Psr\Container\ContainerInterface;
 use Stu\Component\Communication\Kn\KnFactory;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
-use Stu\Lib\KnBbCodeDefinitionSet;
+use Stu\Component\Communication\Kn\KnBbCodeDefinitionSet;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use function DI\autowire;
 use function DI\create;

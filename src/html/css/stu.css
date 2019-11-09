@@ -1144,6 +1144,20 @@ div.knRatingPositive:hover {
   background-color: #048000;
 }
 
+span.knh1 {
+  font-size: 130%;
+  font-weight: bold;
+}
+
+span.knh2 {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+span.knh3 {
+  font-size: 110%;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
   div.container {
     width: 1000px;
