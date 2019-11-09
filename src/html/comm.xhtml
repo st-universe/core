@@ -86,7 +86,7 @@
         <strong i18n:translate="">Übersicht</strong><br />
         <ul>
           <li tal:condition="HAS_NEW_KN_POSTINGS">
-            <span style="color: #cecece">&gt;</span> <a href="?mark=${USER_KN_MARK}"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
+            <span style="color: #cecece">&gt;</span> <a href="?user_mark=1"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
           </li>
           <li>
             <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)

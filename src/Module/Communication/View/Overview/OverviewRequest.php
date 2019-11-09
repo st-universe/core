@@ -14,4 +14,9 @@ final class OverviewRequest implements OverviewRequestInterface
     {
         return $this->queryParameter('mark')->int()->defaultsTo(0);
     }
+
+    public function startAtUserMark(): bool
+    {
+        return $this->queryParameter('user_mark')->boolean()->defaultsTo(false);
+    }
 }

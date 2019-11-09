@@ -56,6 +56,11 @@ final class Overview implements ViewControllerInterface
         if ($mark % static::KNLIMITER != 0 || $mark < 0) {
             $mark = 0;
         }
+
+        if ($this->overviewRequest->startAtUserMark() === true) {
+            $mark = (int) floor($newKnPostCount / static::KNLIMITER) * static::KNLIMITER;
+        }
+
         $maxpage = ceil($knPostCount/ static::KNLIMITER);
         $curpage = floor($mark / static::KNLIMITER);
         $knNavigation = [];
@@ -91,7 +96,7 @@ final class Overview implements ViewControllerInterface
                         $user
                     );
                 },
-                $this->knPostRepository->getBy($this->overviewRequest->getKnOffset(), static::KNLIMITER)
+                $this->knPostRepository->getBy($mark, static::KNLIMITER)
             )
         );
         $game->setTemplateVar('HAS_NEW_KN_POSTINGS', $this->knPostRepository->getAmountSince($userKnMark));
