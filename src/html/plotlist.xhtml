@@ -1,33 +1,64 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
-		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<form action="comm.php" method="post">
-			<input type="hidden" name="SHOW_PLOTLIST" value="1" />
-			<table class="tcal">
-				<tr>
-					<th style="width: 50%;">Titel</th>
-					<th>Schreiber</th>
-					<th>Beiträge</th>
-					<th>Start</th>
-					<th>Status</th>
-				</tr>
-				<tr class="runtime" tal:attributes="class string:row${repeat/plot/odd}" tal:repeat="plot PLOT_LIST">
-					<td><a href="?SHOW_PLOT=1&plotid=${plot/getId}" tal:content="structure plot/getTitle">TITLE</a></td>
-					<td tal:content="plot/getMemberCount">COUNT</td>
-					<td tal:content="plot/getPostingCount">POSTINGS</td>
-					<td tal:content="datetime:plot/getStartDate">START</td>
-					<td>
-						<span tal:condition="not:plot/isActive">Beendet am ${datetime:plot/getEndDate}</span>
-						<span tal:condition="plot/isActive">Aktiv</span>
-					</td>
-				</tr>
-				<tr tal:condition="not:PLOT_LIST">
-					<td colspan="5">Keine Plots vorhanden</td>
-				</tr>
-			</table>
-		</form>
-	</metal:macro>
+  <metal:macro metal:fill-slot="body">
+    <metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+    <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+    <form action="comm.php" method="post">
+      <input type="hidden" name="SHOW_PLOTLIST" value="1" />
+      <table class="tcal">
+        <tr>
+          <th style="width: 50%;">Titel</th>
+          <th>Schreiber</th>
+          <th>Beiträge</th>
+          <th>Start</th>
+          <th>Status</th>
+        </tr>
+        <tr class="runtime" tal:attributes="class string:row${repeat/plot/odd}" tal:repeat="plot PLOT_LIST">
+          <td><a href="?SHOW_PLOT=1&plotid=${plot/getId}" tal:content="structure plot/getTitle">TITLE</a></td>
+          <td tal:content="plot/getMemberCount">COUNT</td>
+          <td tal:content="plot/getPostingCount">POSTINGS</td>
+          <td tal:content="datetime:plot/getStartDate">START</td>
+          <td>
+            <span tal:condition="not:plot/isActive">Beendet am ${datetime:plot/getEndDate}</span>
+            <span tal:condition="plot/isActive">Aktiv</span>
+          </td>
+        </tr>
+        <tr tal:condition="not:PLOT_LIST">
+          <td colspan="5">Keine Plots vorhanden</td>
+        </tr>
+      </table>
+      <br />
+      <div class="plotList">
+        <div class="plotListItem" tal:repeat="plot PLOT_LIST">
+          <div>
+            <div class="plotTitle">
+              <a href="?SHOW_PLOT=1&plotid=${plot/getId}" tal:content="structure plot/getTitle">TITLE</a>
+            </div>
+            <div i18n:translate="">
+              <span i18n:name="postcount" tal:replace="plot/getPostingCount"></span> Beiträg(e) von
+              <span i18n:name="membercount" tal:replace="plot/getMemberCount"></span> Spieler(n)
+            </div>
+          </div>
+          <div>
+            <div i18n:translate="">
+              Gestartet: <span i18n:name="plotstart" tal:content="date:plot/getStartDate">START</span>
+            </div>
+            <div>
+              <span i18n:translate="">Status:</span>
+              <span tal:condition="not:plot/isActive">Beendet am ${date:plot/getEndDate}</span>
+              <span tal:condition="plot/isActive">Aktiv</span>
+            </div>
+          </div>
+          <div>
+            <div class="plotListItemMember" tal:repeat="member plot/getMembers">
+              <a href="/userprofile.php?uid=${member/getUser/getId}" target="_blank">
+                <img tal:attributes="src member/getUser/getFullAvatarPath" title="Zum Siedlerprofil" i18n:attributes="title" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </metal:macro>
 </metal:macro>
 </html>
