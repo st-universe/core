@@ -10,6 +10,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -192,8 +193,12 @@ class ShipMover {
         // @todo
         global $container;
 
+        $shipRepo = $container->get(ShipRepositoryInterface::class);
+        $entryCreator = $container->get(EntryCreatorInterface::class);
+        $shipRemover = $container->get(ShipRemoverInterface::class);
         $privateMessageSender = $container->get(PrivateMessageSenderInterface::class);
         $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+        $applyDamage = $container->get(ApplyDamageInterface::class);
 
         $msg = array();
         if (!$this->isFleetMode()) {
@@ -257,12 +262,6 @@ class ShipMover {
                 $method = ShipEnum::FLY_LEFT;
             }
         }
-
-        // @todo refactor
-        global $container;
-        $shipRepo = $container->get(ShipRepositoryInterface::class);
-        $entryCreator = $container->get(EntryCreatorInterface::class);
-        $shipRemover = $container->get(ShipRemoverInterface::class);
 
         $i = 1;
         while($i<=$this->getFieldCount()) {
@@ -342,11 +341,17 @@ class ShipMover {
                 if ($field->getFieldType()->getDamage()) {
                     if ($ship->isTraktorbeamActive()) {
                         $msg[] = "Die ".$ship->getTraktorShip()->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." beschädigt";
-                        $damageMsg = $ship->getTraktorShip()->damage(new DamageWrapper($field->getFieldType()->getDamage()));
+                        $damageMsg = $applyDamage->damage(
+                            new DamageWrapper($field->getFieldType()->getDamage()),
+                            $ship->getTraktorShip()
+                        );
                         $msg = array_merge($msg,$damageMsg);
                     }
                     $msg[] = "Die ".$ship->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." beschädigt";
-                    $damageMsg = $ship->damage(new DamageWrapper($field->getFieldType()->getDamage()));
+                    $damageMsg = $applyDamage->damage(
+                        new DamageWrapper($field->getFieldType()->getDamage()),
+                        $ship
+                    );
                     $msg = array_merge($msg,$damageMsg);
 
                     if ($ship->getTraktorShip()->getIsDestroyed()) {
@@ -363,11 +368,17 @@ class ShipMover {
             if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
                 if ($ship->isTraktorbeamActive()) {
                     $msg[] = "Die ".$ship->getTraktorShip()->getName()." wurde in Sektor ".$ship->getPosX()."|".$ship->getPosY()." beschädigt";
-                    $damageMsg = $ship->getTraktorShip()->damage(new DamageWrapper($field->getFieldType()->getDamage()));
+                    $damageMsg = $applyDamage->damage(
+                        new DamageWrapper($field->getFieldType()->getDamage()),
+                        $ship->getTraktorShip()
+                    );
                     $msg = array_merge($msg,$damageMsg);
                 }
                 $msg[] = $field->getFieldType()->getName()." in Sektor ".$ship->getPosX()."|".$ship->getPosY();
-                $damageMsg = $ship->damage(new DamageWrapper($field->getFieldType()->getSpecialDamage()));
+                $damageMsg = $applyDamage->damage(
+                    new DamageWrapper($field->getFieldType()->getSpecialDamage()),
+                    $ship
+                );
                 $msg = array_merge($msg,$damageMsg);
 
                 if ($ship->getIsDestroyed()) {

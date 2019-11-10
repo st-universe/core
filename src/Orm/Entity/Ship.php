@@ -991,53 +991,6 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function damage(DamageWrapper $damage_wrapper): array
-    {
-        // @todo refactor
-        global $container;
-
-        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
-
-        $this->setShieldRegenerationTimer(time());
-        $msg = [];
-        if ($this->getShieldState()) {
-            $damage = (int) $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_SHIELDS);
-            if ($damage > $this->getShield()) {
-                $msg[] = "- Schildschaden: " . $this->getShield();
-                $msg[] = "-- Schilde brechen zusammen!";
-
-                $shipSystemManager->deactivate($this, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-
-                $this->setShield(0);
-            } else {
-                $this->setShield($this->getShield() - $damage);
-                $msg[] = "- Schildschaden: " . $damage . " - Status: " . $this->getShield();
-            }
-        }
-        if ($damage_wrapper->getDamage() <= 0) {
-            return $msg;
-        }
-        $disablemessage = false;
-        $damage = (int) $damage_wrapper->getDamageRelative($this, ShipEnum::DAMAGE_MODE_HULL);
-        if ($this->getCanBeDisabled() && $this->getHuell() - $damage < round($this->getMaxHuell() / 100 * 10)) {
-            $damage = (int) round($this->getHuell() - $this->getMaxHuell() / 100 * 10);
-            $disablemessage = _('-- Das Schiff wurde kampfunfähig gemacht');
-            $this->setDisabled(true);
-        }
-        if ($this->getHuell() > $damage) {
-            $this->setHuell($this->getHuell() - $damage);
-            $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $this->getHuell();
-            if ($disablemessage) {
-                $msg[] = $disablemessage;
-            }
-            return $msg;
-        }
-        $msg[] = "- Hüllenschaden: " . $damage;
-        $msg[] = "-- Das Schiff wurde zerstört!";
-        $this->setIsDestroyed(true);
-        return $msg;
-    }
-
     public function getStorage(): Collection
     {
         return $this->storage;

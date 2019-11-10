@@ -251,8 +251,6 @@ interface ShipInterface
 
     public function setTorpedo(?TorpedoTypeInterface $torpedoType): ShipInterface;
 
-    public function damage(DamageWrapper $damage_wrapper): array;
-
     /**
      * @return ShipStorageInterface[] Indexed by commodityId
      */
