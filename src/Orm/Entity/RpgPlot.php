@@ -30,7 +30,7 @@ class RpgPlot implements RpgPlotInterface
     /** @Column(type="string") */
     private $title = '';
 
-    /** @Column(type="string") */
+    /** @Column(type="text") */
     private $description = '';
 
     /** @Column(type="integer") * */
@@ -142,18 +142,12 @@ class RpgPlot implements RpgPlotInterface
 
     public function getMemberCount(): int
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(RpgPlotMemberRepositoryInterface::class)->getAmountByPlot((int)$this->getId());
+        return $this->members->count();
     }
 
     public function getPostingCount(): int
     {
-        // @todo refactor
-        global $container;
-
-        return $container->get(KnPostRepositoryInterface::class)->getAmountByPlot((int)$this->getId());
+        return $this->posts->count();
     }
 
     public function getMembers(): Collection

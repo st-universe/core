@@ -52,11 +52,4 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
             'plot_id' => $plotId
         ]);
     }
-
-    public function getAmountByPlot(int $plotId): int
-    {
-        return $this->count([
-            'plot_id' => $plotId
-        ]);
-    }
 }

@@ -24,6 +24,4 @@ interface RpgPlotMemberRepositoryInterface extends ObjectRepository
      * @return RpgPlotMemberInterface[]
      */
     public function getByPlot(int $plotId): array;
-
-    public function getAmountByPlot(int $plotId): int;
 }
