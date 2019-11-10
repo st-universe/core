@@ -138,7 +138,7 @@ final class ShipMover implements ShipMoverInterface
             $fields = abs($leadShip - $this->getDestX());
         }
         $energyCosts = $leadShip->getRump()->getFlightEcost();
-        
+
         if ($fields * $energyCosts > $leadShip->getEps()) {
             $fields = (int)floor($leadShip->getEps() / $energyCosts);
         }
@@ -300,8 +300,9 @@ final class ShipMover implements ShipMoverInterface
             }
         }
 
+        $fieldCount = $this->getFieldCount($leadShip);
         $i = 1;
-        while ($i <= $this->getFieldCount($leadShip)) {
+        while ($i <= $fieldCount) {
             if ($ship->getSystem() === null && !$ship->getWarpState()) {
                 try {
                     $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
@@ -338,6 +339,7 @@ final class ShipMover implements ShipMoverInterface
                     break;
                 }
             }
+
             $i++;
             if (!$nextfield->getFieldType()->getPassable()) {
                 if (($this->isFleetMode() && $ship->isFleetLeader()) || !$this->isFleetMode()) {
