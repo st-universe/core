@@ -107,6 +107,8 @@ use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipMover;
+use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\ShipStorageManager;
@@ -135,6 +137,7 @@ use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use function DI\autowire;
 
 return [
+    ShipMoverInterface::class => autowire(ShipMover::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     PositionCheckerInterface::class => autowire(PositionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),

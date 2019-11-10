@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\MoveShip;
 
 use request;
-use ShipMover;
+use Stu\Module\Ship\Lib\ShipMover;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class MoveShip implements ActionControllerInterface
@@ -17,10 +18,14 @@ final class MoveShip implements ActionControllerInterface
 
     private $shipLoader;
 
+    private $shipMover;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        ShipMoverInterface $shipMover
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipMover = $shipMover;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -32,8 +37,12 @@ final class MoveShip implements ActionControllerInterface
             $userId
         );
 
-        $mover = new ShipMover($ship);
-        $game->addInformationMerge($mover->getInformations());
+        $this->shipMover->checkAndMove(
+            $ship,
+            request::getIntFatal('posx'),
+            request::getIntFatal('posy')
+        );
+        $game->addInformationMerge($this->shipMover->getInformations());
 
         if ($ship->getIsDestroyed()) {
             return;
