@@ -70,4 +70,9 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->setParameters(['userId' => $userId])
             ->getResult();
     }
+
+    public function getOrderedList(): array
+    {
+       return $this->findBy([], ['start_date' => 'asc']);
+    }
 }

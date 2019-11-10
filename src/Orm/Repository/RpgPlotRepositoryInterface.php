@@ -33,4 +33,9 @@ interface RpgPlotRepositoryInterface extends ObjectRepository
      * @return RpgPlotInterface[]
      */
     public function getByUser(int $userId): array;
+
+    /**
+     * @return RpgPlotInterface[]
+     */
+    public function getOrderedList(): array;
 }
