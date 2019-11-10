@@ -1031,13 +1031,15 @@ div.userListItemButtons {
   padding-top: 5px;
 }
 
-div.userListItem div.userListItemName {
+div.userListItem div.userListItemName,
+div.plotMemberListItemName {
   font-size: 120%;
   padding-bottom: 3px;
 }
 
 div.userListItemName,
-div.userListItemAllianceName {
+div.userListItemAllianceName,
+div.plotMemberListItemName {
   width: 400px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1196,6 +1198,27 @@ div.plotList div.plotListItem {
 div.plotList div.plotTitle {
   font-size: 130%;
   padding-bottom: 7px;
+}
+
+div.plotMemberList {
+  background-color: #171616;
+  display: grid;
+  grid-template-columns: 56px auto;
+  padding: 3px;
+  margin-bottom: 3px;
+}
+
+div.plotMemberList div.plotMemberListItemAvatar {
+  grid-row-start: span 2; margin: 3px;
+}
+
+div.plotMemberList div.plotMemberListItemPm {
+  display: inline-block;
+}
+
+div.plotMemberList div.plotMemberListItemDelete {
+  display: inline-block;
+  padding-left: 20px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
