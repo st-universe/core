@@ -64,6 +64,13 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         return $this->count([]);
     }
 
+    public function getAmountByPlot(int $plotId): int
+    {
+        return $this->count([
+            'plot_id' => $plotId
+        ]);
+    }
+
     public function getAmountSince(int $postId): int
     {
         return (int) $this->getEntityManager()
