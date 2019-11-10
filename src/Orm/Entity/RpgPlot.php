@@ -6,8 +6,6 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Stu\Orm\Repository\KnPostRepositoryInterface;
-use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\RpgPlotRepository")

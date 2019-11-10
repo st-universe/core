@@ -9,16 +9,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Lib\DamageWrapper;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
-use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -262,8 +259,6 @@ class Ship implements ShipInterface
     private $epsUsage;
 
     private $mapfield;
-
-    private $currentColony;
 
     private $effectiveEpsProduction;
 
@@ -1128,17 +1123,6 @@ class Ship implements ShipInterface
     public function getMapCY(): int
     {
         return (int)ceil($this->getCY() / Overview::FIELDS_PER_SECTION);
-    }
-
-    public function getCrewBySlot($slot): array
-    {
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipCrewRepositoryInterface::class)->getByShipAndSlot(
-            (int)$this->getId(),
-            (int)$slot
-        );
     }
 
     public function dockedOnTradePost(): bool

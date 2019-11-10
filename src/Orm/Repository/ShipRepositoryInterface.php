@@ -3,7 +3,6 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 

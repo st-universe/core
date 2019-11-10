@@ -7,8 +7,6 @@ namespace Stu\Orm\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpCategoryRoleCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;

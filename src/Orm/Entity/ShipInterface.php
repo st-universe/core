@@ -3,7 +3,6 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Stu\Lib\DamageWrapper;
 
 interface ShipInterface
 {
@@ -293,8 +292,6 @@ interface ShipInterface
     public function getMapCX(): int;
 
     public function getMapCY(): int;
-
-    public function getCrewBySlot($slot): array;
 
     public function dockedOnTradePost(): bool;
 
