@@ -23,12 +23,13 @@ final class ShowUserPlotList implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->setTemplateFile('html/userplotlist.xhtml');
+        $game->appendNavigationPart('comm.php', _('KommNet'));
         $game->appendNavigationPart(sprintf('comm.php?%s=1', static::VIEW_IDENTIFIER), _('Eigene Plots'));
         $game->setPageTitle(_('Eigene Plots'));
 
         $game->setTemplateVar(
             'PLOT_LIST',
-            $this->rpgPlotRepository->getByUser($game->getUser()->getId())
+            $this->rpgPlotRepository->getByUser($game->getUser())
         );
     }
 }

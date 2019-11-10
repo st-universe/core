@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\RpgPlot;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\RpgPlotMember;
+use Stu\Orm\Entity\UserInterface;
 
 final class RpgPlotRepository extends EntityRepository implements RpgPlotRepositoryInterface
 {
@@ -55,7 +56,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
             ->getResult();
     }
 
-    public function getByUser(int $userId): array
+    public function getByUser(UserInterface $user): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -67,7 +68,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
                     RpgPlotMember::class
                 )
             )
-            ->setParameters(['userId' => $userId])
+            ->setParameters(['userId' => $user])
             ->getResult();
     }
 

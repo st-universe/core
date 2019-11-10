@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|RpgPlotInterface find(integer $id)
@@ -32,7 +33,7 @@ interface RpgPlotRepositoryInterface extends ObjectRepository
     /**
      * @return RpgPlotInterface[]
      */
-    public function getByUser(int $userId): array;
+    public function getByUser(UserInterface $user): array;
 
     /**
      * @return RpgPlotInterface[]
