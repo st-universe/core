@@ -21,10 +21,10 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="plotknnavigation">
-  <table class="use">
+  <table>
     <tr>
       <td tal:repeat="item KN_NAVIGATION">
-        <a href="?SHOW_PLOTKN=1&plotid=${PLOT/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+        <a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
       </td>
     </tr>
   </table>
@@ -303,7 +303,7 @@
     <div class="divbody" i18n:translate="">Keine Beiträge vorhanden</div>
   </tal:block>
   <tal:block tal:condition="KN_POSTINGS">
-    <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
+    <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
     <br />
     <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
       <div class="box">
@@ -369,7 +369,7 @@
       <br />
     </div>
     <br />
-    <metal:macro metal:use-macro="html/commmacros.xhtml/knnavigation" />
+    <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
   </tal:block>
 </metal:macro>
 </html>

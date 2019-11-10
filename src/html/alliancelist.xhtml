@@ -17,11 +17,7 @@
           <a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
         </div>
         <div class="allianceListItemMembers">
-          <div class="allianceListItemMember" tal:repeat="member data/getMembers">
-            <a href="/userprofile.php?uid=${member/getId}" target="_blank">
-              <img tal:attributes="src member/getFullAvatarPath" title="Zum Siedlerprofil" i18n:attributes="title" />
-            </a>
-          </div>
+          <metal:macro tal:repeat="USER data/getMembers" metal:use-macro="html/macros.xhtml/useravatar" />
         </div>
         <div class="allianceListItemBanner">
           <a tal:condition="data/hasAvatar" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}">
@@ -38,11 +34,7 @@
           <a href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
         </div>
         <div class="allianceListItemMembers">
-          <div class="allianceListItemMember" tal:repeat="member data/getMembers">
-            <a href="/userprofile.php?uid=${member/getId}" target="_blank">
-              <img tal:attributes="src member/getFullAvatarPath" title="Zum Siedlerprofil" i18n:attributes="title" />
-            </a>
-          </div>
+          <metal:macro tal:repeat="USER data/getMembers" metal:use-macro="html/macros.xhtml/useravatar" />
         </div>
         <div class="allianceListItemBanner">
           <a tal:condition="data/hasAvatar" href="alliance.php?SHOW_ALLIANCE=1&id=${data/getId}">

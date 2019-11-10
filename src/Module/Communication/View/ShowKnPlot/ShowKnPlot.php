@@ -16,6 +16,8 @@ final class ShowKnPlot implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_PLOT';
 
+    private const KNLIMITER = 6;
+
     private $showKnPlotRequest;
 
     private $knPostRepository;
@@ -45,6 +47,33 @@ final class ShowKnPlot implements ViewControllerInterface
         if ($plot === null) {
             return;
         }
+        $mark = $this->showKnPlotRequest->getKnOffset();
+
+        if ($mark % static::KNLIMITER != 0 || $mark < 0) {
+            $mark = 0;
+        }
+        $maxcount = $this->knPostRepository->getAmountByPlot((int) $plot->getId());
+        $maxpage = ceil($maxcount / static::KNLIMITER);
+        $curpage = floor($mark / static::KNLIMITER);
+        $knNavigation = [];
+        if ($curpage != 0) {
+            $knNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
+            $knNavigation[] = ["page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages"];
+        }
+        for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
+            if ($i > $maxpage || $i < 1) {
+                continue;
+            }
+            $knNavigation[] = [
+                "page" => $i,
+                "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
+                "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
+            ];
+        }
+        if ($curpage + 1 != $maxpage) {
+            $knNavigation[] = ["page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages"];
+            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
+        }
 
         $game->setTemplateFile('html/plotdetails.xhtml');
         $game->setPageTitle(sprintf('Plot: %s', $plot->getTitle()));
@@ -60,6 +89,20 @@ final class ShowKnPlot implements ViewControllerInterface
             $plot->getTitle()
         );
 
+        $game->setTemplateVar(
+            'KN_POSTINGS',
+            array_map(
+                function (KnPostInterface $knPost) use ($user): KnItemInterface {
+                    return $this->knFactory->createKnItem(
+                        $knPost,
+                        $user
+                    );
+                },
+                $this->knPostRepository->getByPlot($plot, $mark, static::KNLIMITER)
+            )
+        );
+        $game->setTemplateVar('KN_OFFSET', $mark);
+        $game->setTemplateVar('KN_NAVIGATION', $knNavigation);
         $game->setTemplateVar('PLOT', $plot);
         $game->setTemplateVar('MAY_EDIT', $plot->getUserId() == $game->getUser()->getId());
         $game->setTemplateVar(

@@ -117,9 +117,6 @@ use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequest;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequestInterface;
 use Stu\Module\Communication\View\ShowNewPm\ShowNewPm;
 use Stu\Module\Communication\View\ShowNewPmCategory\ShowNewPmCategory;
-use Stu\Module\Communication\View\ShowPlotKn\ShowPlotKn;
-use Stu\Module\Communication\View\ShowPlotKn\ShowPlotKnRequest;
-use Stu\Module\Communication\View\ShowPlotKn\ShowPlotKnRequestInterface;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategory;
 use Stu\Module\Communication\View\ShowPmCategory\ShowPmCategoryRequest;
@@ -146,7 +143,6 @@ return [
     ShowPmCategoryRequestInterface::class => autowire(ShowPmCategoryRequest::class),
     ShowEditCategoryRequestInterface::class => autowire(ShowEditCategoryRequest::class),
     ShowKnPlotRequestInterface::class => autowire(ShowKnPlotRequest::class),
-    ShowPlotKnRequestInterface::class => autowire(ShowPlotKnRequest::class),
     ShowEditPlotRequestInterface::class => autowire(ShowEditPlotRequest::class),
     ShowEditKnRequestInterface::class => autowire(ShowEditKnRequest::class),
     ShowContactModeSwitchRequestInterface::class => autowire(ShowContactModeSwitchRequest::class),
@@ -217,7 +213,6 @@ return [
         ShowPmCategoryList::VIEW_IDENTIFIER => autowire(ShowPmCategoryList::class),
         ShowEditPmCategory::VIEW_IDENTIFIER => autowire(ShowEditPmCategory::class),
         ShowKnPlot::VIEW_IDENTIFIER => autowire(ShowKnPlot::class),
-        ShowPlotKn::VIEW_IDENTIFIER => autowire(ShowPlotKn::class),
         ShowPlotList::VIEW_IDENTIFIER => autowire(ShowPlotList::class),
         ShowUserPlotList::VIEW_IDENTIFIER => autowire(ShowUserPlotList::class),
         ShowCreatePlot::VIEW_IDENTIFIER => autowire(ShowCreatePlot::class),

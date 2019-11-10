@@ -21,11 +21,9 @@
       </div>
     </div>
     <div>
-      <div class="plotListItemMember" tal:repeat="member plot/getMembers">
-        <a href="/userprofile.php?uid=${member/getUser/getId}" target="_blank">
-          <img tal:attributes="src member/getUser/getFullAvatarPath" title="Zum Siedlerprofil" i18n:attributes="title" />
-        </a>
-      </div>
+      <tal:block tal:repeat="member plot/getMembers">
+        <metal:macro metal:use-macro="html/macros.xhtml/useravatar" tal:define="USER member/getUser" />
+      </tal:block>
     </div>
   </div>
 </metal:macro>
