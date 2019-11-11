@@ -334,6 +334,50 @@ class KnItemTest extends StuTestCase
         );
     }
 
+    public function testUserCanRateReturnsFalseIfItsTheSameUser(): void {
+        $userId = 666;
+
+        $this->post->shouldReceive('getRatings')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([]);
+        $this->post->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->currentUser);
+
+        $this->currentUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+
+        $this->assertFalse(
+            $this->item->userCanRate()
+        );
+    }
+
+    public function testUserCanRateReturnsTrueIfItsRateable(): void {
+        $userId = 666;
+
+        $this->post->shouldReceive('getRatings')
+            ->withNoArgs()
+            ->once()
+            ->andReturn([]);
+        $this->post->shouldReceive('getUser')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($this->mock(UserInterface::class));
+
+        $this->currentUser->shouldReceive('getId')
+            ->withNoArgs()
+            ->once()
+            ->andReturn($userId);
+
+        $this->assertTrue(
+            $this->item->userCanRate()
+        );
+    }
+
     public function testGetRatingReturnsRatingsSum(): void {
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()

@@ -41,7 +41,7 @@ final class RateKnPost implements ActionControllerInterface
 
         $ratings = $post->getRatings();
 
-        if (array_key_exists($userId, $ratings)) {
+        if (array_key_exists($userId, $ratings) || $post->getUser() === $game->getUser()) {
             return;
         }
         $ratings[$userId] = $this->knPostRequest->getRating();

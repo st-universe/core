@@ -100,6 +100,11 @@ final class KnItem implements KnItemInterface {
         return $this->post->getId() > $this->currentUser->getKnMark();
     }
 
+    public function userCanRate(): bool
+    {
+        return !$this->userHasRated() && $this->currentUser !== $this->post->getUser();
+    }
+
     public function userHasRated(): bool
     {
         return array_key_exists($this->currentUser->getId(), $this->post->getRatings());
