@@ -135,7 +135,7 @@ final class ShipMover implements ShipMoverInterface
         if ($leadShip->getPosX() == $this->getDestX()) {
             $fields = abs($leadShip->getPosY() - $this->getDestY());
         } else {
-            $fields = abs($leadShip - $this->getDestX());
+            $fields = abs($leadShip->getPosX() - $this->getDestX());
         }
         $energyCosts = $leadShip->getRump()->getFlightEcost();
 
@@ -533,7 +533,6 @@ final class ShipMover implements ShipMoverInterface
                     $this->fieldData[sprintf('%d_%d', $field->getSx(), $field->getSy())] = $field;
                 }
             }
-
         }
         return $this->fieldData[$x . "_" . $y];
     }
