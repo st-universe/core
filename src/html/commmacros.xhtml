@@ -354,7 +354,7 @@
               <div class="segment" tal:condition="post/getEditDate">
                 <span class="knedit">Bearbeitet: ${datetime:post/getEditDate}</span>
               </div>
-              <div class="segment" id="kn_rating_${post/getId}" tal:define="UserCanRate post/userCanRate">
+              <div class="segment" id="kn_rating_${post/getId}" tal:define="userCanRate post/userCanRate">
                 <div tal:condition="userCanRate" class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</div>
                 <div style="display: inline-block" tal:condition="post/getRatingBar" tal:content="structure post/getRatingBar">STATUS</div>
                 <div tal:condition="userCanRate" class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</div>
