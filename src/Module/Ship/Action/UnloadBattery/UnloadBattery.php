@@ -71,7 +71,7 @@ final class UnloadBattery implements ActionControllerInterface
         }
         $ship->setEBatt($ship->getEBatt() - $load);
         $ship->setEps($ship->getEps() + $load);
-        $ship->setEBattWaitingTime($load * 60);
+        $ship->setEBattWaitingTime(time() + $load * 60);
 
         $this->shipRepository->save($ship);
 
