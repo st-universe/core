@@ -116,7 +116,7 @@ final class Overview implements ViewControllerInterface
                 },
                 $this->privateMessageRepository->getByUserAndFolder(
                     $userId,
-                    $categoryId,
+                    $category->getId(),
                     (int) $mark,
                     static::PMLIMITER
                 )
