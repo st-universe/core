@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\ContactInterface;
 

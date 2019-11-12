@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ContactRepository")

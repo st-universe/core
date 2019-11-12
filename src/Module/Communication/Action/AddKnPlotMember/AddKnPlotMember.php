@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPlotMember;
 
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\RpgPlotInterface;

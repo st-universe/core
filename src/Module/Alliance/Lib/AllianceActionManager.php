@@ -8,7 +8,7 @@ use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\AllianceInterface;
 use Stu\Orm\Entity\AllianceJobInterface;
 use Stu\Orm\Repository\AllianceBoardRepositoryInterface;
@@ -42,7 +42,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         AllianceBoardRepositoryInterface $allianceBoardRepository,
         AllianceRepositoryInterface $allianceRepository,
         DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
-        PrivateMessageSenderInterface $privateMessageSender,
+        \Stu\Module\Message\Lib\PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         ConfigInterface $config
     ) {

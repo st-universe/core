@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BeamFrom;
 
 use request;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;

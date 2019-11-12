@@ -35,31 +35,6 @@
           </li>
         </ul>
       </stu:box>
-      <br />
-      <stu:box title="Private Nachrichten" i18n:attributes="title">
-        <stu:imagelink href="?WRITE_PM=1" description="Nachricht schreiben" i18n:attributes="description" image="knedit" />
-        <br />
-        <br />
-        <strong i18n:translate="">Ordner</strong>
-        <ul id="catlist" class="pm_categories">
-          <li tal:repeat="cat PM_CATEGORIES" style="width: 100%; display: block;">
-            <span style="color: #cecece">&gt;</span>
-            <a href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
-            (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
-          </li>
-        </ul>
-      </stu:box>
-      <br />
-      <stu:box title="Kontakte" i18n:attributes="title">
-        <ul>
-          <li>
-            <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1" i18n:translate="">Alle Kontakte</a>
-          </li>
-          <li>
-            <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1" i18n:translate="">Ignorierte Siedler</a>
-          </li>
-        </ul>
-      </stu:box>
     </div>
   </metal:macro>
 </metal:macro>

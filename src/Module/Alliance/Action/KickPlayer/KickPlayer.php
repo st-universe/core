@@ -8,7 +8,7 @@ use AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;

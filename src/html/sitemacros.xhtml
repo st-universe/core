@@ -33,7 +33,7 @@
                   <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 
                   <stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
-                  <stu:imagelink href="/comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
+                  <stu:imagelink href="/pm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
                 </div>
               </div>
             </div>
@@ -130,7 +130,7 @@
                   <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 
                   <stu:jsimagelink onclick="event.stopPropagation(); openNotes()" image="notiz" title="Notizzettel öffnen" i18n:attributes="title" />
-                  <stu:imagelink href="/comm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
+                  <stu:imagelink href="/pm.php?WRITE_PM=1" title="Neue Nachricht schreiben" i18n:attributes="title" image="msg" />
                 </div>
               </div>
             </div>
@@ -371,6 +371,7 @@
 	<stu:navigation_item url="colony.php" title="Kolonien" icon_url="planets" i18n:attributes="title" />
 	<stu:navigation_item url="ship.php" title="Schiffe" icon_url="ships" i18n:attributes="title" />
 	<stu:navigation_item url="comm.php" title="KommNet" icon_url="comm" i18n:attributes="title" />
+  <stu:navigation_item url="pm.php" title="Nachrichten" icon_url="msg" i18n:attributes="title" />
 	<stu:navigation_item url="research.php" title="Forschung" icon_url="forsch" i18n:attributes="title" />
 	<stu:navigation_item url="trade.php" title="Handel" icon_url="trade" i18n:attributes="title" />
 	<stu:navigation_item url="alliance.php" title="Allianz" icon_url="ally" i18n:attributes="title" />

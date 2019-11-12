@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 

@@ -6,7 +6,7 @@ namespace Stu\Module\Alliance\Action\Leave;
 
 use AccessViolation;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;

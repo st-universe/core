@@ -34,7 +34,7 @@
   <table class="use">
     <tr>
       <td tal:repeat="item PM_NAVIGATION">
-        <a href="?SHOW_PM_CAT=1&pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+        <a href="?pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
       </td>
     </tr>
   </table>
@@ -45,8 +45,8 @@
     <li id="item_${cat/getId}" style="width: 100%; display: block;">
       <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
-        <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
-        <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?SHOW_PM_CAT=1&pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescription">DESCRIPTION</a>
+        <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
+        <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescription">DESCRIPTION</a>
         (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
       </div>
       <div class="iblock right" style="width: 8%">
@@ -78,11 +78,22 @@
           <br /><br />
           <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteAllMarkedPMs();">Alle selektierten löschen</a>
           <br /><br />
-          <span style="color: #cecece">&gt;</span> <a href="?SHOW_PM_CAT=1&B_DELETE_ALL_PMS=1&pmcat=${CATEGORY/getId}&sstr=${THIS/getSessionString}">Ordner leeren</a>
+          <span style="color: #cecece">&gt;</span> <a href="?B_DELETE_ALL_PMS=1&pmcat=${CATEGORY/getId}&sstr=${THIS/getSessionString}">Ordner leeren</a>
         </div>
       </td>
     </tr>
   </table>
+  <br />
+  <stu:box title="Kontakte" i18n:attributes="title">
+    <ul>
+      <li>
+        <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1" i18n:translate="">Alle Kontakte</a>
+      </li>
+      <li>
+        <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1" i18n:translate="">Ignorierte Siedler</a>
+      </li>
+    </ul>
+  </stu:box>
   <br />
   <table class="tcal">
     <tr>
@@ -110,7 +121,7 @@
 </tal:block>
 
 <metal:macro metal:define-macro="newpmnavlet">
-  <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" tal:repeat="item PM_NAVLET" class="action" onclick="goToUrl('comm.php?SHOW_PM_CAT=1&pmcat=${item/getId}')">
+  <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" tal:repeat="item PM_NAVLET" class="action" onclick="goToUrl('pm.php?pmcat=${item/getId}')">
     <tal:block tal:define="new_pm_amount item/getCategoryCountNew">
       <tal:block tal:condition="new_pm_amount">
         <img src="/assets/buttons/pmnavlet_${repeat/item/key}_1.gif" width="30" height="30" />
@@ -140,7 +151,7 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="editcategory">
-  <form name="editcat" method="post" action="comm.php">
+  <form name="editcat" method="post" action="pm.php">
     <table class="tcal">
       <tr>
         <td>Name</td>

@@ -6,6 +6,7 @@ use Stu\Module\Tal\TalPageInterface;
 class AccessViolation extends STUException {
 
 	function __construct() {
+	    debug_print_backtrace();
 		$this->setError("This incident will be reported");
 		parent::__construct();
 	}

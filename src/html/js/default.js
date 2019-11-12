@@ -108,7 +108,7 @@ function openWindowPosition(elt,exclusive,width,posx,posy) {
 }
 
 function ignoreUser(obj,userid) {
-        ajax_update(obj,'comm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid='+userid);
+        ajax_update(obj,'pm.php?B_IGNORE_USER=1&SHOW_IGNORE=1&recid='+userid);
 }
 function addUserContact(obj,userid) {
         var contact = 'selector_'+obj;
@@ -117,17 +117,17 @@ function addUserContact(obj,userid) {
         } else {
                 mode = $(contact).value;
         }
-        ajax_update(obj,'comm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid='+userid+'&clmode='+mode+'&cldiv='+obj);
+        ajax_update(obj,'pm.php?B_ADD_CONTACT=1&SHOW_CONTACT_MODE=1&recid='+userid+'&clmode='+mode+'&cldiv='+obj);
 }
 var clmodeswitchdiv = '';
 function showContactModeSwitcher(div,contactid) {
         clmodeswitchdiv = div;
         elt = 'clmswitcher';
         openWindow(elt,0,70);
-        ajax_update('clmswitcher','comm.php?SHOW_CONTACT_MODESWITCH=1&cid='+contactid);
+        ajax_update('clmswitcher','pm.php?SHOW_CONTACT_MODESWITCH=1&cid='+contactid);
 }
 function switchContactMode(contactid,mode) {
-        ajax_update(clmodeswitchdiv,'comm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid='+contactid+'&clmode='+mode+"&cldiv="+clmodeswitchdiv);
+        ajax_update(clmodeswitchdiv,'pm.php?B_CHANGE_CONTACTMODE=1&SHOW_CONTACT_MODE=1&cid='+contactid+'&clmode='+mode+"&cldiv="+clmodeswitchdiv);
         clmodeswitcdiv = '';
         cClick();
 }
@@ -233,11 +233,11 @@ function openBoardSettings(obj,bid) {
 function openPmWindow(userId) {
         elt = 'pmwindow';
         openWindowPosition(elt,1,600,90,60);
-        ajax_update(elt,'comm.php?SHOW_WRITE_QUICKPM=1&recipient='+userId);
+        ajax_update(elt,'pm.php?SHOW_WRITE_QUICKPM=1&recipient='+userId);
 }
 function sendQuickPM(userId) {
         var elem = $('quickpm').serialize()+'&sstr='+$('pm_sstr').value;
-        ajaxPost('comm.php','B_WRITE_PM=1&recipient='+userId+"&"+elem);
+        ajaxPost('pm.php','B_WRITE_PM=1&recipient='+userId+"&"+elem);
         $('quickpm_compose').hide();
         $('quickpm_done').show();
 }
@@ -293,7 +293,7 @@ function cp(obj,file) {
 }
 function updatePMNavlet() {
         new Ajax.Request(
-        'comm.php',
+        'pm.php',
                 {
             method: 'post',
             parameters: 'SHOW_NEW_PM=1&ajax=1',

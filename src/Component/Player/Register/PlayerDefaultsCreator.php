@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Register;
 
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;

@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Register;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Entity\ResearchInterface;

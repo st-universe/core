@@ -10,8 +10,8 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -355,7 +355,7 @@ final class ShipMover implements ShipMoverInterface
                     (int)$ship->getUserId(),
                     (int)$ship->getTraktorShip()->getUserId(),
                     "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    \Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
                 );
             }
             $this->flightDone = true;

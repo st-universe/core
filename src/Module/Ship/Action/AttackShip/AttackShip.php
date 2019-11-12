@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\Action\AttackShip;
 
 use request;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;

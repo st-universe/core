@@ -1,7 +1,7 @@
 function openNewCatWindow() {
 	elt = 'newcatwin';
 	openPJsWin(elt,300);
-	ajax_update(elt,"comm.php?SHOW_NEW_CAT=1");
+	ajax_update(elt,"pm.php?SHOW_NEW_CAT=1");
 }
 
 function addNewCategory() {
@@ -10,7 +10,7 @@ function addNewCategory() {
 		alert('Es wurde kein Name eingegeben');
 		return;
 	}
-	ajax_update('catlist','comm.php?B_ADD_PMCATEGORY=1&'+Form.Element.serialize('catname'));
+	ajax_update('catlist','pm.php?B_ADD_PMCATEGORY=1&'+Form.Element.serialize('catname'));
 	cClick();
 }
 
@@ -21,7 +21,7 @@ function changeCategoryName() {
 		return;
 	}
 	catid = document.forms['editcat'].elements['pmcat'].value;
-	ajax_update('catlist','comm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat='+catid+'&'+Form.Element.serialize('catname'));
+	ajax_update('catlist','pm.php?B_EDIT_PMCATEGORY_NAME=1&pmcat='+catid+'&'+Form.Element.serialize('catname'));
 	cClick();
 }
 
@@ -74,7 +74,7 @@ function unMarkAllContacts() {
 function showPMCategoryWindow(catid) {
 	elt = 'cateditwin';
 	openWindow(elt,1,300);
-	ajax_update(elt,"comm.php?SHOW_EDIT_CAT=1&pmcat="+catid);
+	ajax_update(elt,"pm.php?SHOW_EDIT_CAT=1&pmcat="+catid);
 }
 
 function updateRecipient() {
@@ -113,7 +113,7 @@ function deletePostingComment(postingId, commentId) {
 	ajax_update('kncomments',"comm.php?B_DELETE_COMMENT=1&posting="+postingId+"&comment="+commentId);
 }
 function updateCategoryOrder() {
-	ajax_update(false,'comm.php?B_PMCATEGORY_SORT=1&catlist='+Sortable.sequence('catlist').join(','));
+	ajax_update(false,'pm.php?B_PMCATEGORY_SORT=1&catlist='+Sortable.sequence('catlist').join(','));
 }
 function movePm(pmId) {
 	$('move_pm').value = pmId;

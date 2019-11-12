@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 

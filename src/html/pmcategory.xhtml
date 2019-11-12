@@ -3,7 +3,7 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<form action="comm.php" method="post" name="pmlist" id="pmlist">
+		<form action="pm.php" method="post" name="pmlist" id="pmlist">
 			<stu:hidden name="move_pm" value="0" />
 			<stu:hidden name="deletion_mark" value="" />
 			<div style="float: left; width: 75%;">
@@ -44,14 +44,13 @@
                             </tal:block>
                             <img tal:condition="post/getReplied" src="assets/buttons/postein2.gif" title="Diese Nachricht wurde bereits beantwortet" />
                             <div class="iblock" style="padding-left: 15px;">
-                                <a href="?SHOW_PM_CAT=1&B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&delete_single=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2')" onmouseout="cp('del${post/getId}','buttons/x1')">
+                                <a href="?B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&delete_single=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2')" onmouseout="cp('del${post/getId}','buttons/x1')">
                                     <img src="assets/buttons/x1.gif" name="del${post/getId}" title="Nachricht löschen" />
                                 </a>
                             </div>
                         </div>
                         <div class="iblock right" style="width:59%">
                             <input type="hidden" name="runtime" id="formaction" value="1" />
-                            <input type="hidden" name="SHOW_PM_CAT" value="1" />
                             <input type="hidden" name="pmid" value="runtime" tal:attributes="value post/getId" />
                             <input type="hidden" name="pmcat" value="runtime" tal:attributes="value CATEGORY/getId" />
                             <tal:block tal:condition="post/getSender/isContactable">

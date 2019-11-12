@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Stu\Module\Api\Middleware\Action;
 use Stu\Module\Api\Middleware\Response\JsonResponseInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class GetNewPrivateMessages extends Action

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tal;
 
 use JBBCode\Parser;
-use Stu\Module\Communication\Lib\ContactListModeEnum;
+use Stu\Module\Message\Lib\ContactListModeEnum;
 
 final class TalHelper implements TalHelperInterface
 {

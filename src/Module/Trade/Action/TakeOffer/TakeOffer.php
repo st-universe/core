@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\Action\TakeOffer;
 
 use AccessViolation;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Communication\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;

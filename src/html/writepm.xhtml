@@ -3,7 +3,7 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<form action="comm.php" method="post" name="newpm">
+		<form action="pm.php" method="post" name="newpm">
 			<input type="hidden" name="WRITE_PM" value="1" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<div style="float: left; width: 75%;">

@@ -7,7 +7,7 @@ namespace Stu\Module\Api\V1\Player;
 use Mockery;
 use Mockery\MockInterface;
 use Stu\Module\Api\Middleware\SessionInterface;
-use Stu\Module\Communication\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\PrivateMessageFolderInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\StuApiV1TestCase;
