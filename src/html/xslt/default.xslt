@@ -57,8 +57,8 @@
 
 	<xsl:template match="stu:navigation_item">
 		<xsl:variable name="linkid"><xsl:value-of select="generate-id()" /></xsl:variable>
-		<div class="navigation_item border_box" onclick="goToUrl('{@url}')" onmouseover="cp('{$linkid}','buttons/menu_{@icon_url}1')" onmouseout="cp('{$linkid}','buttons/menu_{@icon_url}0')">
-      <img src="/assets/buttons/menu_{@icon_url}0.gif" height="30" width="30" id="{$linkid}" />
+		<div class="navigation_item border_box" onclick="goToUrl('{@url}')" onmouseover="cp('{$linkid}','navigation/menu_{@icon_url}1', 'png')" onmouseout="cp('{$linkid}','navigation/menu_{@icon_url}0', 'png')">
+      <img src="/assets/navigation/menu_{@icon_url}0.png" height="40" width="40" id="{$linkid}" />
 			<div style="margin-top: 5px"><xsl:value-of select="@title" /></div>
 		</div>
 	</xsl:template>

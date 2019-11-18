@@ -288,8 +288,8 @@ function openPJsWin(elt,exclusive,width) {
                 return overlib('<div id='+elt+'></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR,'#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
         }
 }
-function cp(obj,file) {
-        document.images[obj].src = gfx_path+"/"+file+".gif";
+function cp(obj,file,ending='gif') {
+        document.images[obj].src = gfx_path+"/"+file+"."+ending;
 }
 function updatePMNavlet() {
         new Ajax.Request(
