@@ -10,7 +10,6 @@ use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequest;
 use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;
 use Stu\Module\Maindesk\View\Overview\Overview;
 use Stu\Module\Maindesk\View\ShowColonyList\ShowColonyList;
-use Stu\Module\Maindesk\View\ShowColonyListAjax\ShowColonyListAjax;
 use function DI\autowire;
 
 return [
@@ -21,6 +20,5 @@ return [
     'MAINDESK_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         ShowColonyList::VIEW_IDENTIFIER => autowire(ShowColonyList::class),
-        ShowColonyListAjax::VIEW_IDENTIFIER => autowire(ShowColonyListAjax::class),
     ],
 ];

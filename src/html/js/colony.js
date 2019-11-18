@@ -131,7 +131,6 @@ function refreshColony() {
 	ajax_update('colsurface','colony.php?id='+colonyid+'&SHOW_COLONY_SURFACE=1&bid='+selectedbuilding);
 	ajax_update('colonyeps','colony.php?id='+colonyid+'&SHOW_EPSBAR_AJAX=1');
 	ajax_update('colonystorage','colony.php?id='+colonyid+'&SHOW_STORAGE_AJAX=1');
-	ajax_update('colonylist_navlet','maindesk.php?SHOW_COLONYLIST_AJAX=1');
 }
 
 function getOrbitShipList() {
