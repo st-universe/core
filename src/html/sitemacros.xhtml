@@ -41,30 +41,51 @@
           <div class="header_box header_box_pm border_box" id="navlet_newpm">
             <metal:macro metal:use-macro="html/commmacros.xhtml/newpmnavlet" />
           </div>
-          <div class="header_box header_box_research border_box action"  tal:condition="CURRENT_RESEARCH" onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;">
+          <div
+            class="header_box header_box_research border_box action"
+            tal:condition="CURRENT_RESEARCH"
+            onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;"
+          >
             <div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
             <img style="width: 12px; height: 12px;" src="/assets/navigation/menu_forsch1.png" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
             <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
           </div>
-          <div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('research.php')">
-            <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" title="Forschung" i18n:attributes="title" />
+          <div
+            class="header_box header_box_research border_box action"
+            tal:condition="not:CURRENT_RESEARCH"
+            onclick="goToUrl('research.php')"
+            onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')" onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')"
+          >
+            <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research" title="Forschung" i18n:attributes="title" />
             <div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
           </div>
-          <div class="header_box header_box_logout border_box action" onclick="goToUrl('index.php?B_LOGOUT=1')">
+          <div
+            class="header_box header_box_logout border_box action"
+            onclick="goToUrl('index.php?B_LOGOUT=1')"
+            onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')"
+          >
             <div>
-              <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_logout0.png" title="Logout" i18n:attributes="title" />
+              <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout" i18n:attributes="title" />
               <div style="margin-top: 5px" i18n:translate="">Logout</div>
             </div>
           </div>
-          <div class="header_box header_box_help border_box action" onclick="goToUrl('https://docu.stuniverse.de')">
+          <div
+            class="header_box header_box_help border_box action"
+            onclick="goToUrl('https://docu.stuniverse.de')"
+            onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')"
+          >
             <div>
-              <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_doku0.png" title="Hilfe" i18n:attributes="title" />
+              <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Hilfe" i18n:attributes="title" />
               <div style="margin-top: 5px" i18n:translate="">Hilfe</div>
             </div>
           </div>
-          <div class="header_box header_box_settings border_box action" onclick="goToUrl('options.php')">
+          <div
+            class="header_box header_box_settings border_box action"
+            onclick="goToUrl('options.php')"
+            onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')"
+          >
             <div>
-              <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_option0.png" title="Einstellungen" i18n:attributes="title" />
+              <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen" i18n:attributes="title" />
               <div style="margin-top: 5px" i18n:translate="">Einstellungen</div>
             </div>
           </div>
