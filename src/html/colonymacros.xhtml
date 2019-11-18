@@ -947,9 +947,9 @@
   <div tal:attributes="class COLONY_SURFACE/getSurfaceTileCssClass">
     <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
       <tal:block tal:condition="not:field/hasBuilding">
-        <div tal:condition="not:field/getTerraformingId" style="${style}" tal:attributes="class field/getCssClass"><div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img onmouseover="fieldMouseOver(this,${field/getFieldId},0,${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" /></div></div></div>
+        <div tal:condition="not:field/getTerraforming" style="${style}" tal:attributes="class field/getCssClass"><div style="width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img onmouseover="fieldMouseOver(this,${field/getFieldId},0,${field/getFieldType})" onmouseout="fieldMouseOut(this,${field/getFieldType})" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" /></div></div></div>
         </div>
-        <div tal:condition="field/getTerraformingId" style="${style};" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img class="action" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/terraform/${field/getTerraformingId}/${COLONY_SURFACE/getDayNightState}.png" /></div></div></div>
+        <div tal:condition="field/getTerraforming" style="${style};" tal:attributes="class field/getCssClass"><div style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;" onclick="fieldMouseClick(this,${field/getFieldId},0);" id="field${field/getFieldId}"><div><div><img class="action" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/terraform/${field/getTerraforming/getId}/${COLONY_SURFACE/getDayNightState}.png" /></div></div></div>
         </div>
       </tal:block>
       <tal:block tal:condition="field/hasBuilding">
@@ -1108,7 +1108,7 @@
           </div>
         </div>
         <div tal:condition="not:FIELD/hasBuilding">
-          <tal:block tal:condition="FIELD/getTerraformingId">
+          <tal:block tal:condition="FIELD/getTerraforming">
             <table class="use" style="width: 250px;">
               <tr>
                 <th colspan="3" style="text-align: center;">
@@ -1133,7 +1133,7 @@
               </tr>
             </table>
           </tal:block>
-          <tal:block tal:condition="not:FIELD/getTerraformingId">
+          <tal:block tal:condition="not:FIELD/getTerraforming">
             <div tal:condition="FIELD/getTerraformingOptions">
               <table class="use" style="width: 250px;" tal:repeat="data FIELD/getTerraformingOptions">
                 <tr>
