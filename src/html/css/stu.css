@@ -798,7 +798,7 @@ div.navigation_item:hover {
 
 div.header_box {
     font-size: 75%;
-    height: 60px;
+    height: 70px;
     float: left;
     color: #9d9d9d;
 }
@@ -825,7 +825,7 @@ div.header_box_logout {
     float: right;
     background-color: #2d0000;
     text-align: center;
-    width: 60px;
+    width: 70px;
 }
 
 div.header_box_help {
@@ -833,7 +833,7 @@ div.header_box_help {
     padding: 5px;
     float: right;
     text-align: center;
-    width: 60px;
+    width: 70px;
 }
 
 div.header_box_settings {
