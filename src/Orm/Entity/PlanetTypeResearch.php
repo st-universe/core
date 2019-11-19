@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
+ * @Entity
  * @Table(
  *     name="stu_planet_type_research",
  *     indexes={
