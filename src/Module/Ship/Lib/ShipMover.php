@@ -10,7 +10,6 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
@@ -428,6 +427,8 @@ final class ShipMover implements ShipMoverInterface
                     );
 
                     $this->shipRemover->destroy($ship);
+
+                    break;
                 }
             }
         }
