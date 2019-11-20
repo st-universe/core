@@ -56,6 +56,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
             request::indInt('id'),
             $userId
         );
+        $game->setMacro('html/shipmacros.xhtml/entity_not_available');
 
         /**
          * @var TradePostInterface $tradepost
@@ -66,7 +67,7 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         }
 
         if (!$ship->canInteractWith($tradepost->getShip())) {
-            throw new AccessViolation();
+            return;
         }
 
         $game->showMacro('html/shipmacros.xhtml/trademenupayment');

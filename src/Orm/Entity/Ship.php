@@ -1268,17 +1268,17 @@ class Ship implements ShipInterface
     {
         $positionChecker = new PositionChecker();
         if ($this->getCloakState()) {
-            throw new AccessViolation();
+            return false;
         }
         if ($colony === true) {
             if (!$positionChecker->checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
-                new AccessViolation();
+                return false;
             }
             return true;
 
         } else {
             if (!$positionChecker->checkPosition($this, $target)) {
-                new AccessViolation();
+                return false;
             }
         }
         if ($target->getShieldState() && $target->getUserId() != $this->getUser()->getId()) {

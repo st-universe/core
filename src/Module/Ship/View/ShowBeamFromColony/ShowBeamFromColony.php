@@ -35,14 +35,15 @@ final class ShowBeamFromColony implements ViewControllerInterface
             $user->getId()
         );
 
+        $game->setPageTitle(_('Von Kolonie beamen'));
+        $game->setTemplateFile('html/ajaxwindow.xhtml');
+        $game->setMacro('html/shipmacros.xhtml/entity_not_available');
+
         $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
         if ($target === null || $ship->canInteractWith($target, true) === false) {
-            // @todo ships cant interact
             return;
         }
 
-        $game->setPageTitle(_('Von Kolonie beamen'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/show_ship_beamfrom_colony');
 
         $game->setTemplateVar('targetColony', $target);
