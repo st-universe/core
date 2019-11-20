@@ -115,7 +115,7 @@
         </a>
       </tal:block>
       <tal:block tal:condition="not:ship/getWarpState">
-        <a href="javascript:void(0);" onclick="showETransferWindow(${ship/getId})" onmouseover="cp('etr_${ship/getId}','buttons/e_trans2')" onmouseout="cp('etr_${ship/getId}','buttons/e_trans1')">
+        <a href="javascript:void(0);" tal:condition="not:ship/getIsDestroyed" onclick="showETransferWindow(${ship/getId})" onmouseover="cp('etr_${ship/getId}','buttons/e_trans2')" onmouseout="cp('etr_${ship/getId}','buttons/e_trans1')">
           <img src="assets/buttons/e_trans1.gif" name="etr_${ship/getId}" title="Energie zur ${nameWithoutMarkup} transferieren" />
         </a>
         <a href="javascript:void(0);" onclick="showBToWindow(${ship/getId})" onmouseover="cp('bto_${ship/getId}','buttons/b_down2')" onmouseout="cp('bto_${ship/getId}','buttons/b_down1')">

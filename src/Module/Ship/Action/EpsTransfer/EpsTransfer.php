@@ -70,6 +70,9 @@ final class EpsTransfer implements ActionControllerInterface
         if (!$ship->canInteractWith($target)) {
             return;
         }
+        if ($target->getIsDestroyed()) {
+            return;
+        }
         if ($target->getWarpState()) {
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
