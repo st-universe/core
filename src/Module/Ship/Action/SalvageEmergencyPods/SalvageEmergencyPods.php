@@ -10,6 +10,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -40,6 +41,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
