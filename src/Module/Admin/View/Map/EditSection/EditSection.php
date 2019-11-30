@@ -78,7 +78,8 @@ final class EditSection implements ViewControllerInterface
                 false
             );
         }
-        if ($xCoordinate + 1 <= MapEnum::MAP_MAX_X) {
+
+        if ($xCoordinate * self::FIELDS_PER_SECTION + 1 <= MapEnum::MAP_MAX_X) {
             $row = [];
             for ($i = $miny; $i <= $maxy; $i++) {
                 $row[] = new YRow($i, $maxx + 1, $maxx + 1);
