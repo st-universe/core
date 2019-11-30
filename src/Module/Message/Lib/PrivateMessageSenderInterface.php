@@ -2,8 +2,6 @@
 
 namespace Stu\Module\Message\Lib;
 
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-
 interface PrivateMessageSenderInterface
 {
     public function send(

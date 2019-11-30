@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Action\DeleteContacts;
 
-use Stu\Module\Message\Action\DeleteContacts\DeleteContactsRequestInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;

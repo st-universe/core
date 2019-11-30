@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Message\Lib\PrivateMessageListItemInterface;
 use Stu\Orm\Entity\ContactInterface;
 use Stu\Orm\Entity\PrivateMessageInterface;
 use Stu\Orm\Entity\UserInterface;

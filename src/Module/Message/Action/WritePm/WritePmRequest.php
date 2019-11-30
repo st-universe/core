@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\WritePm;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
-use Stu\Module\Message\Action\WritePm\WritePmRequestInterface;
 
 final class WritePmRequest implements WritePmRequestInterface
 {

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Lib;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;

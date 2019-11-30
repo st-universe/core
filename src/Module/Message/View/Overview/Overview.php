@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\Overview;
 
-use AccessViolation;
 use Stu\Module\Control\GameController;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;

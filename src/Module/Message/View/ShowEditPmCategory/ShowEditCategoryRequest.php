@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\View\ShowEditPmCategory;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
-use Stu\Module\Message\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
 
 final class ShowEditCategoryRequest implements ShowEditCategoryRequestInterface
 {

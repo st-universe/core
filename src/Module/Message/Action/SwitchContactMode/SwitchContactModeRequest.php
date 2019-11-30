@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\SwitchContactMode;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
-use Stu\Module\Message\Action\SwitchContactMode\SwitchContactModeRequestInterface;
 
 final class SwitchContactModeRequest implements SwitchContactModeRequestInterface
 {

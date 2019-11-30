@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\ShowWriteQuickPm;
 
-use Stu\Module\Message\View\ShowWriteQuickPm\ShowWriteQuickPmRequestInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;

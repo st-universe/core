@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\MovePm;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
-use Stu\Module\Message\Action\MovePm\MovePmRequestInterface;
 
 final class MovePmRequest implements MovePmRequestInterface
 {

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 
 class ColonyMenu

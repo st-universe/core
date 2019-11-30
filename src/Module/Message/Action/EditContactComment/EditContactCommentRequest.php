@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\EditContactComment;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
-use Stu\Module\Message\Action\EditContactComment\EditContactCommentRequestInterface;
 
 final class EditContactCommentRequest implements EditContactCommentRequestInterface
 {

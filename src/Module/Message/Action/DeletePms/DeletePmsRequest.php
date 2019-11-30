@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\DeletePms;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
-use Stu\Module\Message\Action\DeletePms\DeletePmsRequestInterface;
 
 final class DeletePmsRequest implements DeletePmsRequestInterface
 {

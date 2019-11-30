@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Message\Action\SortPmCategories;
 
 use AccessViolation;
-use Stu\Module\Message\Action\SortPmCategories\SortPmCategoriesRequestInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\View\Noop\Noop;

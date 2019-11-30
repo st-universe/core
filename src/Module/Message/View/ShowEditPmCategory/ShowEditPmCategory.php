@@ -7,7 +7,6 @@ namespace Stu\Module\Message\View\ShowEditPmCategory;
 use AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Message\View\ShowEditPmCategory\ShowEditCategoryRequestInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class ShowEditPmCategory implements ViewControllerInterface

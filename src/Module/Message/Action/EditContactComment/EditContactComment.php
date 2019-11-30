@@ -6,7 +6,6 @@ namespace Stu\Module\Message\Action\EditContactComment;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Action\EditContactComment\EditContactCommentRequestInterface;
 use Stu\Orm\Repository\ContactRepositoryInterface;
 
 final class EditContactComment implements ActionControllerInterface
