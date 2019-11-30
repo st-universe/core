@@ -18,7 +18,7 @@
     "ext-mysqli": "*",
     "ext-redis": "*",
     "ext-xsl": "*",
-    "php": "^7.3",
+    "php": "^7.4",
     "hassankhan/config": "^2.0",
     "mnsami/composer-custom-directory-installer": "^1.1",
     "scn/phptal": "^3.0",
@@ -51,7 +51,7 @@
   },
   "config": {
     "platform": {
-      "php": "7.3"
+      "php": "7.4"
     }
   },
   "scripts": {
