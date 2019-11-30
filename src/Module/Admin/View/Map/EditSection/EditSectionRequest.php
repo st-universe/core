@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\EditSection;
+namespace Stu\Module\Admin\View\Map\EditSection;
 
 use Stu\Component\Map\MapEnum;
 use Stu\Lib\Request\CustomControllerHelperTrait;

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\ShowSystem;
+namespace Stu\Module\Admin\View\Map\ShowSystem;
 
-use AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
@@ -28,9 +27,6 @@ final class ShowSystem implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolation();
-        }
         $system = $this->starSystemRepository->find($this->showSystemRequest->getSystemId());
 
         if ($system === null) {
@@ -42,11 +38,11 @@ final class ShowSystem implements ViewControllerInterface
             $fields[] = new YRow($value, 1, $system->getMaxX(), $system->getId());
         }
 
-        $game->setTemplateFile('html/mapeditor_system.xhtml');
-        $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
+        $game->setTemplateFile('html/admin/mapeditor_system.xhtml');
+        $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
-                'starmap.php?%s&sysid=%d',
+                '/admin/?%s=1&sysid=%d',
                 static::VIEW_IDENTIFIER,
                 $system->getId()
             ),

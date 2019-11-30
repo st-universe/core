@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\EditSection;
+namespace Stu\Module\Admin\View\Map\EditSection;
 
-use AccessViolation;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,7 +12,7 @@ use YRow;
 
 final class EditSection implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'EDIT_SECTION';
+    public const VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
     private const FIELDS_PER_SECTION = 20;
 
     private $editSectionRequest;
@@ -30,9 +29,6 @@ final class EditSection implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolation();
-        }
         $xCoordinate = $this->editSectionRequest->getXCoordinate();
         $yCoordinate = $this->editSectionRequest->getYCoordinate();
         $section_id = $this->editSectionRequest->getSectionId();
@@ -107,11 +103,11 @@ final class EditSection implements ViewControllerInterface
             $possibleFieldTypes['row_' . ($key % 6)][] = $value;
         }
 
-        $game->setTemplateFile('html/mapeditor_section.xhtml');
-        $game->appendNavigationPart('starmap.php', _('Sternenkarte'));
+        $game->setTemplateFile('html/admin/mapeditor_section.xhtml');
+        $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->appendNavigationPart(
             sprintf(
-                'starmap.php?SHOW_SECTION=1&x=%d&y=%d&sec=%d',
+                '/admin/?SHOW_EDIT_MAP_SECTION=1&x=%d&y=%d&sec=%d',
                 $xCoordinate,
                 $yCoordinate,
                 $section_id

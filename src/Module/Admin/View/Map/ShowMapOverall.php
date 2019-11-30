@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\ShowOverall;
+namespace Stu\Module\Admin\View\Map;
 
-use AccessViolation;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,9 +12,9 @@ use Stu\Orm\Repository\MapBorderTypeRepositoryInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
-final class ShowOverall implements ViewControllerInterface
+final class ShowMapOverall implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_OVERALL';
+    public const VIEW_IDENTIFIER = 'SHOW_MAP_OVERALL';
 
     private $mapBorderTypeRepository;
 
@@ -39,9 +38,6 @@ final class ShowOverall implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolation();
-        }
         $types = [];
         $img = imagecreatetruecolor(MapEnum::MAP_MAX_X * 15, MapEnum::MAP_MAX_Y * 15);
 

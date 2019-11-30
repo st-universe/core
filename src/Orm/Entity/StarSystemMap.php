@@ -105,6 +105,6 @@ class StarSystemMap implements StarSystemMapInterface
 
     public function getFieldStyle(): string
     {
-        return "background-image: url('assets/map/" . $this->getFieldId() . ".gif');";
+        return "background-image: url('/assets/map/" . $this->getFieldId() . ".gif');";
     }
 }

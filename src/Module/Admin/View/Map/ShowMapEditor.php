@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\ShowEditor;
+namespace Stu\Module\Admin\View\Map;
 
-use AccessViolation;
 use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
-final class ShowEditor implements ViewControllerInterface
+final class ShowMapEditor implements ViewControllerInterface
 {
     private const FIELDS_PER_SECTION = 20;
-    public const VIEW_IDENTIFIER = 'SHOW_EDITOR';
+    public const VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
 
     private $starSystemRepository;
 
@@ -25,11 +24,8 @@ final class ShowEditor implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolation();
-        }
-        $game->setTemplateFile('html/mapeditor_overview.xhtml');
-        $game->appendNavigationPart('starmap.php?SHOW_EDITOR=1', _('Karteneditor'));
+        $game->setTemplateFile('html/admin/mapeditor_overview.xhtml');
+        $game->appendNavigationPart('/admin/?SHOW_MAP_EDITOR=1', _('Karteneditor'));
         $game->setPageTitle(_('Karteneditor'));
 
         $xHeadRow = [];

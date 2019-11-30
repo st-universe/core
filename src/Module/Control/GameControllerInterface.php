@@ -79,8 +79,6 @@ interface GameControllerInterface
 
     public function getMoonColonyCount(): int;
 
-    public function isAdmin(): bool;
-
     public function checkDatabaseItem($databaseEntryId): void;
 
     public function getAchievements(): array;

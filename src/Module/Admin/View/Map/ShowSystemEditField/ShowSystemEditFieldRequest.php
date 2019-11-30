@@ -2,21 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\Action\EditField;
+namespace Stu\Module\Admin\View\Map\ShowSystemEditField;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class EditFieldRequest implements EditFieldRequestInterface
+final class ShowSystemEditFieldRequest implements ShowSystemEditFieldRequestInterface
 {
     use CustomControllerHelperTrait;
 
     public function getFieldId(): int
     {
         return $this->queryParameter('field')->int()->required();
-    }
-
-    public function getFieldType(): int
-    {
-        return $this->queryParameter('type')->int()->required();
     }
 }

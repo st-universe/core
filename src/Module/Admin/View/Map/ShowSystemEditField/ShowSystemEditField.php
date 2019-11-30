@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\ShowSystemEditField;
+namespace Stu\Module\Admin\View\Map\ShowSystemEditField;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -14,11 +14,11 @@ final class ShowSystemEditField implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SYSTEM_EDITFIELD';
 
-    private $showSystemEditFieldRequest;
+    private ShowSystemEditFieldRequestInterface $showSystemEditFieldRequest;
 
-    private $mapFieldTypeRepository;
+    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
-    private $starSystemMapRepository;
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
     public function __construct(
         ShowSystemEditFieldRequestInterface $showSystemEditFieldRequest,
@@ -44,8 +44,8 @@ final class ShowSystemEditField implements ViewControllerInterface
         $field = $this->starSystemMapRepository->find($this->showSystemEditFieldRequest->getFieldId());
 
         $game->setPageTitle(_('Feld wählen'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/macros.xhtml/mapeditor_system_fieldselector');
+        $game->setTemplateFile('html/admin/ajaxwindow.xhtml');
+        $game->setMacro('../html/admin/mapeditor_macros.xhtml/mapeditor_system_fieldselector');
         $game->setTemplateVar('POSSIBLE_FIELD_TYPES', $possibleFieldTypes);
         $game->setTemplateVar('SELECTED_MAP_FIELD', $field);
     }

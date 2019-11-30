@@ -76,7 +76,7 @@ final class GameController implements GameControllerInterface
 
     private $pagetitle = '';
 
-    private $macro = '';
+    private string $macro = '';
 
     private $execjs = [];
 
@@ -372,7 +372,7 @@ final class GameController implements GameControllerInterface
 
     public function isDebugMode(): bool
     {
-        return $this->isAdmin() && $this->config->get('debug.debug_mode');
+        return in_array($this->getUser()->getId(), [101]) && $this->config->get('debug.debug_mode');
     }
 
     public function getJavascriptPath(): string
@@ -398,11 +398,6 @@ final class GameController implements GameControllerInterface
     public function getMoonColonyCount(): int
     {
         return $this->colonyRepository->getAmountByUser($this->getUser()->getId(), true);
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->getUser()->isAdmin();
     }
 
     public function checkDatabaseItem($databaseEntryId): void

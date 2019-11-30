@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Starmap\View\ShowSystemEditField;
+namespace Stu\Module\Admin\View\Map\ShowSystemEditField;
 
 interface ShowSystemEditFieldRequestInterface
 {

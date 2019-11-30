@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\Action\EditSystemField;
+namespace Stu\Module\Admin\Action\Map\EditSystemField;
 
-use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Starmap\View\Noop\Noop;
+use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -16,11 +15,11 @@ final class EditSystemField implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_EDIT_SYSTEM_FIELD';
 
-    private $editSystemFieldRequest;
+    private EditSystemFieldRequestInterface $editSystemFieldRequest;
 
-    private $mapFieldTypeRepository;
+    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
-    private $starSystemMapRepository;
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
     public function __construct(
         EditSystemFieldRequestInterface $editSystemFieldRequest,
@@ -34,9 +33,6 @@ final class EditSystemField implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolation();
-        }
         /** @var StarSystemMapInterface $selectedField */
         $selectedField = $this->starSystemMapRepository->find($this->editSystemFieldRequest->getFieldId());
         $type = $this->mapFieldTypeRepository->find($this->editSystemFieldRequest->getFieldType());

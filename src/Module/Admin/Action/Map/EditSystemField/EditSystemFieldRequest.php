@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\Action\EditSystemField;
+namespace Stu\Module\Admin\Action\Map\EditSystemField;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 

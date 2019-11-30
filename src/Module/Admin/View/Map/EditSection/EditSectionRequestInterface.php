@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Starmap\View\EditSection;
+namespace Stu\Module\Admin\View\Map\EditSection;
 
 interface EditSectionRequestInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Starmap\View\ShowSystem;
+namespace Stu\Module\Admin\View\Map\ShowSystem;
 
 interface ShowSystemRequestInterface
 {

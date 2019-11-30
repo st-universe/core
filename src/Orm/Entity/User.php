@@ -455,11 +455,6 @@ class User implements UserInterface
         return $contact !== null && $contact->isFriendly();
     }
 
-    public function isAdmin(): bool
-    {
-        return in_array($this->getId(), [101]);
-    }
-
     public function getSessionDataUnserialized(): array
     {
         if ($this->sessiondataUnserialized === null) {

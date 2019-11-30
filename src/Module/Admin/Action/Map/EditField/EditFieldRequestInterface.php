@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\Action\EditField;
+namespace Stu\Module\Admin\Action\Map\EditField;
 
 interface EditFieldRequestInterface
 {

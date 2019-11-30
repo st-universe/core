@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\ShowSystem;
+namespace Stu\Module\Admin\View\Map\ShowSystem;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 

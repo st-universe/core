@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\View\Noop;
+namespace Stu\Module\Admin\View\Map\Noop;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -13,6 +13,6 @@ final class Noop implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->showMacro('html/sitemacros.xhtml/noop');
+        $game->showMacro('../html/sitemacros.xhtml/noop');
     }
 }

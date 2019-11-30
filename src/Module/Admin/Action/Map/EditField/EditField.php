@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Starmap\Action\EditField;
+namespace Stu\Module\Admin\Action\Map\EditField;
 
-use AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Starmap\View\Noop\Noop;
+use Stu\Module\Admin\View\Map\Noop\Noop;
 use Stu\Orm\Repository\MapFieldTypeRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -33,9 +32,6 @@ final class EditField implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if (!$game->isAdmin()) {
-            throw new AccessViolation();
-        }
         $selectedField = $this->mapRepository->find($this->editFieldRequest->getFieldId());
 
         if ($selectedField === null) {

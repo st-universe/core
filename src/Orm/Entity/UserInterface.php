@@ -111,8 +111,6 @@ interface UserInterface
 
     public function isFriend($userId): bool;
 
-    public function isAdmin(): bool;
-
     public function getSessionDataUnserialized(): array;
 
     public function isContactable(): bool;
