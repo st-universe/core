@@ -389,7 +389,7 @@ class User implements UserInterface
         $config = $container->get(ConfigInterface::class);
 
         return sprintf(
-            '%s/%s.png',
+            '/%s/%s.png',
             $config->get('game.user_avatar_path'),
             $this->getAvatar()
         );
