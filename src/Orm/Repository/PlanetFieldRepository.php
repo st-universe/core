@@ -63,7 +63,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc < 0
-                ) AND f.aktiv = :state',
+                ) AND f.aktiv IN (:state)',
                 PlanetField::class,
                 Building::class
             )
@@ -123,14 +123,14 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getCommodityConsumingByColonyAndCommodity(
         int $colonyId,
         int $commodityId,
-        array $state = [0 ,1],
+        array $state = [0, 1],
         ?int $limit = null
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count < 0
-                ) AND f.aktiv = :state',
+                ) AND f.aktiv IN (:state)',
                 PlanetField::class,
                 BuildingGood::class
             )
