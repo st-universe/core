@@ -12,9 +12,9 @@ final class PlayerDeletion implements PlayerDeletionInterface
 {
     public const USER_IDLE_TIME = 120960000;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $deletionHandler;
+    private array $deletionHandler;
 
     /**
      * @param UserRepositoryInterface $userRepository

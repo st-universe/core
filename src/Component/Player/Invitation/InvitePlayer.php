@@ -11,7 +11,7 @@ use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 
 final class InvitePlayer implements InvitePlayerInterface
 {
-    private $userInvitationRepository;
+    private UserInvitationRepositoryInterface $userInvitationRepository;
 
     public function __construct(
         UserInvitationRepositoryInterface $userInvitationRepository

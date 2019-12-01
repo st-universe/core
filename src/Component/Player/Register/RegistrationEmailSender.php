@@ -12,7 +12,7 @@ use Zend\Mail\Transport\Sendmail;
 
 final class RegistrationEmailSender implements RegistrationEmailSenderInterface
 {
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         ConfigInterface $config

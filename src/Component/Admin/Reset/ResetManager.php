@@ -14,19 +14,19 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ResetManager implements ResetManagerInterface
 {
-    private $playerDeletion;
+    private PlayerDeletionInterface $playerDeletion;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $historyRepository;
+    private HistoryRepositoryInterface $historyRepository;
 
-    private $gameTurnRepository;
+    private GameTurnRepositoryInterface $gameTurnRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     public function __construct(
         PlayerDeletionInterface $playerDeletion,

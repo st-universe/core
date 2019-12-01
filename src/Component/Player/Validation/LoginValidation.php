@@ -8,7 +8,7 @@ use Stu\Orm\Entity\UserInterface;
 
 final class LoginValidation implements LoginValidationInterface
 {
-    private $validators;
+    private array $validators;
 
     /**
      * @param PlayerValidationInterface[] $validators

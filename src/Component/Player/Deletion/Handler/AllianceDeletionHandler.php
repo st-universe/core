@@ -11,9 +11,9 @@ use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
 final class AllianceDeletionHandler implements PlayerDeletionHandlerInteface
 {
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,

@@ -11,9 +11,9 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class KnPostDeletionHandler implements PlayerDeletionHandlerInteface
 {
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         KnPostRepositoryInterface $knPostRepository,

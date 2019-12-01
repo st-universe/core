@@ -17,17 +17,17 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerCreator implements PlayerCreatorInterface
 {
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $playerDefaultsCreator;
+    private PlayerDefaultsCreatorInterface $playerDefaultsCreator;
 
-    private $registrationEmailSender;
+    private RegistrationEmailSenderInterface $registrationEmailSender;
 
-    private $userInvitationRepository;
+    private UserInvitationRepositoryInterface $userInvitationRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
-    private $passwordGenerator;
+    private PasswordGeneratorInterface $passwordGenerator;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

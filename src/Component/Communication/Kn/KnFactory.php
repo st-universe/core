@@ -11,9 +11,9 @@ use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
 final class KnFactory implements KnFactoryInterface {
 
-    private $bbcodeParser;
+    private Parser $bbcodeParser;
 
-    private $knCommentRepository;
+    private KnCommentRepositoryInterface $knCommentRepository;
 
     public function __construct(
         Parser $bbcodeParser,

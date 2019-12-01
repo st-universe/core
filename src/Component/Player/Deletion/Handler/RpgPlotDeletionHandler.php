@@ -12,11 +12,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInteface
 {
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,

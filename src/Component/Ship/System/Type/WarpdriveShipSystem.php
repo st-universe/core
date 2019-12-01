@@ -10,7 +10,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class WarpdriveShipSystem implements ShipSystemTypeInterface
 {
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository

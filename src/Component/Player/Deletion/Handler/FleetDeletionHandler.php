@@ -9,7 +9,7 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class FleetDeletionHandler implements PlayerDeletionHandlerInteface
 {
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
     public function __construct(
         FleetRepositoryInterface $fleetRepository

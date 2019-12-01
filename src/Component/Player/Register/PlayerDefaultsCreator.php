@@ -11,9 +11,9 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class PlayerDefaultsCreator implements PlayerDefaultsCreatorInterface
 {
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,

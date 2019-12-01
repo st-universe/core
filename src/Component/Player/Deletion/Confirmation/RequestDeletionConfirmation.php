@@ -14,9 +14,9 @@ use Zend\Mail\Transport\Sendmail;
 
 final class RequestDeletionConfirmation implements RequestDeletionConfirmationInterface
 {
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

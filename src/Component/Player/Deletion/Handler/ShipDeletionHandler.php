@@ -10,9 +10,9 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipDeletionHandler implements PlayerDeletionHandlerInteface
 {
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipRemoverInterface $shipRemover,

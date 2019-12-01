@@ -12,11 +12,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class UserDeletionHandler implements PlayerDeletionHandlerInteface
 {
 
-    private $sessionStringRepository;
+    private SessionStringRepositoryInterface $sessionStringRepository;
 
-    private $userProfileVisitorRepository;
+    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         SessionStringRepositoryInterface $sessionStringRepository,

@@ -19,7 +19,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     /**
      * @var ShipSystemTypeInterface[]
      */
-    private $systemList;
+    private array $systemList;
 
     public function __construct(
         array $systemList

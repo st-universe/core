@@ -16,13 +16,13 @@ use Usox\IpIntel\IpIntelInterface;
 
 final class IpIntelValidator implements PlayerValidationInterface
 {
-    private $ipIntel;
+    private IpIntelInterface $ipIntel;
 
-    private $userIpTableRepository;
+    private UserIpTableRepositoryInterface $userIpTableRepository;
 
-    private $userTagRepository;
+    private UserTagRepositoryInterface $userTagRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         IpIntelInterface $ipIntel,

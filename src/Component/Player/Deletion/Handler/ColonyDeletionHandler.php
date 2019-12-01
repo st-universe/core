@@ -10,9 +10,9 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ColonyDeletionHandler implements PlayerDeletionHandlerInteface
 {
-    private $colonyResetter;
+    private ColonyResetterInterface $colonyResetter;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyResetterInterface $colonyResetter,
