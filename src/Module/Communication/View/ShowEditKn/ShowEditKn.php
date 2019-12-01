@@ -16,11 +16,11 @@ final class ShowEditKn implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'EDIT_KN';
 
-    private $showEditKnRequest;
+    private ShowEditKnRequestInterface $showEditKnRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         ShowEditKnRequestInterface $showEditKnRequest,

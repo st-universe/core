@@ -25,25 +25,25 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_START_AIRFIELD_SHIP';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $buildplanHangarRepository;
+    private BuildplanHangarRepositoryInterface $buildplanHangarRepository;
 
-    private $crewCreator;
+    private CrewCreatorInterface $crewCreator;
 
-    private $shipCreator;
+    private ShipCreatorInterface $shipCreator;
 
-    private $colonyStorageRepository;
+    private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

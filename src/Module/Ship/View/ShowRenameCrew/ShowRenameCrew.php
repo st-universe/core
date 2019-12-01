@@ -13,7 +13,7 @@ final class ShowRenameCrew implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_RENAME_CREW';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

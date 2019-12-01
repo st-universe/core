@@ -36,61 +36,61 @@ final class GameController implements GameControllerInterface
 {
     public const DEFAULT_VIEW = 'DEFAULT_VIEW';
 
-    private $session;
+    private SessionInterface $session;
 
-    private $sessionStringRepository;
+    private SessionStringRepositoryInterface $sessionStringRepository;
 
-    private $talPage;
+    private TalPageInterface $talPage;
 
-    private $databaseUserRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
-    private $gameTurnRepository;
+    private GameTurnRepositoryInterface $gameTurnRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $gameConfigRepository;
+    private GameConfigRepositoryInterface $gameConfigRepository;
 
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $researchRepository;
+    private ResearchRepositoryInterface $researchRepository;
 
-    private $benchmark;
+    private Ubench $benchmark;
 
-    private $createDatabaseEntry;
+    private CreateDatabaseEntryInterface $createDatabaseEntry;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $gameInformations = [];
+    private array $gameInformations = [];
 
-    private $siteNavigation = [];
+    private array $siteNavigation = [];
 
-    private $pagetitle = '';
+    private string $pagetitle = '';
 
     private string $macro = '';
 
-    private $execjs = [];
+    private array $execjs = [];
 
     private $currentRound;
 
-    private $achievements = [];
+    private array $achievements = [];
 
     private $playercount;
 
-    private $viewContext = [];
+    private array $viewContext = [];
 
     private $gameStats;
 
-    private $loginError = '';
+    private string $loginError = '';
 
     public function __construct(
         SessionInterface $session,

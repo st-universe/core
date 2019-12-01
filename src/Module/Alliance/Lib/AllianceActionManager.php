@@ -19,21 +19,21 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class AllianceActionManager implements AllianceActionManagerInterface
 {
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
-    private $dockingPrivilegeRepository;
+    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
 
-    private $privateMessageSender;
+    private \Stu\Module\Message\Lib\PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,

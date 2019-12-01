@@ -13,11 +13,11 @@ final class DeletePmCategory implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_PMCATEGORY';
 
-    private $deletePmCategoryRequest;
+    private DeletePmCategoryRequestInterface $deletePmCategoryRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
     public function __construct(
         DeletePmCategoryRequestInterface $deletePmCategoryRequest,

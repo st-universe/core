@@ -14,11 +14,11 @@ final class RequestInvitationToken implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_REQUEST_INVITATION_TOKEN';
 
-    private $invitationRepository;
+    private UserInvitationRepositoryInterface $invitationRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
-    private $invitePlayer;
+    private InvitePlayerInterface $invitePlayer;
 
     public function __construct(
         UserInvitationRepositoryInterface $invitationRepository,

@@ -13,11 +13,11 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseCategoryTalFactory implements DatabaseCategoryTalFactoryInterface
 {
-    private $databaseUserRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
 
-    private $starSystemRepository;
+    private StarSystemRepositoryInterface $starSystemRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,

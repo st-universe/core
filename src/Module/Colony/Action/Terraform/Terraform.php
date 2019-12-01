@@ -21,17 +21,17 @@ final class Terraform implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_TERRAFORM';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $terraformingRepository;
+    private TerraformingRepositoryInterface $terraformingRepository;
 
-    private $colonyTerraformingRepository;
+    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

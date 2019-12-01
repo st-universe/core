@@ -22,17 +22,17 @@ final class CreateModules implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CREATE_MODULES';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $moduleBuildingFunctionRepository;
+    private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository;
 
-    private $moduleQueueRepository;
+    private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

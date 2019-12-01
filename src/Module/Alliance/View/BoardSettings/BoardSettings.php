@@ -13,9 +13,9 @@ final class BoardSettings implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BOARD_SETTINGS';
 
-    private $boardSettingsRequest;
+    private BoardSettingsRequestInterface $boardSettingsRequest;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
     public function __construct(
         BoardSettingsRequestInterface $boardSettingsRequest,

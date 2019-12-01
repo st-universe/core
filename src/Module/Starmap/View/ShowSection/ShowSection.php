@@ -14,7 +14,7 @@ final class ShowSection implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_SECTION';
     private const FIELDS_PER_SECTION = 20;
 
-    private $showSectionRequest;
+    private ShowSectionRequestInterface $showSectionRequest;
 
     public function __construct(
         ShowSectionRequestInterface $showSectionRequest

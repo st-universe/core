@@ -14,9 +14,9 @@ final class Login implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_LOGIN';
 
-    private $loginRequest;
+    private LoginRequestInterface $loginRequest;
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         LoginRequestInterface $loginRequest,

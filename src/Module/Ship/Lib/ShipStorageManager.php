@@ -10,7 +10,7 @@ use Stu\Orm\Repository\ShipStorageRepositoryInterface;
 
 final class ShipStorageManager implements ShipStorageManagerInterface
 {
-    private $shipStorageRepository;
+    private ShipStorageRepositoryInterface $shipStorageRepository;
 
     public function __construct(
         ShipStorageRepositoryInterface $shipStorageRepository

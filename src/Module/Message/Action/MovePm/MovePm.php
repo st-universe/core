@@ -13,11 +13,11 @@ final class MovePm implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MOVE_PM';
 
-    private $movePmRequest;
+    private MovePmRequestInterface $movePmRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
     public function __construct(
         MovePmRequestInterface $movePmRequest,

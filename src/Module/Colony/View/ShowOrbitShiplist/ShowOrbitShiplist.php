@@ -15,9 +15,9 @@ final class ShowOrbitShiplist implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ORBIT_SHIPLIST';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showOrbitShiplistRequest;
+    private ShowOrbitShiplistRequestInterface $showOrbitShiplistRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

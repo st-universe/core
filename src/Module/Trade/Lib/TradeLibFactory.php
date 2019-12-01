@@ -14,17 +14,17 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradeLibFactory implements TradeLibFactoryInterface
 {
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeTransferRepository;
+    private TradeTransferRepositoryInterface $tradeTransferRepository;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,

@@ -14,11 +14,11 @@ final class ShowModuleCancel implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MODULE_CANCEL';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showModuleCancelRequest;
+    private ShowModuleCancelRequestInterface $showModuleCancelRequest;
 
-    private $moduleQueueRepository;
+    private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

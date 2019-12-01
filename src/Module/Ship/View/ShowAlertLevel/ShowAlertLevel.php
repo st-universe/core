@@ -13,7 +13,7 @@ final class ShowAlertLevel implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ALVL';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

@@ -9,9 +9,9 @@ use Stu\Orm\Entity\UserInterface;
 
 final class TradeOfferItem implements TradeOfferItemInterface
 {
-    private $tradeOffer;
+    private TradeOfferInterface $tradeOffer;
 
-    private $currentUser;
+    private UserInterface $currentUser;
 
     public function __construct(
         TradeOfferInterface $tradeOffer,

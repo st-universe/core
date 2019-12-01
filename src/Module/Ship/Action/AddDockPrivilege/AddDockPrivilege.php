@@ -20,15 +20,15 @@ final class AddDockPrivilege implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_DOCKPRIVILEGE';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $factionRepository;
+    private FactionRepositoryInterface $factionRepository;
 
-    private $dockingPrivilegeRepository;
+    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

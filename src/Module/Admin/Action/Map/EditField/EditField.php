@@ -14,11 +14,11 @@ final class EditField implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_EDIT_FIELD';
 
-    private $editFieldRequest;
+    private EditFieldRequestInterface $editFieldRequest;
 
-    private $mapFieldTypeRepository;
+    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
-    private $mapRepository;
+    private MapRepositoryInterface $mapRepository;
 
     public function __construct(
         EditFieldRequestInterface $editFieldRequest,

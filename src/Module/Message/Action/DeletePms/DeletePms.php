@@ -12,9 +12,9 @@ final class DeletePms implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_PMS';
 
-    private $deletePmsRequest;
+    private DeletePmsRequestInterface $deletePmsRequest;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
     public function __construct(
         DeletePmsRequestInterface $deletePmsRequest,

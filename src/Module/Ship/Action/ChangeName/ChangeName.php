@@ -16,13 +16,13 @@ final class ChangeName implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $bbCodeParser;
+    private Parser $bbCodeParser;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $changeNameRequest;
+    private ChangeNameRequestInterface $changeNameRequest;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

@@ -13,7 +13,7 @@ final class ShowColonyList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONYLIST';
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyRepositoryInterface $colonyRepository

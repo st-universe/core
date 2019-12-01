@@ -16,17 +16,17 @@ use Stu\Orm\Repository\TradeTransferRepositoryInterface;
 
 final class TradeAccountTal implements TradeAccountTalInterface
 {
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeTransferRepository;
+    private TradeTransferRepositoryInterface $tradeTransferRepository;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
-    private $tradePost;
+    private TradePostInterface $tradePost;
 
-    private $userId;
+    private int $userId;
 
     private $storage;
 

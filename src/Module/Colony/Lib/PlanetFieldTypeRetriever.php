@@ -14,9 +14,9 @@ final class PlanetFieldTypeRetriever implements PlanetFieldTypeRetrieverInterfac
 
     private const CACHE_TTL = 86400;
 
-    private $cache;
+    private CacheItemPoolInterface $cache;
 
-    private $planetFieldTypeRepository;
+    private PlanetFieldTypeRepositoryInterface $planetFieldTypeRepository;
 
     public function __construct(
         CacheItemPoolInterface $cache,

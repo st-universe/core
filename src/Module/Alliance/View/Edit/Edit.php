@@ -13,7 +13,7 @@ final class Edit implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'EDIT_ALLIANCE';
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager

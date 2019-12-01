@@ -19,17 +19,17 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU_CHOOSE_PAYMENT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

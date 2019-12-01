@@ -12,9 +12,9 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class CancelResearch extends Action
 {
-    private $session;
+    private SessionInterface $session;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
     public function __construct(
         SessionInterface $session,

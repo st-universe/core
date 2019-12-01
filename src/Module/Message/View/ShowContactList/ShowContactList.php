@@ -11,7 +11,7 @@ use Stu\Orm\Repository\ContactRepositoryInterface;
 final class ShowContactList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_CONTACTLIST';
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
     public function __construct(
         ContactRepositoryInterface $contactRepository

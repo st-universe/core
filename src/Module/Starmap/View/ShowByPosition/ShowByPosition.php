@@ -14,7 +14,7 @@ final class ShowByPosition implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_STARMAP_POSITION';
     private const FIELDS_PER_SECTION = 20;
 
-    private $showByPositionRequest;
+    private ShowByPositionRequestInterface $showByPositionRequest;
 
     public function __construct(
         ShowByPositionRequestInterface $showByPositionRequest

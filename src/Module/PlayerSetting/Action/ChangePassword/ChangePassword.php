@@ -12,9 +12,9 @@ final class ChangePassword implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_PASSWORD';
 
-    private $changePasswordRequest;
+    private ChangePasswordRequestInterface $changePasswordRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ChangePasswordRequestInterface $changePasswordRequest,

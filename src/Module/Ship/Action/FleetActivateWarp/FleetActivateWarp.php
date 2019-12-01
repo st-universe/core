@@ -20,11 +20,11 @@ final class FleetActivateWarp implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FLEET_ACTIVATE_WARP';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

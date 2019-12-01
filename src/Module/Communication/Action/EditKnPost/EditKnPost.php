@@ -18,13 +18,13 @@ final class EditKnPost implements ActionControllerInterface
 
     public const EDIT_TIME = 600;
 
-    private $editKnPostRequest;
+    private EditKnPostRequestInterface $editKnPostRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         EditKnPostRequestInterface $editKnPostRequest,

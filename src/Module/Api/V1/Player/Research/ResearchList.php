@@ -14,9 +14,9 @@ use Stu\Orm\Entity\ResearchInterface;
 
 final class ResearchList extends Action
 {
-    private $session;
+    private SessionInterface $session;
 
-    private $techlistRetriever;
+    private TechlistRetrieverInterface $techlistRetriever;
 
     public function __construct(
         SessionInterface $session,

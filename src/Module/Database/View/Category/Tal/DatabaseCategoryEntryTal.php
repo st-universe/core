@@ -14,15 +14,15 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
 {
-    private $databaseUserRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
 
-    private $databaseEntry;
+    private DatabaseEntryInterface $databaseEntry;
 
-    private $starSystemRepository;
+    private StarSystemRepositoryInterface $starSystemRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $user;
+    private UserInterface $user;
 
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository,
@@ -43,7 +43,7 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
     /**
      * @var DatabaseUserInterface|null
      */
-    private $userDiscovery;
+    private ?DatabaseUserInterface $userDiscovery;
 
     /**
      * @todo Refactor this

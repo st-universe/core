@@ -11,7 +11,7 @@ final class EntryCreator implements EntryCreatorInterface
 {
     public const HISTORY_ALLIANCE = 3;
     public const HISTORY_SHIP = 1;
-    private $historyRepository;
+    private HistoryRepositoryInterface $historyRepository;
 
     public function __construct(
         HistoryRepositoryInterface $historyRepository

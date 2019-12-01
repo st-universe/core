@@ -14,13 +14,13 @@ final class ShowEpsBar implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_EPSBAR_AJAX';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showEpsBarRequest;
+    private ShowEpsBarRequestInterface $showEpsBarRequest;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

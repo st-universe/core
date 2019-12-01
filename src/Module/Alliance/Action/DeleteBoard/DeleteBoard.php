@@ -16,9 +16,9 @@ final class DeleteBoard implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_DELETE_BOARD';
 
-    private $deleteBoardRequest;
+    private DeleteBoardRequestInterface $deleteBoardRequest;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
     public function __construct(
         DeleteBoardRequestInterface $deleteBoardRequest,

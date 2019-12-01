@@ -20,15 +20,15 @@ final class RepairShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_REPAIR_SHIP';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyShipRepairRepository;
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
-    private $shipRumpBuildingFunctionRepository;
+    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

@@ -12,7 +12,7 @@ final class DeleteAllIgnores implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_ALL_IGNORES';
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
     public function __construct(
         IgnoreListRepositoryInterface $ignoreListRepository

@@ -19,15 +19,15 @@ final class ShowShipyard implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SHIPYARD';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showShipyardRequest;
+    private ShowShipyardRequestInterface $showShipyardRequest;
 
-    private $buildingFunctionRepository;
+    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

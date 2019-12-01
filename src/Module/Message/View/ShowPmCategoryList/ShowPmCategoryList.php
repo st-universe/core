@@ -12,7 +12,7 @@ final class ShowPmCategoryList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_CAT_LIST';
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository

@@ -14,7 +14,7 @@ final class ShowRegionInfo implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_REGION_INFO';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

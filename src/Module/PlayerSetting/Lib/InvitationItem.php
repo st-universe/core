@@ -10,9 +10,9 @@ use Stu\Orm\Entity\UserInvitationInterface;
 
 final class InvitationItem implements InvitationItemInterface
 {
-    private $config;
+    private ConfigInterface $config;
 
-    private $userInvitation;
+    private UserInvitationInterface $userInvitation;
 
     public function __construct(
         ConfigInterface $config,

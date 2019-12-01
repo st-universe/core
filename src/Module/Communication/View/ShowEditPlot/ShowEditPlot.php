@@ -14,9 +14,9 @@ final class ShowEditPlot implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_EDIT_PLOT';
 
-    private $showEditPlotRequest;
+    private ShowEditPlotRequestInterface $showEditPlotRequest;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         ShowEditPlotRequestInterface $showEditPlotRequest,

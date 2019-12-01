@@ -21,15 +21,15 @@ final class DeactivateBuildings implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_MULTIPLE_DEACTIVATION';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $buildingAction;
+    private BuildingActionInterface $buildingAction;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $buildingMassActionConfiguration;
+    private BuildingMassActionConfigurationInterface $buildingMassActionConfiguration;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

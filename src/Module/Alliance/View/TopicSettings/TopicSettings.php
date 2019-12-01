@@ -13,9 +13,9 @@ final class TopicSettings implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TOPIC_SETTINGS';
 
-    private $topicSettingsRequest;
+    private TopicSettingsRequestInterface $topicSettingsRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         TopicSettingsRequestInterface $topicSettingsRequest,

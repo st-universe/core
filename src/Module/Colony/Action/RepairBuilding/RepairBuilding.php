@@ -17,13 +17,13 @@ final class RepairBuilding implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_REPAIR';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

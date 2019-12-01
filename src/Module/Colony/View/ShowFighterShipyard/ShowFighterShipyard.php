@@ -17,13 +17,13 @@ final class ShowFighterShipyard implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_FIGHTER_SHIPYARD';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showFighterShipyardRequest;
+    private ShowFighterShipyardRequestInterface $showFighterShipyardRequest;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

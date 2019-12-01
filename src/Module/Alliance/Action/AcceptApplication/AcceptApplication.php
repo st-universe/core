@@ -17,15 +17,15 @@ final class AcceptApplication implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ACCEPT_APPLICATION';
 
-    private $acceptApplicationRequest;
+    private AcceptApplicationRequestInterface $acceptApplicationRequest;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AcceptApplicationRequestInterface $acceptApplicationRequest,

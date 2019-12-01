@@ -18,11 +18,11 @@ final class CreatePost implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_CREATE_POSTING';
 
-    private $createPostRequest;
+    private CreatePostRequestInterface $createPostRequest;
 
-    private $allianceBoardPostRepository;
+    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         CreatePostRequestInterface $createPostRequest,

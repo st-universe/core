@@ -18,11 +18,11 @@ final class Login extends Action
 {
     public const JSON_SCHEMA_FILE = __DIR__ . '/login.json';
 
-    private $session;
+    private SessionInterface $session;
 
-    private $jsonSchemaRequest;
+    private JsonSchemaRequestInterface $jsonSchemaRequest;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         SessionInterface $session,

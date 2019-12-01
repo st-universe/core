@@ -13,9 +13,9 @@ final class ChangeSettings implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_SETTINGS';
 
-    private $changeSettingsRequest;
+    private ChangeSettingsRequestInterface $changeSettingsRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ChangeSettingsRequestInterface $changeSettingsRequest,

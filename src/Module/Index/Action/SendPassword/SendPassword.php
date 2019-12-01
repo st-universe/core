@@ -18,11 +18,11 @@ final class SendPassword implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_SEND_PASSWORD';
 
-    private $sendPasswordRequest;
+    private SendPasswordRequestInterface $sendPasswordRequest;
 
-    private $config;
+    private ConfigInterface $config;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         SendPasswordRequestInterface $sendPasswordRequest,

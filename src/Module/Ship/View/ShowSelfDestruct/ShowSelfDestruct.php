@@ -13,7 +13,7 @@ final class ShowSelfDestruct implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SELFDESTRUCT_AJAX';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

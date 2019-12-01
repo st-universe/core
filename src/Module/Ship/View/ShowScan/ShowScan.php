@@ -15,11 +15,11 @@ final class ShowScan implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SCAN';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

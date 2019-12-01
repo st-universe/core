@@ -15,13 +15,13 @@ final class ShowWritePm implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'WRITE_PM';
 
-    private $showWritePmRequest;
+    private ShowWritePmRequestInterface $showWritePmRequest;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
     public function __construct(
         ShowWritePmRequestInterface $showWritePmRequest,

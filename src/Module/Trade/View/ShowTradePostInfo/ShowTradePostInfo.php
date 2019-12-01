@@ -15,13 +15,13 @@ final class ShowTradePostInfo implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TRADEPOST_INFO';
 
-    private $showTradePostInfoRequest;
+    private ShowTradePostInfoRequestInterface $showTradePostInfoRequest;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $talFactory;
+    private TradeLibFactoryInterface $talFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
     public function __construct(
         ShowTradePostInfoRequestInterface $showTradePostInfoRequest,

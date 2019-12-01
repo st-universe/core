@@ -16,13 +16,13 @@ final class ShowMapOverall implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MAP_OVERALL';
 
-    private $mapBorderTypeRepository;
+    private MapBorderTypeRepositoryInterface $mapBorderTypeRepository;
 
-    private $mapFieldTypeRepository;
+    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
-    private $mapRepository;
+    private MapRepositoryInterface $mapRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         MapBorderTypeRepositoryInterface $mapBorderTypeRepository,

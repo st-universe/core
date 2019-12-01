@@ -26,21 +26,21 @@ final class BuildShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD_SHIP';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $buildplanModuleRepository;
+    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
 
-    private $shipRumpBuildingFunctionRepository;
+    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
-    private $moduleRepository;
+    private ModuleRepositoryInterface $moduleRepository;
 
-    private $colonyShipQueueRepository;
+    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

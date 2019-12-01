@@ -17,13 +17,13 @@ final class DeactivateBuilding implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $buildingAction;
+    private BuildingActionInterface $buildingAction;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

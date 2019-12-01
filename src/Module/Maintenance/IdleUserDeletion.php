@@ -6,7 +6,7 @@ use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 
 final class IdleUserDeletion implements MaintenanceHandlerInterface
 {
-    private $playerDeletion;
+    private PlayerDeletionInterface $playerDeletion;
 
     public function __construct(
         PlayerDeletionInterface $playerDeletion

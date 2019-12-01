@@ -13,9 +13,9 @@ final class DeleteIgnores implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_IGNORES';
 
-    private $deleteIgnoresRequest;
+    private DeleteIgnoresRequestInterface $deleteIgnoresRequest;
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
     public function __construct(
         DeleteIgnoresRequestInterface $deleteIgnoresRequest,

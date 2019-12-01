@@ -16,13 +16,13 @@ final class ShowBuilding implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BUILDING';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showBuildingRequest;
+    private ShowBuildingRequestInterface $showBuildingRequest;
 
-    private $buildingFieldAlternativeRepository;
+    private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

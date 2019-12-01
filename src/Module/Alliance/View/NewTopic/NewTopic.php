@@ -14,9 +14,9 @@ final class NewTopic implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_NEW_TOPIC';
 
-    private $newTopicRequest;
+    private NewTopicRequestInterface $newTopicRequest;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
     public function __construct(
         NewTopicRequestInterface $newTopicRequest,

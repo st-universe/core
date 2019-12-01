@@ -17,11 +17,11 @@ final class DenyImmigration implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_PERMIT_IMMIGRATION';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

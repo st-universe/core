@@ -16,13 +16,13 @@ final class ShowTransferMenu implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_OFFER_MENU_TRANSFER';
 
-    private $showTransferMenueRequest;
+    private ShowTransferMenueRequestInterface $showTransferMenueRequest;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     public function __construct(
         ShowTransferMenueRequestInterface $showTransferMenueRequest,

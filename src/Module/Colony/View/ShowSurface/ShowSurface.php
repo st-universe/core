@@ -14,11 +14,11 @@ final class ShowSurface implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONY_SURFACE';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showSurfaceRequest;
+    private ShowSurfaceRequestInterface $showSurfaceRequest;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

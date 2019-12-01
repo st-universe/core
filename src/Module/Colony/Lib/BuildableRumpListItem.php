@@ -11,13 +11,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BuildableRumpListItem implements BuildableRumpListItemInterface
 {
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
-    private $shipRump;
+    private ShipRumpInterface $shipRump;
 
-    private $currentUser;
+    private UserInterface $currentUser;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,

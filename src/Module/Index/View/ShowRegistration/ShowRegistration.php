@@ -12,9 +12,9 @@ final class ShowRegistration implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_REGISTRATION';
 
-    private $showRegistrationRequest;
+    private ShowRegistrationRequestInterface $showRegistrationRequest;
 
-    private $factionRepository;
+    private FactionRepositoryInterface $factionRepository;
 
     public function __construct(
         ShowRegistrationRequestInterface $showRegistrationRequest,

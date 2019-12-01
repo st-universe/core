@@ -15,13 +15,13 @@ final class ShowTakeOffer implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TAKE_OFFER';
 
-    private $showTakeOfferRequest;
+    private ShowTakeOfferRequestInterface $showTakeOfferRequest;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     public function __construct(
         ShowTakeOfferRequestInterface $showTakeOfferRequest,

@@ -9,7 +9,7 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class CommodityConsumption implements CommodityConsumptionInterface
 {
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
         CommodityRepositoryInterface $commodityRepository

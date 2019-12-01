@@ -18,15 +18,15 @@ final class KickPlayer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_KICK_USER';
 
-    private $kickPlayerRequest;
+    private KickPlayerRequestInterface $kickPlayerRequest;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         KickPlayerRequestInterface $kickPlayerRequest,

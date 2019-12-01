@@ -19,15 +19,15 @@ final class AttackShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ATTACK_SHIP';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipAttackCycle;
+    private ShipAttackCycleInterface $shipAttackCycle;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

@@ -14,13 +14,13 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchState implements ResearchStateInterface
 {
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $shipRumpUserRepository;
+    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $createDatabaseEntry;
+    private CreateDatabaseEntryInterface $createDatabaseEntry;
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,

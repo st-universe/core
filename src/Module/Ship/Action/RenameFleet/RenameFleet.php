@@ -13,9 +13,9 @@ final class RenameFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FLEET_CHANGE_NAME';
 
-    private $renameFleetRequest;
+    private RenameFleetRequestInterface $renameFleetRequest;
 
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
     public function __construct(
         RenameFleetRequestInterface $renameFleetRequest,

@@ -15,13 +15,13 @@ final class AddContact implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_CONTACT';
 
-    private $addContactRequest;
+    private AddContactRequestInterface $addContactRequest;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AddContactRequestInterface $addContactRequest,

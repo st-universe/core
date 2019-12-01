@@ -15,9 +15,9 @@ final class SetTopicSticky implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_STICKY';
 
-    private $setTopicStickyRequest;
+    private SetTopicStickyRequestInterface $setTopicStickyRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         SetTopicStickyRequestInterface $setTopicStickyRequest,

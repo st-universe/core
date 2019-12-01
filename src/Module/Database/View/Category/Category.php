@@ -15,11 +15,11 @@ final class Category implements ViewControllerInterface
 
     public const VIEW_IDENTIFIER = 'SHOW_CATEGORY';
 
-    private $categoryRequest;
+    private CategoryRequestInterface $categoryRequest;
 
-    private $databaseCategoryRepository;
+    private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
 
-    private $databaseCategoryTalFactory;
+    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
     public function __construct(
         CategoryRequestInterface $categoryRequest,

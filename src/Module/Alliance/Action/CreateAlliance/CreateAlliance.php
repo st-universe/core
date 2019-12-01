@@ -16,12 +16,12 @@ final class CreateAlliance implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CREATE_ALLIANCE';
 
-    private $createAllianceRequest;
+    private CreateAllianceRequestInterface $createAllianceRequest;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceRepository;
-    private $userRepository;
+    private AllianceRepositoryInterface $allianceRepository;
+    private UserRepositoryInterface $userRepository;
 
 
     public function __construct(

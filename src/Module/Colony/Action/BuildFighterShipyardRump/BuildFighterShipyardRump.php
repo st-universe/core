@@ -18,13 +18,13 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD_FIGHTER_SHIPYARD_RUMP';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

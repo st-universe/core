@@ -16,15 +16,15 @@ use Stu\Orm\Entity\ShipInterface;
 final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 {
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $applyDamage;
+    private ApplyDamageInterface $applyDamage;
 
-    private $moduleValueCalculator;
+    private ModuleValueCalculatorInterface $moduleValueCalculator;
 
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,

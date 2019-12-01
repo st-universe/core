@@ -17,17 +17,17 @@ final class WritePm implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_WRITE_PM';
 
-    private $writePmRequest;
+    private WritePmRequestInterface $writePmRequest;
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         WritePmRequestInterface $writePmRequest,

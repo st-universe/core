@@ -15,9 +15,9 @@ final class MoveShipUp implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MOVE_UP';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipMover;
+    private ShipMoverInterface $shipMover;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

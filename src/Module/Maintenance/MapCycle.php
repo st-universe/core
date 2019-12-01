@@ -11,13 +11,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class MapCycle implements MaintenanceHandlerInterface
 {
-    private $mapRepository;
+    private MapRepositoryInterface $mapRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $userMapRepository;
+    private UserMapRepositoryInterface $userMapRepository;
 
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         MapRepositoryInterface $mapRepository,

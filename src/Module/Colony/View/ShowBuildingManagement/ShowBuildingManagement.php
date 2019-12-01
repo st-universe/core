@@ -19,17 +19,17 @@ final class ShowBuildingManagement implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BUILDING_MGMT';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showBuildingManagementRequest;
+    private ShowBuildingManagementRequestInterface $showBuildingManagementRequest;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

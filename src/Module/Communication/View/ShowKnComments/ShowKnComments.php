@@ -13,9 +13,9 @@ final class ShowKnComments implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_KN_COMMENTS';
 
-    private $showKnCommentsRequest;
+    private ShowKnCommentsRequestInterface $showKnCommentsRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
     public function __construct(
         ShowKnCommentsRequestInterface $showKnCommentsRequest,

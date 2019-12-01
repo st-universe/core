@@ -16,11 +16,11 @@ final class SelfDestruct implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SELFDESTRUCT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

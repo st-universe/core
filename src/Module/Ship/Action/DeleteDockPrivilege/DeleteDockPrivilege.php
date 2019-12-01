@@ -16,9 +16,9 @@ final class DeleteDockPrivilege implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_DOCKPRIVILEGE';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $dockingPrivilegeRepository;
+    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

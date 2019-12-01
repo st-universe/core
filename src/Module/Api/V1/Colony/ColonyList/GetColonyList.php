@@ -14,11 +14,11 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class GetColonyList extends Action
 {
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $commodityConsumption;
+    private CommodityConsumptionInterface $commodityConsumption;
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,

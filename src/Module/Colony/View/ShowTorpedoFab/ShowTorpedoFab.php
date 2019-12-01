@@ -15,11 +15,11 @@ final class ShowTorpedoFab implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TORPEDO_FAB';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showTorpedoFabRequest;
+    private ShowTorpedoFabRequestInterface $showTorpedoFabRequest;
 
-    private $torpedoTypeRepository;
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

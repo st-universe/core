@@ -6,7 +6,7 @@ use Noodlehaus\ConfigInterface;
 
 final class DatabaseBackup implements MaintenanceHandlerInterface
 {
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         ConfigInterface $config

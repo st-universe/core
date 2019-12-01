@@ -12,9 +12,9 @@ final class EndKnPlot implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_END_PLOT';
 
-    private $endKnPlotRequest;
+    private EndKnPlotRequestInterface $endKnPlotRequest;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         EndKnPlotRequestInterface $endKnPlotRequest,

@@ -13,9 +13,9 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class GetColonyById extends Action
 {
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,

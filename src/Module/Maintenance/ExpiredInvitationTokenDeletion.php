@@ -11,9 +11,9 @@ use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 
 final class ExpiredInvitationTokenDeletion implements MaintenanceHandlerInterface
 {
-    private $userInvitationRepository;
+    private UserInvitationRepositoryInterface $userInvitationRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         UserInvitationRepositoryInterface $userInvitationRepository,

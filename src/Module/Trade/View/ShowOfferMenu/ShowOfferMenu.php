@@ -16,11 +16,11 @@ final class ShowOfferMenu implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_OFFER_MENU';
 
-    private $showOfferMenuRequest;
+    private ShowOfferMenuRequestInterface $showOfferMenuRequest;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     public function __construct(
         ShowOfferMenuRequestInterface $showOfferMenuRequest,

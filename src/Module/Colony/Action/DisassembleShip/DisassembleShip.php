@@ -18,15 +18,15 @@ final class DisassembleShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DISASSEMBLE_SHIP';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $shipRumpBuildingFunctionRepository;
+    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

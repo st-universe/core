@@ -19,11 +19,11 @@ final class SetRedAlert implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_RED_ALERT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

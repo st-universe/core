@@ -9,7 +9,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickInterface
 {
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository

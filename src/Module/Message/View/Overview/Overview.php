@@ -21,15 +21,15 @@ final class Overview implements ViewControllerInterface
 
     private const PMLIMITER = 6;
 
-    private $showPmCategoryRequest;
+    private OverviewRequestInterface $showPmCategoryRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
     public function __construct(
         OverviewRequestInterface $showPmCategoryRequest,

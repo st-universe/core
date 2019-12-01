@@ -10,9 +10,9 @@ use Stu\Orm\Entity\UserInterface;
 
 final class AllianceRelationItem implements AllianceRelationItemInterface
 {
-    private $allianceRelation;
+    private AllianceRelationInterface $allianceRelation;
 
-    private $currentUser;
+    private UserInterface $currentUser;
 
     public function __construct(
         AllianceRelationInterface $allianceRelation,

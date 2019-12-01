@@ -19,13 +19,13 @@ final class ResetPassword implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_RESET_PASSWORD';
 
-    private $resetPasswordRequest;
+    private ResetPasswordRequestInterface $resetPasswordRequest;
 
-    private $config;
+    private ConfigInterface $config;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $passwordGenerator;
+    private PasswordGeneratorInterface $passwordGenerator;
 
     public function __construct(
         ResetPasswordRequestInterface $resetPasswordRequest,
@@ -62,7 +62,7 @@ final class ResetPassword implements ActionControllerInterface
         Hallo.\n\n
         Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
         Das Star Trek Universe Team\n
-        
+
         %s,
         EOT;
 

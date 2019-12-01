@@ -15,9 +15,9 @@ final class RenameTopic implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_RENAME_TOPIC';
 
-    private $renameTopicRequest;
+    private RenameTopicRequestInterface $renameTopicRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         RenameTopicRequestInterface $renameTopicRequest,

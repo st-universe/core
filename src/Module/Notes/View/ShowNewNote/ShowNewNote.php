@@ -12,7 +12,7 @@ final class ShowNewNote implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_NEW_NOTE';
 
-    private $noteRepository;
+    private NoteRepositoryInterface $noteRepository;
 
     public function __construct(
         NoteRepositoryInterface $noteRepository

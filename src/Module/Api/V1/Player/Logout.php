@@ -12,9 +12,9 @@ use Stu\Module\Api\Middleware\SessionInterface;
 
 final class Logout extends Action
 {
-    private $session;
+    private SessionInterface $session;
 
-    private $internalSession;
+    private InternalSessionInterface $internalSession;
 
     public function __construct(
         SessionInterface $session,

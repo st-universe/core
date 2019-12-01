@@ -18,21 +18,21 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipRemover implements ShipRemoverInterface
 {
-    private $shipSystemRepository;
+    private ShipSystemRepositoryInterface $shipSystemRepository;
 
-    private $shipStorageRepository;
+    private ShipStorageRepositoryInterface $shipStorageRepository;
 
-    private $shipCrewRepository;
+    private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,

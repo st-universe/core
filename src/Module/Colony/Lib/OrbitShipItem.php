@@ -11,11 +11,11 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class OrbitShipItem implements OrbitShipItemInterface
 {
-    private $torpedoTypeRepository;
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
-    private $ship;
+    private ShipInterface $ship;
 
-    private $userId;
+    private int $userId;
 
     public function __construct(
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,

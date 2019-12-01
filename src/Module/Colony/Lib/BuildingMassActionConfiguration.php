@@ -17,7 +17,7 @@ final class BuildingMassActionConfiguration implements BuildingMassActionConfigu
     public const CONFIGURATION_COMMODITY_CONSUMER = 6;
     public const CONFIGURATION_COMMODITY_PRODUCER = 7;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository

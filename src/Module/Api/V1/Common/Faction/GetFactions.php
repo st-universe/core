@@ -12,7 +12,7 @@ use Stu\Orm\Repository\FactionRepositoryInterface;
 
 final class GetFactions extends Action
 {
-    private $factionRepository;
+    private FactionRepositoryInterface $factionRepository;
 
     public function __construct(
         FactionRepositoryInterface $factionRepository

@@ -12,9 +12,9 @@ final class ShowWriteQuickPm implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_WRITE_QUICKPM';
 
-    private $showWriteQuickPmRequest;
+    private ShowWriteQuickPmRequestInterface $showWriteQuickPmRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ShowWriteQuickPmRequestInterface $showWriteQuickPmRequest,

@@ -15,11 +15,11 @@ final class ShowColonization implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONIZATION';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

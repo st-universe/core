@@ -16,13 +16,13 @@ final class Signup implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
 
-    private $signupRequest;
+    private SignupRequestInterface $signupRequest;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         SignupRequestInterface $signupRequest,

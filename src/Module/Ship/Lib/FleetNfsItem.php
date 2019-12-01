@@ -12,11 +12,11 @@ use Stu\Orm\Entity\UserInterface;
 
 final class FleetNfsItem implements FleetNfsItemInterface
 {
-    private $session;
+    private SessionInterface $session;
 
-    private $fleet;
+    private FleetInterface $fleet;
 
-    private $currentShip;
+    private ShipInterface $currentShip;
 
     public function __construct(
         SessionInterface $session,

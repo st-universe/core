@@ -13,9 +13,9 @@ final class ShowNote implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_NOTE';
 
-    private $showNoteRequest;
+    private ShowNoteRequestInterface $showNoteRequest;
 
-    private $noteRepository;
+    private NoteRepositoryInterface $noteRepository;
 
     public function __construct(
         ShowNoteRequestInterface $showNoteRequest,

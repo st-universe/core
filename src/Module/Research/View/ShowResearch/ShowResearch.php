@@ -16,13 +16,13 @@ final class ShowResearch implements ViewControllerInterface
 
     public const VIEW_IDENTIFIER = 'SHOW_RESEARCH';
 
-    private $showResearchRequest;
+    private ShowResearchRequestInterface $showResearchRequest;
 
-    private $techlistRetriever;
+    private TechlistRetrieverInterface $techlistRetriever;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $talFactory;
+    private TalFactoryInterface $talFactory;
 
     public function __construct(
         ShowResearchRequestInterface $showResearchRequest,

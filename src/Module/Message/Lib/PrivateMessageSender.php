@@ -11,11 +11,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PrivateMessageSender implements PrivateMessageSenderInterface
 {
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,

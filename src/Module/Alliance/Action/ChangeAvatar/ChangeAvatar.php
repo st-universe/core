@@ -16,11 +16,11 @@ final class ChangeAvatar implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,

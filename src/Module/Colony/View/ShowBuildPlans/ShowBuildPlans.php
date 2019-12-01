@@ -18,15 +18,15 @@ final class ShowBuildPlans implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BUILDPLANS';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showBuildPlansRequest;
+    private ShowBuildPlansRequestInterface $showBuildPlansRequest;
 
-    private $buildingFunctionRepository;
+    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

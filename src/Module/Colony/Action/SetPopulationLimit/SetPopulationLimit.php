@@ -16,9 +16,9 @@ final class SetPopulationLimit implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_POPULATIONLIMIT';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

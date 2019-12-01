@@ -16,15 +16,15 @@ final class FirstColony implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FIRST_COLONY';
 
-    private $firstColonyRequest;
+    private FirstColonyRequestInterface $firstColonyRequest;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
-    private $planetColonization;
+    private PlanetColonizationInterface $planetColonization;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         FirstColonyRequestInterface $firstColonyRequest,

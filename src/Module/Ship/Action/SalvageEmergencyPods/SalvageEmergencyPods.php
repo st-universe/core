@@ -19,13 +19,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SALVAGE_EPODS';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipCrewRepository;
+    private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

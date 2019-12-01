@@ -15,9 +15,9 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,

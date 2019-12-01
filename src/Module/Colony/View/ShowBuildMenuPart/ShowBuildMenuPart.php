@@ -17,13 +17,13 @@ final class ShowBuildMenuPart implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BUILDMENU_PART';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showBuildMenuPartRequest;
+    private ShowBuildMenuPartRequestInterface $showBuildMenuPartRequest;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

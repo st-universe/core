@@ -15,9 +15,9 @@ final class UnsetTopicSticky implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_UNSET_STICKY';
 
-    private $unsetTopicStickyRequest;
+    private UnsetTopicStickyRequestInterface $unsetTopicStickyRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         UnsetTopicStickyRequestInterface $unsetTopicStickyRequest,

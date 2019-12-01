@@ -16,13 +16,13 @@ final class CancelContract implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CANCEL_CONTRACT';
 
-    private $cancelContractRequest;
+    private CancelContractRequestInterface $cancelContractRequest;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         CancelContractRequestInterface $cancelContractRequest,

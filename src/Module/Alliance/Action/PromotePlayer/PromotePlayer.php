@@ -17,15 +17,15 @@ final class PromotePlayer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_PROMOTE_USER';
 
-    private $promotePlayerRequest;
+    private PromotePlayerRequestInterface $promotePlayerRequest;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         PromotePlayerRequestInterface $promotePlayerRequest,

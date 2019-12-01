@@ -16,13 +16,13 @@ final class JoinFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_JOIN_FLEET';
 
-    private $joinFleetRequest;
+    private JoinFleetRequestInterface $joinFleetRequest;
 
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         JoinFleetRequestInterface $joinFleetRequest,

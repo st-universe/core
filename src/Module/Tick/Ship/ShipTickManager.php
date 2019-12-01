@@ -9,11 +9,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipTickManager implements ShipTickManagerInterface
 {
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $shipTick;
+    private ShipTickInterface $shipTick;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipRemoverInterface $shipRemover,

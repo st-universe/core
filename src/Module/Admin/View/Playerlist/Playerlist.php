@@ -15,9 +15,9 @@ final class Playerlist implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_PLAYER_LIST';
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $userTagRepository;
+    private UserTagRepositoryInterface $userTagRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

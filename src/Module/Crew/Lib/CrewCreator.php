@@ -16,15 +16,15 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class CrewCreator implements CrewCreatorInterface
 {
-    private $crewRaceRepository;
+    private CrewRaceRepositoryInterface $crewRaceRepository;
 
-    private $shipRumpCategoryRoleCrewRepository;
+    private ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository;
 
-    private $shipCrewRepository;
+    private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private $crewRepository;
+    private CrewRepositoryInterface $crewRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         CrewRaceRepositoryInterface $crewRaceRepository,

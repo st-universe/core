@@ -13,9 +13,9 @@ final class EditKnPlot implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_EDIT_PLOT';
 
-    private $editKnPlotRequest;
+    private EditKnPlotRequestInterface $editKnPlotRequest;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         EditKnPlotRequestInterface $editKnPlotRequest,

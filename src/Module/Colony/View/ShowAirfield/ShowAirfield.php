@@ -17,13 +17,13 @@ final class ShowAirfield implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_AIRFIELD';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showAirfieldRequest;
+    private ShowAirfieldRequestInterface $showAirfieldRequest;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

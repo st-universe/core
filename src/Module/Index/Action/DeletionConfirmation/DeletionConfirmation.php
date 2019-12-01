@@ -13,9 +13,9 @@ final class DeletionConfirmation implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'CONFIRM_ACCOUNT_DELETION';
 
-    private $deletionConfirmationRequest;
+    private DeletionConfirmationRequestInterface $deletionConfirmationRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         DeletionConfirmationRequestInterface $deletionConfirmationRequest,

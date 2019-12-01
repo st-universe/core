@@ -15,13 +15,13 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $colonyTerraformingRepository;
+    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,

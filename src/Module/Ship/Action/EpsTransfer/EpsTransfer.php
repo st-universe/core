@@ -17,11 +17,11 @@ final class EpsTransfer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ETRANSFER';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

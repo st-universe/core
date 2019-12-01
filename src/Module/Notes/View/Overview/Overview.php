@@ -10,7 +10,7 @@ use Stu\Orm\Repository\NoteRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $noteRepository;
+    private NoteRepositoryInterface $noteRepository;
 
     public function __construct(
         NoteRepositoryInterface $noteRepository

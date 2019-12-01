@@ -14,11 +14,11 @@ final class ShowLicenseList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_LICENSE_LIST';
 
-    private $showLicenseListRequest;
+    private ShowLicenseListRequestInterface $showLicenseListRequest;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
     public function __construct(
         ShowLicenseListRequestInterface $showLicenseListRequest,

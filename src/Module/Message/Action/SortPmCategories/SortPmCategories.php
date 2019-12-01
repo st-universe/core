@@ -14,9 +14,9 @@ final class SortPmCategories implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_PMCATEGORY_SORT';
 
-    private $sortPmCategoriesRequest;
+    private SortPmCategoriesRequestInterface $sortPmCategoriesRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     public function __construct(
         SortPmCategoriesRequestInterface $sortPmCategoriesRequest,

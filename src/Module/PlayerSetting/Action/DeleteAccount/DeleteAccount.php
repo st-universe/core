@@ -12,7 +12,7 @@ final class DeleteAccount implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_ACCOUNT';
 
-    private $requestDeletionConfirmation;
+    private RequestDeletionConfirmation $requestDeletionConfirmation;
 
     public function __construct(
         RequestDeletionConfirmation $requestDeletionConfirmation

@@ -14,15 +14,15 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 
 final class PrivateMessageListItem implements PrivateMessageListItemInterface
 {
-    private $privateMessageRepository;
+    private PrivateMessageRepositoryInterface $privateMessageRepository;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
-    private $message;
+    private PrivateMessageInterface $message;
 
-    private $currentUserId;
+    private int $currentUserId;
 
     private $sender;
 

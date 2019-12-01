@@ -17,15 +17,15 @@ final class AddKnPost implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_WRITE_KN';
 
-    private $addKnPostRequest;
+    private AddKnPostRequestInterface $addKnPostRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,

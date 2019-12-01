@@ -18,15 +18,15 @@ final class ShowModuleFab implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MODULEFAB';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showModuleFabRequest;
+    private ShowModuleFabRequestInterface $showModuleFabRequest;
 
-    private $moduleBuildingFunctionRepository;
+    private ModuleBuildingFunctionRepositoryInterface $moduleBuildingFunctionRepository;
 
-    private $buildingFunctionRepository;
+    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
 
-    private $moduleQueueRepository;
+    private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

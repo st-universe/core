@@ -8,7 +8,7 @@ use Stu\Orm\Entity\AllianceInterface;
 
 final class AllianceListItem implements AllianceListItemInterface
 {
-    private $alliance;
+    private AllianceInterface $alliance;
 
     public function __construct(
         AllianceInterface $alliance

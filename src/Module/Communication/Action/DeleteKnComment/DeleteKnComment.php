@@ -14,9 +14,9 @@ final class DeleteKnComment implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_COMMENT';
 
-    private $deleteKnCommentRequest;
+    private DeleteKnCommentRequestInterface $deleteKnCommentRequest;
 
-    private $knCommentRepository;
+    private KnCommentRepositoryInterface $knCommentRepository;
 
     public function __construct(
         DeleteKnCommentRequestInterface $deleteKnCommentRequest,

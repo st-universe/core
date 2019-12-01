@@ -18,13 +18,13 @@ final class Topic implements ViewControllerInterface
 
     public const ALLIANCEBOARDLIMITER = 20;
 
-    private $topicRequest;
+    private TopicRequestInterface $topicRequest;
 
-    private $allianceBoardPostRepository;
+    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         TopicRequestInterface $topicRequest,

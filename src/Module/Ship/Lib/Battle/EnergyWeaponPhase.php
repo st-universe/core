@@ -20,17 +20,17 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
     public const FIRINGMODE_RANDOM = 1;
     public const FIRINGMODE_FOCUS = 2;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $weaponRepository;
+    private WeaponRepositoryInterface $weaponRepository;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $applyDamage;
+    private ApplyDamageInterface $applyDamage;
 
-    private $moduleValueCalculator;
+    private ModuleValueCalculatorInterface $moduleValueCalculator;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,

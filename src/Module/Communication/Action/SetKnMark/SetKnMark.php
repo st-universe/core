@@ -13,11 +13,11 @@ final class SetKnMark implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_KNMARK';
 
-    private $setKnMarkRequest;
+    private SetKnMarkRequestInterface $setKnMarkRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         SetKnMarkRequestInterface $setKnMarkRequest,

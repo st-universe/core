@@ -18,15 +18,15 @@ final class ShowShipRepair implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SHIP_REPAIR';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showShipRepairRequest;
+    private ShowShipRepairRequestInterface $showShipRepairRequest;
 
-    private $shipRumpBuildingFunctionRepository;
+    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

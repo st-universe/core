@@ -12,9 +12,9 @@ final class EditContactComment implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_EDIT_CONTACT_COMMENT';
 
-    private $editContactCommentRequest;
+    private EditContactCommentRequestInterface $editContactCommentRequest;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
     public function __construct(
         EditContactCommentRequestInterface $editContactCommentRequest,

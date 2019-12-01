@@ -15,7 +15,7 @@ final class AllianceList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_LIST';
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
     public function __construct(
         AllianceRepositoryInterface $allianceRepository

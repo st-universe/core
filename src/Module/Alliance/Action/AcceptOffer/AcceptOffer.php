@@ -15,13 +15,13 @@ final class AcceptOffer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ACCEPT_OFFER';
 
-    private $acceptOfferRequest;
+    private AcceptOfferRequestInterface $acceptOfferRequest;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         AcceptOfferRequestInterface $acceptOfferRequest,

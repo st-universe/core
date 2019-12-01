@@ -8,7 +8,7 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class Shipyard implements BuildingActionHandlerInterface
 {
-    private $colonyShipQueueRepository;
+    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
     public function __construct(
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository

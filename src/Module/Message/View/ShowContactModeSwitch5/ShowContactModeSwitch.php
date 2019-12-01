@@ -13,9 +13,9 @@ final class ShowContactModeSwitch implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_CONTACT_MODESWITCH';
 
-    private $showContactModeSwitchRequest;
+    private ShowContactModeSwitchRequestInterface $showContactModeSwitchRequest;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
     public function __construct(
         ShowContactModeSwitchRequestInterface $showContactModeSwitchRequest,

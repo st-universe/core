@@ -19,15 +19,15 @@ final class CreateOffer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CREATE_OFFER';
 
-    private $createOfferRequest;
+    private CreateOfferRequestInterface $createOfferRequest;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     public function __construct(
         CreateOfferRequestInterface $createOfferRequest,

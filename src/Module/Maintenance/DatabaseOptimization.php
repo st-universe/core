@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 final class DatabaseOptimization implements MaintenanceHandlerInterface
 {
 
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         EntityManagerInterface $entityManager

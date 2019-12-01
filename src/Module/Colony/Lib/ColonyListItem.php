@@ -14,9 +14,9 @@ use Stu\Orm\Entity\StarSystemInterface;
 
 final class ColonyListItem implements ColonyListItemInterface
 {
-    private $colony;
+    private ColonyInterface $colony;
 
-    private $commodityConsumption;
+    private CommodityConsumptionInterface $commodityConsumption;
 
     public function __construct(
         CommodityConsumptionInterface $commodityConsumption,

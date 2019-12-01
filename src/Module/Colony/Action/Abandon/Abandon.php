@@ -16,13 +16,13 @@ final class Abandon implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
 
-    private $abandonRequest;
+    private AbandonRequestInterface $abandonRequest;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $colonyResetter;
+    private ColonyResetterInterface $colonyResetter;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AbandonRequestInterface $abandonRequest,

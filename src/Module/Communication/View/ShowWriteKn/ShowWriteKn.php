@@ -12,7 +12,7 @@ final class ShowWriteKn implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'WRITE_KN';
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         RpgPlotRepositoryInterface $rpgPlotRepository

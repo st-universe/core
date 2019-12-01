@@ -13,11 +13,11 @@ final class DeleteKnPlotMember implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEL_PLOTMEMBER';
 
-    private $deleteKnPlotMemberRequest;
+    private DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest;
 
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         DeleteKnPlotMemberRequestInterface $deleteKnPlotMemberRequest,

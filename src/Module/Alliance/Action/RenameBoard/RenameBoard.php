@@ -15,9 +15,9 @@ final class RenameBoard implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_RENAME_BOARD';
 
-    private $renameBoardRequest;
+    private RenameBoardRequestInterface $renameBoardRequest;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
     public function __construct(
         RenameBoardRequestInterface $renameBoardRequest,

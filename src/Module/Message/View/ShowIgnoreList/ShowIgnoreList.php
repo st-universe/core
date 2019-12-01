@@ -12,7 +12,7 @@ final class ShowIgnoreList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_IGNORELIST';
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
     public function __construct(
         IgnoreListRepositoryInterface $ignoreListRepository

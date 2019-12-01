@@ -14,11 +14,11 @@ final class CreateFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_NEW_FLEET';
 
-    private $createFleetRequest;
+    private CreateFleetRequestInterface $createFleetRequest;
 
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         CreateFleetRequestInterface $createFleetRequest,

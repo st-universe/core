@@ -17,15 +17,15 @@ final class CreateRelation implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_NEW_RELATION';
 
-    private $createRelationRequest;
+    private CreateRelationRequestInterface $createRelationRequest;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
     public function __construct(
         CreateRelationRequestInterface $createRelationRequest,

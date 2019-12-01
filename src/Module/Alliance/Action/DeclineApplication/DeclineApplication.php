@@ -17,13 +17,13 @@ final class DeclineApplication implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DECLINE_APPLICATION';
 
-    private $declineApplicationRequest;
+    private DeclineApplicationRequestInterface $declineApplicationRequest;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         DeclineApplicationRequestInterface $declineApplicationRequest,

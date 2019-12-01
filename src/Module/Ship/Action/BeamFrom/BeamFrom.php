@@ -17,11 +17,11 @@ final class BeamFrom implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BEAMFROM';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipStorageManager;
+    private ShipStorageManagerInterface $shipStorageManager;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

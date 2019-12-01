@@ -9,9 +9,9 @@ use Stu\Orm\Entity\UserInterface;
 
 final class KnCommentTal implements KnCommentTalInterface
 {
-    private $comment;
+    private KnCommentInterface $comment;
 
-    private $currentUser;
+    private UserInterface $currentUser;
 
     public function __construct(
         KnCommentInterface $comment,

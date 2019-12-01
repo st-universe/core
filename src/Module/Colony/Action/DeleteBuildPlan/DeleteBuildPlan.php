@@ -16,9 +16,9 @@ final class DeleteBuildPlan implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEL_BUILDPLAN';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

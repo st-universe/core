@@ -17,11 +17,11 @@ final class Relations implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_RELATIONS';
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,

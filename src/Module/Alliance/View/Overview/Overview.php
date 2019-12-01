@@ -19,13 +19,13 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
     public function __construct(
         AllianceRelationRepositoryInterface $allianceRelationRepository,

@@ -26,9 +26,9 @@ final class UserList implements ViewControllerInterface
 
     private const LIST_LIMIT = 25;
 
-    private $userListRequest;
+    private UserListRequestInterface $userListRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         UserListRequestInterface $userListRequest,

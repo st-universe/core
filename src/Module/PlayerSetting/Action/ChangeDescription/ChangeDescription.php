@@ -12,9 +12,9 @@ final class ChangeDescription implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_DESCRIPTION';
 
-    private $changeDescriptionRequest;
+    private ChangeDescriptionRequestInterface $changeDescriptionRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ChangeDescriptionRequestInterface $changeDescriptionRequest,

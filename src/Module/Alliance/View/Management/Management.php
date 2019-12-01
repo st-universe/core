@@ -16,13 +16,13 @@ final class Management implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,

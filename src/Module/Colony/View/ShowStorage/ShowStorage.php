@@ -14,13 +14,13 @@ final class ShowStorage implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_STORAGE_AJAX';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showStorageRequest;
+    private ShowStorageRequestInterface $showStorageRequest;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

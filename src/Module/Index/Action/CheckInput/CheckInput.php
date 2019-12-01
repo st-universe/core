@@ -18,13 +18,13 @@ final class CheckInput implements ActionControllerInterface
     public const REGISTER_STATE_NOK = "NA";
     public const REGISTER_STATE_DUP = "DUP";
 
-    private $checkInputRequest;
+    private CheckInputRequestInterface $checkInputRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $userInvitationRepository;
+    private UserInvitationRepositoryInterface $userInvitationRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         CheckInputRequestInterface $checkInputRequest,

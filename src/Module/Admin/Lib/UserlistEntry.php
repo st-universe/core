@@ -11,9 +11,9 @@ use Stu\Orm\Repository\UserTagRepositoryInterface;
 
 final class UserlistEntry
 {
-    private $userTagRepository;
+    private UserTagRepositoryInterface $userTagRepository;
 
-    private $user;
+    private UserInterface $user;
 
     public function __construct(
         UserTagRepositoryInterface $userTagRepository,

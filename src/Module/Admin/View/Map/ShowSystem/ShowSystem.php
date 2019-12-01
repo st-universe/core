@@ -13,9 +13,9 @@ final class ShowSystem implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SYSTEM';
 
-    private $showSystemRequest;
+    private ShowSystemRequestInterface $showSystemRequest;
 
-    private $starSystemRepository;
+    private StarSystemRepositoryInterface $starSystemRepository;
 
     public function __construct(
         ShowSystemRequestInterface $showSystemRequest,

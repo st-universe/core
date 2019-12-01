@@ -18,37 +18,37 @@ use Stu\Orm\Repository\WeaponRepositoryInterface;
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
-    private $weaponRepository;
+    private WeaponRepositoryInterface $weaponRepository;
 
-    private $energyWeaponPhase;
+    private EnergyWeaponPhaseInterface $energyWeaponPhase;
 
-    private $projectileWeaponPhase;
-
-    /**
-     * @return ShipInterface[]
-     */
-    private $attacker = [];
+    private ProjectileWeaponPhaseInterface $projectileWeaponPhase;
 
     /**
      * @return ShipInterface[]
      */
-    private $defender = [];
+    private array $attacker = [];
 
-    private $firstStrike = true;
+    /**
+     * @return ShipInterface[]
+     */
+    private array $defender = [];
 
-    private $messages = [];
+    private bool $firstStrike = true;
 
-    private $usedShips = ['attacker' => [], 'defender' => []];
+    private array $messages = [];
 
-    private $singleMode = false;
+    private array $usedShips = ['attacker' => [], 'defender' => []];
+
+    private bool $singleMode = false;
 
     public function __construct(
         ShipRemoverInterface $shipRemover,
@@ -156,7 +156,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             if ($this->firstStrike || $this->singleMode) {
                 $this->firstStrike = false;
 
-                list($attackingShip, $targetShipPool) = $this->getFixture('attacker', $attackerPool, $defenderPool);
+                [$attackingShip, $targetShipPool] = $this->getFixture('attacker', $attackerPool, $defenderPool);
             } else {
                 $readyAttacker = array_filter(
                     $attackerPool,
@@ -174,13 +174,13 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                     break;
                 }
                 if ($readyAttacker === []) {
-                    list($attackingShip, $targetShipPool) = $this->getFixture('defender', $readyDefender, $attackerPool);
+                    [$attackingShip, $targetShipPool] = $this->getFixture('defender', $readyDefender, $attackerPool);
                 } else {
                     $random = rand(1, 2);
                     if ($readyDefender === [] || $random === 1) {
-                        list($attackingShip, $targetShipPool) = $this->getFixture('attacker', $readyAttacker, $defenderPool);
+                        [$attackingShip, $targetShipPool] = $this->getFixture('attacker', $readyAttacker, $defenderPool);
                     } else {
-                        list($attackingShip, $targetShipPool) = $this->getFixture('defender', $readyDefender, $attackerPool);
+                        [$attackingShip, $targetShipPool] = $this->getFixture('defender', $readyDefender, $attackerPool);
                     }
                 }
             }

@@ -10,7 +10,7 @@ final class TickManager implements TickManagerInterface
 {
     public const PROCESS_COUNT = 1;
 
-    private $gameTurnRepository;
+    private GameTurnRepositoryInterface $gameTurnRepository;
 
     public function __construct(
         GameTurnRepositoryInterface $gameTurnRepository

@@ -20,15 +20,15 @@ final class ShowTradeMenu implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

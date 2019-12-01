@@ -21,19 +21,19 @@ final class TakeOffer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TAKE_OFFER';
 
-    private $takeOfferRequest;
+    private TakeOfferRequestInterface $takeOfferRequest;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,

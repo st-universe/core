@@ -13,7 +13,7 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ColonyGuiHelper implements ColonyGuiHelperInterface
 {
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
         CommodityRepositoryInterface $commodityRepository

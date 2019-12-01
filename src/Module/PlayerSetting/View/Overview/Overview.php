@@ -14,9 +14,9 @@ use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 final class Overview implements ViewControllerInterface
 {
 
-    private $userInvitationRepository;
+    private UserInvitationRepositoryInterface $userInvitationRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         UserInvitationRepositoryInterface $userInvitationRepository,

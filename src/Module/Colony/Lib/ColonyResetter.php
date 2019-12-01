@@ -15,19 +15,19 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ColonyResetter implements ColonyResetterInterface
 {
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $colonyStorageRepository;
+    private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
-    private $colonyTerraformingRepository;
+    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
-    private $colonyShipQueueRepository;
+    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     public function __construct(
         ColonyRepositoryInterface $colonyRepository,

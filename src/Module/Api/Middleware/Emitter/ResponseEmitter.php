@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 final class ResponseEmitter extends \Slim\ResponseEmitter
 {
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         ConfigInterface $config,

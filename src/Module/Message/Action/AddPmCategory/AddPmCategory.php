@@ -13,9 +13,9 @@ final class AddPmCategory implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_PMCATEGORY';
 
-    private $addPmCategoryRequest;
+    private AddPmCategoryRequestInterface $addPmCategoryRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     public function __construct(
         AddPmCategoryRequestInterface $addPmCategoryRequest,

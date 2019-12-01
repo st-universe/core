@@ -22,13 +22,13 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MODULE_SCREEN_BUILDPLAN';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showModuleScreenBuildplanRequest;
+    private ShowModuleScreenBuildplanRequestInterface $showModuleScreenBuildplanRequest;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

@@ -11,11 +11,11 @@ use Stu\Orm\Entity\UserInterface;
 
 final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 {
-    private $databaseCategoryTalFactory;
+    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
-    private $databaseCategory;
+    private DatabaseCategoryInterface $databaseCategory;
 
-    private $user;
+    private UserInterface $user;
 
     public function __construct(
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,

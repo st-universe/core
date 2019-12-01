@@ -19,15 +19,15 @@ final class BeamTo implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BEAMTO';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipStorageManager;
+    private ShipStorageManagerInterface $shipStorageManager;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

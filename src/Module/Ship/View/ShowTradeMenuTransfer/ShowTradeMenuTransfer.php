@@ -18,13 +18,13 @@ final class ShowTradeMenuTransfer implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_TRADEMENU_TRANSFER';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

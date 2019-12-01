@@ -16,9 +16,9 @@ final class UndockShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_UNDOCK';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

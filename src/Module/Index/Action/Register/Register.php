@@ -16,11 +16,11 @@ final class Register implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_SEND_REGISTRATION';
 
-    private $registerRequest;
+    private RegisterRequestInterface $registerRequest;
 
-    private $factionRepository;
+    private FactionRepositoryInterface $factionRepository;
 
-    private $playerCreator;
+    private PlayerCreatorInterface $playerCreator;
 
     public function __construct(
         RegisterRequestInterface $registerRequest,

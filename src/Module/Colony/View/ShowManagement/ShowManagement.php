@@ -18,13 +18,13 @@ final class ShowManagement implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_MANAGEMENT';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showManagementRequest;
+    private ShowManagementRequestInterface $showManagementRequest;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

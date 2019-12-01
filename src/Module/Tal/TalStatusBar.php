@@ -7,15 +7,15 @@ namespace Stu\Module\Tal;
 final class TalStatusBar
 {
 
-    private $color = '';
+    private string $color = '';
 
-    private $label = '';
+    private string $label = '';
 
-    private $maxValue = 100;
+    private int $maxValue = 100;
 
-    private $value = 0;
+    private int $value = 0;
 
-    private $sizeModifier = 1;
+    private int $sizeModifier = 1;
 
     public function setColor(string $color): TalStatusBar
     {

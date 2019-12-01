@@ -11,15 +11,15 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class ManagementListItemTal
 {
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $alliance;
+    private AllianceInterface $alliance;
 
-    private $user;
+    private UserInterface $user;
 
-    private $currentUserId;
+    private int $currentUserId;
 
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,

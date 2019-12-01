@@ -13,9 +13,9 @@ final class ShowResetPassword implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_RESET_PASSWORD';
 
-    private $showResetPasswordRequest;
+    private ShowResetPasswordRequestInterface $showResetPasswordRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ShowResetPasswordRequestInterface $showResetPasswordRequest,

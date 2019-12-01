@@ -16,16 +16,16 @@ final class Overview implements ViewControllerInterface
 
     private const HISTORY_TYPE_DEFAULT = 1;
 
-    private $possibleTypes = array(
+    private array $possibleTypes = [
         self::HISTORY_TYPE_DEFAULT => "Schiffe",
         2 => "Kolonie",
         3 => "Diplomatie",
         4 => "Sonstiges"
-    );
+    ];
 
-    private $overviewRequest;
+    private OverviewRequestInterface $overviewRequest;
 
-    private $historyRepository;
+    private HistoryRepositoryInterface $historyRepository;
 
     public function __construct(
         OverviewRequestInterface $overviewRequest,

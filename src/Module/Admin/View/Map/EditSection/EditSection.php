@@ -15,9 +15,9 @@ final class EditSection implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_EDIT_MAP_SECTION';
     private const FIELDS_PER_SECTION = 20;
 
-    private $editSectionRequest;
+    private EditSectionRequestInterface $editSectionRequest;
 
-    private $mapFieldTypeRepository;
+    private MapFieldTypeRepositoryInterface $mapFieldTypeRepository;
 
     public function __construct(
         EditSectionRequestInterface $editSectionRequest,

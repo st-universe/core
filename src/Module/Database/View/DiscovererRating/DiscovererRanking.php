@@ -14,7 +14,7 @@ final class DiscovererRanking implements ViewControllerInterface
 
     public const VIEW_IDENTIFIER = 'SHOW_TOP_DISCOVER';
 
-    private $databaseUserRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
 
     public function __construct(
         DatabaseUserRepositoryInterface $databaseUserRepository

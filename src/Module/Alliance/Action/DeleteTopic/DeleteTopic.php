@@ -16,9 +16,9 @@ final class DeleteTopic implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_DELETE_TOPIC';
 
-    private $deleteTopicRequest;
+    private DeleteTopicRequestInterface $deleteTopicRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         DeleteTopicRequestInterface $deleteTopicRequest,

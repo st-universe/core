@@ -13,7 +13,7 @@ final class ShowDockingPrivileges implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_DOCKPRIVILEGE_LIST';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

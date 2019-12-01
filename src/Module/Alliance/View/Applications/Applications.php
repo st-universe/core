@@ -15,9 +15,9 @@ final class Applications implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_APPLICATIONS';
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,

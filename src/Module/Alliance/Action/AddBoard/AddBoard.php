@@ -15,11 +15,11 @@ final class AddBoard implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_BOARD';
 
-    private $addBoardRequest;
+    private AddBoardRequestInterface $addBoardRequest;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         AddBoardRequestInterface $addBoardRequest,

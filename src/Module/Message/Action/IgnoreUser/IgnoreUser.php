@@ -13,11 +13,11 @@ final class IgnoreUser implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_IGNORE_USER';
 
-    private $ignoreUserRequest;
+    private IgnoreUserRequestInterface $ignoreUserRequest;
 
-    private $ignoreListRepository;
+    private IgnoreListRepositoryInterface $ignoreListRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         IgnoreUserRequestInterface $ignoreUserRequest,

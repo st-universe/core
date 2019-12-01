@@ -13,9 +13,9 @@ final class ShowEditPmCategory implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_EDIT_CAT';
 
-    private $showEditCategoryRequest;
+    private ShowEditCategoryRequestInterface $showEditCategoryRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     public function __construct(
         ShowEditCategoryRequestInterface $showEditCategoryRequest,

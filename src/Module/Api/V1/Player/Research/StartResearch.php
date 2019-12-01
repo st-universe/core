@@ -17,13 +17,13 @@ final class StartResearch extends Action
 {
     public const JSON_SCHEMA_FILE = __DIR__ . '/StartResearch.json';
 
-    private $session;
+    private SessionInterface $session;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $jsonSchemaRequest;
+    private JsonSchemaRequestInterface $jsonSchemaRequest;
 
-    private $techlistRetriever;
+    private TechlistRetrieverInterface $techlistRetriever;
 
     public function __construct(
         SessionInterface $session,

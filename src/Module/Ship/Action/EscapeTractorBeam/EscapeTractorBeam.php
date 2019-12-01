@@ -14,7 +14,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ESCAPE_TRAKTOR';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

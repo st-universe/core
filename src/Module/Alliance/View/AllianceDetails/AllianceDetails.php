@@ -19,15 +19,15 @@ final class AllianceDetails implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ALLIANCE';
 
-    private $allianceDetailsRequest;
+    private AllianceDetailsRequestInterface $allianceDetailsRequest;
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
     public function __construct(
         AllianceDetailsRequestInterface $allianceDetailsRequest,

@@ -12,9 +12,9 @@ final class ChangeEmail implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_EMAIL';
 
-    private $changeEmailRequest;
+    private ChangeEmailRequestInterface $changeEmailRequest;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ChangeEmailRequestInterface $changeEmailRequest,

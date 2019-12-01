@@ -15,9 +15,9 @@ final class ShowAccounts implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ACCOUNTS';
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
     public function __construct(
         TradeLibFactoryInterface $tradeLibFactory,

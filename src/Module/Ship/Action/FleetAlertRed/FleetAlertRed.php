@@ -16,9 +16,9 @@ final class FleetAlertRed implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FLEET_ALERT_RED';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

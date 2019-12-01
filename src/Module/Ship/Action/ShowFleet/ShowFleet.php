@@ -14,7 +14,7 @@ final class ShowFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SHOW_FLEET';
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         SessionInterface $session

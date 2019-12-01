@@ -20,15 +20,15 @@ final class InterceptShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_INTERCEPT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

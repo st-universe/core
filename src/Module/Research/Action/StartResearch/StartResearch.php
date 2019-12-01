@@ -16,11 +16,11 @@ final class StartResearch implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_DO_RESEARCH';
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $techlistRetriever;
+    private TechlistRetrieverInterface $techlistRetriever;
 
-    private $startResearchRequest;
+    private StartResearchRequestInterface $startResearchRequest;
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,

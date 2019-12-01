@@ -15,7 +15,7 @@ final class ShowShipDetails implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SHIPDETAILS';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

@@ -15,11 +15,11 @@ final class ShowAcademy implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ACADEMY';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showAcademyRequest;
+    private ShowAcademyRequestInterface $showAcademyRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

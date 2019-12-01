@@ -15,13 +15,13 @@ final class ShowBeamFrom implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BEAMFROM';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showBeamFromRequest;
+    private ShowBeamFromRequestInterface $showBeamFromRequest;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

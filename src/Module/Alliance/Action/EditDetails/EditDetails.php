@@ -20,17 +20,17 @@ final class EditDetails implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_UPDATE_ALLIANCE';
 
-    private $editDetailsRequest;
+    private EditDetailsRequestInterface $editDetailsRequest;
 
-    private $bbcodeParser;
+    private Parser $bbcodeParser;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
     public function __construct(
         EditDetailsRequestInterface $editDetailsRequest,

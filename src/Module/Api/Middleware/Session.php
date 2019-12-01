@@ -15,7 +15,7 @@ final class Session implements SessionInterface
 
     private $user;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository

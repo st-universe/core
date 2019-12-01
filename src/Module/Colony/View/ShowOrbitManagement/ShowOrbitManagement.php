@@ -15,13 +15,13 @@ final class ShowOrbitManagement implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ORBITAL_SHIPS';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showOrbitManagementRequest;
+    private ShowOrbitManagementRequestInterface $showOrbitManagementRequest;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

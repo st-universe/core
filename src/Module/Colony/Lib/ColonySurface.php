@@ -16,15 +16,15 @@ use Stu\PlanetGenerator\PlanetGenerator;
 
 final class ColonySurface implements ColonySurfaceInterface
 {
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $colony;
+    private ColonyInterface $colony;
 
-    private $buildingId;
+    private ?int $buildingId;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,

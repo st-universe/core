@@ -12,15 +12,15 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class TradePostStorageManager implements TradePostStorageManagerInterface
 {
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $tradePost;
+    private TradePostInterface $tradePost;
 
-    private $userId;
+    private int $userId;
 
     private $storageSum;
 

@@ -12,29 +12,29 @@ use Stu\Orm\Entity\MapBorderTypeInterface;
 class ExploreableStarMap implements ExploreableStarMapInterface
 {
     /** @Id @Column(type="integer") * */
-    private $id = 0;
+    private int $id = 0;
 
     /** @Column(type="integer") * */
-    private $cx = 0;
+    private int $cx = 0;
 
     /** @Column(type="integer") * */
-    private $cy = 0;
+    private int $cy = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private $field_id = 0;
+    private int $field_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private $bordertype_id = 0;
+    private int $bordertype_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private $user_id = 0;
+    private int $user_id = 0;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapBorderType")
      * @JoinColumn(name="bordertype_id", referencedColumnName="id")
      * @var null|MapBorderTypeInterface
      */
-    private $mapBorderType;
+    private ?MapBorderTypeInterface $mapBorderType;
 
     public function getId(): int
     {
@@ -66,7 +66,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         return $this->user_id;
     }
 
-    private $hide = false;
+    private bool $hide = false;
 
     public function setHide(bool $hide): ExploreableStarMapInterface
     {

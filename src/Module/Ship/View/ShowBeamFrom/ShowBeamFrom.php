@@ -14,9 +14,9 @@ final class ShowBeamFrom implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BEAMFROM';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

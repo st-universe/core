@@ -16,13 +16,13 @@ final class Overview implements ViewControllerInterface
 {
     private const KNLIMITER = 6;
 
-    private $overviewRequest;
+    private OverviewRequestInterface $overviewRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
-    private $knFactory;
+    private KnFactoryInterface $knFactory;
 
     public function __construct(
         OverviewRequestInterface $overviewRequest,

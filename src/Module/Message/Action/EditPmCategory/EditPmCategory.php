@@ -14,9 +14,9 @@ final class EditPmCategory implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_EDIT_PMCATEGORY_NAME';
 
-    private $editPmCategoryRequest;
+    private EditPmCategoryRequestInterface $editPmCategoryRequest;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     public function __construct(
         EditPmCategoryRequestInterface $editPmCategoryRequest,

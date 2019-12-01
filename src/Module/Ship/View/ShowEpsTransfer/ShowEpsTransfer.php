@@ -14,9 +14,9 @@ final class ShowEpsTransfer implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_ETRANSFER';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

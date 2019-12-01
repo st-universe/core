@@ -12,9 +12,9 @@ final class ShowBuildResult implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BUILD_RESULT';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showBuildResultRequest;
+    private ShowBuildResultRequestInterface $showBuildResultRequest;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

@@ -14,15 +14,15 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $overviewRequest;
+    private OverviewRequestInterface $overviewRequest;
 
-    private $userProfileVisitorRepository;
+    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
 
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         OverviewRequestInterface $overviewRequest,

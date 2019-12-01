@@ -19,15 +19,15 @@ final class BeamFromColony implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BEAMFROM_COLONY';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipStorageManager;
+    private ShipStorageManagerInterface $shipStorageManager;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

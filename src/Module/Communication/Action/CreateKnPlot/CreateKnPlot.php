@@ -14,11 +14,11 @@ final class CreateKnPlot implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CREATE_PLOT';
 
-    private $createKnPlotRequest;
+    private CreateKnPlotRequestInterface $createKnPlotRequest;
 
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         CreateKnPlotRequestInterface $createKnPlotRequest,

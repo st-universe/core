@@ -16,11 +16,11 @@ final class RenameCrew implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_RENAME_CREW';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $crewRepository;
+    private CrewRepositoryInterface $crewRepository;
 
-    private $renameCrewRequest;
+    private RenameCrewRequestInterface $renameCrewRequest;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

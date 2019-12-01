@@ -17,15 +17,15 @@ final class ShowShipDisassembly implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SHIP_DISASSEMBLY';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $showShipDisassemblyRequest;
+    private ShowShipDisassemblyRequestInterface $showShipDisassemblyRequest;
 
-    private $shipRumpBuildingFunctionRepository;
+    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

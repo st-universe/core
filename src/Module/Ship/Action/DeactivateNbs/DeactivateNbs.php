@@ -17,11 +17,11 @@ final class DeactivateNbs implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_NBS';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

@@ -12,9 +12,9 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         FleetRepositoryInterface $fleetRepository,

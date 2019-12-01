@@ -13,9 +13,9 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class GetNewPrivateMessages extends Action
 {
-    private $session;
+    private SessionInterface $session;
 
-    private $privateMessageFolderRepository;
+    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     public function __construct(
         SessionInterface $session,

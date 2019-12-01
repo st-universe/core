@@ -12,7 +12,7 @@ final class DeleteAllContacts implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_ALL_CONTACTS';
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
     public function __construct(
         ContactRepositoryInterface $contactRepository

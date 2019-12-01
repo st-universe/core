@@ -14,13 +14,13 @@ use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class TechlistRetriever implements TechlistRetrieverInterface
 {
-    private $researchRepository;
+    private ResearchRepositoryInterface $researchRepository;
 
-    private $researchDependencyRepository;
+    private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $factionRepository;
+    private FactionRepositoryInterface $factionRepository;
 
     public function __construct(
         ResearchRepositoryInterface $researchRepository,

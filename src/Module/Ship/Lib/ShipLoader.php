@@ -10,7 +10,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipLoader implements ShipLoaderInterface
 {
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository

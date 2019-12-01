@@ -20,15 +20,15 @@ final class ActivateTractorBeam implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ACTIVATE_TRAKTOR';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipAttackCycle;
+    private ShipAttackCycleInterface $shipAttackCycle;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

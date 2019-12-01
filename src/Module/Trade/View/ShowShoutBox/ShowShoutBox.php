@@ -14,11 +14,11 @@ final class ShowShoutBox implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SHOUTBOX';
 
-    private $showShoutBoxRequest;
+    private ShowShoutBoxRequestInterface $showShoutBoxRequest;
 
-    private $tradeShoutboxRepository;
+    private TradeShoutboxRepositoryInterface $tradeShoutboxRepository;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     public function __construct(
         ShowShoutBoxRequestInterface $showShoutBoxRequest,

@@ -14,7 +14,7 @@ final class ShowMapEditor implements ViewControllerInterface
     private const FIELDS_PER_SECTION = 20;
     public const VIEW_IDENTIFIER = 'SHOW_MAP_EDITOR';
 
-    private $starSystemRepository;
+    private StarSystemRepositoryInterface $starSystemRepository;
 
     public function __construct(
         StarSystemRepositoryInterface $starSystemRepository

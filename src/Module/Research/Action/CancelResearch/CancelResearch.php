@@ -14,7 +14,7 @@ final class CancelResearch implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_CANCEL_CURRENT_RESEARCH';
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository

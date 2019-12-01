@@ -28,17 +28,17 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
 {
-    private $buildplanModuleRepository;
+    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
 
-    private $shipSystemRepository;
+    private ShipSystemRepositoryInterface $shipSystemRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,

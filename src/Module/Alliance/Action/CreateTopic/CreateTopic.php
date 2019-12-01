@@ -17,13 +17,13 @@ final class CreateTopic implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CREATE_TOPIC';
 
-    private $createTopicRequest;
+    private CreateTopicRequestInterface $createTopicRequest;
 
-    private $allianceBoardPostRepository;
+    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
     public function __construct(
         CreateTopicRequestInterface $createTopicRequest,

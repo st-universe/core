@@ -13,13 +13,13 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipTick implements ShipTickInterface
 {
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $msg = [];
+    private array $msg = [];
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,

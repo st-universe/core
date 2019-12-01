@@ -14,9 +14,9 @@ final class ShowBeamFromColony implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_COLONY_BEAMFROM';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

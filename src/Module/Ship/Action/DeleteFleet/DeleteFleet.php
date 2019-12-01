@@ -14,11 +14,11 @@ final class DeleteFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_FLEET';
 
-    private $deleteFleetRequest;
+    private DeleteFleetRequestInterface $deleteFleetRequest;
 
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         DeleteFleetRequestInterface $deleteFleetRequest,

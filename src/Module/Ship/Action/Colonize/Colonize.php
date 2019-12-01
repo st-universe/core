@@ -24,23 +24,23 @@ final class Colonize implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_COLONIZE';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRumpColonizationBuildingRepository;
+    private ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $planetColonization;
+    private PlanetColonizationInterface $planetColonization;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

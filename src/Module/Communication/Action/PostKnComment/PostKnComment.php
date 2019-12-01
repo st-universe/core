@@ -16,11 +16,11 @@ final class PostKnComment implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_POST_COMMENT';
     private const CAHRACTER_LIMIT = 250;
 
-    private $postKnCommentRequest;
+    private PostKnCommentRequestInterface $postKnCommentRequest;
 
-    private $knCommentRepository;
+    private KnCommentRepositoryInterface $knCommentRepository;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
     public function __construct(
         PostKnCommentRequestInterface $postKnCommentRequest,

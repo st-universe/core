@@ -13,9 +13,9 @@ final class LeaveFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_LEAVE_FLEET';
 
-    private $leaveFleetRequest;
+    private LeaveFleetRequestInterface $leaveFleetRequest;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         LeaveFleetRequestInterface $leaveFleetRequest,

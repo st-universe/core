@@ -11,9 +11,9 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class TalFactory implements TalFactoryInterface
 {
-    private $researchDependencyRepository;
+    private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
     public function __construct(
         ResearchDependencyRepositoryInterface $researchDependencyRepository,

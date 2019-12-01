@@ -15,9 +15,9 @@ final class SaveNote implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_SAVE_NOTE';
 
-    private $saveNoteRequest;
+    private SaveNoteRequestInterface $saveNoteRequest;
 
-    private $noteRepository;
+    private NoteRepositoryInterface $noteRepository;
 
     public function __construct(
         SaveNoteRequestInterface $saveNoteRequest,

@@ -15,9 +15,9 @@ final class UnloadBattery implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_USE_BATTERY';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

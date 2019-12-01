@@ -15,9 +15,9 @@ final class DeleteKnPost implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEL_KN';
 
-    private $deleteKnPostRequest;
+    private DeleteKnPostRequestInterface $deleteKnPostRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
     public function __construct(
         DeleteKnPostRequestInterface $deleteKnPostRequest,

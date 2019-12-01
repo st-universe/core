@@ -23,13 +23,13 @@ final class SwitchColonyMenu implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SWITCH_COLONYMENU';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $buildingFunctionRepository;
+    private BuildingFunctionRepositoryInterface $buildingFunctionRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

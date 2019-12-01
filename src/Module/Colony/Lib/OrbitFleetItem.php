@@ -8,11 +8,11 @@ use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class OrbitFleetItem implements OrbitFleetItemInterface
 {
-    private $fleetId;
+    private int $fleetId;
 
-    private $shipList;
+    private array $shipList;
 
-    private $userId;
+    private int $userId;
 
     public function __construct(
         int $fleetId,

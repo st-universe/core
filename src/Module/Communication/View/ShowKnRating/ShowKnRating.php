@@ -12,7 +12,7 @@ final class ShowKnRating implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_KN_RATING';
 
-    private $knFactory;
+    private KnFactoryInterface $knFactory;
 
     public function __construct(
         KnFactoryInterface $knFactory

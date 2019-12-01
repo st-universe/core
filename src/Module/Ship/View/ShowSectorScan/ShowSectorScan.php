@@ -13,7 +13,7 @@ final class ShowSectorScan implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ShipLoaderInterface $shipLoader

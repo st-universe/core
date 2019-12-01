@@ -9,7 +9,7 @@ use Stu\Orm\Entity\ShipRumpInterface;
 
 final class OrbitShipItem implements OrbitShipItemInterface
 {
-    private $ship;
+    private ?ShipInterface $ship;
 
     public function __construct(
         ?ShipInterface $ship

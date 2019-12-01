@@ -11,7 +11,7 @@ use Stu\Module\Research\TechlistRetrieverInterface;
 final class Overview implements ViewControllerInterface
 {
 
-    private $techlistRetriever;
+    private TechlistRetrieverInterface $techlistRetriever;
 
     public function __construct(
         TechlistRetrieverInterface $techlistRetriever

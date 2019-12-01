@@ -19,19 +19,19 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $historyRepository;
+    private HistoryRepositoryInterface $historyRepository;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
-    private $userProfileVisitorRepository;
+    private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $colonyShipQueueRepository;
+    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $knFactory;
+    private KnFactoryInterface $knFactory;
 
     public function __construct(
         HistoryRepositoryInterface $historyRepository,

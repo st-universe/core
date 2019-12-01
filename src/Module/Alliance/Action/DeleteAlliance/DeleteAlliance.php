@@ -17,11 +17,11 @@ final class DeleteAlliance implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_ALLIANCE';
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,

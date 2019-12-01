@@ -22,19 +22,19 @@ final class BuyTradeLicense implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_PAY_TRADELICENCE';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $shipStorageManager;
+    private ShipStorageManagerInterface $shipStorageManager;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

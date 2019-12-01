@@ -19,15 +19,15 @@ final class LandShip implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_LAND_SHIP';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

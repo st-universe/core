@@ -10,7 +10,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ColonyLoader implements ColonyLoaderInterface
 {
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyRepositoryInterface $colonyRepository

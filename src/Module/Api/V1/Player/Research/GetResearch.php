@@ -14,11 +14,11 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 
 final class GetResearch extends Action
 {
-    private $session;
+    private SessionInterface $session;
 
-    private $techlistRetriever;
+    private TechlistRetrieverInterface $techlistRetriever;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
     public function __construct(
         SessionInterface $session,

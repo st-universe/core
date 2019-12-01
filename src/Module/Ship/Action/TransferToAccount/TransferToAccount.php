@@ -20,17 +20,17 @@ final class TransferToAccount implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TRANSFER_TO_ACCOUNT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $shipStorageManager;
+    private ShipStorageManagerInterface $shipStorageManager;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

@@ -16,13 +16,13 @@ final class Board implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BOARD';
 
-    private $boardRequest;
+    private BoardRequestInterface $boardRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         BoardRequestInterface $boardRequest,

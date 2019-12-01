@@ -18,21 +18,21 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ColonyLibFactory implements ColonyLibFactoryInterface
 {
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $torpedoTypeRepository;
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
-    private $commodityConsumption;
+    private CommodityConsumptionInterface $commodityConsumption;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipBuildplanRepository;
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,

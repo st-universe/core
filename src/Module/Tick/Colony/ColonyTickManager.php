@@ -16,17 +16,17 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 {
     public const LOCKFILE_DIR = '/var/tmp/';
 
-    private $colonyTick;
+    private ColonyTickInterface $colonyTick;
 
-    private $colonyShipRepairRepository;
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
-    private $crewCreator;
+    private CrewCreatorInterface $crewCreator;
 
-    private $crewTrainingRepository;
+    private CrewTrainingRepositoryInterface $crewTrainingRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ColonyTickInterface $colonyTick,

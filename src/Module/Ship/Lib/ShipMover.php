@@ -20,28 +20,28 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShipMover implements ShipMoverInterface
 {
-    private $mapRepository;
+    private MapRepositoryInterface $mapRepository;
 
-    private $starSystemMapRepository;
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $entryCreator;
+    private EntryCreatorInterface $entryCreator;
 
-    private $shipRemover;
+    private ShipRemoverInterface $shipRemover;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
-    private $applyDamage;
+    private ApplyDamageInterface $applyDamage;
 
-    private $new_x = 0;
-    private $new_y = 0;
-    private $fleetMode = 0;
+    private int $new_x = 0;
+    private int $new_y = 0;
+    private int $fleetMode = 0;
     private $fieldData = null;
     private $fieldCount = null;
-    private $flightFields = 0;
+    private int $flightFields = 0;
 
     public function __construct(
         MapRepositoryInterface $mapRepository,
@@ -154,7 +154,7 @@ final class ShipMover implements ShipMoverInterface
         $this->new_y = $value;
     }
 
-    private $informations = [];
+    private array $informations = [];
 
     private function addInformation($value)
     {
@@ -446,7 +446,7 @@ final class ShipMover implements ShipMoverInterface
         return $msg;
     }
 
-    private $flightDone = false;
+    private bool $flightDone = false;
 
     private function getNextField(ShipInterface $leadShip, $method, ShipInterface $ship)
     {

@@ -14,7 +14,7 @@ final class HideFleet implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_HIDE_FLEET';
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         SessionInterface $session

@@ -15,13 +15,13 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 final class TalSelectedTech implements TalSelectedTechInterface
 {
 
-    private $research;
+    private ResearchInterface $research;
 
-    private $currentUser;
+    private UserInterface $currentUser;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $researchDependencyRepository;
+    private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
     private $state;
 

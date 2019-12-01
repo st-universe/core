@@ -15,11 +15,11 @@ final class CancelOffer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CANCEL_OFFER';
 
-    private $cancelOfferRequest;
+    private CancelOfferRequestInterface $cancelOfferRequest;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     public function __construct(
         CancelOfferRequestInterface $cancelOfferRequest,

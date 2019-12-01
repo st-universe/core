@@ -13,9 +13,9 @@ final class ChangeAvatar implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_AVATAR';
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

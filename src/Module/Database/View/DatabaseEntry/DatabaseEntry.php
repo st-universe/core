@@ -23,21 +23,21 @@ final class DatabaseEntry implements ViewControllerInterface
 
     public const VIEW_IDENTIFIER = 'SHOW_ENTRY';
 
-    private $databaseEntryRequest;
+    private DatabaseEntryRequestInterface $databaseEntryRequest;
 
-    private $databaseCategoryRepository;
+    private DatabaseCategoryRepositoryInterface $databaseCategoryRepository;
 
-    private $databaseEntryRepository;
+    private DatabaseEntryRepositoryInterface $databaseEntryRepository;
 
-    private $databaseUserRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
 
-    private $mapRegionRepository;
+    private MapRegionRepositoryInterface $mapRegionRepository;
 
-    private $starSystemRepository;
+    private StarSystemRepositoryInterface $starSystemRepository;
 
-    private $shipRumpRepository;
+    private ShipRumpRepositoryInterface $shipRumpRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         DatabaseEntryRequestInterface $databaseEntryRequest,

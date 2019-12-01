@@ -18,17 +18,17 @@ final class TransferGoods implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TRANSFER';
 
-    private $transferGoodsRequest;
+    private TransferGoodsRequestInterface $transferGoodsRequest;
 
-    private $tradeTransferRepository;
+    private TradeTransferRepositoryInterface $tradeTransferRepository;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
-    private $tradeLibFactory;
+    private TradeLibFactoryInterface $tradeLibFactory;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $tradeStorageRepository;
+    private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     public function __construct(
         TransferGoodsRequestInterface $transferGoodsRequest,

@@ -13,7 +13,7 @@ final class Logout implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_LOGOUT';
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         SessionInterface $session

@@ -11,11 +11,11 @@ use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 
 final class ModuleFabricationListItemTal
 {
-    private $moduleQueueRepository;
+    private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
-    private $colony;
+    private ColonyInterface $colony;
 
-    private $module;
+    private ModuleInterface $module;
 
     public function __construct(
         ModuleQueueRepositoryInterface $moduleQueueRepository,

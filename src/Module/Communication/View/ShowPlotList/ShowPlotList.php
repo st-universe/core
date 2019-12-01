@@ -12,7 +12,7 @@ final class ShowPlotList implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_PLOTLIST';
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     public function __construct(
         RpgPlotRepositoryInterface $rpgPlotRepository

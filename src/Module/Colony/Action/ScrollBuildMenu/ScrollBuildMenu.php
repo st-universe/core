@@ -17,9 +17,9 @@ final class ScrollBuildMenu implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SCROLL_BUILDMENU';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

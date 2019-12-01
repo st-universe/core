@@ -16,17 +16,17 @@ final class AddKnPlotMember implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_PLOTMEMBER';
 
-    private $addKnPlotMemberRequest;
+    private AddKnPlotMemberRequestInterface $addKnPlotMemberRequest;
 
-    private $rpgPlotMemberRepository;
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
     /**
      * @var UserRepositoryInterface
      */
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AddKnPlotMemberRequestInterface $addKnPlotMemberRequest,

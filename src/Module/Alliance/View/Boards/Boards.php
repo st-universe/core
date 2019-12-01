@@ -13,9 +13,9 @@ final class Boards implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_BOARDS';
 
-    private $allianceBoardRepository;
+    private AllianceBoardRepositoryInterface $allianceBoardRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         AllianceBoardRepositoryInterface $allianceBoardRepository,

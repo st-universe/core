@@ -16,11 +16,11 @@ final class DeleteAvatar implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_AVATAR';
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
-    private $allianceRepository;
+    private AllianceRepositoryInterface $allianceRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         AllianceActionManagerInterface $allianceActionManager,

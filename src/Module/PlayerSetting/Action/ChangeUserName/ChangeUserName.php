@@ -13,11 +13,11 @@ final class ChangeUserName implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_NAME';
 
-    private $changeUserNameRequest;
+    private ChangeUserNameRequestInterface $changeUserNameRequest;
 
-    private $bbcodeParser;
+    private Parser $bbcodeParser;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         ChangeUserNameRequestInterface $changeUserNameRequest,

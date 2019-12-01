@@ -15,9 +15,9 @@ final class SetYellowAlert implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_YELLOW_ALERT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

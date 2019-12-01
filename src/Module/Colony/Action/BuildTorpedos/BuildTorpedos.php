@@ -17,13 +17,13 @@ final class BuildTorpedos implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD_TORPEDOS';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $torpedoTypeRepository;
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

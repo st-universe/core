@@ -19,13 +19,13 @@ final class Register extends Action
 {
     public const JSON_SCHEMA_FILE = __DIR__ . '/register.json';
 
-    private $jsonSchemaRequest;
+    private JsonSchemaRequestInterface $jsonSchemaRequest;
 
-    private $playerCreator;
+    private PlayerCreatorInterface $playerCreator;
 
-    private $factionRepository;
+    private FactionRepositoryInterface $factionRepository;
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         JsonSchemaRequestInterface $jsonSchemaRequest,

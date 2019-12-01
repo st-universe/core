@@ -16,7 +16,7 @@ final class JsonSchemaRequest implements JsonSchemaRequestInterface
     /**
      * @var null|ServerRequestInterface
      */
-    private $request;
+    private ?ServerRequestInterface $request;
 
     public function setRequest(ServerRequestInterface $request): void
     {

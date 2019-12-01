@@ -12,7 +12,7 @@ use Stu\Orm\Repository\NewsRepositoryInterface;
 
 final class GetNews extends Action
 {
-    private $newsRepository;
+    private NewsRepositoryInterface $newsRepository;
 
     public function __construct(
         NewsRepositoryInterface $newsRepository

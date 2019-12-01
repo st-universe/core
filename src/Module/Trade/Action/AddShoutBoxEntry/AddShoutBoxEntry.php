@@ -15,11 +15,11 @@ final class AddShoutBoxEntry implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ADD_SHOUTBOX_ENTRY';
 
-    private $addShoutBoxEntryRequest;
+    private AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest;
 
-    private $tradeShoutboxRepository;
+    private TradeShoutboxRepositoryInterface $tradeShoutboxRepository;
 
-    private $tradeLicenseRepository;
+    private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     public function __construct(
         AddShoutBoxEntryRequestInterface $addShoutBoxEntryRequest,

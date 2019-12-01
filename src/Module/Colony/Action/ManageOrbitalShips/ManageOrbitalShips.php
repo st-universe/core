@@ -29,27 +29,27 @@ final class ManageOrbitalShips implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MANAGE_ORBITAL_SHIPS';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $torpedoTypeRepository;
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
-    private $crewCreator;
+    private CrewCreatorInterface $crewCreator;
 
-    private $shipCrewRepository;
+    private ShipCrewRepositoryInterface $shipCrewRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

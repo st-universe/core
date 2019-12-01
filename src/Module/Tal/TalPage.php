@@ -12,7 +12,7 @@ use XsltProcessor;
 
 final class TalPage implements TalPageInterface
 {
-    private $config;
+    private ConfigInterface $config;
 
     private $template;
 

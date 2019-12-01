@@ -13,7 +13,7 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
     /**
      * @var BuildingFunctionInterface[]
      */
-    private $buildingfunctionIds;
+    private array $buildingfunctionIds;
 
     public function __construct(
         array $buildingfunctionIds

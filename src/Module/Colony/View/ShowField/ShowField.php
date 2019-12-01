@@ -17,17 +17,17 @@ final class ShowField implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_FIELD';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyShipRepairRepository;
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
-    private $showFieldRequest;
+    private ShowFieldRequestInterface $showFieldRequest;
 
-    private $colonyShipQueueRepository;
+    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

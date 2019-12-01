@@ -16,11 +16,11 @@ final class Leave implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_LEAVE_ALLIANCE';
 
-    private $allianceJobRepository;
+    private AllianceJobRepositoryInterface $allianceJobRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(
         AllianceJobRepositoryInterface $allianceJobRepository,

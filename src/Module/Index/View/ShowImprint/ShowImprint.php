@@ -12,7 +12,7 @@ final class ShowImprint implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_INFOS';
 
-    private $config;
+    private ConfigInterface $config;
 
     public function __construct(
         ConfigInterface $config

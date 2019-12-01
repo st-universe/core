@@ -14,9 +14,9 @@ final class NewPost implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_NEW_POST';
 
-    private $newPostRequest;
+    private NewPostRequestInterface $newPostRequest;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         NewPostRequestInterface $newPostRequest,

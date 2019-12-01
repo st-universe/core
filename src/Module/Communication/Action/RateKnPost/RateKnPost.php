@@ -14,9 +14,9 @@ final class RateKnPost implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_RATE_KN_POST';
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $knPostRequest;
+    private RateKnPostRequestInterface $knPostRequest;
 
     public function __construct(
         KnPostRepositoryInterface $knPostRepository,

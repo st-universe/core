@@ -18,11 +18,11 @@ final class DeletePost implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
-    private $deletePostRequest;
+    private DeletePostRequestInterface $deletePostRequest;
 
-    private $allianceBoardPostRepository;
+    private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
 
-    private $allianceBoardTopicRepository;
+    private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
         DeletePostRequestInterface $deletePostRequest,

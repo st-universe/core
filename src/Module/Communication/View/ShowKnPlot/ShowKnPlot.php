@@ -18,13 +18,13 @@ final class ShowKnPlot implements ViewControllerInterface
 
     private const KNLIMITER = 6;
 
-    private $showKnPlotRequest;
+    private ShowKnPlotRequestInterface $showKnPlotRequest;
 
-    private $knPostRepository;
+    private KnPostRepositoryInterface $knPostRepository;
 
-    private $rpgPlotRepository;
+    private RpgPlotRepositoryInterface $rpgPlotRepository;
 
-    private $knFactory;
+    private KnFactoryInterface $knFactory;
 
     public function __construct(
         ShowKnPlotRequestInterface $showKnPlotRequest,

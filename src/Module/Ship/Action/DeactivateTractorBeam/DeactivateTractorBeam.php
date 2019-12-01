@@ -16,9 +16,9 @@ final class DeactivateTractorBeam implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_TRAKTOR';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

@@ -15,9 +15,9 @@ final class SetGreenAlert implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_GREEN_ALERT';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

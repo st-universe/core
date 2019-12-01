@@ -14,13 +14,13 @@ final class ShowOfferGood implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_OFFER_GOOD';
 
-    private $showOfferGoodRequest;
+    private ShowOfferGoodRequestInterface $showOfferGoodRequest;
 
-    private $tradePostRepository;
+    private TradePostRepositoryInterface $tradePostRepository;
 
-    private $tradeOfferRepository;
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
         ShowOfferGoodRequestInterface $showOfferGoodRequest,

@@ -16,13 +16,13 @@ final class ShowSocial implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SOCIAL';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $colonyGuiHelper;
+    private ColonyGuiHelperInterface $colonyGuiHelper;
 
-    private $showSocialRequest;
+    private ShowSocialRequestInterface $showSocialRequest;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

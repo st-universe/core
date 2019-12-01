@@ -15,11 +15,11 @@ final class SwitchContactMode implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CHANGE_CONTACTMODE';
 
-    private $switchContactModeRequest;
+    private SwitchContactModeRequestInterface $switchContactModeRequest;
 
-    private $contactRepository;
+    private ContactRepositoryInterface $contactRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         SwitchContactModeRequestInterface $switchContactModeRequest,

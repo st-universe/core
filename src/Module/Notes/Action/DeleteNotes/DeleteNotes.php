@@ -14,9 +14,9 @@ final class DeleteNotes implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_NOTES';
 
-    private $deleteNotesRequest;
+    private DeleteNotesRequestInterface $deleteNotesRequest;
 
-    private $noteRepository;
+    private NoteRepositoryInterface $noteRepository;
 
     public function __construct(
         DeleteNotesRequestInterface $deleteNotesRequest,

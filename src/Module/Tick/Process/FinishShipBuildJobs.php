@@ -12,11 +12,11 @@ use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class FinishShipBuildJobs implements ProcessTickInterface
 {
-    private $shipCreator;
+    private ShipCreatorInterface $shipCreator;
 
-    private $colonyShipQueueRepository;
+    private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipCreatorInterface $shipCreator,

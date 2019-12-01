@@ -20,11 +20,11 @@ final class ActivatePhaser implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_ACTIVATE_PHASER';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

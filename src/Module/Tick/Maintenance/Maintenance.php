@@ -8,12 +8,12 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
 final class Maintenance
 {
-    private $gameConfigRepository;
+    private GameConfigRepositoryInterface $gameConfigRepository;
 
     /**
      * @var MaintenanceHandlerInterface[]
      */
-    private $handler_list;
+    private array $handler_list;
 
     public function __construct(
         GameConfigRepositoryInterface $gameConfigRepository,

@@ -17,11 +17,11 @@ final class TrainCrew implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TRAIN_CREW';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $crewTrainingRepository;
+    private CrewTrainingRepositoryInterface $crewTrainingRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,

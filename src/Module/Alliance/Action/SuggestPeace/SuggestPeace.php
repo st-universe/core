@@ -15,11 +15,11 @@ final class SuggestPeace implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SUGGEST_PEACE';
 
-    private $suggestPeaceRequest;
+    private SuggestPeaceRequestInterface $suggestPeaceRequest;
 
-    private $allianceRelationRepository;
+    private AllianceRelationRepositoryInterface $allianceRelationRepository;
 
-    private $allianceActionManager;
+    private AllianceActionManagerInterface $allianceActionManager;
 
     public function __construct(
         SuggestPeaceRequestInterface $suggestPeaceRequest,

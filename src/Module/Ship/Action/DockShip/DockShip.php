@@ -24,17 +24,17 @@ final class DockShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DOCK';
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $dockingPrivilegeRepository;
+    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
-    private $positionChecker;
+    private PositionCheckerInterface $positionChecker;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,

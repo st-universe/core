@@ -12,11 +12,11 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class FinishTerraformingJobs implements ProcessTickInterface
 {
-    private $colonyTerraformingRepository;
+    private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,

@@ -10,7 +10,7 @@ use Stu\Orm\Repository\NewsRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private $newsRepository;
+    private NewsRepositoryInterface $newsRepository;
 
     public function __construct(
         NewsRepositoryInterface $newsRepository

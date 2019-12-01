@@ -11,9 +11,9 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ColonyStorageManager implements ColonyStorageManagerInterface
 {
-    private $colonyStorageRepository;
+    private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
         ColonyStorageRepositoryInterface $colonyStorageRepository,

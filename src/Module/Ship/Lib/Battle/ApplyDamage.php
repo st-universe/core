@@ -13,7 +13,7 @@ use Stu\Orm\Entity\ShipInterface;
 final class ApplyDamage implements ApplyDamageInterface
 {
 
-    private $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager

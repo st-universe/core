@@ -8,7 +8,7 @@ use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 
 final class Academy implements BuildingActionHandlerInterface
 {
-    private $crewTrainingRepository;
+    private CrewTrainingRepositoryInterface $crewTrainingRepository;
 
     public function __construct(
         CrewTrainingRepositoryInterface $crewTrainingRepository

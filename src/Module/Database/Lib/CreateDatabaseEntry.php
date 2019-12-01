@@ -11,9 +11,9 @@ use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 
 final class CreateDatabaseEntry implements CreateDatabaseEntryInterface
 {
-    private $databaseEntryRepository;
+    private DatabaseEntryRepositoryInterface $databaseEntryRepository;
 
-    private $databaseUserRepository;
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
 
     public function __construct(
         DatabaseEntryRepositoryInterface $databaseEntryRepository,

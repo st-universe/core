@@ -22,17 +22,17 @@ final class ShowShip implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SHIP';
 
-    private $session;
+    private SessionInterface $session;
 
-    private $shipLoader;
+    private ShipLoaderInterface $shipLoader;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $fleetRepository;
+    private FleetRepositoryInterface $fleetRepository;
 
-    private $shipRepository;
+    private ShipRepositoryInterface $shipRepository;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
     public function __construct(
         SessionInterface $session,
