@@ -86,7 +86,7 @@ final class TrainCrew implements ActionControllerInterface
 
             $this->crewTrainingRepository->save($crew);
         }
-        $colony->lowerWorkless($count);
+        $colony->setWorkless($colony->getWorkless() - $count);
 
         $this->colonyRepository->save($colony);
 

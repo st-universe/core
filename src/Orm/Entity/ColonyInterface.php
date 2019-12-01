@@ -121,29 +121,9 @@ interface ColonyInterface
 
     public function getBevFood(): int;
 
-    public function upperMaxBev(int $value): void;
-
-    public function lowerMaxBev(int $value): void;
-
-    public function upperWorkers(int $value): void;
-
-    public function lowerWorkers(int $value): void;
-
-    public function upperWorkless(int $value): void;
-
-    public function lowerWorkless(int $value): void;
-
     public function getPopulation(): int;
 
     public function getFreeHousing(): int;
-
-    public function upperMaxEps($value): void;
-
-    public function lowerMaxEps($value): void;
-
-    public function upperMaxStorage(int $value): void;
-
-    public function lowerMaxStorage(int $value): void;
 
     public function getImmigration(): int;
 

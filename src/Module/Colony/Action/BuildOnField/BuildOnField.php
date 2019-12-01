@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildOnField;
 
 use request;
+use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowBuildResult\ShowBuildResult;
 use Stu\Orm\Entity\BuildingCostInterface;
-use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingFieldAlternativeRepositoryInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -23,19 +22,21 @@ final class BuildOnField implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD';
 
-    private $colonyLoader;
+    private ColonyLoaderInterface $colonyLoader;
 
-    private $buildingFieldAlternativeRepository;
+    private BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $buildingRepository;
+    private BuildingRepositoryInterface $buildingRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
+
+    private BuildingActionInterface $buildingAction;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -44,7 +45,8 @@ final class BuildOnField implements ActionControllerInterface
         BuildingRepositoryInterface $buildingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        BuildingActionInterface $buildingAction
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
@@ -53,6 +55,7 @@ final class BuildOnField implements ActionControllerInterface
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
+        $this->buildingAction = $buildingAction;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -188,7 +191,7 @@ final class BuildOnField implements ActionControllerInterface
                     return;
                 }
             }
-            $this->removeBuilding($field, $colony, $game);
+            $this->buildingAction->remove($colony, $field, $game);
         }
 
         foreach ($building->getCosts() as $obj) {
@@ -215,74 +218,6 @@ final class BuildOnField implements ActionControllerInterface
             _('%s wird gebaut - Fertigstellung: %s'),
             $building->getName(),
             date('d.m.Y H:i', $field->getBuildtime())
-        );
-    }
-
-    private function removeBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
-    {
-        if (!$field->hasBuilding()) {
-            return;
-        }
-        if (!$field->getBuilding()->isRemoveAble()) {
-            return;
-        }
-        $this->deActivateBuilding($field, $colony, $game);
-        $colony->lowerMaxStorage($field->getBuilding()->getStorage());
-        $colony->lowerMaxEps($field->getBuilding()->getEpsStorage());
-        $game->addInformationf(
-            _('%s auf Feld %d wurde demontiert'),
-            $field->getBuilding()->getName(),
-            $field->getFieldId()
-        );
-        $game->addInformation(_('Es konnten folgende Waren recycled werden'));
-        foreach ($field->getBuilding()->getCosts() as $value) {
-            $halfAmount = $value->getHalfAmount();
-            if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
-                $amount = $colony->getMaxStorage() - $colony->getStorageSum();
-            } else {
-                $amount = $halfAmount;
-            }
-            if ($amount <= 0) {
-                break;
-            }
-
-            $this->colonyStorageManager->upperStorage($colony, $value->getGood(), $amount);
-
-            $game->addInformationf('%d %s', $amount, $value->getGood()->getName());
-        }
-        $field->clearBuilding();
-
-        $this->planetFieldRepository->save($field);
-
-        $this->colonyRepository->save($colony);
-    }
-
-    protected function deActivateBuilding(PlanetFieldInterface $field, ColonyInterface $colony, GameControllerInterface $game)
-    {
-        if (!$field->hasBuilding()) {
-            return;
-        }
-        if (!$field->isActivateAble()) {
-            return;
-        }
-        if (!$field->isActive()) {
-            return;
-        }
-        $colony->upperWorkless($field->getBuilding()->getWorkers());
-        $colony->lowerWorkers($field->getBuilding()->getWorkers());
-        $colony->lowerMaxBev($field->getBuilding()->getHousing());
-        $field->setActive(0);
-
-        $this->planetFieldRepository->save($field);
-
-        $this->colonyRepository->save($colony);
-
-        $field->getBuilding()->postDeactivation($colony);
-
-        $game->addInformationf(
-            _('%s auf Feld %d wurde deaktiviert'),
-            $field->getBuilding()->getName(),
-            $field->getFieldId()
         );
     }
 

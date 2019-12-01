@@ -164,6 +164,9 @@ class PlanetField implements PlanetFieldInterface
 
     public function isActivateable(): bool
     {
+        if ($this->hasBuilding() === false) {
+            return false;
+        }
         if ($this->isInConstruction()) {
             return false;
         }

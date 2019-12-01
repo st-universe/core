@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Orm\Entity\BuildingInterface;
@@ -16,17 +17,19 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlanetColonization implements PlanetColonizationInterface
 {
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyLibFactory;
+    private ColonyLibFactoryInterface $colonyLibFactory;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
+
+    private BuildingManagerInterface $buildingManager;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -34,7 +37,8 @@ final class PlanetColonization implements PlanetColonizationInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyRepositoryInterface $colonyRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        BuildingManagerInterface $buildingManager
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->commodityRepository = $commodityRepository;
@@ -42,6 +46,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
+        $this->buildingManager = $buildingManager;
     }
 
     public function colonize(
@@ -68,22 +73,17 @@ final class PlanetColonization implements PlanetColonizationInterface
             $field = current($list);
         }
         $field->setBuilding($building);
-        $field->setIntegrity($building->getIntegrity());
-        $field->setActive(1);
 
-        $this->planetFieldRepository->save($field);
+        $colony->setWorkless($building->getHousing());
+        $colony->setEps($building->getEpsStorage());
 
-        $colony->upperMaxBev($building->getHousing());
-        $colony->upperMaxEps($building->getEpsStorage());
-        $colony->upperMaxStorage($building->getStorage());
-        $colony->upperWorkers($building->getWorkers());
-        $colony->lowerWorkless($building->getWorkers());
-        $colony->upperWorkless($building->getHousing());
+        $this->buildingManager->finish($field, true);
+
         $colony->setUser($this->userRepository->find($userId));
-        $colony->upperEps($building->getEpsStorage());
         $colony->setName(_('Kolonie'));
 
         $this->colonyRepository->save($colony);
+        $this->planetFieldRepository->save($field);
 
         $this->colonyStorageManager->upperStorage(
             $colony,

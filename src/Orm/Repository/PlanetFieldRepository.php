@@ -53,18 +53,23 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ]);
     }
 
-    public function getEnergyConsumingByColony(int $colonyId, ?int $limit = null): iterable
+    public function getEnergyConsumingByColony(
+        int $colonyId,
+        array $state = [0, 1],
+        ?int $limit = null
+    ): iterable
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT b.id FROM %s b WHERE b.eps_proc < 0
-                )',
+                ) AND f.aktiv = :state',
                 PlanetField::class,
                 Building::class
             )
         )->setParameters([
             'colonyId' => $colonyId,
+            'state' => $state
         ])
             ->setMaxResults($limit)
             ->getResult();
@@ -118,19 +123,21 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getCommodityConsumingByColonyAndCommodity(
         int $colonyId,
         int $commodityId,
+        array $state = [0 ,1],
         ?int $limit = null
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
                     SELECT bg.buildings_id FROM %s bg WHERE bg.goods_id = :commodityId AND bg.count < 0
-                )',
+                ) AND f.aktiv = :state',
                 PlanetField::class,
                 BuildingGood::class
             )
         )->setParameters([
             'colonyId' => $colonyId,
             'commodityId' => $commodityId,
+            'state' => $state
         ])
             ->setMaxResults($limit)
             ->getResult();

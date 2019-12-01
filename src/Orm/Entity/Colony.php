@@ -478,36 +478,6 @@ class Colony implements ColonyInterface
         return (int)ceil(($this->getWorkers() + $this->getWorkless()) / ColonyTick::PEOPLE_FOOD);
     }
 
-    public function upperMaxBev(int $value): void
-    {
-        $this->setMaxBev($this->getMaxBev() + $value);
-    }
-
-    public function lowerMaxBev(int $value): void
-    {
-        $this->setMaxBev($this->getMaxBev() - $value);
-    }
-
-    public function upperWorkers(int $value): void
-    {
-        $this->setWorkers($this->getWorkers() + $value);
-    }
-
-    public function lowerWorkers(int $value): void
-    {
-        $this->setWorkers($this->getWorkers() - $value);
-    }
-
-    public function upperWorkless(int $value): void
-    {
-        $this->setWorkless($this->getWorkless() + $value);
-    }
-
-    public function lowerWorkless(int $value): void
-    {
-        $this->setWorkless($this->getWorkless() - $value);
-    }
-
     public function getPopulation(): int
     {
         return $this->getWorkers() + $this->getWorkless();
@@ -516,26 +486,6 @@ class Colony implements ColonyInterface
     public function getFreeHousing(): int
     {
         return $this->getMaxBev() - $this->getPopulation();
-    }
-
-    public function upperMaxEps($value): void
-    {
-        $this->setMaxEps($this->getMaxEps() + $value);
-    }
-
-    public function lowerMaxEps($value): void
-    {
-        $this->setMaxEps($this->getMaxEps() - $value);
-    }
-
-    public function upperMaxStorage(int $value): void
-    {
-        $this->setMaxStorage($this->getMaxStorage() + $value);
-    }
-
-    public function lowerMaxStorage(int $value): void
-    {
-        $this->setMaxStorage($this->getMaxStorage() - $value);
     }
 
     public function getImmigration(): int

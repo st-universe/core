@@ -11,4 +11,6 @@ interface BuildingActionInterface
     public function activate(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void;
 
     public function deactivate(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void;
+
+    public function remove(ColonyInterface $colony, PlanetFieldInterface $field, GameControllerInterface $game): void;
 }

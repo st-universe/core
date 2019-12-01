@@ -3,6 +3,7 @@
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
@@ -24,25 +25,27 @@ final class ColonyTick implements ColonyTickInterface
 {
     public const PEOPLE_FOOD = 7;
 
-    private $commodityRepository;
+    private CommodityRepositoryInterface $commodityRepository;
 
-    private $researchedRepository;
+    private ResearchedRepositoryInterface $researchedRepository;
 
-    private $shipRumpUserRepository;
+    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
 
-    private $moduleQueueRepository;
+    private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
-    private $planetFieldRepository;
+    private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private $privateMessageSender;
+    private PrivateMessageSenderInterface $privateMessageSender;
 
-    private $colonyStorageManager;
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
-    private $colonyRepository;
+    private ColonyRepositoryInterface $colonyRepository;
 
-    private $createDatabaseEntry;
+    private CreateDatabaseEntryInterface $createDatabaseEntry;
 
-    private $msg = [];
+    private BuildingManagerInterface $buildingManager;
+
+    private array $msg = [];
 
     public function __construct(
         CommodityRepositoryInterface $commodityRepository,
@@ -53,7 +56,8 @@ final class ColonyTick implements ColonyTickInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        CreateDatabaseEntryInterface $createDatabaseEntry
+        CreateDatabaseEntryInterface $createDatabaseEntry,
+        BuildingManagerInterface $buildingManager
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -64,6 +68,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->createDatabaseEntry = $createDatabaseEntry;
+        $this->buildingManager = $buildingManager;
     }
 
     public function work(ColonyInterface $colony): void
@@ -127,25 +132,21 @@ final class ColonyTick implements ColonyTickInterface
         } else {
             $ext = $this->commodityRepository->find($commodityId)->getName();
         }
+        $building = $field->getBuilding();
 
-        $this->msg[] = $field->getBuilding()->getName() . " auf Feld " . $field->getFieldId() . " deaktiviert (Mangel an " . $ext . ")";
+        $this->buildingManager->deactivate($field);
 
-        $colony->upperWorkless($field->getBuilding()->getWorkers());
-        $colony->lowerWorkers($field->getBuilding()->getWorkers());
-        $colony->lowerMaxBev($field->getBuilding()->getHousing());
-        $this->mergeProduction($colony, $field->getBuilding()->getGoods());
-        $field->getBuilding()->postDeactivation($colony);
+        $this->mergeProduction($colony, $building->getGoods());
 
-        $field->setActive(0);
-
-        $this->planetFieldRepository->save($field);
+        $this->msg[] = $building->getName() . " auf Feld " . $field->getFieldId() . " deaktiviert (Mangel an " . $ext . ")";
     }
 
     private function getBuildingToDeactivateByGood(ColonyInterface $colony, int $commodityId): PlanetFieldInterface
     {
         $fields = $this->planetFieldRepository->getCommodityConsumingByColonyAndCommodity(
             $colony->getId(),
-            $commodityId
+            $commodityId,
+            [1]
         );
 
         return current($fields);
@@ -153,7 +154,7 @@ final class ColonyTick implements ColonyTickInterface
 
     private function getBuildingToDeactivateByEpsUsage(ColonyInterface $colony): PlanetFieldInterface
     {
-        $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), 1);
+        $fields = $this->planetFieldRepository->getEnergyConsumingByColony($colony->getId(), [1], 1);
 
         return current($fields);
     }
@@ -288,7 +289,7 @@ final class ColonyTick implements ColonyTickInterface
     {
         // @todo
         $im = $colony->getImmigration();
-        $colony->upperWorkless($im);
+        $colony->setWorkless($colony->getWorkless() + $im);
     }
 
     private function proceedEmigration(ColonyInterface $colony, $foodrelated = false, $foodmissing = false)
@@ -306,7 +307,7 @@ final class ColonyTick implements ColonyTickInterface
                     $bev = rand(1, $colony->getWorkless());
                 }
             }
-            $colony->lowerWorkless($bev);
+            $colony->setWorkless($colony->getWorkless() - $bev);
             if ($foodrelated) {
                 $this->msg[] = $bev . " Einwohner sind aufgrund des Nahrungsmangels ausgewandert";
             } else {
