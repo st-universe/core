@@ -299,7 +299,7 @@ final class ShipMover implements ShipMoverInterface
             }
         }
 
-        $fieldCount = $this->getFieldCount($leadShip);
+        $fieldCount = $this->getFieldCount($ship);
         $i = 1;
         while ($i <= $fieldCount) {
             if ($ship->getSystem() === null && !$ship->getWarpState()) {
