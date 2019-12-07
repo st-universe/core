@@ -21,13 +21,15 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     private int $cy = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private int $field_id = 0;
+    private ?int $field_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private int $bordertype_id = 0;
+    private ?int $bordertype_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private int $user_id = 0;
+    private ?int $user_id = 0;
+
+    private bool $hide = false;
 
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\MapBorderType")
@@ -65,8 +67,6 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     {
         return $this->user_id;
     }
-
-    private bool $hide = false;
 
     public function setHide(bool $hide): ExploreableStarMapInterface
     {
