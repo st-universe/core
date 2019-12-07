@@ -38,14 +38,16 @@ final class ShipStorageManager implements ShipStorageManagerInterface
 
     public function upperStorage(ShipInterface $ship, CommodityInterface $commodity, int $amount): void
     {
-        $storage = $ship->getStorage()[$commodity->getId()] ?? null;
+        $commodityId = $commodity->getId();
+
+        $storage = $ship->getStorage()[$commodityId] ?? null;
 
         if ($storage === null) {
             $storage = $this->shipStorageRepository->prototype()
                 ->setShip($ship)
                 ->setCommodity($commodity);
 
-            $ship->getStorage()->add($storage);
+            $ship->getStorage()->set($commodityId, $storage);
         }
         $storage->setAmount($storage->getAmount() + $amount);
 

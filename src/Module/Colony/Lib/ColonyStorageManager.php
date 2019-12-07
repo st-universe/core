@@ -46,14 +46,16 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
 
     public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
-        $stor = $colony->getStorage()[$commodity->getId()] ?? null;
+        $commodityId = $commodity->getId();
+
+        $stor = $colony->getStorage()[$commodityId] ?? null;
 
         if ($stor === null) {
             $stor = $this->colonyStorageRepository->prototype();
             $stor->setColony($colony);
             $stor->setGood($commodity);
 
-            $colony->getStorage()->add($stor);
+            $colony->getStorage()->set($commodityId, $stor);
         }
         $stor->setAmount($stor->getAmount() + $amount);
 
