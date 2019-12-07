@@ -91,21 +91,25 @@ final class LoadWarpcore implements ActionControllerInterface
                 $count = $storage->getAmount();
             }
         }
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
-            $count
-        );
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
-            $count
-        );
         if ($ship->getWarpcoreLoad() + $count * ShipEnum::WARPCORE_LOAD > $ship->getWarpcoreCapacity()) {
             $load = $ship->getWarpcoreCapacity() - $ship->getWarpcoreLoad();
         } else {
             $load = $count * ShipEnum::WARPCORE_LOAD;
         }
+
+        $commodityAmount = (int) ceil($load / ShipEnum::WARPCORE_LOAD);
+
+        $this->shipStorageManager->lowerStorage(
+            $ship,
+            $shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
+            $commodityAmount
+        );
+        $this->shipStorageManager->lowerStorage(
+            $ship,
+            $shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
+            $commodityAmount
+        );
+
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() + $load);
 
         $this->shipRepository->save($ship);
