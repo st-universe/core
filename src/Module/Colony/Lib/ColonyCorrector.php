@@ -56,7 +56,7 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 0
             );
 
-            $max_free = $housing - $worker;
+            $max_free = max(0, $housing - $worker);
 
             if (
                 $worker !== $colony->getWorkers() ||
@@ -72,6 +72,14 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                     ['eps' => $eps, 'actual' => $colony->getMaxEps()],
                     ['max_free' => $max_free, 'actual' => $colony->getWorkless()],
                 ]);
+
+                $colony->setWorkers($worker);
+                $colony->setMaxBev($housing);
+                $colony->setMaxStorage($storage);
+                $colony->setMaxEps($eps);
+                $colony->setWorkless(min($max_free, $colony->getWorkless()));
+
+                $this->colonyRepository->save($colony);
             }
         }
     }
