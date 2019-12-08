@@ -1,80 +1,69 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
-	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
-		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<form action="pm.php" method="post" name="pmlist" id="pmlist">
-			<stu:hidden name="move_pm" value="0" />
-			<stu:hidden name="deletion_mark" value="" />
-			<div style="float: left; width: 75%;">
-				<metal:macro metal:use-macro="html/commmacros.xhtml/pmnavigation" />
-				<br />
-                <div class="p100 pm" tal:repeat="post PM_LIST">
-                    <div class="title">
-                        <div class="iblock pm_sender">
-                            <img src="assets/rassen/${post/getSender/getFactionId}s.gif" />
-                            <span tal:condition="not:CATEGORY/isPMOutDir" i18n:translate="">Von:</span>
-                            <span tal:condition="CATEGORY/isPMOutDir" i18n:translate="">An:</span>
-                            <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
-                        </div>
-                        <div class="iblock pm_date right">
-                            <span tal:condition="not:post/getNew" tal:content="datetime:post/getDate">DATE</span>
-                            <span tal:condition="post/isMarkableAsNew" tal:content="datetime:post/getDate" style="background-color: #410000;">DATE</span>
-                        </div>
-                    </div>
-                    <div class="center pm_avatar" style="width: 151px;">
-                        <img tal:attributes="src post/getSender/getFullAvatarpath" />
-                        <tal:block tal:condition="not:CATEGORY/isPMOutDir">
-                            <br /><br />
-                            <span style="color: Red;" tal:condition="not:post/getSender/isOnline">Offline</span>
-                            <span style="color: Green;" tal:condition="post/getSender/isOnline">Online</span>
-                        </tal:block>
-                    </div>
-                    <div class="iblock top pm_text_space">
-                        <span tal:replace="structure nl2br:bbcode2txt:post/getText">TEXT</span>
-                    </div>
-                    <div class="p100 pm_footer">
-                        <div class="iblock" style="width: 40%;">
-                            <input type="checkbox" name="deleted[]" value="runtime" tal:attributes="value post/getId" />
-                            <tal:block tal:condition="post/displayUserLinks">
-                                <a href="?WRITE_PM=1&reply=${post/getId}" onmouseover="cp('reply${post/getId}','buttons/msg2');" onmouseout="cp('reply${post/getId}','buttons/msg1');">
-                                    <img src="assets/buttons/msg1.gif" name="reply${post/getId}" title="Antwort verfassen" />
-                                </a>
-                                <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id post/getSender/getId" />
-                            </tal:block>
-                            <img tal:condition="post/getReplied" src="assets/buttons/postein2.gif" title="Diese Nachricht wurde bereits beantwortet" />
-                            <div class="iblock" style="padding-left: 15px;">
-                                <a href="?B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&delete_single=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2')" onmouseout="cp('del${post/getId}','buttons/x1')">
-                                    <img src="assets/buttons/x1.gif" name="del${post/getId}" title="Nachricht löschen" />
-                                </a>
-                            </div>
-                        </div>
-                        <div class="iblock right" style="width:59%">
-                            <input type="hidden" name="runtime" id="formaction" value="1" />
-                            <input type="hidden" name="pmid" value="runtime" tal:attributes="value post/getId" />
-                            <input type="hidden" name="pmcat" value="runtime" tal:attributes="value CATEGORY/getId" />
-                            <tal:block tal:condition="post/getSender/isContactable">
-                                <tal:block tal:condition="post/senderIsContact">
-                                                <span id="contact${post/getId}">
-                                                    <tal:block tal:define="contact post/senderIsContact;div string:contact${post/getId}" metal:use-macro="html/commmacros.xhtml/clmodeview" />
-                                                </span>
-                                </tal:block>
-                                <tal:block tal:condition="not:post/senderIsContact" tal:define="obj THIS;divname string:selector_contact${post/getId};userid post/getSender/getId;div string:contact${post/getId}" metal:use-macro="html/macros.xhtml/contactbutton" />
-                            </tal:block>
-                            <tal:block tal:condition="post/getSender/isContactable">
-                                <tal:block tal:condition="post/senderIsIgnored" metal:use-macro="html/macros.xhtml/ignoretext" />
-                                <tal:block tal:condition="not:post/senderIsIgnored" tal:define="userid post/getSender/getId;div string:ignore${post/getId}" metal:use-macro="html/macros.xhtml/ignorebutton" />
-                            </tal:block>
-                            <metal:macro tal:condition="not:CATEGORY/isPMOutDir" metal:use-macro="html/commmacros.xhtml/movepmcategories" />
-                        </div>
-                    </div>
+  <metal:macro metal:fill-slot="body">
+    <metal:macro metal:use-macro="html/commmacros.xhtml/initial_js"/>
+    <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb"/>
+    <form action="pm.php" method="post" name="pmlist" id="pmlist">
+      <stu:hidden name="move_pm" value="0"/>
+      <stu:hidden name="deletion_mark" value=""/>
+      <div style="float: left; width: 75%;">
+        <metal:macro metal:use-macro="html/commmacros.xhtml/pmnavigation"/>
+        <br />
+        <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post PM_LIST">
+          <div class="box">
+            <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+              <span tal:condition="not:CATEGORY/isPMOutDir" i18n:translate="">Von:</span>
+              <span tal:condition="CATEGORY/isPMOutDir" i18n:translate="">An:</span>
+              <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
+            </div>
+            <div class="box_body" style="margin: 0; padding: 0;">
+              <div class="knGrid">
+                <div class="knGridText">
+                  <div style="padding: 10px;">
+                    <span tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
+                  </div>
                 </div>
-				<metal:macro metal:use-macro="html/commmacros.xhtml/pmnavigation" />
-			</div>
-		</form>
-		<div style="float: left; width: 24%; margin-left: 1%">
-			<metal:macro metal:use-macro="html/commmacros.xhtml/pmsidebar" tal:define="markcat php:true;" />
-		</div>
-	</metal:macro>
+                <div class="knGridUser">
+                  <div class="segment">
+                    <div tal:condition="post/getSender/isNpc">NPC</div>
+                    <img src="runtime" tal:attributes="src post/getSender/getFullAvatarpath" /><br /><br />
+                  </div>
+                  <div class="segment" tal:define="id post/getSender/getId">
+                    <img src="assets/rassen/${post/getSender/getFactionId}s.png" />
+                    <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
+                    <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
+                  </div>
+                  <div class="segment">
+                    <tal:block tal:condition="post/getSender/isContactable">
+                      <tal:block tal:condition="post/senderIsContact">
+                        <span id="contact${post/getId}">
+                          <tal:block tal:define="contact post/senderIsContact;div string:contact${post/getId}"
+                                     metal:use-macro="html/commmacros.xhtml/clmodeview"/>
+                        </span>
+                      </tal:block>
+                      <tal:block tal:condition="not:post/senderIsContact"
+                                 tal:define="obj THIS;divname string:selector_contact${post/getId};userid post/getSender/getId;div string:contact${post/getId}"
+                                 metal:use-macro="html/macros.xhtml/contactbutton"/>
+                      <br />
+                      <br />
+                      <tal:block tal:condition="post/senderIsIgnored" metal:use-macro="html/macros.xhtml/ignoretext"/>
+                      <tal:block tal:condition="not:post/senderIsIgnored"
+                                 tal:define="userid post/getSender/getId;div string:ignore${post/getId}"
+                                 metal:use-macro="html/macros.xhtml/ignorebutton"/>
+                    </tal:block>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+        </div>
+        <metal:macro metal:use-macro="html/commmacros.xhtml/pmnavigation"/>
+      </div>
+    </form>
+    <div style="float: left; width: 24%; margin-left: 1%">
+      <metal:macro metal:use-macro="html/commmacros.xhtml/pmsidebar" tal:define="markcat php:true;"/>
+    </div>
+  </metal:macro>
 </metal:macro>
 </html>

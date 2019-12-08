@@ -1164,7 +1164,7 @@ span.knh3 {
 div.knGrid {
   display: grid;
   grid-template-columns: auto 200px;
-  grid-template-rows: 300px auto
+  grid-template-rows: 316px auto
 }
 
 div.knGridText {
