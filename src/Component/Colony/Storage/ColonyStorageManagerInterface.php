@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Colony\Lib;
+namespace Stu\Component\Colony\Storage;
 
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;

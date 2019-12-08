@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CancelModuleCreation;
 
 use request;
-use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;

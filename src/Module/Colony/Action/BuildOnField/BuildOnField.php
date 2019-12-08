@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BuildOnField;
 
 use request;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
-use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;

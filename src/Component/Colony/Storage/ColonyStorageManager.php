@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\Lib;
+namespace Stu\Component\Colony\Storage;
 
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -25,37 +25,46 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
 
     public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
-        $stor = $colony->getStorage()[$commodity->getId()] ?? null;
+        $storage = $colony->getStorage();
+
+        $stor = $storage[$commodity->getId()] ?? null;
         if ($stor === null) {
-            return;
+            throw new Exception\CommodityMissingException();
+        }
+
+        $storedAmount = $stor->getAmount();
+
+        if ($storedAmount < $amount) {
+            throw new Exception\QuantityTooSmallException();
         }
 
         $colony->clearCache();
 
-        if ($stor->getAmount() <= $amount) {
-            $colony->getStorage()->removeElement($stor);
+        if ($storedAmount === $amount) {
+            $storage->removeElement($stor);
 
             $this->colonyStorageRepository->delete($stor);
 
             return;
         }
-        $stor->setAmount($stor->getAmount() - $amount);
+        $stor->setAmount($storedAmount - $amount);
 
         $this->colonyStorageRepository->save($stor);
     }
 
     public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
+        $storage = $colony->getStorage();
         $commodityId = $commodity->getId();
 
-        $stor = $colony->getStorage()[$commodityId] ?? null;
+        $stor = $storage[$commodityId] ?? null;
 
         if ($stor === null) {
-            $stor = $this->colonyStorageRepository->prototype();
-            $stor->setColony($colony);
-            $stor->setGood($commodity);
+            $stor = $this->colonyStorageRepository->prototype()
+                ->setColony($colony)
+                ->setGood($commodity);
 
-            $colony->getStorage()->set($commodityId, $stor);
+            $storage->set($commodityId, $stor);
         }
         $stor->setAmount($stor->getAmount() + $amount);
 

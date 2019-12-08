@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
-use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;

@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\BuildShip;
 
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\ModuleSelector;
-use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use request;
 use Stu\Module\Control\ActionControllerInterface;

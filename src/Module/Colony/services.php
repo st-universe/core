@@ -15,8 +15,6 @@ use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyResetter;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
-use Stu\Module\Colony\Lib\ColonyStorageManager;
-use Stu\Module\Colony\Lib\ColonyStorageManagerInterface;
 use Stu\Module\Colony\Lib\CommodityConsumption;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
 use Stu\Module\Colony\Lib\PlanetColonization;
@@ -158,7 +156,6 @@ return [
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
-    ColonyStorageManagerInterface::class => autowire(ColonyStorageManager::class),
     PlanetColonizationInterface::class => autowire(PlanetColonization::class),
     ColonyLibFactoryInterface::class => autowire(ColonyLibFactory::class),
     BuildingActionInterface::class => autowire(BuildingAction::class),
