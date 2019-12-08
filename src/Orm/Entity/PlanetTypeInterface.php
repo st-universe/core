@@ -14,10 +14,6 @@ interface PlanetTypeInterface
 
     public function setIsMoon(bool $isMoon): PlanetTypeInterface;
 
-    public function getResearchId(): ?int;
-
-    public function setResearchId(?int $researchId): PlanetTypeInterface;
-
     public function getDatabaseId(): ?int;
 
     public function setDatabaseId(?int $databaseId): PlanetTypeInterface;

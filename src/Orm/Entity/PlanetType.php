@@ -26,9 +26,6 @@ class PlanetType implements PlanetTypeInterface
     private $is_moon = false;
 
     /** @Column(type="integer", nullable=true) * */
-    private $research_id;
-
-    /** @Column(type="integer", nullable=true) * */
     private $database_id;
 
     /** @Column(type="json") */
@@ -48,12 +45,6 @@ class PlanetType implements PlanetTypeInterface
      * @JoinColumn(name="database_id", referencedColumnName="id")
      */
     private $databaseEntry;
-
-    /**
-     * @ManyToOne(targetEntity="Research")
-     * @JoinColumn(name="research_id", referencedColumnName="id")
-     */
-    private $research;
 
     public function getId(): int
     {
@@ -80,18 +71,6 @@ class PlanetType implements PlanetTypeInterface
     public function setIsMoon(bool $isMoon): PlanetTypeInterface
     {
         $this->is_moon = $isMoon;
-
-        return $this;
-    }
-
-    public function getResearchId(): ?int
-    {
-        return $this->research_id;
-    }
-
-    public function setResearchId(?int $researchId): PlanetTypeInterface
-    {
-        $this->research_id = $researchId;
 
         return $this;
     }
