@@ -11,7 +11,6 @@
 
 img {
     border: 0;
-    vertical-align: middle;
 }
 
 body {
@@ -1164,7 +1163,7 @@ span.knh3 {
 div.knGrid {
   display: grid;
   grid-template-columns: auto 200px;
-  grid-template-rows: 316px auto
+  grid-template-rows: 320px auto
 }
 
 div.knGridText {

@@ -31,7 +31,7 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="pmnavigation">
-  <table class="use">
+  <table>
     <tr>
       <td tal:repeat="item PM_NAVIGATION">
         <a href="?pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
@@ -351,13 +351,15 @@
               </div>
               <div class="segment">
                 <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')" onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">
-                  <img src="assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark${post/getId}" />
+                  <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark${post/getId}" />
                 </a>
                 <tal:block tal:condition="post/isEditAble">
                   <a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2', 'png')" onmouseout="cp('edit${post/getId}','buttons/knedit1', 'png')">
-                    <img src="assets/buttons/knedit1.png" title="Beitrag editieren" name="edit${post/getId}" />
+                    <img src="/assets/buttons/knedit1.png" title="Beitrag editieren" name="edit${post/getId}" />
                   </a>
-                  <stu:imagelink href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" image="x" title="Beitrag löschen" i18n:attributes="title" />
+                  <a href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('x${post/getId}','buttons/x2', 'png')" onmouseout="cp('x${post/getId}','buttons/x1', 'png')">
+                    <img src="/assets/buttons/x1.png" title="Beitrag editieren" name="x${post/getId}" />
+                  </a>
                 </tal:block>
               </div>
             </div>
