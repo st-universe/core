@@ -187,12 +187,15 @@ final class ColonyTick implements ColonyTickInterface
                     $amount = $storageItem->getAmount();
                 }
             }
-            $this->colonyStorageManager->lowerStorage(
-                $colony,
-                $this->commodityRepository->find($commodityId),
-                $amount
-            );
-            $sum -= $amount;
+
+            if ($amount > 0) {
+                $this->colonyStorageManager->lowerStorage(
+                    $colony,
+                    $this->commodityRepository->find($commodityId),
+                    $amount
+                );
+                $sum -= $amount;
+            }
         }
         foreach ($production as $commodityId => $obj) {
             if ($obj->getProduction() <= 0 || !$obj->getGood()->isSaveable()) {
