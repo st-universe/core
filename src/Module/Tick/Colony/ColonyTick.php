@@ -167,25 +167,32 @@ final class ColonyTick implements ColonyTickInterface
         $storage = $colony->getStorage();
 
         foreach ($production as $commodityId => $obj) {
-            if ($obj->getProduction() >= 0) {
+            $amount = $obj->getProduction();
+
+            if ($amount >= 0) {
                 continue;
             }
+
+            $amount = abs($amount);
+
             if ($commodityId == CommodityTypeEnum::GOOD_FOOD) {
                 $storageItem = $storage[CommodityTypeEnum::GOOD_FOOD] ?? null;
-                if ($storageItem === null && $obj->getProduction() < 1) {
+                if ($storageItem === null && $amount > 0) {
                     $this->proceedEmigration($colony, true);
                     $emigrated = 1;
-                } elseif ($storageItem->getAmount() + $obj->getProduction() < 0) {
-                    $this->proceedEmigration($colony, true, abs($storageItem->getAmount() + $obj->getProduction()));
+                    $amount = 0;
+                } elseif ($storageItem->getAmount() - $amount < 0) {
+                    $this->proceedEmigration($colony, true, abs($storageItem->getAmount() - $amount));
                     $emigrated = 1;
+                    $amount = $storageItem->getAmount();
                 }
             }
             $this->colonyStorageManager->lowerStorage(
                 $colony,
                 $this->commodityRepository->find($commodityId),
-                abs($obj->getProduction())
+                $amount
             );
-            $sum -= abs($obj->getProduction());
+            $sum -= $amount;
         }
         foreach ($production as $commodityId => $obj) {
             if ($obj->getProduction() <= 0 || !$obj->getGood()->isSaveable()) {
