@@ -1166,6 +1166,12 @@ div.knGrid {
   grid-template-rows: 320px auto
 }
 
+div.pmGrid {
+  display: grid;
+  grid-template-columns: auto 200px;
+  grid-template-rows: 360px auto
+}
+
 div.knGridText {
   grid-row-start: span 2;
   background-color: #161515;

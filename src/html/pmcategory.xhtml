@@ -17,13 +17,17 @@
               <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
             </div>
             <div class="box_body" style="margin: 0; padding: 0;">
-              <div class="knGrid">
+              <div class="pmGrid">
                 <div class="knGridText">
                   <div style="padding: 10px;">
                     <span tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
                   </div>
                 </div>
                 <div class="knGridUser">
+                  <div class="segment">
+                    <span tal:condition="not:post/getNew" tal:content="datetime:post/getDate">DATE</span>
+                    <span tal:condition="post/isMarkableAsNew" tal:content="datetime:post/getDate" class="negative">DATE</span>
+                  </div>
                   <div class="segment">
                     <div tal:condition="post/getSender/isNpc">NPC</div>
                     <img src="runtime" tal:attributes="src post/getSender/getFullAvatarpath" /><br /><br />
