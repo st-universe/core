@@ -106,4 +106,16 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
             'userId' => GameEnum::USER_NOONE,
         ])->getResult();
     }
+
+    public function getColonized(): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT c FROM %s c WHERE c.user_id != :userId',
+                Colony::class
+            )
+        )->setParameters([
+            'userId' => GameEnum::USER_NOONE,
+        ])->getResult();
+    }
 }

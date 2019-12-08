@@ -37,4 +37,9 @@ interface ColonyRepositoryInterface extends ObjectRepository
      * @return ColonyInterface[]
      */
     public function getByTick(int $tick): iterable;
+
+    /**
+     * @return ColonyInterface[]
+     */
+    public function getColonized(): iterable;
 }

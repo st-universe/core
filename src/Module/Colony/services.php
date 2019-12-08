@@ -9,6 +9,8 @@ use Stu\Module\Colony\Action\ChangeName\ChangeNameRequestInterface;
 use Stu\Module\Colony\Action\DisassembleShip\DisassembleShip;
 use Stu\Module\Colony\Lib\BuildingMassActionConfiguration;
 use Stu\Module\Colony\Lib\BuildingMassActionConfigurationInterface;
+use Stu\Module\Colony\Lib\ColonyCorrector;
+use Stu\Module\Colony\Lib\ColonyCorrectorInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactory;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyResetter;
@@ -192,6 +194,7 @@ return [
     ShowStorageRequestInterface::class => autowire(ShowStorageRequest::class),
     ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
+    ColonyCorrectorInterface::class => autowire(ColonyCorrector::class),
     'COLONY_ACTIONS' => [
         Abandon::ACTION_IDENTIFIER => autowire(Abandon::class),
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
