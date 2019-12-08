@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\View\ShowShip;
 
 use NavPanel;
 use request;
+use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Lib\SessionInterface;
@@ -14,7 +15,6 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use VisualNavPanel;
 
@@ -26,28 +26,28 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ResearchedRepositoryInterface $researchedRepository;
-
     private FleetRepositoryInterface $fleetRepository;
 
     private ShipRepositoryInterface $shipRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ColonizationCheckerInterface $colonizationChecker;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
-        ResearchedRepositoryInterface $researchedRepository,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ColonizationCheckerInterface $colonizationChecker
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
-        $this->researchedRepository = $researchedRepository;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->colonizationChecker = $colonizationChecker;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -107,10 +107,7 @@ final class ShowShip implements ViewControllerInterface
         $canColonize = false;
         if ($colony) {
             if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
-            $researchId = (int)$colony->getPlanetType()->getResearchId();
-            $canColonize = $colony->isFree() && (
-                    $researchId === 0 || ($this->researchedRepository->hasUserFinishedResearch($researchId, $userId))
-                );
+                $canColonize = $this->colonizationChecker->canColonize($user, $colony);
             }
             $ownsCurrentColony = $colony->getUser() === $user;
         }

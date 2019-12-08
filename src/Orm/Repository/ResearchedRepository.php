@@ -7,20 +7,21 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class ResearchedRepository extends EntityRepository implements ResearchedRepositoryInterface
 {
 
-    public function hasUserFinishedResearch(int $researchId, int $userId): bool
+    public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool
     {
         return $this->getEntityManager()
                 ->createQuery(
                     sprintf(
-                        'SELECT COUNT(t.id) FROM %s t WHERE t.research_id = :researchId AND t.user_id = :userId AND t.finished > 0',
+                        'SELECT COUNT(t.id) FROM %s t WHERE t.research_id IN (:researchIds) AND t.user_id = :userId AND t.finished > 0',
                         Researched::class,
                     )
                 )
-                ->setParameters(['userId' => $userId, 'researchId' => $researchId])
+                ->setParameters(['userId' => $user, 'researchIds' => $researchIds])
                 ->getSingleScalarResult() > 0;
     }
 

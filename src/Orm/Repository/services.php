@@ -59,6 +59,7 @@ use Stu\Orm\Entity\PlanetField;
 use Stu\Orm\Entity\PlanetFieldType;
 use Stu\Orm\Entity\PlanetFieldTypeBuilding;
 use Stu\Orm\Entity\PlanetType;
+use Stu\Orm\Entity\PlanetTypeResearch;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
 use Stu\Orm\Entity\Research;
@@ -367,6 +368,11 @@ return [
         ContainerInterface $c
     ): PlanetTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(PlanetType::class);
+    },
+    PlanetTypeResearchRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): PlanetTypeResearchRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(PlanetTypeResearch::class);
     },
     PrivateMessageRepositoryInterface::class => function (
         ContainerInterface $c

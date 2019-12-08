@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Stu\Orm\Repository\PlanetTypeResearchRepository")
  * @Table(
  *     name="stu_planet_type_research",
  *     indexes={

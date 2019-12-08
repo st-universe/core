@@ -4,10 +4,14 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Entity\UserInterface;
 
 interface ResearchedRepositoryInterface extends ObjectRepository
 {
-    public function hasUserFinishedResearch(int $researchId, int $userId): bool;
+    /**
+     * @param int[] $researchIds
+     */
+    public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool;
 
     /**
      * @return ResearchedInterface[]

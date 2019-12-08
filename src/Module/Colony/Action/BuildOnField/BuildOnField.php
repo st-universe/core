@@ -89,7 +89,7 @@ final class BuildOnField implements ActionControllerInterface
         $buildingId = $building->getId();
         $researchId = $building->getResearchId();
 
-        if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($researchId, $userId) === false) {
+        if ($researchId > 0 && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
             return;
         }
         if ($building->getBuildableFields()->containsKey((int) $field->getFieldType()) === false) {

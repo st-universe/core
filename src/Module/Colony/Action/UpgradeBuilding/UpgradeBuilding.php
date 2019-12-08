@@ -93,7 +93,7 @@ final class UpgradeBuilding implements ActionControllerInterface
         $researchId = (int) $upgrade->getResearchId();
         if (
             $researchId > 0 &&
-            $this->researchedRepository->hasUserFinishedResearch($researchId, $game->getUser()->getId()) === false
+            $this->researchedRepository->hasUserFinishedResearch($game->getUser(), [$researchId]) === false
         ) {
             return;
         }
