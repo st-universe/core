@@ -102,6 +102,15 @@
 				</td>
 				<td style="vertical-align: top; width: 360px;">
 					<div style="margin-left: 10px; width: 350px;">
+            <stu:box title="Kolonielimits" i18n:attributes="title">
+              <div style="width: 100%; text-align: center">
+                <img src="/assets/planets/201s.gif" title="Planeten" i18n:attributes="title" />
+                <span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
+                <img src="/assets/planets/401s.gif" title="Monde" i18n:attributes="title" />
+                <span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
+              </div>
+            </stu:box>
+            <br />
 						<stu:box title="Profilbesucher" i18n:attributes="title">
 							<div style="width: 100%; text-align: center;" tal:condition="not:RECENT_PROFILE_VISITORS">
 								Keine Besucher

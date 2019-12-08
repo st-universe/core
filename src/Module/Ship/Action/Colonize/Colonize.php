@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Colonize;
 
 use request;
+use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -42,6 +43,8 @@ final class Colonize implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private ColonyLimitCalculatorInterface $colonyLimitCalculator;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRumpColonizationBuildingRepositoryInterface $shipRumpColonizationBuildingRepository,
@@ -51,7 +54,8 @@ final class Colonize implements ActionControllerInterface
         PlanetColonizationInterface $planetColonization,
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        ColonyLimitCalculatorInterface $colonyLimitCalculator
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRumpColonizationBuildingRepository = $shipRumpColonizationBuildingRepository;
@@ -62,13 +66,15 @@ final class Colonize implements ActionControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
         $this->positionChecker = $positionChecker;
+        $this->colonyLimitCalculator = $colonyLimitCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -104,12 +110,12 @@ final class Colonize implements ActionControllerInterface
             return;
         }
         if ($colony->getPlanetType()->getIsMoon()) {
-            if ($game->getMoonColonyCount() >= $game->getMoonColonyLimit()) {
+            if ($this->colonyLimitCalculator->canColonizeFurtherMoons($user) === false) {
                 $game->addInformation(_('Es können keine weiteren Monde besiedeln werden'));
                 return;
             }
         } else {
-            if ($game->getPlanetColonyCount() >= $game->getPlanetColonyLimit()) {
+            if ($this->colonyLimitCalculator->canColonizeFurtherPlanets($user) === false) {
                 $game->addInformation(_('Es können keine weiteren Planeten besiedeln werden'));
                 return;
             }

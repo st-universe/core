@@ -19,7 +19,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
 
     public function delete(ColonyInterface $post): void;
 
-    public function getAmountByUser(int $userId, bool $isMoon = false): int;
+    public function getAmountByUser(UserInterface $user, bool $isMoon = false): int;
 
     /**
      * @return ColonyInterface[]

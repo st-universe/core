@@ -48,7 +48,7 @@ final class Abandon implements ActionControllerInterface
 
         $this->colonyResetter->reset($colony);
 
-        $colonyAmount = $this->colonyRepository->getAmountByUser($userId);
+        $colonyAmount = $this->colonyRepository->getAmountByUser($user);
 
         if ($colonyAmount === 0) {
             $user->setActive(PlayerEnum::USER_ACTIVE);

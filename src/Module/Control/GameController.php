@@ -9,7 +9,6 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -17,7 +16,6 @@ use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Module\Tal\TalStatusBar;
-use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -27,7 +25,6 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\Orm\Repository\ResearchRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Ubench;
@@ -58,11 +55,7 @@ final class GameController implements GameControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
     private UserRepositoryInterface $userRepository;
-
-    private ResearchRepositoryInterface $researchRepository;
 
     private Ubench $benchmark;
 
@@ -106,7 +99,6 @@ final class GameController implements GameControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
-        ResearchRepositoryInterface $researchRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
         ColonyLibFactoryInterface $colonyLibFactory
@@ -124,7 +116,6 @@ final class GameController implements GameControllerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
-        $this->researchRepository = $researchRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->colonyLibFactory = $colonyLibFactory;
@@ -262,15 +253,6 @@ final class GameController implements GameControllerInterface
 
             $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
-            $this->talPage->setVar(
-                'USER_COLONIES',
-                array_map(
-                    function (ColonyInterface $colony): ColonyListItemInterface {
-                        return $this->colonyLibFactory->createColonyListItem($colony);
-                    },
-                    $this->colonyRepository->getOrderedListByUser($user)
-                )
-            );
             $this->talPage->setVar('PM_NAVLET', $folder);
         }
 
@@ -378,26 +360,6 @@ final class GameController implements GameControllerInterface
     public function getJavascriptPath(): string
     {
         return sprintf('/version_%s', $this->getGameVersion());
-    }
-
-    public function getPlanetColonyLimit(): int
-    {
-        return $this->researchRepository->getPlanetColonyLimitByUser($this->getUser()->getId());
-    }
-
-    public function getMoonColonyLimit(): int
-    {
-        return $this->researchRepository->getMoonColonyLimitByUser($this->getUser()->getId());
-    }
-
-    public function getPlanetColonyCount(): int
-    {
-        return $this->colonyRepository->getAmountByUser($this->getUser()->getId());
-    }
-
-    public function getMoonColonyCount(): int
-    {
-        return $this->colonyRepository->getAmountByUser($this->getUser()->getId(), true);
     }
 
     public function checkDatabaseItem($databaseEntryId): void

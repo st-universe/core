@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use phpDocumentor\Reflection\Types\Integer;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|ResearchInterface find(Integer $id)
@@ -21,9 +22,9 @@ interface ResearchRepositoryInterface extends ObjectRepository
      */
     public function getForFaction(int $factionId): array;
 
-    public function getPlanetColonyLimitByUser(int $userId): int;
+    public function getPlanetColonyLimitByUser(UserInterface $user): int;
 
-    public function getMoonColonyLimitByUser(int $userId): int;
+    public function getMoonColonyLimitByUser(UserInterface $user): int;
 
     public function save(ResearchInterface $research): void;
 }

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class ResearchRepository extends EntityRepository implements ResearchRepositoryInterface
 {
@@ -42,7 +43,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             ->getResult();
     }
 
-    public function getPlanetColonyLimitByUser(int $userId): int
+    public function getPlanetColonyLimitByUser(UserInterface $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -53,11 +54,11 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
                 Researched::class
             )
         )->setParameters([
-            'userId' => $userId
+            'userId' => $user
         ])->getSingleScalarResult();
     }
 
-    public function getMoonColonyLimitByUser(int $userId): int
+    public function getMoonColonyLimitByUser(UserInterface $user): int
     {
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
@@ -68,7 +69,7 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
                 Researched::class
             )
         )->setParameters([
-            'userId' => $userId
+            'userId' => $user
         ])->getSingleScalarResult();
     }
 

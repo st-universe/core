@@ -71,14 +71,6 @@ interface GameControllerInterface
 
     public function getJavascriptPath(): string;
 
-    public function getPlanetColonyLimit(): int;
-
-    public function getMoonColonyLimit(): int;
-
-    public function getPlanetColonyCount(): int;
-
-    public function getMoonColonyCount(): int;
-
     public function checkDatabaseItem($databaseEntryId): void;
 
     public function getAchievements(): array;

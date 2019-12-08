@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Api;
 
+use Stu\Component\Player\ColonyLimitCalculator;
+use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmation;
 use Stu\Component\Player\Deletion\Confirmation\RequestDeletionConfirmationInterface;
 use Stu\Component\Player\Deletion\Handler;
@@ -26,6 +28,7 @@ use function DI\create;
 use function DI\get;
 
 return [
+    ColonyLimitCalculatorInterface::class => autowire(ColonyLimitCalculator::class),
     IpIntelValidator::class => autowire(IpIntelValidator::class),
     InvitePlayerInterface::class => autowire(InvitePlayer::class),
     RequestDeletionConfirmationInterface::class => autowire(RequestDeletionConfirmation::class),

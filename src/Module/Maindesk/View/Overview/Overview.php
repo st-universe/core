@@ -7,6 +7,7 @@ namespace Stu\Module\Maindesk\View\Overview;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -33,6 +34,8 @@ final class Overview implements ViewControllerInterface
 
     private KnFactoryInterface $knFactory;
 
+    private ColonyLimitCalculatorInterface $colonyLimitCalculator;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
@@ -40,7 +43,8 @@ final class Overview implements ViewControllerInterface
         KnPostRepositoryInterface $knPostRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         UserRepositoryInterface $userRepository,
-        KnFactoryInterface $knFactory
+        KnFactoryInterface $knFactory,
+        ColonyLimitCalculatorInterface $colonyLimitCalculator
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
@@ -49,6 +53,7 @@ final class Overview implements ViewControllerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->userRepository = $userRepository;
         $this->knFactory = $knFactory;
+        $this->colonyLimitCalculator = $colonyLimitCalculator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -100,5 +105,9 @@ final class Overview implements ViewControllerInterface
             $this->allianceBoardTopicRepository->getRecentByAlliance((int) $user->getAllianceId())
         );
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
+        $game->setTemplateVar('PLANET_LIMIT', $this->colonyLimitCalculator->getPlanetColonyLimit($user));
+        $game->setTemplateVar('PLANET_COUNT', $this->colonyLimitCalculator->getPlanetColonyCount($user));
+        $game->setTemplateVar('MOON_LIMIT', $this->colonyLimitCalculator->getMoonColonyLimit($user));
+        $game->setTemplateVar('MOON_COUNT', $this->colonyLimitCalculator->getMoonColonyCount($user));
     }
 }
