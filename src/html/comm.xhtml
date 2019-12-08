@@ -8,7 +8,10 @@
     </div>
     <div style="width: 24%; float: left">
       <stu:box title="Kommunikationsnetzwerk" i18n:attributes="title">
-        <stu:imagelink href="?WRITE_KN=1" description="Beitrag schreiben" i18n:attributes="description" image="knedit" />
+        <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')" onmouseout="cp('writekn','buttons/knedit1', 'png')">
+          <img src="/assets/buttons/knedit1.png" title="+ Beitrag" name="writekn" />
+          Beitrag schreiben
+        </a>
         <br /><br />
         <strong i18n:translate="">Übersicht</strong><br />
         <ul>
