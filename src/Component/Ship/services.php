@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship;
 
+use Stu\Component\Ship\Storage\ShipStorageManager;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\Type\CloakShipSystem;
 use Stu\Component\Ship\System\Type\EnergyWeaponShipSystem;
 use Stu\Component\Ship\System\Type\LongRangeScannerShipSystem;
@@ -18,6 +20,7 @@ use function DI\autowire;
 use function DI\create;
 
 return [
+    ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
             ShipSystemTypeEnum::SYSTEM_SHIELDS => autowire(ShieldShipSystem::class),

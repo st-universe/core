@@ -7,20 +7,15 @@ namespace Stu\Component\Colony\Storage;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class ColonyStorageManager implements ColonyStorageManagerInterface
 {
     private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
     public function __construct(
-        ColonyStorageRepositoryInterface $colonyStorageRepository,
-        CommodityRepositoryInterface $commodityRepository
+        ColonyStorageRepositoryInterface $colonyStorageRepository
     ) {
         $this->colonyStorageRepository = $colonyStorageRepository;
-        $this->commodityRepository = $commodityRepository;
     }
 
     public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void

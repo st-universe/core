@@ -10,7 +10,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;

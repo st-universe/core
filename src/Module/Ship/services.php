@@ -111,8 +111,6 @@ use Stu\Module\Ship\Lib\ShipMover;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\Lib\ShipStorageManager;
-use Stu\Module\Ship\Lib\ShipStorageManagerInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -146,7 +144,6 @@ return [
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
-    ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),

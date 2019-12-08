@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Module\Ship\Lib;
+namespace Stu\Component\Ship\Storage;
 
 use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\ShipInterface;
