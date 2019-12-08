@@ -47,7 +47,8 @@
     "phpunit/phpunit": "^8",
     "mockery/mockery": "^1.1",
     "st-universe/assets": "dev-master",
-    "friendsofphp/php-cs-fixer": "^2.15"
+    "friendsofphp/php-cs-fixer": "^2.15",
+    "vimeo/psalm": "^3.7"
   },
   "config": {
     "platform": {
