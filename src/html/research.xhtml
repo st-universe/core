@@ -3,10 +3,13 @@
   <metal:macro metal:fill-slot="body">
     <metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
     <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+    <div class="divhead" i18n:translate="">Verfügbare Forschungen</div>
     <div class="researchList">
       <div class="researchListItem" tal:repeat="data RESEARCH_LIST">
         <div class="researchListItemImage">
-          <img src="/assets/research/${data/getId}.png" />
+          <a href="javascript:void(0);" onclick="showResearchDetails(${data/getId});">
+            <img src="/assets/research/${data/getId}.png" />
+          </a>
         </div>
         <div>
           <div class="researchListItemName">
@@ -22,20 +25,25 @@
     </div>
     <div tal:condition="FINISHED_LIST">
       <br />
-      <table class="tcal">
-        <tr>
-          <th colspan="2" i18n:translate="">Aktive und abgeschlossene Forschungen</th>
-        </tr>
-        <tal:block tal:repeat="data FINISHED_LIST">
-          <tr tal:attributes="class string:row${repeat/data/odd}">
-            <td>
+      <div class="divhead" i18n:translate="">Aktive/Abgeschlossene Forschungen</div>
+      <div class="finishedResearchList">
+        <div class="finishedResearchListItem" tal:repeat="data FINISHED_LIST">
+          <div class="finishedResearchListItemImage">
+            <a href="javascript:void(0);" onclick="showresearchdetails(${data/getResearch/getid});">
+              <img src="/assets/research/${data/getResearch/getid}.png" style="width: 40px" />
+            </a>
+          </div>
+          <div>
+            <div class="finishedResearchListItemName">
               <a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearch/getId});" tal:content="data/getResearch/getName">NAME</a>
-            </td>
-            <td style="width: 180px;" tal:condition="data/getFinished">Erforscht am ${date:data/getFinished}</td>
-            <td style="width: 180px;" tal:condition="not:data/getFinished" i18n:translate="">Wird erforscht</td>
-          </tr>
-        </tal:block>
-      </table>
+            </div>
+            <div>
+              <span style="width: 180px;" tal:condition="data/getFinished">Erforscht am ${date:data/getFinished}</span>
+              <span style="width: 180px;" tal:condition="not:data/getFinished" i18n:translate="">Wird erforscht</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </metal:macro>
 </metal:macro>

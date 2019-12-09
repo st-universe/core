@@ -1264,6 +1264,30 @@ div.researchListItemImage img {
   height: 80px;
 }
 
+div.finishedResearchList {
+  width: 100%;
+}
+
+div.finishedResearchList div.finishedResearchListItem {
+  border: 1px solid #262323;
+  margin: 10px;
+  padding: 5px;
+  width: 300px;
+  display: inline-grid;
+  grid-template-columns: 45px auto;
+  grid-column-gap: 10px;
+  background-color: #171616;
+}
+
+div.finishedResearchListItemImage {
+  place-self: center;
+}
+
+div.finishedResearchListItemImage img {
+  width: 40px;
+  height: 40px;
+}
+
 @media (min-width: 1025px) and (max-width: 1280px) {
   div.container {
     width: 1000px;
