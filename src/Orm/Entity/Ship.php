@@ -789,12 +789,18 @@ class Ship implements ShipInterface
 
     public function leaveFleet(): void
     {
-        $this->setFleet(null);
+        $fleet = $this->getFleet();
 
-        // @todo refactor
-        global $container;
+        if ($fleet !== null) {
+            $fleet->getShips()->removeElement($this);
 
-        $container->get(ShipRepositoryInterface::class)->save($this);
+            $this->setFleet(null);
+
+            // @todo refactor
+            global $container;
+
+            $container->get(ShipRepositoryInterface::class)->save($this);
+        }
     }
 
     public function getFleet(): ?FleetInterface

@@ -40,7 +40,6 @@ final class ShipMover implements ShipMoverInterface
     private int $new_y = 0;
     private int $fleetMode = 0;
     private $fieldData = null;
-    private $fieldCount = null;
     private int $flightFields = 0;
 
     public function __construct(
@@ -129,17 +128,17 @@ final class ShipMover implements ShipMoverInterface
         return $this->new_y;
     }
 
-    private function getFieldCount(ShipInterface $leadShip): int
+    private function getFieldCount(ShipInterface $ship): int
     {
-        if ($leadShip->getPosX() == $this->getDestX()) {
-            $fields = abs($leadShip->getPosY() - $this->getDestY());
+        if ($ship->getPosX() == $this->getDestX()) {
+            $fields = abs($ship->getPosY() - $this->getDestY());
         } else {
-            $fields = abs($leadShip->getPosX() - $this->getDestX());
+            $fields = abs($ship->getPosX() - $this->getDestX());
         }
-        $energyCosts = $leadShip->getRump()->getFlightEcost();
+        $energyCosts = $ship->getRump()->getFlightEcost();
 
-        if ($fields * $energyCosts > $leadShip->getEps()) {
-            $fields = (int)floor($leadShip->getEps() / $energyCosts);
+        if ($fields * $energyCosts > $ship->getEps()) {
+            $fields = (int)floor($ship->getEps() / $energyCosts);
         }
         return $fields;
     }
@@ -260,12 +259,12 @@ final class ShipMover implements ShipMoverInterface
             $this->addInformation("Die " . $ship->getName() . " wird von einem Traktorstrahl gehalten");
             if ($this->isFleetMode()) {
                 if ($leadShip === $ship) {
-                    $this->stopMove($ship->getPosX(), $ship->getPosY());
+                    $this->updateDestination($ship->getPosX(), $ship->getPosY());
                 } else {
                     $ship->leaveFleet();
                 }
             } else {
-                $this->stopMove($ship->getPosX(), $ship->getPosY());
+                $this->updateDestination($ship->getPosX(), $ship->getPosY());
             }
             return null;
         }
@@ -282,7 +281,6 @@ final class ShipMover implements ShipMoverInterface
         }
         if ($this->getDestX() == $ship->getPosX()) {
             $oldy = $ship->getPosY();
-            $cury = $oldy;
             if ($this->getDestY() > $oldy) {
                 $method = ShipEnum::FLY_DOWN;
             } else {
@@ -291,7 +289,6 @@ final class ShipMover implements ShipMoverInterface
         }
         if ($this->getDestY() == $ship->getPosY()) {
             $oldx = $ship->getPosX();
-            $curx = $oldx;
             if ($this->getDestX() > $oldx) {
                 $method = ShipEnum::FLY_RIGHT;
             } else {
@@ -321,11 +318,11 @@ final class ShipMover implements ShipMoverInterface
             }
             $nextfield = $this->getNextField($leadShip, $method, $ship);
             $flight_ecost = $ship->getRump()->getFlightEcost() + $nextfield->getFieldType()->getEnergyCosts();
+
             if ($ship->getEps() < $flight_ecost) {
                 if ($this->isFleetMode()) {
                     if ($ship === $leadShip) {
-                        $this->stopMove($ship->getPosX(), $ship->getPosY());
-                        $this->fieldCount = $i - 1;
+                        $this->updateDestination($ship->getPosX(), $ship->getPosY());
                         $msg[] = _("Das Flaggschiff hat nicht genügend Energie für den Weiterflug");
                         break;
                     } else {
@@ -334,7 +331,7 @@ final class ShipMover implements ShipMoverInterface
                         break;
                     }
                 } else {
-                    $this->stopMove($ship->getPosX(), $ship->getPosY());
+                    $this->updateDestination($ship->getPosX(), $ship->getPosY());
                     break;
                 }
             }
@@ -344,7 +341,7 @@ final class ShipMover implements ShipMoverInterface
                 if (($this->isFleetMode() && $ship->isFleetLeader()) || !$this->isFleetMode()) {
                     $msg[] = _("Das nächste Feld kann nicht passiert werden");
                 }
-                $this->stopMove($ship->getPosX(), $ship->getPosY());
+                $this->updateDestination($ship->getPosX(), $ship->getPosY());
                 break;
             }
             if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost() + 1) {
@@ -442,6 +439,16 @@ final class ShipMover implements ShipMoverInterface
                 $this->shipRepository->save($ship->getTraktorShip());
             }
         }
+        if ($this->isFleetMode()) {
+            if ($ship === $leadShip) {
+                $this->updateDestination($ship->getPosX(), $ship->getPosY());
+            } else {
+                if ($ship->getPosX() !== $leadShip->getPosX() || $ship->getPosY() !== $leadShip->getPosY()) {
+                    $ship->leaveFleet();
+                    $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")";
+                }
+            }
+        }
         $this->shipRepository->save($ship);
         return $msg;
     }
@@ -462,7 +469,7 @@ final class ShipMover implements ShipMoverInterface
         }
     }
 
-    private function stopMove(&$posx, &$posy)
+    private function updateDestination(&$posx, &$posy)
     {
         $this->setDestX($posx);
         $this->setDestY($posy);
