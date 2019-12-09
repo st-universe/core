@@ -46,9 +46,24 @@
             tal:condition="CURRENT_RESEARCH"
             onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;"
           >
-            <div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
-            <img style="width: 12px; height: 12px;" src="/assets/navigation/menu_forsch1.png" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
-            <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
+            <div class="researchNavlet">
+              <div class="researchNavletName" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
+              <div class="researchNavletImage">
+                <img
+                  src="/assets/research/${CURRENT_RESEARCH/getResearch/getId}.png"
+                  title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}"
+                />
+              </div>
+              <div class="researchNavletDetails">
+                <div>
+                  <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
+                </div>
+                <div style="padding-top: 5px;">
+                  <img style="width: 15px" src="/assets/goods/${CURRENT_RESEARCH/getResearch/getGoodId}.gif" tal:attributes="title CURRENT_RESEARCH/getResearch/getGood/getName" />
+                  <span tal:content="CURRENT_RESEARCH/getProgress">POINTSLEFT</span> / <span tal:content="CURRENT_RESEARCH/getResearch/getPoints">POINTS</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div
             class="header_box header_box_research border_box action"

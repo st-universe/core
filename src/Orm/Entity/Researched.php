@@ -99,4 +99,9 @@ class Researched implements ResearchedInterface
     {
         return $this->research_id;
     }
+
+    public function getProgress(): int
+    {
+        return $this->getResearch()->getPoints() - $this->getActive();
+    }
 }

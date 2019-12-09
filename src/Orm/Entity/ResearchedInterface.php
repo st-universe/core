@@ -25,4 +25,6 @@ interface ResearchedInterface
     public function setUser(UserInterface $user): ResearchedInterface;
 
     public function getResearchId(): int;
+
+    public function getProgress(): int;
 }
