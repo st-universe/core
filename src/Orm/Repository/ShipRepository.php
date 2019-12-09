@@ -11,6 +11,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
@@ -62,10 +63,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
-    public function getByUser(int $userId): iterable
+    public function getByUser(UserInterface $user): iterable
     {
         return $this->findBy([
-            'user_id' => $userId,
+            'user_id' => $user,
         ]);
     }
 

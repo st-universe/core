@@ -33,7 +33,7 @@ final class CreateFleet implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $ship = $this->shipRepository->find($this->createFleetRequest->getShipId());
-        if ($ship === null || $ship->getUserId() !== $game->getUser()->getId()) {
+        if ($ship === null || $ship->getUser() !== $game->getUser()) {
             throw new AccessViolation();
         }
         if ($ship->getFleetId()) {

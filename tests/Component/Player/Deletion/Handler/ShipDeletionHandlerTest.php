@@ -45,15 +45,8 @@ class ShipDeletionHandlerTest extends MockeryTestCase
         $user = Mockery::mock(UserInterface::class);
         $ship = Mockery::mock(ShipInterface::class);
 
-        $userId = 666;
-
-        $user->shouldReceive('getId')
-            ->withNoArgs()
-            ->once()
-            ->andReturn($userId);
-
         $this->shipRepository->shouldReceive('getByUser')
-            ->with($userId)
+            ->with($user)
             ->once()
             ->andReturn([$ship]);
 

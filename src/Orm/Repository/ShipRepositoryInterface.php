@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|ShipInterface find(integer $id)
@@ -27,7 +28,7 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
-    public function getByUser(int $userId): iterable;
+    public function getByUser(UserInterface $user): iterable;
 
     /**
      * @return ShipInterface[]

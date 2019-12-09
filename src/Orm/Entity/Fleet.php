@@ -101,7 +101,7 @@ class Fleet implements FleetInterface
         global $container;
 
         return array_filter(
-            $container->get(ShipRepositoryInterface::class)->getByUser($this->getUserId()),
+            $container->get(ShipRepositoryInterface::class)->getByUser($this->getUser()),
             function (ShipInterface $ship): bool {
                 if ($ship->isBase() || $ship->getFleet() !== null) {
                     return false;
