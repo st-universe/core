@@ -1056,7 +1056,8 @@ div.allianceList {
 }
 
 div.allianceList div.allianceListItem,
-div.plotList div.plotListItem {
+div.plotList div.plotListItem
+{
   border: 1px solid #262323;
   padding: 5px;
   width: 100%;
@@ -1224,6 +1225,43 @@ div.plotMemberList div.plotMemberListItemPm {
 div.plotMemberList div.plotMemberListItemDelete {
   display: inline-block;
   padding-left: 20px;
+}
+
+div.researchList div.researchListItem
+{
+  border: 1px solid #262323;
+  padding: 5px;
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: 80px auto;
+  grid-column-gap: 10px;
+  background-color: #171616;
+  margin-bottom: 10px;
+}
+
+div.researchListItemName {
+  font-size: 130%;
+  margin-bottom: 10px;
+}
+
+div.researchListItemDescription {
+  margin-bottom: 5px;
+}
+div.researchListItemNeeds {
+  height: 25px;
+}
+
+div.researchListItemNeeds img {
+  vertical-align: middle;
+}
+
+div.researchListItemImage {
+  place-self: center;
+}
+
+div.researchListItemImage img {
+  width: 80px;
+  height: 80px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
