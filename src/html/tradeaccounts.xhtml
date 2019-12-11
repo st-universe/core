@@ -3,13 +3,16 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-        <stu:box tal:condition="not:ACCOUNTS" title="Meldung" i18n:attributes="title">
-            <span i18n:translate="">Keine Warenkonten vorhanden</span>
-        </stu:box>
-		<tal:block tal:repeat="data ACCOUNTS">
-			<table class="tcal">
-				<tr>
-					<th colspan="5" tal:content="structure data/getShip/getName">POST</th>
+    <div class="box" tal:condition="not:ACCOUNTS">
+      <div class="box_title" i18n:translate="">Meldung</div>
+      <div class="box_body">
+        <span i18n:translate="">Keine Warenkonten vorhanden</span>
+      </div>
+    </div>
+    <tal:block tal:repeat="data ACCOUNTS">
+      <table class="tcal">
+        <tr>
+          <th colspan="5" tal:content="structure data/getShip/getName">POST</th>
 				</tr>
 				<tr tal:define="ship data/getShip">
 					<td rowspan="5">
@@ -17,7 +20,7 @@
 					</td>
 					<td rowspan="5" style="width: 30%;">
 						<div style="font-weight: bold">
-							Waren lagernd	
+							Waren lagernd
 						</div>
 						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage">
 							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})" style="display: block; padding: 4px;" class="tradebutton">
@@ -69,7 +72,7 @@
 				</tr>
 			</table>
 			<br />
-		</tal:block> 
+		</tal:block>
 	</metal:macro>
 </metal:macro>
 </html>

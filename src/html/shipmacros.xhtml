@@ -170,7 +170,13 @@
       </tal:block>
     </td>
     <td>
-      <stu:jsimagelink onclick="openPmWindow(${ship/getUserId})" image="msg" title="Nachricht an ${bbcode2txt:ship/getUser/getName} verfassen" /> <span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span> (${ship/getUserId})
+      <a
+        href="javascript:void(0);"
+        onclick="openPmWindow(${ship/getUserId})"
+        title="Nachricht an ${bbcode2txt:ship/getUser/getName} verfassen"
+        onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')"
+        onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
+        <img src="/assets/buttons/msg1.gif" name="nbsPm${ship/getId}" /></a>
     </td>
   </tal:block>
   <tal:block tal:condition="ship/getRump/isTrumfield">
@@ -256,10 +262,16 @@
           <tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -316,10 +328,16 @@
           <tal:block tal:condition="targetShip/getStorage" tal:repeat="good targetShip/getStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -376,10 +394,16 @@
           <tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -436,10 +460,16 @@
           <tal:block tal:condition="targetColony/getStorage" tal:repeat="good targetColony/getBeamableStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+              <metal:macro
+                metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+              />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -529,8 +559,8 @@
       <tr>
         <td style="width: 450px;">
           <span i18n:translate="">In dem Trümmerfeld befinden sich <span i18n:name="escapepods" tal:replace="targetShip/getCrewCount"/> Rettungskapseln</span><br /><br />
-          <stu:hidden name="target" tal:attributes="value targetShip/getId" />
-          <stu:submit name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" i18n:attributes="value" />
+          <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
+          <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS"  value="Rettungskapseln bergen" i18n:attributes="value" />
         </td>
       </tr>
     </table>
@@ -762,10 +792,16 @@
                   <tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
                     <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
                     <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-                      <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+                      <metal:macro
+                        metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+                      />
                     </div>
                     <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-                      <stu:goodentry tal:attributes="name good/getCommodity/getName; goodid good/getCommodity/getId; count good/getAmount" />
+                      <metal:macro
+                        metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+                      />
                     </div>
                     <br tal:condition="repeat/good/odd" style="clear: both;" />
                   </tal:block>
@@ -788,10 +824,16 @@
                   <tal:block tal:condition="storage" tal:repeat="good storage">
                     <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
                     <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-                      <metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+                      <metal:macro
+                        metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+                      />
                     </div>
                     <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-                      <metal:block metal:use-macro="html/macros.xhtml/goodentry" />
+                      <metal:macro
+                        metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodityId; amount good/getAmount"
+                      />
                     </div>
                     <br tal:condition="repeat/good/odd" style="clear: both;" />
                   </tal:block>

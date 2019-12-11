@@ -19,9 +19,6 @@
 		<input type="button" class="button" value="+ Kontakt" onclick="addUserContact('${div}',${userid})" />
 	</span>
 </tal:block>
-<metal:block metal:define-macro="goodentry">
-  <stu:goodentry tal:attributes="name good/getGood/getName; goodid good/getGoodId; count good/getAmount" />
-</metal:block>
 <metal:block metal:define-macro="userbox">
   <div class="divbody userbox">
     <div style="float: left; width: 50px;">
@@ -46,6 +43,21 @@
   <a href="userprofile.php?uid=${user/getId}">
     <img src="runtime" style="width: 50px; height: 50px;" tal:attributes="title bbcode2txt:user/getName;src user/getFullAvatarPath" />
   </a>
+</metal:macro>
+<metal:macro metal:define-macro="commoditySelection">
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 20px;">
+        <img src="/assets/goods/${commodityId}.gif" onclick="this.up('tr').down('.goodAmount').value=${amount}" style="cursor: pointer;" title="${name}" />
+      </td>
+      <td style="width: 60px; vertical-align: middle;">
+        ${amount}
+      </td>
+      <td>
+        <input type="text" size="3" name="count[]" class="goodAmount" />
+      </td>
+    </tr>
+  </table>
 </metal:macro>
 <metal:block metal:define-macro="starmap">
   <div style="float: left">

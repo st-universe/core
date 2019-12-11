@@ -4,8 +4,8 @@
     <metal:macro metal:use-macro="html/commmacros.xhtml/initial_js"/>
     <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb"/>
     <form action="pm.php" method="post" name="pmlist" id="pmlist">
-      <stu:hidden name="move_pm" value="0"/>
-      <stu:hidden name="deletion_mark" value=""/>
+      <input type="hidden" name="move_pm" value="0"/>
+      <input type="hidden" name="deletion_mark" value=""/>
       <div style="float: left; width: 75%;">
         <metal:macro metal:use-macro="html/commmacros.xhtml/pmnavigation"/>
         <br />

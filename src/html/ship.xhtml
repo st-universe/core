@@ -183,8 +183,21 @@
 						<tal:block tal:condition="SHIP/isCloakAble">
 							<tr>
 								<td colspan="2">
-									<stu:imagelink image="tarn" description="Tarnung aktivieren" href="?B_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getCloakState" />
-									<stu:revimagelink image="tarn" description="Tarnung deaktivieren" href="?B_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getCloakState" />
+                  <a tal:condition="not:SHIP/getCloakState"
+                     href="?B_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+                     onmouseover="cp('cloakon','buttons/tarn2')"
+                     onmouseout="cp('cloakon','buttons/tarn1')"
+                  >
+                    <img src="/assets/buttons/tarn1.gif" name="cloakon" title="löschen" i18n:attributes="title" />
+                  </a>
+
+                  <a href="?B_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+                     tal:condition="SHIP/getCloakState"
+                     onmouseover="cp('cloakoff','buttons/tarn1')"
+                     onmouseout="cp('cloakoff','buttons/tarn2')"
+                  >
+                    <img src="/assets/buttons/tarn2.gif" name="cloakoff" /> <span i18n:translate="">Tarnung deaktivieren</span>
+                  </a>
 								</td>
 							</tr>
 						</tal:block>
@@ -289,9 +302,23 @@
 						</tr>
 						<tr>
 							<td>
-								<stu:jsimagelink onclick="showSectorScanWindow()" image="lupe" tal:attributes="description string:Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen" />
+                <a
+                  href="javascript:void(0);"
+                  onclick="showSectorScanWindow()"
+                  onmouseover="cp('sectorScanButton','buttons/lupe2')"
+                  onmouseout="cp('sectorScanButton','buttons/lupe1')">
+                  <img src="/assets/buttons/lupe1.gif" name="sectorScanButton" />
+                  <span>Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen</span>
+                </a>
 								<br />
-								<stu:jsimagelink tal:condition="SHIP/getCurrentMapField/getMapRegion" onclick="showRegionInfo(${SHIP/getCurrentMapField/getMapRegion/getId})" image="info" tal:attributes="description SHIP/getCurrentMapField/getMapRegion/getDescription" />
+                <a tal:condition="SHIP/getCurrentMapField/getMapRegion"
+                   href="javascript:void(0);"
+                   onclick="showRegionInfo(${SHIP/getCurrentMapField/getMapRegion/getId})"
+                   onmouseover="cp('mapRegionButton','buttons/info2')"
+                   onmouseout="cp('mapRegionButton','buttons/info1')">
+                  <img src="/assets/buttons/info1.gif" name="mapRegionButton" />
+                  ${SHIP/getCurrentMapField/getMapRegion/getDescription}
+                </a>
 								<div tal:condition="SHIP/isBase">
 									<a href="javascript:void(0);" onclick="editDockPrivileges()">Dockrechte</a>
 								</div>
@@ -498,7 +525,15 @@
 									</td>
 									<td>
 										<div id="fleetuser${data/getId}" style="display: none;">
-											<stu:jsimagelink onclick="openPmWindow(${data/getUser/getId})" image="msg" title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/getUser/getName">USERNAME</span> (${data/getUser/getId})
+                      <a
+                        href="javascript:void(0);"
+                        onclick="openPmWindow(${data/getUser/getId})"
+                        title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen"
+                        onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
+                        onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
+                        <img src="/assets/buttons/msg1.gif" name="nbsPm${data/getId}" />
+                      </a>
+                      <span tal:content="structure bbcode:data/getUser/getName">USERNAME</span> (${data/getUser/getId})
 										</div>
 									</td>
 								</tr>
@@ -538,7 +573,14 @@
 									</td>
 									<td>
 										<div id="fleetuser${data/getId}">
-											<stu:jsimagelink onclick="openPmWindow(${data/getUser/getId})" image="msg" title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen" /><span tal:content="structure bbcode:data/getUser/getName">USERNAME</span> (${data/getUser/getId})
+                      <a
+                        href="javascript:void(0);"
+                        onclick="openPmWindow(${data/getUser/getId})"
+                        title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen"
+                        onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
+                        onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
+                        <img src="/assets/buttons/msg1.gif" name="nbsPm${data/getId}" />
+                      </a>
 										</div>
 									</td>
 								</tr>

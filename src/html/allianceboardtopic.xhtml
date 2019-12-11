@@ -14,7 +14,13 @@
 						<img src="assets/rassen/${post/getUser/getFactionId}s.gif" /> <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
 					</td>
 					<td style="width: 100px;" tal:condition="IS_MODERATOR">
-						<stu:imagelink image="x" href="?B_DEL_POSTING=1&bid=${TOPIC/getBoardId}&tid=${post/getTopicId}&pid=${post/getId}&sstr=${THIS/getSessionString}" title="Löschen" i18n:attributes="title" />
+            <a
+              href="?B_DEL_POSTING=1&bid=${TOPIC/getBoardId}&tid=${post/getTopicId}&pid=${post/getId}&sstr=${THIS/getSessionString}"
+              onmouseover="cp('delPost${post/getId}','buttons/x2')"
+              onmouseout="cp('delPost${post/getId}','buttons/x1')"
+            >
+              <img src="/assets/buttons/x1.gif" name="delPost${data/getId}" title="löschen" i18n:attributes="title" />
+            </a>
 					</td>
 					<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>
 				</tr>
@@ -40,7 +46,7 @@
 				</tr>
 			</table>
 			<br />
-		</div>	
+		</div>
 		<br />
 		<metal:macro metal:use-macro="topicnavigation" />
 		<br />
@@ -54,6 +60,6 @@
 				<a href="?SHOW_TOPIC=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
 			</td>
 		</tr>
-	</table>	
+	</table>
 </metal:macro>
 </html>

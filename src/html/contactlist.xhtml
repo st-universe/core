@@ -6,9 +6,9 @@
 		<form action="pm.php" method="post" name="contactlist" id="contactlist">
 			<input type="hidden" name="SHOW_CONTACTLIST" value="1" />
 			<input type="hidden" name="runtime" id="formaction" value="1" />
-			<stu:hidden name="edit_contact" value="0" />
-			<stu:hidden name="formaction" value="1" />
-			<stu:hidden name="deletion_mark" value="" />
+			<input type="hidden" name="edit_contact" value="0" />
+			<input type="hidden" name="formaction" value="1" />
+			<input type="hidden" name="deletion_mark" value="" />
 			<div style="float: left; width: 75%;">
 				<tal:block tal:repeat="contact CONTACT_LIST">
 					<table class="tcal">

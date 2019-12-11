@@ -91,4 +91,16 @@ class ColonyStorage implements ColonyStorageInterface
 
         return $this;
     }
+
+    public function getCommodity(): CommodityInterface
+    {
+        return $this->commodity;
+    }
+
+    public function setCommodity(CommodityInterface $commodity): ColonyStorageInterface
+    {
+        $this->commodity = $commodity;
+
+        return $this;
+    }
 }

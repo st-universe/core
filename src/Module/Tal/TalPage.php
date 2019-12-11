@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tal;
 
-use DomDocument;
 use Noodlehaus\ConfigInterface;
 use PhpTal;
 use PhpTal\PhpTalInterface;
-use XsltProcessor;
 
 final class TalPage implements TalPageInterface
 {
     private ConfigInterface $config;
 
-    private $template;
+    private ?PhpTal\PHPTAL $template = null;
 
     public function __construct(
         ConfigInterface $config
@@ -64,28 +62,12 @@ final class TalPage implements TalPageInterface
 
     public function parse(bool $returnResult = false)
     {
-        $output = $this->parseXslt();
+        $output = $this->getTemplate()->execute();
         if ($returnResult) {
             return $output;
         }
         ob_start();
         echo $output;
         ob_flush();
-    }
-
-    private function parseXslt(): string
-    {
-        $xslDom = new DomDocument();
-        $xslDom->load($this->config->get('game.webroot') . '/html/xslt/default.xslt');
-
-        $xmlDom = new DomDocument();
-        $file = str_replace('&', '&amp;', $this->getTemplate()->execute());
-        $xmlDom->loadXML($file);
-
-        $xsl = new XsltProcessor();
-        $xsl->importStylesheet($xslDom);
-        $data = html_entity_decode($xsl->transformToXML($xmlDom));
-        $data = preg_replace('/<(textarea|script)([^>]*)\/>/U', '<\\1\\2></\\1>', $data);
-        return str_replace("&gt;", ">", $data);
     }
 }

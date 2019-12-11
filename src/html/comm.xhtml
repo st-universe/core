@@ -7,37 +7,40 @@
       <metal:macro metal:use-macro="html/commmacros.xhtml/kn" tal:define="navigation_macro string:knnavigation" />
     </div>
     <div style="width: 24%; float: left">
-      <stu:box title="Kommunikationsnetzwerk" i18n:attributes="title">
-        <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')" onmouseout="cp('writekn','buttons/knedit1', 'png')">
-          <img src="/assets/buttons/knedit1.png" title="+ Beitrag" name="writekn" />
-          Beitrag schreiben
-        </a>
-        <br /><br />
-        <strong i18n:translate="">Übersicht</strong><br />
-        <ul>
-          <li tal:condition="HAS_NEW_KN_POSTINGS">
-            <span style="color: #cecece">&gt;</span> <a href="?user_mark=1"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
-          </li>
-          <li>
-            <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)
-          </li>
-        </ul>
-        <div class="seperator"> </div>
-        <ul>
-          <li>
-            <strong>RPG Plots</strong>
-          </li>
-          <li>
-            <span style="color: #cecece">&gt;</span> <a href="?SHOW_MYPLOTS=1">Liste meiner Plots</a>
-          </li>
-          <li>
-            <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller Plots</a>
-          </li>
-          <li>
-            <span style="color: #cecece">&gt;</span>  <a href="?SHOW_CREATE_PLOT=1">Neuen Plot erstellen</a>
-          </li>
-        </ul>
-      </stu:box>
+      <div class="box">
+        <div class="box_title" i18n:translate="">Kommunikations-Netzwerk</div>
+        <div class="box_body">
+          <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')" onmouseout="cp('writekn','buttons/knedit1', 'png')">
+            <img src="/assets/buttons/knedit1.png" title="+ Beitrag" name="writekn" />
+            Beitrag schreiben
+          </a>
+          <br /><br />
+          <strong i18n:translate="">Übersicht</strong><br />
+          <ul>
+            <li tal:condition="HAS_NEW_KN_POSTINGS">
+              <span style="color: #cecece">&gt;</span> <a href="?user_mark=1"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
+            </li>
+            <li>
+              <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)
+            </li>
+          </ul>
+          <div class="seperator"> </div>
+          <ul>
+            <li>
+              <strong>RPG Plots</strong>
+            </li>
+            <li>
+              <span style="color: #cecece">&gt;</span> <a href="?SHOW_MYPLOTS=1">Liste meiner Plots</a>
+            </li>
+            <li>
+              <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller Plots</a>
+            </li>
+            <li>
+              <span style="color: #cecece">&gt;</span>  <a href="?SHOW_CREATE_PLOT=1">Neuen Plot erstellen</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </metal:macro>
 </metal:macro>

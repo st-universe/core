@@ -18,7 +18,17 @@ interface ColonyStorageInterface
 
     public function setAmount(int $amount): ColonyStorageInterface;
 
+    /**
+     * @deprecated
+     */
     public function getGood(): CommodityInterface;
 
+    /**
+     * @deprecated
+     */
     public function setGood(CommodityInterface $commodity): ColonyStorageInterface;
+
+    public function getCommodity(): CommodityInterface;
+
+    public function setCommodity(CommodityInterface $commodity): ColonyStorageInterface;
 }

@@ -7,15 +7,18 @@
 				<td style="vertical-align: top;">
 					<div style="width: 100%;">
 						<tal:block tal:condition="DISPLAY_FIRST_COLONY_DIALOGUE">
-							<stu:box title="Die Erste Kolonie" i18n:attributes="title">
-								<div i18n:translate="">
-									Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
-								</div>
-								<div i18n:translate="">
-									Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
-								</div><br />
-								- <a href="?SHOW_COLONYLIST=1" i18n:translate="">Kolonie gründen</a>
-							</stu:box>
+              <div class="box">
+                <div class="box_title" i18n:translate="">Die erste Kolonie</div>
+                <div class="box_body">
+                  <div i18n:translate="">
+                    Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
+                  </div>
+                  <div i18n:translate="">
+                    Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
+                  </div><br />
+                  - <a href="?SHOW_COLONYLIST=1" i18n:translate="">Kolonie gründen</a>
+                </div>
+              </div>
 							<br />
 						</tal:block>
 						<table class="tcal" tal:define="posts NEW_KN_POSTINGS">
@@ -92,42 +95,54 @@
 						</tal:block>
 					</div>
 					<br />
-				    <stu:box title="Letzte Ereignisse" i18n:attributes="title">
-					<div tal:condition="not:RECENT_HISTORY" i18n:translate="">Keine</div>
-					<div class="list" tal:condition="RECENT_HISTORY" tal:repeat="item RECENT_HISTORY">
-					    <div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT</div>
-					    <div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
-					</div>
-				    </stu:box>
-				</td>
-				<td style="vertical-align: top; width: 360px;">
-					<div style="margin-left: 10px; width: 350px;">
-            <stu:box title="Kolonielimits" i18n:attributes="title">
-              <div style="width: 100%; text-align: center">
-                <img src="/assets/planets/201s.gif" title="Planeten" i18n:attributes="title" />
-                <span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
-                <img src="/assets/planets/401s.gif" title="Monde" i18n:attributes="title" />
-                <span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
+          <div class="box">
+            <div class="box_title" i18n:translate="">Letzte Ereignisse</div>
+            <div class="box_body">
+              <div tal:condition="not:RECENT_HISTORY" i18n:translate="">Keine</div>
+              <div class="list" tal:condition="RECENT_HISTORY" tal:repeat="item RECENT_HISTORY">
+                <div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT</div>
+                <div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
               </div>
-            </stu:box>
+            </div>
+          </div>
+        </td>
+        <td style="vertical-align: top; width: 360px;">
+					<div style="margin-left: 10px; width: 350px;">
+            <div class="box">
+              <div class="box_title" i18n:translate="">Kolonielimitierung</div>
+              <div class="box_body">
+                <div style="width: 100%; text-align: center">
+                  <img src="/assets/planets/201s.gif" title="Planeten" i18n:attributes="title" />
+                  <span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
+                  <img src="/assets/planets/401s.gif" title="Monde" i18n:attributes="title" />
+                  <span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
+                </div>
+              </div>
+            </div>
             <br />
-						<stu:box title="Profilbesucher" i18n:attributes="title">
-							<div style="width: 100%; text-align: center;" tal:condition="not:RECENT_PROFILE_VISITORS">
-								Keine Besucher
-							</div>
-							<a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}" tal:repeat="data RECENT_PROFILE_VISITORS">
-								<img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55" height="55" tal:attributes="src data/getUser/getFullAvatarPath;title bbcode2txt:data/getUser/getName"/>
-							</a>
-						</stu:box>
+            <div class="box">
+              <div class="box_title" i18n:translate="">Profilbesucher</div>
+              <div class="box_body">
+                <div style="width: 100%; text-align: center;" tal:condition="not:RECENT_PROFILE_VISITORS">
+                  Keine Besucher
+                </div>
+                <a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}" tal:repeat="data RECENT_PROFILE_VISITORS">
+                  <img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55" height="55" tal:attributes="src data/getUser/getFullAvatarPath;title bbcode2txt:data/getUser/getName"/>
+                </a>
+              </div>
+            </div>
 						<br />
-						<stu:box title="Zufällige Spieler (online)">
-							<div style="width: 100%; text-align: center;" i18n:translate="" tal:condition="not:RANDOM_ONLINE_USER">
-								Kein Siedler online
-							</div>
-							<div tal:condition="RANDOM_ONLINE_USER">
-								<metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures" tal:define="userlist RANDOM_ONLINE_USER" />
-							</div>
-						</stu:box>
+            <div class="box">
+              <div class="box_title" i18n:translate="">Zufällige Spieler (online)</div>
+              <div class="box_body">
+                <div style="width: 100%; text-align: center;" i18n:translate="" tal:condition="not:RANDOM_ONLINE_USER">
+                  Kein Spieler online
+                </div>
+                <div tal:condition="RANDOM_ONLINE_USER">
+                  <metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures" tal:define="userlist RANDOM_ONLINE_USER" />
+                </div>
+              </div>
+            </div>
 					</div>
 					<br />
 					<div style="width: 350px; margin-left: 10px">
