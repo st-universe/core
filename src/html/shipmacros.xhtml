@@ -177,6 +177,7 @@
         onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')"
         onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
         <img src="/assets/buttons/msg1.gif" name="nbsPm${ship/getId}" /></a>
+      <span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span> (${ship/getUserId})
     </td>
   </tal:block>
   <tal:block tal:condition="ship/getRump/isTrumfield">
