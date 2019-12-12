@@ -19,7 +19,7 @@
               onmouseover="cp('delPost${post/getId}','buttons/x2')"
               onmouseout="cp('delPost${post/getId}','buttons/x1')"
             >
-              <img src="/assets/buttons/x1.gif" name="delPost${data/getId}" title="löschen" i18n:attributes="title" />
+              <img src="/assets/buttons/x1.gif" name="delPost${post/getId}" title="löschen" i18n:attributes="title" />
             </a>
 					</td>
 					<th tal:content="datetime:post/getDate" style="width: 120px;">DATE</th>

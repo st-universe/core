@@ -28,7 +28,17 @@ interface TradeStorageInterface
 
     public function setTradePost(TradePostInterface $tradePost): TradeStorageInterface;
 
+    /**
+     * @deprecated
+     */
     public function getGood(): CommodityInterface;
 
+    /**
+     * @deprecated
+     */
     public function setGood(CommodityInterface $commodity): TradeStorageInterface;
+
+    public function getCommodity(): CommodityInterface;
+
+    public function setCommodity(CommodityInterface $commodity): TradeStorageInterface;
 }

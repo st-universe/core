@@ -128,4 +128,16 @@ class TradeStorage implements TradeStorageInterface
 
         return $this;
     }
+
+    public function getCommodity(): CommodityInterface
+    {
+        return $this->commodity;
+    }
+
+    public function setCommodity(CommodityInterface $commodity): TradeStorageInterface
+    {
+        $this->commodity = $commodity;
+
+        return $this;
+    }
 }
