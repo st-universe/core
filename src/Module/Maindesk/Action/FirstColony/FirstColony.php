@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Maindesk\Action\FirstColony;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\CreateTopic;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Alliance\View\Board\Board;

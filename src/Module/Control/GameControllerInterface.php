@@ -14,7 +14,7 @@ interface GameControllerInterface
 
     public function getViewContext(): array;
 
-    public function getGameState(): string;
+    public function getGameState(): int;
 
     public function setTemplateFile(string $tpl): void;
 
@@ -34,7 +34,10 @@ interface GameControllerInterface
 
     public function getInformation(): array;
 
-    public function sendInformation($recipient_id, $sender_id = GameEnum::USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+    public function sendInformation(
+        $recipient_id,
+        $sender_id = GameEnum::USER_NOONE,
+        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
     );
 
     public function setTemplateVar(string $key, $variable);

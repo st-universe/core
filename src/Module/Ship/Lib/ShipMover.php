@@ -2,7 +2,7 @@
 
 namespace Stu\Module\Ship\Lib;
 
-use InvalidParamException;
+use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;

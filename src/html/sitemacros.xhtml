@@ -15,12 +15,11 @@
     <script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/drag.js"><!-- overLIB (c) Erik Bosrup --></script>
     <script language="javascript" src="${THIS/getJavascriptPath}/html/js/overlib_exclusive.js"><!-- overlib --></script>
     <link rel="STYLESHEET" type="text/css" href="${THIS/getJavascriptPath}/html/css/stu.css" />
-    <link rel="alternate" type="application/atom+xml" title="Atom-Datei" href="http://stuniverse.de/static/kn.xml" />
     <link rel="shortcut icon" href="/assets/favicon.ico" />
   </head>
   <body onload="startUp();">
     <div id="overDiv">...</div>
-    <div class="container" style="display: grid; grid-template-columns: 120px auto; grid-template-rows: 80px auto; height: 100%">
+    <div class="container">
       <div class="header">
         <div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php');">
           <div style="margin: 5px">
@@ -137,7 +136,9 @@
         <script type="text/javascript">
           setTimeout('updatePMNavlet()',60000);
         </script>
-        <metal:macro metal:use-macro="sitefooter" />
+      </div>
+      <div class="footer" tal:define="benchmark THIS/getBenchmarkResult">
+        Rendered in ${benchmark/executionTime} - Memory usage: ${benchmark/memoryPeakUsage}
       </div>
     </div>
   </body>
@@ -373,8 +374,6 @@
 	</body>
 	</html>
 </metal:block>
-<metal:macro metal:define-macro="sitefooter">
-</metal:macro>
 <metal:block metal:define-macro="ajaxwindow">
   <html lang="de">
   <body>
@@ -393,7 +392,6 @@
       <metal:block metal:define-slot="content">
         ...
       </metal:block>
-      <metal:macro metal:use-macro="sitefooter" />
     </div>
   </body>
   </html>
@@ -421,7 +419,6 @@
       <metal:block metal:define-slot="content">
         ...
       </metal:block>
-      <metal:macro metal:use-macro="sitefooter" />
     </div>
   </body>
   </html>
@@ -508,7 +505,6 @@
     <tal:block metal:define-slot="body">
       ...
     </tal:block>
-    <metal:macro metal:use-macro="sitefooter" />
   </body>
   </html>
 </metal:block>

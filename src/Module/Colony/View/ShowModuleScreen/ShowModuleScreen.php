@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreen;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleScreenTab;

@@ -1,5 +1,7 @@
 <?php
 
+use Stu\Exception\InvalidParamException;
+
 class request
 {
 
@@ -136,10 +138,8 @@ class request
 
     public static function isAjaxRequest()
     {
-        if (self::indInt('ajax') == 1) {
-            return true;
-        }
-        return false;
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
 }

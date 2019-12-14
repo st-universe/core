@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Trade\View\ShowTakeOffer;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;

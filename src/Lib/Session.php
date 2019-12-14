@@ -3,7 +3,7 @@
 namespace Stu\Lib;
 
 use DateTimeImmutable;
-use LoginException;
+use Stu\Exception\LoginException;
 use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\UserInterface;

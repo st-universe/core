@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\DeleteBuildPlan;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

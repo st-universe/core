@@ -296,7 +296,7 @@ function updatePMNavlet() {
         '/pm.php',
                 {
             method: 'post',
-            parameters: 'SHOW_NEW_PM=1&ajax=1',
+            parameters: 'SHOW_NEW_PM=1',
                         onFailure: function(e) {
                         },
                         onSuccess: function(request) {

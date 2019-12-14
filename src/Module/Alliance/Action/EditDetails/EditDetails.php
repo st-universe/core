@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\EditDetails;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use JBBCode\Parser;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;

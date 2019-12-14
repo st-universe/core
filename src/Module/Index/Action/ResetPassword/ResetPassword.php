@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Index\Action\ResetPassword;
 
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
-use InvalidParamException;
+use Stu\Exception\InvalidParamException;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;

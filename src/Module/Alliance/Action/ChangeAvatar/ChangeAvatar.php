@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;

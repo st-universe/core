@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\Action\SaveNote;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;

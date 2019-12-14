@@ -4,9 +4,12 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Exception\LoginException;
 use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Exception\MaintenanceGameStateException;
+use Stu\Exception\TickGameStateException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -19,7 +22,6 @@ use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\GameConfigInterface;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -27,6 +29,7 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Exception\StuException;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -73,15 +76,15 @@ final class GameController implements GameControllerInterface
 
     private array $execjs = [];
 
-    private $currentRound;
+    private ?GameTurnInterface $currentRound = null;
 
     private array $achievements = [];
 
-    private $playercount;
+    private ?int $playercount = null;
 
     private array $viewContext = [];
 
-    private $gameStats;
+    private ?array $gameStats = null;
 
     private string $loginError = '';
 
@@ -97,7 +100,6 @@ final class GameController implements GameControllerInterface
         EntityManagerInterface $entityManager,
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
@@ -114,7 +116,6 @@ final class GameController implements GameControllerInterface
         $this->entityManager = $entityManager;
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageSender = $privateMessageSender;
-        $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
@@ -133,21 +134,9 @@ final class GameController implements GameControllerInterface
         return $this->viewContext;
     }
 
-    private function maintenanceView(): void
+    public function getGameState(): int
     {
-        if ($this->getGameState() == GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
-            $this->setPageTitle("Rundenwechsel aktiv");
-            $this->setTemplateFile('html/tick.xhtml');
-        }
-        if ($this->getGameState() == GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
-            $this->setPageTitle("Wartungsmodus");
-            $this->setTemplateFile('html/maintenance.xhtml');
-        }
-    }
-
-    public function getGameState(): string
-    {
-        return $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
+        return (int) $this->getGameConfig()[GameEnum::CONFIG_GAMESTATE]->getValue();
     }
 
     public function setTemplateFile(string $tpl): void
@@ -202,10 +191,17 @@ final class GameController implements GameControllerInterface
         return $this->gameInformations;
     }
 
-    public function sendInformation($recipient_id, $sender_id = GameEnum::USER_NOONE, $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
-    )
-    {
-        $this->privateMessageSender->send((int) $sender_id, (int) $recipient_id, join('<br />', $this->getInformation()), $category_id);
+    public function sendInformation(
+        $recipient_id,
+        $sender_id = GameEnum::USER_NOONE,
+        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+    ): void {
+        $this->privateMessageSender->send(
+            (int) $sender_id,
+            (int) $recipient_id,
+            join('<br />', $this->getInformation()),
+            $category_id
+        );
     }
 
     public function setTemplateVar(string $key, $variable): void
@@ -217,14 +213,21 @@ final class GameController implements GameControllerInterface
     {
         $user = $this->getUser();
 
-        if ($this->getGameState() != GameEnum::CONFIG_GAMESTATE_VALUE_ONLINE) {
-            $this->maintenanceView();
-        }
+        $gameState = $this->getGameState();
         $this->talPage->setVar('THIS', $this);
         $this->talPage->setVar('USER', $user);
 
         if ($user !== null) {
             $userId = $user->getId();
+
+
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
+                throw new TickGameStateException();
+            }
+
+            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
+                throw new MaintenanceGameStateException();
+            }
 
             $pmFolder = [
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
@@ -400,16 +403,41 @@ final class GameController implements GameControllerInterface
 
     public function main(array $actions, array $views, bool $session_check = true): void
     {
-        $this->session->createSession($session_check);
+        try {
+            $this->session->createSession($session_check);
 
-        if ($session_check === false) {
-            $this->session->checkLoginCookie();
+            if ($session_check === false) {
+                $this->session->checkLoginCookie();
+            }
+
+            $this->executeCallback($actions);
+            $this->executeView($views);
+
+            $this->render();
+        } catch (LoginException $e) {
+
+            session_destroy();
+
+            if (request::isAjaxRequest()) {
+                header('HTTP/1.0 400');
+            } else {
+                header('Location: /');
+            }
+        } catch (TickGameStateException $e) {
+            $this->setPageTitle(_('Rundenwechsel aktiv'));
+            $this->setTemplateFile('html/tick.xhtml');
+
+            $this->talPage->setVar('THIS', $this);
+            $this->talPage->parse();
+        } catch (MaintenanceGameStateException $e) {
+            $this->setPageTitle(_('Wartungsmodus'));
+            $this->setTemplateFile('html/maintenance.xhtml');
+
+            $this->talPage->setVar('THIS', $this);
+            $this->talPage->parse();
+        } catch (StuException $e) {
+            throw $e;
         }
-
-        $this->executeCallback($actions);
-        $this->executeView($views);
-
-        $this->render();
     }
 
     private function executeCallback(array $actions): void

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowTradeMenu;
 
-use AccessViolation;
+use Stu\Exception\AccessViolation;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;

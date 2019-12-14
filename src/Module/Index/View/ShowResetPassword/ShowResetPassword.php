@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\View\ShowResetPassword;
 
-use InvalidParamException;
+use Stu\Exception\InvalidParamException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;

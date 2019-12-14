@@ -14,18 +14,45 @@ img {
 }
 
 body {
-    background-color: #000000;
-    color: #dddddd;
-    margin: 2px 2px 2px 2px;
-    scrollbar-arrow-color: #8897cf;
-    scrollbar-base-color: #000000;
-    scrollbar-3dlight-color: #000000;
-    scrollbar-face-color: #262323;
-    scrollbar-highlight-color: #000000;
+  background-color: #000000;
+  color: #dddddd;
+  margin: 2px 2px 2px 2px;
+  scrollbar-arrow-color: #8897cf;
+  scrollbar-base-color: #000000;
+  scrollbar-3dlight-color: #000000;
+  scrollbar-face-color: #262323;
+  scrollbar-highlight-color: #000000;
 }
 
 ul {
     list-style-type: none;
+}
+
+div.container {
+  display: grid;
+  grid-template-columns: 120px auto;
+  grid-template-rows: 80px auto 30px; height: 100%;
+}
+
+div.innerContent {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 10px 5px 0 5px;
+}
+
+div.sidebar {
+  grid-row-start: span 2;
+  width: 120px;
+  background-color: #121220;
+  height: 100%;
+  border-right: 1px solid #4b4b4b;
+}
+
+div.footer {
+  font-size: 70%;
+  color: #2d2d2d;
+  text-align: center;
 }
 
 a.selected {
@@ -1311,18 +1338,6 @@ div.researchNavlet div.researchNavletName {
 div.researchNavletImage img {
   width: 35px;
   height: 35px;
-}
-
-div.innerContent {
-  width: 100%;
-  padding: 10px 5px 0 5px;
-}
-
-div.sidebar {
-  width: 120px;
-  background-color: #121220;
-  height: 100%;
-  border-right: 1px solid #4b4b4b;
 }
 
 div.header {
