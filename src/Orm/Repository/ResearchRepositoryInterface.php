@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use phpDocumentor\Reflection\Types\Integer;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;

@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 interface TerraformingCostRepositoryInterface extends ObjectRepository
 {

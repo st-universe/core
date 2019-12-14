@@ -2,7 +2,7 @@
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ModuleCostInterface;
 
 interface ModuleCostRepositoryInterface extends ObjectRepository

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use AccessViolation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipEnum;
