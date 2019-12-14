@@ -257,6 +257,7 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
+            $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         }
 
         $this->talPage->parse();
@@ -335,11 +336,6 @@ final class GameController implements GameControllerInterface
         $this->execjs[] = $value;
     }
 
-    public function getGameVersion(): string
-    {
-        return (string) $this->config->get('game.version');
-    }
-
     public function redirectTo(string $href): void
     {
         $this->entityManager->commit();;
@@ -362,7 +358,10 @@ final class GameController implements GameControllerInterface
 
     public function getJavascriptPath(): string
     {
-        return sprintf('/version_%s', $this->getGameVersion());
+        return sprintf(
+            '/version_%s',
+            $this->config->get('game.version')
+        );
     }
 
     public function checkDatabaseItem($databaseEntryId): void
@@ -473,11 +472,6 @@ final class GameController implements GameControllerInterface
         if ($view !== null) {
             $view->handle($this);
         }
-    }
-
-    public function isRegistrationPossible(): bool
-    {
-        return $this->config->get('game.registration_enabled');
     }
 
     public function getGameStats(): array

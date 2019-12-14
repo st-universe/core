@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\Register;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Player\Register\Exception\RegistrationException;
 use Stu\Component\Player\Register\PlayerCreatorInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -22,14 +23,18 @@ final class Register implements ActionControllerInterface
 
     private PlayerCreatorInterface $playerCreator;
 
+    private ConfigInterface $config;
+
     public function __construct(
         RegisterRequestInterface $registerRequest,
         FactionRepositoryInterface $factionRepository,
-        PlayerCreatorInterface $playerCreator
+        PlayerCreatorInterface $playerCreator,
+        ConfigInterface $config
     ) {
         $this->registerRequest = $registerRequest;
         $this->factionRepository = $factionRepository;
         $this->playerCreator = $playerCreator;
+        $this->config = $config;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +44,7 @@ final class Register implements ActionControllerInterface
         $factionId = $this->registerRequest->getFactionId();
         $token = $this->registerRequest->getToken();
 
-        if (!$game->isRegistrationPossible()) {
+        if (!$this->config->get('game.registration_enabled')) {
             return;
         }
 

@@ -64,8 +64,6 @@ interface GameControllerInterface
 
     public function addExecuteJS(string $value): void;
 
-    public function getGameVersion(): string;
-
     public function redirectTo(string $href): void;
 
     public function getCurrentRound(): GameTurnInterface;
@@ -81,8 +79,6 @@ interface GameControllerInterface
     public function getSessionString(): string;
 
     public function main(array $actions, array $views, bool $session_check = true): void;
-
-    public function isRegistrationPossible(): bool;
 
     public function getGameStats(): array;
 

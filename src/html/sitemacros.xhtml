@@ -125,7 +125,7 @@
             <img title="Serverzeit" i18n:attributes="title" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span><br />
+            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="GAME_VERSION" /></span><br />
           </div>
         </div>
       </div>
@@ -236,7 +236,7 @@
             <img title="Serverzeit" i18n:attributes="title" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="THIS/getGameVersion" /></span><br />
+            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="GAME_VERSION" /></span><br />
           </div>
         </div>
       </div>
