@@ -1249,16 +1249,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "1.2.0",
+            "version": "1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "43526ae63312942e5316100bb3ed589ba1aba491"
+                "reference": "99b196bbd4715a94fa100fac664a351ffa46d6a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/43526ae63312942e5316100bb3ed589ba1aba491",
-                "reference": "43526ae63312942e5316100bb3ed589ba1aba491",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/99b196bbd4715a94fa100fac664a351ffa46d6a5",
+                "reference": "99b196bbd4715a94fa100fac664a351ffa46d6a5",
                 "shasum": ""
             },
             "require": {
@@ -1273,19 +1273,20 @@
                 "doctrine/common": "<2.10@dev"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^5.0",
-                "phpstan/phpstan": "^0.8",
+                "doctrine/coding-standard": "^6.0",
+                "phpstan/phpstan": "^0.11",
                 "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2.x-dev"
+                    "dev-master": "1.3.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Common\\": "lib/Doctrine/Common"
+                    "Doctrine\\Common\\": "lib/Doctrine/Common",
+                    "Doctrine\\Persistence\\": "lib/Doctrine/Persistence"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1327,7 +1328,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2019-04-23T12:39:21+00:00"
+            "time": "2019-12-13T10:43:02+00:00"
         },
         {
             "name": "doctrine/reflection",
@@ -2251,16 +2252,16 @@
         },
         {
             "name": "php-di/php-di",
-            "version": "6.0.10",
+            "version": "6.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/PHP-DI.git",
-                "reference": "a6c813bf6b0d0bdeade3ac5a920e2c2a5b1a6ce3"
+                "reference": "9bdcc2f41f5fb700ddd01bc4fa8d5bd7b3f94620"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/a6c813bf6b0d0bdeade3ac5a920e2c2a5b1a6ce3",
-                "reference": "a6c813bf6b0d0bdeade3ac5a920e2c2a5b1a6ce3",
+                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/9bdcc2f41f5fb700ddd01bc4fa8d5bd7b3f94620",
+                "reference": "9bdcc2f41f5fb700ddd01bc4fa8d5bd7b3f94620",
                 "shasum": ""
             },
             "require": {
@@ -2310,7 +2311,7 @@
                 "ioc",
                 "psr11"
             ],
-            "time": "2019-10-21T11:58:24+00:00"
+            "time": "2019-12-12T07:58:02+00:00"
         },
         {
             "name": "php-di/phpdoc-reader",
@@ -6220,12 +6221,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "9d0aefdc8f36937312bd8ed2cdffd6d929552cb7"
+                "reference": "9c4a1ce18c0cb197465df301bc41552b6bae7601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/9d0aefdc8f36937312bd8ed2cdffd6d929552cb7",
-                "reference": "9d0aefdc8f36937312bd8ed2cdffd6d929552cb7",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/9c4a1ce18c0cb197465df301bc41552b6bae7601",
+                "reference": "9c4a1ce18c0cb197465df301bc41552b6bae7601",
                 "shasum": ""
             },
             "require": {
@@ -6242,7 +6243,7 @@
                 "source": "https://github.com/st-universe/assets/tree/master",
                 "issues": "https://github.com/st-universe/assets/issues"
             },
-            "time": "2019-12-10T17:25:36+00:00"
+            "time": "2019-12-13T20:47:26+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
