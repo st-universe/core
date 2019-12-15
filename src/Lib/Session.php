@@ -3,7 +3,7 @@
 namespace Stu\Lib;
 
 use DateTimeImmutable;
-use Stu\Exception\LoginException;
+use Stu\Exception\SessionInvalidException;
 use Stu\Component\Player\Validation\LoginValidationInterface;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\UserInterface;
@@ -42,7 +42,7 @@ final class Session implements SessionInterface
     public function createSession(bool $session_check = true): void
     {
         if (!$this->isLoggedIn() && $session_check) {
-            throw new LoginException('Session abgelaufen');
+            throw new SessionInvalidException('Session abgelaufen');
         }
         if ($session_check && (!$_SESSION['uid'] || !$_SESSION['login'])) {
             $this->logout();
@@ -199,13 +199,13 @@ final class Session implements SessionInterface
             return;
         }
         if ($result->getActive() == PlayerEnum::USER_NEW) {
-            throw new LoginException("Aktivierung");
+            throw new SessionInvalidException("Aktivierung");
         }
         if ($result->getActive() == PlayerEnum::USER_LOCKED) {
-            throw new LoginException("Gesperrt");
+            throw new SessionInvalidException("Gesperrt");
         }
         if ($result->getDeletionMark() == 2) {
-            throw new LoginException("Löschung");
+            throw new SessionInvalidException("Löschung");
         }
         if ($result->isVacationMode() === true) {
             $result->setVacationMode(false);
@@ -234,7 +234,7 @@ final class Session implements SessionInterface
     private function chklogin(): void
     {
         if (!$this->isLoggedIn()) {
-            throw new LoginException("Not logged in");
+            throw new SessionInvalidException("Not logged in");
         }
 
         $userId = (int) $_SESSION['uid'];

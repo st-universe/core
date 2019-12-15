@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-class TickGameStateException extends StuException
+final class TickGameStateException extends StuException
 {
 
 }

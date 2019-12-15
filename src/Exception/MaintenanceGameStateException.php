@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-class MaintenanceGameStateException extends StuException
+final class MaintenanceGameStateException extends StuException
 {
 
 }

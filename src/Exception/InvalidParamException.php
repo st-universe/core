@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Exception;
 
-class InvalidParamException extends StuException
+final class InvalidParamException extends StuException
 {
 
 }

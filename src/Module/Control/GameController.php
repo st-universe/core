@@ -4,12 +4,13 @@ namespace Stu\Module\Control;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Exception\LoginException;
+use Stu\Exception\SessionInvalidException;
 use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\TickGameStateException;
+use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
@@ -411,10 +412,7 @@ final class GameController implements GameControllerInterface
 
             $this->executeCallback($actions);
             $this->executeView($views);
-
-            $this->render();
-        } catch (LoginException $e) {
-
+        } catch (SessionInvalidException $e) {
             session_destroy();
 
             if (request::isAjaxRequest()) {
@@ -422,6 +420,8 @@ final class GameController implements GameControllerInterface
             } else {
                 header('Location: /');
             }
+        } catch (LoginException $e) {
+            $this->loginError = $e->getMessage();
         } catch (TickGameStateException $e) {
             $this->setPageTitle(_('Rundenwechsel aktiv'));
             $this->setTemplateFile('html/tick.xhtml');
@@ -436,6 +436,8 @@ final class GameController implements GameControllerInterface
             $this->talPage->parse();
         } catch (StuException $e) {
             throw $e;
+        } finally {
+            $this->render();;
         }
     }
 
