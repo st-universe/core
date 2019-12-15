@@ -315,7 +315,7 @@ class Colony implements ColonyInterface
             function (int $sum, ColonyStorageInterface $storage): int {
                 return $sum + $storage->getAmount();
             },
-            1
+            0
         );
     }
 
