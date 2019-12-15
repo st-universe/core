@@ -351,10 +351,10 @@
               </div>
               <div class="segment">
                 <div tal:condition="post/getUser/isNpc">NPC</div>
-                <img src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
+                <img class="knUserAvatar" src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
               </div>
               <div class="segment" tal:condition="post/displayContactLinks" tal:define="id post/getUser/getId">
-                <img src="assets/rassen/${post/getUser/getFactionId}s.png" />
+                <img src="/assets/rassen/${post/getUser/getFactionId}s.png" />
                 <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
                 <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
               </div>

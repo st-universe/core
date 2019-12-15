@@ -1190,7 +1190,7 @@ span.knh3 {
 div.knGrid {
   display: grid;
   grid-template-columns: auto 200px;
-  grid-template-rows: 320px auto
+  grid-template-rows: auto auto
 }
 
 div.pmGrid {
@@ -1358,6 +1358,13 @@ div.headerBottom {
   border-color: #4b4b4b;
   background-color: #000000;
   border-radius: 3px 3px 0 0;
+}
+
+div.pmGrid img.pmUserAvatar,
+div.knGrid img.knUserAvatar
+{
+  width: 80px;
+  height: 80px;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
