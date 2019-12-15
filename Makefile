@@ -9,11 +9,11 @@ dirs:force
 	for a in src/admin/backup src/html/avatare/user src/html/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
 
 i18nextract:force
-	xgettext --no-location --no-wrap --from-code UTF-8 **/*.php -o php.pot
-	i18nfool-extract html/*html
+	xgettext --no-location --no-wrap --from-code UTF-8 src/**/*.php -o php.pot
+	i18nfool-extract src/html/*html
 	head -n17 php.pot > tal.pot
 	cat default.pot >> tal.pot
-	msgcat php.pot tal.pot --no-location --no-wrap | sed -e 's/msgstr ".*/msgstr ""/' > lang/stu.pot
+	msgcat php.pot tal.pot --no-location --no-wrap | sed -e 's/msgstr ".*/msgstr ""/' > src/lang/stu.pot
 	rm default.pot php.pot tal.pot
 
 init:force

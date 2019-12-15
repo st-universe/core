@@ -1,9 +1,9 @@
 DOMAIN=stu
 PO=LC_MESSAGES/$(DOMAIN).po
 MO=LC_MESSAGES/$(DOMAIN).mo
-LANGS=de_DE en_US en_PIR
+LANGS=de_DE en_US
 
-all: de_DE/$(MO) en_US/$(MO) en_PIR/${MO}
+all: de_DE/$(MO) en_US/$(MO)
 
 .SUFFIXES: .po .mo
 .po.mo:

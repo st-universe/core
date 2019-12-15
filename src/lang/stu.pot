@@ -9,7 +9,7 @@ msgstr ""
 "#-#-#-#-#  php.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-21 12:42+0100\n"
+"POT-Creation-Date: 2019-12-15 15:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,321 +20,13 @@ msgstr ""
 "#-#-#-#-#  tal.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-21 12:42+0100\n"
+"POT-Creation-Date: 2019-12-15 15:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-
-msgid "Einzelschiffe"
-msgstr ""
-
-msgid "Kolonie"
-msgstr ""
-
-msgid "Zufriedenheit"
-msgstr ""
-
-msgid "Loyalität"
-msgstr ""
-
-msgid "Umweltkontrollen"
-msgstr ""
-
-msgid "Zerschmetterte Opposition"
-msgstr ""
-
-msgid "Umweltverschmutzung"
-msgstr ""
-
-msgid "Opposition"
-msgstr ""
-
-#, php-format
-msgid "Es sind %d Arbeitslose ausgewandert"
-msgstr ""
-
-msgid "Es sind alle Arbeitslosen ausgewandert"
-msgstr ""
-
-#, php-format
-msgid "Es wurden %d %s hergestellt"
-msgstr ""
-
-msgid "Tarnung"
-msgstr ""
-
-msgid "Hülle"
-msgstr ""
-
-msgid "Schilde"
-msgstr ""
-
-msgid "EPS-Leitungen"
-msgstr ""
-
-msgid "Antrieb"
-msgstr ""
-
-msgid "Reaktor"
-msgstr ""
-
-msgid "Computer"
-msgstr ""
-
-msgid "Energiewaffe"
-msgstr ""
-
-msgid "Torpedobank"
-msgstr ""
-
-msgid "Spezial"
-msgstr ""
-
-msgid "Sensoren"
-msgstr ""
-
-msgid "Auf der Kolonie "
-msgstr ""
-
-msgid "-- Das Schiff wurde kampfunfähig gemacht"
-msgstr ""
-
-msgid "Trümmer"
-msgstr ""
-
-msgid "Energiesystem"
-msgstr ""
-
-msgid "Impulsantrieb"
-msgstr ""
-
-msgid "Warpkern"
-msgstr ""
-
-msgid "Das Bild darf maximal 600 Pixel breit sein"
-msgstr ""
-
-msgid "Das Bild darf maximal 150 Pixel hoch sein"
-msgstr ""
-
-msgid "Das Bild wurde gelöscht"
-msgstr ""
-
-msgid "Zur Allianz Homepage"
-msgstr ""
-
-msgid "Unbesetzt"
-msgstr ""
-
-msgid "Das Thema wurde gelöscht"
-msgstr ""
-
-msgid "Der Beitrag wurde gelöscht"
-msgstr ""
-
-msgid "Das Thema wurde als wichtig markiert"
-msgstr ""
-
-msgid "Das Thema ist nicht mehr wichtig"
-msgstr ""
-
-msgid "Orbitalmanagement"
-msgstr ""
-
-msgid " / Orbitalmanagement"
-msgstr ""
-
-msgid "Das Gebäude auf diesem Feld ist noch nicht fertig"
-msgstr ""
-
-msgid "Keine Energie vorhanden"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat die Schilde aktiviert"
-msgstr ""
-
-#, php-format
-msgid "Der Lagerraum der %s ist voll"
-msgstr ""
-
-msgid "Keine Waren zum Beamen vorhanden"
-msgstr ""
-
-msgid "Es wurde keine Waren zum Beamen ausgewählt"
-msgstr ""
-
-#, php-format
-msgid "Die Kolonie %s hat folgende Waren zur %s transferiert"
-msgstr ""
-
-#, php-format
-msgid "%s ist nicht beambar"
-msgstr ""
-
-#, php-format
-msgid "%d %s (Energieverbrauch: %d)"
-msgstr ""
-
-#, php-format
-msgid "Die Kolonie %s hat folgende Waren von der %s transferiert"
-msgstr ""
-
-msgid "Es wurden keine Schiffe ausgewählt"
-msgstr ""
-
-#, php-format
-msgid "%s: Batterie um %d Einheiten aufgeladen"
-msgstr ""
-
-#, php-format
-msgid "%s: Nicht genügend Crew vorhanden (%d benötigt)"
-msgstr ""
-
-#, php-format
-msgid "%s: Die Crew wurde hochgebeamt"
-msgstr ""
-
-#, php-format
-msgid "%s: Die Crew wurde runtergebeamt"
-msgstr ""
-
-#, php-format
-msgid "Der Warpkern der %s wurde um %d Einheiten aufgeladen"
-msgstr ""
-
-#, php-format
-msgid "Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen"
-msgstr ""
-
-#, php-format
-msgid "%s: Es wird Deuterium und Antimaterie zum Aufladen des Warpkerns benötigt"
-msgstr ""
-
-#, php-format
-msgid "%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden"
-msgstr ""
-
-#, php-format
-msgid "%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert"
-msgstr ""
-
-#, php-format
-msgid "%s: Es wurden %d Torpedos des Typs %s zum Schiff transferiert"
-msgstr ""
-
-msgid " / Schiffbau"
-msgstr ""
-
-msgid "Schiffbau"
-msgstr ""
-
-msgid "Schiffbau nach Bauplan"
-msgstr ""
-
-msgid "Die Werft ist nicht aktiviert"
-msgstr ""
-
-msgid "In dieser Werft wird bereits ein Schiff gebaut"
-msgstr ""
-
-#, php-format
-msgid "Es wurde kein Modul des Typs %s ausgewählt"
-msgstr ""
-
-#, php-format
-msgid "Es wird 1 %s benötigt"
-msgstr ""
-
-msgid "Bauplan "
-msgstr ""
-
-msgid "Lege neuen Bauplan an: "
-msgstr ""
-
-msgid "Benutze verfügbaren Bauplan: "
-msgstr ""
-
-#, php-format
-msgid "Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s"
-msgstr ""
-
-#, php-format
-msgid "Es wird %d Energie benötigt - Vorhanden ist nur %d"
-msgstr ""
-
-#, php-format
-msgid "Es wird %d %s benötigt"
-msgstr ""
-
-#, php-format
-msgid "Es wird %d %s benötigt - Vorhanden ist nur %d"
-msgstr ""
-
-#, php-format
-msgid "%s-Klasse wurde gebaut"
-msgstr ""
-
-msgid "Es kann nur ein Schiff mit Kolonisierungsfunktion genutzt werden"
-msgstr ""
-
-msgid "Es ist für den Start des Schiffes nicht genügend Crew vorhanden"
-msgstr ""
-
-msgid "Im Moment sind nur 10 Schiffe pro Siedler erlaubt"
-msgstr ""
-
-#, php-format
-msgid "Neuer Datenbankeintrag: %s-System"
-msgstr ""
-
-#, php-format
-msgid "Neuer Datenbankeintrag: %s"
-msgstr ""
-
-msgid "Das Schiff wurde gestartet"
-msgstr ""
-
-msgid "Kein Lagerraum verfügbar"
-msgstr ""
-
-#, php-format
-msgid "Die %s ist gelandet"
-msgstr ""
-
-#, php-format
-msgid "Zur Herstellung von %s wird %s benötigt"
-msgstr ""
-
-#, php-format
-msgid "Zur Herstellung von %s wird %d %s benötigt"
-msgstr ""
-
-msgid "Es wurden keine Module hergestellt"
-msgstr ""
-
-msgid "Es wurden folgende Module zur Warteschlange hinzugefügt"
-msgstr ""
-
-#, php-format
-msgid "Es wurden %d Torpedos des Typs %s hergestellt"
-msgstr ""
-
-msgid "Es wurden keine Torpedos hergestellt"
-msgstr ""
-
-msgid "Es befindet sich keine aktivierte Akademie auf diesen Planeten"
-msgstr ""
-
-msgid "Derzeit kann keine weitere Crew ausgebildet werden"
-msgstr ""
-
-#, php-format
-msgid "Es werden %d Crew ausgebildet"
-msgstr ""
 
 msgid "Soziales"
 msgstr ""
@@ -345,289 +37,22 @@ msgstr ""
 msgid "Infrastruktur"
 msgstr ""
 
-msgid "Dieser Beitrag kann nicht gelöscht werden"
+msgid "Benutzername oder Passwort inkorrekt"
 msgstr ""
 
-msgid "Dieser Siedler kann nicht hinzugefügt werden"
+msgid "Dein Spieleraccount wurde gesperrt"
 msgstr ""
 
-msgid "Der Siedler betrachtet Dich von nun an als Feind"
+msgid "Dein Spieleraccount wurde zur Löschung vorgesehen"
 msgstr ""
 
-msgid "Kommentar wurde editiert"
+msgid "Login fehlgeschlagen"
 msgstr ""
 
-msgid "Kommentare für Posting "
-msgstr ""
-
-msgid "Die ausgewählten Notizen wurden gelöscht"
-msgstr ""
-
-msgid "Benutzername nicht gefunden"
-msgstr ""
-
-msgid "Das Passwort ist falsch"
-msgstr ""
-
-msgid "Login bestätigen"
-msgstr ""
-
-msgid "Die "
-msgstr ""
-
-msgid ": Die Schilde sind nicht aufgeladen"
-msgstr ""
-
-msgid ": Abgedockt"
-msgstr ""
-
-msgid ": Keine Torpedos geladen"
-msgstr ""
-
-msgid ": Nicht genügend Energie vorhanden"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Deaktivierung der Torpedobänke"
-msgstr ""
-
-msgid ": Schilde deaktiviert"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Deaktivierung der Tarnung"
-msgstr ""
-
-msgid ": Nicht genügend Energie zum Abdocken vorhanden"
-msgstr ""
-
-msgid ": Traktorstrahl aufgrund von Energiemangel deaktiviert"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Deaktivierung des Warpantriebs"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Alarmstufe Grün"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Alarmstufe Gelb"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Alarmstufe Rot"
-msgstr ""
-
-msgid "Neuer Datenbankeintrag: "
-msgstr ""
-
-msgid "Der Traktorstrahl ist aktiviert"
-msgstr ""
-
-#, php-format
-msgid "Es sind maximal %d Schiffspunkte pro Flotte möglich"
-msgstr ""
-
-#, php-format
-msgid "Die %s ist der Flotte %s beigetreten"
-msgstr ""
-
-msgid "Die Ersatzbatterie ist leer"
-msgstr ""
-
-msgid "Die Tarnung ist aktiviert"
-msgstr ""
-
-msgid "Der Warpantrieb ist aktiviert"
-msgstr ""
-
-#, php-format
-msgid "Die %s befindet sich im Warp"
-msgstr ""
-
-msgid "Es wurde keine Energiemenge angegeben"
-msgstr ""
-
-#, php-format
-msgid "Der Energiespeicher der %s ist voll"
-msgstr ""
-
-#, php-format
-msgid "Es wurde %d Energie zur %s transferiert"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat folgende Waren zur %s transferiert"
-msgstr ""
-
-msgid "Die Schilde sind aktiviert"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat folgende Waren von der %s transferiert"
-msgstr ""
-
-#, php-format
-msgid "Der Lagerraum der Kolonie %s ist voll"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat folgende Waren zur Kolonie %s transferiert"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat folgende Waren von der Kolonie %s transferiert"
-msgstr ""
-
-msgid "Ziel kann nicht erfasst werden"
-msgstr ""
-
-msgid "Das Schiff ist kampfunfähig"
-msgstr ""
-
-#, php-format
-msgid "Kampf in Sektor %d|%d"
-msgstr ""
-
-msgid "Angriff durchgeführt"
-msgstr ""
-
-msgid "Kolonie gründen"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Andocken an "
-msgstr ""
-
-msgid "Es sind alle Dockplätze belegt"
-msgstr ""
-
-msgid ": Das Schiff ist getarnt"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Abdocken von "
-msgstr ""
-
-msgid "Dein Warenkonto an diesem Posten ist voll"
-msgstr ""
-
-msgid "Keine Waren zum Transferieren vorhanden"
-msgstr ""
-
-msgid "Es wurde keine Waren zum Transferieren ausgewählt"
-msgstr ""
-
-msgid "Es wurden folgende Waren ins Warenkonto transferiert"
-msgstr ""
-
-#, php-format
-msgid "Der Handel mit %s ist in diesem Handelsnetzwerk verboten"
-msgstr ""
-
-#, php-format
-msgid "%d %s"
-msgstr ""
-
-msgid "Es wurden folgende Waren vom Warenkonto transferiert"
-msgstr ""
-
-msgid "Flottenbefehl ausgeführt: Aufladung des Warpkerns"
-msgstr ""
-
-#, php-format
-msgid "%s: Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt"
-msgstr ""
-
-#, php-format
-msgid "%s: Der Warpkern wurde um %d Einheiten aufgeladen"
-msgstr ""
-
-msgid "Der Warpkern ist bereits vollständig geladen"
-msgstr ""
-
-msgid "Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt"
-msgstr ""
-
-#, php-format
-msgid "Der Warpkern wurde um %d Einheiten aufgeladen"
-msgstr ""
-
-msgid "Es können keine weiteren Monde besiedeln werden"
-msgstr ""
-
-msgid "Es können keine weiteren Planeten besiedeln werden"
-msgstr ""
-
-msgid "Keine Rettungskapseln vorhanden"
-msgstr ""
-
-#, php-format
-msgid "Zum Bergen der Rettungskapseln wird %d Energie benötigt"
-msgstr ""
-
-#, php-format
-msgid "Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen."
-msgstr ""
-
-msgid "Die Rettungskapseln wurden geborgen"
-msgstr ""
-
-msgid "Es wird 1 Energie benötigt"
-msgstr ""
-
-#, php-format
-msgid "Es wird %d Energie benötigt"
-msgstr ""
-
-msgid "Es wird 1 Crewmitglied benötigt"
-msgstr ""
-
-#, php-format
-msgid "Es werden %d Crewmitglieder benötigt"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat nicht genug Energie für den Flug"
-msgstr ""
-
-#, php-format
-msgid "Die Flotte fliegt in Sektor %d|%d ein"
-msgstr ""
-
-msgid "Dieses Schiff verfügt über keinen Warpantrieb"
-msgstr ""
-
-#, php-format
-msgid "Die %s hat nicht genug Energie für den Flug (%d benötigt)"
-msgstr ""
-
-#, php-format
-msgid "Die %s kann den Warpantrieb aufgrund von Energiemangel nicht aktivieren"
-msgstr ""
-
-msgid "Das Flaggschiff hat nicht genügend Energie für den Weiterflug"
-msgstr ""
-
-msgid "Das nächste Feld kann nicht passiert werden"
-msgstr ""
-
-msgid "Schwarzes Brett"
-msgstr ""
-
-msgid "Normal"
-msgstr ""
-
-msgid "Crewman"
-msgstr ""
-
-msgid "Freund"
-msgstr ""
-
-msgid "Feind"
-msgstr ""
-
-msgid "Neutral"
+msgid "${postcount} Beiträg(e) von ${membercount} Spieler(n)"
 msgstr ""
 
 msgid "(${points}/${maxpoints} Punkte)"
-msgstr ""
-
-msgid "6 zufällige Siedler"
 msgstr ""
 
 msgid "Abschicken"
@@ -639,10 +64,22 @@ msgstr ""
 msgid "Akademie"
 msgstr ""
 
+msgid "Aktive/Abgeschlossene Forschungen"
+msgstr ""
+
 msgid "Aktivieren"
 msgstr ""
 
 msgid "Alarmstufe"
+msgstr ""
+
+msgid "Alle Beiträge"
+msgstr ""
+
+msgid "Alle Kontakte"
+msgstr ""
+
+msgid "Allianz"
 msgstr ""
 
 msgid "Als Unwichtig markieren"
@@ -669,6 +106,9 @@ msgstr ""
 msgid "Anzahl löschen"
 msgstr ""
 
+msgid "Arbeiter"
+msgstr ""
+
 msgid "Ausbilden"
 msgstr ""
 
@@ -676,6 +116,9 @@ msgid "Ausbildung"
 msgstr ""
 
 msgid "Ausführen"
+msgstr ""
+
+msgid "Ausgewogene Mischung aus Ebenen, Wüsten, Wasserflächen und Wäldern"
 msgstr ""
 
 msgid "Ausweichchance"
@@ -687,10 +130,10 @@ msgstr ""
 msgid "Auswirkungen"
 msgstr ""
 
-msgid "Basisschaden (abstrakt)"
+msgid "Außenminister"
 msgstr ""
 
-msgid "Basisschaden:"
+msgid "Basisschaden (abstrakt)"
 msgstr ""
 
 msgid "Batterie"
@@ -702,25 +145,19 @@ msgstr ""
 msgid "Bauen"
 msgstr ""
 
-msgid "Baufauftrag"
+msgid "Baukosten"
 msgstr ""
 
-msgid "Baukosten"
+msgid "Baumenü"
 msgstr ""
 
 msgid "Baupläne"
 msgstr ""
 
-msgid "Baustatus"
-msgstr ""
-
 msgid "Bauzeit"
 msgstr ""
 
-msgid "Beitrag löschen"
-msgstr ""
-
-msgid "Benötigt"
+msgid "Befördern"
 msgstr ""
 
 msgid "Benötigte Crew: ${crewcount}(100%)"
@@ -735,13 +172,22 @@ msgstr ""
 msgid "Benötigte Ware / Effekt"
 msgstr ""
 
+msgid "Beschreibung"
+msgstr ""
+
 msgid "Bestätigen"
 msgstr ""
 
 msgid "Bevölkerung"
 msgstr ""
 
+msgid "Beziehungen"
+msgstr ""
+
 msgid "Beziehungen zu anderen Allianzen"
+msgstr ""
+
+msgid "Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung."
 msgstr ""
 
 msgid "Crew"
@@ -759,16 +205,31 @@ msgstr ""
 msgid "Crewberechnung dieser Kolonie"
 msgstr ""
 
+msgid "Das Gebäude ist stark beschädigt und kann nicht aktiviert werden."
+msgstr ""
+
+msgid "Das Ziel wurde nicht gefunden"
+msgstr ""
+
 msgid "Deaktivieren"
 msgstr ""
 
 msgid "Demontieren"
 msgstr ""
 
+msgid "Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen."
+msgstr ""
+
 msgid "Details"
 msgstr ""
 
 msgid "Details schließen"
+msgstr ""
+
+msgid "Die ${rumpname}-Klasse ist vom Typ ${rumpcategory} und dient in erster Linie als ${rumprolename}."
+msgstr ""
+
+msgid "Die erste Kolonie"
 msgstr ""
 
 msgid "Du besitzt derzeit keine Kolonien"
@@ -778,6 +239,12 @@ msgid "Du besitzt derzeit keine Schiffe"
 msgstr ""
 
 msgid "Effekte"
+msgstr ""
+
+msgid "Einstellungen"
+msgstr ""
+
+msgid "Empfänger:"
 msgstr ""
 
 msgid "Energie"
@@ -816,22 +283,52 @@ msgstr ""
 msgid "Flotte: Alarmstufe Rot"
 msgstr ""
 
+msgid "Flottenkontrolle"
+msgstr ""
+
 msgid "Fluchtversuch"
 msgstr ""
 
 msgid "Flugkosten"
 msgstr ""
 
+msgid "Forschung"
+msgstr ""
+
+msgid "Frachtkapazität: ${torage} Einheiten"
+msgstr ""
+
+msgid "Fraktion"
+msgstr ""
+
+msgid "Fraktion wählen"
+msgstr ""
+
 msgid "Freie Bevölkerung"
 msgstr ""
 
+msgid "Für einen erfolgreichen Spielstart ist es wichtig, den grundlegenden Unterschied der Planetentypen zu kennen."
+msgstr ""
+
+msgid "Gebäudeschaltung"
+msgstr ""
+
+msgid "Gesamt"
+msgstr ""
+
 msgid "Gespeicherte Baupläne"
+msgstr ""
+
+msgid "Gestartet: ${plotstart}"
 msgstr ""
 
 msgid "Gleichzeitig Ausbildbar"
 msgstr ""
 
 msgid "Globale Crewübersicht"
+msgstr ""
+
+msgid "Grundsätzlich sind alle Planeten in dieser Liste für den Spielstart geeignet und befinden sich im Kerngebiet der gewählten Fraktion.."
 msgstr ""
 
 msgid "Handelsposten"
@@ -846,10 +343,28 @@ msgstr ""
 msgid "Herstellung"
 msgstr ""
 
+msgid "Hilfe"
+msgstr ""
+
 msgid "Hochbeamen"
 msgstr ""
 
+msgid "Homepage"
+msgstr ""
+
+msgid "Hülle"
+msgstr ""
+
 msgid "Hüllenstärke"
+msgstr ""
+
+msgid "ID:"
+msgstr ""
+
+msgid "Id"
+msgstr ""
+
+msgid "Ignorierte Siedler"
 msgstr ""
 
 msgid "Im Einsatz"
@@ -885,10 +400,10 @@ msgstr ""
 msgid "Kategorie"
 msgstr ""
 
-msgid "Kein Siedler online"
+msgid "Kein Spieler online"
 msgstr ""
 
-msgid "Keine Allianzen vorhanden"
+msgid "Keine"
 msgstr ""
 
 msgid "Keine Angebote vorhanden"
@@ -903,6 +418,15 @@ msgstr ""
 msgid "Keine Einträge vorhanden"
 msgstr ""
 
+msgid "Keine Forschung"
+msgstr ""
+
+msgid "Keine Schiffe im Orbit"
+msgstr ""
+
+msgid "Keine Warenkonten vorhanden"
+msgstr ""
+
 msgid "Keine baubaren Rümpfe vorhanden"
 msgstr ""
 
@@ -912,13 +436,34 @@ msgstr ""
 msgid "Klasse"
 msgstr ""
 
+msgid "Klicke auf die Schaltfläche um Dir ein neues Password zusenden zu lassen."
+msgstr ""
+
+msgid "Kolonie gründen"
+msgstr ""
+
+msgid "Kolonielimitierung"
+msgstr ""
+
+msgid "Kolonien"
+msgstr ""
+
 msgid "Kolonisierbare Felder"
 msgstr ""
 
 msgid "Kommentar"
 msgstr ""
 
+msgid "Kommentar schreiben"
+msgstr ""
+
 msgid "Kommentare"
+msgstr ""
+
+msgid "Kommunikations-Netzwerk"
+msgstr ""
+
+msgid "Kontakte"
 msgstr ""
 
 msgid "Koordinaten"
@@ -927,7 +472,16 @@ msgstr ""
 msgid "Korrespondenz"
 msgstr ""
 
+msgid "L-Klasse"
+msgstr ""
+
 msgid "Lager"
+msgstr ""
+
+msgid "Lager:"
+msgstr ""
+
+msgid "Lagernd"
 msgstr ""
 
 msgid "Lagerraum"
@@ -939,13 +493,40 @@ msgstr ""
 msgid "Lesezeichen bei diesem Beitrag setzen"
 msgstr ""
 
+msgid "Letzte Ereignisse"
+msgstr ""
+
+msgid "Link"
+msgstr ""
+
+msgid "Login bestätigen"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
 msgid "Löschen"
+msgstr ""
+
+msgid "M-Klasse"
 msgstr ""
 
 msgid "Max."
 msgstr ""
 
 msgid "Meldung"
+msgstr ""
+
+msgid "Mitglied"
+msgstr ""
+
+msgid "Mittels Deiner eMail-Adresse, die Du bei der Registrierung angegeben hast, kannst Du Dir ein neues Password setzen."
+msgstr ""
+
+msgid "Modulauswahl"
+msgstr ""
+
+msgid "Modulauswirkungen"
 msgstr ""
 
 msgid "Module"
@@ -960,7 +541,7 @@ msgstr ""
 msgid "Modus"
 msgstr ""
 
-msgid "Mondlimit"
+msgid "Monde"
 msgstr ""
 
 msgid "Nachricht schreiben"
@@ -972,22 +553,67 @@ msgstr ""
 msgid "Name ändern"
 msgstr ""
 
+msgid "Neue KN-Beiträge (${postcount})"
+msgstr ""
+
+msgid "Neue Nachricht schreiben"
+msgstr ""
+
+msgid "Neue Notiz"
+msgstr ""
+
 msgid "Neuer Bauplan"
+msgstr ""
+
+msgid "Neues Passwort zusenden"
 msgstr ""
 
 msgid "Noch Ausbildbar"
 msgstr ""
 
+msgid "Notizzettel öffnen"
+msgstr ""
+
+msgid "O-Klasse"
+msgstr ""
+
 msgid "Ok"
+msgstr ""
+
+msgid "Passwort vergessen?"
+msgstr ""
+
+msgid "Planet ${planetname}"
 msgstr ""
 
 msgid "Planet für die Erste Kolonie wählen"
 msgstr ""
 
-msgid "Planetenlimit"
+msgid "Planeten"
+msgstr ""
+
+msgid "Planetentypen"
+msgstr ""
+
+msgid "Plot beendet seit: ${plotenddate}"
+msgstr ""
+
+msgid "Plot läuft seit ${plotstartdate}"
+msgstr ""
+
+msgid "Plot:"
+msgstr ""
+
+msgid "Profilbesucher"
+msgstr ""
+
+msgid "Präsident"
 msgstr ""
 
 msgid "Punkte"
+msgstr ""
+
+msgid "Rassenallianz"
 msgstr ""
 
 msgid "Reaktorleistung"
@@ -1002,13 +628,13 @@ msgstr ""
 msgid "Rettungskapseln bergen"
 msgstr ""
 
-msgid "Rolle"
-msgstr ""
-
 msgid "Rumpf"
 msgstr ""
 
 msgid "Rumpfdetails"
+msgstr ""
+
+msgid "Runde: ${turn}"
 msgstr ""
 
 msgid "Runterbeamen"
@@ -1023,7 +649,31 @@ msgstr ""
 msgid "Schiff starten"
 msgstr ""
 
+msgid "Schiffbau"
+msgstr ""
+
+msgid "Schiffe"
+msgstr ""
+
+msgid "Schiffe im Orbit"
+msgstr ""
+
 msgid "Schiffe in Bau"
+msgstr ""
+
+msgid "Schiffe in Reparatur"
+msgstr ""
+
+msgid "Schiffreparatur"
+msgstr ""
+
+msgid "Schiffsdemontage"
+msgstr ""
+
+msgid "Schiffsreparatur"
+msgstr ""
+
+msgid "Schilde"
 msgstr ""
 
 msgid "Schildkapazität"
@@ -1032,7 +682,10 @@ msgstr ""
 msgid "Schildregeneration:"
 msgstr ""
 
-msgid "Sektor"
+msgid "Schreiber"
+msgstr ""
+
+msgid "Sektor ${sector_id}"
 msgstr ""
 
 msgid "Sensoren aktivieren"
@@ -1044,10 +697,31 @@ msgstr ""
 msgid "Sensorreichweite"
 msgstr ""
 
-msgid "Spielversion"
+msgid "Sensorreichweite: ${sensorrange} Felder"
+msgstr ""
+
+msgid "Serverzeit"
+msgstr ""
+
+msgid "Siedler"
+msgstr ""
+
+msgid "Siedlerprofil ansehen"
+msgstr ""
+
+msgid "Spieler"
 msgstr ""
 
 msgid "Standort"
+msgstr ""
+
+msgid "Stark bewaldet mit vielen Ebenen und Sümpfen."
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Status:"
 msgstr ""
 
 msgid "System"
@@ -1062,10 +736,22 @@ msgstr ""
 msgid "Systemzustand"
 msgstr ""
 
+msgid "Tarnung deaktivieren"
+msgstr ""
+
+msgid "Thema"
+msgstr ""
+
+msgid "Thema:"
+msgstr ""
+
+msgid "Titel:"
+msgstr ""
+
 msgid "Torpedoherstellung"
 msgstr ""
 
-msgid "Torpedokapazität"
+msgid "Torpedokapazität: ${torpedocapacity} Projektile"
 msgstr ""
 
 msgid "Torpedolagerraum"
@@ -1080,10 +766,13 @@ msgstr ""
 msgid "Torpedosalven"
 msgstr ""
 
+msgid "Torpedosalven: ${torpedovolleys} pro Schuss"
+msgstr ""
+
 msgid "Torpedoschaden"
 msgstr ""
 
-msgid "Torpedotyp"
+msgid "Torpedotyp: ${torpedotype}"
 msgstr ""
 
 msgid "Trefferchance"
@@ -1095,13 +784,34 @@ msgstr ""
 msgid "Typ"
 msgstr ""
 
+msgid "Verfügbar"
+msgstr ""
+
+msgid "Verfügbare Forschungen"
+msgstr ""
+
 msgid "Verfügbare Module"
+msgstr ""
+
+msgid "Verschieben"
+msgstr ""
+
+msgid "Version: ${version}"
 msgstr ""
 
 msgid "Versorgung"
 msgstr ""
 
+msgid "Verwaltung"
+msgstr ""
+
+msgid "Vize-Präsident"
+msgstr ""
+
 msgid "Von:"
+msgstr ""
+
+msgid "Wachstum"
 msgstr ""
 
 msgid "Waren auf dem Schiff"
@@ -1110,23 +820,71 @@ msgstr ""
 msgid "Waren im Konto"
 msgstr ""
 
+msgid "Warp-System"
+msgstr ""
+
+msgid "Warpkern"
+msgstr ""
+
 msgid "Warpkernladung"
+msgstr ""
+
+msgid "Wasserreich, wenig Berge und keine Wüsten"
 msgstr ""
 
 msgid "Wichtig"
 msgstr ""
 
-msgid "Zusammenfassung"
+msgid "Wird angeboten"
+msgstr ""
+
+msgid "Wird erforscht"
+msgstr ""
+
+msgid "Wohnraum"
+msgstr ""
+
+msgid "Wurde angeboten"
+msgstr ""
+
+msgid "Zeichen"
+msgstr ""
+
+msgid "Zufällige Spieler (online)"
+msgstr ""
+
+msgid "Zuletzt online"
+msgstr ""
+
+msgid "Zur Allianz"
 msgstr ""
 
 msgid "auf"
 msgstr ""
 
+msgid "aufsteigend"
+msgstr ""
+
 msgid "bestätigen"
+msgstr ""
+
+msgid "cost/getCommodity/getName"
+msgstr ""
+
+msgid "eMail-Adresse"
+msgstr ""
+
+msgid "in Sternensystem"
 msgstr ""
 
 msgid "löschen"
 msgstr ""
 
 msgid "speichern"
+msgstr ""
+
+msgid "von: ${username}"
+msgstr ""
+
+msgid "Übersicht"
 msgstr ""
