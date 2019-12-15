@@ -112,13 +112,19 @@ final class KnItem implements KnItemInterface {
 
     public function getRating(): int
     {
-        return array_sum($this->post->getRatings());
+        return array_sum(
+            array_filter(
+                $this->post->getRatings(),
+                function (int $value): bool {
+                    return $value > 0;
+                }
+            )
+        );
     }
 
     public function getRatingBar(): string
     {
-        $ratings = $this->post->getRatings();
-        $ratingAmount = count($ratings);
+        $ratingAmount = count($this->post->getRatings());
 
         if ($ratingAmount === 0) {
             return '';
@@ -128,7 +134,7 @@ final class KnItem implements KnItemInterface {
             ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
             ->setLabel(_('Bewertung'))
             ->setMaxValue($ratingAmount)
-            ->setValue(array_sum($ratings))
+            ->setValue($this->getRating())
             ->render();
 
     }
