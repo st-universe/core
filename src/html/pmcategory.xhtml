@@ -30,13 +30,16 @@
                   </div>
                   <div class="segment">
                     <div tal:condition="post/getSender/isNpc">NPC</div>
-                    <img src="runtime" tal:attributes="src post/getSender/getFullAvatarpath" /><br /><br />
+                    <img style="width: 80px; height: 80px;" src="runtime" tal:attributes="src post/getSender/getFullAvatarpath" /><br /><br />
                   </div>
                   <div class="segment" tal:define="id post/getSender/getId">
+                    <a href="?B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&delete_single=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2', 'png')" onmouseout="cp('del${post/getId}','buttons/x1', 'png')">
+                      <img src="/assets/buttons/x1.png" name="del${post/getId}" title="Nachricht löschen" />
+                    </a>
                     <tal:block tal:condition="post/displayUserLinks">
-                      <img src="assets/rassen/${post/getSender/getFactionId}s.png" />
+                      <img src="/assets/rassen/${post/getSender/getFactionId}s.png" />
                       <a href="?WRITE_PM=1&reply=${post/getId}" onmouseover="cp('reply${post/getId}','buttons/msg2', 'png');" onmouseout="cp('reply${post/getId}','buttons/msg1', 'png');">
-                        <img src="assets/buttons/msg1.png" name="reply${post/getId}" title="Antwort verfassen" />
+                        <img src="/assets/buttons/msg1.png" name="reply${post/getId}" title="Antwort verfassen" />
                       </a>
                       <metal:block metal:use-macro="html/macros.xhtml/userprofile" tal:define="id post/getSender/getId" />
                     </tal:block>
