@@ -65,7 +65,7 @@ final class TalStatusBar
         return sprintf(
             '<img
                 alt="%s"
-                src="assets/bars/balken.png"
+                src="/assets/bars/balken.png"
                 style="background-color: #%s;height: 12px; width:%dpx;"
                 title="%s: %d/%d"
              />',

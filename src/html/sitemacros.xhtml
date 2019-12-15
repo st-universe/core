@@ -80,7 +80,7 @@
         <div
           class="header_box header_box_research border_box action"
           tal:condition="not:CURRENT_RESEARCH"
-          onclick="goToUrl('research.php')"
+          onclick="goToUrl('/research.php')"
           onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')" onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')"
         >
           <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research" title="Forschung" i18n:attributes="title" />
@@ -205,7 +205,7 @@
           <img style="width: 12px; height: 12px;" src="/assets/buttons/menu_forsch1.gif" title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
           <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
         </div>
-        <div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('research.php')">
+        <div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('/research.php')">
           <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_forsch0.gif" title="Forschung" i18n:attributes="title" />
           <div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
         </div>

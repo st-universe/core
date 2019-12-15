@@ -258,7 +258,7 @@ function ajaxPost(url,elements) {
 function showResearchDetails(researchId) {
         elt = 'researchwin';
         openWindow(elt);
-        ajax_update(elt,'research.php?SHOW_RESEARCH=1&id='+researchId);
+        ajax_update(elt,'/research.php?SHOW_RESEARCH=1&id='+researchId);
 }
 function openNotes() {
         str="notes.php";
