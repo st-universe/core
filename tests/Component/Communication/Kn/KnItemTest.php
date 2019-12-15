@@ -405,7 +405,7 @@ class KnItemTest extends StuTestCase
     public function testGetRatingBarReturnsBar(): void {
         $this->post->shouldReceive('getRatings')
             ->withNoArgs()
-            ->once()
+            ->twice()
             ->andReturn([666 => 1]);
 
         $this->assertStringContainsString(
