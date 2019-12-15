@@ -30,7 +30,7 @@
                   </div>
                   <div class="segment">
                     <div tal:condition="post/getSender/isNpc">NPC</div>
-                    <img src="runtime" tal:attributes="src post/getSender/getFullAvatarpath" /><br /><br />
+                    <img class="pmUserAvatar" src="runtime" tal:attributes="src post/getSender/getFullAvatarpath" /><br /><br />
                   </div>
                   <div class="segment" tal:define="id post/getSender/getId">
                     <a href="?B_DELETE_PMS=1&pmcat=${CATEGORY/getId}&delete_single=${post/getId}" onmouseover="cp('del${post/getId}','buttons/x2', 'png')" onmouseout="cp('del${post/getId}','buttons/x1', 'png')">
