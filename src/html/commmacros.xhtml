@@ -186,7 +186,7 @@
       <option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescription">DESCRIPTION</option>
     </tal:block>
   </select>
-  <input type="button" class="button" onclick="movePm(${post/getId});" value="Verschieben" />
+  <input type="button" class="button" onclick="movePm(${post/getId});" value="=>" title="Verschieben" i18n:attributes="title" />
 </metal:macro>
 
 <tal:block metal:define-macro="clmodeselector">
