@@ -26,16 +26,15 @@ final class Login implements ActionControllerInterface
         $this->session = $session;
     }
 
+    /**
+     * @throws LoginException
+     */
     public function handle(GameControllerInterface $game): void
     {
-        try {
-            $this->session->login(
-                $this->loginRequest->getLoginName(),
-                $this->loginRequest->getPassword()
-            );
-        } catch (LoginException $e) {
-            $game->setLoginError($e->getMessage());
-        }
+        $this->session->login(
+            $this->loginRequest->getLoginName(),
+            $this->loginRequest->getPassword()
+        );
     }
 
     public function performSessionCheck(): bool

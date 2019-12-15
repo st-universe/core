@@ -66,7 +66,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function render(): string
     {
-        return $this->getTemplate()->parse(true);
+        return $this->getTemplate()->parse();
     }
 
     public function getModuleType(): int

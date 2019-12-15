@@ -60,14 +60,8 @@ final class TalPage implements TalPageInterface
         );
     }
 
-    public function parse(bool $returnResult = false)
+    public function parse(): string
     {
-        $output = $this->getTemplate()->execute();
-        if ($returnResult) {
-            return $output;
-        }
-        ob_start();
-        echo $output;
-        ob_flush();
+        return $this->getTemplate()->execute();
     }
 }

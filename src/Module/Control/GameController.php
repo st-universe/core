@@ -214,21 +214,11 @@ final class GameController implements GameControllerInterface
     {
         $user = $this->getUser();
 
-        $gameState = $this->getGameState();
         $this->talPage->setVar('THIS', $this);
         $this->talPage->setVar('USER', $user);
 
         if ($user !== null) {
             $userId = $user->getId();
-
-
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
-                throw new TickGameStateException();
-            }
-
-            if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
-                throw new MaintenanceGameStateException();
-            }
 
             $pmFolder = [
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
@@ -261,7 +251,11 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         }
 
-        $this->talPage->parse();
+        $result = $this->talPage->parse();
+
+        ob_start();
+        echo $result;
+        ob_end_flush();
     }
 
     public function getUser(): ?UserInterface
@@ -410,6 +404,17 @@ final class GameController implements GameControllerInterface
                 $this->session->checkLoginCookie();
             }
 
+            if ($this->getUser() !== null) {
+                $gameState = $this->getGameState();
+                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
+                    throw new TickGameStateException();
+                }
+
+                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
+                    throw new MaintenanceGameStateException();
+                }
+            }
+
             $this->executeCallback($actions);
             $this->executeView($views);
         } catch (SessionInvalidException $e) {
@@ -422,22 +427,22 @@ final class GameController implements GameControllerInterface
             }
         } catch (LoginException $e) {
             $this->loginError = $e->getMessage();
+
+            $this->executeView($views);
         } catch (TickGameStateException $e) {
             $this->setPageTitle(_('Rundenwechsel aktiv'));
             $this->setTemplateFile('html/tick.xhtml');
 
             $this->talPage->setVar('THIS', $this);
-            $this->talPage->parse();
         } catch (MaintenanceGameStateException $e) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/maintenance.xhtml');
 
             $this->talPage->setVar('THIS', $this);
-            $this->talPage->parse();
         } catch (StuException $e) {
             throw $e;
         } finally {
-            $this->render();;
+            $this->render();
         }
     }
 
@@ -499,11 +504,6 @@ final class GameController implements GameControllerInterface
                 return _('Tick');
         }
         return '';
-    }
-
-    public function setLoginError(string $error): void
-    {
-        $this->loginError = $error;
     }
 
     public function getLoginError(): string

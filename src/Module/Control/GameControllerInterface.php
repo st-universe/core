@@ -84,8 +84,6 @@ interface GameControllerInterface
 
     public function getGameStateTextual(): string;
 
-    public function setLoginError(string $error): void;
-
     public function getLoginError(): string;
 
     public function getBenchmarkResult(): array;
