@@ -16,6 +16,7 @@ use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -42,6 +43,8 @@ final class BuildShip implements ActionControllerInterface
 
     private ColonyStorageManagerInterface $colonyStorageManager;
 
+    private ColonyRepositoryInterface $colonyRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -50,7 +53,8 @@ final class BuildShip implements ActionControllerInterface
         ModuleRepositoryInterface $moduleRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildplanModuleRepository = $buildplanModuleRepository;
@@ -60,6 +64,7 @@ final class BuildShip implements ActionControllerInterface
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->colonyRepository = $colonyRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -88,10 +93,21 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
         $game->setView('SHOW_MODULE_SCREEN');
+
         if ($this->colonyShipQueueRepository->getAmountByColonyAndBuildingFunction($colonyId, $building_function->getBuildingFunction()) > 0) {
             $game->addInformation(_('In dieser Werft wird bereits ein Schiff gebaut'));
             return;
         }
+
+        if ($colony->getEps() < $rump->getEpsCost()) {
+            $game->addInformationf(
+                _('Zum Bau wird %d Energie benötigt, es ist jedoch nur %d Energie vorhanden'),
+                $rump->getEpsCost(),
+                $colony->getEps()
+            );
+            return;
+        }
+
         $modules = array();
         $sigmod = array();
         $crewcount = 100;
@@ -206,6 +222,9 @@ final class BuildShip implements ActionControllerInterface
         $queue->setFinishDate(time() + $buildtime);
         $queue->setBuildingFunctionId($building_function->getBuildingFunction());
 
+        $colony->setEps($colony->getEps() - $rump->getEpsCost());
+
+        $this->colonyRepository->save($colony);
         $this->colonyShipQueueRepository->save($queue);
 
         $game->addInformationf(
