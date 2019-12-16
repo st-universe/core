@@ -104,11 +104,11 @@ final class StartAirfieldShip implements ActionControllerInterface
             return;
         }
 
-        // XXX starting costs
-        if ($colony->getEps() < 10) {
+        if ($colony->getEps() < $hangar->getStartEnergyCosts()) {
             $game->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 10,
+                $hangar->getStartEnergyCosts(),
                 $colony->getEps()
             );
             return;
@@ -160,7 +160,7 @@ final class StartAirfieldShip implements ActionControllerInterface
             $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
             $this->shipRepository->save($ship);
         }
-        $colony->lowerEps(10);
+        $colony->lowerEps($hangar->getStartEnergyCosts());
 
         $this->colonyRepository->save($colony);
 
