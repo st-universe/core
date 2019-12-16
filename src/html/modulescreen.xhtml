@@ -130,7 +130,12 @@
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector">
     <table class="tcal" tal:define="rump THIS/getRump" tal:condition="not:THIS/allowMultiple">
-      <input type="hidden" name="module_level_${THIS/getModuleType}" tal:attributes="value THIS/getRump/getModuleLevels/getModuleLevel${THIS/getModuleType}" />
+      <input
+        type="hidden"
+        name="module_level_${THIS/getModuleType}"
+        id="module_level_${THIS/getModuleType}"
+        tal:attributes="value THIS/getRump/getModuleLevels/getModuleLevel${THIS/getModuleType}"
+      />
       <tal:block tal:condition="THIS/getAvailableModules">
         <tr tal:condition="THIS/allowEmptySlot">
           <td class="module_positive" style="width: 3px;"></td>
