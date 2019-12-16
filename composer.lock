@@ -4616,16 +4616,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.3",
+            "version": "1.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea"
+                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/007c053ae6f31bba39dfa19a7726f56e9763bbea",
-                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
+                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
                 "shasum": ""
             },
             "require": {
@@ -4660,7 +4660,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-08-09T12:45:53+00:00"
+            "time": "2019-12-15T19:12:40+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -6221,12 +6221,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "9c4a1ce18c0cb197465df301bc41552b6bae7601"
+                "reference": "3116f6c82e25d3034dc122f4138afadaeedb9ce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/9c4a1ce18c0cb197465df301bc41552b6bae7601",
-                "reference": "9c4a1ce18c0cb197465df301bc41552b6bae7601",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/3116f6c82e25d3034dc122f4138afadaeedb9ce2",
+                "reference": "3116f6c82e25d3034dc122f4138afadaeedb9ce2",
                 "shasum": ""
             },
             "require": {
@@ -6243,7 +6243,7 @@
                 "source": "https://github.com/st-universe/assets/tree/master",
                 "issues": "https://github.com/st-universe/assets/issues"
             },
-            "time": "2019-12-13T20:47:26+00:00"
+            "time": "2019-12-15T17:14:06+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
