@@ -20,7 +20,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         $em = $this->getEntityManager();
 
         $em->persist($terraforming);
-        $em->flush($terraforming);
+        $em->flush();
     }
 
     public function delete(ColonyTerraformingInterface $terraforming): void
@@ -28,7 +28,7 @@ final class ColonyTerraformingRepository extends EntityRepository implements Col
         $em = $this->getEntityManager();
 
         $em->remove($terraforming);
-        $em->flush($terraforming);
+        $em->flush();
     }
 
     public function getByColony(array $colonies): array

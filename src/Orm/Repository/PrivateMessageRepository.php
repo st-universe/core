@@ -20,7 +20,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(PrivateMessageInterface $post): void
@@ -28,7 +28,7 @@ final class PrivateMessageRepository extends EntityRepository implements Private
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getOrderedCorrepondence(

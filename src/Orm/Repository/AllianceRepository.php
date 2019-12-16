@@ -20,7 +20,7 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(AllianceInterface $post): void
@@ -28,7 +28,7 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function findAllOrdered(): array

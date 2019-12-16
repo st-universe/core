@@ -22,7 +22,7 @@ final class UserIpTableRepository extends EntityRepository implements UserIpTabl
         $em = $this->getEntityManager();
 
         $em->persist($userIpTable);
-        $em->flush($userIpTable);
+        $em->flush();
     }
 
     public function findMostRecentByUser(UserInterface $user): ?UserIpTableInterface

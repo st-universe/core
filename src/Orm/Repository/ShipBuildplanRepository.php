@@ -61,7 +61,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em = $this->getEntityManager();
 
         $em->persist($shipBuildplan);
-        $em->flush($shipBuildplan);
+        $em->flush();
     }
 
     public function delete(ShipBuildplanInterface $shipBuildplan): void
@@ -69,7 +69,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em = $this->getEntityManager();
 
         $em->remove($shipBuildplan);
-        $em->flush($shipBuildplan);
+        $em->flush();
     }
 
     public function getByUser(int $userId): array

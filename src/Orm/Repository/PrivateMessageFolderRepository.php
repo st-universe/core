@@ -21,7 +21,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(PrivateMessageFolderInterface $post): void
@@ -29,7 +29,7 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getOrderedByUser(int $userId): iterable

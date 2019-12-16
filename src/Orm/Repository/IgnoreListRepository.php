@@ -20,7 +20,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         $em = $this->getEntityManager();
 
         $em->persist($ignoreList);
-        $em->flush($ignoreList);
+        $em->flush();
     }
 
     public function delete(IgnoreListInterface $ignoreList): void
@@ -28,7 +28,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         $em = $this->getEntityManager();
 
         $em->remove($ignoreList);
-        $em->flush($ignoreList);
+        $em->flush();
     }
 
     public function getByRecipient(int $recipientId): array

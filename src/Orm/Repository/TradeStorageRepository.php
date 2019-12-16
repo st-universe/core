@@ -22,7 +22,7 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(TradeStorageInterface $post): void
@@ -30,7 +30,7 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function truncateByUser(int $userId): void

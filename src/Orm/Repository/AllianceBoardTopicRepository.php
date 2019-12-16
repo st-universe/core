@@ -20,7 +20,7 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(AllianceBoardTopicInterface $post): void
@@ -28,7 +28,7 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getRecentByAlliance(int $allianceId, int $limit = 3): array

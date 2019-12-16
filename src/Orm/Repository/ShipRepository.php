@@ -26,7 +26,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(ShipInterface $post): void
@@ -34,7 +34,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getAmountByUserAndSpecialAbility(

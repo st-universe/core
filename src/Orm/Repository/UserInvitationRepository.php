@@ -22,7 +22,7 @@ final class UserInvitationRepository extends EntityRepository implements UserInv
         $em = $this->getEntityManager();
 
         $em->persist($userInvitation);
-        $em->flush($userInvitation);
+        $em->flush();
     }
 
     public function getInvitationsByUser(UserInterface $user): array

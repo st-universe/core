@@ -20,7 +20,7 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(AllianceBoardInterface $post): void
@@ -28,7 +28,7 @@ final class AllianceBoardRepository extends EntityRepository implements Alliance
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByAlliance(int $allianceId): array

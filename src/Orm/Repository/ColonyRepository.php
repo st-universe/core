@@ -26,7 +26,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(ColonyInterface $post): void
@@ -34,7 +34,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getAmountByUser(UserInterface $user, bool $isMoon = false): int

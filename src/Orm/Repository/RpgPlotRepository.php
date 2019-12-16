@@ -29,7 +29,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em = $this->getEntityManager();
 
         $em->persist($rpgPlot);
-        $em->flush($rpgPlot);
+        $em->flush();
     }
 
     public function delete(RpgPlotInterface $rpgPlot): void
@@ -37,7 +37,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em = $this->getEntityManager();
 
         $em->remove($rpgPlot);
-        $em->flush($rpgPlot);
+        $em->flush();
     }
 
     public function getActiveByUser(int $userId): array

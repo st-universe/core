@@ -34,7 +34,7 @@ final class KnCommentRepository extends EntityRepository implements KnCommentRep
         $em = $this->getEntityManager();
 
         $em->persist($comment);
-        $em->flush($comment);
+        $em->flush();
     }
 
     public function delete(KnCommentInterface $comment): void
@@ -42,7 +42,7 @@ final class KnCommentRepository extends EntityRepository implements KnCommentRep
         $em = $this->getEntityManager();
 
         $em->remove($comment);
-        $em->flush($comment);
+        $em->flush();
     }
 
     public function truncateByUser(int $userId): void

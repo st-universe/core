@@ -54,6 +54,6 @@ final class SessionStringRepository extends EntityRepository implements SessionS
         $em = $this->getEntityManager();
 
         $em->persist($sessionString);
-        $em->flush($sessionString);
+        $em->flush();
     }
 }

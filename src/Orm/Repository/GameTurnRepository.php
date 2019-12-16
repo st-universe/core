@@ -28,7 +28,7 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
         $em = $this->getEntityManager();
 
         $em->persist($turn);
-        $em->flush($turn);
+        $em->flush();
     }
 
     public function delete(GameTurnInterface $turn): void
@@ -36,6 +36,6 @@ final class GameTurnRepository extends EntityRepository implements GameTurnRepos
         $em = $this->getEntityManager();
 
         $em->remove($turn);
-        $em->flush($turn);
+        $em->flush();
     }
 }

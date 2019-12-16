@@ -21,7 +21,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(AllianceJobInterface $post): void
@@ -29,7 +29,7 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByUser(int $userId): array

@@ -15,7 +15,7 @@ final class GameConfigRepository extends EntityRepository implements GameConfigR
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByOption(int $optionId): ?GameConfigInterface

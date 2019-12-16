@@ -23,7 +23,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em = $this->getEntityManager();
 
         $em->persist($fleet);
-        $em->flush($fleet);
+        $em->flush();
     }
 
     public function delete(FleetInterface $fleet): void
@@ -31,7 +31,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em = $this->getEntityManager();
 
         $em->remove($fleet);
-        $em->flush($fleet);
+        $em->flush();
     }
 
     public function truncateByUser(UserInterface $user): void
@@ -63,7 +63,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f LEFT JOIN %s s WITH s.id = f.ships_id WHERE 
+                'SELECT f FROM %s f LEFT JOIN %s s WITH s.id = f.ships_id WHERE
                 (s.starSystem = :starSystem OR (s.starSystem IS NULL AND :starSystem is NULL))
                 AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.is_base = 0',
                 Fleet::class,

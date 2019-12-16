@@ -23,7 +23,7 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(ColonyStorageInterface $post): void
@@ -31,7 +31,7 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByColony(int $colonyId, int $viewable = 1): array

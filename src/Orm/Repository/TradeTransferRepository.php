@@ -20,7 +20,7 @@ final class TradeTransferRepository extends EntityRepository implements TradeTra
         $em = $this->getEntityManager();
 
         $em->persist($tradeTransfer);
-        $em->flush($tradeTransfer);
+        $em->flush();
     }
 
     public function getSumByPostAndUser(int $tradePostId, int $userId): int

@@ -20,7 +20,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(ShipCrewInterface $post): void
@@ -28,7 +28,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByShip(int $shipId): array

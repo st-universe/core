@@ -21,7 +21,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(ShipSystemInterface $post): void
@@ -29,7 +29,7 @@ final class ShipSystemRepository extends EntityRepository implements ShipSystemR
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByShip(int $shipId): array

@@ -22,7 +22,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(TradeLicenseInterface $post): void
@@ -30,7 +30,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function truncateByUser(int $userId): void

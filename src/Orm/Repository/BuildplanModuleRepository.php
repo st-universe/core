@@ -35,7 +35,7 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         $em = $this->getEntityManager();
 
         $em->persist($obj);
-        $em->flush($obj);
+        $em->flush();
     }
 
     public function delete(BuildplanModuleInterface $obj): void
@@ -43,6 +43,6 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         $em = $this->getEntityManager();
 
         $em->remove($obj);
-        $em->flush($obj);
+        $em->flush();
     }
 }

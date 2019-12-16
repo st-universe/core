@@ -28,6 +28,6 @@ final class ShipRumpUserRepository extends EntityRepository implements ShipRumpU
         $em = $this->getEntityManager();
 
         $em->persist($shipRumpUser);
-        $em->flush($shipRumpUser);
+        $em->flush();
     }
 }

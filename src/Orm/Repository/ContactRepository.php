@@ -21,7 +21,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(ContactInterface $post): void
@@ -29,7 +29,7 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getByUserAndOpponent(int $userId, int $opponentId): ?ContactInterface

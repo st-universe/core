@@ -24,7 +24,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function delete(UserInterface $post): void
@@ -32,7 +32,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush($post);
+        $em->flush();
     }
 
     public function getAmountByFaction(int $factionId): int

@@ -29,7 +29,7 @@ final class UserProfileVisitorRepository extends EntityRepository implements Use
         $em = $this->getEntityManager();
 
         $em->persist($userProfileVisitor);
-        $em->flush($userProfileVisitor);
+        $em->flush();
     }
 
     public function getRecent(int $userId): array

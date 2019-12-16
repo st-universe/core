@@ -78,6 +78,6 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         $em = $this->getEntityManager();
 
         $em->persist($research);
-        $em->flush($research);
+        $em->flush();
     }
 }

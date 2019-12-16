@@ -29,6 +29,6 @@ final class UserTagRepository extends EntityRepository implements UserTagReposit
         $em = $this->getEntityManager();
 
         $em->persist($userTag);
-        $em->flush($userTag);
+        $em->flush();
     }
 }
