@@ -107,7 +107,6 @@ final class StartAirfieldShip implements ActionControllerInterface
         if ($colony->getEps() < $hangar->getStartEnergyCosts()) {
             $game->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
-                10,
                 $hangar->getStartEnergyCosts(),
                 $colony->getEps()
             );
