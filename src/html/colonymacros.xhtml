@@ -1243,9 +1243,6 @@
       <td style="text-align: center; vertical-align: middle" tal:content="data/getRump/getName">RUMP</td>
       <tal:block tal:condition="not:data/getStopDate">
         <td style="text-align: center; vertical-align: middle">
-          <span tal:replace="structure data/getStatusBar">STATUSBAR</span>
-        </td>
-        <td style="text-align: center; vertical-align: middle">
           <span tal:replace="datetime:data/getFinishDate">DATE</span>
         </td>
       </tal:block>

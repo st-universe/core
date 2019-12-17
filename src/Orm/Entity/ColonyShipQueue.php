@@ -176,17 +176,4 @@ class ColonyShipQueue implements ColonyShipQueueInterface
 
         return $this;
     }
-
-    /**
-     * @todo temporary, remove it.
-     */
-    public function getStatusBar(): string
-    {
-        return (new TalStatusBar())
-            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
-            ->setLabel(_('Fortschritt'))
-            ->setMaxValue($this->getBuildtime())
-            ->setValue($this->getBuildtime() - $this->getFinishDate() - time())
-            ->render();
-    }
 }
