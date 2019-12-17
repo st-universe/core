@@ -89,7 +89,9 @@ final class ShipRemover implements ShipRemoverInterface
         }
         $ship->deactivateTraktorBeam();
 
-        $this->shipStorageRepository->truncateForShip((int) $ship->getId());
+        foreach ($ship->getStorage() as $item) {
+            $this->shipStorageRepository->delete($item);
+        }
         $this->shipCrewRepository->truncateByShip((int) $ship->getId());
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
 

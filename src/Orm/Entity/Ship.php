@@ -1343,4 +1343,5 @@ class Ship implements ShipInterface
         $this->dockedTo = $dockedTo;
         return $this;
     }
+
 }
