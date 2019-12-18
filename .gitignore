@@ -1,12 +1,7 @@
-*.table.php
 data/Makefile
-admin/backup/*
 src/Public/avatare
-astar/**/*
-astar/*
 *.po~
 docu/de/_build/*
-tags
 vendor
 config.json
 src/Public/assets
