@@ -53,7 +53,7 @@ final class ChangePassword implements ActionControllerInterface
             $game->addInformation(_('Die eingegebenen Passwörter stimmen nichberein'));
             return;
         }
-        $user->setPassword(sha1($newPassword));
+        $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
 
         $this->userRepository->save($user);
 
