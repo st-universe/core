@@ -60,7 +60,7 @@
   },
   "extra": {
     "installer-paths": {
-      "./src/assets": [
+      "./src/Public/assets": [
         "st-universe/assets"
       ]
     }

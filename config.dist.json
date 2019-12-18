@@ -31,8 +31,8 @@
     "base_url": "https://change.me",
     "version": "VERSIONSTRING",
     "language": "de_DE",
-    "user_avatar_path": "html/avatare/user/",
-    "alliance_avatar_path": "html/avatare/alliance/",
+    "user_avatar_path": "avatare/user/",
+    "alliance_avatar_path": "avatare/alliance/",
     "invitation": {
       "tokens_per_user": 2,
       "ttl": 86400

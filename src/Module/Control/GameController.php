@@ -354,7 +354,7 @@ final class GameController implements GameControllerInterface
     public function getJavascriptPath(): string
     {
         return sprintf(
-            '/version_%s',
+            '/version_%s/static',
             $this->config->get('game.version')
         );
     }
@@ -441,9 +441,13 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('THIS', $this);
         } catch (StuException $e) {
             throw $e;
-        } finally {
-            $this->render();
+        } catch (\Throwable $e) {
+            if ($this->config->get('debug.debug_mode') === true) {
+                throw $e;
+            }
+            $this->setTemplateFile('html/error.html');
         }
+        $this->render();
     }
 
     private function executeCallback(array $actions): void

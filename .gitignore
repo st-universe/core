@@ -1,8 +1,7 @@
 *.table.php
 data/Makefile
 admin/backup/*
-html/avatare/alliance/*
-html/avatare/user/*
+src/Public/avatare
 astar/**/*
 astar/*
 *.po~
@@ -10,9 +9,8 @@ docu/de/_build/*
 tags
 vendor
 config.json
-src/assets
-src/version_*
-src/html/avatare
+src/Public/assets
+src/Public/version_*
 backup
 .phpunit.result.cache
 src/api/

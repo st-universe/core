@@ -2,8 +2,8 @@
 	<metal:block metal:define-macro="initial_js">
 		<script language="Javascript">
 			var sstr = '${THIS/getSessionString}';
-		</script> 
-		<script type="text/javascript" src="${THIS/getJavascriptPath}/html/js/trade.js"><!-- stuniverse --></script>
+		</script>
+		<script type="text/javascript" src="${THIS/getJavascriptPath}/js/trade.js"><!-- stuniverse --></script>
 	</metal:block>
 	<metal:macro metal:define-macro="tradepostinfo">
 		<br />
@@ -22,7 +22,7 @@
 				<tr>
 					<th>Handelsnetz</th>
 					<td>
-						<img src="assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.gif" />
+						<img src="/assets/rassen/${TRADE_POST_INFO/getTradeNetwork}s.gif" />
 					</td>
 				</tr>
 				<tr>
@@ -249,7 +249,7 @@
 			</table>
 		</metal:macro>
 		<div id="shoutbox_list">
-			<metal:macro metal:use-macro="shoutbox_entries" />	
+			<metal:macro metal:use-macro="shoutbox_entries" />
 		</div>
 		<br />
 		<div class="divhead" i18n:translate="">Nachricht schreiben</div>

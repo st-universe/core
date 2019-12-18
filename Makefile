@@ -6,7 +6,7 @@ SUITE=
 all:init dirs
 
 dirs:force
-	for a in src/admin/backup src/html/avatare/user src/html/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
+	for a in src/admin/backup src/Public/avatare/user src/Public/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
 
 i18nextract:force
 	xgettext --no-location --no-wrap --from-code UTF-8 src/**/*.php -o php.pot
@@ -32,7 +32,7 @@ update:force
 	composer update
 
 dev-serve:force
-	php -S localhost:1337 -t src/
+	php -S localhost:1337 -t src/Public/
 
 dev-create-db:force
 	docker-compose up -d
@@ -49,7 +49,7 @@ dev-stop-db:force
 	docker-compose stop
 
 version_link:force
-	cd src && ln -s . version_dev
+	cd src/Public && ln -s . version_dev
 
 clearCache:force
 	vendor/bin/doctrine orm:clear-cache:metadata

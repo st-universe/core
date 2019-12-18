@@ -35,7 +35,15 @@ final class TalPage implements TalPageInterface
             $tr->addDomain('stu', $this->config->get('game.webroot') . '/lang');
             $tr->useDomain('stu');
 
+            $template_repository = realpath(
+                sprintf(
+                    '%s/../',
+                    $this->config->get('game.webroot')
+                )
+            );
+
             $this->template = new PhpTal\PHPTAL();
+            $this->template->setTemplateRepository($template_repository);
             $this->template->setPhpCodeDestination(sprintf(
                 '%s/stu/%s/tal',
                 $this->config->get('game.temp_dir'),
@@ -51,13 +59,7 @@ final class TalPage implements TalPageInterface
 
     public function setTemplate(string $file): void
     {
-        $this->getTemplate()->setTemplate(
-            sprintf(
-                '%s/%s',
-                $this->config->get('game.webroot'),
-                $file
-            )
-        );
+        $this->getTemplate()->setTemplate($file);
     }
 
     public function parse(): string
