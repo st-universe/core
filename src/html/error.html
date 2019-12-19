@@ -1,25 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Error - Star Trek Universe</title>
+  <meta charset="UTF-8" />
+  <title>Error - Star Trek Universe</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      line-height: 1.3em;
+      font-family: Arial, Helvetica, Verdana, sans-serif;
+      font-size: 0.99em;
+    }
+
+    div.phaser {
+      animation-iteration-count: infinite;
+      padding-top: 8px;
+      height:0px;
+      width:1px;
+      border-bottom:1px solid #ffa600;
+      -webkit-animation: increase 3s;
+      -moz-animation:    increase 3s;
+      -o-animation:      increase 3s;
+      animation:         increase 3s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes increase {
+      100% {
+        width: 200px;
+      }
+    }
+
+    div.header {
+      margin: auto;
+      width: 800px;
+      padding: 10px;
+    }
+
+    div.content {
+      padding-top: 100px;
+      margin: auto;
+      width: 418px;
+    }
+
+    div.message {
+      margin-top: 50px;
+      margin-right: auto;
+      margin-left: auto;
+      width: 500px;
+      color: #dddddd;
+    }
+
+    div.box div.box_title {
+      background-color: #121220;
+      color: #dddddd;
+      padding: 1px;
+      text-align: center;
+      font-weight: bold;
+      display: block;
+      width: 100%
+    }
+
+    div.box div.box_body {
+      margin-top: 3px;
+      padding: 3px;
+    }
+
+    div.box {
+      border: 1px solid #262323;
+      border-radius: 3px 3px 3px 3px;
+    }
+  </style>
+  <script type="text/javascript">
+    function restart() {
+      document.getElementById('foe').src = '/assets/ships/8102.gif';
+
+      let elm = document.getElementById('phaser');
+      let newone = elm.cloneNode(true);
+      elm.parentNode.replaceChild(newone, elm);
+
+      startAnimation(newone);
+    }
+
+    function destroy() {
+      document.getElementById('foe').src = '/assets/ships/8.gif';
+    }
+
+    function startAnimation(element) {
+      element.addEventListener('webkitAnimationEnd', () => destroy(), false);
+      element.addEventListener('animationend', () => destroy(),  false);
+      element.addEventListener('oanimationend', () => destroy(), false);
+
+      setTimeout('restart()', 4000);
+    }
+  </script>
 </head>
-<body>
-<pre>
-                          [=========]
-               -==++""" .  /. . .  \ .  """++==-
-        -+""   \   .. . .  | ..  . |  . .  .   /   ""+-
-     /\  +-""   `-----=====\    /=====-----'   ""-+  /\
-    / /                      ""=""                      \ \
-  / /                                                     \ \
- //                            |                            \\
-/")                          \ | /                          ("\
-\o\                           \*/                           /o/
- \ )                       --**O**--                       ( /
-                              /*\
-                             / | \
-                               |
-</pre>
-<div>Ein Fehler ist aufgetreten</div>
+<body style="background: #000000" onload="startAnimation(document.getElementById('phaser'));">
+<div class="header">
+  <a href="/">
+    <img src="/assets/main/banner.png" />
+  </a>
+</div>
+<div class="box message">
+  <div class="box_title">Ein Fehler ist aufgetreten</div>
+  <div class="box_body">Keine Panik - Fehler passieren. Vielleicht hast Du einen Bug gefunden - wende dich in diesem Fall an das STU-Team.</div>
+</div>
+<div class="content">
+ <div style="display: grid; grid-template-columns: 160px 200px 158px;">
+   <div><img src="/assets/ships/8101.gif" /></div>
+   <div class="phaser" id="phaser"></div>
+   <div><img src="/assets/ships/8102.gif" id="foe" /></div>
+ </div>
+</div>
 </body>
 </html>

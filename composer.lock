@@ -6221,12 +6221,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "3116f6c82e25d3034dc122f4138afadaeedb9ce2"
+                "reference": "a42870327bfc801900c15f5a85ee950dca717307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/3116f6c82e25d3034dc122f4138afadaeedb9ce2",
-                "reference": "3116f6c82e25d3034dc122f4138afadaeedb9ce2",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/a42870327bfc801900c15f5a85ee950dca717307",
+                "reference": "a42870327bfc801900c15f5a85ee950dca717307",
                 "shasum": ""
             },
             "require": {
@@ -6243,7 +6243,7 @@
                 "source": "https://github.com/st-universe/assets/tree/master",
                 "issues": "https://github.com/st-universe/assets/issues"
             },
-            "time": "2019-12-15T17:14:06+00:00"
+            "time": "2019-12-19T11:49:48+00:00"
         },
         {
             "name": "symfony/event-dispatcher",

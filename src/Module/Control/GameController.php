@@ -425,6 +425,7 @@ final class GameController implements GameControllerInterface
             } else {
                 header('Location: /');
             }
+            return;
         } catch (LoginException $e) {
             $this->loginError = $e->getMessage();
 
