@@ -86,10 +86,10 @@ final class ColonyTick implements ColonyTickInterface
     {
         $i = 1;
         $storage = $colony->getStorage();
-        $production = $colony->getProductionRaw();
 
         while (true) {
             $rewind = 0;
+            $production = $colony->getProductionRaw();
             foreach ($production as $commodityId => $pro) {
                 if ($pro->getProduction() >= 0) {
                     continue;
@@ -111,7 +111,6 @@ final class ColonyTick implements ColonyTickInterface
                 $rewind = 1;
             }
             if ($rewind == 1) {
-                reset($production);
                 $i++;
                 if ($i == 100) {
                     // SECURITY
@@ -351,7 +350,9 @@ final class ColonyTick implements ColonyTickInterface
                 $data = new ColonyProduction;
                 $data->setGoodId($commodityId);
                 $data->setProduction($obj->getAmount() * -1);
-                $colony->setProductionRaw($colony->getProductionRaw() + array($commodityId => $data));
+
+                $prod[$commodityId] = $data;
+                $colony->setProductionRaw($prod);
             } else {
                 if ($obj->getAmount() < 0) {
                     $prod[$commodityId]->upperProduction(abs($obj->getAmount()));
