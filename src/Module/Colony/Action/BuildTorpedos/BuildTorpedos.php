@@ -48,7 +48,7 @@ final class BuildTorpedos implements ActionControllerInterface
 
         $buildableTorpedoTypes = $this->torpedoTypeRepository->getForUser($userId);
 
-        $torps = request::postArray('torps');
+        $torps = request::postArray('torp');
         $storage = $colony->getStorage();
         $msg = array();
         foreach ($torps as $torp_id => $count) {
