@@ -234,7 +234,7 @@
 		</table>
 	</metal:macro>
 	<metal:macro metal:define-macro="shoutbox">
-		<input type="hidden" name="network" value="${NETWORK}" />
+		<input type="hidden" name="network" id="network" tal:attributes="value NETWORK" />
 		<metal:macro metal:define-macro="shoutbox_entries">
 			<table class="tcal">
 				<tr tal:repeat="data SHOUTBOX" tal:attributes="class string:row${repeat/data/odd}">

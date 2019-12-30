@@ -215,7 +215,7 @@
   </tal:block>
 </tal:block>
 <metal:macro metal:define-macro="write_quick_pm">
-  <input type="hidden" name="pm_sstr" tal:attributes="value THIS/getSessionString" />
+  <input type="hidden" name="pm_sstr" id="pm_sstr" tal:attributes="value THIS/getSessionString" />
   <form id="quickpm">
     <table class="tcal" id="quickpm_compose">
       <tr>
