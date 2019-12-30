@@ -313,6 +313,9 @@ function deleteBuildplan(planid,function_id) {
 	ajaxcall('colonymenu','colony.php?B_DEL_BUILDPLAN=1&id='+colonyid+'&planid='+planid+'&func='+function_id);
 }
 function cancelModuleQueueEntries(module_id) {
-	ajaxPostUpdate('module_'+module_id+'_action','colony.php','B_CANCEL_MODULECREATION=1&id='+colonyid+'&module='+module_id+'&func='+$('func').value+'&count='+$('module_'+module_id+'_count').value);
-	setTimeout('refreshColony()',250);
+  ajaxPostUpdate(
+    'module_'+module_id+'_action',
+    'colony.php','B_CANCEL_MODULECREATION=1&id='+colonyid+'&module='+module_id+'&func='+$('func').value+'&count='+$('module_'+module_id+'_count').value
+  );
+  setTimeout('refreshColony()',250);
 }

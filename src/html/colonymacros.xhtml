@@ -733,7 +733,7 @@
     <div metal:fill-slot="containment">
       <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
       <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-      <input type="hidden" name="func" tal:attributes="value FUNC/getFunction" />
+      <input type="hidden" name="func" id="func" tal:attributes="value FUNC/getFunction" />
       <br />
       <table class="tcal">
         <tr>
@@ -765,10 +765,10 @@
               <div style="display: table-cell; vertical-align:middle; padding-left: 4px;">
                 <a
                   href="Javascript:cancelModuleQueueEntries(${data/getModuleId});"
-                  onmouseover="cp('cancelModuleList${data/getId}','buttons/x2')"
-                  onmouseout="cp('cancelModuleList${data/getId}','buttons/x1')"
+                  onmouseover="cp('cancelModuleList${data/getModuleId}','buttons/x2')"
+                  onmouseout="cp('cancelModuleList${data/getModuleId}','buttons/x1')"
                 >
-                  <img src="/assets/buttons/x1.gif" name="cancelModuleList${data/getId}" title="Anzahl löschen" i18n:attributes="title" />
+                  <img src="/assets/buttons/x1.gif" name="cancelModuleList${data/getModuleId}" title="Anzahl löschen" i18n:attributes="title" />
                 </a>
               </div>
             </div>
