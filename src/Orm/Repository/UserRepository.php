@@ -130,13 +130,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT u FROM %s u WHERE u.id IN (
-                    SELECT cl.user_id FROM %s cl WHERE cl.mode = 1 AND cl.recipient = :userId
+                    SELECT cl.user_id FROM %s cl WHERE cl.mode = :mode AND cl.recipient = :userId
                 ) OR (u.allys_id IS NOT NULL AND u.allys_id = :allianceId) AND u.id != :userId
                 ORDER BY u.id',
                 User::class,
                 Contact::class
             )
         )->setParameters([
+            'mode' => 1,
             'userId' => $userId,
             'allianceId' => $allianceId
         ])->getResult();
@@ -146,7 +147,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id != :ignoreUserId AND (u.show_online_status = 1 OR u.id IN (
+                'SELECT u FROM %s u WHERE u.id != :ignoreUserId AND (u.show_online_status = :allowStart OR u.id IN (
                         SELECT cl.user_id FROM %s cl WHERE cl.mode = :contactListModeFriend AND cl.recipient = :ignoreUserId
                     )
                 ) AND u.lastaction > :lastActionThreshold',
@@ -155,8 +156,9 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'ignoreUserId' => $ignoreUserId,
-            'contactListModeFriend' => ContactListModeEnum::CONTACT_FRIEND,
-            'lastActionThreshold' => $lastActionThreshold
+            'contactListModeFriend' => (string)ContactListModeEnum::CONTACT_FRIEND,
+            'lastActionThreshold' => $lastActionThreshold,
+            'allowStart' => 1
         ])
             ->setMaxResults($limit)
             ->getResult();

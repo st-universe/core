@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_rump_costs",
  *     indexes={
- *         @Index(name="ship_rump_idx", columns={"rump_id"})
+ *         @Index(name="rump_cost_ship_rump_idx", columns={"rump_id"})
  *     }
  * )
  **/

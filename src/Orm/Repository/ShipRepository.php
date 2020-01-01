@@ -183,8 +183,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
             'SELECT sx as posx,sy as posy,systems_id as sysid,
-			(SELECT count(id) FROM stu_ships WHERE sx=posx and sy=posy and cloak=0 AND systems_id=sysid) as shipcount,
-			(SELECT count(id) FROM stu_ships where sx=posx AND sy=posy AND cloak=1 AND systems_id=sysid) as cloakcount,
+			(SELECT count(id) FROM stu_ships WHERE sx=posx and sy=posy and cloak = :stateOff AND systems_id=sysid) as shipcount,
+			(SELECT count(id) FROM stu_ships where sx=posx AND sy=posy AND cloak = :stateOn AND systems_id=sysid) as cloakcount,
 			(SELECT type FROM stu_map_ftypes where id=field_id) as type,field_id FROM stu_sys_map WHERE
 			systems_id = :starSystemId AND sx BETWEEN :sxStart AND :sxEnd AND sy BETWEEN :syStart AND :syEnd ORDER BY sy,sx',
             $rsm
@@ -194,6 +194,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $sx + $sensorRange,
             'syStart' => $sy - $sensorRange,
             'syEnd' => $sy + $sensorRange,
+            'stateOff' => 0,
+            'stateOn' => 1
         ])->getResult();
     }
 
@@ -208,8 +210,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
             'SELECT cx as posx,cy as posy,
-			(SELECT count(id) FROM stu_ships WHERE cx=posx and cy=posy and cloak=0) as shipcount,
-			(SELECT count(id) FROM stu_ships where cx=posx AND cy=posy AND cloak=1) as cloakcount,
+			(SELECT count(id) FROM stu_ships WHERE cx=posx and cy=posy and cloak = :stateOff) as shipcount,
+			(SELECT count(id) FROM stu_ships where cx=posx AND cy=posy AND cloak = :stateOn) as cloakcount,
 			(SELECT type FROM stu_map_ftypes where id=field_id) as type,field_id FROM stu_map WHERE
 			cx BETWEEN :sxStart AND :sxEnd AND cy BETWEEN :syStart AND :syEnd ORDER BY cy,cx',
             $rsm
@@ -218,6 +220,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $cx + $sensorRange,
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
+            'stateOff' => 0,
+            'startOn' => 1
         ])->getResult();
     }
 
@@ -234,7 +238,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s WHERE (
                     (s.systems_id IS NULL AND :starSystemId IS NULL) OR s.systems_id = :starSystemId
                 ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = 0
-                AND s.is_base = 1 AND s.id != :ignoreId',
+                AND s.is_base = :state AND s.id != :ignoreId',
                 Ship::class
             )
         )->setParameters([
@@ -243,7 +247,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sy' => $sy,
             'cx' => $cx,
             'cy' => $cy,
-            'ignoreId' => $ignoreId
+            'ignoreId' => $ignoreId,
+            'state' => 1
         ])->getResult();
     }
 

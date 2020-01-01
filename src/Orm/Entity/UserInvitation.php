@@ -11,8 +11,8 @@ use DateTimeInterface;
  * @Table(
  *     name="stu_user_invitations",
  *     indexes={
- *         @Index(name="user_idx", columns={"user_id"}),
- *         @Index(name="token_idx", columns={"token"})
+ *         @Index(name="user_invitation_user_idx", columns={"user_id"}),
+ *         @Index(name="user_invitation_token_idx", columns={"token"})
  *     }
  * )
  **/

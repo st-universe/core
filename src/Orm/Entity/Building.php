@@ -16,7 +16,7 @@ use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
  *     indexes={
  *         @Index(name="eps_production_idx", columns={"eps_proc"}),
  *         @Index(name="buildmenu_column_idx", columns={"bm_col"}),
- *         @Index(name="research_idx", columns={"research_id"})
+ *         @Index(name="building_research_idx", columns={"research_id"})
  *     }
  * )
  **/

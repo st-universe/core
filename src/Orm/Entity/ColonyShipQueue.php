@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ColonyShipQueueRepository")
  * @Table(
  *     name="stu_colonies_shipqueue",
  *     indexes={
- *         @Index(name="colony_building_function_idx", columns={"colony_id","building_function_id"}),
- *         @Index(name="user_idx", columns={"user_id"}),
- *         @Index(name="finish_date_idx", columns={"finish_date"})
+ *         @Index(name="colony_shipqueue_building_function_idx", columns={"colony_id","building_function_id"}),
+ *         @Index(name="colony_shipqueue_user_idx", columns={"user_id"}),
+ *         @Index(name="colony_shipqueue_finish_date_idx", columns={"finish_date"})
  *     }
  * )
  **/

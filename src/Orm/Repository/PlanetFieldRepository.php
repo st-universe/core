@@ -259,11 +259,12 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         return (int)$this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT SUM(b.eps_proc) FROM %s cfd LEFT JOIN %s b WITH b.id = cfd.buildings_id WHERE
-                cfd.aktiv = 1 AND cfd.colonies_id = :colonyId',
+                cfd.aktiv = :state AND cfd.colonies_id = :colonyId',
                 PlanetField::class,
                 Building::class
             )
         )->setParameters([
+            'state' => 1,
             'colonyId' => $colonyId,
         ])->getSingleScalarResult();
     }

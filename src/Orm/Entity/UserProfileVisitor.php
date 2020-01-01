@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_user_profile_visitors",
  *     indexes={
- *         @Index(name="user_idx", columns={"user_id"})
+ *         @Index(name="user_profile_visitor_user_idx", columns={"user_id"})
  *     }
  * )
  **/

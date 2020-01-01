@@ -28,10 +28,10 @@ class UserIpTable implements UserIpTableInterface
     private $agent;
 
     /** @Column(type="datetime", nullable=true) * */
-    private $start;
+    private $startDate;
 
     /** @Column(type="datetime", nullable=true) * */
-    private $end;
+    private $endDate;
 
     /**
      * @ManyToOne(targetEntity="User")
@@ -93,21 +93,21 @@ class UserIpTable implements UserIpTableInterface
     }
 
     public function getStartDate(): ?DateTimeInterface {
-        return $this->start;
+        return $this->startDate;
     }
 
     public function setStartDate(DateTimeInterface $startDate): UserIpTableInterface {
-        $this->start = $startDate;
+        $this->startDate = $startDate;
 
         return $this;
     }
 
     public function getEndDate(): ?DateTimeInterface {
-        return $this->end;
+        return $this->endDate;
     }
 
     public function setEndDate(DateTimeInterface $endDate): UserIpTableInterface {
-        $this->end = $endDate;
+        $this->endDate = $endDate;
 
         return $this;
     }

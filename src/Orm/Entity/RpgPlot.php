@@ -12,8 +12,8 @@ use Doctrine\Common\Collections\Collection;
  * @Table(
  *     name="stu_plots",
  *     indexes={
- *         @Index(name="end_date_idx", columns={"end_date"}),
- *         @Index(name="user_idx", columns={"user_id"}),
+ *         @Index(name="rpg_plot_end_date_idx", columns={"end_date"}),
+ *         @Index(name="rpg_plot_user_idx", columns={"user_id"}),
  *     }
  * )
  **/

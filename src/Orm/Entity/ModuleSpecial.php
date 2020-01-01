@@ -11,7 +11,7 @@ use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
  * @Table(
  *     name="stu_modules_specials",
  *     indexes={
- *         @Index(name="module_idx", columns={"module_id"})
+ *         @Index(name="module_special_module_idx", columns={"module_id"})
  *     }
  * )
  **/

@@ -21,7 +21,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  * @Table(
  *     name="stu_colonies",
  *     indexes={
- *         @Index(name="user_idx", columns={"user_id"}),
+ *         @Index(name="colony_user_idx", columns={"user_id"}),
  *         @Index(name="location_idx", columns={"systems_id","sx","sy"})
  *     }
  * )

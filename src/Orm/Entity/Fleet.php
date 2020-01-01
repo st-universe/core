@@ -13,7 +13,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  * @Table(
  *     name="stu_fleets",
  *     indexes={
- *         @Index(name="user_idx", columns={"user_id"})
+ *         @Index(name="fleet_user_idx", columns={"user_id"})
  *     }
  * )
  **/

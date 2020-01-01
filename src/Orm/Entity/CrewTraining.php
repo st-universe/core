@@ -9,8 +9,8 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_crew_training",
  *     indexes={
- *         @Index(name="colony_idx", columns={"colony_id"}),
- *         @Index(name="user_idx", columns={"user_id"})
+ *         @Index(name="crew_training_colony_idx", columns={"colony_id"}),
+ *         @Index(name="crew_training_user_idx", columns={"user_id"})
  *     }
  * )
  **/

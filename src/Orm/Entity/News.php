@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_news",
  *     indexes={
- *         @Index(name="date_idx", columns={"date"})
+ *         @Index(name="news_date_idx", columns={"date"})
  *     }
  * )
  **/

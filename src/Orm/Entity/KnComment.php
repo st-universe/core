@@ -9,8 +9,8 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_kn_comments",
  *     indexes={
- *         @Index(name="post_idx", columns={"post_id"}),
- *         @Index(name="user_idx", columns={"user_id"})
+ *         @Index(name="kn_comment_post_idx", columns={"post_id"}),
+ *         @Index(name="kn_comment_user_idx", columns={"user_id"})
  *     }
  * )
  **/

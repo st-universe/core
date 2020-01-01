@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
  * @Table(
  *     name="stu_torpedo_types",
  *     indexes={
- *          @Index(name="research_idx", columns={"research_id"}),
+ *          @Index(name="torpedo_type_research_idx", columns={"research_id"}),
  *          @Index(name="level_idx", columns={"level"})
  * })
  **/

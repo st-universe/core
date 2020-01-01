@@ -15,7 +15,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
  * @Table(
  *     name="stu_dockingrights",
  *     indexes={
- *         @Index(name="ship_idx", columns={"ships_id"})
+ *         @Index(name="dockingrights_ship_idx", columns={"ships_id"})
  *     }
  * )
  **/

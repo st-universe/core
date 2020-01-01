@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_trade_storage",
  *     indexes={
- *         @Index(name="user_idx", columns={"user_id"})
+ *         @Index(name="trade_storage_user_idx", columns={"user_id"})
  *     }
  * )
  **/

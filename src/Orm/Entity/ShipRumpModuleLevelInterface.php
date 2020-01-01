@@ -4,16 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-
-/**
- * @Entity(repositoryClass="Stu\Orm\Repository\ShipRumpModuleLevelRepository")
- * @Table(
- *     name="stu_rumps_module_level",
- *     indexes={
- *         @Index(name="ship_rump_idx", columns={"rump_id"})
- *     }
- * )
- **/
 interface ShipRumpModuleLevelInterface
 {
     public function getId(): int;

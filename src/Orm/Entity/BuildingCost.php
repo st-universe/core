@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_buildings_cost",
  *     indexes={
- *          @Index(name="building_idx", columns={"buildings_id"})
+ *          @Index(name="building_cost_building_idx", columns={"buildings_id"})
  * })
  **/
 class BuildingCost implements BuildingCostInterface

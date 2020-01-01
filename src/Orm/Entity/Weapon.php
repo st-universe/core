@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_weapons",
  *     indexes={
- *         @Index(name="module_idx", columns={"module_id"})
+ *         @Index(name="weapon_module_idx", columns={"module_id"})
  *     }
  * )
  **/

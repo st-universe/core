@@ -39,7 +39,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = 1 AND r.id IN (
+                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = :state AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
                     ) AND r.id IN (
                         SELECT rubu.rump_id FROM %s rubu WHERE rubu.building_function = :buildingFunction
@@ -50,6 +50,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
+                'state' => 1,
                 'userId' => $userId,
                 'buildingFunction' => $buildingFunction
             ])
@@ -61,7 +62,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = 1 AND r.id IN (
+                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = :state AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
                     )',
                     ShipRump::class,
@@ -69,6 +70,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
+                'state' => 1,
                 'userId' => $userId,
             ])
             ->getResult();
@@ -95,7 +97,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = 1 AND r.id IN (
+                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = :state AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
                     ) AND r.good_id IN (
                         SELECT cs.goods_id FROM %s cs WHERE cs.colonies_id = :colonyId
@@ -106,6 +108,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
+                'state' => 1,
                 'userId' => $userId,
                 'colonyId' => $colonyId
             ])
