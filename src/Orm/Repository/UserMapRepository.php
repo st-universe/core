@@ -14,8 +14,9 @@ final class UserMapRepository extends EntityRepository implements UserMapReposit
     {
         $this->getEntityManager()->getConnection()->query(
             sprintf(
-                'INSERT IGNORE INTO stu_user_map (id,user_id,cx,cy,map_id)
-                SELECT uuid(),%d as user_id,cx,cy,id as map_id FROM stu_map WHERE cx BETWEEN %d AND %d AND cy BETWEEN %d AND %d',
+                'INSERT INTO stu_user_map (id,user_id,cx,cy,map_id)
+                (SELECT uuid_in(overlay(overlay(md5(random()::text || \':\' || clock_timestamp()::text) placing \'4\' from 13) placing to_hex(floor(random()*(11-8+1) + 8)::int)::text from 17)::cstring),%d as user_id,cx,cy,id as map_id FROM stu_map WHERE cx BETWEEN %d AND %d AND cy BETWEEN %d AND %d)
+                ON CONFLICT DO NOTHING',
                 $userId,
                 $cx - $range,
                 $cx + $range,

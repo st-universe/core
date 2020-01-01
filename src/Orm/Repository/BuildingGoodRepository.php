@@ -26,11 +26,11 @@ final class BuildingGoodRepository extends EntityRepository implements BuildingG
         return $this->getEntityManager()->createNativeQuery(
             'SELECT id as goods_id,id as global_goods_id,(
                 SELECT SUM(a.count) FROM stu_buildings_goods as a LEFT JOIN stu_colonies_fielddata as b USING(buildings_id)
-                WHERE a.goods_id=global_goods_id AND b.colonies_id = :colonyId AND b.aktiv = :state
+                WHERE a.goods_id = stu_goods.id AND b.colonies_id = :colonyId AND b.aktiv = :state
             ) as gc,(
-                SELECT count FROM stu_planets_goods WHERE goods_id=global_goods_id AND planet_classes_id=:planetTypeId
+                SELECT count FROM stu_planets_goods WHERE goods_id = stu_goods.id AND planet_classes_id=:planetTypeId
             ) as pc
-                FROM stu_goods GROUP BY id HAVING gc!=0 OR pc!=0',
+                FROM stu_goods GROUP BY id',
             $rsm
         )->setParameters([
             'state' => 1,

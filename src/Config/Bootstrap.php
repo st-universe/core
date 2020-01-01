@@ -82,7 +82,7 @@ $builder->addDefinitions([
 
         $manager = EntityManager::create(
             [
-                'driver' => 'mysqli',
+                'driver' => 'pdo_pgsql',
                 'user' => $config->get('db.user'),
                 'password' => $config->get('db.pass'),
                 'dbname'=> $config->get('db.database'),
