@@ -1,21 +1,20 @@
-STU3
-====
+Star Trek Universe
+==================
 
 Lokales Setup
 -------------
 
-Benoetigte Software: Linux (geht u.U. auch unter macOS) docker, php 7.3,
-composer
+Benoetigte Software: Linux (geht u.U. auch unter macOS) docker, php 7.4,
+composer, git.
 
-- Repository forken
-- Source Code auschecken und folgende Befehle ausfuehren
+- Repository forken und das Source-Code auschecken
 - config.dist.json nach config.json kopieren und anpassen
 - make init
 - make dev-create-db
-- make generators
+- php src/admin/scripts/reset.php
 - make dev-serve
 
-Danach sollte die Software via http://localhost:1337 erreichbar sein. Ggf kann
+Danach sollte die Software via http://localhost:1337 erreichbar sein, ggf. kann
 es sein, dass der Hostname (stu-db) nicht aufgelöst werden kann. In diesem
 Fall muss für die im `docker-compose.yml` File hinterlegte IP ein Eintrag in
 der Hosts-Datei des Betriebssystems gemacht werden.

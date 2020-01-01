@@ -1,7 +1,8 @@
 version: '3'
 services:
-  stu3-db:
+  stu-db:
     image: mysql:5
+    hostname: 'stu-db'
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:

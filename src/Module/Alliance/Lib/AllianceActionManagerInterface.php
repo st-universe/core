@@ -10,7 +10,7 @@ interface AllianceActionManagerInterface
 {
     public function setJobForUser(int $allianceId, int $userId, int $jobTypeId): void;
 
-    public function delete(int $allianceId): void;
+    public function delete(int $allianceId, bool $sendMessage = true): void;
 
     public function mayEdit(int $allianceId, int $userId): bool;
 

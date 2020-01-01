@@ -55,6 +55,11 @@ class Alliance implements AllianceInterface
      */
     private $members;
 
+    /**
+     * @OneToMany(targetEntity="AllianceJob", mappedBy="alliance")
+     */
+    private $jobs;
+
     private $founder;
 
     private $successor;
@@ -64,6 +69,7 @@ class Alliance implements AllianceInterface
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
     }
 
     public function getId(): int

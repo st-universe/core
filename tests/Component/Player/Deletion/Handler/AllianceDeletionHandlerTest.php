@@ -111,7 +111,7 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturnNull();
 
         $this->allianceActionManager->shouldReceive('delete')
-            ->with($allianceId)
+            ->with($allianceId, false)
             ->once();
 
         $this->handler->delete($user);
@@ -139,9 +139,6 @@ class AllianceDeletionHandlerTest extends MockeryTestCase
             ->andReturn([$job]);
         $this->allianceJobRepository->shouldReceive('delete')
             ->with($job)
-            ->once();
-        $this->allianceJobRepository->shouldReceive('truncateByUser')
-            ->with($successorUserId)
             ->once();
 
         $job->shouldReceive('getType')

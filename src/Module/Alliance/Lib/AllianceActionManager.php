@@ -71,7 +71,7 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $this->allianceJobRepository->save($obj);
     }
 
-    public function delete(int $allianceId): void
+    public function delete(int $allianceId, bool $sendMesage = true): void
     {
         $alliance = $this->allianceRepository->find($allianceId);
         if ($alliance === null) {
@@ -83,7 +83,9 @@ final class AllianceActionManager implements AllianceActionManagerInterface
         $text = sprintf(_('Die Allianz %s wurde aufgelöst'), $alliance->getName());
 
         foreach ($alliance->getMembers() as $user) {
-            $this->privateMessageSender->send(GameEnum::USER_NOONE, $user->getId(), $text);
+            if ($sendMesage === true) {
+                $this->privateMessageSender->send(GameEnum::USER_NOONE, $user->getId(), $text);
+            }
             $user->setAlliance(null);
 
             $this->userRepository->save($user);
