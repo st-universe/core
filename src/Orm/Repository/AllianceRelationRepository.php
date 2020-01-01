@@ -53,13 +53,14 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT COUNT(ar.id) FROM %s ar WHERE ar.date = 0 AND (
+                    'SELECT COUNT(ar.id) FROM %s ar WHERE ar.date = :date AND (
                         ar.alliance_id IN (:allianceId,:opponentId) AND ar.recipient IN (:allianceId,:opponentId)
                     )',
                     AllianceRelation::class
                 )
             )
             ->setParameters([
+                'date' => 0,
                 'allianceId' => $allianceId,
                 'opponentId' => $opponentId
             ])

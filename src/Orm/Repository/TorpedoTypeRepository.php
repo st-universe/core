@@ -16,13 +16,16 @@ final class TorpedoTypeRepository extends EntityRepository implements TorpedoTyp
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT t FROM %s t INDEX BY t.id WHERE t.research_id IN (
-                    SELECT r.research_id from %s r WHERE r.aktiv = 0 AND r.user_id = :userId
+                    SELECT r.research_id from %s r WHERE r.aktiv = :activeState AND r.user_id = :userId
                 )',
                 TorpedoType::class,
                 Researched::class,
             )
         )
-            ->setParameter('userId', $userId)
+            ->setParameters([
+                'userId' => $userId,
+                'activeState' => 0
+            ])
             ->getResult();
     }
 

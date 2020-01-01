@@ -19,17 +19,18 @@ final class ModuleBuildingFunctionRepository extends EntityRepository implements
         $rsm->addFieldResult('mbf', 'module_id', 'module_id');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT mbf.id, mbf.module_id, mbf.buildingfunction FROM stu_modules_buildingfunction mbf 
+            'SELECT mbf.id, mbf.module_id, mbf.buildingfunction FROM stu_modules_buildingfunction mbf
             WHERE mbf.buildingfunction = :buildingFunction AND mbf.module_id IN (
                 SELECT m.id FROM stu_modules m WHERE m.research_id is null OR m.research_id IN (
-                    SELECT r.research_id FROM stu_researched r WHERE r.aktiv = 0 AND r.user_id = :userId
+                    SELECT r.research_id FROM stu_researched r WHERE r.aktiv = :activeState AND r.user_id = :userId
                 )
             ) ORDER BY mbf.module_id',
             $rsm
         )
             ->setParameters([
                 'buildingFunction' => $buildingFunction,
-                'userId' => $userId
+                'userId' => $userId,
+                'activeState' => 0
             ])
             ->getResult();
     }

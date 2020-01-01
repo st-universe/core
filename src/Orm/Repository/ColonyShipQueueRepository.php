@@ -54,11 +54,12 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'UPDATE %s sq SET sq.finish_date = (:time + sq.finish_date - sq.stop_date), sq.stop_date = 0 WHERE sq.colony_id = :colonyId AND sq.building_function_id = :buildingFunctionId',
+                    'UPDATE %s sq SET sq.finish_date = (:time + sq.finish_date - sq.stop_date), sq.stop_date = :stopDate WHERE sq.colony_id = :colonyId AND sq.building_function_id = :buildingFunctionId',
                     ColonyShipQueue::class
                 )
             )
             ->setParameters([
+                'stopDate' => 0,
                 'time' => time(),
                 'colonyId' => $colonyId,
                 'buildingFunctionId' => $buildingFunctionId
@@ -93,11 +94,12 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT sq FROM %s sq WHERE sq.stop_date = 0 AND sq.finish_date <= :time',
+                    'SELECT sq FROM %s sq WHERE sq.stop_date = :stopDate AND sq.finish_date <= :time',
                     ColonyShipQueue::class
                 )
             )
             ->setParameters([
+                'stopDate' => 0,
                 'time' => time()
             ])
             ->getResult();

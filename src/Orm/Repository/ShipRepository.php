@@ -77,7 +77,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy AND s.cloak = 0
+                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy AND s.cloak = :cloakState
                 ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
                 Ship::class
             )
@@ -85,6 +85,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'starSystemId' => $starStstemId,
             'sx' => $sx,
             'sy' => $sy,
+            'cloakState' => 0
         ])->getResult();
     }
 
@@ -136,11 +137,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.is_destroyed = 0 AND s.schilde<s.max_schilde AND s.shield_regeneration_timer <= :regenerationThreshold',
+                'SELECT s FROM %s s WHERE s.is_destroyed = :destroyedState AND s.schilde<s.max_schilde AND s.shield_regeneration_timer <= :regenerationThreshold',
                 Ship::class
             )
         )->setParameters([
             'regenerationThreshold' => $regenerationThreshold,
+            'destroyedState' => 0,
         ])->getResult();
     }
 
@@ -237,8 +239,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT s FROM %s s WHERE (
                     (s.systems_id IS NULL AND :starSystemId IS NULL) OR s.systems_id = :starSystemId
-                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = 0
-                AND s.is_base = :state AND s.id != :ignoreId',
+                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState
+                AND s.is_base = :isBase AND s.id != :ignoreId',
                 Ship::class
             )
         )->setParameters([
@@ -248,7 +250,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cx' => $cx,
             'cy' => $cy,
             'ignoreId' => $ignoreId,
-            'state' => 1
+            'isBase' => 1,
+            'cloakState' => 0
         ])->getResult();
     }
 
@@ -264,8 +267,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT s FROM %s s WHERE (
                     (s.systems_id IS NULL AND :starSystemId IS NULL) OR s.systems_id = :starSystemId
-                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = 0
-                AND s.is_base = 0 AND s.id != :ignoreId',
+                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState
+                AND s.is_base = :isBase AND s.id != :ignoreId',
                 Ship::class
             )
         )->setParameters([
@@ -274,7 +277,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sy' => $sy,
             'cx' => $cx,
             'cy' => $cy,
-            'ignoreId' => $ignoreId
+            'ignoreId' => $ignoreId,
+            'isBase' => 0,
+            'cloakState' => 0
         ])->getResult();
     }
 }

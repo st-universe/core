@@ -24,9 +24,9 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT b.* FROM stu_buildings b WHERE b.bm_col = :buildMenu AND b.view = :state AND (
-                    b.research_id = 0 OR b.research_id IN (
-                        SELECT ru.research_id FROM stu_researched ru WHERE ru.user_id = :userId AND aktiv = 0
+                'SELECT b.* FROM stu_buildings b WHERE b.bm_col = :buildMenu AND b.view = :viewState AND (
+                    b.research_id is null OR b.research_id IN (
+                        SELECT ru.research_id FROM stu_researched ru WHERE ru.user_id = :userId AND aktiv = :activeState
                     ) AND id IN (
                         SELECT fb.buildings_id FROM stu_field_build fb WHERE fb.type IN (
                             SELECT fd.type FROM stu_colonies_fielddata fd WHERE colonies_id = :colonyId
@@ -36,7 +36,8 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
                 $rsm
             )
             ->setParameters([
-                'state' => 1,
+                'activeState' => 0,
+                'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
                 'colonyId' => $colonyId,

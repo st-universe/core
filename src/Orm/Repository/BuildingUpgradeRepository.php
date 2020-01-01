@@ -14,13 +14,17 @@ final class BuildingUpgradeRepository extends EntityRepository implements Buildi
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT t FROM %s t WHERE t.upgrade_from = :buildingId AND (
-                    t.research_id = 0 OR t.research_id IN (SELECT r.research_id from %s r WHERE r.aktiv = 0 AND r.user_id = :userId)
+                    t.research_id IS NULL OR t.research_id IN (SELECT r.research_id from %s r WHERE r.aktiv = :activeState AND r.user_id = :userId)
                 )',
                 BuildingUpgrade::class,
                 Researched::class
             )
         )
-            ->setParameters(['userId' => $userId, 'buildingId' => $buildingId])
+            ->setParameters([
+                'userId' => $userId,
+                'buildingId' => $buildingId,
+                'activeState' => 0,
+            ])
             ->getResult();
     }
 }
