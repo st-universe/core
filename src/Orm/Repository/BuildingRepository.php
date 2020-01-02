@@ -8,6 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Orm\Entity\Building;
+use Stu\Orm\Entity\PlanetField;
+use Stu\Orm\Entity\PlanetFieldTypeBuilding;
+use Stu\Orm\Entity\Researched;
 
 final class BuildingRepository extends EntityRepository implements BuildingRepositoryInterface
 {
@@ -22,27 +25,30 @@ final class BuildingRepository extends EntityRepository implements BuildingRepos
         $rsm->addFieldResult('b', 'id', 'id');
         $rsm->addFieldResult('b', 'name', 'name');
 
-        return $this->getEntityManager()
-            ->createNativeQuery(
-                'SELECT b.* FROM stu_buildings b WHERE b.bm_col = :buildMenu AND b.view = :viewState AND (
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT b FROM %s b WHERE b.bm_col = :buildMenu AND b.view = :viewState AND (
                     b.research_id is null OR b.research_id IN (
-                        SELECT ru.research_id FROM stu_researched ru WHERE ru.user_id = :userId AND aktiv = :activeState
-                    ) AND id IN (
-                        SELECT fb.buildings_id FROM stu_field_build fb WHERE fb.type IN (
-                            SELECT fd.type FROM stu_colonies_fielddata fd WHERE colonies_id = :colonyId
+                        SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.aktiv = :activeState
+                    ) AND b.id IN (
+                        SELECT fb.buildings_id FROM %s fb WHERE fb.type IN (
+                            SELECT fd.type FROM %s fd WHERE fd.colonies_id = :colonyId
                         )
-                    )
-                ) ORDER BY b.name LIMIT :offset,:scrollOffset',
-                $rsm
+                    )) ORDER BY b.name',
+                Building::class,
+                Researched::class,
+                PlanetFieldTypeBuilding::class,
+                PlanetField::class
             )
+        )
+            ->setMaxResults(ColonyEnum::BUILDMENU_SCROLLOFFSET)
+            ->setFirstResult($offset)
             ->setParameters([
                 'activeState' => 0,
                 'viewState' => 1,
                 'buildMenu' => $buildMenu,
                 'userId' => $userId,
-                'colonyId' => $colonyId,
-                'offset' => $offset,
-                'scrollOffset' => ColonyEnum::BUILDMENU_SCROLLOFFSET,
+                'colonyId' => $colonyId
             ])
             ->getResult();
     }

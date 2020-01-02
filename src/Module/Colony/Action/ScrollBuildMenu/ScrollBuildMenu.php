@@ -62,8 +62,7 @@ final class ScrollBuildMenu implements ActionControllerInterface
             );
             $offset -= ColonyEnum::BUILDMENU_SCROLLOFFSET;
         }
-        $arr['buildings'] = &$ret;
-        $game->setTemplateVar('menu', $arr);
+        $game->setTemplateVar('buildings', ['buildings' => $ret]);
         $game->setTemplateVar('menutype', $menu);
         $game->setTemplateVar('scrolloffset', $offset);
         $game->setView(ShowBuildMenuPart::VIEW_IDENTIFIER);
