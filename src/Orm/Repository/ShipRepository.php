@@ -223,7 +223,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
             'stateOff' => 0,
-            'startOn' => 1
+            'stateOn' => 1
         ])->getResult();
     }
 
