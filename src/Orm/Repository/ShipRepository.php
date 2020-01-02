@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use PhpTal\PHPTAL;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
@@ -184,11 +185,12 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('type', 'type', 'integer');
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT sx as posx,sy as posy,systems_id as sysid,
-			(SELECT count(id) FROM stu_ships WHERE sx=posx and sy=posy and cloak = :stateOff AND systems_id=sysid) as shipcount,
-			(SELECT count(id) FROM stu_ships where sx=posx AND sy=posy AND cloak = :stateOn AND systems_id=sysid) as cloakcount,
-			(SELECT type FROM stu_map_ftypes where id=field_id) as type,field_id FROM stu_sys_map WHERE
-			systems_id = :starSystemId AND sx BETWEEN :sxStart AND :sxEnd AND sy BETWEEN :syStart AND :syEnd ORDER BY sy,sx',
+            'SELECT a.sx as posx,a.sy as posy,a.systems_id as sysid, count(b.id) as shipcount, count(c.id) as cloakcount, d.type, a.field_id
+            FROM stu_sys_map a LEFT JOIN stu_ships b ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy AND b.cloak = :stateOff LEFT JOIN
+            stu_ships c ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy AND c.cloak = :stateOn LEFT JOIN
+            stu_map_ftypes d ON d.id = a.field_id WHERE
+			a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
+            GROUP BY a.sy, a.sx, a.systems_id, d.type, a.field_id ORDER BY a.sy,a.sx',
             $rsm
         )->setParameters([
             'starSystemId' => $systemId,
@@ -211,11 +213,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('type', 'type', 'integer');
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT cx as posx,cy as posy,
-			(SELECT count(id) FROM stu_ships WHERE cx=posx and cy=posy and cloak = :stateOff) as shipcount,
-			(SELECT count(id) FROM stu_ships where cx=posx AND cy=posy AND cloak = :stateOn) as cloakcount,
-			(SELECT type FROM stu_map_ftypes where id=field_id) as type,field_id FROM stu_map WHERE
-			cx BETWEEN :sxStart AND :sxEnd AND cy BETWEEN :syStart AND :syEnd ORDER BY cy,cx',
+            'SELECT a.cx as posx,a.cy as posy, count(b.id) as shipcount, count(c.id) as cloakcount, d.type, a.field_id
+            FROM stu_map a LEFT JOIN stu_ships b ON b.cx=a.cx AND b.cy=a.cy AND b.cloak = :stateOff LEFT JOIN stu_ships c ON c.cx = a.cx AND
+            c.cy=a.cy AND c.cloak = :stateOn LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+			WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
             $rsm
         )->setParameters([
             'sxStart' => $cx - $sensorRange,
@@ -227,33 +228,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-    public function getBaseScannerResults(
-        ?StarSystemInterface $starSystem,
-        int $sx,
-        int $sy,
-        int $cx,
-        int $cy,
-        int $ignoreId
-    ): iterable {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s WHERE (
-                    (s.systems_id IS NULL AND :starSystemId IS NULL) OR s.systems_id = :starSystemId
-                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState
-                AND s.is_base = :isBase AND s.id != :ignoreId',
-                Ship::class
-            )
-        )->setParameters([
-            'starSystemId' => $starSystem,
-            'sx' => $sx,
-            'sy' => $sy,
-            'cx' => $cx,
-            'cy' => $cy,
-            'ignoreId' => $ignoreId,
-            'isBase' => 1,
-            'cloakState' => 0
-        ])->getResult();
-    }
 
     public function getSingleShipScannerResults(
         ?StarSystemInterface $starSystem,
@@ -261,25 +235,45 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $sy,
         int $cx,
         int $cy,
-        int $ignoreId
+        int $ignoreId,
+        bool $isBase
     ): iterable {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT s FROM %s s WHERE (
-                    (s.systems_id IS NULL AND :starSystemId IS NULL) OR s.systems_id = :starSystemId
-                ) AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState
-                AND s.is_base = :isBase AND s.id != :ignoreId',
-                Ship::class
-            )
-        )->setParameters([
-            'starSystemId' => $starSystem,
-            'sx' => $sx,
-            'sy' => $sy,
-            'cx' => $cx,
-            'cy' => $cy,
-            'ignoreId' => $ignoreId,
-            'isBase' => 0,
-            'cloakState' => 0
-        ])->getResult();
+        if ($starSystem === null) {
+            $query = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s WHERE s.systems_id is null AND s.cx = :cx AND s.cy = :cy AND
+                         s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState AND
+                         s.is_base = :isBase AND s.id != :ignoreId',
+                    Ship::class
+                )
+            )->setParameters([
+                'sx' => $sx,
+                'sy' => $sy,
+                'cx' => $cx,
+                'cy' => $cy,
+                'ignoreId' => $ignoreId,
+                'isBase' => $isBase,
+                'cloakState' => 0
+            ]);
+        } else {
+            $query = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s WHERE s.systems_id = :starSystem AND s.cx = :cx AND s.cy = :cy AND
+                         s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState AND
+                         s.is_base = :isBase AND s.id != :ignoreId',
+                    Ship::class
+                )
+            )->setParameters([
+                'starSystem' => $starSystem,
+                'sx' => $sx,
+                'sy' => $sy,
+                'cx' => $cx,
+                'cy' => $cy,
+                'ignoreId' => $ignoreId,
+                'isBase' => 1,
+                'cloakState' => 0
+            ]);
+        }
+        return $query->getResult();
     }
 }
