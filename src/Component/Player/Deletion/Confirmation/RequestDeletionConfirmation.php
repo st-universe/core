@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion\Confirmation;
 
+use Laminas\Mail\Exception\RuntimeException;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Zend\Mail\Exception\RuntimeException;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Sendmail;
 
 final class RequestDeletionConfirmation implements RequestDeletionConfirmationInterface
 {

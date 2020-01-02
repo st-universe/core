@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Stu\Module\Index\Action\SendPassword;
 
+use Laminas\Mail\Exception\RuntimeException;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Zend\Mail\Exception\RuntimeException;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Sendmail;
 
 final class SendPassword implements ActionControllerInterface
 {
