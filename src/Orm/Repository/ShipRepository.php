@@ -270,7 +270,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'cx' => $cx,
                 'cy' => $cy,
                 'ignoreId' => $ignoreId,
-                'isBase' => 1,
+                'isBase' => $isBase,
                 'cloakState' => 0
             ]);
         }
