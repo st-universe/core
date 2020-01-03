@@ -54,6 +54,7 @@ $builder->addDefinitions([
             return new ArrayCachePool();
         } else {
             $redis = new Redis();
+            $redis->setOption(Redis::OPT_PREFIX, $config->get('db.database'));
             $redis->connect(
                 $config->get('cache.redis_host'),
                 $config->get('cache.redis_port')
