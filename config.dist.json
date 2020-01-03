@@ -6,7 +6,8 @@
     "pass": "me",
     "database": "change_me",
     "backup_dir": "change/me",
-    "backup_cycle_time": 2592000
+    "backup_cycle_time": 2592000,
+    "proxy_namespace": "Stu\\Orm\\DevProxy"
   },
   "cache": {
     "redis_host": "localhost",

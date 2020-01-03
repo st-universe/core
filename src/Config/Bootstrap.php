@@ -78,7 +78,7 @@ $builder->addDefinitions([
             '%s/../OrmProxy/',
             $config->get('game.webroot')
         ));
-        $emConfig->setProxyNamespace('Stu\Orm\Proxy');
+        $emConfig->setProxyNamespace($config->get('db.proxy_namespace'));
 
         $manager = EntityManager::create(
             [
