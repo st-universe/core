@@ -4,9 +4,9 @@
 		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
     <div class="box" tal:condition="not:ACCOUNTS">
-      <div class="box_title" i18n:translate="">Meldung</div>
+      <div class="box_title">Meldung</div>
       <div class="box_body">
-        <span i18n:translate="">Keine Warenkonten vorhanden</span>
+        <span>Keine Warenkonten vorhanden</span>
       </div>
     </div>
     <tal:block tal:repeat="data ACCOUNTS">

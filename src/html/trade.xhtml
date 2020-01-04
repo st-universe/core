@@ -27,7 +27,7 @@
 				<th>Siedler</th>
 			</tr>
 			<tr tal:condition="not:OFFER_LIST">
-				<td colspan="6" i18n:translate="">Keine Angebote vorhanden</td>
+				<td colspan="6">Keine Angebote vorhanden</td>
 			</tr>
 			<tal:block tal:repeat="offer OFFER_LIST">
 				<tr tal:define="data offer/getOffer" tal:attributes="class string:row${repeat/offer/odd}">

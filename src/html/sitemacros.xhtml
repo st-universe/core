@@ -29,12 +29,12 @@
               </div>
               <div class="user_box_details">
                 <div class="userBoxDetailName" tal:content="structure bbcode:THIS/getUser/getName">NAME</div>
-                <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
+                <span>ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 
                 <a
                   href="javascript:void(0);"
                   onclick="event.stopPropagation(); openNotes()"
-                  title="Notizzettel öffnen" i18n:attributes="title"
+                  title="Notizzettel öffnen"
                   onmouseover="cp('headerNotiz','buttons/notiz2')"
                   onmouseout="cp('headerNotiz','buttons/notiz1')">
                   <img src="/assets/buttons/notiz1.gif" name="headerNotiz" />
@@ -44,7 +44,7 @@
                    onmouseover="cp('writePm','buttons/msg2')"
                    onmouseout="cp('writePm','buttons/msg1')"
                 >
-                  <img src="/assets/buttons/msg1.gif" name="writePm" title="Neue Nachricht schreiben" i18n:attributes="title" />
+                  <img src="/assets/buttons/msg1.gif" name="writePm" title="Neue Nachricht schreiben" />
                 </a>
               </div>
             </div>
@@ -83,8 +83,8 @@
           onclick="goToUrl('/research.php')"
           onmouseover="cp('header_menu_research','navigation/menu_forsch1', 'png')" onmouseout="cp('header_menu_research','navigation/menu_forsch0', 'png')"
         >
-          <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research" title="Forschung" i18n:attributes="title" />
-          <div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
+          <img style="width: 40px; height: 40px;" src="/assets/navigation/menu_forsch0.png" id="header_menu_research" title="Forschung" />
+          <div style="margin-top: 5px">Keine Forschung</div>
         </div>
         <div
           class="header_box header_box_logout border_box action"
@@ -92,8 +92,8 @@
           onmouseover="cp('header_menu_logout','navigation/menu_logout1', 'png')" onmouseout="cp('header_menu_logout','navigation/menu_logout0', 'png')"
         >
           <div>
-            <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout" i18n:attributes="title" />
-            <div style="margin-top: 5px" i18n:translate="">Logout</div>
+            <img style="width: 40px; height: 40px;" id="header_menu_logout" src="/assets/navigation/menu_logout0.png" title="Logout" />
+            <div style="margin-top: 5px">Logout</div>
           </div>
         </div>
         <div
@@ -102,8 +102,8 @@
           onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')" onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')"
         >
           <div>
-            <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Hilfe" i18n:attributes="title" />
-            <div style="margin-top: 5px" i18n:translate="">Hilfe</div>
+            <img style="width: 40px; height: 40px;" id="header_menu_docu" src="/assets/navigation/menu_doku0.png" title="Hilfe" />
+            <div style="margin-top: 5px">Hilfe</div>
           </div>
         </div>
         <div
@@ -112,8 +112,8 @@
           onmouseover="cp('header_menu_settings','navigation/menu_option1', 'png')" onmouseout="cp('header_menu_settings','navigation/menu_option0', 'png')"
         >
           <div>
-            <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen" i18n:attributes="title" />
-            <div style="margin-top: 5px" i18n:translate="">Einstellungen</div>
+            <img style="width: 40px; height: 40px;" id="header_menu_settings" src="/assets/navigation/menu_option0.png" title="Einstellungen" />
+            <div style="margin-top: 5px">Einstellungen</div>
           </div>
         </div>
         <div class="headerBottom"> </div>
@@ -122,10 +122,10 @@
         <div style="width: 100%; padding-left: 10px; padding-right: 10px">
           <tal:block metal:use-macro="navigation" />
           <div class="border_box navigation_item_servertime">
-            <img title="Serverzeit" i18n:attributes="title" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
+            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
-            <span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="GAME_VERSION" /></span><br />
+            <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
+            <span>Version: <span tal:replace="GAME_VERSION" /></span><br />
           </div>
         </div>
       </div>
@@ -176,12 +176,12 @@
               </div>
               <div class="user_box_details">
                 <div class="userBoxDetailName" tal:content="structure bbcode:THIS/getUser/getName">NAME</div>
-                <span i18n:translate="">ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
+                <span>ID:</span> <span tal:replace="THIS/getUser/getId" /><br />
 
                 <a
                   href="javascript:void(0);"
                   onclick="event.stopPropagation(); openNotes()"
-                  title="Notizzettel öffnen" i18n:attributes="title"
+                  title="Notizzettel öffnen"
                   onmouseover="cp('headerNotiz','buttons/notiz2')"
                   onmouseout="cp('headerNotiz','buttons/notiz1')">
                   <img src="/assets/buttons/notiz1.gif" name="headerNotiz" />
@@ -191,7 +191,7 @@
                   onmouseover="cp('writePm','buttons/msg2')"
                   onmouseout="cp('writePm','buttons/msg1')"
                 >
-                  <img src="/assets/buttons/msg1.gif" name="writePm" title="Neue Nachricht schreiben" i18n:attributes="title" />
+                  <img src="/assets/buttons/msg1.gif" name="writePm" title="Neue Nachricht schreiben" />
                 </a>
               </div>
             </div>
@@ -206,25 +206,25 @@
           <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
         </div>
         <div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH" onclick="goToUrl('/research.php')">
-          <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_forsch0.gif" title="Forschung" i18n:attributes="title" />
-          <div style="margin-top: 5px" i18n:translate="">Keine Forschung</div>
+          <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_forsch0.gif" title="Forschung" />
+          <div style="margin-top: 5px">Keine Forschung</div>
         </div>
         <div class="header_box header_box_logout border_box action" onclick="goToUrl('/index.php?B_LOGOUT=1')">
           <div>
-            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_logout0.gif" title="Logout" i18n:attributes="title" />
-            <div style="margin-top: 5px" i18n:translate="">Logout</div>
+            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_logout0.gif" title="Logout" />
+            <div style="margin-top: 5px">Logout</div>
           </div>
         </div>
         <div class="header_box header_box_help border_box action" onclick="goToUrl('https://docu.stuniverse.de')">
           <div>
-            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_doku0.gif" title="Hilfe" i18n:attributes="title" />
-            <div style="margin-top: 5px" i18n:translate="">Hilfe</div>
+            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_doku0.gif" title="Hilfe" />
+            <div style="margin-top: 5px">Hilfe</div>
           </div>
         </div>
         <div class="header_box header_box_settings border_box action" onclick="goToUrl('/options.php')">
           <div>
-            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_option0.gif" title="Einstellungen" i18n:attributes="title" />
-            <div style="margin-top: 5px" i18n:translate="">Einstellungen</div>
+            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_option0.gif" title="Einstellungen" />
+            <div style="margin-top: 5px">Einstellungen</div>
           </div>
         </div>
         <div class="headerBottom"> </div>
@@ -233,10 +233,10 @@
         <div style="width: 100%; padding-left: 10px; padding-right: 10px">
           <tal:block metal:use-macro="adminnavigation" />
           <div class="border_box navigation_item_servertime">
-            <img title="Serverzeit" i18n:attributes="title" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
+            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
-            <span i18n:translate="">Runde: <span i18n:name="turn" tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-            <span i18n:translate="">Version: <span i18n:name="version" tal:replace="GAME_VERSION" /></span><br />
+            <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
+            <span>Version: <span tal:replace="GAME_VERSION" /></span><br />
           </div>
         </div>
       </div>
@@ -341,7 +341,7 @@
 									<tr>
 										<td colspan="2" style="padding-top: 10px;">
 											<input type="submit" value="Login" class="button" name="B_LOGIN" style="cursor: pointer" />
-											<a i18n:translate="" href="/?SHOW_LOST_PASSWORD=1" class="lostpassword">Passwort vergessen?</a>
+											<a href="/?SHOW_LOST_PASSWORD=1" class="lostpassword">Passwort vergessen?</a>
 										</td>
 									</tr>
 								</table>
@@ -477,7 +477,7 @@
 	<div id="result">
 		<table class="use">
 			<tr>
-				<th i18n:translate="">Meldung</th>
+				<th>Meldung</th>
 			</tr>
 			<tr>
 				<td>

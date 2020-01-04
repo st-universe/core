@@ -1,5 +1,5 @@
 # DEFAULT
-PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs i18nextract version_link migrateDatabase showDatabaseChanges
+PHONY=init init-production tests coverage update dev-serve dev-create-db dev-wipe-db dev-start-db dev-stop-db dev-migrate-db dirs version_link migrateDatabase showDatabaseChanges
 
 SUITE=
 
@@ -7,14 +7,6 @@ all:init dirs
 
 dirs:force
 	for a in src/admin/backup src/Public/avatare/user src/Public/avatare/alliance; do mkdir -p "$$a"; chmod 770 "$$a"; done
-
-i18nextract:force
-	xgettext --no-location --no-wrap --from-code UTF-8 src/**/*.php -o php.pot
-	i18nfool-extract src/html/*html
-	head -n17 php.pot > tal.pot
-	cat default.pot >> tal.pot
-	msgcat php.pot tal.pot --no-location --no-wrap | sed -e 's/msgstr ".*/msgstr ""/' > src/lang/stu.pot
-	rm default.pot php.pot tal.pot
 
 init:force
 	composer install

@@ -15,8 +15,8 @@
 						<input type="submit" value="Umbenennen" name="B_RENAME_TOPIC" />
 						<br />
 						<br />
-						<a tal:condition="not:TOPIC/getSticky" class="linkbutton" href="?B_SET_STICKY=1&SHOW_BOARD=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}" i18n:translate="">Als Wichtig markieren</a>
-						<a tal:condition="TOPIC/getSticky" class="linkbutton" href="?B_UNSET_STICKY=1&SHOW_BOARD=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}" i18n:translate="">Als Unwichtig markieren</a>
+						<a tal:condition="not:TOPIC/getSticky" class="linkbutton" href="?B_SET_STICKY=1&SHOW_BOARD=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}">Als Wichtig markieren</a>
+						<a tal:condition="TOPIC/getSticky" class="linkbutton" href="?B_UNSET_STICKY=1&SHOW_BOARD=1&bid=${TOPIC/getBoardId}&tid=${TOPIC/getId}">Als Unwichtig markieren</a>
 					</td>
 				</tr>
 			</table>

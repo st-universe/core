@@ -3,7 +3,7 @@
   <metal:macro metal:fill-slot="body">
     <metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
     <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-    <div class="divhead" i18n:translate="">Verfügbare Forschungen</div>
+    <div class="divhead">Verfügbare Forschungen</div>
     <div class="researchList">
       <div class="researchListItem" tal:repeat="data RESEARCH_LIST">
         <div class="researchListItemImage">
@@ -25,7 +25,7 @@
     </div>
     <div tal:condition="FINISHED_LIST">
       <br />
-      <div class="divhead" i18n:translate="">Aktive/Abgeschlossene Forschungen</div>
+      <div class="divhead">Aktive/Abgeschlossene Forschungen</div>
       <div class="finishedResearchList">
         <div class="finishedResearchListItem" tal:repeat="data FINISHED_LIST">
           <div class="finishedResearchListItemImage">
@@ -39,7 +39,7 @@
             </div>
             <div>
               <span style="width: 180px;" tal:condition="data/getFinished">Erforscht am ${date:data/getFinished}</span>
-              <span style="width: 180px;" tal:condition="not:data/getFinished" i18n:translate="">Wird erforscht</span>
+              <span style="width: 180px;" tal:condition="not:data/getFinished">Wird erforscht</span>
             </div>
           </div>
         </div>

@@ -51,7 +51,7 @@
 				<br />
 				<br />
 				<div id="factionerror" style="display:none; color: #FF0000">Es wurde keine Fraktion gewählt</div>
-				<div class="divhead" i18n:translate="">Fraktion wählen</div>
+				<div class="divhead">Fraktion wählen</div>
 				<tal:block tal:repeat="data POSSIBLE_FACTIONS">
 					<div class="divbody" style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}" onclick="toggleFaction(${data/getId}); selectFaction(${data/getId});" tal:condition="data/hasFreePlayerSlots">
 						<metal:macro metal:use-macro="faction_entry" />

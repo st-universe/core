@@ -244,7 +244,7 @@
 					</td>
 				</tr>
 				<tr tal:condition="not:SHOUTBOX">
-					<td class="darkbg" i18n:translate="">Keine Einträge vorhanden</td>
+					<td class="darkbg">Keine Einträge vorhanden</td>
 				</tr>
 			</table>
 		</metal:macro>
@@ -252,9 +252,9 @@
 			<metal:macro metal:use-macro="shoutbox_entries" />
 		</div>
 		<br />
-		<div class="divhead" i18n:translate="">Nachricht schreiben</div>
+		<div class="divhead">Nachricht schreiben</div>
 		<div class="divbody">
-			<input type="text" style="width: 500px;" name="shoutboxentry" id="shoutboxentry" maxlength="200" /> <input type="button" class="button" value="Absenden" i18n:attributes="value" onclick="addShoutboxEntry()" />
+			<input type="text" style="width: 500px;" name="shoutboxentry" id="shoutboxentry" maxlength="200" /> <input type="button" class="button" value="Absenden" onclick="addShoutboxEntry()" />
 		</div>
 	</metal:macro>
 </html>

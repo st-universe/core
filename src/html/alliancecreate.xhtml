@@ -5,18 +5,18 @@
 		<form action="alliance.php" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
 			<div style="width: 505px; float: left;">
-				<div class="divhead" i18n:translate="">Name</div>
+				<div class="divhead">Name</div>
 				<div class="divbody">
 					<input type="text" style="width: 500px" name="name" />
 				</div>
 				<br />
-				<div class="divhead" i18n:translate="">Beschreibung</div>
+				<div class="divhead">Beschreibung</div>
 				<div class="divbody">
 					<textarea name="description" style="width: 500px; height: 150px;"></textarea>
 				</div>
 			</div>
 			<div style="margin-left: 5px; width: 200px; float: left;">
-				<div class="divhead" i18n:translate="">Rassenallianz</div>
+				<div class="divhead">Rassenallianz</div>
 				<div class="divbody">
 					<img src="assets/rassen/${THIS/getUser/getFactionId}s.gif" />
 					<input type="checkbox" name="factionid" />

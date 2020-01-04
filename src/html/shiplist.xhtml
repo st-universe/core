@@ -4,10 +4,10 @@
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<table class="tcal" tal:condition="not:SHIPS_AVAILABLE">
 			<tr>
-				<th i18n:translate="">Meldung</th>
+				<th>Meldung</th>
 			</tr>
 			<tr>
-				<td i18n:translate="">Du besitzt derzeit keine Schiffe</td>
+				<td>Du besitzt derzeit keine Schiffe</td>
 			</tr>
 		</table>
 		<tal:block tal:condition="SHIPS_AVAILABLE">
@@ -25,28 +25,28 @@
 											</div>
 											<div style="display: table-cell; vertical-align:middle;">
 												<span tal:replace="structure bbcode:fleet/getName">NAME</span>
-												<span i18n:translate="">
-													(<span tal:replace="fleet/getPointSum" i18n:name="points" />/<span tal:replace="MAX_POINTS_PER_FLEET" i18n:name="maxpoints" /> Punkte)
+												<span>
+													(<span tal:replace="fleet/getPointSum" />/<span tal:replace="MAX_POINTS_PER_FLEET" /> Punkte)
 												</span>
 											</div>
 										</td>
 										<td style="width: 25%;">
 											<input type="text" name="fleetname" style="width: 150px;" tal:attributes="value fleet/getName"  />
-											<input type="submit" value="Name ändern" i18n:attributes="value" name="B_FLEET_CHANGE_NAME" />
+											<input type="submit" value="Name ändern" name="B_FLEET_CHANGE_NAME" />
 										</td>
 										<td style="width: 35%; text-align: right;" tal:define="availableShips fleet/getAvailableShips" >
 											<tal:block tal:condition="availableShips">
 												<select name="id" style="width: 150px;">
 													<option tal:repeat="data availableShips" tal:attributes="value data/getId" tal:content="bbcode2txt:data/getName">.</option>
 												</select>
-												<input type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" i18n:attributes="value" />
+												<input type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" />
 											</tal:block>
 										</td>
 									</tr>
 								</table>
 							</td>
 						</tr>
-						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />	
+						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
 						<tal:block tal:repeat="ship fleet/getShips">
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
 						</tal:block>
@@ -60,7 +60,7 @@
 					<tr>
 						<td colspan="11">Stationen</td>
 					</tr>
-					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />	
+					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
 					<tal:block tal:repeat="ship BASES">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
 					</tal:block>
@@ -73,7 +73,7 @@
 					<tr>
 						<td colspan="11">Einzelschiffe</td>
 					</tr>
-					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />	
+					<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_header" />
 					<tal:block tal:repeat="ship SHIPS">
 						<metal:macro metal:use-macro="html/shipmacros.xhtml/shiplist_body" />
 					</tal:block>

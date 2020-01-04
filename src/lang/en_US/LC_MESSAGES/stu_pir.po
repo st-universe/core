@@ -1,1 +1,0 @@
-../../en_PIR/LC_MESSAGES/stu.po

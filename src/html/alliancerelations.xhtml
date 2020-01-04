@@ -18,7 +18,7 @@
 		<br />
 		<table class="tcal">
 			<tr>
-				<th colspan="4" i18n:translate="">Beziehungen</th>
+				<th colspan="4">Beziehungen</th>
 			</tr>
 			<tr>
 				<td class="darkbg">Allianz</td>
@@ -44,8 +44,8 @@
 					</td>
 					<td tal:condition="not:relation/isPending" tal:content="datetime:relation/getDate">DATE</td>
 					<td tal:condition="relation/isPending">
-						<span tal:condition="data/offerIsSend" i18n:translate="">Wird angeboten</span>
-						<span tal:condition="not:data/offerIsSend" i18n:translate="">Wurde angeboten</span>
+						<span tal:condition="data/offerIsSend">Wird angeboten</span>
+						<span tal:condition="not:data/offerIsSend">Wurde angeboten</span>
 					</td>
 					<td tal:condition="not:relation/isPending">
 						<a class="linkbutton" tal:condition="relation/isWar" href="alliance.php?SHOW_RELATIONS=1&B_SUGGEST_PEACE=1&al=${relation/getId}&sstr=${THIS/getSessionString}">Frieden vorschlagen</a>

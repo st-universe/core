@@ -28,13 +28,6 @@ final class TalPage implements TalPageInterface
     private function getTemplate(): PhpTalInterface
     {
         if ($this->template === null) {
-            $tr = new PhpTal\GetTextTranslator();
-
-            $tr->setLanguage($this->config->get('game.language'));
-
-            $tr->addDomain('stu', $this->config->get('game.webroot') . '/lang');
-            $tr->useDomain('stu');
-
             $template_repository = realpath(
                 sprintf(
                     '%s/../',
@@ -50,7 +43,6 @@ final class TalPage implements TalPageInterface
                 $this->config->get('game.version')
             ));
             $this->template->setForceReparse((bool) $this->config->get('debug.debug_mode'));
-            $this->template->setTranslator($tr);
             $this->template->allowPhpModifier();
             $this->template->setOutputMode(PhpTal\PHPTAL::XHTML);
         }

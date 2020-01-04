@@ -13,7 +13,7 @@
 				<tal:block tal:define="RECENT_POST topic/getLatestPost; PAGES topic/getPages">
 					<td>
 						<div style="display: table-cell; width: 100%">
-							<img src="assets/buttons/board_important.png" title="Wichtig" i18n:attributes="title" tal:condition="topic/getSticky" />
+							<img src="assets/buttons/board_important.png" title="Wichtig" tal:condition="topic/getSticky" />
 							<a href="alliance.php?SHOW_TOPIC=1&bid=${topic/getBoardId}&tid=${topic/getId}&mark=0" tal:content="structure topic/getName">
 								NAME
 							</a>

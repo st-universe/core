@@ -8,20 +8,20 @@
     </div>
     <div style="width: 24%; float: left">
       <div class="box">
-        <div class="box_title" i18n:translate="">Kommunikations-Netzwerk</div>
+        <div class="box_title">Kommunikations-Netzwerk</div>
         <div class="box_body">
           <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')" onmouseout="cp('writekn','buttons/knedit1', 'png')">
             <img src="/assets/buttons/knedit1.png" title="+ Beitrag" name="writekn" />
             Beitrag schreiben
           </a>
           <br /><br />
-          <strong i18n:translate="">Übersicht</strong><br />
+          <strong>Übersicht</strong><br />
           <ul>
             <li tal:condition="HAS_NEW_KN_POSTINGS">
               <span style="color: #cecece">&gt;</span> <a href="?user_mark=1"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
             </li>
             <li>
-              <span style="color: #cecece">&gt;</span> <a href="comm.php" i18n:translate="">Alle Beiträge</a> (<a href="?mark=${KN_START}" i18n:translate="">aufsteigend</a>)
+              <span style="color: #cecece">&gt;</span> <a href="comm.php">Alle Beiträge</a> (<a href="?mark=${KN_START}">aufsteigend</a>)
             </li>
           </ul>
           <div class="seperator"> </div>

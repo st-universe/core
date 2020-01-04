@@ -5,17 +5,17 @@
       <div class="plotTitle">
         <a href="?SHOW_PLOT=1&plotid=${plot/getId}" tal:content="structure plot/getTitle">TITLE</a>
       </div>
-      <div i18n:translate="">
-        <span i18n:name="postcount" tal:replace="plot/getPostingCount"></span> Beiträg(e) von
-        <span i18n:name="membercount" tal:replace="plot/getMemberCount"></span> Spieler(n)
+      <div>
+        <span tal:replace="plot/getPostingCount"></span> Beiträg(e) von
+        <span tal:replace="plot/getMemberCount"></span> Spieler(n)
       </div>
     </div>
     <div>
-      <div i18n:translate="">
-        Gestartet: <span i18n:name="plotstart" tal:content="date:plot/getStartDate">START</span>
+      <div>
+        Gestartet: <span tal:content="date:plot/getStartDate">START</span>
       </div>
       <div>
-        <span i18n:translate="">Status:</span>
+        <span>Status:</span>
         <span tal:condition="not:plot/isActive">Beendet am ${date:plot/getEndDate}</span>
         <span tal:condition="plot/isActive">Aktiv</span>
       </div>

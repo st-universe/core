@@ -2,49 +2,49 @@
 <metal:macro metal:define-macro="shiprump">
   <table class="tcal" tal:condition="not:RUMP/getIsNpc">
     <tr>
-      <th colspan="2" i18n:translate="">Rumpfdetails</th>
+      <th colspan="2">Rumpfdetails</th>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Kategorie</td>
+      <td class="darkbg">Kategorie</td>
       <td tal:content="RUMP/getShipRumpCategory/getName">CATEGORY</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Modullevel</td>
+      <td class="darkbg">Modullevel</td>
       <td tal:content="RUMP/getModuleLevel">MODULELEVEL</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Flugkosten</td>
+      <td class="darkbg">Flugkosten</td>
       <td tal:content="RUMP/getFlightEcost">FLIGHTECOST</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Lagerraum</td>
+      <td class="darkbg">Lagerraum</td>
       <td tal:content="RUMP/getStorage">STORAGE</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Energiewaffensalven</td>
+      <td class="darkbg">Energiewaffensalven</td>
       <td tal:content="RUMP/getPhaserVolleys">PHASERVOLLEYS</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Torpedosalven</td>
+      <td class="darkbg">Torpedosalven</td>
       <td tal:content="RUMP/getTorpedoVolleys">TORPVOLLEYS</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Torpedolagerraum</td>
+      <td class="darkbg">Torpedolagerraum</td>
       <td tal:content="RUMP/getBaseTorpedoStorage">TORPCOUNT</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Sensorreichweite</td>
+      <td class="darkbg">Sensorreichweite</td>
       <td tal:content="RUMP/getBaseSensorRange">SENSORRANGE</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Punkte</td>
+      <td class="darkbg">Punkte</td>
       <td tal:content="RUMP/getShipRumpCategory/getPoints">POINTS</td>
     </tr>
     <tr>
-      <td class="darkbg" i18n:translate="">Baukosten</td>
+      <td class="darkbg">Baukosten</td>
       <td>
         <div>
-          <img src="assets/buttons/e_trans2.gif" title="Energie" i18n:attributes="title" /> ${RUMP/getEpsCost}
+          <img src="assets/buttons/e_trans2.gif" title="Energie" /> ${RUMP/getEpsCost}
         </div>
         <div tal:repeat="data RUMP/getBuildingCosts">
           <img src="assets/goods/${data/getCommodity/getId}.gif" tal:attributes="title data/getCommodity/getName" /> ${data/getAmount}
@@ -81,8 +81,8 @@
     <div class="divhead" style="width: 200px;" tal:content="SYSTEM/getName">NAME</div>
     <div class="divbody">
       <img src="assets/map/${SYSTEM/getType}.gif" /><br />
-      <span i18n:translate="">Typ</span>: ${SYSTEM/getSystemType/getDescription}<br />
-      <span i18n:translate="">Koordinaten</span>: ${SYSTEM/getCX}|${SYSTEM/getCY}<br />
+      <span>Typ</span>: ${SYSTEM/getSystemType/getDescription}<br />
+      <span>Koordinaten</span>: ${SYSTEM/getCX}|${SYSTEM/getCY}<br />
     </div>
   </div>
 </metal:macro>

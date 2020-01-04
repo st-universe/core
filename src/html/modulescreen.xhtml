@@ -11,7 +11,7 @@
 			<div class="moduleScreenGrid">
 				<div>
           <div class="box">
-            <div class="box_title" i18n:translate="" style="margin: 0; padding: 0">Modulauswahl</div>
+            <div class="box_title" style="margin: 0; padding: 0">Modulauswahl</div>
             <div class="box_body">
               <table class="tcal" id="module_select_tabs">
                 <tr>
@@ -47,40 +47,40 @@
               </div>
               <br />
               <div style="text-align: center; width: 100%;">
-                <input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" i18n:attributes="value" id="buildbutton" disabled="disabled" />
+                <input type="submit" class="button" name="B_BUILD_SHIP" value="Schiff bauen" id="buildbutton" disabled="disabled" />
               </div>
             </div>
           </div>
 					<br />
           <div class="box">
-            <div class="box_title" i18n:translate="">Beschreibung</div>
+            <div class="box_title">Beschreibung</div>
             <div class="box_body">
               <div>
-                <div i18n:translate="">
-                  Die <span i18n:name="rumpname" tal:replace="RUMP/getName">RUMPNAME</span>-Klasse ist vom Typ <span tal:replace="RUMP/getShipRumpCategory/getName" i18n:name="rumpcategory"></span> und dient in erster Linie als
-                  <span i18n:name="rumprolename" tal:replace="RUMP/getShipRumpRole/getName"></span>.
+                <div>
+                  Die <span tal:replace="RUMP/getName">RUMPNAME</span>-Klasse ist vom Typ <span tal:replace="RUMP/getShipRumpCategory/getName"></span> und dient in erster Linie als
+                  <span tal:replace="RUMP/getShipRumpRole/getName"></span>.
                 </div>
               </div>
               <br />
               <div>
-                <div i18n:translate="">Frachtkapazität: <span i18n:name="torage" tal:content="RUMP/getStorage"></span> Einheiten</div>
-                <div i18n:translate="">Sensorreichweite: <span i18n:name="sensorrange" tal:content="RUMP/getBaseSensorRange"></span> Felder</div>
-                <div i18n:translate="">Torpedotyp: <span i18n:name="torpedotype" tal:content="RUMP/getTorpedoLevel"></span></div>
-                <div i18n:translate="">Torpedosalven: <span i18n:name="torpedovolleys" tal:content="RUMP/getTorpedoVolleys"></span> pro Schuss</div>
-                <div i18n:translate="">Torpedokapazität: <span i18n:name="torpedocapacity" tal:content="RUMP/getBaseTorpedoStorage"></span> Projektile</div>
+                <div>Frachtkapazität: <span tal:content="RUMP/getStorage"></span> Einheiten</div>
+                <div>Sensorreichweite: <span tal:content="RUMP/getBaseSensorRange"></span> Felder</div>
+                <div>Torpedotyp: <span tal:content="RUMP/getTorpedoLevel"></span></div>
+                <div>Torpedosalven: <span tal:content="RUMP/getTorpedoVolleys"></span> pro Schuss</div>
+                <div>Torpedokapazität: <span tal:content="RUMP/getBaseTorpedoStorage"></span> Projektile</div>
               </div>
             </div>
           </div>
 					<br />
           <div class="box">
-            <div class="box_title" i18n:translate="">Modulauswirkungen</div>
+            <div class="box_title">Modulauswirkungen</div>
             <div class="box_body">
               <div style="width: 100%;">
                 <div id="crewdisplay">
-                  <div id="crew100p" i18n:translate="">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew100P" />(100%)</div>
-                  <div id="crew110p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew110P" />(110%)</div>
-                  <div id="crew120p" i18n:translate="" style="display: none;">Benötigte Crew: <span i18n:name="crewcount" tal:replace="RUMP/getCrew120P" />(120%)</div>
-                  <div id="crewerr" style="display: none;" i18n:translate="">Crewbedarf &gt; 120% - Nicht baubar</div>
+                  <div id="crew100p">Benötigte Crew: <span tal:replace="RUMP/getCrew100P" />(100%)</div>
+                  <div id="crew110p" style="display: none;">Benötigte Crew: <span tal:replace="RUMP/getCrew110P" />(110%)</div>
+                  <div id="crew120p" style="display: none;">Benötigte Crew: <span tal:replace="RUMP/getCrew120P" />(120%)</div>
+                  <div id="crewerr" style="display: none;">Crewbedarf &gt; 120% - Nicht baubar</div>
                 </div>
               </div>
               <br />
@@ -108,16 +108,16 @@
           </div>
           <br/>
           <div class="box">
-            <div class="box_title" i18n:translate="">Baukosten</div>
+            <div class="box_title">Baukosten</div>
             <div class="box_body">
               <div>
-                <img src="assets/goods/0.gif" /> ${RUMP/getEpsCost} <span i18n:translate="">Energie</span>
+                <img src="assets/goods/0.gif" /> ${RUMP/getEpsCost} <span>Energie</span>
               </div>
               <div tal:repeat="cost RUMP/getBuildingCosts">
-                <img src="assets/goods/${cost/getCommodity/getId}.gif" i18n:attributes="title cost/getCommodity/getName" /> ${cost/getAmount}
+                <img src="assets/goods/${cost/getCommodity/getId}.gif" tal:attributes="title cost/getCommodity/getName" /> ${cost/getAmount}
               </div>
               <div>
-                <img src="assets/buttons/time.gif" title="Bauzeit" i18n:attributes="title" /> <span tal:content="formatSeconds:RUMP/getBuildtime"></span>
+                <img src="assets/buttons/time.gif" title="Bauzeit" /> <span tal:content="formatSeconds:RUMP/getBuildtime"></span>
               </div>
             </div>
           </div>
@@ -141,7 +141,7 @@
           <td class="module_positive" style="width: 3px;"></td>
           <td colspan="4">
             <input type="radio" tal:attributes="checked not:THIS/hasModuleSelected/${THIS/getModuleType}" name="mod_${THIS/getModuleType}[]" value="0" onchange="replaceTabImage(${THIS/getModuleType},0)" />
-            <span i18n:translate="">Keine Auswahl</span>
+            <span>Keine Auswahl</span>
             <script defer="defer">
               crew_type.set(${THIS/getModuleType},0);
             </script>
@@ -184,28 +184,28 @@
     </table>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_1">
-    <img src="assets/buttons/modul_1.gif" tal:attributes="title module/getModule/getDescription"/> <span i18n:translate="">Hüllenstärke</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
+    <img src="assets/buttons/modul_1.gif" tal:attributes="title module/getModule/getDescription"/> <span>Hüllenstärke</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_2">
-    <img src="assets/buttons/modul_2.gif" tal:attributes="title module/getModule/getDescription"/> <span i18n:translate="">Schildkapazität</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseShield')">VALUE</span>
+    <img src="assets/buttons/modul_2.gif" tal:attributes="title module/getModule/getDescription"/> <span>Schildkapazität</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseShield')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_3">
-    <img src="assets/buttons/modul_3.gif" tal:attributes="title module/getModule/getDescription"/> <span i18n:translate="">Energiespeicher</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseEps')">VALUE</span>
+    <img src="assets/buttons/modul_3.gif" tal:attributes="title module/getModule/getDescription"/> <span>Energiespeicher</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseEps')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_4">
-    <img src="assets/buttons/modul_4.gif" tal:attributes="title module/getModule/getDescription" /> <span i18n:translate="">Ausweichchance</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateEvadeChance(rump,module.getModule())">VALUE</span>%
+    <img src="assets/buttons/modul_4.gif" tal:attributes="title module/getModule/getDescription" /> <span>Ausweichchance</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateEvadeChance(rump,module.getModule())">VALUE</span>%
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_5">
-    <img src="assets/buttons/modul_5.gif" tal:attributes="title module/getModule/getDescription"/> <span i18n:translate="">Reaktorleistung</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseReactor')">VALUE</span>
+    <img src="assets/buttons/modul_5.gif" tal:attributes="title module/getModule/getDescription"/> <span>Reaktorleistung</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseReactor')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_6">
-    <img src="assets/buttons/modul_6.gif" tal:attributes="title module/getModule/getDescription" /> <span i18n:translate="">Trefferchance</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getHitChance')">VALUE</span>%
+    <img src="assets/buttons/modul_6.gif" tal:attributes="title module/getModule/getDescription" /> <span>Trefferchance</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getHitChance')">VALUE</span>%
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_7">
-    <img src="assets/buttons/modul_7.gif" tal:attributes="title module/getModule/getDescription"/> <span i18n:translate="">Basisschaden (abstrakt)</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseDamage')">VALUE</span>
+    <img src="assets/buttons/modul_7.gif" tal:attributes="title module/getModule/getDescription"/> <span>Basisschaden (abstrakt)</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseDamage')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_8">
-    <img src="assets/buttons/modul_8.gif" tal:attributes="title module/getModule/getDescription"/> <span i18n:translate="">Torpedoschaden</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateDamageImpact(rump,module.getModule())">VALUE</span>
+    <img src="assets/buttons/modul_8.gif" tal:attributes="title module/getModule/getDescription"/> <span>Torpedoschaden</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateDamageImpact(rump,module.getModule())">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_9">
     <div tal:repeat="special module/getModule/getSpecials" class="module_special_${module/getModule/getId}" id="module_special_${module/getModule/getId}">

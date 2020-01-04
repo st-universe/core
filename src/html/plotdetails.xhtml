@@ -12,14 +12,14 @@
           <metal:macro metal:use-macro="html/commmacros.xhtml/kn" tal:define="navigation_macro string:plotknnavigation" />
         </div>
         <div>
-          <div class="divhead" i18n:translate="">Beschreibung</div>
+          <div class="divhead">Beschreibung</div>
           <div class="divbody" tal:content="structure bbcode:nl2br:PLOT/getDescription">DESCRIPTION</div>
           <br />
-          <div class="divhead" i18n:translate="">Status</div>
+          <div class="divhead">Status</div>
           <div class="divbody">
             <div tal:condition="PLOT/isActive">
-              <div i18n:translate="">
-                Plot läuft seit <span i18n:name="plotstartdate" tal:replace="date:PLOT/getStartDate">DATE</span>
+              <div>
+                Plot läuft seit <span tal:replace="date:PLOT/getStartDate">DATE</span>
               </div>
               <div style="padding-top: 15px">
                 <input tal:condition="MAY_EDIT" type="submit" value="Plot beenden" name="B_END_PLOT" />
@@ -28,12 +28,12 @@
                 Spieler-ID <input type="text" name="memid" style="width: 50px;" /> <input type="submit" value="Hinzufügen" name="B_ADD_PLOTMEMBER" />
               </div>
             </div>
-            <div tal:condition="not:PLOT/isActive" i18n:translate="">
-              Plot beendet seit: <span i18n:name="plotenddate" tal:replace="date:PLOT/getEndDate">DATE</span>
+            <div tal:condition="not:PLOT/isActive">
+              Plot beendet seit: <span tal:replace="date:PLOT/getEndDate">DATE</span>
             </div>
           </div>
           <br />
-          <div class="divhead" i18n:translate="">Schreiber</div>
+          <div class="divhead">Schreiber</div>
           <div class="divbody">
             <div tal:repeat="member PLOT/getMembers" class="plotMemberList">
               <div class="plotMemberListItemAvatar">

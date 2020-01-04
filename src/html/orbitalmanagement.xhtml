@@ -9,12 +9,12 @@
       <input type="hidden" name="SHOW_ORBITAL_SHIPS" value="1" />
       <table class="tcal">
         <tr>
-          <th i18n:translate="">Klasse</th>
-          <th i18n:translate="">Name</th>
-          <th i18n:translate="">Crew</th>
-          <th i18n:translate="">Batterie</th>
-          <th i18n:translate="">Warpkern</th>
-          <th i18n:translate="">Torpedos</th>
+          <th>Klasse</th>
+          <th>Name</th>
+          <th>Crew</th>
+          <th>Batterie</th>
+          <th>Warpkern</th>
+          <th>Torpedos</th>
         </tr>
         <tal:block tal:repeat="fleet ORBIT_SHIP_LIST">
           <tr>
@@ -33,35 +33,35 @@
               <td tal:condition="ship/ownedByUser">
                 <div tal:condition="ship/canMan">
                   <input type="checkbox" name="man[${ship/getId}]" />
-                  <span i18n:translate="">Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span tal:replace="ship/getCrewSlots">CREW</span>)
+                  <span>Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span tal:replace="ship/getCrewSlots">CREW</span>)
                 </div>
                 <div tal:condition="ship/getCrewCount">
                   <input type="checkbox" name="unman[${ship/getId}]" />
-                  <span i18n:translate="">Runterbeamen</span>: <span tal:replace="ship/getCrewSlots">CREW</span>
+                  <span>Runterbeamen</span>: <span tal:replace="ship/getCrewSlots">CREW</span>
                 </div>
               </td>
               <td tal:condition="not:ship/ownedByUser"> </td>
               <td>
                 <div>
-                  <img class="center" i18n:attributes="title" src="assets/buttons/batt.gif" title="Ersatzbatterie" />
+                  <img class="center" src="assets/buttons/batt.gif" title="Ersatzbatterie" />
                   <input type="text" size="3" name="batt[${ship/getId}]" />
                   <span tal:condition="ship/ownedByUser">${ship/getEBatt}/${ship/getEbattMax}</span>
                 </div>
               </td>
               <td>
                 <div>
-                  <img class="center" i18n:attributes="title" src="assets/buttons/warpk.gif" title="Warpkernladung" />
+                  <img class="center" src="assets/buttons/warpk.gif" title="Warpkernladung" />
                   <input type="text" size="3" name="wk[${ship/getId}]" />
                   <span tal:condition="ship/ownedByUser">${ship/getWarpCoreLoad}/${ship/getWarpcoreCapacity}</span>
                 </div>
               </td>
               <td>
                 <div tal:condition="ship/canLoadTorpedos">
-                  <img class="center" tal:condition="not:ship/getTorpedoCount" i18n:attributes="title" src="assets/buttons/torp.gif" title="Torpedos" />
+                  <img class="center" tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.gif" title="Torpedos" />
                   <img class="center" tal:condition="ship/getTorpedoCount" src="assets/goods/${ship/getTorpedoType/getGoodId}.gif" tal:attributes="title ship/getTorpedoType/getName" />
                   <tal:block tal:condition="ship/ownedByUser">
                     <input type="text" size="3" name="torp[${ship/getId}]" tal:attributes="value ship/getTorpedoCount" />
-                    <span i18n:translate="">Max.</span> ${ship/getTorpedoCapacity}
+                    <span>Max.</span> ${ship/getTorpedoCapacity}
                   </tal:block>
                   <input tal:condition="not:ship/ownedByUser" type="text" size="3" name="torp[${ship/getId}]" />
                   <tal:block tal:condition="not:ship/getTorpedoCount">
@@ -77,7 +77,7 @@
         </tal:block>
       </table>
       <br />
-      <input type="submit" style="cursor: pointer" id="B_MANAGE_ORBITAL_SHIPS" name="B_MANAGE_ORBITAL_SHIPS" value="Ausführen" i18n:attributes="value" />
+      <input type="submit" style="cursor: pointer" id="B_MANAGE_ORBITAL_SHIPS" name="B_MANAGE_ORBITAL_SHIPS" value="Ausführen" />
     </form>
   </metal:macro>
 </metal:macro>

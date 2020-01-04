@@ -8,15 +8,15 @@
 					<div style="width: 100%;">
 						<tal:block tal:condition="DISPLAY_FIRST_COLONY_DIALOGUE">
               <div class="box">
-                <div class="box_title" i18n:translate="">Die erste Kolonie</div>
+                <div class="box_title">Die erste Kolonie</div>
                 <div class="box_body">
-                  <div i18n:translate="">
+                  <div>
                     Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
                   </div>
-                  <div i18n:translate="">
+                  <div>
                     Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
                   </div><br />
-                  - <a href="?SHOW_COLONYLIST=1" i18n:translate="">Kolonie gründen</a>
+                  - <a href="?SHOW_COLONYLIST=1">Kolonie gründen</a>
                 </div>
               </div>
 							<br />
@@ -24,8 +24,8 @@
 						<table class="tcal" tal:define="posts NEW_KN_POSTINGS">
 							<tr>
 								<th colspan="2">
-									<a href="comm.php?SHOW_KN=1" i18n:translate="">
-										Neue KN-Beiträge (<span i18n:name="postcount" tal:replace="NEW_KN_POSTING_COUNT" />)
+									<a href="comm.php?SHOW_KN=1">
+										Neue KN-Beiträge (<span tal:replace="NEW_KN_POSTING_COUNT" />)
 									</a>
 								</th>
 							</tr>
@@ -40,18 +40,18 @@
 										</a>
 									</td>
 									<td>
-										<span tal:condition="data/getPlot" i18n:translate="">Plot:</span>
-										<span tal:condition="not:data/getPlot" i18n:translate="">Titel:</span>
+										<span tal:condition="data/getPlot">Plot:</span>
+										<span tal:condition="not:data/getPlot">Titel:</span>
 										<a href="comm.php?SHOW_KN=1&mark=0" tal:content="structure data/getTitle">TITLE</a>
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:data/getUser/getName" /></span>
+										<span>von: <span tal:replace="structure bbcode:data/getUser/getName" /></span>
 										-
 										<span tal:content="datetime:data/getDate">DATE</span>
 										-
-										<span tal:replace="data/getCommentcount">COMMENTS</span> <span i18n:translate="">Kommentare</span>
+										<span tal:replace="data/getCommentcount">COMMENTS</span> <span>Kommentare</span>
 									</td>
 								</tr>
 							</tal:block>
@@ -76,7 +76,7 @@
 												</a>
 											</td>
 											<td>
-												<span i18n:translate="">Thema:</span>
+												<span>Thema:</span>
 												<a href="alliance.php?SHOW_TOPIC=1&bid=${data/getBoardId}&tid=${data/getId}" tal:content="structure bbcode:data/getName">
 													NAME
 												</a>
@@ -84,7 +84,7 @@
 										</tr>
 										<tr>
 											<td>
-												<span i18n:translate="">von: <span i18n:name="username" tal:replace="structure bbcode:RECENT_POST/getUser/getName" /></span>
+												<span>von: <span tal:replace="structure bbcode:RECENT_POST/getUser/getName" /></span>
 													-
 													<span tal:content="datetime:RECENT_POST/getDate">DATE</span>
 											</td>
@@ -96,9 +96,9 @@
 					</div>
 					<br />
           <div class="box">
-            <div class="box_title" i18n:translate="">Letzte Ereignisse</div>
+            <div class="box_title">Letzte Ereignisse</div>
             <div class="box_body">
-              <div tal:condition="not:RECENT_HISTORY" i18n:translate="">Keine</div>
+              <div tal:condition="not:RECENT_HISTORY">Keine</div>
               <div class="list" tal:condition="RECENT_HISTORY" tal:repeat="item RECENT_HISTORY">
                 <div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT</div>
                 <div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
@@ -109,19 +109,19 @@
         <td style="vertical-align: top; width: 360px;">
 					<div style="margin-left: 10px; width: 350px;">
             <div class="box">
-              <div class="box_title" i18n:translate="">Kolonielimitierung</div>
+              <div class="box_title">Kolonielimitierung</div>
               <div class="box_body">
                 <div style="width: 100%; text-align: center">
-                  <img src="/assets/planets/201s.gif" title="Planeten" i18n:attributes="title" />
+                  <img src="/assets/planets/201s.gif" title="Planeten" />
                   <span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
-                  <img src="/assets/planets/401s.gif" title="Monde" i18n:attributes="title" />
+                  <img src="/assets/planets/401s.gif" title="Monde" />
                   <span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
                 </div>
               </div>
             </div>
             <br />
             <div class="box">
-              <div class="box_title" i18n:translate="">Profilbesucher</div>
+              <div class="box_title">Profilbesucher</div>
               <div class="box_body">
                 <div style="width: 100%; text-align: center;" tal:condition="not:RECENT_PROFILE_VISITORS">
                   Keine Besucher
@@ -133,9 +133,9 @@
             </div>
 						<br />
             <div class="box">
-              <div class="box_title" i18n:translate="">Zufällige Spieler (online)</div>
+              <div class="box_title">Zufällige Spieler (online)</div>
               <div class="box_body">
-                <div style="width: 100%; text-align: center;" i18n:translate="" tal:condition="not:RANDOM_ONLINE_USER">
+                <div style="width: 100%; text-align: center;" tal:condition="not:RANDOM_ONLINE_USER">
                   Kein Spieler online
                 </div>
                 <div tal:condition="RANDOM_ONLINE_USER">

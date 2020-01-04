@@ -4,20 +4,20 @@
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<table class="tcal" tal:condition="not:COLONY_LIST">
 			<tr>
-				<th i18n:translate="">Meldung</th>
+				<th>Meldung</th>
 			</tr>
 			<tr>
-				<td i18n:translate="">Du besitzt derzeit keine Kolonien</td>
+				<td>Du besitzt derzeit keine Kolonien</td>
 			</tr>
 		</table>
 		<tal:block tal:condition="COLONY_LIST">
 			<table class="tcal">
 				<tr>
 					<th style="width: 120px;"></th>
-					<th i18n:translate="">Name</th>
-					<th i18n:translate="">Bevölkerung</th>
-					<th i18n:translate="">Energie</th>
-					<th i18n:translate="">Lager</th>
+					<th>Name</th>
+					<th>Bevölkerung</th>
+					<th>Energie</th>
+					<th>Lager</th>
 				</tr>
 				<tr tal:repeat="colony COLONY_LIST" tal:attributes="class string:row${repeat/colony/odd}">
 					<td style="text-align: center;">

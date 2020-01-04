@@ -11,10 +11,10 @@
 						<br />
 						<br />
 						<div tal:condition="SELECTED_RESEARCH/getUpperPlanetlimit">
-							<span i18n:translate="">Anzahl Kolonien auf Planeten:</span> +${SELECTED_RESEARCH/getUpperPlanetlimit}
+							<span>Anzahl Kolonien auf Planeten:</span> +${SELECTED_RESEARCH/getUpperPlanetlimit}
 						</div>
 						<div tal:condition="SELECTED_RESEARCH/getUpperMoonlimit">
-							<span i18n:translate="">Anzahl Kolonien auf Monden:</span> +${SELECTED_RESEARCH/getUpperMoonlimit}
+							<span>Anzahl Kolonien auf Monden:</span> +${SELECTED_RESEARCH/getUpperMoonlimit}
 						</div>
 					</td>
 				</tr>
@@ -22,8 +22,8 @@
 					<td>
 						<table class="tcal">
 							<tr>
-								<td class="darkbg" i18n:translate="">Punkte</td>
-								<td tal:condition="SELECTED_RESEARCH/getGoodId" class="darkbg" i18n:translate="">Benötigte Ware / Effekt</td>
+								<td class="darkbg">Punkte</td>
+								<td tal:condition="SELECTED_RESEARCH/getGoodId" class="darkbg">Benötigte Ware / Effekt</td>
 							</tr>
 							<tr>
 								<td tal:content="SELECTED_RESEARCH/getPoints">POINTS</td>

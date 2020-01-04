@@ -85,14 +85,14 @@
   </table>
   <br />
   <div class="box">
-    <div class="box_title" i18n:translate="">Kontakte</div>
+    <div class="box_title">Kontakte</div>
     <div class="box_body">
       <ul>
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1" i18n:translate="">Alle Kontakte</a>
+          <span style="color: #cecece">&gt;</span> <a href="?SHOW_CONTACTLIST=1">Alle Kontakte</a>
         </li>
         <li>
-          <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1" i18n:translate="">Ignorierte Siedler</a>
+          <span style="color: #cecece">&gt;</span> <a href="?SHOW_IGNORELIST=1">Ignorierte Siedler</a>
         </li>
       </ul>
     </div>
@@ -186,7 +186,7 @@
       <option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescription">DESCRIPTION</option>
     </tal:block>
   </select>
-  <input type="button" class="button" onclick="movePm(${post/getId});" value="=>" title="Verschieben" i18n:attributes="title" />
+  <input type="button" class="button" onclick="movePm(${post/getId});" value="=>" title="Verschieben" />
 </metal:macro>
 
 <tal:block metal:define-macro="clmodeselector">
@@ -219,7 +219,7 @@
   <form id="quickpm">
     <table class="tcal" id="quickpm_compose">
       <tr>
-        <td><span i18n:translate="">Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span></td>
+        <td><span>Empfänger:</span> <span tal:replace="structure bbcode:RECIPIENT/getName"></span></td>
       </tr>
       <tr>
         <th>Text</th>
@@ -249,7 +249,7 @@
   <div id="writecomment" style="display: none;">
     <table class="tcal">
       <tr>
-        <th colspan="2" i18n:translate="">Kommentar schreiben</th>
+        <th colspan="2">Kommentar schreiben</th>
       </tr>
       <tr>
         <td colspan="2">
@@ -258,10 +258,10 @@
       </tr>
       <tr>
         <td style="width: 200px">
-          <span id="commentTextLength">0</span>/250 <span i18n:translate="">Zeichen</span>
+          <span id="commentTextLength">0</span>/250 <span>Zeichen</span>
         </td>
         <td style="text-align: right;">
-          <input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken" i18n:attributes="value" id="postCommentButton" />
+          <input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken" id="postCommentButton" />
         </td>
       </tr>
     </table>
@@ -319,8 +319,8 @@
 
 <metal:macro metal:define-macro="kn">
   <tal:block tal:condition="not:KN_POSTINGS">
-    <div class="divhead" i18n:translate="">Meldung</div>
-    <div class="divbody" i18n:translate="">Keine Beiträge vorhanden</div>
+    <div class="divhead">Meldung</div>
+    <div class="divbody">Keine Beiträge vorhanden</div>
   </tal:block>
   <tal:block tal:condition="KN_POSTINGS">
     <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
@@ -382,7 +382,7 @@
                 <div tal:condition="userCanRate" class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</div>
               </div>
               <div class="segment">
-                <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount} <span i18n:translate="">Kommentare</span></a>
+                <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount} <span>Kommentare</span></a>
               </div>
             </div>
           </div>

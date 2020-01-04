@@ -5,8 +5,8 @@
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<tal:block tal:define="FIGHT_RESULTS FIGHT_RESULTS|false">
 			<div tal:condition="FIGHT_RESULTS" style="width: 150px;">
-				<div class="divhead" i18n:translate="">Kampflog</div>
-				<div class="divbody" i18n:translate="" style="cursor: pointer;" onclick="showFightLog();">Kampflog einsehen</div>
+				<div class="divhead">Kampflog</div>
+				<div class="divbody" style="cursor: pointer;" onclick="showFightLog();">Kampflog einsehen</div>
 				<div style="display: none;" id="fightlog">
 					<metal:macro metal:use-macro="html/sitemacros.xhtml/ajaxwindow">
 						<div metal:fill-slot="content">
@@ -100,7 +100,7 @@
 				<td style="width: 33%; vertical-align: top;">
 					<table class="tcal" tal:condition="not:SHIP/getLss">
 						<tr>
-							<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss1.gif" title="Langstreckensensoren aktivieren" /></a> Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}" i18n:translate="">Sensoren aktivieren</a>)</th>
+							<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss1.gif" title="Langstreckensensoren aktivieren" /></a> Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}">Sensoren aktivieren</a>)</th>
 						</tr>
 						<tr>
 							<td colspan="3" style="text-align: center;">
@@ -188,7 +188,7 @@
                      onmouseover="cp('cloakon','buttons/tarn2')"
                      onmouseout="cp('cloakon','buttons/tarn1')"
                   >
-                    <img src="/assets/buttons/tarn1.gif" name="cloakon" title="löschen" i18n:attributes="title" />
+                    <img src="/assets/buttons/tarn1.gif" name="cloakon" title="löschen" />
                   </a>
 
                   <a href="?B_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
@@ -196,7 +196,7 @@
                      onmouseover="cp('cloakoff','buttons/tarn1')"
                      onmouseout="cp('cloakoff','buttons/tarn2')"
                   >
-                    <img src="/assets/buttons/tarn2.gif" name="cloakoff" /> <span i18n:translate="">Tarnung deaktivieren</span>
+                    <img src="/assets/buttons/tarn2.gif" name="cloakoff" /> <span>Tarnung deaktivieren</span>
                   </a>
 								</td>
 							</tr>
@@ -208,13 +208,13 @@
 							<tr>
 								<th colspan="3">
 									<img src="assets/buttons/fleet.gif" title="Flottenkontrolle" />
-									<span i18n:translate="">Flottenkontrolle</span>
+									<span>Flottenkontrolle</span>
 								</th>
 							</tr>
 							<tr>
-								<td class="darkbg" style="width: 40%;" i18n:translate="">Aktivieren</td>
-								<td class="darkbg" style="width: 40%;" i18n:translate="">Deaktivieren</td>
-								<td class="darkbg" style="width: 20%;" i18n:translate="">Alarmstufe</td>
+								<td class="darkbg" style="width: 40%;">Aktivieren</td>
+								<td class="darkbg" style="width: 40%;">Deaktivieren</td>
+								<td class="darkbg" style="width: 20%;">Alarmstufe</td>
 							</tr>
 							<tr>
 								<td>
@@ -259,13 +259,13 @@
 								</td>
 								<td>
 									<a href="?B_FLEET_ALERT_GREEN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="assets/buttons/alert1.gif" title="Flotte: Alarmstufe Grün" i18n:attributes="title" />
+										<img src="assets/buttons/alert1.gif" title="Flotte: Alarmstufe Grün" />
 									</a>
 									<a href="?B_FLEET_ALERT_YELLOW=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="assets/buttons/alert2.gif" title="Flotte: Alarmstufe Gelb" i18n:attributes="title" />
+										<img src="assets/buttons/alert2.gif" title="Flotte: Alarmstufe Gelb" />
 									</a>
 									<a href="?B_FLEET_ALERT_RED=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="assets/buttons/alert3.gif" title="Flotte: Alarmstufe Rot" i18n:attributes="title" />
+										<img src="assets/buttons/alert3.gif" title="Flotte: Alarmstufe Rot" />
 									</a>
 								</td>
 							</tr>
@@ -383,7 +383,7 @@
 										</a>
 									</tal:block>
 									<div tal:condition="SHIP/canLandOnCurrentColony">
-										<a href="colony.php?B_LAND_SHIP=1&id=${CURRENT_COLONY/getId}&shipid=${SHIP/getId}&sstr=${THIS/getSessionString}" i18n:translate="">Landen</a>
+										<a href="colony.php?B_LAND_SHIP=1&id=${CURRENT_COLONY/getId}&shipid=${SHIP/getId}&sstr=${THIS/getSessionString}">Landen</a>
 									</div>
 								</td>
 							</tr>
@@ -395,7 +395,7 @@
 						<tr>
 							<th colspan="2">
 								<img src="assets/buttons/warpsys.gif" />
-								<span i18n:translate="">Warp-System</span>
+								<span>Warp-System</span>
 							</th>
 						</tr>
 						<tr tal:condition="SHIP/hasWarpcore">
@@ -455,8 +455,8 @@
 								<img src="assets/ships/${SHIP/getTraktorShip/getRump/getId}.gif" />
 							</td>
 							<td>
-								<input tal:condition="SHIP/traktorBeamFromShip" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR" i18n:attributes="value" value="Deaktivieren" />
-								<input tal:condition="SHIP/traktorBeamToShip" type="submit" class="button" name="B_ESCAPE_TRAKTOR" i18n:attributes="value" value="Fluchtversuch" />
+								<input tal:condition="SHIP/traktorBeamFromShip" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR" value="Deaktivieren" />
+								<input tal:condition="SHIP/traktorBeamToShip" type="submit" class="button" name="B_ESCAPE_TRAKTOR" value="Fluchtversuch" />
 							</td>
 						</tr>
 					</table>

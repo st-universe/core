@@ -27,9 +27,9 @@
 <metal:macro metal:define-macro="category_starsystems">
 	<table class="use">
 		<tr>
-			<th i18n:translate="">System</th>
-			<th i18n:translate="">Koordinaten</th>
-			<th i18n:translate="">Entdeckung</th>
+			<th>System</th>
+			<th>Koordinaten</th>
+			<th>Entdeckung</th>
 		</tr>
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">
@@ -52,9 +52,9 @@
 <metal:macro metal:define-macro="category_tradeposts">
 	<table class="use">
 		<tr>
-			<th i18n:translate="">Handelsposten</th>
-			<th i18n:translate="">Koordinaten</th>
-			<th i18n:translate="">Entdeckung</th>
+			<th>Handelsposten</th>
+			<th>Koordinaten</th>
+			<th>Entdeckung</th>
 		</tr>
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">

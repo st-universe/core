@@ -12,8 +12,8 @@
         <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post PM_LIST">
           <div class="box">
             <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
-              <span tal:condition="not:CATEGORY/isPMOutDir" i18n:translate="">Von:</span>
-              <span tal:condition="CATEGORY/isPMOutDir" i18n:translate="">An:</span>
+              <span tal:condition="not:CATEGORY/isPMOutDir">Von:</span>
+              <span tal:condition="CATEGORY/isPMOutDir">An:</span>
               <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
             </div>
             <div class="box_body" style="margin: 0; padding: 0;">
@@ -31,7 +31,7 @@
                   <div class="segment">
                     <div tal:condition="post/getSender/isNpc">NPC</div>
                     <a href="/userprofile.php?uid=${post/getSender/getId}">
-                      <img class="pmUserAvatar" i18n:attributes="title" title="Siedlerprofil ansehen" tal:attributes="src post/getSender/getFullAvatarpath" />
+                      <img class="pmUserAvatar" title="Siedlerprofil ansehen" tal:attributes="src post/getSender/getFullAvatarpath" />
                     </a>
                   </div>
                   <div class="segment" tal:define="id post/getSender/getId">

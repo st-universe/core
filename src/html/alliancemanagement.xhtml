@@ -5,10 +5,10 @@
 		<table class="tcal">
 			<tr>
 				<th></th>
-				<th i18n:translate="">Mitglied</th>
-				<th i18n:translate="">Kolonien</th>
-				<th i18n:translate="">Schiffe</th>
-				<th i18n:translate="">Verwaltung</th>
+				<th>Mitglied</th>
+				<th>Kolonien</th>
+				<th>Schiffe</th>
+				<th>Verwaltung</th>
 				<th></th>
 			</tr>
 			<tr tal:repeat="data MEMBER_LIST">
@@ -22,7 +22,7 @@
 						<span tal:content="structure bbcode:data/getName">NAME</span>
 					</div>
 					<div>
-						<img src="assets/buttons/time.gif" title="Zuletzt online" i18n:attributes="title" />
+						<img src="assets/buttons/time.gif" title="Zuletzt online" />
 						<span tal:content="datetime:data/getLastActionDate">LASTACTION</span>
 					</div>
 				</td>
@@ -37,13 +37,13 @@
 				</td>
 				<td style="width: 200px; text-align: center;" tal:condition="not:data/isCurrentUser">
 					<tal:block tal:condition="not:data/isFounder">
-						<a href="javascript:void(0);" class="linkbutton" onclick="toggleVisible('promote${data/getId}');" i18n:translate="">Befördern</a>
+						<a href="javascript:void(0);" class="linkbutton" onclick="toggleVisible('promote${data/getId}');">Befördern</a>
 						<div id="promote${data/getId}" style="border-top: 1px solid #262323; margin-top: 10px; padding-top: 10px; display: none;">
-							<a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_DIPLOMATIC}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Außenminister</a><br /><br />
-							<a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_SUCCESSOR}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Vize-Präsident</a>
+							<a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_DIPLOMATIC}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Außenminister</a><br /><br />
+							<a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_SUCCESSOR}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Vize-Präsident</a>
 							<tal:block tal:condition="USER_IS_FOUNDER">
 								<br /><br />
-                <a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_FOUNDER}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton" i18n:translate="">Präsident</a>
+                <a href="alliance.php?B_PROMOTE_USER=1&type=${ALLIANCE_JOB_FOUNDER}&uid=${data/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Präsident</a>
 							</tal:block>
 						</div>
 					</tal:block>
