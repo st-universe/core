@@ -39,9 +39,9 @@ final class DatabaseBackup implements MaintenanceHandlerInterface
     private function backup(): void
     {
         $cmd = sprintf(
-            "/usr/bin/mysqldump -u%s -p%s -h%s %s | gzip > %s/%s.gz",
-            $this->config->get('db.user'),
+            'PGPASSWORD="%s" pg_dump -Fc -U %s -h %s %s > %s/%s.dump',
             $this->config->get('db.pass'),
+            $this->config->get('db.user'),
             $this->config->get('db.host'),
             $this->config->get('db.database'),
             $this->config->get('db.backup_dir'),
