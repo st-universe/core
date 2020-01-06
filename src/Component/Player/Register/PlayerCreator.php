@@ -95,7 +95,7 @@ final class PlayerCreator implements PlayerCreatorInterface
 
         $password = $this->passwordGenerator->generatePassword();
 
-        $player->setUser('Siedler ' . $player->getId());
+        $player->setUsername('Siedler ' . $player->getId());
         $player->setTick(1);
         $player->setCreationDate(time());
         $player->setPassword(password_hash($password, PASSWORD_DEFAULT));

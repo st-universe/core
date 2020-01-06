@@ -100,7 +100,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
         global $container;
         switch ($this->getPrivilegeType()) {
             case ShipEnum::DOCK_PRIVILEGE_USER:
-                return $container->get(UserRepositoryInterface::class)->find((int)$this->getTargetId())->getUser();
+                return $container->get(UserRepositoryInterface::class)->find((int)$this->getTargetId())->getUserName();
             case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
                 return $container->get(AllianceRepositoryInterface::class)->find((int)$this->getTargetId())->getName();
             case ShipEnum::DOCK_PRIVILEGE_FACTION:

@@ -122,7 +122,7 @@
 <metal:macro metal:define-macro="useravatar">
   <div class="userAvatar">
     <a href="/userprofile.php?uid=${USER/getId}" target="_blank">
-      <img tal:attributes="src USER/getFullAvatarPath; title bbcode2txt:USER/getUser" />
+      <img tal:attributes="src USER/getFullAvatarPath; title bbcode2txt:USER/getUserName" />
     </a>
   </div>
 </metal:macro>

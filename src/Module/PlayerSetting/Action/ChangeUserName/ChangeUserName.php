@@ -60,7 +60,7 @@ final class ChangeUserName implements ActionControllerInterface
         }
 
         $user = $game->getUser();
-        $user->setUser($value);
+        $user->setUsername($value);
 
         $this->userRepository->save($user);
 

@@ -22,10 +22,10 @@ class GameTurn implements GameTurnInterface
     private $turn = 0;
 
     /** @Column(type="integer") * */
-    private $start = 0;
+    private $startdate = 0;
 
     /** @Column(type="integer") * */
-    private $end;
+    private $enddate;
 
     public function getId(): int
     {
@@ -46,24 +46,24 @@ class GameTurn implements GameTurnInterface
 
     public function getStart(): int
     {
-        return $this->start;
+        return $this->startdate;
     }
 
-    public function setStart(int $start): GameTurnInterface
+    public function setStart(int $startdate): GameTurnInterface
     {
-        $this->start = $start;
+        $this->startdate = $startdate;
 
         return $this;
     }
 
     public function getEnd(): int
     {
-        return $this->end;
+        return $this->enddate;
     }
 
-    public function setEnd(int $end): GameTurnInterface
+    public function setEnd(int $enddate): GameTurnInterface
     {
-        $this->end = $end;
+        $this->enddate = $enddate;
 
         return $this;
     }

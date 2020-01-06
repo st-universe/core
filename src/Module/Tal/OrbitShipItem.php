@@ -29,7 +29,7 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function getUserName(): string
     {
-        return $this->ship->getUser()->getUser();
+        return $this->ship->getUser()->getUserName();
     }
 
     public function isDestroyed(): bool

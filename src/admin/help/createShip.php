@@ -72,7 +72,7 @@ if ($buildplanId > 0) {
             printf(
                 '<a href="?userId=%d">%s</a><br />',
                 $user->getId(),
-                $user->getUser()
+                $user->getUserName()
             );
         }
     }

@@ -53,7 +53,7 @@ final class KnCommentTal implements KnCommentTalInterface
             return $commentUserName;
         }
 
-        return $this->comment->getUser()->getUser();
+        return $this->comment->getUser()->getUserName();
     }
 
     public function getUserAvatarPath(): string

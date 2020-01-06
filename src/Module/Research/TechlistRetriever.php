@@ -67,7 +67,7 @@ final class TechlistRetriever implements TechlistRetrieverInterface
         }
         foreach ($exclude_result as $dependency) {
             $research_id = $dependency->getDependsOn();
-            if (array_key_exists($research_id, $dependencies) === false) {
+            if (array_key_exists($research_id, $excludes) === false) {
                 $excludes[$research_id] = [];
             }
             $excludes[$research_id][] = $dependency;

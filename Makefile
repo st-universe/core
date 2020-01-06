@@ -37,7 +37,7 @@ dev-serve:force
 dev-create-db:force
 	docker-compose up -d
 	sleep 15
-	docker-compose exec -T stu-db sh -c 'exec mysql -ustu stu_db -pstu' < dist/db/stu.sql
+	docker-compose exec -T stu-db sh -c 'exec psql -U stu -d stu_db < /dump/stu.dump'
 
 dev-wipe-db:force
 	docker-compose down

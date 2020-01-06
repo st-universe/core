@@ -128,9 +128,9 @@ final class AllianceDetails implements ViewControllerInterface
         $replacementVars = [];
         $replacementVars['$ALLIANCE_HOMEPAGE_LINK'] = '<a href="' . $alliance->getHomepage() . '" target="_blank">' . _('Zur Allianz Homepage') . '</a>';
         $replacementVars['$ALLIANCE_BANNER'] = ($alliance->getAvatar() ? '<img src="' . $alliance->getFullAvatarpath() . '" />' : false);
-        $replacementVars['$ALLIANCE_PRESIDENT'] = $alliance->getFounder()->getUser()->getUser();
-        $replacementVars['$ALLIANCE_VICEPRESIDENT'] = ($alliance->getSuccessor() ? $alliance->getSuccessor()->getUser()->getUser() : _('Unbesetzt'));
-        $replacementVars['$ALLIANCE_FOREIGNMINISTER'] = ($alliance->getDiplomatic() ? $alliance->getDiplomatic()->getUser()->getUser() : _('Unbesetzt'));
+        $replacementVars['$ALLIANCE_PRESIDENT'] = $alliance->getFounder()->getUser()->getUserName();
+        $replacementVars['$ALLIANCE_VICEPRESIDENT'] = ($alliance->getSuccessor() ? $alliance->getSuccessor()->getUser()->getUserName() : _('Unbesetzt'));
+        $replacementVars['$ALLIANCE_FOREIGNMINISTER'] = ($alliance->getDiplomatic() ? $alliance->getDiplomatic()->getUser()->getUserName() : _('Unbesetzt'));
         return $replacementVars;
     }
 }

@@ -32,7 +32,7 @@ class User implements UserInterface
     private $id;
 
     /** @Column(type="string") */
-    private $user = '';
+    private $username = '';
 
     /** @Column(type="string", length=20) */
     private $login = '';
@@ -128,14 +128,14 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUser(): string
+    public function getUserName(): string
     {
-        return $this->user;
+        return $this->username;
     }
 
-    public function setUser(string $user): UserInterface
+    public function setUsername(string $username): UserInterface
     {
-        $this->user = $user;
+        $this->username = $username;
         return $this;
     }
 
@@ -374,7 +374,7 @@ class User implements UserInterface
      */
     public function getName(): string
     {
-        return $this->getUser();
+        return $this->getUserName();
     }
 
     public function getFullAvatarPath(): string

@@ -47,7 +47,7 @@ final class ManagementListItemTal
 
     public function getName(): string
     {
-        return $this->user->getUser();
+        return $this->user->getUserName();
     }
 
     public function getLastActionDate(): int

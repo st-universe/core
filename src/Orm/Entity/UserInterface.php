@@ -6,9 +6,9 @@ interface UserInterface
 {
     public function getId(): int;
 
-    public function getUser(): string;
+    public function getUserName(): string;
 
-    public function setUser(string $user): UserInterface;
+    public function setUsername(string $user): UserInterface;
 
     public function getLogin(): string;
 

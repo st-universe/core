@@ -28,7 +28,7 @@ try {
 
 $entityManager->getConnection()->query(
     sprintf(
-        'ALTER TABLE stu_user AUTO_INCREMENT = %d',
+        'ALTER SEQUENCE stu_user_id_seq RESTART WITH %d',
         $config->get('game.admin.id')
     )
 );
@@ -38,3 +38,5 @@ $playerCreator->createPlayer(
     $config->get('game.admin.email'),
     $factionRepo->find($config->get('game.admin.faction'))
 );
+
+$entityManager->commit();
