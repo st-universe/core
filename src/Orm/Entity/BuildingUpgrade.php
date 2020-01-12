@@ -19,7 +19,11 @@ use Doctrine\Common\Collections\Collection;
  **/
 class BuildingUpgrade implements BuildingUpgradeInterface
 {
-    /** @Id @Column(type="bigint") @GeneratedValue * */
+    /**
+     * @Id
+     * @Column(type="bigint")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */
