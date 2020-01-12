@@ -32,7 +32,7 @@ return [
             'port' => $config->get('mq.port'),
             'user' => $config->get('mq.user'),
             'pass' => $config->get('mq.pass'),
-            'vhost' => '/',
+            'vhost' => $config->get('mq.vhost'),
             'persisted' => true,
         ]);
 
