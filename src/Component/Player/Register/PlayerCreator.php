@@ -87,7 +87,7 @@ final class PlayerCreator implements PlayerCreatorInterface
         FactionInterface $faction
     ): UserInterface {
         $player = $this->userRepository->prototype();
-        $player->setLogin($loginName);
+        $player->setLogin(mb_strtolower($loginName));
         $player->setEmail($emailAddress);
         $player->setFaction($faction);
 

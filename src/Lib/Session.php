@@ -84,7 +84,7 @@ final class Session implements SessionInterface
     {
         $this->destroyLoginCookies();
 
-        $result = $this->userRepository->getByLogin($userName);
+        $result = $this->userRepository->getByLogin(mb_strtolower($userName));
         if ($result === null) {
             throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
         }
