@@ -12,7 +12,11 @@ namespace Stu\Orm\Entity;
  **/
 class MapBorderType implements MapBorderTypeInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

@@ -18,7 +18,11 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
  **/
 class TradePost implements TradePostInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

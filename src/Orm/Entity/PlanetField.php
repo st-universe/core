@@ -25,7 +25,11 @@ use Stu\Orm\Repository\TerraformingRepositoryInterface;
  **/
 class PlanetField implements PlanetFieldInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") */

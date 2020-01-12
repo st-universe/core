@@ -11,7 +11,11 @@ namespace Stu\Orm\Entity;
  **/
 class ResearchDependency implements ResearchDependencyInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

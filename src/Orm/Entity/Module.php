@@ -19,7 +19,11 @@ use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
  **/
 class Module implements ModuleInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="string") */

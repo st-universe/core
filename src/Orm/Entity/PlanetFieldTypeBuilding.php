@@ -15,7 +15,11 @@ use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
  **/
 class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

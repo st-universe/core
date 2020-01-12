@@ -16,7 +16,11 @@ use Stu\Component\Crew\CrewEnum;
  **/
 class Crew implements CrewInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="smallint") * */

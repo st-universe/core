@@ -19,7 +19,11 @@ use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
  **/
 class PrivateMessageFolder implements PrivateMessageFolderInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") */

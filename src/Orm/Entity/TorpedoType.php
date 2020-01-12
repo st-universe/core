@@ -18,7 +18,11 @@ use Doctrine\Common\Collections\Collection;
  **/
 class TorpedoType implements TorpedoTypeInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="string") * */

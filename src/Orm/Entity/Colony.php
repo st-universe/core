@@ -28,7 +28,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  **/
 class Colony implements ColonyInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") */

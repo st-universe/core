@@ -15,7 +15,11 @@ namespace Stu\Orm\Entity;
  **/
 class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

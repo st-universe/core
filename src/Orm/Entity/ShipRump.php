@@ -21,7 +21,11 @@ use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
  **/
 class ShipRump implements ShipRumpInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @column(type="integer", nullable=true) * */

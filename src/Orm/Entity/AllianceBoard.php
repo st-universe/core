@@ -19,7 +19,11 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
  **/
 class AllianceBoard implements AllianceBoardInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

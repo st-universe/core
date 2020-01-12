@@ -15,7 +15,11 @@ use Doctrine\Common\Collections\Collection;
  */
 class Terraforming implements TerraformingInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="string") * */

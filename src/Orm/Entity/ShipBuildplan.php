@@ -17,7 +17,11 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
  **/
 class ShipBuildplan implements ShipBuildplanInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

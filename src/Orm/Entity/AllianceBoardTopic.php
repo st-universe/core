@@ -21,7 +21,11 @@ use Stu\Orm\Repository\AllianceBoardPostRepositoryInterface;
  **/
 class AllianceBoardTopic implements AllianceBoardTopicInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

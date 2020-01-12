@@ -16,7 +16,11 @@ namespace Stu\Orm\Entity;
  **/
 class ShipRumpBuildingFunction implements ShipRumpBuildingFunctionInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

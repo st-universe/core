@@ -19,7 +19,11 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  **/
 class Fleet implements FleetInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="string", length=200) */

@@ -17,7 +17,11 @@ use Stu\Module\Message\Lib\ContactListModeEnum;
  **/
 class Contact implements ContactInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") */

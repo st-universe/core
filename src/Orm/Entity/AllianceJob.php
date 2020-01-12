@@ -14,7 +14,11 @@ namespace Stu\Orm\Entity;
  **/
 class AllianceJob implements AllianceJobInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

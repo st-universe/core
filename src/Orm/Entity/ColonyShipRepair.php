@@ -12,7 +12,11 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
  **/
 class ColonyShipRepair implements ColonyShipRepairInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

@@ -31,7 +31,11 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
  **/
 class Ship implements ShipInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") */

@@ -17,7 +17,11 @@ use Stu\Component\Alliance\AllianceEnum;
  **/
 class AllianceRelation implements AllianceRelationInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="smallint") * */

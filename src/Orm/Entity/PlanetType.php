@@ -16,7 +16,11 @@ use Stu\Component\Colony\ColonyEnum;
  **/
 class PlanetType implements PlanetTypeInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="string") */

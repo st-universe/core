@@ -13,7 +13,11 @@ namespace Stu\Orm\Entity;
  **/
 class RpgPlotMember implements RpgPlotMemberInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="integer") * */

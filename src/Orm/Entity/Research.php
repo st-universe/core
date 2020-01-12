@@ -11,7 +11,11 @@ namespace Stu\Orm\Entity;
  **/
 class Research implements ResearchInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="string") * */

@@ -13,7 +13,11 @@ namespace Stu\Orm\Entity;
  **/
 class StarSystemMap implements StarSystemMapInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="smallint") * */

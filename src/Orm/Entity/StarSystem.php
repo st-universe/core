@@ -18,7 +18,11 @@ use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
  **/
 class StarSystem implements StarSystemInterface
 {
-    /** @Id @Column(type="integer") @GeneratedValue * */
+    /** 
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /** @Column(type="smallint") * */
