@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildOnField;
 
 use request;
+use Stu\Component\Queue\Message\MessageFactoryInterface;
+use Stu\Component\Queue\Publisher\DelayedJobPublisherInterface;
+use Stu\Component\Queue\PublishInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -38,6 +41,10 @@ final class BuildOnField implements ActionControllerInterface
 
     private BuildingActionInterface $buildingAction;
 
+    private DelayedJobPublisherInterface $delayedJobPublisher;
+
+    private MessageFactoryInterface $messageFactory;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         BuildingFieldAlternativeRepositoryInterface $buildingFieldAlternativeRepository,
@@ -46,7 +53,9 @@ final class BuildOnField implements ActionControllerInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        BuildingActionInterface $buildingAction
+        BuildingActionInterface $buildingAction,
+        DelayedJobPublisherInterface $delayedJobPublisher,
+        MessageFactoryInterface $messageFactory
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
@@ -56,6 +65,8 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
+        $this->delayedJobPublisher = $delayedJobPublisher;
+        $this->messageFactory = $messageFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -213,6 +224,14 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $this->planetFieldRepository->save($field);
+
+        $message = $this->messageFactory->createBuildingJobProcessMessage()
+            ->setPlanetFieldId($field->getId());
+
+        $this->delayedJobPublisher->publish(
+            $message,
+            $building->getBuildtime()
+        );
 
         $game->addInformationf(
             _('%s wird gebaut - Fertigstellung: %s'),

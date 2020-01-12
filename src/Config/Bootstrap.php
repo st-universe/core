@@ -9,7 +9,6 @@ use Cache\Adapter\Redis\RedisCachePool;
 use Cache\Bridge\Doctrine\DoctrineCacheBridge;
 use Curl\Curl;
 use DI\ContainerBuilder;
-use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,7 +68,7 @@ $builder->addDefinitions([
         $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
 
         $emConfig = new Configuration();
-        $emConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_NEVER);
+        $emConfig->setAutoGenerateProxyClasses(0);
         $emConfig->setMetadataCacheImpl($cacheDriver);
         $emConfig->setQueryCacheImpl($cacheDriver);
 
@@ -103,7 +102,7 @@ $builder->addDefinitions([
         $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());
         return $parser;
     },
-    Ubench::class => function (ContainerInterface $c): Ubench {
+    Ubench::class => function (): Ubench {
         $bench = new Ubench();
         $bench->start();
 
@@ -206,6 +205,12 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__.'/../Component/Colony/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Component/Queue/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__.'/../Component/Process/services.php'
 );
 
 $builder->addDefinitions([

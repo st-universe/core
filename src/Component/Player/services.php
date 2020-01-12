@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Api;
+namespace Stu\Module\Player;
 
 use Stu\Component\Player\ColonizationChecker;
 use Stu\Component\Player\ColonizationCheckerInterface;

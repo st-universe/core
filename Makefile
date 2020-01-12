@@ -27,18 +27,18 @@ dev-serve:force
 	php -S localhost:1337 -t src/Public/
 
 dev-create-db:force
-	docker-compose up -d
+	docker-compose up stu-db -d
 	sleep 15
 	docker-compose exec -T stu-db sh -c 'exec psql -U stu -d stu_db < /dump/stu.dump'
 
 dev-wipe-db:force
-	docker-compose down
+	docker-compose down stu-db
 
 dev-start-db:force
-	docker-compose start
+	docker-compose up -d stu-db
 
 dev-stop-db:force
-	docker-compose stop
+	docker-compose kill stu-db
 
 version_link:force
 	cd src/Public && ln -s . version_dev
