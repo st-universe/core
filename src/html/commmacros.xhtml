@@ -280,12 +280,12 @@
         </th>
         <th style="width: 120px; text-align: center;" tal:content="datetime:data/getDate">DATE</th>
         <th style="width: 20px">
-          <a
+          <a tal:condition="data/isDeleteable"
             href="javascript:void(0);"
             onclick="deletePostingComment(${data/getPostId}, ${data/getId})"
             title="Löschen"
             onmouseover="cp('delComment${data/getId}','buttons/x2')"
-            onmouseout="cp('delComment${data/getId}','buttons/x')">
+            onmouseout="cp('delComment${data/getId}','buttons/x1')">
             <img src="/assets/buttons/x1.gif" name="delComment${data/getId}" /></a>
         </th>
       </tr>
