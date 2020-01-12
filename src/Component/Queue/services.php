@@ -48,7 +48,12 @@ return [
 
         $logger = new Logger('DelayedJobDriverLogger');
         $logger->pushHandler(
-            new StreamHandler($path, $config->get('mq.debug.log_level')),
+            new StreamHandler(
+                $path,
+                $config->get('mq.debug.log_level'),
+                true,
+                0777
+            ),
 
         );
         return new DelayedJobDriver(
