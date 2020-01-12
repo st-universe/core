@@ -55,7 +55,7 @@ class KnPostingDeletionHandlerTest extends MockeryTestCase
             ->withNoArgs()
             ->once()
             ->andReturn($userId);
-        $user->shouldReceive('getUser')
+        $user->shouldReceive('getUserName')
             ->withNoArgs()
             ->once()
             ->andReturn($userName);

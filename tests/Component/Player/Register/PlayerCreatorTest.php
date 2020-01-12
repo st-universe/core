@@ -217,7 +217,7 @@ class PlayerCreatorTest extends MockeryTestCase
 
     public function testCreateCreatesPlayer(): void
     {
-        $loginname = 'mehzomglol';
+        $loginname = 'mehzomgLoL';
         $email = 'lol@example.com';
         $token = 'some-token';
         $ttl = 666;
@@ -263,7 +263,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->andReturnTrue();
 
         $user->shouldReceive('setLogin')
-            ->with($loginname)
+            ->with(mb_strtolower($loginname))
             ->once()
             ->andReturnSelf();
         $user->shouldReceive('setEmail')
@@ -274,7 +274,7 @@ class PlayerCreatorTest extends MockeryTestCase
             ->with($faction)
             ->once()
             ->andReturnSelf();
-        $user->shouldReceive('setUser')
+        $user->shouldReceive('setUsername')
             ->with(sprintf('Siedler %d', $user_id))
             ->once()
             ->andReturnSelf();

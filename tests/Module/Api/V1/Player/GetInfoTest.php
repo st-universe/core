@@ -59,7 +59,7 @@ class GetInfoTest extends StuApiV1TestCase
             ->withNoArgs()
             ->once()
             ->andReturn($avatarPath);
-        $user->shouldReceive('getUser')
+        $user->shouldReceive('getUserName')
             ->withNoArgs()
             ->once()
             ->andReturn($name);
