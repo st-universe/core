@@ -119,12 +119,14 @@
                         <table class="tcal">
                                 <th colspan="4">Accounteinstellungen</th>
                                 <tr>
+                                  <!--
                                         <td>
                                                 <input type="checkbox" name="email_not" value="1" tal:attributes="checked THIS/getUser/isEmailNotification" />
                                         </td>
                                         <td>
                                                 Emailbenachrichtigung bei privaten Nachrichten
                                         </td>
+                                        -->
                                         <td>
                                                 <input type="checkbox" name="save_login" value="1" tal:attributes="checked THIS/getUser/isSaveLogin" />
                                         </td>
@@ -163,6 +165,7 @@
                 </tr>
                 </table>
                 </form>
+          <!--
                 <br />
                 <form action="options.php" method="post">
                 <input type="hidden" name="cb" value="setOptions" />
@@ -174,6 +177,7 @@
                 </tr>
                 </table>
                 </form>
+                -->
         </tal:block>
 </tal:block>
 </html>
