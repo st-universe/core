@@ -107,7 +107,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             ->createNativeQuery(
                 'SELECT tro.gg_id as commodity_id, SUM(tro.gg_count * tro.amount) as amount, c.name as commodity_name
                     FROM stu_trade_offers tro LEFT JOIN stu_goods c ON c.id = tro.gg_id WHERE
-                    tro.posts_id = :tradePostId AND tro.user_id = :userId GROUP BY tro.gg_id ORDER BY c.sort',
+                    tro.posts_id = :tradePostId AND tro.user_id = :userId GROUP BY tro.gg_id,c.name,c.sort ORDER BY c.sort',
                 $rsm
             )
             ->setParameters([
