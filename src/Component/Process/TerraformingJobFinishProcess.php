@@ -32,6 +32,9 @@ final class TerraformingJobFinishProcess implements TerraformingJobFinishProcess
     public function work(TerraformingJobProcessMessageInterface $message): void
     {
         $terraforming_job = $this->colonyTerraformingRepository->find($message->getTerraformingId());
+        if ($terraforming_job === null) {
+            return;
+        }
 
         $field = $terraforming_job->getField();
         $colony = $terraforming_job->getColony();

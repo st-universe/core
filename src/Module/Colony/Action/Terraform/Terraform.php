@@ -153,7 +153,7 @@ final class Terraform implements ActionControllerInterface
 
         $this->delayedJobPublisher->publish(
             $message,
-            $time
+            $terraf->getDuration()
         );
 
         $game->addInformationf(
