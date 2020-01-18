@@ -1249,16 +1249,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "1.3.5",
+            "version": "1.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "be70c016fdcd44a428405ee062ebcdd01a6867cd"
+                "reference": "5dd3ac5eebef2d0b074daa4440bb18f93132dee4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/be70c016fdcd44a428405ee062ebcdd01a6867cd",
-                "reference": "be70c016fdcd44a428405ee062ebcdd01a6867cd",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/5dd3ac5eebef2d0b074daa4440bb18f93132dee4",
+                "reference": "5dd3ac5eebef2d0b074daa4440bb18f93132dee4",
                 "shasum": ""
             },
             "require": {
@@ -1266,7 +1266,7 @@
                 "doctrine/cache": "^1.0",
                 "doctrine/collections": "^1.0",
                 "doctrine/event-manager": "^1.0",
-                "doctrine/reflection": "^1.0",
+                "doctrine/reflection": "^1.1",
                 "php": "^7.1"
             },
             "conflict": {
@@ -1328,7 +1328,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2020-01-14T18:44:12+00:00"
+            "time": "2020-01-16T22:06:23+00:00"
         },
         {
             "name": "doctrine/reflection",
@@ -5143,16 +5143,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.4",
+            "version": "1.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef",
                 "shasum": ""
             },
             "require": {
@@ -5187,7 +5187,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-12-15T19:12:40+00:00"
+            "time": "2020-01-17T21:11:47+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -6749,12 +6749,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/st-universe/assets.git",
-                "reference": "785f61ebd49b81e47bfc8e84334f7a5cc9ef1870"
+                "reference": "e3a47489f4e92ebf7ef3bb8b972d26a6253baa7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/st-universe/assets/zipball/785f61ebd49b81e47bfc8e84334f7a5cc9ef1870",
-                "reference": "785f61ebd49b81e47bfc8e84334f7a5cc9ef1870",
+                "url": "https://api.github.com/repos/st-universe/assets/zipball/e3a47489f4e92ebf7ef3bb8b972d26a6253baa7f",
+                "reference": "e3a47489f4e92ebf7ef3bb8b972d26a6253baa7f",
                 "shasum": ""
             },
             "require": {
@@ -6771,7 +6771,7 @@
                 "source": "https://github.com/st-universe/assets/tree/master",
                 "issues": "https://github.com/st-universe/assets/issues"
             },
-            "time": "2020-01-15T10:42:16+00:00"
+            "time": "2020-01-15T18:24:56+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
