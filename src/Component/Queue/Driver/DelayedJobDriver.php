@@ -139,6 +139,9 @@ final class DelayedJobDriver implements DelayedJobDriverInterface
                     'Error occured',
                     ['message' => $e->getTrace()]
                 );
+
+                $consumer->reject($message, true);
+                continue;
             }
 
             $consumer->acknowledge($message);

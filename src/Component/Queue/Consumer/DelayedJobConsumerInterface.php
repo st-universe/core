@@ -2,7 +2,7 @@
 
 namespace Stu\Component\Queue\Consumer;
 
-interface DelayedBuildingJobConsumerInterface
+interface DelayedJobConsumerInterface
 {
     public function consume(): void;
 }

@@ -9,6 +9,7 @@ use Stu\Component\Queue\Message\TransformableMessageInterface;
 abstract class MessageTypeEnum
 {
     public const BUILDING_JOB = 1;
+    public const TERRAFORMING_JOB = 2;
 
     public static function map(int $typeId): TransformableMessageInterface
     {
@@ -16,13 +17,16 @@ abstract class MessageTypeEnum
             static::BUILDING_JOB => function (): BuildingJobProcessMessageInterface {
                 return new BuildingJobProcessMessage();
             },
+            static::TERRAFORMING_JOB => function (): TerraformingJobProcessMessageInterface {
+                return new TerraformingJobProcessMessage();
+            },
         ];
 
         $type = $map[$typeId] ?? null;
 
         if ($type === null) {
             // @todo add exception
-            throw new \InvalidParamException();
+            throw new \InvalidArgumentException();
         }
 
         return $type();

@@ -35,7 +35,7 @@ final class DelayedJobPublisher implements DelayedJobPublisherInterface
         $this->delayedJobDriver->publish(
             $this->messageTransformator->encode($message),
             $delay,
-            QueueRouteEnum::DELAYED_BUILDING_JOB
+            QueueRouteEnum::DELAYED_JOB
         );
     }
 }

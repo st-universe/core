@@ -11,14 +11,16 @@ use Monolog\Logger;
 use Noodlehaus\ConfigInterface;
 use Psr\Container\ContainerInterface;
 use Seld\Signal\SignalHandler;
-use Stu\Component\Queue\Consumer\DelayedBuildingJobConsumer;
-use Stu\Component\Queue\Consumer\DelayedBuildingJobConsumerInterface;
+use Stu\Component\Queue\Consumer\DelayedJobConsumer;
+use Stu\Component\Queue\Consumer\DelayedJobConsumerInterface;
 use Stu\Component\Queue\Driver\DelayedJobDriver;
 use Stu\Component\Queue\Driver\DelayedJobDriverInterface;
 use Stu\Component\Queue\Message\MessageFactory;
 use Stu\Component\Queue\Message\MessageFactoryInterface;
 use Stu\Component\Queue\Message\MessageTransformator;
 use Stu\Component\Queue\Message\MessageTransformatorInterface;
+use Stu\Component\Queue\Processor\DelayedJobProcessor;
+use Stu\Component\Queue\Processor\DelayedJobProcessorInterface;
 use Stu\Component\Queue\Publisher\DelayedJobPublisher;
 use Stu\Component\Queue\Publisher\DelayedJobPublisherInterface;
 use function DI\autowire;
@@ -64,7 +66,8 @@ return [
         );
     },
     DelayedJobPublisherInterface::class => autowire(DelayedJobPublisher::class),
-    DelayedBuildingJobConsumerInterface::class => autowire(DelayedBuildingJobConsumer::class),
+    DelayedJobConsumerInterface::class => autowire(DelayedJobConsumer::class),
     MessageTransformatorInterface::class => autowire(MessageTransformator::class),
     MessageFactoryInterface::class => autowire(MessageFactory::class),
+    DelayedJobProcessorInterface::class => autowire(DelayedJobProcessor::class),
 ];

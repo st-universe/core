@@ -76,7 +76,7 @@ $builder->addDefinitions([
         $emConfig->setMetadataDriverImpl($driverImpl);
         $emConfig->setProxyDir(sprintf(
             '%s/../OrmProxy/',
-            $config->get('game.webroot')
+            __DIR__
         ));
         $emConfig->setProxyNamespace($config->get('db.proxy_namespace'));
 

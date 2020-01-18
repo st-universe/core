@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyTerraformingInterface;
 
+/**
+ * @method null|ColonyTerraformingInterface find(integer $id)
+ */
 interface ColonyTerraformingRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ColonyTerraformingInterface;

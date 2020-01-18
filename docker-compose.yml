@@ -33,11 +33,11 @@ services:
         ipv4_address: 172.40.128.3
   stu-process-worker:
     hostname: 'stu-process-worker'
-    image: bitnami/php-fpm:7.4
-    command: php bin/test_consume.php
+    build: dist/docker/php-cli/
+    command: php /usr/src/stu/bin/test_consume.php
     restart: always
     volumes:
-      - .:/app
+      - .:/usr/src/stu
     networks:
       static-network:
         ipv4_address: 172.40.128.4
