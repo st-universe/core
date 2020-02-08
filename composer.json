@@ -3,10 +3,11 @@
   "autoload": {
     "classmap": [
       "src/Lib",
-      "src/admin"
+      "src/admin",
+      "tests/"
     ],
     "psr-4": {
-      "Stu\\": ["src/", "tests/"]
+      "Stu\\": ["src/"]
     }
   },
   "require": {
