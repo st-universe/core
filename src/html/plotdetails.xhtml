@@ -21,12 +21,14 @@
               <div>
                 Plot läuft seit <span tal:replace="date:PLOT/getStartDate">DATE</span>
               </div>
-              <div style="padding-top: 15px">
-                <input tal:condition="MAY_EDIT" type="submit" value="Plot beenden" name="B_END_PLOT" />
-              </div>
-              <div style="padding-top: 30px">
-                Spieler-ID <input type="text" name="memid" style="width: 50px;" /> <input type="submit" value="Hinzufügen" name="B_ADD_PLOTMEMBER" />
-              </div>
+              <tal:block tal:condition="MAY_EDIT">
+                <div style="padding-top: 15px">
+                  <input tal:condition="MAY_EDIT" type="submit" value="Plot beenden" name="B_END_PLOT" />
+                </div>
+                <div style="padding-top: 30px">
+                  Spieler-ID <input type="text" name="memid" style="width: 50px;" /> <input type="submit" value="Hinzufügen" name="B_ADD_PLOTMEMBER" />
+                </div>
+              </tal:block>
             </div>
             <div tal:condition="not:PLOT/isActive">
               Plot beendet seit: <span tal:replace="date:PLOT/getEndDate">DATE</span>
