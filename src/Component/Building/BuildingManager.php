@@ -80,14 +80,17 @@ final class BuildingManager implements BuildingManagerInterface
         $building->postDeactivation($colony);
     }
 
-    public function remove(PlanetFieldInterface $field): void {
+    public function remove(
+        PlanetFieldInterface $field,
+        bool $upgrade = false
+    ): void {
         if (!$field->hasBuilding()) {
             return;
         }
 
         $building = $field->getBuilding();
 
-        if (!$building->isRemoveAble()) {
+        if (!$building->isRemoveAble() && $upgrade === false) {
             return;
         }
 

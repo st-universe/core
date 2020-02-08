@@ -135,7 +135,7 @@ final class UpgradeBuilding implements ActionControllerInterface
 
         $colony->lowerEps($upgrade->getEnergyCost());
 
-        $this->buildingAction->remove($colony, $field, $game);
+        $this->buildingAction->remove($colony, $field, $game, true);
 
         foreach ($upgrade->getUpgradeCosts() as $key => $obj) {
             $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());

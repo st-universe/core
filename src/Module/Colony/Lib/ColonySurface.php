@@ -146,7 +146,13 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getStorageSumPercent(): float
     {
-        return round(100 / $this->colony->getMaxStorage() * $this->colony->getStorageSum(), 2);
+        $maxStorage = $this->colony->getMaxStorage();
+
+        if ($maxStorage === 0) {
+            return 0;
+        }
+
+        return round(100 / $maxStorage * $this->colony->getStorageSum(), 2);
     }
 
     public function updateSurface(): array

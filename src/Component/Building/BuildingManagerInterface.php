@@ -10,7 +10,10 @@ interface BuildingManagerInterface
 
     public function deactivate(PlanetFieldInterface $field): void;
 
-    public function remove(PlanetFieldInterface $field): void;
+    public function remove(
+        PlanetFieldInterface $field,
+        bool $upgrade = false
+    ): void;
 
     public function finish(PlanetFieldInterface $field, bool $activate = true): void;
 }
