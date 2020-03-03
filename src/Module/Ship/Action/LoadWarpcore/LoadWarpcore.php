@@ -57,7 +57,7 @@ final class LoadWarpcore implements ActionControllerInterface
                 }
                 $load = $this->loadWarpCore($ship, $load);
                 if (!$load) {
-                    $game->addInformation(sprintf(_('%s: Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt'),
+                    $game->addInformation(sprintf(_('%s: Zum Aufladen des Warpkerns werden mindestens 2 Deuterium, 2 Antimaterie, sowie 1 Dilithium benötigt'),
                         $ship->getName()));
                     continue;
                 }
@@ -73,7 +73,7 @@ final class LoadWarpcore implements ActionControllerInterface
         }
         $load = $this->loadWarpCore($ship, $load);
         if (!$load) {
-            $game->addInformation(_('Zum Aufladen des Warpkerns werden mindestens 1 Deuterium sowie 1 Antimaterie benötigt'));
+            $game->addInformation(_('Zum Aufladen des Warpkerns werden mindestens 2 Deuterium, 2 Antimaterie, sowie 1 Dilithium benötigt'));
             return;
         }
         $game->addInformation(sprintf(_('Der Warpkern wurde um %d Einheiten aufgeladen'), $load));
@@ -82,7 +82,7 @@ final class LoadWarpcore implements ActionControllerInterface
     public function loadWarpCore(ShipInterface $ship, int $count): ?int
     {
         $shipStorage = $ship->getStorage();
-        foreach ([CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER] as $commodityId) {
+        foreach ([CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER, CommodityTypeEnum::GOOD_DILITHIUM] as $commodityId) {
             $storage = $shipStorage[$commodityId] ?? null;
             if ($storage === null) {
                 return null;
@@ -102,14 +102,18 @@ final class LoadWarpcore implements ActionControllerInterface
         $this->shipStorageManager->lowerStorage(
             $ship,
             $shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
-            $commodityAmount
+            2*$commodityAmount
         );
         $this->shipStorageManager->lowerStorage(
             $ship,
             $shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
+            2*$commodityAmount
+        );
+        $this->shipStorageManager->lowerStorage(
+            $ship,
+            $shipStorage[CommodityTypeEnum::GOOD_DILITHIUM]->getCommodity(),
             $commodityAmount
         );
-
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() + $load);
 
         $this->shipRepository->save($ship);
