@@ -77,7 +77,7 @@ final class CreateOffer implements ActionControllerInterface
             return;
         }
 
-        if ($giveGoodId == CommodityTypeEnum::GOOD_DILITHIUM) {
+        if ($giveGoodId == CommodityTypeEnum::GOOD_LATINUM) {
             $result = array_filter(
                 $this->commodityRepository->getViewable(),
                 function (CommodityInterface $commodity) use ($wantedGoodId): bool {
@@ -88,7 +88,7 @@ final class CreateOffer implements ActionControllerInterface
                 return;
             }
         } else {
-            if ($wantedGoodId != CommodityTypeEnum::GOOD_DILITHIUM) {
+            if ($wantedGoodId != CommodityTypeEnum::GOOD_LATINUM) {
                 return;
             }
         }
