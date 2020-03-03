@@ -188,7 +188,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
                 if (
                     $storage->containsKey(CommodityTypeEnum::GOOD_DEUTERIUM) &&
-                    $storage->containsKey(CommodityTypeEnum::GOOD_ANTIMATTER)
+                    $storage->containsKey(CommodityTypeEnum::GOOD_ANTIMATTER) &&
+                    $storage->containsKey(CommodityTypeEnum::GOOD_DILITHIUM) 
                 ) {
                     if ($shipobj->getWarpcoreLoad() < $shipobj->getWarpcoreCapacity()) {
                         if ($wk[$shipobj->getId()] == 'm') {
@@ -201,6 +202,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         }
                         $load = (int) $load;
                         if ($load >= 1) {
+                            if ($storage[CommodityTypeEnum::GOOD_DILITHIUM]->getAmount() < $load) {
+                                $load = $storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount();
+                            }
                             if ($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() < $load) {
                                 $load = $storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount();
                             }
@@ -209,13 +213,18 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             }
                             $this->colonyStorageManager->lowerStorage(
                                 $colony,
-                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_DEUTERIUM),
+                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_DILITHIUM),
                                 $load
                             );
                             $this->colonyStorageManager->lowerStorage(
                                 $colony,
+                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_DEUTERIUM),
+                                2*$load
+                            );
+                            $this->colonyStorageManager->lowerStorage(
+                                $colony,
                                 $this->commodityRepository->find(CommodityTypeEnum::GOOD_ANTIMATTER),
-                                $load
+                                2*$load
                             );
                             if ($shipobj->getWarpcoreLoad() + $load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
                                 $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
@@ -245,7 +254,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     }
                 } else {
                     $msg[] = sprintf(
-                        _('%s: Es wird Deuterium und Antimaterie zum Aufladen des Warpkerns benötigt'),
+                        _('%s: Es wird mindestens 2 Deuterium, 2 Antimaterie, sowie 1 Dilithium zum Aufladen des Warpkerns benötigt'),
                         $shipobj->getName()
                     );
                 }
