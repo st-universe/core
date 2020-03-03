@@ -54,7 +54,7 @@ final class ShowOfferMenuNewOffer implements ViewControllerInterface
             _('Management %s'), $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
-        $game->setTemplateVar('IS_DILITHIUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_DILITHIUM);
+        $game->setTemplateVar('IS_LATINUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_LATINUM);
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
     }
 }
