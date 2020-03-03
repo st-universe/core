@@ -101,6 +101,11 @@ final class LoadWarpcore implements ActionControllerInterface
 
         $this->shipStorageManager->lowerStorage(
             $ship,
+            $shipStorage[CommodityTypeEnum::GOOD_DILITHIUM]->getCommodity(),
+            $commodityAmount
+        );
+        $this->shipStorageManager->lowerStorage(
+            $ship,
             $shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
             2*$commodityAmount
         );
@@ -108,11 +113,6 @@ final class LoadWarpcore implements ActionControllerInterface
             $ship,
             $shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
             2*$commodityAmount
-        );
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $shipStorage[CommodityTypeEnum::GOOD_DILITHIUM]->getCommodity(),
-            $commodityAmount
         );
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() + $load);
 
