@@ -752,7 +752,7 @@
             </div>
             <tal:block tal:repeat="cost data/getConstructionCosts">
               <div style="display: table-cell; padding-left: 4px;">
-                <img src="assets/goods/${cost/getCommodity/getId}.gif" />
+                <img src="assets/goods/${cost/getCommodity/getId}.gif" tal:attributes="title cost/getCommodity/getName"/>
               </div>
               <div style="display: table-cell; vertical-align: middle;" tal:content="cost/getAmount">COST</div>
             </tal:block>
