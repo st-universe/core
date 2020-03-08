@@ -82,7 +82,7 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
-  <img src="assets/ships/${ship/getRump/getId}.gif" />
+  <img src="assets/ships/${ship/getRump/getId}.gif" tal:attributes="title ship/getRump/getName" />
 </metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
