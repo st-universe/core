@@ -1432,7 +1432,7 @@
 </metal:block>
 <metal:macro metal:define-macro="module_select_tab">
   <td id="module_tab_${moduleType}" tal:define="tab MODULE_SCREEN_TABS/${moduleType}" tal:attributes="class tab/getCssClass" onclick="showModuleSelectTab(this,${moduleType});">
-    <img src="assets/buttons/modul_${moduleType}.gif" tal:condition="not:tab/hasSelectedModule" id="tab_image_mod_${moduleType}" />
+    <img src="assets/buttons/modul_screen_${moduleType}.gif" tal:condition="not:tab/hasSelectedModule" id="tab_image_mod_${moduleType}" />
     <tal:block tal:condition="tab/hasSelectedModule" tal:repeat="mod tab/getSelectedModule">
       <img src="assets/goods/${mod/getModule/getGoodId}.gif" id="tab_image_mod_${moduleType}" />
     </tal:block>
