@@ -15,13 +15,13 @@ class ModuleTypeDescriptionMapper
             case ShipModuleTypeEnum::MODULE_TYPE_SHIELDS:
                 return _("Schilde");
             case ShipModuleTypeEnum::MODULE_TYPE_EPS:
-                return _("EPS-Leitungen");
+                return _("EPS-Leistung");
             case ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE:
                 return _("Antrieb");
             case ShipModuleTypeEnum::MODULE_TYPE_WARPCORE:
                 return _("Reaktor");
             case ShipModuleTypeEnum::MODULE_TYPE_COMPUTER:
-                return _("Computer");
+                return _("Sensoren");
             case ShipModuleTypeEnum::MODULE_TYPE_PHASER:
                 return _("Energiewaffe");
             case ShipModuleTypeEnum::MODULE_TYPE_TORPEDO:
