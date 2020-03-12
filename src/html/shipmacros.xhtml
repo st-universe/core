@@ -161,7 +161,7 @@
   <td style="width: 200px; background-color: #000000 ! important;">
     <metal:macro metal:use-macro="shipimage" />
   </td>
-  <td> <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:content="structure bbcode:ship/getName">. </a> </td>
+  <td tal:content="structure bbcode:ship/getName">.<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:condition="ship/ownedByUser" </a> </td>
   <tal:block tal:condition="not:ship/getRump/isTrumfield">
     <td style="width: 160px;">
       <span tal:replace="ship/getHuell"></span>/<span tal:replace="ship/getMaxHuell"></span>
