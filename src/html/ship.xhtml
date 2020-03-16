@@ -324,7 +324,7 @@
 								</div>
 							</td>
 							<td tal:condition="SHIP/getSystem">
-								<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName}<br />
+								<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName} (${ship/getCx}|${ship/getCy})<br />
 								<a href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 									<img src="assets/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
 								</a>
