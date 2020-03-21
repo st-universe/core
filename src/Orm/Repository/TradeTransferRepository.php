@@ -28,13 +28,14 @@ final class TradeTransferRepository extends EntityRepository implements TradeTra
        return (int) $this->getEntityManager()
            ->createQuery(
                sprintf(
-                   'SELECT SUM(t.count) as amount FROM %s t WHERE t.posts_id = :tradePostId AND t.user_id = :userId',
+                   'SELECT SUM(t.count) as amount FROM %s t WHERE t.posts_id = :tradePostId AND t.user_id = :userId' AND p.date > :date ORDER BY p.date DESC',
                    TradeTransfer::class,
                )
            )
            ->setParameters([
                'tradePostId' => $tradePostId,
-               'userId' => $userId
+               'userId' => $userId,
+               'date' => time() - 86400
            ])
            ->getSingleScalarResult();
     }
