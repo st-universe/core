@@ -254,7 +254,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     }
                 } else {
                     $msg[] = sprintf(
-                        _('%s: Es wird Deuterium und Antimaterie zum Aufladen des Warpkerns benötigt'),
+                        _('%s: Es wird mindestens 2 Deuterium, 2 Antimaterie und 1 Dilithium zum Aufladen des Warpkerns benötigt'),
                         $shipobj->getName()
                     );
                 }
