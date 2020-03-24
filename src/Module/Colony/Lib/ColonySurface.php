@@ -121,11 +121,11 @@ final class ColonySurface implements ColonySurfaceInterface
         // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
-                return _('Umweltkontrollen');
+                return _('Bildung');
             case FactionEnum::FACTION_ROMULAN:
-                return _('Zerschmetterte Opposition');
+                return _('Imperiales Gedankengut');
             case FactionEnum::FACTION_KLINGON:
-                return _('Irgendwas mit Kahless');
+                return _('Kampftraining');
         }
         return '';
     }
@@ -135,11 +135,11 @@ final class ColonySurface implements ColonySurfaceInterface
         // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
-                return _('Umweltverschmutzung');
+                return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_ROMULAN:
-                return _('Opposition');
+                return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_KLINGON:
-                return _('Abtrünnige');
+                return _('Bevölkerungsdichte');
         }
         return '';
     }
