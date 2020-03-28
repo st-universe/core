@@ -4,9 +4,8 @@ use Stu\PlanetGenerator\PlanetGenerator;
 
 $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse G - Basisklasse Tundra";
 
-$bonusdata = array(
-    PlanetGenerator::BONUS_DEUTERIUM
-);
+$bonusdata = array(PlanetGenerator::BONUS_AENERGY, PlanetGenerator::BONUS_HABITAT, PlanetGenerator::BONUS_HABITAT);
+
 
 $data[PlanetGenerator::COLGEN_SIZEW] = 10;
 $data[PlanetGenerator::COLGEN_SIZEH] = 6;
@@ -15,7 +14,7 @@ $hasground = 1;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 406;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
-$udata[PlanetGenerator::COLGEN_BASEFIELD] = 802;
+$udata[PlanetGenerator::COLGEN_BASEFIELD] = 806;
 
 $phases = 0;
 $ophases = 0;
@@ -28,12 +27,12 @@ $eisn = rand(3, 4);
 $eiss = ($eisn == 4 ? 3 : rand(3, 4));
 
 $berge = rand(12, 14);
-$swamp = rand(8, 12);
-$felsf = rand(6, 8);
-$jungle = rand(2, 4);
+$swamp = rand(8, 11);
+$felsf = rand(2, 4);
+$jungle = rand(5, 8);
 
 $ufels = rand(4, 7);
-$ueis = 5;
+$uwasser = 5;
 
 
 
@@ -85,7 +84,7 @@ $phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Jungle";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = $berge;
+$phase[$phases][PlanetGenerator::COLGEN_NUM] = $jungle;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "406");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "116");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
@@ -124,10 +123,10 @@ $ophases++;
 // Underground Phases
 
 $uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
-$uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Untergrundeis";
-$uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $ueis;
-$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array("0" => "801");
-$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array("0" => "821");
+$uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Untergrundwasser";
+$uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $uwasser;
+$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array("0" => "806");
+$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array("0" => "851");
 $uphase[$uphases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
@@ -137,8 +136,8 @@ $uphases++;
 $uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
 $uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Untergrundfels";
 $uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $ufels;
-$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array("0" => "801");
-$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array("0" => "802");
+$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array("0" => "806");
+$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array("0" => "816");
 $uphase[$uphases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
