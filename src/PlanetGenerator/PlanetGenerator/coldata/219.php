@@ -27,9 +27,9 @@ $eisn = rand(3, 4);
 $eiss = ($eisn == 4 ? 3 : rand(3, 4));
 
 $berge = rand(12, 14);
-$swamp = rand(8, 11);
+$swamp = rand(3, 5);
 $felsf = rand(2, 4);
-$jungle = rand(5, 8);
+$jungle = rand(8, 12);
 
 $ufels = rand(4, 7);
 $uwasser = 5;
