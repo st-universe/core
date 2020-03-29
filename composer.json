@@ -44,7 +44,6 @@
     "slim/http": "^0.8",
     "slim/psr7": "^0.6",
     "slim/slim": "^4.2",
-    "st-universe/planet-generator": "dev-master",
     "st-universe/starsystem-generator": "dev-master",
     "tuupola/slim-jwt-auth": "^3.4",
     "usox/ipintel": "^1.0",
