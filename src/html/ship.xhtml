@@ -324,11 +324,11 @@
 								</div>
 							</td>
 							<td tal:condition="SHIP/getSystem">								
-								<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${SHIP/getSystemgetDatabaseEntry/getId}">
+								<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${SHIP/getSystem/getDatabaseEntry/getId}">
 									<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" />
 									<span>${SHIP/getSystem/getName} (${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
 								</a>
-								<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" title="Sternensystem" /> ${SHIP/getSystem/getName} (${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})<br />
+								<br />
 								<a href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 									<img src="assets/buttons/sysleave1.gif" name="sysleave" title="System verlassen" /> verlassen
 								</a>
