@@ -979,46 +979,6 @@ class Ship implements ShipInterface
         return $this->isOverStarSystem;
     }
 
-    public function isInDiscoveredSystem(): bool
-    {
-        if ($this->getSystem() !== null) {
-            // @todo refactor
-            global $container;
-
-            $result = $container->get(DatabaseUserRepositoryInterface::class)->findFor(
-                $this->starSystem->getDatabaseEntry()->getId(),
-                $this->getUserId()
-            );
-            if ($result === null) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function isOverDiscoveredSystem(): bool
-    {
-        if ($this->isOverSystem() !== null) {
-            // @todo refactor
-            global $container;
-
-            $result = $container->get(DatabaseUserRepositoryInterface::class)->findFor(
-                $this->isOverSystem()->getDatabaseEntry()->getId(),
-                $this->getUserId()
-            );
-            if ($result === null) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function isWarpPossible(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE) && $this->getSystem() === null;
