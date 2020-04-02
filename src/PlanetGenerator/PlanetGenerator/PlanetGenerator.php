@@ -349,10 +349,6 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                     $bw = 0;
                 }
 
-                if (($mode == "first") && ($i = 1) && ($j = 1)) {
-                    $bw = 0;
-                }
-
                 if (($mode == "right") && ($colfields[$j - 1][$i] != $adjacent[0])) {
                     $bw = 0;
                 }
