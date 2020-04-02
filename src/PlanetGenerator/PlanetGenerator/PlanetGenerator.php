@@ -349,7 +349,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                     $bw = 0;
                 }
 
-                if (($mode == "first") && ($j = 0) && ($i = 0)) {
+                if (($mode == "first") && ($i = 1) && ($j = 1)) {
                     $bw = 0;
                 }
 
