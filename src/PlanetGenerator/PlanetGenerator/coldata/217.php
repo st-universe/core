@@ -19,7 +19,6 @@ $uphases = 0;
 
 // Surface Phases
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_Y] = "3";
 $phase[$phases][PlanetGenerator::COLGEN_X] = "1";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
