@@ -19,7 +19,7 @@ $hasground = 1;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 221;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
-$udata[PlanetGenerator::COLGEN_BASEFIELD] = 802;
+$udata[PlanetGenerator::COLGEN_BASEFIELD] = 805;
 
 $phases = 0;
 $ophases = 0;
@@ -74,8 +74,8 @@ $phases++;
 $uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
 $uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Erde";
 $uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $uerde;
-$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array(802);
-$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array(801);
+$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array(805);
+$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array(815);
 $uphase[$uphases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
@@ -85,7 +85,7 @@ $uphases++;
 $uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
 $uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Eis";
 $uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $ueis;
-$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array(802);
+$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array(805);
 $uphase[$uphases][PlanetGenerator::COLGEN_TO] = array(821);
 $uphase[$uphases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
