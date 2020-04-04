@@ -13,7 +13,7 @@ $hasground = 1;
 
 $data[PlanetGenerator::COLGEN_BASEFIELD] = 201;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
-$udata[PlanetGenerator::COLGEN_BASEFIELD] = 804;
+$udata[PlanetGenerator::COLGEN_BASEFIELD] = 814;
 
 $phases = 0;
 $ophases = 0;
