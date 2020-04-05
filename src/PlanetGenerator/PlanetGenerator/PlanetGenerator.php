@@ -358,7 +358,12 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                 if (($mode == "crater seeding") && (($j == $w - 1) || ($i == $h - 1))) {
                     $bw = 0;
                 }
-
+		if ($mode == "first") {
+                    $res[$c][self::COLGEN_X] = $0;
+                    $res[$c][self::COLGEN_Y] = $3;
+                    $res[$c][self::COLGEN_BASEWEIGHT] = 0;
+                    $c++;
+		}
                 if ($bw > 0) {
                     $res[$c][self::COLGEN_X] = $j;
                     $res[$c][self::COLGEN_Y] = $i;

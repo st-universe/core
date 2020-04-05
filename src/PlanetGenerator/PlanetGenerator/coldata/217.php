@@ -19,8 +19,7 @@ $uphases = 0;
 
 // Surface Phases
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "forced rim";
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "polar seeding north";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "first";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
