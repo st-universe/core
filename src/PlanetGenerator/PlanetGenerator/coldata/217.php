@@ -9,676 +9,196 @@ $data[PlanetGenerator::COLGEN_SIZEH] = 6;
 
 $hasground = 1;
 
-$data[PlanetGenerator::COLGEN_BASEFIELD] = 1000;
+$data[PlanetGenerator::COLGEN_BASEFIELD] = 918;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
-$udata[PlanetGenerator::COLGEN_BASEFIELD] = 802;
+$udata[PlanetGenerator::COLGEN_BASEFIELD] = 828;
 
 $phases = 0;
 $ophases = 0;
 $uphases = 0;
 
+$vulkan = rand(5, 7);
+$magma = rand(5, 9);
+
 // Surface Phases
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "forced rim";
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "polar seeding north";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "equatorial";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava rechtsrunter";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1001");
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "909");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
 $phases++;
 
+
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lavastrom horizontal";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1002");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1001);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "910");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(909);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1003");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1002);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan links";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1004");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1003);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1005");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1004);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1006");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1005);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1007");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1006);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1008");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1007);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1009");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1008);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1010");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1009);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "906");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(910);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "below";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava Ende";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1011");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1001);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1012");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1011);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "922");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(909);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
+
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "polar seeding south";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan rechts";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1013");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1012);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "904");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
+
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava Ende";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1014");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1013);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "914");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(904);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1015");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1014);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "polar seeding north";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan runter";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1016");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1015);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1017");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1016);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1018");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1017);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1019");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1018);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1020");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1019);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "919");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "below";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava runter";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1021");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1011);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1022");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1021);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "908");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(919);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1023");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1022);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1024");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1023);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1025");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1024);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1026");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1025);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1027");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1026);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1028");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1027);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1029");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1028);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1030");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1029);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "below";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava Ende";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1031");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1021);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "922");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(908);
+$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
+$phases++;
+
+
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "equatorial";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava Ende";
+$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "912");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1032");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1031);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava links runter";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1033");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1032);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "911");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(912);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1034");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1033);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1035");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1034);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1036");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1035);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1037");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1036);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1038");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1037);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1039");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1038);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1040");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1039);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "below";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lavastrom";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan hoch";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1041");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1031);
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "920");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(911);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Plattform";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1042");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1041);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan (Lava)";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1043");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1042);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lavastrom";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1044");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1043);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1045");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1044);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1046");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1045);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1047");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1046);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1048");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1047);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1049");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1048);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1050");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1049);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "below";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1051");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1041);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "916");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = ;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan (Lava)";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1052");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1051);
+
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
+$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan erloschen";
+$phase[$phases][PlanetGenerator::COLGEN_NUM] = $vulkan;
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
+$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "902");
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
 $phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lavastrom";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1053");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1052);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lavasee";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1054");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1053);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
+//Underground
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1055");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1054);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1056");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1055);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1057");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1056);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1058");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1057);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1059");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1058);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "right";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Krater";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "1060");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(1059);
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
-$phases++;
+$uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
+$uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Untergrund Magma";
+$uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $magma;
+$uphase[$uphases][PlanetGenerator::COLGEN_FROM] = array("0" => "828");
+$uphase[$uphases][PlanetGenerator::COLGEN_TO] = array("0" => "831");
+$uphase[$uphases][PlanetGenerator::COLGEN_ADJACENT] = 0;
+$uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
+$uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
+$uphase[$uphases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
+$uphases++;
 
 
 
