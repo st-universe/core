@@ -30,7 +30,7 @@ $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "909");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 
@@ -148,7 +148,7 @@ $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "911");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(912);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 
@@ -160,8 +160,9 @@ $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "920");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(911);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
+
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Plattform";
