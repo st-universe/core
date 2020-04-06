@@ -173,12 +173,12 @@ $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "916");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = ;
+$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 10;
 $phases++;
 
-/*
+
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan erloschen";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = $vulkan;
@@ -189,12 +189,12 @@ $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 20;
 $phases++;
-*/
+
 
 
 // Underground
 
-/*
+
 $uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
 $uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Untergrund Magma";
 $uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $magma;
@@ -205,7 +205,7 @@ $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
 $uphases++;
-*/
+
 
 
 return [
