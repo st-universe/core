@@ -185,7 +185,7 @@ $phase[$phases][PlanetGenerator::COLGEN_NUM] = $vulkan;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "902");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = array("0" => "902");
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 30;
 $phases++;
