@@ -194,6 +194,7 @@ $phases++;
 
 // Underground
 
+/*
 $uphase[$uphases][PlanetGenerator::COLGEN_MODE] = "normal";
 $uphase[$uphases][PlanetGenerator::COLGEN_DESCRIPTION] = "Untergrund Magma";
 $uphase[$uphases][PlanetGenerator::COLGEN_NUM] = $magma;
@@ -204,7 +205,7 @@ $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
 $uphases++;
-
+*/
 
 
 return [
