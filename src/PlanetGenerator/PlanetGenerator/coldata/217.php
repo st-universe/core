@@ -165,7 +165,6 @@ $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
-/*
 
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
@@ -191,7 +190,7 @@ $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 20;
 $phases++;
 
-*/
+
 
 // Underground
 /*
