@@ -187,7 +187,7 @@ $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "902");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
+$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 30;
 $phases++;
 
 
@@ -203,7 +203,7 @@ $uphase[$uphases][PlanetGenerator::COLGEN_TO] = array("0" => "831");
 $uphase[$uphases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $uphase[$uphases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$uphase[$uphases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
+$uphase[$uphases][PlanetGenerator::COLGEN_FRAGMENTATION] = 8;
 $uphases++;
 
 
