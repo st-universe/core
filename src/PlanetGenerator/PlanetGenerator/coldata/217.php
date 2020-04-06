@@ -22,7 +22,7 @@ $magma = rand(5, 9);
 
 // Surface Phases
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "equatorial";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava rechtsrunter";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
@@ -69,7 +69,7 @@ $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "polar seeding south";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan rechts";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
@@ -93,7 +93,7 @@ $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "polar seeding north";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan runter";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
@@ -128,7 +128,7 @@ $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
 
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "equatorial";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lava Ende";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
