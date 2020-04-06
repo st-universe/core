@@ -17,7 +17,7 @@ $phases = 0;
 $ophases = 0;
 $uphases = 0;
 
-$vulkan = rand(5, 7);
+$vulkan = rand(10, 13);
 $magma = rand(5, 9);
 
 // Surface Phases
@@ -186,7 +186,7 @@ $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "902");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = array("0" => "902");
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 30;
 $phases++;
 
