@@ -2,7 +2,7 @@
 
 use Stu\PlanetGenerator\PlanetGenerator;
 
-$data[PlanetGenerator::COLGEN_DETAILS] = "Klasse X - Vulkanisch"";
+$data[PlanetGenerator::COLGEN_DETAILS] = "Klasse X - Vulkanisch";
 
 $data[PlanetGenerator::COLGEN_SIZEW] = 7;
 $data[PlanetGenerator::COLGEN_SIZEH] = 5;
@@ -152,15 +152,17 @@ $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 30;
 $phases++;
 
+
 return [
     $odata,
     $data,
     $udata,
-    $ophase,
     [],
-    [],
+    $phase,
+    $uphase,
     $ophases,
     $phases,
     $uphases,
     $hasground
 ];
+
