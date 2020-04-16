@@ -13,6 +13,10 @@ $data[PlanetGenerator::COLGEN_BASEFIELD] = 918;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
 $udata[PlanetGenerator::COLGEN_BASEFIELD] = 828;
 
+$phases = 0;
+$ophases = 0;
+$uphases = 0;
+
 $vulkan = rand(5, 7);
 
 // Surface Phases
@@ -147,8 +151,6 @@ $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = array("0" => "902");
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 30;
 $phases++;
-
-
 
 return [
     $odata,
