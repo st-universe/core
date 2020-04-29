@@ -571,8 +571,8 @@ class Colony implements ColonyInterface
         return (int)floor(
             min(
                 max(
-                    $this->getPositiveEffectPrimary() - (4 * max(0,
-                            $this->getNegativeEffect() - $this->getPositiveEffectSecondary())),
+                    2 + ($this->getPositiveEffectPrimary() - (4 * max(0,
+                            $this->getNegativeEffect() - $this->getPositiveEffectSecondary()))),
                     2
                 ),
                 $this->getWorkers()
