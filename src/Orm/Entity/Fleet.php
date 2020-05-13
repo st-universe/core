@@ -119,6 +119,9 @@ class Fleet implements FleetInterface
                     }
                     return $ship->getSx() === $leader->getSX() && $ship->getSy() === $leader->getSY();
                 }
+				if ($ship->getSystem() !== null) {
+                    return false;
+                }
                 return $ship->getCx() === $leader->getCX() && $ship->getCy() === $leader->getCY();
             }
         );
