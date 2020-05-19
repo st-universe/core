@@ -82,7 +82,16 @@ final class LoadWarpcore implements ActionControllerInterface
     public function loadWarpCore(ShipInterface $ship, int $count): ?int
     {
         $shipStorage = $ship->getStorage();
-        foreach ([CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER, CommodityTypeEnum::GOOD_DILITHIUM] as $commodityId) {
+        foreach ([CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER] as $commodityId) {
+            $storage = $shipStorage[$commodityId] ?? null;
+            if ($storage === null) {
+                return null;
+            }
+            if ($storage->getAmount() < ($count * 2)) {
+                $count = intval($storage->getAmount() / 2);
+            }
+        }
+        foreach ([CommodityTypeEnum::GOOD_DILITHIUM] as $commodityId) {
             $storage = $shipStorage[$commodityId] ?? null;
             if ($storage === null) {
                 return null;
