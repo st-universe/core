@@ -2,7 +2,7 @@
 
 use Stu\PlanetGenerator\PlanetGenerator;
 
-$data[PlanetGenerator::COLGEN_DETAILS] = "Klasse Q";
+$data[PlanetGenerator::COLGEN_DETAILS] = "Klasse Q Planet";
 
 $data[PlanetGenerator::COLGEN_SIZEW] = 10;
 $data[PlanetGenerator::COLGEN_SIZEH] = 6;
