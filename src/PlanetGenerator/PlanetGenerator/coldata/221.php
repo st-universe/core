@@ -187,7 +187,7 @@ $ophase[$ophases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lower Orbit";
 $ophase[$ophases][PlanetGenerator::COLGEN_NUM] = 10;
 $ophase[$ophases][PlanetGenerator::COLGEN_FROM] = array("0" => "900");
 $ophase[$ophases][PlanetGenerator::COLGEN_TO] = array("0" => "948");
-$ophase[$ophases][PlanetGenerator::COLGEN_ADJACENT] = array(900)
+$ophase[$ophases][PlanetGenerator::COLGEN_ADJACENT] = array(900);
 $ophase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
