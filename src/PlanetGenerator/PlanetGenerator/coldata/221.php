@@ -134,18 +134,6 @@ $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 1;
 $phases++;
 
-
-$phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
-$phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Fels";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 24;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "101");
-$phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "715");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
-$phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
-$phases++;
-
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Abstandshalter entfernen";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 24;
@@ -194,12 +182,12 @@ $phases++;
 
 // Orbit Phases
 
-$ophase[$ophases][PlanetGenerator::COLGEN_MODE] = "upper orbit";
+$ophase[$ophases][PlanetGenerator::COLGEN_MODE] = "below";
 $ophase[$ophases][PlanetGenerator::COLGEN_DESCRIPTION] = "Lower Orbit";
 $ophase[$ophases][PlanetGenerator::COLGEN_NUM] = 10;
 $ophase[$ophases][PlanetGenerator::COLGEN_FROM] = array("0" => "900");
 $ophase[$ophases][PlanetGenerator::COLGEN_TO] = array("0" => "948");
-$ophase[$ophases][PlanetGenerator::COLGEN_ADJACENT] = 0;
+$ophase[$ophases][PlanetGenerator::COLGEN_ADJACENT] = array(900)
 $ophase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
