@@ -148,7 +148,7 @@ $phases++;
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Abstandshalter entfernen";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 60;
-$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "201");
+$phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "101");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "940");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
@@ -191,14 +191,13 @@ $ophase[$ophases][PlanetGenerator::COLGEN_ADJACENT] = array(900);
 $ophase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
-$ophases++;
 
 
 return [
     $odata,
     $data,
     $udata,
-    [],
+    $ophase,
     $phase,
     [],
     $ophases,
