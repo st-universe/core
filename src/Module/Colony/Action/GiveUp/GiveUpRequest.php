@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\Action\Abandon;
+namespace Stu\Module\Colony\Action\GiveUp;
 
 use Stu\Lib\Request\CustomControllerHelperTrait;
 
-final class AbandonRequest implements AbandonRequestInterface
+final class GiveUpRequest implements GiveUpRequestInterface
 {
     use CustomControllerHelperTrait;
 

@@ -26,9 +26,7 @@ use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
 use Stu\Module\Control\GameController;
-use Stu\Module\Colony\Action\Abandon\Abandon;
-use Stu\Module\Colony\Action\Abandon\AbandonRequest;
-use Stu\Module\Colony\Action\Abandon\AbandonRequestInterface;
+
 use Stu\Module\Colony\Action\ActivateBuilding\ActivateBuilding;
 use Stu\Module\Colony\Action\ActivateBuildings\ActivateBuildings;
 use Stu\Module\Colony\Action\AllowImmigration\AllowImmigration;
@@ -46,6 +44,9 @@ use Stu\Module\Colony\Action\DeactivateBuilding\DeactivateBuilding;
 use Stu\Module\Colony\Action\DeactivateBuildings\DeactivateBuildings;
 use Stu\Module\Colony\Action\DeleteBuildPlan\DeleteBuildPlan;
 use Stu\Module\Colony\Action\DenyImmigration\DenyImmigration;
+use Stu\Module\Colony\Action\GiveUp\GiveUp;
+use Stu\Module\Colony\Action\GiveUp\GiveUpRequest;
+use Stu\Module\Colony\Action\GiveUp\GiveUpRequestInterface;
 use Stu\Module\Colony\Action\LandShip\LandShip;
 use Stu\Module\Colony\Action\ManageOrbitalShips\ManageOrbitalShips;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
@@ -107,6 +108,7 @@ use Stu\Module\Colony\View\ShowField\ShowFieldRequestInterface;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
+use Stu\Module\Colony\View\ShowGiveUp\ShowGiveUp;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequest;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequestInterface;
@@ -161,7 +163,7 @@ return [
     BuildingActionInterface::class => autowire(BuildingAction::class),
     ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
     ColonyLoaderInterface::class => autowire(ColonyLoader::class),
-    AbandonRequestInterface::class => autowire(AbandonRequest::class),
+    GiveUpRequestInterface::class => autowire(GiveUpRequest::class),
     ShowAcademyRequestInterface::class => autowire(ShowAcademyRequest::class),
     ShowAirfieldRequestInterface::class => autowire(ShowAirfieldRequest::class),
     ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),
@@ -193,7 +195,7 @@ return [
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
     ColonyCorrectorInterface::class => autowire(ColonyCorrector::class),
     'COLONY_ACTIONS' => [
-        Abandon::ACTION_IDENTIFIER => autowire(Abandon::class),
+        GiveUp::ACTION_IDENTIFIER => autowire(GiveUp::class),
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
         AllowImmigration::ACTION_IDENTIFIER => autowire(AllowImmigration::class),
         BeamFrom::ACTION_IDENTIFIER => autowire(BeamFrom::class),
@@ -256,5 +258,6 @@ return [
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
+        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
     ]
 ];

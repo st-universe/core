@@ -319,3 +319,8 @@ function cancelModuleQueueEntries(module_id) {
   );
   setTimeout('refreshColony()',250);
 }
+function showGiveUpWindow(target) {
+	elt = 'giveup';
+	openWindow(elt,1,300);
+	ajax_update(elt,'colony.php?id='+colonyid+'&SHOW_GIVEUP_AJAX=1&target='+target);
+}
