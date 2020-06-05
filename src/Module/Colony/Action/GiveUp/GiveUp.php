@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Colony\Action\Abandon;
+namespace Stu\Module\Colony\Action\GiveUp;
 
+use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
+//use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class Abandon implements ActionControllerInterface
+final class GiveUp implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_GIVEUP_COLONY';
 
-    private AbandonRequestInterface $abandonRequest;
+    private GiveUpRequestInterface $giveupRequest;
 
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -25,12 +27,12 @@ final class Abandon implements ActionControllerInterface
     private UserRepositoryInterface $userRepository;
 
     public function __construct(
-        AbandonRequestInterface $abandonRequest,
+        GiveUpRequestInterface $giveupRequest,
         ColonyRepositoryInterface $colonyRepository,
         ColonyResetterInterface $colonyResetter,
         UserRepositoryInterface $userRepository
     ) {
-        $this->abandonRequest = $abandonRequest;
+        $this->giveupRequest = $giveupRequest;
         $this->colonyRepository = $colonyRepository;
         $this->colonyResetter = $colonyResetter;
         $this->userRepository = $userRepository;
@@ -38,9 +40,18 @@ final class Abandon implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        //$game->setView(ShowShip::VIEW_IDENTIFIER);
+
         $user = $game->getUser();
         $userId = $user->getId();
-        $colony = $this->colonyRepository->find($this->abandonRequest->getColonyId());
+        $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
+
+        $code = trim(request::postString('giveupcode'));
+
+        if ($code !== substr(md5($colony->getName()), 0, 6)) {
+            $game->addInformation(_('Der Bestätigungscode war fehlerhaft'));
+            return;
+        }
 
         if ($colony === null || $colony->getUserId() !== $userId) {
             throw new AccessViolation();
@@ -57,6 +68,7 @@ final class Abandon implements ActionControllerInterface
         }
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
+        //$game->redirectTo('/colony.php');
     }
 
     public function performSessionCheck(): bool

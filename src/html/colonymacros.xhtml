@@ -720,11 +720,35 @@
       <div class="divhead">Kolonie aufgeben</div>
       <div class="divbody">
         <div class="fabutton_red">
-          <a href="colony.php?B_GIVEUP_COLONY=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}" class="fabutton fabutton_red">Kolonie aufgeben</a>
+          <a href="javascript:void(0);" onclick="showGiveUpWindow(${COLONY/getId});" class="fabutton fabutton_red">
+            Kolonie aufgeben
+          </a>
         </div>
       </div>
     </div>
   </metal:macro>
+</metal:block>
+<metal:block metal:define-macro="giveup">
+  <form action="colony.php" method="post">
+    <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
+    <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
+    <table class="tcal">
+      <tr>
+        <td colspan="2">Tippe folgenden Code in das Feld um die Kolonie-Aufgabe zu bestätigen.</td>
+      </tr>
+      <tr>
+        <td tal:content="GIVE_UP_CODE" style="text-align: center; color: Red;">CODE</td>
+        <td>
+          <input type="text" size="8" name="giveupcode" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" class="button" name="B_GIVEUP_COLONY" value="Bestätigen" />
+        </td>
+      </tr>
+    </table>
+  </form>
 </metal:block>
 <metal:block metal:define-macro="cm_modulefab">
   <metal:macro metal:use-macro="cm_modulefab_tabs" />
