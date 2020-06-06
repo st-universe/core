@@ -121,8 +121,8 @@ final class PlanetGenerator implements PlanetGeneratorInterface
             $res = $this->shadd($res, 704, "12");
             $res = $this->shadd($res, 705, "12");
             $res = $this->shadd($res, 706, "12");
-	    $res = $this->shadd($res, 902, "12");
         }
+
         if (($btype == self::BONUS_DEUTERIUM) || ($btype == self::BONUS_ANYRESOURCE)) {
             $res = $this->shadd($res, 201, "11");
             $res = $this->shadd($res, 210, "11");

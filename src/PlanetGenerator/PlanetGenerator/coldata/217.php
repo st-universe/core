@@ -4,9 +4,6 @@ use Stu\PlanetGenerator\PlanetGenerator;
 
 $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse X - Vulkanisch";
 
-$bonusdata = array(
-    PlanetGenerator::BONUS_ORE,
-);
 $data[PlanetGenerator::COLGEN_SIZEW] = 10;
 $data[PlanetGenerator::COLGEN_SIZEH] = 6;
 
