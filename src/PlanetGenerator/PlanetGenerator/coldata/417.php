@@ -155,7 +155,7 @@ $phases++;
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "normal";
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Vulkan erloschen - reiches Iridium Vorkommen";
-$phase[$phases][PlanetGenerator::COLGEN_NUM] = 2;
+$phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "918");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "90212");
 $phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
