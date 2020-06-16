@@ -83,12 +83,17 @@ final class PromotePlayer implements ActionControllerInterface
                     $allianceId,
                     AllianceEnum::ALLIANCE_JOBS_FOUNDER
                 );
-                if ($founderJob->getUserId() === $userId) {
+                if ($founderJob->getUserId() !== $userId) {
                     throw new AccessViolation();
                 }
                 $this->allianceActionManager->setJobForUser(
                     $allianceId,
                     $userId,
+                    AllianceEnum::ALLIANCE_JOBS_SUCCESSOR
+                );
+                $this->allianceActionManager->setJobForUser(
+                    $allianceId,
+                    $playerId,
                     AllianceEnum::ALLIANCE_JOBS_FOUNDER
                 );
                 $text = sprintf(
