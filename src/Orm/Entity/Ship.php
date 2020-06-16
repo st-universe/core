@@ -11,7 +11,6 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -1199,15 +1198,6 @@ class Ship implements ShipInterface
     public function canIntercept(): bool
     {
         return !$this->getTraktorMode();
-    }
-	
-	public function isOwnedByCurrentUser(): bool
-    {
-        global $container;
-        if ($container->get(GameControllerInterface::class)->getUser() !== $this->getUser()) {
-	        return false;
-        }
-        return true;
     }
 
     public function canLandOnCurrentColony(): bool

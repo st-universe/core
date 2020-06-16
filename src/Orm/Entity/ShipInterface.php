@@ -310,9 +310,7 @@ interface ShipInterface
 
     public function getShieldRegenerationRate(): int;
 
-    public function canIntercept(): bool;
-	
-	public function isOwnedByCurrentUser(): bool;
+    public function canIntercept(): bool;	
 
     public function canLandOnCurrentColony(): bool;
 
