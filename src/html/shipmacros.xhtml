@@ -159,11 +159,22 @@
       <div style="width: 100%; color: #404040;" tal:condition="SHIP/getCloakState">Tarnung aktiv</div>
     </td>
   </tal:block>
-  <td style="width: 200px; background-color: #000000 ! important;">
-    <metal:macro metal:use-macro="shipimage" />
-  </td>
-  <td> <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-	<span tal:content="structure bbcode:ship/getName">.</span></a></td>
+  <tal:block tal:condition="ship/isOwnedByCurrentUser">
+    <td style="width: 200px; background-color: #000000 !important;">
+      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><metal:macro metal:use-macro="shipimage" /></a>
+    </td>
+    <td>
+      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span tal:content="structure bbcode:ship/getName">.</span></a>
+    </td>
+  </tal:block>
+  <tal:block tal:condition="not:ship/isOwnedByCurrentUser">
+    <td style="width: 200px; background-color: #000000 !important;">
+      <metal:macro metal:use-macro="shipimage" />
+    </td>
+    <td>
+      <span tal:content="structure bbcode:ship/getName">.</span>
+    </td>
+  </tal:block>
   <tal:block tal:condition="not:ship/getRump/isTrumfield">
     <td style="width: 160px;">
       <span tal:replace="ship/getHuell"></span>/<span tal:replace="ship/getMaxHuell"></span>
