@@ -11,6 +11,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
