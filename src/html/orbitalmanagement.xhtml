@@ -25,19 +25,7 @@
               <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
               <img src="assets/ships/${ship/getRumpId}.gif" />
             </td>
-			<tal:block tal:condition="ship/isOwnedByCurrentUser">
-              <td>
-                <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-                  <span tal:content="structure bbcode:ship/getName">NAME</span>
-                </a>
-              </td>
-            </tal:block>
-            <tal:block tal:condition="not:ship/isOwnedByCurrentUser">
-              <td tal:content="structure bbcode:ship/getName">NAME</td>
-            </tal:block>
-            <tal:block tal:condition="ship/isDestroyed">
-              <td colspan="4"> </td>
-            </tal:block>
+	    <td tal:content="structure bbcode:ship/getName">NAME</td>
             <tal:block tal:condition="not:ship/isDestroyed">
               <td tal:condition="ship/ownedByUser">
                 <div tal:condition="ship/canMan">
