@@ -1199,6 +1199,15 @@ class Ship implements ShipInterface
     {
         return !$this->getTraktorMode();
     }
+	
+	public function isOwnedByCurrentUser(): bool
+    {
+        global $container;
+        if ($container->get(GameControllerInterface::class)->getUser() !== $this->getUser()) {
+	        return false;
+        }
+        return true;
+    }
 
     public function canLandOnCurrentColony(): bool
     {
