@@ -14,7 +14,9 @@ $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
     $container->get('ADMIN_ACTIONS'),
-    $container->get('ADMIN_VIEWS')
+    $container->get('ADMIN_VIEWS'),
+    true,
+    true
 );
 
 $em->commit();
