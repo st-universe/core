@@ -58,7 +58,7 @@ final class SendPassword implements ActionControllerInterface
         $mail = new Message();
         $mail->addTo($user->getEmail());
         $mail->setSubject(_('Star Trek Universe - Password vergessen'));
-        $mail->setFrom('automailer@stuniverse.de');
+        $mail->setFrom($this->config->get('game.email_sender_address'));
         $mail->setBody(
             sprintf("Hallo.\n\n
 Du bekommst diese eMail, da Du in Star Trek Universe ein neues Password angefordert hast. Solltest Du das nicht getan
