@@ -58,7 +58,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
 
     public function getFreeAmountByUser(int $userId): int
     {
-        return $this->getEntityManager()
+        return (int) $this->getEntityManager()
             ->createQuery(
                 sprintf(
                     'SELECT COUNT(c.id) FROM %s c WHERE c.user_id = :userId AND c.id NOT IN (

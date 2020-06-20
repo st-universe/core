@@ -63,7 +63,6 @@ final class ResetPassword implements ActionControllerInterface
         Hallo.\n\n
         Du kannst Dich ab sofort mit folgendem Passwort in Star Trek Universe einloggen: %s\n\n
         Das Star Trek Universe Team\n
-
         %s,
         EOT;
 

@@ -46,11 +46,18 @@ final class BuildingAction implements BuildingActionInterface
             return;
         }
         if ($field->hasHighDamage()) {
-            $game->addInformation("Das Gebäude kann aufgrund zu starker Beschädigung nicht aktiviert werden");
+            $game->addInformationf(
+                _('Das Gebäude (%s) kann aufgrund zu starker Beschädigung nicht aktiviert werden'),
+                $field->getBuilding()->getName()
+            );
             return;
         }
         if ($colony->getWorkless() < $field->getBuilding()->getWorkers()) {
-            $game->addInformation("Zum aktivieren des Gebäudes werden " . $field->getBuilding()->getWorkers() . " Arbeiter benötigt");
+            $game->addInformationf(
+                _('Zum Aktivieren des Gebäudes (%s) werden %s Arbeiter benötigt'),
+                $field->getBuilding()->getName(),
+                $field->getBuilding()->getWorkers()
+            );
             return;
         }
 
