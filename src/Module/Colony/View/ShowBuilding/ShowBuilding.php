@@ -76,16 +76,19 @@ final class ShowBuilding implements ViewControllerInterface
                 $buildingcount = 0;
             }
         }
-        if (
-            $building->hasLimitColony() &&
-            $this->planetFieldRepository->getCountByColonyAndBuilding($colony->getId(), $building->getId()) >= $building->getLimitColony()
-        ) {
-            $buildingcount = 0;
+        if ($building->hasLimitColony()) {
+            if($this->planetFieldRepository->getCountByColonyAndBuilding($colony->getId(), $building->getId()) >= $building->getLimitColony()) {
+                $buildingcount = 0;
+            } else {
+                $buildingcount = min($buildingcount, $building->getLimitColony());
+            }
         }
-        if ($building->hasLimit() && 
-            $this->planetFieldRepository->getCountByBuildingAndUser($building->getId(), $userId) >= $building->getLimit()
-        ) {
-            $buildingcount = 0;
+        if ($building->hasLimit()) {
+            if($this->planetFieldRepository->getCountByBuildingAndUser($building->getId(), $userId) >= $building->getLimit()) {
+                $buildingcount = 0;
+            } else {
+                $buildingcount = min($buildingcount, $building->getLimit());
+            }
         }
         if($buildingcount < 0) {
             $buildingcount = 0;
