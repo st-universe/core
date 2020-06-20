@@ -30,7 +30,7 @@ use Stu\Module\Api\V1\Player\Research\GetResearch;
 use Stu\Module\Api\V1\Player\Research\ResearchList;
 use Stu\Module\Api\V1\Player\Research\StartResearch;
 
-require_once __DIR__ . '/Config/Bootstrap.php';
+require_once __DIR__ . '/../Config/Bootstrap.php';
 
 $app = AppFactory::create(
     new ReponseFactory(),

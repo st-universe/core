@@ -395,13 +395,19 @@ final class GameController implements GameControllerInterface
         return $string;
     }
 
-    public function main(array $actions, array $views, bool $session_check = true): void
+    public function main(array $actions, array $views, bool $session_check = true, bool $admin_check = false): void
     {
         try {
             $this->session->createSession($session_check);
 
             if ($session_check === false) {
                 $this->session->checkLoginCookie();
+            }
+
+            if ($admin_check === true) {
+                if (!$this->getUser()->isAdmin()) {
+                    header('Location: /');
+                }
             }
 
             if ($this->getUser() !== null) {

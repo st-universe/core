@@ -4,7 +4,7 @@
 		<tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
     <div class="userList">
       <tal:block tal:repeat="user LIST">
-        <div class="userListItem" tal:define="data user/getUserName">
+        <div class="userListItem" tal:define="data user/getUser">
           <div>
             <a href="/userprofile.php?uid=${data/getId}">
               <img class="userListItemImage" tal:attributes="src data/getFullAvatarPath"/>

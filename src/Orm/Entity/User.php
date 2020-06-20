@@ -577,4 +577,11 @@ class User implements UserInterface
     public function isNpc(): bool {
         return $this->getId() < 100;
     }
+
+    public function isAdmin(): bool {
+        // @todo refactor
+        global $container;
+        return in_array($this->getId(),  $container->get(ConfigInterface::class)->get('game.admins'));
+    }
+
 }
