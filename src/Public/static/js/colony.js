@@ -122,6 +122,8 @@ function buildOnField(field) {
         parameters: 'id='+colonyid+'&B_BUILD=1&fid='+field+'&bid='+selectedbuilding,
         evalScripts: true,
         onComplete: function(transport) {
+			var counter = document.getElementById("counter");
+			counter.innerHTML = Math.max((counter.innerText - 1), 0);
             $('result').show();
         }
     });
