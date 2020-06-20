@@ -177,7 +177,7 @@ if ($rumpId !== 0) {
             printf(
                 '<a href="?userId=%d">%s</a><br />',
                 $user->getId(),
-                $user->getUserName()
+                $user->getUser()
             );
         }
     }
