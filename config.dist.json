@@ -51,7 +51,7 @@
     },
     "registration_enabled": false,
     "email_sender_address": "some@e.mail",
-    "admins": [101],
+    "admins": [101, 102],
     "admin": {
       "id": 101,
       "username": "adminuser",
