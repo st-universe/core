@@ -23,7 +23,7 @@
           <tr tal:repeat="ship fleet/getShips" tal:attributes="class string:row${repeat/ship/odd}">
             <td>
               <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
-              <img src="assets/ships/${ship/getRumpId}.gif" />
+              <img src="assets/ships/${ship/getRumpId}.png" />
             </td>
 	    <td tal:content="structure bbcode:ship/getName">NAME</td>
             <tal:block tal:condition="not:ship/isDestroyed">
