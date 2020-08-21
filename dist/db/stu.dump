@@ -155497,15 +155497,15 @@ COPY public.stu_trade_transfers (id, posts_id, user_id, count, date) FROM stdin;
 --
 
 COPY public.stu_user (id, username, login, pass, email, allys_id, race, aktiv, propic, email_notification, lastaction, creation, kn_lez, delmark, vac_active, storage_notification, description, show_online_status, save_login, tick, maptype, sessiondata, password_token) FROM stdin;
-10	Vereinte Föderation der Planeten	föderation	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m	npc@stuniverse.de	1	1	1		f	1597654723	1248036351	166	0	f	f		f	f	1	2	a:1:{s:12:"hiddenfleets";a:1:{i:51;i:1;}}	
-13	Cardassianische Union	cardassianer	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m	npc@stuniverse.de	\N	4	1		f	1586021147	1248036351	0	0	f	f		f	f	1	1		
+10	Vereinte Föderation der Planeten	föderation	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO	npc@stuniverse.de	1	1	1		f	1597654723	1248036351	166	0	f	f		f	f	1	2	a:1:{s:12:"hiddenfleets";a:1:{i:51;i:1;}}	
+13	Cardassianische Union	cardassianer	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO	npc@stuniverse.de	\N	4	1		f	1586021147	1248036351	0	0	f	f		f	f	1	1		
 15	[b][color=552222]Pakled[/color][/b] (NPC)	pakled	$2y$10$DmzXWYANec1AuT.Izfh.TODQiv86uW3KDORLy1skDpGBxs8JP4FwO	npc@stuniverse.de	\N	6	2	3c1f6573cf3b4e0341840d11950e715b	f	1597233427	1248036351	149	0	f	f		f	f	1	1	a:1:{s:12:"hiddenfleets";a:0:{}}	
-1	Niemand	niemand	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m		\N	9	1		f	1580986051	1248036351	0	0	f	f		f	f	1	1		
-2	Handelsallianz	handelsallianz	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m		\N	1	1		f	2006	1248036351	0	0	f	f		f	f	1	1		
-3	Test	tester	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m		\N	1	1		f	2005	1248036351	0	0	f	f		f	f	1	1		
-14	Ferengi Allianz	ferengi	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m	npc@stuniverse.de	\N	5	1		f	1597265229	1248036351	119	0	f	f		f	f	1	1		
-12	Klingonisches Imperium	klingonen	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m	npc@stuniverse.de	3	3	1		f	1597654756	1248036351	24	0	f	f		f	f	1	1		
-11	Romulanisches Sternenimperium	romulaner	$2y$10$sypDQEBUSFq.mv4gAdqW2e13uxXew4d.kfO/8p86dBbEkwbM0DP4m	npc@stuniverse.de	2	2	1		f	1597441343	1248036351	37	0	f	f		f	f	1	1		
+1	Niemand	niemand	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO		\N	9	1		f	1580986051	1248036351	0	0	f	f		f	f	1	1		
+2	Handelsallianz	handelsallianz	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO		\N	1	1		f	2006	1248036351	0	0	f	f		f	f	1	1		
+3	Test	tester	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO		\N	1	1		f	2005	1248036351	0	0	f	f		f	f	1	1		
+14	Ferengi Allianz	ferengi	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO	npc@stuniverse.de	\N	5	1		f	1597265229	1248036351	119	0	f	f		f	f	1	1		
+12	Klingonisches Imperium	klingonen	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO	npc@stuniverse.de	3	3	1		f	1597654756	1248036351	24	0	f	f		f	f	1	1		
+11	Romulanisches Sternenimperium	romulaner	$2y$10$gsFXhwhuxUSmUm.rsnnycu/u.SUkyTquK/ZhKroJHE7P0TCGGtHuO	npc@stuniverse.de	2	2	1		f	1597441343	1248036351	37	0	f	f		f	f	1	1		
 \.
 
 
