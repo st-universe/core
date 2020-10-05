@@ -1006,7 +1006,7 @@
   </div>
 </metal:macro>
 <metal:macro metal:define-macro="fieldaction">
-  <table class="use" style="width: 550px;">
+  <table class="use" style="width: 600px;">
     <tr>
       <td>
         <div style="width: 100%;" tal:condition="FIELD/isInConstruction">
@@ -1119,7 +1119,7 @@
           <br />
         </div>
       </td>
-      <td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 150px; vertical-align: top;">
+      <td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 200px; vertical-align: top;">
         <div tal:condition="FIELD/getPossibleUpgrades">
           <div tal:repeat="data FIELD/getPossibleUpgrades">
             <table class="tcal">
@@ -1127,21 +1127,20 @@
                 <th tal:content="data/getDescription" colspan="4">DESCRIPTION</th>
               </tr>
               <tr>
-                <td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
+                <td style="width: 50px; height: 45px; text-align: center; vertical-align: middle">
                   <img src="assets/generated/buildings/${FIELD/getBuilding/getId}/0at.png" />
                 </td>
                 <td style="text-align: center; vertical-align: middle">
                   =&gt;
                 </td>
-                <td style="width: 45px; height: 45px; text-align: center; vertical-align: middle">
+                <td style="width: 50px; height: 45px; text-align: center; vertical-align: middle">
                   <img src="assets/generated/buildings/${data/getUpgradeToBuildingId}/0at.png" />
                 </td>
-                <td style="vertical-align: left; width: 110px;">
+                <td style="vertical-align: top; width: 100px;">
                   <strong>Kosten</strong><br />
                   <img src="assets/buttons/e_trans2.gif" title="Energie" /> ${data/getBuilding/getEpsCost}
                   <div tal:repeat="cost data/getUpgradeCosts">
-                    <img src="assets/goods/${cost/getGoodId}.gif" tal:attributes="title cost/getGood/getName"/>
-		    <span tal:replace="cost/getAmount">CNT</span>
+                    <img src="assets/goods/${cost/getGoodId}.gif" tal:attributes="title cost/getGood/getName"/> <span tal:replace="cost/getAmount">CNT</span>
                   </div>
                 </td>
               </tr>
