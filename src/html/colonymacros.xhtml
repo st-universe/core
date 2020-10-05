@@ -1140,7 +1140,8 @@
                   <strong>Kosten</strong><br />
                   <img src="assets/buttons/e_trans2.gif" title="Energie" /> ${data/getBuilding/getEpsCost}
                   <div tal:repeat="cost data/getUpgradeCosts">
-                    <img src="assets/goods/${cost/getGoodId}.gif" tal:attributes="title cost/getGood/getName" /> ${cost/getAmount}
+                    <img src="assets/goods/${cost/getGoodId}.gif" tal:attributes="title cost/getGood/getName"/>
+		    <span tal:replace="cost/getAmount">CNT</span>
                   </div>
                 </td>
               </tr>
