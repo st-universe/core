@@ -1006,7 +1006,7 @@
   </div>
 </metal:macro>
 <metal:macro metal:define-macro="fieldaction">
-  <table class="use" style="width: 500px;">
+  <table class="use" style="width: 550px;">
     <tr>
       <td>
         <div style="width: 100%;" tal:condition="FIELD/isInConstruction">
@@ -1119,7 +1119,7 @@
           <br />
         </div>
       </td>
-      <td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 125px; vertical-align: top;">
+      <td rowspan="2" tal:condition="FIELD/hasUpgradeOrTerraformingOption" style="width: 150px; vertical-align: top;">
         <div tal:condition="FIELD/getPossibleUpgrades">
           <div tal:repeat="data FIELD/getPossibleUpgrades">
             <table class="tcal">
