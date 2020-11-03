@@ -81,7 +81,7 @@
 				</tr>
 				<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data RPG_PLOTS">
 					<td>
-						<a href="comm.php?SHOW_PLOT=1&plotid=${data/getId}" tal:content="structure data/getRpgPlot/getTitle">NAME</a>
+						<a href="comm.php?SHOW_PLOT=1&plotid=${PLOT/getId}" tal:content="structure data/getRpgPlot/getTitle">NAME</a>
 					</td>
 				</tr>
 			</table>
