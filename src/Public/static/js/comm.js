@@ -87,19 +87,6 @@ function updateRecipient() {
 	}
 }
 
-function switchToPlotSelector() {
-	$('writekntitle').className = 'nselected';
-	$('writeknplot').className = 'selected';
-	$('writekntitleinput').hide();
-	$('writeknplotselect').show();
-}
-
-function switchToTitleInput() {
-	$('writekntitle').className = 'selected';
-	$('writeknplot').className = 'nselected';
-	$('writekntitleinput').show();
-	$('writeknplotselect').hide();
-}
 function showKnComments(postingId) {
 	elt = 'kncomments';
 	openWindow(elt,1,450);
