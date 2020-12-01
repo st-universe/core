@@ -998,15 +998,7 @@ class Ship implements ShipInterface
 
     public function getStorage(): Collection
     {
-        return usort(
-            $this->storage->getValues(),
-            function (ShipStorageInterface $a, ShipStorageInterface $b) {
-                if ($a == $b) {
-                    return 0;
-                }
-                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
-            }
-        );
+        return $this->storage;
     }
 
     public function getStorageSum(): int
