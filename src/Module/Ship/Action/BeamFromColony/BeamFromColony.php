@@ -125,8 +125,11 @@ final class BeamFromColony implements ActionControllerInterface
             if ($count > $good->getAmount()) {
                 $count = (int) $good->getAmount();
             }
-            if (ceil($count / $good->getGood()->getTransferCount()) > $ship->getEps()) {
-                $count = $ship->getEps() * $good->getGood()->getTransferCount();
+
+            $transferAmount = $good->getGood()->getTransferCount() * $ship->getBeamFactor();
+
+            if (ceil($count / $transferAmount) > $ship->getEps()) {
+                $count = $ship->getEps() * $transferAmount;
             }
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
@@ -138,7 +141,7 @@ final class BeamFromColony implements ActionControllerInterface
                 _('%d %s (Energieverbrauch: %d)'),
                 $count,
                 $good->getGood()->getName(),
-                ceil($count / $good->getGood()->getTransferCount())
+                ceil($count / $transferAmount)
             );
 
             $count = (int) $count;
@@ -146,7 +149,7 @@ final class BeamFromColony implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage($target, $good->getGood(), $count);
             $this->shipStorageManager->upperStorage($ship, $good->getGood(), $count);
 
-            $ship->setEps($ship->getEps() - (int)ceil($count / $good->getGood()->getTransferCount()));
+            $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
         }
         if ($target->getUserId() != $ship->getUserId()) {
             $game->sendInformation($target->getUserId(), $ship->getUserId(),

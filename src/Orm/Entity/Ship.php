@@ -1033,6 +1033,11 @@ class Ship implements ShipInterface
     {
         return $this->getRump()->getStorage();
     }
+    
+    public function getBeamFactor(): int
+    {
+        return $this->getRump()->getBeamFactor();
+    }
 
     public function getSectorString(): string
     {
