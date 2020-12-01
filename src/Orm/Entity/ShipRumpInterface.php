@@ -62,7 +62,7 @@ interface ShipRumpInterface
 
     public function getBeamFactor(): int;
 
-    public function setBeamFactor(int $beamFactor): ShipRumpInterface;
+    public function setBeamFactor(int $beamFactor): int;
 
     public function getPhaserVolleys(): int;
 
