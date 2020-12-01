@@ -996,9 +996,9 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getStorage(): Collection
+    public function getSortedStorage(): array;
     {
-        $array = $this->storage->getValues();
+        $array = $this->getStorage()->getValues();
 
         usort(
             $array,
@@ -1010,7 +1010,12 @@ class Ship implements ShipInterface
             }
         );
 
-        return $array;
+        return array_values($array);
+    }
+
+    public function getStorage(): Collection
+    {
+        return $this->storage;
     }
 
     public function getStorageSum(): int
