@@ -68,55 +68,55 @@ class ShipRump implements ShipRumpInterface
     private $base_torpedo_storage = 0;
     
     /** @column(type="smallint") * */
+    private $beam_factor = 0;
+
+    /** @column(type="smallint") * */
     private $phaser_volleys = 0;
-    
+
     /** @column(type="smallint") * */
     private $phaser_hull_damage_factor = 0;
-    
+
     /** @column(type="smallint") * */
     private $phaser_shield_damage_factor = 0;
-    
+
     /** @column(type="smallint") * */
     private $torpedo_level = 0;
-    
+
     /** @column(type="smallint") * */
     private $torpedo_volleys = 0;
-    
+
     /** @Column(type="string") */
     private $name = '';
-    
+
     /** @Column(type="boolean") */
     private $is_buildable;
-    
+
     /** @Column(type="boolean") */
     private $is_npc;
-    
+
     /** @column(type="smallint") * */
     private $eps_cost = 0;
-    
+
     /** @column(type="smallint") * */
     private $storage = 0;
-    
+
     /** @column(type="smallint") * */
     private $slots = 0;
-    
+
     /** @column(type="integer") * */
     private $buildtime = 0;
-    
+
     /** @column(type="smallint") * */
     private $sort = 0;
-    
+
     /** @column(type="integer", nullable=true) * */
     private $database_id = 0;
-    
+
     /** @column(type="integer", nullable=true) * */
     private $good_id = 0;
-    
+
     /** @column(type="smallint") * */
     private $flight_ecost = 0;
-    
-    /** @column(type="smallint") * */
-    private $beam_factor = 0;
 
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
@@ -311,7 +311,7 @@ class ShipRump implements ShipRumpInterface
         return $this->beam_factor;
     }
 
-    public function setBeamFactor(int $beamFactor): ShipRumpInterface
+    public function setBeamFactor(int $beamFactor): int
     {
         $this->beam_factor = $beamFactor;
         return $this;
