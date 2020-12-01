@@ -358,13 +358,15 @@ class Colony implements ColonyInterface
      */
     public function getBeamableStorage(): array
     {
-        return usort( 
-            array_filter(
-                $this->getStorage()->getValues(),
-                function (ColonyStorageInterface $storage): bool {
-                    return $storage->getCommodity()->isBeamable() === true;
-                }
-            ),
+        $filteredArray = array_filter(
+            $this->getStorage()->getValues(),
+            function (ColonyStorageInterface $storage): bool {
+                return $storage->getCommodity()->isBeamable() === true;
+            }
+        );
+
+        usort(
+            $filteredArray,
             function (ColonyStorageInterface $a, ColonyStorageInterface $b): int {
                 if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
                     return 0;
@@ -372,6 +374,8 @@ class Colony implements ColonyInterface
                 return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
             }
         );
+
+        return $filteredArray;
     }
 
     public function getStorage(): Collection
