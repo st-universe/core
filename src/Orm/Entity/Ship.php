@@ -1000,8 +1000,8 @@ class Ship implements ShipInterface
     {
         return usort(
             $this->storage->getValues(),
-            function (ShipStorageInterface $a, ShipStorageInterface $b) {
-                if ($a == $b) {
+            function (ShipStorageInterface $a, ShipStorageInterface $b): int {
+                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
                     return 0;
                 }
                 return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
