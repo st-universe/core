@@ -60,10 +60,6 @@ interface ShipRumpInterface
 
     public function setBaseTorpedoStorage(int $baseTorpedoStorage): ShipRumpInterface;
 
-    public function getBeamFactor(): int;
-
-    public function setBeamFactor(int $beamFactor): int;
-
     public function getPhaserVolleys(): int;
 
     public function setPhaserVolleys(int $phaserVolleys): ShipRumpInterface;
