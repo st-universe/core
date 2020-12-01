@@ -133,7 +133,7 @@ final class BeamToColony implements ActionControllerInterface
             }
             $count = min($count, $storage->getAmount());
 
-            $transferAmount = $commodity->getTransferCount();
+            $transferAmount = $commodity->getTransferCount() * $ship->getBeamFactor();
 
             if (ceil($count / $transferAmount) > $ship->getEps()) {
                 $count = $ship->getEps() * $transferAmount;

@@ -260,6 +260,8 @@ interface ShipInterface
     public function getStorageSum(): int;
 
     public function getMaxStorage(): int;
+    
+    public function getBeamFactor(): int;
 
     public function getSectorString(): string;
 
