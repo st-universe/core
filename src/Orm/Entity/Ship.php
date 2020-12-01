@@ -996,7 +996,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getSortedStorage(): array;
+    public function getSortedStorage(): array
     {
         $array = $this->getStorage()->getValues();
 
