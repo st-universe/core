@@ -365,8 +365,8 @@ class Colony implements ColonyInterface
                     return $storage->getCommodity()->isBeamable() === true;
                 }
             ),
-            function (ColonyStorageInterface $a, ColonyStorageInterface $b): int {
-                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
+            function (ColonyStorageInterface $a, ColonyStorageInterface $b) {
+                if ($a == $b) {
                     return 0;
                 }
                 return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
