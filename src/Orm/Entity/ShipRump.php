@@ -66,9 +66,6 @@ class ShipRump implements ShipRumpInterface
 
     /** @column(type="smallint") * */
     private $base_torpedo_storage = 0;
-    
-    /** @column(type="smallint") * */
-    private $beam_factor = 0;
 
     /** @column(type="smallint") * */
     private $phaser_volleys = 0;
@@ -306,17 +303,6 @@ class ShipRump implements ShipRumpInterface
         return $this;
     }
 
-    public function getBeamFactor(): int;
-    {
-        return $this->beam_factor;
-    }
-
-    public function setBeamFactor(int $beamFactor): int;
-    {
-        $this->beam_factor = $beamFactor;
-        return $this;
-    }
-    
     public function getPhaserVolleys(): int
     {
         return $this->phaser_volleys;
