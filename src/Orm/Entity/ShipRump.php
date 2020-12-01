@@ -306,12 +306,12 @@ class ShipRump implements ShipRumpInterface
         return $this;
     }
 
-    public function getBeamFactor(): int;
+    public function getBeamFactor(): int
     {
         return $this->beam_factor;
     }
 
-    public function setBeamFactor(int $beamFactor): int;
+    public function setBeamFactor(int $beamFactor): int
     {
         $this->beam_factor = $beamFactor;
         return $this;
