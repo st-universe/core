@@ -471,7 +471,7 @@
       </tr>
       <tr>
         <td style="width: 100%;">
-          <tal:block tal:condition="targetColony/getStorage" tal:repeat="good targetColony/getBeamableStorage">
+          <tal:block tal:condition="targetColony/getBeamableStorage" tal:repeat="good targetColony/getBeamableStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
               <metal:macro
