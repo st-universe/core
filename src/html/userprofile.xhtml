@@ -12,20 +12,25 @@
 					<table style="width: 100%;" cellpadding="0" cellspacing="0">
 						<tr>
 							<td style="text-align: center; width: 6%">
-								<metal:block metal:use-macro="html/macros.xhtml/pmwindow" tal:define="id PROFILE/getId" />
+								<metal:block metal:use-macro="html/macros.xhtml/pmwindow"
+									tal:define="id PROFILE/getId" />
 							</td>
 							<td style="text-align: center; width: 47%">
 								<tal:block tal:define="contact CONTACT; handle THIS/getUniqId">
 									<tal:block tal:condition="contact">
 										<span tal:attributes="id handle">
-											<metal:macro tal:define="div handle" metal:use-macro="html/commmacros.xhtml/clmodeview" />
+											<metal:macro tal:define="div handle"
+												metal:use-macro="html/commmacros.xhtml/clmodeview" />
 										</span>
 									</tal:block>
-									<tal:block tal:condition="not:contact" tal:define="divname string:selector_${handle};div handle; userid PROFILE/getId" metal:use-macro="html/macros.xhtml/contactbutton" />
+									<tal:block tal:condition="not:contact"
+										tal:define="divname string:selector_${handle};div handle; userid PROFILE/getId"
+										metal:use-macro="html/macros.xhtml/contactbutton" />
 								</tal:block>
 							</td>
 							<td style="text-align: center; width: 47%">
-								<metal:macro metal:use-macro="html/macros.xhtml/ignorebutton" tal:define="div string:ignore; userid PROFILE/getId" />
+								<metal:macro metal:use-macro="html/macros.xhtml/ignorebutton"
+									tal:define="div string:ignore; userid PROFILE/getId" />
 							</td>
 						</tr>
 					</table>
@@ -43,7 +48,8 @@
 				<tal:block tal:condition="PROFILE/getAllianceId">
 					<div class="divhead">Allianz</div>
 					<div class="divbody">
-						<a href="alliance.php?SHOW_ALLIANCE=1&id=${PROFILE/getAllianceId}" tal:content="structure bbcode:PROFILE/getAlliance/getName">ALLIANZ</a>
+						<a href="alliance.php?SHOW_ALLIANCE=1&id=${PROFILE/getAllianceId}"
+							tal:content="structure bbcode:PROFILE/getAlliance/getName">ALLIANZ</a>
 					</div>
 				</tal:block>
 				<br />
@@ -58,8 +64,12 @@
 				</tr>
 				<tr>
 					<td>
-						<div tal:condition="not:PROFILE/getFriends" class="darkbg" style="text-align: center;">Keine</div>
-						<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends" tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime" tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName" title="runtime" style="width: 55px; height: 55px;" /></a>
+						<div tal:condition="not:PROFILE/getFriends" class="darkbg" style="text-align: center;">Keine
+						</div>
+						<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends"
+							tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime"
+								tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
+								title="runtime" style="width: 55px; height: 55px;" /></a>
 					</td>
 				</tr>
 			</table>
@@ -68,7 +78,8 @@
 		<br />
 		<tal:block tal:condition="PROFILE/getDescription">
 			<div class="divhead" style="width: 530px;">Beschreibung</div>
-			<div class="divbody" style="width: 530px; word-wrap: break-word;" tal:content="structure nl2br:bbcode2txt:PROFILE/getDescription">DESCRIPTION</div>
+			<div class="divbody" style="width: 530px; word-wrap: break-word;"
+				tal:content="structure nl2br:bbcode2txt:PROFILE/getDescription">DESCRIPTION</div>
 			<br />
 		</tal:block>
 		<div style="width: 530px;">
@@ -81,11 +92,13 @@
 				</tr>
 				<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data RPG_PLOTS">
 					<td>
-						<a href="comm.php?SHOW_PLOT=1&plotid=${data/getId}" tal:content="structure data/getRpgPlot/getTitle">NAME</a>
+						<a href="comm.php?SHOW_PLOT=1&plotid=${data/getPlotId}"
+							tal:content="structure data/getRpgPlot/getTitle">NAME</a>
 					</td>
 				</tr>
 			</table>
 		</div>
 	</tal:block>
 </tal:block>
+
 </html>
