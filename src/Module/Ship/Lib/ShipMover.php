@@ -449,24 +449,25 @@ final class ShipMover implements ShipMoverInterface
                 foreach ($shipsOnLocation as $shipOnLocation) {
                     $this->addInformation("Schiff mit ID " . $shipOnLocation->getId());
                     
-                    $fleetId = $shipOnLocation->getFleetId();
+                    $fleet = $shipOnLocation->getFleet();
                     
-                    if ($fleedId === null) {
+                    if ($fleet === null) {
+                        $this->addInformation(" Schiff nicht in Flotte");
                         if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
                             $singleShipCount++;
-                            $this->addInformation("Einzelschiff mit AR");
+                            $this->addInformation("  Einzelschiff mit AR");
                         }
                     }
                     else {
-                        $this->addInformation("fleetId ungleich null");
-                        $fleet = $fleetIds[$fleetId] ?? null;
-                        if ($fleet === null) {
-                            $this->addInformation("unbekannte Flotte");
-                            if ($shipOnLocation->getFleet()->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                                $this->addInformation("Flotte mit AR");
+                        $this->addInformation(" fleet ungleich null");
+                        $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
+                        if ($fleetIdEintrag === null) {
+                            $this->addInformation("  unbekannte Flotte");
+                            if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                                $this->addInformation("   Flotte mit AR");
                                 $fleetCount++;
                             }
-                            $fleetIds[$fleetId] = [];
+                            $fleetIds[$fleet->getId()] = [];
                         }
                     }
                 }
