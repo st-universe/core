@@ -446,16 +446,18 @@ final class ShipMover implements ShipMoverInterface
                 $fleetCount = 0;
                 $singleShipCount = 0;
 
-                foreach ($shipsOnLocation as $ship) {
-                    $fleetId = $ship->getFleetId();
+                foreach ($shipsOnLocation as $shipOnLocation) {
+                    $this->addInformation("Schiff mit ID " . $shipOnLocation->getId());
+
+                    $fleetId = $shipOnLocation->getFleetId();
         
-                    if ($fleedId === null && $ship->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                    if ($fleedId === null && $shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
                         $singleShipCount++;
                     }
                     else {
                         $fleet = $fleetIds[$fleetId] ?? null;
                         if ($fleet === null) {
-                            if ($ship->getFleet()->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                            if ($shipOnLocation->getFleet()->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
                                 $fleetCount++;
                             }
                             $fleetIds[$fleetId] = [];
@@ -463,8 +465,12 @@ final class ShipMover implements ShipMoverInterface
                     }
                 }
 
-                $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $fleetCount . " Flotte(n) auf Alarm-Rot!");
-                $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
+                if ($fleetCount > 0) {
+                    $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $fleetCount . " Flotte(n) auf Alarm-Rot!");
+                }
+                if ($singleShipCount > 0) {
+                    $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
+                }
             }
         }
 
