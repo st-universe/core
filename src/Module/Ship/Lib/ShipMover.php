@@ -448,18 +448,22 @@ final class ShipMover implements ShipMoverInterface
 
                 foreach ($shipsOnLocation as $shipOnLocation) {
                     $this->addInformation("Schiff mit ID " . $shipOnLocation->getId());
-
+                    
                     $fleetId = $shipOnLocation->getFleetId();
-        
+                    
                     if ($fleedId === null) {
                         if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
                             $singleShipCount++;
+                            $this->addInformation("Einzelschiff mit AR");
                         }
                     }
                     else {
+                        $this->addInformation("fleetId ungleich null");
                         $fleet = $fleetIds[$fleetId] ?? null;
                         if ($fleet === null) {
+                            $this->addInformation("unbekannte Flotte");
                             if ($shipOnLocation->getFleet()->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                                $this->addInformation("Flotte mit AR");
                                 $fleetCount++;
                             }
                             $fleetIds[$fleetId] = [];
