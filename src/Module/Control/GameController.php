@@ -449,8 +449,7 @@ final class GameController implements GameControllerInterface
         } catch (StuException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            //if ($this->config->get('debug.debug_mode') === true) {
-            if (true === true) {
+            if ($this->config->get('debug.debug_mode') === true) {
                 throw $e;
             }
             $this->setTemplateFile('html/error.html');
