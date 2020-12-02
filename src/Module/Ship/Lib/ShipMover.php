@@ -469,13 +469,13 @@ final class ShipMover implements ShipMoverInterface
                 if ($fleetCount == 1) {
                     $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befindet sich " . $fleetCount . " Flotte auf Alarm-Rot!");
                 }
-                if ($fleetCount >= 1) {
+                if ($fleetCount > 1) {
                     $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $fleetCount . " Flotten auf Alarm-Rot!");
                 }
                 if ($singleShipCount == 1) {
                     $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befindet sich " . $singleShipCount . " Einzelschiff auf Alarm-Rot!");
                 }
-                if ($singleShipCount >= 1) {
+                if ($singleShipCount > 1) {
                     $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
                 }
             }
