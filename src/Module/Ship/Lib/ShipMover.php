@@ -451,8 +451,10 @@ final class ShipMover implements ShipMoverInterface
 
                     $fleetId = $shipOnLocation->getFleetId();
         
-                    if ($fleedId === null && $shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                        $singleShipCount++;
+                    if ($fleedId === null) {
+                        if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                            $singleShipCount++;
+                        }
                     }
                     else {
                         $fleet = $fleetIds[$fleetId] ?? null;
