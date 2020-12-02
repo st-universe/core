@@ -438,7 +438,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             //Alarm-Rot Meldungen
-            if ($ship->getId() == 2171 && $ship === $leadShip && $ship->getSystem() !== null && !$ship->isOverSystem()) {
+            if ($ship === $leadShip && $ship->getSystem() !== null && !$ship->isOverSystem()) {
                 $starSystem = $ship->getSystem();
                 $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $ship->getPosX(), $ship->getPosY());
 
@@ -447,24 +447,18 @@ final class ShipMover implements ShipMoverInterface
                 $singleShipCount = 0;
 
                 foreach ($shipsOnLocation as $shipOnLocation) {
-                    $this->addInformation("Schiff mit ID " . $shipOnLocation->getId());
                     
                     $fleet = $shipOnLocation->getFleet();
                     
                     if ($fleet === null) {
-                        $this->addInformation(" Schiff nicht in Flotte");
                         if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
                             $singleShipCount++;
-                            $this->addInformation("  Einzelschiff mit AR");
                         }
                     }
                     else {
-                        $this->addInformation(" fleet ungleich null");
                         $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
                         if ($fleetIdEintrag === null) {
-                            $this->addInformation("  unbekannte Flotte");
                             if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                                $this->addInformation("   Flotte mit AR");
                                 $fleetCount++;
                             }
                             $fleetIds[$fleet->getId()] = [];
@@ -472,10 +466,16 @@ final class ShipMover implements ShipMoverInterface
                     }
                 }
 
-                if ($fleetCount > 0) {
-                    $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $fleetCount . " Flotte(n) auf Alarm-Rot!");
+                if ($fleetCount == 1) {
+                    $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befindet sich " . $fleetCount . " Flotte auf Alarm-Rot!");
                 }
-                if ($singleShipCount > 0) {
+                if ($fleetCount >= 1) {
+                    $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $fleetCount . " Flotten auf Alarm-Rot!");
+                }
+                if ($singleShipCount == 1) {
+                    $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befindet sich " . $singleShipCount . " Einzelschiff auf Alarm-Rot!");
+                }
+                if ($singleShipCount >= 1) {
                     $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
                 }
             }
