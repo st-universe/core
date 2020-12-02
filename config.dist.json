@@ -25,7 +25,7 @@
     "redis_port": 6379
   },
   "debug": {
-    "debug_mode": false,
+    "debug_mode": true,
     "logfile_path": "/path/to/log",
     "loglevel": 7
   },
