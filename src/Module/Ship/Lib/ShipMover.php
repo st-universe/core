@@ -5,6 +5,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -299,6 +300,7 @@ final class ShipMover implements ShipMoverInterface
         $fieldCount = $this->getFieldCount($ship);
         $i = 1;
         while ($i <= $fieldCount) {
+            //WA aktivieren falls außerhalb
             if ($ship->getSystem() === null && !$ship->getWarpState()) {
                 try {
                     $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
@@ -319,6 +321,7 @@ final class ShipMover implements ShipMoverInterface
             $nextfield = $this->getNextField($leadShip, $method, $ship);
             $flight_ecost = $ship->getRump()->getFlightEcost() + $nextfield->getFieldType()->getEnergyCosts();
 
+            //zu wenig E zum weiterfliegen
             if ($ship->getEps() < $flight_ecost) {
                 if ($this->isFleetMode()) {
                     if ($ship === $leadShip) {
@@ -337,6 +340,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             $i++;
+            //nächstes Feld nicht passierbar
             if (!$nextfield->getFieldType()->getPassable()) {
                 if (($this->isFleetMode() && $ship->isFleetLeader()) || !$this->isFleetMode()) {
                     $msg[] = _("Das nächste Feld kann nicht passiert werden");
@@ -344,6 +348,7 @@ final class ShipMover implements ShipMoverInterface
                 $this->updateDestination($ship->getPosX(), $ship->getPosY());
                 break;
             }
+            //Traktorstrahl Kosten
             if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost() + 1) {
                 $msg[] = "Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " aufgrund Energiemangels deaktiviert";
                 $ship->deactivateTraktorBeam();
@@ -362,6 +367,7 @@ final class ShipMover implements ShipMoverInterface
                 $ship->leaveFleet();
                 $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")";
             }
+            //Traktorstrahl ggf. deaktivieren
             if ($ship->isTraktorbeamActive()) {
                 if ($ship->getTraktorShip()->getFleetId()) {
                     $msg[] = sprintf(_('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
@@ -373,6 +379,7 @@ final class ShipMover implements ShipMoverInterface
                 }
             }
             $field = $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY());
+            //Einflugschaden Energiemangel
             if ($flight_ecost > $ship->getEps()) {
                 $ship->setEps(0);
                 if ($field->getFieldType()->getDamage()) {
@@ -402,6 +409,7 @@ final class ShipMover implements ShipMoverInterface
             } else {
                 $ship->setEps($ship->getEps() - $flight_ecost);
             }
+            //Einflugschaden Feldschaden
             if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
                 if ($ship->isTraktorbeamActive()) {
                     $msg[] = "Die " . $ship->getTraktorShip()->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " beschädigt";
@@ -427,6 +435,36 @@ final class ShipMover implements ShipMoverInterface
 
                     break;
                 }
+            }
+
+            //Alarm-Rot Meldungen
+            if ($ship->getId() == 2171 && $ship === $leadShip && $ship->getSystem() !== null && !$ship->isOverSystem()) {
+                $starSystem = $ship->getSystem();
+                $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $ship->getPosX(), $ship->getPosY());
+
+                $fleetIds = [];
+                $fleetCount = 0;
+                $singleShipCount = 0;
+
+                foreach ($shipsOnLocation as $ship) {
+                    $fleetId = $ship->getFleetId();
+        
+                    if ($fleedId === null && $ship->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                        $singleShipCount++;
+                    }
+                    else {
+                        $fleet = $fleetIds[$fleetId] ?? null;
+                        if ($fleet === null) {
+                            if ($ship->getFleet()->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                                $fleetCount++;
+                            }
+                            $fleetIds[$fleetId] = [];
+                        }
+                    }
+                }
+
+                $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $fleetCount . " Flotte(n) auf Alarm-Rot!");
+                $this->addInformation("In Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
             }
         }
 
