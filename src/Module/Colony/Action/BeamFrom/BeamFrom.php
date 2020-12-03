@@ -122,7 +122,7 @@ final class BeamFrom implements ActionControllerInterface
             }
             $count = min($count, $storage->getAmount());
 
-            $transferAmount = $storage->getCommodity()->getTransferCount();
+            $transferAmount = $storage->getCommodity()->getTransferCount() * $colony->getBeamFactor();
 
             if (ceil($count / $transferAmount) > $colony->getEps()) {
                 $count = $colony->getEps() * $transferAmount;

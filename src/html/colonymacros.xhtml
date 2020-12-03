@@ -1301,6 +1301,9 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
       <tr>
+        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:COLONY/getBeamFactor">...</span></td>
+      </tr>
+      <tr>
         <td style="width: 100%;" tal:define="COLONY_STORAGE COLONY/getBeamableStorage">
           <tal:block tal:condition="COLONY_STORAGE" tal:repeat="good COLONY_STORAGE">
             <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
@@ -1362,6 +1365,9 @@
     <table class="tcal">
       <tr>
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:COLONY/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">

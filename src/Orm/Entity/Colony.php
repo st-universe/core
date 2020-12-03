@@ -353,6 +353,11 @@ class Colony implements ColonyInterface
         return $container->get(PlanetFieldRepositoryInterface::class)->getEnergyProductionByColony($this->getId());
     }
 
+    public function getBeamFactor(): int
+    {
+        return 10;
+    }
+
     /**
      * @return ColonyStorageInterface[]
      */
