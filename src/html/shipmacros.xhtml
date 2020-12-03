@@ -272,6 +272,9 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
       <tr>
+        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
+      </tr>
+      <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
@@ -336,6 +339,9 @@
     <table class="tcal">
       <tr>
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">
@@ -404,6 +410,9 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
       <tr>
+        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
+      </tr>
+      <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
@@ -468,6 +477,9 @@
     <table class="tcal">
       <tr>
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">
@@ -670,6 +682,7 @@
       <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
       <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
       <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
+      <span>Beam-Faktor</span>: ${SHIP/getRump/getBeamFactor}<br />
       <span>Torpedolagerraum</span>: ${SHIP/getMaxTorpedos}<br />
       <span>Punkte</span>: ${SHIP/getRump/getShipRumpCategory/getPoints}<br />
     </div>

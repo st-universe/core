@@ -113,6 +113,6 @@ class Commodity implements CommodityInterface
     {
         // @todo Anzahl Waren pro Energieeinheit
         // Möglicherweise einstellbar nach Warentyp
-        return 10;
+        return 1;
     }
 }

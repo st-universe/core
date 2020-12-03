@@ -117,21 +117,24 @@ final class BeamTo implements ActionControllerInterface
             if ($count > $good->getAmount()) {
                 $count = $good->getAmount();
             }
-            if (ceil($count / $good->getGood()->getTransferCount()) > $colony->getEps()) {
-                $count = $colony->getEps() * $good->getGood()->getTransferCount();
+
+            $transferAmount = $good->getCommodity()->getTransferCount() * $colony->getBeamFactor();
+
+            if (ceil($count / $transferAmount) > $colony->getEps()) {
+                $count = $colony->getEps() * $transferAmount;
             }
             if ($target->getStorageSum() + $count > $target->getMaxStorage()) {
                 $count = $target->getMaxStorage() - $target->getStorageSum();
             }
 
-            $eps_usage = ceil($count / $good->getGood()->getTransferCount());
+            $eps_usage = ceil($count / $transferAmount);
             $game->addInformationf(
                 _('%d %s (Energieverbrauch: %d)'),
                 $count,
                 $good->getGood()->getName(),
                 $eps_usage
             );
-            $colony->lowerEps((int)ceil($count / $good->getGood()->getTransferCount()));
+            $colony->lowerEps((int)ceil($count / $transferAmount));
 
             $this->shipStorageManager->upperStorage($target, $good->getGood(), $count);
             $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);

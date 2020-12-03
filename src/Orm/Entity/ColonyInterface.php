@@ -87,6 +87,8 @@ interface ColonyInterface
 
     public function getEpsProduction(): int;
 
+    public function getBeamFactor(): int;
+
     /**
      * @return ColonyStorageInterface[]
      */
