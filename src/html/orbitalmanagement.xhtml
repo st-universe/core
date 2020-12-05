@@ -22,11 +22,15 @@
           </tr>
           <tr tal:repeat="ship fleet/getShips" tal:attributes="class string:row${repeat/ship/odd}">
             <td>
-              <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />              
-              <a tal:condition="ship/ownedByUser" href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-                <img src="assets/ships/${ship/getRump/getId}.png" tal:attributes="title ship/getRump/getName" />
-              </a>
-              <img tal:condition="not:ship/ownedByUser" src="assets/ships/${ship/getRump/getId}.png" tal:attributes="title ship/getRump/getName" />
+              <input type="hidden" name="ships[]" tal:attributes="value ship/getId" />
+              <tal:block tal:condition="ship/ownedByUser">
+                <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+                  <img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
+                </a>
+              </tal:block>
+              <tal:block tal:condition="not:ship/ownedByUser">
+                <img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
+              </tal:block>        
             </td>
             <td tal:condition="not:ship/ownedByUser" tal:content="structure bbcode:ship/getName">NAME</td>
             <td tal:condition="ship/ownedByUser">
