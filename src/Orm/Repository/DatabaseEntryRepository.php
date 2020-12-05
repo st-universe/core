@@ -17,6 +17,14 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         ]);
     }
 
+    public function getByCategoryIdAndObjectId(int $categoryId, int $objectId): DatabaseEntryInterface
+    {
+        return $this->findOneBy([
+            'category_id' => $categoryId,
+            'object_id' => $objectId
+        ]);
+    }
+
     public function prototype(): DatabaseEntryInterface
     {
         return new DatabaseEntry();
