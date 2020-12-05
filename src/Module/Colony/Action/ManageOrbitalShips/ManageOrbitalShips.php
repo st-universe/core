@@ -205,11 +205,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             if ($storage[CommodityTypeEnum::GOOD_DILITHIUM]->getAmount() < $load) {
                                 $load = $storage[CommodityTypeEnum::GOOD_DILITHIUM]->getAmount();
                             }
-                            if ($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() < $load) {
-                                $load = $storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount();
+                            if ($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() < ($load * 2)) {
+                                $load = intval($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() / 2);
                             }
-                            if ($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() < $load) {
-                                $load = $storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount();
+                            if ($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() < ($load * 2)) {
+                                $load = intval($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() / 2);
                             }
                             $this->colonyStorageManager->lowerStorage(
                                 $colony,
