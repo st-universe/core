@@ -30,7 +30,8 @@ final class BuildingGoodRepository extends EntityRepository implements BuildingG
                 LEFT JOIN stu_buildings_goods c ON c.goods_id = a.id AND c.buildings_id = b.buildings_id
                 LEFT JOIN stu_planets_goods d ON d.goods_id = a.id AND d.planet_classes_id = :planetTypeId
             WHERE c.count != 0 OR d.count != 0
-            GROUP BY a.id',
+            GROUP BY a.id
+            ORDER BY a.sort ASC',
             $rsm
         )->setParameters([
             'state' => 1,
