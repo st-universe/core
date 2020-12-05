@@ -449,7 +449,7 @@ final class GameController implements GameControllerInterface
         } catch (StuException $e) {
             throw $e;
         } catch (\Throwable $e) {
-            if ($this->getUser()->getId() == 126 || $this->config->get('debug.debug_mode') === true) {
+            if ($this->config->get('debug.debug_mode') === true) {
                 throw $e;
             }
             $this->setTemplateFile('html/error.html');
