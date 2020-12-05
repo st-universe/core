@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\View\ShowShip;
 
 use NavPanel;
 use request;
-//use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -35,19 +34,13 @@ final class ShowShip implements ViewControllerInterface
 
     private ColonizationCheckerInterface $colonizationChecker;
 
-    private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
-    
-    //private DatabaseEntryRepositoryInterface $databaseEntryRepository;
-
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
-        ColonizationCheckerInterface $colonizationChecker,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
-        //DatabaseEntryRepositoryInterface $databaseEntryRepository
+        ColonizationCheckerInterface $colonizationChecker
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
@@ -55,8 +48,6 @@ final class ShowShip implements ViewControllerInterface
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->colonizationChecker = $colonizationChecker;
-        $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        //$this->databaseEntryRepository = $databaseEntryRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -123,13 +114,6 @@ final class ShowShip implements ViewControllerInterface
             $ownsCurrentColony = $colony->getUser() === $user;
         }
 
-        //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
-        $starsystem = null;
-        if ($ship->getSystem() !== null) {
-            //$entry = $this->databaseEntryRepository->getByCategoryIdAndObjectId(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM, $ship->getSystem()->getId());
-            $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($ship->getSystem()->getDatabaseEntry(), $user);
-        }
-
         $game->appendNavigationPart(
             'ship.php',
             _('Schiffe')
@@ -142,9 +126,6 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateFile('html/ship.xhtml');
 
         $game->setTemplateVar('SHIP', $ship);
-        if ($starsystem !== null) {
-            $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
-        }
         $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser()));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
