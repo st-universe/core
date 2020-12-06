@@ -89,7 +89,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                 unset($targetPool[$target->getId()]);
 
                 $this->entryCreator->addShipEntry(
-                    'Die ' . $target->getName() . ' wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
+                    'Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
                     $attacker->getUser()->getId()
                 );
                 $this->shipRemover->destroy($target);
