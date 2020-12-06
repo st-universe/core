@@ -1307,14 +1307,6 @@ class Ship implements ShipInterface
 
     public function canInteractWith($target, bool $colony = false): bool
     {
-        if ($target->getUser()->isVacationRequestOldEnough()) {
-            global $container;
-            $game = $container->get(GameControllerInterface::class);
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
-            
-            return false;
-        }
-
         $positionChecker = new PositionChecker();
         if ($this->getCloakState()) {
             return false;
