@@ -86,6 +86,13 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($target === null) {
             return;
         }
+        
+        if ($target->getUser()->isVacationRequestOldEnough())
+        {
+            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            return;
+        }
+
         if ($target->getRump()->isTrumfield()) {
             $game->addInformation("Das Trümmerfeld kann nicht erfasst werden");
             return;
