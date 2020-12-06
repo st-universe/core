@@ -34,6 +34,8 @@ final class Overview implements ViewControllerInterface
         {
             $game->setPageTitle(_('Star Trek Universe'));
             $game->setTemplateFile('html/index.xhtml');
+
+            return;
         }
 
         $game->appendNavigationPart(
