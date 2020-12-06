@@ -137,6 +137,11 @@ class User implements UserInterface
 
     public function getUserName(): string
     {
+        //wenn UMODE aktiv, eine Info an den Namen anhängen
+        if ($this->isVacationRequestOldEnough())
+        {
+            return $this->username . '[b][color=red] (UMODE)[/color][/b]';
+        }
         return $this->username;
     }
 
