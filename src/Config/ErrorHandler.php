@@ -11,7 +11,8 @@ $config = $container->get(ConfigInterface::class);
 
 $whoops = new Run();
 
-if ($config->get('debug.debug_mode') === true) {
+//if ($config->get('debug.debug_mode') === true) {
+if (true === true) {
 //    error_reporting(E_ALL);
     error_reporting(E_ALL & ~E_NOTICE);
 
