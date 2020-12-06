@@ -32,7 +32,8 @@ final class Overview implements ViewControllerInterface
 
         if ($user === null)
         {
-            return;
+            $game->setPageTitle(_('Star Trek Universe'));
+            $game->setTemplateFile('html/index.xhtml');
         }
 
         $game->appendNavigationPart(
