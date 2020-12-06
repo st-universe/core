@@ -62,6 +62,13 @@ final class BeamTo implements ActionControllerInterface
         if ($target === null) {
             return;
         }
+
+        if ($target->getUser()->isVacationRequestOldEnough())
+        {
+            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            return;
+        }
+
         if ($target->getShieldState() && $target->getUserId() != $userId) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
