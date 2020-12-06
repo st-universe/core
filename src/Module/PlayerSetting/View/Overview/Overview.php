@@ -9,6 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\PlayerSetting\Lib\InvitationItem;
 use Stu\Orm\Entity\UserInvitationInterface;
+use Stu\Orm\Repository\NewsRepositoryInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
@@ -18,12 +19,16 @@ final class Overview implements ViewControllerInterface
 
     private ConfigInterface $config;
 
+    private NewsRepositoryInterface $newsRepository;
+
     public function __construct(
         UserInvitationRepositoryInterface $userInvitationRepository,
-        ConfigInterface $config
+        ConfigInterface $config,
+        NewsRepositoryInterface $newsRepository
     ) {
         $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
+        $this->newsRepository = $newsRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -34,6 +39,8 @@ final class Overview implements ViewControllerInterface
         {
             $game->setPageTitle(_('Star Trek Universe'));
             $game->setTemplateFile('html/index.xhtml');
+
+            $game->setTemplateVar('SYSTEM_NEWS', $this->newsRepository->getRecent(5));
 
             return;
         }
