@@ -21,6 +21,7 @@ use Stu\Module\PlayerSetting\Action\ChangeSettings\ChangeSettingsRequestInterfac
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
+use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
 use Stu\Module\PlayerSetting\Action\RequestInvitationToken\RequestInvitationToken;
 use Stu\Module\PlayerSetting\View\Overview\Overview;
@@ -40,6 +41,7 @@ return [
         ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
         ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
         ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
+        ActivateVacation::ACTION_IDENTIFIER => autowire(ActivateVacation::class),
         DeleteAccount::ACTION_IDENTIFIER => autowire(DeleteAccount::class),
     ],
     'PLAYER_SETTING_VIEWS' => [
