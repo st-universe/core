@@ -55,6 +55,13 @@ final class AttackShip implements ActionControllerInterface
         if ($target === null) {
             return;
         }
+
+        if ($target->getUser()->isVacationRequestOldEnough())
+        {
+            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            return;
+        }
+
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
