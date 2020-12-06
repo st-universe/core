@@ -30,6 +30,11 @@ final class Overview implements ViewControllerInterface
     {
         $user = $game->getUser();
 
+        if ($user === null)
+        {
+            return;
+        }
+
         $game->appendNavigationPart(
             'options.php',
             _('Optionen')
