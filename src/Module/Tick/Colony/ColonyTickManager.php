@@ -59,7 +59,12 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
         foreach ($colonyList as $colony) {
             //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";
-            $this->colonyTick->work($colony);
+
+            //handle colony only if vacation mode not active
+            if (!$colony->getUser()->isVacationRequestOldEnough())
+            {
+                $this->colonyTick->work($colony);
+            }
         }
     }
 
