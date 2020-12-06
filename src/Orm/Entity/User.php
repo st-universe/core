@@ -77,6 +77,9 @@ class User implements UserInterface
     /** @Column(type="boolean") */
     private $vac_active = false;
 
+    /** @Column(type="integer") * */
+    private $vac_request_date = 0;
+
     /** @Column(type="boolean") */
     private $storage_notification = true;
 
@@ -283,6 +286,24 @@ class User implements UserInterface
     {
         $this->vac_active = $vacationMode;
         return $this;
+    }
+
+    public function getVacationRequestDate(): int
+    {
+        return $this->vac_request_date;
+    }
+
+    public function setVacationRequestDate(int $date): UserInterface
+    {
+        $this->vac_request_date = $date;
+
+        return $this;
+    }
+
+    public function isVacationRequestOldEnough(): bool
+    {
+        //172800 = 48 hours in seconds
+        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > 172800);
     }
 
     public function isStorageNotification(): bool
