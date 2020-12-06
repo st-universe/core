@@ -62,12 +62,6 @@ interface UserInterface
 
     public function setVacationMode(bool $vacationMode): UserInterface;
 
-    public function getVacationRequestDate(): int;
-
-    public function setVacationRequestDate(int $date): UserInterface;
-
-    public function isVacationRequestOldEnough(): bool;
-
     public function isStorageNotification(): bool;
 
     public function setStorageNotification(bool $storage_notification): UserInterface;
