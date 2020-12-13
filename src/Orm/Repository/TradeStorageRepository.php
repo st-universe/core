@@ -105,6 +105,6 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
         return $this->findBy([
             'posts_id' => $tradePostId,
             'user_id' => $userId
-        ]);
+        ], ['goods_id' => 'ASC']);
     }
 }
