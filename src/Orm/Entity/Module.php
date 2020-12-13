@@ -258,6 +258,23 @@ class Module implements ModuleInterface
         return $this->buildingCosts;
     }
 
+    public function getCostSorted(): array
+    {
+        $array = $this->getCost()->getValues();
+
+        usort(
+            $array,
+            function (ModuleCostInterface $a, ModuleCostInterface $b): int {
+                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
+                    return 0;
+                }
+                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
+            }
+        );
+
+        return array_values($array);
+    }
+
     public function getCommodity(): CommodityInterface
     {
         return $this->commodity;
