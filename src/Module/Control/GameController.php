@@ -181,15 +181,29 @@ final class GameController implements GameControllerInterface
 
         $this->gameInformations[] = $notification;
     }
-
+    
     public function addInformationMerge(array $info): void
     {
-        $this->gameInformations = array_merge($info, $this->getInformation());
+        $notificationArray = array();
+        foreach ($info as $value) {
+            $notification = new Notification();
+            $notification->setText($value);
+            $notificationArray[] = $notification;
+        }
+
+        $this->gameInformations = array_merge($notificationArray, $this->getInformation());
     }
 
     public function addInformationMergeDown(array $info): void
     {
-        $this->gameInformations = array_merge($this->getInformation(), $info);
+        $notificationArray = array();
+        foreach ($info as $value) {
+            $notification = new Notification();
+            $notification->setText($value);
+            $notificationArray[] = $notification;
+        }
+
+        $this->gameInformations = array_merge($this->getInformation(), $notificationArray);
     }
 
     public function getInformation(): array
