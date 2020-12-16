@@ -176,10 +176,10 @@ final class GameController implements GameControllerInterface
         if ($override) {
             $this->gameInformations = array();
         }
-        $meldung = new Meldung();
-        $meldung->setText($msg);
+        $notification = new Notification();
+        $notification->setText($msg);
 
-        $this->gameInformations[] = $meldung;
+        $this->gameInformations[] = $notification;
     }
 
     public function addInformationMerge(array $info): void
