@@ -234,10 +234,16 @@ final class GameController implements GameControllerInterface
         $sender_id = GameEnum::USER_NOONE,
         $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
     ): void {
+
+        $textOnlyArray = array();
+        foreach ($this->getInformation() as $value) {
+            $textOnlyArray[] = $value->getText();
+        }
+
         $this->privateMessageSender->send(
             (int) $sender_id,
             (int) $recipient_id,
-            join('<br />', $this->getInformation()),
+            join('<br />', $textOnlyArray),
             $category_id
         );
     }
