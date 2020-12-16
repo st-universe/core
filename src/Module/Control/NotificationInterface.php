@@ -8,7 +8,7 @@ interface NotificationInterface
 
     public function setText(string $text): NotificationInterface;
 
-    public function getLink(): string;
+    public function getLink(): ?string;
 
-    public function setLink(string $link): NotificationInterface;
+    public function setLink(?string $link): NotificationInterface;
 }

@@ -6,7 +6,7 @@ final class Notification implements NotificationInterface
 {
     private string $text = '';
     
-    private string $link = null;
+    private $link;
 
     public function __construct(
     ) {
@@ -14,7 +14,7 @@ final class Notification implements NotificationInterface
 
     public function getText(): string
     {
-        return $text;
+        return $this->text;
     }
 
     public function setText(string $text): NotificationInterface
@@ -23,12 +23,12 @@ final class Notification implements NotificationInterface
         return $this;
     }
 
-    public function getLink(): string
+    public function getLink(): ?string
     {
-        return $link;
+        return $this->link;
     }
 
-    public function setLink(string $link): NotificationInterface
+    public function setLink(?string $link): NotificationInterface
     {
         $this->link = $link;
         return $this;
