@@ -161,6 +161,14 @@ final class GameController implements GameControllerInterface
         return $this->macro;
     }
 
+    public function addInformationfWithLink(string $text, string $link, ...$args): void
+    {
+        $this->addInformationWithLink(vsprintf(
+            $text,
+            $args
+        ), $link);
+    }
+
     public function addInformationf(string $text, ...$args): void
     {
         $this->addInformation(vsprintf(
@@ -169,7 +177,17 @@ final class GameController implements GameControllerInterface
         ));
     }
 
-    //TODO funktion mit link
+    public function addInformationWithLink(string $msg, string $link, bool $override = false): void
+    {
+        if ($override) {
+            $this->gameInformations = array();
+        }
+        $notification = new Notification();
+        $notification->setText($msg);
+        $notification->setLink($link);
+
+        $this->gameInformations[] = $notification;
+    }
 
     public function addInformation(string $msg, bool $override = false): void
     {
