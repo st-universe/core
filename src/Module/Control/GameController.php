@@ -169,12 +169,17 @@ final class GameController implements GameControllerInterface
         ));
     }
 
+    //TODO funktion mit link
+
     public function addInformation(string $msg, bool $override = false): void
     {
         if ($override) {
             $this->gameInformations = array();
         }
-        $this->gameInformations[] = $msg;
+        $meldung = new Meldung();
+        $meldung->setText($msg);
+
+        $this->gameInformations[] = $meldung;
     }
 
     public function addInformationMerge(array $info): void
