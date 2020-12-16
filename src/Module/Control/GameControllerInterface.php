@@ -24,7 +24,11 @@ interface GameControllerInterface
 
     public function getMacro(): string;
 
+    public function addInformationfWithLink(string $text, string $link, ...$args): void;
+
     public function addInformationf(string $text, ...$args): void;
+
+    public function addInformationWithLink(string $msg, string $link, bool $override = false): void;
 
     public function addInformation(string $msg, bool $override = false): void;
 
