@@ -177,7 +177,13 @@
 									<img src="assets/buttons/act_torp1.gif" name="acttorp" /> Torpedobänke aktivieren</a>
 							</td>
 							<td>
-								<img src="assets/buttons/torp.gif" /> Torpedos: ${SHIP/getTorpedoCount}
+								<tal:block tal:condition="SHIP/getTorpedo">
+									<img src="assets/goods/${SHIP/getTorpedo/getGoodId}.gif" />
+            						<span tal:replace="SHIP/getTorpedo/getName">TORPEDOTYPE</span>: ${SHIP/getTorpedoCount}
+								</tal:block>
+								<tal:block tal:condition="not:SHIP/getTorpedo">
+									<img src="assets/buttons/torp.gif" /> Torpedos: ${SHIP/getTorpedoCount}
+								</tal:block>
 							</td>
 						</tr>
 						<tal:block tal:condition="SHIP/isCloakAble">
