@@ -90,11 +90,22 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_('Es wurde keine Waren zum Beamen ausgewählt'));
             return;
         }
-        $game->addInformationf(
-            _('Die Kolonie %s hat folgende Waren von der %s transferiert'),
-            $colony->getName(),
-            $target->getName()
-        );
+        if ($target->isOwnedByCurrentUser()) {
+            $link = "ship.php?SHOW_SHIP=1&id=" . $target->getId();
+
+            $game->addInformationfWithLink(
+                _('Die Kolonie %s hat folgende Waren von der %s transferiert'),
+                $link,
+                $colony->getName(),
+                $target->getName()
+            );
+        } else {
+            $game->addInformationf(
+                _('Die Kolonie %s hat folgende Waren von der %s transferiert'),
+                $colony->getName(),
+                $target->getName()
+            );
+        }
         foreach ($goods as $key => $value) {
             $commodityId = (int) $value;
             if ($colony->getEps() < 1) {
