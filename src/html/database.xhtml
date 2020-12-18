@@ -36,7 +36,7 @@
 			<div class="divhead">Sonstiges</div>
 			<div class="divbody">
 				<a href="?SHOW_SETTLERLIST=1">Siedlerliste</a><br />
-				<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a>
+				<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a><br />
 				<a href="?SHOW_GOODS_OVERVIEW=1">Warenübersicht</a>
 			</div>
 		</div>
@@ -74,7 +74,9 @@
 				<tr tal:repeat="entry GOODS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
 					<td tal:content="entry/getAmount">AMOUNT</td>
 					<td>
-						<img src="assets/goods/${entry/getCommodityId}.gif" tal:attributes="title entry/getCommodity/getName" />
+						<div style="display: table-cell; width: 55px;">
+							<img src="assets/goods/${entry/getCommodityId}.gif" tal:attributes="title entry/getCommodity/getName" />
+						</div>
 						<div style="display: table-cell; vertical-align: middle" tal:content="entry/getCommodity/getName">NAME</div>
 					</td>
 				</tr>
