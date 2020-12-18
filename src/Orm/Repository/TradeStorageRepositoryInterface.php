@@ -37,4 +37,11 @@ interface TradeStorageRepositoryInterface extends ObjectRepository
      * @return TradeStorageInterface[]
      */
     public function getByTradePostAndUser(int $tradePostId, int $userId): array;
+
+    public function getByUserAccumulated(int $userId): iterable;
+    
+    /**
+     * @return TradeStorageInterface[]
+     */
+    public function getByUserAndCommodity(int $userId, int $commodityId): array;
 }

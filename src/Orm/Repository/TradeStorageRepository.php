@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeStorage;
 use Stu\Orm\Entity\TradeStorageInterface;
@@ -106,5 +107,31 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
             'posts_id' => $tradePostId,
             'user_id' => $userId
         ], ['goods_id' => 'ASC']);
+    }
+
+    public function getByUserAccumulated(int $userId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('commodity_id', 'commodity_id', 'integer');
+        $rsm->addScalarResult('amount', 'amount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT ts.goods_id AS commodity_id, SUM(ts.count) AS amount
+            FROM stu_trade_storage ts
+            WHERE ts.user_id = :userId
+            GROUP BY ts.goods_id
+            ORDER BY ts.goods_id ASC',
+            $rsm
+        )->setParameters([
+            'userId' => $userId
+        ])->getResult();
+    }
+
+    public function getByUserAndCommodity(int $userId, int $commodityId): array
+    {
+        return $this->findBy([
+            'goods_id' => $commodityId,
+            'user_id' => $userId
+        ], ['count' => 'DESC']);
     }
 }
