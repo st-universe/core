@@ -27,6 +27,11 @@ class StorageWrapper
         return $this->amount;
     }
 
+    public function addAmount(int $amount)
+    {
+        $this->amount += $amount;
+    }
+
     public function getCommodity(): CommodityInterface
     {
         // @todo refactor
