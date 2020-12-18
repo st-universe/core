@@ -90,7 +90,7 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
             ORDER BY cs.count DESC',
             $rsm
         )->setParameters([
-            'userId' => $userId
+            'userId' => $userId,
             'commodityId' => $commodityId
         ])->getResult();
     }
