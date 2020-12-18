@@ -9,6 +9,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\ShipStorageRepositoryInterface;
+use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
 
 final class GoodsOverview implements ViewControllerInterface
@@ -20,15 +21,19 @@ final class GoodsOverview implements ViewControllerInterface
    
     private ShipStorageRepositoryInterface $shipStorageRepository;
     
+    private TradeOfferRepositoryInterface $tradeOfferRepository;
+
     private TradeStorageRepositoryInterface $tradeStorageRepository;
 
     public function __construct(
         ColonyStorageRepositoryInterface $colonyStorageRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
+        TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository
     ) {
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->shipStorageRepository = $shipStorageRepository;
+        $this->tradeOfferRepository = $tradeOfferRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
     }
 
@@ -67,6 +72,18 @@ final class GoodsOverview implements ViewControllerInterface
         // add storage of trade posts
         $tradepostsStorage = $this->tradeStorageRepository->getByUserAccumulated($game->getUser()->getId());
         foreach ($tradepostsStorage as $data) {
+            if (array_key_exists($data['commodity_id'], $goodsOverview)) {
+                $storageWrapper = $goodsOverview[$data['commodity_id']];
+                $storageWrapper->addAmount($data['amount']);
+            }
+            else {
+                $goodsOverview[$data['commodity_id']] = new StorageWrapper($data['commodity_id'], $data['amount']);
+            }
+        }
+
+        // add storage of trade offers
+        $tradeoffersStorage = $this->tradeOfferRepository->getByUserAccumulated($game->getUser()->getId());
+        foreach ($tradeoffersStorage as $data) {
             if (array_key_exists($data['commodity_id'], $goodsOverview)) {
                 $storageWrapper = $goodsOverview[$data['commodity_id']];
                 $storageWrapper->addAmount($data['amount']);
