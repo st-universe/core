@@ -18,6 +18,7 @@ use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
+use Stu\Module\Database\View\GoodsOverview\GoodsOverview;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
 use function DI\autowire;
@@ -32,6 +33,7 @@ return [
     'DATABASE_VIEWS' => [
         Category::VIEW_IDENTIFIER => autowire(Category::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
+        GoodsOverview::VIEW_IDENTIFIER => autowire(GoodsOverview::class),
         UserList::VIEW_IDENTIFIER => autowire(UserList::class),
         DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
         GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -37,6 +37,7 @@
 			<div class="divbody">
 				<a href="?SHOW_SETTLERLIST=1">Siedlerliste</a><br />
 				<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a>
+				<a href="?SHOW_GOODS_OVERVIEW=1">Warenübersicht</a>
 			</div>
 		</div>
 	</tal:block>
@@ -56,6 +57,26 @@
 						<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
 					</td>
 					<td tal:content="entry/getPoints">POINTS</td>
+				</tr>
+			</table>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="goods_overview">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<table class="tcal">
+				<tr>
+					<th>Anzahl</th>
+					<th>Ware</th>
+				</tr>
+				<tr tal:repeat="entry GOODS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+					<td tal:content="entry/getAmount">AMOUNT</td>
+					<td>
+						<img src="assets/goods/${entry/getCommodityId}.gif" tal:attributes="title entry/getCommodity/getName" />
+						<div style="display: table-cell; vertical-align: middle" tal:content="entry/getCommodity/getName">NAME</div>
+					</td>
 				</tr>
 			</table>
 		</tal:block>
