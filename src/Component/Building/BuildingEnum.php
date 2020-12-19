@@ -26,6 +26,7 @@ final class BuildingEnum
     public const BUILDING_FUNCTION_ACADEMY = 20;
     public const BUILDING_FUNCTION_DESTROYER_SHIPYARD = 21;
     public const BUILDING_FUNCTION_REPAIR_SHIPYARD = 22;
+    public const BUILDING_FUNCTION_WAREHOUSE = 23;
 
     public const BUILDMENU_SOCIAL = 1;
     public const BUILDMENU_INDUSTRY = 2;

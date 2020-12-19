@@ -1080,6 +1080,9 @@
             <div class="fabutton" tal:condition="BUILDING_FUNCTION/isAcademy">
               <a href="javascript:void(0)" onclick="switchColonyMenu(12);cClick();" class="fabutton">Akademie</a>
             </div>
+            <div class="fabutton" tal:condition="BUILDING_FUNCTION/isWarehouse">
+              <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_GOODS_OVERVIEW=1')" class="fabutton">Warenübersicht</a>
+            </div>
             <br />
           </div>
           <tal:block tal:condition="FIELD/hasBuilding">
