@@ -70,6 +70,11 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
         return false;
     }
 
+    public function isWarehouse(): bool
+    {
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_WAREHOUSE);
+    }
+
     public function getModuleFabBuildingFunctionId(): ?int {
         foreach ($this->buildingfunctionIds as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
