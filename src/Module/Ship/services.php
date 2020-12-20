@@ -109,8 +109,6 @@ use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMover;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
-use Stu\Module\Ship\Lib\ShipMoverV2;
-use Stu\Module\Ship\Lib\ShipMoverV2Interface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -138,7 +136,6 @@ use function DI\autowire;
 
 return [
     ShipMoverInterface::class => autowire(ShipMover::class),
-    ShipMoverV2Interface::class => autowire(ShipMoverV2::class),
     ModuleValueCalculatorInterface::class => autowire(ModuleValueCalculator::class),
     PositionCheckerInterface::class => autowire(PositionChecker::class),
     RenameCrewRequestInterface::class => autowire(RenameCrewRequest::class),
