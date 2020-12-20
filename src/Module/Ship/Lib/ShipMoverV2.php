@@ -14,6 +14,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -162,13 +163,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         return $this->informations;
     }
 
-    function console_log($wo, $data ){
-        echo '<script>';
-        echo 'console.log('. $wo .')';
-        echo 'console.log('. json_encode( $data ) .')';
-        echo '</script>';
-    }
-
     public function checkAndMove(
         ShipInterface $leadShip,
         int $destinationX,
@@ -196,7 +190,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
             $nextfield = $this->getNextField($leadShip, $flightMethod);
-            $this->console_log("nextField, 199: ", $nextfield);
 
             // move every ship by one field
             foreach ($ships as $ship) {
@@ -351,7 +344,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     private function moveOneField(
         ShipInterface $leadShip,
         ShipInterface $ship,
-        $nextField
+        MapInterface $nextField
     ) {
         // zu wenig Crew?
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
