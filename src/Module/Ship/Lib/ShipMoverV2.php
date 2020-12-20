@@ -169,7 +169,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     ) {
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
-        $flightMethod = $this->determineFlightMethod($leadShip);
+        //$flightMethod = $this->determineFlightMethod($leadShip);
 
         $ships[] = $leadShip;
         if ($this->isFleetMode()) {
@@ -349,6 +349,23 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 sprintf(_('Es werden %d Crewmitglieder benötigt'),
                     $ship->getBuildplan()->getCrew()));
             return;
+        }
+
+        if ($this->getDestX() == $ship->getPosX()) {
+            $oldy = $ship->getPosY();
+            if ($this->getDestY() > $oldy) {
+                $method = ShipEnum::FLY_DOWN;
+            } else {
+                $method = ShipEnum::FLY_UP;
+            }
+        }
+        if ($this->getDestY() == $ship->getPosY()) {
+            $oldx = $ship->getPosX();
+            if ($this->getDestX() > $oldx) {
+                $method = ShipEnum::FLY_RIGHT;
+            } else {
+                $method = ShipEnum::FLY_LEFT;
+            }
         }
         
         $nextfield = $this->getNextField($leadShip, $method, $ship);
