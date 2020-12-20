@@ -76,6 +76,14 @@ final class Overview implements ViewControllerInterface
                 }
             }
         }
+        // filter 0 values
+        $productionOverview = array_filter(
+            $productionOverview,
+            function (ColonyProduction $prod): bool {
+                return $prod->getProduction() > 0;
+            }
+        );
+        
         usort(
             $productionOverview,
             function (ColonyProduction $a, ColonyProduction $b): int {
@@ -85,6 +93,7 @@ final class Overview implements ViewControllerInterface
                 return ($a->getGood()->getSort() < $b->getGood()->getSort()) ? -1 : 1;
             }
         );
+
 
         $game->setTemplateVar(
             'COLONY_LIST',
