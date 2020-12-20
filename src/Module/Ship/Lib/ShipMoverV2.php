@@ -14,7 +14,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -168,6 +168,8 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         int $destinationX,
         int $destinationY
     ) {
+        $this->console_log('losgehts');
+
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);
@@ -344,7 +346,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     private function moveOneField(
         ShipInterface $leadShip,
         ShipInterface $ship,
-        MapInterface $nextField
+        StarSystemMapInterface $nextField
     ) {
         // zu wenig Crew?
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
@@ -523,6 +525,15 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     {
         $ship->setPosX($ship->getPosX() - 1);
         $ship->setFlightDirection(4);
+    }
+
+    function console_log($output, $with_script_tags = true) {
+        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
+    ');';
+        if ($with_script_tags) {
+            $js_code = '<script>' . $js_code . '</script>';
+        }
+        echo $js_code;
     }
 
     private function getFieldData(ShipInterface $leadShip, $x, $y)
