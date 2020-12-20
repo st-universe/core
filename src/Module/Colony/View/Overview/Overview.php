@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\Overview;
 
+use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Colony\Lib\ColonyListItemInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -48,6 +49,38 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Kolonien'));
         $game->setTemplateFile('html/colonylist.xhtml');
 
+        // add production of colonies
+        $productionOverview = [];
+        foreach ($colonyList as $colony) {
+            foreach ($colony->getProduction as $prod) {
+                $commodityId = $prod->getGoodId();
+
+                if (array_key_exists($commodityId, $productionOverview)) {
+                    $colonyProduction = $productionOverview[$commodityId];
+                    $newProduction = $colonyProduction->getProduction() + $prod->getProduction();
+                    $colonyProduction->setProduction($newProduction);
+                }
+                else {
+                    $data = [];
+                    $data['gc'] = $prod->getProduction();
+                    $data['pc'] = 0;
+                    $data['goods_id'] = $commodityId;
+
+                    $colonyProduction = new ColonyProduction($data);
+                    $goodsOverview[$commodityId] = $colonyProduction;
+                }
+            }
+        }
+        usort(
+            $productionOverview,
+            function (ColonyProduction $a, ColonyProduction $b): int {
+                if ($a->getGood()->getSort() == $b->getGood()->getSort()) {
+                    return 0;
+                }
+                return ($a->getGood()->getSort() < $b->getGood()->getSort()) ? -1 : 1;
+            }
+        );
+
         $game->setTemplateVar(
             'COLONY_LIST',
             array_map(
@@ -56,6 +89,9 @@ final class Overview implements ViewControllerInterface
                 },
                 $colonyList
             )
+        );
+        $game->setTemplateVar(
+            'PRODUCTION_LIST', $productionOverview
         );
         $game->setTemplateVar(
             'TERRAFORMING_LIST',
