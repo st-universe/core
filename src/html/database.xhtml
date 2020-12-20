@@ -1,7 +1,6 @@
 <html xmlns:stu="stu">
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<div style="width: 300px; float: left;">
 			<div class="divhead">Schiffe</div>
@@ -75,10 +74,10 @@
 				<tr tal:repeat="entry GOODS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
 					<td tal:content="entry/getAmount">AMOUNT</td>
 					<td>
-						<a href="javascript:void(0);"
-							onclick="getCommodityLocations(${entry/getCommodityId})">
-							<img src="assets/goods/${entry/getCommodityId}.gif" tal:attributes="title entry/getCommodity/getName" /><span tal:replace="entry/getCommodity/getName">NAME</span>
-						</a>
+						<div style="display: table-cell; width: 55px;">
+							<img src="assets/goods/${entry/getCommodityId}.gif" tal:attributes="title entry/getCommodity/getName" />
+						</div>
+						<div style="display: table-cell; vertical-align: middle" tal:content="entry/getCommodity/getName">NAME</div>
 					</td>
 				</tr>
 			</table>
