@@ -94,4 +94,70 @@
 </metal:macro>
 <metal:macro metal:define-macro="starsystemtype">
 </metal:macro>
+<metal:block metal:define-macro="initial_js">
+  <script language="Javascript">
+			var sstr = '${THIS/getSessionString}';
+		</script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/database.js"><!-- stuniverse --></script>
+</metal:block>
+<metal:macro metal:define-macro="commodityLocations">
+  <table tal:condition="COLONY_LOCATIONS" class="use" style="width: 500px;">
+    <tr>
+        <th>Anzahl</th>
+        <th>auf Kolonie</th>
+    </tr>
+    <tr tal:repeat="storageWrapper COLONY_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
+      <td tal:content="storageWrapper/getAmount">AMOUNT</td>
+      <td tal:define="colony storageWrapper/getColony">
+        <a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" >
+          <metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /><span tal:replace="structure bbcode:colony/getName">NAME</span>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <table tal:condition="SHIP_LOCATIONS" class="use" style="width: 500px;">
+    <tr>
+        <th>Anzahl</th>
+        <th>auf Schiff</th>
+    </tr>
+    <tr tal:repeat="storageWrapper SHIP_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
+      <td tal:content="storageWrapper/getAmount">AMOUNT</td>
+      <td tal:define="ship storageWrapper/getShip">
+        <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" >
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span tal:replace="structure bbcode:ship/getName">NAME</span>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <table tal:condition="php: POST_LOCATIONS OR OFFER_LOCATIONS" class="use" style="width: 500px;">
+    <tal:block tal:condition="POST_LOCATIONS">
+      <tr>
+          <th>Anzahl</th>
+          <th>im Lager der Warenbörse</th>
+      </tr>
+      <tr tal:repeat="storageWrapper POST_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
+        <td tal:content="storageWrapper/getAmount">AMOUNT</td>
+        <td tal:define="ship storageWrapper/getTradepost/getShip">
+          <a href="trade.php?SHOW_ACCOUNTS=1" >
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span tal:replace="structure bbcode:ship/getName">NAME</span>
+          </a>
+        </td>
+      </tr>
+    </tal:block>
+    <tal:block tal:condition="OFFER_LOCATIONS">
+      <tr>
+          <th>Anzahl</th>
+          <th>in Angeboten an der Warenbörse</th>
+      </tr>
+      <tr tal:repeat="storageWrapper OFFER_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
+        <td tal:content="storageWrapper/getAmount">AMOUNT</td>
+        <td tal:define="ship storageWrapper/getTradepost/getShip">
+          <a href="trade.php?SHOW_ACCOUNTS=1" >
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span tal:replace="structure bbcode:ship/getName">NAME</span>
+          </a>
+        </td>
+      </tr>
+    </tal:block>
+  </table>
+</metal:macro>
 </html>
