@@ -162,6 +162,13 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         return $this->informations;
     }
 
+    function console_log($wo, $data ){
+        echo '<script>';
+        echo 'console.log('. $wo .')';
+        echo 'console.log('. json_encode( $data ) .')';
+        echo '</script>';
+    }
+
     public function checkAndMove(
         ShipInterface $leadShip,
         int $destinationX,
@@ -189,6 +196,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
             $nextfield = $this->getNextField($leadShip, $flightMethod);
+            $this->console_log("nextField, 199: ", $nextfield);
 
             // move every ship by one field
             foreach ($ships as $ship) {
