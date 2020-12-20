@@ -18,9 +18,6 @@ use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
-use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocations;
-use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequest;
-use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequestInterface;
 use Stu\Module\Database\View\GoodsOverview\GoodsOverview;
 use Stu\Module\Database\View\UserList\UserList;
 use Stu\Module\Database\View\Overview\Overview;
@@ -31,13 +28,11 @@ return [
     DatabaseCategoryTalFactoryInterface::class => autowire(DatabaseCategoryTalFactory::class),
     DatabaseEntryRequestInterface::class => autowire(DatabaseEntryRequest::class),
     CategoryRequestInterface::class => autowire(CategoryRequest::class),
-    ShowGoodsLocationsRequestInterface::class => autowire(ShowGoodsLocationsRequest::class),
     UserListRequestInterface::class => autowire(UserListRequest::class),
     'DATABASE_ACTIONS' => [],
     'DATABASE_VIEWS' => [
         Category::VIEW_IDENTIFIER => autowire(Category::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
-        ShowGoodsLocations::VIEW_IDENTIFIER => autowire(ShowGoodsLocations::class),
         GoodsOverview::VIEW_IDENTIFIER => autowire(GoodsOverview::class),
         UserList::VIEW_IDENTIFIER => autowire(UserList::class),
         DatabaseEntry::VIEW_IDENTIFIER => autowire(DatabaseEntry::class),
