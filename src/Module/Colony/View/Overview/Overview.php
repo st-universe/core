@@ -67,7 +67,7 @@ final class Overview implements ViewControllerInterface
                     $data['goods_id'] = $commodityId;
 
                     $colonyProduction = new ColonyProduction($data);
-                    $goodsOverview[$commodityId] = $colonyProduction;
+                    $productionOverview[$commodityId] = $colonyProduction;
                 }
             }
         }
