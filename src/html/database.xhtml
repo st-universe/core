@@ -1,7 +1,6 @@
 <html xmlns:stu="stu">
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<div style="width: 300px; float: left;">
 			<div class="divhead">Schiffe</div>
@@ -66,6 +65,7 @@
 <metal:macro metal:define-macro="goods_overview">
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
+			<metal:macro metal:use-macro="html/databasemacros.xhtml/initial_js" />
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 			<table class="tcal">
 				<tr>
