@@ -14,7 +14,6 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -168,8 +167,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         int $destinationX,
         int $destinationY
     ) {
-        $this->console_log('losgehts');
-
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);
@@ -191,14 +188,13 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
-            $nextfield = $this->getNextField($leadShip, $flightMethod);
 
             // move every ship by one field
             foreach ($ships as $ship) {
                 if (!array_key_exists($ship->getId(), $this->lostShips)
                     && !$this->isDestinationArrived($leadShip))
                 {
-                    $this->moveOneField($leadShip, $ship, $nextfield);
+                    $this->moveOneField($leadShip, $ship);
                 }
             }
 
@@ -345,8 +341,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
     private function moveOneField(
         ShipInterface $leadShip,
-        ShipInterface $ship,
-        StarSystemMapInterface $nextField
+        ShipInterface $ship
     ) {
         // zu wenig Crew?
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
@@ -356,6 +351,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             return;
         }
         
+        $nextfield = $this->getNextField($leadShip, $method, $ship);
         $flight_ecost = $ship->getRump()->getFlightEcost() + $nextfield->getFieldType()->getEnergyCosts();
         
         //zu wenig E zum weiterfliegen
@@ -483,17 +479,17 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->addInformation("Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")");
     }
 
-    private function getNextField(ShipInterface $leadShip, $method)
+    private function getNextField(ShipInterface $leadShip, $method, ShipInterface $ship)
     {
         switch ($method) {
             case ShipEnum::FLY_RIGHT:
-                return $this->getFieldData($leadShip, $leadShip->getPosX() + 1, $leadShip->getPosY());
+                return $this->getFieldData($leadShip, $ship->getPosX() + 1, $ship->getPosY());
             case ShipEnum::FLY_LEFT:
-                return $this->getFieldData($leadShip, $leadShip->getPosX() - 1, $leadShip->getPosY());
+                return $this->getFieldData($leadShip, $ship->getPosX() - 1, $ship->getPosY());
             case ShipEnum::FLY_UP:
-                return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() - 1);
+                return $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY() - 1);
             case ShipEnum::FLY_DOWN:
-                return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() + 1);
+                return $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY() + 1);
         }
     }
 
@@ -525,15 +521,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     {
         $ship->setPosX($ship->getPosX() - 1);
         $ship->setFlightDirection(4);
-    }
-
-    function console_log($output, $with_script_tags = true) {
-        $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
-    ');';
-        if ($with_script_tags) {
-            $js_code = '<script>' . $js_code . '</script>';
-        }
-        echo $js_code;
     }
 
     private function getFieldData(ShipInterface $leadShip, $x, $y)
