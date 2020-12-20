@@ -53,6 +53,11 @@ final class Overview implements ViewControllerInterface
         $productionOverview = [];
         foreach ($colonyList as $colony) {
             foreach ($colony->getProduction() as $prod) {
+                if (!$prod->getGood()->isTradeable())
+                {
+                    continue;
+                }
+
                 $commodityId = $prod->getGoodId();
 
                 if (array_key_exists($commodityId, $productionOverview)) {
