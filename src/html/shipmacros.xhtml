@@ -23,7 +23,7 @@
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:content="structure bbcode:ship/getName">.</a>
     </td>
     <td style="text-align: center;">
-      <img src="assets/buttons/alert${ship/getAlertState}.gif" title="Alarmstufe" />
+      <img src="assets/buttons/alert${ship/getAlertState}_1.gif" title="Alarmstufe" />
     </td>
     <td align="center">
       ${ship/getPosX}|${ship/getPosY}<br />
@@ -52,17 +52,17 @@
     </td>
     <td tal:content="ship/getCrewCount" style="text-align: center;">CREW</td>
     <td>
-      <img src="assets/buttons/kss2.gif" tal:condition="ship/getNbs" title="Nahbereichssensoren aktiviert" />
-      <img src="assets/buttons/kss1.gif" tal:condition="not:ship/getNbs" title="Nahbereichssensoren deaktiviert" />
-      <img src="assets/buttons/lss2.gif" tal:condition="ship/getLss" title="Langstreckensensoren aktiviert" />
-      <img src="assets/buttons/lss1.gif" tal:condition="not:ship/getLss" title="Langstreckensensoren deaktiviert" />
-      <img src="assets/buttons/act_phaser2.gif" tal:condition="ship/getPhaser" title="Strahlenwaffe aktiviert" />
-      <img src="assets/buttons/act_phaser1.gif" tal:condition="not:ship/getPhaser" title="Strahlenwaffe deaktiviert" />
-      <img src="assets/buttons/act_torp2.gif" tal:condition="ship/getTorpedos" title="Torpedobänke aktiviert" />
-      <img src="assets/buttons/act_torp1.gif" tal:condition="not:ship/getTorpedos" title="Torpedobände deaktiviert" />
+      <img src="assets/buttons/kss1.gif" tal:condition="ship/getNbs" title="Nahbereichssensoren aktiviert" />
+      <img src="assets/buttons/kss2.gif" tal:condition="not:ship/getNbs" title="Nahbereichssensoren deaktiviert" />
+      <img src="assets/buttons/lss1.gif" tal:condition="ship/getLss" title="Langstreckensensoren aktiviert" />
+      <img src="assets/buttons/lss2.gif" tal:condition="not:ship/getLss" title="Langstreckensensoren deaktiviert" />
+      <img src="assets/buttons/act_phaser1.gif" tal:condition="ship/getPhaser" title="Strahlenwaffe aktiviert" />
+      <img src="assets/buttons/act_phaser2.gif" tal:condition="not:ship/getPhaser" title="Strahlenwaffe deaktiviert" />
+      <img src="assets/buttons/act_torp1.gif" tal:condition="ship/getTorpedos" title="Torpedobänke aktiviert" />
+      <img src="assets/buttons/act_torp2.gif" tal:condition="not:ship/getTorpedos" title="Torpedobände deaktiviert" />
       <tal:block tal:condition="ship/isCloakAble">
-        <img src="assets/buttons/tarn2.gif" tal:condition="ship/getCloakState" title="Tarnung aktiviert" />
-        <img src="assets/buttons/tarn1.gif" tal:condition="not:ship/getCloakState" title="Tarnung deaktiviert" />
+        <img src="assets/buttons/tarn1.gif" tal:condition="ship/getCloakState" title="Tarnung aktiviert" />
+        <img src="assets/buttons/tarn2.gif" tal:condition="not:ship/getCloakState" title="Tarnung deaktiviert" />
       </tal:block>
     </td>
     <td style="text-align: center;">
