@@ -447,7 +447,6 @@
 								Einheiten
 								<input type="text" size="5" name="ebattload" id="ebattload" /> <input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton" />
 								<input type="button" class="button" onclick="$('ebattload').value = ${SHIP/getEbatt}; $('unloadBatteryButton').click();" value="max" />
-								<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" /> Flotte</span>
 							</td>
 							<td tal:condition="not:SHIP/isEBattUseable">
 								Gesperrt bis ${datetime:SHIP/getEBattWaitingTime}

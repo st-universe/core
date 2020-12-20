@@ -37,49 +37,32 @@ final class UnloadBattery implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        
-        $load = request::postInt('ebattload');
-        
-        if (request::postString('fleet')) {
-            $msg = [];
-            $msg[] = _('Flottenbefehl ausgeführt: Ersatzbatterie entladen');
 
-            foreach ($ship->getFleet()->getShips() as $ship) {
-                $msg = array_merge($msg, $this->unloadBattery($ship, $load, $game));
-            }
-            $game->addInformationMerge($msg);
+        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+            $game->addInformation(_('Das Schiff hat keine Crew'));
             return;
         }
-        
-        $game->addInformationMerge($this->unloadBattery($ship, $load, $game));
-    }
 
-    private function unloadBattery(ShipInterface $ship, int $load, GameControllerInterface $game): array
-    {
-        $msg = [];
-
-        // cancel conditions
-        if ($load < 1) {
-            return $msg;
-        }
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
-            $msg[] = sprintf(_('%s: Das Schiff hat keine Crew'), $ship->getName()));
-            return $msg;
+        if ($ship->getMaxEbatt() == 0) {
+            return;
         }
         if (!$ship->getEBatt()) {
-            $msg[] = sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName()));
-            return $msg;
+            $game->addInformation(_("Die Ersatzbatterie ist leer"));
+            return;
         }
         if (!$ship->isEBattUseable()) {
-            $msg[] = sprintf(_('%s: Die Batterie kann erst wieder am ' . $ship->getEBattWaitingTime() . ' genutzt werden'), $ship->getName()));
-            return $msg;
+            $game->addInformation("Die Batterie kann erst wieder am " . $ship->getEBattWaitingTime() . " genutzt werden");
+            return;
         }
         if ($ship->getEps() >= $ship->getMaxEps()) {
-            $msg[] = sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName()));
-            return $msg;
+            $game->addInformation("Der Energiespeicher ist voll");
+            return;
         }
-
-        // unload following
+        $load = request::postInt('ebattload');
+        // @todo Load errechnen
+        if ($load < 1) {
+            return;
+        }
         if ($load > $ship->getEBatt()) {
             $load = $ship->getEBatt();
         }
@@ -90,12 +73,9 @@ final class UnloadBattery implements ActionControllerInterface
         $ship->setEps($ship->getEps() + $load);
         $ship->setEBattWaitingTime(time() + $load * 60);
 
-        $msg[] = sprintf(_('%s: Die Ersatzbatterie wurde um %d Einheiten entladen'), $ship->getName(),
-                    $load));
-
         $this->shipRepository->save($ship);
 
-        return $msg;
+        $game->addInformation("Die Batterie wurde um " . $load . " Einheiten entladen");
     }
 
     public function performSessionCheck(): bool
