@@ -49,29 +49,29 @@ final class UnloadBattery implements ActionControllerInterface
             $msg[] = _('Flottenbefehl ausgeführt: Ersatzbatterie entladen');
 
             foreach ($ship->getFleet()->getShips() as $ship) {
-                $msg[] = $this->unloadBattery($ship, $load, $game);
+                $msg[] = $this->unloadBattery($ship, $load);
             }
             $game->addInformationMerge($msg);
             return;
         }
         
-        $game->addInformation($this->unloadBattery($ship, $load, $game));
+        $game->addInformation($this->unloadBattery($ship, $load));
     }
 
-    private function unloadBattery(ShipInterface $ship, int $load, GameControllerInterface $game): string
+    private function unloadBattery(ShipInterface $ship, int $load): string
     {
         // cancel conditions
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
-            return sprintf(_('%s: Das Schiff hat keine Crew'), $ship->getName()));
+            return sprintf(_('%s: Das Schiff hat keine Crew'), $ship->getName());
         }
         if (!$ship->getEBatt()) {
-            return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName()));
+            return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName());
         }
         if (!$ship->isEBattUseable()) {
-            return sprintf(_('%s: Die Batterie kann erst wieder am ' . $ship->getEBattWaitingTime() . ' genutzt werden'), $ship->getName()));
+            return sprintf(_('%s: Die Batterie kann erst wieder am ' . $ship->getEBattWaitingTime() . ' genutzt werden'), $ship->getName());
         }
         if ($ship->getEps() >= $ship->getMaxEps()) {
-            return sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName()));
+            return sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName());
         }
 
         // unload following
@@ -88,7 +88,7 @@ final class UnloadBattery implements ActionControllerInterface
         $this->shipRepository->save($ship);
 
         return sprintf(_('%s: Die Ersatzbatterie wurde um %d Einheiten entladen'), $ship->getName(),
-                            $load));
+                            $load);
     }
 
     public function performSessionCheck(): bool
