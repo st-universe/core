@@ -92,6 +92,27 @@
 					</table>
 				</div>
 			</div>
+			<div style="float: right; width: 49%;">
+				<div tal:condition="PRODUCTION_LIST">
+					<table class="tcal">
+						<tr>
+							<th colspan="5">Ware</th>
+							<th colspan="5">Gesamtproduktion</th>
+						</tr>
+						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
+							<td style="vertical-align: middle;">
+							  <div style="display: table-cell; width: 55px;">
+								<img src="assets/goods/${prod/getGoodId}.gif" tal:attributes="title prod/getGood/getName" />
+							  </div>
+							  <div style="display: table-cell; vertical-align: middle" tal:content="prod/getGood/getName">NAME</div>
+							</td>
+							<td style="vertical-align: middle;">
+							  <span tal:content="prod/getProductionDisplay" tal:attributes="class prod/getCssClass">.</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</tal:block>
 	</metal:macro>
 </metal:macro>
