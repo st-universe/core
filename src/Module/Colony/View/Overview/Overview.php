@@ -52,7 +52,7 @@ final class Overview implements ViewControllerInterface
         // add production of colonies
         $productionOverview = [];
         foreach ($colonyList as $colony) {
-            foreach ($colony->getProduction as $prod) {
+            foreach ($colony->getProduction() as $prod) {
                 $commodityId = $prod->getGoodId();
 
                 if (array_key_exists($commodityId, $productionOverview)) {
