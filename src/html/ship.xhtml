@@ -154,27 +154,27 @@
 						<tr>
 							<td colspan="2">
 								<a href="?B_DEACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getShieldState" onmouseover="cp('shld','buttons/shldac1');" onmouseout="cp('shld','buttons/shldac2');">
-									<img src="assets/buttons/shldac2.gif" name="shld" /> Schilde deaktivieren
+									<img src="assets/buttons/shldac1.png" name="shld" /> Schilde deaktivieren
 								</a>
 								<a href="?B_ACTIVATE_SHIELDS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getShieldState" onmouseover="cp('shld','buttons/shldac2');" onmouseout="cp('shld','buttons/shldac1');">
-									<img src="assets/buttons/shldac1.gif" name="shld" /> Schilde aktivieren
+									<img src="assets/buttons/shldac2.png" name="shld" /> Schilde aktivieren
 								</a>
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasPhaser">
 							<td colspan="2">
 								<a href="?B_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser1');" onmouseout="cp('actphaser','buttons/act_phaser2');">
-									<img src="assets/buttons/act_phaser2.gif" name="actphaser" /> Strahlenwaffe deaktivieren</a>
+									<img src="assets/buttons/act_phaser1.png" name="actphaser" /> Strahlenwaffe deaktivieren</a>
 								<a href="?B_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser2');" onmouseout="cp('actphaser','buttons/act_phaser1');">
-									<img src="assets/buttons/act_phaser1.gif" name="actphaser" /> Strahlenwaffe aktivieren</a>
+									<img src="assets/buttons/act_phaser2.png" name="actphaser" /> Strahlenwaffe aktivieren</a>
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasTorpedo">
 							<td>
 								<a href="?B_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp1');" onmouseout="cp('acttorp','buttons/act_torp2');">
-									<img src="assets/buttons/act_torp2.gif" name="acttorp" /> Torpedobänke deaktivieren</a>
+									<img src="assets/buttons/act_torp1.png" name="acttorp" /> Torpedobänke deaktivieren</a>
 								<a href="?B_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp2');" onmouseout="cp('acttorp','buttons/act_torp1');">
-									<img src="assets/buttons/act_torp1.gif" name="acttorp" /> Torpedobänke aktivieren</a>
+									<img src="assets/buttons/act_torp2.png" name="acttorp" /> Torpedobänke aktivieren</a>
 							</td>
 							<td>
 								<tal:block tal:condition="SHIP/getTorpedo">
@@ -265,13 +265,13 @@
 								</td>
 								<td>
 									<a href="?B_FLEET_ALERT_GREEN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="assets/buttons/alert1.gif" title="Flotte: Alarmstufe Grün" />
+										<img src="assets/buttons/alert1_2.png" title="Flotte: Alarmstufe Grün" />
 									</a>
 									<a href="?B_FLEET_ALERT_YELLOW=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="assets/buttons/alert2.gif" title="Flotte: Alarmstufe Gelb" />
+										<img src="assets/buttons/alert2_2.png" title="Flotte: Alarmstufe Gelb" />
 									</a>
 									<a href="?B_FLEET_ALERT_RED=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-										<img src="assets/buttons/alert3.gif" title="Flotte: Alarmstufe Rot" />
+										<img src="assets/buttons/alert3_2.png" title="Flotte: Alarmstufe Rot" />
 									</a>
 								</td>
 							</tr>
