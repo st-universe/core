@@ -233,19 +233,24 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew() || $ship->getRump()->isTrumfield()) {
             return $msg;
         }
-        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
-            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
-            $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt";
-        }
         if ($ship->getDockedTo()) {
             $ship->setDockedTo(null);
             $msg[] = "- Das Schiff hat abgedockt";
         }
-        try {
-            $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
+            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+            $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
+            return $msg;
+        }
+        if (!$ship->isTraktorbeamActive()) {
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
 
-            $msg[] = "- Die Schilde wurden aktiviert";
-        } catch (ShipSystemException $e) {
+                $msg[] = "- Die Schilde wurden aktiviert";
+            } catch (ShipSystemException $e) {
+            }
+        } else {
+            $msg[] = "- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden";
         }
         try {
             $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_NBS);
@@ -258,6 +263,14 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_PHASER);
 
                 $msg[] = "- Die Energiewaffe wurde aktiviert";
+            } catch (ShipSystemException $e) {
+            }
+        }
+        if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_RED) {
+            try {
+                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO);
+
+                $msg[] = "- Der Torpedowerfer wurde aktiviert";
             } catch (ShipSystemException $e) {
             }
         }
