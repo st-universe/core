@@ -378,22 +378,26 @@ class Ship implements ShipInterface
 
     public function setAlertState(int $alertState): ShipInterface
     {
-        $this->alvl = $alertState;
-
-        if ($alertState == ShipAlertStateEnum::ALERT_YELLOW)
+        //check if enough energy
+        if ($alertState == ShipAlertStateEnum::ALERT_YELLOW
+            && $this->alvl == ShipAlertStateEnum::ALERT_GREEN)
         {
             if ($this->getEps() < 1) {
                 throw new InsufficientEnergyException();
             }
             $this->eps -= 1;
         }
-        if ($alertState == ShipAlertStateEnum::ALERT_RED)
+        if ($alertState == ShipAlertStateEnum::ALERT_RED
+            && $this->alvl !== ShipAlertStateEnum::ALERT_RED)
         {
             if ($this->getEps() < 2) {
                 throw new InsufficientEnergyException();
             }
             $this->eps -= 2;
         }
+
+        // now change
+        $this->alvl = $alertState;
         $this->reloadEpsUsage();
 
         return $this;
