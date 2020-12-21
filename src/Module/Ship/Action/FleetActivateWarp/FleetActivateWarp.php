@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateWarp;
 
 use request;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
@@ -53,6 +54,8 @@ final class FleetActivateWarp implements ActionControllerInterface
             $error = null;
             try {
                 $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            } catch (AlreadyActiveException $e) {
+                $error = _('Der Warpantrieb ist bereits aktiviert');
             } catch (InsufficientEnergyException $e) {
                 $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
             } catch (SystemDamagedException $e) {

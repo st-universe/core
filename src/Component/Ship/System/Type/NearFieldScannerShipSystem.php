@@ -9,6 +9,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class NearFieldScannerShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getNbs();
+    }
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {

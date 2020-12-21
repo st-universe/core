@@ -9,6 +9,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class CloakShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getCloakState();
+    }
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {

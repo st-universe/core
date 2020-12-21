@@ -18,6 +18,11 @@ final class WarpdriveShipSystem implements ShipSystemTypeInterface
         $this->shipRepository = $shipRepository;
     }
 
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getWarpState();
+    }
+
     public function checkActivationConditions(ShipInterface $ship): bool
     {
         return $ship->getWarpState() === false &&

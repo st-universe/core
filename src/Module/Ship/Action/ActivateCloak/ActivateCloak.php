@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivateCloak;
 
 use request;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
@@ -53,6 +54,9 @@ final class ActivateCloak implements ActionControllerInterface
             );
 
             $this->shipRepository->save($ship);
+        } catch (AlreadyActiveException $e) {
+            $game->addInformation(_('Tarnung ist bereits aktiviert'));
+            return;
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(_('Nicht genügend Energie zur Aktivierung vorhanden'));
             return;

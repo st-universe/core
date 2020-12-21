@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateCloak;
 
 use request;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
@@ -53,6 +54,8 @@ final class FleetActivateCloak implements ActionControllerInterface
             $error = null;
             try {
                 $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
+            } catch (AlreadyActiveException $e) {
+                $error = _('Die Tarnung ist bereits aktiviert');
             } catch (InsufficientEnergyException $e) {
                 $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
             } catch (SystemDamagedException $e) {
