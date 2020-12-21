@@ -291,7 +291,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 }
 
                 //ships of friends dont attack
-                if ($shipOnLocation->getUser()->isFriend($userId))
+                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
                 {
                     continue;
                 }
