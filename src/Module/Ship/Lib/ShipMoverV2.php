@@ -189,14 +189,14 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
 
-            $nextField = $this->getNextField($leadShip, $flightMethod);
+            $nextfield = $this->getNextField($leadShip, $flightMethod);
 
             // move every ship by one field
             foreach ($ships as $ship) {
                 if (!array_key_exists($ship->getId(), $this->lostShips)
                     && !array_key_exists($leadShip->getId(), $this->lostShips))
                 {
-                    $this->moveOneField($leadShip, $ship, $flightMethod, $nextField);
+                    $this->moveOneField($leadShip, $ship, $flightMethod, $nextfield);
                 }
             }
 
@@ -355,7 +355,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             return;
         }
         
-        $flight_ecost = $ship->getRump()->getFlightEcost() + $nextField->getFieldType()->getEnergyCosts();
+        $flight_ecost = $ship->getRump()->getFlightEcost() + $nextfield->getFieldType()->getEnergyCosts();
         
         //zu wenig E zum weiterfliegen
         if ($ship->getEps() < $flight_ecost) {
@@ -366,7 +366,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         }
 
         //nächstes Feld nicht passierbar
-        if (!$nextField->getFieldType()->getPassable()) {
+        if (!$nextfield->getFieldType()->getPassable()) {
             $this->addLostShip($ship, $leadShip, "Das nächste Feld kann nicht passiert werden");
             return;
         }
