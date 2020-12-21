@@ -59,9 +59,9 @@ final class SetRedAlert implements ActionControllerInterface
         }
 
         $alertSystems = [
-            ShipSystemTypeEnum::SYSTEM_PHASER,
-            ShipSystemTypeEnum::SYSTEM_TORPEDO,
             ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            ShipSystemTypeEnum::SYSTEM_PHASER,
+            ShipSystemTypeEnum::SYSTEM_TORPEDO
         ];
 
         foreach ($alertSystems as $systemId) {

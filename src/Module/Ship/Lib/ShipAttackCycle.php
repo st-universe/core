@@ -241,9 +241,14 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             $msg[] = "- Das Schiff hat abgedockt";
         }
         if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
-            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
-            $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
-            return $msg;
+            try {
+                $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+                $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
+                return $msg;
+            } catch (ShipSystemException $e) {
+                $msg[] = "- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln";
+                return $msg;
+            }
         }
         if (!$ship->isTraktorbeamActive()) {
             try {

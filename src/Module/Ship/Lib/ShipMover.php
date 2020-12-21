@@ -475,7 +475,7 @@ final class ShipMover implements ShipMoverInterface
         if ($ship->getEps() < $flight_ecost) {
             $this->addLostShip($ship, $leadShip,
                 sprintf(_('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
-                    $ship->getName(), $ship->getRump()->getFlightEcost()));
+                    $ship->getName(), $flight_ecost));
             return;
         }
 
