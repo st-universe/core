@@ -173,8 +173,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         int $destinationX,
         int $destinationY
     ) {
-        echo "- CAP: ".$leadShip->canActivatePhaser()."\n";
-        echo "- CAT: ".$leadShip->canActivateTorpedos()."\n";
+        //echo "- CAP: ".$leadShip->canActivatePhaser()."\n";
 
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
@@ -276,7 +275,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
     private function checkForAlertRedShips(ShipInterface $leadShip) : array
     {
-        $this->addInformation(_('checkForAlertRedShips'));
         $shipsToShuffle = [];
         
         // only inside systems
@@ -289,45 +287,37 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             $singleShipCount = 0;
             
             foreach ($shipsOnLocation as $shipOnLocation) {
-                $this->addInformation('  shipsOnLocation: ' . $shipOnLocation->getName());
 
                 // own ships dont count
                 if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId())
                 {
-                    $this->addInformation('    cancelSelf');
                     continue;
                 }
                 
                 // ships dont count if user is on vacation
                 if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
                 {
-                    $this->addInformation('    cancelUrlaub');
                     continue;
                 }
                 
                 //ships of friends dont attack
                 if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
                 {
-                    $this->addInformation('    cancelFriend');
                     continue;
                 }
                 
                 $fleet = $shipOnLocation->getFleet();
                 
                 if ($fleet === null) {
-                    $this->addInformation('    noFleet');
                     if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                        $this->addInformation('    isSingleAR');
                         $singleShipCount++;
                         $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
                     }
                 }
                 else {
-                    $this->addInformation('    isFleet');
                     $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
                     if ($fleetIdEintrag === null) {
                         if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                            $this->addInformation('    isArFleetLeader');
                             $fleetCount++;
                             $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
                         }
@@ -335,7 +325,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                     }
                 }
             }
-
             
             if ($fleetCount == 1) {
                 $this->addInformation(sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY()));

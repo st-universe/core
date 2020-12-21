@@ -15,7 +15,8 @@ final class ProjectileWeaponShipSystem implements ShipSystemTypeInterface
         return
             $ship->getTorpedos() === false &&
             $ship->getTorpedoCount() > 0  &&
-            $ship->getCloakState() === false
+            $ship->getCloakState() === false &&
+            $ship->canActivateTorpedos()
         ;
     }
 
