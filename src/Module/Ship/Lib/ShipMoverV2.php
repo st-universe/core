@@ -206,7 +206,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             }
             
             //Alarm-Rot check
-            $shipsToShuffle = $this->checkForAlertRedShips();
+            $shipsToShuffle = $this->checkForAlertRedShips($leadShip);
             shuffle($shipsToShuffle);
             foreach ($shipsToShuffle as $alertShip)
             {
