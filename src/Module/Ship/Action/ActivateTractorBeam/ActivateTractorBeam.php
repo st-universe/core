@@ -115,12 +115,17 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
                 && !$target->getUser()->isFriend($userId)
                 && $target->getUser()->getId() !== $userId) {
+            if ($ship->isFleetLeader()) {
+                $defender = $ship->getFleet()->getShips()->toArray();
+            } else {
+                $defender = [$ship->getId() => $ship];
+            }
             if ($target->getFleetId()) {
-                $attacker = $target->getFleet()->getShips();
+                $attacker = $target->getFleet()->getShips()->toArray();
             } else {
                 $attacker = [$target->getId() => $target];
             }
-            $this->shipAttackCycle->init($attacker, [$ship->getId() => $ship], true);
+            $this->shipAttackCycle->init($attacker, $defender]);
             $this->shipAttackCycle->cycle();
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
 
