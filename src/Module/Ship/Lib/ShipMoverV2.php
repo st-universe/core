@@ -288,7 +288,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 $this->addInformation('  shipsOnLocation: ' . $shipOnLocation->getName());
 
                 // own ships dont count
-                if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId()))
+                if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId())
                 {
                     $this->addInformation('    cancelSelf');
                     continue;
