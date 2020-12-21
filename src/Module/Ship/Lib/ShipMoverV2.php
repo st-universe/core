@@ -286,6 +286,13 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             
             foreach ($shipsOnLocation as $shipOnLocation) {
                 $this->addInformation('  shipsOnLocation: ' . $shipOnLocation->getName());
+
+                // own ships dont count
+                if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId()))
+                {
+                    $this->addInformation('    cancelSelf');
+                    continue;
+                }
                 
                 // ships dont count if user is on vacation
                 if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
@@ -295,7 +302,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 }
                 
                 //ships of friends dont attack
-                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
+                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()), $this->informations)
                 {
                     $this->addInformation('    cancelFriend');
                     continue;

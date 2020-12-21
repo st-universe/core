@@ -458,23 +458,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function isFriend($userId): bool
+    public function isFriend($userId, &$informationen = array()): bool
     {
         // @todo refactor
         global $container;
 
         $user = $container->get(UserRepositoryInterface::class)->find($userId);
         if ($this->getAllianceId() > 0) {
+            $informationen[] = "      userInAlly";
             if ($this->getAllianceId() == $user->getAllianceId()) {
+                $informationen[] = "      userInSameAlly";
                 return true;
             }
-
+            
             $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
                 [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED],
                 (int)$user->getAllianceId,
                 (int)$this->getAllianceId()
             );
             if ($result !== []) {
+                $informationen[] = "      userInBefriendedAlly";
                 return true;
             }
         }
@@ -482,9 +485,23 @@ class User implements UserInterface
             $this->getId(),
             (int)$userId
         );
-        return $contact !== null && $contact->isFriendly();
-    }
+        $informationen[] = "      notMatchSoFar";
+        
+        $result1 = $contact !== null;
+        $result2 = $contact->isFriendly();
+        
+        if ($result1)
+        {
+            $informationen[] = "      hasContact";
+        }
+        if ($result2)
+        {
+            $informationen[] = "      hasFriendContact";
+        }
 
+        return $result1 && $result2;
+    }
+    
     public function getSessionDataUnserialized(): array
     {
         if ($this->sessiondataUnserialized === null) {
