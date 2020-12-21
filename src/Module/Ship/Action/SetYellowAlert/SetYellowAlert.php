@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\SetYellowAlert;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -39,7 +40,12 @@ final class SetYellowAlert implements ActionControllerInterface
             $userId
         );
 
-        $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+        try {
+            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+        } catch (ShipSystemException $e) {
+            $game->addInformation("Nicht genügend Energie vorhanden");
+            return;
+        }
 
         $this->shipRepository->save($ship);
 

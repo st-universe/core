@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -381,10 +382,16 @@ class Ship implements ShipInterface
 
         if ($alertState == ShipAlertStateEnum::ALERT_YELLOW)
         {
+            if ($this->getEps() < 1) {
+                throw new InsufficientEnergyException();
+            }
             $this->eps -= 1;
         }
         if ($alertState == ShipAlertStateEnum::ALERT_RED)
         {
+            if ($this->getEps() < 2) {
+                throw new InsufficientEnergyException();
+            }
             $this->eps -= 2;
         }
         $this->reloadEpsUsage();

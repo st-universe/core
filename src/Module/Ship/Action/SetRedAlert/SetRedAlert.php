@@ -51,7 +51,12 @@ final class SetRedAlert implements ActionControllerInterface
             return;
         }
 
-        $ship->setAlertState(ShipAlertStateEnum::ALERT_RED);
+        try {
+            $ship->setAlertState(ShipAlertStateEnum::ALERT_RED);
+        } catch (ShipSystemException $e) {
+            $game->addInformation("Nicht genügend Energie vorhanden");
+            return;
+        }
 
         $alertSystems = [
             ShipSystemTypeEnum::SYSTEM_PHASER,
