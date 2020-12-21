@@ -374,7 +374,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             $this->deactivateTraktorBeam($ship, "Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " aufgrund Energiemangels deaktiviert");
         }
         
-        $met = 'fly' . $method;
+        $met = 'fly' . $flightMethod;
         $this->$met($ship);
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($ship);
@@ -479,9 +479,9 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->addInformation("Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")");
     }
 
-    private function getNextField(ShipInterface $leadShip, $method, ShipInterface $ship)
+    private function getNextField(ShipInterface $leadShip, $flightMethod, ShipInterface $ship)
     {
-        switch ($method) {
+        switch ($flightMethod) {
             case ShipEnum::FLY_RIGHT:
                 return $this->getFieldData($leadShip, $ship->getPosX() + 1, $ship->getPosY());
             case ShipEnum::FLY_LEFT:
