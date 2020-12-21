@@ -581,7 +581,7 @@ class Ship implements ShipInterface
 
     public function canActivatePhaser(): bool
     {
-        return $this->getAlertState !== ShipAlertStateEnum::ALERT_GREEN;
+        return $this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN;
     }
 
     public function getPhaser(): bool
@@ -597,7 +597,7 @@ class Ship implements ShipInterface
 
     public function canActivateTorpedos(): bool
     {
-        return $this->getAlertState !== ShipAlertStateEnum::ALERT_GREEN;
+        return $this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN;
     }
 
     public function getTorpedos(): bool

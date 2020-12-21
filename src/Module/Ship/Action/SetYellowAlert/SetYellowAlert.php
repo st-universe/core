@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SetYellowAlert;
 
 use request;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -38,7 +39,7 @@ final class SetYellowAlert implements ActionControllerInterface
             $userId
         );
 
-        $ship->setAlertState(2);
+        $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
 
         $this->shipRepository->save($ship);
 

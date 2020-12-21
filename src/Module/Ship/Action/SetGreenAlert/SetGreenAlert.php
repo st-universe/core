@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SetGreenAlert;
 
 use request;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
@@ -45,7 +46,7 @@ final class SetGreenAlert implements ActionControllerInterface
             $userId
         );
 
-        $ship->setAlertState(1);
+        $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
         
         $deactivateSystems = [
             ShipSystemTypeEnum::SYSTEM_PHASER,
