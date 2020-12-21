@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -377,6 +378,17 @@ class Ship implements ShipInterface
     public function setAlertState(int $alertState): ShipInterface
     {
         $this->alvl = $alertState;
+
+        if ($alertState == ShipAlertStateEnum::ALERT_YELLOW)
+        {
+            $this->eps -= 1;
+        }
+        if ($alertState == ShipAlertStateEnum::ALERT_RED)
+        {
+            $this->eps -= 2;
+        }
+        $this->reloadEpsUsage();
+
         return $this;
     }
 
@@ -567,6 +579,11 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function canActivatePhaser(): bool
+    {
+        return $this->getAlertState !== ShipAlertStateEnum::ALERT_GREEN;
+    }
+
     public function getPhaser(): bool
     {
         return $this->wea_phaser;
@@ -576,6 +593,11 @@ class Ship implements ShipInterface
     {
         $this->wea_phaser = $energyWeaponState;
         return $this;
+    }
+
+    public function canActivateTorpedos(): bool
+    {
+        return $this->getAlertState !== ShipAlertStateEnum::ALERT_GREEN;
     }
 
     public function getTorpedos(): bool
@@ -1063,15 +1085,28 @@ class Ship implements ShipInterface
     public function getEpsUsage(): int
     {
         if ($this->epsUsage === null) {
-            $this->epsUsage = array_reduce(
-                $this->getActiveSystems(),
-                function (int $sum, ShipSystemInterface $shipSystem): int {
-                    return $sum + 1;
-                },
-                0
-            );
+            $this->reloadEpsUsage();
         }
         return $this->epsUsage;
+    }
+
+    private function reloadEpsUsage(): void
+    {
+        $this->epsUsage = array_reduce(
+            $this->getActiveSystems(),
+            function (int $sum, ShipSystemInterface $shipSystem): int {
+                return $sum + 1;
+            },
+            0
+        );
+        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW)
+        {
+            $this->epsUsage += 1;
+        }
+        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_RED)
+        {
+            $this->epsUsage += 2;
+        }
     }
 
     public function lowerEpsUsage($value): void

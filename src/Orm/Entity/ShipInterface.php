@@ -115,9 +115,13 @@ interface ShipInterface
 
     public function setLss(bool $lss): ShipInterface;
 
+    public function canActivatePhaser(): bool;
+
     public function getPhaser(): bool;
 
     public function setPhaser(bool $energyWeaponState): ShipInterface;
+
+    public function canActivateTorpedos(): bool;
 
     public function getTorpedos(): bool;
 
