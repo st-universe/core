@@ -14,6 +14,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -37,6 +38,8 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
     private ApplyDamageInterface $applyDamage;
 
+    private ShipAttackCycleInterface $shipAttackCycle;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -52,7 +55,8 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         ShipRemoverInterface $shipRemover,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
-        ApplyDamageInterface $applyDamage
+        ApplyDamageInterface $applyDamage,
+        ShipAttackCycleInterface $shipAttackCycle
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -62,6 +66,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->privateMessageSender = $privateMessageSender;
         $this->shipSystemManager = $shipSystemManager;
         $this->applyDamage = $applyDamage;
+        $this->shipAttackCycle = $shipAttackCycle;
     }
 
     private function setDestination(
@@ -199,50 +204,33 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                     $this->moveOneField($leadShip, $ship, $flightMethod, $nextField);
                 }
             }
+            
+            //Alarm-Rot check
+            $shipsToShuffle = $this->checkForAlertRedShips();
+            shuffle($shipsToShuffle);
+            foreach ($shipsToShuffle as $alertShip)
+            {
+                // if there are ships left
+                if ($this->areShipsLeft($ships))
+                {
+                    $this->performAttackCycle($alertShip, $leadShip);
+                }
+                else {
+                    break;
+                }
 
-            //Alarm-Rot Meldungen
-            if ($leadShip->getSystem() !== null && !$leadShip->isOverSystem()) {
-                $starSystem = $leadShip->getSystem();
-                $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $leadShip->getPosX(), $leadShip->getPosY());
-
-                $fleetIds = [];
-                $fleetCount = 0;
-                $singleShipCount = 0;
-
-                foreach ($shipsOnLocation as $shipOnLocation) {
-                    
-                    $fleet = $shipOnLocation->getFleet();
-                    
-                    if ($fleet === null) {
-                        if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                            $singleShipCount++;
-                        }
+                // check for destroyed ships
+                foreach ($ships as $ship) {
+                    if ($ship->getIsDestroyed())
+                    {
+                        $this->lostShips[$ship->getId()] = $ship;
                     }
-                    else {
-                        $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
-                        if ($fleetIdEintrag === null) {
-                            if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                                $fleetCount++;
-                            }
-                            $fleetIds[$fleet->getId()] = [];
-                        }
-                    }
-                }
-
-                if ($fleetCount == 1) {
-                    $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befindet sich " . $fleetCount . " Flotte auf Alarm-Rot!");
-                }
-                if ($fleetCount > 1) {
-                    $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befinden sich " . $fleetCount . " Flotten auf Alarm-Rot!");
-                }
-                if ($singleShipCount == 1) {
-                    $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befindet sich " . $singleShipCount . " Einzelschiff auf Alarm-Rot!");
-                }
-                if ($singleShipCount > 1) {
-                    $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
                 }
             }
+            
         }
+
+        // save all ships
         foreach ($ships as $ship)
         {
             if (!$ship->getIsDestroyed())
@@ -267,6 +255,122 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         else {
             $this->addInformation("Die " . $leadShip->getName() . " fliegt in Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " ein");
         }
+    }
+
+    private function areShipsLeft(array $ships) : bool
+    {
+        foreach($ships as $ship)
+        {
+            if (!array_key_exists($ship->getId(), $this->lostShips))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function checkForAlertRedShips(ShipInterface $leadShip) : array
+    {
+        $shipsToShuffle = [];
+
+        // only inside systems
+        if ($leadShip->getSystem() !== null && !$leadShip->isOverSystem()) {
+            $starSystem = $leadShip->getSystem();
+            $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $leadShip->getPosX(), $leadShip->getPosY());
+
+            $fleetIds = [];
+            $fleetCount = 0;
+            $singleShipCount = 0;
+
+            foreach ($shipsOnLocation as $shipOnLocation) {
+                // ships dont count if user is on vacation
+                if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
+                {
+                    continue;
+                }
+
+                //ships of friends dont attack
+                if ($shipOnLocation->getUser()->isFriend($userId))
+                {
+                    continue;
+                }
+                
+                $fleet = $shipOnLocation->getFleet();
+                
+                if ($fleet === null) {
+                    if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                        $singleShipCount++;
+                        $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
+                    }
+                }
+                else {
+                    $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
+                    if ($fleetIdEintrag === null) {
+                        if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                            $fleetCount++;
+                            $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
+                        }
+                        $fleetIds[$fleet->getId()] = [];
+                    }
+                }
+            }
+
+            if ($fleetCount == 1) {
+                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befindet sich " . $fleetCount . " Flotte auf Alarm-Rot!");
+            }
+            if ($fleetCount > 1) {
+                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befinden sich " . $fleetCount . " Flotten auf Alarm-Rot!");
+            }
+            if ($singleShipCount == 1) {
+                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befindet sich " . $singleShipCount . " Einzelschiff auf Alarm-Rot!");
+            }
+            if ($singleShipCount > 1) {
+                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
+            }
+        }
+
+        return $shipsToShuffle;
+    }
+
+    private function performAttackCycle($alertShip, $leadShip)
+    {
+        $fleet = false;
+        $target_user_id = $alertShip->getUserId();
+        if ($alertShip->getFleetId()) {
+            $attacker = $alertShip->getFleet()->getShips()->toArray();
+            $fleet = true;
+        } else {
+            $attacker = [$alertShip->getId() => $alertShip];
+        }
+        if ($leadShip->isFleetLeader()) {
+            $defender = $leadShip->getFleet()->getShips()->toArray();
+            $fleet = true;
+        } else {
+            $defender = [$leadShip->getId() => $leadShip];
+        }
+        $this->shipAttackCycle->init($attacker, $defender);
+        $this->shipAttackCycle->cycle();
+
+        $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
+            $pm .= $value . "\n";
+        }
+        $this->privateMessageSender->send(
+            $leadShip->getId(),
+            (int)$target_user_id,
+            $pm,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
+
+        if ($leadShip->getIsDestroyed()) {
+
+            $this->addInformationMerge($this->shipAttackCycle->getMessages());
+            return;
+        }
+
+        $this->addInformation(_("Angriff durchgeführt"));
+        $this->addInformationMerge($this->shipAttackCycle->getMessages());
     }
 
     private function getReadyForFlight(ShipInterface $leadShip, array $ships) : void
