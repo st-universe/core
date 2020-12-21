@@ -464,8 +464,10 @@ class User implements UserInterface
         global $container;
 
         $user = $container->get(UserRepositoryInterface::class)->find($userId);
+        $informationen[] = "      user: " . $user->getName();
         if ($this->getAllianceId() > 0) {
-            $informationen[] = "      userInAlly";
+            $informationen[] = "      userAlly: " . $user->getAllianceId();
+            $informationen[] = "      otherAlly: " . $this->getAllianceId();
             if ($this->getAllianceId() == $user->getAllianceId()) {
                 $informationen[] = "      userInSameAlly";
                 return true;
@@ -473,10 +475,10 @@ class User implements UserInterface
             
             $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
                 [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED],
-                (int)$user->getAllianceId,
+                (int)$user->getAllianceId(),
                 (int)$this->getAllianceId()
             );
-            if ($result !== []) {
+            if ($result !== null) {
                 $informationen[] = "      userInBefriendedAlly";
                 return true;
             }
