@@ -125,7 +125,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             } else {
                 $attacker = [$target->getId() => $target];
             }
-            $this->shipAttackCycle->init($attacker, $defender]);
+            $this->shipAttackCycle->init($attacker, $defender);
             $this->shipAttackCycle->cycle();
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
 
