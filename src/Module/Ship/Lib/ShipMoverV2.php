@@ -173,7 +173,8 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         int $destinationX,
         int $destinationY
     ) {
-        echo "- ShipMoverV2\n";
+        echo "- CAP: ".$leadShip->canActivatePhaser()."\n";
+        echo "- CAT: ".$leadShip->canActivateTorpedos()."\n";
 
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
