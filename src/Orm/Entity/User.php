@@ -490,7 +490,7 @@ class User implements UserInterface
         $informationen[] = "      notMatchSoFar";
         
         $result1 = $contact !== null;
-        $result2 = $contact->isFriendly();
+        $result2 = $contact !== null && $contact->isFriendly();
         
         if ($result1)
         {
