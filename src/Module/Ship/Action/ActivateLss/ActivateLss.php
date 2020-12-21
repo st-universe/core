@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\ActivateLss;
 
 use request;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
@@ -54,6 +55,9 @@ final class ActivateLss implements ActionControllerInterface
             );
 
             $this->shipRepository->save($ship);
+        } catch (AlreadyActiveException $e) {
+            $game->addInformation(_('Die Sensoren sind bereits aktiviert'));
+            return;
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(_('Nicht genügend Energie zur Aktivierung vorhanden'));
             return;

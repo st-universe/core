@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System;
 
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
@@ -80,6 +81,10 @@ final class ShipSystemManager implements ShipSystemManagerInterface
 
         if ($shipSystem->isActivateable() === false) {
             throw new SystemDamagedException();
+        }
+
+        if ($system->isAlreadyActive($ship) === true) {
+            throw new AlreadyActiveException();
         }
 
         if ($ship->getEps() < $system->getEnergyUsageForActivation()) {

@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -65,6 +66,9 @@ final class FleetAlertRed implements ActionControllerInterface
                 try {
                     $this->shipSystemManager->activate($ship, $systemId);
                     $game->addInformation(sprintf(_('%s: System %s wurde aktiviert'), $ship->getName(), $key));
+                } catch (AlreadyActiveException $e) {
+                    $game->addInformation(sprintf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $key));
+                    continue;
                 } catch (ShipSystemException $e) {
                     $game->addInformation(sprintf(_('%s: System %s konnte nicht aktiviert werden'), $ship->getName(), $key));
                     continue;

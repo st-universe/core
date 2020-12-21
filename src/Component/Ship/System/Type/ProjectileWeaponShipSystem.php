@@ -9,6 +9,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ProjectileWeaponShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getTorpedos();
+    }
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {

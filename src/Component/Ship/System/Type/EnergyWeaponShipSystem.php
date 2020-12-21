@@ -9,6 +9,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class EnergyWeaponShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getPhaser();
+    }
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {

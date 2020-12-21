@@ -9,6 +9,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShieldShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getShieldState();
+    }
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {

@@ -9,6 +9,10 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class LongRangeScannerShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getLss();
+    }
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
