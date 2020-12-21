@@ -458,7 +458,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function isFriend($userId, &$informationen = array()): bool
+    public function isFriend($userId, array &$informationen = array()): bool
     {
         // @todo refactor
         global $container;
