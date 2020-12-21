@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SetGreenAlert;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -19,12 +22,16 @@ final class SetGreenAlert implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipSystemManagerInterface $shipSystemManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,7 +46,21 @@ final class SetGreenAlert implements ActionControllerInterface
         );
 
         $ship->setAlertState(1);
-
+        
+        $deactivateSystems = [
+            ShipSystemTypeEnum::SYSTEM_PHASER,
+            ShipSystemTypeEnum::SYSTEM_TORPEDO,
+            ShipSystemTypeEnum::SYSTEM_SHIELDS,
+        ];
+        
+        foreach ($alertSystems as $systemId) {
+            try {
+                $this->shipSystemManager->deactivate($ship, $systemId);
+            } catch (ShipSystemException $e) {
+                continue;
+            }
+        }
+        
         $this->shipRepository->save($ship);
 
         $game->addInformation("Die Alarmstufe wurde auf Grün geändert");
