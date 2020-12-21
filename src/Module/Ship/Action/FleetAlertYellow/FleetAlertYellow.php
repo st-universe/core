@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\FleetAlertYellow;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -40,7 +41,12 @@ final class FleetAlertYellow implements ActionControllerInterface
         );
 
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+            try {
+                $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+            } catch (ShipSystemException $e) {
+                $game->addInformation(sprintf(_('%s: Nicht genügend Energie um auf Alarm-Gelb zu wechseln'), $ship->getName()));
+                continue;
+            }
 
             $this->shipRepository->save($ship);
         }

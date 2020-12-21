@@ -47,7 +47,13 @@ final class FleetAlertRed implements ActionControllerInterface
         );
 
         foreach ($ship->getFleet()->getShips() as $key => $ship) {
-            $ship->setAlertState(ShipAlertStateEnum::ALERT_RED);
+            
+            try {
+                $ship->setAlertState(ShipAlertStateEnum::ALERT_RED);
+            } catch (ShipSystemException $e) {
+                $game->addInformation(sprintf(_('%s: Nicht genügend Energie um auf Alarm-Rot zu wechseln'), $ship->getName()));
+                continue;
+            }
 
             $alertSystems = [
                 ShipSystemTypeEnum::SYSTEM_PHASER,
