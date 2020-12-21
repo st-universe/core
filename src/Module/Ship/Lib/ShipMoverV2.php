@@ -272,42 +272,51 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
     private function checkForAlertRedShips(ShipInterface $leadShip) : array
     {
+        $this->addInformation('checkForAlertRedShips');
         $shipsToShuffle = [];
-
+        
         // only inside systems
         if ($leadShip->getSystem() !== null && !$leadShip->isOverSystem()) {
             $starSystem = $leadShip->getSystem();
             $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $leadShip->getPosX(), $leadShip->getPosY());
-
+            
             $fleetIds = [];
             $fleetCount = 0;
             $singleShipCount = 0;
-
+            
             foreach ($shipsOnLocation as $shipOnLocation) {
+                $this->addInformation('  shipsOnLocation: ' . $shipOnLocation->getName());
+                
                 // ships dont count if user is on vacation
                 if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
                 {
+                    $this->addInformation('    cancelUrlaub');
                     continue;
                 }
-
+                
                 //ships of friends dont attack
                 if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
                 {
+                    $this->addInformation('    cancelFriend');
                     continue;
                 }
                 
                 $fleet = $shipOnLocation->getFleet();
                 
                 if ($fleet === null) {
+                    $this->addInformation('    noFleet');
                     if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                        $this->addInformation('    isSingleAR');
                         $singleShipCount++;
                         $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
                     }
                 }
                 else {
+                    $this->addInformation('    isFleet');
                     $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
                     if ($fleetIdEintrag === null) {
                         if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                            $this->addInformation('    isArFleetLeader');
                             $fleetCount++;
                             $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
                         }
