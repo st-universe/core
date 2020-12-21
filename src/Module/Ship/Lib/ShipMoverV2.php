@@ -239,7 +239,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 $this->shipRepository->save($ship);
             }
             if ($ship->isTraktorbeamActive()) {
-                $this->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde per Traktorstrahl mitgezogen");
+                $this->addInformation(sprintf(_('Die %s wurde per Traktorstrahl mitgezogen'), $ship->getTraktorShip()->getName()));
                 $this->shipRepository->save($ship->getTraktorShip());
             }
         }
@@ -254,7 +254,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             );
         }
         else {
-            $this->addInformation("Die " . $leadShip->getName() . " fliegt in Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " ein");
+            $this->addInformation(sprintf(_('Die %s fliegt in Sektor %d|%d ein'), $leadShip->getName(), $leadShip->getPosX(), $leadShip->getPosY()));
         }
     }
 
@@ -273,7 +273,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
     private function checkForAlertRedShips(ShipInterface $leadShip) : array
     {
-        $this->addInformation('checkForAlertRedShips');
+        $this->addInformation(_('checkForAlertRedShips'));
         $shipsToShuffle = [];
         
         // only inside systems
@@ -303,7 +303,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 }
                 
                 //ships of friends dont attack
-                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId(), $this->informations))
+                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
                 {
                     $this->addInformation('    cancelFriend');
                     continue;
@@ -333,17 +333,18 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 }
             }
 
+            
             if ($fleetCount == 1) {
-                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befindet sich " . $fleetCount . " Flotte auf Alarm-Rot!");
+                $this->addInformation(sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY()));
             }
             if ($fleetCount > 1) {
-                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befinden sich " . $fleetCount . " Flotten auf Alarm-Rot!");
+                $this->addInformation(sprintf(_('In Sektor %d|%d befinden sich %d Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $fleetCount));
             }
             if ($singleShipCount == 1) {
-                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befindet sich " . $singleShipCount . " Einzelschiff auf Alarm-Rot!");
+                $this->addInformation(sprintf(_('In Sektor %d|%d befindet sich 1 Einzelschiff auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY()));
             }
             if ($singleShipCount > 1) {
-                $this->addInformation("In Sektor " . $leadShip->getPosX() . "|" . $leadShip->getPosY() . " befinden sich " . $singleShipCount . " Einzelschiffe auf Alarm-Rot!");
+                $this->addInformation(sprintf(_('In Sektor %d|%d befinden sich %d Einzelschiffe auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $singleShipCount));
             }
         }
 
@@ -369,7 +370,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle();
 
-        $pm = sprintf(_('Eigene Schiffe auf Alarm-Rot, Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        $pm = sprintf(_('Eigene Schiffe auf [b][color=red]Alarm-Rot[/color][/b], Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
         foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
@@ -386,7 +387,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             return;
         }
 
-        $this->addInformation(sprintf(_('Alarm-Rot fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $leadShip->getPosX(), $leadShip->getPosY()));
+        $this->addInformation(sprintf(_('[b][color=red]Alarm-Rot[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $leadShip->getPosX(), $leadShip->getPosY()));
         $this->addInformationMerge($this->shipAttackCycle->getMessages());
     }
 
@@ -404,12 +405,12 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                         $ship->getTraktorShip()->getName()));
             }
             if ($ship->getTraktorMode() == 2) {
-                $this->addLostShip($ship, $leadShip, "Die " . $ship->getName() . " wird von einem Traktorstrahl gehalten");
+                $this->addLostShip($ship, $leadShip, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
                 continue;
             }
             // WA vorhanden?
             if ($ship->getSystem() === null && !$ship->isWarpAble()) {
-                $this->addLostShip($ship, $leadShip, "Die " . $ship->getName() . " verfügt über keinen Warpantrieb");
+                $this->addLostShip($ship, $leadShip, sprintf(_('Die %s verfügt über keinen Warpantrieb'), $ship->getName()));
                 continue;
             }
             //WA aktivieren falls außerhalb
@@ -417,7 +418,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 try {
                     $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
 
-                    $this->addInformation("Die " . $ship->getName() . " aktiviert den Warpantrieb");
+                    $this->addInformation(sprintf(_('Die %s aktiviert den Warpantrieb'), $ship->getName()));
                 } catch (ShipSystemException $e) {
                     $this->addLostShip($ship, $leadShip, sprintf(
                         _('Die %s kann den Warpantrieb nicht aktivieren (%s|%s)'),
@@ -488,13 +489,13 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
         //nächstes Feld nicht passierbar
         if (!$nextField->getFieldType()->getPassable()) {
-            $this->addLostShip($ship, $leadShip, "Das nächste Feld kann nicht passiert werden");
+            $this->addLostShip($ship, $leadShip, _('Das nächste Feld kann nicht passiert werden'));
             return;
         }
 
         //Traktorstrahl Kosten
         if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost() + 1) {
-            $this->deactivateTraktorBeam($ship, "Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " aufgrund Energiemangels deaktiviert");
+            $this->deactivateTraktorBeam($ship, sprintf(_('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
         }
         
         $met = 'fly' . $flightMethod;
@@ -514,14 +515,14 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             $ship->setEps(0);
             if ($field->getFieldType()->getDamage()) {
                 if ($ship->isTraktorbeamActive()) {
-                    $this->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " beschädigt");
+                    $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
                     $damageMsg = $this->applyDamage->damage(
                         new DamageWrapper($field->getFieldType()->getDamage()),
                         $ship->getTraktorShip()
                     );
                     $this->addInformationMerge($damageMsg);
                 }
-                $this->addInformation("Die " . $ship->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " beschädigt");
+                $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
                 $damageMsg = $this->applyDamage->damage(
                     new DamageWrapper($field->getFieldType()->getDamage()),
                     $ship
@@ -529,9 +530,8 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 $this->addInformationMerge($damageMsg);
 
                 if ($ship->getTraktorShip()->getIsDestroyed()) {
-                    $this->entryCreator->addShipEntry(
-                        'Die ' . $ship->getTraktorShip()->getName() . ' wurde beim Einflug in Sektor ' . $ship->getTraktorShip()->getSectorString() . ' zerstört'
-                    );
+                    
+                    $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getTraktorShip()->getName(), $ship->getTraktorShip()->getSectorString()));
 
                     $this->shipRemover->destroy($ship->getTraktorShip());
                 }
@@ -542,14 +542,14 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         //Einflugschaden Feldschaden
         if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
             if ($ship->isTraktorbeamActive()) {
-                $this->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde in Sektor " . $ship->getPosX() . "|" . $ship->getPosY() . " beschädigt");
+                $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
                 $damageMsg = $this->applyDamage->damage(
                     new DamageWrapper($field->getFieldType()->getDamage()),
                     $ship->getTraktorShip()
                 );
                 $this->addInformationMerge($damageMsg);
             }
-            $this->addInformation($field->getFieldType()->getName() . " in Sektor " . $ship->getPosX() . "|" . $ship->getPosY());
+            $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $field->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
             $damageMsg = $this->applyDamage->damage(
                 new DamageWrapper($field->getFieldType()->getSpecialDamage()),
                 $ship
@@ -557,9 +557,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             $this->addInformationMerge($damageMsg);
 
             if ($ship->getIsDestroyed()) {
-                $this->entryCreator->addShipEntry(
-                    'Die ' . $ship->getName() . ' wurde beim Einflug in Sektor ' . $ship->getSectorString() . ' zerstört'
-                );
+                $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
 
                 $this->shipRemover->destroy($ship);
                 $this->lostShips[$ship->getid()] = $ship;
@@ -575,7 +573,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->privateMessageSender->send(
             (int)$ship->getUserId(),
             (int)$ship->getTraktorShip()->getUserId(),
-            "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
+            sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getSectorString()),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
         $ship->deactivateTraktorBeam();
@@ -599,7 +597,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     private function leaveFleet(ShipInterface $ship)
     {
         $ship->leaveFleet();
-        $this->addInformation("Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")");
+        $this->addInformation(sprintf(_('Die %s hat die Flotte verlassen (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
     }
 
     private function getNextField(ShipInterface $leadShip, $flightMethod)
