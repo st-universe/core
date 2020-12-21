@@ -112,7 +112,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $game->addInformation("Die " . $target->getName() . " befindet sich in der selben Flotte wie die " . $ship->getName());
             return;
         }
-        if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED) && !$target->getUser()->isFriend($userId)) {
+        if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
+                && !$target->getUser()->isFriend($userId)
+                && $target->getUser()->getId() !== $userId) {
             if ($target->getFleetId()) {
                 $attacker = $target->getFleet()->getShips();
             } else {

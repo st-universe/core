@@ -189,12 +189,14 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
 
+            $nextfield = $this->getNextField($leadShip, $flightMethod);
+
             // move every ship by one field
             foreach ($ships as $ship) {
                 if (!array_key_exists($ship->getId(), $this->lostShips)
                     && !array_key_exists($leadShip->getId(), $this->lostShips))
                 {
-                    $this->moveOneField($leadShip, $ship, $flightMethod);
+                    $this->moveOneField($leadShip, $ship, $flightMethod, $nextfield);
                 }
             }
 
@@ -342,7 +344,8 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     private function moveOneField(
         ShipInterface $leadShip,
         ShipInterface $ship,
-        $flightMethod
+        $flightMethod,
+        $nextField
     ) {
         // zu wenig Crew
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
@@ -351,8 +354,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                     $ship->getBuildplan()->getCrew()));
             return;
         }
-
-        $nextfield = $this->getNextField($leadShip, $flightMethod, $ship);
+        
         $flight_ecost = $ship->getRump()->getFlightEcost() + $nextfield->getFieldType()->getEnergyCosts();
         
         //zu wenig E zum weiterfliegen
@@ -479,17 +481,17 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->addInformation("Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")");
     }
 
-    private function getNextField(ShipInterface $leadShip, $flightMethod, ShipInterface $ship)
+    private function getNextField(ShipInterface $leadShip, $flightMethod)
     {
         switch ($flightMethod) {
             case ShipEnum::FLY_RIGHT:
-                return $this->getFieldData($leadShip, $ship->getPosX() + 1, $ship->getPosY());
+                return $this->getFieldData($leadShip, $leadShip->getPosX() + 1, $leadShip->getPosY());
             case ShipEnum::FLY_LEFT:
-                return $this->getFieldData($leadShip, $ship->getPosX() - 1, $ship->getPosY());
+                return $this->getFieldData($leadShip, $leadShip->getPosX() - 1, $leadShip->getPosY());
             case ShipEnum::FLY_UP:
-                return $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY() - 1);
+                return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() - 1);
             case ShipEnum::FLY_DOWN:
-                return $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY() + 1);
+                return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() + 1);
         }
     }
 
