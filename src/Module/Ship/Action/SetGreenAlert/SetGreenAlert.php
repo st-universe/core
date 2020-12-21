@@ -53,7 +53,7 @@ final class SetGreenAlert implements ActionControllerInterface
             ShipSystemTypeEnum::SYSTEM_SHIELDS,
         ];
         
-        foreach ($alertSystems as $systemId) {
+        foreach ($deactivateSystems as $systemId) {
             try {
                 $this->shipSystemManager->deactivate($ship, $systemId);
             } catch (ShipSystemException $e) {
