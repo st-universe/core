@@ -302,7 +302,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
                 }
                 
                 //ships of friends dont attack
-                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()), $this->informations)
+                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId(), $this->informations))
                 {
                     $this->addInformation('    cancelFriend');
                     continue;
