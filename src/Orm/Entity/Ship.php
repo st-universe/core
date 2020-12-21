@@ -10,7 +10,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Component\Ship\System\Exception\InsufficientEnergyException
+use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
