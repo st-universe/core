@@ -169,7 +169,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     ) {
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
-        //$flightMethod = $this->determineFlightMethod($leadShip);
+        $flightMethod = $this->determineFlightMethod($leadShip);
 
         $ships[] = $leadShip;
         if ($this->isFleetMode()) {
@@ -192,9 +192,9 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             // move every ship by one field
             foreach ($ships as $ship) {
                 if (!array_key_exists($ship->getId(), $this->lostShips)
-                    && !$this->isDestinationArrived($leadShip))
+                    && !array_key_exists($leadShip->getId(), $this->lostShips))
                 {
-                    $this->moveOneField($leadShip, $ship);
+                    $this->moveOneField($leadShip, $ship, $flightMethod);
                 }
             }
 
@@ -341,9 +341,10 @@ final class ShipMoverV2 implements ShipMoverV2Interface
 
     private function moveOneField(
         ShipInterface $leadShip,
-        ShipInterface $ship
+        ShipInterface $ship,
+        $flightMethod
     ) {
-        // zu wenig Crew?
+        // zu wenig Crew
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $this->addLostShip($ship, $leadShip,
                 sprintf(_('Es werden %d Crewmitglieder benötigt'),
@@ -351,24 +352,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             return;
         }
 
-        if ($this->getDestX() == $ship->getPosX()) {
-            $oldy = $ship->getPosY();
-            if ($this->getDestY() > $oldy) {
-                $method = ShipEnum::FLY_DOWN;
-            } else {
-                $method = ShipEnum::FLY_UP;
-            }
-        }
-        if ($this->getDestY() == $ship->getPosY()) {
-            $oldx = $ship->getPosX();
-            if ($this->getDestX() > $oldx) {
-                $method = ShipEnum::FLY_RIGHT;
-            } else {
-                $method = ShipEnum::FLY_LEFT;
-            }
-        }
-        
-        $nextfield = $this->getNextField($leadShip, $method, $ship);
+        $nextfield = $this->getNextField($leadShip, $flightMethod, $ship);
         $flight_ecost = $ship->getRump()->getFlightEcost() + $nextfield->getFieldType()->getEnergyCosts();
         
         //zu wenig E zum weiterfliegen
@@ -492,7 +476,6 @@ final class ShipMoverV2 implements ShipMoverV2Interface
     private function leaveFleet(ShipInterface $ship)
     {
         $ship->leaveFleet();
-        
         $this->addInformation("Die " . $ship->getName() . " hat die Flotte verlassen (" . $ship->getPosX() . "|" . $ship->getPosY() . ")");
     }
 

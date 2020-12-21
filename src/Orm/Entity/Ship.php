@@ -799,6 +799,7 @@ class Ship implements ShipInterface
             $fleet->getShips()->removeElement($this);
 
             $this->setFleet(null);
+            $this->setFleetId(null);
 
             // @todo refactor
             global $container;
