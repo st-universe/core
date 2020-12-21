@@ -59,15 +59,17 @@ final class SetRedAlert implements ActionControllerInterface
         }
 
         $alertSystems = [
-            ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            ShipSystemTypeEnum::SYSTEM_PHASER,
-            ShipSystemTypeEnum::SYSTEM_TORPEDO
+            'Schilde' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            'Phaser' => ShipSystemTypeEnum::SYSTEM_PHASER,
+            'Torpedowerfer' => ShipSystemTypeEnum::SYSTEM_TORPEDO
         ];
 
-        foreach ($alertSystems as $systemId) {
+        foreach ($alertSystems as $key => $systemId) {
             try {
                 $this->shipSystemManager->activate($ship, $systemId);
+                $game->addInformation(sprintf(_('%s: System %s wurde aktiviert'), $ship->getName(), $key));
             } catch (ShipSystemException $e) {
+                $game->addInformation(sprintf(_('%s: System %s konnte nicht aktiviert werden'), $ship->getName(), $key));
                 continue;
             }
         }
