@@ -76,6 +76,9 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->attacker = $attackingShips;
         $this->defender = $defendingShips;
         $this->singleMode = $singleMode;
+        $this->firstStrike = true;
+        $this->messages = [];
+        $this->usedShips = ['attacker' => [], 'defender' => []];
     }
 
     /**
