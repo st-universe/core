@@ -369,12 +369,12 @@ final class ShipMoverV2 implements ShipMoverV2Interface
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle();
 
-        $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        $pm = sprintf(_('Eigene Schiffe auf Alarm-Rot, Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
         foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
-            $leadShip->getId(),
+            (int)$leadShip->getUser()->getId(),
             (int)$target_user_id,
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
@@ -386,7 +386,7 @@ final class ShipMoverV2 implements ShipMoverV2Interface
             return;
         }
 
-        $this->addInformation(_("Angriff durchgeführt"));
+        $this->addInformation(sprintf(_('Alarm-Rot fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $leadShip->getPosX(), $leadShip->getPosY()));
         $this->addInformationMerge($this->shipAttackCycle->getMessages());
     }
 
