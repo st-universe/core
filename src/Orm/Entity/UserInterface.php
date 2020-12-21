@@ -115,7 +115,7 @@ interface UserInterface
 
     public function setAlliance(?AllianceInterface $alliance): UserInterface;
 
-    public function isFriend($userId): bool;
+    public function isFriend($userId, $informationen): bool;
 
     public function getSessionDataUnserialized(): array;
 
