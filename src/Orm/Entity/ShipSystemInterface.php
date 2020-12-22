@@ -18,6 +18,10 @@ interface ShipSystemInterface
 
     public function setStatus(int $status): ShipSystemInterface;
 
+    public function getMode(): int;
+
+    public function setMode(int $mode): ShipSystemInterface;
+
     public function isActivateable(): bool;
 
     public function getEnergyCosts(): int;
