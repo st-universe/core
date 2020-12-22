@@ -1345,6 +1345,11 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO);
     }
 
+    public function hasCloak(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK);
+    }
+
     public function hasWarpcore(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE);
