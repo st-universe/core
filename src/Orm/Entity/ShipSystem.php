@@ -34,6 +34,9 @@ class ShipSystem implements ShipSystemInterface
     /** @Column(type="smallint") * */
     private $status = 0;
 
+    /** @Column(type="smallint") * */
+    private $mode = 0;
+
     /**
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
@@ -87,21 +90,36 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    public function getMode(): int
+    {
+        return $this->mode;
+    }
+
+    public function setMode(int $mode): ShipSystemInterface
+    {
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     */
     public function isActivateable(): bool
     {
-        // @todo
         return true;
     }
 
     public function getEnergyCosts(): int
     {
-        // @todo
+        // @TODO über CloakShipSystem implements ShipSystemTypeInterface?
         return 1;
     }
 
     public function isDisabled(): bool
     {
-        return $this->getStatus() === 0;
+        return $this->getStatus() === 0
+            || $this->getMode() < 2;
     }
 
     public function getModule(): ModuleInterface
