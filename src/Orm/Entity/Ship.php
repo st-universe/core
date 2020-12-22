@@ -404,6 +404,11 @@ class Ship implements ShipInterface
 
     private function getSystemState(int $systemId): bool
     {
+        if (!$this->hasShipSystem($systemId))
+        {
+            return false;
+        }
+
         return $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ON
             || $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON;
     }
