@@ -17,10 +17,22 @@ final class BuildingFieldAlternativeRepository extends EntityRepository implemen
         ]);
     }
 
-    public function getByBuildingId(int $buildingId): array
+    public function getByBuildingIdAndResearchedByUser(int $buildingId, int $userId): iterable
     {
-        return $this->findBy([
-            'buildings_id' => $buildingId,
-        ]);
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT b FROM %s b WHERE b.buildings_id = :buildingId AND (
+                    b.research_id is null OR b.research_id IN (
+                        SELECT ru.research_id FROM %s ru WHERE ru.user_id = :userId AND ru.finished > 0
+                    ))',
+                BuildingFieldAlternative::class,
+                Researched::class
+            )
+        )
+            ->setParameters([
+                'userId' => $userId,
+                'buildingId' => $buildingId
+            ])
+            ->getResult();
     }
 }
