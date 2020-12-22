@@ -30,9 +30,6 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
     /** @Column(type="integer") * */
     private $alternate_buildings_id = 0;
     
-    /** @Column(type="integer") * */
-    private $research_id = 0;
-
     /**
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id", onDelete="CASCADE")
@@ -89,17 +86,6 @@ class BuildingFieldAlternative implements BuildingFieldAlternativeInterface
     public function getAlternativeBuilding(): BuildingInterface
     {
         return $this->alternateBuilding;
-    }
-
-    public function getResearchId(): int
-    {
-        return $this->research_id;
-    }
-
-    public function setResearchId(int $researchId): BuildingInterface
-    {
-        $this->research_id = $researchId;
-        return $this;
     }
 
     public function getBuilding(): BuildingInterface
