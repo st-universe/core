@@ -192,7 +192,7 @@
 								</tal:block>
 							</td>
 						</tr>
-						<tal:block tal:condition="SHIP/hasCloak">
+						<tal:block tal:condition="SHIP/isCloakAble">
 							<tr>
 								<td colspan="2">
                   <a tal:condition="not:SHIP/getCloakState"

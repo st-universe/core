@@ -60,7 +60,7 @@
       <img src="assets/buttons/act_phaser2.gif" tal:condition="not:ship/getPhaser" title="Strahlenwaffe deaktiviert" />
       <img src="assets/buttons/act_torp1.gif" tal:condition="ship/getTorpedos" title="Torpedobänke aktiviert" />
       <img src="assets/buttons/act_torp2.gif" tal:condition="not:ship/getTorpedos" title="Torpedobände deaktiviert" />
-      <tal:block tal:condition="ship/hasCloak">
+      <tal:block tal:condition="ship/isCloakAble">
         <img src="assets/buttons/tarn1.gif" tal:condition="ship/getCloakState" title="Tarnung aktiviert" />
         <img src="assets/buttons/tarn2.gif" tal:condition="not:ship/getCloakState" title="Tarnung deaktiviert" />
       </tal:block>
