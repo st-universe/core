@@ -4,20 +4,34 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class LongRangeScannerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
+final class LongRangeScannerShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getLss();
+    }
+
+    public function checkActivationConditions(ShipInterface $ship): bool
+    {
+        return $ship->getLss() === false
+        ;
+    }
+
+    public function getEnergyUsageForActivation(): int
+    {
+        return 1;
+    }
+
     public function activate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->setMode(ShipSystemModeEnum::MODE_ON);
+        $ship->setLss(true);
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->setLss(false);
     }
 }
