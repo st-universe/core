@@ -330,6 +330,8 @@ interface ShipInterface
 
     public function hasTorpedo(): bool;
 
+    public function hasCloak(): bool;
+
     public function hasWarpcore(): bool;
 
     public function getMaxTorpedos(): int;
