@@ -58,6 +58,7 @@ final class FleetAlertRed implements ActionControllerInterface
             
             $alertSystems = [
                 'Schilde' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+                'Nahbereichssensoren' => ShipSystemTypeEnum::SYSTEM_NBS,
                 'Phaser' => ShipSystemTypeEnum::SYSTEM_PHASER,
                 'Torpedowerfer' => ShipSystemTypeEnum::SYSTEM_TORPEDO
             ];
