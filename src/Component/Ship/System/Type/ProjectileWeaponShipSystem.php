@@ -4,27 +4,38 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class ProjectileWeaponShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
+final class ProjectileWeaponShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getTorpedos();
+    }
+
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getTorpedoCount() > 0  &&
+        return
+            $ship->getTorpedos() === false &&
+            $ship->getTorpedoCount() > 0  &&
             $ship->getCloakState() === false &&
-            $ship->canActivateTorpedos();
+            $ship->canActivateTorpedos()
+        ;
+    }
+
+    public function getEnergyUsageForActivation(): int
+    {
+        return 1;
     }
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->setMode(ShipSystemModeEnum::MODE_ON);
+        $ship->setTorpedos(true);
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->setTorpedos(false);
     }
 }

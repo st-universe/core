@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
-use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class EnergyWeaponShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
+final class EnergyWeaponShipSystem implements ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool
+    {
+        return $ship->getPhaser();
+    }
+
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getCloakState() === false;
+        return $ship->getPhaser() === false &&
+               $ship->getCloakState() === false &&
+               $ship->canActivatePhaser();
+        ;
     }
 
     public function getEnergyUsageForActivation(): int
@@ -23,11 +29,11 @@ final class EnergyWeaponShipSystem extends AbstractShipSystemType implements Shi
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_ON);
+        $ship->setPhaser(true);
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship->setPhaser(false);
     }
 }

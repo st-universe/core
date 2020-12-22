@@ -6,11 +6,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ShipSystemTypeInterface
 {
+    public function isAlreadyActive(ShipInterface $ship): bool;
+
     public function checkActivationConditions(ShipInterface $ship): bool;
 
     public function getEnergyUsageForActivation(): int;
-
-    public function getDefaultMode(): int;
 
     public function activate(ShipInterface $ship): void;
 

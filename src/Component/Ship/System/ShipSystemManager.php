@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System;
 
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
-use Stu\Component\Ship\System\Exception\SystemNotActivableException;
-use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -36,18 +32,16 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     {
         $system = $this->lookupSystem($shipSystemId);
 
-        $this->checkActivationConditions($ship, $system, $shipSystemId);
-        
+        $this->checkConditions($ship, $system, $shipSystemId);
+
         $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
-        
+
         $system->activate($ship);
     }
-    
+
     public function deactivate(ShipInterface $ship, int $shipSystemId): void
     {
         $system = $this->lookupSystem($shipSystemId);
-        
-        $this->checkDeactivationConditions($ship, $system, $shipSystemId);
 
         $system->deactivate($ship);
     }
@@ -75,7 +69,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         return $system;
     }
 
-    private function checkActivationConditions(
+    private function checkConditions(
         ShipInterface $ship,
         ShipSystemTypeInterface $system,
         int $shipSystemId
@@ -85,16 +79,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new SystemNotFoundException();
         }
 
-        if ($shipSystem->getStatus() === 0) {
+        if ($shipSystem->isActivateable() === false) {
             throw new SystemDamagedException();
         }
 
-        if (!$shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF) {
-            throw new SystemNotActivableException();
-        }
-        
-        if ($shipSystem->getMode() === ShipSystemModeEnum::MODE_ON
-            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON) {
+        if ($system->isAlreadyActive($ship) === true) {
             throw new AlreadyActiveException();
         }
 
@@ -106,28 +95,8 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new InsufficientCrewException();
         }
 
-        if (!$system->checkActivationConditions($ship)) {
+        if ($system->checkActivationConditions($ship) === false) {
             throw new ActivationConditionsNotMetException();
-        }
-    }
-
-    private function checkDeactivationConditions(
-        ShipInterface $ship,
-        ShipSystemTypeInterface $system,
-        int $shipSystemId
-    ): void {
-        $shipSystem = $ship->getSystems()[$shipSystemId] ?? null;
-        if ($shipSystem === null) {
-            throw new SystemNotFoundException();
-        }
-
-        if (!$shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON) {
-            throw new SystemNotDeactivableException();
-        }
-        
-        if ($shipSystem->getMode() === ShipSystemModeEnum::MODE_OFF
-            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF) {
-            throw new AlreadyOffException();
         }
     }
 }
