@@ -55,11 +55,9 @@ final class ShowBuilding implements ViewControllerInterface
             return;
         }
 
-        $iterator = $this->buildingFieldAlternativeRepository->getByBuildingIdAndResearchedByUser(
+        $alternativeBuildings = $this->buildingFieldAlternativeRepository->getByBuildingIdAndResearchedByUser(
             (int) $building->getId(), (int) $userId
         );
-
-        $alternativeBuildings = iterator_to_array($iterator, false);
 
         if ($alternativeBuildings === []) {
             $useableFieldTypes = $building->getBuildableFields();
