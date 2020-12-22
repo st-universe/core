@@ -49,19 +49,11 @@ interface ShipInterface
 
     public function getWarpState(): bool;
 
-    public function setWarpState(bool $warpState): ShipInterface;
-
     public function getWarpcoreLoad(): int;
 
     public function setWarpcoreLoad(int $warpcoreLoad): ShipInterface;
 
     public function getCloakState(): bool;
-
-    public function setCloakState(bool $cloakState): ShipInterface;
-
-    public function isCloakable(): bool;
-
-    public function setCloakable(bool $cloakable): ShipInterface;
 
     public function getEps(): int;
 
@@ -97,8 +89,6 @@ interface ShipInterface
 
     public function getShieldState(): bool;
 
-    public function setShieldState(bool $shieldState): ShipInterface;
-
     public function getTraktorShipId(): int;
 
     public function setTraktorShipId(int $traktorShipId): ShipInterface;
@@ -109,23 +99,15 @@ interface ShipInterface
 
     public function getNbs(): bool;
 
-    public function setNbs(bool $nbs): ShipInterface;
-
     public function getLss(): bool;
-
-    public function setLss(bool $lss): ShipInterface;
 
     public function canActivatePhaser(): bool;
 
     public function getPhaser(): bool;
 
-    public function setPhaser(bool $energyWeaponState): ShipInterface;
-
     public function canActivateTorpedos(): bool;
 
     public function getTorpedos(): bool;
-
-    public function setTorpedos(bool $projectileWeaponState): ShipInterface;
 
     public function getFormerRumpId(): int;
 
