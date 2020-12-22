@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperComputer;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperEnergyWeapon;
@@ -20,11 +21,13 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ModuleSpecialRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 
 final class ShipCreator implements ShipCreatorInterface
 {
@@ -39,6 +42,8 @@ final class ShipCreator implements ShipCreatorInterface
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
+    
+    private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
 
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
@@ -46,7 +51,8 @@ final class ShipCreator implements ShipCreatorInterface
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        ModuleSpecialRepositoryInterface $moduleSpecialRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
@@ -54,6 +60,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->userRepository = $userRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->moduleSpecialRepository = $moduleSpecialRepository;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
@@ -155,7 +162,7 @@ final class ShipCreator implements ShipCreatorInterface
                     $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO] = $module->getModule();
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
-                    // XXX: TBD
+                    $this->addSpecialSystems($module->getModule(), $systems);
                     break;
             }
         }
@@ -167,8 +174,26 @@ final class ShipCreator implements ShipCreatorInterface
                 $obj->setModule($module);
             }
             $obj->setStatus(100);
+            $obj->setMode(ShipSystemModeEnum::MODE_OFF);
 
             $this->shipSystemRepository->save($obj);
+        }
+    }
+
+    private function addSpecialSystems($module, &$systems): void
+    {
+        $moduleSpecials = $this->moduleSpecialRepository->getByModule($module->getId());
+
+        foreach ($moduleSpecials as $special)
+        {
+            switch ($special->getSpecialId()) {
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK:
+                    $systems[ShipSystemTypeEnum::SYSTEM_CLOAK] = $module;
+                    break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TOMATO_PEELER:
+                    $systems[ShipSystemTypeEnum::SYSTEM_TOMATO_PEELER] = $module;
+                    break;
+            }
         }
     }
 }
