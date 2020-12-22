@@ -35,7 +35,7 @@ class ShipSystem implements ShipSystemInterface
     private $status = 0;
     
     /** @Column(type="smallint") * */
-    private $system_mode = 1;
+    private $mode = 1;
 
     /**
      * @ManyToOne(targetEntity="Module")
@@ -92,12 +92,12 @@ class ShipSystem implements ShipSystemInterface
 
     public function getMode(): int
     {
-        return $this->system_mode;
+        return $this->mode;
     }
 
     public function setMode(int $mode): ShipSystemInterface
     {
-        $this->system_mode = $mode;
+        $this->mode = $mode;
 
         return $this;
     }
