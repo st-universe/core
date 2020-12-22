@@ -20,5 +20,9 @@ interface BuildingFieldAlternativeInterface
 
     public function getAlternativeBuilding(): BuildingInterface;
 
+    public function getResearchId(): int;
+
+    public function setResearchId(int $researchId): BuildingFieldAlternativeInterface;
+
     public function getBuilding(): BuildingInterface;
 }
