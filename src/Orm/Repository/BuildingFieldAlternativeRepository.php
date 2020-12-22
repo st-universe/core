@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\BuildingFieldAlternative;
 use Stu\Orm\Entity\BuildingFieldAlternativeInterface;
+use Stu\Orm\Entity\Researched;
 
 final class BuildingFieldAlternativeRepository extends EntityRepository implements BuildingFieldAlternativeRepositoryInterface
 {
