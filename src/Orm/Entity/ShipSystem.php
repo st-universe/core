@@ -102,21 +102,24 @@ class ShipSystem implements ShipSystemInterface
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function isActivateable(): bool
     {
-        // @todo
         return true;
     }
 
     public function getEnergyCosts(): int
     {
-        // @todo
+        // @TODO über CloakShipSystem implements ShipSystemTypeInterface?
         return 1;
     }
 
     public function isDisabled(): bool
     {
-        return $this->getStatus() === 0;
+        return $this->getStatus() === 0
+            || $this->getMode() < 2;
     }
 
     public function getModule(): ModuleInterface

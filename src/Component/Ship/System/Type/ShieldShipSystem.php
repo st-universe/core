@@ -4,39 +4,30 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\System\ShipSystemModeEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
-final class ShieldShipSystem implements ShipSystemTypeInterface
+final class ShieldShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function isAlreadyActive(ShipInterface $ship): bool
-    {
-        return $ship->getShieldState();
-    }
-
     public function checkActivationConditions(ShipInterface $ship): bool
     {
         return $ship->getCloakState() === false
-            && $ship->getShieldState() === false
             && $ship->getTraktorShip() === null
             && $ship->getShield() > 0
         ;
-    }
-
-    public function getEnergyUsageForActivation(): int
-    {
-        return 1;
     }
 
     public function activate(ShipInterface $ship): void
     {
         $ship->cancelRepair();
         $ship->setDockedTo(null);
-        $ship->setShieldState(true);
+        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_ON);
     }
-
+    
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->setShieldState(false);
+        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 }

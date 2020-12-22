@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Module\Ship\Lib\PositionChecker;
@@ -260,8 +261,6 @@ class Ship implements ShipInterface
      */
     private $storage;
 
-    private $activeSystems;
-
     private $epsUsage;
 
     private $mapfield;
@@ -403,15 +402,20 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function getWarpState(): bool
+    private function getSystemState(int $systemId): bool
     {
-        return $this->warp;
+        return $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ON
+            || $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON;
     }
 
-    public function setWarpState(bool $warpState): ShipInterface
+    private function setSystemMode(int $systemId, int $mode): void
     {
-        $this->warp = $warpState;
-        return $this;
+        $this->getShipSystem($systemId)->setMode($mode);
+    }
+
+    public function getWarpState(): bool
+    {
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
     public function getWarpcoreLoad(): int
@@ -427,24 +431,7 @@ class Ship implements ShipInterface
 
     public function getCloakState(): bool
     {
-        return $this->cloak;
-    }
-
-    public function setCloakState(bool $cloakState): ShipInterface
-    {
-        $this->cloak = $cloakState;
-        return $this;
-    }
-
-    public function isCloakable(): bool
-    {
-        return $this->cloakable;
-    }
-
-    public function setCloakable(bool $cloakable): ShipInterface
-    {
-        $this->cloakable = $cloakable;
-        return $this;
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CLOAK);
     }
 
     public function getEps(): int
@@ -537,13 +524,7 @@ class Ship implements ShipInterface
 
     public function getShieldState(): bool
     {
-        return $this->schilde_status;
-    }
-
-    public function setShieldState(bool $shieldState): ShipInterface
-    {
-        $this->schilde_status = $shieldState;
-        return $this;
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SHIELDS);
     }
 
     public function getTraktorShipId(): int
@@ -570,56 +551,34 @@ class Ship implements ShipInterface
 
     public function getNbs(): bool
     {
-        return $this->nbs;
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_NBS);
     }
-
-    public function setNbs(bool $nbs): ShipInterface
-    {
-        $this->nbs = $nbs;
-        return $this;
-    }
-
+    
     public function getLss(): bool
     {
-        return $this->lss;
-    }
-
-    public function setLss(bool $lss): ShipInterface
-    {
-        $this->lss = $lss;
-        return $this;
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_LSS);
     }
 
     public function canActivatePhaser(): bool
     {
+        //TODO rework über CloakShipSystem implements ShipSystemTypeInterface?
         return $this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN;
     }
 
     public function getPhaser(): bool
     {
-        return $this->wea_phaser;
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
-
-    public function setPhaser(bool $energyWeaponState): ShipInterface
-    {
-        $this->wea_phaser = $energyWeaponState;
-        return $this;
-    }
-
+    
     public function canActivateTorpedos(): bool
     {
+        //TODO rework über CloakShipSystem implements ShipSystemTypeInterface?
         return $this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN;
     }
-
+    
     public function getTorpedos(): bool
     {
-        return $this->wea_torp;
-    }
-
-    public function setTorpedos(bool $projectileWeaponState): ShipInterface
-    {
-        $this->wea_torp = $projectileWeaponState;
-        return $this;
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TORPEDO);
     }
 
     public function getFormerRumpId(): int
@@ -1106,7 +1065,7 @@ class Ship implements ShipInterface
         $this->epsUsage = array_reduce(
             $this->getActiveSystems(),
             function (int $sum, ShipSystemInterface $shipSystem): int {
-                return $sum + 1;
+                return $sum + $shipSystem->getEnergyCosts();
             },
             0
         );
@@ -1130,11 +1089,13 @@ class Ship implements ShipInterface
         return $this->systems;
     }
 
+    // with ShipSystemTypeEnum
     public function hasShipSystem($system): bool
     {
         return $this->getSystems()->containsKey($system);
     }
 
+    // with ShipSystemTypeEnum
     public function getShipSystem($system): ShipSystemInterface
     {
         return $this->getSystems()->get($system);
@@ -1145,38 +1106,13 @@ class Ship implements ShipInterface
      */
     public function getActiveSystems(): array
     {
-        if ($this->activeSystems !== null) {
-            return $this->activeSystems;
-        }
-
-        $this->activeSystems = [];
-        foreach ($this->getSystems() as $obj) {
-            if ($this->isActiveSystem($obj)) {
-                $this->activeSystems[] = $obj;
+        $activeSystems = [];
+        foreach ($this->getSystems() as $system) {
+            if ($system->getMode() > 1) {
+                $this->activeSystems[] = $system;
             }
         }
-        return $this->activeSystems;
-    }
-
-    private function isActiveSystem(ShipSystemInterface $shipSystem): bool
-    {
-        switch ($shipSystem->getSystemType()) {
-            case ShipSystemTypeEnum::SYSTEM_CLOAK:
-                return $this->getCloakState() === true;
-            case ShipSystemTypeEnum::SYSTEM_NBS:
-                return $this->getNbs() === true;
-            case ShipSystemTypeEnum::SYSTEM_LSS:
-                return $this->getLss() === true;
-            case ShipSystemTypeEnum::SYSTEM_PHASER:
-                return $this->getPhaser() === true;
-            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
-                return $this->getTorpedos() === true;
-            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
-                return $this->getWarpState() === true;
-            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
-                return $this->getShieldState() === true;
-        }
-        return false;
+        return $activeSystems;
     }
 
     public function displayNbsActions(): bool
