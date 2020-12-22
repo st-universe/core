@@ -21,7 +21,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Redis;
 use Stu\Lib\StuBbCodeDefinitionSet;
-use Stu\Module\Control\GameController
+use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Lib\Session;
 use Stu\Lib\SessionInterface;
@@ -49,7 +49,7 @@ $builder->addDefinitions([
     CacheItemPoolInterface::class => function (ContainerInterface $c): CacheItemPoolInterface {
         $config = $c->get(ConfigInterface::class);
 
-        if ($config->get('debug.debug_mode') === true))) {
+        if ($config->get('debug.debug_mode') === true) {
             return new ArrayCachePool();
         } else {
             $redis = new Redis();
