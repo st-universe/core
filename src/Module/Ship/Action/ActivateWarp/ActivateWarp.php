@@ -27,7 +27,7 @@ final class ActivateWarp implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, _('Warpantrieb'), $game);
+        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, _('Warpantrieb'), $game);
     }
 
     public function performSessionCheck(): bool
