@@ -98,15 +98,12 @@ class ShipSystem implements ShipSystemInterface
         } elseif ($this->getStatus() < 26)
         {
             return _("sysStatus1to25");
-        }
         } elseif ($this->getStatus() < 51)
         {
             return _("sysStatus26to50");
-        }
         } elseif ($this->getStatus() < 76)
         {
             return _("sysStatus51to75");
-        }
         } else
         {
             return _("sysStatus76to100");
