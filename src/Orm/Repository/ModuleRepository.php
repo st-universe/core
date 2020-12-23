@@ -11,20 +11,35 @@ use Stu\Orm\Entity\ModuleSpecial;
 
 final class ModuleRepository extends EntityRepository implements ModuleRepositoryInterface
 {
+    // used for ModuleSelector
     public function getBySpecialTypeColonyAndRump(
         int $colonyId,
-        int $moduleTypeId,
+        int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
         int $shipRumpId,
         int $shipRumpRoleId
     ): array {
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew, m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
-                    FROM stu_modules m WHERE m.type = :typeId AND
-					(SELECT CASE WHEN (SELECT count(id) FROM stu_modules where type = :typeId AND rumps_role_id = :shipRumpRoleId)=0 THEN m.rumps_role_id IS NULL ELSE m.rumps_role_id = :shipRumpRoleId END)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id = :colonyId))
-                    AND m.id IN (SELECT module_id FROM stu_modules_specials WHERE special_id IN (SELECT module_special_id FROM stu_rumps_module_special WHERE rump_id = :shipRumpId))
+                        m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew,
+                        m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
+                    FROM stu_modules m
+                    WHERE m.type = :typeId
+                    AND (SELECT CASE WHEN (SELECT count(id)
+                                            FROM stu_modules
+                                            WHERE type = :typeId
+                                            AND rumps_role_id = :shipRumpRoleId) = 0
+                                    THEN m.rumps_role_id IS NULL
+                                    ELSE m.rumps_role_id = :shipRumpRoleId
+                                END)
+					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id
+                                                                FROM stu_colonies_storage
+                                                                WHERE colonies_id = :colonyId))
+                    AND m.id IN (SELECT module_id
+                                FROM stu_modules_specials
+                                WHERE special_id IN (SELECT module_special_id
+                                                    FROM stu_rumps_module_special
+                                                    WHERE rump_id = :shipRumpId))
                 ',
                 $this->getResultSetMapping()
             )
@@ -38,6 +53,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
+    // used for ModuleSelector
     public function getByTypeColonyAndLevel(
         int $colonyId,
         int $moduleTypeId,
@@ -48,10 +64,21 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
         return $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT
-                        m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew, m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
-                    FROM stu_modules m WHERE m.type = :typeId AND (SELECT CASE WHEN (SELECT count(id) FROM stu_modules where type = :typeId AND rumps_role_id = :shipRumpRoleId) = 0 THEN m.rumps_role_id IS NULL ELSE m.rumps_role_id = :shipRumpRoleId END)
+                        m.id, m.name, m.level, m.upgrade_factor, m.downgrade_factor, m.crew,
+                        m.type, m.research_id, m.goods_id, m.viewable, m.rumps_role_id, m.ecost
+                    FROM stu_modules m
+                    WHERE m.type = :typeId
+                    AND (SELECT CASE WHEN (SELECT count(id)
+                                            FROM stu_modules
+                                            WHERE type = :typeId
+                                            AND rumps_role_id = :shipRumpRoleId) = 0
+                                    THEN m.rumps_role_id IS NULL
+                                    ELSE m.rumps_role_id = :shipRumpRoleId
+                                END)
 					AND level IN (:levelList)
-					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id FROM stu_colonies_storage WHERE colonies_id = :colonyId))
+					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id
+                                                                FROM stu_colonies_storage
+                                                                WHERE colonies_id = :colonyId))
                 ',
                 $this->getResultSetMapping()
             )
@@ -65,6 +92,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
+    // used for admin createBuildplan
     public function getByTypeAndLevel(
         int $moduleTypeId,
         int $shipRumpRoleId,
@@ -88,6 +116,7 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
             ->getResult();
     }
 
+    // used for admin createBuildplan
     public function getBySpecialTypeIds(array $specialTypeIds): iterable
     {
         return $this->getEntityManager()->createQuery(
