@@ -45,7 +45,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         try {
             $this->shipSystemManager->deactivate($ship, $systemId);
             $this->shipRepository->save($ship);
-            $game->addInformation(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
         } catch (AlreadyOffException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotDeactivableException $e) {
@@ -70,7 +70,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             try {
                 $this->shipSystemManager->deactivate($ship, $systemId);
                 $this->shipRepository->save($ship);
-                $game->addInformation(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
+                $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
             } catch (AlreadyOffException $e) {
                 $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
             } catch (SystemNotDeactivableException $e) {
