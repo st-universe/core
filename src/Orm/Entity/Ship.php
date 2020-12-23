@@ -1044,30 +1044,45 @@ class Ship implements ShipInterface
 
     private function reloadEpsUsage(): void
     {
-        $this->epsUsage = 0;
+        if ($this->getId() === 1963)
+        {
+            echo "reloadEpsUsage\n";
+        }
+        
+        $result = 0;
         
         if ($this->getCrewCount() > 0)
         {
-            $this->epsUsage += 1;
+            $result += 1;
         }
-
+        
         //@todo refactor
         global $container;
         $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
         
         foreach ($this->getActiveSystems() as $shipSystem)
         {
-            $this->epsUsage += $shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
+            if ($this->getId() === 1963)
+            {
+                echo "- activeSystem: ".$shipSystem->getSystemType()."\n";
+            }
+            $result += $shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
-
+        
         if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW)
         {
-            $this->epsUsage += 1;
+            $result += 1;
         }
         if ($this->getAlertState() == ShipAlertStateEnum::ALERT_RED)
         {
-            $this->epsUsage += 2;
+            $result += 2;
         }
+        
+        if ($this->getId() === 1963)
+        {
+            echo "- result: ".$result."\n";
+        }
+        return $result;
     }
 
     public function lowerEpsUsage($value): void
