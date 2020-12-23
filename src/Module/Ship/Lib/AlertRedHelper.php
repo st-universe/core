@@ -108,7 +108,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
     {
         $fleet = false;
         $target_user_id = $alertShip->getUserId();
-        if ($alertShip->getFleetId() {
+        if ($alertShip->getFleetId()) {
             $attacker = [];
 
             // only uncloaked ships enter fight
