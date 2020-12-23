@@ -5,7 +5,6 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipEnum;
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
