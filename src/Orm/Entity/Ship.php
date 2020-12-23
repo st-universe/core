@@ -218,6 +218,7 @@ class Ship implements ShipInterface
 
     /**
      * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type")
+     * @OrderBy({"system_type" = "ASC"})
      */
     private $systems;
 
