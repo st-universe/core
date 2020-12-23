@@ -5,20 +5,50 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DeactivateLss;
 
 use request;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Action\Deactivate\AbstractSystemDeactivator;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class DeactivateLss extends AbstractSystemDeactivator implements ActionControllerInterface
+final class DeactivateLss implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_LSS';
+
+    private ShipLoaderInterface $shipLoader;
+
+    private ShipRepositoryInterface $shipRepository;
+
+    private ShipSystemManagerInterface $shipSystemManager;
+
+    public function __construct(
+        ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
+    ) {
+        $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_LSS, _('Langstreckensensoren'), $game);
+        $userId = $game->getUser()->getId();
+
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId
+        );
+
+        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_LSS);
+
+        $this->shipRepository->save($ship);
+
+        $game->addInformation("Langstreckensensoren deaktiviert");
     }
 
     public function performSessionCheck(): bool
