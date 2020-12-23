@@ -194,7 +194,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('type', 'type', 'integer');
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT a.sx as posx,a.sy as posy,a.systems_id as sysid, count(b.id) as shipcount, count(c.id) as cloakcount, d.type, a.field_id
+            'SELECT a.sx as posx,a.sy as posy,a.systems_id as sysid, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount, d.type, a.field_id
             FROM stu_sys_map a
             LEFT JOIN stu_ships b
                 ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy
@@ -205,11 +205,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                     AND ss.mode > 1)
             LEFT JOIN stu_ships c
                 ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy
-                AND NOT EXISTS (SELECT ss2.id
+                AND EXISTS (SELECT ss2.id
                                     FROM stu_ships_systems ss2
                                     WHERE c.id = ss2.ships_id
                                     AND ss2.system_type = :systemId
-                                    AND ss2.mode < 2)
+                                    AND ss2.mode > 1)
             LEFT JOIN stu_map_ftypes d ON d.id = a.field_id WHERE
 			a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
             GROUP BY a.sy, a.sx, a.systems_id, d.type, a.field_id ORDER BY a.sy,a.sx',
@@ -234,7 +234,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('type', 'type', 'integer');
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT a.cx as posx,a.cy as posy, count(b.id) as shipcount, count(c.id) as cloakcount, d.type, a.field_id
+            'SELECT a.cx as posx,a.cy as posy, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount, d.type, a.field_id
             FROM stu_map a
             LEFT JOIN stu_ships b
                 ON b.cx=a.cx AND b.cy=a.cy
@@ -245,11 +245,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                     AND ss.mode > 1)
             LEFT JOIN stu_ships c
                 ON c.cx = a.cx AND c.cy=a.cy
-                AND NOT EXISTS (SELECT ss2.id
+                AND EXISTS (SELECT ss2.id
                                     FROM stu_ships_systems ss2
                                     WHERE c.id = ss2.ships_id
                                     AND ss2.system_type = :systemId
-                                    AND ss2.mode < 2)
+                                    AND ss2.mode > 1)
             LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
 			WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
             $rsm
