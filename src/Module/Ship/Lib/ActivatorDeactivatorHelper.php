@@ -94,7 +94,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $this->shipRepository->save($ship);
         }
         
-        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s deaktiviert'), $systemName));
+        $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s aktiviert'), $systemName));
     }
 
     public function deactivate( int $shipId,
