@@ -15,6 +15,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
 
 final class InterceptShip implements ActionControllerInterface
 {
@@ -85,9 +86,12 @@ final class InterceptShip implements ActionControllerInterface
         }
         if ($target->getFleetId()) {
             foreach ($target->getFleet()->getShips() as $fleetShip) {
-                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-
+                try {
+                    $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                } catch (AlreadyOffException $e) {
+                }
                 $this->shipRepository->save($fleetShip);
+
             }
 
             $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
@@ -105,12 +109,18 @@ final class InterceptShip implements ActionControllerInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
         if ($ship->getFleetId()) {
             foreach ($ship->getFleet()->getShips() as $fleetShip) {
-                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-
+                try {
+                    $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                } catch (AlreadyOffException $e) {
+                }
                 $this->shipRepository->save($fleetShip);
+
             }
         } else {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            try {
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            } catch (AlreadyOffException $e) {
+            }
 
             $this->shipRepository->save($ship);
         }

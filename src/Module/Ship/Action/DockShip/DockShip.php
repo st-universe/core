@@ -19,6 +19,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -105,7 +106,10 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+        try {
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+        } catch (AlreadyOffException $e) {
+        }
 
         $ship->cancelRepair();
         $ship->setEps($ship->getEps() - 1);
@@ -144,7 +148,11 @@ final class DockShip implements ActionControllerInterface
                 continue;
             }
             $ship->cancelRepair();
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+            
+            try {
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+            } catch (AlreadyOffException $e) {
+            }
 
             $ship->setDockedTo($target);
 

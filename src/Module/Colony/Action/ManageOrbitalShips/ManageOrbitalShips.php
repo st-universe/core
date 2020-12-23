@@ -24,6 +24,8 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -308,7 +310,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             if ($shipobj->getTorpedoCount() == 0) {
                                 $shipobj->setTorpedo(null);
 
-                                $this->shipSystemManager->deactivate($shipobj, ShipSystemTypeEnum::SYSTEM_TORPEDO);
+                                try {
+                                    $this->shipSystemManager->deactivate($shipobj, ShipSystemTypeEnum::SYSTEM_TORPEDO);
+                                } catch (AlreadyOffException $e) {
+                                } catch (SystemNotDeactivableException $e) {
+                                }
                             }
                             $msg[] = sprintf(
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
