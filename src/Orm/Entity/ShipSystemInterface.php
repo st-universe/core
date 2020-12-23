@@ -24,8 +24,6 @@ interface ShipSystemInterface
 
     public function isActivateable(): bool;
 
-    public function getEnergyCosts(): int;
-
     public function isDisabled(): bool;
 
     public function getModule(): ModuleInterface;

@@ -27,4 +27,6 @@ interface ShipSystemManagerInterface
     public function deactivate(ShipInterface $ship, int $shipSystemId): void;
 
     public function deactivateAll(ShipInterface $ship): void;
+
+    public function getEnergyConsumption(int $shipSystemId): int;
 }

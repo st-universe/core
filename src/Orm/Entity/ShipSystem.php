@@ -110,12 +110,6 @@ class ShipSystem implements ShipSystemInterface
         return true;
     }
 
-    public function getEnergyCosts(): int
-    {
-        // @TODO über CloakShipSystem implements ShipSystemTypeInterface?
-        return 1;
-    }
-
     public function isDisabled(): bool
     {
         return $this->getStatus() === 0
