@@ -1044,11 +1044,6 @@ class Ship implements ShipInterface
 
     private function reloadEpsUsage(): void
     {
-        if ($this->getId() === 1963)
-        {
-            echo "reloadEpsUsage\n";
-        }
-        
         $result = 0;
         
         if ($this->getCrewCount() > 0)
@@ -1062,10 +1057,6 @@ class Ship implements ShipInterface
         
         foreach ($this->getActiveSystems() as $shipSystem)
         {
-            if ($this->getId() === 1963)
-            {
-                echo "- activeSystem: ".$shipSystem->getSystemType()."\n";
-            }
             $result += $shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
         
@@ -1078,10 +1069,6 @@ class Ship implements ShipInterface
             $result += 2;
         }
         
-        if ($this->getId() === 1963)
-        {
-            echo "- result: ".$result."\n";
-        }
         $this->epsUsage = $result;
     }
 
@@ -1112,19 +1099,10 @@ class Ship implements ShipInterface
      */
     public function getActiveSystems(): array
     {
-        if ($this->getId() === 1963)
-        {
-            echo "getActiveSystems\n";
-        }
-        
         $activeSystems = [];
         foreach ($this->getSystems() as $system) {
-            if ($this->getId() === 1963)
-            {
-                echo "- system: ".$system->getSystemType().", mode: ".$system->getMode()."\n";
-            }
             if ($system->getMode() > 1) {
-                $this->activeSystems[] = $system;
+                $activeSystems[] = $system;
             }
         }
         return $activeSystems;
