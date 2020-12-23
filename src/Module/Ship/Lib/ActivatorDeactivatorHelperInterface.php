@@ -29,4 +29,12 @@ interface ActivatorDeactivatorHelperInterface
                                 string $systemName,
                                 GameControllerInterface $game
                                 ): void;
+
+    public function setAlertState( int $shipId,
+                                int $alertState,
+                                GameControllerInterface $game): void;
+
+    public function setAlertStateFleet( int $shipId,
+                                int $alertState,
+                                GameControllerInterface $game): void;
 }
