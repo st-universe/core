@@ -14,6 +14,8 @@ use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\PositionChecker;
@@ -144,6 +146,7 @@ return [
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
+    ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
