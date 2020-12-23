@@ -99,7 +99,23 @@ final class AttackShip implements ActionControllerInterface
             $attacker = [$ship->getId() => $ship];
         }
         if ($target->getFleetId()) {
-            $defender = $target->getFleet()->getShips()->toArray();
+            $defender = [];
+
+            // only uncloaked defenders fight
+            foreach ($target->getFleet()->getShips()->toArray() as $defShip)
+            {
+                if (!$defShip->getCloakState())
+                {
+                    $defender[] = $defShip;
+                }
+            }
+
+            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
+            if (empty($defender))
+            {
+                $defender = $target->getFleet()->getShips()->toArray();
+            }
+
             $fleet = true;
         } else {
             $defender = [$target->getId() => $target];
