@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Module\Control\GameControllerInterface;
 
-final class ActivatorDeactivatorHelperInterface
+interface ActivatorDeactivatorHelperInterface
 {
     public function deactivate( int $shipId,
                                 int $systemId,
