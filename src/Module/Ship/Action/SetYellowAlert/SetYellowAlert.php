@@ -6,50 +6,28 @@ namespace Stu\Module\Ship\Action\SetYellowAlert;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SetYellowAlert implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SET_YELLOW_ALERT';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
+    private ActivatorDeactivatorHelperInterface $helper;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ActivatorDeactivatorHelperInterface $helper
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
+        $this->helper = $helper;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
-
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
-
-        try {
-            $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
-        } catch (ShipSystemException $e) {
-            $game->addInformation("Nicht genügend Energie vorhanden");
-            return;
-        }
-
-        $this->shipRepository->save($ship);
-
-        $game->addInformation("Die Alarmstufe wurde auf Gelb geändert");
+        $this->helper->setAlertState(request::indInt('id'), ShipAlertStateEnum::ALERT_YELLOW, $game);
     }
 
     public function performSessionCheck(): bool
