@@ -694,7 +694,7 @@
     <div class="divhead">Systemstatus</div>
     <div class="divbody">
       <div tal:repeat="data SHIP/getSystems">
-        <img class="${sys/getCssClass}" src="assets/system/${data/getSystemType}.gif" />
+        <img class="${data/getCssClass}" src="assets/system/${data/getSystemType}.gif" />
         ${data/getStatus}%
       </div>
     </div>
