@@ -1082,7 +1082,7 @@ class Ship implements ShipInterface
         {
             echo "- result: ".$result."\n";
         }
-        return $result;
+        $this->epsUsage = $result;
     }
 
     public function lowerEpsUsage($value): void
