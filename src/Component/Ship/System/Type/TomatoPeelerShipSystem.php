@@ -11,6 +11,11 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class TomatoPeelerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public function getEnergyConsumption(): int
+    {
+        return 3;
+    }
+
     public function activate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TOMATO_PEELER)->setMode(ShipSystemModeEnum::MODE_ON);

@@ -10,6 +10,8 @@ interface ShipSystemTypeInterface
 
     public function getEnergyUsageForActivation(): int;
 
+    public function getEnergyConsumption(): int;
+
     public function getDefaultMode(): int;
 
     public function activate(ShipInterface $ship): void;

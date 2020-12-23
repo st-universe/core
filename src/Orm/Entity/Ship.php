@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
@@ -1043,13 +1044,22 @@ class Ship implements ShipInterface
 
     private function reloadEpsUsage(): void
     {
-        $this->epsUsage = array_reduce(
-            $this->getActiveSystems(),
-            function (int $sum, ShipSystemInterface $shipSystem): int {
-                return $sum + $shipSystem->getEnergyCosts();
-            },
-            0
-        );
+        $this->epsUsage = 0;
+        
+        if ($this->getCrewCount() > 0)
+        {
+            $this->epsUsage += 1;
+        }
+
+        //@todo refactor
+        global $container;
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+        
+        foreach ($this->getActiveSystems() as $shipSystem)
+        {
+            $this->epsUsage += $shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
+        }
+
         if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW)
         {
             $this->epsUsage += 1;

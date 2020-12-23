@@ -24,4 +24,9 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
     {
         return 1;
     }
+
+    public function getEnergyConsumption(): int
+    {
+        return 1;
+    }
 }
