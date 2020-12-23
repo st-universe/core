@@ -28,7 +28,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->shipAttackCycle = $shipAttackCycle;
     }
 
-    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations = array()) : array
+    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations) : array
     {
         $shipsToShuffle = [];
         
@@ -104,7 +104,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         return $shipsToShuffle;
     }
 
-    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations = array()) : void
+    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations) : void
     {
         $fleet = false;
         $target_user_id = $alertShip->getUserId();
