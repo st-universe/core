@@ -37,7 +37,15 @@ interface ShipRepositoryInterface extends ObjectRepository
         int $starStstemId,
         int $sx,
         int $sy
-    ): iterable;
+        ): iterable;
+        
+    /**
+     * @return ShipInterface[]
+     */
+    public function getByOuterSystemLocation(
+        int $cx,
+        int $cy
+        ): iterable;
 
     /**
      * @return ShipInterface[]

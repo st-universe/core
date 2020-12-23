@@ -138,6 +138,8 @@ final class EnterStarSystem implements ActionControllerInterface
             $game->addInformation("Das Schiff fliegt in das " . $system->getName() . "-System ein");
         }
 
+        //TODO alert red?
+
         $this->shipRepository->save($ship);
     }
 
