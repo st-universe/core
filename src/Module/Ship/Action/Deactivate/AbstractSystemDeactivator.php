@@ -6,11 +6,12 @@ namespace Stu\Module\Ship\Action\Deactivate;
 
 use request;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-abstract class AbstractSystemDeactivator
+abstract class AbstractSystemDeactivator implements ActionControllerInterface
 {
     private ShipLoaderInterface $shipLoader;
 
