@@ -18,7 +18,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     public function getEnergyConsumption(): int
     {
-        return 5;
+        return 8;
     }
 
     public function activate(ShipInterface $ship): void
