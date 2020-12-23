@@ -7,7 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use PhpTal\PHPTAL;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
@@ -78,15 +80,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy AND s.cloak = :cloakState
+                'SELECT s FROM %s s
+                WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM %s ss
+                                    WHERE s.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
                 ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
-                Ship::class
+                Ship::class,
+                ShipSystem::class
             )
         )->setParameters([
             'starSystemId' => $starStstemId,
             'sx' => $sx,
             'sy' => $sy,
-            'cloakState' => 0
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
 
@@ -186,9 +195,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
             'SELECT a.sx as posx,a.sy as posy,a.systems_id as sysid, count(b.id) as shipcount, count(c.id) as cloakcount, d.type, a.field_id
-            FROM stu_sys_map a LEFT JOIN stu_ships b ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy AND b.cloak = :stateOff LEFT JOIN
-            stu_ships c ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy AND c.cloak = :stateOn LEFT JOIN
-            stu_map_ftypes d ON d.id = a.field_id WHERE
+            FROM stu_sys_map a
+            LEFT JOIN stu_ships b
+                ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM stu_ships_systems ss
+                                    WHERE b.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+            LEFT JOIN stu_ships c
+                ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy
+                AND NOT EXISTS (SELECT ss2.id
+                                    FROM stu_ships_systems ss2
+                                    WHERE c.id = ss2.ships_id
+                                    AND ss2.system_type = :systemId
+                                    AND ss2.mode < 2)
+            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id WHERE
 			a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
             GROUP BY a.sy, a.sx, a.systems_id, d.type, a.field_id ORDER BY a.sy,a.sx',
             $rsm
@@ -198,8 +220,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $sx + $sensorRange,
             'syStart' => $sy - $sensorRange,
             'syEnd' => $sy + $sensorRange,
-            'stateOff' => 0,
-            'stateOn' => 1
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
 
@@ -214,8 +235,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('field_id', 'field_id', 'integer');
         return $this->getEntityManager()->createNativeQuery(
             'SELECT a.cx as posx,a.cy as posy, count(b.id) as shipcount, count(c.id) as cloakcount, d.type, a.field_id
-            FROM stu_map a LEFT JOIN stu_ships b ON b.cx=a.cx AND b.cy=a.cy AND b.cloak = :stateOff LEFT JOIN stu_ships c ON c.cx = a.cx AND
-            c.cy=a.cy AND c.cloak = :stateOn LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+            FROM stu_map a
+            LEFT JOIN stu_ships b
+                ON b.cx=a.cx AND b.cy=a.cy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM stu_ships_systems ss
+                                    WHERE b.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+            LEFT JOIN stu_ships c
+                ON c.cx = a.cx AND c.cy=a.cy
+                AND NOT EXISTS (SELECT ss2.id
+                                    FROM stu_ships_systems ss2
+                                    WHERE c.id = ss2.ships_id
+                                    AND ss2.system_type = :systemId
+                                    AND ss2.mode < 2)
+            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
 			WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
             $rsm
         )->setParameters([
@@ -223,8 +258,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $cx + $sensorRange,
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
-            'stateOff' => 0,
-            'stateOn' => 1
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }
 
@@ -241,10 +275,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         if ($starSystem === null) {
             $query = $this->getEntityManager()->createQuery(
                 sprintf(
-                    'SELECT s FROM %s s WHERE s.systems_id is null AND s.cx = :cx AND s.cy = :cy AND
-                         s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState AND
-                         s.is_base = :isBase AND s.id != :ignoreId',
-                    Ship::class
+                    'SELECT s FROM %s s
+                    WHERE s.systems_id is null
+                    AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy
+                    AND s.fleets_id IS NULL
+                    AND NOT EXISTS (SELECT ss.id
+                                    FROM %s ss
+                                    WHERE s.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+                    AND s.is_base = :isBase AND s.id != :ignoreId',
+                    Ship::class,
+                    ShipSystem::class
                 )
             )->setParameters([
                 'sx' => $sx,
@@ -253,15 +295,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'cy' => $cy,
                 'ignoreId' => $ignoreId,
                 'isBase' => $isBase,
-                'cloakState' => 0
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
             ]);
         } else {
             $query = $this->getEntityManager()->createQuery(
                 sprintf(
-                    'SELECT s FROM %s s WHERE s.systems_id = :starSystem AND s.cx = :cx AND s.cy = :cy AND
-                         s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL AND s.cloak = :cloakState AND
-                         s.is_base = :isBase AND s.id != :ignoreId',
-                    Ship::class
+                    'SELECT s FROM %s s
+                    WHERE s.systems_id = :starSystem AND s.cx = :cx AND s.cy = :cy
+                    AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL
+                    AND NOT EXISTS (SELECT ss.id
+                                    FROM %s ss
+                                    WHERE s.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+                    AND s.is_base = :isBase AND s.id != :ignoreId',
+                    Ship::class,
+                    ShipSystem::class
                 )
             )->setParameters([
                 'starSystem' => $starSystem,
@@ -271,7 +320,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'cy' => $cy,
                 'ignoreId' => $ignoreId,
                 'isBase' => $isBase,
-                'cloakState' => 0
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
             ]);
         }
         return $query->getResult();
