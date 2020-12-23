@@ -1053,23 +1053,23 @@ img.userListItemImage {
 }
 
 img.sysStatus0 {
-    background: rgba(255,55,55, 0.7);
+    border: 1px solid #ff0000;
 }
 
 img.sysStatus1to25 {
-    background: rgba(255, 120, 55, 0.7);
+    border: 1px solid #ffa200;
 }
 
 img.sysStatus26to50 {
-    background: rgba(255, 180, 55, 0.7);
+    border: 1px solid #ffdd00;
 }
 
 img.sysStatus51to75 {
-    background: rgba(255, 240, 55, 0.7);
+    border: 1px solid #feff00;
 }
 
 img.sysStatus76to100 {
-    background: rgba(72, 255, 55, 0.7);
+    border: 1px solid #15ff00;
 }
 
 div.userListItemButtons {
