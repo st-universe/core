@@ -5,77 +5,29 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\FleetActivateShields;
 
 use request;
-use Stu\Component\Ship\System\Exception\AlreadyActiveException;
-use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Component\Ship\System\Exception\SystemDamagedException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 
 final class FleetActivateShields implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_FLEET_ACTIVATE_SHIELDS';
 
-    private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
+    private ActivatorDeactivatorHelperInterface $helper;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ActivatorDeactivatorHelperInterface $helper
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
+        $this->helper = $helper;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
-
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
-
-        $msg = [];
-        $msg[] = "Flottenbefehl ausgeführt: Aktivierung der Schilde";
-        foreach ($ship->getFleet()->getShips() as $ship) {
-            $error = null;
-            try {
-                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-            } catch (AlreadyActiveException $e) {
-                $error = _('Die Schilde sind bereits aktiviert');
-            } catch (InsufficientEnergyException $e) {
-                $error = _('Nicht genügend Energie zur Aktivierung vorhanden');
-            } catch (SystemDamagedException $e) {
-                $error = _('Die Schilde konnten aufgrund beschädigter Schildemitter nicht aktiviert werden');
-            } catch (ShipSystemException $e) {
-                $error = _('Die Schilde konnten nicht aktiviert werden');
-            } finally {
-                if ($error !== null) {
-
-                    $msg[] = sprintf(
-                        '%s: %s',
-                        $ship->getName(),
-                        $error
-                    );
-                } else {
-                    $this->shipRepository->save($ship);
-                }
-            }
-        }
-        $game->addInformationMerge($msg);
+        $this->helper->activateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SHIELDS, _('Schilde'), $game);
     }
 
     public function performSessionCheck(): bool
