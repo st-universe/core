@@ -99,6 +99,30 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    public function getByOuterSystemLocation(
+        int $cx,
+        int $cy
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.systems_id is null AND s.cx = :cx AND s.cy = :cy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM %s ss
+                                    WHERE s.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+                ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
+                Ship::class,
+                ShipSystem::class
+            )
+        )->setParameters([
+            'cx' => $cx,
+            'cy' => $cy,
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+        ])->getResult();
+    }
+
     public function getTradePostsWithoutDatabaseEntry(): iterable
     {
         return $this->getEntityManager()->createQuery(

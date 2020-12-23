@@ -33,73 +33,82 @@ final class AlertRedHelper implements AlertRedHelperInterface
     {
         $shipsToShuffle = [];
         
-        // only inside systems
-        if ($leadShip->getSystem() !== null && !$leadShip->isOverSystem()) {
+        // get ships inside or outside systems
+        if ($leadShip->getSystem() !== null) {
             $starSystem = $leadShip->getSystem();
             $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $leadShip->getPosX(), $leadShip->getPosY());
-            
-            $fleetIds = [];
-            $fleetCount = 0;
-            $singleShipCount = 0;
-            
-            foreach ($shipsOnLocation as $shipOnLocation) {
+        } else
+        {
+            $shipsOnLocation = $this->shipRepository->getByOuterSystemLocation($leadShip->getCx(), $leadShip->getCy());
+        }
 
-                // own ships dont count
-                if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId())
-                {
-                    continue;
-                }
-                
-                // ships dont count if user is on vacation
-                if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
-                {
-                    continue;
-                }
-                
-                //ships of friends dont attack
-                if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
-                {
-                    continue;
-                }
-                
-                //cloaked ships dont attack
-                if ($shipOnLocation->getCloakState())
-                {
-                    continue;
-                }
-                
-                $fleet = $shipOnLocation->getFleet();
-                
-                if ($fleet === null) {
-                    if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                        $singleShipCount++;
-                        $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
-                    }
-                }
-                else {
-                    $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
-                    if ($fleetIdEintrag === null) {
-                        if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                            $fleetCount++;
-                            $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
-                        }
-                        $fleetIds[$fleet->getId()] = [];
-                    }
-                }
+        $fleetIds = [];
+        $fleetCount = 0;
+        $singleShipCount = 0;
+        
+        foreach ($shipsOnLocation as $shipOnLocation) {
+
+            // own ships dont count
+            if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId())
+            {
+                continue;
             }
             
-            if ($fleetCount == 1) {
-                $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+            // ships dont count if user is on vacation
+            if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
+            {
+                continue;
             }
-            if ($fleetCount > 1) {
-                $informations[] = sprintf(_('In Sektor %d|%d befinden sich %d Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $fleetCount);
+            
+            //ships of friends dont attack
+            if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
+            {
+                continue;
             }
-            if ($singleShipCount == 1) {
-                $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Einzelschiff auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+            
+            //cloaked ships dont attack
+            if ($shipOnLocation->getCloakState())
+            {
+                continue;
             }
-            if ($singleShipCount > 1) {
-                $informations[] = sprintf(_('In Sektor %d|%d befinden sich %d Einzelschiffe auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $singleShipCount);
+            
+            //warped ships dont attack
+            if ($shipOnLocation->getWarpState())
+            {
+                continue;
             }
+            
+            $fleet = $shipOnLocation->getFleet();
+            
+            if ($fleet === null) {
+                if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                    $singleShipCount++;
+                    $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
+                }
+            }
+            else {
+                $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
+                if ($fleetIdEintrag === null) {
+                    if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
+                        $fleetCount++;
+                        $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
+                    }
+                    $fleetIds[$fleet->getId()] = [];
+                }
+            }
+        }
+        
+        if ($fleetCount == 1) {
+            $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        }
+        if ($fleetCount > 1) {
+            $informations[] = sprintf(_('In Sektor %d|%d befinden sich %d Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $fleetCount);
+        }
+        if ($singleShipCount == 1) {
+            $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Einzelschiff auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        }
+        if ($singleShipCount > 1) {
+            $informations[] = sprintf(_('In Sektor %d|%d befinden sich %d Einzelschiffe auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY(), $singleShipCount);
         }
 
         return $shipsToShuffle;
@@ -112,10 +121,10 @@ final class AlertRedHelper implements AlertRedHelperInterface
         if ($alertShip->getFleetId()) {
             $attacker = [];
 
-            // only uncloaked ships enter fight
+            // only uncloaked and unwarped ships enter fight
             foreach ($alertShip->getFleet()->getShips()->toArray() as $fleetShip)
             {
-                if (!$fleetShip->getCloakState())
+                if (!$fleetShip->getCloakState() && !$fleetShip->getWarpState())
                 {
                     $attacker[] = $fleetShip;
                 }

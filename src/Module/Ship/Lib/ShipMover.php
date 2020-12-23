@@ -207,6 +207,12 @@ final class ShipMover implements ShipMoverInterface
                 }
             }
             
+            //if moving in warp skip AR check
+            if ($leadShip->getWarpState())
+            {
+                continue;
+            }
+
             //Alarm-Rot check
             $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($leadShip, $this->informations);
             shuffle($shipsToShuffle);

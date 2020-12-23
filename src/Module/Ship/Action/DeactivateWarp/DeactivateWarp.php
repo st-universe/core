@@ -10,6 +10,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class DeactivateWarp implements ActionControllerInterface
 {
@@ -17,10 +19,18 @@ final class DeactivateWarp implements ActionControllerInterface
 
     private ActivatorDeactivatorHelperInterface $helper;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
+    private ShipLoaderInterface $shipLoader;
+
     public function __construct(
-        ActivatorDeactivatorHelperInterface $helper
+        ActivatorDeactivatorHelperInterface $helper,
+        ShipLoaderInterface $shipLoader,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->helper = $helper;
+        $this->alertRedHelper = $alertRedHelper;
+        $this->shipLoader = $shipLoader;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -29,7 +39,23 @@ final class DeactivateWarp implements ActionControllerInterface
 
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, _('Warpantrieb'), $game);
 
-        // @todo Alarm Rot
+        $userId = $game->getUser()->getId();
+
+        $ship = $this->shipLoader->getByIdAndUser(
+            $shipId,
+            $userId
+        );
+
+        $informations = [];
+
+        //Alarm-Rot check
+        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+        shuffle($shipsToShuffle);
+        foreach ($shipsToShuffle as $alertShip)
+        {
+            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+        }
+        $game->addInformationMergeDown($informations);
     }
 
     public function performSessionCheck(): bool
