@@ -78,17 +78,8 @@ class Ship implements ShipInterface
     /** @Column(type="smallint", length=1) */
     private $alvl = 0;
 
-    /** @Column(type="boolean") */
-    private $warp = false;
-
     /** @Column(type="integer", length=5) */
     private $warpcore = 0;
-
-    /** @Column(type="boolean") */
-    private $cloak = false;
-
-    /** @Column(type="boolean") */
-    private $cloakable = false;
 
     /** @Column(type="integer", length=6) */
     private $eps = 0;
@@ -114,9 +105,6 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=6) */
     private $max_schilde = 0;
 
-    /** @Column(type="boolean") */
-    private $schilde_status = false;
-
     /** @Column(type="integer") */
     private $traktor = 0;
 
@@ -125,18 +113,6 @@ class Ship implements ShipInterface
 
     /** @Column(type="integer", nullable=true) */
     private $dock;
-
-    /** @Column(type="boolean") */
-    private $nbs = false;
-
-    /** @Column(type="boolean") */
-    private $lss = false;
-
-    /** @Column(type="boolean") */
-    private $wea_phaser = false;
-
-    /** @Column(type="boolean") */
-    private $wea_torp = false;
 
     /** @Column(type="integer") */
     private $former_rumps_id = 0;
