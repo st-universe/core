@@ -1112,8 +1112,17 @@ class Ship implements ShipInterface
      */
     public function getActiveSystems(): array
     {
+        if ($this->getId() === 1963)
+        {
+            echo "getActiveSystems\n";
+        }
+        
         $activeSystems = [];
         foreach ($this->getSystems() as $system) {
+            if ($this->getId() === 1963)
+            {
+                echo "- system: ".$system->getSystemType().", mode: ".$system->getMode()."\n";
+            }
             if ($system->getMode() > 1) {
                 $this->activeSystems[] = $system;
             }
