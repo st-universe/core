@@ -42,7 +42,7 @@ final class DeactivateWarp implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
-            $shipId,
+            request::indInt('id'),
             $userId
         );
 
