@@ -208,14 +208,14 @@ final class ShipMover implements ShipMoverInterface
             }
             
             //Alarm-Rot check
-            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($leadShip, $this->getInformations());
+            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($leadShip, $this->informations);
             shuffle($shipsToShuffle);
             foreach ($shipsToShuffle as $alertShip)
             {
                 // if there are ships left
                 if ($this->areShipsLeft($ships))
                 {
-                    $this->alertRedHelper->performAttackCycle($alertShip, $leadShip, $this->getInformations());
+                    $this->alertRedHelper->performAttackCycle($alertShip, $leadShip, $this->informations);
                 }
                 else {
                     break;
