@@ -268,9 +268,9 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     private function setAlertGreen(ShipInterface $ship, GameControllerInterface $game): void
     {
         $deactivateSystems = [
-            ShipSystemTypeEnum::SYSTEM_PHASER,
-            ShipSystemTypeEnum::SYSTEM_TORPEDO,
-            ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            'Phaser' => ShipSystemTypeEnum::SYSTEM_PHASER,
+            'Torpedowerfer' => ShipSystemTypeEnum::SYSTEM_TORPEDO,
+            'Schilde' => ShipSystemTypeEnum::SYSTEM_SHIELDS
         ];
         
         foreach ($deactivateSystems as $key => $systemId)
