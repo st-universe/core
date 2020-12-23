@@ -14,6 +14,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
 
 final class EnterStarSystem implements ActionControllerInterface
 {
@@ -80,7 +81,10 @@ final class EnterStarSystem implements ActionControllerInterface
                 break;
         }
 
-        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+        try {
+            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+        } catch (AlreadyOffException $e) {
+        }
 
         // @todo Beschädigung bei Systemeinflug
         $this->enterStarSystem($ship, $system, $posx, $posy);
@@ -110,7 +114,10 @@ final class EnterStarSystem implements ActionControllerInterface
                     continue;
                 }
 
-                $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                try {
+                    $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                } catch (AlreadyOffException $e) {
+                }
 
                 $this->enterStarSystem($fleetShip, $system, $posx, $posy);
                 if ($fleetShip->isTraktorbeamActive()) {
