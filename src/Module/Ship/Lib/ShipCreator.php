@@ -190,8 +190,8 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK:
                     $systems[ShipSystemTypeEnum::SYSTEM_CLOAK] = $module;
                     break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER:
-                    $systems[ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER] = $module;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TOMATO_PEELER:
+                    $systems[ShipSystemTypeEnum::SYSTEM_TOMATO_PEELER] = $module;
                     break;
             }
         }

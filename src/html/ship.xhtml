@@ -245,11 +245,9 @@
 									<a href="?B_FLEET_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 										<img src="assets/buttons/tarn1.gif" name="fl_cloakon" title="Tarnung aktivieren" />
 									</a>
-									<tal:block tal:condition="SHIP/isWarpPossible">
-										<a href="?B_FLEET_ACTIVATE_WARP=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-											<img src="assets/buttons/warp1.gif" name="fl_cloakon" title="Warpantrieb aktivieren" />
-										</a>
-									</tal:block>
+									<a href="?B_FLEET_ACTIVATE_WARP=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+										<img src="assets/buttons/warp1.gif" name="fl_cloakon" title="Warpantrieb aktivieren" />
+									</a>
 								</td>
 								<td>
 									<a href="?B_FLEET_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
