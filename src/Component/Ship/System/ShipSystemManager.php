@@ -43,11 +43,14 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $system->activate($ship);
     }
     
-    public function deactivate(ShipInterface $ship, int $shipSystemId): void
+    public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
     {
         $system = $this->lookupSystem($shipSystemId);
         
-        $this->checkDeactivationConditions($ship, $system, $shipSystemId);
+        if (!$force)
+        {
+            $this->checkDeactivationConditions($ship, $system, $shipSystemId);
+        }
 
         $system->deactivate($ship);
     }
