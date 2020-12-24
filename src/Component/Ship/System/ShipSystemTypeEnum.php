@@ -49,7 +49,7 @@ final class ShipSystemTypeEnum
             case ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER:
                 return _('Tachyon-Scanner');
             case ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT:
-                return _('Lebenserhaltungssysteme');
+                return _('Lebenserhaltungssystem');
             case ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM:
                 return _('Traktorstrahl');
         }

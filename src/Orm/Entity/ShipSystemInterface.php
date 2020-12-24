@@ -18,6 +18,8 @@ interface ShipSystemInterface
 
     public function setStatus(int $status): ShipSystemInterface;
 
+    public function getName(): string;
+
     public function getCssClass(): string;
 
     public function getMode(): int;
