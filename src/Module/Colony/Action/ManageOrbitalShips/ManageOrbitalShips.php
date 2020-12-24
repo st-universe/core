@@ -175,6 +175,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         _('%s: Die Crew wurde hochgebeamt'),
                         $shipobj->getName()
                     );
+
+                    $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
                 }
             }
             if (

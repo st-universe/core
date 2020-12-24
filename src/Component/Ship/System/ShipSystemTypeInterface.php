@@ -12,7 +12,10 @@ interface ShipSystemTypeInterface
 
     public function getEnergyConsumption(): int;
 
-    public function getDefaultMode(): int;
+    /**
+     * the higher the number, the more important the system is
+     */
+    public function getPriority(): int;
 
     public function activate(ShipInterface $ship): void;
 
