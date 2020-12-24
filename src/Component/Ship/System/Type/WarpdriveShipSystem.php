@@ -22,8 +22,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function checkActivationConditions(ShipInterface $ship): bool
     {
-        return $ship->getSystem() === null &&
-            ($ship->getTraktorShip() === null || $ship->traktorBeamFromShip());
+        return ($ship->getTraktorShip() === null || $ship->traktorBeamFromShip());
     }
 
     public function activate(ShipInterface $ship): void
