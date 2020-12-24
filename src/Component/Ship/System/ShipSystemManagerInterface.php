@@ -7,6 +7,7 @@ use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
+use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 interface ShipSystemManagerInterface
@@ -29,4 +30,6 @@ interface ShipSystemManagerInterface
     public function deactivateAll(ShipInterface $ship): void;
 
     public function getEnergyConsumption(int $shipSystemId): int;
+
+    public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface;
 }

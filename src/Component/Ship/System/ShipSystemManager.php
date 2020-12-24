@@ -61,7 +61,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
 
         foreach ($ship->getSystems() as $shipSystem) {
             try {
-                $this->deactivate($ship, $shipSystem->getSystemType());
+                $this->deactivate($ship, $shipSystem->getSystemType(), true);
             } catch (ShipSystemException $e) {
                 continue;
             }
@@ -75,7 +75,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         return $system->getEnergyConsumption();
     }
 
-    private function lookupSystem(int $shipSystemId): ShipSystemTypeInterface
+    public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface
     {
         $system = $this->systemList[$shipSystemId] ?? null;
         if ($system === null){

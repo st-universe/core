@@ -15,12 +15,12 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         return true;
     }
 
-    public function getDefaultMode(): int
+    public function getEnergyUsageForActivation(): int
     {
-        return ShipSystemModeEnum::MODE_OFF;
+        return 1;
     }
 
-    public function getEnergyUsageForActivation(): int
+    public function getPriority(): int
     {
         return 1;
     }

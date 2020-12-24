@@ -135,6 +135,11 @@ final class ShipCreator implements ShipCreatorInterface
     private function createByModuleList(ShipInterface $ship, array $modules): void
     {
         $systems = array();
+
+        //default systems, that every ship should have
+        $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM] = 0;
+        $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
+
         foreach ($modules as $key => $module) {
             switch ($module->getModule()->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SHIELDS:
