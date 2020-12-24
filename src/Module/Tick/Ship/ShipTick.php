@@ -39,13 +39,21 @@ final class ShipTick implements ShipTickInterface
         $eps = $ship->getEps() + $ship->getReactorCapacity();
         if ($ship->getEpsUsage() > $eps) {
             foreach ($ship->getActiveSystems() as $system) {
+
+                $energyConsumption = $this->shipSystemManager->getEnergyConsumption($system->getSystemType());
+
+                if ($energyConsumption < 1)
+                {
+                    continue;
+                }
+
                 //echo "- eps: ".$eps." - usage: ".$ship->getEpsUsage()."\n";
-                if ($eps - $ship->getEpsUsage() - $system->getEnergyCosts() < 0) {
+                if ($eps - $ship->getEpsUsage() - $energyConsumption < 0) {
                     //echo "-- hit system: ".$system->getDescription()."\n";
 
-                    $this->shipSystemManager->deactivate($ship, $system->getSystemType());
+                    $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
 
-                    $ship->lowerEpsUsage($system->getEnergyCosts());
+                    $ship->lowerEpsUsage($energyConsumption);
                     $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
                 }
                 if ($ship->getEpsUsage() <= $eps) {
@@ -69,31 +77,7 @@ final class ShipTick implements ShipTickInterface
 
     private function getSystemDescription(ShipSystemInterface $shipSystem): string
     {
-        switch ($shipSystem->getSystemType()) {
-            case ShipSystemTypeEnum::SYSTEM_CLOAK:
-                return "Tarnung";
-            case ShipSystemTypeEnum::SYSTEM_NBS:
-                return "Nahbereichssensoren";
-            case ShipSystemTypeEnum::SYSTEM_LSS:
-                return "Langstreckensensoren";
-            case ShipSystemTypeEnum::SYSTEM_PHASER:
-                return "Strahlenwaffe";
-            case ShipSystemTypeEnum::SYSTEM_TORPEDO:
-                return "Torpedobänke";
-            case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
-                return "Warpantrieb";
-            case ShipSystemTypeEnum::SYSTEM_EPS:
-                return _("Energiesystem");
-            case ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE:
-                return _("Impulsantrieb");
-            case ShipSystemTypeEnum::SYSTEM_COMPUTER:
-                return _('Computer');
-            case ShipSystemTypeEnum::SYSTEM_WARPCORE:
-                return _('Warpkern');
-            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
-                return _('Schilde');
-        }
-        return '';
+        return ShipSystemTypeEnum::getDescription($shipSystem->getSystemType());
     }
 
     private function sendMessages(ShipInterface $ship): void
