@@ -12,7 +12,7 @@ use Stu\Component\Ship\System\Type\LongRangeScannerShipSystem;
 use Stu\Component\Ship\System\Type\NearFieldScannerShipSystem;
 use Stu\Component\Ship\System\Type\ProjectileWeaponShipSystem;
 use Stu\Component\Ship\System\Type\ShieldShipSystem;
-use Stu\Component\Ship\System\Type\TomatoPeelerShipSystem;
+use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -29,7 +29,7 @@ return [
             ShipSystemTypeEnum::SYSTEM_NBS => autowire(NearFieldScannerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_PHASER => autowire(EnergyWeaponShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_CLOAK => autowire(CloakShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_TOMATO_PEELER => autowire(TomatoPeelerShipSystem::class),
+            ShipSystemTypeEnum::MODULE_SPECIAL_TACHYON_SCANNER => autowire(TachyonScannerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TORPEDO => autowire(ProjectileWeaponShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_LSS => autowire(LongRangeScannerShipSystem::class),
         ]

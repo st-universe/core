@@ -17,7 +17,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_NBS = 9;
     public const SYSTEM_WARPDRIVE = 10;
     public const SYSTEM_SHIELDS = 11;
-    public const SYSTEM_TOMATO_PEELER = 12;
+    public const SYSTEM_TACHYON_SCANNER = 12;
 
     //TODO Traktorstrahl und andere Systeme aufnehmen?
 
