@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipSystemRepository")
  * @Table(
@@ -88,6 +90,11 @@ class ShipSystem implements ShipSystemInterface
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getName(): string
+    {
+        return ShipSystemTypeEnum::getDescription($this->getSystemType());
     }
 
     public function getCssClass(): string
