@@ -37,7 +37,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, _('Warpantrieb'), $game);
+        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game);
 
         $userId = $game->getUser()->getId();
 

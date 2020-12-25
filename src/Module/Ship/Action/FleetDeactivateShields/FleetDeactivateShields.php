@@ -27,7 +27,7 @@ final class FleetDeactivateShields implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SHIELDS, _('Schilde'), $game);
+        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SHIELDS, $game);
     }
 
     public function performSessionCheck(): bool

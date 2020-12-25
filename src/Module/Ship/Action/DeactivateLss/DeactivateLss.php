@@ -27,7 +27,7 @@ final class DeactivateLss implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_LSS, _('Langstreckensensoren'), $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_LSS, $game);
     }
 
     public function performSessionCheck(): bool

@@ -73,7 +73,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
 
         // activate system
-        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, _('Traktorstrahl'), $game))
+        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game))
         {
             return;
         }
@@ -160,7 +160,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
     private function abort(): void
     {
         // deactivate system
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, _('Traktorstrahl'), $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
         $this->shipRepository->save($ship);
     }
 

@@ -60,7 +60,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, _('Traktorstrahl'), $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
         $ship->deactivateTraktorBeam();
     }
 
