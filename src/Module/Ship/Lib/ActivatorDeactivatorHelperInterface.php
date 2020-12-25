@@ -10,7 +10,7 @@ interface ActivatorDeactivatorHelperInterface
                                 int $systemId,
                                 string $systemName,
                                 GameControllerInterface $game
-                                ): void;
+                                ): bool;
 
     public function activateFleet( int $shipId,
                                 int $systemId,

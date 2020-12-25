@@ -162,24 +162,24 @@
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasPhaser">
-							<td tal:condition="SHIP/canActivatePhaser" colspan="2">
+							<td tal:condition="not:SHIP/isAlertGreen" colspan="2">
 								<a href="?B_DEACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser2');" onmouseout="cp('actphaser','buttons/act_phaser1');">
 									<img src="assets/buttons/act_phaser1.png" name="actphaser" /> Strahlenwaffe deaktivieren</a>
 								<a href="?B_ACTIVATE_PHASER=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getPhaser" onmouseover="cp('actphaser','buttons/act_phaser1');" onmouseout="cp('actphaser','buttons/act_phaser2');">
 									<img src="assets/buttons/act_phaser2.png" name="actphaser" /> Strahlenwaffe aktivieren</a>
 							</td>
-							<td tal:condition="not:SHIP/canActivatePhaser" colspan="2">
+							<td tal:condition="SHIP/isAlertGreen" colspan="2">
 								<img src="assets/buttons/act_phaser2.png" name="actphaser" /> bei Alarmstufe deaktiviert
 							</td>
 						</tr>
 						<tr tal:condition="SHIP/hasTorpedo">
-							<td tal:condition="SHIP/canActivateTorpedos">
+							<td tal:condition="not:SHIP/isAlertGreen">
 								<a href="?B_DEACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp2');" onmouseout="cp('acttorp','buttons/act_torp1');">
 									<img src="assets/buttons/act_torp1.png" name="acttorp" /> Torpedobänke deaktivieren</a>
 								<a href="?B_ACTIVATE_TORPEDO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="not:SHIP/getTorpedos" onmouseover="cp('acttorp','buttons/act_torp1');" onmouseout="cp('acttorp','buttons/act_torp2');">
 									<img src="assets/buttons/act_torp2.png" name="acttorp" /> Torpedobänke aktivieren</a>
 							</td>
-							<td tal:condition="not:SHIP/canActivateTorpedos">
+							<td tal:condition="SHIP/isAlertGreen">
 								<img src="assets/buttons/act_torp2.png" name="acttorp" /> bei Alarmstufe deaktiviert
 							</td>
 							<td>

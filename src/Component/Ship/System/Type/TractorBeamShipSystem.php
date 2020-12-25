@@ -20,6 +20,35 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         $this->shipRepository = $shipRepository;
     }
 
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
+    {
+        if ($ship->getCloakState())
+        {
+            $reason = _('die Tarnung aktiviert ist');
+            return false;
+        }
+
+        if ($ship->getShieldState())
+        {
+            $reason = _('die Schilde aktiviert sind');
+            return false;
+        }
+
+        if ($ship->getDockedTo())
+        {
+            $reason = _('das Schiff angedockt ist');
+            return false;
+        }
+
+        if ($ship->traktorBeamToShip())
+        {
+            $reason = sprintf(_('das Schiff selbst von dem Traktorstrahl der %s erfasst ist'), $ship->getTraktorShip()->getName());
+            return false;
+        }
+
+        return true;
+    }
+
     public function getEnergyUsageForActivation(): int
     {
         return 2;

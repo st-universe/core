@@ -172,7 +172,7 @@ final class ShipMover implements ShipMoverInterface
         int $destinationX,
         int $destinationY
     ) {
-        //echo "- CAP: ".$leadShip->canActivatePhaser()."\n";
+        //echo "- CAP: ".$leadShip->foobar()."\n";
 
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ActivateTractorBeam;
 
 use request;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -15,6 +16,7 @@ use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 
 final class ActivateTractorBeam implements ActionControllerInterface
 {
@@ -29,19 +31,23 @@ final class ActivateTractorBeam implements ActionControllerInterface
     private ShipAttackCycleInterface $shipAttackCycle;
 
     private PositionCheckerInterface $positionChecker;
+    
+    private ActivatorDeactivatorHelperInterface $helper;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipAttackCycleInterface $shipAttackCycle,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        ActivatorDeactivatorHelperInterface $helper
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
         $this->positionChecker = $positionChecker;
+        $this->helper = $helper;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,33 +61,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $userId
         );
 
-        if ($ship->isTraktorBeamActive()) {
-            return;
-        }
-        if ($ship->getShieldState()) {
-            $game->addInformation("Die Schilde sind aktiviert");
-            return;
-        }
-        if ($ship->getDockedTo()) {
-            $game->addInformation("Das Schiff ist angedockt");
-            return;
-        }
-
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
-            $game->addInformation(_('Das Schiff hat keine Crew'));
-            return;
-        }
-
-        $energyCosts = 2;
-
-        if ($ship->getEps() < $energyCosts) {
-            $game->addInformationf(
-                _('Es wird %s Energie benötigt'),
-                $energyCosts
-            );
-            return;
-        }
-
         $target = $this->shipRepository->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
@@ -93,23 +72,34 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
 
+        // activate system
+        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, _('Traktorstrahl'), $game))
+        {
+            return;
+        }
+
         if ($target->getRump()->isTrumfield()) {
             $game->addInformation("Das Trümmerfeld kann nicht erfasst werden");
+            $this->abort();
             return;
         }
         if (!$this->positionChecker->checkPosition($ship, $target)) {
+            $this->abort();
             return;
         }
         if ($target->isBase()) {
             $game->addInformation("Die " . $target->getName() . " kann nicht erfasst werden");
+            $this->abort();
             return;
         }
         if ($target->traktorbeamToShip()) {
             $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTraktorShip()->getName() . " gehalten");
+            $this->abort();
             return;
         }
         if ($target->getFleetId() && $target->getFleetId() == $ship->getFleetId()) {
             $game->addInformation("Die " . $target->getName() . " befindet sich in der selben Flotte wie die " . $ship->getName());
+            $this->abort();
             return;
         }
         if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
@@ -128,7 +118,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->shipAttackCycle->init($attacker, $defender);
             $this->shipAttackCycle->cycle();
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
-
+            
             $this->privateMessageSender->send(
                 $userId,
                 $target->getUser()->getId(),
@@ -143,6 +133,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         if ($target->getShieldState()) {
             $game->addInformation("Die " . $target->getName() . " kann aufgrund der aktiven Schilde nicht erfasst werden");
+            $this->abort();
             return;
         }
         $target->deactivateTraktorBeam();
@@ -151,19 +142,26 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $target->setTraktorMode(2);
         $target->setTraktorShipId($ship->getId());
         $ship->setEps($ship->getEps() - $energyCosts);
-
+        
         $this->shipRepository->save($target);
         $this->shipRepository->save($ship);
-
+        
         if ($userId != $target->getUser()->getId()) {
             $this->privateMessageSender->send(
                 $userId,
                 $target->getUser()->getId(),
-                "Die " . $target->getName() . " wurde in SeKtor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
+                "Die " . $target->getName() . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
         $game->addInformation("Der Traktorstrahl wurde auf die " . $target->getName() . " gerichtet");
+    }
+    
+    private function abort(): void
+    {
+        // deactivate system
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, _('Traktorstrahl'), $game);
+        $this->shipRepository->save($ship);
     }
 
     public function performSessionCheck(): bool

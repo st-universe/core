@@ -17,9 +17,6 @@ use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
-
-    private ShipRemoverInterface $shipRemover;
-
     private EntryCreatorInterface $entryCreator;
 
     private ShipRepositoryInterface $shipRepository;
@@ -51,7 +48,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     private bool $singleMode = false;
 
     public function __construct(
-        ShipRemoverInterface $shipRemover,
         EntryCreatorInterface $entryCreator,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
@@ -59,7 +55,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase
     ) {
-        $this->shipRemover = $shipRemover;
         $this->entryCreator = $entryCreator;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
@@ -131,7 +126,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         ];
     }
 
-    public function cycle(): void
+    public function cycle(bool $isAlertRed = false): void
     {
         foreach ($this->attacker as $attacker) {
             $this->addMessageMerge($this->ready($attacker));
@@ -188,9 +183,9 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 }
             }
 
-            $this->addMessageMerge($this->energyWeaponPhase->fire($attackingShip, $targetShipPool));
+            $this->addMessageMerge($this->energyWeaponPhase->fire($attackingShip, $targetShipPool, $isAlertRed));
 
-            $this->addMessageMerge($this->projectileWeaponPhase->fire($attackingShip, $this->filterInactiveShips($targetShipPool)));
+            $this->addMessageMerge($this->projectileWeaponPhase->fire($attackingShip, $this->filterInactiveShips($targetShipPool), $isAlertRed));
         }
 
         foreach ($this->attacker as $ship) {
