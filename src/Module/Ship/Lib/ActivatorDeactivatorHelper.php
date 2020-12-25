@@ -40,7 +40,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     public function activate( int $shipId,
                                 int $systemId,
-                                string $systemName,
                                 GameControllerInterface $game
                                 ): bool
     {
@@ -91,7 +90,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     public function activateFleet( int $shipId,
                                 int $systemId,
-                                string $systemName,
                                 GameControllerInterface $game
                                 ): void
     {
@@ -107,12 +105,12 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $this->shipRepository->save($ship);
         }
         
+        $systemName = ShipSystemTypeEnum::getDescription($systemId);
         $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s aktiviert'), $systemName));
     }
 
     public function deactivate( int $shipId,
                                 int $systemId,
-                                string $systemName,
                                 GameControllerInterface $game
                                 ): void
     {
@@ -146,7 +144,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     public function deactivateFleet( int $shipId,
                                 int $systemId,
-                                string $systemName,
                                 GameControllerInterface $game
                                 ): void
     {
@@ -162,6 +159,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $this->shipRepository->save($ship);
         }
         
+        $systemName = ShipSystemTypeEnum::getDescription($systemId);
         $game->addInformation(sprintf(_('Flottenbefehl ausgeführt: System %s deaktiviert'), $systemName));
     }
 
