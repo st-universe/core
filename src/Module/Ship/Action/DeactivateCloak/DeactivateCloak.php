@@ -38,7 +38,7 @@ final class DeactivateCloak implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, _('Tarnung'), $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, $game);
         
         $userId = $game->getUser()->getId();
 

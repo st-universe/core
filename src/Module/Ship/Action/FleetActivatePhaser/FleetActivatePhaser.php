@@ -27,7 +27,7 @@ final class FleetActivatePhaser implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->activateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_PHASER, _('Energiewaffe'), $game);
+        $this->helper->activateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_PHASER, $game);
     }
 
     public function performSessionCheck(): bool

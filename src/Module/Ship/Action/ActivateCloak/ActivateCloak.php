@@ -27,7 +27,7 @@ final class ActivateCloak implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, _('Tarnung'), $game);
+        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, $game);
     }
 
     public function performSessionCheck(): bool

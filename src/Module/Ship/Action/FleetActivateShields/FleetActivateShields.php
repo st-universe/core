@@ -27,7 +27,7 @@ final class FleetActivateShields implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->activateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SHIELDS, _('Schilde'), $game);
+        $this->helper->activateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SHIELDS, $game);
     }
 
     public function performSessionCheck(): bool

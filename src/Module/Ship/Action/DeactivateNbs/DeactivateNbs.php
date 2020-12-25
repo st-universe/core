@@ -27,7 +27,7 @@ final class DeactivateNbs implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_NBS, _('Nahbereichssensoren'), $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_NBS, $game);
     }
 
     public function performSessionCheck(): bool

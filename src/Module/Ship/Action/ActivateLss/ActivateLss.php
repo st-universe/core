@@ -27,7 +27,7 @@ final class ActivateLss implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_LSS, _('Langstreckensensoren'), $game);
+        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_LSS, $game);
     }
 
     public function performSessionCheck(): bool

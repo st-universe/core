@@ -27,7 +27,7 @@ final class FleetDeactivateTorpedo implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TORPEDO, _('Projektilwaffe'), $game);
+        $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TORPEDO, $game);
     }
 
     public function performSessionCheck(): bool
