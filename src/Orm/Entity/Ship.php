@@ -1047,11 +1047,6 @@ class Ship implements ShipInterface
     {
         $result = 0;
         
-        if ($this->getCrewCount() > 0)
-        {
-            $result += 1;
-        }
-        
         //@todo refactor
         global $container;
         $shipSystemManager = $container->get(ShipSystemManagerInterface::class);

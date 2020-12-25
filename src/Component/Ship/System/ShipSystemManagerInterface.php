@@ -19,7 +19,7 @@ interface ShipSystemManagerInterface
      * @throws SystemDamagedException
      * @throws SystemNotFoundException
      */
-    public function activate(ShipInterface $ship, int $shipSystemId): void;
+    public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void;
 
     /**
      * @throws InvalidSystemException

@@ -27,17 +27,17 @@ final class ShipSystemTypeEnum
     public static function getDescription(int $systemType): string {
         switch ($systemType) {
             case ShipSystemTypeEnum::SYSTEM_CLOAK:
-                return "Tarnung";
+                return _("Tarnung");
             case ShipSystemTypeEnum::SYSTEM_NBS:
-                return "Nahbereichssensoren";
+                return _("Nahbereichssensoren");
             case ShipSystemTypeEnum::SYSTEM_LSS:
-                return "Langstreckensensoren";
+                return _("Langstreckensensoren");
             case ShipSystemTypeEnum::SYSTEM_PHASER:
-                return "Strahlenwaffe";
+                return _("Energiewaffe");
             case ShipSystemTypeEnum::SYSTEM_TORPEDO:
-                return "Torpedobänke";
+                return _("Projektilwaffe");
             case ShipSystemTypeEnum::SYSTEM_WARPDRIVE:
-                return "Warpantrieb";
+                return _("Warpantrieb");
             case ShipSystemTypeEnum::SYSTEM_EPS:
                 return _("Energiesystem");
             case ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE:

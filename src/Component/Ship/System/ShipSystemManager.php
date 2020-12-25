@@ -32,12 +32,14 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         $this->systemList = $systemList;
     }
 
-    public function activate(ShipInterface $ship, int $shipSystemId): void
+    public function activate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
     {
         $system = $this->lookupSystem($shipSystemId);
 
-        $this->checkActivationConditions($ship, $system, $shipSystemId);
-        
+        if (!$force)
+        {
+            $this->checkActivationConditions($ship, $system, $shipSystemId);
+        }
         $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
         
         $system->activate($ship);

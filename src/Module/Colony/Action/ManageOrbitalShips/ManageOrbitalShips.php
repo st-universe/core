@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\ManageOrbitalShips;
 
 use Exception;
 use request;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -176,7 +177,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getName()
                     );
 
-                    $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
+                    $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
                 }
             }
             if (
@@ -188,6 +189,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 );
 
                 $this->shipSystemManager->deactivateAll($shipobj);
+                $shipobj->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
                 if (

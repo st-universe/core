@@ -209,9 +209,16 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
 
     private function setAlertStateShip(ShipInterface $ship, int $alertState, GameControllerInterface $game): void
     {
+        // can only change when there is crew
+        if ($ship->getCrewCount() === 0)
+        {
+            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Mangel an Crew verhindert den Wechsel der Alarmstufe[/color][/b]'), $ship->getName()));
+            return;
+        }
+
         if ($alertState === ShipAlertStateEnum::ALERT_RED && $ship->getCloakState)
         {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Tarnung verhindert Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
+            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
             return;
         }
 
