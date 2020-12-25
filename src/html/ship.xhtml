@@ -197,18 +197,39 @@
 								<td colspan="2">
                   <a tal:condition="not:SHIP/getCloakState"
                      href="?B_ACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-                     onmouseover="cp('cloakon','buttons/tarn2')"
-                     onmouseout="cp('cloakon','buttons/tarn1')"
+                     onmouseover="cp('cloakon','buttons/tarn1')"
+                     onmouseout="cp('cloakon','buttons/tarn2')"
                   >
-                    <img src="/assets/buttons/tarn1.gif" name="cloakon" title="löschen" />
+                    <img src="/assets/buttons/tarn2.gif" name="cloakon" /> Tarnung aktivieren
                   </a>
 
                   <a href="?B_DEACTIVATE_CLOAK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
                      tal:condition="SHIP/getCloakState"
-                     onmouseover="cp('cloakoff','buttons/tarn1')"
-                     onmouseout="cp('cloakoff','buttons/tarn2')"
+                     onmouseover="cp('cloakon','buttons/tarn2')"
+                     onmouseout="cp('cloakon','buttons/tarn1')"
                   >
-                    <img src="/assets/buttons/tarn2.gif" name="cloakoff" /> <span>Tarnung deaktivieren</span>
+                    <img src="/assets/buttons/tarn1.gif" name="cloakon" /> Tarnung deaktivieren
+                  </a>
+								</td>
+							</tr>
+						</tal:block>
+						<tal:block tal:condition="SHIP/hasTachyonScanner">
+							<tr>
+								<td colspan="2">
+                  <a tal:condition="not:SHIP/getTachyonState"
+                     href="?B_ACTIVATE_TACHYON=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+                     onmouseover="cp('tachyon','buttons/decloak1')"
+                     onmouseout="cp('tachyon','buttons/decloak2')"
+                  >
+                    <img src="/assets/buttons/decloak2.gif" name="tachyon" /> Tachyon-Scanner aktivieren
+                  </a>
+
+                  <a href="?B_DEACTIVATE_TACHYON=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+                     tal:condition="SHIP/getTachyonState"
+                     onmouseover="cp('tachyon','buttons/decloak2')"
+                     onmouseout="cp('tachyon','buttons/decloak1')"
+                  >
+                    <img src="/assets/buttons/decloak1.gif" name="tachyon" /> Tachyon-Scanner deaktivieren
                   </a>
 								</td>
 							</tr>

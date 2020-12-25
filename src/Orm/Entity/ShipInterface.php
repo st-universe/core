@@ -54,6 +54,8 @@ interface ShipInterface
     public function setWarpcoreLoad(int $warpcoreLoad): ShipInterface;
 
     public function getCloakState(): bool;
+    
+    public function getTachyonState(): bool;
 
     public function getEps(): int;
 
@@ -329,6 +331,8 @@ interface ShipInterface
     public function hasTorpedo(): bool;
 
     public function hasCloak(): bool;
+
+    public function hasTachyonScanner(): bool;
 
     public function hasWarpcore(): bool;
 
