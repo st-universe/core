@@ -44,6 +44,8 @@ final class ShipSystemTypeEnum
                 return _("Impulsantrieb");
             case ShipSystemTypeEnum::SYSTEM_COMPUTER:
                 return _('Computer');
+            case ShipSystemTypeEnum::SYSTEM_SHIELDS:
+                return _('Schilde');
             case ShipSystemTypeEnum::SYSTEM_WARPCORE:
                 return _('Warpkern');
             case ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER:
