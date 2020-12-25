@@ -6,5 +6,5 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ProjectileWeaponPhaseInterface
 {
-    public function fire(ShipInterface $attacker, array $targetPool): array;
+    public function fire(ShipInterface $attacker, array $targetPool, bool $isAlertRed = false): array;
 }

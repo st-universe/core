@@ -118,8 +118,9 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new InsufficientCrewException();
         }
 
-        if (!$system->checkActivationConditions($ship)) {
-            throw new ActivationConditionsNotMetException();
+        $reason;
+        if (!$system->checkActivationConditions($ship, $reason)) {
+            throw new ActivationConditionsNotMetException($reason);
         }
     }
 

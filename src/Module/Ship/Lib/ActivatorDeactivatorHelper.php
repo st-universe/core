@@ -41,7 +41,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                                 int $systemId,
                                 string $systemName,
                                 GameControllerInterface $game
-                                ): void
+                                ): bool
     {
         $userId = $game->getUser()->getId();
 
@@ -50,19 +50,27 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
-        $this->activateIntern($ship, $systemId, $systemName, $game);
-        $this->shipRepository->save($ship);
+        if ($this->activateIntern($ship, $systemId, $game))
+        {
+            $this->shipRepository->save($ship);
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
     private function activateIntern( ShipInterface $ship,
                                 int $systemId,
-                                string $systemName,
                                 GameControllerInterface $game
-                                ): void
+                                ): bool
     {
+        $systemName = ShipSystemTypeEnum::getDescription($systemId);
+
         try {
             $this->shipSystemManager->activate($ship, $systemId);
             $game->addInformation(sprintf(_('%s: System %s aktiviert'), $ship->getName(), $systemName));
+            return true;
         } catch (AlreadyActiveException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits aktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotActivableException $e) {
@@ -71,9 +79,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s kann aufgrund Energiemangels nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         } catch (SystemDamagedException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+        } catch (ActivationConditionsNotMetException $e) {
+            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
         } catch (ShipSystemException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         }
+
+        return false;
     }
 
     public function activateFleet( int $shipId,
@@ -90,7 +102,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         );
 
         foreach ($ship->getFleet()->getShips() as $ship) {
-            $this->activateIntern($ship, $systemId, $systemName, $game);
+            $this->activateIntern($ship, $systemId, $game);
             $this->shipRepository->save($ship);
         }
         
@@ -110,16 +122,17 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
-        $this->deactivateIntern($ship, $systemId, $systemName, $game);
+        $this->deactivateIntern($ship, $systemId, $game);
         $this->shipRepository->save($ship);
     }
 
     private function deactivateIntern( ShipInterface $ship,
                                 int $systemId,
-                                string $systemName,
                                 GameControllerInterface $game
                                 ): void
     {
+        $systemName = ShipSystemTypeEnum::getDescription($systemId);
+
         try {
             $this->shipSystemManager->deactivate($ship, $systemId);
             $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
@@ -144,7 +157,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         );
 
         foreach ($ship->getFleet()->getShips() as $ship) {
-            $this->deactivateIntern($ship, $systemId, $systemName, $game);
+            $this->deactivateIntern($ship, $systemId, $game);
             $this->shipRepository->save($ship);
         }
         
@@ -248,41 +261,41 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     private function setAlertRed(ShipInterface $ship, GameControllerInterface $game): void
     {
         $alertSystems = [
-            'Schilde' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
-            'Nahbereichssensoren' => ShipSystemTypeEnum::SYSTEM_NBS,
-            'Phaser' => ShipSystemTypeEnum::SYSTEM_PHASER,
-            'Torpedowerfer' => ShipSystemTypeEnum::SYSTEM_TORPEDO
+            ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            ShipSystemTypeEnum::SYSTEM_NBS,
+            ShipSystemTypeEnum::SYSTEM_PHASER,
+            ShipSystemTypeEnum::SYSTEM_TORPEDO
         ];
 
-        foreach ($alertSystems as $key => $systemId)
+        foreach ($alertSystems as $systemId)
         {
-            $this->activateIntern($ship, $systemId, $key, $game);
+            $this->activateIntern($ship, $systemId, $game);
         }
     }
     
     private function setAlertYellow(ShipInterface $ship, GameControllerInterface $game): void
     {
         $alertSystems = [
-            'Nahbereichssensoren' => ShipSystemTypeEnum::SYSTEM_NBS
+            ShipSystemTypeEnum::SYSTEM_NBS
         ];
         
-        foreach ($alertSystems as $key => $systemId)
+        foreach ($alertSystems as $systemId)
         {
-            $this->activateIntern($ship, $systemId, $key, $game);
+            $this->activateIntern($ship, $systemId, $game);
         }
     }
     
     private function setAlertGreen(ShipInterface $ship, GameControllerInterface $game): void
     {
         $deactivateSystems = [
-            'Phaser' => ShipSystemTypeEnum::SYSTEM_PHASER,
-            'Torpedowerfer' => ShipSystemTypeEnum::SYSTEM_TORPEDO,
-            'Schilde' => ShipSystemTypeEnum::SYSTEM_SHIELDS
+            ShipSystemTypeEnum::SYSTEM_PHASER,
+            ShipSystemTypeEnum::SYSTEM_TORPEDO,
+            ShipSystemTypeEnum::SYSTEM_SHIELDS
         ];
         
-        foreach ($deactivateSystems as $key => $systemId)
+        foreach ($deactivateSystems as $systemId)
         {
-            $this->deactivateIntern($ship, $systemId, $key, $game);
+            $this->deactivateIntern($ship, $systemId, $game);
         }
     }
 }

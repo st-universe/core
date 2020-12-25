@@ -17,7 +17,7 @@ interface ShipAttackCycleInterface
         bool $singleMode = false
     ): void;
 
-    public function cycle();
+    public function cycle(bool $isAlertRed = false);
 
     public function getMessages();
 }

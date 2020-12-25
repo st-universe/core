@@ -10,7 +10,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 abstract class AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function checkActivationConditions(ShipInterface $ship): bool
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         return true;
     }

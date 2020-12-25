@@ -20,9 +20,21 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $this->shipRepository = $shipRepository;
     }
 
-    public function checkActivationConditions(ShipInterface $ship): bool
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        return ($ship->getTraktorShip() === null || $ship->traktorBeamFromShip());
+        if ($ship->traktorBeamFromShip())
+        {
+            $reason = _('der Traktorstrahl aktiviert ist');
+            return false;
+        }
+
+        if ($ship->traktorBeamToShip())
+        {
+            $reason = _('es von einem Traktorstrahl gehalten wird');
+            return false;
+        }
+
+        return true;
     }
 
     public function activate(ShipInterface $ship): void

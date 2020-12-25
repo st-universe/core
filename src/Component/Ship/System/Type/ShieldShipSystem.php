@@ -11,12 +11,33 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class ShieldShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function checkActivationConditions(ShipInterface $ship): bool
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        return $ship->getCloakState() === false
-            && $ship->getTraktorShip() === null
-            && $ship->getShield() > 0
-        ;
+        if ($ship->getCloakState())
+        {
+            $reason = _('die Tarnung aktiviert ist');
+            return false;
+        }
+
+        if ($ship->traktorBeamFromShip())
+        {
+            $reason = _('der Traktorstrahl aktiviert ist');
+            return false;
+        }
+
+        if ($ship->traktorBeamToShip())
+        {
+            $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
+            return false;
+        }
+
+        if ($ship->getShield() === 0)
+        {
+            $reason = _('die Schildemitter erschöpft sind');
+            return false;
+        }
+
+        return true;
     }
 
     public function activate(ShipInterface $ship): void

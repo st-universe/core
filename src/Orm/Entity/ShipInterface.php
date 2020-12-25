@@ -101,11 +101,9 @@ interface ShipInterface
 
     public function getLss(): bool;
 
-    public function canActivatePhaser(): bool;
-
     public function getPhaser(): bool;
 
-    public function canActivateTorpedos(): bool;
+    public function isAlertGreen(): bool;
 
     public function getTorpedos(): bool;
 

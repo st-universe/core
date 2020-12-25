@@ -542,21 +542,14 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_LSS);
     }
 
-    public function canActivatePhaser(): bool
-    {
-        //TODO rework über CloakShipSystem implements ShipSystemTypeInterface?
-        return $this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN;
-    }
-
     public function getPhaser(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
     
-    public function canActivateTorpedos(): bool
+    public function isAlertGreen(): bool
     {
-        //TODO rework über CloakShipSystem implements ShipSystemTypeInterface?
-        return $this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN;
+        return $this->getAlertState() === ShipAlertStateEnum::ALERT_GREEN;
     }
     
     public function getTorpedos(): bool

@@ -50,7 +50,8 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
 
     public function fire(
         ShipInterface $attacker,
-        array $targetPool
+        array $targetPool,
+        bool $isAlertRed = false
     ): array {
         $msg = [];
 
@@ -88,10 +89,18 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
             $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $target));
 
             if ($target->getIsDestroyed()) {
-                $this->entryCreator->addShipEntry(
-                    'Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
-                    $attacker->getUser()->getId()
-                );
+                if ($isAlertRed)
+                {
+                    $this->entryCreator->addShipEntry(
+                        '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
+                        $attacker->getUser()->getId()
+                    );
+                } else {
+                    $this->entryCreator->addShipEntry(
+                        'Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
+                        $attacker->getUser()->getId()
+                    );
+                }
 
                 $this->shipRemover->destroy($target);
 

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DeactivateTractorBeam;
 
 use request;
+
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 
 final class DeactivateTractorBeam implements ActionControllerInterface
 {
@@ -20,12 +23,16 @@ final class DeactivateTractorBeam implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private ActivatorDeactivatorHelperInterface $helper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ActivatorDeactivatorHelperInterface $helper
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
+        $this->helper = $helper;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,8 +60,8 @@ final class DeactivateTractorBeam implements ActionControllerInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, _('Traktorstrahl'), $game);
         $ship->deactivateTraktorBeam();
-        $game->addInformation("Der Traktorstrahl wurde deaktiviert");
     }
 
     public function performSessionCheck(): bool

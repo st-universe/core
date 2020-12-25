@@ -6,7 +6,7 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ShipSystemTypeInterface
 {
-    public function checkActivationConditions(ShipInterface $ship): bool;
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool;
 
     public function getEnergyUsageForActivation(): int;
 

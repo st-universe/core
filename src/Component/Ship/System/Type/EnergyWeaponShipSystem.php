@@ -11,9 +11,21 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class EnergyWeaponShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
-    public function checkActivationConditions(ShipInterface $ship): bool
+    public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        return $ship->getCloakState() === false;
+        if ($ship->getCloakState())
+        {
+            $reason = _('die Tarnung aktiviert ist');
+            return false;
+        }
+
+        if ($ship->isAlertGreen())
+        {
+            $reason = _('die Alarmstufe Grün ist');
+            return false;
+        }
+
+        return true;
     }
 
     public function getEnergyUsageForActivation(): int
