@@ -417,6 +417,11 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CLOAK);
     }
 
+    public function getTachyonState(): bool
+    {
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+    }
+
     public function getEps(): int
     {
         return $this->eps;
@@ -1330,6 +1335,11 @@ class Ship implements ShipInterface
     public function hasCloak(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK);
+    }
+
+    public function hasTachyonScanner(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
     }
 
     public function hasWarpcore(): bool
