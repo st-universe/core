@@ -81,6 +81,8 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         } catch (ActivationConditionsNotMetException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
+        } catch (SystemNotFoundException $e) {
+            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName));
         } catch (ShipSystemException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         }
@@ -228,7 +230,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             return;
         }
 
-        if ($alertState === ShipAlertStateEnum::ALERT_RED && $ship->getCloakState)
+        if ($alertState === ShipAlertStateEnum::ALERT_RED && $ship->getCloakState())
         {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
             return;
