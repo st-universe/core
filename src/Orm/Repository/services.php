@@ -86,7 +86,6 @@ use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemType;
-use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
 use Stu\Orm\Entity\TorpedoType;
@@ -509,11 +508,6 @@ return [
         ContainerInterface $c
     ): TerraformingRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Terraforming::class);
-    },
-    TachyonScanRepositoryInterface::class => function (
-        ContainerInterface $c
-    ): TachyonScanRepositoryInterface {
-        return $c->get(EntityManagerInterface::class)->getRepository(TachyonScan::class);
     },
     TerraformingCostRepositoryInterface::class => function (
         ContainerInterface $c
