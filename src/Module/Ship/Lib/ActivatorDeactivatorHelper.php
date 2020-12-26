@@ -102,9 +102,19 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
+        $success = false;
         foreach ($ship->getFleet()->getShips() as $ship) {
-            $this->activateIntern($ship, $systemId, $game);
-            $this->shipRepository->save($ship);
+            if ($this->activateIntern($ship, $systemId, $game))
+            {
+                $success = true;
+                $this->shipRepository->save($ship);
+            }
+        }
+
+        // only show info if at least one ship was able to change
+        if (!$success)
+        {
+            return;
         }
         
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
@@ -176,7 +186,10 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
-        $this->setAlertStateShip($ship, $alertState, $game);
+        if (!$this->setAlertStateShip($ship, $alertState, $game))
+        {
+            return;
+        }
 
         if ($alertState === ShipAlertStateEnum::ALERT_RED)
         {
@@ -203,8 +216,15 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
         
+        $success = false;
         foreach ($ship->getFleet()->getShips() as $ship) {
-            $this->setAlertStateShip($ship, $alertState, $game);
+            $success = $success || $this->setAlertStateShip($ship, $alertState, $game);
+        }
+
+        // only show info if at least one ship was able to change
+        if (!$success)
+        {
+            return;
         }
 
         if ($alertState === ShipAlertStateEnum::ALERT_RED)
@@ -221,19 +241,19 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } 
     }
 
-    private function setAlertStateShip(ShipInterface $ship, int $alertState, GameControllerInterface $game): void
+    private function setAlertStateShip(ShipInterface $ship, int $alertState, GameControllerInterface $game): bool
     {
         // can only change when there is crew
         if ($ship->getCrewCount() === 0)
         {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]Mangel an Crew verhindert den Wechsel der Alarmstufe[/color][/b]'), $ship->getName()));
-            return;
+            return false;
         }
 
         if ($alertState === ShipAlertStateEnum::ALERT_RED && $ship->getCloakState())
         {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]Tarnung verhindert den Wechsel zu Alarm-Rot[/color][/b]'), $ship->getName()));
-            return;
+            return false;
         }
 
         try {
@@ -241,7 +261,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $this->shipRepository->save($ship);
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]Nicht genügend Energie um die Alarmstufe zu wechseln[/color][/b]'), $ship->getName()));
-            return;
+            return false;
         }
 
         switch ($alertState) {
@@ -257,6 +277,8 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
 
         $this->shipRepository->save($ship);
+
+        return true;
     }
 
     private function setAlertRed(ShipInterface $ship, GameControllerInterface $game): void
