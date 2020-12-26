@@ -14,4 +14,12 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
     {
         return new TachyonScan();
     }
+
+    public function save(TachyonScanInterface $obj): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($obj);
+        $em->flush();
+    }
 }
