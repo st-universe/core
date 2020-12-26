@@ -344,7 +344,17 @@
                   onmouseout="cp('sectorScanButton','buttons/lupe1')">
                   <img src="/assets/buttons/lupe1.gif" name="sectorScanButton" />
                   <span>Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen</span>
-                </a>
+				</a>
+				
+				<tal:block tal:condition="SHIP/getTachyonState">
+					<br />
+					<a href="ship.php?B_TACHYON_SCAN=1&id=${SHIP/getId}"
+						onmouseover="cp('tachyonScanButton','buttons/decloak1')"
+						onmouseout="cp('tachyonScanButton','buttons/decloak2')">
+						<img src="/assets/buttons/decloak2.gif" name="tachyonScanButton" />
+						<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY}</span>
+					</a>
+				</tal:block>
 								<br />
                 <a tal:condition="SHIP/getCurrentMapField/getMapRegion"
                    href="javascript:void(0);"
