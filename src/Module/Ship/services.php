@@ -31,6 +31,7 @@ use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
 use Stu\Module\Ship\Action\ActivateNbs\ActivateNbs;
 use Stu\Module\Ship\Action\ActivatePhaser\ActivatePhaser;
 use Stu\Module\Ship\Action\ActivateShields\ActivateShields;
+use Stu\Module\Ship\Action\ActivateShieldsFoo\ActivateShieldsFoo;
 use Stu\Module\Ship\Action\ActivateTorpedo\ActivateTorpedo;
 use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
@@ -178,6 +179,7 @@ return [
         ActivateNbs::ACTION_IDENTIFIER => autowire(ActivateNbs::class),
         DeactivateNbs::ACTION_IDENTIFIER => autowire(DeactivateNbs::class),
         ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
+        ActivateShieldsFoo::ACTION_IDENTIFIER => autowire(ActivateShieldsFoo::class),
         DeactivateShields::ACTION_IDENTIFIER => autowire(DeactivateShields::class),
         ActivatePhaser::ACTION_IDENTIFIER => autowire(ActivatePhaser::class),
         DeactivatePhaser::ACTION_IDENTIFIER => autowire(DeactivatePhaser::class),
