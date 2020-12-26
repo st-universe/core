@@ -68,18 +68,18 @@ final class DoTachyonScan implements ActionControllerInterface
         }
 
         $tachyonScan = $this->tachyonScanRepository->prototype();
-        $tachyonScan.setUser($ship->getUser());
+        $tachyonScan->setUser($ship->getUser());
 
         if ($ship->getSystem() === null)
         {
-            $tachyonScan.setMap($this->mapRepository->getByCoordinates($ship->getPosX(), $ship->getPosY()));
+            $tachyonScan->setMap($this->mapRepository->getByCoordinates($ship->getPosX(), $ship->getPosY()));
         }
         else {
-            $tachyonScan.setStarsystemMap($this->starSystemMapRepository->
+            $tachyonScan->setStarsystemMap($this->starSystemMapRepository->
                             getByCoordinates($ship->getSystem()->getId(), $ship->getPosX(), $ship->getPosY()));
         }
 
-        $tachyonScan.setScanTime(time());
+        $tachyonScan->setScanTime(time());
         $this->tachyonScanRepository->save($tachyonScan);
 
         $ship->setEps($ship->getEps() - 10);
