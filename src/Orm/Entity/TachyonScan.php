@@ -37,7 +37,7 @@ class TachyonScan implements TachyonScanInterface
     /** @Column(type="integer", nullable=true) * */
     private $map_id;
 
-    /** @Column(type="smallint", nullable=true) * */
+    /** @Column(type="integer", nullable=true) * */
     private $starsystem_map_id;
 
     /**
