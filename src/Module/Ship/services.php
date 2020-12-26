@@ -61,6 +61,7 @@ use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequest;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequestInterface;
 use Stu\Module\Ship\Action\DisplayNotOwner\DisplayNotOwner;
 use Stu\Module\Ship\Action\DockShip\DockShip;
+use Stu\Module\Ship\Action\DoTachyonScan\DoTachyonScan;
 use Stu\Module\Ship\Action\EnterStarSystem\EnterStarSystem;
 use Stu\Module\Ship\Action\EpsTransfer\EpsTransfer;
 use Stu\Module\Ship\Action\EscapeTractorBeam\EscapeTractorBeam;
@@ -209,6 +210,7 @@ return [
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
         DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
         DockShip::ACTION_IDENTIFIER => autowire(DockShip::class),
+        DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
         UndockShip::ACTION_IDENTIFIER => autowire(UndockShip::class),
         BuyTradeLicense::ACTION_IDENTIFIER => autowire(BuyTradeLicense::class),
         TransferToAccount::ACTION_IDENTIFIER => autowire(TransferToAccount::class),
