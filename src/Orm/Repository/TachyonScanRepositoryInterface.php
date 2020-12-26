@@ -11,4 +11,6 @@ use Stu\Orm\Entity\TachyonScanInterface;
 interface TachyonScanRepositoryInterface extends ObjectRepository
 {
     public function prototype(): TachyonScanInterface;
+
+    public function save(TachyonScanInterface $obj): void;
 }
