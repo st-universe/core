@@ -35,10 +35,10 @@ class TachyonScan implements TachyonScanInterface
     private $scan_time = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private $map_id = 0;
+    private $map_id;
 
     /** @Column(type="smallint", nullable=true) * */
-    private $starsystem_map_id = 0;
+    private $starsystem_map_id;
 
     /**
      * @ManyToOne(targetEntity="User")
