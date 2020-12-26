@@ -67,6 +67,7 @@ final class DoTachyonScan implements ActionControllerInterface
             return;
         }
 
+        /**
         $tachyonScan = $this->tachyonScanRepository->prototype();
         $tachyonScan->setUser($ship->getUser());
 
@@ -84,7 +85,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $ship->setEps($ship->getEps() - 10);
         $this->shipRepository->save($ship);
-
+        */
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
