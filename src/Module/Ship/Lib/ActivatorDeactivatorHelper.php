@@ -15,7 +15,6 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemDamagedException;
 use Stu\Component\Ship\System\Exception\SystemNotActivableException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
-use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -84,8 +83,6 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden, weil %s[/color][/b]'), $ship->getName(), $systemName, $e->getMessage()));
         } catch (SystemNotFoundException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s nicht vorhanden[/color][/b]'), $ship->getName(), $systemName));
-        } catch (InsufficientCrewException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte wegen Mangel an Crew nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         } catch (ShipSystemException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s konnte nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         }
@@ -321,10 +318,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         
         foreach ($deactivateSystems as $systemId)
         {
-            if ($ship->hasShipSystem($systemId))
-            {
-                $this->deactivateIntern($ship, $systemId, $game);
-            }
+            $this->deactivateIntern($ship, $systemId, $game);
         }
     }
 }
