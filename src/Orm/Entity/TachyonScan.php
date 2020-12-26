@@ -11,7 +11,12 @@ use Stu\Orm\Entity\UserInterface;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\TachyonScanRepository")
  * @Table(
- *     name="stu_tachyon_scan"
+ *     name="stu_tachyon_scan",
+ *     indexes={
+ *         @Index(name="tachyon_scan_user_idx", columns={"user_id"}),
+ *         @Index(name="tachyon_scan_map_idx", columns={"map_id"}),
+ *         @Index(name="tachyon_scan_sysmap_idx", columns={"starsystem_map_id"})
+ *     }
  * )
  **/
 class TachyonScan implements TachyonScanInterface
