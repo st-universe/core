@@ -27,4 +27,6 @@ interface OrbitShipItemInterface
     public function getShieldStatusBar(): string;
 
     public function getEpsStatusBar(): string;
+
+    public function getCloakState(): bool;
 }

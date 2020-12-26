@@ -68,6 +68,11 @@ final class OrbitShipItem implements OrbitShipItemInterface
         return $this->ship->getMaxTorpedos() > 0;
     }
 
+    public function getCloakState(): bool
+    {
+        return $this->ship->getCloakState();
+    }
+
     public function getTorpedoCount(): int
     {
         return $this->ship->getTorpedoCount();

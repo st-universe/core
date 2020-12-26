@@ -37,6 +37,11 @@ final class OrbitShipItem implements OrbitShipItemInterface
         return $this->ship->getIsDestroyed();
     }
 
+    public function getCloakState(): bool
+    {
+        return $this->ship->getCloakState();
+    }
+
     public function getRump(): ShipRumpInterface
     {
         return $this->ship->getRump();

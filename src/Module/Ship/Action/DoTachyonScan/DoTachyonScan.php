@@ -12,7 +12,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
-//use Stu\Orm\Repository\TachyonScanRepositoryInterface;
+use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class DoTachyonScan implements ActionControllerInterface
 {
@@ -20,7 +20,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    //private TachyonScanRepositoryInterface $tachyonScanRepository;
+    private TachyonScanRepositoryInterface $tachyonScanRepository;
 
     private MapRepositoryInterface $mapRepository;
 
@@ -30,13 +30,13 @@ final class DoTachyonScan implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        //TachyonScanRepositoryInterface $tachyonScanRepository,
+        TachyonScanRepositoryInterface $tachyonScanRepository,
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
-        //$this->tachyonScanRepository = $tachyonScanRepository;
+        $this->tachyonScanRepository = $tachyonScanRepository;
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->shipRepository = $shipRepository;
@@ -67,7 +67,6 @@ final class DoTachyonScan implements ActionControllerInterface
             return;
         }
 
-        /**
         $tachyonScan = $this->tachyonScanRepository->prototype();
         $tachyonScan->setUser($ship->getUser());
 
@@ -85,7 +84,7 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $ship->setEps($ship->getEps() - 10);
         $this->shipRepository->save($ship);
-        */
+        
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
