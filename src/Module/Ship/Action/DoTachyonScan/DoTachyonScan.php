@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
@@ -24,17 +25,21 @@ final class DoTachyonScan implements ActionControllerInterface
     private MapRepositoryInterface $mapRepository;
     
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
+    
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TachyonScanRepositoryInterface $tachyonScanRepository,
         MapRepositoryInterface $mapRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,6 +81,9 @@ final class DoTachyonScan implements ActionControllerInterface
         
         $tachyonScan.setScanTime(time());
         $this->tachyonScanRepository->save($tachyonScan);
+        
+        $ship->setEps($ship->getEps() - 10);
+        $this->shipRepository->save($ship);
 
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
