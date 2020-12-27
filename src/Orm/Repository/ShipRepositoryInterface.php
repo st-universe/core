@@ -101,7 +101,6 @@ interface ShipRepositoryInterface extends ObjectRepository
         int $cx,
         int $cy,
         int $ignoreId,
-        bool $isBase,
-        bool $showCloaked = false
+        bool $isBase
     ): iterable;
 }
