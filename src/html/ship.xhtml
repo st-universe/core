@@ -346,15 +346,21 @@
                   <span>Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen</span>
 				</a>
 				
-				<tal:block tal:condition="SHIP/getTachyonState">
+				<tal:block tal:condition="php: SHIP/getTachyonState AND !TACHYON_ACTIVE">
 					<br />
 					<a href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('tachyonScanButton','buttons/decloak1')"
 						onmouseout="cp('tachyonScanButton','buttons/decloak2')">
 						<img src="/assets/buttons/decloak2.gif" name="tachyonScanButton" />
-						<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY}</span>
+						<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} starten</span>
 					</a>
 				</tal:block>
+				<tal:block tal:condition="TACHYON_ACTIVE">
+					<br />
+					<img src="/assets/buttons/decloak1.gif" />
+					<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
+				</tal:block>
+
 								<br />
                 <a tal:condition="SHIP/getCurrentMapField/getMapRegion"
                    href="javascript:void(0);"
