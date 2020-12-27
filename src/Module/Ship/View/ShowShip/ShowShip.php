@@ -80,20 +80,15 @@ final class ShowShip implements ViewControllerInterface
 
         $shipId = $ship->getId();
 
-        // check if tachyon scan still active
-        $tachyonActive = false;
-        foreach ($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship) as $entry)
+        $tachyonFresh = $game->getViewContext()['TACHYON_SCAN_JUST_HAPPENED'] ?? false;
+        $tachyonActive = $tachyonFresh;
+
+        if (!$tachyonFresh)
         {
-            if ($ship->getId() === 2245)
-            {
-                echo "- scanId: ".$entry->getId()."\n";
-            }
-            $tachyonActive = true;
+            // check if tachyon scan still active
+            $tachyonActive = !empty($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship));
         }
-        if ($ship->getId() === 2245)
-        {
-            echo "- tachyonActive: ".$tachyonActive."\n";
-        }
+
         $nbs = $this->shipRepository->getSingleShipScannerResults(
             $ship->getSystem(),
             $ship->getSx(),
@@ -164,13 +159,13 @@ final class ShowShip implements ViewControllerInterface
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
-        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser()));
+        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser(), $tachyonFresh, $ship->getTachyonState()));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',
             $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
         );
-        $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
+        $game->setTemplateVar('TACHYON_ACTIVE', $tachyonFresh || $tachyonActive);
         //$game->setTemplateVar('CLOAK_NBS', $fnbs);//TODO via ShipRepo Methode isCloakedShipAt?
         $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $nbs);
