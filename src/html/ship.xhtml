@@ -346,7 +346,7 @@
                   <span>Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen</span>
 				</a>
 				
-				<tal:block tal:condition="php: SHIP/getTachyonState AND !TACHYON_ACTIVE">
+				<tal:block tal:condition="php: SHIP/getTachyonState() AND !TACHYON_ACTIVE">
 					<br />
 					<a href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('tachyonScanButton','buttons/decloak1')"
