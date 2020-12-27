@@ -77,7 +77,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                 continue;
             }
             $damage_wrapper = new DamageWrapper(
-                $this->getProjectileWeaponDamage($attacker),
+                $this->getProjectileWeaponDamage($attacker, $target->getCloakState()),
                 $attacker
             );
             $damage_wrapper->setShieldDamageFactor($attacker->getTorpedo()->getShieldDamageFactor());
@@ -114,7 +114,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
         return 1;
     }
 
-    private function getProjectileWeaponDamage(ShipInterface $ship): float
+    private function getProjectileWeaponDamage(ShipInterface $ship, bool $isTargetCloaked): float
     {
         $variance = (int) round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
         $basedamage = $this->moduleValueCalculator->calculateModuleValue(
@@ -124,7 +124,8 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
             $ship->getTorpedo()->getBaseDamage()
         );
         $damage = rand($basedamage - $variance, $basedamage + $variance);
-        if (rand(1, 100) <= $ship->getTorpedo()->getCriticalChance()) {
+        $critChance = $isTargetCloaked ? $ship->getTorpedo()->getCriticalChance() * 2 : $ship->getTorpedo()->getCriticalChance();
+        if (rand(1, 100) <= $critChance) {
             return $damage * 2;
         }
         return $damage;
