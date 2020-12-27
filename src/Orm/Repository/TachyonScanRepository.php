@@ -40,7 +40,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
                             END)', $rsm
         )->setParameters([
             'isSystem' => $ship->getSystem !== null,
-            'systemId' => $ship->getSystem()->getId(),
+            'systemId' => $ship->getSystem !== null ? $ship->getSystem()->getId() : 0,
             'sx' => $sx,
             'sy' => $sy,
             'cx' => $cx,
