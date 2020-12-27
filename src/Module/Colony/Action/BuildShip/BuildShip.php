@@ -228,7 +228,7 @@ final class BuildShip implements ActionControllerInterface
         $game->addInformationf(
             _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
             $rump->getName(),
-            date("d.m.Y H:i", (time() + $plan->getBuildtime())
+            date("d.m.Y H:i", (time() + $plan->getBuildtime()))
         );
     }
 
