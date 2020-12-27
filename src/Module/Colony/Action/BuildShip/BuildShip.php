@@ -174,8 +174,6 @@ final class BuildShip implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-        // @todo
-        $buildtime = 3600;
         $signature = ShipBuildplan::createSignature($sigmod);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
@@ -193,7 +191,7 @@ final class BuildShip implements ActionControllerInterface
             $plan->setRump($rump);
             $plan->setName($planname);
             $plan->setSignature($signature);
-            $plan->setBuildtime($buildtime);
+            $plan->setBuildtime($rump->getBuildtime());
             $plan->setCrew($crew_usage);
             $plan->setCrewPercentage($crewcount);
 
@@ -218,8 +216,8 @@ final class BuildShip implements ActionControllerInterface
         $queue->setUserId($userId);
         $queue->setRump($rump);
         $queue->setShipBuildplan($plan);
-        $queue->setBuildtime($buildtime);
-        $queue->setFinishDate(time() + $buildtime);
+        $queue->setBuildtime($plan->getBuildtime());
+        $queue->setFinishDate(time() + $plan->getBuildtime());
         $queue->setBuildingFunctionId($building_function->getBuildingFunction());
 
         $colony->setEps($colony->getEps() - $rump->getEpsCost());
@@ -230,7 +228,7 @@ final class BuildShip implements ActionControllerInterface
         $game->addInformationf(
             _('Das Schiff der %s-Klasse wird gebaut - Fertigstellung: %s'),
             $rump->getName(),
-            date("d.m.Y H:i", (time() + $buildtime))
+            date("d.m.Y H:i", (time() + $plan->getBuildtime())
         );
     }
 
