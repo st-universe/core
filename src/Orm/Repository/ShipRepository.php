@@ -294,7 +294,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $cx,
         int $cy,
         int $ignoreId,
-        bool $isBase
+        bool $isBase,
+        bool $showCloaked = false
     ): iterable {
         if ($starSystem === null) {
             $query = $this->getEntityManager()->createQuery(
@@ -303,11 +304,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     WHERE s.systems_id is null
                     AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy
                     AND s.fleets_id IS NULL
-                    AND NOT EXISTS (SELECT ss.id
-                                    FROM %s ss
-                                    WHERE s.id = ss.ships_id
-                                    AND ss.system_type = :systemId
-                                    AND ss.mode > 1)
+                    AND (SELECT CASE WHEN :showCloaked = true
+                                    THEN true
+                                    ELSE NOT EXISTS (SELECT ss.id
+                                                    FROM %s ss
+                                                    WHERE s.id = ss.ships_id
+                                                    AND ss.system_type = :systemId
+                                                    AND ss.mode > 1)
+                                END)
                     AND s.is_base = :isBase AND s.id != :ignoreId',
                     Ship::class,
                     ShipSystem::class
@@ -319,7 +323,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'cy' => $cy,
                 'ignoreId' => $ignoreId,
                 'isBase' => $isBase,
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
+                'showCloaked' => $showCloaked
             ]);
         } else {
             $query = $this->getEntityManager()->createQuery(
