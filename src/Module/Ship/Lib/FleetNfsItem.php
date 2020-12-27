@@ -18,18 +18,27 @@ final class FleetNfsItem implements FleetNfsItemInterface
 
     private ShipInterface $currentShip;
 
+    private bool $showCloaked;
+
     public function __construct(
         SessionInterface $session,
         FleetInterface $fleet,
-        ShipInterface $currentShip
+        ShipInterface $currentShip,
+        bool $showCloaked
     ) {
         $this->session = $session;
         $this->fleet = $fleet;
         $this->currentShip = $currentShip;
+        $this->showCloaked = $showCloaked;
     }
 
     public function isVisisble(): bool
     {
+        if ($this->showCloaked)
+        {
+            return true;
+        }
+
         $fleetShips = $this->fleet->getShips();
 
         if (
@@ -58,6 +67,7 @@ final class FleetNfsItem implements FleetNfsItemInterface
             ->filter(
                 function (ShipInterface $ship): bool {
                     return $ship !== $this->currentShip && (
+                        $this->showCloaked ||
                         $ship->getCloakState() === false ||
                         $ship->getUser() === $this->currentShip->getUser()
                     );
