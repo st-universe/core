@@ -25,7 +25,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
                 'SELECT ts FROM %s ts
                 WHERE ts.scan_time > :theTime
                 AND ts.user_id = :userId
-                AND (CASE WHEN :isSystem
+                AND (CASE WHEN :isSystem = true
                                 THEN EXISTS (SELECT ss.id
                                                 FROM %s ss
                                                 WHERE ss.id = ts.starsystem_map_id
