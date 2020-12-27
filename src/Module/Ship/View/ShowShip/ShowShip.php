@@ -164,7 +164,7 @@ final class ShowShip implements ViewControllerInterface
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
-        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser()));
+        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser(), $ship->getTachyonState()));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',

@@ -13,11 +13,14 @@ class VisualNavPanel
     private $ship;
 
     private $user;
+    
+    private $isTachyonSystemActive;
 
-    function __construct(ShipInterface $ship, UserInterface $user)
+    function __construct(ShipInterface $ship, UserInterface $user, bool $isTachyonSystemActive)
     {
         $this->ship = $ship;
         $this->user = $user;
+        $this->isTachyonSystemActive = $isTachyonSystemActive;
     }
 
     function getShip()
@@ -103,7 +106,7 @@ class VisualNavPanel
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new VisualNavPanelEntry($data);
+            $entry = new VisualNavPanelEntry($data, $this->isTachyonSystemActive);
             $entry->currentShipPosX = $cx;
             $entry->currentShipPosY = $cy;
             $rows[$y]->addEntry($entry);
