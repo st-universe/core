@@ -6,6 +6,8 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+
+use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemMap;
@@ -52,7 +54,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
             'sy' => $ship->getSy(),
             'cx' => $ship->getCx(),
             'cy' => $ship->getCy(),
-            'theTime' => time() - 300,
+            'theTime' => time() - TachyonScannerShipSystem::DECLOAK_INTERVAL,
             'userId' => $ship->getUser()->getId()
         ])->getResult();
     }

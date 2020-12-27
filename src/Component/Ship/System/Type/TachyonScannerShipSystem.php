@@ -11,6 +11,9 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class TachyonScannerShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    //in seconds
+    public const DECLOAK_INTERVAL = 300;
+
     public function getEnergyConsumption(): int
     {
         return 3;
