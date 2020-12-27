@@ -13,6 +13,7 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
+use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 
 final class DoTachyonScan implements ActionControllerInterface
 {
@@ -44,8 +45,6 @@ final class DoTachyonScan implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -57,6 +56,7 @@ final class DoTachyonScan implements ActionControllerInterface
         if (!$ship->hasTachyonScanner())
         {
             $game->addInformation(_('Aktion nicht möglich, kein Tachyon-Scanner installiert!'));
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
 
@@ -64,6 +64,7 @@ final class DoTachyonScan implements ActionControllerInterface
         if (!$ship->getTachyonState())
         {
             $game->addInformation(_('Aktion nicht möglich, der Tachyon-Scanner muss aktiviert sein!'));
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
 
@@ -76,15 +77,16 @@ final class DoTachyonScan implements ActionControllerInterface
         }
         else {
             $tachyonScan->setStarsystemMap($this->starSystemMapRepository->
-                            getByCoordinates($ship->getSystem()->getId(), $ship->getPosX(), $ship->getPosY()));
+            getByCoordinates($ship->getSystem()->getId(), $ship->getPosX(), $ship->getPosY()));
         }
 
         $tachyonScan->setScanTime(time());
         $this->tachyonScanRepository->save($tachyonScan);
 
-        $ship->setEps($ship->getEps() - 10);
+        $ship->setEps($ship->getEps() - TachyonScannerShipSystem::SCAN_EPS_COST);
         $this->shipRepository->save($ship);
         
+        $game->setView(ShowShip::VIEW_IDENTIFIER, ['TACHYON_SCAN_JUST_HAPPENED' => true]);
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
