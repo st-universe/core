@@ -18,6 +18,7 @@ use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 use VisualNavPanel;
 
 final class ShowShip implements ViewControllerInterface
@@ -38,7 +39,7 @@ final class ShowShip implements ViewControllerInterface
 
     private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
     
-    //private DatabaseEntryRepositoryInterface $databaseEntryRepository;
+    private TachyonScanRepositoryInterface $tachyonScanRepository;
 
     public function __construct(
         SessionInterface $session,
@@ -47,8 +48,8 @@ final class ShowShip implements ViewControllerInterface
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
         ColonizationCheckerInterface $colonizationChecker,
-        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
-        //DatabaseEntryRepositoryInterface $databaseEntryRepository
+        DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
+        TachyonScanRepositoryInterface $tachyonScanRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
@@ -57,7 +58,7 @@ final class ShowShip implements ViewControllerInterface
         $this->colonyRepository = $colonyRepository;
         $this->colonizationChecker = $colonizationChecker;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        //$this->databaseEntryRepository = $databaseEntryRepository;
+        $this->tachyonScanRepository = $tachyonScanRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -79,6 +80,13 @@ final class ShowShip implements ViewControllerInterface
 
         $shipId = $ship->getId();
 
+        // check if tachyon scan still active
+        $tachyonActive = false;
+        foreach ($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship) as $entry)
+        {
+            $tachyonActive = true;
+        }
+
         $nbs = $this->shipRepository->getSingleShipScannerResults(
             $ship->getSystem(),
             $ship->getSx(),
@@ -86,7 +94,8 @@ final class ShowShip implements ViewControllerInterface
             $ship->getCx(),
             $ship->getCy(),
             $ship->getId(),
-            true
+            true,
+            $tachyonActive
         );
 
         $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
@@ -96,7 +105,8 @@ final class ShowShip implements ViewControllerInterface
             $ship->getCx(),
             $ship->getCy(),
             $ship->getId(),
-            false
+            false,
+            $tachyonActive
         );
 
         $fleets = $this->fleetRepository->getByPositition(
@@ -112,7 +122,8 @@ final class ShowShip implements ViewControllerInterface
             $fnbs[] = new FleetNfsItem(
                 $this->session,
                 $fleet,
-                $ship
+                $ship,
+                $tachyonActive
             );
         }
 
@@ -152,6 +163,8 @@ final class ShowShip implements ViewControllerInterface
             'HAS_NBS',
             $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
         );
+        $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
+        //$game->setTemplateVar('CLOAK_NBS', $fnbs);//TODO via ShipRepo Methode isCloakedShipAt?
         $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $nbs);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
