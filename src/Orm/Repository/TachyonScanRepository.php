@@ -22,7 +22,8 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
     public function findActiveByShipLocationAndOwner(ShipInterface $ship): array
     {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('scan_id', 'scan_id', 'integer');
+        $rsm->addEntityResult(TachyonScan::class, 't');
+        $rsm->addFieldResult('t', 'scan_id', 'scan_id');
 
         return $this->getEntityManager()->createNativeQuery(
                 'SELECT ts.id as scan_id FROM stu_tachyon_scan ts
