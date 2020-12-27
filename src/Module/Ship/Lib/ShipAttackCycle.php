@@ -245,6 +245,14 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 return $msg;
             }
         }
+        if ($ship->getCloakState() && $ship->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
+            try {
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
+                $msg[] = "- Die Tarnung wurde deaktiviert";
+                return $msg;
+            } catch (ShipSystemException $e) {
+            }
+        }
         if (!$ship->isTraktorbeamActive()) {
             try {
                 $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
