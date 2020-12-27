@@ -221,7 +221,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         
         $success = false;
         foreach ($ship->getFleet()->getShips() as $ship) {
-            $success = $success || $this->setAlertStateShip($ship, $alertState, $game);
+            $success = $this->setAlertStateShip($ship, $alertState, $game) || $success;
         }
 
         // only show info if at least one ship was able to change
