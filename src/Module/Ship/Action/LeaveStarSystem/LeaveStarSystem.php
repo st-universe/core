@@ -81,7 +81,7 @@ final class LeaveStarSystem implements ActionControllerInterface
                 }
             );
             foreach ($result as $fleetShip) {
-                if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game))
+                if (!$this->helper->activate($fleetShip->getId(), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game))
                 {
                     $msg[] = "Die " . $ship->getName() . " hat die Flotte verlassen. Grund: Warpantrieb kann nicht aktiviert werden";
                     $fleetShip->leaveFleet();
