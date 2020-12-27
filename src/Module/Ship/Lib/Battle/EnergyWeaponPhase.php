@@ -56,6 +56,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         $msg = [];
 
         $target = $targetPool[array_rand($targetPool)];
+        $isTargetCloaked = $target->getCloakState();
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
             if (!$attacker->getPhaser() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
@@ -79,7 +80,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
                 continue;
             }
             $damage_wrapper = new DamageWrapper(
-                $this->getEnergyWeaponDamage($attacker),
+                $this->getEnergyWeaponDamage($attacker, $isTargetCloaked),
                 $attacker
             );
             $damage_wrapper->setShieldDamageFactor($attacker->getRump()->getPhaserShieldDamageFactor());
@@ -115,7 +116,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         return $msg;
     }
 
-    private function getEnergyWeaponDamage(ShipInterface $ship): float
+    private function getEnergyWeaponDamage(ShipInterface $ship, bool $isTargetCloaked): float
     {
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return 0;
@@ -127,7 +128,8 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         );
         $variance = (int)round($basedamage / 100 * $this->getEnergyWeapon($ship)->getVariance());
         $damage = rand($basedamage - $variance, $basedamage + $variance);
-        if (rand(1, 100) <= $this->getEnergyWeapon($ship)->getCriticalChance()) {
+        $critChance = $isTargetCloaked ? $this->getEnergyWeapon($ship)->getCriticalChance() * 2 : $this->getEnergyWeapon($ship)->getCriticalChance();
+        if (rand(1, 100) <= $critChance) {
             return $damage * 2;
         }
         return $damage;
