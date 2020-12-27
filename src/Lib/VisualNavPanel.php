@@ -14,15 +14,10 @@ class VisualNavPanel
 
     private $user;
 
-    private $tachyonFresh;
-    private $tachyonSystemActive;
-
-    function __construct(ShipInterface $ship, UserInterface $user, bool $tachyonFresh, bool $tachyonSystemActive)
+    function __construct(ShipInterface $ship, UserInterface $user)
     {
         $this->ship = $ship;
         $this->user = $user;
-        $this->tachyonFresh = $tachyonFresh;
-        $this->tachyonSystemActive = $tachyonSystemActive;
     }
 
     function getShip()
@@ -103,12 +98,12 @@ class VisualNavPanel
             if ($data['posy'] != $y) {
                 $y = $data['posy'];
                 $rows[$y] = new VisualNavPanelRow;
-                $entry = new VisualNavPanelEntry(false, false);
+                $entry = new VisualNavPanelEntry();
                 $entry->row = $y;
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new VisualNavPanelEntry($this->tachyonFresh, $this->tachyonSystemActive, $data);
+            $entry = new VisualNavPanelEntry($data);
             $entry->currentShipPosX = $cx;
             $entry->currentShipPosY = $cy;
             $rows[$y]->addEntry($entry);
