@@ -84,9 +84,16 @@ final class ShowShip implements ViewControllerInterface
         $tachyonActive = false;
         foreach ($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship) as $entry)
         {
+            if ($ship->getId() === 2245)
+            {
+                echo "- scanId: ".$entry->getId()."\n";
+            }
             $tachyonActive = true;
         }
-
+        if ($ship->getId() === 2245)
+        {
+            echo "- tachyonActive: ".$tachyonActive."\n";
+        }
         $nbs = $this->shipRepository->getSingleShipScannerResults(
             $ship->getSystem(),
             $ship->getSx(),
