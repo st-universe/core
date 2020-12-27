@@ -301,9 +301,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ' AND NOT EXISTS (SELECT ss.id
                             FROM %s ss
                             WHERE s.id = ss.ships_id
-                            AND ss.system_type = :systemId
+                            AND ss.system_type = %d
                             AND ss.mode > 1) ',
-            ShipSystem::class
+            ShipSystem::class,
+            ShipSystemTypeEnum::SYSTEM_CLOAK
         );
 
         if ($starSystem === null) {
@@ -324,8 +325,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'cx' => $cx,
                 'cy' => $cy,
                 'ignoreId' => $ignoreId,
-                'isBase' => $isBase,
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'isBase' => $isBase
             ]);
         } else {
             $query = $this->getEntityManager()->createQuery(
@@ -345,8 +345,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'cx' => $cx,
                 'cy' => $cy,
                 'ignoreId' => $ignoreId,
-                'isBase' => $isBase,
-                'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+                'isBase' => $isBase
             ]);
         }
         return $query->getResult();
