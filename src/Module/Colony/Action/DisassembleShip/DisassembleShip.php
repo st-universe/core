@@ -64,11 +64,6 @@ final class DisassembleShip implements ActionControllerInterface
 
         $ship_id = request::getIntFatal('ship_id');
 
-        //TODO revive some modules?
-        //$this->moduleRepository->find((int) $key);
-        //with key = ShipSystem->module_id
-        // from Module to Commidity
-
         $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
         $this->shipRemover->remove($ship);
 
