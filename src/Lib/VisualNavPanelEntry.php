@@ -7,9 +7,12 @@ class VisualNavPanelEntry
 
     private $data = array();
 
-    function __construct(&$entry = array())
+    private $isTachyonSystemActive;
+
+    function __construct(&$entry = array(), bool $isTachyonSystemActive = false)
     {
         $this->data = $entry;
+        $this->isTachyonSystemActive = $isTachyonSystemActive;
     }
 
     function getPosX()
@@ -47,7 +50,7 @@ class VisualNavPanelEntry
         if ($this->hasShips()) {
             return $this->getShipCount();
         }
-        if ($this->hasCloakedShips()) {
+        if ($this->hasCloakedShips() && $this->isTachyonSystemActive) {
             return "?";
         }
         return "";
