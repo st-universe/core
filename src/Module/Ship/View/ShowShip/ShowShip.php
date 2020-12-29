@@ -80,8 +80,15 @@ final class ShowShip implements ViewControllerInterface
 
         $shipId = $ship->getId();
 
+        $tachyonFresh = $game->getViewContext()['TACHYON_SCAN_JUST_HAPPENED'] ?? false;
+        if ($tachyonFresh && $ship->getId() === 2245)
+        {
+            echo "- tachyonFresh!\n";
+        }
+
+        $tachyonActive = $tachyonFresh;
+
         // check if tachyon scan still active
-        $tachyonActive = false;
         foreach ($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship) as $entry)
         {
             if ($ship->getId() === 2245)
