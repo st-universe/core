@@ -81,26 +81,18 @@ final class ShowShip implements ViewControllerInterface
         $shipId = $ship->getId();
 
         $tachyonFresh = $game->getViewContext()['TACHYON_SCAN_JUST_HAPPENED'] ?? false;
-        if ($tachyonFresh && $ship->getId() === 2245)
-        {
-            echo "- tachyonFresh!\n";
-        }
-
         $tachyonActive = $tachyonFresh;
 
         // check if tachyon scan still active
-        foreach ($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship) as $entry)
+        if (!$tachyonActive)
         {
-            if ($ship->getId() === 2245)
-            {
-                echo "- scanId: ".$entry->getId()."\n";
-            }
-            $tachyonActive = true;
+            $tachyonActive = !empty($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship));
         }
         if ($ship->getId() === 2245)
         {
             echo "- tachyonActive: ".$tachyonActive."\n";
         }
+
         $nbs = $this->shipRepository->getSingleShipScannerResults(
             $ship->getSystem(),
             $ship->getSx(),
@@ -171,7 +163,7 @@ final class ShowShip implements ViewControllerInterface
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
-        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser(), $ship->getTachyonState()));
+        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser(), $ship->getTachyonState(), $tachyonFresh));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',

@@ -8,11 +8,14 @@ class VisualNavPanelEntry
     private $data = array();
 
     private $isTachyonSystemActive;
+    
+    private $tachyonFresh;
 
-    function __construct(&$entry = array(), bool $isTachyonSystemActive = false)
+    function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false)
     {
         $this->data = $entry;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
+        $this->tachyonFresh = $tachyonFresh;
     }
 
     function getPosX()
@@ -51,6 +54,10 @@ class VisualNavPanelEntry
             return $this->getShipCount();
         }
         if ($this->hasCloakedShips()) {
+            if ($tachyonFresh)
+            {
+                return "?";
+            }
             if ($this->isTachyonSystemActive
                 && abs($this->getPosX() - $this->currentShipPosX) < 3
                 && abs($this->getPosY() - $this->currentShipPosY) < 3)
