@@ -52,8 +52,8 @@ class VisualNavPanelEntry
         }
         if ($this->hasCloakedShips()) {
             if ($this->isTachyonSystemActive
-                && abs($this->getPosX(), $this->currentShipPosX) < 3
-                && abs($this->getPosY(), $this->currentShipPosY) < 3)
+                && abs($this->getPosX() - $this->currentShipPosX) < 3
+                && abs($this->getPosY() - $this->currentShipPosY) < 3)
             {
                 return "?";
             }
