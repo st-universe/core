@@ -14,6 +14,8 @@ final class TachyonScannerShipSystem extends AbstractShipSystemType implements S
     //in seconds
     public const DECLOAK_INTERVAL = 300;
 
+    public const SCAN_EPS_COST = 10;
+
     public function getEnergyConsumption(): int
     {
         return 3;

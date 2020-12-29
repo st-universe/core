@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DoTachyonScan;
 
 use request;
+
+use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -56,14 +58,21 @@ final class DoTachyonScan implements ActionControllerInterface
         // scanner needs to be present
         if (!$ship->hasTachyonScanner())
         {
-            $game->addInformation(_('Aktion nicht möglich, kein Tachyon-Scanner installiert!'));
+            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, kein Tachyon-Scanner installiert![/color][/b]'));
             return;
         }
 
         // scanner needs to be active
         if (!$ship->getTachyonState())
         {
-            $game->addInformation(_('Aktion nicht möglich, der Tachyon-Scanner muss aktiviert sein!'));
+            $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, der Tachyon-Scanner muss aktiviert sein![/color][/b]'));
+            return;
+        }
+
+        // scanner needs to be active
+        if ($ship->getEps() < TachyonScannerShipSystem::SCAN_EPS_COST)
+        {
+            $game->addInformation(sprintf(_('[b][color=FF2626]Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE[/color][/b]'), TachyonScannerShipSystem::SCAN_EPS_COST));
             return;
         }
 
@@ -82,7 +91,7 @@ final class DoTachyonScan implements ActionControllerInterface
         $tachyonScan->setScanTime(time());
         $this->tachyonScanRepository->save($tachyonScan);
 
-        $ship->setEps($ship->getEps() - 10);
+        $ship->setEps($ship->getEps() - TachyonScannerShipSystem::SCAN_EPS_COST);
         $this->shipRepository->save($ship);
         
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
