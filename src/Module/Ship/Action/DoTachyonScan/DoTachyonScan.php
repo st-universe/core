@@ -94,6 +94,7 @@ final class DoTachyonScan implements ActionControllerInterface
         $ship->setEps($ship->getEps() - TachyonScannerShipSystem::SCAN_EPS_COST);
         $this->shipRepository->save($ship);
         
+        $game->setView(ShowShip::VIEW_IDENTIFIER, ['TACHYON_SCAN_JUST_HAPPENED' => true]);
         $game->addInformation("Der umfangreiche Tachyon-Scan wurde durchgeführt");
     }
 
