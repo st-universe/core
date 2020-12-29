@@ -359,8 +359,10 @@
 				</tal:block>
 				<tal:block tal:condition="TACHYON_ACTIVE">
 					<br />
-					<img src="/assets/buttons/decloak1.gif" />
-					<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
+					<a href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+							<img src="/assets/buttons/decloak2.gif" name="tachyonScanButton" />
+							<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
+					</a>
 				</tal:block>
 
 								<br />
