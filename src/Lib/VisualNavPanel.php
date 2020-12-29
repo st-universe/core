@@ -109,7 +109,7 @@ class VisualNavPanel
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new VisualNavPanelEntry($data, $this->isTachyonSystemActive, $tachyonFresh);
+            $entry = new VisualNavPanelEntry($data, $this->isTachyonSystemActive, $this->tachyonFresh);
             $entry->currentShipPosX = $cx;
             $entry->currentShipPosY = $cy;
             $rows[$y]->addEntry($entry);
