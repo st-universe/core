@@ -54,7 +54,7 @@ class VisualNavPanelEntry
             return $this->getShipCount();
         }
         if ($this->hasCloakedShips()) {
-            if ($tachyonFresh)
+            if ($this->tachyonFresh)
             {
                 return "?";
             }
