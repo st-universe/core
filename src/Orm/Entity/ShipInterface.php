@@ -272,6 +272,11 @@ interface ShipInterface
      * @return ShipSystemInterface[]
      */
     public function getActiveSystems(): array;
+    
+    /**
+     * @return ShipSystemInterface[]
+     */
+    public function getHealthySystems(): array;
 
     public function displayNbsActions(): bool;
 

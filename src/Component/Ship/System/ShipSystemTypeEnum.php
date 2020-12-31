@@ -23,7 +23,6 @@ final class ShipSystemTypeEnum
 
     public const SYSTEM_ECOST_DOCK = 1;
 
-    //TODO use this method in ActivatorDeactivatorHelper
     public static function getDescription(int $systemType): string {
         switch ($systemType) {
             case ShipSystemTypeEnum::SYSTEM_CLOAK:

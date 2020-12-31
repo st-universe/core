@@ -79,10 +79,12 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
                 $msg[] = "Die " . $target->getName() . " wurde verfehlt";
                 continue;
             }
+            $isCritical = $this->isCritical($attacker, $target->getCloakState());
             $damage_wrapper = new DamageWrapper(
-                $this->getEnergyWeaponDamage($attacker, $isTargetCloaked),
+                $this->getEnergyWeaponDamage($attacker, $isCritical),
                 $attacker
             );
+            $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldDamageFactor($attacker->getRump()->getPhaserShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($attacker->getRump()->getPhaserHullDamageFactor());
             $damage_wrapper->setIsPhaserDamage(true);
@@ -116,7 +118,16 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         return $msg;
     }
 
-    private function getEnergyWeaponDamage(ShipInterface $ship, bool $isTargetCloaked): float
+    private function isCritical(ShipInterface $ship, bool $isTargetCloaked): bool
+    {
+        $critChance = $isTargetCloaked ? $this->getEnergyWeapon($ship)->getCriticalChance() * 2 : $this->getEnergyWeapon($ship)->getCriticalChance();
+        if (rand(1, 100) <= $critChance) {
+            return true;
+        }
+        return false;
+    }
+
+    private function getEnergyWeaponDamage(ShipInterface $ship, bool $isCritical): float
     {
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return 0;
@@ -128,11 +139,8 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         );
         $variance = (int)round($basedamage / 100 * $this->getEnergyWeapon($ship)->getVariance());
         $damage = rand($basedamage - $variance, $basedamage + $variance);
-        $critChance = $isTargetCloaked ? $this->getEnergyWeapon($ship)->getCriticalChance() * 2 : $this->getEnergyWeapon($ship)->getCriticalChance();
-        if (rand(1, 100) <= $critChance) {
-            return $damage * 2;
-        }
-        return $damage;
+        
+        return $isCritical ? $damage * 2 : $damage;
     }
 
     private function getEnergyWeapon(ShipInterface $ship): ?WeaponInterface

@@ -27,6 +27,7 @@ class DamageWrapper
 
 	private $damage = 0;
 	private $source = false;
+	private $isCrit = false;
 
 	/**
 	 */
@@ -51,6 +52,16 @@ class DamageWrapper
 	{ #{{{
 		return $this->hull_damage_factor;
 	} # }}}
+
+	public function setCrit(bool $isCrit)
+	{
+		$this->isCrit = $isCrit;
+	}
+
+	public function isCrit(): bool
+	{
+		return $this->isCrit;
+	}
 
 	private $shield_damage_factor = 100;
 

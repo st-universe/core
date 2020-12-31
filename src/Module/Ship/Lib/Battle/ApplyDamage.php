@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
 use Stu\Orm\Entity\ShipInterface;
@@ -52,8 +53,20 @@ final class ApplyDamage implements ApplyDamageInterface
             $ship->setDisabled(true);
         }
         if ($ship->getHuell() > $damage) {
-            $ship->setHuell($ship->getHuell() - $damage);
+            if ($damage_wrapper->isCrit())
+            {
+                $systemName = $this->destroyRandomShipSystem($ship);
+                $msg[] = "- Kritischer Hüllen-Treffer zerstört System: " . $systemName;
+            }
+            $huelleVorher = $ship->getHuell();
+            $ship->setHuell($huelleVorher - $damage);
             $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHuell();
+
+            if (!$this->checkForDestroyedShipSystems($ship, $huelleVorher, $msg))
+            {
+                $this->damageRandomShipSystem($msg);
+            }
+
             if ($disablemessage) {
                 $msg[] = $disablemessage;
             }
@@ -63,5 +76,55 @@ final class ApplyDamage implements ApplyDamageInterface
         $msg[] = "-- Das Schiff wurde zerstört!";
         $ship->setIsDestroyed(true);
         return $msg;
+    }
+    
+    private function checkForDestroyedShipSystems(ShipInterface $ship, int $huelleVorher, &$msg): bool
+    {
+        $systemsToDestroy = ceil($huelleVorher * 6 / $ship->getMaxHuell()) -
+        ceil($ship->getHuell() * 6 / $ship->getMaxHuell());
+
+        if ($systemsToDestroy == 0)
+        {
+            return false;
+        }
+        
+        for ($i = 1; $i <= $systemsToDestroy; $i++) {
+            $systemName = $this->destroyRandomShipSystem($ship);
+            $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
+        }
+        
+        return true;
+    }
+
+    private function destroyRandomShipSystem(ShipInterface $ship): string
+    {
+        $healthySystems = $ship->getHealthySystems();
+        shuffle($healthySystems);
+        
+        $healthySystems[0]->setStatus(0);
+        $healthySystems[0]->setMode(ShipSystemModeEnum::MODE_OFF);
+        
+        return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
+    }
+    
+    private function damageRandomShipSystem(ShipInterface $ship): void
+    {
+        $healthySystems = $ship->getHealthySystems();
+        shuffle($healthySystems);
+        
+        $status = $healthySystems[0]->getStatus();
+        $dmg = rand(1, 70);
+        
+        $systemName = ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
+
+        if ($status > $dmg)
+        {
+            $healthySystems[0]->setStatus($status - $dmg);
+            $msg[] = "- Folgendes System wurde beschädigt: " . $systemName;
+        } else {
+            $healthySystems[0]->setStatus(0);
+            $healthySystems[0]->setMode(ShipSystemModeEnum::MODE_OFF);
+            $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
+        }
     }
 }
