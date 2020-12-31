@@ -64,7 +64,7 @@ final class ApplyDamage implements ApplyDamageInterface
 
             if (!$this->checkForDestroyedShipSystems($ship, $huelleVorher, $msg))
             {
-                $this->damageRandomShipSystem($msg);
+                $this->damageRandomShipSystem($ship, $msg);
             }
 
             if ($disablemessage) {
@@ -107,7 +107,7 @@ final class ApplyDamage implements ApplyDamageInterface
         return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
     }
     
-    private function damageRandomShipSystem(ShipInterface $ship): void
+    private function damageRandomShipSystem(ShipInterface $ship, &$msg): void
     {
         $healthySystems = $ship->getHealthySystems();
         shuffle($healthySystems);
