@@ -1102,6 +1102,17 @@ class Ship implements ShipInterface
         return $activeSystems;
     }
 
+    public function getHealthySystems(): array
+    {
+        $healthySystems = [];
+        foreach ($this->getSystems() as $system) {
+            if ($system->getStatus() > 0) {
+                $healthySystems[] = $system;
+            }
+        }
+        return $healthySystems;
+    }
+
     public function displayNbsActions(): bool
     {
         return $this->getCloakState() == 0 && $this->getWarpstate() == 0;

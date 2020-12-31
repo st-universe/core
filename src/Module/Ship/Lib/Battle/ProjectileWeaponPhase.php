@@ -76,10 +76,12 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                 $msg[] = "Die " . $target->getName() . " wurde verfehlt";
                 continue;
             }
+            $isCritical = $this->isCritical($attacker, $target->getCloakState());
             $damage_wrapper = new DamageWrapper(
-                $this->getProjectileWeaponDamage($attacker, $target->getCloakState()),
+                $this->getProjectileWeaponDamage($attacker, $isCritical),
                 $attacker
             );
+            $damage_wrapper->setCrit($isCritical);
             $damage_wrapper->setShieldDamageFactor($attacker->getTorpedo()->getShieldDamageFactor());
             $damage_wrapper->setHullDamageFactor($attacker->getTorpedo()->getHullDamageFactor());
             $damage_wrapper->setIsTorpedoDamage(true);
@@ -114,7 +116,16 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
         return 1;
     }
 
-    private function getProjectileWeaponDamage(ShipInterface $ship, bool $isTargetCloaked): float
+    private function isCritical(ShipInterface $ship, bool $isTargetCloaked): bool
+    {
+        $critChance = $isTargetCloaked ? $ship->getTorpedo()->getCriticalChance() * 2 : $ship->getTorpedo()->getCriticalChance();
+        if (rand(1, 100) <= $critChance) {
+            return true;
+        }
+        return false;
+    }
+
+    private function getProjectileWeaponDamage(ShipInterface $ship, bool $isCritical): float
     {
         $variance = (int) round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
         $basedamage = $this->moduleValueCalculator->calculateModuleValue(
@@ -124,10 +135,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
             $ship->getTorpedo()->getBaseDamage()
         );
         $damage = rand($basedamage - $variance, $basedamage + $variance);
-        $critChance = $isTargetCloaked ? $ship->getTorpedo()->getCriticalChance() * 2 : $ship->getTorpedo()->getCriticalChance();
-        if (rand(1, 100) <= $critChance) {
-            return $damage * 2;
-        }
-        return $damage;
+        
+        return $isCritical ? $damage * 2 : $damage;
     }
 }
