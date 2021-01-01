@@ -1,0 +1,12 @@
+<html xmlns:stu="stu">
+<tal:block metal:use-macro="../sitemacros.xhtml/admindefaults">
+	<tal:block metal:fill-slot="body">
+		<tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
+    <div>
+      <a href="?B_COLONY_TICK=1&sstr=${THIS/getSessionString}" class="button">
+        <span>Colony-Manager Tick ausführen</span>
+      </a>
+    </div>
+	</tal:block>
+</tal:block>
+</html>
