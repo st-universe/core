@@ -938,7 +938,7 @@ class Ship implements ShipInterface
         }
 
         $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
-        $ship = $this->getTractorShip();
+        $ship = $this->getTraktorShip();
         $this->setTraktorMode(0);
         $this->setTraktorShipId(0);
         $ship->setTraktorMode(0);

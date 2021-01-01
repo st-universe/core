@@ -147,7 +147,7 @@ final class EnterStarSystem implements ActionControllerInterface
     {
         if ($ship->getEps() < 1) {
             $ship->deactivateTraktorBeam();
-            $game->addInformation("Der Traktorstrahl auf die " . $ship->getTractorShip()->getName() . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
+            $game->addInformation("Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;
         }
         $this->enterStarSystem(
