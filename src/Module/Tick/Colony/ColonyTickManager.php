@@ -6,6 +6,7 @@ namespace Stu\Module\Tick\Colony;
 
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
@@ -28,13 +29,16 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private ShipSystemManagerInterface $shipSystemManager;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         CrewCreatorInterface $crewCreator,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -42,6 +46,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->crewTrainingRepository = $crewTrainingRepository;
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function work(int $tickId): void
@@ -98,6 +103,34 @@ final class ColonyTickManager implements ColonyTickManagerInterface
                 continue;
             }
             $obj->getShip()->setHuell($obj->getShip()->getHuell() + $obj->getShip()->getRepairRate());
+
+            //repair ship systems
+            $damagedSystems = $obj->getShip()->getDamagedSystems();
+            if (!empty($damagedSystems))
+            {
+                $firstSystem = $damagedSystems[0];
+                $firstSystem->setStatus(100);
+
+                if ($obj->getShip()->getCrewCount() > 0)
+                {
+                    $firstSystem->setMode($this->shipSystemManager->
+                        lookupSystem($firstSystem->getSystemType())->getDefaultMode());
+                }
+
+                // maximum of two systems get repaired
+                if (count($damagedSystems) > 1)
+                {
+                    $secondSystem = $damagedSystems[1];
+                    $secondSystem->setStatus(100);
+
+                    if ($obj->getShip()->getCrewCount() > 0)
+                    {
+                        $secondSystem->setMode($this->shipSystemManager->
+                            lookupSystem($secondSystem->getSystemType())->getDefaultMode());
+                    }
+                }
+            }
+
             if (!$obj->getShip()->canBeRepaired()) {
                 $obj->getShip()->setHuell($obj->getShip()->getMaxHuell());
                 $obj->getShip()->setState(ShipStateEnum::SHIP_STATE_NONE);

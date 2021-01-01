@@ -46,4 +46,9 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
     {
         return 0;
     }
+
+    public function getDefaultMode(): int
+    {
+        return ShipSystemModeEnum::MODE_ALWAYS_ON;
+    }
 }

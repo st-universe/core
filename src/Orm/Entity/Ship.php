@@ -1307,11 +1307,16 @@ class Ship implements ShipInterface
 
     public function canBeRepaired(): bool
     {
-        // @todo
-        if ($this->getHuell() >= $this->getMaxHuell()) {
+        if ($this->getShieldState()) {
             return false;
         }
-        if ($this->getShieldState()) {
+        
+        if (!empty($this->getDamagedSystems()))
+        {
+            return true;
+        }
+        // @todo
+        if ($this->getHuell() >= $this->getMaxHuell()) {
             return false;
         }
         return true;
