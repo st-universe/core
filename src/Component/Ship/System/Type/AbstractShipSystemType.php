@@ -34,4 +34,9 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
     {
         //nothing to do here
     }
+
+    public function getDefaultMode(): int
+    {
+        return ShipSystemModeEnum::MODE_OFF;
+    }
 }

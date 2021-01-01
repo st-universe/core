@@ -55,4 +55,9 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
     {
         //TODO launch escape pods and flee ship
     }
+
+    public function getDefaultMode(): int
+    {
+        return ShipSystemModeEnum::MODE_ALWAYS_ON;
+    }
 }
