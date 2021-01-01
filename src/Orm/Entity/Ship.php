@@ -931,23 +931,14 @@ class Ship implements ShipInterface
         return $container->get(ShipRepositoryInterface::class)->find($this->getTraktorShipId());
     }
 
-    public function unsetTraktor(): void
-    {
-        $this->setTraktorMode(0);
-        $this->setTraktorShipId(0);
-
-        // @todo refactor
-        global $container;
-
-        $container->get(ShipRepositoryInterface::class)->save($this);
-    }
-
     public function deactivateTraktorBeam(): void
     {
         if (!$this->getTraktorMode()) {
             return;
         }
-        $ship = $this->getTraktorShip();
+
+        $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
+        $ship = $this->getTractorShip();
         $this->setTraktorMode(0);
         $this->setTraktorShipId(0);
         $ship->setTraktorMode(0);
