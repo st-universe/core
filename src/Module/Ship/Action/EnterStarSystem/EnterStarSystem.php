@@ -146,7 +146,7 @@ final class EnterStarSystem implements ActionControllerInterface
     private function enterStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
     {
         if ($ship->getEps() < 1) {
-            $name = $ship->getTractorShip()->getName();
+            $name = $ship->getTraktorShip()->getName();
             $ship->deactivateTraktorBeam();
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;

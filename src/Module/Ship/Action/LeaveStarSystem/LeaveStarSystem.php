@@ -115,8 +115,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private function leaveStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
     {
-        if ($ship->getTractorShip()->getFleetId()) {
-            $name = $ship->getTractorShip()->getName();
+        if ($ship->getTraktorShip()->getFleetId()) {
+            $name = $ship->getTraktorShip()->getName();
             $ship->deactivateTraktorBeam();
             
             $game->addInformation(sprintf(_('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Systems deaktiviert'),
@@ -124,7 +124,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
         if ($ship->getEps() < 1) {
-            $name = $ship->getTractorShip()->getName();
+            $name = $ship->getTraktorShip()->getName();
             $ship->deactivateTraktorBeam();
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
