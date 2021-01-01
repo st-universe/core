@@ -146,16 +146,16 @@ final class EnterStarSystem implements ActionControllerInterface
     private function enterStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
     {
         if ($ship->getEps() < 1) {
-            $ship->getTraktorShip()->unsetTraktor();
+            $ship->getTractorShip()->unsetTraktor();
 
-            $this->shipRepository->save($ship->getTraktorShip());
+            $this->shipRepository->save($ship->getTractorShip());
 
             $ship->unsetTraktor();
-            $game->addInformation("Der Traktorstrahl auf die " . $ship->getTraktorShip()->getName() . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
+            $game->addInformation("Der Traktorstrahl auf die " . $ship->getTractorShip()->getName() . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;
         }
         $this->enterStarSystem(
-            $ship->getTraktorShip(),
+            $ship->getTractorShip(),
             $ship->getSystem(),
             $ship->getPosX(),
             $ship->getPosY()
@@ -163,10 +163,10 @@ final class EnterStarSystem implements ActionControllerInterface
         // @todo Beschädigung bei Systemeinflug
         $ship->setEps($ship->getEps() - 1);
 
-        $this->shipRepository->save($ship->getTraktorShip());
+        $this->shipRepository->save($ship->getTractorShip());
         $this->shipRepository->save($ship);
 
-        $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit in das System gezogen");
+        $game->addInformation("Die " . $ship->getTractorShip()->getName() . " wurde mit in das System gezogen");
     }
 
     private function enterStarSystem(ShipInterface $ship, StarSystemInterface $starSystem, int $posx, int $posy): void

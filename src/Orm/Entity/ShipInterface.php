@@ -93,11 +93,11 @@ interface ShipInterface
 
     public function getShieldState(): bool;
 
-    public function getTraktorShipId(): ?int;
+    public function getTraktor(): ?int;
 
-    public function setTraktorShipId(?int $traktorShipId): ShipInterface;
+    public function setTraktor(?int $traktor): ShipInterface;
     
-    public function setTraktorShip(?ShipInterface $traktorShip): ShipInterface;
+    public function setTractorShip(?ShipInterface $tractorShip): ShipInterface;
 
     public function getTraktormode(): int;
 
@@ -226,7 +226,7 @@ interface ShipInterface
 
     public function traktorBeamToShip(): bool;
 
-    public function getTraktorShip(): ?ShipInterface;
+    public function getTractorShip(): ?ShipInterface;
 
     public function unsetTraktor(): void;
 
