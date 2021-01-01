@@ -178,6 +178,12 @@ class Ship implements ShipInterface
     private $trade_post;
 
     /**
+     * @OneToOne(targetEntity="Ship")
+     * @JoinColumn(name="traktor", referencedColumnName="traktor")
+     */
+    private $tractor_ship;
+
+    /**
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
      * @JoinColumn(name="dock", referencedColumnName="id")
      */
@@ -539,6 +545,11 @@ class Ship implements ShipInterface
     public function setTraktorShipId(?int $traktorShipId): ShipInterface
     {
         $this->traktor = $traktorShipId;
+    }
+    
+    public function setTraktorShip(?ShipInterface $traktorShip): ShipInterface
+    {
+        $this->tractor_ship = $traktorShip;
         return $this;
     }
 
@@ -920,21 +931,13 @@ class Ship implements ShipInterface
 
     public function getTraktorShip(): ?ShipInterface
     {
-        if ($this->getTraktorShipId() === null
-            || $this->getTraktorShipId() == 0)
-        {
-            return null;
-        }
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipRepositoryInterface::class)->find($this->getTraktorShipId());
+        return $this->tractor_ship;
     }
 
     public function unsetTraktor(): void
     {
         $this->setTraktorMode(0);
-        $this->setTraktorShipId(0);
+        $this->setTraktorShip(null);
 
         // @todo refactor
         global $container;
@@ -949,9 +952,9 @@ class Ship implements ShipInterface
         }
         $ship = $this->getTraktorShip();
         $this->setTraktorMode(0);
-        $this->setTraktorShipId(0);
+        $this->setTraktorShip(null);
         $ship->setTraktorMode(0);
-        $ship->setTraktorShipId(0);
+        $ship->setTraktorShip(null);
         // @todo refactor
         global $container;
 
