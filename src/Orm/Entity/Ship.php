@@ -537,19 +537,19 @@ class Ship implements ShipInterface
     }
 
     //@deprecated?
-    public function getTraktorShipId(): ?int
+    public function getTraktor(): ?int
     {
         return $this->traktor;
     }
 
-    public function setTraktorShipId(?int $traktorShipId): ShipInterface
+    public function setTraktor(?int $traktor): ShipInterface
     {
-        $this->traktor = $traktorShipId;
+        $this->traktor = $traktor;
     }
     
-    public function setTraktorShip(?ShipInterface $traktorShip): ShipInterface
+    public function setTractorShip(?ShipInterface $tractorShip): ShipInterface
     {
-        $this->tractor_ship = $traktorShip;
+        $this->tractor_ship = $tractorShip;
         return $this;
     }
 
@@ -929,7 +929,7 @@ class Ship implements ShipInterface
         return $this->getTraktorMode() == 2;
     }
 
-    public function getTraktorShip(): ?ShipInterface
+    public function getTractorShip(): ?ShipInterface
     {
         return $this->tractor_ship;
     }
@@ -937,7 +937,7 @@ class Ship implements ShipInterface
     public function unsetTraktor(): void
     {
         $this->setTraktorMode(0);
-        $this->setTraktorShip(null);
+        $this->setTractorShip(null);
 
         // @todo refactor
         global $container;
@@ -950,11 +950,11 @@ class Ship implements ShipInterface
         if (!$this->getTraktorMode()) {
             return;
         }
-        $ship = $this->getTraktorShip();
+        $ship = $this->getTractorShip();
         $this->setTraktorMode(0);
-        $this->setTraktorShip(null);
+        $this->setTractorShip(null);
         $ship->setTraktorMode(0);
-        $ship->setTraktorShip(null);
+        $ship->setTractorShip(null);
         // @todo refactor
         global $container;
 

@@ -52,11 +52,11 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         if ($ship->getTraktorMode() == 2) {
             return;
         }
-        if ($userId != $ship->getTraktorShip()->getUserId()) {
+        if ($userId != $ship->getTractorShip()->getUserId()) {
             $this->privateMessageSender->send(
                 $userId,
-                (int)$ship->getTraktorShip()->getUserId(),
-                "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
+                (int)$ship->getTractorShip()->getUserId(),
+                "Der auf die " . $ship->getTractorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
