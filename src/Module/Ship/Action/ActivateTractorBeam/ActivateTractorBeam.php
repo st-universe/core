@@ -138,9 +138,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         $target->deactivateTraktorBeam();
         $ship->setTraktorMode(1);
-        $ship->setTraktorShip($target);
+        $ship->setTraktorShipId($target->getId());
         $target->setTraktorMode(2);
-        $target->setTraktorShip($ship);
+        $target->setTraktorShipId($ship->getId());
         $ship->setEps($ship->getEps() - $energyCosts);
         
         $this->shipRepository->save($target);
