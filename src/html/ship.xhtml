@@ -90,7 +90,7 @@
 						<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;" src="assets/goods/${mod/getModule/getGoodId}.gif" />
 					</td>
 					<td colspan="4">
-						<img tal:repeat="sys SHIP/getSystems" title="${sys/getName}" style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
+						<img tal:repeat="sys SHIP/getSystems" title="${sys/getName}: ${sys/getStatus}%" style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
 					</td>
 				</tr>
 			</table>
