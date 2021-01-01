@@ -106,8 +106,8 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=6) */
     private $max_schilde = 0;
 
-    /** @Column(type="integer", nullable=true) */
-    private $traktor;
+    /** @Column(type="integer") */
+    private $traktor = 0;
 
     /** @Column(type="smallint", length=1) */
     private $traktormode = 0;
@@ -176,12 +176,6 @@ class Ship implements ShipInterface
      * @OneToOne(targetEntity="TradePost", mappedBy="ship")
      */
     private $trade_post;
-
-    /**
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="traktor", referencedColumnName="traktor")
-     */
-    private $tractor_ship;
 
     /**
      * @ManyToOne(targetEntity="Ship", inversedBy="dockedShips")
@@ -536,9 +530,14 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SHIELDS);
     }
 
-    public function setTraktorShip(?ShipInterface $traktorShip): ShipInterface
+    public function getTraktorShipId(): int
     {
-        $this->tractor_ship = $traktorShip;
+        return $this->traktor;
+    }
+
+    public function setTraktorShipId(int $traktorShipId): ShipInterface
+    {
+        $this->traktor = $traktorShipId;
         return $this;
     }
 
@@ -920,13 +919,16 @@ class Ship implements ShipInterface
 
     public function getTraktorShip(): ?ShipInterface
     {
-        return $this->tractor_ship;
+        // @todo refactor
+        global $container;
+
+        return $container->get(ShipRepositoryInterface::class)->find($this->getTraktorShipId());
     }
 
     public function unsetTraktor(): void
     {
         $this->setTraktorMode(0);
-        $this->setTraktorShip(null);
+        $this->setTraktorShipId(0);
 
         // @todo refactor
         global $container;
@@ -941,9 +943,9 @@ class Ship implements ShipInterface
         }
         $ship = $this->getTraktorShip();
         $this->setTraktorMode(0);
-        $this->setTraktorShip(null);
+        $this->setTraktorShipId(0);
         $ship->setTraktorMode(0);
-        $ship->setTraktorShip(null);
+        $ship->setTraktorShipId(0);
         // @todo refactor
         global $container;
 
