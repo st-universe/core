@@ -143,4 +143,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new AlreadyOffException();
         }
     }
+
+    public function handleDestroyedSystem(ShipInterface $ship, int $shipSystemId): void
+    {
+        $system = $this->lookupSystem($shipSystemId);
+
+        $system->handleDestruction($ship);
+    }
 }

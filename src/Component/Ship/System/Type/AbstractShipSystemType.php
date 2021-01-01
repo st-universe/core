@@ -29,4 +29,9 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
     {
         return 1;
     }
+
+    public function handleDestruction(ShipInterface $ship): void
+    {
+        //nothing to do here
+    }
 }

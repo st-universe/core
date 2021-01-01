@@ -20,4 +20,6 @@ interface ShipSystemTypeInterface
     public function activate(ShipInterface $ship): void;
 
     public function deactivate(ShipInterface $ship): void;
+    
+    public function handleDestruction(ShipInterface $ship): void;
 }

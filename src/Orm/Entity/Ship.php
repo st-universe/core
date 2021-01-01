@@ -380,6 +380,16 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    private function isSystemHealthy(int $systemId): bool
+    {
+        if (!$this->hasShipSystem($systemId))
+        {
+            return false;
+        }
+
+        return $this->getShipSystem($systemId)->getStatus() > 0;
+    }
+
     private function getSystemState(int $systemId): bool
     {
         if (!$this->hasShipSystem($systemId))
@@ -394,6 +404,11 @@ class Ship implements ShipInterface
     private function setSystemMode(int $systemId, int $mode): void
     {
         $this->getShipSystem($systemId)->setMode($mode);
+    }
+
+    public function getImpulseState(): bool
+    {
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
     }
 
     public function getWarpState(): bool
@@ -847,6 +862,10 @@ class Ship implements ShipInterface
 
     public function getReactorCapacity(): int
     {
+        if (!$this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE))
+        {
+            return 0;
+        }
         if ($this->getReactorOutput() > $this->getWarpcoreLoad()) {
             return $this->getWarpcoreLoad();
         }
@@ -880,8 +899,7 @@ class Ship implements ShipInterface
 
     public function isWarpAble(): bool
     {
-        // @todo TBD damaged warp coils
-        return true;
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
     public function isTraktorbeamActive(): bool
@@ -1190,8 +1208,7 @@ class Ship implements ShipInterface
 
     private function getShieldRegenerationPercentage(): int
     {
-        // @todo
-        return 10;
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHIELDS) ? 10 : 0;
     }
 
     public function getShieldRegenerationRate(): int

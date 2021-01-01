@@ -22,12 +22,6 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->traktorBeamFromShip())
-        {
-            $reason = _('der Traktorstrahl aktiviert ist');
-            return false;
-        }
-
         if ($ship->traktorBeamToShip())
         {
             $reason = _('es von einem Traktorstrahl gehalten wird');
