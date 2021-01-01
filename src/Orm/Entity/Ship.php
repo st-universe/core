@@ -106,8 +106,8 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=6) */
     private $max_schilde = 0;
 
-    /** @Column(type="integer") */
-    private $traktor = 0;
+    /** @Column(type="integer", nullable=true) */
+    private $traktor;
 
     /** @Column(type="smallint", length=1) */
     private $traktormode = 0;
@@ -530,12 +530,13 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SHIELDS);
     }
 
-    public function getTraktorShipId(): int
+    //@deprecated?
+    public function getTraktorShipId(): ?int
     {
         return $this->traktor;
     }
 
-    public function setTraktorShipId(int $traktorShipId): ShipInterface
+    public function setTraktorShipId(?int $traktorShipId): ShipInterface
     {
         $this->traktor = $traktorShipId;
         return $this;
@@ -919,6 +920,11 @@ class Ship implements ShipInterface
 
     public function getTraktorShip(): ?ShipInterface
     {
+        if ($this->getTraktorShipId() === null
+            || $this->getTraktorShipId() == 0)
+        {
+            return null;
+        }
         // @todo refactor
         global $container;
 
