@@ -226,8 +226,6 @@ interface ShipInterface
 
     public function getTraktorShip(): ?ShipInterface;
 
-    public function unsetTraktor(): void;
-
     public function deactivateTraktorBeam(): void;
 
     public function isOverSystem(): ?StarSystemInterface;
