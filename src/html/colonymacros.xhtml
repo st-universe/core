@@ -1291,6 +1291,9 @@
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.gif" title="Hülle" style="width: 12px; height: 12px;" /> ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
       </td>
+      <td style="text-align: center; vertical-align: middle">
+        <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%" style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
+      </td>
     </tr>
   </table>
 </metal:macro>

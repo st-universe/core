@@ -1131,6 +1131,38 @@ class Ship implements ShipInterface
         return $healthySystems;
     }
 
+    public function getDamagedSystems(): array
+    {
+        //@todo refactor
+        global $container;
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+
+        $damagedSystems = [];
+        $prioArray = [];
+        foreach ($this->getSystems() as $system) {
+            if ($system->getStatus() < 100) {
+                $damagedSystems[] = $system;
+                $prioArray[$system->getSystemType()] = $shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
+            }
+        }
+
+        // sort by damage and priority
+        usort(
+            $damagedSystems,
+            function (ShipSystemInterface $a, ShipSystemInterface $b): int {
+                if ($a->getStatus() == $b->getStatus()) {
+                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
+                        return 0;
+                    }
+                    return ($prioArray[$a->getSystemType()] > $prioArray[$b->getSystemType()]) ? -1 : 1;
+                }
+                return ($a->getStatus() < $b->getStatus()) ? -1 : 1;
+            }
+        );
+
+        return $damagedSystems;
+    }
+
     public function displayNbsActions(): bool
     {
         return $this->getCloakState() == 0 && $this->getWarpstate() == 0;
