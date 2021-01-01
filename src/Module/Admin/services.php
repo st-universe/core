@@ -24,6 +24,8 @@ use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequest;
 use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequestInterface;
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
+use Stu\Module\Admin\Action\Ticks\DoManualColonyTick;
+use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
 
 use function DI\autowire;
@@ -37,12 +39,14 @@ return [
     'ADMIN_ACTIONS' => [
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
+        DoManualColonyTick::ACTION_IDENTIFIER => autowire(DoManualColonyTick::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Playerlist::VIEW_IDENTIFIER => autowire(Playerlist::class),
         ShowMapEditor::VIEW_IDENTIFIER => autowire(ShowMapEditor::class),
         ShowMapOverall::VIEW_IDENTIFIER => autowire(ShowMapOverall::class),
+        ShowTicks::VIEW_IDENTIFIER => autowire(ShowTicks::class),
         EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),
         ShowSystem::VIEW_IDENTIFIER => autowire(ShowSystem::class),
         ShowSystemEditField::VIEW_IDENTIFIER => autowire(ShowSystemEditField::class),
