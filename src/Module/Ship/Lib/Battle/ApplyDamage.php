@@ -112,18 +112,20 @@ final class ApplyDamage implements ApplyDamageInterface
         $healthySystems = $ship->getHealthySystems();
         shuffle($healthySystems);
         
-        $status = $healthySystems[0]->getStatus();
+        $system = $healthySystems[0];
+        $status = $system->getStatus();
         $dmg = rand(1, 70);
         
-        $systemName = ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
+        $systemName = ShipSystemTypeEnum::getDescription($system->getSystemType());
 
         if ($status > $dmg)
         {
-            $healthySystems[0]->setStatus($status - $dmg);
+            $system->setStatus($status - $dmg);
             $msg[] = "- Folgendes System wurde beschädigt: " . $systemName;
         } else {
-            $healthySystems[0]->setStatus(0);
-            $healthySystems[0]->setMode(ShipSystemModeEnum::MODE_OFF);
+            $system->setStatus(0);
+            $system->setMode(ShipSystemModeEnum::MODE_OFF);
+            $this->shipSystemManager->handleDestroyedSystem($ship, $system->getSystemType());
             $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
         }
     }

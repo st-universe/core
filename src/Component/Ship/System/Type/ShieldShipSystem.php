@@ -51,4 +51,9 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
+
+    public function handleDestruction(ShipInterface $ship): void
+    {
+        $ship->setShield(0);
+    }
 }

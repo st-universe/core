@@ -32,4 +32,6 @@ interface ShipSystemManagerInterface
     public function getEnergyConsumption(int $shipSystemId): int;
 
     public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface;
+
+    public function handleDestroyedSystem(ShipInterface $ship, int $shipSystemId): void;
 }

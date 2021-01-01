@@ -50,4 +50,9 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
+
+    public function handleDestruction(ShipInterface $ship): void
+    {
+        //TODO launch escape pods and flee ship
+    }
 }

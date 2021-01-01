@@ -47,6 +47,8 @@ final class ShipMover implements ShipMoverInterface
 
     private $lostShips = [];
 
+    private $hasTravelled = false;
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
@@ -238,6 +240,12 @@ final class ShipMover implements ShipMoverInterface
             
         }
 
+        //skip save and log info if flight did not happen
+        if (!$this->hasTravelled)
+        {
+            return;
+        }
+
         // save all ships
         foreach ($ships as $ship)
         {
@@ -299,6 +307,23 @@ final class ShipMover implements ShipMoverInterface
             if ($ship->getSystem() === null && !$ship->isWarpAble()) {
                 $this->addLostShip($ship, $leadShip, sprintf(_('Die %s verfügt über keinen Warpantrieb'), $ship->getName()));
                 continue;
+            }
+            //Impulsantrieb aktivieren falls innerhalb
+            if ($ship->getSystem() !== null && !$ship->getImpulseState()) {
+                try {
+                    $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+
+                    $this->addInformation(sprintf(_('Die %s aktiviert den Impulsantrieb'), $ship->getName()));
+                } catch (ShipSystemException $e) {
+                    $this->addLostShip($ship, $leadShip, sprintf(
+                        _('Die %s kann den Impulsantrieb nicht aktivieren (%s|%s)'),
+                        $ship->getName(),
+                        $ship->getPosX(),
+                        $ship->getPosY()
+                    ));
+
+                    continue;
+                }
             }
             //WA aktivieren falls außerhalb
             if ($ship->getSystem() === null && !$ship->getWarpState()) {
@@ -387,6 +412,7 @@ final class ShipMover implements ShipMoverInterface
         
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
+        $this->hasTravelled = true;
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($ship);
         }

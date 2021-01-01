@@ -134,6 +134,7 @@ final class LeaveStarSystem implements ActionControllerInterface
     }
 
     private function leaveStarSystem(ShipInterface $ship): void {
+        $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
         $ship->setSystem(null);
         $ship->setSX(0);
         $ship->setSY(0);
