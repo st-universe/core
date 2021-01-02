@@ -1299,7 +1299,9 @@ class Ship implements ShipInterface
 
     public function hasEscapePods(): bool
     {
-        return $this->getRump()->isTrumfield() && $this->getCrewCount() > 0;
+        //TODO remove trumfield when escape pods fully integrated
+        return $this->getCrewCount() > 0
+            && ($this->getRump()->isTrumfield() || $this->getRump()->isEscapePods());
     }
 
     public function canBeRepaired(): bool

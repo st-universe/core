@@ -542,6 +542,11 @@ class ShipRump implements ShipRumpInterface
         return $this->getCategoryId() === ShipEnum::SHIP_CATEGORY_DEBRISFIELD;
     }
 
+    public function isEscapePods(): bool
+    {
+        return $this->getCategoryId() === ShipEnum::SHIP_CATEGORY_ESCAPE_PODS;
+    }
+
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface
     {
         if ($this->module_levels === null) {
