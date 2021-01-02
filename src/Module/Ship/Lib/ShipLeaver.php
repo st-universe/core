@@ -107,6 +107,8 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $pods->setRump($shipRump);
         $pods->setName(_('Rettungskapseln'));
+        $pods->setHuell(1);
+        $pods->getMaxHuell(1);
 
         $pods->setSX($ship->getSx());
         $pods->setSY($ship->getSy());
