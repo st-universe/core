@@ -187,7 +187,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT s FROM %s s
                 LEFT JOIN %s sr
-                ON s.rumps_id = sr.id
+                WITH s.rumps_id = sr.id
                 WHERE sr.category_id = :categoryId',
                 Ship::class,
                 ShipRump::class
