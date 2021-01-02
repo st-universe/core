@@ -83,16 +83,20 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             );
         }
         
-        //remove entity if crew was on escape pods
-        if ($target->getRump()->isEscapePods())
-        {
-            echo "- removeEscapePodEntity\n";
-            $this->shipRemover->remove($target);
-        } else
-        {
-            $this->shipCrewRepository->truncateByShip((int) $target->getId());
-        }
-
+        $this->shipCrewRepository->truncateByShip((int) $target->getId());
+        
+        /**
+         * 
+         //remove entity if crew was on escape pods
+         if ($target->getRump()->isEscapePods())
+         {
+             echo "- removeEscapePodEntity\n";
+             $this->shipRemover->remove($target);
+            } else
+            {
+            }
+        */
+            
         $ship->setEps($ship->getEps() - 1);
 
         $this->shipRepository->save($ship);
