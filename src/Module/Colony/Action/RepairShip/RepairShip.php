@@ -117,6 +117,8 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
         $ticks = ceil(($ship->getMaxHuell() - $ship->getHuell()) / $ship->getRepairRate());
+        $ticks = max($ticks, ceil(count($ship->getDamagedSystems()) / 2));
+        
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
     }
 

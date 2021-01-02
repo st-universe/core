@@ -1106,18 +1106,42 @@ class Ship implements ShipInterface
 
     /**
      * @return ShipSystemInterface[]
+     * sort = true: lowest prio first
      */
-    public function getActiveSystems(): array
+    public function getActiveSystems(bool $sort = false): array
     {
+        //@todo refactor
+        global $container;
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
+
         $activeSystems = [];
+        $prioArray = [];
         foreach ($this->getSystems() as $system) {
             if ($system->getMode() > 1) {
                 $activeSystems[] = $system;
+                if ($sort)
+                {
+                    $prioArray[$system->getSystemType()] = $shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
+                }
             }
         }
+
+        if ($sort)
+        {
+            usort(
+                $activeSystems,
+                function (ShipSystemInterface $a, ShipSystemInterface $b): int {
+                    if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
+                        return 0;
+                    }
+                    return ($prioArray[$a->getSystemType()] < $prioArray[$b->getSystemType()]) ? -1 : 1;
+                }
+            );
+        }
+
         return $activeSystems;
     }
-
+    
     public function getHealthySystems(): array
     {
         $healthySystems = [];
@@ -1129,6 +1153,7 @@ class Ship implements ShipInterface
         return $healthySystems;
     }
 
+    //highest damage first, then prio
     public function getDamagedSystems(): array
     {
         //@todo refactor

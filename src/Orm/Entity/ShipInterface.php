@@ -273,7 +273,7 @@ interface ShipInterface
     /**
      * @return ShipSystemInterface[]
      */
-    public function getActiveSystems(): array;
+    public function getActiveSystems(bool $sort = false): array;
     
     /**
      * @return ShipSystemInterface[]
