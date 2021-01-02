@@ -21,7 +21,7 @@ final class DoManualShipTick implements ActionControllerInterface
 
     public function __construct(
         ShipTickInterface $shipTick,
-        ShipLoaderInterface $shipLoader,
+        ShipLoaderInterface $shipLoader
     ) {
         $this->shipTick = $shipTick;
         $this->shipLoader = $shipLoader;
