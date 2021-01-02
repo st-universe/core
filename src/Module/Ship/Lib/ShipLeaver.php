@@ -114,7 +114,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setRump($shipRump);
         $pods->setName(_('Rettungskapseln'));
         $pods->setHuell(1);
-        $pods->getMaxHuell(1);
+        $pods->setMaxHuell(1);
 
         $pods->setSX($ship->getSx());
         $pods->setSY($ship->getSy());
