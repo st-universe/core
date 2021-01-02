@@ -17,7 +17,7 @@ use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
-final class ShipRepository extends EntityRepository implements fdebris
+final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
 {
 
     public function prototype(): ShipInterface
