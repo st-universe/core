@@ -16,6 +16,7 @@ use Stu\Orm\Repository\ShipRumpSpecialRepositoryInterface;
  * @Table(
  *     name="stu_rumps",
  *     indexes={
+ *          @Index(name="rump_category_idx", columns={"category_id"})
  *     }
  * )
  **/
