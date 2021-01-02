@@ -8,8 +8,8 @@ use request;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Tick\Ship\ShipTickInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DoManualShipTick implements ActionControllerInterface
 {
@@ -17,14 +17,14 @@ final class DoManualShipTick implements ActionControllerInterface
 
     private ShipTickInterface $shipTick;
 
-    private ShipLoaderInterface $shipLoader;
+    private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
         ShipTickInterface $shipTick,
-        ShipLoaderInterface $shipLoader
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipTick = $shipTick;
-        $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,12 +38,7 @@ final class DoManualShipTick implements ActionControllerInterface
             return;
         }
 
-        $userId = $game->getUser()->getId();
-
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::postInt('shiptickid'),
-            $userId
-        );
+        $ship = $this->shipRepository->find(request::postInt('shiptickid'));
 
         $this->shipTick->work($ship);
         
