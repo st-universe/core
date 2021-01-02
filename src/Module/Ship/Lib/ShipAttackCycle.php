@@ -228,6 +228,10 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     private function alertLevelBasedReaction(ShipInterface $ship): array
     {
         $msg = [];
+        if ($ship->getRump()->isEscapePods())
+        {
+            return $msg;
+        }
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew() || $ship->getRump()->isTrumfield()) {
             return $msg;
         }
