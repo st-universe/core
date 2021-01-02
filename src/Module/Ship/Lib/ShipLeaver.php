@@ -67,7 +67,7 @@ final class ShipLeaver implements ShipLeaverInterface
         if ($pods == null)
         {
             $this->letCrewDie($ship);
-            return _('Keine Fluchtkapseln vorhanden, die Crew ist daher verstorben!');
+            return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
         }
         
         //transfer crew into pods
@@ -81,7 +81,7 @@ final class ShipLeaver implements ShipLeaverInterface
         
         $this->shipRepository->save($pods);
         $this->shipRepository->save($ship);
-        return _('Die Crew hat das Schiff in den Fluchtkapseln verlassen!');
+        return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
 
     private function letCrewDie(ShipInterface $ship): void
@@ -95,17 +95,18 @@ final class ShipLeaver implements ShipLeaverInterface
     
     private function launchEscapePods(ShipInterface $ship): ?ShipInterface
     {
-        $pods = $this->shipRepository->prototype();
-        $pods->setUser($this->userRepository->find(GameEnum::USER_NOONE));
-        $pods->setRump($this->shipRumpRepository->find($ship->getUser()->getFactionId() + 100));
-
+        $shipRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + 100);
+        
         // faction does not have escape pods
-        if ($pods->getRump() == null)
+        if ($shipRump == null)
         {
             return null;
         }
 
-        $pods->setName(_('Fluchtkapseln'));
+        $pods = $this->shipRepository->prototype();
+        $pods->setUser($this->userRepository->find(GameEnum::USER_NOONE));
+        $pods->setRump($shipRump);
+        $pods->setName(_('Rettungskapseln'));
 
         $pods->setSX($ship->getSx());
         $pods->setSY($ship->getSy());

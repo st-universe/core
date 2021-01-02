@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -34,6 +35,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private ShipLeaverInterface $shipLeaver;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
@@ -42,7 +45,8 @@ final class ShipRemover implements ShipRemoverInterface
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        ShipLeaverInterface $shipLeaver
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
@@ -52,14 +56,23 @@ final class ShipRemover implements ShipRemoverInterface
         $this->userRepository = $userRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->shipLeaver = $shipLeaver;
     }
 
-    public function destroy(ShipInterface $ship): void
+    public function destroy(ShipInterface $ship): ?string
     {
+        $msg = null;
+
         $this->shipSystemManager->deactivateAll($ship);
 
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader($ship);
+        }
+
+        //leave ship if there is crew
+        if ($ship->getCrewCount() > 0)
+        {
+            $msg = $this->shipLeaver->leave($ship);
         }
 
         $ship->setFormerRumpId($ship->getRump()->getId());
@@ -80,6 +93,8 @@ final class ShipRemover implements ShipRemoverInterface
         // @todo Torpedos löschen
 
         $this->shipRepository->save($ship);
+
+        return $msg;
     }
 
     public function remove(ShipInterface $ship): void

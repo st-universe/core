@@ -10,6 +10,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -26,17 +27,21 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipRepositoryInterface $shipRepository;
+    
+    private ShipRemoverInterface $shipRemover;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        ShipRemoverInterface $shipRemover
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
+        $this->shipRemover = $shipRemover;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -72,17 +77,19 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 $userId,
                 $dummy_crew->getCrew()->getUser()->getId(),
                 sprintf(
-                    _('Der Siedler hat %d deiner Crewmitglieder von einem Trümmerfeld geborgen.'),
+                    _('Der Siedler hat %d deiner Crewmitglieder aus Rettungskapseln geborgen.'),
                     $target->getCrewCount()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
+        
         //remove entity if crew was on escape pods
         if ($target->getRump()->isEscapePods())
         {
-            $this->shipRepository->delete($target);
-        } else {
+            $this->shipRemover->remove($target);
+        } else
+        {
             $this->shipCrewRepository->truncateByShip((int) $target->getId());
         }
 
