@@ -9,20 +9,25 @@ use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tick\Ship\ShipTickInterface;
+use Stu\Module\Tick\Ship\ShipTickManagerInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DoManualShipTick implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_SHIP_TICK';
 
+    private ShipTickManagerInterface $shipTickManager;
+
     private ShipTickInterface $shipTick;
 
     private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
+        ShipTickManagerInterface $shipTickManager,
         ShipTickInterface $shipTick,
         ShipRepositoryInterface $shipRepository
     ) {
+        $this->shipTickManager = $shipTickManager;
         $this->shipTick = $shipTick;
         $this->shipRepository = $shipRepository;
     }
@@ -38,11 +43,21 @@ final class DoManualShipTick implements ActionControllerInterface
             return;
         }
 
-        $ship = $this->shipRepository->find(request::postInt('shiptickid'));
+        //check if single or all colonies
+        if (!request::getVarByMethod(request::postvars(), 'shiptickid'))
+        {
+            $this->shipTickManager->work();
+            $game->addInformation("Der Schiff-Tick für alle Schiffe wurde durchgeführt!");
+        } else 
+        {
+            $shipId = request::postInt('shiptickid');
+            $ship = $this->shipRepository->find($shipId);
+    
+            $this->shipTick->work($ship);
+            
+            $game->addInformation("Der Schiff-Tick für dieses Schiff wurde durchgeführt!");
+        }
 
-        $this->shipTick->work($ship);
-        
-        $game->addInformation("Der Schiff-Tick für dieses Schiff wurde durchgeführt!");
     }
 
     public function performSessionCheck(): bool
