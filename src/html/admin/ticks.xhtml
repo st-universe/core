@@ -1,16 +1,18 @@
 <html xmlns:stu="stu">
 <tal:block metal:use-macro="../sitemacros.xhtml/admindefaults">
 	<tal:block metal:fill-slot="body">
-		<tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
-    <div>
-      <a href="?B_COLONY_TICK=1&sstr=${THIS/getSessionString}" class="button">
-        <span>Colony-Manager Tick für alle Kolonien ausführen</span>
-      </a>
-    </div>
-    <br />
-    <div>
-        <input type="text" size="5" name="shiptickid" id="shiptickid" /><input type="submit" class="button" name="B_SHIP_TICK" value="Schiff-Tick durchführen" id="shiptickbutton" />
-    </div>
+    <tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
+    <form action="/admin/index.php" method="post" name="tickform" id="tickform">
+      <div>
+        <a href="?B_COLONY_TICK=1&sstr=${THIS/getSessionString}" class="button">
+          <span>Colony-Manager Tick für alle Kolonien ausführen</span>
+        </a>
+      </div>
+      <br />
+      <div>
+          <input type="text" size="5" name="shiptickid" id="shiptickid" /><input type="submit" class="button" name="B_SHIP_TICK" value="Schiff-Tick durchführen" id="shiptickbutton" />
+      </div>
+    </form>
 	</tal:block>
 </tal:block>
 </html>
