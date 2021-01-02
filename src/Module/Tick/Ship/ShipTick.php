@@ -3,6 +3,7 @@
 namespace Stu\Module\Tick\Ship;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -49,11 +50,34 @@ final class ShipTick implements ShipTickInterface
             return;
         }
         $eps = $ship->getEps() + $ship->getReactorCapacity();
+
+        //try to save energy by reducing alert state
         if ($ship->getEpsUsage() > $eps) {
-            foreach ($ship->getActiveSystems() as $system) {
+            $malus = $ship->getEpsUsage() - $eps;
+            $alertUsage = $ship->getAlertState() - 1;
+            
+            if ($alertUsage > 0)
+            {
+                $preState = $ship->getAlertState();
+                $reduce = max($malus, $alertUsage);
+
+                $ship->setAlertState($preState - $reduce);
+                $ship->lowerEpsUsage($reduce);
+                $this->msg[] = sprintf(
+                    _('Wechsel von %s auf %s wegen Energiemangel'),
+                    ShipAlertStateEnum::getDescription($preState),
+                    ShipAlertStateEnum::getDescription($ship->getAlertState())
+                )
+            }
+        }
+
+        //try to save energy by deactivating systems from low to high priority
+        if ($ship->getEpsUsage() > $eps) {
+            $activeSystems = $ship->getActiveSystems(true);
+
+            foreach ($activeSystems as $system) {
 
                 $energyConsumption = $this->shipSystemManager->getEnergyConsumption($system->getSystemType());
-
                 if ($energyConsumption < 1)
                 {
                     continue;
@@ -67,6 +91,13 @@ final class ShipTick implements ShipTickInterface
 
                     $ship->lowerEpsUsage($energyConsumption);
                     $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
+
+                    if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+                    {
+                        $this->msg[] = $this->shipLeaver->leave($ship);
+                        $this->sendMessages($ship);
+                        return;
+                    }
                 }
                 if ($ship->getEpsUsage() <= $eps) {
                     break;
