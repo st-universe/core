@@ -25,6 +25,7 @@ use Stu\Module\Admin\View\Map\ShowSystemEditField\ShowSystemEditFieldRequestInte
 use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\Action\Ticks\DoManualColonyTick;
+use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
 
@@ -39,7 +40,8 @@ return [
     'ADMIN_ACTIONS' => [
         EditField::ACTION_IDENTIFIER => autowire(EditField::class),
         EditSystemField::ACTION_IDENTIFIER => autowire(EditSystemField::class),
-        DoManualColonyTick::ACTION_IDENTIFIER => autowire(DoManualColonyTick::class)
+        DoManualColonyTick::ACTION_IDENTIFIER => autowire(DoManualColonyTick::class),
+        DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
