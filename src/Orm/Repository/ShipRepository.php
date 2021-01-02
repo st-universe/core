@@ -186,7 +186,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                JOIN %s sr
+                LEFT JOIN %s sr
                 ON s.rumps_id = sr.id
                 WHERE sr.category_id = :categoryId',
                 Ship::class,
