@@ -70,12 +70,11 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
         $ship->cancelRepair();
 
-        /** @var ShipCrewInterface $dummy_crew */
-        $dummy_crew = $target->getCrewList()->current();
-        if ($dummy_crew->getCrew()->getUser()->getId() !== $userId) {
+        $targetUserId = $target->getCrewList()->current()->getCrew()->getUser()->getId();
+        if ($targetUserId !== $userId) {
             $this->privateMessageSender->send(
                 $userId,
-                $dummy_crew->getCrew()->getUser()->getId(),
+                $targetUserId,
                 sprintf(
                     _('Der Siedler hat %d deiner Crewmitglieder aus Rettungskapseln geborgen.'),
                     $target->getCrewCount()
@@ -87,7 +86,6 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         //remove entity if crew was on escape pods
         if ($target->getRump()->isEscapePods())
         {
-            $dummy_crew = null;
             echo "- removeEscapePodEntity\n";
             $this->shipRemover->remove($target);
         } else
