@@ -4,8 +4,12 @@
 		<tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
     <div>
       <a href="?B_COLONY_TICK=1&sstr=${THIS/getSessionString}" class="button">
-        <span>Colony-Manager Tick ausführen</span>
+        <span>Colony-Manager Tick für alle Kolonien ausführen</span>
       </a>
+    </div>
+    <br />
+    <div>
+        <input type="text" size="5" name="shiptickid" id="shiptickid" /><input type="submit" class="button" name="B_SHIP_TICK" value="Schiff-Tick durchführen" id="shiptickbutton" />
     </div>
 	</tal:block>
 </tal:block>
