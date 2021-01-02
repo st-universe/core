@@ -30,7 +30,8 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
  *     name="stu_ships",
  *     indexes={
  *         @Index(name="outer_system_location_idx", columns={"systems_id","cx","cy"}),
- *         @Index(name="inner_system_location_idx", columns={"systems_id","sx","sy"})
+ *         @Index(name="inner_system_location_idx", columns={"systems_id","sx","sy"}),
+ *         @Index(name="ship_rump_idx", columns={"rumps_id"})
  *     }
  * )
  **/
