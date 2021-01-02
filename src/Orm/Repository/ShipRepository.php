@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use PhpTal\PHPTAL;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
@@ -16,7 +17,7 @@ use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
-final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
+final class ShipRepository extends EntityRepository implements fdebris
 {
 
     public function prototype(): ShipInterface
@@ -179,7 +180,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'destroyedState' => 0,
         ])->getResult();
     }
-
+    
+    public function getEscapePods(): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                JOIN %s sr
+                ON s.rumps_id = sr.id
+                WHERE sr.category_id = :categoryId',
+                Ship::class,
+                ShipRump::class
+            )
+        )->setParameters([
+            'categoryId' => 9,
+        ])->getResult();
+    }
+    
     public function getDebrisFields(): iterable
     {
         return $this->findBy([

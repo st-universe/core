@@ -38,7 +38,18 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         }
         $this->handleNPCShips();
+        $this->removeEmptyEscapePods();
         $this->lowerTrumfieldHuell();
+    }
+
+    private function removeEmptyEscapePods(): void
+    {
+        foreach ($this->shipRepository->getEscapePods() as $ship) {
+            if ($ship->getCrewCount() == 0) {
+                $this->shipRemover->remove($ship);
+                continue;
+            }
+        }
     }
 
     private function lowerTrumfieldHuell(): void
