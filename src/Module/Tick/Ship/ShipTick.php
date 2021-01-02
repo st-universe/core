@@ -22,7 +22,7 @@ final class ShipTick implements ShipTickInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
     
-    private ShipSystemManagerInterface $shipLeaver;
+    private ShipLeaverInterface $shipLeaver;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
