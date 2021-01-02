@@ -43,7 +43,7 @@ final class DoManualShipTick implements ActionControllerInterface
             return;
         }
 
-        //check if single or all colonies
+        //check if single or all ships
         if (!request::getVarByMethod(request::postvars(), 'shiptickid'))
         {
             $this->shipTickManager->work();
