@@ -146,6 +146,8 @@ interface ShipRumpInterface
 
     public function isTrumfield(): bool;
 
+    public function isEscapePods(): bool;
+
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
 
     /**

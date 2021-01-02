@@ -116,6 +116,8 @@ use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMover;
 use Stu\Module\Ship\Lib\ShipMoverInterface;
+use Stu\Module\Ship\Lib\ShipLeaver;
+use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\Noop\Noop;
@@ -153,6 +155,7 @@ return [
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
+    ShipLeaverInterface::class => autowire(ShipLeaver::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),

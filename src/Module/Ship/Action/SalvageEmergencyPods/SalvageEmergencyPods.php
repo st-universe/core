@@ -78,7 +78,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
-        $this->shipCrewRepository->truncateByShip((int) $target->getId());
+        //remove entity if crew was on escape pods
+        if ($target->getRump()->isEscapePods())
+        {
+            $this->shipRepository->delete($target);
+        } else {
+            $this->shipCrewRepository->truncateByShip((int) $target->getId());
+        }
 
         $ship->setEps($ship->getEps() - 1);
 
