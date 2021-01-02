@@ -380,7 +380,7 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    private function isSystemHealthy(int $systemId): bool
+    public function isSystemHealthy(int $systemId): bool
     {
         if (!$this->hasShipSystem($systemId))
         {
