@@ -61,6 +61,12 @@ final class ShipLeaver implements ShipLeaverInterface
         $ship->setDockedTo(null);
         $ship->setFleet(null);
 
+        if ($ship->getRump()->isEscapePods())
+        {
+            $this->letCrewDie($ship);
+            return _('Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!');
+        }
+
         //create pods entity
         $pods = $this->launchEscapePods($ship);
 

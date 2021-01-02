@@ -76,6 +76,11 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return ShipInterface[]
      */
     public function getDebrisFields(): iterable;
+    
+    /**
+     * @return ShipInterface[]
+     */
+    public function getEscapePods(): iterable;
 
     /**
      * @return ShipInterface[]
