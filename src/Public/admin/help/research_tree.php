@@ -4,7 +4,9 @@ use Stu\Component\Research\ResearchEnum;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
-require_once __DIR__ . '/../../Config/Bootstrap.php';
+@session_start();
+
+require_once __DIR__ . '/../../../Config/Bootstrap.php';
 
 $graph = new Fhaculty\Graph\Graph();
 
