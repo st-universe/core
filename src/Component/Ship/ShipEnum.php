@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship;
 
+use Stu\Module\Commodity\CommodityTypeEnum;
+
 final class ShipEnum
 {
     //fly stuff
