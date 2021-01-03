@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -16,6 +17,8 @@ require_once __DIR__ . '/../../../Config/Bootstrap.php';
 $db = $container->get(EntityManagerInterface::class);
 
 $db->beginTransaction();
+
+$container->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
 $buildplanRepo = $container->get(ShipBuildplanRepositoryInterface::class);
 $userRepo = $container->get(UserRepositoryInterface::class);

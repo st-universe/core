@@ -26,6 +26,7 @@ use Stu\Module\Admin\View\Overview\Overview;
 use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\Action\Ticks\DoManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
+use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
 
@@ -48,6 +49,7 @@ return [
         Playerlist::VIEW_IDENTIFIER => autowire(Playerlist::class),
         ShowMapEditor::VIEW_IDENTIFIER => autowire(ShowMapEditor::class),
         ShowMapOverall::VIEW_IDENTIFIER => autowire(ShowMapOverall::class),
+        ShowScripts::VIEW_IDENTIFIER => autowire(ShowScripts::class),
         ShowTicks::VIEW_IDENTIFIER => autowire(ShowTicks::class),
         EditSection::VIEW_IDENTIFIER => autowire(EditSection::class),
         ShowSystem::VIEW_IDENTIFIER => autowire(ShowSystem::class),
