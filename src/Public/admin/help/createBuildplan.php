@@ -14,7 +14,7 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-require_once __DIR__ . '/../../Config/Bootstrap.php';
+require_once __DIR__ . '/../../../Config/Bootstrap.php';
 
 $db = $container->get(EntityManagerInterface::class);
 
@@ -177,7 +177,7 @@ if ($rumpId !== 0) {
             printf(
                 '<a href="?userId=%d">%s</a><br />',
                 $user->getId(),
-                $user->getUser()
+                $user->getUserName()
             );
         }
     }

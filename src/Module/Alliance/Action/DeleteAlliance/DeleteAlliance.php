@@ -41,10 +41,14 @@ final class DeleteAlliance implements ActionControllerInterface
 
         $game->setView(AllianceList::VIEW_IDENTIFIER);
 
-        $job = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
+        $jobFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
             AllianceEnum::ALLIANCE_JOBS_FOUNDER);
+        
+        $jobSuccessor = $this->allianceJobRepository->getSingleResultByAllianceAndType($allianceId,
+            AllianceEnum::ALLIANCE_JOBS_SUCCESSOR);
 
-        if ($job->getUserId() !== $user->getId()) {
+        if ($jobFounder->getUserId() !== $user->getId()
+            && ($jobSuccessor === null || $jobSuccessor->getUserId() !== $user->getId())) {
             throw new AccessViolation();
         }
 

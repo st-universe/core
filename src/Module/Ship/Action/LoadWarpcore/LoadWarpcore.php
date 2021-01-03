@@ -57,8 +57,13 @@ final class LoadWarpcore implements ActionControllerInterface
                 }
                 $load = $this->loadWarpCore($ship, $load);
                 if (!$load) {
-                    $game->addInformation(sprintf(_('%s: Zum Aufladen des Warpkerns werden mindestens 2 Deuterium, 2 Antimaterie, sowie 1 Dilithium benötigt'),
-                        $ship->getName()));
+                    $game->addInformation(sprintf(
+                        _('%s: Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:'),
+                        $ship->getName()
+                    ));
+                    foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                        $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
+                    }
                     continue;
                 }
                 $game->addInformation(sprintf(_('%s: Der Warpkern wurde um %d Einheiten aufgeladen'), $ship->getName(),
@@ -73,7 +78,12 @@ final class LoadWarpcore implements ActionControllerInterface
         }
         $load = $this->loadWarpCore($ship, $load);
         if (!$load) {
-            $game->addInformation(_('Zum Aufladen des Warpkerns werden mindestens 2 Deuterium, 2 Antimaterie, sowie 1 Dilithium benötigt'));
+            $game->addInformation(
+                _('Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:')
+            );
+            foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
+            }
             return;
         }
         $game->addInformation(sprintf(_('Der Warpkern wurde um %d Einheiten aufgeladen'), $load));

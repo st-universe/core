@@ -120,7 +120,7 @@ final class BuildingAction implements BuildingActionInterface
         );
 
         $game->addInformation(_('Es konnten folgende Waren recycled werden'));
-
+        
         foreach ($building->getCosts() as $value) {
             $halfAmount = $value->getHalfAmount();
             if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
@@ -129,6 +129,7 @@ final class BuildingAction implements BuildingActionInterface
                 $amount = $halfAmount;
             }
             if ($amount <= 0) {
+                $game->addInformation(_('[b][color=FF2626]Abbruch: keine weiteren Lagerkapazitäten vorhanden![/color][/b]'));
                 break;
             }
             $this->colonyStorageManager->upperStorage($colony, $value->getGood(), $amount);
