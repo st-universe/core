@@ -67,7 +67,7 @@ final class ShipTick implements ShipTickInterface
                     _('Wechsel von %s auf %s wegen Energiemangel'),
                     ShipAlertStateEnum::getDescription($preState),
                     ShipAlertStateEnum::getDescription($ship->getAlertState())
-                )
+                );
             }
         }
 
