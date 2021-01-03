@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Orm\Entity\ShipBuildplan;
