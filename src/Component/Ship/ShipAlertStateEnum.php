@@ -13,11 +13,11 @@ final class ShipAlertStateEnum
 
     public static function getDescription(int $alertState): string {
         switch ($alertState) {
-            case ShipSystemTypeEnum::ALERT_GREEN:
+            case ShipAlertStateEnum::ALERT_GREEN:
                 return _("Alarm Grün");
-            case ShipSystemTypeEnum::ALERT_YELLOW:
+            case ShipAlertStateEnum::ALERT_YELLOW:
                 return _("Alarm Gelb");
-            case ShipSystemTypeEnum::ALERT_RED:
+            case ShipAlertStateEnum::ALERT_RED:
                 return _("Alarm Rot");
         }
         return '';
