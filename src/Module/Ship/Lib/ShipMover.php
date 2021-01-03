@@ -254,8 +254,8 @@ final class ShipMover implements ShipMoverInterface
                 $this->shipRepository->save($ship);
             }
             if ($ship->isTraktorbeamActive()) {
-                $this->addInformation(sprintf(_('Die %s wurde per Traktorstrahl mitgezogen'), $ship->getTractorShip()->getName()));
-                $this->shipRepository->save($ship->getTractorShip());
+                $this->addInformation(sprintf(_('Die %s wurde per Traktorstrahl mitgezogen'), $ship->getTraktorShip()->getName()));
+                $this->shipRepository->save($ship->getTraktorShip());
             }
         }
 
@@ -294,10 +294,10 @@ final class ShipMover implements ShipMoverInterface
                 $ship->cancelRepair();
                 $this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getId()));
             }
-            if ($ship->isTraktorbeamActive() && $ship->getTractorShip()->getFleetId()) {
+            if ($ship->isTraktorbeamActive() && $ship->getTraktorShip()->getFleetId()) {
                 $this->deactivateTraktorBeam($ship,
                     sprintf(_('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
-                        $ship->getTractorShip()->getName()));
+                        $ship->getTraktorShip()->getName()));
             }
             if ($ship->getTraktorMode() == 2) {
                 $this->addLostShip($ship, $leadShip, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
@@ -406,8 +406,8 @@ final class ShipMover implements ShipMoverInterface
         }
 
         //Traktorstrahl Kosten
-        if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTractorShip()->getRump()->getFlightEcost() + 1) {
-            $this->deactivateTraktorBeam($ship, sprintf(_('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'), $ship->getTractorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
+        if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost() + 1) {
+            $this->deactivateTraktorBeam($ship, sprintf(_('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
         }
         
         $met = 'fly' . $flightMethod;
@@ -418,8 +418,8 @@ final class ShipMover implements ShipMoverInterface
         }
         //Traktorstrahl Energie abziehen
         if ($ship->isTraktorbeamActive()) {
-            $ship->setEps($ship->getEps() - $ship->getTractorShip()->getRump()->getFlightEcost());
-            $this->$met($ship->getTractorShip());
+            $ship->setEps($ship->getEps() - $ship->getTraktorShip()->getRump()->getFlightEcost());
+            $this->$met($ship->getTraktorShip());
         }
         $field = $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY());
 
@@ -428,10 +428,10 @@ final class ShipMover implements ShipMoverInterface
             $ship->setEps(0);
             if ($field->getFieldType()->getDamage()) {
                 if ($ship->isTraktorbeamActive()) {
-                    $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTractorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
+                    $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
                     $damageMsg = $this->applyDamage->damage(
                         new DamageWrapper($field->getFieldType()->getDamage()),
-                        $ship->getTractorShip()
+                        $ship->getTraktorShip()
                     );
                     $this->addInformationMerge($damageMsg);
                 }
@@ -442,11 +442,11 @@ final class ShipMover implements ShipMoverInterface
                 );
                 $this->addInformationMerge($damageMsg);
 
-                if ($ship->getTractorShip()->getIsDestroyed()) {
+                if ($ship->getTraktorShip()->getIsDestroyed()) {
                     
-                    $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getTractorShip()->getName(), $ship->getTractorShip()->getSectorString()));
+                    $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getTraktorShip()->getName(), $ship->getTraktorShip()->getSectorString()));
 
-                    $this->shipRemover->destroy($ship->getTractorShip());
+                    $this->shipRemover->destroy($ship->getTraktorShip());
                 }
             }
         } else {
@@ -455,10 +455,10 @@ final class ShipMover implements ShipMoverInterface
         //Einflugschaden Feldschaden
         if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
             if ($ship->isTraktorbeamActive()) {
-                $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTractorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
+                $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
                 $damageMsg = $this->applyDamage->damage(
                     new DamageWrapper($field->getFieldType()->getDamage()),
-                    $ship->getTractorShip()
+                    $ship->getTraktorShip()
                 );
                 $this->addInformationMerge($damageMsg);
             }
@@ -485,8 +485,8 @@ final class ShipMover implements ShipMoverInterface
         $this->addInformation($msg);
         $this->privateMessageSender->send(
             (int)$ship->getUserId(),
-            (int)$ship->getTractorShip()->getUserId(),
-            sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $ship->getTractorShip()->getName(), $ship->getSectorString()),
+            (int)$ship->getTraktorShip()->getUserId(),
+            sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getSectorString()),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
         $ship->deactivateTraktorBeam();

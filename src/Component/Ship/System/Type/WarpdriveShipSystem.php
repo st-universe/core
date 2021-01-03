@@ -39,7 +39,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         
         if ($ship->traktorBeamFromShip()) {
             if ($ship->getEps() > $this->getEnergyUsageForActivation()) {
-                $traktorShip = $ship->getTractorShip();
+                $traktorShip = $ship->getTraktorShip();
                 
                 $traktorShip->cancelRepair();
                 $traktorShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
@@ -58,7 +58,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
         
         if ($ship->traktorBeamFromShip()) {
-            $traktorShip = $ship->getTractorShip();
+            $traktorShip = $ship->getTraktorShip();
             
             $traktorShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
             
