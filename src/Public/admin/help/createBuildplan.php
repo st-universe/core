@@ -23,12 +23,7 @@ $db = $container->get(EntityManagerInterface::class);
 
 $db->beginTransaction();
 
-$container->get(GameControllerInterface::class)->main(
-    $container->get('ADMIN_ACTIONS'),
-    $container->get('ADMIN_VIEWS'),
-    true,
-    true
-);
+$container->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
 $shipRumpRepo = $container->get(ShipRumpRepositoryInterface::class);
 $shipRumpModuleLevelRepo = $container->get(ShipRumpModuleLevelRepositoryInterface::class);
