@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchInterface;
@@ -33,13 +34,16 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
      */
     public function getForFaction(int $factionId): array
     {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT t FROM %s t
-                WHERE CAST(t.id AS TEXT) LIKE :factionId
-                OR CAST(t.id AS TEXT) LIKE \'%%0\'',
-                Research::class,
-            )
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult(Research::class, 'r');
+        $rsm->addFieldResult('r', 'id', 'id');
+        $rsm->addFieldResult('r', 'name', 'name');
+
+        return $this->getEntityManager()->createNativeQuery(
+                'SELECT r.id, r.name FROM stu_research r
+                WHERE CAST(r.id AS TEXT) LIKE :factionId
+                OR CAST(r.id AS TEXT) LIKE \'%%0\'',
+                $rsm
         )
             ->setParameter('factionId', sprintf('%%%d', $factionId))
             ->getResult();
