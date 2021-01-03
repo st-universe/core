@@ -192,11 +192,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $shipobj->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if (
-                    $storage->containsKey(CommodityTypeEnum::GOOD_DILITHIUM) &&
-                    $storage->containsKey(CommodityTypeEnum::GOOD_DEUTERIUM) &&
-                    $storage->containsKey(CommodityTypeEnum::GOOD_ANTIMATTER)
-                ) {
+                if ($this->storageContainsNeededCommodities($storage)) {
                     if ($shipobj->getWarpcoreLoad() < $shipobj->getWarpcoreCapacity()) {
                         if ($wk[$shipobj->getId()] == 'm') {
                             $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
@@ -208,30 +204,18 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         }
                         $load = (int) $load;
                         if ($load >= 1) {
-                            if ($storage[CommodityTypeEnum::GOOD_DILITHIUM]->getAmount() < $load) {
-                                $load = $storage[CommodityTypeEnum::GOOD_DILITHIUM]->getAmount();
+                            foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                                if ($storage[$commodityId]->getAmount() < ($load * $loadCost)) {
+                                    $load = intval($storage[$commodityId]->getAmount() / $loadCost);
+                                }
                             }
-                            if ($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() < ($load * 2)) {
-                                $load = intval($storage[CommodityTypeEnum::GOOD_DEUTERIUM]->getAmount() / 2);
+                            foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                                $this->colonyStorageManager->lowerStorage(
+                                    $colony,
+                                    $this->commodityRepository->find($commodityId),
+                                    $loadCost * $load
+                                );
                             }
-                            if ($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() < ($load * 2)) {
-                                $load = intval($storage[CommodityTypeEnum::GOOD_ANTIMATTER]->getAmount() / 2);
-                            }
-                            $this->colonyStorageManager->lowerStorage(
-                                $colony,
-                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_DILITHIUM),
-                                $load
-                            );
-                            $this->colonyStorageManager->lowerStorage(
-                                $colony,
-                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_DEUTERIUM),
-                                2*$load
-                            );
-                            $this->colonyStorageManager->lowerStorage(
-                                $colony,
-                                $this->commodityRepository->find(CommodityTypeEnum::GOOD_ANTIMATTER),
-                                2*$load
-                            );
                             if ($shipobj->getWarpcoreLoad() + $load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
                                 $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
                             } else {
@@ -260,9 +244,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     }
                 } else {
                     $msg[] = sprintf(
-                        _('%s: Es wird mindestens 2 Deuterium, 2 Antimaterie und 1 Dilithium zum Aufladen des Warpkerns benötigt'),
+                        _('%s: Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:'),
                         $shipobj->getName()
                     );
+                    foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+                        $msg[] = sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId));
+                    }
                 }
             }
             if (isset($torp[$shipobj->getId()]) && $shipobj->getMaxTorpedos() > 0) {
@@ -378,6 +365,18 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $game->addInformationMerge($msg);
+    }
+
+    private function storageContainsNeededCommodities($storage): bool
+    {
+        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+            if (!$storage->containsKey($commodityId))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function performSessionCheck(): bool
