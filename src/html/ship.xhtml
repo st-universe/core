@@ -509,16 +509,16 @@
 						</tr>
 						<tr>
 							<td colspan="2" tal:condition="SHIP/traktorBeamFromShip">
-								Gerichtet auf: <span tal:replace="structure bbcode:SHIP/getTractorShip/getName">.</span>
+								Gerichtet auf: <span tal:replace="structure bbcode:SHIP/getTraktorShip/getName">.</span>
 							</td>
 							<td colspan="2" tal:condition="SHIP/traktorBeamToShip">
-								Gehalten von: <span tal:replace="structure bbcode:SHIP/getTractorShip/getName">.</span>
+								Gehalten von: <span tal:replace="structure bbcode:SHIP/getTraktorShip/getName">.</span>
 
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<img src="assets/ships/${SHIP/getTractorShip/getRump/getId}.png" />
+								<img src="assets/ships/${SHIP/getTraktorShip/getRump/getId}.png" />
 							</td>
 							<td>
 								<input tal:condition="SHIP/traktorBeamFromShip" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR" value="Deaktivieren" />
