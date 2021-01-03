@@ -14,6 +14,8 @@ use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
+@session_start();
+
 require_once __DIR__ . '/../../../Config/Bootstrap.php';
 
 $db = $container->get(EntityManagerInterface::class);
