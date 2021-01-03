@@ -22,167 +22,174 @@ $db = $container->get(EntityManagerInterface::class);
 
 $db->beginTransaction();
 
-$shipRumpRepo = $container->get(ShipRumpRepositoryInterface::class);
-$shipRumpModuleLevelRepo = $container->get(ShipRumpModuleLevelRepositoryInterface::class);
-$moduleRepo = $container->get(ModuleRepositoryInterface::class);
-$buildplanRepo = $container->get(ShipBuildplanRepositoryInterface::class);
-$buildplanModuleRepo = $container->get(BuildplanModuleRepositoryInterface::class);
-$userRepo = $container->get(UserRepositoryInterface::class);
+$isAdmin = $container->get(GameControllerInterface::class)->getUser()->isAdmin();
 
-$userId = request::indInt('userId');
-$rumpId = request::indInt('rumpId');
+if ($isAdmin)
+{
+    $shipRumpRepo = $container->get(ShipRumpRepositoryInterface::class);
+    $shipRumpModuleLevelRepo = $container->get(ShipRumpModuleLevelRepositoryInterface::class);
+    $moduleRepo = $container->get(ModuleRepositoryInterface::class);
+    $buildplanRepo = $container->get(ShipBuildplanRepositoryInterface::class);
+    $buildplanModuleRepo = $container->get(BuildplanModuleRepositoryInterface::class);
+    $userRepo = $container->get(UserRepositoryInterface::class);
 
-if ($rumpId !== 0) {
-    $rump = $shipRumpRepo->find($rumpId);
+    $userId = request::indInt('userId');
+    $rumpId = request::indInt('rumpId');
 
-    $specialModuleTypes = [
-        ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
-        ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
-    ];
+    if ($rumpId !== 0) {
+        $rump = $shipRumpRepo->find($rumpId);
 
-    $moduleTypes = [
-        ShipModuleTypeEnum::MODULE_TYPE_HULL,
-        ShipModuleTypeEnum::MODULE_TYPE_SHIELDS,
-        ShipModuleTypeEnum::MODULE_TYPE_EPS,
-        ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE,
-        ShipModuleTypeEnum::MODULE_TYPE_WARPCORE,
-        ShipModuleTypeEnum::MODULE_TYPE_COMPUTER,
-        ShipModuleTypeEnum::MODULE_TYPE_PHASER,
-        ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
-    ];
-    $moduleList = request::postArray('mod');
-    $moduleSpecialList = request::postArray('special_mod');
+        $specialModuleTypes = [
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
+            ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
+        ];
 
-    if (count($moduleList) === count($moduleTypes)) {
-        $user = $userRepo->find($userId);
+        $moduleTypes = [
+            ShipModuleTypeEnum::MODULE_TYPE_HULL,
+            ShipModuleTypeEnum::MODULE_TYPE_SHIELDS,
+            ShipModuleTypeEnum::MODULE_TYPE_EPS,
+            ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE,
+            ShipModuleTypeEnum::MODULE_TYPE_WARPCORE,
+            ShipModuleTypeEnum::MODULE_TYPE_COMPUTER,
+            ShipModuleTypeEnum::MODULE_TYPE_PHASER,
+            ShipModuleTypeEnum::MODULE_TYPE_TORPEDO,
+        ];
+        $moduleList = request::postArray('mod');
+        $moduleSpecialList = request::postArray('special_mod');
 
-        $signature = ShipBuildplan::createSignature(array_merge($moduleList, $moduleSpecialList));
-        $plan = $buildplanRepo->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
+        if (count($moduleList) === count($moduleTypes)) {
+            $user = $userRepo->find($userId);
 
-        if ($plan === null) {
-            $planname = sprintf(
-                _('Bauplan %s %s'),
-                $rump->getName(),
-                date('d.m.Y H:i')
-            );
-            $plan = $buildplanRepo->prototype();
-            $plan->setUser($user);
-            $plan->setRump($rump);
-            $plan->setName($planname);
-            $plan->setSignature($signature);
-            $plan->setBuildtime(0);
-            $plan->setCrew($rump->getCrew100P());
-            $plan->setCrewPercentage(100);
+            $signature = ShipBuildplan::createSignature(array_merge($moduleList, $moduleSpecialList));
+            $plan = $buildplanRepo->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
 
-            $buildplanRepo->save($plan);
+            if ($plan === null) {
+                $planname = sprintf(
+                    _('Bauplan %s %s'),
+                    $rump->getName(),
+                    date('d.m.Y H:i')
+                );
+                $plan = $buildplanRepo->prototype();
+                $plan->setUser($user);
+                $plan->setRump($rump);
+                $plan->setName($planname);
+                $plan->setSignature($signature);
+                $plan->setBuildtime(0);
+                $plan->setCrew($rump->getCrew100P());
+                $plan->setCrewPercentage(100);
 
-            foreach ($moduleList as $moduleId) {
-                $module = $moduleRepo->find($moduleId);
+                $buildplanRepo->save($plan);
 
-                $mod = $buildplanModuleRepo->prototype();
-                $mod->setModuleType($module->getType());
-                $mod->setBuildplanId($plan->getId());
-                $mod->setModule($module);
+                foreach ($moduleList as $moduleId) {
+                    $module = $moduleRepo->find($moduleId);
 
-                $buildplanModuleRepo->save($mod);
+                    $mod = $buildplanModuleRepo->prototype();
+                    $mod->setModuleType($module->getType());
+                    $mod->setBuildplanId($plan->getId());
+                    $mod->setModule($module);
+
+                    $buildplanModuleRepo->save($mod);
+                }
+
+                $moduleSpecialList = request::postArray('special_mod');
+
+                foreach ($moduleSpecialList as $moduleId) {
+                    $module = $moduleRepo->find($moduleId);
+
+                    $mod = $buildplanModuleRepo->prototype();
+                    $mod->setModuleType($module->getType());
+                    $mod->setBuildplanId($plan->getId());
+                    $mod->setModule($module);
+
+                    $buildplanModuleRepo->save($mod);
+                }
             }
 
-            $moduleSpecialList = request::postArray('special_mod');
+            echo 'Bauplan angelegt';
 
-            foreach ($moduleSpecialList as $moduleId) {
-                $module = $moduleRepo->find($moduleId);
-
-                $mod = $buildplanModuleRepo->prototype();
-                $mod->setModuleType($module->getType());
-                $mod->setBuildplanId($plan->getId());
-                $mod->setModule($module);
-
-                $buildplanModuleRepo->save($mod);
-            }
-        }
-
-        echo 'Bauplan angelegt';
-
-    } else {
-
-        printf(
-            '<form action="" method="post">
-            <input type="hidden" name="userId" value="%d">',
-            $userId
-        );
-
-        foreach ($moduleTypes as $moduleTypeId) {
+        } else {
 
             printf(
-                '<div>Modul: %s</div>',
-                ModuleTypeDescriptionMapper::getDescription($moduleTypeId)
+                '<form action="" method="post">
+                <input type="hidden" name="userId" value="%d">',
+                $userId
             );
 
-            $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
-                $rump->getId()
-            );
+            foreach ($moduleTypes as $moduleTypeId) {
 
-            $min_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Min'}();
-            $max_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Max'}();
+                printf(
+                    '<div>Modul: %s</div>',
+                    ModuleTypeDescriptionMapper::getDescription($moduleTypeId)
+                );
 
-            $modules = $moduleRepo->getByTypeAndLevel(
-                $moduleTypeId,
-                $rump->getShipRumpRole()->getId(),
-                range($min_level, $max_level)
-            );
+                $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
+                    $rump->getId()
+                );
 
-            foreach ($modules as $module) {
+                $min_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Min'}();
+                $max_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Max'}();
+
+                $modules = $moduleRepo->getByTypeAndLevel(
+                    $moduleTypeId,
+                    $rump->getShipRumpRole()->getId(),
+                    range($min_level, $max_level)
+                );
+
+                foreach ($modules as $module) {
+                    printf(
+                        '<div>
+                        <input type="radio" name="mod[%d]" value="%d" /> %s
+                    </div>',
+                        $moduleTypeId,
+                        $module->getId(),
+                        $module->getName()
+                    );
+                }
+
+                echo '<br /><br />';
+            }
+
+            $specialModules = $moduleRepo->getBySpecialTypeIds($specialModuleTypes);
+
+            foreach ($specialModules as $module) {
                 printf(
                     '<div>
-                    <input type="radio" name="mod[%d]" value="%d" /> %s
-                </div>',
-                    $moduleTypeId,
+                        <input type="checkbox" name="special_mod[%d]" value="%d" /> %s
+                    </div>',
+                    $module->getId(),
                     $module->getId(),
                     $module->getName()
                 );
             }
 
-            echo '<br /><br />';
-        }
-
-        $specialModules = $moduleRepo->getBySpecialTypeIds($specialModuleTypes);
-
-        foreach ($specialModules as $module) {
             printf(
-                '<div>
-                    <input type="checkbox" name="special_mod[%d]" value="%d" /> %s
-                </div>',
-                $module->getId(),
-                $module->getId(),
-                $module->getName()
+                '<br /><input type="submit" value="Bauplan erstellen" /></form>'
             );
         }
 
-        printf(
-            '<br /><input type="submit" value="Bauplan erstellen" /></form>'
-        );
-    }
-
-} else {
-    if ($userId > 0) {
-        foreach ($shipRumpRepo->getList() as $shipRump) {
-            printf(
-                '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.gif" /> %s</a></div>',
-                $shipRump->getId(),
-                $userId,
-                $shipRump->getId(),
-                $shipRump->getName()
-            );
-        }
     } else {
-        foreach ($userRepo->getNpcList() as $user) {
-            printf(
-                '<a href="?userId=%d">%s</a><br />',
-                $user->getId(),
-                $user->getUserName()
-            );
+        if ($userId > 0) {
+            foreach ($shipRumpRepo->getList() as $shipRump) {
+                printf(
+                    '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.gif" /> %s</a></div>',
+                    $shipRump->getId(),
+                    $userId,
+                    $shipRump->getId(),
+                    $shipRump->getName()
+                );
+            }
+        } else {
+            foreach ($userRepo->getNpcList() as $user) {
+                printf(
+                    '<a href="?userId=%d">%s</a><br />',
+                    $user->getId(),
+                    $user->getUserName()
+                );
+            }
         }
     }
 }
-
+else {
+    echo 'Zugriff verweigert!';
+}
 $db->commit();
