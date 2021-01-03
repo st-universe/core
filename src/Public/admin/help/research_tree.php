@@ -1,12 +1,15 @@
 <?php
 
 use Stu\Component\Research\ResearchEnum;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 @session_start();
 
 require_once __DIR__ . '/../../../Config/Bootstrap.php';
+
+$container->get(GameControllerInterface::class)->sessionAndAdminCheck();
 
 $graph = new Fhaculty\Graph\Graph();
 
