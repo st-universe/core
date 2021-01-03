@@ -15,4 +15,16 @@ final class CommodityTypeEnum
     public const GOOD_ANTIMATTER = 6;
     public const GOOD_DILITHIUM = 8;
     public const GOOD_LATINUM = 50;
+
+    public static function getDescription(int $commodityId): string {
+        switch ($commodityId) {
+            case CommodityTypeEnum::GOOD_DEUTERIUM:
+                return _("Deuterium");
+            case CommodityTypeEnum::GOOD_ANTIMATTER:
+                return _("Antimaterie");
+            case CommodityTypeEnum::GOOD_DILITHIUM:
+                return _("Dilithium");
+        }
+        return '';
+    }
 }
