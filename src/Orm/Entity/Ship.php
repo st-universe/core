@@ -185,12 +185,6 @@ class Ship implements ShipInterface
     private $dockedTo;
 
     /**
-     * @OneToOne(targetEntity="Ship")
-     * @JoinColumn(name="traktor", referencedColumnName="id")
-     */
-    private $tractorShip;
-
-    /**
      * @OneToMany(targetEntity="Ship", mappedBy="dockedTo")
      */
     private $dockedShips;
@@ -925,6 +919,19 @@ class Ship implements ShipInterface
         return $this->getTraktorMode() == 2;
     }
 
+    public function getTraktorShip(): ?ShipInterface
+    {
+        if ($this->getTraktorShipId() === null
+            || $this->getTraktorShipId() == 0)
+        {
+            return null;
+        }
+        // @todo refactor
+        global $container;
+
+        return $container->get(ShipRepositoryInterface::class)->find($this->getTraktorShipId());
+    }
+
     public function deactivateTraktorBeam(): void
     {
         if (!$this->getTraktorMode()) {
@@ -932,7 +939,7 @@ class Ship implements ShipInterface
         }
 
         $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
-        $ship = $this->getTractorShip();
+        $ship = $this->getTraktorShip();
         $this->setTraktorMode(0);
         $this->setTraktorShipId(null);
         $ship->setTraktorMode(0);
@@ -1448,17 +1455,6 @@ class Ship implements ShipInterface
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface
     {
         $this->dockedTo = $dockedTo;
-        return $this;
-    }
-
-    public function getTractorShip(): ?ShipInterface
-    {
-        return $this->tractorShip;
-    }
-
-    public function setTractorShip(?ShipInterface $tractorShip): ShipInterface
-    {
-        $this->tractorShip = $tractorShip;
         return $this;
     }
 
