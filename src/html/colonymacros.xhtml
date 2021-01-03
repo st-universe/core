@@ -1281,7 +1281,7 @@
 <metal:macro metal:define-macro="ship_repairprogress">
   <table class="tcal">
     <tr>
-      <th colspan="3">Schiffe in Reparatur</th>
+      <th colspan="4">Schiffe in Reparatur</th>
     </tr>
     <tr tal:repeat="data SHIP_REPAIR_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
       <td style="text-align: center; vertical-align: middle;">
@@ -1291,7 +1291,7 @@
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.gif" title="Hülle" style="width: 12px; height: 12px;" /> ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
       </td>
-      <td style="text-align: center; vertical-align: middle">
+      <td tal:condition="data/getShip/getDamagedSystems" style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%" style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
       </td>
     </tr>
