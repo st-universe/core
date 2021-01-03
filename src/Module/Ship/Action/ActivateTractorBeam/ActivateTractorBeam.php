@@ -93,7 +93,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         if ($target->traktorbeamToShip()) {
-            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTraktorShip()->getName() . " gehalten");
+            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTractorShip()->getName() . " gehalten");
             $this->abort();
             return;
         }

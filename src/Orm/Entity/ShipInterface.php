@@ -226,8 +226,6 @@ interface ShipInterface
 
     public function traktorBeamToShip(): bool;
 
-    public function getTraktorShip(): ?ShipInterface;
-
     public function deactivateTraktorBeam(): void;
 
     public function isOverSystem(): ?StarSystemInterface;
@@ -355,4 +353,8 @@ interface ShipInterface
     public function getDockedTo(): ?ShipInterface;
 
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface;
+
+    public function getTractorShip(): ?ShipInterface;
+
+    public function setTractorShip(?ShipInterface $tractorShip): ShipInterface;
 }
