@@ -82,22 +82,13 @@ final class LoadWarpcore implements ActionControllerInterface
     public function loadWarpCore(ShipInterface $ship, int $count): ?int
     {
         $shipStorage = $ship->getStorage();
-        foreach ([CommodityTypeEnum::GOOD_DEUTERIUM, CommodityTypeEnum::GOOD_ANTIMATTER] as $commodityId) {
+        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
             $storage = $shipStorage[$commodityId] ?? null;
             if ($storage === null) {
                 return null;
             }
-            if ($storage->getAmount() < ($count * 2)) {
-                $count = intval($storage->getAmount() / 2);
-            }
-        }
-        foreach ([CommodityTypeEnum::GOOD_DILITHIUM] as $commodityId) {
-            $storage = $shipStorage[$commodityId] ?? null;
-            if ($storage === null) {
-                return null;
-            }
-            if ($storage->getAmount() < $count) {
-                $count = $storage->getAmount();
+            if ($storage->getAmount() < ($count * $loadCost)) {
+                $count = intval($storage->getAmount() / $loadCost);
             }
         }
         if ($ship->getWarpcoreLoad() + $count * ShipEnum::WARPCORE_LOAD > $ship->getWarpcoreCapacity()) {
@@ -105,24 +96,17 @@ final class LoadWarpcore implements ActionControllerInterface
         } else {
             $load = $count * ShipEnum::WARPCORE_LOAD;
         }
-
+        
         $commodityAmount = (int) ceil($load / ShipEnum::WARPCORE_LOAD);
+        
+        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+            $this->shipStorageManager->lowerStorage(
+                $ship,
+                $shipStorage[$commodityId]->getCommodity(),
+                $loadCost*$commodityAmount
+            );
+        }
 
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $shipStorage[CommodityTypeEnum::GOOD_DEUTERIUM]->getCommodity(),
-            2*$commodityAmount
-        );
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $shipStorage[CommodityTypeEnum::GOOD_ANTIMATTER]->getCommodity(),
-            2*$commodityAmount
-        );
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $shipStorage[CommodityTypeEnum::GOOD_DILITHIUM]->getCommodity(),
-            $commodityAmount
-        );
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() + $load);
 
         $this->shipRepository->save($ship);
