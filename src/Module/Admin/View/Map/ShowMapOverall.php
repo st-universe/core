@@ -45,8 +45,6 @@ final class ShowMapOverall implements ViewControllerInterface
         $startY = 1;
         $cury = 0;
         $curx = 0;
-        
-        $webrootWithoutPublic = str_replace("/Public", "", $this->config->get('game.webroot'));
 
         foreach ($this->mapRepository->getAllOrdered() as $data) {
             if ($startY != $data->getCy()) {
@@ -65,10 +63,9 @@ final class ShowMapOverall implements ViewControllerInterface
                 $curx += 15;
                 continue;
             }
-
-            $types[$data->getFieldId()] = imagecreatefromgif(
-                $webrootWithoutPublic . '/assets/map/' . $data->getFieldType()->getType(). '.gif'
-            );
+                $types[$data->getFieldId()] = imagecreatefromgif(
+                    $this->config->get('game.webroot') . '/assets/map/' . $data->getFieldType()->getType(). '.gif'
+                );
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
             $curx += 15;
         }
