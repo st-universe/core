@@ -48,22 +48,30 @@ class VisualNavPanelEntry
         return $this->data['shipcount'] > 0;
     }
 
-    function getDisplayCount()
+    function showCloakedSign()
     {
         if ($this->hasShips()) {
-            return $this->getShipCount();
+            return false;
         }
         if ($this->hasCloakedShips()) {
             if ($this->tachyonFresh)
             {
-                return "?";
+                return true;
             }
             if ($this->isTachyonSystemActive
                 && abs($this->getPosX() - $this->currentShipPosX) < 3
                 && abs($this->getPosY() - $this->currentShipPosY) < 3)
             {
-                return "?";
+                return true;
             }
+        }
+        return false;
+    }
+
+    function getDisplayCount()
+    {
+        if ($this->hasShips()) {
+            return $this->getShipCount();
         }
         return "";
     }
