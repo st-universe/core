@@ -135,11 +135,23 @@
 							<tal:block tal:repeat="entry row/getEntries">
 								<td tal:condition="entry/getRow" style="width: 30px;" tal:attributes="class entry/getCSSClass" tal:content="entry/getRow" phptal:cache="1d per entry/getRow">.</td>
 								<td tal:condition="not:entry/getRow" tal:attributes="class entry/getCSSClass" style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
-									<tal:block tal:condition="entry/isClickable">
-										<div class="lssobj" onclick="moveToPosition(${entry/getPosX},${entry/getPosY});" tal:content="entry/getDisplayCount">.</div>
+									<tal:block tal:condition="not:entry/showCloakedSign">
+										<tal:block tal:condition="entry/isClickable">
+											<div class="lssobj" onclick="moveToPosition(${entry/getPosX},${entry/getPosY});" tal:content="entry/getDisplayCount">.</div>
+										</tal:block>
+										<tal:block tal:condition="not:entry/isClickable">
+											<div tal:content="entry/getDisplayCount">.</div>
+										</tal:block>
 									</tal:block>
-									<tal:block tal:condition="not:entry/isClickable">
-										<div tal:content="entry/getDisplayCount">.</div>
+									<tal:block tal:condition="entry/showCloakedSign">
+										<tal:block tal:condition="entry/isClickable">
+											<div class="lssobj" onclick="moveToPosition(${entry/getPosX},${entry/getPosY});" >
+												<img style="width: 40px; height: 40px;" src="assets/map/1t.png">
+											</div>
+										</tal:block>
+										<tal:block tal:condition="not:entry/isClickable">
+											<img style="width: 40px; height: 40px;" src="assets/map/1t.png">
+										</tal:block>
 									</tal:block>
 								</td>
 							</tal:block>
@@ -359,10 +371,14 @@
 				</tal:block>
 				<tal:block tal:condition="TACHYON_ACTIVE">
 					<br />
-					<a href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-							<img src="/assets/buttons/ascan1.gif" name="tachyonScanButton" />
-							<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
+					<a tal:condition="SHIP/getTachyonState" href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+						<img src="/assets/buttons/ascan1.gif" name="tachyonScanButton" />
+						<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
 					</a>
+					<tal:block tal:condition="not:SHIP/getTachyonState">
+						<img src="/assets/buttons/ascan1.gif" name="tachyonScanButton" />
+						<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
+					</tal:block>
 				</tal:block>
 
 								<br />
