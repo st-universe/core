@@ -367,4 +367,56 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         }
         return $query->getResult();
     }
+
+    public function isCloakedShipAtLocation(
+        ShipInterface $ship
+    ): bool {
+
+        $cloakSql = sprintf(
+            ' AND EXISTS (SELECT ss.id
+                            FROM %s ss
+                            WHERE s.id = ss.ships_id
+                            AND ss.system_type = %d
+                            AND ss.mode > 1) ',
+            ShipSystem::class,
+            ShipSystemTypeEnum::SYSTEM_CLOAK
+        );
+
+        if ($ship->getSystem() === null) {
+            $query = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT COUNT(s.id) FROM %s s
+                    WHERE s.systems_id is null
+                    AND s.cx = :cx AND s.cy = :cy
+                    AND s.fleets_id IS NULL
+                    %s
+                    AND s.user_id != :ignoreId',
+                    Ship::class,
+                    $cloakSql
+                )
+            )->setParameters([
+                'cx' => $ship->getCx(),
+                'cy' => $ship->getCy(),
+                'ignoreId' => $ship->getUserId()
+            ]);
+        } else {
+            $query = $this->getEntityManager()->createQuery(
+                sprintf(
+                    'SELECT COUNT(s.id) FROM %s s
+                    WHERE s.systems_id = :starSystemId
+                    AND s.sx = :sx AND s.sy = :sy
+                    %s
+                    AND s.user_id != :ignoreId',
+                    Ship::class,
+                    $cloakSql
+                )
+            )->setParameters([
+                'starSystemId' => $ship->getSystem()->getId(),
+                'sx' => $ship->getSx(),
+                'sy' => $ship->getSy(),
+                'ignoreId' => $ship->getUserId()
+            ]);
+        }
+        return $query->getSingleScalarResult() > 0;
+    }
 }

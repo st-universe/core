@@ -166,7 +166,7 @@ final class ShowShip implements ViewControllerInterface
             $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
         );
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
-        //$game->setTemplateVar('CLOAK_NBS', $fnbs);//TODO via ShipRepo Methode isCloakedShipAt?
+        $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $nbs);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
