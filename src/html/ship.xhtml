@@ -350,9 +350,9 @@
 					<tal:block tal:condition="SHIP/getTachyonState">
 						<br />
 						<a href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-							onmouseover="cp('tachyonScanButton','buttons/decloak1')"
-							onmouseout="cp('tachyonScanButton','buttons/decloak2')">
-							<img src="/assets/buttons/decloak2.gif" name="tachyonScanButton" />
+							onmouseover="cp('tachyonScanButton','buttons/ascan1')"
+							onmouseout="cp('tachyonScanButton','buttons/ascan')">
+							<img src="/assets/buttons/ascan.gif" name="tachyonScanButton" />
 							<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} starten</span>
 						</a>
 					</tal:block>	
@@ -360,7 +360,7 @@
 				<tal:block tal:condition="TACHYON_ACTIVE">
 					<br />
 					<a href="?B_TACHYON_SCAN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-							<img src="/assets/buttons/decloak2.gif" name="tachyonScanButton" />
+							<img src="/assets/buttons/ascan1.gif" name="tachyonScanButton" />
 							<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch aktiv</span>
 					</a>
 				</tal:block>
