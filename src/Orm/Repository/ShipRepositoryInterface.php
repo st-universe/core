@@ -109,4 +109,6 @@ interface ShipRepositoryInterface extends ObjectRepository
         bool $isBase,
         bool $showCloaked = false
     ): iterable;
+
+    public function isCloakedShipAtLocation(ShipInterface $ship): bool;
 }

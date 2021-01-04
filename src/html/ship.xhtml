@@ -541,9 +541,16 @@
 		</table>
 		<tal:block tal:condition="SHIP/getNbs">
 			<tal:block tal:condition="not:HAS_NBS">
-				<table class="tcal">
+				<table tal:condition="not:CLOAK_NBS" class="tcal">
 					<tr>
 						<td>Es befinden sich keine Schiffe in diesem Sektor</td>
+					</tr>
+				</table>
+			</tal:block>
+			<tal:block tal:condition="CLOAK_NBS">
+				<table class="tcal">
+					<tr>
+						<td style="color: #f1a005;">Es befinden sich getarnte Schiffe in diesem Sektor</td>
 					</tr>
 				</table>
 			</tal:block>
