@@ -305,31 +305,27 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
 
     public function getSingleShipScannerResults(
-        ?StarSystemInterface $starSystem,
-        int $sx,
-        int $sy,
-        int $cx,
-        int $cy,
-        int $ignoreId,
+        ShipInterface $ship,
         bool $isBase,
         bool $showCloaked = false
     ): iterable {
         $cloakSql = sprintf(
-            ' AND NOT EXISTS (SELECT ss.id
+            ' AND ( (s.user_id = %d) OR NOT EXISTS (SELECT ss.id
                             FROM %s ss
                             WHERE s.id = ss.ships_id
                             AND ss.system_type = %d
-                            AND ss.mode > 1) ',
+                            AND ss.mode > 1)) ',
+            $ship->getUser()->getId(),
             ShipSystem::class,
             ShipSystemTypeEnum::SYSTEM_CLOAK
         );
 
-        if ($starSystem === null) {
+        if ($ship->getSystem() === null) {
             $query = $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT s FROM %s s
                     WHERE s.systems_id is null
-                    AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy
+                    AND s.cx = :cx AND s.cy = :cy
                     AND s.fleets_id IS NULL
                     %s
                     AND s.is_base = :isBase AND s.id != :ignoreId',
@@ -337,18 +333,16 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     $showCloaked ? '' : $cloakSql
                 )
             )->setParameters([
-                'sx' => $sx,
-                'sy' => $sy,
-                'cx' => $cx,
-                'cy' => $cy,
-                'ignoreId' => $ignoreId,
+                'cx' => $ship->getCx(),
+                'cy' => $ship->getCy(),
+                'ignoreId' => $ship->getId(),
                 'isBase' => $isBase
             ]);
         } else {
             $query = $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT s FROM %s s
-                    WHERE s.systems_id = :starSystem AND s.cx = :cx AND s.cy = :cy
+                    WHERE s.systems_id = :starSystemId
                     AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL
                     %s
                     AND s.is_base = :isBase AND s.id != :ignoreId',
@@ -356,12 +350,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     $showCloaked ? '' : $cloakSql
                 )
             )->setParameters([
-                'starSystem' => $starSystem,
-                'sx' => $sx,
-                'sy' => $sy,
-                'cx' => $cx,
-                'cy' => $cy,
-                'ignoreId' => $ignoreId,
+                'starSystemId' => $ship->getSystem()->getId(),
+                'sx' => $ship->getSx(),
+                'sy' => $ship->getSy(),
+                'ignoreId' => $ship->getId(),
                 'isBase' => $isBase
             ]);
         }

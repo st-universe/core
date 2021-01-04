@@ -90,23 +90,13 @@ final class ShowShip implements ViewControllerInterface
         }
 
         $nbs = $this->shipRepository->getSingleShipScannerResults(
-            $ship->getSystem(),
-            $ship->getSx(),
-            $ship->getSy(),
-            $ship->getCx(),
-            $ship->getCy(),
-            $ship->getId(),
+            $ship,
             true,
             $tachyonActive
         );
 
         $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
-            $ship->getSystem(),
-            $ship->getSx(),
-            $ship->getSy(),
-            $ship->getCx(),
-            $ship->getCy(),
-            $ship->getId(),
+            $ship,
             false,
             $tachyonActive
         );
@@ -166,7 +156,7 @@ final class ShowShip implements ViewControllerInterface
             $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
         );
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
-        $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $this->shipRepository->isCloakedShipAtLocation($ship));
+        $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $nbs);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);

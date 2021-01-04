@@ -100,12 +100,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return ShipInterface[]
      */
     public function getSingleShipScannerResults(
-        ?StarSystemInterface $starStarSystem,
-        int $sx,
-        int $sy,
-        int $cx,
-        int $cy,
-        int $ignoreId,
+        ShipInterface $ship,
         bool $isBase,
         bool $showCloaked = false
     ): iterable;
