@@ -480,9 +480,9 @@ class Ship implements ShipInterface
         return $this->max_batt;
     }
 
-    public function setMaxEBatt(int $maxBatt): ShipInterface
+    public function setMaxEBatt(): ShipInterface
     {
-        $this->max_batt = $maxBatt;
+        $this->max_batt = (int)round($this->max_eps / 3);
         return $this;
     }
 
