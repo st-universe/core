@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\UnloadBattery;
 
 use request;
+
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -73,6 +75,9 @@ final class UnloadBattery implements ActionControllerInterface
         }
         if ($ship->getEps() >= $ship->getMaxEps()) {
             return sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName());
+        }
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_EPS)) {
+            return sprintf(_('%s: Das Energienetz ist zerstört und kann nicht geladen werden'), $ship->getName());
         }
 
         // unload following

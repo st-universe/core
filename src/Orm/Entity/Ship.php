@@ -917,6 +917,11 @@ class Ship implements ShipInterface
         return $this->getReactorOutput();
     }
 
+    public function isWarpcoreHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE);
+    }
+
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {

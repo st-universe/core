@@ -216,6 +216,8 @@ interface ShipInterface
 
     public function getReactorCapacity(): int;
 
+    public function isWarpcoreHealthy(): bool;
+
     public function getEffectiveEpsProduction(): int;
 
     public function getWarpcoreUsage(): int;
