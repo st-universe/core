@@ -730,6 +730,11 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
     }
 
+    public function getTheoreticalReactorOutput(): int
+    {
+        return $this->reactor_output;
+    }
+
     public function setReactorOutput(int $reactorOutput): ShipInterface
     {
         $this->reactor_output = $reactorOutput;
@@ -892,7 +897,7 @@ class Ship implements ShipInterface
 
     public function getWarpcoreCapacity(): int
     {
-        return $this->getReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
+        return $this->getTheoreticalReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
     }
 
     public function getReactorCapacity(): int
