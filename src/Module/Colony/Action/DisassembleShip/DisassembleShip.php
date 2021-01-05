@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\DisassembleShip;
 
 use request;
+
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -27,19 +29,23 @@ final class DisassembleShip implements ActionControllerInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     private ShipRemoverInterface $shipRemover;
+    
+    private ColonyStorageManagerInterface $colonyStorageManager;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         ShipLoaderInterface $shipLoader,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->shipLoader = $shipLoader;
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -64,15 +70,52 @@ final class DisassembleShip implements ActionControllerInterface
 
         $ship_id = request::getIntFatal('ship_id');
 
-        //TODO revive some modules?
-        //$this->moduleRepository->find((int) $key);
-        //with key = ShipSystem->module_id
-        // from Module to Commidity
-
         $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
+        $this->retrieveSomeIntactModules($ship, $colony, $game);
+
         $this->shipRemover->remove($ship);
 
         $game->addInformationf(_('Das Schiff wurde demontiert'));
+    }
+
+    private function retrieveSomeIntactModules($ship, $colony, $game): void
+    {
+        $intactModules = [];
+
+        foreach($ship->getSystems() as $system)
+        {
+            if ($system->getModule() !== null
+                && $system->getStatus() == 100)
+            {
+                $module = $system->getModule();
+
+                if (!array_key_exists($module->getId(), $intactModules))
+                {
+                    $intactModules[$module->getId()] = $module;
+                }
+            }
+        }
+
+        $maxStorage = $colony->getMaxStorage();
+
+        //retrieve 50% of all intact modules
+        for ($i = 1; $i <= (int)(ceil(count($intactModules) / 2)); $i++)
+        {
+            if ($colony->getStorageSum() >= $maxStorage)
+            {
+                break;
+            }
+            
+            $module = $intactModules[array_rand($intactModules)];
+
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $module->getCommodity(),
+                1
+            );
+
+            $game->addInformationf(sprintf(_('Folgendes Modul konnte recycelt werden: %s'), $module->getName()));
+        }
     }
 
     public function performSessionCheck(): bool
