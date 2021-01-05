@@ -229,17 +229,17 @@ function showModuleSelectTab(obj,tabId) {
 	$('module_select_tab_'+tabId).show();
 	currentTab = $('module_select_tab_'+tabId);
 }
-function replaceTabImage(type,moduleId,max_crew,goodId,module_crew) {
+function replaceTabImage(type,moduleId,goodId,module_crew) {
 	if (moduleId == 0) {
 		$('tab_image_mod_'+type).src = 'assets/buttons/modul_'+type+'.gif';
 		$('module_type_'+type).innerHTML = '';
-		updateCrewCount(type,0,max_crew);
+		updateCrewCount(type,0);
 	} else {
 		Element.removeClassName($('module_tab_'+type),'module_select_base_mandatory');
 		$('tab_image_mod_'+type).src = 'assets/goods/'+goodId+'.gif';
 		$('module_type_'+type).innerHTML = $(moduleId+'_content').innerHTML;
 		$('module_type_'+type).show();
-		updateCrewCount(type,module_crew,max_crew);
+		updateCrewCount(type,module_crew);
 	}
 	enableShipBuildButton();
 }
@@ -258,10 +258,8 @@ function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
 	}
 }
 var crew_type = new Hash();
-var maxCrew;
-function updateCrewCount(type,module_crew,max_crew) {
+function updateCrewCount(type,module_crew) {
 	crew_type.set(type,module_crew);
-	maxCrew = max_crew;
 }
 function checkCrewCount() {
 	crewSum = 0;
@@ -283,15 +281,23 @@ function checkCrewCount() {
 	$('crewdisplay').select('div').each(function(elem) {
 		elem.hide();
 	});
-	if (crewSum > maxCrew) {
+	$('crewSum').show();
+	$('crewSum').innerHTML = "Benötigte Crew: " + crewSum;
+	if (crewcount > 120) {
 		Form.Element.disable('buildbutton');
 		$('crewerr').show();
 		return false;
-	} else {
-		$('crewSum').show();
-		$('crewSum').innerHTML = "Benötigte Crew: " + crewSum;
+	}
+	if (crewcount <= 120 && crewcount > 110) {
+		$('crew120p').show();
 		return true;
 	}
+	if (crewcount <= 110 && crewcount > 100) {
+		$('crew110p').show();
+		return true;
+	}
+	$('crew100p').show();
+	return true;
 }
 function enableShipBuildButton() {
 	if (!checkCrewCount()) {
