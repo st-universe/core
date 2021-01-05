@@ -105,7 +105,11 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
                     );
                 }
 
-                $this->shipRemover->destroy($target);
+                $destroyMsg = $this->shipRemover->destroy($target);
+                if ($destroyMsg !== null)
+                {
+                    $msg[] = $destroyMsg;
+                }
 
                 unset($targetPool[$target->getId()]);
 

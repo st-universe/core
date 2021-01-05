@@ -56,7 +56,12 @@ final class SelfDestruct implements ActionControllerInterface
             ),
             $userId
         );
-        $this->shipRemover->destroy($ship);
+
+        $destroyMsg = $this->shipRemover->destroy($ship);
+        if ($destroyMsg !== null)
+        {
+            $game->addInformation($destroyMsg);
+        }
 
         $game->redirectTo('/ship.php');
     }

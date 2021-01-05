@@ -103,7 +103,11 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                         $attacker->getUser()->getId()
                     );
                 }
-                $this->shipRemover->destroy($target);
+                $destroyMsg = $this->shipRemover->destroy($target);
+                if ($destroyMsg !== null)
+                {
+                    $msg[] = $destroyMsg;
+                }
             }
         }
 
