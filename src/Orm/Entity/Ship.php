@@ -711,6 +711,11 @@ class Ship implements ShipInterface
      */
     public function getEvadeChance(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE))
+        {
+            return $this->evade_chance;
+        }
+
         return (int)(ceil($this->evade_chance
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100));
         }
