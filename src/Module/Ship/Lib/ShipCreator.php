@@ -109,11 +109,10 @@ final class ShipCreator implements ShipCreatorInterface
             }
         }
 
-        $ship->setMaxEbatt((int)round($ship->getMaxEps() / 3));
         $ship->setName($ship->getRump()->getName());
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
         $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
-
+        
         $this->shipRepository->save($ship);
         if ($colony) {
             $ship->setSX($colony->getSX());
@@ -123,11 +122,14 @@ final class ShipCreator implements ShipCreatorInterface
             $ship->setCY($colony->getSystem()->getCY());
             $this->shipRepository->save($ship);
         }
-
+        
         $this->createByModuleList(
             $ship,
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
+        
+        $ship->setMaxEbatt((int)round($ship->getMaxEps() / 3));
+        $this->shipRepository->save($ship);
 
         return $ship;
     }
@@ -139,6 +141,7 @@ final class ShipCreator implements ShipCreatorInterface
         //default systems, that every ship should have
         $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM] = 0;
         $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
+        //TODO deflector
 
         foreach ($modules as $key => $module) {
             switch ($module->getModule()->getType()) {
