@@ -161,6 +161,8 @@ interface ShipInterface
 
     public function getReactorOutput(): int;
 
+    public function getTheoreticalReactorOutput(): int;
+
     public function setReactorOutput(int $reactorOutput): ShipInterface;
 
     public function getBaseDamage(): int;

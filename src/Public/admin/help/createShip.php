@@ -38,7 +38,7 @@ if ($buildplanId > 0) {
     $ship->setCx($cx);
     $ship->setCy($cy);
     $ship->setEps($ship->getTheoreticalMaxEps());
-    $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
+    $ship->setWarpcoreLoad($ship->getTheoreticalWarpcoreCapacity());
 
     $shipRepo->save($ship);
 
