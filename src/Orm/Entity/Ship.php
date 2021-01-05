@@ -458,6 +458,11 @@ class Ship implements ShipInterface
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
     }
 
+    public function getTheoreticalMaxEps(): int
+    {
+        return $this->max_eps;
+    }
+
     public function setMaxEps(int $maxEps): ShipInterface
     {
         $this->max_eps = $maxEps;
