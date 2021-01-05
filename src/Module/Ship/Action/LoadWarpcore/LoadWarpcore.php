@@ -98,7 +98,7 @@ final class LoadWarpcore implements ActionControllerInterface
                 return null;
             }
             if ($storage->getAmount() < ($count * $loadCost)) {
-                $count = intval($storage->getAmount() / $loadCost);
+                $count = (int)($storage->getAmount() / $loadCost);
             }
         }
         if ($ship->getWarpcoreLoad() + $count * ShipEnum::WARPCORE_LOAD > $ship->getWarpcoreCapacity()) {

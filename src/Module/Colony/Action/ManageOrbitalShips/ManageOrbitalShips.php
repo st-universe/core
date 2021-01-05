@@ -130,7 +130,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 if ($batt[$ship] == 'm') {
                     $load = $shipobj->getMaxEbatt() - $shipobj->getEBatt();
                 } else {
-                    $load = intval($batt[$ship]);
+                    $load = (int)$batt[$ship];
                     if ($shipobj->getEBatt() + $load > $shipobj->getMaxEBatt()) {
                         $load = $shipobj->getMaxEBatt() - $shipobj->getEBatt();
                     }
@@ -197,7 +197,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if ($wk[$shipobj->getId()] == 'm') {
                             $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
                         } else {
-                            $load = ceil(intval($wk[$shipobj->getId()]) / ShipEnum::WARPCORE_LOAD);
+                            $load = ceil(((int)$wk[$shipobj->getId()]) / ShipEnum::WARPCORE_LOAD);
                             if ($load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) {
                                 $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
                             }
@@ -206,7 +206,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if ($load >= 1) {
                             foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
                                 if ($storage[$commodityId]->getAmount() < ($load * $loadCost)) {
-                                    $load = intval($storage[$commodityId]->getAmount() / $loadCost);
+                                    $load = (int)($storage[$commodityId]->getAmount() / $loadCost);
                                 }
                             }
                             foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
@@ -256,7 +256,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 if ($torp[$shipobj->getId()] == 'm') {
                     $count = $shipobj->getMaxTorpedos();
                 } else {
-                    $count = intval($torp[$shipobj->getId()]);
+                    $count = (int)$torp[$shipobj->getId()];
                 }
                 try {
                     if ($count < 0) {
