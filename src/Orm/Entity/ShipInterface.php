@@ -67,6 +67,8 @@ interface ShipInterface
 
     public function getMaxEps(): int;
 
+    public function getTheoreticalMaxEps(): int;
+
     public function setMaxEps(int $maxEps): ShipInterface;
 
     public function getEBatt(): int;
