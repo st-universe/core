@@ -12,6 +12,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -28,19 +29,23 @@ final class AttackShip implements ActionControllerInterface
     private ShipAttackCycleInterface $shipAttackCycle;
 
     private PositionCheckerInterface $positionChecker;
+    
+    private ShipRemoverInterface $shipRemover;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipAttackCycleInterface $shipAttackCycle,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        ShipRemoverInterface $shipRemover
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
         $this->positionChecker = $positionChecker;
+        $this->shipRemover = $shipRemover;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -147,6 +152,21 @@ final class AttackShip implements ActionControllerInterface
         } else {
             $game->addInformationMerge($this->shipAttackCycle->getMessages());
             $game->setTemplateVar('FIGHT_RESULTS', null);
+        }
+
+        $this->removeTrumfieldZero();
+    }
+
+    /**
+     * escape pods create 0 hull trumfields, that need to get removed right away
+     */
+    private function removeTrumfieldZero(): void
+    {
+        $target = $this->shipRepository->find(request::postIntFatal('target'));
+
+        if ($target->getHuell() == 0)
+        {
+            $this->shipRemover->remove($target);
         }
     }
 
