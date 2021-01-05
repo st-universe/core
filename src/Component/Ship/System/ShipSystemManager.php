@@ -150,4 +150,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
 
         $system->handleDestruction($ship);
     }
+
+    public function handleDamagedSystem(ShipInterface $ship, int $shipSystemId): void
+    {
+        $system = $this->lookupSystem($shipSystemId);
+
+        $system->handleDamage($ship);
+    }
 }

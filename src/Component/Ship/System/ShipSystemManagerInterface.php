@@ -34,4 +34,6 @@ interface ShipSystemManagerInterface
     public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface;
 
     public function handleDestroyedSystem(ShipInterface $ship, int $shipSystemId): void;
+
+    public function handleDamagedSystem(ShipInterface $ship, int $shipSystemId): void;
 }

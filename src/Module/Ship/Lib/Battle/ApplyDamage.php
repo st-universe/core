@@ -121,6 +121,7 @@ final class ApplyDamage implements ApplyDamageInterface
         if ($status > $dmg)
         {
             $system->setStatus($status - $dmg);
+            $this->shipSystemManager->handleDamagedSystem($ship, $system->getSystemType());
             $msg[] = "- Folgendes System wurde beschädigt: " . $systemName;
         } else {
             $system->setStatus(0);
