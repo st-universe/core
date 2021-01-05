@@ -146,7 +146,7 @@ class ShipSystem implements ShipSystemInterface
             || $this->getMode() < 2;
     }
 
-    public function getModule(): ?ModuleInterface
+    public function getModule(): ModuleInterface
     {
         return $this->module;
     }
