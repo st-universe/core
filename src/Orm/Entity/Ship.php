@@ -449,9 +449,13 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    /**
+     * proportional to eps system status
+     */
     public function getMaxEps(): int
     {
-        return $this->max_eps;
+        return ceil($this->max_eps
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100);
     }
 
     public function setMaxEps(int $maxEps): ShipInterface
@@ -515,9 +519,13 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    /**
+     * proportional to shield system status
+     */
     public function getMaxShield(): int
     {
-        return $this->max_schilde;
+        return ceil($this->max_schilde
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100);
     }
 
     public function setMaxShield(int $maxShields): ShipInterface
@@ -678,31 +686,43 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    /**
+     * proportional to computer system status
+     */
     public function getHitChance(): int
     {
-        return $this->hit_chance;
+        return ceil($this->hit_chance
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100);
     }
-
+    
     public function setHitChance(int $hitChance): ShipInterface
     {
         $this->hit_chance = $hitChance;
         return $this;
     }
-
+    
+    /**
+     * proportional to impulsedrive system status
+     */
     public function getEvadeChance(): int
     {
-        return $this->evade_chance;
-    }
-
+        return ceil($this->evade_chance
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100);
+        }
+        
     public function setEvadeChance(int $evadeChance): ShipInterface
     {
         $this->evade_chance = $evadeChance;
         return $this;
     }
-
+    
+    /**
+     * proportional to warpcore system status
+     */
     public function getReactorOutput(): int
     {
-        return $this->reactor_output;
+        return ceil($this->reactor_output
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100);
     }
 
     public function setReactorOutput(int $reactorOutput): ShipInterface
@@ -711,9 +731,13 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    /**
+     * proportional to energy weapon system status
+     */
     public function getBaseDamage(): int
     {
-        return $this->base_damage;
+        return ceil($this->base_damage
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100);
     }
 
     public function setBaseDamage(int $baseDamage): ShipInterface
@@ -722,9 +746,13 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    /**
+     * proportional to sensor system status
+     */
     public function getSensorRange(): int
     {
-        return $this->sensor_range;
+        return ceil($this->sensor_range
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100);
     }
 
     public function setSensorRange(int $sensorRange): ShipInterface

@@ -22,6 +22,7 @@ use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
 use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Ship\System\Type\WarpcoreShipSystem;
 use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
+use Stu\Component\Ship\System\Type\ComputerShipSystem;
 use function DI\autowire;
 use function DI\create;
 
@@ -41,7 +42,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM => autowire(TractorBeamShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_WARPCORE => autowire(WarpcoreShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_EPS => autowire(EpsShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE => autowire(ImpulseDriveShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE => autowire(ImpulseDriveShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_COMPUTER => autowire(ComputerShipSystem::class)
         ]
     )
 ];
