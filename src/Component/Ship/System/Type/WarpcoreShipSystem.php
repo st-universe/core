@@ -51,4 +51,9 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
     {
         return ShipSystemModeEnum::MODE_ALWAYS_ON;
     }
+
+    public function handleDestruction(ShipInterface $ship): void
+    {
+        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
+    }
 }
