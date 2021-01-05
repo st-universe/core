@@ -53,7 +53,7 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
 
     public function handleDestruction(ShipInterface $ship): void
     {
-        //TODO launch escape pods and flee ship
+        //crew flees ship when tick happens! not yet!
     }
 
     public function getDefaultMode(): int
