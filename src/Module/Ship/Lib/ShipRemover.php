@@ -75,6 +75,12 @@ final class ShipRemover implements ShipRemoverInterface
             $msg = $this->shipLeaver->leave($ship);
         }
 
+        if ($ship->getRump()->isEscapePods())
+        {
+            $this->remove($ship);
+            return $msg;
+        }
+
         $ship->setFormerRumpId($ship->getRump()->getId());
         $ship->setRump($this->shipRumpRepository->find(ShipEnum::TRUMFIELD_CLASS));
         $ship->setHuell((int) round($ship->getMaxHuell()/20));
