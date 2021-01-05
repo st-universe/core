@@ -35,6 +35,11 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         //nothing to do here
     }
 
+    public function handleDamage(ShipInterface $ship): void
+    {
+        //nothing to do here
+    }
+
     public function getDefaultMode(): int
     {
         return ShipSystemModeEnum::MODE_OFF;
