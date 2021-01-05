@@ -454,8 +454,8 @@ class Ship implements ShipInterface
      */
     public function getMaxEps(): int
     {
-        return ceil($this->max_eps
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100);
+        return intval(ceil($this->max_eps
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
     }
 
     public function setMaxEps(int $maxEps): ShipInterface
@@ -524,8 +524,8 @@ class Ship implements ShipInterface
      */
     public function getMaxShield(): int
     {
-        return ceil($this->max_schilde
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100);
+        return intval(ceil($this->max_schilde
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100));
     }
 
     public function setMaxShield(int $maxShields): ShipInterface
@@ -691,8 +691,8 @@ class Ship implements ShipInterface
      */
     public function getHitChance(): int
     {
-        return ceil($this->hit_chance
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100);
+        return intval(ceil($this->hit_chance
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100));
     }
     
     public function setHitChance(int $hitChance): ShipInterface
@@ -706,8 +706,8 @@ class Ship implements ShipInterface
      */
     public function getEvadeChance(): int
     {
-        return ceil($this->evade_chance
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100);
+        return intval(ceil($this->evade_chance
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100));
         }
         
     public function setEvadeChance(int $evadeChance): ShipInterface
@@ -721,8 +721,8 @@ class Ship implements ShipInterface
      */
     public function getReactorOutput(): int
     {
-        return ceil($this->reactor_output
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100);
+        return intval(ceil($this->reactor_output
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
     }
 
     public function setReactorOutput(int $reactorOutput): ShipInterface
@@ -736,8 +736,8 @@ class Ship implements ShipInterface
      */
     public function getBaseDamage(): int
     {
-        return ceil($this->base_damage
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100);
+        return intval(ceil($this->base_damage
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100));
     }
 
     public function setBaseDamage(int $baseDamage): ShipInterface
@@ -751,8 +751,8 @@ class Ship implements ShipInterface
      */
     public function getSensorRange(): int
     {
-        return ceil($this->sensor_range
-            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100);
+        return intval(ceil($this->sensor_range
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100));
     }
 
     public function setSensorRange(int $sensorRange): ShipInterface
