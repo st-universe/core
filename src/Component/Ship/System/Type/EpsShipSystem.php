@@ -40,4 +40,12 @@ final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTy
     {
         $ship->setEps(0);
     }
+
+    public function handleDamage(ShipInterface $ship): void
+    {
+        if ($ship->getEps() > $ship->getMaxEps())
+        {
+            $ship->setEps($ship->getMaxEps());
+        }
+    }
 }

@@ -56,4 +56,12 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
     {
         $ship->setShield(0);
     }
+
+    public function handleDamage(ShipInterface $ship): void
+    {
+        if ($ship->getShield() > $ship->getMaxShield())
+        {
+            $ship->setShield($ship->getMaxShield());
+        }
+    }
 }
