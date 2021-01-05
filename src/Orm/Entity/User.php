@@ -524,6 +524,12 @@ class User implements UserInterface
                     (int)$this->getId(),
                     ShipEnum::SHIP_CATEGORY_DEBRISFIELD
                 );
+
+            $this->crew_count_debris += $container->get(CrewRepositoryInterface::class)
+                ->getAmountByUserAndShipRumpCategory(
+                    (int)$this->getId(),
+                    ShipEnum::SHIP_CATEGORY_ESCAPE_PODS
+                );
         }
         return $this->crew_count_debris;
     }
