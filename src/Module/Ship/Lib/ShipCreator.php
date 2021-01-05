@@ -112,6 +112,7 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setName($ship->getRump()->getName());
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
         $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+        $ship->setMaxEbatt();
         
         $this->shipRepository->save($ship);
         if ($colony) {
@@ -128,11 +129,6 @@ final class ShipCreator implements ShipCreatorInterface
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
         
-        //reload to have systems installed
-        $ship = $this->shipRepository->find($ship->getId());
-        $ship->setMaxEbatt((int)round($ship->getMaxEps() / 3));
-        $this->shipRepository->save($ship);
-
         return $ship;
     }
 

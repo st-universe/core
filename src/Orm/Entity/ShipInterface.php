@@ -75,7 +75,7 @@ interface ShipInterface
 
     public function getMaxEBatt(): int;
 
-    public function setMaxEBatt(int $maxBatt): ShipInterface;
+    public function setMaxEBatt(): ShipInterface;
 
     public function getHuell(): int;
 
