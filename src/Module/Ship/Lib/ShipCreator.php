@@ -129,7 +129,7 @@ final class ShipCreator implements ShipCreatorInterface
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
         
-        return $ship;
+        return $this->shipRepository->find($ship->getId());
     }
 
     private function createByModuleList(ShipInterface $ship, array $modules): void
