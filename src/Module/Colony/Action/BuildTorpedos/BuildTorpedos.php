@@ -55,7 +55,7 @@ final class BuildTorpedos implements ActionControllerInterface
             if (!array_key_exists($torp_id, $buildableTorpedoTypes)) {
                 continue;
             }
-            $count = intval($count);
+            $count = (int)$count;
             $torp = $buildableTorpedoTypes[$torp_id];
             if ($torp->getEnergyCost() * $count > $colony->getEps()) {
                 $count = floor($colony->getEps() / $torp->getEnergyCost());
@@ -77,7 +77,7 @@ final class BuildTorpedos implements ActionControllerInterface
             }
 
             //count could be float here
-            $count = intval($count);
+            $count = (int)$count;
 
             foreach ($torp->getProductionCosts() as $id => $cost) {
                 $this->colonyStorageManager->lowerStorage($colony, $cost->getGood(), $cost->getAmount() * $count);

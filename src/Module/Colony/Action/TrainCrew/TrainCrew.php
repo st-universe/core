@@ -62,7 +62,7 @@ final class TrainCrew implements ActionControllerInterface
             if ($count > $trainableCrewPerTick) {
                 $count = $trainableCrewPerTick;
             } else {
-                $count = intval($count);
+                $count = (int)$count;
             }
         }
         if ($count <= 0) {

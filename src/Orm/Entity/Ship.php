@@ -454,7 +454,7 @@ class Ship implements ShipInterface
      */
     public function getMaxEps(): int
     {
-        return intval(ceil($this->max_eps
+        return (int)(ceil($this->max_eps
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
     }
 
@@ -524,7 +524,7 @@ class Ship implements ShipInterface
      */
     public function getMaxShield(): int
     {
-        return intval(ceil($this->max_schilde
+        return (int)(ceil($this->max_schilde
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100));
     }
 
@@ -691,7 +691,7 @@ class Ship implements ShipInterface
      */
     public function getHitChance(): int
     {
-        return intval(ceil($this->hit_chance
+        return (int)(ceil($this->hit_chance
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100));
     }
     
@@ -706,7 +706,7 @@ class Ship implements ShipInterface
      */
     public function getEvadeChance(): int
     {
-        return intval(ceil($this->evade_chance
+        return (int)(ceil($this->evade_chance
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100));
         }
         
@@ -721,7 +721,7 @@ class Ship implements ShipInterface
      */
     public function getReactorOutput(): int
     {
-        return intval(ceil($this->reactor_output
+        return (int)(ceil($this->reactor_output
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
     }
 
@@ -736,7 +736,7 @@ class Ship implements ShipInterface
      */
     public function getBaseDamage(): int
     {
-        return intval(ceil($this->base_damage
+        return (int)(ceil($this->base_damage
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100));
     }
 
@@ -751,7 +751,7 @@ class Ship implements ShipInterface
      */
     public function getSensorRange(): int
     {
-        return intval(ceil($this->sensor_range
+        return (int)(ceil($this->sensor_range
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100));
     }
 

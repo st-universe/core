@@ -128,6 +128,8 @@ final class ShipCreator implements ShipCreatorInterface
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
         
+        //reload to have systems installed
+        $ship = $this->shipRepository->find($ship->getId());
         $ship->setMaxEbatt((int)round($ship->getMaxEps() / 3));
         $this->shipRepository->save($ship);
 

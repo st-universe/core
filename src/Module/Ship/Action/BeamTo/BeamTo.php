@@ -119,7 +119,7 @@ final class BeamTo implements ActionControllerInterface
             if ($count == "m") {
                 $count = $storage->getAmount();
             } else {
-                $count = intval($count);
+                $count = (int)$count;
             }
             if ($count < 1) {
                 continue;

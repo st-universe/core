@@ -16,7 +16,7 @@ class ColonyMenu
 
     private function getMenuType()
     {
-        return intval(request::getInt('menu'));
+        return (int)request::getInt('menu');
     }
 
     public function __get($value)
