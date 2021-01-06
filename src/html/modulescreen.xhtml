@@ -78,7 +78,6 @@
             <div class="box_body">
               <div style="width: 100%;">
                 <div id="crewdisplay">
-                  <div id="crewSum">Benötigte Crew: ?</div>
                   <div id="crew100p">Benötigte Crew: <span tal:replace="RUMP/getCrew100P" />(100%)</div>
                   <div id="crew110p" style="display: none;">Benötigte Crew: <span tal:replace="RUMP/getCrew110P" />(110%)</div>
                   <div id="crew120p" style="display: none;">Benötigte Crew: <span tal:replace="RUMP/getCrew120P" />(120%)</div>
@@ -152,7 +151,7 @@
         <tr tal:repeat="module THIS/getAvailableModules" class="runtime">
           <td style="width: 3px;" tal:attributes="class php:THIS.getModuleLevelClass(rump,module)"></td>
           <td style="width: 50px;">
-            <input type="radio" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getCrew})" />
+            <input type="radio" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
