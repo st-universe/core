@@ -6,7 +6,6 @@ namespace Stu\Module\Tick\Ship;
 
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 final class ShipTickManager implements ShipTickManagerInterface
 {
@@ -71,22 +70,11 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
-            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS))
-            {
-                $eps = (int)ceil($ship->getMaxEps() / 10);
-                if ($eps + $ship->getEps() > $ship->getMaxEps()) {
-                    $eps = $ship->getMaxEps() - $ship->getEps();
-                }
-                $ship->setEps($ship->getEps() + $eps);
+            $eps = (int)ceil($ship->getMaxEps() / 10);
+            if ($eps + $ship->getEps() > $ship->getMaxEps()) {
+                $eps = $ship->getMaxEps() - $ship->getEps();
             }
-            else
-            {
-                $eps = (int)ceil($ship->getTheoreticalMaxEps() / 10);
-                if ($eps + $ship->getEps() > $ship->getTheoreticalMaxEps()) {
-                    $eps = $ship->getTheoreticalMaxEps() - $ship->getEps();
-                }
-                $ship->setEps($ship->getEps() + $eps);
-            }
+            $ship->setEps($ship->getEps() + $eps);
 
             $this->shipRepository->save($ship);
         }
