@@ -55,9 +55,9 @@ final class JoinFleet implements ActionControllerInterface
         if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
-        if ($fleet->getPointSum() + $ship->getRump()->getShipRumpCategory()->getPoints() > GameEnum::POINTS_PER_FLEET) {
-            $game->addInformation(sprintf(_('Es sind maximal %d Schiffspunkte pro Flotte möglich'),
-                GameEnum::POINTS_PER_FLEET));
+        if ($fleet->getCrewSum() + $ship->getBuildplan()->getCrew() > GameEnum::CREW_PER_FLEET) {
+            $game->addInformation(sprintf(_('Es sind maximal %d Crew pro Flotte möglich'),
+                GameEnum::CREW_PER_FLEET));
             return;
         }
         $ship->setFleet($fleet);

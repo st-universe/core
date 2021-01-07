@@ -1443,6 +1443,7 @@ class Ship implements ShipInterface
         return 100;
     }
 
+    //TODO intercept script attacks, e.g. beam from cloaked or warped ship
     public function canInteractWith($target, bool $colony = false): bool
     {
         if ($target->getUser()->isVacationRequestOldEnough()) {
