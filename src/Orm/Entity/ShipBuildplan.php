@@ -149,13 +149,11 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
-    //@deprecated
     public function getCrewPercentage(): int
     {
         return $this->crew_percentage;
     }
 
-    //@deprecated
     public function setCrewPercentage(int $crewPercentage): ShipBuildplanInterface
     {
         $this->crew_percentage = $crewPercentage;

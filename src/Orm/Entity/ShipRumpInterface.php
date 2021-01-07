@@ -159,7 +159,6 @@ interface ShipRumpInterface
 
     public function getCrew100P(): int;
 
-    //@deprecated
     public function getCrew110P(): int;
 
     public function getCrew120P(): int;

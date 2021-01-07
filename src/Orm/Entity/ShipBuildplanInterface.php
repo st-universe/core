@@ -36,10 +36,8 @@ interface ShipBuildplanInterface
 
     public function setCrew(int $crew): ShipBuildplanInterface;
 
-    //@deprecated
     public function getCrewPercentage(): int;
 
-    //@deprecated
     public function setCrewPercentage(int $crewPercentage): ShipBuildplanInterface;
 
     public function isDeleteable(): bool;
