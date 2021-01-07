@@ -41,6 +41,7 @@ if ($rumpId !== 0) {
     $specialModuleTypes = [
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER
     ];
 
     $moduleTypes = [

@@ -120,9 +120,9 @@ class ShipBuildplan implements ShipBuildplanInterface
         return false;
     }
 
-    public static function createSignature(array $modules): string
+    public static function createSignature(array $modules, int $crewUsage = 0): string
     {
-        return md5(implode('_', $modules));
+        return md5(implode('_', $modules) . '_' . $crewUsage);
     }
 
     public function getSignature(): ?string
