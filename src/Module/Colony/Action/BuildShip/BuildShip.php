@@ -110,10 +110,12 @@ final class BuildShip implements ActionControllerInterface
 
         $modules = array();
         $sigmod = array();
-        $crewcount = 100;
+        $crew_usage = $rump->getBaseCrew();
         for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);
-            if ($i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0 && count($module) == 0) {
+            if ($i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
+                    && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0
+                    && count($module) == 0) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     ModuleTypeDescriptionMapper::getDescription($i)
@@ -123,7 +125,9 @@ final class BuildShip implements ActionControllerInterface
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 foreach ($module as $key) {
                     /** @var ModuleInterface[] $modules */
-                    $modules[$key] = $this->moduleRepository->find((int) $key);
+                    $specialMod = $this->moduleRepository->find((int) $key);
+                    $crew_usage += $specialMod->getCrew();
+                    $modules[$key] = $specialMod;
                     $sigmod[$key] = $modules[$key]->getId();
                 }
                 continue;
@@ -134,30 +138,17 @@ final class BuildShip implements ActionControllerInterface
             if (current($module) > 0) {
                 /** @var ModuleInterface $mod */
                 $mod = $this->moduleRepository->find((int) current($module));
-                if ($mod->getLevel() > $rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
-                    $crewcount += 20;
-                } elseif ($mod->getLevel() < $rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
-                    $crewcount -= 10;
-                }
+                $crew_usage += $mod->getCrew();
             } else {
                 if (!$rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
                     return;
                 }
-                $crewcount -= 10;
             }
             $modules[current($module)] = $mod;
             $sigmod[$i] = $mod->getId();
         }
-        if ($crewcount > 120) {
+        if ($crew_usage > $rump->getCrew120P()) {
             return;
-        }
-        if ($crewcount == 120) {
-            $crew_usage = $rump->getCrew120P();
-        } elseif ($crewcount == 110) {
-            $crew_usage = $rump->getCrew110P();
-        } else {
-            $crew_usage = $rump->getCrew100P();
-            $crewcount = 100;
         }
         $storage = $colony->getStorage();
         foreach ($modules as $module) {
@@ -193,7 +184,6 @@ final class BuildShip implements ActionControllerInterface
             $plan->setSignature($signature);
             $plan->setBuildtime($rump->getBuildtime());
             $plan->setCrew($crew_usage);
-            $plan->setCrewPercentage($crewcount);
 
             $this->shipBuildplanRepository->save($plan);
 
