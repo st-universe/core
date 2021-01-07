@@ -454,6 +454,11 @@ class Ship implements ShipInterface
      */
     public function getMaxEps(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS))
+        {
+            return $this->max_eps;
+        }
+
         return (int)(ceil($this->max_eps
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
     }
@@ -529,6 +534,11 @@ class Ship implements ShipInterface
      */
     public function getMaxShield(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS))
+        {
+            return $this->max_schilde;
+        }
+
         return (int)(ceil($this->max_schilde
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100));
     }
@@ -696,6 +706,11 @@ class Ship implements ShipInterface
      */
     public function getHitChance(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER))
+        {
+            return $this->hit_chance;
+        }
+
         return (int)(ceil($this->hit_chance
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100));
     }
@@ -731,6 +746,11 @@ class Ship implements ShipInterface
      */
     public function getReactorOutput(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE))
+        {
+            return $this->reactor_output;
+        }
+
         return (int)(ceil($this->reactor_output
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
     }
@@ -751,6 +771,11 @@ class Ship implements ShipInterface
      */
     public function getBaseDamage(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER))
+        {
+            return $this->base_damage;
+        }
+
         return (int)(ceil($this->base_damage
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100));
     }
@@ -766,6 +791,11 @@ class Ship implements ShipInterface
      */
     public function getSensorRange(): int
     {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LSS))
+        {
+            return $this->sensor_range;
+        }
+
         return (int)(ceil($this->sensor_range
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100));
     }
