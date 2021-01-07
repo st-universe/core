@@ -79,7 +79,8 @@
               <div style="width: 100%;">
                 <div id="crewdisplay">
                   <div id="crewSum">Benötigte Crew: ?</div>
-                  <div id="crewerr" style="display: none;">Crewbedarf &gt; <span tal:replace="RUMP/getCrew120P" /> - Nicht baubar</div>
+                  <div id="crewMax">Maximale Crew: <span tal:replace="RUMP/getCrew120P" /></div>
+                  <div id="crewerr" style="display: none; color:tomato">Crewbedarf &gt; <span tal:replace="RUMP/getCrew120P" /> - Nicht baubar</div>
                 </div>
               </div>
               <br />
@@ -139,7 +140,7 @@
         <tr tal:condition="THIS/allowEmptySlot">
           <td class="module_positive" style="width: 3px;"></td>
           <td colspan="4">
-            <input type="radio" tal:attributes="checked not:THIS/hasModuleSelected/${THIS/getModuleType}" name="mod_${THIS/getModuleType}[]" value="0" onchange="replaceTabImage(${THIS/getModuleType},0,${rump/getCrew120P})" />
+            <input type="radio" tal:attributes="checked not:THIS/hasModuleSelected/${THIS/getModuleType}" name="mod_${THIS/getModuleType}[]" value="0" onchange="replaceTabImage(${THIS/getModuleType},0,${rump/getBaseCrew},${rump/getCrew120P})" />
             <span>Keine Auswahl</span>
             <script defer="defer">
               crew_type.set(${THIS/getModuleType},0);
@@ -149,7 +150,7 @@
         <tr tal:repeat="module THIS/getAvailableModules" class="runtime">
           <td style="width: 3px;" tal:attributes="class php:THIS.getModuleLevelClass(rump,module)"></td>
           <td style="width: 50px;">
-            <input type="radio" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${rump/getCrew120P},${module/getModule/getGoodId},${module/getModule/getCrew})" />
+            <input type="radio" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}" onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${rump/getBaseCrew},${rump/getCrew120P},${module/getModule/getGoodId},${module/getModule/getCrew})" />
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
