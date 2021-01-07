@@ -587,7 +587,7 @@ class ShipRump implements ShipRumpInterface
 
     private function getBaseCrewCount(): int
     {
-        $count = 0;
+        $count = $this->getBaseCrew();
         foreach ([1, 2, 3, 4, 5, 7] as $slot) {
             $crew_func = 'getJob' . $slot . 'Crew';
             $count += $this->getCrewObj()->$crew_func();
@@ -600,6 +600,7 @@ class ShipRump implements ShipRumpInterface
         return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew();
     }
 
+    //@deprecated
     public function getCrew110P(): int
     {
         return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew10p();
