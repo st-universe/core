@@ -165,7 +165,7 @@ final class BuildShip implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage($colony, $module->getCommodity(), 1);
         }
         $game->setView(ShowColony::VIEW_IDENTIFIER);
-        $signature = ShipBuildplan::createSignature($sigmod);
+        $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
             $planname = sprintf(

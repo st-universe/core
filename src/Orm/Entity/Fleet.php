@@ -143,7 +143,7 @@ class Fleet implements FleetInterface
         return array_reduce(
             $this->shiplist->toArray(),
             function (int $sum, ShipInterface $ship): int {
-                return $sum + $ship->getRump()->getShipRumpCategory()->getPoints();
+                return $sum + $ship->getBuildplan()->getCrew();
             },
             0
         );
