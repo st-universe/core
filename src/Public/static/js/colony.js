@@ -229,7 +229,7 @@ function showModuleSelectTab(obj,tabId) {
 	$('module_select_tab_'+tabId).show();
 	currentTab = $('module_select_tab_'+tabId);
 }
-function replaceTabImage(type,moduleId,goodId,module_level) {
+function replaceTabImage(type,moduleId,goodId,module_crew) {
 	if (moduleId == 0) {
 		$('tab_image_mod_'+type).src = 'assets/buttons/modul_'+type+'.gif';
 		$('module_type_'+type).innerHTML = '';
@@ -239,7 +239,7 @@ function replaceTabImage(type,moduleId,goodId,module_level) {
 		$('tab_image_mod_'+type).src = 'assets/goods/'+goodId+'.gif';
 		$('module_type_'+type).innerHTML = $(moduleId+'_content').innerHTML;
 		$('module_type_'+type).show();
-		updateCrewCount(type,module_level);
+		updateCrewCount(type,module_crew);
 	}
 	enableShipBuildButton();
 }
@@ -258,13 +258,15 @@ function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
 	}
 }
 var crew_type = new Hash();
-function updateCrewCount(type,module_level) {
-	crew_type.set(type,module_level);
+function updateCrewCount(type,module_crew) {
+	crew_type.set(type,module_crew);
 }
 function checkCrewCount() {
+	crewSum = 0;
 	crewcount = 100;
 	crew_type.each(function(pair) {
 		if (pair.value >= 0) {
+			crewSum += pair.value;
 			if (pair.value == 0) {
 				crewcount -= 10;
 			} else {
@@ -279,6 +281,8 @@ function checkCrewCount() {
 	$('crewdisplay').select('div').each(function(elem) {
 		elem.hide();
 	});
+	$('crewSum').show();
+	$('crewSum').innerHTML = "Benötigte Crew: " + crewSum;
 	if (crewcount > 120) {
 		Form.Element.disable('buildbutton');
 		$('crewerr').show();
