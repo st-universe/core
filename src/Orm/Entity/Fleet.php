@@ -138,7 +138,7 @@ class Fleet implements FleetInterface
         return $this;
     }
 
-    public function getPointSum(): int
+    public function getCrewSum(): int
     {
         return array_reduce(
             $this->shiplist->toArray(),

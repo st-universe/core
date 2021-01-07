@@ -31,5 +31,5 @@ interface FleetInterface
 
     public function setUser(UserInterface $user): FleetInterface;
 
-    public function getPointSum(): int;
+    public function getCrewSum(): int;
 }

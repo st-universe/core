@@ -78,7 +78,7 @@
             <div class="box_body">
               <div style="width: 100%;">
                 <div id="crewdisplay">
-                  <div id="crewSum">Benötigte Crew: ?</div>
+                  <div id="crewSum">Benötigte Crew: <span tal:replace="RUMP/getBaseCrew" /></div>
                   <div id="crewMax">Maximale Crew: <span tal:replace="RUMP/getCrew120P" /></div>
                   <div id="crewerr" style="display: none; color:tomato">Crewbedarf &gt; <span tal:replace="RUMP/getCrew120P" /> - Nicht baubar</div>
                 </div>
