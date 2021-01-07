@@ -79,13 +79,22 @@ final class CrewCreator implements CrewCreatorInterface
     {
         $userId = $ship->getUser()->getId();
 
-        $crewToSetup = $ship->getBuildPlan()->getCrew();
-
-        foreach (CrewEnum::CREW_ORDER as $i) {
+        for ($i = CrewEnum::CREW_TYPE_FIRST; $i <= CrewEnum::CREW_TYPE_LAST; $i++) {
             $j = 1;
             if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
-                $slot = 'getJob6Crew20p';
-            }
+                $percentage = $ship->getBuildPlan()->getCrewPercentage();
+                // @todo refactor
+                switch ($percentage) {
+                    case 100:
+                        $slot = 'getJob6Crew';
+                        break;
+                    case 110:
+                        $slot = 'getJob6Crew10p';
+                        break;
+                    case 120:
+                        $slot = 'getJob6Crew20p';
+                        break;
+                }
             } else {
                 $slot = 'getJob' . $i . 'Crew';
             }
@@ -93,9 +102,8 @@ final class CrewCreator implements CrewCreatorInterface
                 (int)$ship->getRump()->getShipRumpCategory()->getId(),
                 (int)$ship->getRump()->getShipRumpRole()->getId()
             );
-            while ($crewToSetup > 0 && $j <= $config->$slot()) {
+            while ($j <= $config->$slot()) {
                 $j++;
-                $crewToSetup--;
                 if (($crew = $this->crewRepository->getFreeByUserAndType($userId, $i)) === null) {
                     $crew = $this->crewRepository->getFreeByUser($userId);
 

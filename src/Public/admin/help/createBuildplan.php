@@ -75,6 +75,7 @@ if ($rumpId !== 0) {
             $plan->setSignature($signature);
             $plan->setBuildtime(0);
             $plan->setCrew($rump->getCrew100P());
+            $plan->setCrewPercentage(100);
 
             $buildplanRepo->save($plan);
 
