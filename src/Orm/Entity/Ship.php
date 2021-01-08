@@ -1444,7 +1444,7 @@ class Ship implements ShipInterface
     }
 
     //TODO intercept script attacks, e.g. beam from cloaked or warped ship
-    public function canInteractWith($target, bool $colony = false): bool
+    public function canInteractWith($target, bool $colony = false, bool $doCloakCheck = false): bool
     {
         if ($target->getUser()->isVacationRequestOldEnough()) {
             global $container;
@@ -1471,6 +1471,10 @@ class Ship implements ShipInterface
             }
         }
         if ($target->getShieldState() && $target->getUserId() != $this->getUser()->getId()) {
+            return false;
+        }
+        if ($doCloakCheck && $target->getCloakState())
+        {
             return false;
         }
         return true;
@@ -1540,6 +1544,6 @@ class Ship implements ShipInterface
 
     public function __toString()
     {
-        return $this->getName();
+        return $this->getName() . '(' . $this->getId() . ')';
     }
 }
