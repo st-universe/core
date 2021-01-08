@@ -81,6 +81,11 @@ final class CrewCreator implements CrewCreatorInterface
 
         $crewToSetup = $ship->getBuildPlan()->getCrew();
 
+        if ($ship->getId() == 2208)
+        {
+            echo "- crewToSetup: ".$crewToSetup."\n";
+        }
+
         foreach (CrewEnum::CREW_ORDER as $i) {
             $j = 1;
             if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
@@ -92,7 +97,7 @@ final class CrewCreator implements CrewCreatorInterface
                 (int)$ship->getRump()->getShipRumpCategory()->getId(),
                 (int)$ship->getRump()->getShipRumpRole()->getId()
             );
-            while ($crewToSetup > 0 && $j <= $config->$slot()) {
+            while ($crewToSetup > 0 && ($i == CrewEnum::CREW_TYPE_CREWMAN || $j <= $config->$slot())) {
                 $j++;
                 $crewToSetup--;
                 if (($crew = $this->crewRepository->getFreeByUserAndType($userId, $i)) === null) {
