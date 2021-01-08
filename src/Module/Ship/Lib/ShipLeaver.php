@@ -83,9 +83,9 @@ final class ShipLeaver implements ShipLeaverInterface
             $shipCrew->setShip($pods);
             $this->shipCrewRepository->save($shipCrew);
         }
-        $ship->getCrewlist()->clear();
+        $ship->getCrewlist()->clear(); // !!!! evtl das hier noch weg?!?!
         
-        $this->shipRepository->save($pods);
+        //$this->shipRepository->save($pods);
         $this->shipRepository->save($ship);
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
