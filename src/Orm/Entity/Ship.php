@@ -1544,6 +1544,6 @@ class Ship implements ShipInterface
 
     public function __toString()
     {
-        return $this->getName() . '(' . $this->getId() == null ? 'null' : $this->getId() . ')';
+        return $this->getName();// . '(' . $this->getId() == null ? 'null' : $this->getId() . ')';
     }
 }
