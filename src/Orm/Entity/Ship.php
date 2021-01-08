@@ -257,7 +257,7 @@ class Ship implements ShipInterface
         $this->storage = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -1544,6 +1544,6 @@ class Ship implements ShipInterface
 
     public function __toString()
     {
-        return $this->getName() . '(' . $this->getId() . ')';
+        return $this->getName() . '(' . $this->getId() == null ? 'null' : $this->getId() . ')';
     }
 }

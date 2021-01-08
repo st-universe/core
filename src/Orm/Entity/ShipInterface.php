@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 
 interface ShipInterface
 {
-    public function getId(): int;
+    public function getId(): ?int;
 
     /**
      * @deprecated
@@ -336,7 +336,7 @@ interface ShipInterface
 
     public function getRepairRate(): int;
 
-    public function canInteractWith($target, bool $colony = false): bool;
+    public function canInteractWith($target, bool $colony = false, bool $doCloakCheck = false): bool;
 
     public function hasActiveWeapons(): bool;
 
