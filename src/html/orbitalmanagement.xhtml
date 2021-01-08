@@ -44,7 +44,7 @@
                 </div>
                 <div tal:condition="ship/getCrewCount">
                   <input type="checkbox" name="unman[${ship/getId}]" />
-                  <span>Runterbeamen</span>: <span tal:replace="ship/getCrewSlots">CREW</span>
+                  <span>Runterbeamen</span>: <span tal:replace="ship/getCrewCount">CREW</span>
                 </div>
               </td>
               <td tal:condition="not:ship/ownedByUser"> </td>
