@@ -1454,10 +1454,11 @@ class Ship implements ShipInterface
             return false;
         }
 
-        $positionChecker = new PositionChecker();
         if ($this->getCloakState()) {
             return false;
         }
+        
+        $positionChecker = new PositionChecker();
         if ($colony === true) {
             if (!$positionChecker->checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
                 return false;

@@ -138,7 +138,12 @@ final class BuildShip implements ActionControllerInterface
             if (current($module) > 0) {
                 /** @var ModuleInterface $mod */
                 $mod = $this->moduleRepository->find((int) current($module));
-                $crew_usage += $mod->getCrew();
+                if ($mod->getLevel() > $rump->getModuleLevel())
+                {
+                    $crew_usage += $mod->getCrew() + 1;
+                } else {
+                    $crew_usage += $mod->getCrew();
+                }
             } else {
                 if (!$rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
                     return;

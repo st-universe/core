@@ -229,17 +229,17 @@ function showModuleSelectTab(obj,tabId) {
 	$('module_select_tab_'+tabId).show();
 	currentTab = $('module_select_tab_'+tabId);
 }
-function replaceTabImage(type,moduleId,base_crew,max_crew,goodId,module_crew) {
+function replaceTabImage(type,moduleId,base_crew,max_crew,rump_module_lvl,goodId,module_crew,module_lvl) {
 	if (moduleId == 0) {
 		$('tab_image_mod_'+type).src = 'assets/buttons/modul_'+type+'.gif';
 		$('module_type_'+type).innerHTML = '';
-		updateCrewCount(type,0,base_crew,max_crew);
+		updateCrewCount(type,0,base_crew,max_crew,rump_module_lvl,0);
 	} else {
 		Element.removeClassName($('module_tab_'+type),'module_select_base_mandatory');
 		$('tab_image_mod_'+type).src = 'assets/goods/'+goodId+'.gif';
 		$('module_type_'+type).innerHTML = $(moduleId+'_content').innerHTML;
 		$('module_type_'+type).show();
-		updateCrewCount(type,module_crew,base_crew,max_crew);
+		updateCrewCount(type,module_crew,base_crew,max_crew,rump_module_lvl,module_lvl);
 	}
 	enableShipBuildButton();
 }
@@ -260,16 +260,23 @@ function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
 var crew_type = new Hash();
 var maxCrew;
 var baseCrew;
-function updateCrewCount(type,module_crew,base_crew,max_crew) {
-	crew_type.set(type,module_crew);
+var rumpModuleLvl;
+function updateCrewCount(type,module_crew,base_crew,max_crew,rump_module_lvl,module_lvl) {
+	crew_type.set(type,{lvl: module_lvl, crew: module_crew});
 	maxCrew = max_crew;
 	baseCrew = base_crew;
+	rumpModuleLvl = rump_module_lvl;
 }
 function checkCrewCount() {
 	crewSum = baseCrew;
 	crew_type.each(function(pair) {
-		if (pair.value >= 0) {
-			crewSum += pair.value;
+		if (pair.value.crew >= 0) {
+			if (pair.value.lvl > rumpModuleLvl)
+			{
+				crewSum += pair.value.crew + 1;
+			} else {
+				crewSum += pair.value.crew;
+			}
 		}
 	});
 	$('crewdisplay').select('div').each(function(elem) {
