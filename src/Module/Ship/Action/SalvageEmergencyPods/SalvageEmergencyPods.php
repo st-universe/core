@@ -76,7 +76,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                 $userId,
                 $targetUserId,
                 sprintf(
-                    _('Der Siedler hat %d deiner Crewmitglieder aus Rettungskapseln geborgen.'),
+                    _('Der Siedler hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an deine Kolonien überstellt.'),
                     $target->getCrewCount()
                 ),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
@@ -101,7 +101,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
         $this->shipRepository->save($ship);
 
-        $game->addInformation(_('Die Rettungskapseln wurden geborgen'));
+        $game->addInformation(_('Die Crew wurde geborgen und an den Besitzer überstellt'));
     }
 
     public function performSessionCheck(): bool
