@@ -81,6 +81,11 @@ final class CrewCreator implements CrewCreatorInterface
 
         $crewToSetup = $ship->getBuildPlan()->getCrew();
 
+        if ($ship->getId() == 2208)
+        {
+            echo "- crewToSetup: ".$crewToSetup."\n";
+        }
+
         foreach (CrewEnum::CREW_ORDER as $i) {
             $j = 1;
             if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
