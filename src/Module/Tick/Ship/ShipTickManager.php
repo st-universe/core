@@ -28,6 +28,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     public function work(): void
     {
+        $this->removeEmptyEscapePods();
+        
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
 
@@ -39,7 +41,6 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         }
         $this->handleNPCShips();
-        $this->removeEmptyEscapePods();
         $this->lowerTrumfieldHuell();
     }
 
@@ -48,7 +49,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($this->shipRepository->getEscapePods() as $ship) {
             if ($ship->getCrewCount() == 0) {
                 $this->shipRemover->remove($ship);
-                continue;
             }
         }
     }
