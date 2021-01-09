@@ -39,11 +39,12 @@ final class ShipTick implements ShipTickInterface
 
     public function work(ShipInterface $ship): void
     {
-        if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew()) {
-            $this->msg[] = _('Zu wenig Crew an Board, Schiff ist nicht funktionsfähig!');
-            $this->sendMessages($ship);
+        // ship offline
+        if ($ship->getCrewCount() == 0) {
             return;
         }
+
+        // leave ship
         if ($ship->getCrewCount() > 0 && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT))
         {
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
@@ -51,7 +52,15 @@ final class ShipTick implements ShipTickInterface
             $this->sendMessages($ship);
             return;
         }
-        $eps = $ship->getEps() + $ship->getReactorCapacity();
+
+        // not enough crew
+        if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew()) {
+            $this->msg[] = _('Zu wenig Crew an Board, Schiff ist nicht voll funktionsfähig!');
+            $eps = $ship->getEps();
+        }
+        else {
+            $eps = $ship->getEps() + $ship->getReactorCapacity();
+        }
 
         //try to save energy by reducing alert state
         if ($ship->getEpsUsage() > $eps) {
