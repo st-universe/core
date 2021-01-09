@@ -100,7 +100,7 @@
 				<td style="width: 33%; vertical-align: top;">
 					<table class="tcal" tal:condition="not:SHIP/getLss">
 						<tr>
-							<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss1.gif" title="Langstreckensensoren aktivieren" /></a> Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}">Sensoren aktivieren</a>)</th>
+							<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss2.gif" title="Langstreckensensoren aktivieren" /></a> Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}">Langstreckensensoren aktivieren</a>)</th>
 						</tr>
 						<tr>
 							<td colspan="3" style="text-align: center;">
@@ -127,7 +127,7 @@
 					<table tal:condition="SHIP/getLss" tal:define="panel VISUAL_NAV_PANEL" class="lssarea" cellpadding="0" cellspacing="0">
 						<tr>
 							<td style="text-align: center; height: 30px;">
-								<a phptal:cache="1d per SHIP/getId" href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss2.gif" name="lss_panel" title="Langstreckensensoren deaktivieren" /></a>
+								<a phptal:cache="1d per SHIP/getId" href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss1.gif" name="lss_panel" title="Langstreckensensoren deaktivieren" /></a>
 							</td>
 							<td class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.</td>
 						</tr>
@@ -538,8 +538,8 @@
 		<table class="tcal">
 			<tr>
 				<th>
-					<a href="?B_ACTIVATE_NBS=1&id=${SHIP/getId}" tal:condition="not:SHIP/getNbs"><img src="assets/buttons/kss1.gif" /> Nahbereichssensoren aktivieren</a>
-					<a href="?B_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getNbs"><img src="assets/buttons/kss2.gif" /> Nahbereichssensoren deaktivieren</a>
+					<a href="?B_ACTIVATE_NBS=1&id=${SHIP/getId}" tal:condition="not:SHIP/getNbs"><img src="assets/buttons/kss2.gif" /> Nahbereichssensoren aktivieren</a>
+					<a href="?B_DEACTIVATE_NBS=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}" tal:condition="SHIP/getNbs"><img src="assets/buttons/kss1.gif" /> Nahbereichssensoren deaktivieren</a>
 				</th>
 			</tr>
 		</table>
