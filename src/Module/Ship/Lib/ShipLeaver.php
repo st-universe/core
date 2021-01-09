@@ -60,6 +60,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $ship->setAlertState(1);
         $ship->setDockedTo(null);
         $ship->setFleet(null);
+        $this->shipRepository->save($ship);
 
         if ($ship->getRump()->isEscapePods())
         {
@@ -83,10 +84,7 @@ final class ShipLeaver implements ShipLeaverInterface
             $shipCrew->setShip($pods);
             $this->shipCrewRepository->save($shipCrew);
         }
-        $ship->getCrewlist()->clear(); // !!!! evtl das hier noch weg?!?!
         
-        //$this->shipRepository->save($pods);
-        $this->shipRepository->save($ship);
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
 
