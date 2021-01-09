@@ -103,6 +103,7 @@ final class ApplyDamage implements ApplyDamageInterface
         
         $healthySystems[0]->setStatus(0);
         $healthySystems[0]->setMode(ShipSystemModeEnum::MODE_OFF);
+        $this->shipSystemManager->handleDestroyedSystem($ship, $healthySystems[0]->getSystemType());
         
         return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
     }
