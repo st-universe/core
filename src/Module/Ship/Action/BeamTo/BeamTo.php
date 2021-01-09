@@ -67,7 +67,7 @@ final class BeamTo implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        if (!$ship->canInteractWith($target)) {
+        if (!$ship->canInteractWith($target, false, true)) {
             return;
         }
         if ($target->getWarpState()) {

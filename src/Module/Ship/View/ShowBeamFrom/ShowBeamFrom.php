@@ -42,7 +42,7 @@ final class ShowBeamFrom implements ViewControllerInterface
         if ($target === null) {
             return;
         }
-        if ($ship->canInteractWith($target) === false) {
+        if ($ship->canInteractWith($target, false, true) === false) {
             return;
         }
 
