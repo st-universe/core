@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use PhpTal\PHPTAL;
 
-use Stu\Component\Ship\ShipEnum
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRump;
