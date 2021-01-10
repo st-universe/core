@@ -63,6 +63,14 @@ function showBFromColonyWindow(target) {
 	new Ajax.Updater(elt,'ship.php?id='+shipid+'&SHOW_COLONY_BEAMFROM=1&target='+target);
 }
 
+function showBTroopTransferWindow(target, targetIsColony, isUnload) {
+	elt = 'troop';
+	openPJsWin(elt,1);
+	colonyParam = targetIsColony ? '&isColony=1' : '';
+	directionParam = isUnload ? '&isUnload=1' : '';
+	new Ajax.Updater(elt,'ship.php?id='+shipid+'&SHOW_TROOP_TRANSFER=1&target='+target + colonyParam + directionParam);
+}
+
 function triggerBeamToColony(target) {
 	new Ajax.Updater(elt,'ship.php?id='+shipid+'&SHOW_COLONY_BEAMTO=1&target='+target);
 }

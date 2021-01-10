@@ -9,6 +9,7 @@ final class ModuleSpecialAbilityEnum
     public const MODULE_SPECIAL_CLOAK = 1;
     public const MODULE_SPECIAL_RPG = 2;
     public const MODULE_SPECIAL_TACHYON_SCANNER = 4;
+    public const MODULE_SPECIAL_TROOP_QUARTERS = 5;
 
     public static function getDescription(int $specialId): string {
         switch ($specialId) {
@@ -18,6 +19,8 @@ final class ModuleSpecialAbilityEnum
                 return _('RPG-Schiff');
             case static::MODULE_SPECIAL_TACHYON_SCANNER:
                 return _('Tachyon-Scanner');
+            case static::MODULE_SPECIAL_TROOP_QUARTERS:
+                return _('Truppen-Quartiere');
         }
         return '';
     }
