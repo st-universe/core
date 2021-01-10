@@ -89,7 +89,6 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleet;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
-use Stu\Module\Ship\Action\TroopTransfer\TroopTransfer;
 use Stu\Module\Ship\Action\LoadWarpcore\LoadWarpcore;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
@@ -121,8 +120,6 @@ use Stu\Module\Ship\Lib\ShipLeaver;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Module\Ship\Lib\TroopTransferUtility;
-use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -159,7 +156,6 @@ return [
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
     ShipLeaverInterface::class => autowire(ShipLeaver::class),
-    TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
@@ -244,7 +240,6 @@ return [
         Colonize::ACTION_IDENTIFIER => autowire(Colonize::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
         SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class),
-        TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -259,7 +254,6 @@ return [
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
-        ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
         ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),

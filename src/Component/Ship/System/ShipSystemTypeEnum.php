@@ -20,7 +20,6 @@ final class ShipSystemTypeEnum
     public const SYSTEM_TACHYON_SCANNER = 12;
     public const SYSTEM_LIFE_SUPPORT = 13;
     public const SYSTEM_TRACTOR_BEAM = 14;
-    public const SYSTEM_TROOP_QUARTERS = 15;
 
     public const SYSTEM_ECOST_DOCK = 1;
 
@@ -54,8 +53,6 @@ final class ShipSystemTypeEnum
                 return _('Lebenserhaltungssystem');
             case ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM:
                 return _('Traktorstrahl');
-            case ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS:
-                return _('Truppen-Quartiere');
         }
         return '';
     }
