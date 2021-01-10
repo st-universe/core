@@ -62,7 +62,7 @@ final class ApplyDamage implements ApplyDamageInterface
             $ship->setHuell($huelleVorher - $damage);
             $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHuell();
 
-            if (!$this->checkForDestroyedShipSystems($ship, $huelleVorher, $msg))
+            if (!$this->checkForDamagedShipSystems($ship, $huelleVorher, $msg))
             {
                 $this->damageRandomShipSystem($ship, $msg);
             }
@@ -78,19 +78,18 @@ final class ApplyDamage implements ApplyDamageInterface
         return $msg;
     }
     
-    private function checkForDestroyedShipSystems(ShipInterface $ship, int $huelleVorher, &$msg): bool
+    private function checkForDamagedShipSystems(ShipInterface $ship, int $huelleVorher, &$msg): bool
     {
-        $systemsToDestroy = ceil($huelleVorher * 6 / $ship->getMaxHuell()) -
+        $systemsToDamage = ceil($huelleVorher * 6 / $ship->getMaxHuell()) -
         ceil($ship->getHuell() * 6 / $ship->getMaxHuell());
 
-        if ($systemsToDestroy == 0)
+        if ($systemsToDamage == 0)
         {
             return false;
         }
         
-        for ($i = 1; $i <= $systemsToDestroy; $i++) {
-            $systemName = $this->destroyRandomShipSystem($ship);
-            $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
+        for ($i = 1; $i <= $systemsToDamage; $i++) {
+            $systemName = $this->damageRandomShipSystem($ship, $msg);
         }
         
         return true;
