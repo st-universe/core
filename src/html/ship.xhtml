@@ -445,6 +445,16 @@
 											<img src="assets/buttons/b_up1.gif" name="beamto" title="Von der Kolonie beamen" />
 										</a>
 									</div>
+									<tal:block tal:condition="OWNS_CURRENT_COLONY">
+										<div tal:condition="SHIP/hasTroopQuarters" style="margin-top: 5px;">
+											<a href="javascript:void(0);" onclick="showBTroopTransferWindow(${CURRENT_COLONY/getId}, true, true);" >
+												<img src="assets/buttons/bt_down1.png" title="Truppen zu der Kolonie beamen" />
+											</a>
+											<a href="javascript:void(0);" onclick="showBTroopTransferWindow(${CURRENT_COLONY/getId}, true, false);" >
+												<img src="assets/buttons/bt_up1.png" title="Truppen von der Kolonie beamen" />
+											</a>
+										</div>
+									</tal:block>
 									<tal:block tal:condition="not:OWNS_CURRENT_COLONY">
 										<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" />
 										<a onclick="showColonization(${CURRENT_COLONY/getId});" href="javascript:void(0);" tal:condition="CAN_COLONIZE_CURRENT_COLONY">
