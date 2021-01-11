@@ -195,6 +195,8 @@ final class TroopTransfer implements ActionControllerInterface
             
         }
         
+        $epsUsage = ceil($requestedTransferCount / $transferAmount);
+        $ship->setEps($ship->getEps() - $epsUsage);
         $this->shipRepository->save($ship);
 
         if ($shipCrew > $ship->getBuildplan()->getCrew())
@@ -211,6 +213,7 @@ final class TroopTransfer implements ActionControllerInterface
                 $target->getName()
             )
         );
+        $game->addInformation(sprintf(_('Energieverbrauch: %d'),$epsUsage));
 
         if ($shipCrew <= $ship->getBuildplan()->getCrew())
         {
