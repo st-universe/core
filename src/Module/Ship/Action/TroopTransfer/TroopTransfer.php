@@ -73,69 +73,83 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
+        echo "- 1: \n";
+        
         if ($ship->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
         }
+        echo "- 2: \n";
         if ($ship->getCloakState()) {
             $game->addInformation(_("Die Tarnung ist aktiviert"));
             return;
         }
+        echo "- 3: \n";
         if ($ship->getWarpState()) {
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
+        echo "- 4: \n";
         if ($ship->getShieldState()) {
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
-
+        echo "- 5: \n";
+        
         $isColony = request::has('isColony');
         $isUnload = request::has('isUnload');
-
+        
         if ($isColony)
         {
+            echo "- 6: \n";
             $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
         } else {
             $target = $this->shipRepository->find((int)request::postIntFatal('target'));
         }
-
-
+        
+        
         if ($target === null) {
             return;
         }
+        echo "- 7: \n";
         if (!$ship->canInteractWith($target, $isColony, !$isColony)) {
             return;
         }
+        echo "- 8: \n";
         if (!$isColony && $target->getWarpState()) {
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }
+        echo "- 9: \n";
         $requestedTransferCount = request::postInt('tcount');
-
+        
         $transferAmount = $ship->getBeamFactor();
-
+        
         if (ceil($requestedTransferCount / $transferAmount) > $ship->getEps()) {
             $requestedTransferCount = $ship->getEps() * $transferAmount;
         }
-
+        
         if ($isColony)
         {
+            
+            echo "- 10: \n";
             if ($isUnload)
             {
                 $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship));
-
+                
                 $array = $ship->getCrewlist()->getValues();
-
+                
                 for ($i = 0; $i < $amount; $i++) {
                     $this->shipCrewRepository->delete($array[$i]); 
                 }
             }
             else {
+                echo "- 11: \n";
                 $amount = min($requestedTransferCount, min($ship->getUser()->getFreeCrewCount(),
                 $this->transferUtility->getFreeQuarters($ship)));
                 
                 for ($i = 0; $i < $amount; $i++) {
+                    echo "- 12: \n";
                     $crew = $this->crewRepository->getFreeByUser($userId);
 
                     $sc = $this->shipCrewRepository->prototype();
