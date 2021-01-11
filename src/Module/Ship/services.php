@@ -89,6 +89,7 @@ use Stu\Module\Ship\Action\LeaveFleet\LeaveFleet;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
 use Stu\Module\Ship\Action\LeaveStarSystem\LeaveStarSystem;
+use Stu\Module\Ship\Action\TroopTransfer\TroopTransfer;
 use Stu\Module\Ship\Action\LoadWarpcore\LoadWarpcore;
 use Stu\Module\Ship\Action\MoveShip\MoveShip;
 use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
@@ -143,6 +144,7 @@ use Stu\Module\Ship\View\ShowShipDetails\ShowShipDetails;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
+use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
 use function DI\autowire;
 
 return [
@@ -243,6 +245,7 @@ return [
         Colonize::ACTION_IDENTIFIER => autowire(Colonize::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
         SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class),
+        TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -257,6 +260,7 @@ return [
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
+        ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
         ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
