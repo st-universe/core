@@ -128,6 +128,8 @@ final class TroopTransfer implements ActionControllerInterface
         if (ceil($requestedTransferCount / $transferAmount) > $ship->getEps()) {
             $requestedTransferCount = $ship->getEps() * $transferAmount;
         }
+
+        $shipCrew = $ship->getCrewCount();
         
         if ($isColony)
         {
@@ -138,7 +140,8 @@ final class TroopTransfer implements ActionControllerInterface
                 $array = $ship->getCrewlist()->getValues();
                 
                 for ($i = 0; $i < $amount; $i++) {
-                    $this->shipCrewRepository->delete($array[$i]); 
+                    $this->shipCrewRepository->delete($array[$i]);
+                    $shipCrew--;
                 }
             }
             else {
@@ -155,6 +158,7 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
     
                     $this->shipCrewRepository->save($sc);
+                    $shipCrew++;
                 }
             }
             
@@ -172,6 +176,7 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc = $array[$i];
                     $sc->setShip($target);
                     $this->shipCrewRepository->save($sc);
+                    $shipCrew--;
                 }
             }
             else {
@@ -184,6 +189,7 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc = $array[$i];
                     $sc->setShip($ship);
                     $this->shipCrewRepository->save($sc);
+                    $shipCrew++;
                 }
             }
             
@@ -191,7 +197,7 @@ final class TroopTransfer implements ActionControllerInterface
         
         $this->shipRepository->save($ship);
 
-        if ($this->transferUtility->getBeamableTroopCount($ship) > 0)
+        if ($shipCrew > $ship->getBuildplan()->getCrew())
         {
             $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
@@ -206,7 +212,7 @@ final class TroopTransfer implements ActionControllerInterface
             )
         );
 
-        if ($this->transferUtility->getBeamableTroopCount($ship) <= 0)
+        if ($shipCrew <= $ship->getBuildplan()->getCrew())
         {
             $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
