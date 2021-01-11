@@ -55,7 +55,7 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
     {
         $free = $ship->getBuildplan()->getCrew() - $ship->getCrewCount();
 
-        if ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS))
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS))
         {
             $free += 100;
         }
