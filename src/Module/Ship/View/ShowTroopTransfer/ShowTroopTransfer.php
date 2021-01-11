@@ -52,9 +52,8 @@ final class ShowTroopTransfer implements ViewControllerInterface
             return;
         }
 
-        $isColony = request::getVarByMethod(request::getvars(), 'isColony');
-        $isUnload = request::getVarByMethod(request::getvars(), 'isUnload');
-
+        $isColony = request::has('isColony');
+        $isUnload = request::has('isUnload');
 
         if ($isColony)
         {

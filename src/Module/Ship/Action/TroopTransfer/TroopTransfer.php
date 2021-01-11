@@ -90,8 +90,8 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
-        $isColony = request::getVarByMethod(request::postvars(), 'isColony');
-        $isUnload = request::getVarByMethod(request::postvars(), 'isUnload');
+        $isColony = request::has('isColony');
+        $isUnload = request::has('isUnload');
 
         if ($isColony)
         {
