@@ -120,6 +120,8 @@ use Stu\Module\Ship\Lib\ShipLeaver;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\TroopTransferUtility;
+use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -156,6 +158,7 @@ return [
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
     ShipLeaverInterface::class => autowire(ShipLeaver::class),
+    TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
