@@ -181,7 +181,7 @@ final class TroopTransfer implements ActionControllerInterface
                     $shipCrew--;
                 }
 
-                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF)
+                if ($amount > 0 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF)
                 {
                     $this->helper->activate($target->getId(), ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, $game);
                 }
