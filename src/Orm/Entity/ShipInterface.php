@@ -218,6 +218,8 @@ interface ShipInterface
 
     public function isWarpcoreHealthy(): bool;
 
+    public function isTroopQuartersHealthy(): bool;
+
     public function getEffectiveEpsProduction(): int;
 
     public function getWarpcoreUsage(): int;
@@ -351,8 +353,6 @@ interface ShipInterface
     public function hasCloak(): bool;
 
     public function hasTachyonScanner(): bool;
-
-    public function hasTroopQuarters(): bool;
 
     public function hasWarpcore(): bool;
 

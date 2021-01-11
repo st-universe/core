@@ -172,6 +172,16 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
+        $pm = sprintf(_('Fremde Schiffe auf [b][color=red]Alarm-Rot[/color][/b], Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
+            $pm .= $value . "\n";
+        }
+        $this->privateMessageSender->send(
+            (int)$target_user_id,
+            (int)$leadShip->getUser()->getId(),
+            $pm,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
 
         if ($leadShip->getIsDestroyed()) {
 

@@ -8,9 +8,11 @@ use request;
 
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -37,6 +39,8 @@ final class TroopTransfer implements ActionControllerInterface
 
     private CrewRepositoryInterface $crewRepository;
 
+    private ActivatorDeactivatorHelperInterface $helper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipStorageManagerInterface $shipStorageManager,
@@ -44,7 +48,8 @@ final class TroopTransfer implements ActionControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         TroopTransferUtilityInterface $transferUtility,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        CrewRepositoryInterface $crewRepository
+        CrewRepositoryInterface $crewRepository,
+        ActivatorDeactivatorHelperInterface $helper
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipStorageManager = $shipStorageManager;
@@ -53,6 +58,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->transferUtility = $transferUtility;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->crewRepository = $crewRepository;
+        $this->helper = $helper;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -73,6 +79,10 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
+            $game->addInformation(_("Die Truppenquartiere sind zerstört"));
+            return;
+        }
         if ($ship->getEps() == 0) {
             $game->addInformation(_("Keine Energie vorhanden"));
             return;
@@ -176,7 +186,14 @@ final class TroopTransfer implements ActionControllerInterface
                     $this->shipCrewRepository->save($sc);
                 }
             }
+            
+        }
+        
+        $this->shipRepository->save($ship);
 
+        if ($this->transferUtility->getBeamableTroopCount($ship) > 0)
+        {
+            $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
 
         $game->addInformation(
@@ -189,7 +206,11 @@ final class TroopTransfer implements ActionControllerInterface
             )
         );
 
-        $this->shipRepository->save($ship);
+        if ($this->transferUtility->getBeamableTroopCount($ship) <= 0)
+        {
+            $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
+        }
+
     }
 
     public function performSessionCheck(): bool
