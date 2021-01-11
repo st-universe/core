@@ -352,6 +352,8 @@ interface ShipInterface
 
     public function hasTachyonScanner(): bool;
 
+    public function hasTroopQuarters(): bool;
+
     public function hasWarpcore(): bool;
 
     public function getMaxTorpedos(): int;
