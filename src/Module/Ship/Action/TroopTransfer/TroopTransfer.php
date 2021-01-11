@@ -195,7 +195,7 @@ final class TroopTransfer implements ActionControllerInterface
             
         }
         
-        $epsUsage = ceil($requestedTransferCount / $transferAmount);
+        $epsUsage = ceil($amount / $transferAmount);
         $ship->setEps($ship->getEps() - $epsUsage);
         $this->shipRepository->save($ship);
 
