@@ -7,12 +7,11 @@ namespace Stu\Module\Ship\Action\TroopTransfer;
 use request;
 
 use Stu\Component\Crew\CrewEnum;
-use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
@@ -28,8 +27,6 @@ final class TroopTransfer implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipStorageManagerInterface $shipStorageManager;
-
     private ShipRepositoryInterface $shipRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
@@ -41,25 +38,27 @@ final class TroopTransfer implements ActionControllerInterface
     private CrewRepositoryInterface $crewRepository;
 
     private ActivatorDeactivatorHelperInterface $helper;
+    
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipStorageManagerInterface $shipStorageManager,
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
         TroopTransferUtilityInterface $transferUtility,
         ShipCrewRepositoryInterface $shipCrewRepository,
         CrewRepositoryInterface $crewRepository,
-        ActivatorDeactivatorHelperInterface $helper
+        ActivatorDeactivatorHelperInterface $helper,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipStorageManager = $shipStorageManager;
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->transferUtility = $transferUtility;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->crewRepository = $crewRepository;
         $this->helper = $helper;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -181,6 +180,11 @@ final class TroopTransfer implements ActionControllerInterface
                     $this->shipCrewRepository->save($sc);
                     $shipCrew--;
                 }
+
+                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF)
+                {
+                    $this->helper->activate($target->getId(), ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, $game);
+                }
             }
             else {
                 $amount = min($requestedTransferCount, $target->getCrewCount(),
@@ -195,12 +199,20 @@ final class TroopTransfer implements ActionControllerInterface
                 }
 
                 $array = $target->getCrewlist()->getValues();
+                $targetCrewCount = $target->getCrewCount();
 
                 for ($i = 0; $i < $amount; $i++) {
                     $sc = $array[$i];
                     $sc->setShip($ship);
                     $this->shipCrewRepository->save($sc);
                     $shipCrew++;
+                }
+
+                // no crew left
+                if ($amount == $targetCrewCount)
+                {
+                    $this->shipSystemManager->deactivateAll($target);
+                    $ship->setAlertState(1);
                 }
             }
         }
@@ -216,7 +228,6 @@ final class TroopTransfer implements ActionControllerInterface
                 $target->getName()
             )
         );
-        $game->addInformation(sprintf(_('Energieverbrauch: %d'),$epsUsage));
 
         if ($shipCrew <= $ship->getBuildplan()->getCrew())
         {
