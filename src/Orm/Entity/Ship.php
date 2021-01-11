@@ -1516,6 +1516,11 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
     }
 
+    public function hasTroopQuarters(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS);
+    }
+
     public function hasWarpcore(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE);
