@@ -212,7 +212,8 @@ final class TroopTransfer implements ActionControllerInterface
                 if ($amount == $targetCrewCount)
                 {
                     $this->shipSystemManager->deactivateAll($target);
-                    $ship->setAlertState(1);
+                    $target->setAlertState(1);
+                    $this->shipRepository->save($target);
                 }
             }
         }
