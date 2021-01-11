@@ -104,6 +104,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
         $game->setMacro('html/shipmacros.xhtml/show_troop_transfer');
 
+        $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('target', $target);
         $game->setTemplateVar('MAXIMUM', $max);
         $game->setTemplateVar('IS_UNLOAD', $isUnload);
