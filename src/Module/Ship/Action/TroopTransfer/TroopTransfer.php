@@ -102,7 +102,7 @@ final class TroopTransfer implements ActionControllerInterface
         if ($isColony)
         {
             echo "- 6: \n";
-            $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
+            $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
         } else {
             $target = $this->shipRepository->find((int)request::postIntFatal('target'));
         }
