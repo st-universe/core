@@ -545,6 +545,39 @@
     </table>
   </form>
 </metal:block>
+<metal:block metal:define-macro="show_troop_transfer">
+  <form action="ship.php" method="post">
+    <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+    <input type="hidden" name="target" tal:attributes="value target/getId" />
+    <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+
+    <tal:block tal:condition="IS_COLONY">
+      <input type="hidden" name="isColony" tal:attributes="value IS_COLONY" />
+    </tal:block>
+    <tal:block tal:condition="IS_UNLOAD">
+      <input type="hidden" name="isUnload" tal:attributes="value IS_UNLOAD" />
+    </tal:block>
+    <table class="tcal">
+      <tr>
+        <td>Ziel: <span tal:replace="structure bbcode:target/getName">...</span></td>
+      </tr>
+      <tr>
+        <td>Verfügbare Truppen: ${MAXIMUM}</td>
+      </tr>
+      <tr>
+        <td>
+          <img tal:condition="IS_UNLOAD" src="assets/buttons/bt_down1.png" title="Truppen hinbeamen" />
+          <img tal:condition="not:IS_UNLOAD" src="assets/buttons/bt_up1.png" title="Truppen wegbeamen" />
+          <input type="text" size="4" name="tcount" id="ttransfer_value" />
+          <input type="submit" class="button" value="beamen" name="B_TROOP_TRANSFER" id="ttransfer_button" />
+          <input type="button" class="button" value="max" name="B_MAX_TTRANSFER"
+                 onclick="$('ttransfer_value').value = '${MAXIMUM}'; $('ttransfer_button').click()"
+          />
+        </td>
+      </tr>
+    </table>
+  </form>
+</metal:block>
 <metal:block metal:define-macro="selfdestruct">
   <form action="ship.php" method="post">
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
