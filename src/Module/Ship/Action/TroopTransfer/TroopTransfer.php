@@ -8,6 +8,7 @@ use request;
 
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -122,12 +123,6 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
         $requestedTransferCount = request::postInt('tcount');
-        
-        $transferAmount = $ship->getBeamFactor();
-        
-        if (ceil($requestedTransferCount / $transferAmount) > $ship->getEps()) {
-            $requestedTransferCount = $ship->getEps() * $transferAmount;
-        }
 
         $shipCrew = $ship->getCrewCount();
         
@@ -145,8 +140,16 @@ final class TroopTransfer implements ActionControllerInterface
                 }
             }
             else {
-                $amount = min($requestedTransferCount, min($ship->getUser()->getFreeCrewCount(),
-                $this->transferUtility->getFreeQuarters($ship)));
+                $amount = min($requestedTransferCount, $ship->getUser()->getFreeCrewCount(),
+                                $this->transferUtility->getFreeQuarters($ship));
+
+                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF)
+                {
+                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game))
+                    {
+                        return;
+                    }
+                }
                 
                 for ($i = 0; $i < $amount; $i++) {
                     $crew = $this->crewRepository->getFreeByUser($userId);
@@ -167,8 +170,8 @@ final class TroopTransfer implements ActionControllerInterface
         {
             if ($isUnload)
             {
-                $amount = min($requestedTransferCount, min($this->transferUtility->getBeamableTroopCount($ship),
-                            $this->transferUtility->getFreeQuarters($target)));
+                $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship),
+                            $this->transferUtility->getFreeQuarters($target));
 
                 $array = $ship->getCrewlist()->getValues();
 
@@ -180,8 +183,16 @@ final class TroopTransfer implements ActionControllerInterface
                 }
             }
             else {
-                $amount = min($requestedTransferCount, min($target->getCrewCount(),
-                            $this->transferUtility->getFreeQuarters($ship)));
+                $amount = min($requestedTransferCount, $target->getCrewCount(),
+                            $this->transferUtility->getFreeQuarters($ship));
+
+                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF)
+                {
+                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game))
+                    {
+                        return;
+                    }
+                }
 
                 $array = $target->getCrewlist()->getValues();
 
@@ -192,17 +203,9 @@ final class TroopTransfer implements ActionControllerInterface
                     $shipCrew++;
                 }
             }
-            
         }
         
-        $epsUsage = ceil($amount / $transferAmount);
-        $ship->setEps($ship->getEps() - $epsUsage);
         $this->shipRepository->save($ship);
-
-        if ($shipCrew > $ship->getBuildplan()->getCrew())
-        {
-            $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
-        }
 
         $game->addInformation(
             sprintf(
