@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowTroopTransfer;
 
 use request;
+
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
