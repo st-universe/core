@@ -131,13 +131,15 @@
           <a href="javascript:void(0);" onclick="showBFromWindow(${ship/getId})" onmouseover="cp('bfr_${ship/getId}','buttons/b_up2')" onmouseout="cp('bfr_${ship/getId}','buttons/b_up1')">
             <img src="assets/buttons/b_up1.gif" name="bfr_${ship/getId}" title="Von der ${nameWithoutMarkup} hochbeamen" />
           </a>
-          <tal:block tal:condition="SHIP/isTroopQuartersHealthy">
-            <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, true);" >
-              <img src="assets/buttons/bt_down1.png" title="Truppen zur ${nameWithoutMarkup} beamen" />
-            </a>
-            <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, false);" >
-              <img src="assets/buttons/bt_up1.png" title="Truppen von der ${nameWithoutMarkup} beamen" />
-            </a>
+          <tal:block tal:condition="ship/isOwnedByCurrentUser">
+            <tal:block tal:condition="SHIP/isTroopQuartersHealthy">
+              <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, true);" >
+                <img src="assets/buttons/bt_down1.png" title="Truppen zur ${nameWithoutMarkup} beamen" />
+              </a>
+              <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, false);" >
+                <img src="assets/buttons/bt_up1.png" title="Truppen von der ${nameWithoutMarkup} beamen" />
+              </a>
+            </tal:block>
           </tal:block>
           <tal:block tal:condition="not:ship/traktorbeamNotPossible">
             <tal:block tal:condition="not:SHIP/isTraktorBeamActive">
