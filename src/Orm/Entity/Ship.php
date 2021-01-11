@@ -952,6 +952,11 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE);
     }
 
+    public function isTroopQuartersHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS);
+    }
+
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
@@ -1514,11 +1519,6 @@ class Ship implements ShipInterface
     public function hasTachyonScanner(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
-    }
-
-    public function hasTroopQuarters(): bool
-    {
-        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS);
     }
 
     public function hasWarpcore(): bool

@@ -446,7 +446,7 @@
 										</a>
 									</div>
 									<tal:block tal:condition="OWNS_CURRENT_COLONY">
-										<div tal:condition="SHIP/hasTroopQuarters" style="margin-top: 5px;">
+										<div tal:condition="SHIP/isTroopQuartersHealthy" style="margin-top: 5px;">
 											<a href="javascript:void(0);" onclick="showBTroopTransferWindow(${CURRENT_COLONY/getId}, true, true);" >
 												<img src="assets/buttons/bt_down1.png" title="Truppen zu der Kolonie beamen" />
 											</a>

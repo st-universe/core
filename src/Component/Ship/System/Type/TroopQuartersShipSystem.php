@@ -18,7 +18,6 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
     
     public function deactivate(ShipInterface $ship): void
     {
-        //TODO check if troop quarters empty?
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_OFF);
     }
 
