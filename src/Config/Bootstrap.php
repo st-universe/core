@@ -6,7 +6,7 @@ namespace Stu\Config;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
 use Cache\Adapter\Redis\RedisCachePool;
-use Cache\Bridge\Doctrine\DoctrineCacheBridge;;;;;;;;;;;KILLING ME SOFTLY
+use Cache\Bridge\Doctrine\DoctrineCacheBridge;
 use Curl\Curl;
 use DI\ContainerBuilder;
 use Doctrine\ORM\Configuration;
