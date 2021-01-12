@@ -83,8 +83,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->createNativeQuery(
                 'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id FROM stu_map
                     m LEFT JOIN stu_user_map um ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId WHERE m.cx
-                    BETWEEN :startX AND :endX AND m.cy = :cy
-                    ORDER BY m.cx ASC',
+                    BETWEEN :startX AND :endX AND m.cy = :cy',
                 $rsm
             )
             ->setParameters([
