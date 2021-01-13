@@ -420,7 +420,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id', 'integer');
 
-        $result = (int) $this->getEntityManager()
+        $result = $this->getEntityManager()
             ->createNativeQuery(
                     'SELECT s.id as id FROM stu_ships s
                     WHERE s.user_id = :userId
