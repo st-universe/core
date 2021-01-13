@@ -96,7 +96,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             {
                 if ($freeCrewCount > 0)
                 {
-                    $deleteAmount = min($crewOnShips - $crewLimit, $freeCrewCount);
+                    $deleteAmount = min($crewOnShips + $freeCrewCount - $crewLimit, $freeCrewCount);
                     
                     for ($i = 0; $i < $deleteAmount; $i++) {
 
