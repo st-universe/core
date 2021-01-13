@@ -108,12 +108,13 @@ final class ShipTickManager implements ShipTickManagerInterface
                     $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$user->getId(), $msg,
                         PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
                 } else {
-                    $randomShip = $this->shipRepository->getRandomShipWithCrewByUser($user->getId());
+                    $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($user->getId());
 
-                    if ($randomShip == null)
+                    if ($randomShipId == null)
                     {
                         continue;
                     }
+                    $randomShip = $this->shipCrewRepository->find($randomShipId);
                     $this->shipCrewRepository->truncateByShip($randomShip->getId());
                     $this->shipSystemManager->deactivateAll($randomShip);
                     $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);

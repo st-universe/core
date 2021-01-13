@@ -107,5 +107,5 @@ interface ShipRepositoryInterface extends ObjectRepository
 
     public function isCloakedShipAtLocation(ShipInterface $ship): bool;
 
-    public function getRandomShipWithCrewByUser(int $userId): ?ShipInterface;
+    public function getRandomShipIdWithCrewByUser(int $userId): ?int;
 }

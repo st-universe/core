@@ -415,24 +415,27 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $query->getSingleScalarResult() > 0;
     }
 
-    public function getRandomShipWithCrewByUser(int $userId): ?ShipInterface
+    public function getRandomShipIdWithCrewByUser(int $userId): ?int
     {
-        return (int) $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT s FROM %s s
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+
+        $result = (int) $this->getEntityManager()
+            ->createNativeQuery(
+                    'SELECT s.id as id FROM stu_ships s
                     WHERE s.user_id = :userId
                     AND EXISTS (SELECT sc.id
-                                FROM %s sc
+                                FROM stu_ships_crew sc
                                 WHERE s.id = sc.ships_id) 
                     ORDER BY RANDOM()
                     LIMIT 1',
-                    Ship::class,
-                    ShipCrew::class)
+                    $rsm
             )
             ->setParameters([
                 'userId' => $userId
             ])
             ->getOneOrNullResult();
+        
+        return $result != null ? $result['id'] : null;
     }
 }
