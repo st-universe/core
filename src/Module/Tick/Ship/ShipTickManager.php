@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
+use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
-use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 final class ShipTickManager implements ShipTickManagerInterface
 {
@@ -34,6 +35,8 @@ final class ShipTickManager implements ShipTickManagerInterface
     
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRemoverInterface $shipRemover,
@@ -42,7 +45,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         UserRepositoryInterface $userRepository,
         CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
@@ -52,6 +56,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function work(): void
@@ -122,6 +127,12 @@ final class ShipTickManager implements ShipTickManagerInterface
                     }
                     
                     $randomShip = $this->shipRepository->find($randomShipId);
+                    $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
+                    //deactivate ship
+                    $this->shipSystemManager->deactivateAll($randomShip);
+                    $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+
+                    $this->shipRepository->save($randomShip);
                     
                     //remove crew
                     $this->shipCrewRepository->truncateByShip($randomShipId);
@@ -130,18 +141,31 @@ final class ShipTickManager implements ShipTickManagerInterface
                         $this->crewRepository->delete($shipCrew->getCrew());
                     }
 
-                    //deactivate ship
-                    $this->shipSystemManager->deactivateAll($randomShip);
-                    $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
-
-                    $this->shipRepository->save($randomShip);
-
                     $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
                     $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$user->getId(), $msg,
                         PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
+
+                    //do alert red stuff
+                    if ($doAlertRedCheck)
+                    {
+                        $this->doAlertRedCheck($randomShip);
+                    }
                 }
             }
 
+        }
+    }
+
+    private function doAlertRedCheck($ship): void
+    {
+        $informations = [];
+
+        //Alarm-Rot check
+        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+        shuffle($shipsToShuffle);
+        foreach ($shipsToShuffle as $alertShip)
+        {
+            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
         }
     }
 
