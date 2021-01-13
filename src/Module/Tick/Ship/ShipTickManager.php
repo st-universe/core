@@ -12,6 +12,7 @@ use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 
 final class ShipTickManager implements ShipTickManagerInterface
@@ -29,6 +30,8 @@ final class ShipTickManager implements ShipTickManagerInterface
     private CrewRepositoryInterface $crewRepository;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
+    
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
@@ -37,7 +40,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         ShipRepositoryInterface $shipRepository,
         UserRepositoryInterface $userRepository,
         CrewRepositoryInterface $crewRepository,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
@@ -46,6 +50,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->userRepository = $userRepository;
         $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function work(): void
@@ -115,7 +120,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                         continue;
                     }
                     $this->shipCrewRepository->truncateByShip($randomShipId);
-                    
+
                     $randomShip = $this->shipRepository->find($randomShipId);
                     $this->shipSystemManager->deactivateAll($randomShip);
                     $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
