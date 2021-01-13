@@ -134,11 +134,17 @@ final class ShipTickManager implements ShipTickManagerInterface
 
                     $this->shipRepository->save($randomShip);
                     
-                    //remove crew
-                    $this->shipCrewRepository->truncateByShip($randomShipId);
+                    $crewArray = [];
                     foreach ($randomShip->getCrewlist() as $shipCrew)
                     {
-                        $this->crewRepository->delete($shipCrew->getCrew());
+                        $crewArray[] = $shipCrew->getCrew();
+                    }
+
+                    //remove crew
+                    $this->shipCrewRepository->truncateByShip($randomShipId);
+                    foreach ($crewArray as $crew)
+                    {
+                        $this->crewRepository->delete($crew);
                     }
 
                     $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
