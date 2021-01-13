@@ -114,8 +114,9 @@ final class ShipTickManager implements ShipTickManagerInterface
                     {
                         continue;
                     }
-                    $randomShip = $this->shipCrewRepository->find($randomShipId);
-                    $this->shipCrewRepository->truncateByShip($randomShip->getId());
+                    $this->shipCrewRepository->truncateByShip($randomShipId);
+                    
+                    $randomShip = $this->shipRepository->find($randomShipId);
                     $this->shipSystemManager->deactivateAll($randomShip);
                     $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
 
