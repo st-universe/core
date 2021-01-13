@@ -75,4 +75,9 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return UserInterface[]
      */
     public function getNpcList(): iterable;
+    
+    /**
+     * @return UserInterface[]
+     */
+    public function getNonNpcList(): iterable;
 }

@@ -195,4 +195,14 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->getResult();
     }
+
+    public function getNonNpcList(): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT u FROM %s u WHERE u.id > 100 ORDER BY u.id',
+                User::class
+            )
+        )->getResult();
+    }
 }
