@@ -11,6 +11,7 @@ use PhpTal\PHPTAL;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
@@ -412,5 +413,26 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ]);
         }
         return $query->getSingleScalarResult() > 0;
+    }
+
+    public function getRandomShipWithCrewByUser(int $userId): ?ShipInterface
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT s FROM %s s
+                    WHERE s.user_id = :userId
+                    AND EXISTS (SELECT sc.id
+                                FROM %s sc
+                                WHERE s.id = sc.ships_id) 
+                    ORDER BY RANDOM()
+                    LIMIT 1',
+                    Ship::class,
+                    ShipCrew::class)
+            )
+            ->setParameters([
+                'userId' => $userId
+            ])
+            ->getOneOrNullResult();
     }
 }
