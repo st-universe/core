@@ -139,7 +139,8 @@ final class ShipCreator implements ShipCreatorInterface
         //default systems, that every ship should have
         $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM] = 0;
         $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
-        //TODO deflector, transporter
+        $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR] = 0;
+        //TODO transporter
 
         foreach ($modules as $key => $module) {
             switch ($module->getModule()->getType()) {
@@ -201,6 +202,9 @@ final class ShipCreator implements ShipCreatorInterface
                     break;
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TROOP_QUARTERS:
                     $systems[ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS] = $module;
+                    break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY:
+                    $systems[ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY] = $module;
                     break;
             }
         }
