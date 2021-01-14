@@ -21,6 +21,8 @@ final class ShipSystemTypeEnum
     public const SYSTEM_LIFE_SUPPORT = 13;
     public const SYSTEM_TRACTOR_BEAM = 14;
     public const SYSTEM_TROOP_QUARTERS = 15;
+    public const SYSTEM_DEFLECTOR = 16;
+    public const SYSTEM_ASTRO_LABORATORY = 17;
 
     public const SYSTEM_ECOST_DOCK = 1;
 
@@ -56,6 +58,10 @@ final class ShipSystemTypeEnum
                 return _('Traktorstrahl');
             case ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS:
                 return _('Truppen-Quartiere');
+            case ShipSystemTypeEnum::SYSTEM_DEFLECTOR:
+                return _('Deflektor');
+            case ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
+                return _('Astrometrisches Labor');
         }
         return '';
     }

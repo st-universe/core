@@ -389,7 +389,7 @@ final class ShipMover implements ShipMoverInterface
             return;
         }
         
-        $flight_ecost = $ship->getRump()->getFlightEcost() + $nextField->getFieldType()->getEnergyCosts();
+        $flight_ecost = $ship->getRump()->getFlightEcost();
         
         //zu wenig E zum weiterfliegen
         if ($ship->getEps() < $flight_ecost) {
@@ -416,6 +416,9 @@ final class ShipMover implements ShipMoverInterface
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($ship);
         }
+        //Flugkosten abziehen
+        $ship->setEps($ship->getEps() - $flight_ecost);
+
         //Traktorstrahl Energie abziehen
         if ($ship->isTraktorbeamActive()) {
             $ship->setEps($ship->getEps() - $ship->getTraktorShip()->getRump()->getFlightEcost());
@@ -423,60 +426,69 @@ final class ShipMover implements ShipMoverInterface
         }
         $field = $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY());
 
-        //Einflugschaden Energiemangel
-        if ($flight_ecost > $ship->getEps()) {
-            $ship->setEps(0);
-            if ($field->getFieldType()->getDamage()) {
-                if ($ship->isTraktorbeamActive()) {
-                    $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
-                    $damageMsg = $this->applyDamage->damage(
-                        new DamageWrapper($field->getFieldType()->getDamage()),
-                        $ship->getTraktorShip()
-                    );
-                    $this->addInformationMerge($damageMsg);
-                }
-                $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-                $damageMsg = $this->applyDamage->damage(
-                    new DamageWrapper($field->getFieldType()->getDamage()),
-                    $ship
-                );
-                $this->addInformationMerge($damageMsg);
-
-                if ($ship->getTraktorShip()->getIsDestroyed()) {
-                    
-                    $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getTraktorShip()->getName(), $ship->getTraktorShip()->getSectorString()));
-
-                    $this->shipRemover->destroy($ship->getTraktorShip());
-                }
-            }
-        } else {
-            $ship->setEps($ship->getEps() - $flight_ecost);
-        }
         //Einflugschaden Feldschaden
         if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
-            if ($ship->isTraktorbeamActive()) {
-                $this->addInformation(sprintf(_('Die %s wurde in Sektor %d|%d beschädigt'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
-                $damageMsg = $this->applyDamage->damage(
-                    new DamageWrapper($field->getFieldType()->getDamage()),
-                    $ship->getTraktorShip()
-                );
-                $this->addInformationMerge($damageMsg);
-            }
             $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $field->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
-            $damageMsg = $this->applyDamage->damage(
-                new DamageWrapper($field->getFieldType()->getSpecialDamage()),
-                $ship
-            );
+            
+            $this->applyFieldDamage($ship, $field->getFieldType()->getSpecialDamage(), true, '');
+        }
+        
+        //check for deflector state
+        $notEnoughEnergyForDeflector = false;
+        $deflectorDestroyed = false;
+        if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR))
+        {
+            $notEnoughEnergyForDeflector = $nextField->getFieldType()->getEnergyCosts() > $ship->getEps();
+
+            if ($notEnoughEnergyForDeflector) {
+                $ship->setEps(0);
+            } else {
+                $ship->setEps($ship->getEps() - $nextField->getFieldType()->getEnergyCosts());
+            }
+        } else {
+            $deflectorDestroyed = true;
+        }
+
+        //Einflugschaden Energiemangel oder Deflektor zerstört
+        if ($notEnoughEnergyForDeflector || $deflectorDestroyed) {
+            $dmgCause = $notEnoughEnergyForDeflector ?
+                'Nicht genug Energie für den Deflektor.' :
+                'Deflektor außer Funktion.';
+
+            $this->applyFieldDamage($ship, $field->getFieldType()->getDamage(), false, $dmgCause);
+        }
+
+    }
+
+    private function applyFieldDamage($ship, $damage, $isAbsolutDmg, $cause): void
+    {
+        //tractored ship
+        if ($ship->isTraktorbeamActive()) {
+            $tractorShip = $ship->getTraktorShip();
+            $dmg = $isAbsolutDmg ? $damage : $tractorShip->getMaxHuell() * $damage / 100;
+
+            $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'),$cause, $tractorShip->getName(), $ship->getPosX(), $ship->getPosY()));
+            $damageMsg = $this->applyDamage->damage(new DamageWrapper((int)ceil($dmg)), $tractorShip);
             $this->addInformationMerge($damageMsg);
 
-            if ($ship->getIsDestroyed()) {
-                $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
-
-                $this->shipRemover->destroy($ship);
-                $this->lostShips[$ship->getid()] = $ship;
-
-                return;
+            if ($tractorShip->getIsDestroyed()) {
+                $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $tractorShip->getName(), $tractorShip->getSectorString()));
+    
+                $this->shipRemover->destroy($tractorShip);
             }
+        }
+        
+        //ship itself
+        $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'),$cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
+        $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHuell() * $damage / 100;
+        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int)ceil($dmg)), $ship);
+        $this->addInformationMerge($damageMsg);
+        
+        if ($ship->getIsDestroyed()) {
+            $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
+
+            $this->shipRemover->destroy($ship);
+            $this->lostShips[$ship->getid()] = $ship;
         }
     }
 
