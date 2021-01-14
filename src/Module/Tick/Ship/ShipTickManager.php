@@ -139,6 +139,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                     {
                         $crewArray[] = $shipCrew->getCrew();
                     }
+                    $randomShip->getCrewlist()->clear();
 
                     //remove crew
                     $this->shipCrewRepository->truncateByShip($randomShipId);
