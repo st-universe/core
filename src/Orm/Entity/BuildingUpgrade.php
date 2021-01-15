@@ -134,6 +134,6 @@ class BuildingUpgrade implements BuildingUpgradeInterface
 
     public function getUpgradeCosts(): Collection
     {
-        return $this->upgradeCosts;
+        return $this->getBuilding()->getCosts();
     }
 }
