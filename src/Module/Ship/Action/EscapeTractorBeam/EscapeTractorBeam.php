@@ -7,10 +7,10 @@ namespace Stu\Module\Ship\Action\EscapeTractorBeam;
 use request;
 
 use Stu\Lib\DamageWrapper;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -32,19 +32,23 @@ final class EscapeTractorBeam implements ActionControllerInterface
     private PrivateMessageSenderInterface $privateMessageSender;
     
     private ShipRemoverInterface $shipRemover;
+    
+    private EntryCreatorInterface $entryCreator;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ApplyDamageInterface $applyDamage,
         ShipRepositoryInterface $shipRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        EntryCreatorInterface $entryCreator
     ) {
         $this->shipLoader = $shipLoader;
         $this->applyDamage = $applyDamage;
         $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
+        $this->entryCreator = $entryCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -141,6 +145,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     private function sufferHullDamage($ship, $game): void
     {
         $otherUserId = $ship->getTraktorShip()->getUserId();
+        $shipName = $ship->getName();
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
         
@@ -149,6 +154,11 @@ final class EscapeTractorBeam implements ActionControllerInterface
         
         if ($ship->getIsDestroyed())
         {
+            $this->entryCreator->addShipEntry(
+                'Die ' . $shipName . ' (' . $ship->getRump()->getName() . ') wurde bei einem Fluchtversuch in Sektor ' . $ship->getSectorString() . ' zerstört',
+                $ship->getUser()->getId()
+            );
+
             $destroyMsg = $this->shipRemover->destroy($ship);
             if ($destroyMsg !== null)
             {
@@ -158,7 +168,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $this->privateMessageSender->send(
                 (int)$ship->getUserId(),
                 (int)$otherUserId,
-                sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $ship->getName()),
+                sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $shipName),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         } else {
@@ -166,7 +176,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             $this->privateMessageSender->send(
                 (int)$ship->getUserId(),
                 (int)$ship->getTraktorShip()->getUserId(),
-                sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
+                sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $shipName),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
