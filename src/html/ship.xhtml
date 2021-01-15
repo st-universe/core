@@ -536,7 +536,9 @@
 							</td>
 							<td>
 								<input tal:condition="SHIP/traktorBeamFromShip" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR" value="Deaktivieren" />
-								<input tal:condition="SHIP/traktorBeamToShip" type="submit" class="button" name="B_ESCAPE_TRAKTOR" value="Fluchtversuch" />
+								<tal:block tal:condition="SHIP/isDeflectorHealthy" >
+									<input tal:condition="SHIP/traktorBeamToShip" type="submit" class="button" name="B_ESCAPE_TRAKTOR" value="Fluchtversuch (riskant!)" />
+								</tal:block>
 							</td>
 						</tr>
 					</table>

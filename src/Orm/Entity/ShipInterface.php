@@ -218,6 +218,8 @@ interface ShipInterface
 
     public function isWarpcoreHealthy(): bool;
 
+    public function isDeflectorHealthy(): bool;
+
     public function isTroopQuartersHealthy(): bool;
 
     public function getEffectiveEpsProduction(): int;
