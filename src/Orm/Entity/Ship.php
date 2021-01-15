@@ -952,6 +952,11 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE);
     }
 
+    public function isDeflectorHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR);
+    }
+
     public function isTroopQuartersHealthy(): bool
     {
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS);

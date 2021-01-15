@@ -113,9 +113,12 @@ final class ApplyDamage implements ApplyDamageInterface
         shuffle($healthySystems);
         
         $system = $healthySystems[0];
+        $this->damageShipSystem($ship, $system, rand(1, 70), $msg);
+    }
+
+    public function damageShipSystem($ship, $system, $dmg, &$msg): void
+    {
         $status = $system->getStatus();
-        $dmg = rand(1, 70);
-        
         $systemName = ShipSystemTypeEnum::getDescription($system->getSystemType());
 
         if ($status > $dmg)
