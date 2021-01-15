@@ -117,7 +117,7 @@ class BuildingUpgrade implements BuildingUpgradeInterface
 
     public function getEnergyCost(): int
     {
-        return $this->energy_cost;
+        return $this->getBuilding()->getEpsCost();
     }
 
     public function setEnergyCost(int $energyCost): BuildingUpgradeInterface
