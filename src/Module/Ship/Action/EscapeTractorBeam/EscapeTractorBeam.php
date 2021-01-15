@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -29,17 +30,21 @@ final class EscapeTractorBeam implements ActionControllerInterface
     private ShipRepositoryInterface $shipRepository;
 
     private PrivateMessageSenderInterface $privateMessageSender;
+    
+    private ShipRemoverInterface $shipRemover;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ApplyDamageInterface $applyDamage,
         ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ShipRemoverInterface $shipRemover
     ) {
         $this->shipLoader = $shipLoader;
         $this->applyDamage = $applyDamage;
         $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->shipRemover = $shipRemover;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -65,6 +70,12 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
+        //enough energy?
+        if ($ship->getEps() < 20)
+        {
+            return;
+        }
+
         //eps cost
         $ship->setEps($ship->getEps() - 20);
 
@@ -80,6 +91,12 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
             $this->sufferHullDamage($ship, $game);
         }
+
+        if ($ship->getIsDestroyed()) {
+
+            return;
+        }
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $this->shipRepository->save($ship);
     }
@@ -124,16 +141,33 @@ final class EscapeTractorBeam implements ActionControllerInterface
     private function sufferHullDamage($ship, $game): void
     {
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
-
+        
         $damageMsg = $this->applyDamage->damage(new DamageWrapper((int)ceil($ship->getMaxHuell() * rand(10,25) / 100)), $ship);
         $game->addInformationMergeDown($damageMsg);
+        
+        if ($ship->getIsDestroyed())
+        {
+            $destroyMsg = $this->shipRemover->destroy($ship);
+            if ($destroyMsg !== null)
+            {
+                $game->addInformation($destroyMsg);
+            }
+            
+            $this->privateMessageSender->send(
+                (int)$ship->getUserId(),
+                (int)$ship->getTraktorShip()->getUserId(),
+                sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $ship->getName()),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
+        } else {
 
-        $this->privateMessageSender->send(
-            (int)$ship->getUserId(),
-            (int)$ship->getTraktorShip()->getUserId(),
-            sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-        );
+            $this->privateMessageSender->send(
+                (int)$ship->getUserId(),
+                (int)$ship->getTraktorShip()->getUserId(),
+                sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
+        }
     }
 
     public function performSessionCheck(): bool
