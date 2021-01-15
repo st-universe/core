@@ -73,6 +73,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
         //enough energy?
         if ($ship->getEps() < 20)
         {
+            $game->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
+
             return;
         }
 
@@ -140,6 +142,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
     private function sufferHullDamage($ship, $game): void
     {
+        $otherUserId = $ship->getTraktorShip()->getUserId();
+
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
         
         $damageMsg = $this->applyDamage->damage(new DamageWrapper((int)ceil($ship->getMaxHuell() * rand(10,25) / 100)), $ship);
@@ -155,7 +159,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
             
             $this->privateMessageSender->send(
                 (int)$ship->getUserId(),
-                (int)$ship->getTraktorShip()->getUserId(),
+                (int)$otherUserId,
                 sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $ship->getName()),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
