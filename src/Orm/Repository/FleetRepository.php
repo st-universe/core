@@ -95,4 +95,14 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         }
         return $query->getResult();
     }
+
+    public function getNonNpcFleetList(): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT f FROM %s f WHERE f.user_id > 100',
+                Fleet::class
+            )
+        )->getResult();
+    }
 }

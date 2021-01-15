@@ -35,4 +35,6 @@ interface FleetRepositoryInterface extends ObjectRepository
         int $sx,
         int $sy
     ): iterable;
+
+    public function getNonNpcFleetList(): iterable;
 }
