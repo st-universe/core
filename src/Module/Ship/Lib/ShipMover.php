@@ -205,7 +205,7 @@ final class ShipMover implements ShipMoverInterface
             // move every ship by one field
             foreach ($ships as $ship) {
                 if (!array_key_exists($ship->getId(), $this->lostShips)
-                    && $this->leaderMovedToNextField)
+                    && ($ship === $leadShip || $this->leaderMovedToNextField))
                 {
                     $this->moveOneField($leadShip, $ship, $flightMethod, $nextField);
                 }
