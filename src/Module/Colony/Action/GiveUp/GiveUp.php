@@ -40,8 +40,6 @@ final class GiveUp implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        //$game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $user = $game->getUser();
         $userId = $user->getId();
         $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
@@ -68,7 +66,6 @@ final class GiveUp implements ActionControllerInterface
         }
 
         $game->addInformation(_('Die Kolonie wurde aufgegeben'));
-        //$game->redirectTo('/colony.php');
     }
 
     public function performSessionCheck(): bool
