@@ -16,6 +16,8 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    public const VIEW_IDENTIFIER = 'SHOW_COLONY_LIST';
+
     private ColonyTerraformingRepositoryInterface $colonyTerraformingRepository;
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;

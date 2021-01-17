@@ -225,10 +225,11 @@ return [
         UpgradeBuilding::ACTION_IDENTIFIER => autowire(UpgradeBuilding::class),
         ActivateBuildings::ACTION_IDENTIFIER => autowire(ActivateBuildings::class),
         DeactivateBuildings::ACTION_IDENTIFIER => autowire(DeactivateBuildings::class),
-        DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
+        DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowColony::VIEW_IDENTIFIER => autowire(ShowColony::class),
         ShowBuildMenu::VIEW_IDENTIFIER => autowire(ShowBuildMenu::class),
         ShowManagement::VIEW_IDENTIFIER => autowire(ShowManagement::class),
@@ -258,6 +259,6 @@ return [
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
-        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
+        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class)
     ]
 ];
