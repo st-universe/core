@@ -6,6 +6,7 @@ namespace Stu\Component\Ship;
 
 final class ShipModuleTypeEnum
 {
+    //module types
     public const MODULE_TYPE_HULL = 1;
     public const MODULE_TYPE_SHIELDS = 2;
     public const MODULE_TYPE_EPS = 3;
@@ -16,4 +17,8 @@ final class ShipModuleTypeEnum
     public const MODULE_TYPE_TORPEDO = 8;
     public const MODULE_TYPE_SPECIAL = 9;
     public const MODULE_TYPE_COUNT = 9;
+    
+    //mandatory types
+    public const MODULE_OPTIONAL = 0;
+    public const MODULE_MANDATORY = 1;
 }
