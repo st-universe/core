@@ -114,7 +114,7 @@ final class BuildShip implements ActionControllerInterface
         for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);
             if ($i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                    && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() > 0
+                    && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
                     && count($module) == 0) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
@@ -132,7 +132,8 @@ final class BuildShip implements ActionControllerInterface
                 }
                 continue;
             }
-            if (count($module) == 0) {
+            if (count($module) == 0 || current($module) == 0) {
+                $sigmod[$i] = 0;
                 continue;
             }
             if (current($module) > 0) {

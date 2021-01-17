@@ -76,7 +76,7 @@ class ModuleSelector implements ModuleSelectorInterface
 
     public function allowEmptySlot(): bool
     {
-        return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == 0;
+        return $this->getRump()->getModuleLevels()->{'getModuleMandatory' . $this->getModuleType()}() == ShipModuleTypeEnum::MODULE_OPTIONAL;
     }
 
     public function getModuleDescription(): string
