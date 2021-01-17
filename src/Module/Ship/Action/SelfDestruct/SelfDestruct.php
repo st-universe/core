@@ -65,8 +65,6 @@ final class SelfDestruct implements ActionControllerInterface
         {
             $game->addInformation($destroyMsg);
         }
-
-        $game->redirectTo('/ship.php');
     }
 
     public function performSessionCheck(): bool
