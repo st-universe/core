@@ -47,7 +47,6 @@ final class ShipMover implements ShipMoverInterface
 
     private $lostShips = [];
 
-    private $leaderMovedToNextField = false;
     private $hasTravelled = false;
 
     public function __construct(
@@ -198,14 +197,13 @@ final class ShipMover implements ShipMoverInterface
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
-            $this->leaderMovedToNextField = false;
 
             $nextField = $this->getNextField($leadShip, $flightMethod);
 
             // move every ship by one field
             foreach ($ships as $ship) {
                 if (!array_key_exists($ship->getId(), $this->lostShips)
-                    && $this->leaderMovedToNextField)
+                    && !array_key_exists($leadShip->getId(), $this->lostShips))
                 {
                     $this->moveOneField($leadShip, $ship, $flightMethod, $nextField);
                 }
@@ -415,10 +413,6 @@ final class ShipMover implements ShipMoverInterface
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
         $this->hasTravelled = true;
-        if ($leadShip == $ship)
-        {
-            $this->leaderMovedToNextField = true;
-        }
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($ship);
         }
