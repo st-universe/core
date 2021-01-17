@@ -97,8 +97,8 @@
                       <div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
                         <metal:macro metal:use-macro="html/modulescreen.xhtml/moduleselector_stats_type_${slot}" />
                         <script type="text/Javascript" tal:condition="module">
-											crew_type.set(${slot},${module/getModule/getLevel});
-										</script>
+											    crew_type.set(${slot},${module/getModule/getLevel});
+										    </script>
                       </div>
                     </tal:block>
                   </tal:block>
@@ -208,7 +208,7 @@
     <img src="assets/buttons/modul_screen_8.gif" tal:attributes="title module/getModule/getDescription"/> <span>Torpedoschaden</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateDamageImpact(rump,module.getModule())">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_9">
-    <div tal:repeat="special module/getModule/getSpecials" class="module_special_${module/getModule/getId}" id="module_special_${module/getModule/getId}">
+    <div tal:repeat="special module/getModule/getSpecials" class="module_special_${module/getModule/getId} moduleSpecialStats" id="module_special_${module/getModule/getId}">
       <img src="assets/buttons/modul_special_${special/getId}.gif" tal:attributes="title special/getName" /> <span tal:content="special/getName"></span>
     </div>
   </metal:macro>

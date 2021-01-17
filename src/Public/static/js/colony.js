@@ -245,22 +245,17 @@ function replaceTabImage(type,moduleId,base_crew,max_crew,rump_module_lvl,goodId
 	enableShipBuildButton();
 }
 function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
-	if (Element.select($('module_type_'+type),'.module_special_'+module_id).length == 0) {
-		$('module_type_'+type).innerHTML = $(module_id+'_content').innerHTML;
-		$('module_type_'+type).show();
-	} else {
-		let innerHTML = '';
-		Element.select($('module_type_'+type),'.module_special_'+module_id).each(function(elem) {
-			innerHTML = innerHTML.concat(elem.innerHTML);
-			if (elem.style.display == 'none') {
-				elem.show();
-			} else {
-				elem.hide();
-			}
-		});
-		$('module_type_'+type).innerHTML = innerHTML;
-		$('module_type_'+type).show();
-	}
+	let innerHTML = '';
+	Element.select($('module_select_tab_'+type),'.moduleSpecialStats').each(function(elem) {
+		innerHTML = innerHTML.concat(elem.innerHTML);
+		if (elem.style.display == 'none') {
+			elem.show();
+		} else {
+			elem.hide();
+		}
+	});
+	$('module_type_'+type).innerHTML = innerHTML;
+	$('module_type_'+type).show();
 }
 var crew_type = new Hash();
 var maxCrew;
