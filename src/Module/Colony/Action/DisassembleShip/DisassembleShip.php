@@ -103,7 +103,6 @@ final class DisassembleShip implements ActionControllerInterface
         {
             if ($colony->getStorageSum() >= $maxStorage)
             {
-                $game->addInformationf(_('Kein Lagerraum frei um Module zu recyclen!'));
                 break;
             }
             
