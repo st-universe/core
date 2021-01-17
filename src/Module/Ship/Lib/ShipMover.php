@@ -415,7 +415,7 @@ final class ShipMover implements ShipMoverInterface
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
         $this->hasTravelled = true;
-        if ($ship === $leadShip)
+        if ($leadShip == $ship)
         {
             $this->leaderMovedToNextField = true;
         }
