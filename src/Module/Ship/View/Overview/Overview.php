@@ -12,6 +12,8 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    public const VIEW_IDENTIFIER = 'SHOW_SHIP_LIST';
+
     private FleetRepositoryInterface $fleetRepository;
 
     private ShipRepositoryInterface $shipRepository;
