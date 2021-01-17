@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\SelfDestruct;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -34,8 +35,6 @@ final class SelfDestruct implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -47,9 +46,13 @@ final class SelfDestruct implements ActionControllerInterface
 
         if ($code !== substr(md5($ship->getName()), 0, 6)) {
             $game->addInformation(_('Der Selbstzerstörungscode war fehlerhaft'));
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
 
+        $game->setView(GameController::DEFAULT_VIEW);
+        
+        $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
         $this->entryCreator->addShipEntry(
             sprintf(
                 _('Die %s hat sich in Sektor %s selbst zerstört'), $ship->getName(), $ship->getSectorString()
