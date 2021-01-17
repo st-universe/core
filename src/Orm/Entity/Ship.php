@@ -218,7 +218,7 @@ class Ship implements ShipInterface
     private $torpedo;
 
     /**
-     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type")
+     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"})
      * @OrderBy({"system_type" = "ASC"})
      */
     private $systems;
