@@ -79,7 +79,6 @@ final class ModuleRepository extends EntityRepository implements ModuleRepositor
 					AND (m.viewable = :state OR m.goods_id IN (SELECT goods_id
                                                                 FROM stu_colonies_storage
                                                                 WHERE colonies_id = :colonyId))
-                    ORDER BY m.level ASC
                 ',
                 $this->getResultSetMapping()
             )
