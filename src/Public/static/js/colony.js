@@ -237,6 +237,7 @@ function replaceTabImage(type,moduleId,base_crew,max_crew,rump_module_lvl,goodId
 	} else {
 		Element.removeClassName($('module_tab_'+type),'module_select_base_mandatory');
 		$('tab_image_mod_'+type).src = 'assets/goods/'+goodId+'.gif';
+		//TODO mehrere spezial module anzeigen
 		$('module_type_'+type).innerHTML = $(moduleId+'_content').innerHTML;
 		$('module_type_'+type).show();
 		updateCrewCount(type,module_crew,base_crew,max_crew,rump_module_lvl,module_lvl);
@@ -248,13 +249,17 @@ function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
 		$('module_type_'+type).innerHTML = $(module_id+'_content').innerHTML;
 		$('module_type_'+type).show();
 	} else {
+		let innerHTML = '';
 		Element.select($('module_type_'+type),'.module_special_'+module_id).each(function(elem) {
+			innerHTML = innerHTML.concat(elem.innerHTML);
 			if (elem.style.display == 'none') {
 				elem.show();
 			} else {
 				elem.hide();
 			}
 		});
+		$('module_type_'+type).innerHTML = innerHTML;
+		$('module_type_'+type).show();
 	}
 }
 var crew_type = new Hash();
