@@ -27,4 +27,15 @@ final class ModuleSpecialAbilityEnum
         }
         return '';
     }
+
+    public static function getHash($specials): ?int {
+        $result = 0;
+
+        foreach ($specials as $special)
+        {
+            $result += pow(2, $special->getSpecialId() - 1);
+        }
+
+        return $result == 0 ? null : $result;
+    }
 }

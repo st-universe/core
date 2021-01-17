@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Action\BuildShip;
 
+use request;
+
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ModuleScreen\ModuleSelector;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
-use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
 use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -123,12 +125,12 @@ final class BuildShip implements ActionControllerInterface
                 return;
             }
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                foreach ($module as $key) {
+                foreach ($module as $id) {
                     /** @var ModuleInterface[] $modules */
-                    $specialMod = $this->moduleRepository->find((int) $key);
+                    $specialMod = $this->moduleRepository->find((int) $id);
                     $crew_usage += $specialMod->getCrew();
-                    $modules[$key] = $specialMod;
-                    $sigmod[$key] = $modules[$key]->getId();
+                    $modules[$id] = $specialMod;
+                    $sigmod[$id] = $id;
                 }
                 continue;
             }
@@ -198,6 +200,7 @@ final class BuildShip implements ActionControllerInterface
                 $mod->setModuleType((int) $obj->getType());
                 $mod->setBuildplanId((int)$plan->getId());
                 $mod->setModule($obj);
+                $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 
                 $this->buildplanModuleRepository->save($mod);
             }
