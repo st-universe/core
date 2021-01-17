@@ -255,6 +255,8 @@ function toggleSpecialModuleDisplay(type,base_crew,max_crew,rump_module_lvl,modu
 	});
 	$('module_type_'+type).innerHTML = innerHTML;
 	$('module_type_'+type).show();
+
+	enableShipBuildButton();
 }
 var crew_type = new Hash();
 var maxCrew;
