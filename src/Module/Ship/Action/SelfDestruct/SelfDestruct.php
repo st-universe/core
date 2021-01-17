@@ -6,11 +6,11 @@ namespace Stu\Module\Ship\Action\SelfDestruct;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
-use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 
 final class SelfDestruct implements ActionControllerInterface
@@ -50,7 +50,7 @@ final class SelfDestruct implements ActionControllerInterface
             return;
         }
 
-        $game->setView(GameController::DEFAULT_VIEW);
+        $game->setView(Overview::VIEW_IDENTIFIER);
         
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
         $this->entryCreator->addShipEntry(

@@ -102,7 +102,6 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
-use Stu\Module\Ship\Action\SelfDestructConfirmation\SelfDestructConfirmation;
 use Stu\Module\Ship\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
@@ -171,7 +170,6 @@ return [
     ShipLoaderInterface::class => autowire(ShipLoader::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
-        SelfDestructConfirmation::ACTION_IDENTIFIER => autowire(SelfDestructConfirmation::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
         DeleteFleet::ACTION_IDENTIFIER => autowire(DeleteFleet::class),
         RenameFleet::ACTION_IDENTIFIER => autowire(RenameFleet::class),
@@ -249,6 +247,7 @@ return [
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
@@ -269,6 +268,6 @@ return [
         ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),
         ShowColonization::VIEW_IDENTIFIER => autowire(ShowColonization::class),
         ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
-        Noop::VIEW_IDENTIFIER => autowire(Noop::class),
+        Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
 ];
