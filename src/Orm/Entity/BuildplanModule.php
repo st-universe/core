@@ -9,7 +9,7 @@ namespace Stu\Orm\Entity;
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildplanModuleRepository")
  * @Table(
  *     name="stu_buildplans_modules",
- *     uniqueConstraints={@UniqueConstraint(name="buildplan_module_type_idx", columns={"buildplan_id", "module_type"})}
+ *     uniqueConstraints={@UniqueConstraint(name="buildplan_module_type_idx", columns={"buildplan_id", "module_type", "module_special"})}
  * )
  **/
 class BuildplanModule implements BuildplanModuleInterface
@@ -26,10 +26,12 @@ class BuildplanModule implements BuildplanModuleInterface
 
     /** @Column(type="smallint") * */
     private $module_type = 0;
-
+    
     /** @Column(type="integer") * */
     private $module_id = 0;
-
+    
+    /** @Column(type="smallint", nullable=true) * */
+    private $module_special;
     /**
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
@@ -61,6 +63,18 @@ class BuildplanModule implements BuildplanModuleInterface
     public function setModuleType(int $moduleType): BuildplanModuleInterface
     {
         $this->module_type = $moduleType;
+
+        return $this;
+    }
+
+    public function getModuleSpecial(): ?int
+    {
+        return $this->module_special;
+    }
+
+    public function setModuleSpecial(?int $moduleSpecial): BuildplanModuleInterface
+    {
+        $this->module_special = $moduleSpecial;
 
         return $this;
     }
