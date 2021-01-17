@@ -30,7 +30,7 @@ interface ShipSystemInterface
 
     public function isDisabled(): bool;
 
-    public function getModule(): ?ModuleInterface;
+    public function getModule(): ModuleInterface;
 
     public function setModule(ModuleInterface $module): ShipSystemInterface;
 
