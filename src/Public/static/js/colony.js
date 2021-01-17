@@ -246,12 +246,9 @@ function replaceTabImage(type,moduleId,base_crew,max_crew,rump_module_lvl,goodId
 }
 function toggleSpecialModuleDisplay(type,module_id,good_id,module_level) {
 	let innerHTML = '';
-	Element.select($('module_select_tab_'+type),'.moduleSpecialStats').each(function(elem) {
-		innerHTML = innerHTML.concat(elem.innerHTML);
-		if (elem.style.display == 'none') {
-			elem.show();
-		} else {
-			elem.hide();
+	Element.select($('module_select_tab_'+type),'.specialModuleRadio').each(function(elem) {
+		if (elem.checked) {
+			innerHTML = innerHTML.concat($(elem.value+'_content').innerHTML);
 		}
 	});
 	$('module_type_'+type).innerHTML = innerHTML;
