@@ -79,6 +79,7 @@ class Module implements ModuleInterface
 
     /**
      * @OneToMany(targetEntity="ModuleSpecial", mappedBy="module")
+     * @OrderBy({"special_id" = "ASC"})
      */
     private $moduleSpecials;
 
