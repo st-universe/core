@@ -140,7 +140,7 @@
         <tr tal:condition="THIS/allowEmptySlot">
           <td class="module_positive" style="width: 3px;"></td>
           <td colspan="4">
-            <input type="radio" tal:attributes="checked not:THIS/hasModuleSelected/${THIS/getModuleType}" name="mod_${THIS/getModuleType}[]" value="0" onchange="replaceTabImage(${THIS/getModuleType},0,${rump/getBaseCrew},${rump/getCrew120P},${rump/getModuleLevel})" />
+            <input type="radio" name="mod_${THIS/getModuleType}[]" value="0" onchange="replaceTabImage(${THIS/getModuleType},0,${rump/getBaseCrew},${rump/getCrew120P},${rump/getModuleLevel})" />
             <span>Keine Auswahl</span>
             <script defer="defer">
               crew_type.set(${THIS/getModuleType},0);
