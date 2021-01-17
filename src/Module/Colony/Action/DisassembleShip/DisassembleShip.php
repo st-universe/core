@@ -101,7 +101,8 @@ final class DisassembleShip implements ActionControllerInterface
         $maxStorage = $colony->getMaxStorage();
 
         //retrieve 50% of all intact modules
-        for ($i = 1; $i <= (int)(ceil(count($intactModules) / 2)); $i++)
+        $recycleCount = (int) ceil(count($intactModules) / 2);
+        for ($i = 1; $i <= $recycleCount; $i++)
         {
             if ($colony->getStorageSum() >= $maxStorage)
             {
@@ -110,6 +111,7 @@ final class DisassembleShip implements ActionControllerInterface
             }
             
             $module = $intactModules[array_rand($intactModules)];
+            unset($intactModules[$module->getId()]);
 
             $this->colonyStorageManager->upperStorage(
                 $colony,
