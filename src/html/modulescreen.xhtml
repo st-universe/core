@@ -167,8 +167,9 @@
     <table class="tcal" tal:define="rump THIS/getRump" tal:condition="THIS/allowMultiple">
       <tal:block tal:condition="THIS/getAvailableModules" tal:repeat="module THIS/getAvailableModules">
         <tr>
-          <td style="width: 50px;">
-            <input class="specialModuleRadio" type="checkbox" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value ="${module/getModule/getId}" onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getLevel})" />
+          <td style="width: 50px;">                                                                     
+            <input class="specialModuleRadio" type="checkbox" tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1" name="mod_${THIS/getModuleType}[]" value ="${module/getModule/getId}"
+              onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${rump/getBaseCrew},${rump/getCrew120P},${rump/getModuleLevel},${module/getModule/getCrew})" />
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
@@ -208,7 +209,7 @@
     <img src="assets/buttons/modul_screen_8.gif" tal:attributes="title module/getModule/getDescription"/> <span>Torpedoschaden</span>: <span tal:replace="php:THIS.getModuleValueCalculator().calculateDamageImpact(rump,module.getModule())">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_9">
-    <div tal:repeat="special module/getModule/getSpecials" class="module_special_${module/getModule/getId} moduleSpecialStats" id="module_special_${module/getModule/getId}">
+    <div tal:repeat="special module/getModule/getSpecials" class="module_special_${module/getModule/getId}" id="module_special_${module/getModule/getId}">
       <img src="assets/buttons/modul_special_${special/getId}.gif" tal:attributes="title special/getName" /> <span tal:content="special/getName"></span>
     </div>
   </metal:macro>
