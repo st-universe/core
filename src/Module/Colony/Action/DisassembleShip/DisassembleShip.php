@@ -73,6 +73,8 @@ final class DisassembleShip implements ActionControllerInterface
         $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
         $this->retrieveSomeIntactModules($ship, $colony, $game);
 
+        $ship->getSystems()->clear();
+
         $this->shipRemover->remove($ship);
 
         $game->addInformationf(_('Das Schiff wurde demontiert'));
