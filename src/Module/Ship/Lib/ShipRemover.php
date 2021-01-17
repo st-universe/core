@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -22,6 +23,8 @@ final class ShipRemover implements ShipRemoverInterface
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ShipStorageRepositoryInterface $shipStorageRepository;
+    
+    private ShipStorageManagerInterface $shipStorageManager;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
@@ -40,6 +43,7 @@ final class ShipRemover implements ShipRemoverInterface
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
+        ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
@@ -50,6 +54,7 @@ final class ShipRemover implements ShipRemoverInterface
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
+        $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
@@ -100,12 +105,47 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setFleet(null);
         $ship->cancelRepair();
 
+        $this->leaveSomeIntactModules($ship);
+
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
         // @todo Torpedos löschen
 
         $this->shipRepository->save($ship);
 
         return $msg;
+    }
+
+    private function leaveSomeIntactModules($ship): void
+    {
+        $intactModules = [];
+
+        foreach($ship->getSystems() as $system)
+        {
+            if ($system->getModule() !== null
+                && $system->getStatus() == 100)
+            {
+                $module = $system->getModule();
+
+                if (!array_key_exists($module->getId(), $intactModules))
+                {
+                    $intactModules[$module->getId()] = $module;
+                }
+            }
+        }
+
+        //leave 50% of all intact modules
+        $leaveCount = (int) ceil(count($intactModules) / 2);
+        for ($i = 1; $i <= $leaveCount; $i++)
+        {
+            $module = $intactModules[array_rand($intactModules)];
+            unset($intactModules[$module->getId()]);
+
+            $this->shipStorageManager->upperStorage(
+                $ship,
+                $module->getCommodity(),
+                1
+            );
+        }
     }
 
     public function remove(ShipInterface $ship): void
