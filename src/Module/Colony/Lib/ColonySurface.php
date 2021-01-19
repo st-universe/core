@@ -104,7 +104,6 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getPositiveEffectPrimaryDescription(): string
     {
-        // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
                 return _('Zufriedenheit');
@@ -112,13 +111,16 @@ final class ColonySurface implements ColonySurfaceInterface
                 return _('Loyalität');
             case FactionEnum::FACTION_KLINGON:
                 return _('Ehre');
+            case FactionEnum::FACTION_CARDASSIAN:
+                return _('Stolz');
+            case FactionEnum::FACTION_FERENGI:
+                return _('Wohlstand');
         }
         return '';
     }
 
     public function getPositiveEffectSecondaryDescription(): string
     {
-        // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
                 return _('Bildung');
@@ -126,19 +128,26 @@ final class ColonySurface implements ColonySurfaceInterface
                 return _('Imperiales Gedankengut');
             case FactionEnum::FACTION_KLINGON:
                 return _('Kampftraining');
+            case FactionEnum::FACTION_CARDASSIAN:
+                return _('Patriotismus');
+            case FactionEnum::FACTION_FERENGI:
+                return _('Profitgier');
         }
         return '';
     }
 
     public function getNegativeEffectDescription(): string
     {
-        // XXX We need the other factions...
         switch ($this->colony->getUser()->getFactionId()) {
             case FactionEnum::FACTION_FEDERATION:
                 return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_ROMULAN:
                 return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_KLINGON:
+                return _('Bevölkerungsdichte');
+           case FactionEnum::FACTION_CARDASSIAN:
+                return _('Bevölkerungsdichte');
+           case FactionEnum::FACTION_FERENGI:
                 return _('Bevölkerungsdichte');
         }
         return '';
