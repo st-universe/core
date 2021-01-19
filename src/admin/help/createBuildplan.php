@@ -164,7 +164,7 @@ if ($rumpId !== 0) {
     if ($userId > 0) {
         foreach ($shipRumpRepo->getList() as $shipRump) {
             printf(
-                '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.gif" /> %s</a></div>',
+                '<div><a href="?rumpId=%d&userId=%d"><img src="/assets/ships/%s.png" /> %s</a></div>',
                 $shipRump->getId(),
                 $userId,
                 $shipRump->getId(),
