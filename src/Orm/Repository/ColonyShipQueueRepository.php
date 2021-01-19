@@ -89,6 +89,13 @@ final class ColonyShipQueueRepository extends EntityRepository implements Colony
         ]);
     }
 
+    public function getByBuildplan(int $buildplanId): array
+    {
+        return $this->findBy([
+            'buildplan_id' => $buildplanId
+        ]);
+    }
+
     public function getFinishedJobs(): array
     {
         return $this->getEntityManager()

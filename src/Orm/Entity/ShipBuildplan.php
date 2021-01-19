@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
+use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipBuildplanRepository")
@@ -133,7 +134,12 @@ class ShipBuildplan implements ShipBuildplanInterface
 
     public function isDeleteable(): bool
     {
-        return $this->getShipCount() == 0;
+        // @todo refactor
+        global $container;
+
+        $array = $container->get(ColonyShipQueueRepositoryInterface::class)->getByBuildplan($this->getId());
+
+        return $this->getShipCount() == 0 && count($array) == 0;
     }
 
     public static function createSignature(array $modules, int $crewUsage = 0): string

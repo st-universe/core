@@ -32,6 +32,11 @@ interface ColonyShipQueueRepositoryInterface
     /**
      * @return ColonyShipQueueInterface[]
      */
+    public function getByBuildplan(int $buildplanId): array;
+
+    /**
+     * @return ColonyShipQueueInterface[]
+     */
     public function getFinishedJobs(): array;
 
     public function truncateByColony(ColonyInterface $colony): void;
