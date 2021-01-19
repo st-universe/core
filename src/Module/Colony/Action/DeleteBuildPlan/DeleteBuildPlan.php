@@ -42,6 +42,10 @@ final class DeleteBuildPlan implements ActionControllerInterface
             $userId
         );
 
+        $game->setPageTitle(_('Bauplan löschen'));
+        $game->setTemplateFile('html/ajaxwindow.xhtml');
+        $game->setMacro('html/colonymacros.xhtml/entity_not_available');
+
         /** @var ShipBuildplanInterface $plan */
         $plan = $this->shipBuildplanRepository->find((int) request::getIntFatal('planid'));
         if ($plan === null || $plan->getUserId() !== $userId || $plan->isDeleteable() === false) {
@@ -51,7 +55,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
         $this->shipBuildplanRepository->delete($plan);
 
         //$this->getTemplate()->setVar('FUNC', $this->getSelectedBuildingFunction());
-        $game->showMacro('html/colonymacros.xhtml/cm_buildplans');
+        $game->showMacro('html/colonymacros.xhtml/cm_buildplan_deleted');
     }
 
     public function performSessionCheck(): bool
