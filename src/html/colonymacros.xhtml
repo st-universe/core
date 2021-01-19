@@ -985,6 +985,16 @@
     </div>
   </metal:macro>
 </metal:block>
+<metal:block metal:define-macro="entity_not_available">
+  <div class="box">
+    <div class="box_body">Das Ziel wurde nicht gefunden</div>
+  </div>
+</metal:block>
+<metal:block metal:define-macro="cm_buildplan_deleted">
+  <div class="box">
+    <div class="box_body">Bauplan wurde gelöscht</div>
+  </div>
+</metal:block>
 <metal:block metal:define-macro="buildinginfo">
   <metal:macro use-macro="building_preview"
     tal:define="display string:block;preview_id string:building_preview_default; building buildingdata" />
