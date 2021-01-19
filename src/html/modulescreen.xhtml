@@ -173,7 +173,7 @@
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
           <td style="width: 30px; text-align: center;" tal:content="module/getModule/getLevel">LEVEL</td>
-          <td id="${module/getModule/getId}_content">
+          <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
             <metal:macro metal:use-macro="moduleselector_stats_type_${THIS/getModuleType}" />
           </td>
         </tr>
@@ -194,7 +194,7 @@
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
           <td style="width: 30px; text-align: center;" tal:content="module/getModule/getLevel">LEVEL</td>
-          <td id="${module/getModule/getId}_content">
+          <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
             <metal:macro metal:use-macro="moduleselector_stats_type_${THIS/getModuleType}" />
           </td>
         </tr>
@@ -207,42 +207,42 @@
   <metal:macro metal:define-macro="moduleselector_stats_type_1">
     <img src="assets/buttons/modul_screen_1.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Hüllenstärke</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseHull')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_2">
     <img src="assets/buttons/modul_screen_2.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Schildkapazität</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseShield')">VALUE</span>
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseShield')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_3">
     <img src="assets/buttons/modul_screen_3.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Energiespeicher</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseEps')">VALUE</span>
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseEps')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_4">
     <img src="assets/buttons/modul_screen_4.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Ausweichchance</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateEvadeChance(rump,module.getModule())">VALUE</span>%
+      tal:replace="php:modSel.getModuleValueCalculator().calculateEvadeChance(rump,module.getModule())">VALUE</span>%
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_5">
     <img src="assets/buttons/modul_screen_5.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Reaktorleistung</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseReactor')">VALUE</span>
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseReactor')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_6">
     <img src="assets/buttons/modul_screen_6.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Trefferchance</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getHitChance')">VALUE</span>%
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getHitChance')">VALUE</span>%
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_7">
     <img src="assets/buttons/modul_screen_7.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Basisschaden (abstrakt)</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseDamage')">VALUE</span>
+      tal:replace="php:modSel.getModuleValueCalculator().calculateModuleValue(rump,module.getModule(),'getBaseDamage')">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_8">
     <img src="assets/buttons/modul_screen_8.gif" tal:attributes="title module/getModule/getDescription" />
     <span>Torpedoschaden</span>: <span
-      tal:replace="php:THIS.getModuleValueCalculator().calculateDamageImpact(rump,module.getModule())">VALUE</span>
+      tal:replace="php:modSel.getModuleValueCalculator().calculateDamageImpact(rump,module.getModule())">VALUE</span>
   </metal:macro>
   <metal:macro metal:define-macro="moduleselector_stats_type_9">
     <div tal:repeat="special module/getModule/getSpecials" class="module_special_${module/getModule/getId}"
