@@ -550,6 +550,12 @@ class Colony implements ColonyInterface
                 case FactionEnum::FACTION_KLINGON:
                     $key = ColonyEnum::GOOD_SATISFACTION_KLINGON_PRIMARY;
                     break;
+                case FactionEnum::FACTION_CARDASSIAN:
+                    $key = ColonyEnum::GOOD_SATISFACTION_CARDASSIAN_PRIMARY;
+                    break;
+                case FactionEnum::FACTION_FERENGI:
+                    $key = ColonyEnum::GOOD_SATISFACTION_FERENGI_PRIMARY;
+                    break;
             }
             $this->positive_effect_primary = 0;
             if (!isset($production[$key])) {
@@ -575,6 +581,12 @@ class Colony implements ColonyInterface
                     break;
                 case FactionEnum::FACTION_KLINGON:
                     $key = ColonyEnum::GOOD_SATISFACTION_KLINGON_SECONDARY;
+                    break;
+                case FactionEnum::FACTION_CARDASSIAN:
+                    $key = ColonyEnum::GOOD_SATISFACTION_CARDASSIAN_SECONDARY;
+                    break;
+                case FactionEnum::FACTION_FERENGI:
+                    $key = ColonyEnum::GOOD_SATISFACTION_FERENGI_SECONDARY;
                     break;
             }
             if (!isset($production[$key])) {
