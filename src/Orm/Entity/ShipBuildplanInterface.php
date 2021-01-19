@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 
 interface ShipBuildplanInterface
@@ -43,6 +44,8 @@ interface ShipBuildplanInterface
     public function setCrewPercentage(int $crewPercentage): ShipBuildplanInterface;
 
     public function isDeleteable(): bool;
+
+    public function getShiplist(): Collection;
 
     public function getRump(): ShipRumpInterface;
 
