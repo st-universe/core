@@ -158,7 +158,7 @@
           <td class="module_positive" style="width: 3px;"></td>
           <td colspan="4">
             <input type="radio" name="mod_${THIS/getModuleType}[]" value="0"
-              onchange="replaceTabImage(${THIS/getModuleType},0,${rump/getBaseCrew},${rump/getCrew120P},${rump/getModuleLevel})" />
+              onchange="replaceTabImage(${THIS/getModuleType},0)" />
             <span>Keine Auswahl</span>
           </td>
         </tr>
@@ -168,7 +168,7 @@
             <input type="radio"
               tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
-              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${rump/getBaseCrew},${rump/getCrew120P},${rump/getModuleLevel},${module/getModule/getGoodId},${module/getModule/getCrew},${module/getModule/getLevel})" />
+              onchange="replaceTabImage(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getGoodId},${module/getModule/getCrew},${module/getModule/getLevel})" />
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
@@ -189,7 +189,7 @@
             <input class="specialModuleRadio" type="checkbox"
               tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
-              onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${rump/getBaseCrew},${rump/getCrew120P},${rump/getModuleLevel},${module/getModule/getCrew})" />
+              onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getCrew})" />
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>

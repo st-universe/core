@@ -229,28 +229,28 @@ function showModuleSelectTab(obj, tabId) {
 	$('module_select_tab_' + tabId).show();
 	currentTab = $('module_select_tab_' + tabId);
 }
-function replaceTabImage(type, moduleId, base_crew, max_crew, rump_module_lvl, goodId, module_crew, module_lvl) {
+function replaceTabImage(type, moduleId, goodId, module_crew, module_lvl) {
 	if (moduleId == 0) {
 		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.gif';
 		$('module_type_' + type).innerHTML = '';
-		updateCrewCount(type, 0, base_crew, max_crew, rump_module_lvl, 0);
+		updateCrewCount(type, 0, 0);
 	} else {
 		Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
 		$('tab_image_mod_' + type).src = 'assets/goods/' + goodId + '.gif';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
-		updateCrewCount(type, module_crew, base_crew, max_crew, rump_module_lvl, module_lvl);
+		updateCrewCount(type, module_crew, module_lvl);
 	}
 	enableShipBuildButton();
 }
-function toggleSpecialModuleDisplay(type, base_crew, max_crew, rump_module_lvl, module_crew) {
+function toggleSpecialModuleDisplay(type, module_crew) {
 	let innerHTML = '';
 	Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
 		if (elem.checked) {
 			innerHTML = innerHTML.concat($(elem.value + '_content').innerHTML);
-			updateCrewCount(elem.value, module_crew, base_crew, max_crew, rump_module_lvl, 0);
+			updateCrewCount(elem.value, module_crew, 0);
 		} else {
-			updateCrewCount(elem.value, 0, base_crew, max_crew, rump_module_lvl, 0);
+			updateCrewCount(elem.value, 0, 0);
 		}
 	});
 	$('module_type_' + type).innerHTML = innerHTML;
@@ -267,7 +267,7 @@ function setFixValues(base_crew, max_crew, rump_module_lvl) {
 	rumpModuleLvl = rump_module_lvl;
 }
 var crew_type = new Hash();
-function updateCrewCount(type, module_crew, base_crew, max_crew, rump_module_lvl, module_lvl) {
+function updateCrewCount(type, module_crew, module_lvl) {
 	crew_type.set(type, { lvl: module_lvl, crew: module_crew });
 }
 function checkCrewCount() {

@@ -14,6 +14,7 @@ interface ShipRumpCategoryInterface
 
     public function setDatabaseId(int $databaseId): ShipRumpCategoryInterface;
 
+    //@deprecated
     public function getPoints(): int;
 
     public function setPoints(int $points): ShipRumpCategoryInterface;

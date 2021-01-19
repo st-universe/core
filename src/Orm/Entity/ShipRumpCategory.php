@@ -65,6 +65,7 @@ class ShipRumpCategory implements ShipRumpCategoryInterface
         return $this;
     }
 
+    //@deprecated
     public function getPoints(): int
     {
         return $this->points;
