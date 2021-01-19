@@ -311,11 +311,6 @@ function enableShipBuildButton() {
 	Form.Element.enable('buildbutton');
 	new Effect.Highlight($('buildbutton'));
 }
-function deleteBuildplan(planid, function_id) {
-	elt = 'deleteBuildplan'
-	openPJsWin(elt, 1);
-	new Ajax.Updater(elt, 'colony.php?B_DEL_BUILDPLAN=1&id=' + colonyid + '&planid=' + planid);
-}
 function cancelModuleQueueEntries(module_id) {
 	ajaxPostUpdate(
 		'module_' + module_id + '_action',
