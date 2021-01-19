@@ -126,9 +126,14 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    public function getShipCount(): int
+    {
+        return $this->getShiplist()->count();
+    }
+
     public function isDeleteable(): bool
     {
-        return $this->getShiplist()->count() == 0;
+        return $this->getShipCount() == 0;
     }
 
     public static function createSignature(array $modules, int $crewUsage = 0): string

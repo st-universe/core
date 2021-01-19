@@ -54,8 +54,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
         $this->buildplanModuleRepository->truncateByBuildplan($plan->getId());
         $this->shipBuildplanRepository->delete($plan);
 
-        //$this->getTemplate()->setVar('FUNC', $this->getSelectedBuildingFunction());
-        $game->showMacro('html/colonymacros.xhtml/cm_buildplan_deleted');
+        $game->setMacro('html/colonymacros.xhtml/cm_buildplan_deleted');
     }
 
     public function performSessionCheck(): bool
