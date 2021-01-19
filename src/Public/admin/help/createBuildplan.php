@@ -100,13 +100,13 @@ if ($rumpId !== 0) {
                 $mod->setModuleType($module->getType());
                 $mod->setBuildplanId($plan->getId());
                 $mod->setModule($module);
+                $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($module->getSpecials()));
 
                 $buildplanModuleRepo->save($mod);
             }
         }
 
         echo 'Bauplan angelegt';
-
     } else {
 
         printf(
@@ -166,7 +166,6 @@ if ($rumpId !== 0) {
             '<br /><input type="submit" value="Bauplan erstellen" /></form>'
         );
     }
-
 } else {
     if ($userId > 0) {
         foreach ($shipRumpRepo->getList() as $shipRump) {

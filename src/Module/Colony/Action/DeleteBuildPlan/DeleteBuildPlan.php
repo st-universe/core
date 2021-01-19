@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class DeleteBuildPlan implements ActionControllerInterface
@@ -20,12 +21,16 @@ final class DeleteBuildPlan implements ActionControllerInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
+    private BuildplanModuleRepositoryInterface $buildplanModuleRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        BuildplanModuleRepositoryInterface $buildplanModuleRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->buildplanModuleRepository = $buildplanModuleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -42,6 +47,7 @@ final class DeleteBuildPlan implements ActionControllerInterface
         if ($plan === null || $plan->getUserId() !== $userId || $plan->isDeleteable() === false) {
             throw new AccessViolation();
         }
+        $this->buildplanModuleRepository->truncateByBuildplan($plan->getId());
         $this->shipBuildplanRepository->delete($plan);
 
         //$this->getTemplate()->setVar('FUNC', $this->getSelectedBuildingFunction());
