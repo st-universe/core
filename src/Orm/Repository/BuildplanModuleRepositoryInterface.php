@@ -22,4 +22,6 @@ interface BuildplanModuleRepositoryInterface extends ObjectRepository
     public function save(BuildplanModuleInterface $obj): void;
 
     public function delete(BuildplanModuleInterface $obj): void;
+
+    public function truncateByBuildplan(int $buildplanId): void;
 }

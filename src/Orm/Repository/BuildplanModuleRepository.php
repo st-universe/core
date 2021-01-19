@@ -45,4 +45,19 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
         $em->remove($obj);
         $em->flush();
     }
+
+    public function truncateByBuildplan(int $buildplanId): void
+    {
+        $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'DELETE FROM %s bm WHERE bm.buildplan_id = :buildplanId',
+                    BuildplanModule::class
+                )
+            )
+            ->setParameters([
+                'buildplanId' => $buildplanId
+            ])
+            ->execute();
+    }
 }
