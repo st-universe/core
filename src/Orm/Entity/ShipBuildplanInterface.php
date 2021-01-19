@@ -45,6 +45,8 @@ interface ShipBuildplanInterface
 
     public function isDeleteable(): bool;
 
+    public function getShipCount(): int;
+
     public function getShiplist(): Collection;
 
     public function getRump(): ShipRumpInterface;

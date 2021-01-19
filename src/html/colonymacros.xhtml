@@ -932,6 +932,7 @@
       <table class="tcal">
         <tr>
           <th></th>
+          <th>Anzahl Schiffe</th>
           <th>Bauzeit</th>
           <th></th>
           <th style="width: 20px;"></th>
@@ -940,6 +941,8 @@
           <tr tal:attributes="class string:row${repeat/data/odd}" style="cursor: pointer;" title="Details">
             <td tal:content="data/getName" class="selectable"
               onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
+            <td tal:content="data/getShipCount" class="selectable"
+              onclick="toggleTableRowVisible('buildplan_${data/getId}');">ANZAHL</td>
             <td tal:content="formatSeconds:data/getBuildtime"
               onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
             <td style="text-align: center;">
