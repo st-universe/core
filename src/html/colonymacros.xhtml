@@ -951,7 +951,8 @@
             </td>
             <td style="text-align: center;">
               <a tal:condition="data/isDeleteable" class="linkbutton linkbutton_red"
-                href="?B_DEL_BUILDPLAN=1&planid=${data/getId}" title="Löschen">X</a>
+                href="?id=${COLONY/getId}&B_DEL_BUILDPLAN=1&planid=${data/getId}&sstr=${THIS/getSessionString}"
+                title="Löschen">X</a>
             </td>
           </tr>
           <tr title="Details schließen" onclick="toggleTableRowVisible('buildplan_${data/getId}');"
