@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Stu\Lib\ModuleScreen\ModuleSelectWrapper;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 
@@ -46,6 +48,11 @@ class ShipBuildplan implements ShipBuildplanInterface
     private $crew_percentage = 0;
 
     /**
+     * @OneToMany(targetEntity="Ship", mappedBy="buildplan")
+     */
+    private $ships;
+
+    /**
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -56,6 +63,11 @@ class ShipBuildplan implements ShipBuildplanInterface
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
+
+    public function __construct()
+    {
+        $this->ships = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -116,8 +128,7 @@ class ShipBuildplan implements ShipBuildplanInterface
 
     public function isDeleteable(): bool
     {
-        // @todo
-        return false;
+        return $this->getShiplist()->count() == 0;
     }
 
     public static function createSignature(array $modules, int $crewUsage = 0): string
@@ -163,6 +174,11 @@ class ShipBuildplan implements ShipBuildplanInterface
         return $this;
     }
 
+    public function getShiplist(): Collection
+    {
+        return $this->ships;
+    }
+
     public function getRump(): ShipRumpInterface
     {
         return $this->shipRump;
@@ -181,8 +197,8 @@ class ShipBuildplan implements ShipBuildplanInterface
         global $container;
 
         return $container->get(BuildplanModuleRepositoryInterface::class)->getByBuildplanAndModuleType(
-            (int)$this->getId(),
-            (int)$type
+            (int) $this->getId(),
+            (int) $type
         );
     }
 
