@@ -4,11 +4,16 @@
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
     <th style="width: 22px;"></th>
-    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="assets/buttons/info2.gif" style="height:16px;" /></th>
-    <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.gif" style="height:16px;" /></th>
-    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img src="assets/buttons/info2.gif" style="height:16px;" /></th>
-    <th style="width: 160px;" title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img src="assets/buttons/info2.gif" style="height:16px;" /></th>
-    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="assets/buttons/info2.gif" style="height:16px;" /></th>
+    <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="assets/buttons/info2.gif"
+        style="height:16px;" /></th>
+    <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.gif" style="height:16px;" />
+    </th>
+    <th style="width: 160px;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
+        src="assets/buttons/info2.gif" style="height:16px;" /></th>
+    <th style="width: 160px;" title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img
+        src="assets/buttons/info2.gif" style="height:16px;" /></th>
+    <th style="width: 120px;" title="Warpkern, Ersatzbatterie">Versorgung <img src="assets/buttons/info2.gif"
+        style="height:16px;" /></th>
     <th style="width: 90px; text-align: center;">Crew</th>
     <th style="width: 125px; text-align: center;">Systeme</th>
     <th style="width: 35px;"></th>
@@ -17,7 +22,8 @@
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><metal:macro metal:use-macro="shipimage" /></a>
+      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+        <metal:macro metal:use-macro="shipimage" /></a>
     </td>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:content="structure bbcode:ship/getName">.</a>
@@ -27,20 +33,22 @@
     </td>
     <td align="center">
       ${ship/getPosX}|${ship/getPosY}<br />
-	(${ship/getCx}|${ship/getCy})
+      (${ship/getCx}|${ship/getCy})
     </td>
     <td>
       ${ship/getHuell}/${ship/getMaxHuell}
     </td>
     <td>
-      <span tal:condition="ship/getShieldState" class="activeshield" tal:content="string:${ship/getShield}/${ship/getMaxShield}">..</span>
+      <span tal:condition="ship/getShieldState" class="activeshield"
+        tal:content="string:${ship/getShield}/${ship/getMaxShield}">..</span>
       <span tal:condition="not:ship/getShieldState">${ship/getShield}/${ship/getMaxShield}</span>
       (+<span tal:replace="ship/getShieldRegenerationRate">REGENERATIONRATE</span>)
     </td>
     <td>
       ${ship/getEps}/${ship/getMaxEps}
       <span>${addPlusCharacter:ship/getEffectiveEpsProduction}</span>
-      (<span tal:content="ship/getEpsUsage" class="neg">USAGE</span>/<span class="neg" tal:content="ship/getWarpcoreUsage">CORE</span>)
+      (<span tal:content="ship/getEpsUsage" class="neg">USAGE</span>/<span class="neg"
+        tal:content="ship/getWarpcoreUsage">CORE</span>)
     </td>
     <td>
       <div style="float: left; width: 50%">
@@ -58,7 +66,8 @@
       <img src="assets/buttons/lss2.gif" tal:condition="not:ship/getLss" title="Langstreckensensoren deaktiviert" />
       <tal:block tal:condition="ship/hasPhaser">
         <img src="assets/buttons/act_phaser1.gif" tal:condition="ship/getPhaser" title="Strahlenwaffe aktiviert" />
-        <img src="assets/buttons/act_phaser2.gif" tal:condition="not:ship/getPhaser" title="Strahlenwaffe deaktiviert" />
+        <img src="assets/buttons/act_phaser2.gif" tal:condition="not:ship/getPhaser"
+          title="Strahlenwaffe deaktiviert" />
       </tal:block>
       <tal:block tal:condition="ship/hasTorpedo">
         <img src="assets/buttons/act_torp1.gif" tal:condition="ship/getTorpedos" title="Torpedobänke aktiviert" />
@@ -71,15 +80,21 @@
     </td>
     <td style="text-align: center;">
       <tal:block tal:condition="ship/getFleet">
-        <a href="?B_DELETE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="ship/isFleetLeader" onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag3')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag2')">
+        <a href="?B_DELETE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="ship/isFleetLeader"
+          onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag3')"
+          onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag2')">
           <img src="assets/buttons/fl_flag2.gif" name="fleet_${ship/getId}" title="Flotte auflösen" />
         </a>
-        <a href="?B_LEAVE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="not:ship/isFleetLeader" onmouseover="cp('fleet_${ship/getId}','buttons/fl_raus2')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_raus1')">
+        <a href="?B_LEAVE_FLEET=1&id=${ship/getId}&sstr=${THIS/getSessionString}" tal:condition="not:ship/isFleetLeader"
+          onmouseover="cp('fleet_${ship/getId}','buttons/fl_raus2')"
+          onmouseout="cp('fleet_${ship/getId}','buttons/fl_raus1')">
           <img src="assets/buttons/fl_raus1.gif" name="fleet_${ship/getId}" title="Flotte verlassen" />
         </a>
       </tal:block>
       <tal:block tal:condition="not:ship/getFleet">
-        <a href="?B_NEW_FLEET=1&id=${ship/getId}" tal:condition="not:ship/isBase" onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag2')" onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag1')">
+        <a href="?B_NEW_FLEET=1&id=${ship/getId}" tal:condition="not:ship/isBase"
+          onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag2')"
+          onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag1')">
           <img src="assets/buttons/fl_flag1.gif" name="fleet_${ship/getId}" title="Flotte erstellen" />
         </a>
       </tal:block>
@@ -87,8 +102,10 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
-  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRump/getId}_cloaked.png" tal:attributes="title ship/getRump/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRump/getId}.png" tal:attributes="title ship/getRump/getName" />
+  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRump/getId}_cloaked.png"
+    tal:attributes="title ship/getRump/getName" />
+  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRump/getId}.png"
+    tal:attributes="title ship/getRump/getName" />
 </metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
@@ -103,55 +120,77 @@
   </tr>
 </metal:block>
 <metal:block metal:define-macro="nbslist_body">
-  <tal:block tal:condition="SHIP/displayNbsActions" tal:define="sstr string:${THIS/getSessionString}; nameWithoutMarkup bbcode2txt:ship/getName">
+  <tal:block tal:condition="SHIP/displayNbsActions"
+    tal:define="sstr string:${THIS/getSessionString}; nameWithoutMarkup bbcode2txt:ship/getName">
     <td style="width: 30px; text-align: center;">
       <tal:block tal:condition="SHIP/canAttack">
-        <div tal:condition="ship/canBeAttacked" style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();" onmouseover="cp('att_${ship/getId}','buttons/phaser2')" onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
+        <div tal:condition="ship/canBeAttacked" style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
+          onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
+          onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
           <img src="assets/buttons/phaser1.gif" name="att_${ship/getId}" title="${nameWithoutMarkup} angreifen" />
         </div>
       </tal:block>
     </td>
     <td style="width: 120px;">
-      <a tal:condition="not:ship/getCloakState" href="javascript:void(0);" onclick="showScanWindow(${SHIP/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
+      <a tal:condition="not:ship/getCloakState" href="javascript:void(0);"
+        onclick="showScanWindow(${SHIP/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')"
+        onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
         <img src="assets/buttons/lupe1.gif" name="scn_${ship/getId}" title="${nameWithoutMarkup} scannen" />
       </a>
       <tal:block tal:condition="SHIP/canIntercept">
-        <a tal:condition="ship/isInterceptable" href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
+        <a tal:condition="ship/isInterceptable"
+          href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
+          onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
           <img src="assets/buttons/inc1.gif" name="int_${ship/getId}" title="${nameWithoutMarkup} abfangen" />
         </a>
       </tal:block>
       <tal:block tal:condition="not:ship/getWarpState">
         <tal:block tal:condition="not:ship/getCloakState">
-          <a href="javascript:void(0);" tal:condition="not:ship/getIsDestroyed" onclick="showETransferWindow(${ship/getId})" onmouseover="cp('etr_${ship/getId}','buttons/e_trans2')" onmouseout="cp('etr_${ship/getId}','buttons/e_trans1')">
-            <img src="assets/buttons/e_trans1.gif" name="etr_${ship/getId}" title="Energie zur ${nameWithoutMarkup} transferieren" />
+          <a href="javascript:void(0);" tal:condition="not:ship/getIsDestroyed"
+            onclick="showETransferWindow(${ship/getId})" onmouseover="cp('etr_${ship/getId}','buttons/e_trans2')"
+            onmouseout="cp('etr_${ship/getId}','buttons/e_trans1')">
+            <img src="assets/buttons/e_trans1.gif" name="etr_${ship/getId}"
+              title="Energie zur ${nameWithoutMarkup} transferieren" />
           </a>
-          <a href="javascript:void(0);" onclick="showBToWindow(${ship/getId})" onmouseover="cp('bto_${ship/getId}','buttons/b_down2')" onmouseout="cp('bto_${ship/getId}','buttons/b_down1')">
-            <img src="assets/buttons/b_down1.gif" name="bto_${ship/getId}" title="Zur ${nameWithoutMarkup} runterbeamen" />
+          <a href="javascript:void(0);" onclick="showBToWindow(${ship/getId})"
+            onmouseover="cp('bto_${ship/getId}','buttons/b_down2')"
+            onmouseout="cp('bto_${ship/getId}','buttons/b_down1')">
+            <img src="assets/buttons/b_down1.gif" name="bto_${ship/getId}"
+              title="Zur ${nameWithoutMarkup} runterbeamen" />
           </a>
-          <a href="javascript:void(0);" onclick="showBFromWindow(${ship/getId})" onmouseover="cp('bfr_${ship/getId}','buttons/b_up2')" onmouseout="cp('bfr_${ship/getId}','buttons/b_up1')">
-            <img src="assets/buttons/b_up1.gif" name="bfr_${ship/getId}" title="Von der ${nameWithoutMarkup} hochbeamen" />
+          <a href="javascript:void(0);" onclick="showBFromWindow(${ship/getId})"
+            onmouseover="cp('bfr_${ship/getId}','buttons/b_up2')" onmouseout="cp('bfr_${ship/getId}','buttons/b_up1')">
+            <img src="assets/buttons/b_up1.gif" name="bfr_${ship/getId}"
+              title="Von der ${nameWithoutMarkup} hochbeamen" />
           </a>
           <tal:block tal:condition="ship/isOwnedByCurrentUser">
             <tal:block tal:condition="SHIP/isTroopQuartersHealthy">
-              <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, true);" >
+              <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, true);">
                 <img src="assets/buttons/bt_down1.png" title="Truppen zur ${nameWithoutMarkup} beamen" />
               </a>
-              <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, false);" >
+              <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, false);">
                 <img src="assets/buttons/bt_up1.png" title="Truppen von der ${nameWithoutMarkup} beamen" />
               </a>
             </tal:block>
           </tal:block>
           <tal:block tal:condition="not:ship/traktorbeamNotPossible">
             <tal:block tal:condition="not:SHIP/isTraktorBeamActive">
-              <a href="?B_ACTIVATE_TRAKTOR=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}" onmouseover="cp('tra_${ship/getId}','buttons/trak2')" onmouseout="cp('tra_${ship/getId}','buttons/trak1')">
-                <img src="assets/buttons/trak1.gif" name="tra_${ship/getId}" title="Traktorstrahl auf die ${nameWithoutMarkup} richten" />
+              <a href="?B_ACTIVATE_TRAKTOR=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
+                onmouseover="cp('tra_${ship/getId}','buttons/trak2')"
+                onmouseout="cp('tra_${ship/getId}','buttons/trak1')">
+                <img src="assets/buttons/trak1.gif" name="tra_${ship/getId}"
+                  title="Traktorstrahl auf die ${nameWithoutMarkup} richten" />
               </a>
             </tal:block>
           </tal:block>
         </tal:block>
         <tal:block tal:condition="ship/isBase">
-          <a tal:condition="not:SHIP/getDockedTo" href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('dock_${ship/getId}','buttons/dock2')" onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
-            <img src="assets/buttons/dock1.gif" name="dock_${ship/getId}" title="An die ${nameWithoutMarkup} andocken" />
+          <a tal:condition="not:SHIP/getDockedTo"
+            href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
+            onmouseover="cp('dock_${ship/getId}','buttons/dock2')"
+            onmouseout="cp('dock_${ship/getId}','buttons/dock1')">
+            <img src="assets/buttons/dock1.gif" name="dock_${ship/getId}"
+              title="An die ${nameWithoutMarkup} andocken" />
           </a>
         </tal:block>
       </tal:block>
@@ -164,11 +203,14 @@
     <td colspan="2" style="text-align: center;">
       <tal:block tal:condition="SHIP/getWarpState">
         <tal:block tal:condition="SHIP/canIntercept">
-          <a tal:condition="ship/isInterceptable" href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
+          <a tal:condition="ship/isInterceptable"
+            href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
+            onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
             <img src="assets/buttons/inc1.gif" name="int_${ship/getId}" title="${bbcode2txt:ship/getName} abfangen" />
           </a>
         </tal:block>
-        <a href="javascript:void(0);" onclick="showScanWindow(${SHIP/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
+        <a href="javascript:void(0);" onclick="showScanWindow(${SHIP/getId},${ship/getId})"
+          onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
           <img src="assets/buttons/lupe1.gif" name="scn_${ship/getId}" title="${bbcode2txt:ship/getName} scannen" />
         </a>
         <span style="width: 100%; color: #474791;">Warpantrieb aktiv</span>
@@ -178,7 +220,8 @@
   </tal:block>
   <tal:block tal:condition="ship/isOwnedByCurrentUser">
     <td style="width: 200px; background-color: #000000 !important;">
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><metal:macro metal:use-macro="shipimage" /></a>
+      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+        <metal:macro metal:use-macro="shipimage" /></a>
     </td>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span tal:content="structure bbcode:ship/getName">.</span></a>
@@ -200,12 +243,9 @@
       </tal:block>
     </td>
     <td>
-      <a
-        href="javascript:void(0);"
-        onclick="openPmWindow(${ship/getUserId})"
+      <a href="javascript:void(0);" onclick="openPmWindow(${ship/getUserId})"
         title="Nachricht an ${bbcode2txt:ship/getUser/getName} verfassen"
-        onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')"
-        onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
+        onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
         <img src="/assets/buttons/msg1.gif" name="nbsPm${ship/getId}" /></a>
       <span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span> (${ship/getUserId})
     </td>
@@ -219,10 +259,10 @@
 </metal:block>
 <metal:block metal:define-macro="initial_js">
   <script language="Javascript">
-			var sstr = '${THIS/getSessionString}';
-			var shipid = ${SHIP/getId};
-		</script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js"><!-- stuniverse --></script>
+    var sstr = '${THIS/getSessionString}';
+    var shipid = ${ SHIP/getId};
+  </script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js">< !--stuniverse --></script>
 </metal:block>
 <metal:block metal:define-macro="show_ship_alvl">
   <table style="width: 100%;" tal:define="sstr THIS/getSessionString">
@@ -267,8 +307,7 @@
           <input type="text" size="4" name="ecount" id="etransfer_value" />
           <input type="submit" class="button" value="transferieren" name="B_ETRANSFER" id="etransfer_button" />
           <input type="button" class="button" value="max" name="B_MAX_ETRANSFER"
-                 onclick="$('etransfer_value').value = '${SHIP/getEps}'; $('etransfer_button').click()"
-          />
+            onclick="$('etransfer_value').value = '${SHIP/getEps}'; $('etransfer_button').click()" />
         </td>
       </tr>
     </table>
@@ -289,23 +328,20 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
+        <td colspan="2">Kapazität pro 1 Energie: <span
+            tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -324,7 +360,8 @@
             </tr>
             <tr>
               <td style="text-align: center; height: 10%;">
-                <a href="javascript:void(0);" onclick="triggerBeamFrom(${targetShip/getId})" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
+                <a href="javascript:void(0);" onclick="triggerBeamFrom(${targetShip/getId})"
+                  onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
                   <img src="assets/buttons/b_down1.gif" name="beamtrigger" title="Beammodus wechseln" />
                 </a>
               </td>
@@ -358,23 +395,20 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetShip/getName">...</span></td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
+        <td colspan="2">Kapazität pro 1 Energie: <span
+            tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="targetShip/getSortedStorage" tal:repeat="good targetShip/getSortedStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -393,7 +427,8 @@
             </tr>
             <tr>
               <td style="text-align: center; height: 10%;">
-                <a href="javascript:void(0);" onclick="triggerBeamTo(${targetShip/getId})" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
+                <a href="javascript:void(0);" onclick="triggerBeamTo(${targetShip/getId})"
+                  onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
                   <img src="assets/buttons/b_up1.gif" name="beamtrigger" title="Beammodus wechseln" />
                 </a>
               </td>
@@ -427,23 +462,20 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
+        <td colspan="2">Kapazität pro 1 Energie: <span
+            tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -462,7 +494,8 @@
             </tr>
             <tr>
               <td style="text-align: center; height: 10%;">
-                <a href="javascript:void(0);" onclick="triggerBeamFromColony(${targetColony/getId})" onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
+                <a href="javascript:void(0);" onclick="triggerBeamFromColony(${targetColony/getId})"
+                  onmouseover="cp('beamtrigger','buttons/b_down2');" onmouseout="cp('beamtrigger','buttons/b_down1');">
                   <img src="assets/buttons/b_down1.gif" name="beamtrigger" title="Beammodus wechseln" />
                 </a>
               </td>
@@ -496,23 +529,20 @@
         <td colspan="2">Ziel: <span tal:replace="structure bbcode:targetColony/getName">...</span></td>
       </tr>
       <tr>
-        <td colspan="2">Kapazität pro 1 Energie: <span tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
+        <td colspan="2">Kapazität pro 1 Energie: <span
+            tal:replace="structure bbcode:SHIP/getRump/getBeamFactor">...</span></td>
       </tr>
       <tr>
         <td style="width: 100%;">
           <tal:block tal:condition="targetColony/getBeamableStorage" tal:repeat="good targetColony/getBeamableStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-              <metal:macro
-                metal:use-macro="macros.xhtml/commoditySelection"
-                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-              />
+              <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
@@ -531,7 +561,8 @@
             </tr>
             <tr>
               <td style="text-align: center; height: 10%;">
-                <a href="javascript:void(0);" onclick="triggerBeamToColony(${targetColony/getId})" onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
+                <a href="javascript:void(0);" onclick="triggerBeamToColony(${targetColony/getId})"
+                  onmouseover="cp('beamtrigger','buttons/b_up2');" onmouseout="cp('beamtrigger','buttons/b_up1');">
                   <img src="assets/buttons/b_up1.gif" name="beamtrigger" title="Beammodus wechseln" />
                 </a>
               </td>
@@ -581,8 +612,7 @@
           <input type="text" size="4" name="tcount" id="ttransfer_value" />
           <input type="submit" class="button" value="beamen" name="B_TROOP_TRANSFER" id="ttransfer_button" />
           <input type="button" class="button" value="max" name="B_MAX_TTRANSFER"
-                 onclick="$('ttransfer_value').value = '${MAXIMUM}'; $('ttransfer_button').click()"
-          />
+            onclick="$('ttransfer_value').value = '${MAXIMUM}'; $('ttransfer_button').click()" />
         </td>
       </tr>
     </table>
@@ -634,9 +664,10 @@
       </tr>
       <tr>
         <td style="width: 450px;">
-          <span>Es befinden sich <span tal:replace="targetShip/getCrewCount"/> Crewman in den Rettungskapseln</span><br /><br />
+          <span>Es befinden sich <span tal:replace="targetShip/getCrewCount" /> Crewman in den
+            Rettungskapseln</span><br /><br />
           <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
-          <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS"  value="Rettungskapseln bergen" />
+          <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
         </td>
       </tr>
     </table>
@@ -704,14 +735,17 @@
       </tr>
       <tr tal:repeat="data SHIP/getCrewlist">
         <td>
-          <img src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
+          <img
+            src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
         </td>
         <td style="vertical-align: middle;">
           <metal:macro metal:define-macro="crewslot">
             <div id="rn_crew_${CREW/getId}">
-              <div onclick="showRenameCrew(this,${CREW/getId});" tal:content="CREW/getName" class="action" style="font-weight: bold;">NAME</div>
+              <div onclick="showRenameCrew(this,${CREW/getId});" tal:content="CREW/getName" class="action"
+                style="font-weight: bold;">NAME</div>
               <div id="rn_crew_${CREW/getId}_input" style="display: none;">
-                <input type="text" size="15" tal:attributes="value CREW/getName" id="rn_crew_${CREW/getId}_value" name="rn_crew_${CREW/getId}_value" />
+                <input type="text" size="15" tal:attributes="value CREW/getName" id="rn_crew_${CREW/getId}_value"
+                  name="rn_crew_${CREW/getId}_value" />
                 <input type="button" class="button" value="Ok" onclick="renameCrew(${CREW/getId})" />
               </div>
             </div>
@@ -734,7 +768,6 @@
       <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
       <span>Beam-Faktor</span>: ${SHIP/getRump/getBeamFactor}<br />
       <span>Torpedolagerraum</span>: ${SHIP/getMaxTorpedos}<br />
-      <span>Punkte</span>: ${SHIP/getRump/getShipRumpCategory/getPoints}<br />
     </div>
     <br />
     <div class="divhead">Systemstatus</div>
@@ -760,9 +793,12 @@
         <tr tal:repeat="data SHIP/getDockPrivileges">
           <td tal:content="structure bbcode:data/getTargetName">NAME</td>
           <td class="positive" tal:condition="data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE</td>
-          <td class="negative" tal:condition="not:data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE</td>
+          <td class="negative" tal:condition="not:data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE
+          </td>
           <td>
-            <div style="cursor: pointer;" onclick="deleteDockPrivilege(${data/getId},'${THIS/getSessionString}')" onmouseover="cp('dcfg_${repeat/data/index}','buttons/x2');" onmouseout="cp('dcfg_${repeat/data/index}','buttons/x1');">
+            <div style="cursor: pointer;" onclick="deleteDockPrivilege(${data/getId},'${THIS/getSessionString}')"
+              onmouseover="cp('dcfg_${repeat/data/index}','buttons/x2');"
+              onmouseout="cp('dcfg_${repeat/data/index}','buttons/x1');">
               <img src="assets/buttons/x1.gif" title="Einstellung löschen" name="dcfg_${repeat/data/index}" />
             </div>
           </td>
@@ -778,28 +814,29 @@
     </tr>
     <tr>
       <td>
-        <select id="docktype" onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
+        <select id="docktype"
+          onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
           <option value="1">Siedler</option>
           <option value="2">Allianz</option>
           <option value="3">Rasse</option>
         </select>
       </td>
       <td>
-					<span id="dock_opt1">
-						Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1" />
-					</span>
+        <span id="dock_opt1">
+          Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1" />
+        </span>
         <span id="dock_opt2" style="display: none;">
-						Allianz-ID: <input type="text" size="6" id="docktarget_2" name="docktarget" />
-					</span>
+          Allianz-ID: <input type="text" size="6" id="docktarget_2" name="docktarget" />
+        </span>
         <span id="dock_opt3" style="display: none;">
-						Rasse: <select name="docktarget" id="docktarget_3">
-							<option value="1">Föderation</option>
-							<option value="2">Romulaner</option>
-							<option value="3">Klingonen</option>
-							<option value="4">Cardassianer</option>
-							<option value="5">Ferengi</option>
-						</select>
-					</span>
+          Rasse: <select name="docktarget" id="docktarget_3">
+            <option value="1">Föderation</option>
+            <option value="2">Romulaner</option>
+            <option value="3">Klingonen</option>
+            <option value="4">Cardassianer</option>
+            <option value="5">Ferengi</option>
+          </select>
+        </span>
         <select id="dockmode">
           <option value="1">Erlauben</option>
           <option value="2">Verbieten</option>
@@ -833,7 +870,8 @@
           <tr>
             <td>
               <img src="assets/buttons/lager.gif" />
-              <span tal:replace="TRADEPOST/getStorageSum">SUM</span>/<span tal:replace="TRADEPOST/getStorageCapacity">MAX</span>
+              <span tal:replace="TRADEPOST/getStorageSum">SUM</span>/<span
+                tal:replace="TRADEPOST/getStorageCapacity">MAX</span>
             </td>
             <td>
               <img src="assets/buttons/lager.gif" />
@@ -848,10 +886,12 @@
           </tr>
           <tr>
             <td style="width: 50%" class="selected" id="transfertoaccount">
-              <a style="display: block;" href="javascript:void(0);" onclick="switchTransferToAccount(${TRADEPOST/getId})">Transfer in Konto</a>
+              <a style="display: block;" href="javascript:void(0);"
+                onclick="switchTransferToAccount(${TRADEPOST/getId})">Transfer in Konto</a>
             </td>
             <td style="width: 50%" id="transferfromaccount">
-              <a style="display: block;" href="javascript:void(0);" onclick="switchTransferFromAccount(${TRADEPOST/getId})">Transfer von Konto</a>
+              <a style="display: block;" href="javascript:void(0);"
+                onclick="switchTransferFromAccount(${TRADEPOST/getId})">Transfer von Konto</a>
             </td>
           </tr>
         </table>
@@ -869,16 +909,12 @@
                   <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
                     <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
                     <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-                      <metal:macro
-                        metal:use-macro="macros.xhtml/commoditySelection"
-                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-                      />
+                      <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
                     </div>
                     <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-                      <metal:macro
-                        metal:use-macro="macros.xhtml/commoditySelection"
-                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-                      />
+                      <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
                     </div>
                     <br tal:condition="repeat/good/odd" style="clear: both;" />
                   </tal:block>
@@ -901,16 +937,12 @@
                   <tal:block tal:condition="storage" tal:repeat="good storage">
                     <input type="hidden" name="goods[]" tal:attributes="value good/getGoodId" />
                     <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
-                      <metal:macro
-                        metal:use-macro="macros.xhtml/commoditySelection"
-                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-                      />
+                      <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
                     </div>
                     <div tal:condition="repeat/good/even" style="float: left; width: 50%;">
-                      <metal:macro
-                        metal:use-macro="macros.xhtml/commoditySelection"
-                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount"
-                      />
+                      <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
+                        tal:define="name good/getCommodity/getName; commodityId good/getCommodity/getId; amount good/getAmount" />
                     </div>
                     <br tal:condition="repeat/good/odd" style="clear: both;" />
                   </tal:block>
@@ -942,9 +974,13 @@
         </tr>
         <tr>
           <td>
-            Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt: <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
-            Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem Frachtraum des Schiffes beglichen werden.<br /><br />
-            <input class="button" type="button" value="Bezahlmethode wählen" onclick="tradeMenuChoosePayment(${TRADEPOST/getId});" />
+            Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt:
+            <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span
+              tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
+            Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem
+            Frachtraum des Schiffes beglichen werden.<br /><br />
+            <input class="button" type="button" value="Bezahlmethode wählen"
+              onclick="tradeMenuChoosePayment(${TRADEPOST/getId});" />
 
           </td>
         </tr>
@@ -955,7 +991,8 @@
         </tr>
         <tr>
           <td>
-            Du hast bereits die Maximalzahl an Handelslizenzen (<span tal:replace="php:MAX_TRADELICENCE_COUNT">MAXCOUNT</span>) und kannst daher keine weitere erwerben.
+            Du hast bereits die Maximalzahl an Handelslizenzen (<span
+              tal:replace="php:MAX_TRADELICENCE_COUNT">MAXCOUNT</span>) und kannst daher keine weitere erwerben.
           </td>
         </tr>
       </table>
@@ -966,8 +1003,11 @@
   <table class="tcal">
     <tr>
       <td>
-        Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu begleichen.<br /><br />
-        <img src="assets/goods/${TRADEPOST/getTradeLicenseCostsCommodity/getId}.gif" tal:attributes="title TRADEPOST/getTradeLicenseCostsCommodity/getName" /> <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span>
+        Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu
+        begleichen.<br /><br />
+        <img src="assets/goods/${TRADEPOST/getTradeLicenseCostsCommodity/getId}.gif"
+          tal:attributes="title TRADEPOST/getTradeLicenseCostsCommodity/getName" /> <span
+          tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span>
       </td>
     </tr>
   </table>
@@ -982,13 +1022,16 @@
         <div style="float: left; width: 190px;">
           <strong>Angedockte Schiffe</strong>
           <div tal:repeat="ship DOCKED_SHIPS_FOR_LICENSE">
-            - <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})" tal:content="structure bbcode:ship/getName">NAME</a>
+            - <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})"
+              tal:content="structure bbcode:ship/getName">NAME</a>
           </div>
         </div>
         <div style="padding-left: 6px; float: right; width: 190px;">
           <strong>Warenkonten</strong>
           <div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
-            - <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})" tal:content="structure acc/getTradePost/getName">NAME</a>
+            - <a href="javascript:void(0);"
+              onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})"
+              tal:content="structure acc/getTradePost/getName">NAME</a>
           </div>
         </div>
       </td>
@@ -1018,20 +1061,24 @@
     <tr>
       <td>
         Energiekosten: ${SHIP/getCurrentMapField/getFieldType/getEnergyCosts}<br />
-        Schaden: ${SHIP/getCurrentMapField/getFieldType/getSpecialDamage} (${SHIP/getCurrentMapField/getFieldType/getDamage})
+        Schaden: ${SHIP/getCurrentMapField/getFieldType/getSpecialDamage}
+        (${SHIP/getCurrentMapField/getFieldType/getDamage})
       </td>
     </tr>
   </table>
 </metal:macro>
 <metal:macro metal:define-macro="colonization">
   <div tal:attributes="class COLONY_SURFACE/getSurfaceTileCssClass" tal:define="sstr THIS/getSessionString">
-    <tal:block  tal:repeat="field COLONY_SURFACE/getSurface">
+    <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
       <div style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass">
         <div>
           <div>
-            <img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" />
-            <a tal:condition="field/isColonizeAble" href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
-              <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" />
+            <img tal:condition="not:field/isColonizeAble" style="width: 40px; height: 40px;" title="runtime"
+              tal:attributes="title field/getTitleString" src="assets/generated/fields/${field/getFieldType}.png" />
+            <a tal:condition="field/isColonizeAble"
+              href="?id=${SHIP/getId}&B_COLONIZE=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
+              <img style="width: 40px; height: 40px;" title="runtime" tal:attributes="title field/getTitleString"
+                src="assets/generated/fields/${field/getFieldType}.png" />
             </a>
           </div>
         </div>
@@ -1042,8 +1089,10 @@
     <br />
     <div class="divhead">Kolonisierbare Felder</div>
     <div class="divbody">
-      <img src="assets/generated/fields/${field}.png" tal:repeat="field currentColony/getPlanetType/getColonizeableFields" />
+      <img src="assets/generated/fields/${field}.png"
+        tal:repeat="field currentColony/getPlanetType/getColonizeableFields" />
     </div>
   </tal:block>
 </metal:macro>
+
 </html>
