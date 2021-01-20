@@ -31,8 +31,11 @@
     <td style="text-align: center;">
       <img src="assets/buttons/alert${ship/getAlertState}_1.gif" title="Alarmstufe" />
     </td>
-    <td align="center">
+    <td align="center" tal:condition="ship/getSystem">
       ${ship/getPosX}|${ship/getPosY}<br />
+      (${ship/getCx}|${ship/getCy})
+    </td>
+    <td align="center" tal:condition="not:ship/getSystem">
       (${ship/getCx}|${ship/getCy})
     </td>
     <td>
