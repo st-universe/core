@@ -113,12 +113,12 @@ class Terraforming implements TerraformingInterface
         return $this;
     }
 
-    public function getResearchId(): int
+    public function getResearchId(): ?int
     {
         return $this->research_id;
     }
 
-    public function setResearchId(int $researchId): TerraformingInterface
+    public function setResearchId(?int $researchId): TerraformingInterface
     {
         $this->research_id = $researchId;
         return $this;
