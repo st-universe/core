@@ -10,10 +10,7 @@ use Doctrine\Common\Collections\Collection;
  * @Entity(repositoryClass="Stu\Orm\Repository\TerraformingRepository")
  * @Table(
  *     name="stu_terraforming",
- *     uniqueConstraints={@UniqueConstraint(name="field_transformation_idx", columns={"v_feld", "z_feld"})},
- *     indexes={
- *         @Index(name="terraforming_research_idx", columns={"research_id"})
- *     }
+ *     uniqueConstraints={@UniqueConstraint(name="field_transformation_idx", columns={"v_feld", "z_feld"})}
  * )
  */
 class Terraforming implements TerraformingInterface
@@ -39,9 +36,6 @@ class Terraforming implements TerraformingInterface
 
     /** @Column(type="integer") * */
     private $duration = 0;
-
-    /** @Column(type="integer", nullable="true") * */
-    private $research_id;
 
     /**
      * @OneToMany(targetEntity="TerraformingCost", mappedBy="terraforming")
@@ -110,17 +104,6 @@ class Terraforming implements TerraformingInterface
     {
         $this->duration = $duration;
 
-        return $this;
-    }
-
-    public function getResearchId(): int
-    {
-        return $this->research_id;
-    }
-
-    public function setResearchId(int $researchId): TerraformingInterface
-    {
-        $this->research_id = $researchId;
         return $this;
     }
 
