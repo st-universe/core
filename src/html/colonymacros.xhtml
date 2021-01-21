@@ -1373,6 +1373,9 @@
                   <td colspan="3" style="text-align: center">
                     <a href="?B_TERRAFORM=1&id=${COLONY/getId}&fid=${FIELD/getFieldId}&tfid=${data/getId}&sstr=${THIS/getSessionString}"
                       class="linkbutton">Durchführen</a>
+                    <br />
+                    <strong>Dauer</strong><br />
+                    <span tal:replace="formatSeconds:data/getDuration">DURATION</span>
                   </td>
                 </tr>
               </table>
