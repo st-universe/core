@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Stu\Module\Building\Action\BuildingFunctionActionMapperInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\BuildingUpgradeRepositoryInterface;
@@ -252,7 +253,7 @@ class PlanetField implements PlanetFieldInterface
 
             $handler = $buildingFunctionActionMapper->map($buildingFunctionId);
             if ($handler !== null) {
-                $handler->destruct((int)$this->getColonyId(), $buildingFunctionId);
+                $handler->destruct((int) $this->getColonyId(), $buildingFunctionId);
             }
         }
         $this->setBuilding(null);
@@ -290,8 +291,8 @@ class PlanetField implements PlanetFieldInterface
             global $container;
 
             $this->terraformingState = $container->get(ColonyTerraformingRepositoryInterface::class)->getByColonyAndField(
-                (int)$this->getColonyId(),
-                (int)$this->getId()
+                (int) $this->getColonyId(),
+                (int) $this->getId()
             );
         }
         return $this->terraformingState;
@@ -303,8 +304,11 @@ class PlanetField implements PlanetFieldInterface
             // @todo refactor
             global $container;
 
+            $userId = $container->get(GameControllerInterface::class)->getUser()->getId();
+
             $this->terraformingopts = $container->get(TerraformingRepositoryInterface::class)->getBySourceFieldType(
-                (int)$this->getFieldType()
+                (int) $this->getFieldType(),
+                (int) $userId
             );
         }
         return $this->terraformingopts;
@@ -367,7 +371,7 @@ class PlanetField implements PlanetFieldInterface
             global $container;
             $this->upgrades = $container
                 ->get(BuildingUpgradeRepositoryInterface::class)
-                ->getByBuilding((int)$this->getBuildingId(), (int)$this->getColony()->getUserId());
+                ->getByBuilding((int) $this->getBuildingId(), (int) $this->getColony()->getUserId());
         }
         return $this->upgrades;
     }
