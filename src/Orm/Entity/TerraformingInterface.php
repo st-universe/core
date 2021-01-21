@@ -28,6 +28,10 @@ interface TerraformingInterface
 
     public function setDuration(int $duration): TerraformingInterface;
 
+    public function getResearchId(): int;
+
+    public function setResearchId(int $researchId): TerraformingInterface;
+
     /**
      * @return TerraformingCostInterface[]
      */
