@@ -6,18 +6,15 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use PhpTal\PHPTAL;
 
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
@@ -48,7 +45,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $userId,
         int $specialAbilityId
     ): int {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s) FROM %s s WHERE s.user_id = :userId AND s.rumps_id IN (
                     SELECT rs.rumps_id FROM %s rs WHERE rs.special = :specialAbilityId
@@ -183,7 +180,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'destroyedState' => 0,
         ])->getResult();
     }
-    
+
     public function getEscapePods(): iterable
     {
         return $this->getEntityManager()->createQuery(
@@ -199,7 +196,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'categoryId' => ShipEnum::SHIP_CATEGORY_ESCAPE_PODS
         ])->getResult();
     }
-    
+
     public function getDebrisFields(): iterable
     {
         return $this->findBy([
@@ -422,20 +419,20 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         $result = $this->getEntityManager()
             ->createNativeQuery(
-                    'SELECT s.id as id FROM stu_ships s
-                    WHERE s.user_id = :userId
-                    AND EXISTS (SELECT sc.id
-                                FROM stu_ships_crew sc
-                                WHERE s.id = sc.ships_id) 
-                    ORDER BY RANDOM()
-                    LIMIT 1',
-                    $rsm
+                'SELECT s.id as id FROM stu_ships s
+                WHERE s.user_id = :userId
+                AND EXISTS (SELECT sc.id
+                            FROM stu_ships_crew sc
+                            WHERE s.id = sc.ships_id) 
+                ORDER BY RANDOM()
+                LIMIT 1',
+                $rsm
             )
             ->setParameters([
                 'userId' => $userId
             ])
             ->getOneOrNullResult();
-        
+
         return $result != null ? $result['id'] : null;
     }
 }
