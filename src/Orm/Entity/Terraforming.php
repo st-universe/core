@@ -40,7 +40,7 @@ class Terraforming implements TerraformingInterface
     /** @Column(type="integer") * */
     private $duration = 0;
 
-    /** @Column(type="integer", nullable="true") * */
+    /** @Column(type="integer", nullable=true) * */
     private $research_id;
 
     /**
