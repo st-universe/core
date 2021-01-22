@@ -10,8 +10,8 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -21,8 +21,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
     private BuildingRepositoryInterface $buildingRepository;
-
-    private CommodityRepositoryInterface $commodityRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -34,24 +32,26 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
+    private ResearchedRepositoryInterface $researchedRepository;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
-        CommodityRepositoryInterface $commodityRepository,
         ColonyRepositoryInterface $colonyRepository,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         CommodityConsumptionInterface $commodityConsumption,
         ShipRepositoryInterface $shipRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
-        $this->commodityRepository = $commodityRepository;
         $this->colonyRepository = $colonyRepository;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->commodityConsumption = $commodityConsumption;
         $this->shipRepository = $shipRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function createOrbitShipItem(
@@ -91,6 +91,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->planetFieldRepository,
             $this->buildingRepository,
             $this->colonyRepository,
+            $this->researchedRepository,
             $colony,
             $buildingId
         );

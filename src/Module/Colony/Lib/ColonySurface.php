@@ -12,6 +12,7 @@ use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
 
 final class ColonySurface implements ColonySurfaceInterface
@@ -22,6 +23,8 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ResearchedRepositoryInterface $researchedRepository;
+
     private ColonyInterface $colony;
 
     private ?int $buildingId;
@@ -30,6 +33,7 @@ final class ColonySurface implements ColonySurfaceInterface
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
+        ResearchedRepositoryInterface $researchedRepository,
         ColonyInterface $colony,
         ?int $buildingId = null
     ) {
@@ -38,10 +42,13 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->buildingRepository = $buildingRepository;
         $this->buildingId = $buildingId;
         $this->colonyRepository = $colonyRepository;
+        $this->researchedRepository = $researchedRepository;
     }
 
     public function getSurface(): array
     {
+        $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
+
         $fields = $this->planetFieldRepository->getByColony($this->colony->getId());
 
         if ($fields === []) {
@@ -55,18 +62,36 @@ final class ColonySurface implements ColonySurfaceInterface
 
             array_walk(
                 $fields,
-                function (PlanetFieldInterface $field) use ($building): void {
+                function (PlanetFieldInterface $field) use ($building, $researchedArray): void {
                     if (
                         $field->getTerraformingId() === null &&
-                        $building->getBuildableFields()->containsKey((int)$field->getFieldType())
+                        $building->getBuildableFields()->containsKey((int) $field->getFieldType())
                     ) {
-                        $field->setBuildMode(true);
+
+                        //PlanetFieldTypeBuildingInterface
+                        $fieldBuilding = $building->getBuildableFields()->get((int) $field->getFieldType());
+
+                        $researchId = $fieldBuilding->getResearchId();
+                        if ($researchId == null || $this->isResearched($researchId, $researchedArray)) {
+                            $field->setBuildMode(true);
+                        }
                     }
                 }
             );
         }
 
         return $fields;
+    }
+
+    private function isResearched(int $researchId, array $researched): bool
+    {
+        foreach ($researched as $research) {
+            if ($research->getResearchId() == $researchId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getSurfaceTileCssClass(): string
@@ -145,9 +170,9 @@ final class ColonySurface implements ColonySurfaceInterface
                 return _('Bevölkerungsdichte');
             case FactionEnum::FACTION_KLINGON:
                 return _('Bevölkerungsdichte');
-           case FactionEnum::FACTION_CARDASSIAN:
+            case FactionEnum::FACTION_CARDASSIAN:
                 return _('Bevölkerungsdichte');
-           case FactionEnum::FACTION_FERENGI:
+            case FactionEnum::FACTION_FERENGI:
                 return _('Bevölkerungsdichte');
         }
         return '';
@@ -190,7 +215,7 @@ final class ColonySurface implements ColonySurfaceInterface
             }
             $fields[$key]->setBuilding(null);
             $fields[$key]->setIntegrity(0);
-            $fields[$key]->setFieldType((int)$value);
+            $fields[$key]->setFieldType((int) $value);
             $fields[$key]->setActive(0);
 
             $this->planetFieldRepository->save($fields[$key]);
@@ -213,28 +238,28 @@ final class ColonySurface implements ColonySurfaceInterface
     public function hasShipyard(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-                $this->colony->getId(),
-                BuildingFunctionTypeEnum::getShipyardOptions(),
-                [0, 1]
-            ) > 0;
+            $this->colony->getId(),
+            BuildingFunctionTypeEnum::getShipyardOptions(),
+            [0, 1]
+        ) > 0;
     }
 
     public function hasModuleFab(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-                $this->colony->getId(),
-                BuildingFunctionTypeEnum::getModuleFabOptions(),
-                [0, 1]
-            ) > 0;
+            $this->colony->getId(),
+            BuildingFunctionTypeEnum::getModuleFabOptions(),
+            [0, 1]
+        ) > 0;
     }
 
     public function hasAirfield(): bool
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-                $this->colony->getId(),
-                [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
-                [0, 1]
-            ) > 0;
+            $this->colony->getId(),
+            [BuildingEnum::BUILDING_FUNCTION_AIRFIELD],
+            [0, 1]
+        ) > 0;
     }
 
     public function getDayNightState(): string
