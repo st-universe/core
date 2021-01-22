@@ -15,14 +15,14 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
     public function hasUserFinishedResearch(UserInterface $user, array $researchIds): bool
     {
         return $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT COUNT(t.id) FROM %s t WHERE t.research_id IN (:researchIds) AND t.user_id = :userId AND t.finished > 0',
-                        Researched::class,
-                    )
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(t.id) FROM %s t WHERE t.research_id IN (:researchIds) AND t.user_id = :userId AND t.finished > 0',
+                    Researched::class,
                 )
-                ->setParameters(['userId' => $user, 'researchIds' => $researchIds])
-                ->getSingleScalarResult() > 0;
+            )
+            ->setParameters(['userId' => $user, 'researchIds' => $researchIds])
+            ->getSingleScalarResult() > 0;
     }
 
     public function getListByUser(int $userId): array
@@ -31,6 +31,19 @@ final class ResearchedRepository extends EntityRepository implements ResearchedR
             ->createQuery(
                 sprintf(
                     'SELECT t FROM %s t WHERE t.user_id = :userId AND (t.finished > 0 OR t.aktiv > 0)',
+                    Researched::class,
+                )
+            )
+            ->setParameter('userId', $userId)
+            ->getResult();
+    }
+
+    public function getFinishedListByUser(int $userId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT t FROM %s t WHERE t.user_id = :userId AND t.finished > 0',
                     Researched::class,
                 )
             )

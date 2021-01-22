@@ -20,6 +20,7 @@ final class TerraformingRepository extends EntityRepository implements Terraform
                         OR EXISTS (SELECT r.id
                                     FROM %s r
                                     WHERE t.research_id = r.research_id
+                                    AND r.finished > 0
                                     AND r.user_id = :userId))',
                 Terraforming::class,
                 Researched::class

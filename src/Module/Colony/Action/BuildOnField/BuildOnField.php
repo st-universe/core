@@ -83,7 +83,7 @@ final class BuildOnField implements ActionControllerInterface
 
         $colonyId = $colony->getId();
 
-        $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, (int)request::indInt('fid'));
+        $field = $this->planetFieldRepository->getByColonyAndFieldId($colonyId, (int) request::indInt('fid'));
 
         if ($field === null) {
             return;
@@ -106,6 +106,12 @@ final class BuildOnField implements ActionControllerInterface
         if ($building->getBuildableFields()->containsKey((int) $field->getFieldType()) === false) {
             return;
         }
+
+        $researchId = $building->getBuildableFields()->get((int) $field->getFieldType())->getResearchId();
+        if ($researchId != null && $this->researchedRepository->hasUserFinishedResearch($user, [$researchId]) === false) {
+            return;
+        }
+
         if (
             $building->hasLimitColony() &&
             $this->planetFieldRepository->getCountByColonyAndBuilding($colonyId, $buildingId) >= $building->getLimitColony()
