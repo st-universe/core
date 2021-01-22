@@ -159,7 +159,8 @@ function switchToShip(obj) {
 	goToUrl(link[0].href);
 }
 function shipSelectorChoose(obj) {
-	if (!$('shiplist')) {
+	shiplist = document.getElementById("shiplist");
+	if (!shiplist) {
 		switchToShip(obj);
 		return;
 	}
