@@ -29,64 +29,57 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->shipAttackCycle = $shipAttackCycle;
     }
 
-    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations) : array
+    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations): array
     {
         $shipsToShuffle = [];
-        
+
         // get ships inside or outside systems
         if ($leadShip->getSystem() !== null) {
             $starSystem = $leadShip->getSystem();
             $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $leadShip->getPosX(), $leadShip->getPosY());
-        } else
-        {
+        } else {
             $shipsOnLocation = $this->shipRepository->getByOuterSystemLocation($leadShip->getCx(), $leadShip->getCy());
         }
 
         $fleetIds = [];
         $fleetCount = 0;
         $singleShipCount = 0;
-        
+
         foreach ($shipsOnLocation as $shipOnLocation) {
 
             // own ships dont count
-            if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId())
-            {
+            if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId()) {
                 continue;
             }
-            
+
             // ships dont count if user is on vacation
-            if ($shipOnLocation->getUser()->isVacationRequestOldEnough())
-            {
+            if ($shipOnLocation->getUser()->isVacationRequestOldEnough()) {
                 continue;
             }
-            
+
             //ships of friends dont attack
-            if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId()))
-            {
+            if ($shipOnLocation->getUser()->isFriend($leadShip->getUser()->getId())) {
                 continue;
             }
-            
+
             //cloaked ships dont attack
-            if ($shipOnLocation->getCloakState())
-            {
+            if ($shipOnLocation->getCloakState()) {
                 continue;
             }
-            
+
             //warped ships dont attack
-            if ($shipOnLocation->getWarpState())
-            {
+            if ($shipOnLocation->getWarpState()) {
                 continue;
             }
-            
+
             $fleet = $shipOnLocation->getFleet();
-            
+
             if ($fleet === null) {
                 if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
                     $singleShipCount++;
                     $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
                 }
-            }
-            else {
+            } else {
                 $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
                 if ($fleetIdEintrag === null) {
                     if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
@@ -97,7 +90,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 }
             }
         }
-        
+
         if ($fleetCount == 1) {
             $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
         }
@@ -114,22 +107,20 @@ final class AlertRedHelper implements AlertRedHelperInterface
         return $shipsToShuffle;
     }
 
-    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations) : void
+    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations): void
     {
-        $fleet = false;
-        $target_user_id = $alertShip->getUserId();
+        $alert_user_id = $alertShip->getUserId();
+        $lead_user_id = $leadShip->getUser()->getId();
+
         if ($alertShip->getFleetId()) {
             $attacker = [];
 
             // only uncloaked and unwarped ships enter fight
-            foreach ($alertShip->getFleet()->getShips()->toArray() as $fleetShip)
-            {
-                if (!$fleetShip->getCloakState() && !$fleetShip->getWarpState())
-                {
+            foreach ($alertShip->getFleet()->getShips()->toArray() as $fleetShip) {
+                if (!$fleetShip->getCloakState() && !$fleetShip->getWarpState()) {
                     $attacker[] = $fleetShip;
                 }
             }
-            $fleet = true;
         } else {
             $attacker = [$alertShip->getId() => $alertShip];
         }
@@ -137,23 +128,18 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $defender = [];
 
             // only uncloaked ships enter fight
-            foreach ($leadShip->getFleet()->getShips()->toArray() as $defShip)
-            {
-                if (!$defShip->getCloakState())
-                {
+            foreach ($leadShip->getFleet()->getShips()->toArray() as $defShip) {
+                if (!$defShip->getCloakState()) {
                     $defender[] = $defShip;
                 }
             }
             // if whole flying fleet cloaked, nothing happens
-            if (empty($defender))
-            {
+            if (empty($defender)) {
                 return;
             }
-            $fleet = true;
         } else {
             // if flying ship is cloaked, nothing happens
-            if ($leadShip->getCloakState())
-            {
+            if ($leadShip->getCloakState()) {
                 return;
             }
 
@@ -167,8 +153,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
-            (int)$leadShip->getUser()->getId(),
-            (int)$target_user_id,
+            (int) $lead_user_id,
+            (int) $alert_user_id,
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
@@ -177,8 +163,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
-            (int)$target_user_id,
-            (int)$leadShip->getUser()->getId(),
+            (int) $alert_user_id,
+            (int) $lead_user_id,
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
@@ -189,7 +175,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             return;
         }
 
-        $informations [] = sprintf(_('[b][color=red]Alarm-Rot[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        $informations[] = sprintf(_('[b][color=red]Alarm-Rot[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
         $informations = array_merge($informations, $this->shipAttackCycle->getMessages());
     }
 }
