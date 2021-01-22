@@ -62,6 +62,11 @@ final class OrbitShipItem implements OrbitShipItemInterface
         return $this->ship->getEps();
     }
 
+    public function ownedByUser(): bool
+    {
+        return $this->ship->isOwnedByCurrentUser();
+    }
+
     public function getHullStatusBar(): string
     {
         return (new TalStatusBar())

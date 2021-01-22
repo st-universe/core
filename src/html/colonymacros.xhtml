@@ -589,7 +589,7 @@
       onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this);">
       <tr>
         <td class="darkbg" colspan="4">
-          <a type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
+          <a tal:condition="data/ownedByUser" type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
           <span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span
             tal:replace="structure bbcode:data/getUserName">USERNAME</span>
         </td>
