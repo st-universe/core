@@ -22,6 +22,8 @@ interface OrbitShipItemInterface
 
     public function getEps(): int;
 
+    public function ownedByUser(): bool;
+
     public function getHullStatusBar(): string;
 
     public function getShieldStatusBar(): string;
