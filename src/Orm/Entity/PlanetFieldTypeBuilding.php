@@ -10,7 +10,10 @@ use Stu\Module\Colony\Lib\PlanetFieldTypeRetrieverInterface;
  * @Entity(repositoryClass="Stu\Orm\Repository\PlanetFieldTypeBuildingRepository")
  * @Table(
  *     name="stu_field_build",
- *     indexes={@Index(name="type_building_idx", columns={"type", "buildings_id"})}
+ *     indexes={
+ *          @Index(name="type_building_idx", columns={"type", "buildings_id"}),
+ *          @Index(name="type_building_research_idx", columns={"type", "research_id"})
+ *     }
  * )
  **/
 class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
@@ -27,6 +30,9 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
 
     /** @Column(type="integer") * */
     private $buildings_id = 0;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $research_id;
 
     /**
      * @ManyToOne(targetEntity="Building", inversedBy="buildingPossibleFieldTypes")
@@ -59,6 +65,18 @@ class PlanetFieldTypeBuilding implements PlanetFieldTypeBuildingInterface
     public function setBuildingId(int $buildingId): PlanetFieldTypeBuildingInterface
     {
         $this->buildings_id = $buildingId;
+
+        return $this;
+    }
+
+    public function getResearchId(): ?int
+    {
+        return $this->research_id;
+    }
+
+    public function setResearchId(?int $researchId): PlanetFieldTypeBuildingInterface
+    {
+        $this->research_id = $researchId;
 
         return $this;
     }

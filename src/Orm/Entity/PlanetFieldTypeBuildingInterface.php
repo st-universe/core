@@ -14,5 +14,9 @@ interface PlanetFieldTypeBuildingInterface
 
     public function setBuildingId(int $buildingId): PlanetFieldTypeBuildingInterface;
 
+    public function getResearchId(): ?int;
+
+    public function setResearchId(?int $researchId): PlanetFieldTypeBuildingInterface;
+
     public function getFieldTypeDescription(): string;
 }
