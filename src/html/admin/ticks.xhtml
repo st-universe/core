@@ -1,16 +1,24 @@
 <html xmlns:stu="stu">
 <tal:block metal:use-macro="../sitemacros.xhtml/admindefaults">
-	<tal:block metal:fill-slot="body">
-    <tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
-    <form action="/admin/index.php" method="post" name="tickform" id="tickform">
-      <div>
-          <input type="text" size="5" name="colonytickid" id="colonytickid" /><input type="submit" class="button" name="B_COLONY_TICK" value="Kolonie-Tick durchführen" id="colonytickbutton" />
-      </div>
-      <br />
-      <div>
-          <input type="text" size="5" name="shiptickid" id="shiptickid" /><input type="submit" class="button" name="B_SHIP_TICK" value="Schiff-Tick durchführen" id="shiptickbutton" />
-      </div>
-    </form>
-	</tal:block>
+    <tal:block metal:fill-slot="body">
+        <tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
+        <form action="/admin/index.php" method="post" name="tickform" id="tickform">
+            <div>
+                <input type="text" size="5" name="colonytickid" id="colonytickid" /><input type="submit" class="button"
+                    name="B_COLONY_TICK" value="Kolonie-Tick durchführen" id="colonytickbutton" />
+            </div>
+            <br />
+            <div>
+                <input type="text" size="5" name="shiptickid" id="shiptickid" /><input type="submit" class="button"
+                    name="B_SHIP_TICK" value="Schiff-Tick durchführen" id="shiptickbutton" />
+            </div>
+            <br />
+            <div>
+                <input type="submit" class="button" name="B_MAINTENANCE" value="Wartungs-Tick durchführen"
+                    id="maintenancetickbutton" />
+            </div>
+        </form>
+    </tal:block>
 </tal:block>
+
 </html>
