@@ -10,7 +10,11 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class PlayerDeletion implements PlayerDeletionInterface
 {
-    public const USER_IDLE_TIME = 120960000;
+    //3 months
+    public const USER_IDLE_TIME = 7905600;
+
+    //6 months
+    public const USER_IDLE_TIME_VACATION = 15811200;
 
     private UserRepositoryInterface $userRepository;
 
@@ -32,6 +36,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     {
         $list = $this->userRepository->getDeleteable(
             time() - PlayerDeletion::USER_IDLE_TIME,
+            time() - PlayerDeletion::USER_IDLE_TIME_VACATION,
             [101]
         );
 

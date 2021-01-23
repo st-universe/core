@@ -30,6 +30,7 @@ interface UserRepositoryInterface extends ObjectRepository
      */
     public function getDeleteable(
         int $idleTimeThreshold,
+        int $idleTimeVacationThreshold,
         array $ignoreIds
     ): iterable;
 
@@ -75,7 +76,7 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return UserInterface[]
      */
     public function getNpcList(): iterable;
-    
+
     /**
      * @return UserInterface[]
      */
