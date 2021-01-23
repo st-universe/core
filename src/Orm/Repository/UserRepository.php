@@ -61,20 +61,27 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
 
     public function getDeleteable(
         int $idleTimeThreshold,
+        int $idleTimeVacationThreshold,
         array $ignoreIds
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100 AND
-                         u.id NOT IN (:ignoreIds) AND (
-                             u.lastaction < :idleTimeThreshold OR u.delmark = :deletionMark
-                         )',
+                'SELECT u FROM %s u
+                 WHERE u.id > 100
+                 AND u.id NOT IN (:ignoreIds)
+                 AND u.delmark != :deletionForbidden
+                 AND (u.delmark = :deletionMark
+                        OR (u.vac_active = false AND u.lastaction < :idleTimeThreshold)
+                        OR (u.vac_active = true AND u.lastaction < :idleTimeVacationThreshold)
+                    )',
                 User::class
             )
         )->setParameters([
             'idleTimeThreshold' => $idleTimeThreshold,
+            'idleTimeVacationThreshold' => $idleTimeVacationThreshold,
             'ignoreIds' => $ignoreIds,
-            'deletionMark' => PlayerEnum::DELETION_CONFIRMED
+            'deletionMark' => PlayerEnum::DELETION_CONFIRMED,
+            'deletionForbidden' => PlayerEnum::DELETION_FORBIDDEN
         ])->getResult();
     }
 
@@ -156,7 +163,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
             )
         )->setParameters([
             'ignoreUserId' => $ignoreUserId,
-            'contactListModeFriend' => (string)ContactListModeEnum::CONTACT_FRIEND,
+            'contactListModeFriend' => (string) ContactListModeEnum::CONTACT_FRIEND,
             'lastActionThreshold' => $lastActionThreshold,
             'allowStart' => 1
         ])
@@ -166,7 +173,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
 
     public function getActiveAmount(): int
     {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100',
                 User::class
@@ -176,7 +183,7 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
 
     public function getActiveAmountRecentlyOnline(int $threshold): int
     {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(u.id) FROM %s u WHERE u.id > 100 AND u.lastaction > :threshold',
                 User::class
