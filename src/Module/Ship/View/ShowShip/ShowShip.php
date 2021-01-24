@@ -118,8 +118,12 @@ final class ShowShip implements ViewControllerInterface
                 $tachyonActive
             );
 
-            if ($fleetNfsItem->isVisisble()) {
-                $fnbs[] = $fleetNfsItem;
+            if ($fleetNfsItem->getVisibleShips()->count() > 0) {
+                if ($fleetNfsItem->isFleetOfCurrentShip()) {
+                    array_unshift($fnbs, $fleetNfsItem);
+                } else {
+                    $fnbs[] = $fleetNfsItem;
+                }
             }
         }
 
