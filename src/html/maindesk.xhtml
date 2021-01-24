@@ -7,18 +7,19 @@
 				<td style="vertical-align: top;">
 					<div style="width: 100%;">
 						<tal:block tal:condition="DISPLAY_FIRST_COLONY_DIALOGUE">
-              <div class="box">
-                <div class="box_title">Die erste Kolonie</div>
-                <div class="box_body">
-                  <div>
-                    Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
-                  </div>
-                  <div>
-                    Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
-                  </div><br />
-                  - <a href="?SHOW_COLONYLIST=1">Kolonie gründen</a>
-                </div>
-              </div>
+							<div class="box">
+								<div class="box_title">Die erste Kolonie</div>
+								<div class="box_body">
+									<div>
+										Der Erste Schritt um in das Spiel einzusteigen ist die Gründung Deiner Ersten
+										Kolonie. Diese kannst Du Dir unter folgendem Link selbst aussuchen.
+									</div>
+									<div>
+										Bitte wirf bei dieser Gelegenheit einen Blick in unsere Spielstart Anleitung.
+									</div><br />
+									- <a href="?SHOW_COLONYLIST=1">Kolonie gründen</a>
+								</div>
+							</div>
 							<br />
 						</tal:block>
 						<table class="tcal" tal:define="posts NEW_KN_POSTINGS">
@@ -36,13 +37,15 @@
 								<tr>
 									<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
 										<a href="userprofile.php?uid=${data/getUserId}">
-											<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="src data/getUser/getFullAvatarPath" />
+											<img src="runtime" style="width: 50px; height: 50px;"
+												tal:attributes="src data/getUser/getFullAvatarPath" />
 										</a>
 									</td>
 									<td>
 										<span tal:condition="data/getPlot">Plot:</span>
 										<span tal:condition="not:data/getPlot">Titel:</span>
-										<a href="comm.php?SHOW_KN=1&mark=0" tal:content="structure data/getTitle">TITLE</a>
+										<a href="comm.php?SHOW_KN=1&mark=0"
+											tal:content="structure data/getTitle">TITLE</a>
 									</td>
 								</tr>
 								<tr>
@@ -72,21 +75,24 @@
 										<tr>
 											<td style="text-align: center; width: 40px; height: 40px;" rowspan="2">
 												<a href="userprofile.php?uid=${RECENT_POST/getUserId}">
-													<img src="runtime" style="width: 50px; height: 50px;" tal:attributes="src RECENT_POST/getUser/getFullAvatarPath" />
+													<img src="runtime" style="width: 50px; height: 50px;"
+														tal:attributes="src RECENT_POST/getUser/getFullAvatarPath" />
 												</a>
 											</td>
 											<td>
 												<span>Thema:</span>
-												<a href="alliance.php?SHOW_TOPIC=1&bid=${data/getBoardId}&tid=${data/getId}" tal:content="structure bbcode:data/getName">
+												<a href="alliance.php?SHOW_TOPIC=1&bid=${data/getBoardId}&tid=${data/getId}"
+													tal:content="structure bbcode:data/getName">
 													NAME
 												</a>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<span>von: <span tal:replace="structure bbcode:RECENT_POST/getUser/getName" /></span>
-													-
-													<span tal:content="datetime:RECENT_POST/getDate">DATE</span>
+												<span>von: <span
+														tal:replace="structure bbcode:RECENT_POST/getUser/getName" /></span>
+												-
+												<span tal:content="datetime:RECENT_POST/getDate">DATE</span>
 											</td>
 										</tr>
 									</tal:block>
@@ -95,62 +101,84 @@
 						</tal:block>
 					</div>
 					<br />
-          <div class="box">
-            <div class="box_title">Letzte Ereignisse</div>
-            <div class="box_body">
-              <div tal:condition="not:RECENT_HISTORY">Keine</div>
-              <div class="list" tal:condition="RECENT_HISTORY" tal:repeat="item RECENT_HISTORY">
-                <div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT</div>
-                <div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
-              </div>
-            </div>
-          </div>
-        </td>
-        <td style="vertical-align: top; width: 360px;">
+					<div class="box">
+						<div class="box_title">Letzte Ereignisse</div>
+						<div class="box_body">
+							<div tal:condition="not:RECENT_HISTORY">Keine</div>
+							<div class="list" tal:condition="RECENT_HISTORY" tal:repeat="item RECENT_HISTORY">
+								<div style="width: 80%" class="iblock" tal:content="structure bbcode:item/getText">TEXT
+								</div>
+								<div style="width: 19%" class="iblock" tal:content="datetime:item/getDate">DATE</div>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td style="vertical-align: top; width: 360px;">
 					<div style="margin-left: 10px; width: 350px;">
-            <div class="box">
-              <div class="box_title">Kolonielimitierung</div>
-              <div class="box_body">
-                <div style="width: 100%; text-align: center">
-                  <img src="/assets/planets/201s.gif" title="Planeten" />
-                  <span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
-                  <img src="/assets/planets/401s.gif" title="Monde" />
-                  <span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
-                </div>
-              </div>
-            </div>
-            <br />
-            <div class="box">
-              <div class="box_title">Profilbesucher</div>
-              <div class="box_body">
-                <div style="width: 100%; text-align: center;" tal:condition="not:RECENT_PROFILE_VISITORS">
-                  Keine Besucher
-                </div>
-                <a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}" tal:repeat="data RECENT_PROFILE_VISITORS">
-                  <img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55" height="55" tal:attributes="src data/getUser/getFullAvatarPath;title bbcode2txt:data/getUser/getName"/>
-                </a>
-              </div>
-            </div>
+						<div class="box">
+							<div class="box_title">Kolonielimitierung</div>
+							<div class="box_body">
+								<div style="width: 100%; text-align: center">
+									<img src="/assets/planets/201s.gif" title="Planeten" />
+									<span tal:replace="PLANET_COUNT" /> / <span tal:replace="PLANET_LIMIT" />
+									<img src="/assets/planets/401s.gif" title="Monde" />
+									<span tal:replace="MOON_COUNT" /> / <span tal:replace="MOON_LIMIT" />
+								</div>
+							</div>
+						</div>
 						<br />
-            <div class="box">
-              <div class="box_title">Zufällige Spieler (online)</div>
-              <div class="box_body">
-                <div style="width: 100%; text-align: center;" tal:condition="not:RANDOM_ONLINE_USER">
-                  Kein Spieler online
-                </div>
-                <div tal:condition="RANDOM_ONLINE_USER">
-                  <metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures" tal:define="userlist RANDOM_ONLINE_USER" />
-                </div>
-              </div>
-            </div>
+						<div class="box">
+							<div class="box_title">Crewlimitierung</div>
+							<div class="box_body">
+								<div style="width: 100%; text-align: center">
+									<img src="/assets/navigation/menu_ships0.png" height="30" width="30"
+										title="Crew auf Schiffen" />
+									<span tal:replace="USER/getUsedCrewCount">USED</span> / <span
+										tal:replace="USER/getGlobalCrewLimit">LIMIT</span>
+									<img src="/assets/bev/bev_free_5_1.gif" height="30" width="30"
+										title="globales Crewlimit">
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="box">
+							<div class="box_title">Profilbesucher</div>
+							<div class="box_body">
+								<div style="width: 100%; text-align: center;"
+									tal:condition="not:RECENT_PROFILE_VISITORS">
+									Keine Besucher
+								</div>
+								<a style="padding: 5px;" href="userprofile.php?uid=${data/getUserId}"
+									tal:repeat="data RECENT_PROFILE_VISITORS">
+									<img src="runtime" title="runtime" style="width:55px; height: 55px;" width="55"
+										height="55"
+										tal:attributes="src data/getUser/getFullAvatarPath;title bbcode2txt:data/getUser/getName" />
+								</a>
+							</div>
+						</div>
+						<br />
+						<div class="box">
+							<div class="box_title">Zufällige Spieler (online)</div>
+							<div class="box_body">
+								<div style="width: 100%; text-align: center;" tal:condition="not:RANDOM_ONLINE_USER">
+									Kein Spieler online
+								</div>
+								<div tal:condition="RANDOM_ONLINE_USER">
+									<metal:macro metal:use-macro="html/macros.xhtml/userlist_pictures"
+										tal:define="userlist RANDOM_ONLINE_USER" />
+								</div>
+							</div>
+						</div>
 					</div>
 					<br />
 					<div style="width: 350px; margin-left: 10px">
-						<metal:macro metal:use-macro="html/colonymacros.xhtml/ship_buildprogress" tal:condition="SHIP_BUILD_PROGRESS" />
+						<metal:macro metal:use-macro="html/colonymacros.xhtml/ship_buildprogress"
+							tal:condition="SHIP_BUILD_PROGRESS" />
 					</div>
 				</td>
 			</tr>
 		</table>
 	</tal:block>
 </tal:block>
+
 </html>
