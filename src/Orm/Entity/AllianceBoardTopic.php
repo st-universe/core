@@ -115,7 +115,7 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
 
     public function setLastPostDate(int $lastPostDate): AllianceBoardTopicInterface
     {
-        $this->last_post_date;
+        $this->last_post_date = $lastPostDate;
 
         return $this;
     }
@@ -172,7 +172,7 @@ class AllianceBoardTopic implements AllianceBoardTopicInterface
     {
         global $container;
 
-        return $container->get(AllianceBoardPostRepositoryInterface::class)->getRecentByTopic((int)$this->getId());
+        return $container->get(AllianceBoardPostRepositoryInterface::class)->getRecentByTopic((int) $this->getId());
     }
 
     public function getBoard(): AllianceBoardInterface
