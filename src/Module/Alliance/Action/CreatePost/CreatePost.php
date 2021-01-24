@@ -55,7 +55,7 @@ final class CreatePost implements ActionControllerInterface
 
         $time = time();
         $topic->setLastPostDate($time);
-        $topic = $this->allianceBoardTopicRepository->save($topic);
+        $this->allianceBoardTopicRepository->save($topic);
 
         $post = $this->allianceBoardPostRepository->prototype();
         $post->setText($text);
