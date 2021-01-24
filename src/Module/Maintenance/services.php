@@ -11,4 +11,6 @@ return [
     MapCycle::class => autowire(MapCycle::class),
     IdleUserDeletion::class => autowire(IdleUserDeletion::class),
     ExpiredInvitationTokenDeletion::class => autowire(ExpiredInvitationTokenDeletion::class),
+    //TODO clean old tachy scans
+    //TODO clean unallowed fleets
 ];

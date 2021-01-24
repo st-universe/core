@@ -42,7 +42,7 @@ final class ShipCreator implements ShipCreatorInterface
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
-    
+
     private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
 
     public function __construct(
@@ -112,8 +112,8 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setName($ship->getRump()->getName());
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
         $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
-        $ship->setMaxEbatt();
-        
+        $ship->setMaxEBatt();
+
         $this->shipRepository->save($ship);
         if ($colony) {
             $ship->setSX($colony->getSX());
@@ -123,12 +123,12 @@ final class ShipCreator implements ShipCreatorInterface
             $ship->setCY($colony->getSystem()->getCY());
             $this->shipRepository->save($ship);
         }
-        
+
         $this->createByModuleList(
             $ship,
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
-        
+
         return $this->shipRepository->find($ship->getId());
     }
 
@@ -191,8 +191,7 @@ final class ShipCreator implements ShipCreatorInterface
     {
         $moduleSpecials = $this->moduleSpecialRepository->getByModule($module->getId());
 
-        foreach ($moduleSpecials as $special)
-        {
+        foreach ($moduleSpecials as $special) {
             switch ($special->getSpecialId()) {
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK:
                     $systems[ShipSystemTypeEnum::SYSTEM_CLOAK] = $module;
