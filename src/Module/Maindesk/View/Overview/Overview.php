@@ -104,7 +104,6 @@ final class Overview implements ViewControllerInterface
             'RECENT_ALLIANCE_BOARD_TOPICS',
             $this->allianceBoardTopicRepository->getRecentByAlliance((int) $user->getAllianceId())
         );
-        $game->setTemplateVar('USER', $user);
         $game->setTemplateVar('RECENT_HISTORY', $this->historyRepository->getRecent());
         $game->setTemplateVar('PLANET_LIMIT', $this->colonyLimitCalculator->getPlanetColonyLimit($user));
         $game->setTemplateVar('PLANET_COUNT', $this->colonyLimitCalculator->getPlanetColonyCount($user));
