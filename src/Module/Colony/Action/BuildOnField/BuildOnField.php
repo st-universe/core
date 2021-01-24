@@ -129,6 +129,16 @@ final class BuildOnField implements ActionControllerInterface
             );
             return;
         }
+
+        // Check for alternative building
+        $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
+            $buildingId,
+            (int) $field->getFieldType()
+        );
+        if ($alt_building !== null) {
+            $building = $alt_building->getAlternativeBuilding();
+        }
+
         $storage = $colony->getStorage();
         foreach ($building->getCosts() as $obj) {
             $commodityId = $obj->getGoodId();
@@ -213,14 +223,6 @@ final class BuildOnField implements ActionControllerInterface
 
         foreach ($building->getCosts() as $obj) {
             $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());
-        }
-        // Check for alternative building
-        $alt_building = $this->buildingFieldAlternativeRepository->getByBuildingAndFieldType(
-            $buildingId,
-            (int) $field->getFieldType()
-        );
-        if ($alt_building !== null) {
-            $building = $alt_building->getAlternativeBuilding();
         }
 
         $colony->lowerEps($building->getEpsCost());
