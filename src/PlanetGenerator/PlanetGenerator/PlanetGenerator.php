@@ -456,7 +456,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         if (!file_exists($fileName)) {
             throw new Exception('Planetgenerator description file missing for id ' . $id);
         }
-        $requireResult = require_once $fileName;
+        $requireResult = require $fileName;
 
         if (is_bool($requireResult)) {
             throw new Exception('Error loading planetgenerator description file for id ' . $id);
