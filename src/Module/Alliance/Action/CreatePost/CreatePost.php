@@ -53,16 +53,12 @@ final class CreatePost implements ActionControllerInterface
             throw new AccessViolation();
         }
 
-        $time = time();
-        $topic->setLastPostDate($time);
-        $topic = $this->allianceBoardTopicRepository->save($topic);
-
         $post = $this->allianceBoardPostRepository->prototype();
         $post->setText($text);
         $post->setBoard($topic->getBoard());
         $post->setTopic($topic);
         $post->setUser($game->getUser());
-        $post->setDate($time);
+        $post->setDate(time());
 
         $this->allianceBoardPostRepository->save($post);
 
