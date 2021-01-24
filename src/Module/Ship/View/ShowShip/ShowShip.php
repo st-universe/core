@@ -38,7 +38,7 @@ final class ShowShip implements ViewControllerInterface
     private ColonizationCheckerInterface $colonizationChecker;
 
     private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
-    
+
     private TachyonScanRepositoryInterface $tachyonScanRepository;
 
     public function __construct(
@@ -84,8 +84,7 @@ final class ShowShip implements ViewControllerInterface
         $tachyonActive = $tachyonFresh;
 
         // check if tachyon scan still active
-        if (!$tachyonActive)
-        {
+        if (!$tachyonActive) {
             $tachyonActive = !empty($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship));
         }
 
@@ -111,12 +110,17 @@ final class ShowShip implements ViewControllerInterface
 
         $fnbs = [];
         foreach ($fleets as $fleet) {
-            $fnbs[] = new FleetNfsItem(
+
+            $fleetNfsItem = new FleetNfsItem(
                 $this->session,
                 $fleet,
                 $ship,
                 $tachyonActive
             );
+
+            if ($fleetNfsItem->isVisisble()) {
+                $fnbs[] = $fleetNfsItem;
+            }
         }
 
         $canColonize = false;
