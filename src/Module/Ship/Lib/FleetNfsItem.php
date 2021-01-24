@@ -32,32 +32,8 @@ final class FleetNfsItem implements FleetNfsItemInterface
         $this->showCloaked = $showCloaked;
     }
 
-    public function isVisisble(): bool
+    public function isHidden(): bool
     {
-        if ($this->showCloaked)
-        {
-            return true;
-        }
-
-        $fleetShips = $this->fleet->getShips();
-
-        if (
-            $this->fleet->getUser() === $this->currentShip->getUser() && (
-                ($fleetShips->containsKey($this->currentShip->getId()) && $fleetShips->count() > 1) ||
-                $fleetShips->count() > 0
-            )
-        ) {
-            return true;
-        }
-        foreach ($this->fleet->getShips() as $ship) {
-            if ($ship->getCloakState() === false) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function isHidden(): bool {
         return $this->session->hasSessionValue('hiddenfleets', $this->fleet->getId());
     }
 
@@ -66,13 +42,16 @@ final class FleetNfsItem implements FleetNfsItemInterface
         return $this->fleet->getShips()
             ->filter(
                 function (ShipInterface $ship): bool {
-                    return $ship !== $this->currentShip && (
-                        $this->showCloaked ||
+                    return $ship !== $this->currentShip && ($this->showCloaked ||
                         $ship->getCloakState() === false ||
-                        $ship->getUser() === $this->currentShip->getUser()
-                    );
+                        $ship->getUser() === $this->currentShip->getUser());
                 }
             );
+    }
+
+    public function isFleetOfCurrentShip(): bool
+    {
+        return $this->fleet->getShips()->containsKey($this->currentShip->getId());
     }
 
     public function showManagement(): bool

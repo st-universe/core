@@ -8,11 +8,11 @@ use Stu\Orm\Entity\UserInterface;
 
 interface FleetNfsItemInterface
 {
-    public function isVisisble(): bool;
-
     public function isHidden(): bool;
 
     public function getVisibleShips(): Collection;
+
+    public function isFleetOfCurrentShip(): bool;
 
     public function showManagement(): bool;
 
