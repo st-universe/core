@@ -16,6 +16,7 @@ use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 use Stu\Orm\Repository\TradePostRepositoryInterface;
 use Stu\Orm\Repository\TradeStorageRepositoryInterface;
+use Stu\Orm\Repository\TradeTransactionRepositoryInterface;
 
 final class TakeOffer implements ActionControllerInterface
 {
@@ -35,6 +36,8 @@ final class TakeOffer implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private TradeTransactionRepositoryInterface $tradeTransactionRepository;
+
     public function __construct(
         TakeOfferRequestInterface $takeOfferRequest,
         TradeLibFactoryInterface $tradeLibFactory,
@@ -42,7 +45,8 @@ final class TakeOffer implements ActionControllerInterface
         TradeOfferRepositoryInterface $tradeOfferRepository,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        TradeTransactionRepositoryInterface $tradeTransactionRepository
     ) {
         $this->takeOfferRequest = $takeOfferRequest;
         $this->tradeLibFactory = $tradeLibFactory;
@@ -51,6 +55,7 @@ final class TakeOffer implements ActionControllerInterface
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->tradeTransactionRepository = $tradeTransactionRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -137,6 +142,14 @@ final class TakeOffer implements ActionControllerInterface
             (int) $selectedOffer->getWantedGoodId(),
             (int) $selectedOffer->getWantedGoodCount() * $amount
         );
+
+        $transaction = $this->tradeTransactionRepository->prototype();
+        $transaction->setDate(time());
+        $transaction->setWantedCommodity($selectedOffer->getWantedCommodity());
+        $transaction->setWantedGoodCount($selectedOffer->getWantedGoodCount() * $amount);
+        $transaction->setOfferedCommodity($selectedOffer->getOfferedCommodity());
+        $transaction->setOfferedGoodCount($selectedOffer->getOfferedGoodCount() * $amount);
+        $this->tradeTransactionRepository->save($transaction);
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
 

@@ -22,4 +22,12 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
         $em->persist($tradeTransaction);
         $em->flush();
     }
+
+    public function getLatestTransactions(int $offered, int $wanted): array
+    {
+        return $this->findBy(
+            ['gg_id' => $offered, 'wg_id' => $wanted],
+            10
+        );
+    }
 }
