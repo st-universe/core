@@ -30,7 +30,7 @@ class TachyonScan implements TachyonScanInterface
 
     /** @Column(type="integer") */
     private $user_id = 0;
-    
+
     /** @Column(type="integer") */
     private $scan_time = 0;
 
@@ -42,7 +42,7 @@ class TachyonScan implements TachyonScanInterface
 
     /**
      * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
@@ -51,7 +51,7 @@ class TachyonScan implements TachyonScanInterface
      * @JoinColumn(name="map_id", referencedColumnName="id")
      */
     private $map;
-    
+
     /**
      * @ManyToOne(targetEntity="StarSystemMap")
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
