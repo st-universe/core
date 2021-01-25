@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Trade\View\Overview;
+namespace Stu\Module\Trade\View\ShowSearch;
+
+use request;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,8 +16,10 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
-final class Overview implements ViewControllerInterface
+final class ShowSearchOffer implements ViewControllerInterface
 {
+    public const VIEW_IDENTIFIER = 'B_TRADE_SEARCH_OFFER';
+
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
@@ -36,6 +40,8 @@ final class Overview implements ViewControllerInterface
     {
         $user = $game->getUser();
         $userId = $user->getId();
+
+        $commodityId = request::postIntFatal('cid');
 
         $game->appendNavigationPart(
             'trade.php',
@@ -59,7 +65,7 @@ final class Overview implements ViewControllerInterface
                 function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
                     return new TradeOfferItem($tradeOffer, $user);
                 },
-                $this->tradeOfferRepository->getByUserLicenses($userId, null, null)
+                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, true)
             )
         );
     }

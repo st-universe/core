@@ -21,10 +21,10 @@
 			<form action="trade.php" method="post" name="tradesearchform" id="tradesearchform">
 				<table class="tcal">
 					<tr>
-						<th>Suche</th>
+						<th colspan="2">Suche</th>
 					</tr>
 					<tr>
-						<td>
+						<td colspan="2">
 							<select name="cid">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data SELECTABLE_GOODS">
@@ -32,8 +32,12 @@
 								</tal:block>
 							</select>
 						</td>
+					</tr>
+					<tr>
 						<td>
 							<input type="submit" class="button" name="B_TRADE_SEARCH_OFFER" value="in Angeboten" />
+						</td>
+						<td>
 							<input type="submit" class="button" name="B_TRADE_SEARCH_DEMAND" value="in Nachfragen" />
 						</td>
 					</tr>
