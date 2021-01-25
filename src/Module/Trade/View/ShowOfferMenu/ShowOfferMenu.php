@@ -42,17 +42,12 @@ final class ShowOfferMenu implements ViewControllerInterface
         }
 
         $commodityList = $this->commodityRepository->getViewable();
-        usort(
-            $commodityList,
-            function (CommodityInterface $a, CommodityInterface $b): int {
-                return $a->getSort() <=> $b->getSort();
-            }
-        );
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/trademacros.xhtml/tradeoffermenu');
         $game->setPageTitle(sprintf(
-            _('Management %s'), $storage->getGood()->getName()
+            _('Management %s'),
+            $storage->getGood()->getName()
         ));
         $game->setTemplateVar('STOR', $storage);
         $game->setTemplateVar('IS_LATINUM', (int) $storage->getGoodId() === CommodityTypeEnum::GOOD_LATINUM);

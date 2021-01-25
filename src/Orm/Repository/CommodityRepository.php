@@ -40,6 +40,6 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
     {
         return $this->findBy([
             'view' => true
-        ]);
+        ], ['sort' => 'asc']);
     }
 }
