@@ -10,6 +10,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeOfferItem;
 use Stu\Module\Trade\Lib\TradeOfferItemInterface;
 use Stu\Orm\Entity\TradeOfferInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
@@ -19,12 +20,16 @@ final class Overview implements ViewControllerInterface
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
-        TradeOfferRepositoryInterface $tradeOfferRepository
+        TradeOfferRepositoryInterface $tradeOfferRepository,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,6 +48,10 @@ final class Overview implements ViewControllerInterface
             'TRADE_LICENSE_COUNT',
             $this->tradeLicenseRepository->getAmountByUser($userId)
         );
+
+        $commodityList = $this->commodityRepository->getViewable();
+        $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
+
         $game->setTemplateVar('MAX_TRADE_LICENSE_COUNT', GameEnum::MAX_TRADELICENCE_COUNT);
         $game->setTemplateVar(
             'OFFER_LIST',

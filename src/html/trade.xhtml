@@ -10,10 +10,35 @@
 				</tr>
 				<tr>
 					<td>
-						<a href="?SHOW_ACCOUNTS=1">Warenkonten</a> (<span tal:replace="TRADE_LICENSE_COUNT">TRADELICENCES</span>/<span tal:replace="MAX_TRADE_LICENSE_COUNT">MAXCOUNT</span>)
+						<a href="?SHOW_ACCOUNTS=1">Warenkonten</a> (<span
+							tal:replace="TRADE_LICENSE_COUNT">TRADELICENCES</span>/<span
+							tal:replace="MAX_TRADE_LICENSE_COUNT">MAXCOUNT</span>)
 					</td>
 				</tr>
 			</table>
+		</div>
+		<div style="width: 300px; float: left;">
+			<form action="trade.php" method="post" name="tradesearchform" id="tradesearchform">
+				<table class="tcal">
+					<tr>
+						<th>Suche</th>
+					</tr>
+					<tr>
+						<td>
+							<select name="cid">
+								<option value="0">----------------------</option>
+								<tal:block tal:repeat="data SELECTABLE_GOODS">
+									<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+								</tal:block>
+							</select>
+						</td>
+						<td>
+							<input type="submit" class="button" name="B_TRADE_SEARCH_OFFER" value="in Angeboten" />
+							<input type="submit" class="button" name="B_TRADE_SEARCH_DEMAND" value="in Nachfragen" />
+						</td>
+					</tr>
+				</table>
+			</form>
 		</div>
 		<br style="clear: both;" />
 		<br />
@@ -32,22 +57,31 @@
 			<tal:block tal:repeat="offer OFFER_LIST">
 				<tr tal:define="data offer/getOffer" tal:attributes="class string:row${repeat/offer/odd}">
 					<td tal:define="handle THIS/getUniqId">
-						<a tal:condition="not:offer/isOwnOffer" href="javascript:void(0);" onmouseover="cp('${handle}','buttons/menu_trade1');" onmouseout="cp('${handle}','buttons/menu_trade0');" onclick="takeTradeOffer(${data/getId});">
-							<img src="assets/buttons/menu_trade0.gif" tal:attributes="name handle" title="Angebot annehmen" />
+						<a tal:condition="not:offer/isOwnOffer" href="javascript:void(0);"
+							onmouseover="cp('${handle}','buttons/menu_trade1');"
+							onmouseout="cp('${handle}','buttons/menu_trade0');"
+							onclick="takeTradeOffer(${data/getId});">
+							<img src="assets/buttons/menu_trade0.gif" tal:attributes="name handle"
+								title="Angebot annehmen" />
 						</a>
-						<a href="?B_CANCEL_OFFER=1&offerid=${data/getId}&sstr=${THIS/getSessionString}" tal:condition="offer/isOwnOffer" onmouseover="cp('${handle}','buttons/x2');" onmouseout="cp('${handle}','buttons/x1');">
+						<a href="?B_CANCEL_OFFER=1&offerid=${data/getId}&sstr=${THIS/getSessionString}"
+							tal:condition="offer/isOwnOffer" onmouseover="cp('${handle}','buttons/x2');"
+							onmouseout="cp('${handle}','buttons/x1');">
 							<img src="assets/buttons/x1.gif" tal:attributes="name handle" title="Angebot löschen" />
 						</a>
 					</td>
 					<td>
-						<img src="assets/goods/${data/getOfferedCommodity/getId}.gif" tal:attributes="title data/getOfferedCommodity/getName" /> ${data/getOfferedGoodCount}
+						<img src="assets/goods/${data/getOfferedCommodity/getId}.gif"
+							tal:attributes="title data/getOfferedCommodity/getName" /> ${data/getOfferedGoodCount}
 					</td>
 					<td>
-						<img src="assets/goods/${data/getWantedCommodity/getId}.gif" tal:attributes="title data/getWantedCommodity/getName" /> ${data/getWantedGoodCount}
+						<img src="assets/goods/${data/getWantedCommodity/getId}.gif"
+							tal:attributes="title data/getWantedCommodity/getName" /> ${data/getWantedGoodCount}
 					</td>
 					<td tal:content="data/getOfferCount">AMOUNT</td>
 					<td>
-						<metal:macro metal:use-macro="html/trademacros.xhtml/tradepost" tal:define="handle string:hdlo${data/getId};id data/getTradepostId" />
+						<metal:macro metal:use-macro="html/trademacros.xhtml/tradepost"
+							tal:define="handle string:hdlo${data/getId};id data/getTradepostId" />
 						<span tal:replace="data/getTradePost/getName">TRADEPOST</span>
 					</td>
 					<td tal:define="id data/getUserId">
@@ -60,4 +94,5 @@
 		</table>
 	</metal:macro>
 </metal:macro>
+
 </html>
