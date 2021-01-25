@@ -95,6 +95,7 @@ use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradePost;
 use Stu\Orm\Entity\TradeShoutbox;
 use Stu\Orm\Entity\TradeStorage;
+use Stu\Orm\Entity\TradeTransaction;
 use Stu\Orm\Entity\TradeTransfer;
 use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInvitation;
@@ -549,6 +550,11 @@ return [
         ContainerInterface $c
     ): TradeStorageRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(TradeStorage::class);
+    },
+    TradeTransactionRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): TradeTransactionRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(TradeTransaction::class);
     },
     TradeTransferRepositoryInterface::class => function (
         ContainerInterface $c
