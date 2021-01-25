@@ -27,7 +27,7 @@ dev-serve:force
 	php -S localhost:1337 -t src/Public/
 
 dev-create-db:force
-	docker-compose up stu-db -d
+	docker-compose up -d stu-db
 	sleep 15
 	docker-compose exec -T stu-db sh -c 'exec psql -U stu -d stu_db < /dump/stu.dump'
 
