@@ -36,6 +36,7 @@ use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenuRequestInterface;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOffer;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequest;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequestInterface;
+use Stu\Module\Trade\View\ShowSearch\ShowSearchDemand;
 use Stu\Module\Trade\View\ShowSearch\ShowSearchOffer;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBox;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBoxRequest;
@@ -75,7 +76,7 @@ return [
         TakeOffer::ACTION_IDENTIFIER => autowire(TakeOffer::class),
         CancelOffer::ACTION_IDENTIFIER => autowire(CancelOffer::class),
         AddShoutBoxEntry::ACTION_IDENTIFIER => autowire(AddShoutBoxEntry::class),
-        TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class),
+        TransferGoods::ACTION_IDENTIFIER => autowire(TransferGoods::class)
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -89,6 +90,7 @@ return [
         ShowOfferGood::VIEW_IDENTIFIER => autowire(ShowOfferGood::class),
         ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
         ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
+        ShowSearchDemand::VIEW_IDENTIFIER => autowire(ShowSearchDemand::class),
         ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class)
     ],
 ];
