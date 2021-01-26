@@ -21,78 +21,95 @@
 				</tr>
 				<tr tal:repeat="colony COLONY_LIST" tal:attributes="class string:row${repeat/colony/odd}">
 					<td style="text-align: center;">
-						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}"><metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /></a>
+						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}">
+							<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /></a>
 					</td>
 					<td style="vertical-align: middle;" tal:define="system colony/getSystem">
-						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%" tal:content="structure bbcode:colony/getName">.</a>
+						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%"
+							tal:content="structure bbcode:colony/getName">.</a>
 						<div>
-							<img src="assets/map/${colony/getSystem/getMapField/getFieldId}.gif" tal:attributes="title system/getSystemType/getDescription" style="width: 15px; height: 15px;" /> ${colony/getSX}|${colony/getSY} (${system/getName}-System ${system/getCX}|${system/getCY})
+							<img src="assets/map/${colony/getSystem/getMapField/getFieldId}.gif"
+								tal:attributes="title system/getSystemType/getDescription"
+								style="width: 15px; height: 15px;" /> ${colony/getSX}|${colony/getSY}
+							(${system/getName}-System ${system/getCX}|${system/getCY})
 						</div>
 					</td>
 					<td style="vertical-align: middle;">
 						<img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.gif" />
-						<span tal:replace="colony/getPopulation">POPULATION</span>/<span tal:replace="colony/getHousing">HOUSING</span> (<span tal:replace="colony/getImmigration">IMMIGRATION</span>)
+						<span tal:replace="colony/getPopulation">POPULATION</span>/<span
+							tal:replace="colony/getHousing">HOUSING</span> (<span
+							tal:replace="colony/getImmigration">IMMIGRATION</span>)
 					</td>
 					<td style="vertical-align: middle;">
 						<span tal:content="structure colony/getEpsStatusBar">EPS</span>
-						${colony/getEps}/${colony/getMaxEps} (<span tal:replace="addPlusCharacter:colony/getEpsProduction">PROD</span>)
+						${colony/getEps}/${colony/getMaxEps} (<span
+							tal:replace="addPlusCharacter:colony/getEpsProduction">PROD</span>)
 					</td>
 					<td style="vertical-align: middle;">
 						<span tal:content="structure colony/getStorageStatusBar">STORAGE</span>
-						${colony/getStorageSum}/${colony/getMaxStorage} (${addPlusCharacter:colony/getProductionSum})<br />
+						${colony/getStorageSum}/${colony/getMaxStorage}
+						(${addPlusCharacter:colony/getProductionSum})<br />
 						<div tal:repeat="stor colony/getGoodUseView">
-							<img src="assets/goods/${stor/good/getId}.gif" title="runtime" tal:attributes="title stor/good/getName" />
-							<span style="color: #FF0000;" tal:content="stor/production">COUNT</span> (<span tal:replace="stor/turnsleft">TURNS</span> Runden)
+							<img src="assets/goods/${stor/good/getId}.gif" title="runtime"
+								tal:attributes="title stor/good/getName" />
+							<span style="color: #FF0000;" tal:content="stor/production">COUNT</span> (<span
+								tal:replace="stor/turnsleft">TURNS</span> Runden)
 						</div>
 					</td>
 				</tr>
 			</table>
 			<br />
 			<div style="float: left; width: 49%;">
-				<div tal:condition="BUILDINGJOB_LIST">
-					<table class="tcal">
-						<tr>
-							<th colspan="5">Aktuelle Bauvorgänge</th>
-						</tr>
-						<tr tal:repeat="data BUILDINGJOB_LIST">
-							<td style="width: 45px; text-align: center;vertical-align: middle">
-								<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title bbcode2txt:data/getColony/getName" />
-							</td>
-							<td style="width: 45px; text-align:center;">
-								<img src="assets/generated/buildings/${data/getBuildingId}/0at.png" />
-							</td>
-							<td style="vertical-align: middle">
-								<span tal:replace="data/getBuilding/getName">DESCRIPTION</span> - Fertigstellung: <span tal:replace="datetime:data/getBuildtime">DATE</span>
-							</td>
-						</tr>
-					</table>
+				<div style="float: left; width: 100%;">
+					<div tal:condition="BUILDINGJOB_LIST">
+						<table class="tcal">
+							<tr>
+								<th colspan="5">Aktuelle Bauvorgänge</th>
+							</tr>
+							<tr tal:repeat="data BUILDINGJOB_LIST">
+								<td style="width: 45px; text-align: center;vertical-align: middle">
+									<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime"
+										tal:attributes="title bbcode2txt:data/getColony/getName" />
+								</td>
+								<td style="width: 45px; text-align:center;">
+									<img src="assets/generated/buildings/${data/getBuildingId}/0at.png" />
+								</td>
+								<td style="vertical-align: middle">
+									<span tal:replace="data/getBuilding/getName">DESCRIPTION</span> - Fertigstellung:
+									<span tal:replace="datetime:data/getBuildtime">DATE</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div style="float: top; width: 100%;">
+					<div tal:condition="TERRAFORMING_LIST">
+						<table class="tcal">
+							<tr>
+								<th colspan="5">Aktuelle Terraformingvorgänge</th>
+							</tr>
+							<tr tal:repeat="data TERRAFORMING_LIST">
+								<td style="width: 45px; text-align: center;vertical-align: middle">
+									<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime"
+										tal:attributes="title bbcode2txt:data/getColony/getName" />
+								</td>
+								<td style="width: 45px; text-align:center;">
+									<img src="assets/generated/fields/${data/getTerraforming/getFromFieldTypeId}.png" />
+								</td>
+								<td style="vertical-align: middle; width: 40px; text-align: center;">=&gt;</td>
+								<td style="width: 45px; text-align:center;">
+									<img src="assets/generated/fields/${data/getTerraforming/getToFieldTypeId}.png" />
+								</td>
+								<td style="vertical-align: middle">
+									<span tal:replace="data/getTerraforming/getDescription">DESCRIPTION</span> -
+									Fertigstellung: <span tal:replace="datetime:data/getFinishDate">DATE</span>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
-			<div style="float: left; margin-left: 5px; width: 49%;">
-				<div tal:condition="TERRAFORMING_LIST">
-					<table class="tcal">
-						<tr>
-							<th colspan="5">Aktuelle Terraformingvorgänge</th>
-						</tr>
-						<tr tal:repeat="data TERRAFORMING_LIST">
-							<td style="width: 45px; text-align: center;vertical-align: middle">
-								<img src="assets/planets/${data/getColony/getColonyClass}.gif" title="runtime" tal:attributes="title bbcode2txt:data/getColony/getName" />
-							</td>
-							<td style="width: 45px; text-align:center;">
-								<img src="assets/generated/fields/${data/getTerraforming/getFromFieldTypeId}.png" />
-							</td>
-							<td style="vertical-align: middle; width: 40px; text-align: center;">=&gt;</td>
-							<td style="width: 45px; text-align:center;">
-								<img src="assets/generated/fields/${data/getTerraforming/getToFieldTypeId}.png" />
-							</td>
-							<td style="vertical-align: middle">
-								<span tal:replace="data/getTerraforming/getDescription">DESCRIPTION</span> - Fertigstellung: <span tal:replace="datetime:data/getFinishDate">DATE</span>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<div style="float: right; width: 49%;">
+			<div style="float: right; width: 30%;">
 				<div tal:condition="PRODUCTION_LIST">
 					<table class="tcal">
 						<tr>
@@ -101,13 +118,16 @@
 						</tr>
 						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
 							<td style="vertical-align: middle;">
-							  <div style="display: table-cell; width: 55px;">
-								<img src="assets/goods/${prod/getGoodId}.gif" tal:attributes="title prod/getGood/getName" />
-							  </div>
-							  <div style="display: table-cell; vertical-align: middle" tal:content="prod/getGood/getName">NAME</div>
+								<div style="display: table-cell; width: 55px;">
+									<img src="assets/goods/${prod/getGoodId}.gif"
+										tal:attributes="title prod/getGood/getName" />
+								</div>
+								<div style="display: table-cell; vertical-align: middle"
+									tal:content="prod/getGood/getName">NAME</div>
 							</td>
 							<td style="vertical-align: middle;">
-							  <span tal:content="prod/getProductionDisplay" tal:attributes="class prod/getCssClass">.</span>
+								<span tal:content="prod/getProductionDisplay"
+									tal:attributes="class prod/getCssClass">.</span>
 							</td>
 						</tr>
 					</table>
@@ -116,4 +136,5 @@
 		</tal:block>
 	</metal:macro>
 </metal:macro>
+
 </html>
