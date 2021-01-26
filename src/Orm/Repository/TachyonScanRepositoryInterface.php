@@ -16,4 +16,6 @@ interface TachyonScanRepositoryInterface extends ObjectRepository
     public function save(TachyonScanInterface $obj): void;
 
     public function findActiveByShipLocationAndOwner(ShipInterface $ship): array;
+
+    public function deleteOldScans(int $threshold): void;
 }

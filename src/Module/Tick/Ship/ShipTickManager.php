@@ -21,13 +21,13 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 final class ShipTickManager implements ShipTickManagerInterface
 {
     private PrivateMessageSenderInterface $privateMessageSender;
-    
+
     private ShipRemoverInterface $shipRemover;
 
     private ShipTickInterface $shipTick;
 
     private ShipRepositoryInterface $shipRepository;
-    
+
     private FleetRepositoryInterface $fleetRepository;
 
     private UserRepositoryInterface $userRepository;
@@ -35,7 +35,7 @@ final class ShipTickManager implements ShipTickManagerInterface
     private CrewRepositoryInterface $crewRepository;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
-    
+
     private ShipSystemManagerInterface $shipSystemManager;
 
     private AlertRedHelperInterface $alertRedHelper;
@@ -67,18 +67,15 @@ final class ShipTickManager implements ShipTickManagerInterface
     public function work(): void
     {
         $this->checkForCrewLimitation();
-        $this->checkFleetRestriction();
         $this->removeEmptyEscapePods();
-        
+
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
 
             //handle ship only if vacation mode not active
-            if (!$ship->getUser()->isVacationRequestOldEnough())
-            {
+            if (!$ship->getUser()->isVacationRequestOldEnough()) {
                 $this->shipTick->work($ship);
             }
-
         }
         $this->handleNPCShips();
         $this->lowerTrumfieldHuell();
@@ -97,11 +94,9 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         $userList = $this->userRepository->getNonNpcList();
 
-        foreach ($userList as $user)
-        {
+        foreach ($userList as $user) {
             //only handle user that are not on vacation
-            if ($user->isVacationRequestOldEnough())
-            {
+            if ($user->isVacationRequestOldEnough()) {
                 continue;
             }
 
@@ -109,12 +104,10 @@ final class ShipTickManager implements ShipTickManagerInterface
             $crewOnShips = $this->shipCrewRepository->getAmountByUser($user->getId());
             $freeCrewCount = $this->crewRepository->getFreeAmountByUser($user->getId());
 
-            if (($crewOnShips + $freeCrewCount) > $crewLimit)
-            {
-                if ($freeCrewCount > 0)
-                {
+            if (($crewOnShips + $freeCrewCount) > $crewLimit) {
+                if ($freeCrewCount > 0) {
                     $deleteAmount = min($crewOnShips + $freeCrewCount - $crewLimit, $freeCrewCount);
-                    
+
                     for ($i = 0; $i < $deleteAmount; $i++) {
 
                         $crew = $this->crewRepository->getFreeByUser($user->getId());
@@ -122,16 +115,19 @@ final class ShipTickManager implements ShipTickManagerInterface
                     }
 
                     $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits haben %d freie Crewman ihren Dienst quittiert'), $deleteAmount);
-                    $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$user->getId(), $msg,
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
+                    $this->privateMessageSender->send(
+                        GameEnum::USER_NOONE,
+                        (int) $user->getId(),
+                        $msg,
+                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                    );
                 } else {
                     $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($user->getId());
 
-                    if ($randomShipId == null)
-                    {
+                    if ($randomShipId == null) {
                         continue;
                     }
-                    
+
                     $randomShip = $this->shipRepository->find($randomShipId);
                     $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
                     //deactivate ship
@@ -139,33 +135,33 @@ final class ShipTickManager implements ShipTickManagerInterface
                     $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
 
                     $this->shipRepository->save($randomShip);
-                    
+
                     $crewArray = [];
-                    foreach ($randomShip->getCrewlist() as $shipCrew)
-                    {
+                    foreach ($randomShip->getCrewlist() as $shipCrew) {
                         $crewArray[] = $shipCrew->getCrew();
                     }
                     $randomShip->getCrewlist()->clear();
 
                     //remove crew
                     $this->shipCrewRepository->truncateByShip($randomShipId);
-                    foreach ($crewArray as $crew)
-                    {
+                    foreach ($crewArray as $crew) {
                         $this->crewRepository->delete($crew);
                     }
 
                     $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
-                    $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$user->getId(), $msg,
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
+                    $this->privateMessageSender->send(
+                        GameEnum::USER_NOONE,
+                        (int) $user->getId(),
+                        $msg,
+                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    );
 
                     //do alert red stuff
-                    if ($doAlertRedCheck)
-                    {
+                    if ($doAlertRedCheck) {
                         $this->doAlertRedCheck($randomShip);
                     }
                 }
             }
-
         }
     }
 
@@ -176,27 +172,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         //Alarm-Rot check
         $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
         shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip)
-        {
+        foreach ($shipsToShuffle as $alertShip) {
             $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-        }
-    }
-
-    private function checkFleetRestriction(): void
-    {
-        foreach ($this->fleetRepository->getNonNpcFleetList() as $fleet)
-        {
-            if ($fleet->getCrewSum() > GameEnum::CREW_PER_FLEET
-                || $fleet->getShipCount() == 0)
-            {
-                foreach ($fleet->getShips() as $fleetShip) {
-                    $fleetShip->setFleet(null);
-        
-                    $this->shipRepository->save($fleetShip);
-                }
-        
-                $this->fleetRepository->delete($fleet);
-            }
         }
     }
 
@@ -218,17 +195,14 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         // @todo
         foreach ($this->shipRepository->getNpcShipsForTick() as $ship) {
-            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS))
-            {
-                $eps = (int)ceil($ship->getMaxEps() / 10);
+            if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)) {
+                $eps = (int) ceil($ship->getMaxEps() / 10);
                 if ($eps + $ship->getEps() > $ship->getMaxEps()) {
                     $eps = $ship->getMaxEps() - $ship->getEps();
                 }
                 $ship->setEps($ship->getEps() + $eps);
-            }
-            else
-            {
-                $eps = (int)ceil($ship->getTheoreticalMaxEps() / 10);
+            } else {
+                $eps = (int) ceil($ship->getTheoreticalMaxEps() / 10);
                 if ($eps + $ship->getEps() > $ship->getTheoreticalMaxEps()) {
                     $eps = $ship->getTheoreticalMaxEps() - $ship->getEps();
                 }
