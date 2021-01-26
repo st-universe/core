@@ -158,4 +158,21 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
             'commodityId' => $commodityId
         ])->getResult();
     }
+
+    public function getOldOffers(int $threshold): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT to FROM %s to
+                     WHERE to.date < :maxAge
+                    ',
+                    TradeOffer::class
+                )
+            )
+            ->setParameters([
+                'maxAge' => time() - $threshold
+            ])
+            ->getResult();
+    }
 }

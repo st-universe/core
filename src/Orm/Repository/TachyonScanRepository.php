@@ -8,9 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use Stu\Component\Ship\System\Type\TachyonScannerShipSystem;
-use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\TachyonScanInterface;
 
@@ -32,7 +30,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
         $rsm->addFieldResult('t', 'scan_time', 'scan_time');
 
         return $this->getEntityManager()->createNativeQuery(
-                'SELECT ts.id as id, ts.user_id as user_id, ts.map_id as map_id, ts.starsystem_map_id as starsystem_map_id,
+            'SELECT ts.id as id, ts.user_id as user_id, ts.map_id as map_id, ts.starsystem_map_id as starsystem_map_id,
                         ts.scan_time as scan_time
                 FROM stu_tachyon_scan ts
                 WHERE ts.scan_time > :theTime
@@ -46,7 +44,8 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
                                                 FROM stu_map m
                                                 WHERE m.id = ts.map_id
                                                 AND m.cx = :cx and m.cy = :cy)
-                            END)', $rsm
+                            END)',
+            $rsm
         )->setParameters([
             'isSystem' => $ship->getSystem() !== null,
             'systemId' => $ship->getSystem() !== null ? $ship->getSystem()->getId() : 0,
@@ -65,5 +64,17 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
 
         $em->persist($obj);
         $em->flush();
+    }
+
+    public function deleteOldScans(int $threshold): void
+    {
+        $q = $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s ts WHERE ts.scan_time < :maxAge',
+                TachyonScan::class
+            )
+        );
+        $q->setParameter('maxAge', time() - $threshold);
+        $q->execute();
     }
 }

@@ -41,4 +41,6 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     public function getByUserAccumulated(int $userId): iterable;
 
     public function getByUserAndCommodity(int $userId, int $commodityId): iterable;
+
+    public function getOldOffers(int $threshold): array;
 }
