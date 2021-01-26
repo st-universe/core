@@ -65,13 +65,12 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             $userId = $offer->getUserId();
             $postId = $offer->getTradePostId();
 
-            $offeredCount = (int) $offer->getOfferedGoodCount() * $offer->getOfferCount();
-            $wantedCount = (int) $offer->getWantedGoodCount() * $offer->getOfferCount();
             $pm[] = sprintf(
-                _('angeboten: %d %s, verlangt: %d %s'),
-                $offeredCount,
+                _('%d x angeboten: %d %s, verlangt: %d %s'),
+                $offer->getOfferCount(),
+                $offer->getOfferedGoodCount(),
                 $offer->getOfferedCommodity()->getName(),
-                $wantedCount,
+                $offer->getWantedGoodCount(),
                 $offer->getWantedCommodity()->getName()
             );
 
@@ -81,7 +80,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
                 $offer->getUserId(),
             )->upperStorage(
                 (int) $offer->getOfferedGoodId(),
-                $offeredCount
+                (int) $offer->getOfferedGoodCount() * $offer->getOfferCount()
             );
 
             $this->tradeOfferRepository->delete($offer);
