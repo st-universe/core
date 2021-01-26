@@ -39,7 +39,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
 
     public function getAmountByUser(UserInterface $user, bool $isMoon = false): int
     {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT count(c.id) from %s c WHERE c.user_id = :userId AND c.colonies_classes_id IN (
                     SELECT pt.id FROM %s pt WHERE pt.is_moon = :isMoon
@@ -89,7 +89,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     {
         return $this->findBy(
             ['user_id' => $user],
-            ['id' => 'asc']
+            ['colonies_classes_id' => 'asc', 'id' => 'asc']
         );
     }
 
@@ -101,7 +101,7 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT c FROM %s c WHERE c.user_id != :userId',
-            Colony::class
+                Colony::class
             )
         )->setParameters([
             'userId' => GameEnum::USER_NOONE,
