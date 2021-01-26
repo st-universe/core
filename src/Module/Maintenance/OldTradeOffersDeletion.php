@@ -60,7 +60,7 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
             //trade post change
             if ($postId != $offer->getTradePostId()) {
                 $post = $this->tradePostRepository->find($offer->getTradePostId());
-                $pm[] = sprintf(_('\n%s:'), $post->getName());
+                $pm[] = "\n" . sprintf(_('%s:'), $post->getName());
             }
             $userId = $offer->getUserId();
             $postId = $offer->getTradePostId();
