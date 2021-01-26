@@ -166,6 +166,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
                 sprintf(
                     'SELECT to FROM %s to
                      WHERE to.date < :maxAge
+                     AND to.user_id > 100
                      ORDER BY to.user_id ASC, to.posts_id ASC
                     ',
                     TradeOffer::class
