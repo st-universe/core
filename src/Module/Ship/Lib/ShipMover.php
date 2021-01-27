@@ -14,7 +14,9 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
+use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
@@ -40,6 +42,8 @@ final class ShipMover implements ShipMoverInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private FlightSignatureRepositoryInterface $flightSignatureRepository;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -50,6 +54,8 @@ final class ShipMover implements ShipMoverInterface
     private $leaderMovedToNextField = false;
     private $hasTravelled = false;
 
+    private $flightSignatures = [];
+
     public function __construct(
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
@@ -59,7 +65,8 @@ final class ShipMover implements ShipMoverInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
         ApplyDamageInterface $applyDamage,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -70,6 +77,7 @@ final class ShipMover implements ShipMoverInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->applyDamage = $applyDamage;
         $this->alertRedHelper = $alertRedHelper;
+        $this->flightSignatureRepository = $flightSignatureRepository;
     }
 
     private function setDestination(
@@ -204,55 +212,47 @@ final class ShipMover implements ShipMoverInterface
 
             // move every ship by one field
             foreach ($ships as $ship) {
-                if (!array_key_exists($ship->getId(), $this->lostShips)
-                    && ($ship === $leadShip || $this->leaderMovedToNextField))
-                {
+                if (
+                    !array_key_exists($ship->getId(), $this->lostShips)
+                    && ($ship === $leadShip || $this->leaderMovedToNextField)
+                ) {
                     $this->moveOneField($leadShip, $ship, $flightMethod, $nextField);
                 }
             }
-            
+
             //if moving in warp skip AR check
-            if ($leadShip->getWarpState())
-            {
+            if ($leadShip->getWarpState()) {
                 continue;
             }
 
             //Alarm-Rot check
             $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($leadShip, $this->informations);
             shuffle($shipsToShuffle);
-            foreach ($shipsToShuffle as $alertShip)
-            {
+            foreach ($shipsToShuffle as $alertShip) {
                 // if there are ships left
-                if ($this->areShipsLeft($ships))
-                {
+                if ($this->areShipsLeft($ships)) {
                     $this->alertRedHelper->performAttackCycle($alertShip, $leadShip, $this->informations);
-                }
-                else {
+                } else {
                     break;
                 }
 
                 // check for destroyed ships
                 foreach ($ships as $ship) {
-                    if ($ship->getIsDestroyed())
-                    {
+                    if ($ship->getIsDestroyed()) {
                         $this->lostShips[$ship->getId()] = $ship;
                     }
                 }
             }
-            
         }
 
         //skip save and log info if flight did not happen
-        if (!$this->hasTravelled)
-        {
+        if (!$this->hasTravelled) {
             return;
         }
 
         // save all ships
-        foreach ($ships as $ship)
-        {
-            if (!$ship->getIsDestroyed())
-            {
+        foreach ($ships as $ship) {
+            if (!$ship->getIsDestroyed()) {
                 $this->shipRepository->save($ship);
             }
             if ($ship->isTraktorbeamActive()) {
@@ -269,18 +269,17 @@ final class ShipMover implements ShipMoverInterface
                     $this->getDestY()
                 )
             );
-        }
-        else {
+        } else {
             $this->addInformation(sprintf(_('Die %s fliegt in Sektor %d|%d ein'), $leadShip->getName(), $leadShip->getPosX(), $leadShip->getPosY()));
         }
+
+        $this->saveFlightSignatures();
     }
 
-    private function areShipsLeft(array $ships) : bool
+    private function areShipsLeft(array $ships): bool
     {
-        foreach($ships as $ship)
-        {
-            if (!array_key_exists($ship->getId(), $this->lostShips))
-            {
+        foreach ($ships as $ship) {
+            if (!array_key_exists($ship->getId(), $this->lostShips)) {
                 return true;
             }
         }
@@ -288,7 +287,7 @@ final class ShipMover implements ShipMoverInterface
         return false;
     }
 
-    private function getReadyForFlight(ShipInterface $leadShip, array $ships) : void
+    private function getReadyForFlight(ShipInterface $leadShip, array $ships): void
     {
         foreach ($ships as $ship) {
             $ship->setDockedTo(null);
@@ -297,9 +296,13 @@ final class ShipMover implements ShipMoverInterface
                 $this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getId()));
             }
             if ($ship->isTraktorbeamActive() && $ship->getTraktorShip()->getFleetId()) {
-                $this->deactivateTraktorBeam($ship,
-                    sprintf(_('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
-                        $ship->getTraktorShip()->getName()));
+                $this->deactivateTraktorBeam(
+                    $ship,
+                    sprintf(
+                        _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
+                        $ship->getTraktorShip()->getName()
+                    )
+                );
             }
             if ($ship->getTraktorMode() == 2) {
                 $this->addLostShip($ship, $leadShip, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
@@ -345,14 +348,16 @@ final class ShipMover implements ShipMoverInterface
                 }
             }
             if ($ship->getEps() == 0) {
-                $this->addLostShip($ship, $leadShip, sprintf(_('Die %s hat nicht genug Energie für den Flug'),
-                                                        $ship->getName()));
+                $this->addLostShip($ship, $leadShip, sprintf(
+                    _('Die %s hat nicht genug Energie für den Flug'),
+                    $ship->getName()
+                ));
                 continue;
             }
         }
     }
 
-    private function isDestinationArrived(ShipInterface $ship) : bool
+    private function isDestinationArrived(ShipInterface $ship): bool
     {
         return $this->getDestX() == $ship->getPosX() && $this->getDestY() == $ship->getPosY();
     }
@@ -385,19 +390,30 @@ final class ShipMover implements ShipMoverInterface
     ) {
         // zu wenig Crew
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
-            $this->addLostShip($ship, $leadShip,
-                sprintf(_('Es werden %d Crewmitglieder benötigt'),
-                    $ship->getBuildplan()->getCrew()));
+            $this->addLostShip(
+                $ship,
+                $leadShip,
+                sprintf(
+                    _('Es werden %d Crewmitglieder benötigt'),
+                    $ship->getBuildplan()->getCrew()
+                )
+            );
             return;
         }
-        
+
         $flight_ecost = $ship->getRump()->getFlightEcost();
-        
+
         //zu wenig E zum weiterfliegen
         if ($ship->getEps() < $flight_ecost) {
-            $this->addLostShip($ship, $leadShip,
-                sprintf(_('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
-                    $ship->getName(), $flight_ecost));
+            $this->addLostShip(
+                $ship,
+                $leadShip,
+                sprintf(
+                    _('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
+                    $ship->getName(),
+                    $flight_ecost
+                )
+            );
             return;
         }
 
@@ -411,12 +427,11 @@ final class ShipMover implements ShipMoverInterface
         if ($ship->isTraktorbeamActive() && $ship->getEps() < $ship->getTraktorShip()->getRump()->getFlightEcost() + 1) {
             $this->deactivateTraktorBeam($ship, sprintf(_('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
         }
-        
+
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
         $this->hasTravelled = true;
-        if ($ship === $leadShip)
-        {
+        if ($ship === $leadShip) {
             $this->leaderMovedToNextField = true;
         }
         if (!$this->isFleetMode() && $ship->getFleetId()) {
@@ -432,18 +447,20 @@ final class ShipMover implements ShipMoverInterface
         }
         $field = $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY());
 
+        //create flight signatures
+        $this->addFlightSignatures($ship, $flightMethod, $field, $leadShip->getSystem() !== null);
+
         //Einflugschaden Feldschaden
         if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
             $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $field->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
-            
+
             $this->applyFieldDamage($ship, $field->getFieldType()->getSpecialDamage(), true, '');
         }
-        
+
         //check for deflector state
         $notEnoughEnergyForDeflector = false;
         $deflectorDestroyed = false;
-        if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR))
-        {
+        if ($ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)) {
             $notEnoughEnergyForDeflector = $nextField->getFieldType()->getEnergyCosts() > $ship->getEps();
 
             if ($notEnoughEnergyForDeflector) {
@@ -463,7 +480,6 @@ final class ShipMover implements ShipMoverInterface
 
             $this->applyFieldDamage($ship, $field->getFieldType()->getDamage(), false, $dmgCause);
         }
-
     }
 
     private function applyFieldDamage($ship, $damage, $isAbsolutDmg, $cause): void
@@ -473,23 +489,23 @@ final class ShipMover implements ShipMoverInterface
             $tractorShip = $ship->getTraktorShip();
             $dmg = $isAbsolutDmg ? $damage : $tractorShip->getMaxHuell() * $damage / 100;
 
-            $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'),$cause, $tractorShip->getName(), $ship->getPosX(), $ship->getPosY()));
-            $damageMsg = $this->applyDamage->damage(new DamageWrapper((int)ceil($dmg)), $tractorShip);
+            $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $tractorShip->getName(), $ship->getPosX(), $ship->getPosY()));
+            $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $tractorShip);
             $this->addInformationMerge($damageMsg);
 
             if ($tractorShip->getIsDestroyed()) {
                 $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $tractorShip->getName(), $tractorShip->getSectorString()));
-    
+
                 $this->shipRemover->destroy($tractorShip);
             }
         }
-        
+
         //ship itself
-        $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'),$cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
+        $this->addInformation(sprintf(_('%sDie %s wurde in Sektor %d|%d beschädigt'), $cause, $ship->getName(), $ship->getPosX(), $ship->getPosY()));
         $dmg = $isAbsolutDmg ? $damage : $ship->getMaxHuell() * $damage / 100;
-        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int)ceil($dmg)), $ship);
+        $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($dmg)), $ship);
         $this->addInformationMerge($damageMsg);
-        
+
         if ($ship->getIsDestroyed()) {
             $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
 
@@ -502,8 +518,8 @@ final class ShipMover implements ShipMoverInterface
     {
         $this->addInformation($msg);
         $this->privateMessageSender->send(
-            (int)$ship->getUserId(),
-            (int)$ship->getTraktorShip()->getUserId(),
+            (int) $ship->getUserId(),
+            (int) $ship->getTraktorShip()->getUserId(),
             sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getSectorString()),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
@@ -513,18 +529,16 @@ final class ShipMover implements ShipMoverInterface
     private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, string $msg)
     {
         $this->addInformation($msg);
-        
+
         $this->lostShips[$ship->getId()] = $ship;
-        
-        if ($ship === $leadShip)
-        {
+
+        if ($ship === $leadShip) {
             $this->updateDestination($ship->getPosX(), $ship->getPosY());
-        }
-        else {
+        } else {
             $this->leaveFleet($ship);
         }
     }
-    
+
     private function leaveFleet(ShipInterface $ship)
     {
         $ship->leaveFleet();
@@ -578,10 +592,10 @@ final class ShipMover implements ShipMoverInterface
     private function getFieldData(ShipInterface $leadShip, $x, $y)
     {
         if ($this->fieldData === null) {
-            $sx = (int)$leadShip->getPosX();
-            $sy = (int)$leadShip->getPosY();
-            $destx = (int)$this->getDestX();
-            $desty = (int)$this->getDestY();
+            $sx = (int) $leadShip->getPosX();
+            $sy = (int) $leadShip->getPosY();
+            $destx = (int) $this->getDestX();
+            $desty = (int) $this->getDestY();
 
             if ($sy > $desty) {
                 $oy = $sy;
@@ -619,5 +633,55 @@ final class ShipMover implements ShipMoverInterface
             }
         }
         return $this->fieldData[$x . "_" . $y];
+    }
+
+    private function addFlightSignatures($ship, $flightMethod, $field, bool $isSystem): void
+    {
+        $fromSignature = $this->createSignature($ship, $field, $isSystem);
+        $toSignature = $this->createSignature($ship, $field, $isSystem);
+
+        switch ($flightMethod) {
+            case ShipEnum::FLY_RIGHT:
+                $fromSignature->setToDirection(ShipEnum::DIRECTION_RIGHT);
+                $toSignature->setFromDirection(ShipEnum::DIRECTION_LEFT);
+                break;
+            case ShipEnum::FLY_LEFT:
+                $fromSignature->setToDirection(ShipEnum::DIRECTION_LEFT);
+                $toSignature->setFromDirection(ShipEnum::DIRECTION_RIGHT);
+                break;
+            case ShipEnum::FLY_UP:
+                $fromSignature->setToDirection(ShipEnum::DIRECTION_TOP);
+                $toSignature->setFromDirection(ShipEnum::DIRECTION_BOTTOM);
+                break;
+            case ShipEnum::FLY_DOWN:
+                $fromSignature->setToDirection(ShipEnum::DIRECTION_BOTTOM);
+                $toSignature->setFromDirection(ShipEnum::DIRECTION_TOP);
+                break;
+        }
+
+        $this->flightSignatures[] = $fromSignature;
+        $this->flightSignatures[] = $toSignature;
+    }
+
+    private function createSignature($ship, $field, bool $isSystem): FlightSignatureInterface
+    {
+        $signature = $this->flightSignatureRepository->prototype();
+
+        $signature->setUser($ship->getUser());
+        $signature->setShip($ship);
+        $signature->setRump($ship->getRump());
+        $signature->setTime(time());
+        if ($isSystem) {
+            $signature->setStarsystemMap($field);
+        } else {
+            $signature->setMap($field);
+        }
+
+        return $signature;
+    }
+
+    private function saveFlightSignatures(): void
+    {
+        $this->flightSignatureRepository->saveAll($this->flightSignatures);
     }
 }
