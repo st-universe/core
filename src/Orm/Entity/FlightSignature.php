@@ -30,6 +30,9 @@ class FlightSignature implements FlightSignatureInterface
     private $ship_id = 0;
 
     /** @Column(type="integer") */
+    private $rump_id = 0;
+
+    /** @Column(type="integer") */
     private $time = 0;
 
     /** @Column(type="integer", nullable=true) * */
@@ -55,6 +58,12 @@ class FlightSignature implements FlightSignatureInterface
      * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ship;
+
+    /**
+     * @ManyToOne(targetEntity="ShipRump")
+     * @JoinColumn(name="rump_id", referencedColumnName="id")
+     */
+    private $rump;
 
     /**
      * @ManyToOne(targetEntity="Map")
@@ -97,6 +106,17 @@ class FlightSignature implements FlightSignatureInterface
     public function setShip(ShipInterface $ship): FlightSignatureInterface
     {
         $this->ship = $ship;
+        return $this;
+    }
+
+    public function getRump(): ShipRumpInterface
+    {
+        return $this->rump;
+    }
+
+    public function setRump(ShipRumpInterface $shipRump): FlightSignatureInterface
+    {
+        $this->rump = $shipRump;
         return $this;
     }
 
