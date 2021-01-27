@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\StarSystemMapRepository")
  * @Table(
@@ -43,6 +46,17 @@ class StarSystemMap implements StarSystemMapInterface
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
     private $mapFieldType;
+
+    /**
+     * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
+     * @OrderBy({"time" = "DESC"})
+     */
+    private $signatures;
+
+    public function __construct()
+    {
+        $this->signatures = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -110,5 +124,10 @@ class StarSystemMap implements StarSystemMapInterface
     public function getFieldStyle(): string
     {
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".gif');";
+    }
+
+    public function getSignatures(): Collection
+    {
+        return $this->signatures;
     }
 }
