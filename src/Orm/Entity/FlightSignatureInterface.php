@@ -31,12 +31,4 @@ interface FlightSignatureInterface
     public function getStarsystemMap(): ?StarSystemMapInterface;
 
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): FlightSignatureInterface;
-
-    public function getFromDirection(): int;
-
-    public function setFromDirection(int $direction): FlightSignatureInterface;
-
-    public function getToDirection(): int;
-
-    public function setToDirection(int $direction): FlightSignatureInterface;
 }
