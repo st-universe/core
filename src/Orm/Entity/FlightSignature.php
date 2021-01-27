@@ -151,4 +151,26 @@ class FlightSignature implements FlightSignatureInterface
         $this->starsystem_map = $starsystem_map;
         return $this;
     }
+
+    public function getFromDirection(): int
+    {
+        return $this->from_direction;
+    }
+
+    public function setFromDirection(int $direction): FlightSignatureInterface
+    {
+        $this->from_direction = $direction;
+        return $this;
+    }
+
+    public function getToDirection(): int
+    {
+        return $this->to_direction;
+    }
+
+    public function setToDirection(int $direction): FlightSignatureInterface
+    {
+        $this->to_direction = $direction;
+        return $this;
+    }
 }
