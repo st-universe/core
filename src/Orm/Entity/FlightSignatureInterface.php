@@ -16,10 +16,6 @@ interface FlightSignatureInterface
 
     public function setShip(ShipInterface $ship): FlightSignatureInterface;
 
-    public function getRump(): ShipRumpInterface;
-
-    public function setRump(ShipRumpInterface $shipRump): FlightSignatureInterface;
-
     public function getTime(): int;
 
     public function setTime(int $time): FlightSignatureInterface;
