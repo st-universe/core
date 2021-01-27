@@ -2,13 +2,11 @@
 
 namespace Stu\Orm\Repository;
 
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityRepository;
+
 use Stu\Orm\Entity\FlightSignatureInterface;
 
-/**
- * @method null|FlightSignatureInterface find(integer $id)
- */
-interface TachyonScanRepositoryInterface extends ObjectRepository
+interface FlightSignatureRepositoryInterface extends EntityRepository
 {
     public function prototype(): FlightSignatureInterface;
 
