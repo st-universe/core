@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\MapRepository")
  * @Table(
@@ -66,17 +63,6 @@ class Map implements MapInterface
      * @JoinColumn(name="region_id", referencedColumnName="id")
      */
     private $mapRegion;
-
-    /**
-     * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
-     * @OrderBy({"time" = "DESC"})
-     */
-    private $signatures;
-
-    public function __construct()
-    {
-        $this->signatures = new ArrayCollection();
-    }
 
     public function getId(): int
     {
@@ -184,10 +170,5 @@ class Map implements MapInterface
         $style = "background-image: url('/assets/map/" . $this->getFieldId() . ".gif');";
         $style .= $this->getBorder();
         return $style;
-    }
-
-    public function getSignatures(): Collection
-    {
-        return $this->signatures;
     }
 }
