@@ -13,5 +13,6 @@ return [
     ExpiredInvitationTokenDeletion::class => autowire(ExpiredInvitationTokenDeletion::class),
     OldTachyonScanDeletion::class => autowire(OldTachyonScanDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
-    CorruptFleetDeletion::class => autowire(CorruptFleetDeletion::class)
+    CorruptFleetDeletion::class => autowire(CorruptFleetDeletion::class),
+    OldFlightSignatureDeletion::class => autowire(OldFlightSignatureDeletion::class)
 ];
