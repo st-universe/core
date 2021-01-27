@@ -8,7 +8,7 @@ use Stu\Orm\Entity\FlightSignatureInterface;
 /**
  * @method null|FlightSignatureInterface find(integer $id)
  */
-interface TachyonScanRepositoryInterface extends ObjectRepository
+interface FlightSignatureRepositoryInterface extends ObjectRepository
 {
     public function prototype(): FlightSignatureInterface;
 
