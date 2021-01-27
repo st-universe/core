@@ -36,12 +36,6 @@ final class ShipEnum
     ];
     public const WARPCORE_CAPACITY_MULTIPLIER = 15;
 
-    //signatures
-    public const DIRECTION_LEFT = 1;
-    public const DIRECTION_BOTTOM = 2;
-    public const DIRECTION_RIGHT = 3;
-    public const DIRECTION_TOP = 4;
-
     //other
     public const TRUMFIELD_CLASS = 8;
     public const SHIELD_REGENERATION_TIME = 900;
