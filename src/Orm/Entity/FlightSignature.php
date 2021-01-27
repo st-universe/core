@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity(repositoryClass="Stu\Orm\Repository\TachyonScanRepository")
+ * @Entity(repositoryClass="Stu\Orm\Repository\FlightSignatureRepository")
  * @Table(
- *     name="stu_tachyon_scan",
+ *     name="stu_flight_sig",
  *     indexes={
- *         @Index(name="tachyon_scan_user_idx", columns={"user_id"}),
- *         @Index(name="tachyon_scan_map_idx", columns={"map_id"}),
- *         @Index(name="tachyon_scan_sysmap_idx", columns={"starsystem_map_id"})
+ *         @Index(name="flight_sig_map_idx", columns={"map_id"}),
+ *         @Index(name="flight_sig_starsystem_map_idx", columns={"starsystem_map_id"})
  *     }
  * )
  **/
-class TachyonScan implements TachyonScanInterface
+class FlightSignature implements FlightSignatureInterface
 {
     /** 
      * @Id
@@ -28,7 +27,10 @@ class TachyonScan implements TachyonScanInterface
     private $user_id = 0;
 
     /** @Column(type="integer") */
-    private $scan_time = 0;
+    private $ship_id = 0;
+
+    /** @Column(type="integer") */
+    private $time = 0;
 
     /** @Column(type="integer", nullable=true) * */
     private $map_id;
@@ -36,11 +38,23 @@ class TachyonScan implements TachyonScanInterface
     /** @Column(type="integer", nullable=true) * */
     private $starsystem_map_id;
 
+    /** @Column(type="smallint", length=1) */
+    private $from_direction = 0;
+
+    /** @Column(type="smallint", length=1) */
+    private $to_direction = 0;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
+
+    /**
+     * @ManyToOne(targetEntity="Ship")
+     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ship;
 
     /**
      * @ManyToOne(targetEntity="Map")
@@ -69,19 +83,30 @@ class TachyonScan implements TachyonScanInterface
         return $this->user;
     }
 
-    public function setUser(UserInterface $user): TachyonScanInterface
+    public function setUser(UserInterface $user): FlightSignatureInterface
     {
         $this->user = $user;
         return $this;
     }
 
-    public function getScanTime(): int
+    public function getShip(): ShipInterface
     {
-        return $this->scan_time;
+        return $this->ship;
     }
-    public function setScanTime(int $scanTime): TachyonScanInterface
+
+    public function setShip(ShipInterface $ship): FlightSignatureInterface
     {
-        $this->scan_time = $scanTime;
+        $this->ship = $ship;
+        return $this;
+    }
+
+    public function getTime(): int
+    {
+        return $this->time;
+    }
+    public function setTime(int $time): FlightSignatureInterface
+    {
+        $this->time = $time;
         return $this;
     }
 
@@ -90,7 +115,7 @@ class TachyonScan implements TachyonScanInterface
         return $this->map;
     }
 
-    public function setMap(?MapInterface $map): TachyonScanInterface
+    public function setMap(?MapInterface $map): FlightSignatureInterface
     {
         $this->map = $map;
         return $this;
@@ -101,7 +126,7 @@ class TachyonScan implements TachyonScanInterface
         return $this->starsystem_map;
     }
 
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): TachyonScanInterface
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): FlightSignatureInterface
     {
         $this->starsystem_map = $starsystem_map;
         return $this;
