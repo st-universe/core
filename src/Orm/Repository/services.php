@@ -38,6 +38,7 @@ use Stu\Orm\Entity\DatabaseUser;
 use Stu\Orm\Entity\DockingPrivilege;
 use Stu\Orm\Entity\Faction;
 use Stu\Orm\Entity\Fleet;
+use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\GameConfig;
 use Stu\Orm\Entity\GameTurn;
 use Stu\Orm\Entity\History;
@@ -265,6 +266,11 @@ return [
         ContainerInterface $c
     ): FleetRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(Fleet::class);
+    },
+    FlightSignatureRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): FlightSignatureRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(FlightSignature::class);
     },
     GameConfigRepositoryInterface::class => function (
         ContainerInterface $c
