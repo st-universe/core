@@ -19,6 +19,9 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
+    private $otherSigCount = 0;
+    private $otherCloakCount = 0;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         FlightSignatureRepositoryInterface $flightSignatureRepository
@@ -56,24 +59,38 @@ final class ShowSectorScan implements ViewControllerInterface
             }
         }
 
-        //6 stunden name des schiffes
-        //12 stunden rumpf
-        //2 tage anzahl
-
-        //getarnte rümpfe 6 stunden
-        //getarnte sigs 12 stunden
-
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $ship->getSystem() !== null, $userId));
+        $game->setTemplateVar('OTHER_SIG_COUNT', $this->otherSigCount > 0 ? $this->otherSigCount : null);
+        $game->setTemplateVar('OTHER_CLOAKED_COUNT', $this->otherCloakCount > 0 ? $this->otherCloakCount : null);
         $game->setTemplateVar('SHIP', $ship);
     }
 
     private function getSignatures($field, $isSystem, $ignoreId)
     {
-        return array_map(
-            function ($data): SignatureWrapper {
-                return new SignatureWrapper($data);
-            },
-            $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId)
-        );
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId);
+
+        $filteredSigs = [];
+
+        foreach ($allSigs as $sig) {
+            $id = $sig->getShip()->getId();
+
+            if (!array_key_exists($id, $filteredSigs)) {
+                $wrapper = new SignatureWrapper($sig);
+
+                if ($wrapper->getRump() == null) {
+                    if ($sig->isCloaked()) {
+                        if ($sig->getTime() > (time() - 43200)) {
+                            $this->otherCloakCount++;
+                        }
+                    } else {
+                        $this->otherSigCount++;
+                    }
+                } else {
+                    $filteredSigs[$id] = $wrapper;
+                }
+            }
+        }
+
+        return $filteredSigs;
     }
 }

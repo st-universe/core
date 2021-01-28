@@ -37,7 +37,8 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                     'SELECT fs FROM %s fs
                     WHERE fs.time > :maxAge
                     AND fs.%s = :fieldId
-                    AND fs.user_id != :ignoreId',
+                    AND fs.user_id != :ignoreId
+                    ORDER BY fs.time desc',
                     FlightSignature::class,
                     $isSystem ? "starsystem_map_id" : "map_id"
                 )

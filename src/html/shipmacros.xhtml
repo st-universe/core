@@ -1069,7 +1069,7 @@
       </td>
     </tr>
   </table>
-  <table class="tcal">
+  <table class="tcal" tal:condition="SIGNATURES">
     <tr>
       <th colspan="3">Signaturen</th>
     </tr>
@@ -1090,6 +1090,27 @@
       </td>
       <td>
         <span tal:content="sig/getAge">.</span>
+      </td>
+    </tr>
+  </table>
+  <table class="tcal" tal:condition="php: OTHER_SIG_COUNT OR OTHER_CLOAKED_COUNT">
+    <tr>
+      <th colspan="2">verblasste Signaturen</th>
+    </tr>
+    <tr tal:condition="OTHER_SIG_COUNT">
+      <td>
+        ungetarnt:
+      </td>
+      <td>
+        <span tal:content="OTHER_SIG_COUNT">.</span>
+      </td>
+    </tr>
+    <tr tal:condition="OTHER_CLOAKED_COUNT">
+      <td>
+        getarnt:
+      </td>
+      <td>
+        <span tal:content="OTHER_CLOAKED_COUNT">.</span>
       </td>
     </tr>
   </table>
