@@ -16,14 +16,6 @@ interface FlightSignatureInterface
 
     public function setShip(ShipInterface $ship): FlightSignatureInterface;
 
-    public function getShipName(): string;
-
-    public function setShipName(string $name): FlightSignatureInterface;
-
-    public function isCloaked(): bool;
-
-    public function setCloaked(bool $cloaked): FlightSignatureInterface;
-
     public function getRump(): ShipRumpInterface;
 
     public function setRump(ShipRumpInterface $shipRump): FlightSignatureInterface;
