@@ -14,8 +14,12 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 {
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_RED)
-        {
+        if ($ship->traktorBeamToShip()) {
+            $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
+            return false;
+        }
+
+        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');
             return false;
         }
@@ -49,7 +53,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_ON);
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_OFF);
