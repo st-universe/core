@@ -17,7 +17,7 @@ class SignatureWrapper
     function getRump()
     {
         if ($this->signature->getTime() > (time() - 43200)) {
-            return $this->signature->getRump()->getId();
+            return $this->signature->getRump();
         } else {
             return null;
         }
