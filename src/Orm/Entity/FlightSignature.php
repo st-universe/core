@@ -29,12 +29,6 @@ class FlightSignature implements FlightSignatureInterface
     /** @Column(type="integer") */
     private $ship_id = 0;
 
-    /** @Column(type="string") */
-    private $ship_name = '';
-
-    /** @Column(type="boolean") */
-    private $is_cloaked = false;
-
     /** @Column(type="integer") */
     private $rump_id = 0;
 
@@ -112,28 +106,6 @@ class FlightSignature implements FlightSignatureInterface
     public function setShip(ShipInterface $ship): FlightSignatureInterface
     {
         $this->ship = $ship;
-        return $this;
-    }
-
-    public function getShipName(): string
-    {
-        return $this->ship_name;
-    }
-
-    public function setShipName(string $name): FlightSignatureInterface
-    {
-        $this->ship_name = $name;
-        return $this;
-    }
-
-    public function isCloaked(): bool
-    {
-        return $this->is_cloaked;
-    }
-
-    public function setIsCloaked(bool $isCloaked): FlightSignatureInterface
-    {
-        $this->is_cloaked = $isCloaked;
         return $this;
     }
 
