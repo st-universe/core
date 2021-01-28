@@ -70,7 +70,7 @@ final class ShowSectorScan implements ViewControllerInterface
     private function getSignatures($field, $isSystem, $ignoreId)
     {
         return array_map(
-            function (array $data): SignatureWrapper {
+            function ($data): SignatureWrapper {
                 return new SignatureWrapper($data);
             },
             $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId)
