@@ -31,7 +31,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
     private ShipAttackCycleInterface $shipAttackCycle;
 
     private PositionCheckerInterface $positionChecker;
-    
+
     private ActivatorDeactivatorHelperInterface $helper;
 
     public function __construct(
@@ -65,46 +65,45 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        
-        if ($target->getUser()->isVacationRequestOldEnough())
-        {
+
+        if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         // activate system
-        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game))
-        {
+        if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
             return;
         }
 
         if ($target->getRump()->isTrumfield()) {
             $game->addInformation("Das Trümmerfeld kann nicht erfasst werden");
-            $this->abort();
+            $this->abort($ship, $game);
             return;
         }
         if (!$this->positionChecker->checkPosition($ship, $target)) {
-            $this->abort();
+            $this->abort($ship, $game);
             return;
         }
         if ($target->isBase()) {
             $game->addInformation("Die " . $target->getName() . " kann nicht erfasst werden");
-            $this->abort();
+            $this->abort($ship, $game);
             return;
         }
         if ($target->traktorbeamToShip()) {
             $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTraktorShip()->getName() . " gehalten");
-            $this->abort();
+            $this->abort($ship, $game);
             return;
         }
         if ($target->getFleetId() && $target->getFleetId() == $ship->getFleetId()) {
             $game->addInformation("Die " . $target->getName() . " befindet sich in der selben Flotte wie die " . $ship->getName());
-            $this->abort();
+            $this->abort($ship, $game);
             return;
         }
         if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
-                && !$target->getUser()->isFriend($userId)
-                && $target->getUser()->getId() !== $userId) {
+            && !$target->getUser()->isFriend($userId)
+            && $target->getUser()->getId() !== $userId
+        ) {
             if ($ship->isFleetLeader()) {
                 $defender = $ship->getFleet()->getShips()->toArray();
             } else {
@@ -118,7 +117,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->shipAttackCycle->init($attacker, $defender);
             $this->shipAttackCycle->cycle();
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
-            
+
             $this->privateMessageSender->send(
                 $userId,
                 $target->getUser()->getId(),
@@ -129,11 +128,12 @@ final class ActivateTractorBeam implements ActionControllerInterface
                     $ship->getSectorString(),
                     implode(PHP_EOL, $this->shipAttackCycle->getMessages())
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
         }
         if ($target->getShieldState()) {
             $game->addInformation("Die " . $target->getName() . " kann aufgrund der aktiven Schilde nicht erfasst werden");
-            $this->abort();
+            $this->abort($ship, $game);
             return;
         }
         $target->deactivateTraktorBeam();
@@ -141,11 +141,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $ship->setTraktorShipId($target->getId());
         $target->setTraktorMode(2);
         $target->setTraktorShipId($ship->getId());
-        $ship->setEps($ship->getEps() - $energyCosts);
-        
+
         $this->shipRepository->save($target);
         $this->shipRepository->save($ship);
-        
+
         if ($userId != $target->getUser()->getId()) {
             $this->privateMessageSender->send(
                 $userId,
@@ -156,8 +155,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         $game->addInformation("Der Traktorstrahl wurde auf die " . $target->getName() . " gerichtet");
     }
-    
-    private function abort(): void
+
+    private function abort($ship, $game): void
     {
         // deactivate system
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
