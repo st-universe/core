@@ -115,6 +115,28 @@ class FlightSignature implements FlightSignatureInterface
         return $this;
     }
 
+    public function getShipName(): string
+    {
+        return $this->ship_name;
+    }
+
+    public function setShipName(string $name): FlightSignatureInterface
+    {
+        $this->ship_name = $name;
+        return $this;
+    }
+
+    public function isCloaked(): bool
+    {
+        return $this->is_cloaked;
+    }
+
+    public function setIsCloaked(bool $isCloaked): FlightSignatureInterface
+    {
+        $this->is_cloaked = $isCloaked;
+        return $this;
+    }
+
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;
