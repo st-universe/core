@@ -50,6 +50,9 @@ class FlightSignature implements FlightSignatureInterface
     /** @Column(type="string", nullable=true) */
     private $ship_name;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $is_cloaked = false;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
