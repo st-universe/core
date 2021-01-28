@@ -669,7 +669,9 @@ final class ShipMover implements ShipMoverInterface
 
         $signature->setUser($ship->getUser());
         $signature->setShip($ship);
+        $signature->setShipName($ship->getName());
         $signature->setRump($ship->getRump());
+        $signature->setIsCloaked($ship->getCloakState());
         $signature->setTime(time());
         if ($isSystem) {
             $signature->setStarsystemMap($field);
