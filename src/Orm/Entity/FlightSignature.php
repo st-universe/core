@@ -9,6 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_flight_sig",
  *     indexes={
+ *         @Index(name="flight_sig_user_idx", columns={"user_id"}),
  *         @Index(name="flight_sig_map_idx", columns={"map_id"}),
  *         @Index(name="flight_sig_starsystem_map_idx", columns={"starsystem_map_id"})
  *     }
@@ -47,10 +48,10 @@ class FlightSignature implements FlightSignatureInterface
     /** @Column(type="smallint", length=1) */
     private $to_direction = 0;
 
-    /** @Column(type="string", nullable=true) */
+    /** @Column(type="string") */
     private $ship_name;
 
-    /** @Column(type="boolean", nullable=true) */
+    /** @Column(type="boolean") */
     private $is_cloaked = false;
 
     /**
