@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
@@ -37,5 +38,25 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         );
         $q->setParameter('maxAge', time() - $threshold);
         $q->execute();
+    }
+
+    public function getFlightsTop10(): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('user_id', 'user_id', 'integer');
+        $rsm->addScalarResult('sc', 'sc', 'integer');
+        $rsm->addScalarResult('race', 'race', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT user_id, count(*) as sc, (SELECT race
+                                                FROM stu_user u
+                                                WHERE fs.user_id = u.id)
+            FROM stu_flight_sig fs
+            WHERE to_direction != 0
+            GROUP BY user_id
+            ORDER BY 2 DESC
+            LIMIT 10',
+            $rsm
+        )->getResult();
     }
 }

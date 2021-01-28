@@ -15,4 +15,6 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
     public function saveAll(array $array): void;
 
     public function deleteOldSignatures(int $threshold): void;
+
+    public function getFlightsTop10(): array;
 }

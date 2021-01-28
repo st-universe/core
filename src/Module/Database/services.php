@@ -18,6 +18,7 @@ use Stu\Module\Database\View\DatabaseEntry\DatabaseEntryRequestInterface;
 use Stu\Module\Database\View\DatabaseEntry\DatabaseEntry;
 use Stu\Module\Database\View\Category\Category;
 use Stu\Module\Database\View\DiscovererRating\DiscovererRanking;
+use Stu\Module\Database\View\FlightRanking\FlightRanking;
 use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocations;
 use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequest;
 use Stu\Module\Database\View\ShowGoodsLocations\ShowGoodsLocationsRequestInterface;
@@ -37,6 +38,7 @@ return [
     'DATABASE_VIEWS' => [
         Category::VIEW_IDENTIFIER => autowire(Category::class),
         DiscovererRanking::VIEW_IDENTIFIER => autowire(DiscovererRanking::class),
+        FlightRanking::VIEW_IDENTIFIER => autowire(FlightRanking::class),
         ShowGoodsLocations::VIEW_IDENTIFIER => autowire(ShowGoodsLocations::class),
         GoodsOverview::VIEW_IDENTIFIER => autowire(GoodsOverview::class),
         UserList::VIEW_IDENTIFIER => autowire(UserList::class),
