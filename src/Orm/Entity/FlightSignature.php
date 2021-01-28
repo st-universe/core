@@ -9,7 +9,6 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_flight_sig",
  *     indexes={
- *         @Index(name="flight_sig_user_idx", columns={"user_id"}),
  *         @Index(name="flight_sig_map_idx", columns={"map_id"}),
  *         @Index(name="flight_sig_starsystem_map_idx", columns={"starsystem_map_id"})
  *     }
@@ -29,12 +28,6 @@ class FlightSignature implements FlightSignatureInterface
 
     /** @Column(type="integer") */
     private $ship_id = 0;
-
-    /** @Column(type="string") */
-    private $ship_name = '';
-
-    /** @Column(type="boolean") */
-    private $cloaked = false;
 
     /** @Column(type="integer") */
     private $rump_id = 0;
@@ -113,28 +106,6 @@ class FlightSignature implements FlightSignatureInterface
     public function setShip(ShipInterface $ship): FlightSignatureInterface
     {
         $this->ship = $ship;
-        return $this;
-    }
-
-    public function getShipName(): string
-    {
-        return $this->ship_name;
-    }
-
-    public function setShipName(string $name): FlightSignatureInterface
-    {
-        $this->ship_name = $name;
-        return $this;
-    }
-
-    public function isCloaked(): bool
-    {
-        return $this->cloaked;
-    }
-
-    public function setCloaked(bool $cloaked): FlightSignatureInterface
-    {
-        $this->cloaked = $cloaked;
         return $this;
     }
 
