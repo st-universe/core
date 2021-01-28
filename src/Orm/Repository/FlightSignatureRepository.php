@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
+use Stu\Module\Maintenance\OldFlightSignatureDeletion;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
 
@@ -26,6 +27,27 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         }
 
         $em->flush();
+    }
+
+    public function getVisibleSignatures($field, bool $isSystem, $ignoreId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT fs FROM %s fs
+                    WHERE fs.time > :maxAge
+                    AND fs.%s = :fieldId
+                    AND fs.user_id != :ignoreId',
+                    FlightSignature::class,
+                    $isSystem ? "starsystem_map_id" : "map_id"
+                )
+            )
+            ->setParameters([
+                'maxAge' => time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE,
+                'fieldId' => $field->getId(),
+                'ignoreId' => $ignoreId
+            ])
+            ->getResult();
     }
 
     public function deleteOldSignatures(int $threshold): void
