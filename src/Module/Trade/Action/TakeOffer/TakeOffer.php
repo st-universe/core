@@ -123,7 +123,7 @@ final class TakeOffer implements ActionControllerInterface
 
             $this->tradeOfferRepository->delete($selectedOffer);
         } else {
-            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - $amount);
+            $selectedOffer->setOfferCount($selectedOffer->getOfferCount() - (int) $amount);
 
             $this->tradeOfferRepository->save($selectedOffer);
         }
