@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowSectorScan;
 
 use request;
+
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
@@ -15,10 +17,14 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private FlightSignatureRepositoryInterface $flightSignatureRepository;
+
     public function __construct(
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->flightSignatureRepository = $flightSignatureRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -50,6 +56,24 @@ final class ShowSectorScan implements ViewControllerInterface
             }
         }
 
+        //6 stunden name des schiffes
+        //12 stunden rumpf
+        //2 tage anzahl
+
+        //getarnte rümpfe 6 stunden
+        //getarnte sigs 12 stunden
+
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $ship->getSystem() !== null, $userId));
         $game->setTemplateVar('SHIP', $ship);
+    }
+
+    private function getSignatures($field, $isSystem, $ignoreId)
+    {
+        return array_map(
+            function (array $data): SignatureWrapper {
+                return new SignatureWrapper($data);
+            },
+            $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId)
+        );
     }
 }
