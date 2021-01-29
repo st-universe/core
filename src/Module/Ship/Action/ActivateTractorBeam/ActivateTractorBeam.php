@@ -61,14 +61,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $userId
         );
 
-        $shipName = $ship->getName();
-
         $target = $this->shipRepository->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }
-
-        $targetName = $target->getName();
 
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
@@ -90,7 +86,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         if ($target->isBase()) {
-            $game->addInformation("Die " . $targetName . " kann nicht erfasst werden");
+            $game->addInformation("Die " . $target->getName() . " kann nicht erfasst werden");
             $this->abort($ship, $game);
             return;
         }
@@ -100,7 +96,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         if ($target->getFleetId() && $target->getFleetId() == $ship->getFleetId()) {
-            $game->addInformation("Die " . $targetName . " befindet sich in der selben Flotte wie die " . $shipName);
+            $game->addInformation("Die " . $target->getName() . " befindet sich in der selben Flotte wie die " . $ship->getName());
             $this->abort($ship, $game);
             return;
         }
@@ -127,8 +123,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
                 $target->getUser()->getId(),
                 sprintf(
                     "Die %s versucht die %s in Sektor %s mit dem Traktorstrahl zu erfassen. Folgende Aktionen wurden ausgeführt:\n%s",
-                    $shipName,
-                    $targetName,
+                    $ship->getName(),
+                    $target->getName(),
                     $ship->getSectorString(),
                     implode(PHP_EOL, $this->shipAttackCycle->getMessages())
                 ),
@@ -136,7 +132,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
             );
         }
         if ($target->getShieldState()) {
-            $game->addInformation("Die " . $targetName . " kann aufgrund der aktiven Schilde nicht erfasst werden");
+            $game->addInformation("Die " . $target->getName() . " kann aufgrund der aktiven Schilde nicht erfasst werden");
             $this->abort($ship, $game);
             return;
         }
@@ -153,11 +149,11 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->privateMessageSender->send(
                 $userId,
                 $target->getUser()->getId(),
-                "Die " . $targetName . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $shipName . " erfasst",
+                "Die " . $target->getName() . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $ship->getName() . " erfasst",
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }
-        $game->addInformation("Der Traktorstrahl wurde auf die " . $targetName . " gerichtet");
+        $game->addInformation("Der Traktorstrahl wurde auf die " . $target->getName() . " gerichtet");
     }
 
     private function abort($ship, $game): void

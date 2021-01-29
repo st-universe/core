@@ -15,7 +15,7 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_ON);
     }
-
+    
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -25,7 +25,7 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
     {
         //TODO let troops die
     }
-
+    
     public function handleDamage(ShipInterface $ship): void
     {
         //TODO let troops die
@@ -38,7 +38,7 @@ final class TroopQuartersShipSystem extends AbstractShipSystemType implements Sh
 
     public function getPriority(): int
     {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS];
+        return 3;
     }
 
     public function getEnergyConsumption(): int

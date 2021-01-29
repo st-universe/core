@@ -27,12 +27,13 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
 
     public function getPriority(): int
     {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT];
+        return 10;
     }
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->getCrewCount() === 0) {
+        if ($ship->getCrewCount() === 0)
+        {
             $reason = _('keine Crew vorhanden ist');
             return false;
         }
@@ -44,7 +45,7 @@ final class LifeSupportShipSystem extends AbstractShipSystemType implements Ship
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
-
+    
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_OFF);

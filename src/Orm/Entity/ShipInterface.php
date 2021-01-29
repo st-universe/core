@@ -50,7 +50,7 @@ interface ShipInterface
     public function isSystemHealthy(int $systemId): bool;
 
     public function getImpulseState(): bool;
-
+    
     public function getWarpState(): bool;
 
     public function getWarpcoreLoad(): int;
@@ -58,10 +58,8 @@ interface ShipInterface
     public function setWarpcoreLoad(int $warpcoreLoad): ShipInterface;
 
     public function getCloakState(): bool;
-
+    
     public function getTachyonState(): bool;
-
-    public function getSubspaceState(): bool;
 
     public function getEps(): int;
 
@@ -260,7 +258,7 @@ interface ShipInterface
     public function getStorageSum(): int;
 
     public function getMaxStorage(): int;
-
+    
     public function getBeamFactor(): int;
 
     public function getSectorString(): string;
@@ -286,12 +284,12 @@ interface ShipInterface
      * @return ShipSystemInterface[]
      */
     public function getActiveSystems(bool $sort = false): array;
-
+    
     /**
      * @return ShipSystemInterface[]
      */
     public function getHealthySystems(): array;
-
+    
     /**
      * @return ShipSystemInterface[]
      */
@@ -325,8 +323,8 @@ interface ShipInterface
     public function getShieldRegenerationRate(): int;
 
     public function canIntercept(): bool;
-
-    public function isOwnedByCurrentUser(): bool;
+	
+	public function isOwnedByCurrentUser(): bool;
 
     public function canLandOnCurrentColony(): bool;
 
@@ -357,8 +355,6 @@ interface ShipInterface
     public function hasCloak(): bool;
 
     public function hasTachyonScanner(): bool;
-
-    public function hasSubspaceScanner(): bool;
 
     public function hasWarpcore(): bool;
 
