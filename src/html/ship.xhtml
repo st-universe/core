@@ -171,12 +171,19 @@
 									<td tal:condition="not:entry/getRow" tal:attributes="class entry/getCSSClass"
 										style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
 										<tal:block tal:condition="entry/isClickable">
-											<div class="lssobj"
-												onclick="moveToPosition(${entry/getPosX},${entry/getPosY});"
-												tal:content="entry/getDisplayCount">.</div>
+											<div class="lssobj imgOverlayText"
+												onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
+												<img tal:condition="SHIP/getSubspaceState"
+													src="assets/subspace/${entry/getSubspaceCode}.png">
+												<div class="centered" tal:content="entry/getDisplayCount">.</div>
+											</div>
 										</tal:block>
 										<tal:block tal:condition="not:entry/isClickable">
-											<div tal:content="entry/getDisplayCount">.</div>
+											<div class="imgOverlayText">
+												<img tal:condition="SHIP/getSubspaceState"
+													src="assets/subspace/${entry/getSubspaceCode}.png">
+												<div class="centered" tal:content="entry/getDisplayCount">.</div>
+											</div>
 										</tal:block>
 									</td>
 								</tal:block>
@@ -252,6 +259,27 @@
 									</tal:block>
 								</td>
 							</tr>
+							<tal:block tal:condition="SHIP/hasSubspaceScanner">
+								<tr>
+									<td colspan="2">
+										<a tal:condition="not:SHIP/getSubspaceState"
+											href="?B_ACTIVATE_SUBSPACE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+											onmouseover="cp('subspace','buttons/subspace1')"
+											onmouseout="cp('subspace','buttons/subspace2')">
+											<img src="/assets/buttons/subspace2.gif" name="subspace" />
+											Subraumfeldsensoren aktivieren
+										</a>
+
+										<a href="?B_DEACTIVATE_SUBSPACE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+											tal:condition="SHIP/getSubspaceState"
+											onmouseover="cp('subspace','buttons/subspace2')"
+											onmouseout="cp('subspace','buttons/subspace1')">
+											<img src="/assets/buttons/subspace1.gif" name="subspace" />
+											Subraumfeldsensoren deaktivieren
+										</a>
+									</td>
+								</tr>
+							</tal:block>
 							<tal:block tal:condition="SHIP/hasCloak">
 								<tr>
 									<td colspan="2">

@@ -8,7 +8,7 @@ class VisualNavPanelEntry
     private $data = array();
 
     private $isTachyonSystemActive;
-    
+
     private $tachyonFresh;
 
     function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false)
@@ -48,20 +48,25 @@ class VisualNavPanelEntry
         return $this->data['shipcount'] > 0;
     }
 
+    function getSubspaceCode()
+    {
+        return sprintf('%d%d%d%d', $this->data['d1c'], $this->data['d2c'], $this->data['d3c'], $this->data['d4c']);
+    }
+
     function getDisplayCount()
     {
         if ($this->hasShips()) {
             return $this->getShipCount();
         }
         if ($this->hasCloakedShips()) {
-            if ($this->tachyonFresh)
-            {
+            if ($this->tachyonFresh) {
                 return "?";
             }
-            if ($this->isTachyonSystemActive
+            if (
+                $this->isTachyonSystemActive
                 && abs($this->getPosX() - $this->currentShipPosX) < 3
-                && abs($this->getPosY() - $this->currentShipPosY) < 3)
-            {
+                && abs($this->getPosY() - $this->currentShipPosY) < 3
+            ) {
                 return "?";
             }
         }

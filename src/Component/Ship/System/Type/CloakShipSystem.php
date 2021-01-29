@@ -39,7 +39,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     public function getPriority(): int
     {
-        return 0;
+        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_CLOAK];
     }
 
     public function activate(ShipInterface $ship): void
