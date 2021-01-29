@@ -1054,66 +1054,68 @@
     <metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   </tal:block>
   <br />
-  <table class="tcal" tal:condition="SHIP">
-    <tr>
-      <td rowspan="2" style="width: 30px; vertical-align: top;">
-        <img src="assets/map/${SHIP/getCurrentMapField/getFieldId}.gif" />
-      </td>
-      <th tal:content="SHIP/getCurrentMapField/getFieldType/getName">NAME</th>
-    </tr>
-    <tr>
-      <td>
-        Energiekosten: ${SHIP/getCurrentMapField/getFieldType/getEnergyCosts}<br />
-        Schaden: ${SHIP/getCurrentMapField/getFieldType/getSpecialDamage}
-        (${SHIP/getCurrentMapField/getFieldType/getDamage})
-      </td>
-    </tr>
-  </table>
-  <table class="tcal" tal:condition="SIGNATURES">
-    <tr>
-      <th colspan="3">Signaturen</th>
-    </tr>
-    <tr>
-      <th>Rumpf</th>
-      <th>Schiffsname</th>
-      <th>Alter</th>
-    </tr>
-    <tr tal:repeat="sig SIGNATURES">
-      <td>
-        <img tal:condition="sig/getRump" src="assets/ships/${sig/getRump/getId}.png"
-          tal:attributes="title sig/getRump/getName" />
-        <span tal:condition="not:sig/getRump">?</span>
-      </td>
-      <td>
-        <span tal:condition="sig/getShipName" tal:content="structure bbcode:sig/getShipName">.</span>
-        <span tal:condition="not:sig/getShipName">?</span>
-      </td>
-      <td>
-        <span tal:content="sig/getAge">.</span>
-      </td>
-    </tr>
-  </table>
-  <table class="tcal" tal:condition="php: OTHER_SIG_COUNT OR OTHER_CLOAKED_COUNT">
-    <tr>
-      <th colspan="2">verblasste Signaturen</th>
-    </tr>
-    <tr tal:condition="OTHER_SIG_COUNT">
-      <td>
-        ungetarnt:
-      </td>
-      <td>
-        <span tal:content="OTHER_SIG_COUNT">.</span>
-      </td>
-    </tr>
-    <tr tal:condition="OTHER_CLOAKED_COUNT">
-      <td>
-        getarnt:
-      </td>
-      <td>
-        <span tal:content="OTHER_CLOAKED_COUNT">.</span>
-      </td>
-    </tr>
-  </table>
+  <tal:block tal:condition="not:ERROR">
+    <table class="tcal">
+      <tr>
+        <td rowspan="2" style="width: 30px; vertical-align: top;">
+          <img src="assets/map/${SHIP/getCurrentMapField/getFieldId}.gif" />
+        </td>
+        <th tal:content="SHIP/getCurrentMapField/getFieldType/getName">NAME</th>
+      </tr>
+      <tr>
+        <td>
+          Energiekosten: ${SHIP/getCurrentMapField/getFieldType/getEnergyCosts}<br />
+          Schaden: ${SHIP/getCurrentMapField/getFieldType/getSpecialDamage}
+          (${SHIP/getCurrentMapField/getFieldType/getDamage})
+        </td>
+      </tr>
+    </table>
+    <table class="tcal" tal:condition="SIGNATURES">
+      <tr>
+        <th colspan="3">Signaturen</th>
+      </tr>
+      <tr>
+        <th>Rumpf</th>
+        <th>Schiffsname</th>
+        <th>Alter</th>
+      </tr>
+      <tr tal:repeat="sig SIGNATURES">
+        <td>
+          <img tal:condition="sig/getRump" src="assets/ships/${sig/getRump/getId}.png"
+            tal:attributes="title sig/getRump/getName" />
+          <span tal:condition="not:sig/getRump">?</span>
+        </td>
+        <td>
+          <span tal:condition="sig/getShipName" tal:content="structure bbcode:sig/getShipName">.</span>
+          <span tal:condition="not:sig/getShipName">?</span>
+        </td>
+        <td>
+          <span tal:content="sig/getAge">.</span>
+        </td>
+      </tr>
+    </table>
+    <table class="tcal" tal:condition="php: OTHER_SIG_COUNT OR OTHER_CLOAKED_COUNT">
+      <tr>
+        <th colspan="2">verblasste Signaturen</th>
+      </tr>
+      <tr tal:condition="OTHER_SIG_COUNT">
+        <td>
+          ungetarnt:
+        </td>
+        <td>
+          <span tal:content="OTHER_SIG_COUNT">.</span>
+        </td>
+      </tr>
+      <tr tal:condition="OTHER_CLOAKED_COUNT">
+        <td>
+          getarnt:
+        </td>
+        <td>
+          <span tal:content="OTHER_CLOAKED_COUNT">.</span>
+        </td>
+      </tr>
+    </table>
+  </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="colonization">
   <div tal:attributes="class COLONY_SURFACE/getSurfaceTileCssClass" tal:define="sstr THIS/getSessionString">
