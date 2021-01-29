@@ -50,7 +50,30 @@ class VisualNavPanelEntry
 
     function getSubspaceCode()
     {
-        return sprintf('%d%d%d%d', $this->data['d1c'], $this->data['d2c'], $this->data['d3c'], $this->data['d4c']);
+        return sprintf('%d%d%d%d', $this->getCode('d1c'), $this->getCode('d2c'), $this->getCode('d3c'), $this->getCode('d4c'));
+    }
+
+    private function getCode(string $column): int
+    {
+        $shipCount = $this->data[$column];
+
+        if ($shipCount == 0) {
+            return 0;
+        }
+        if ($shipCount == 1) {
+            return 1;
+        }
+        if ($shipCount < 6) {
+            return 2;
+        }
+        if ($shipCount < 11) {
+            return 3;
+        }
+        if ($shipCount < 21) {
+            return 4;
+        }
+
+        return 5;
     }
 
     function getDisplayCount()
