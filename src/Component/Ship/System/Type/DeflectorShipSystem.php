@@ -15,7 +15,7 @@ final class DeflectorShipSystem extends AbstractShipSystemType implements ShipSy
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
-
+    
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_DEFLECTOR)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -33,7 +33,7 @@ final class DeflectorShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function getPriority(): int
     {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_DEFLECTOR];
+        return 4;
     }
 
     public function getEnergyConsumption(): int

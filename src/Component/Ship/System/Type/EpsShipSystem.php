@@ -15,7 +15,7 @@ final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTy
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
-
+    
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -28,7 +28,7 @@ final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTy
 
     public function getPriority(): int
     {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_EPS];
+        return 6;
     }
 
     public function getEnergyConsumption(): int
@@ -43,7 +43,8 @@ final class EpsShipSystem extends AbstractShipSystemType implements ShipSystemTy
 
     public function handleDamage(ShipInterface $ship): void
     {
-        if ($ship->getEps() > $ship->getMaxEps()) {
+        if ($ship->getEps() > $ship->getMaxEps())
+        {
             $ship->setEps($ship->getMaxEps());
         }
     }

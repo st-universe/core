@@ -205,9 +205,6 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY:
                     $systems[ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY] = $module;
                     break;
-                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR:
-                    $systems[ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER] = $module;
-                    break;
             }
         }
     }

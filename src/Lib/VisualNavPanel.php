@@ -13,9 +13,9 @@ class VisualNavPanel
     private $ship;
 
     private $user;
-
+    
     private $isTachyonSystemActive;
-
+    
     private $tachyonFresh;
 
     function __construct(ShipInterface $ship, UserInterface $user, bool $isTachyonSystemActive, bool $tachyonFresh)
@@ -70,8 +70,7 @@ class VisualNavPanel
         return $container->get(ShipRepositoryInterface::class)->getSensorResultOuterSystem(
             $cx,
             $cy,
-            $range,
-            $this->getShip()->getSubspaceState()
+            $range
         );
     }
 
@@ -84,8 +83,7 @@ class VisualNavPanel
             $this->getShip()->getSystem()->getId(),
             $this->getShip()->getSx(),
             $this->getShip()->getSy(),
-            $this->getShip()->getSensorRange(),
-            $this->getShip()->getSubspaceState()
+            $this->getShip()->getSensorRange()
         );
     }
 
@@ -142,4 +140,5 @@ class VisualNavPanel
         }
         return $row;
     }
+
 }

@@ -13,7 +13,8 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
 {
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->getWarpcoreLoad() == 0) {
+        if ($ship->getWarpcoreLoad() == 0)
+        {
             $reason = _('keine Warpkernladung vorhanden ist');
             return false;
         }
@@ -25,7 +26,7 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
-
+    
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -38,7 +39,7 @@ final class WarpcoreShipSystem extends AbstractShipSystemType implements ShipSys
 
     public function getPriority(): int
     {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_WARPCORE];
+        return 5;
     }
 
     public function getEnergyConsumption(): int
