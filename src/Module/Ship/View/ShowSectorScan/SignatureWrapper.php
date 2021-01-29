@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\View\ShowSectorScan;
 
+use Stu\Module\Tal\TalHelper;
+
 class SignatureWrapper
 {
 
@@ -44,6 +46,6 @@ class SignatureWrapper
 
     function getAge()
     {
-        return '~';
+        return TalHelper::formatSeconds(strval(time() - $this->signature->getTime()));
     }
 }
