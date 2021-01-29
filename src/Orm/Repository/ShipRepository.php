@@ -341,7 +341,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                     WHERE c.id = ss2.ships_id
                                     AND ss2.system_type = :systemId
                                     AND ss2.mode > 1)
-            
+            %s
             LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
 			WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx', $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '', $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_MAP_JOIN : ''),
             $rsm
