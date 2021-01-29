@@ -1054,7 +1054,7 @@
     <metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   </tal:block>
   <br />
-  <table class="tcal">
+  <table class="tcal" tal:condition="SHIP">
     <tr>
       <td rowspan="2" style="width: 30px; vertical-align: top;">
         <img src="assets/map/${SHIP/getCurrentMapField/getFieldId}.gif" />
