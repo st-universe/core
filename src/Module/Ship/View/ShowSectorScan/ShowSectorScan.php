@@ -43,9 +43,15 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/sectorscan');
 
+        $game->setTemplateVar('ERROR', true);
+
         if (!$ship->getNbs()) {
             $game->addInformation("Die Nahbereichssensoren sind nicht aktiv");
-            $game->setTemplateVar('SHIP', null);
+            return;
+        }
+
+        if ($ship->getEps() < 1) {
+            $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;
         }
 
@@ -69,6 +75,7 @@ final class ShowSectorScan implements ViewControllerInterface
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
+        $game->setTemplateVar('ERROR', false);
     }
 
     private function getSignatures($field, $isSystem, $ignoreId)
