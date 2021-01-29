@@ -25,6 +25,7 @@ use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
 use Stu\Component\Ship\System\Type\ComputerShipSystem;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Ship\System\Type\DeflectorShipSystem;
+use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
 use function DI\autowire;
 use function DI\create;
 
@@ -47,7 +48,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE => autowire(ImpulseDriveShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_COMPUTER => autowire(ComputerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => autowire(TroopQuartersShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_DEFLECTOR => autowire(DeflectorShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_DEFLECTOR => autowire(DeflectorShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => autowire(SubspaceSensorShipSystem::class)
         ]
     )
 ];

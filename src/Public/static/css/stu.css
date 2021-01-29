@@ -394,6 +394,19 @@ div.lssobj {
     padding-top: 8px;
 }
 
+.imgOverlayText {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+  
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .activeshield {
     color: #00b3c8;
 }

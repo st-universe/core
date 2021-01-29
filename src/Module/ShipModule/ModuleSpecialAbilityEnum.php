@@ -11,8 +11,10 @@ final class ModuleSpecialAbilityEnum
     public const MODULE_SPECIAL_TACHYON_SCANNER = 4;
     public const MODULE_SPECIAL_TROOP_QUARTERS = 5;
     public const MODULE_SPECIAL_ASTRO_LABORATORY = 6;
+    public const MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR = 7;
 
-    public static function getDescription(int $specialId): string {
+    public static function getDescription(int $specialId): string
+    {
         switch ($specialId) {
             case static::MODULE_SPECIAL_CLOAK:
                 return _('Tarnung');
@@ -24,15 +26,17 @@ final class ModuleSpecialAbilityEnum
                 return _('Truppen-Quartiere');
             case static::MODULE_SPECIAL_ASTRO_LABORATORY:
                 return _('Astrometrie-Labor');
+            case static::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR:
+                return _('Subraumfeldsensor');
         }
         return '';
     }
 
-    public static function getHash($specials): ?int {
+    public static function getHash($specials): ?int
+    {
         $result = 0;
 
-        foreach ($specials as $special)
-        {
+        foreach ($specials as $special) {
             $result += pow(2, $special->getSpecialId() - 1);
         }
 

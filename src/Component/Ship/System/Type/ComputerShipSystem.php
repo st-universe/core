@@ -15,7 +15,7 @@ final class ComputerShipSystem extends AbstractShipSystemType implements ShipSys
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -33,7 +33,7 @@ final class ComputerShipSystem extends AbstractShipSystemType implements ShipSys
 
     public function getPriority(): int
     {
-        return 2;
+        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_COMPUTER];
     }
 
     public function getDefaultMode(): int
