@@ -45,6 +45,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
         if (!$ship->getNbs()) {
             $game->addInformation("Die Nahbereichssensoren sind nicht aktiv");
+            $game->setTemplateVar('SHIP', null);
             return;
         }
 
