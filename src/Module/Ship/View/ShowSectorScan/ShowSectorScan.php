@@ -10,6 +10,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
@@ -19,14 +20,18 @@ final class ShowSectorScan implements ViewControllerInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
+    private ShipRepositoryInterface $shipRepository;
+
     private $fadedSignaturesUncloaked = [];
     private $fadedSignaturesCloaked = [];
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
     }
 
@@ -54,6 +59,9 @@ final class ShowSectorScan implements ViewControllerInterface
             $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
             return;
         }
+
+        $ship->setEps($ship->getEps() - 1);
+        $this->shipRepository->save($ship);
 
         $mapField = $ship->getCurrentMapField();
 
