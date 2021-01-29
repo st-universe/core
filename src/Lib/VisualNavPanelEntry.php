@@ -50,7 +50,8 @@ class VisualNavPanelEntry
 
     function getSubspaceCode()
     {
-        return sprintf('%d%d%d%d', $this->getCode('d1c'), $this->getCode('d2c'), $this->getCode('d3c'), $this->getCode('d4c'));
+        $code = sprintf('%d%d%d%d', $this->getCode('d1c'), $this->getCode('d2c'), $this->getCode('d3c'), $this->getCode('d4c'));
+        return $code == '0000' ? null : $code;
     }
 
     private function getCode(string $column): int

@@ -168,20 +168,21 @@
 									<td tal:condition="entry/getRow" style="width: 30px;"
 										tal:attributes="class entry/getCSSClass" tal:content="entry/getRow"
 										phptal:cache="1d per entry/getRow">.</td>
-									<td tal:condition="not:entry/getRow" tal:attributes="class entry/getCSSClass"
+									<td tal:condition="not:entry/getRow" tal:definine="code entry/getSubspaceCode"
+										tal:attributes="class entry/getCSSClass"
 										style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
 										<tal:block tal:condition="entry/isClickable">
 											<div class="lssobj imgOverlayText"
 												onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
-												<img tal:condition="SHIP/getSubspaceState"
-													src="assets/subspace/${entry/getSubspaceCode}.png" />
+												<img tal:condition="php:SHIP.getSubspaceState() AND code"
+													src="assets/subspace/${code}.png" />
 												<div class="centered" tal:content="entry/getDisplayCount">.</div>
 											</div>
 										</tal:block>
 										<tal:block tal:condition="not:entry/isClickable">
 											<div class="imgOverlayText">
-												<img tal:condition="SHIP/getSubspaceState"
-													src="assets/subspace/${entry/getSubspaceCode}.png" />
+												<img tal:condition="php:SHIP.getSubspaceState() AND code"
+													src="assets/subspace/${code}.png" />
 												<div class="centered" tal:content="entry/getDisplayCount">.</div>
 											</div>
 										</tal:block>
