@@ -357,17 +357,19 @@ class Ship implements ShipInterface
     public function setAlertState(int $alertState): ShipInterface
     {
         //check if enough energy
-        if ($alertState == ShipAlertStateEnum::ALERT_YELLOW
-            && $this->alvl == ShipAlertStateEnum::ALERT_GREEN)
-        {
+        if (
+            $alertState == ShipAlertStateEnum::ALERT_YELLOW
+            && $this->alvl == ShipAlertStateEnum::ALERT_GREEN
+        ) {
             if ($this->getEps() < 1) {
                 throw new InsufficientEnergyException();
             }
             $this->eps -= 1;
         }
-        if ($alertState == ShipAlertStateEnum::ALERT_RED
-            && $this->alvl !== ShipAlertStateEnum::ALERT_RED)
-        {
+        if (
+            $alertState == ShipAlertStateEnum::ALERT_RED
+            && $this->alvl !== ShipAlertStateEnum::ALERT_RED
+        ) {
             if ($this->getEps() < 2) {
                 throw new InsufficientEnergyException();
             }
@@ -383,8 +385,7 @@ class Ship implements ShipInterface
 
     public function isSystemHealthy(int $systemId): bool
     {
-        if (!$this->hasShipSystem($systemId))
-        {
+        if (!$this->hasShipSystem($systemId)) {
             return false;
         }
 
@@ -393,8 +394,7 @@ class Ship implements ShipInterface
 
     private function getSystemState(int $systemId): bool
     {
-        if (!$this->hasShipSystem($systemId))
-        {
+        if (!$this->hasShipSystem($systemId)) {
             return false;
         }
 
@@ -438,6 +438,11 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
     }
 
+    public function getSubspaceState(): bool
+    {
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
+    }
+
     public function getEps(): int
     {
         return $this->eps;
@@ -454,12 +459,11 @@ class Ship implements ShipInterface
      */
     public function getMaxEps(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)) {
             return $this->max_eps;
         }
 
-        return (int)(ceil($this->max_eps
+        return (int) (ceil($this->max_eps
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_EPS)->getStatus() / 100));
     }
 
@@ -492,7 +496,7 @@ class Ship implements ShipInterface
 
     public function setMaxEBatt(): ShipInterface
     {
-        $this->max_batt = (int)round($this->max_eps / 3);
+        $this->max_batt = (int) round($this->max_eps / 3);
         return $this;
     }
 
@@ -534,12 +538,11 @@ class Ship implements ShipInterface
      */
     public function getMaxShield(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
             return $this->max_schilde;
         }
 
-        return (int)(ceil($this->max_schilde
+        return (int) (ceil($this->max_schilde
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->getStatus() / 100));
     }
 
@@ -581,7 +584,7 @@ class Ship implements ShipInterface
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_NBS);
     }
-    
+
     public function getLss(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_LSS);
@@ -591,12 +594,12 @@ class Ship implements ShipInterface
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_PHASER);
     }
-    
+
     public function isAlertGreen(): bool
     {
         return $this->getAlertState() === ShipAlertStateEnum::ALERT_GREEN;
     }
-    
+
     public function getTorpedos(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_TORPEDO);
@@ -706,52 +709,49 @@ class Ship implements ShipInterface
      */
     public function getHitChance(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)) {
             return $this->hit_chance;
         }
 
-        return (int)(ceil($this->hit_chance
+        return (int) (ceil($this->hit_chance
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_COMPUTER)->getStatus() / 100));
     }
-    
+
     public function setHitChance(int $hitChance): ShipInterface
     {
         $this->hit_chance = $hitChance;
         return $this;
     }
-    
+
     /**
      * proportional to impulsedrive system status
      */
     public function getEvadeChance(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             return $this->evade_chance;
         }
 
-        return (int)(ceil($this->evade_chance
+        return (int) (ceil($this->evade_chance
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)->getStatus() / 100));
-        }
-        
+    }
+
     public function setEvadeChance(int $evadeChance): ShipInterface
     {
         $this->evade_chance = $evadeChance;
         return $this;
     }
-    
+
     /**
      * proportional to warpcore system status
      */
     public function getReactorOutput(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
             return $this->reactor_output;
         }
 
-        return (int)(ceil($this->reactor_output
+        return (int) (ceil($this->reactor_output
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE)->getStatus() / 100));
     }
 
@@ -771,12 +771,11 @@ class Ship implements ShipInterface
      */
     public function getBaseDamage(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return $this->base_damage;
         }
 
-        return (int)(ceil($this->base_damage
+        return (int) (ceil($this->base_damage
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getStatus() / 100));
     }
 
@@ -791,12 +790,11 @@ class Ship implements ShipInterface
      */
     public function getSensorRange(): int
     {
-        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LSS))
-        {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)) {
             return $this->sensor_range;
         }
 
-        return (int)(ceil($this->sensor_range
+        return (int) (ceil($this->sensor_range
             * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_LSS)->getStatus() / 100));
     }
 
@@ -937,8 +935,7 @@ class Ship implements ShipInterface
 
     public function getReactorCapacity(): int
     {
-        if (!$this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE))
-        {
+        if (!$this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
             return 0;
         }
         if ($this->getReactorOutput() > $this->getWarpcoreLoad()) {
@@ -1009,9 +1006,10 @@ class Ship implements ShipInterface
 
     public function getTraktorShip(): ?ShipInterface
     {
-        if ($this->getTraktorShipId() === null
-            || $this->getTraktorShipId() == 0)
-        {
+        if (
+            $this->getTraktorShipId() === null
+            || $this->getTraktorShipId() == 0
+        ) {
             return null;
         }
         // @todo refactor
@@ -1051,8 +1049,8 @@ class Ship implements ShipInterface
             global $container;
 
             $this->isOverStarSystem = $container->get(StarSystemRepositoryInterface::class)->getByCoordinates(
-                (int)$this->getCX(),
-                (int)$this->getCY()
+                (int) $this->getCX(),
+                (int) $this->getCY()
             );
         }
         return $this->isOverStarSystem;
@@ -1111,7 +1109,7 @@ class Ship implements ShipInterface
     {
         return $this->getRump()->getStorage();
     }
-    
+
     public function getBeamFactor(): int
     {
         return $this->getRump()->getBeamFactor();
@@ -1148,25 +1146,22 @@ class Ship implements ShipInterface
     private function reloadEpsUsage(): void
     {
         $result = 0;
-        
+
         //@todo refactor
         global $container;
         $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
-        
-        foreach ($this->getActiveSystems() as $shipSystem)
-        {
+
+        foreach ($this->getActiveSystems() as $shipSystem) {
             $result += $shipSystemManager->getEnergyConsumption($shipSystem->getSystemType());
         }
-        
-        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW)
-        {
+
+        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
             $result += 1;
         }
-        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_RED)
-        {
+        if ($this->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
             $result += 2;
         }
-        
+
         $this->epsUsage = $result;
     }
 
@@ -1207,15 +1202,13 @@ class Ship implements ShipInterface
         foreach ($this->getSystems() as $system) {
             if ($system->getMode() > 1) {
                 $activeSystems[] = $system;
-                if ($sort)
-                {
+                if ($sort) {
                     $prioArray[$system->getSystemType()] = $shipSystemManager->lookupSystem($system->getSystemType())->getPriority();
                 }
             }
         }
 
-        if ($sort)
-        {
+        if ($sort) {
             usort(
                 $activeSystems,
                 function (ShipSystemInterface $a, ShipSystemInterface $b): int {
@@ -1229,7 +1222,7 @@ class Ship implements ShipInterface
 
         return $activeSystems;
     }
-    
+
     public function getHealthySystems(): array
     {
         $healthySystems = [];
@@ -1296,7 +1289,7 @@ class Ship implements ShipInterface
 
     public function getMapCY(): int
     {
-        return (int)ceil($this->getCY() / Overview::FIELDS_PER_SECTION);
+        return (int) ceil($this->getCY() / Overview::FIELDS_PER_SECTION);
     }
 
     public function dockedOnTradePost(): bool
@@ -1356,19 +1349,19 @@ class Ship implements ShipInterface
 
     public function getShieldRegenerationRate(): int
     {
-        return (int)ceil(($this->getMaxShield() / 100) * $this->getShieldRegenerationPercentage());
+        return (int) ceil(($this->getMaxShield() / 100) * $this->getShieldRegenerationPercentage());
     }
 
     public function canIntercept(): bool
     {
         return !$this->getTraktorMode();
     }
-	
-	public function isOwnedByCurrentUser(): bool
+
+    public function isOwnedByCurrentUser(): bool
     {
         global $container;
         if ($container->get(GameControllerInterface::class)->getUser() !== $this->getUser()) {
-	        return false;
+            return false;
         }
         return true;
     }
@@ -1423,9 +1416,8 @@ class Ship implements ShipInterface
         if ($this->getShieldState()) {
             return false;
         }
-        
-        if (!empty($this->getDamagedSystems()))
-        {
+
+        if (!empty($this->getDamagedSystems())) {
             return true;
         }
         // @todo
@@ -1460,21 +1452,20 @@ class Ship implements ShipInterface
             global $container;
             $game = $container->get(GameControllerInterface::class);
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
-            
+
             return false;
         }
 
         if ($this->getCloakState()) {
             return false;
         }
-        
+
         $positionChecker = new PositionChecker();
         if ($colony === true) {
             if (!$positionChecker->checkColonyPosition($target, $this) || $target->getId() == $this->getId()) {
                 return false;
             }
             return true;
-
         } else {
             if (!$positionChecker->checkPosition($this, $target)) {
                 return false;
@@ -1483,8 +1474,7 @@ class Ship implements ShipInterface
         if ($target->getShieldState() && $target->getUserId() != $this->getUser()->getId()) {
             return false;
         }
-        if ($doCloakCheck && $target->getCloakState())
-        {
+        if ($doCloakCheck && $target->getCloakState()) {
             return false;
         }
         return true;
@@ -1526,6 +1516,11 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
     }
 
+    public function hasSubspaceScanner(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
+    }
+
     public function hasWarpcore(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE);
@@ -1554,6 +1549,6 @@ class Ship implements ShipInterface
 
     public function __toString()
     {
-        return $this->getName();// . '(' . $this->getId() == null ? 'null' : $this->getId() . ')';
+        return $this->getName(); // . '(' . $this->getId() == null ? 'null' : $this->getId() . ')';
     }
 }

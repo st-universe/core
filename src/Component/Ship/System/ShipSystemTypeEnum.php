@@ -6,6 +6,7 @@ namespace Stu\Component\Ship\System;
 
 final class ShipSystemTypeEnum
 {
+    // system types
     public const SYSTEM_EPS = 1;
     public const SYSTEM_IMPULSEDRIVE = 2;
     public const SYSTEM_WARPCORE = 3;
@@ -23,10 +24,26 @@ final class ShipSystemTypeEnum
     public const SYSTEM_TROOP_QUARTERS = 15;
     public const SYSTEM_DEFLECTOR = 16;
     public const SYSTEM_ASTRO_LABORATORY = 17;
+    public const SYSTEM_SUBSPACE_SCANNER = 18;
 
+    // system priorites
+    public const SYSTEM_PRIORITY_STANDARD = 1;
+    public const SYSTEM_PRIORITIES = [
+        ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT => 10,
+        ShipSystemTypeEnum::SYSTEM_EPS => 6,
+        ShipSystemTypeEnum::SYSTEM_WARPCORE => 5,
+        ShipSystemTypeEnum::SYSTEM_DEFLECTOR => 4,
+        ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => 3,
+        ShipSystemTypeEnum::SYSTEM_COMPUTER => 2,
+        ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => 0,
+        ShipSystemTypeEnum::SYSTEM_CLOAK => 0
+    ];
+
+    // other
     public const SYSTEM_ECOST_DOCK = 1;
 
-    public static function getDescription(int $systemType): string {
+    public static function getDescription(int $systemType): string
+    {
         switch ($systemType) {
             case ShipSystemTypeEnum::SYSTEM_CLOAK:
                 return _("Tarnung");
@@ -62,6 +79,8 @@ final class ShipSystemTypeEnum
                 return _('Deflektor');
             case ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY:
                 return _('Astrometrisches Labor');
+            case ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER:
+                return _('Subraumfeldsensoren');
         }
         return '';
     }
