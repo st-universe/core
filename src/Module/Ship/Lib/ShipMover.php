@@ -208,6 +208,7 @@ final class ShipMover implements ShipMoverInterface
         while (!$this->isDestinationArrived($leadShip)) {
             $this->leaderMovedToNextField = false;
 
+            $currentField = $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY());
             $nextField = $this->getNextField($leadShip, $flightMethod);
 
             // move every ship by one field
@@ -216,7 +217,7 @@ final class ShipMover implements ShipMoverInterface
                     !array_key_exists($ship->getId(), $this->lostShips)
                     && ($ship === $leadShip || $this->leaderMovedToNextField)
                 ) {
-                    $this->moveOneField($leadShip, $ship, $flightMethod, $nextField);
+                    $this->moveOneField($leadShip, $ship, $flightMethod, $currentField, $nextField);
                 }
             }
 
@@ -386,6 +387,7 @@ final class ShipMover implements ShipMoverInterface
         ShipInterface $leadShip,
         ShipInterface $ship,
         $flightMethod,
+        $currentField,
         $nextField
     ) {
         // zu wenig Crew
@@ -445,16 +447,15 @@ final class ShipMover implements ShipMoverInterface
             $ship->setEps($ship->getEps() - $ship->getTraktorShip()->getRump()->getFlightEcost());
             $this->$met($ship->getTraktorShip());
         }
-        $field = $this->getFieldData($leadShip, $ship->getPosX(), $ship->getPosY());
 
         //create flight signatures
-        $this->addFlightSignatures($ship, $flightMethod, $field, $leadShip->getSystem() !== null);
+        $this->addFlightSignatures($ship, $flightMethod, $currentField, $nextField, $leadShip->getSystem() !== null);
 
         //Einflugschaden Feldschaden
-        if ($field->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$field->getFieldType()->getSpecialDamageInnerSystem()))) {
-            $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $field->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
+        if ($nextField->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $nextField->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$nextField->getFieldType()->getSpecialDamageInnerSystem()))) {
+            $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $nextField->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
 
-            $this->applyFieldDamage($ship, $field->getFieldType()->getSpecialDamage(), true, '');
+            $this->applyFieldDamage($ship, $nextField->getFieldType()->getSpecialDamage(), true, '');
         }
 
         //check for deflector state
@@ -478,7 +479,7 @@ final class ShipMover implements ShipMoverInterface
                 'Nicht genug Energie für den Deflektor.' :
                 'Deflektor außer Funktion.';
 
-            $this->applyFieldDamage($ship, $field->getFieldType()->getDamage(), false, $dmgCause);
+            $this->applyFieldDamage($ship, $nextField->getFieldType()->getDamage(), false, $dmgCause);
         }
     }
 
@@ -635,10 +636,10 @@ final class ShipMover implements ShipMoverInterface
         return $this->fieldData[$x . "_" . $y];
     }
 
-    private function addFlightSignatures($ship, $flightMethod, $field, bool $isSystem): void
+    private function addFlightSignatures($ship, $flightMethod, $currentField, $nextField, bool $isSystem): void
     {
-        $fromSignature = $this->createSignature($ship, $field, $isSystem);
-        $toSignature = $this->createSignature($ship, $field, $isSystem);
+        $fromSignature = $this->createSignature($ship, $currentField, $isSystem);
+        $toSignature = $this->createSignature($ship, $nextField, $isSystem);
 
         switch ($flightMethod) {
             case ShipEnum::FLY_RIGHT:
