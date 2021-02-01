@@ -22,7 +22,7 @@ final class ShipTick implements ShipTickInterface
     private array $msg = [];
 
     private ShipSystemManagerInterface $shipSystemManager;
-    
+
     private ShipLeaverInterface $shipLeaver;
 
     public function __construct(
@@ -40,13 +40,12 @@ final class ShipTick implements ShipTickInterface
     public function work(ShipInterface $ship): void
     {
         // ship offline
-        if ($ship->getCrewCount() == 0) {
+        if ($ship->getCrewCount() == 0 && $ship->getBuildplan()->getCrew() > 0) {
             return;
         }
 
         // leave ship
-        if ($ship->getCrewCount() > 0 && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT))
-        {
+        if ($ship->getCrewCount() > 0 && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
             $this->msg[] = $this->shipLeaver->leave($ship);
             $this->sendMessages($ship);
@@ -57,8 +56,7 @@ final class ShipTick implements ShipTickInterface
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew()) {
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig!');
             $eps = $ship->getEps();
-        }
-        else {
+        } else {
             $eps = $ship->getEps() + $ship->getReactorCapacity();
         }
 
@@ -66,9 +64,8 @@ final class ShipTick implements ShipTickInterface
         if ($ship->getEpsUsage() > $eps) {
             $malus = $ship->getEpsUsage() - $eps;
             $alertUsage = $ship->getAlertState() - 1;
-            
-            if ($alertUsage > 0)
-            {
+
+            if ($alertUsage > 0) {
                 $preState = $ship->getAlertState();
                 $reduce = min($malus, $alertUsage);
 
@@ -88,8 +85,7 @@ final class ShipTick implements ShipTickInterface
             foreach ($activeSystems as $system) {
 
                 $energyConsumption = $this->shipSystemManager->getEnergyConsumption($system->getSystemType());
-                if ($energyConsumption < 1)
-                {
+                if ($energyConsumption < 1) {
                     continue;
                 }
 
@@ -102,8 +98,7 @@ final class ShipTick implements ShipTickInterface
                     $ship->lowerEpsUsage($energyConsumption);
                     $this->msg[] = $this->getSystemDescription($system) . ' deaktiviert wegen Energiemangel';
 
-                    if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
-                    {
+                    if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
                         $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
                         $this->msg[] = $this->shipLeaver->leave($ship);
                         $this->sendMessages($ship);
@@ -144,8 +139,12 @@ final class ShipTick implements ShipTickInterface
             $text .= $msg . "\n";
         }
 
-        $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$ship->getUserId(), $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $ship->getUserId(),
+            $text,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
 
         $this->msg = [];
     }
