@@ -175,14 +175,14 @@
 											<div class="lssobj imgOverlayText"
 												onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
 												<img tal:condition="php:SHIP.getSubspaceState() AND code"
-													src="assets/subspace/${code}.png" />
+													src="assets/subspace/generated/${code}.png" />
 												<div class="centered" tal:content="entry/getDisplayCount">.</div>
 											</div>
 										</tal:block>
 										<tal:block tal:condition="not:entry/isClickable">
 											<div class="imgOverlayText">
 												<img tal:condition="php:SHIP.getSubspaceState() AND code"
-													src="assets/subspace/${code}.png" />
+													src="assets/subspace/generated/${code}.png" />
 												<div class="centered" tal:content="entry/getDisplayCount">.</div>
 											</div>
 										</tal:block>
