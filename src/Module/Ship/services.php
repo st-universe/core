@@ -26,6 +26,7 @@ use Stu\Module\Ship\Lib\ShipAttackCycle;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
+use Stu\Module\Ship\Action\ActivateSubspace\ActivateSubspace;
 use Stu\Module\Ship\Action\ActivateTachyon\ActivateTachyon;
 use Stu\Module\Ship\Action\ActivateLss\ActivateLss;
 use Stu\Module\Ship\Action\ActivateNbs\ActivateNbs;
@@ -47,6 +48,7 @@ use Stu\Module\Ship\Action\CreateFleet\CreateFleet;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequest;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequestInterface;
 use Stu\Module\Ship\Action\DeactivateCloak\DeactivateCloak;
+use Stu\Module\Ship\Action\DeactivateSubspace\DeactivateSubspace;
 use Stu\Module\Ship\Action\DeactivateTachyon\DeactivateTachyon;
 use Stu\Module\Ship\Action\DeactivateLss\DeactivateLss;
 use Stu\Module\Ship\Action\DeactivateNbs\DeactivateNbs;
@@ -176,8 +178,10 @@ return [
         LeaveFleet::ACTION_IDENTIFIER => autowire(LeaveFleet::class),
         JoinFleet::ACTION_IDENTIFIER => autowire(JoinFleet::class),
         ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),
+        ActivateSubspace::ACTION_IDENTIFIER => autowire(ActivateSubspace::class),
         ActivateTachyon::ACTION_IDENTIFIER => autowire(ActivateTachyon::class),
         DeactivateCloak::ACTION_IDENTIFIER => autowire(DeactivateCloak::class),
+        DeactivateSubspace::ACTION_IDENTIFIER => autowire(DeactivateSubspace::class),
         DeactivateTachyon::ACTION_IDENTIFIER => autowire(DeactivateTachyon::class),
         ActivateLss::ACTION_IDENTIFIER => autowire(ActivateLss::class),
         DeactivateLss::ACTION_IDENTIFIER => autowire(DeactivateLss::class),
