@@ -19,6 +19,11 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
             return false;
         }
 
+        if ($ship->getSubspaceState()) {
+            $reason = _('die Subraumfeldsensoren aktiv sind');
+            return false;
+        }
+
         if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
             $reason = _('die Alarmstufe Rot ist');
             return false;
