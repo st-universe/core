@@ -92,9 +92,9 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getNpcShipsForTick(): iterable;
 
-    public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace): iterable;
+    public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable;
 
-    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace): iterable;
+    public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable;
 
     /**
      * @return ShipInterface[]

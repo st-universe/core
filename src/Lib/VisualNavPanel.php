@@ -71,7 +71,8 @@ class VisualNavPanel
             $cx,
             $cy,
             $range,
-            $this->getShip()->getSubspaceState()
+            $this->getShip()->getSubspaceState(),
+            $this->user->getId()
         );
     }
 
@@ -85,7 +86,8 @@ class VisualNavPanel
             $this->getShip()->getSx(),
             $this->getShip()->getSy(),
             $this->getShip()->getSensorRange(),
-            $this->getShip()->getSubspaceState()
+            $this->getShip()->getSubspaceState(),
+            $this->user->getId()
         );
     }
 
