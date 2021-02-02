@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Stu\Module\Database\Lib;
+
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 abstract class DatabaseTopList
