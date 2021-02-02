@@ -81,4 +81,6 @@ interface UserRepositoryInterface extends ObjectRepository
      * @return UserInterface[]
      */
     public function getNonNpcList(): iterable;
+
+    public function getLatinumTop10(): array;
 }

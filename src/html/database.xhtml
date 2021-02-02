@@ -38,6 +38,7 @@
 				<a href="?SHOW_SETTLERLIST=1">Siedlerliste</a><br />
 				<a href="?SHOW_TOP_DISCOVER=1">Die 10 besten Entdecker</a><br />
 				<a href="?SHOW_TOP_FLIGHTS=1">Top 10 der Vielflieger</a><br />
+				<a href="?SHOW_TOP_LATINUM=1">Die 10 Söhne des Nagus</a><br />
 				<a href="?SHOW_GOODS_OVERVIEW=1">Warenübersicht</a>
 			</div>
 		</div>
@@ -77,6 +78,26 @@
 						<img src="assets/rassen/${entry/getFaction}s.gif" />
 					</td>
 					<td tal:content="entry/getSignatures">POINTS</td>
+				</tr>
+			</table>
+		</tal:block>
+	</tal:block>
+</metal:macro>
+<metal:macro metal:define-macro="top_lat_user">
+	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+		<tal:block metal:fill-slot="body">
+			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+			<table class="tcal">
+				<tr>
+					<th>Siedler</th>
+					<th>Latinum</th>
+				</tr>
+				<tr tal:repeat="entry NAGUS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+					<td>
+						<metal:macro metal:use-macro="html/macros.xhtml/userprofile" tal:define="id entry/getUserId" />
+						<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
+					</td>
+					<td tal:content="entry/getAmount">AMOUNT</td>
 				</tr>
 			</table>
 		</tal:block>
