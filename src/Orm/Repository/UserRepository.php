@@ -222,30 +222,31 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT u.id as user_id,
-            SUM(CASE WHEN ss.count is NULL THEN 0 ELSE ss.count END) +
-            SUM(CASE WHEN cs.count is NULL THEN 0 ELSE cs.count END) +
-            SUM(CASE WHEN ts.count is NULL THEN 0 ELSE ts.count END) +
-            SUM(CASE WHEN tro.gg_count is NULL THEN 0 ELSE tro.amount * tro.gg_count END) as amount
-            FROM stu_user u
-            LEFT JOIN stu_ships s
-                ON u.id = s.user_id
-            LEFT JOIN stu_ships_storage ss
-                ON s.id = ss.ships_id
-                AND ss.goods_id = :latId
-            LEFT JOIN stu_colonies c
-                ON u.id = c.user_id
-            LEFT JOIN stu_colonies_storage cs
-                ON c.id = cs.colonies_id
-                AND cs.goods_id = :latId
-            LEFT JOIN stu_trade_storage ts
-                ON u.id = ts.user_id
-                AND ts.goods_id = :latId
-            LEFT JOIN stu_trade_offers tro
-                ON u.id = tro.user_id
-                AND tro.gg_id = :latId
-            WHERE u.id > 100
-            GROUP BY u.id
+            'SELECT user_id,
+            SUM(CASE WHEN ships is NULL THEN 0 ELSE ships END) +
+            SUM(CASE WHEN colos is NULL THEN 0 ELSE colos END) +
+            SUM(CASE WHEN posts is NULL THEN 0 ELSE posts END) +
+            SUM(CASE WHEN offers is NULL THEN 0 ELSE offers END) as amount
+            FROM (SELECT u.id as user_id,
+                    (select sum(ss.count) from stu_ships s
+                       LEFT JOIN stu_ships_storage ss
+                           ON s.id = ss.ships_id
+                           AND ss.goods_id = :latId
+                       where u.id = s.user_id) as ships,
+                    (select sum(cs.count) from stu_colonies c
+                       left join stu_colonies_storage cs
+                           ON c.id = cs.colonies_id
+                           AND cs.goods_id = :latId
+                       where u.id = c.user_id) as colos,
+                    (select sum(ts.count) from stu_trade_storage ts
+                           where ts.goods_id = :latId
+                       and u.id = ts.user_id) as posts,
+                    (select sum(tro.amount * tro.gg_count) from stu_trade_offers tro
+                           where u.id = tro.user_id
+                           AND tro.gg_id = :latId) as offers
+                    FROM stu_user u
+                    WHERE u.id > 100) as xyz
+            GROUP BY user_id
             ORDER BY amount DESC
             LIMIT 10',
             $rsm
