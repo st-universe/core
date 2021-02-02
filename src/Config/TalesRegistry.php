@@ -53,13 +53,13 @@ TalesRegistry::registerPrefix(
 TalesRegistry::registerPrefix(
     'datetime',
     function ($src, $nothrow): string {
-        return 'date(\'d.m.Y H:i\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370) . " " . date("H:i", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );
 TalesRegistry::registerPrefix(
     'date',
     function ($src, $nothrow): string {
-        return 'date(\'d.m.Y\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+        return 'date(\'d.m.\', ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ') . (date("Y", ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')+370)';
     }
 );
 TalesRegistry::registerPrefix(
