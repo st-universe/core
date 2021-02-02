@@ -242,7 +242,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 AND tro.gg_id = :latId
             WHERE u.id > 100
             GROUP BY u.id
-            ORDER BY 2 DESC',
+            ORDER BY amount DESC
+            LIMIT 10',
             $rsm
         )->setParameters([
             'latId' => CommodityTypeEnum::GOOD_LATINUM
