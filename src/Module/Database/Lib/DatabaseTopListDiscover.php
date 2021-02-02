@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Stu\Module\Database\Lib;
+
 class DatabaseTopListDiscover extends DatabaseTopList
 {
 
@@ -17,5 +19,4 @@ class DatabaseTopListDiscover extends DatabaseTopList
     {
         return $this->points;
     }
-
 }
