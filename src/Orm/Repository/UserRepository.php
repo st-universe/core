@@ -222,7 +222,11 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
         $rsm->addScalarResult('amount', 'amount', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT u.id as user_id, SUM(ss.count) + SUM(cs.count) + SUM(ts.count) + SUM(tro.amount * tro.gg_count) as amount
+            'SELECT u.id as user_id,
+            SUM(CASE WHEN ss.count is NULL THEN 0 ELSE ss.count END) +
+            SUM(CASE WHEN cs.count is NULL THEN 0 ELSE cs.count END) +
+            SUM(CASE WHEN ts.count is NULL THEN 0 ELSE ts.count END) +
+            SUM(CASE WHEN tro.gg_count is NULL THEN 0 ELSE tro.amount * tro.gg_count END) as amount
             FROM stu_user u
             LEFT JOIN stu_ships s
                 ON u.id = s.user_id
