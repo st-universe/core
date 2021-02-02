@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Database\View\FlightRanking;
 
+use DatabaseTopListFlights;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Database\Lib\DatabaseTopListFlights;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class FlightRanking implements ViewControllerInterface

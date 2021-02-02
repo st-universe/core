@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Database\Lib;
-
 class DatabaseTopListFlights extends DatabaseTopList
 {
 

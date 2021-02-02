@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\Contact;
@@ -212,39 +211,5 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
                 User::class
             )
         )->getResult();
-    }
-
-    public function getLatinumTop10(): array
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('user_id', 'user_id', 'integer');
-        $rsm->addScalarResult('amount', 'amount', 'integer');
-
-        return $this->getEntityManager()->createNativeQuery(
-            'SELECT u.id as user_id, SUM(ss.count) + SUM(cs.count) + SUM(ts.count) + SUM(tro.amount * tro.gg_count) as amount
-            FROM stu_user u
-            LEFT JOIN stu_ships s
-                ON u.id = s.user_id
-            LEFT JOIN stu_ships_storage ss
-                ON s.id = ss.ships_id
-                AND ss.goods_id = :latId
-            LEFT JOIN stu_colonies c
-                ON u.id = c.user_id
-            LEFT JOIN stu_colonies_storage cs
-                ON c.id = cs.colonies_id
-                AND cs.goods_id = :latId
-            LEFT JOIN stu_trade_storage ts
-                ON u.id = ts.user_id
-                AND ts.goods_id = :latId
-            LEFT JOIN stu_trade_offers tro
-                ON u.id = tro.user_id
-                AND tro.gg_id = :latId
-            WHERE u.id > 100
-            GROUP BY u.id
-            ORDER BY 2 DESC',
-            $rsm
-        )->setParameters([
-            'latId' => CommodityTypeEnum::GOOD_LATINUM
-        ])->getResult();
     }
 }
