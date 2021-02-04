@@ -447,7 +447,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     'SELECT COUNT(s.id) FROM %s s
                     WHERE s.systems_id is null
                     AND s.cx = :cx AND s.cy = :cy
-                    AND s.fleets_id IS NULL
                     %s
                     AND s.user_id != :ignoreId',
                     Ship::class,
