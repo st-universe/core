@@ -212,8 +212,9 @@
             <img src="assets/buttons/inc1.gif" name="int_${ship/getId}" title="${bbcode2txt:ship/getName} abfangen" />
           </a>
         </tal:block>
-        <a href="javascript:void(0);" onclick="showScanWindow(${SHIP/getId},${ship/getId})"
-          onmouseover="cp('scn_${ship/getId}','buttons/lupe2')" onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
+        <a tal:condition="not:ship/getCloakState" href="javascript:void(0);"
+          onclick="showScanWindow(${SHIP/getId},${ship/getId})" onmouseover="cp('scn_${ship/getId}','buttons/lupe2')"
+          onmouseout="cp('scn_${ship/getId}','buttons/lupe1')">
           <img src="assets/buttons/lupe1.gif" name="scn_${ship/getId}" title="${bbcode2txt:ship/getName} scannen" />
         </a>
         <span style="width: 100%; color: #474791;">Warpantrieb aktiv</span>

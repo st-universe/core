@@ -52,6 +52,10 @@ final class ShowScan implements ViewControllerInterface
             return;
         }
 
+        if ($target->getCloakState()) {
+            return;
+        }
+
         if ($target->getDatabaseId()) {
             $game->checkDatabaseItem($target->getDatabaseId());
         }
