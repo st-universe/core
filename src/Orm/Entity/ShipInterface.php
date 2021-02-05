@@ -224,6 +224,8 @@ interface ShipInterface
 
     public function isTroopQuartersHealthy(): bool;
 
+    public function isMatrixScannerHealthy(): bool;
+
     public function getEffectiveEpsProduction(): int;
 
     public function getWarpcoreUsage(): int;

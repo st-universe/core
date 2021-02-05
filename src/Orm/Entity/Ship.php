@@ -402,11 +402,6 @@ class Ship implements ShipInterface
             || $this->getShipSystem($systemId)->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON;
     }
 
-    private function setSystemMode(int $systemId, int $mode): void
-    {
-        $this->getShipSystem($systemId)->setMode($mode);
-    }
-
     public function getImpulseState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
@@ -959,6 +954,11 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS);
     }
 
+    public function isMatrixScannerHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER);
+    }
+
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
@@ -1211,7 +1211,7 @@ class Ship implements ShipInterface
         if ($sort) {
             usort(
                 $activeSystems,
-                function (ShipSystemInterface $a, ShipSystemInterface $b): int {
+                function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
                     if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
                         return 0;
                     }
@@ -1253,7 +1253,7 @@ class Ship implements ShipInterface
         // sort by damage and priority
         usort(
             $damagedSystems,
-            function (ShipSystemInterface $a, ShipSystemInterface $b): int {
+            function (ShipSystemInterface $a, ShipSystemInterface $b) use ($prioArray): int {
                 if ($a->getStatus() == $b->getStatus()) {
                     if ($prioArray[$a->getSystemType()] == $prioArray[$b->getSystemType()]) {
                         return 0;

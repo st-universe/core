@@ -65,7 +65,7 @@ final class ShowColonyScan implements ViewControllerInterface
             return;
         }
 
-        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER)) {
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER)) {
             return;
         }
 

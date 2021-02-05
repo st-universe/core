@@ -573,6 +573,13 @@
 										</tal:block>
 									</td>
 									<td style="width: 50%;">
+										<a tal:condition="SHIP/isMatrixScannerHealthy" href="javascript:void(0);"
+											onclick="showColonyScan();"
+											onmouseover="cp('coloScanButton','buttons/lupe2')"
+											onmouseout="cp('coloScanButton','buttons/lupe1')">
+											<img src="/assets/buttons/lupe1.gif" name="coloScanButton"
+												title="Kolonie-Oberfläche scannen" />
+										</a>
 										<div tal:condition="not:CURRENT_COLONY/isFree"
 											style="margin-top: 5px; margin-right: 20px; float: left;">
 											<a href="javascript:void(0);"
