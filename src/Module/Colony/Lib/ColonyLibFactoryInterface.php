@@ -26,7 +26,8 @@ interface ColonyLibFactoryInterface
 
     public function createColonySurface(
         ColonyInterface $colony,
-        ?int $buildingId = null
+        ?int $buildingId = null,
+        bool $showUnderground = true
     ): ColonySurfaceInterface;
 
     public function createColonyListItem(

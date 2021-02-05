@@ -276,15 +276,18 @@ function toggleTableRowVisible(id) {
         }
         $(id).style.display = 'table-row';
 }
-function openPJsWin(elt, exclusive, width) {
+function openPJsWin(elt, exclusive, width, offsety) {
         if (width) {
                 var OLWIDTH = ' WIDTH, ' + width;
         } else {
                 var OLWIDTH = '';
         }
         if (exclusive) {
-                //(offsetx and) offsety to raise the scan popup TODO
-                return overlib('<div id=' + elt + '></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR, '#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                if (offsety) {
+                        return overlib('<div id=' + elt + '></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR, '#000000', CELLPAD, 0, 0, 0, 0, OFFSETY, offsety, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                } else {
+                        return overlib('<div id=' + elt + '></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR, '#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, STICKY, DRAGGABLE, ALTCUT, EXCLUSIVE);
+                }
         }
         else {
                 return overlib('<div id=' + elt + '></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR, '#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
