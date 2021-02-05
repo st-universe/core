@@ -2,44 +2,52 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowColonization;
+namespace Stu\Module\Ship\View\ShowColonyScan;
 
 use request;
 
 use Stu\Component\Player\ColonizationCheckerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class ShowColonization implements ViewControllerInterface
+final class ShowColonyScan implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_COLONIZATION';
+    public const VIEW_IDENTIFIER = 'SHOW_COLONY_SCAN';
 
     private ShipLoaderInterface $shipLoader;
+
+    private ShipRepositoryInterface $shipRepository;
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private ColonizationCheckerInterface $colonizationChecker;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository,
-        ColonizationCheckerInterface $colonizationChecker
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
-        $this->colonizationChecker = $colonizationChecker;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setTemplateVar('ERROR', true);
+
+        $game->setPageTitle(_('Kolonie scannen'));
+        $game->setTemplateFile('html/ajaxwindow.xhtml');
+        $game->setMacro('html/shipmacros.xhtml/colonyscan');
+
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -57,20 +65,21 @@ final class ShowColonization implements ViewControllerInterface
             return;
         }
 
-        if ($ship->getRump()->hasSpecialAbility(ShipRumpSpecialAbilityEnum::COLONIZE)) {
-            if (!$this->colonizationChecker->canColonize($game->getUser(), $colony)) {
-                return;
-            }
-        } else {
+        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER)) {
             return;
         }
 
-        $game->setPageTitle(_('Kolonie gründen'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/colonization');
+        if ($ship->getEps() < MatrixScannerShipSystem::SCAN_EPS_COST) {
+            $game->addInformation(sprintf(_('Aktion nicht möglich, ungenügend Energie vorhanden. Bedarf: %dE'), MatrixScannerShipSystem::SCAN_EPS_COST));
+            return;
+        }
+
+        $ship->setEps($ship->getEps() - MatrixScannerShipSystem::SCAN_EPS_COST);
+        $this->shipRepository->save($ship);
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
+        $game->setTemplateVar('ERROR', false);
     }
 }

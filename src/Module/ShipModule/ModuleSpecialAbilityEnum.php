@@ -12,6 +12,7 @@ final class ModuleSpecialAbilityEnum
     public const MODULE_SPECIAL_TROOP_QUARTERS = 5;
     public const MODULE_SPECIAL_ASTRO_LABORATORY = 6;
     public const MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR = 7;
+    public const MODULE_SPECIAL_MATRIX_SENSOR = 8;
 
     public static function getDescription(int $specialId): string
     {
@@ -28,6 +29,8 @@ final class ModuleSpecialAbilityEnum
                 return _('Astrometrie-Labor');
             case static::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR:
                 return _('Subraumfeldsensor');
+            case static::MODULE_SPECIAL_MATRIX_SENSOR:
+                return _('Matrix-Sensor');
         }
         return '';
     }

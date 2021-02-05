@@ -37,6 +37,7 @@ use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
 use Stu\Module\Ship\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
+use Stu\Module\Ship\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
 use Stu\Module\Ship\Action\BeamFromColony\BeamFromColony;
 use Stu\Module\Ship\Action\BeamTo\BeamTo;
@@ -132,6 +133,7 @@ use Stu\Module\Ship\View\ShowBeamFromColony\ShowBeamFromColony;
 use Stu\Module\Ship\View\ShowBeamTo\ShowBeamTo;
 use Stu\Module\Ship\View\ShowBeamToColony\ShowBeamToColony;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
+use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Ship\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
@@ -215,6 +217,7 @@ return [
         BeamToColony::ACTION_IDENTIFIER => autowire(BeamToColony::class),
         BeamFromColony::ACTION_IDENTIFIER => autowire(BeamFromColony::class),
         SelfDestruct::ACTION_IDENTIFIER => autowire(SelfDestruct::class),
+        AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
         AttackShip::ACTION_IDENTIFIER => autowire(AttackShip::class),
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
@@ -261,6 +264,7 @@ return [
         ShowBeamFromColony::VIEW_IDENTIFIER => autowire(ShowBeamFromColony::class),
         ShowSelfDestruct::VIEW_IDENTIFIER => autowire(ShowSelfDestruct::class),
         ShowScan::VIEW_IDENTIFIER => autowire(ShowScan::class),
+        ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
         ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
