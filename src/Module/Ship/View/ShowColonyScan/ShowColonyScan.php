@@ -6,12 +6,14 @@ namespace Stu\Module\Ship\View\ShowColonyScan;
 
 use request;
 
-use Stu\Component\Player\ColonizationCheckerInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -28,16 +30,20 @@ final class ShowColonyScan implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -76,6 +82,13 @@ final class ShowColonyScan implements ViewControllerInterface
 
         $ship->setEps($ship->getEps() - MatrixScannerShipSystem::SCAN_EPS_COST);
         $this->shipRepository->save($ship);
+
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $colony->getUserId(),
+            sprintf(_('Der Spieler %s hat die Oberfläche deiner Kolonie %s gescannt.'), $game->getUser()->getName(), $colony->getName()),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+        );
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);

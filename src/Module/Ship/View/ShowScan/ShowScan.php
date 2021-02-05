@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowScan;
 
 use request;
+
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -21,14 +25,18 @@ final class ShowScan implements ViewControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->positionChecker = $positionChecker;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -62,6 +70,13 @@ final class ShowScan implements ViewControllerInterface
         if ($target->getRump()->getDatabaseId()) {
             $game->checkDatabaseItem($target->getRump()->getDatabaseId());
         }
+
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $target->getUserId(),
+            sprintf(_('Der Spieler %s hat dein Schiff %s gescannt.'), $game->getUser()->getName(), $target->getName()),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);

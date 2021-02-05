@@ -646,6 +646,26 @@
 </metal:block>
 <metal:block metal:define-macro="show_ship_scan">
   <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
+  <table class="tcal" tal:condition="SHIP/isMatrixScannerHealthy">
+    <tr>
+      <th colspan="2">Details</th>
+    </tr>
+    <tr>
+      <td>Lebenszeichen</td>
+      <td>${targetShip/getCrewCount}</td>
+    </tr>
+    <tr>
+      <td>Alarmstufe</td>
+      <td style="text-align: center;">
+        <img src="assets/buttons/alert${targetShip/getAlertState}_1.gif" title="Alarmstufe" />
+      </td>
+    </tr>
+    <tr>
+      <td>Energie</td>
+      <td>${targetShip/getEps}</td>
+    </tr>
+  </table>
+  <br />
   <form action="ship.php" method="post">
     <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
     <br />
@@ -1187,8 +1207,7 @@
               <div>
                 <div>
                   <a href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&field=${field/getId}&sstr=${sstr}">
-                    <img style="width: 40px; height: 40px;" title="Gebäude bombardieren"
-                      tal:attributes="title field/getTitleString"
+                    <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: ${field/getTitleString}"
                       src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" />
                   </a>
                 </div>
