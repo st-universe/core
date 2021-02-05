@@ -208,6 +208,9 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR:
                     $systems[ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER] = $module;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR:
+                    $systems[ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER] = $module;
+                    break;
             }
         }
     }
