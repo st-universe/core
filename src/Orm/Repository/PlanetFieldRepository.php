@@ -57,8 +57,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         int $colonyId,
         array $state = [0, 1],
         ?int $limit = null
-    ): iterable
-    {
+    ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
@@ -169,7 +168,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
     public function getCountByBuildingAndUser(int $buildingId, int $userId): int
     {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(f) FROM %s f WHERE f.buildings_id = :buildingId AND f.colonies_id IN (
                     SELECT c.id FROM %s c WHERE c.user_id = :userId
@@ -188,7 +187,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         array $buildingFunctionIds,
         array $state
     ): int {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(f) FROM %s f WHERE f.colonies_id = :colonyId AND f.aktiv IN(:state) AND f.buildings_id IN (
                     SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
@@ -242,12 +241,16 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    public function getByColony(int $colonyId): iterable
+    public function getByColony(int $colonyId, bool $showUnderground = true): iterable
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT f FROM %s f INDEX BY f.field_id WHERE f.colonies_id = :colonyId ORDER BY f.field_id',
-                PlanetField::class
+                'SELECT f FROM %s f INDEX BY f.field_id
+                WHERE f.colonies_id = :colonyId
+                %s
+                ORDER BY f.field_id',
+                PlanetField::class,
+                !$showUnderground ? ' AND f.field_id < 80 ' : ''
             )
         )->setParameters([
             'colonyId' => $colonyId,
@@ -256,7 +259,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
     public function getEnergyProductionByColony(int $colonyId): int
     {
-        return (int)$this->getEntityManager()->createQuery(
+        return (int) $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT SUM(b.eps_proc) FROM %s cfd LEFT JOIN %s b WITH b.id = cfd.buildings_id WHERE
                 cfd.aktiv = :state AND cfd.colonies_id = :colonyId',
@@ -271,13 +274,13 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
     public function truncateByColony(ColonyInterface $colony): void
     {
-       $this->getEntityManager()->createQuery(
-           sprintf(
-               'DELETE FROM %s pf WHERE pf.colonies_id = :colonyId',
-               PlanetField::class
-           )
-       )
-           ->setParameters(['colonyId' => $colony])
-           ->execute();
+        $this->getEntityManager()->createQuery(
+            sprintf(
+                'DELETE FROM %s pf WHERE pf.colonies_id = :colonyId',
+                PlanetField::class
+            )
+        )
+            ->setParameters(['colonyId' => $colony])
+            ->execute();
     }
 }

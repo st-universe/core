@@ -29,13 +29,16 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private ?int $buildingId;
 
+    private bool $showUnderground;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
         ResearchedRepositoryInterface $researchedRepository,
         ColonyInterface $colony,
-        ?int $buildingId = null
+        ?int $buildingId = null,
+        bool $showUnderground = true
     ) {
         $this->colony = $colony;
         $this->planetFieldRepository = $planetFieldRepository;
@@ -43,18 +46,19 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->buildingId = $buildingId;
         $this->colonyRepository = $colonyRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->showUnderground = $showUnderground;
     }
 
     public function getSurface(): array
     {
         $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
 
-        $fields = $this->planetFieldRepository->getByColony($this->colony->getId());
+        $fields = $this->planetFieldRepository->getByColony($this->colony->getId(), $this->showUnderground);
 
         if ($fields === []) {
             $this->updateSurface();
 
-            $fields = $this->planetFieldRepository->getByColony($this->colony->getId());
+            $fields = $this->planetFieldRepository->getByColony($this->colony->getId(), $this->showUnderground);
         }
 
         if ($this->buildingId !== null) {

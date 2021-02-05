@@ -44,7 +44,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     public function getCommodityConsumingByColonyAndCommodity(
         int $colonyId,
         int $commodityId,
-        array $state = [0 ,1],
+        array $state = [0, 1],
         ?int $limit = null
     ): iterable;
 
@@ -91,7 +91,7 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
     /**
      * @return PlanetFieldInterface[]
      */
-    public function getByColony(int $colonyId): iterable;
+    public function getByColony(int $colonyId, bool $showUnderground = true): iterable;
 
     public function getEnergyProductionByColony(int $colonyId): int;
 

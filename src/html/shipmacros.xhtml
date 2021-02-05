@@ -1154,16 +1154,61 @@
   <tal:block tal:condition="not:ERROR">
     <div tal:attributes="class COLONY_SURFACE/getSurfaceTileCssClass" tal:define="sstr THIS/getSessionString">
       <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
-        <div style="width: 40px; height: 40px;" tal:attributes="class field/getCssClass">
-          <div>
-            <div>
-              <a href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&field=${field/getId}&sstr=${sstr}">
-                <img style="width: 40px; height: 40px;" title="angreifen" tal:attributes="title field/getTitleString"
-                  src="assets/generated/fields/${field/getFieldType}.png" />
-              </a>
+        <tal:block tal:condition="not:field/hasBuilding">
+          <div tal:condition="not:field/getTerraforming" style="${style}" tal:attributes="class field/getCssClass">
+            <div style="width: 40px; height: 40px;" id="field${field/getFieldId}">
+              <div>
+                <div>
+                  <img style="width: 40px; height: 40px;" tal:attributes="title field/getTitleString"
+                    src="assets/generated/fields/${field/getFieldType}.png" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+          <div tal:condition="field/getTerraforming" style="${style};" tal:attributes="class field/getCssClass">
+            <div
+              style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+              id="field${field/getFieldId}">
+              <div>
+                <div>
+                  <img class="action" style="width: 40px; height: 40px;" title="runtime"
+                    tal:attributes="title field/getTitleString"
+                    src="assets/terraform/${field/getTerraforming/getId}/${COLONY_SURFACE/getDayNightState}.png" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </tal:block>
+        <tal:block tal:condition="field/hasBuilding">
+          <div tal:condition="not:field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
+            <div
+              style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+              id="field${field/getFieldId}">
+              <div>
+                <div>
+                  <a href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&field=${field/getId}&sstr=${sstr}">
+                    <img style="width: 40px; height: 40px;" title="Gebäude bombardieren"
+                      tal:attributes="title field/getTitleString"
+                      src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div tal:condition="field/isInConstruction" style="${style}" tal:attributes="class field/getCssClass">
+            <div
+              style="background-image: url(assets/generated/fields/${field/getFieldType}.png); width: 40px; height: 40px;"
+              id="field${field/getFieldId}">
+              <div
+                style="width: 40px; height: 40px; background-image: url(assets/generated/buildings/${field/getPictureType}${COLONY_SURFACE/getDayNightState}.png)">
+                <div style="height: 40px; overflow: hidden; width: ${field/getOverlayWidth}px;"><img
+                    style="width: 40px; height: 40px;" tal:attributes="title field/getTitleString"
+                    src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}a${COLONY_SURFACE/getDayNightState}.png" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </tal:block>
       </tal:block>
     </div>
   </tal:block>

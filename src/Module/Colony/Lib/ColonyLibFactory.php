@@ -85,7 +85,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     public function createColonySurface(
         ColonyInterface $colony,
-        ?int $buildingId = null
+        ?int $buildingId = null,
+        bool $showUnderground = true
     ): ColonySurfaceInterface {
         return new ColonySurface(
             $this->planetFieldRepository,
@@ -93,7 +94,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->colonyRepository,
             $this->researchedRepository,
             $colony,
-            $buildingId
+            $buildingId,
+            $showUnderground
         );
     }
 
