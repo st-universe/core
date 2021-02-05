@@ -1151,7 +1151,7 @@
     <metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
   </tal:block>
   <br />
-  <tal:block tal:condition="not:ERROR">
+  <tal:block tal:condition="not:ERROR" tal:define="style string:margin: 1px;; width: 42px;; height: 42px;;">
     <div tal:attributes="class COLONY_SURFACE/getSurfaceTileCssClass" tal:define="sstr THIS/getSessionString">
       <tal:block tal:repeat="field COLONY_SURFACE/getSurface">
         <tal:block tal:condition="not:field/hasBuilding">
