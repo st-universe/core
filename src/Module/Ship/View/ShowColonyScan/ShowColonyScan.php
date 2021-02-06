@@ -61,6 +61,10 @@ final class ShowColonyScan implements ViewControllerInterface
             $userId
         );
 
+        if ($ship->getCloakState()) {
+            return;
+        }
+
         $colony = $this->colonyRepository->getByPosition(
             $ship->getSystem(),
             $ship->getPosX(),
