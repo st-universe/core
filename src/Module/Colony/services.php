@@ -40,6 +40,8 @@ use Stu\Module\Colony\Action\BuildShip\BuildShip;
 use Stu\Module\Colony\Action\BuildTorpedos\BuildTorpedos;
 use Stu\Module\Colony\Action\CancelModuleCreation\CancelModuleCreation;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequency;
+use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequest;
+use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequestInterface;
 use Stu\Module\Colony\Action\ChangeName\ChangeName;
 use Stu\Module\Colony\Action\CreateModules\CreateModules;
 use Stu\Module\Colony\Action\DeactivateBuilding\DeactivateBuilding;
@@ -158,6 +160,7 @@ use function DI\autowire;
 return [
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
+    ChangeFrequencyRequestInterface::class => autowire(ChangeFrequencyRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
