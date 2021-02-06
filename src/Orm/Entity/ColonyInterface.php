@@ -77,6 +77,10 @@ interface ColonyInterface
 
     public function getMaxShields(): int;
 
+    public function hasShields(): bool;
+
+    public function getShieldState(): bool;
+
     public function getShieldFrequency(): ?int;
 
     public function setShieldFrequency(?int $shieldFrequency): ColonyInterface;
