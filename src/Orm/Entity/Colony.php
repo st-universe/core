@@ -6,8 +6,6 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Component\Game\GameEnum;
@@ -334,16 +332,6 @@ class Colony implements ColonyInterface
                 ->getMaxShieldsOfColony($this->getId());
         }
         return $this->maxShields;
-    }
-
-    public function hasShields(): bool
-    {
-        return $this->hasBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR, [0, 1]);
-    }
-
-    public function getShieldState(): bool
-    {
-        return $this->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR);
     }
 
     public function getShieldFrequency(): ?int
@@ -677,23 +665,18 @@ class Colony implements ColonyInterface
     public function hasActiveBuildingWithFunction(int $function_id): bool
     {
         if (!isset($this->has_active_building_by_function[$function_id])) {
-            $this->has_active_building_by_function[$function_id] = $this->hasBuildingWithFunction($function_id);
+            // @todo refactor
+            global $container;
+
+            $this->has_active_building_by_function[$function_id] = $container
+                ->get(PlanetFieldRepositoryInterface::class)
+                ->getCountByColonyAndBuildingFunctionAndState(
+                    $this->getId(),
+                    [$function_id],
+                    [1]
+                ) > 0;
         }
         return $this->has_active_building_by_function[$function_id];
-    }
-
-    private function hasBuildingWithFunction(int $function_id, array $states = [1]): bool
-    {
-        // @todo refactor
-        global $container;
-
-        return $container
-            ->get(PlanetFieldRepositoryInterface::class)
-            ->getCountByColonyAndBuildingFunctionAndState(
-                $this->getId(),
-                [$function_id],
-                $states
-            ) > 0;
     }
 
     public function lowerEps(int $value): void
