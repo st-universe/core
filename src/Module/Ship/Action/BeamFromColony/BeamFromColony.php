@@ -74,17 +74,9 @@ final class BeamFromColony implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        $target = $this->colonyRepository->find((int) request::postIntFatal('target'));
+        $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
         if ($target === null || !$ship->canInteractWith($target, true)) {
             return;
-        }
-        if ($target->getUserId() !== $userId && $target->getShieldState()) {
-            $frequency = (int) request::postInt('frequency');
-
-            if ($frequency !== $target->getShieldFrequency()) {
-                $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
-                return;
-            }
         }
         if ($ship->getMaxStorage() <= $ship->getStorageSum()) {
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
@@ -100,11 +92,8 @@ final class BeamFromColony implements ActionControllerInterface
             $game->addInformation(_("Es wurde keine Waren zum Beamen ausgewählt"));
             return;
         }
-        $game->addInformation(sprintf(
-            _('Die %s hat folgende Waren von der Kolonie %s transferiert'),
-            $ship->getName(),
-            $target->getName()
-        ));
+        $game->addInformation(sprintf(_('Die %s hat folgende Waren von der Kolonie %s transferiert'),
+            $ship->getName(), $target->getName()));
         foreach ($goods as $key => $value) {
             $value = (int) $value;
             if ($ship->getEps() < 1) {
@@ -160,14 +149,11 @@ final class BeamFromColony implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage($target, $good->getGood(), $count);
             $this->shipStorageManager->upperStorage($ship, $good->getGood(), $count);
 
-            $ship->setEps($ship->getEps() - (int) ceil($count / $transferAmount));
+            $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
         }
         if ($target->getUserId() != $ship->getUserId()) {
-            $game->sendInformation(
-                $target->getUserId(),
-                $ship->getUserId(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
-            );
+            $game->sendInformation($target->getUserId(), $ship->getUserId(),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
         }
 
         $this->shipRepository->save($ship);

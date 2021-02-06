@@ -29,7 +29,6 @@ use Stu\Module\Control\GameController;
 
 use Stu\Module\Colony\Action\ActivateBuilding\ActivateBuilding;
 use Stu\Module\Colony\Action\ActivateBuildings\ActivateBuildings;
-use Stu\Module\Colony\Action\ActivateShields\ActivateShields;
 use Stu\Module\Colony\Action\AllowImmigration\AllowImmigration;
 use Stu\Module\Colony\Action\BeamFrom\BeamFrom;
 use Stu\Module\Colony\Action\BeamTo\BeamTo;
@@ -39,12 +38,10 @@ use Stu\Module\Colony\Action\BuildOnField\BuildOnField;
 use Stu\Module\Colony\Action\BuildShip\BuildShip;
 use Stu\Module\Colony\Action\BuildTorpedos\BuildTorpedos;
 use Stu\Module\Colony\Action\CancelModuleCreation\CancelModuleCreation;
-use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequency;
 use Stu\Module\Colony\Action\ChangeName\ChangeName;
 use Stu\Module\Colony\Action\CreateModules\CreateModules;
 use Stu\Module\Colony\Action\DeactivateBuilding\DeactivateBuilding;
 use Stu\Module\Colony\Action\DeactivateBuildings\DeactivateBuildings;
-use Stu\Module\Colony\Action\DeactivateShields\DeactivateShields;
 use Stu\Module\Colony\Action\DeleteBuildPlan\DeleteBuildPlan;
 use Stu\Module\Colony\Action\DenyImmigration\DenyImmigration;
 use Stu\Module\Colony\Action\GiveUp\GiveUp;
@@ -200,7 +197,6 @@ return [
     'COLONY_ACTIONS' => [
         GiveUp::ACTION_IDENTIFIER => autowire(GiveUp::class),
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
-        ActivateShields::ACTION_IDENTIFIER => autowire(ActivateShields::class),
         AllowImmigration::ACTION_IDENTIFIER => autowire(AllowImmigration::class),
         BeamFrom::ACTION_IDENTIFIER => autowire(BeamFrom::class),
         BeamTo::ACTION_IDENTIFIER => autowire(BeamTo::class),
@@ -213,7 +209,6 @@ return [
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
         CreateModules::ACTION_IDENTIFIER => autowire(CreateModules::class),
         DeactivateBuilding::ACTION_IDENTIFIER => autowire(DeactivateBuilding::class),
-        DeactivateShields::ACTION_IDENTIFIER => autowire(DeactivateShields::class),
         DeleteBuildPlan::ACTION_IDENTIFIER => autowire(DeleteBuildPlan::class),
         DenyImmigration::ACTION_IDENTIFIER => autowire(DenyImmigration::class),
         LandShip::ACTION_IDENTIFIER => autowire(LandShip::class),
@@ -230,8 +225,7 @@ return [
         UpgradeBuilding::ACTION_IDENTIFIER => autowire(UpgradeBuilding::class),
         ActivateBuildings::ACTION_IDENTIFIER => autowire(ActivateBuildings::class),
         DeactivateBuildings::ACTION_IDENTIFIER => autowire(DeactivateBuildings::class),
-        DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
-        ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class)
+        DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

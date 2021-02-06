@@ -73,11 +73,6 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
         array $state
     ): int;
 
-    public function getByColonyAndBuildingFunction(
-        int $colonyId,
-        array $buildingFunctionIds
-    ): iterable;
-
     public function getMaxShieldsOfColony(int $colonyId): int;
 
     /**
