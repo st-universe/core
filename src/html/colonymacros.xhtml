@@ -519,6 +519,37 @@
           ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
         </div>
       </div>
+      <div class="box" tal:condition="COLONY/hasShields">
+        <div class="box_title">Schilde</div>
+        <div class="box_body">
+          <table class="tcal">
+            <tr>
+              <td colspan="2">
+                <a tal:condition="not:COLONY/getShieldState"
+                  href="?B_ACTIVATE_SHIELDS=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}"
+                  onmouseover="cp('shields','buttons/shldac1')" onmouseout="cp('shields','buttons/shldac2')">
+                  <img src="/assets/buttons/shldac2.gif" name="shields" /> aktivieren
+                </a>
+
+                <a href="?B_DEACTIVATE_SHIELDS=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}"
+                  tal:condition="COLONY/getShieldState" onmouseover="cp('shields','buttons/shldac2')"
+                  onmouseout="cp('shields','buttons/shldac1')">
+                  <img src="/assets/buttons/shldac1.gif" name="shields" /> deaktivieren
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
+              <td>
+                <input type="text" size="3" name="frequency" class="goodAmount"
+                  tal:attributes="value COLONY/getShieldFrequency" />
+                <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
+                  id="changeFrequencyButton" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <br />
       <table class="tcal population">
         <tr>

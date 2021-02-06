@@ -204,6 +204,24 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getSingleScalarResult();
     }
 
+    public function getByColonyAndBuildingFunction(
+        int $colonyId,
+        array $buildingFunctionIds
+    ): iterable {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (
+                    SELECT bf.buildings_id FROM %s bf WHERE bf.function IN (:buildingFunctionId)
+                )',
+                PlanetField::class,
+                BuildingFunction::class
+            )
+        )->setParameters([
+            'colonyId' => $colonyId,
+            'buildingFunctionId' => $buildingFunctionIds
+        ])->getResult();
+    }
+
     public function getMaxShieldsOfColony(int $colonyId): int
     {
         return (int) $this->getEntityManager()->createQuery(
