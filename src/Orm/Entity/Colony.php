@@ -86,6 +86,12 @@ class Colony implements ColonyInterface
     /** @Column(type="boolean") */
     private $immigrationstate = true;
 
+    /** @Column(type="integer", length=6, nullable=true) */
+    private $shields = 0;
+
+    /** @Column(type="integer", length=6, nullable=true) */
+    private $shield_frequency = 0;
+
     /**
      * @ManyToOne(targetEntity="PlanetType")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
@@ -123,7 +129,10 @@ class Colony implements ColonyInterface
 
     private $shiplist;
 
-    public function __construct() {
+    private $maxShields;
+
+    public function __construct()
+    {
         $this->storage = new ArrayCollection();
     }
 
@@ -301,6 +310,41 @@ class Colony implements ColonyInterface
         return $this;
     }
 
+    public function getShields(): ?int
+    {
+        return $this->shields;
+    }
+
+    public function setShields(?int $shields): ColonyInterface
+    {
+        $this->shields = $shields;
+        return $this;
+    }
+
+    public function getMaxShields(): int
+    {
+        if (!isset($this->maxShields)) {
+            // @todo refactor
+            global $container;
+
+            $this->maxShields = $container
+                ->get(PlanetFieldRepositoryInterface::class)
+                ->getMaxShieldsOfColony($this->getId());
+        }
+        return $this->maxShields;
+    }
+
+    public function getShieldFrequency(): ?int
+    {
+        return $this->shield_frequency;
+    }
+
+    public function setShieldFrequency(?int $shieldFrequency): ColonyInterface
+    {
+        $this->shield_frequency = $shieldFrequency;
+        return $this;
+    }
+
     public function getPlanetType(): PlanetTypeInterface
     {
         return $this->planetType;
@@ -407,7 +451,6 @@ class Colony implements ColonyInterface
                     $this->productionRaw[$data['goods_id']] = new ColonyProduction($data);
                 }
             }
-
         }
         return $this->productionRaw;
     }
@@ -498,7 +541,7 @@ class Colony implements ColonyInterface
 
     public function getBevFood(): int
     {
-        return (int)ceil(($this->getWorkers() + $this->getWorkless()) / ColonyTick::PEOPLE_FOOD);
+        return (int) ceil(($this->getWorkers() + $this->getWorkless()) / ColonyTick::PEOPLE_FOOD);
     }
 
     public function getPopulation(): int
@@ -527,12 +570,12 @@ class Colony implements ColonyInterface
         if ($im < 0) {
             return 0;
         }
-        return (int)round($im / 100 * $this->getPlanetType()->getBevGrowthRate());
+        return (int) round($im / 100 * $this->getPlanetType()->getBevGrowthRate());
     }
 
     public function getNegativeEffect(): int
     {
-        return (int)ceil($this->getPopulation() / 70);
+        return (int) ceil($this->getPopulation() / 70);
     }
 
     public function getPositiveEffectPrimary(): int
@@ -599,13 +642,15 @@ class Colony implements ColonyInterface
 
     public function getCrewLimit(): int
     {
-        return (int)floor(
+        return (int) floor(
             min(
                 10 + max(
-                    	($this->getPositiveEffectPrimary() - (4 * max(0,
-                        	    $this->getNegativeEffect() - $this->getPositiveEffectSecondary()))),
-                	    0
-             	 	  ),
+                    ($this->getPositiveEffectPrimary() - (4 * max(
+                        0,
+                        $this->getNegativeEffect() - $this->getPositiveEffectSecondary()
+                    ))),
+                    0
+                ),
                 $this->getWorkers()
             ) / 5
         );

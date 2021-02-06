@@ -71,6 +71,16 @@ interface ColonyInterface
 
     public function setImmigrationstate(bool $immigrationstate): ColonyInterface;
 
+    public function getShields(): ?int;
+
+    public function setShields(?int $shields): ColonyInterface;
+
+    public function getMaxShields(): int;
+
+    public function getShieldFrequency(): ?int;
+
+    public function setShieldFrequency(?int $shieldFrequency): ColonyInterface;
+
     public function getPlanetType(): PlanetTypeInterface;
 
     public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;
