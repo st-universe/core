@@ -6,7 +6,7 @@ namespace Stu\Component\Building;
 
 final class BuildingEnum
 {
-
+    // building functions 
     public const BUILDING_FUNCTION_CENTRAL = 1;
     public const BUILDING_FUNCTION_AIRFIELD = 4;
     public const BUILDING_FUNCTION_FIGHTER_SHIPYARD = 5;
@@ -28,6 +28,17 @@ final class BuildingEnum
     public const BUILDING_FUNCTION_REPAIR_SHIPYARD = 22;
     public const BUILDING_FUNCTION_WAREHOUSE = 23;
 
+    // planetary defense 
+    public const BUILDING_FUNCTION_SHIELD_GENERATOR = 24;
+    public const BUILDING_FUNCTION_SHIELD_BATTERY = 25;
+    public const BUILDING_FUNCTION_ENERGY_PHALANX = 26;
+    public const BUILDING_FUNCTION_PARTICLE_PHALANX = 27;
+    public const BUILDING_FUNCTION_ANTI_PARTICLE = 28;
+
+    public const SHIELD_GENERATOR_CAPACITY = 2000;
+    public const SHIELD_BATTERY_CAPACITY = 5000;
+
+    // other
     public const BUILDMENU_SOCIAL = 1;
     public const BUILDMENU_INDUSTRY = 2;
     public const BUILDMENU_INFRASTRUCTURE = 3;

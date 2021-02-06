@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+
+use Stu\Component\Building\BuildingEnum;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingFunction;
 use Stu\Orm\Entity\BuildingGood;
@@ -199,6 +201,32 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
             'colonyId' => $colonyId,
             'buildingFunctionId' => $buildingFunctionIds,
             'state' => $state,
+        ])->getSingleScalarResult();
+    }
+
+    public function getMaxShieldsOfColony(int $colonyId): int
+    {
+        return (int) $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(distinct f1.id) * :generatorCapacity + COUNT(distinct f2.id) * :batteryCapacity
+                FROM %s f1, %s f2
+                WHERE f1.colonies_id = :colonyId AND f1.aktiv = 1 AND f1.buildings_id IN (
+                    SELECT bf1.buildings_id FROM %s bf1 WHERE bf1.function = :shieldGenerator
+                )
+                AND f2.colonies_id = :colonyId AND f2.aktiv = 1 AND f2.buildings_id IN (
+                    SELECT bf2.buildings_id FROM %s bf2 WHERE bf2.function = :shieldBattery
+                )',
+                PlanetField::class,
+                PlanetField::class,
+                BuildingFunction::class,
+                BuildingFunction::class
+            )
+        )->setParameters([
+            'colonyId' => $colonyId,
+            'shieldGenerator' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR,
+            'shieldBattery' => BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY,
+            'generatorCapacity' => BuildingEnum::SHIELD_GENERATOR_CAPACITY,
+            'batteryCapacity' => BuildingEnum::SHIELD_BATTERY_CAPACITY
         ])->getSingleScalarResult();
     }
 
