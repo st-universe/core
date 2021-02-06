@@ -207,7 +207,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
     public function getByColonyAndBuildingFunction(
         int $colonyId,
         array $buildingFunctionIds
-    ): iterable {
+    ): array {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT f FROM %s f WHERE f.colonies_id = :colonyId AND f.buildings_id IN (

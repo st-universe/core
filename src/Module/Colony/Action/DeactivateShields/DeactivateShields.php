@@ -44,10 +44,10 @@ final class DeactivateShields implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $fields = iterator_to_array($this->planetFieldRepository->getByColonyAndBuildingFunction(
+        $fields = $this->planetFieldRepository->getByColonyAndBuildingFunction(
             $colony->getId(),
             [BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR]
-        ));
+        );
 
         if (count($fields) !== 1) {
             return;
