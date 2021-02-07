@@ -10,6 +10,8 @@ interface ColonySurfaceInterface
 
     public function getEpsBoxTitleString(): string;
 
+    public function getShieldBoxTitleString(): string;
+
     public function getPositiveEffectPrimaryDescription(): string;
 
     public function getPositiveEffectSecondaryDescription(): string;

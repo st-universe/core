@@ -79,11 +79,13 @@ final class BeamToColony implements ActionControllerInterface
             return;
         }
         if ($target->getUserId() !== $userId && $target->getShieldState()) {
-            $frequency = (int) request::postInt('frequency');
+            if ($target->getShieldFrequency() !== 0) {
+                $frequency = (int) request::postInt('frequency');
 
-            if ($frequency !== $target->getShieldFrequency()) {
-                $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
-                return;
+                if ($frequency !== $target->getShieldFrequency()) {
+                    $game->addInformation(_("Die Schildfrequenz ist nicht korrekt"));
+                    return;
+                }
             }
         }
         if (!$target->storagePlaceLeft()) {

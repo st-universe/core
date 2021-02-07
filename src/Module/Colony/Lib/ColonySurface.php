@@ -131,6 +131,15 @@ final class ColonySurface implements ColonySurfaceInterface
         );
     }
 
+    public function getShieldBoxTitleString(): string
+    {
+        return sprintf(
+            _('Schildstärke: %d/%d'),
+            $this->colony->getShields(),
+            $this->colony->getMaxShields()
+        );
+    }
+
     public function getPositiveEffectPrimaryDescription(): string
     {
         switch ($this->colony->getUser()->getFactionId()) {
