@@ -13,4 +13,8 @@ final class StatusBarColorEnum
     public const STATUSBAR_RED = 'ff0000';
     public const STATUSBAR_BLUE = '0070cf';
     public const STATUSBAR_DARKBLUE = '004682';
+
+    // shield bar
+    public const STATUSBAR_SHIELD_ON = '00fbff';
+    public const STATUSBAR_SHIELD_OFF = '004aff';
 }

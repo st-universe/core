@@ -125,7 +125,44 @@ final class ColonyGuiHelper implements ColonyGuiHelperInterface
             'EPS_STATUS_BAR',
             $epsBar
         );
+        if ($colony->hasShields()) {
+            $game->setTemplateVar(
+                'SHIELD_STATUS_BAR',
+                $this->buildShieldBar($colony)
+            );
+        }
         $game->setTemplateVar('STORAGE', $storage);
         $game->setTemplateVar('EFFECTS', $effets);
+    }
+
+    private function buildShieldBar(ColonyInterface $colony): array
+    {
+        $shieldBar = [];
+        $bars = array();
+        $width = 360;
+
+        if ($colony->getShieldState()) {
+            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_ON] = $colony->getShields();
+        } else {
+            $bars[StatusBarColorEnum::STATUSBAR_SHIELD_OFF] = $colony->getShields();
+        }
+        $bars[StatusBarColorEnum::STATUSBAR_GREY] = $colony->getMaxShields() - $colony->getShields();
+
+        foreach ($bars as $color => $value) {
+            if ($colony->getMaxShields() < $value) {
+                $value = $colony->getMaxShields();
+            }
+            if ($value <= 0) {
+                continue;
+            }
+            $shieldBar[] = sprintf(
+                '<img src="assets/bars/balken.png" style="background-color: #%s;height: 12px; width: %dpx;" title="%s" />',
+                $color,
+                round($width / 100 * (100 / $colony->getMaxShields() * $value)),
+                _('Schildstärke')
+            );
+        }
+
+        return $shieldBar;
     }
 }

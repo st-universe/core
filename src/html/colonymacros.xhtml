@@ -519,6 +519,7 @@
           ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
         </div>
       </div>
+      <br />
       <div class="box" tal:condition="COLONY/hasShields">
         <div class="box_title">Schilde</div>
         <div class="box_body">
@@ -539,7 +540,7 @@
               </td>
             </tr>
             <tr>
-              <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
+              <td>Schildfrequenz in MHz (max. 6 Stellen, 0 = kein Beamschutz):</td>
               <td>
                 <input type="text" size="3" name="frequency" class="goodAmount"
                   tal:attributes="value COLONY/getShieldFrequency" />
@@ -704,6 +705,12 @@
       <metal:block metal:use-macro="html/colonymacros.xhtml/colonyeps" />
     </div>
     <br />
+    <tal:block tal:condition="COLONY/hasShields">
+      <div id="colonyshields">
+        <metal:block metal:use-macro="html/colonymacros.xhtml/colonyshields" />
+      </div>
+      <br />
+    </tal:block>
     <div id="colsurface">
       <metal:macro metal:use-macro="html/colonymacros.xhtml/colonysurface" />
     </div>
@@ -1640,6 +1647,16 @@
       <img src="/assets/buttons/e_trans2.gif" title="Energie" style="width: 12px; height: 12px;" /> <span
         tal:repeat="bar EPS_STATUS_BAR" tal:content="structure bar">BAR</span>
       ${addPlusCharacter:COLONY/getEpsProduction}
+    </div>
+  </div>
+</metal:block>
+<metal:block metal:define-macro="colonyshields">
+  <input type="hidden" name="sstr" id="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
+  <div class="box">
+    <div class="box_title" tal:content="COLONY_SURFACE/getShieldBoxTitleString">TITLE</div>
+    <div class="box_body">
+      <img src="/assets/buttons/shld.gif" title="Schildstärke" style="width: 12px; height: 12px;" /> <span
+        tal:repeat="bar SHIELD_STATUS_BAR" tal:content="structure bar">BAR</span>
     </div>
   </div>
 </metal:block>
