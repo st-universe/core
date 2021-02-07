@@ -529,19 +529,19 @@
                 <a tal:condition="not:COLONY/getShieldState"
                   href="?B_ACTIVATE_SHIELDS=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}"
                   onmouseover="cp('shields','buttons/shldac1')" onmouseout="cp('shields','buttons/shldac2')">
-                  <img src="/assets/buttons/shldac2.gif" name="shields" /> aktivieren
+                  <img src="/assets/buttons/shldac2.gif" name="shields" /> Aktivieren
                 </a>
 
                 <a href="?B_DEACTIVATE_SHIELDS=1&id=${COLONY/getId}&sstr=${THIS/getSessionString}"
                   tal:condition="COLONY/getShieldState" onmouseover="cp('shields','buttons/shldac2')"
                   onmouseout="cp('shields','buttons/shldac1')">
-                  <img src="/assets/buttons/shldac1.gif" name="shields" /> deaktivieren
+                  <img src="/assets/buttons/shldac1.gif" name="shields" /> Deaktivieren
                 </a>
                 <a href="javascript:void(0)" onclick="showLoadShieldsWindow();" class="linkbutton">Schilde laden</a>
               </td>
             </tr>
             <tr>
-              <td>Schildfrequenz in MHz (max. 6 Stellen, 0 = kein Beamschutz):</td>
+              <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
               <td>
                 <input type="text" size="3" name="frequency" class="goodAmount"
                   tal:attributes="value COLONY/getShieldFrequency" />
