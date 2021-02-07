@@ -36,4 +36,7 @@ final class ColonyEnum
     public const MENU_MODULEFAB = 7;
     public const MENU_FIGHTER_SHIPYARD = 10;
     public const MENU_AIRFIELD = 6;
+
+    // shield stuff
+    public const SHIELDS_PER_EPS = 10;
 }

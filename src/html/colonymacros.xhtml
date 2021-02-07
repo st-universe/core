@@ -537,6 +537,7 @@
                   onmouseout="cp('shields','buttons/shldac1')">
                   <img src="/assets/buttons/shldac1.gif" name="shields" /> deaktivieren
                 </a>
+                <a href="javascript:void(0)" onclick="showLoadShieldsWindow();" class="linkbutton">Schilde laden</a>
               </td>
             </tr>
             <tr>
@@ -1511,6 +1512,26 @@
     </tr>
   </table>
 </metal:macro>
+<metal:block metal:define-macro="show_load_shields">
+  <form action="colony.php" method="post">
+    <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
+    <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+    <table class="tcal">
+      <tr>
+        <td>Kosten: ${SHIELDS_PER_EPS} Schildstärke pro Energie</td>
+      </tr>
+      <tr>
+        <td>
+          <img src="assets/buttons/shld.gif" title="Schilde laden" />
+          <input type="text" size="4" name="load" id="loadshield_value" />
+          <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS" id="loadshield_button" />
+          <input type="button" class="button" value="max"
+            onclick="$('loadshield_value').value = '${COLONY/getMaxShields}'; $('loadshield_button').click()" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</metal:block>
 <metal:block metal:define-macro="show_ship_beamto">
   <form action="colony.php" method="post">
     <input type="hidden" name="id" tal:attributes="value COLONY/getId" />

@@ -132,6 +132,7 @@ function buildOnField(field) {
 function refreshColony() {
 	ajax_update('colsurface', 'colony.php?id=' + colonyid + '&SHOW_COLONY_SURFACE=1&bid=' + selectedbuilding);
 	ajax_update('colonyeps', 'colony.php?id=' + colonyid + '&SHOW_EPSBAR_AJAX=1');
+	//ajax_update('colonyshields', 'colony.php?id=' + colonyid + '&SHOW_SHIELDBAR_AJAX=1');
 	ajax_update('colonystorage', 'colony.php?id=' + colonyid + '&SHOW_STORAGE_AJAX=1');
 }
 
@@ -184,6 +185,12 @@ function showBFromWindow() {
 	elt = 'beam'
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
+}
+
+function showLoadShieldsWindow() {
+	elt = 'loadshields';
+	openPJsWin(elt, 1);
+	new Ajax.Updater(elt, 'colony.php?id=' + colonyid + '&SHOW_LOAD_SHIELDS=1');
 }
 
 function triggerBeamTo() {
