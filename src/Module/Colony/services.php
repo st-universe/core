@@ -115,9 +115,6 @@ use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowGiveUp\ShowGiveUp;
-use Stu\Module\Colony\View\ShowLoadShields\ShowLoadShields;
-use Stu\Module\Colony\View\ShowLoadShields\ShowLoadShieldsRequest;
-use Stu\Module\Colony\View\ShowLoadShields\ShowLoadShieldsRequestInterface;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequest;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequestInterface;
@@ -187,7 +184,6 @@ return [
     ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
     ShowEpsBarRequestInterface::class => autowire(ShowEpsBarRequest::class),
     ShowFieldRequestInterface::class => autowire(ShowFieldRequest::class),
-    ShowLoadShieldsRequestInterface::class => autowire(ShowLoadShieldsRequest::class),
     ShowFighterShipyardRequestInterface::class => autowire(ShowFighterShipyardRequest::class),
     ShowManagementRequestInterface::class => autowire(ShowManagementRequest::class),
     ShowMiscRequestInterface::class => autowire(ShowMiscRequest::class),
@@ -274,7 +270,6 @@ return [
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
-        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
-        ShowLoadShields::VIEW_IDENTIFIER => autowire(ShowLoadShields::class)
+        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class)
     ]
 ];
