@@ -53,6 +53,7 @@ use Stu\Module\Colony\Action\GiveUp\GiveUp;
 use Stu\Module\Colony\Action\GiveUp\GiveUpRequest;
 use Stu\Module\Colony\Action\GiveUp\GiveUpRequestInterface;
 use Stu\Module\Colony\Action\LandShip\LandShip;
+use Stu\Module\Colony\Action\LoadShields\LoadShields;
 use Stu\Module\Colony\Action\ManageOrbitalShips\ManageOrbitalShips;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
@@ -114,6 +115,9 @@ use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequest;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyardRequestInterface;
 use Stu\Module\Colony\View\ShowGiveUp\ShowGiveUp;
+use Stu\Module\Colony\View\ShowLoadShields\ShowLoadShields;
+use Stu\Module\Colony\View\ShowLoadShields\ShowLoadShieldsRequest;
+use Stu\Module\Colony\View\ShowLoadShields\ShowLoadShieldsRequestInterface;
 use Stu\Module\Colony\View\ShowManagement\ShowManagement;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequest;
 use Stu\Module\Colony\View\ShowManagement\ShowManagementRequestInterface;
@@ -183,6 +187,7 @@ return [
     ShowColonyRequestInterface::class => autowire(ShowColonyRequest::class),
     ShowEpsBarRequestInterface::class => autowire(ShowEpsBarRequest::class),
     ShowFieldRequestInterface::class => autowire(ShowFieldRequest::class),
+    ShowLoadShieldsRequestInterface::class => autowire(ShowLoadShieldsRequest::class),
     ShowFighterShipyardRequestInterface::class => autowire(ShowFighterShipyardRequest::class),
     ShowManagementRequestInterface::class => autowire(ShowManagementRequest::class),
     ShowMiscRequestInterface::class => autowire(ShowMiscRequest::class),
@@ -220,6 +225,7 @@ return [
         DeleteBuildPlan::ACTION_IDENTIFIER => autowire(DeleteBuildPlan::class),
         DenyImmigration::ACTION_IDENTIFIER => autowire(DenyImmigration::class),
         LandShip::ACTION_IDENTIFIER => autowire(LandShip::class),
+        LoadShields::ACTION_IDENTIFIER => autowire(LoadShields::class),
         ManageOrbitalShips::ACTION_IDENTIFIER => autowire(ManageOrbitalShips::class),
         RemoveBuilding::ACTION_IDENTIFIER => autowire(RemoveBuilding::class),
         RepairBuilding::ACTION_IDENTIFIER => autowire(RepairBuilding::class),
@@ -268,6 +274,7 @@ return [
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
-        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class)
+        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
+        ShowLoadShields::VIEW_IDENTIFIER => autowire(ShowLoadShields::class)
     ]
 ];
