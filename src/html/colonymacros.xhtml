@@ -537,7 +537,10 @@
                   onmouseout="cp('shields','buttons/shldac1')">
                   <img src="/assets/buttons/shldac1.gif" name="shields" /> Deaktivieren
                 </a>
-                <a href="javascript:void(0)" onclick="showLoadShieldsWindow();" class="linkbutton">Schilde laden</a>
+                <input type="text" size="4" name="load" id="loadshield_value" />
+                <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS" id="loadshield_button" />
+                <input type="button" class="button" value="max"
+                  onclick="$('loadshield_value').value = '${COLONY/getMaxShields}'; $('loadshield_button').click()" />
               </td>
             </tr>
             <tr>
