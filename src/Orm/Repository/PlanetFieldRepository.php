@@ -230,7 +230,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
 
         return (int) $this->getEntityManager()->createNativeQuery(
             'SELECT COUNT(distinct f1.id) * :generatorCapacity + COUNT(distinct f2.id) * :batteryCapacity as capacity
-            FROM stu_colonies_fielddata f1, 
+            FROM stu_colonies_fielddata f1
             LEFT JOIN stu_colonies_fielddata f2
             ON f1.colonies_id = f2.colonies_id
             AND f2.aktiv = 1 AND f2.buildings_id IN (
