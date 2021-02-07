@@ -187,12 +187,6 @@ function showBFromWindow() {
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
 }
 
-function showLoadShieldsWindow() {
-	elt = 'loadshields';
-	openPJsWin(elt, 1);
-	new Ajax.Updater(elt, 'colony.php?id=' + colonyid + '&SHOW_LOAD_SHIELDS=1');
-}
-
 function triggerBeamTo() {
 	var shipid = $('selshipid').value;
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);

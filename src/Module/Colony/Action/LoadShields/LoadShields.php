@@ -55,7 +55,7 @@ final class LoadShields implements ActionControllerInterface
         }
 
         $colony->setEps($colony->getEps() - (int) ceil($load / ColonyEnum::SHIELDS_PER_EPS));
-        $colony->setShields($colony->getShields() + (int) ($load * ColonyEnum::SHIELDS_PER_EPS));
+        $colony->setShields($colony->getShields() + (int) $load);
 
         $this->colonyRepository->save($colony);
         $game->addInformation(sprintf(_('Die Schilde wurden um %d Punkte geladen'), $load));
