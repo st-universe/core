@@ -53,7 +53,7 @@ function triggerBeamFrom(target) {
 
 function showBToColonyWindow(target) {
 	elt = 'beam';
-	openPJsWin(elt, 1);
+	openPJsWin(elt, 1, null, 400);
 	new Ajax.Updater(elt, 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
 }
 
