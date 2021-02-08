@@ -38,7 +38,7 @@
 					</td>
 					<td style="vertical-align: middle;">
 						<a tal:condition="php:colony.getSignatureCount()!=0" href="javascript:void(0);"
-							onclick="showSectorScanWindow(${colony/getId});">
+							onclick="showSectorScanWindow()">
 							${colony/getSignatureCount}
 						</a>
 						<span tal:condition="php:colony.getSignatureCount() EQ 0">0</span>
