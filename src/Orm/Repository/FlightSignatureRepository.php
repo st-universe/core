@@ -38,7 +38,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                     'SELECT count(distinct fs.ship_id) as count
                     FROM %s fs
                     JOIN %s ssm
-                    ON fs.starsystem_map_id = ssm.id
+                    WITH fs.starsystem_map_id = ssm.id
                     WHERE fs.time > :maxAge
                     AND ssm.sx = :sx
                     AND ssm.sy = :sy
