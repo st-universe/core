@@ -16,14 +16,18 @@ final class ColonyListItem implements ColonyListItemInterface
 {
     private ColonyInterface $colony;
 
+    private $signatureCount;
+
     private CommodityConsumptionInterface $commodityConsumption;
 
     public function __construct(
         CommodityConsumptionInterface $commodityConsumption,
-        ColonyInterface $colony
+        ColonyInterface $colony,
+        $signatureCount
     ) {
         $this->commodityConsumption = $commodityConsumption;
         $this->colony = $colony;
+        $this->signatureCount = $signatureCount;
     }
 
     public function getId(): int
@@ -49,6 +53,11 @@ final class ColonyListItem implements ColonyListItemInterface
     public function getSY(): int
     {
         return $this->colony->getSY();
+    }
+
+    public function getSignatureCount(): int
+    {
+        return $this->signatureCount;
     }
 
     public function getPopulation(): int
@@ -101,7 +110,8 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->colony->getPlanetType();
     }
 
-    public function getProductionSum(): int {
+    public function getProductionSum(): int
+    {
         return $this->colony->getProductionSum();
     }
 
