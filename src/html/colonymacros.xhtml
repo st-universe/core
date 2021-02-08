@@ -17,6 +17,12 @@
   </script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/colony.js">< !--stuniverse --></script>
 </metal:block>
+<metal:block metal:define-macro="initial_js_light">
+  <script language="Javascript">
+    var sstr = '${THIS/getSessionString}';
+  </script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/colony.js">< !--stuniverse --></script>
+</metal:block>
 <metal:block metal:define-macro="buildmenu">
   <input type="hidden" name="buildmenu${menutype}_offset" id="buildmenu${menutype}_offset"
     tal:attributes="value scrolloffset" />
