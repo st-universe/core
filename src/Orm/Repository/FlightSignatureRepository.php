@@ -10,7 +10,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Module\Maintenance\OldFlightSignatureDeletion;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
-use Stu\Orm\Entity\StarSystemMap;
 
 final class FlightSignatureRepository extends EntityRepository implements FlightSignatureRepositoryInterface
 {
@@ -28,34 +27,6 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         }
 
         $em->flush();
-    }
-
-    public function getVisibleSignatureCount($colony): int
-    {
-        return (int) $this->getEntityManager()
-            ->createQuery(
-                sprintf(
-                    'SELECT count(distinct fs.ship_id) as count
-                    FROM %s fs
-                    JOIN %s ssm
-                    ON fs.starsystem_map_id = ssm.id
-                    WHERE fs.time > :maxAge
-                    AND ssm.sx = :sx
-                    AND ssm.sy = :sy
-                    AND ssm.systems_id = :systemsId
-                    AND fs.user_id != :ignoreId',
-                    FlightSignature::class,
-                    StarSystemMap::class
-                )
-            )
-            ->setParameters([
-                'maxAge' => time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE,
-                'sx' => $colony->getSx(),
-                'sy' => $colony->getSy(),
-                'systemsId' => $colony->getSystem()->getId(),
-                'ignoreId' => $colony->getUserId()
-            ])
-            ->getSingleScalarResult();
     }
 
     public function getVisibleSignatures($field, bool $isSystem, $ignoreId): array

@@ -10,7 +10,6 @@ use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -35,8 +34,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private ResearchedRepositoryInterface $researchedRepository;
 
-    private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -45,8 +42,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         CommodityConsumptionInterface $commodityConsumption,
         ShipRepositoryInterface $shipRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ResearchedRepositoryInterface $researchedRepository,
-        FlightSignatureRepositoryInterface $flightSignatureRepository
+        ResearchedRepositoryInterface $researchedRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
@@ -56,7 +52,6 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->shipRepository = $shipRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->researchedRepository = $researchedRepository;
-        $this->flightSignatureRepository = $flightSignatureRepository;
     }
 
     public function createOrbitShipItem(
@@ -109,8 +104,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
     ): ColonyListItemInterface {
         return new ColonyListItem(
             $this->commodityConsumption,
-            $colony,
-            $this->flightSignatureRepository->getVisibleSignatureCount($colony)
+            $colony
         );
     }
 
