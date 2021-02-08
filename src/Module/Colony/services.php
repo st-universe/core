@@ -139,6 +139,7 @@ use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagementRequestInterfa
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplist;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequest;
 use Stu\Module\Colony\View\ShowOrbitShiplist\ShowOrbitShiplistRequestInterface;
+use Stu\Module\Colony\View\ShowSectorScan\ShowSectorScan;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepair;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequestInterface;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
@@ -270,6 +271,7 @@ return [
         ShowModuleCancel::VIEW_IDENTIFIER => autowire(ShowModuleCancel::class),
         ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class),
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
-        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class)
+        ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
+        ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class)
     ]
 ];
