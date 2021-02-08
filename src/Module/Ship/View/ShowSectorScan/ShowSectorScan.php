@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\View\ShowSectorScan;
 
 use request;
 
-use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;

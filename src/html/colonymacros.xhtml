@@ -1643,55 +1643,6 @@
     </table>
   </form>
 </metal:block>
-<metal:macro metal:define-macro="sectorscan">
-  <tal:block tal:condition="not:ERROR">
-    <table class="tcal" tal:condition="SIGNATURES">
-      <tr>
-        <th colspan="3">Signaturen</th>
-      </tr>
-      <tr>
-        <th>Rumpf</th>
-        <th>Schiffsname</th>
-        <th>Alter</th>
-      </tr>
-      <tr tal:repeat="sig SIGNATURES">
-        <td>
-          <img tal:condition="sig/getRump" src="assets/ships/${sig/getRump/getId}.png"
-            tal:attributes="title sig/getRump/getName" />
-          <span tal:condition="not:sig/getRump">?</span>
-        </td>
-        <td>
-          <span tal:condition="sig/getShipName" tal:content="structure bbcode:sig/getShipName">.</span>
-          <span tal:condition="not:sig/getShipName">?</span>
-        </td>
-        <td>
-          <span tal:content="sig/getAge">.</span>
-        </td>
-      </tr>
-    </table>
-    <table class="tcal" tal:condition="php: OTHER_SIG_COUNT OR OTHER_CLOAKED_COUNT">
-      <tr>
-        <th colspan="2">verblasste Signaturen</th>
-      </tr>
-      <tr tal:condition="OTHER_SIG_COUNT">
-        <td>
-          ungetarnt:
-        </td>
-        <td>
-          <span tal:content="OTHER_SIG_COUNT">.</span>
-        </td>
-      </tr>
-      <tr tal:condition="OTHER_CLOAKED_COUNT">
-        <td>
-          getarnt:
-        </td>
-        <td>
-          <span tal:content="OTHER_CLOAKED_COUNT">.</span>
-        </td>
-      </tr>
-    </table>
-  </tal:block>
-</metal:macro>
 <metal:block metal:define-macro="colonyeps">
   <input type="hidden" name="sstr" id="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
   <div class="box">
