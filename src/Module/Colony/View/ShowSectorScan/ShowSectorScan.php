@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowSectorScan;
+namespace Stu\Module\Colony\View\ShowSectorScan;
 
 use request;
 
 use Stu\Lib\SignatureWrapper;
+use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSectorScan implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_SECTOR_SCAN';
 
-    private ShipLoaderInterface $shipLoader;
+    private ColonyLoaderInterface $colonyLoader;
+
+    private StarSystemMapRepositoryInterface $mapRepository;
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private $fadedSignaturesUncloaked = [];
     private $fadedSignaturesCloaked = [];
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
+        ColonyLoaderInterface $colonyLoader,
+        StarSystemMapRepositoryInterface $mapRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
-        $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
+        $this->colonyLoader = $colonyLoader;
+        $this->mapRepository = $mapRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
     }
 
@@ -40,50 +40,26 @@ final class ShowSectorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
+        $colony = $this->colonyLoader->byIdAndUser(
             request::indInt('id'),
             $userId
         );
 
         $game->setPageTitle("Sektor Scan");
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/sectorscan');
+        $game->setMacro('html/colonymacros.xhtml/sectorscan');
 
         $game->setTemplateVar('ERROR', true);
 
-        if (!$ship->getNbs()) {
-            $game->addInformation("Die Nahbereichssensoren sind nicht aktiv");
-            return;
-        }
+        $mapField = $this->mapRepository->getByCoordinates(
+            $colony->getSystem()->getId(),
+            $colony->getSx(),
+            $colony->getSy()
+        );
 
-        if ($ship->getEps() < 1) {
-            $game->addInformation("Nicht genügend Energie vorhanden (1 benötigt)");
-            return;
-        }
-
-        $ship->setEps($ship->getEps() - 1);
-        $this->shipRepository->save($ship);
-
-        $mapField = $ship->getCurrentMapField();
-
-        $planetType = $mapField->getFieldType()->getPlanetType();
-        if ($planetType !== null) {
-            $game->checkDatabaseItem($planetType->getDatabaseId());
-        }
-        if ($mapField->getFieldType()->getIsSystem()) {
-            $game->checkDatabaseItem($ship->getCurrentMapField()->getSystem()->getSystemType()->getDatabaseEntryId());
-        }
-        if ($ship->getSystem() !== null) {
-            $databaseEntry = $ship->getSystem()->getDatabaseEntry();
-            if ($databaseEntry !== null) {
-                $game->checkDatabaseItem($databaseEntry->getId());
-            }
-        }
-
-        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $ship->getSystem() !== null, $userId));
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, true, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
-        $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('ERROR', false);
     }
 

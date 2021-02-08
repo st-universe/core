@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowSectorScan;
+namespace Stu\Lib;
 
 use Stu\Module\Tal\TalHelper;
 

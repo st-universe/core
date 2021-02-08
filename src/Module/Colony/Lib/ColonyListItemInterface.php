@@ -19,6 +19,8 @@ interface ColonyListItemInterface
 
     public function getSY(): int;
 
+    public function getSignatureCount(): int;
+
     public function getPopulation(): int;
 
     public function getHousing(): int;

@@ -15,6 +15,7 @@
 				<tr>
 					<th style="width: 120px;"></th>
 					<th>Name</th>
+					<th>Signaturen</th>
 					<th>Bevölkerung</th>
 					<th>Energie</th>
 					<th>Lager</th>
@@ -33,6 +34,13 @@
 								style="width: 15px; height: 15px;" /> ${colony/getSX}|${colony/getSY}
 							(${system/getName}-System ${system/getCX}|${system/getCY})
 						</div>
+					</td>
+					<td style="vertical-align: middle;">
+						<a tal:condition="php:colony.getSignatureCount()!=0" href="javascript:void(0);"
+							onclick="showSectorScanWindow()">
+							${colony/getSignatureCount}
+						</a>
+						<span tal:condition="php:colony.getSignatureCount() EQ 0">0</span>
 					</td>
 					<td style="vertical-align: middle;">
 						<img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.gif" />
