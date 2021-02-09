@@ -253,14 +253,19 @@ function replaceTabImage(type, moduleId, goodId, module_crew, module_lvl) {
 }
 function toggleSpecialModuleDisplay(type, module_crew) {
 	let innerHTML = '';
+	let checkedCount = 0;
 	Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
 		if (elem.checked) {
 			innerHTML = innerHTML.concat($(elem.value + '_content').innerHTML);
 			updateCrewCount(elem.value, module_crew, 0);
+			//updateSpecialSlot(elem.value, true);
+			checkedCount++;
 		} else {
 			updateCrewCount(elem.value, 0, 0);
+			//updateSpecialSlot(elem.value, false);
 		}
 	});
+	$('module_tab_info_' + type).innerHTML = checkedCount + ' von ' + specialSlots;
 	$('module_type_' + type).innerHTML = innerHTML;
 	$('module_type_' + type).show();
 
@@ -269,15 +274,26 @@ function toggleSpecialModuleDisplay(type, module_crew) {
 var maxCrew;
 var baseCrew;
 var rumpModuleLvl;
-function setFixValues(base_crew, max_crew, rump_module_lvl) {
+var specialSlots;
+function setFixValues(base_crew, max_crew, rump_module_lvl, special_slots) {
 	baseCrew = base_crew;
 	maxCrew = max_crew;
 	rumpModuleLvl = rump_module_lvl;
+	specialSlots = special_slots;
 }
 var crew_type = new Hash();
 function updateCrewCount(type, module_crew, module_lvl) {
 	crew_type.set(type, { lvl: module_lvl, crew: module_crew });
 }
+//var special_slots = new Set();
+//function updateSpecialSlot(type, add) {
+//	if (add) {
+//		crew_type.add(type);
+//	}
+//	else {
+//		crew_type.remove(type);
+//	}
+//}
 function checkCrewCount() {
 	crewSum = baseCrew;
 	crew_type.each(function (pair) {

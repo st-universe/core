@@ -119,7 +119,7 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $beam_factor = 0;
 
-    /** @column(type="smallint", nullable=true) * */
+    /** @column(type="smallint") * */
     private $special_slots = 0;
 
     /**
