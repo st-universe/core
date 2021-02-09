@@ -106,9 +106,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $torp_type = request::postArray('torp_type');
         $storage = $colony->getStorage();
 
-        $sectorString = $colony->getSX().'|'.$colony->getSY();
+        $sectorString = $colony->getSX() . '|' . $colony->getSY();
         if ($colony->isInSystem()) {
-            $sectorString .= ' ('.$colony->getSystem()->getName().'-System)';
+            $sectorString .= ' (' . $colony->getSystem()->getName() . '-System)';
         }
 
         foreach ($ships as $key => $ship) {
@@ -125,12 +125,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
             if ($shipobj->getIsDestroyed()) {
                 continue;
             }
-            if ($colony->getEps() > 0 && $shipobj->getEBatt() < $shipobj->getMaxEbatt() && array_key_exists($ship,
-                    $batt)) {
+            if ($colony->getEps() > 0 && $shipobj->getEBatt() < $shipobj->getMaxEbatt() && array_key_exists(
+                $ship,
+                $batt
+            )) {
                 if ($batt[$ship] == 'm') {
                     $load = $shipobj->getMaxEbatt() - $shipobj->getEBatt();
                 } else {
-                    $load = (int)$batt[$ship];
+                    $load = (int) $batt[$ship];
                     if ($shipobj->getEBatt() + $load > $shipobj->getMaxEBatt()) {
                         $load = $shipobj->getMaxEBatt() - $shipobj->getEBatt();
                     }
@@ -143,12 +145,13 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     $colony->lowerEps($load);
                     $msg[] = sprintf(
                         _('%s: Batterie um %d Einheiten aufgeladen'),
-                        $shipobj->getName(), $load
+                        $shipobj->getName(),
+                        $load
                     );
                     if ($shipobj->getUser() !== $user) {
                         $this->privateMessageSender->send(
                             $userId,
-                            (int)$shipobj->getUserId(),
+                            (int) $shipobj->getUserId(),
                             sprintf(
                                 _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
                                 $colony->getName(),
@@ -156,7 +159,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $shipobj->getName(),
                                 $load
                             ),
-                            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
+                            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                        );
                     }
                 }
             }
@@ -185,7 +189,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
             ) {
                 $this->shipCrewRepository->truncateByShip((int) $shipobj->getId());
                 $msg[] = sprintf(
-                    _('%s: Die Crew wurde runtergebeamt'), $shipobj->getName()
+                    _('%s: Die Crew wurde runtergebeamt'),
+                    $shipobj->getName()
                 );
 
                 $this->shipSystemManager->deactivateAll($shipobj);
@@ -197,7 +202,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if ($wk[$shipobj->getId()] == 'm') {
                             $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
                         } else {
-                            $load = ceil(((int)$wk[$shipobj->getId()]) / ShipEnum::WARPCORE_LOAD);
+                            $load = ceil(((int) $wk[$shipobj->getId()]) / ShipEnum::WARPCORE_LOAD);
                             if ($load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) {
                                 $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
                             }
@@ -206,7 +211,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         if ($load >= 1) {
                             foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
                                 if ($storage[$commodityId]->getAmount() < ($load * $loadCost)) {
-                                    $load = (int)($storage[$commodityId]->getAmount() / $loadCost);
+                                    $load = (int) ($storage[$commodityId]->getAmount() / $loadCost);
                                 }
                             }
                             foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
@@ -230,7 +235,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             if ($shipobj->getUser() !== $user) {
                                 $this->privateMessageSender->send(
                                     $userId,
-                                    (int)$shipobj->getUserId(),
+                                    (int) $shipobj->getUserId(),
                                     sprintf(
                                         _('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
                                         $colony->getName(),
@@ -238,7 +243,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                         $shipobj->getName(),
                                         $load
                                     ),
-                                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
+                                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                                );
                             }
                         }
                     }
@@ -256,7 +262,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 if ($torp[$shipobj->getId()] == 'm') {
                     $count = $shipobj->getMaxTorpedos();
                 } else {
-                    $count = (int)$torp[$shipobj->getId()];
+                    $count = (int) $torp[$shipobj->getId()];
                 }
                 try {
                     if ($count < 0) {
@@ -271,7 +277,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());
                     if (
                         $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
-                        !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
+                            !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
                     ) {
                         throw new Exception;
                     }
@@ -296,7 +302,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         }
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
                         if ($load < 0) {
-                            $this->colonyStorageManager->upperStorage($colony, $torp_obj->getCommodity(), abs($load));
+                            $this->colonyStorageManager->upperStorage($colony, $shipobj->getTorpedo()->getCommodity(), abs($load));
 
                             if ($shipobj->getTorpedoCount() == 0) {
                                 $shipobj->setTorpedo(null);
@@ -370,8 +376,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
     private function storageContainsNeededCommodities($storage): bool
     {
         foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
-            if (!$storage->containsKey($commodityId))
-            {
+            if (!$storage->containsKey($commodityId)) {
                 return false;
             }
         }
