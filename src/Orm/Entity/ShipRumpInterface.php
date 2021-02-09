@@ -64,6 +64,10 @@ interface ShipRumpInterface
 
     public function setBeamFactor(int $beamFactor): ShipRumpInterface;
 
+    public function getSpecialSlots(): int;
+
+    public function setSpecialSlots(int $specialSlots): ShipRumpInterface;
+
     public function getPhaserVolleys(): int;
 
     public function setPhaserVolleys(int $phaserVolleys): ShipRumpInterface;

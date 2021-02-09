@@ -67,57 +67,60 @@ class ShipRump implements ShipRumpInterface
 
     /** @column(type="smallint") * */
     private $base_torpedo_storage = 0;
-    
+
     /** @column(type="smallint") * */
     private $phaser_volleys = 0;
-    
+
     /** @column(type="smallint") * */
     private $phaser_hull_damage_factor = 0;
-    
+
     /** @column(type="smallint") * */
     private $phaser_shield_damage_factor = 0;
-    
+
     /** @column(type="smallint") * */
     private $torpedo_level = 0;
-    
+
     /** @column(type="smallint") * */
     private $torpedo_volleys = 0;
-    
+
     /** @Column(type="string") */
     private $name = '';
-    
+
     /** @Column(type="boolean") */
     private $is_buildable;
-    
+
     /** @Column(type="boolean") */
     private $is_npc;
-    
+
     /** @column(type="smallint") * */
     private $eps_cost = 0;
-    
+
     /** @column(type="smallint") * */
     private $storage = 0;
-    
+
     /** @column(type="smallint") * */
     private $slots = 0;
-    
+
     /** @column(type="integer") * */
     private $buildtime = 0;
-    
+
     /** @column(type="smallint") * */
     private $sort = 0;
-    
+
     /** @column(type="integer", nullable=true) * */
     private $database_id = 0;
-    
+
     /** @column(type="integer", nullable=true) * */
     private $good_id = 0;
-    
+
     /** @column(type="smallint") * */
     private $flight_ecost = 0;
-    
+
     /** @column(type="smallint") * */
     private $beam_factor = 0;
+
+    /** @column(type="smallint", nullable=true) * */
+    private $special_slots = 0;
 
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
@@ -154,7 +157,8 @@ class ShipRump implements ShipRumpInterface
      */
     private $buildingCosts;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->buildingCosts = new ArrayCollection();
     }
 
@@ -317,7 +321,18 @@ class ShipRump implements ShipRumpInterface
         $this->beam_factor = $beamFactor;
         return $this;
     }
-    
+
+    public function getSpecialSlots(): int
+    {
+        return $this->special_slots;
+    }
+
+    public function setSpecialSlots(int $specialSlots): ShipRumpInterface
+    {
+        $this->special_slots = $specialSlots;
+        return $this;
+    }
+
     public function getPhaserVolleys(): int
     {
         return $this->phaser_volleys;
@@ -555,7 +570,7 @@ class ShipRump implements ShipRumpInterface
             global $container;
 
             $this->module_levels = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
-                (int)$this->getId()
+                (int) $this->getId()
             );
         }
         return $this->module_levels;
@@ -579,7 +594,7 @@ class ShipRump implements ShipRumpInterface
                 function (ShipRumpSpecialInterface $shipRumpSpecial): int {
                     return $shipRumpSpecial->getSpecialId();
                 },
-                $container->get(ShipRumpSpecialRepositoryInterface::class)->getByShipRump((int)$this->getId())
+                $container->get(ShipRumpSpecialRepositoryInterface::class)->getByShipRump((int) $this->getId())
             );
         }
         return in_array($value, $this->specialAbilities);
@@ -619,8 +634,8 @@ class ShipRump implements ShipRumpInterface
 
             $this->crewobj = $container->get(ShipRumpCategoryRoleCrewRepositoryInterface::class)
                 ->getByShipRumpCategoryAndRole(
-                    (int)$this->getCategoryId(),
-                    (int)$this->getRoleId()
+                    (int) $this->getCategoryId(),
+                    (int) $this->getRoleId()
                 );
         }
         return $this->crewobj;
