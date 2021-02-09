@@ -233,7 +233,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ON fs1.starsystem_map_id = a.id
         AND fs1.user_id != %d
         AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
-        AND fs.time > %d
+        AND fs1.time > %d
     LEFT JOIN stu_flight_sig fs2
         ON fs2.starsystem_map_id = a.id
         AND fs2.user_id != %d
