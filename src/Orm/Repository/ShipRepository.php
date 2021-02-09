@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Maintenance\OldFlightSignatureDeletion;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
@@ -233,22 +232,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ON fs1.starsystem_map_id = a.id
         AND fs1.user_id != %d
         AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
-        AND fs.time > %d
     LEFT JOIN stu_flight_sig fs2
         ON fs2.starsystem_map_id = a.id
         AND fs2.user_id != %d
         AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
-        AND fs2.time > %d
     LEFT JOIN stu_flight_sig fs3
         ON fs3.starsystem_map_id = a.id
         AND fs3.user_id != %d
         AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
-        AND fs3.time > %d
     LEFT JOIN stu_flight_sig fs4
         ON fs4.starsystem_map_id = a.id
         AND fs4.user_id != %d
-        AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
-        AND fs4.time > %d ';
+        AND (fs4.from_direction = 4 OR fs4.to_direction = 4) ';
 
     public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
     {
@@ -266,8 +261,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             $rsm->addScalarResult('d2c', 'd2c', 'integer');
             $rsm->addScalarResult('d3c', 'd3c', 'integer');
             $rsm->addScalarResult('d4c', 'd4c', 'integer');
-
-            $maxAge = time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE;
         }
 
         return $this->getEntityManager()->createNativeQuery(
@@ -294,7 +287,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 			a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
             GROUP BY a.sy, a.sx, a.systems_id, d.type, a.field_id ORDER BY a.sy,a.sx',
                 $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '',
-                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_STAR_JOIN, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge) : ''
+                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_STAR_JOIN, $ignoreId, $ignoreId, $ignoreId, $ignoreId) : ''
             ),
             $rsm
         )->setParameters([
@@ -312,22 +305,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ON fs1.map_id = a.id
         AND fs1.user_id != %d
         AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
-        AND fs1.time > %d
     LEFT JOIN stu_flight_sig fs2
         ON fs2.map_id = a.id
         AND fs2.user_id != %d
         AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
-        AND fs2.time > %d
     LEFT JOIN stu_flight_sig fs3
         ON fs3.map_id = a.id
         AND fs3.user_id != %d
         AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
-        AND fs3.time > %d
     LEFT JOIN stu_flight_sig fs4
         ON fs4.map_id = a.id
         AND fs4.user_id != %d
-        AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
-        AND fs4.time > %d ';
+        AND (fs4.from_direction = 4 OR fs4.to_direction = 4) ';
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
     {
@@ -344,8 +333,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             $rsm->addScalarResult('d2c', 'd2c', 'integer');
             $rsm->addScalarResult('d3c', 'd3c', 'integer');
             $rsm->addScalarResult('d4c', 'd4c', 'integer');
-
-            $maxAge = time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE;
         }
 
         return $this->getEntityManager()->createNativeQuery(
@@ -371,7 +358,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
             WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
                 $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '',
-                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_MAP_JOIN, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge) : ''
+                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_MAP_JOIN, $ignoreId, $ignoreId, $ignoreId, $ignoreId) : ''
             ),
             $rsm
         )->setParameters([
