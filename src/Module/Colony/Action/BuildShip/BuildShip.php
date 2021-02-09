@@ -115,9 +115,11 @@ final class BuildShip implements ActionControllerInterface
         $crew_usage = $rump->getBaseCrew();
         for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
             $module = request::postArray('mod_' . $i);
-            if ($i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
-                    && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
-                    && count($module) == 0) {
+            if (
+                $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
+                && $rump->getModuleLevels()->{'getModuleMandatory' . $i}() == ShipModuleTypeEnum::MODULE_MANDATORY
+                && count($module) == 0
+            ) {
                 $game->addInformationf(
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     ModuleTypeDescriptionMapper::getDescription($i)
@@ -125,12 +127,19 @@ final class BuildShip implements ActionControllerInterface
                 return;
             }
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
+                $specialCount = 0;
                 foreach ($module as $id) {
                     /** @var ModuleInterface[] $modules */
                     $specialMod = $this->moduleRepository->find((int) $id);
                     $crew_usage += $specialMod->getCrew();
                     $modules[$id] = $specialMod;
                     $sigmod[$id] = $id;
+                    $specialCount++;
+                }
+
+                if ($specialCount > $rump->getSpecialSlots()) {
+                    $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    return;
                 }
                 continue;
             }
@@ -141,8 +150,7 @@ final class BuildShip implements ActionControllerInterface
             if (current($module) > 0) {
                 /** @var ModuleInterface $mod */
                 $mod = $this->moduleRepository->find((int) current($module));
-                if ($mod->getLevel() > $rump->getModuleLevel())
-                {
+                if ($mod->getLevel() > $rump->getModuleLevel()) {
                     $crew_usage += $mod->getCrew() + 1;
                 } else {
                     $crew_usage += $mod->getCrew();
@@ -196,10 +204,10 @@ final class BuildShip implements ActionControllerInterface
 
             $this->shipBuildplanRepository->save($plan);
 
-            foreach($modules as $obj) {
+            foreach ($modules as $obj) {
                 $mod = $this->buildplanModuleRepository->prototype();
                 $mod->setModuleType((int) $obj->getType());
-                $mod->setBuildplanId((int)$plan->getId());
+                $mod->setBuildplanId((int) $plan->getId());
                 $mod->setModule($obj);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($obj->getSpecials()));
 
