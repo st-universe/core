@@ -303,6 +303,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->setTorpedoCount($shipobj->getTorpedoCount() + $load);
                         if ($load < 0) {
                             $this->colonyStorageManager->upperStorage($colony, $shipobj->getTorpedo()->getCommodity(), abs($load));
+                            $torpName = $shipobj->getTorpedo()->getName();
 
                             if ($shipobj->getTorpedoCount() == 0) {
                                 $shipobj->setTorpedo(null);
@@ -317,7 +318,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 _('%s: Es wurden %d Torpedos des Typs %s vom Schiff transferiert'),
                                 $shipobj->getName(),
                                 abs($load),
-                                $shipobj->getTorpedo()->getName()
+                                $torpName
                             );
                         } elseif ($load > 0) {
                             $this->colonyStorageManager->lowerStorage(
