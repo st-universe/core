@@ -265,10 +265,7 @@ function toggleSpecialModuleDisplay(type, module_crew) {
 		}
 	});
 	$('module_tab_info_' + type).innerHTML = checkedCount + ' von ' + specialSlots;
-	if (checkedCount > specialSlots) {
-		$('module_tab_info_' + type).style.color = '#ff0000';
-	}
-	else if (checkedCount == specialSlots) {
+	if (checkedCount == specialSlots) {
 		Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
 			if (!elem.checked && !elem.disabled) {
 				elem.disabled = true;
@@ -277,7 +274,6 @@ function toggleSpecialModuleDisplay(type, module_crew) {
 		});
 	}
 	else {
-		$('module_tab_info_' + type).style.color = '#1ba92a';
 		disabledSlots.forEach(function (elem) {
 			elem.disabled = false;
 		});

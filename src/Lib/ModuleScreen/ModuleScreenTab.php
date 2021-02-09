@@ -67,6 +67,14 @@ class ModuleScreenTab
 
     /**
      */
+    public function isSpecial()
+    {
+        return $this->getModuleType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL;
+    }
+
+
+    /**
+     */
     public function getBuildplan()
     {
         return $this->buildplan;
@@ -119,6 +127,4 @@ class ModuleScreenTab
         }
         return $class;
     }
-
 }
-

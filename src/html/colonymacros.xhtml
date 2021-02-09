@@ -1759,7 +1759,7 @@
       <img src="assets/goods/${mod/getModule/getGoodId}.gif" id="tab_image_mod_${moduleType}" />
     </tal:block>
     <span tal:replace="tab/getTabTitle">DESCRIPTION</span>
-    <span id="module_tab_info_${moduleType}">0 von ${RUMP/getSpecialSlots}</span>
+    <span tal:condition="tab/isSpecial" id="module_tab_info_${moduleType}">0 von ${RUMP/getSpecialSlots}</span>
   </td>
 </metal:macro>
 <metal:macro metal:define-macro="colonymenu_container">
