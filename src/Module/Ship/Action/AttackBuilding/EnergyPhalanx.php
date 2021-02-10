@@ -53,6 +53,11 @@ final class EnergyPhalanx
         return $this->colony->getUser();
     }
 
+    public function hasShipSystem(int $foo)
+    {
+        return true;
+    }
+
     public function getShipSystem(int $foo)
     {
         return $this;
