@@ -12,6 +12,8 @@ use Stu\Module\Ship\Lib\Battle\ApplyDamage;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\FightLib;
+use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhase;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
@@ -158,6 +160,7 @@ return [
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ApplyDamageInterface::class => autowire(ApplyDamage::class),
     EnergyWeaponPhaseInterface::class => autowire(EnergyWeaponPhase::class),
+    FightLibInterface::class => autowire(FightLib::class),
     ProjectileWeaponPhaseInterface::class => autowire(ProjectileWeaponPhase::class),
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),

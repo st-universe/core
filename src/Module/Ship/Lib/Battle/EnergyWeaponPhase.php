@@ -9,9 +9,7 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\WeaponInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
@@ -19,8 +17,6 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
 
     public const FIRINGMODE_RANDOM = 1;
     public const FIRINGMODE_FOCUS = 2;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private WeaponRepositoryInterface $weaponRepository;
 
@@ -33,14 +29,12 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
     private ModuleValueCalculatorInterface $moduleValueCalculator;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         WeaponRepositoryInterface $weaponRepository,
         EntryCreatorInterface $entryCreator,
         ShipRemoverInterface $shipRemover,
         ApplyDamageInterface $applyDamage,
         ModuleValueCalculatorInterface $moduleValueCalculator
     ) {
-        $this->shipRepository = $shipRepository;
         $this->weaponRepository = $weaponRepository;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
@@ -49,14 +43,13 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
     }
 
     public function fire(
-        ShipInterface $attacker,
+        $attacker,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
         $msg = [];
 
         $target = $targetPool[array_rand($targetPool)];
-        $isTargetCloaked = $target->getCloakState();
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
             if (!$attacker->getPhaser() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
@@ -92,8 +85,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
             $msg = array_merge($msg, $this->applyDamage->damage($damage_wrapper, $target));
 
             if ($target->getIsDestroyed()) {
-                if ($isAlertRed)
-                {
+                if ($isAlertRed) {
                     $this->entryCreator->addShipEntry(
                         '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
                         $attacker->getUser()->getId()
@@ -107,8 +99,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
 
                 $targetId = $target->getId();
                 $destroyMsg = $this->shipRemover->destroy($target);
-                if ($destroyMsg !== null)
-                {
+                if ($destroyMsg !== null) {
                     $msg[] = $destroyMsg;
                 }
 
@@ -123,7 +114,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         return $msg;
     }
 
-    private function isCritical(ShipInterface $ship, bool $isTargetCloaked): bool
+    private function isCritical($ship, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $this->getEnergyWeapon($ship)->getCriticalChance() * 2 : $this->getEnergyWeapon($ship)->getCriticalChance();
         if (rand(1, 100) <= $critChance) {
@@ -132,7 +123,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         return false;
     }
 
-    private function getEnergyWeaponDamage(ShipInterface $ship, bool $isCritical): float
+    private function getEnergyWeaponDamage($ship, bool $isCritical): float
     {
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
             return 0;
@@ -142,16 +133,16 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModule(),
             'getBaseDamage'
         );
-        $variance = (int)round($basedamage / 100 * $this->getEnergyWeapon($ship)->getVariance());
+        $variance = (int) round($basedamage / 100 * $this->getEnergyWeapon($ship)->getVariance());
         $damage = rand($basedamage - $variance, $basedamage + $variance);
-        
+
         return $isCritical ? $damage * 2 : $damage;
     }
 
-    private function getEnergyWeapon(ShipInterface $ship): ?WeaponInterface
+    private function getEnergyWeapon($ship): ?WeaponInterface
     {
         return $this->weaponRepository->findByModule(
-            (int)$ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModuleId()
+            (int) $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->getModuleId()
         );
     }
 
