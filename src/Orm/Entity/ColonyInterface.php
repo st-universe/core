@@ -155,6 +155,8 @@ interface ColonyInterface
 
     public function hasActiveBuildingWithFunction(int $function_id): bool;
 
+    public function getBuildingWithFunctionCount(int $function_id, array $states = [1]): int;
+
     public function lowerEps(int $value): void;
 
     public function upperEps(int $value): void;

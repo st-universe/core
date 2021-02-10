@@ -264,7 +264,7 @@ function toggleSpecialModuleDisplay(type, module_crew) {
 			updateCrewCount(elem.value, 0, 0);
 		}
 	});
-	$('module_tab_info_' + type).innerHTML = checkedCount + ' von ' + specialSlots;
+	$('module_tab_info_' + type).innerHTML = checkedCount + ' von max. ' + specialSlots;
 	if (checkedCount == specialSlots) {
 		Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
 			if (!elem.checked && !elem.disabled) {

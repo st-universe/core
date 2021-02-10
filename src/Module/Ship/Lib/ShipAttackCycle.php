@@ -8,26 +8,23 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
+use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\WeaponRepositoryInterface;
 
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
-    private EntryCreatorInterface $entryCreator;
-
     private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    private WeaponRepositoryInterface $weaponRepository;
-
     private EnergyWeaponPhaseInterface $energyWeaponPhase;
 
     private ProjectileWeaponPhaseInterface $projectileWeaponPhase;
+
+    private FightLibInterface $fightLib;
 
     /**
      * @return ShipInterface[]
@@ -48,19 +45,17 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     private bool $singleMode = false;
 
     public function __construct(
-        EntryCreatorInterface $entryCreator,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        WeaponRepositoryInterface $weaponRepository,
         EnergyWeaponPhaseInterface $energyWeaponPhase,
-        ProjectileWeaponPhaseInterface $projectileWeaponPhase
+        ProjectileWeaponPhaseInterface $projectileWeaponPhase,
+        FightLibInterface $fightLib
     ) {
-        $this->entryCreator = $entryCreator;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->weaponRepository = $weaponRepository;
         $this->energyWeaponPhase = $energyWeaponPhase;
         $this->projectileWeaponPhase = $projectileWeaponPhase;
+        $this->fightLib = $fightLib;
     }
 
     public function init(
@@ -74,38 +69,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->firstStrike = true;
         $this->messages = [];
         $this->usedShips = ['attacker' => [], 'defender' => []];
-    }
-
-    /**
-     * @return ShipInterface[]
-     */
-    private function filterInactiveShips(array $base): array
-    {
-        return array_filter(
-            $base,
-            function (ShipInterface $ship): bool {
-                return !$ship->getIsDestroyed() && !$ship->getDisabled();
-            }
-        );
-    }
-
-    private function ready(ShipInterface $ship): array
-    {
-        try {
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
-            $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
-        } catch (ShipSystemException $e) {
-        }
-
-        $ship->cancelRepair();
-
-        $msg = $this->alertLevelBasedReaction($ship);
-
-        if ($msg !== []) {
-            $msg = array_merge([sprintf(_('Aktionen der %s'), $ship->getName())], $msg);
-        }
-
-        return $msg;
     }
 
     /**
@@ -129,10 +92,10 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     public function cycle(bool $isAlertRed = false): void
     {
         foreach ($this->attacker as $attacker) {
-            $this->addMessageMerge($this->ready($attacker));
+            $this->addMessageMerge($this->fightLib->ready($attacker));
         }
         foreach ($this->defender as $defender) {
-            $this->addMessageMerge($this->ready($defender));
+            $this->addMessageMerge($this->fightLib->ready($defender));
         }
 
         while (true) {
@@ -144,8 +107,8 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 break;
             }
 
-            $attackerPool = $this->filterInactiveShips($this->attacker);
-            $defenderPool = $this->filterInactiveShips($this->defender);
+            $attackerPool = $this->fightLib->filterInactiveShips($this->attacker);
+            $defenderPool = $this->fightLib->filterInactiveShips($this->defender);
 
             if ($attackerPool === [] || $defenderPool === []) {
                 break;
@@ -185,7 +148,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
             $this->addMessageMerge($this->energyWeaponPhase->fire($attackingShip, $targetShipPool, $isAlertRed));
 
-            $this->addMessageMerge($this->projectileWeaponPhase->fire($attackingShip, $this->filterInactiveShips($targetShipPool), $isAlertRed));
+            $this->addMessageMerge($this->projectileWeaponPhase->fire($attackingShip, $this->fightLib->filterInactiveShips($targetShipPool), $isAlertRed));
         }
 
         foreach ($this->attacker as $ship) {
@@ -195,7 +158,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         foreach ($this->defender as $ship) {
             $this->shipRepository->save($ship);
         }
-
     }
 
     private function addMessageMerge($msg): void
@@ -223,72 +185,5 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             return false;
         }
         return true;
-    }
-
-    private function alertLevelBasedReaction(ShipInterface $ship): array
-    {
-        $msg = [];
-        if ($ship->getRump()->isEscapePods())
-        {
-            return $msg;
-        }
-        if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew() || $ship->getRump()->isTrumfield()) {
-            return $msg;
-        }
-        if ($ship->getDockedTo()) {
-            $ship->setDockedTo(null);
-            $msg[] = "- Das Schiff hat abgedockt";
-        }
-        if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
-            try {
-                $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
-                $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
-                return $msg;
-            } catch (ShipSystemException $e) {
-                $msg[] = "- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln";
-                return $msg;
-            }
-        }
-        if ($ship->getCloakState() && $ship->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
-            try {
-                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
-                $msg[] = "- Die Tarnung wurde deaktiviert";
-                return $msg;
-            } catch (ShipSystemException $e) {
-            }
-        }
-        if (!$ship->isTraktorbeamActive()) {
-            try {
-                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-
-                $msg[] = "- Die Schilde wurden aktiviert";
-            } catch (ShipSystemException $e) {
-            }
-        } else {
-            $msg[] = "- Die Schilde konnten wegen aktiviertem Traktorstrahl nicht aktiviert werden";
-        }
-        try {
-            $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_NBS);
-
-            $msg[] = "- Die Nahbereichssensoren wurden aktiviert";
-        } catch (ShipSystemException $e) {
-        }
-        if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_YELLOW) {
-            try {
-                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_PHASER);
-
-                $msg[] = "- Die Energiewaffe wurde aktiviert";
-            } catch (ShipSystemException $e) {
-            }
-        }
-        if ($ship->getAlertState() >= ShipAlertStateEnum::ALERT_RED) {
-            try {
-                $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_TORPEDO);
-
-                $msg[] = "- Der Torpedowerfer wurde aktiviert";
-            } catch (ShipSystemException $e) {
-            }
-        }
-        return $msg;
     }
 }

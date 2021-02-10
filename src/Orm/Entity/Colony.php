@@ -684,6 +684,11 @@ class Colony implements ColonyInterface
 
     private function hasBuildingWithFunction(int $function_id, array $states = [1]): bool
     {
+        return $this->getBuildingWithFunctionCount($function_id, $states) > 0;
+    }
+
+    public function getBuildingWithFunctionCount(int $function_id, array $states = [1]): int
+    {
         // @todo refactor
         global $container;
 
@@ -693,7 +698,7 @@ class Colony implements ColonyInterface
                 $this->getId(),
                 [$function_id],
                 $states
-            ) > 0;
+            );
     }
 
     public function lowerEps(int $value): void
