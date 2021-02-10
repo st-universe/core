@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class AttackBuilding implements ActionControllerInterface
@@ -43,6 +44,8 @@ final class AttackBuilding implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private ModuleRepositoryInterface $moduleRepository;
+
     private array $messages = [];
 
     public function __construct(
@@ -54,7 +57,8 @@ final class AttackBuilding implements ActionControllerInterface
         FightLibInterface $fightLib,
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        ModuleRepositoryInterface $moduleRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->buildingRepository = $buildingRepository;
@@ -65,6 +69,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->energyWeaponPhase = $energyWeaponPhase;
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->privateMessageSender = $privateMessageSender;
+        $this->moduleRepository = $moduleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -138,7 +143,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         // DEFENSE
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX);
-        $defendingPhalanx = new EnergyPhalanx($colony);
+        $defendingPhalanx = new EnergyPhalanx($colony, $this->moduleRepository->find(1));
 
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attacker);
