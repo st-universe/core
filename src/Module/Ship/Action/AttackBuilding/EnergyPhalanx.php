@@ -53,6 +53,16 @@ final class EnergyPhalanx
         return $this->colony->getUser();
     }
 
+    public function getShipSystem(int $foo)
+    {
+        return $this;
+    }
+
+    public function getModuleId()
+    {
+        return 1;
+    }
+
     // ShipRumpInterface stuff
 
     public function getPhaserVolleys(): int
