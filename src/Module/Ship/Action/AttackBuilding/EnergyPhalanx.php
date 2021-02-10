@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackBuilding;
 
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ModuleInterface;
 
 final class EnergyPhalanx
 {
 
     private ColonyInterface $colony;
 
+    private ModuleInterface $module;
+
     public function __construct(
-        ColonyInterface $colony
+        ColonyInterface $colony,
+        ModuleInterface $module
     ) {
         $this->colony = $colony;
+        $this->module = $module;
     }
 
     // ShipInterface stuff
@@ -68,7 +73,22 @@ final class EnergyPhalanx
         return 1;
     }
 
+    public function getModule()
+    {
+        return $this->module;
+    }
+
     // ShipRumpInterface stuff
+
+    public function getBaseDamage()
+    {
+        return 500;
+    }
+
+    public function getModuleLevel()
+    {
+        return 1;
+    }
 
     public function getPhaserVolleys(): int
     {

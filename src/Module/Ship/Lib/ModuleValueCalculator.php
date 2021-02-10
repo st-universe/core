@@ -11,7 +11,7 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
 {
 
     public function calculateModuleValue(
-        ShipRumpInterface $rump,
+        $rump,
         ModuleInterface $module,
         $callback = 'aggi',
         $value = false
@@ -20,12 +20,12 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
             $value = $rump->$callback();
         }
         if ($rump->getModuleLevel() > $module->getLevel()) {
-            return (int)round($value - $value / 100 * $module->getDowngradeFactor());
+            return (int) round($value - $value / 100 * $module->getDowngradeFactor());
         }
         if ($rump->getModuleLevel() < $module->getLevel()) {
-            return (int)round($value + $value / 100 * $module->getUpgradeFactor());
+            return (int) round($value + $value / 100 * $module->getUpgradeFactor());
         }
-        return (int)$value;
+        return (int) $value;
     }
 
     public function calculateDamageImpact(ShipRumpInterface $rump, ModuleInterface $module): string
@@ -49,6 +49,6 @@ final class ModuleValueCalculator implements ModuleValueCalculatorInterface
         } else {
             return $base;
         }
-        return (int)round((1 - $value) * 100);
+        return (int) round((1 - $value) * 100);
     }
 }
