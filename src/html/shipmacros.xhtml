@@ -1214,7 +1214,8 @@
               id="field${field/getFieldId}">
               <div>
                 <div>
-                  <a href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&field=${field/getId}&sstr=${sstr}">
+                  <a
+                    href="?id=${SHIP/getId}&B_ATTACK_BUILDING=1&colid=${currentColony/getId}&field=${field/getId}&sstr=${sstr}">
                     <img style="width: 40px; height: 40px;" title="Gebäude bombardieren: ${field/getTitleString}"
                       src="assets/generated/buildings/${field/getBuildingId}/${field/getBuilding/getBuildingType}${field/getBuildingState}${COLONY_SURFACE/getDayNightState}.png" />
                   </a>
