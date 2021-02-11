@@ -368,17 +368,17 @@ final class ShipMover implements ShipMoverInterface
         if ($this->getDestX() == $ship->getPosX()) {
             $oldy = $ship->getPosY();
             if ($this->getDestY() > $oldy) {
-                return ShipEnum::FLY_DOWN;
+                return ShipEnum::DIRECTION_BOTTOM;
             } else {
-                return ShipEnum::FLY_UP;
+                return ShipEnum::DIRECTION_TOP;
             }
         }
         if ($this->getDestY() == $ship->getPosY()) {
             $oldx = $ship->getPosX();
             if ($this->getDestX() > $oldx) {
-                return ShipEnum::FLY_RIGHT;
+                return ShipEnum::DIRECTION_RIGHT;
             } else {
-                return ShipEnum::FLY_LEFT;
+                return ShipEnum::DIRECTION_LEFT;
             }
         }
     }
@@ -549,13 +549,13 @@ final class ShipMover implements ShipMoverInterface
     private function getNextField(ShipInterface $leadShip, $flightMethod)
     {
         switch ($flightMethod) {
-            case ShipEnum::FLY_RIGHT:
+            case ShipEnum::DIRECTION_RIGHT:
                 return $this->getFieldData($leadShip, $leadShip->getPosX() + 1, $leadShip->getPosY());
-            case ShipEnum::FLY_LEFT:
+            case ShipEnum::DIRECTION_LEFT:
                 return $this->getFieldData($leadShip, $leadShip->getPosX() - 1, $leadShip->getPosY());
-            case ShipEnum::FLY_UP:
+            case ShipEnum::DIRECTION_TOP:
                 return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() - 1);
-            case ShipEnum::FLY_DOWN:
+            case ShipEnum::DIRECTION_BOTTOM:
                 return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() + 1);
         }
     }
@@ -566,28 +566,32 @@ final class ShipMover implements ShipMoverInterface
         $this->setDestY($posy);
     }
 
-    private function fly4(ShipInterface $ship)
-    {
-        $ship->setPosY($ship->getPosY() + 1);
-        $ship->setFlightDirection(1);
-    }
-
-    private function fly3(ShipInterface $ship)
-    {
-        $ship->setPosY($ship->getPosY() - 1);
-        $ship->setFlightDirection(2);
-    }
-
-    private function fly1(ShipInterface $ship)
-    {
-        $ship->setPosX($ship->getPosX() + 1);
-        $ship->setFlightDirection(3);
-    }
-
+    //down
     private function fly2(ShipInterface $ship)
     {
+        $ship->setPosY($ship->getPosY() + 1);
+        $ship->setFlightDirection(ShipEnum::DIRECTION_BOTTOM);
+    }
+
+    //up
+    private function fly4(ShipInterface $ship)
+    {
+        $ship->setPosY($ship->getPosY() - 1);
+        $ship->setFlightDirection(ShipEnum::DIRECTION_TOP);
+    }
+
+    //right
+    private function fly3(ShipInterface $ship)
+    {
+        $ship->setPosX($ship->getPosX() + 1);
+        $ship->setFlightDirection(ShipEnum::DIRECTION_RIGHT);
+    }
+
+    //left
+    private function fly1(ShipInterface $ship)
+    {
         $ship->setPosX($ship->getPosX() - 1);
-        $ship->setFlightDirection(4);
+        $ship->setFlightDirection(ShipEnum::DIRECTION_LEFT);
     }
 
     private function getFieldData(ShipInterface $leadShip, $x, $y)
@@ -642,19 +646,19 @@ final class ShipMover implements ShipMoverInterface
         $toSignature = $this->createSignature($ship, $nextField, $isSystem);
 
         switch ($flightMethod) {
-            case ShipEnum::FLY_RIGHT:
+            case ShipEnum::DIRECTION_RIGHT:
                 $fromSignature->setToDirection(ShipEnum::DIRECTION_RIGHT);
                 $toSignature->setFromDirection(ShipEnum::DIRECTION_LEFT);
                 break;
-            case ShipEnum::FLY_LEFT:
+            case ShipEnum::DIRECTION_LEFT:
                 $fromSignature->setToDirection(ShipEnum::DIRECTION_LEFT);
                 $toSignature->setFromDirection(ShipEnum::DIRECTION_RIGHT);
                 break;
-            case ShipEnum::FLY_UP:
+            case ShipEnum::DIRECTION_TOP:
                 $fromSignature->setToDirection(ShipEnum::DIRECTION_TOP);
                 $toSignature->setFromDirection(ShipEnum::DIRECTION_BOTTOM);
                 break;
-            case ShipEnum::FLY_DOWN:
+            case ShipEnum::DIRECTION_BOTTOM:
                 $fromSignature->setToDirection(ShipEnum::DIRECTION_BOTTOM);
                 $toSignature->setFromDirection(ShipEnum::DIRECTION_TOP);
                 break;

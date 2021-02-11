@@ -8,12 +8,6 @@ use Stu\Module\Commodity\CommodityTypeEnum;
 
 final class ShipEnum
 {
-    //fly stuff
-    public const FLY_RIGHT = 1;
-    public const FLY_LEFT = 2;
-    public const FLY_UP = 3;
-    public const FLY_DOWN = 4;
-
     //dock stuff
     public const DOCK_PRIVILEGE_MODE_ALLOW = 1;
     public const DOCK_PRIVILEGE_MODE_DENY = 2;
@@ -36,7 +30,7 @@ final class ShipEnum
     ];
     public const WARPCORE_CAPACITY_MULTIPLIER = 15;
 
-    //signatures
+    //flight and signature directions
     public const DIRECTION_LEFT = 1;
     public const DIRECTION_BOTTOM = 2;
     public const DIRECTION_RIGHT = 3;
