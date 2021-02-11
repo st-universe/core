@@ -94,6 +94,9 @@ class Colony implements ColonyInterface
     /** @Column(type="integer", length=6, nullable=true) */
     private $shield_frequency = 0;
 
+    /** @Column(type="integer", length=3, nullable=true) */
+    private $torpedo_type;
+
     /**
      * @ManyToOne(targetEntity="PlanetType")
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
@@ -116,6 +119,12 @@ class Colony implements ColonyInterface
      * @OneToMany(targetEntity="ColonyStorage", mappedBy="colony", indexBy="goods_id")
      */
     private $storage;
+
+    /**
+     * @ManyToOne(targetEntity="TorpedoType")
+     * @JoinColumn(name="torpedo_type", referencedColumnName="id")
+     */
+    private $torpedo;
 
     private $has_active_building_by_function = [];
 
@@ -354,6 +363,17 @@ class Colony implements ColonyInterface
     public function setShieldFrequency(?int $shieldFrequency): ColonyInterface
     {
         $this->shield_frequency = $shieldFrequency;
+        return $this;
+    }
+
+    public function getTorpedo(): ?TorpedoTypeInterface
+    {
+        return $this->torpedo;
+    }
+
+    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyInterface
+    {
+        $this->torpedo = $torpedoType;
         return $this;
     }
 
