@@ -129,6 +129,8 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
+        //TODO check if feldId erlaubt (kleiner 80)
+
         $fleet = false;
         if ($ship->isFleetLeader()) {
             $attacker = $ship->getFleet()->getShips()->toArray();
