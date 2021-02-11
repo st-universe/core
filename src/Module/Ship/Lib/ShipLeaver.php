@@ -28,7 +28,7 @@ final class ShipLeaver implements ShipLeaverInterface
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
-    
+
     private CrewRepositoryInterface $crewRepository;
 
     public function __construct(
@@ -62,8 +62,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $ship->setFleet(null);
         $this->shipRepository->save($ship);
 
-        if ($ship->getRump()->isEscapePods())
-        {
+        if ($ship->getRump()->isEscapePods()) {
             $this->letCrewDie($ship);
             return _('Die Rettungskapseln wurden zerstört, die Crew ist daher verstorben!');
         }
@@ -71,47 +70,41 @@ final class ShipLeaver implements ShipLeaverInterface
         //create pods entity
         $pods = $this->launchEscapePods($ship);
 
-        if ($pods == null)
-        {
+        if ($pods == null) {
             $this->letCrewDie($ship);
             return _('Keine Rettungskapseln vorhanden, die Crew ist daher verstorben!');
         }
-        
+
         //transfer crew into pods
         $crewList = $ship->getCrewlist();
-        foreach ($crewList as $shipCrew)
-        {
+        foreach ($crewList as $shipCrew) {
             $shipCrew->setShip($pods);
             $this->shipCrewRepository->save($shipCrew);
         }
-        
+
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
 
     private function letCrewDie(ShipInterface $ship): void
     {
         $crewArray = [];
-        foreach ($ship->getCrewlist() as $shipCrew)
-        {
+        foreach ($ship->getCrewlist() as $shipCrew) {
             $crewArray[] = $shipCrew->getCrew();
         }
 
         $this->shipCrewRepository->truncateByShip((int) $ship->getId());
-        
-        foreach ($crewArray as $crew)
-        {
+
+        foreach ($crewArray as $crew) {
             $this->crewRepository->delete($crew);
         }
-
     }
-    
+
     private function launchEscapePods(ShipInterface $ship): ?ShipInterface
     {
         $shipRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + 100);
-        
+
         // faction does not have escape pods
-        if ($shipRump == null)
-        {
+        if ($shipRump == null) {
             return null;
         }
 
@@ -127,11 +120,14 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setSystem($ship->getSystem());
         $pods->setCX($ship->getCx());
         $pods->setCY($ship->getCy());
-        
+
+        //return to save place
+        $this->returnToSafety($pods, $ship);
+
         $this->shipRepository->save($pods);
         return $pods;
     }
-    
+
     private function changeFleetLeader(ShipInterface $obj): void
     {
         $ship = current(
@@ -158,5 +154,42 @@ final class ShipLeaver implements ShipLeaverInterface
         $fleet->setLeadShip($ship);
 
         $this->fleetRepository->save($fleet);
+    }
+
+    private function returnToSafety(ShipInterface $pods, ShipInterface $ship)
+    {
+        $field = $pods->getCurrentMapField();
+
+        if (
+            $field->getFieldType()->getSpecialDamage()
+            && (($pods->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($pods->getSystem() === null && !$field->getFieldType()->getSpecialDamageInnerSystem()))
+        ) {
+            $met = 'fly' . $ship->getFlightDirection();
+            $this->$met($pods);
+        }
+    }
+
+    //flee upwardss
+    private function fly2(ShipInterface $pods)
+    {
+        $pods->setPosY($pods->getPosY() - 1);
+    }
+
+    //flee downwards
+    private function fly4(ShipInterface $pods)
+    {
+        $pods->setPosY($pods->getPosY() + 1);
+    }
+
+    //flee right
+    private function fly3(ShipInterface $pods)
+    {
+        $pods->setPosX($pods->getPosX() - 1);
+    }
+
+    //flee left
+    private function fly1(ShipInterface $pods)
+    {
+        $pods->setPosX($pods->getPosX() + 1);
     }
 }

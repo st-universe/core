@@ -50,7 +50,7 @@ final class EnergyPhalanx
 
     public function getHitChance(): int
     {
-        return 100;
+        return 86;
     }
 
     public function getUser()
@@ -97,11 +97,11 @@ final class EnergyPhalanx
 
     public function getPhaserShieldDamageFactor(): int
     {
-        return 2;
+        return 200;
     }
 
     public function getPhaserHullDamageFactor(): int
     {
-        return 1;
+        return 100;
     }
 }

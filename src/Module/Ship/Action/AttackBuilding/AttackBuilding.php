@@ -155,6 +155,10 @@ final class AttackBuilding implements ActionControllerInterface
         // OFFENSE
         //oberfläche, nur torpedos!
 
+
+        //save colo
+        //TODO
+
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
         foreach ($this->messages as $key => $value) {
             $pm .= $value . "\n";

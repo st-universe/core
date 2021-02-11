@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\EnterStarSystem;
 
 use request;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -14,7 +16,6 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
 
 final class EnterStarSystem implements ActionControllerInterface
 {
@@ -59,23 +60,23 @@ final class EnterStarSystem implements ActionControllerInterface
 
         $flightDirection = $ship->getFlightDirection();
         if ($flightDirection === 0) {
-            $flightDirection = rand(1,4);
+            $flightDirection = rand(1, 4);
         }
 
         switch ($flightDirection) {
-            case 1:
+            case ShipEnum::DIRECTION_BOTTOM:
                 $posx = rand(1, $system->getMaxX());
                 $posy = 1;
                 break;
-            case 2:
+            case ShipEnum::DIRECTION_TOP:
                 $posx = rand(1, $system->getMaxX());
                 $posy = $system->getMaxY();
                 break;
-            case 3:
+            case ShipEnum::DIRECTION_RIGHT:
                 $posx = 1;
                 $posy = rand(1, $system->getMaxY());
                 break;
-            case 4:
+            case ShipEnum::DIRECTION_LEFT:
                 $posx = $system->getMaxX();
                 $posy = rand(1, $system->getMaxY());
                 break;
