@@ -566,11 +566,7 @@
                 <select name="torpid">
                   <option value="0">----------------------</option>
                   <tal:block tal:repeat="data BUILDABLE_TORPEDO_TYPES">
-                    <option tal:condition="php:COLONY.getTorpedo() AND (COLONY.getTorpedo().getId() EQ data.getId())"
-                      tal:content="data/getName" tal:attributes="value data/getId" selected>NAME</option>
-                    <option
-                      tal:condition="php: (NOT COLONY.getTorpedo()) OR (COLONY.getTorpedo().getId() != data.getId())"
-                      tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+                    <option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
                   </tal:block>
                 </select>
                 <input type="submit" class="button" value="ändern" name="B_CHANGE_TORPS" id="changetorps_button" />
