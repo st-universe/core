@@ -226,6 +226,10 @@ final class ShipMover implements ShipMoverInterface
                 continue;
             }
 
+            if (!$this->areShipsLeft($ships)) {
+                continue;
+            }
+
             //Alarm-Rot check
             $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($leadShip, $this->informations);
             shuffle($shipsToShuffle);
@@ -240,7 +244,7 @@ final class ShipMover implements ShipMoverInterface
                 // check for destroyed ships
                 foreach ($ships as $ship) {
                     if ($ship->getIsDestroyed()) {
-                        $this->lostShips[$ship->getId()] = $ship;
+                        $this->addLostShip($ship, $leadShip, null);
                     }
                 }
             }
@@ -455,7 +459,11 @@ final class ShipMover implements ShipMoverInterface
         if ($nextField->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $nextField->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$nextField->getFieldType()->getSpecialDamageInnerSystem()))) {
             $this->addInformation(sprintf(_('%s in Sektor %d|%d'), $nextField->getFieldType()->getName(), $ship->getPosX(), $ship->getPosY()));
 
-            $this->applyFieldDamage($ship, $nextField->getFieldType()->getSpecialDamage(), true, '');
+            $this->applyFieldDamage($ship, $leadShip, $nextField->getFieldType()->getSpecialDamage(), true, '');
+
+            if ($ship->getIsDestroyed()) {
+                return;
+            }
         }
 
         //check for deflector state
@@ -479,11 +487,11 @@ final class ShipMover implements ShipMoverInterface
                 'Nicht genug Energie für den Deflektor.' :
                 'Deflektor außer Funktion.';
 
-            $this->applyFieldDamage($ship, $nextField->getFieldType()->getDamage(), false, $dmgCause);
+            $this->applyFieldDamage($ship, $leadShip, $nextField->getFieldType()->getDamage(), false, $dmgCause);
         }
     }
 
-    private function applyFieldDamage($ship, $damage, $isAbsolutDmg, $cause): void
+    private function applyFieldDamage($ship, $leadShip, $damage, $isAbsolutDmg, $cause): void
     {
         //tractored ship
         if ($ship->isTraktorbeamActive()) {
@@ -511,7 +519,7 @@ final class ShipMover implements ShipMoverInterface
             $this->entryCreator->addShipEntry(sprintf(_('Die %s wurde beim Einflug in Sektor %s zerstört'), $ship->getName(), $ship->getSectorString()));
 
             $this->shipRemover->destroy($ship);
-            $this->lostShips[$ship->getid()] = $ship;
+            $this->addLostShip($ship, $leadShip, null);
         }
     }
 
@@ -527,9 +535,11 @@ final class ShipMover implements ShipMoverInterface
         $ship->deactivateTraktorBeam();
     }
 
-    private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, string $msg)
+    private function addLostShip(ShipInterface $ship, ShipInterface $leadShip, ?string $msg)
     {
-        $this->addInformation($msg);
+        if ($msg !== null) {
+            $this->addInformation($msg);
+        }
 
         $this->lostShips[$ship->getId()] = $ship;
 
