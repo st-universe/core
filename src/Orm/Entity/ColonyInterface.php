@@ -85,6 +85,10 @@ interface ColonyInterface
 
     public function setShieldFrequency(?int $shieldFrequency): ColonyInterface;
 
+    public function getTorpedo(): ?TorpedoTypeInterface;
+
+    public function setTorpedo(?TorpedoTypeInterface $torpedoType): ColonyInterface;
+
     public function getPlanetType(): PlanetTypeInterface;
 
     public function setPlanetType(PlanetTypeInterface $planetType): ColonyInterface;
