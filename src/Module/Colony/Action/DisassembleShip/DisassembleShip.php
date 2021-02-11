@@ -7,14 +7,16 @@ namespace Stu\Module\Colony\Action\DisassembleShip;
 use request;
 
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 
 final class DisassembleShip implements ActionControllerInterface
 {
@@ -22,30 +24,30 @@ final class DisassembleShip implements ActionControllerInterface
 
     private ColonyLoaderInterface $colonyLoader;
 
-    private ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository;
-
     private ShipLoaderInterface $shipLoader;
 
     private ColonyRepositoryInterface $colonyRepository;
 
     private ShipRemoverInterface $shipRemover;
-    
+
     private ColonyStorageManagerInterface $colonyStorageManager;
+
+    private CommodityRepositoryInterface $commodityRepository;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         ShipLoaderInterface $shipLoader,
         ColonyRepositoryInterface $colonyRepository,
         ShipRemoverInterface $shipRemover,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyLoader = $colonyLoader;
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->shipLoader = $shipLoader;
         $this->colonyRepository = $colonyRepository;
         $this->shipRemover = $shipRemover;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -72,8 +74,7 @@ final class DisassembleShip implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser((int) $ship_id, $userId);
         $this->retrieveSomeIntactModules($ship, $colony, $game);
-
-        //$ship->getSystems()->clear();
+        $this->retrieveWarpcoreLoad($ship, $colony, $game);
 
         $this->shipRemover->remove($ship);
 
@@ -84,15 +85,14 @@ final class DisassembleShip implements ActionControllerInterface
     {
         $intactModules = [];
 
-        foreach($ship->getSystems() as $system)
-        {
-            if ($system->getModule() !== null
-                && $system->getStatus() == 100)
-            {
+        foreach ($ship->getSystems() as $system) {
+            if (
+                $system->getModule() !== null
+                && $system->getStatus() == 100
+            ) {
                 $module = $system->getModule();
 
-                if (!array_key_exists($module->getId(), $intactModules))
-                {
+                if (!array_key_exists($module->getId(), $intactModules)) {
                     $intactModules[$module->getId()] = $module;
                 }
             }
@@ -102,14 +102,12 @@ final class DisassembleShip implements ActionControllerInterface
 
         //retrieve 50% of all intact modules
         $recycleCount = (int) ceil(count($intactModules) / 2);
-        for ($i = 1; $i <= $recycleCount; $i++)
-        {
-            if ($colony->getStorageSum() >= $maxStorage)
-            {
+        for ($i = 1; $i <= $recycleCount; $i++) {
+            if ($colony->getStorageSum() >= $maxStorage) {
                 $game->addInformationf(_('Kein Lagerraum frei um Module zu recyclen!'));
                 break;
             }
-            
+
             $module = $intactModules[array_rand($intactModules)];
             unset($intactModules[$module->getId()]);
 
@@ -120,6 +118,38 @@ final class DisassembleShip implements ActionControllerInterface
             );
 
             $game->addInformationf(sprintf(_('Folgendes Modul konnte recycelt werden: %s'), $module->getName()));
+        }
+    }
+
+    private function retrieveWarpcoreLoad(ShipInterface $ship, $colony, $game): void
+    {
+        $loads = (int) floor($ship->getWarpcoreLoad() / ShipEnum::WARPCORE_LOAD);
+
+        if ($loads < 1) {
+            return;
+        }
+
+        $maxStorage = $colony->getMaxStorage();
+
+        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+            if ($colony->getStorageSum() >= $maxStorage) {
+                $game->addInformationf(_('Kein Lagerraum frei um Warpkern-Mix zu sichern!'));
+                break;
+            }
+
+            $amount = (int) $loads * $loadCost;
+            if ($maxStorage - $colony->getStorageSum() < $amount) {
+                $amount = $maxStorage - $colony->getStorageSum();
+            }
+
+            $commodity = $this->commodityRepository->find($commodityId);
+            $this->colonyStorageManager->upperStorage(
+                $colony,
+                $commodity,
+                $amount
+            );
+
+            $game->addInformationf(sprintf(_('%d Einheiten folgender Ware konnten recycelt werden: %s'), $amount, $commodity->getName()));
         }
     }
 

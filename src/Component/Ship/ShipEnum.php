@@ -24,9 +24,9 @@ final class ShipEnum
     //warpcore stuff
     public const WARPCORE_LOAD = 20;
     public const WARPCORE_LOAD_COST = [
-        CommodityTypeEnum::GOOD_DEUTERIUM => 2,
+        CommodityTypeEnum::GOOD_DILITHIUM => 1,
         CommodityTypeEnum::GOOD_ANTIMATTER => 2,
-        CommodityTypeEnum::GOOD_DILITHIUM => 1
+        CommodityTypeEnum::GOOD_DEUTERIUM => 2
     ];
     public const WARPCORE_CAPACITY_MULTIPLIER = 15;
 
