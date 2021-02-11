@@ -42,6 +42,9 @@ use Stu\Module\Colony\Action\CancelModuleCreation\CancelModuleCreation;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequency;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequest;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequestInterface;
+use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoType;
+use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoTypeRequest;
+use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoTypeRequestInterface;
 use Stu\Module\Colony\Action\ChangeName\ChangeName;
 use Stu\Module\Colony\Action\CreateModules\CreateModules;
 use Stu\Module\Colony\Action\DeactivateBuilding\DeactivateBuilding;
@@ -163,6 +166,7 @@ return [
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
     ChangeFrequencyRequestInterface::class => autowire(ChangeFrequencyRequest::class),
+    ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
@@ -237,7 +241,8 @@ return [
         ActivateBuildings::ACTION_IDENTIFIER => autowire(ActivateBuildings::class),
         DeactivateBuildings::ACTION_IDENTIFIER => autowire(DeactivateBuildings::class),
         DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
-        ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class)
+        ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class),
+        ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

@@ -527,7 +527,7 @@
       </div>
       <br />
       <div class="box" tal:condition="COLONY/hasShields">
-        <div class="box_title">Schilde</div>
+        <div class="box_title">Schilde + Orbitalverteidigung</div>
         <div class="box_body">
           <table class="tcal">
             <tr>
@@ -556,6 +556,18 @@
                   tal:attributes="value COLONY/getShieldFrequency" />
                 <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
                   id="changeFrequencyButton" />
+              </td>
+            </tr>
+            <tr tal:condition="BUILDABLE_TORPEDO_TYPES">
+              <td>Torpedo-Sorte für Orbitalverteidigung</td>
+              <td>
+                <select name="torpid">
+                  <option value="0">----------------------</option>
+                  <tal:block tal:repeat="data BUILDABLE_TORPEDO_TYPES">
+                    <option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+                  </tal:block>
+                </select>
+                <input type="submit" class="button" value="ändern" name="B_CHANGE_TORPS" id="changetorps_button" />
               </td>
             </tr>
           </table>

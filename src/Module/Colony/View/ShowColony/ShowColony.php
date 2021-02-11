@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\View\ShowColony;
 
 use ColonyMenu;
 use request;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -13,6 +14,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyGuiHelperInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Tal\OrbitShipItem;
+use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 
 final class ShowColony implements ViewControllerInterface
 {
@@ -26,16 +28,20 @@ final class ShowColony implements ViewControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyGuiHelperInterface $colonyGuiHelper,
         ShowColonyRequestInterface $showColonyRequest,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        TorpedoTypeRepositoryInterface $torpedoTypeRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyGuiHelper = $colonyGuiHelper;
         $this->showColonyRequest = $showColonyRequest;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->torpedoTypeRepository = $torpedoTypeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -103,5 +109,8 @@ final class ShowColony implements ViewControllerInterface
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
+
+        $particlePhalanxCount = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX, [0, 1]);
+        $game->setTemplateVar('BUILDABLE_TORPEDO_TYPES', $particlePhalanxCount > 0 ? $this->torpedoTypeRepository->getForUser($userId) : null);
     }
 }
