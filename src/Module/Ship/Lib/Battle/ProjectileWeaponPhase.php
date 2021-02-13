@@ -11,7 +11,6 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
-use Stu\Orm\Entity\ShipInterface;
 
 final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 {
@@ -41,7 +40,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
     }
 
     public function fire(
-        ShipInterface $attacker,
+        $attacker,
         array $targetPool,
         bool $isAlertRed = false
     ): array {
@@ -58,7 +57,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
             $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
 
             if ($attacker->getTorpedoCount() === 0) {
-                $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO);
+                $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
             }
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
@@ -91,8 +90,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
             if ($target->getIsDestroyed()) {
                 unset($targetPool[$target->getId()]);
 
-                if ($isAlertRed)
-                {
+                if ($isAlertRed) {
                     $this->entryCreator->addShipEntry(
                         '[b][color=red]Alarm-Rot:[/color][/b] Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
                         $attacker->getUser()->getId()
@@ -104,8 +102,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                     );
                 }
                 $destroyMsg = $this->shipRemover->destroy($target);
-                if ($destroyMsg !== null)
-                {
+                if ($destroyMsg !== null) {
                     $msg[] = $destroyMsg;
                 }
             }
@@ -120,7 +117,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
         return 1;
     }
 
-    private function isCritical(ShipInterface $ship, bool $isTargetCloaked): bool
+    private function isCritical($ship, bool $isTargetCloaked): bool
     {
         $critChance = $isTargetCloaked ? $ship->getTorpedo()->getCriticalChance() * 2 : $ship->getTorpedo()->getCriticalChance();
         if (rand(1, 100) <= $critChance) {
@@ -129,7 +126,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
         return false;
     }
 
-    private function getProjectileWeaponDamage(ShipInterface $ship, bool $isCritical): float
+    private function getProjectileWeaponDamage($ship, bool $isCritical): float
     {
         $variance = (int) round($ship->getTorpedo()->getBaseDamage() / 100 * $ship->getTorpedo()->getVariance());
         $basedamage = $this->moduleValueCalculator->calculateModuleValue(
@@ -139,7 +136,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
             $ship->getTorpedo()->getBaseDamage()
         );
         $damage = rand($basedamage - $variance, $basedamage + $variance);
-        
+
         return $isCritical ? $damage * 2 : $damage;
     }
 }

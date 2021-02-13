@@ -6,9 +6,9 @@ namespace Stu\Module\Ship\Action\AttackBuilding;
 
 use request;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
@@ -46,6 +46,8 @@ final class AttackBuilding implements ActionControllerInterface
 
     private ModuleRepositoryInterface $moduleRepository;
 
+    private ColonyStorageManagerInterface $colonyStorageManager;
+
     private array $messages = [];
 
     public function __construct(
@@ -58,7 +60,8 @@ final class AttackBuilding implements ActionControllerInterface
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
         PrivateMessageSenderInterface $privateMessageSender,
-        ModuleRepositoryInterface $moduleRepository
+        ModuleRepositoryInterface $moduleRepository,
+        ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->buildingRepository = $buildingRepository;
@@ -70,6 +73,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->privateMessageSender = $privateMessageSender;
         $this->moduleRepository = $moduleRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -90,8 +94,9 @@ final class AttackBuilding implements ActionControllerInterface
         $colonyId = (int) request::getIntFatal('colid');
         $fieldId = (int) request::getIntFatal('field');
 
-        $game->addInformation("colonyId: " . $colonyId);
-        $game->addInformation("fieldId:" . $fieldId);
+        if ($fieldId >= 80) {
+            return;
+        }
 
         $colony = $this->colonyRepository->find($colonyId);
         $field = $this->planetFieldRepository->find($fieldId);
@@ -129,8 +134,6 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        //TODO check if feldId erlaubt (kleiner 80)
-
         $fleet = false;
         if ($ship->isFleetLeader()) {
             $attacker = $ship->getFleet()->getShips()->toArray();
@@ -153,6 +156,12 @@ final class AttackBuilding implements ActionControllerInterface
         }
 
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
+        $defendingPhalanx = new ProjectilePhalanx($colony, $this->moduleRepository->find(2), $this->colonyStorageManager);
+
+        for ($i = 0; $i < $count; $i++) {
+            $attackerPool = $this->fightLib->filterInactiveShips($attacker);
+            $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool, false));
+        }
 
         // OFFENSE
         //oberfläche, nur torpedos!

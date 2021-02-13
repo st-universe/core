@@ -46,15 +46,19 @@ final class ChangeTorpedoType implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_INFO]);
 
-        $getTorpedoId = $this->changeTorpedoTypeRequest->getTorpedoId();
+        $torpedoId = $this->changeTorpedoTypeRequest->getTorpedoId();
 
-        $availableTorpedos = $this->torpedoTypeRepository->getForUser($game->getUser()->getId());
-        if (!array_key_exists($getTorpedoId, $availableTorpedos)) {
-            $game->addInformation(_('Unerlaubter Torpedo-Typ'));
-            return;
+        if ($torpedoId !== 0) {
+            $availableTorpedos = $this->torpedoTypeRepository->getForUser($game->getUser()->getId());
+            if (!array_key_exists($torpedoId, $availableTorpedos)) {
+                $game->addInformation(_('Unerlaubter Torpedo-Typ'));
+                return;
+            }
+
+            $colony->setTorpedo($availableTorpedos[$torpedoId]);
+        } else {
+            $colony->setTorpedo(null);
         }
-
-        $colony->setTorpedo($availableTorpedos[$getTorpedoId]);
         $this->colonyRepository->save($colony);
 
         $game->addInformation(_('Die Torpedo-Sorte wurde geändert'));

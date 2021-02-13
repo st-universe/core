@@ -53,13 +53,13 @@ function triggerBeamFrom(target) {
 
 function showBToColonyWindow(target) {
 	elt = 'beam';
-	openPJsWin(elt, 1, null, 400);
+	openPJsWin(elt, 1);
 	new Ajax.Updater(elt, 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
 }
 
 function showBFromColonyWindow(target) {
 	elt = 'beam';
-	openPJsWin(elt, 1, null, 400);
+	openPJsWin(elt, 1);
 	new Ajax.Updater(elt, 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
 }
 
@@ -91,7 +91,7 @@ function showScanWindow(shipid, target) {
 }
 function showSectorScanWindow() {
 	elt = 'sectorscan';
-	openPJsWin(elt, 1, null, 400);
+	openPJsWin(elt, 1);
 	ajax_update(elt, 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
 }
 function openStarMap(obj, cx, cy) {
@@ -154,7 +154,7 @@ function showColonization(colonyId) {
 }
 function showColonyScan() {
 	elt = 'colonyscan';
-	openPJsWin(elt, 1, null, 400);
+	openPJsWin(elt, 1);
 	ajax_update(elt, 'ship.php?SHOW_COLONY_SCAN=1&id=' + shipid);
 }
 function hideFleet(fleetid) {
