@@ -2,9 +2,7 @@
 
 namespace Stu\Module\Ship\Lib\Battle;
 
-use Stu\Orm\Entity\ShipInterface;
-
 interface ProjectileWeaponPhaseInterface
 {
-    public function fire(ShipInterface $attacker, array $targetPool, bool $isAlertRed = false): array;
+    public function fire($attacker, array $targetPool, bool $isAlertRed = false): array;
 }
