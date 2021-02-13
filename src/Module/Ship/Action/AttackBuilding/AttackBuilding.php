@@ -95,6 +95,7 @@ final class AttackBuilding implements ActionControllerInterface
         $fieldId = (int) request::getIntFatal('field');
 
         if ($fieldId >= 80) {
+            $game->addInformation(_('Der Untergrund kann nicht attackiert werden'));
             return;
         }
 
@@ -102,6 +103,7 @@ final class AttackBuilding implements ActionControllerInterface
         $field = $this->planetFieldRepository->find($fieldId);
 
         if ($field === null || $colony === null) {
+            $game->addInformation(_('Feld oder Kolonie nicht vorhanden'));
             return;
         }
 

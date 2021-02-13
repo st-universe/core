@@ -48,19 +48,22 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<table class="tcal">
-				<tr>
-					<th>Siedler</th>
-					<th>Punkte</th>
-				</tr>
-				<tr tal:repeat="entry DISCOVERER_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-					<td>
-						<metal:macro metal:use-macro="html/macros.xhtml/userprofile" tal:define="id entry/getUserId" />
-						<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
-					</td>
-					<td tal:content="entry/getPoints">POINTS</td>
-				</tr>
-			</table>
+			<div style="float: left; width: 30%;">
+				<table class="tcal">
+					<tr>
+						<th>Siedler</th>
+						<th>Punkte</th>
+					</tr>
+					<tr tal:repeat="entry DISCOVERER_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+						<td>
+							<metal:macro metal:use-macro="html/macros.xhtml/userprofile"
+								tal:define="id entry/getUserId" />
+							<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
+						</td>
+						<td tal:content="entry/getPoints">POINTS</td>
+					</tr>
+				</table>
+			</div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
@@ -68,18 +71,20 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<table class="tcal">
-				<tr>
-					<th>Fraktion</th>
-					<th>Geflogene Felder</th>
-				</tr>
-				<tr tal:repeat="entry FLIGHTS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-					<td>
-						<img src="assets/rassen/${entry/getFaction}s.gif" />
-					</td>
-					<td tal:content="entry/getSignatures">POINTS</td>
-				</tr>
-			</table>
+			<div style="float: left; width: 30%;">
+				<table class="tcal">
+					<tr>
+						<th>Fraktion</th>
+						<th>Geflogene Felder</th>
+					</tr>
+					<tr tal:repeat="entry FLIGHTS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+						<td>
+							<img src="assets/rassen/${entry/getFaction}s.gif" />
+						</td>
+						<td tal:content="entry/getSignatures">POINTS</td>
+					</tr>
+				</table>
+			</div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
@@ -87,19 +92,22 @@
 	<tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 		<tal:block metal:fill-slot="body">
 			<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-			<table class="tcal">
-				<tr>
-					<th>Siedler</th>
-					<th>Latinum</th>
-				</tr>
-				<tr tal:repeat="entry NAGUS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
-					<td>
-						<metal:macro metal:use-macro="html/macros.xhtml/userprofile" tal:define="id entry/getUserId" />
-						<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
-					</td>
-					<td tal:content="entry/getAmount">AMOUNT</td>
-				</tr>
-			</table>
+			<div style="float: left; width: 30%;">
+				<table class="tcal">
+					<tr>
+						<th>Siedler</th>
+						<th>Latinum</th>
+					</tr>
+					<tr tal:repeat="entry NAGUS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
+						<td>
+							<metal:macro metal:use-macro="html/macros.xhtml/userprofile"
+								tal:define="id entry/getUserId" />
+							<span tal:replace="structure bbcode:entry/getUser/getName">USER</span>
+						</td>
+						<td tal:content="entry/getAmount">AMOUNT</td>
+					</tr>
+				</table>
+			</div>
 		</tal:block>
 	</tal:block>
 </metal:macro>
