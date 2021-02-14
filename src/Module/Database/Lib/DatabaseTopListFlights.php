@@ -8,18 +8,25 @@ class DatabaseTopListFlights extends DatabaseTopList
 {
 
     private $signatures = null;
+    private $shipcount = null;
     private $faction = null;
 
     function __construct($entry)
     {
         parent::__construct($entry['user_id']);
         $this->signatures = $entry['sc'];
+        $this->shipcount = $entry['shipc'];
         $this->faction = $entry['race'];
     }
 
     function getSignatures()
     {
         return $this->signatures;
+    }
+
+    function getShipCount()
+    {
+        return $this->shipcount;
     }
 
     function getFaction()

@@ -98,17 +98,23 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
         $rsm->addScalarResult('user_id', 'user_id', 'integer');
         $rsm->addScalarResult('sc', 'sc', 'integer');
         $rsm->addScalarResult('race', 'race', 'integer');
+        $rsm->addScalarResult('shipc', 'shipc', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT user_id, count(*) as sc, (SELECT race
-                                                FROM stu_user u
-                                                WHERE fs.user_id = u.id)
+            'SELECT fs.user_id, count(*) as sc,
+                (SELECT race
+                FROM stu_user u
+                WHERE fs.user_id = u.id),
+                count(distinct ship_id) as shipc
             FROM stu_flight_sig fs
-            WHERE to_direction != 0
-            GROUP BY user_id
+            WHERE fs.to_direction != 0
+            AND fs.time > :maxAge
+            GROUP BY fs.user_id
             ORDER BY 2 DESC
             LIMIT 10',
             $rsm
-        )->getResult();
+        )
+            ->setParameter('maxAge', time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE)
+            ->getResult();
     }
 }

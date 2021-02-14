@@ -75,12 +75,14 @@
 				<table class="tcal">
 					<tr>
 						<th>Fraktion</th>
+						<th>Beteiligte Schiffe</th>
 						<th>Geflogene Felder</th>
 					</tr>
 					<tr tal:repeat="entry FLIGHTS_LIST" tal:attributes="class string:row${repeat/entry/odd}">
 						<td>
 							<img src="assets/rassen/${entry/getFaction}s.gif" />
 						</td>
+						<td tal:content="entry/getShipCount">SHIPS</td>
 						<td tal:content="entry/getSignatures">POINTS</td>
 					</tr>
 				</table>
