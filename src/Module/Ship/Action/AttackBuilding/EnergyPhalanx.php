@@ -40,7 +40,7 @@ final class EnergyPhalanx
 
     public function getName(): string
     {
-        return 'Orbitale Phaserphalanx';
+        return in_array($this->colony->getUser()->getFactionId(), [2, 3]) ? 'Orbitale Disruptorphalanx' : 'Orbitale Phaserphalanx';
     }
 
     public function getPhaser(): bool
@@ -82,7 +82,7 @@ final class EnergyPhalanx
 
     public function getBaseDamage()
     {
-        return 500;
+        return 200;
     }
 
     public function getModuleLevel()
@@ -92,7 +92,7 @@ final class EnergyPhalanx
 
     public function getPhaserVolleys(): int
     {
-        return 1;
+        return 2;
     }
 
     public function getPhaserShieldDamageFactor(): int
