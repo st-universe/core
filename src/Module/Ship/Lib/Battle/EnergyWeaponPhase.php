@@ -162,6 +162,11 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
                     break;
                 }
             }
+            //deactivate if high damage
+            else if ($target->hasHighDamage()) {
+
+                $this->buildingManager->deactivate($target);
+            }
         }
 
         return $msg;
