@@ -80,6 +80,11 @@ final class EnergyPhalanx
 
     // ShipRumpInterface stuff
 
+    public function getRoleId()
+    {
+        return 0;
+    }
+
     public function getBaseDamage()
     {
         return 200;
