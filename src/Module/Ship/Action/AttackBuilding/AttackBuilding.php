@@ -149,6 +149,10 @@ final class AttackBuilding implements ActionControllerInterface
 
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attacker);
+
+            if (count($attackerPool) === 0) {
+                break;
+            }
             $this->addMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
@@ -157,6 +161,10 @@ final class AttackBuilding implements ActionControllerInterface
 
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attacker);
+
+            if (count($attackerPool) === 0) {
+                break;
+            }
             $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
