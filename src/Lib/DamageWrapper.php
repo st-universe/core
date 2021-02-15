@@ -15,6 +15,7 @@ namespace Stu\Lib;
 
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRoleEnum;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 /**
@@ -134,8 +135,14 @@ class DamageWrapper
 
 	/**
 	 */
-	public function getDamageRelative($target, $mode)
+	public function getDamageRelative($target, $mode, $isColony = false)
 	{ #{{{
+		if ($isColony) {
+			if ($mode === ShipEnum::DAMAGE_MODE_HULL) {
+				return $this->calculateDamageBuilding();
+			}
+			return $this->calculateDamageColonyShields($target);
+		}
 		if ($mode === ShipEnum::DAMAGE_MODE_HULL) {
 			return $this->calculateDamageHull($target);
 		}
@@ -161,6 +168,20 @@ class DamageWrapper
 
 	/**
 	 */
+	private function calculateDamageColonyShields(ColonyInterface $target)
+	{ #{{{
+		$damage = round($this->getDamage() / 100 * $this->getShieldDamageFactor());
+		// paratrinic shields
+		if ($damage < $target->getShields()) {
+			$this->setDamage(0);
+		} else {
+			$this->setDamage(round($damage - $target->getShields() / $this->getShieldDamageFactor() * 100));
+		}
+		return $damage;
+	} # }}}
+
+	/**
+	 */
 	private function calculateDamageHull(ShipInterface $target)
 	{ #{{{
 		$damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
@@ -171,7 +192,12 @@ class DamageWrapper
 		return $damage;
 	} # }}}
 
+	/**
+	 */
+	private function calculateDamageBuilding()
+	{ #{{{
+		$damage = round($this->getDamage() / 100 * $this->getHullDamageFactor());
+		return $damage;
+	} # }}}
+
 } #}}}
-
-
-?>

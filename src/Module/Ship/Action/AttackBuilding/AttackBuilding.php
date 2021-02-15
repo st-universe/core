@@ -17,7 +17,6 @@ use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -27,8 +26,6 @@ final class AttackBuilding implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_ATTACK_BUILDING';
 
     private ShipLoaderInterface $shipLoader;
-
-    private BuildingRepositoryInterface $buildingRepository;
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
@@ -52,7 +49,6 @@ final class AttackBuilding implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        BuildingRepositoryInterface $buildingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyRepositoryInterface $colonyRepository,
         PositionCheckerInterface $positionChecker,
@@ -64,7 +60,6 @@ final class AttackBuilding implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager
     ) {
         $this->shipLoader = $shipLoader;
-        $this->buildingRepository = $buildingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
         $this->positionChecker = $positionChecker;
@@ -154,7 +149,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attacker);
-            $this->addMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool, false));
+            $this->addMessageMerge($this->energyWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX);
@@ -162,15 +157,30 @@ final class AttackBuilding implements ActionControllerInterface
 
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attacker);
-            $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool, false));
+            $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
         // OFFENSE
-        //oberfläche, nur torpedos!
+        $isMoon = $colony->getPlanetType()->getIsMoon();
+        $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
+        $attackerPool = $this->fightLib->filterInactiveShips($attacker);
 
+        foreach ($attackerPool as $attacker) {
+            if ($isOrbitField) {
+                $this->addMessageMerge($this->energyWeaponPhase->fireAtBuilding($attacker, $field, $isOrbitField));
 
-        //save colo
-        //TODO
+                if ($field->getIntegrity() === 0) {
+                    break;
+                }
+            }
+            $this->addMessageMerge($this->projectileWeaponPhase->fireAtBuilding($attacker, $field, $isOrbitField));
+
+            if ($field->getIntegrity() === 0) {
+                break;
+            }
+        }
+
+        $this->colonyRepository->save($colony);
 
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
         foreach ($this->messages as $key => $value) {

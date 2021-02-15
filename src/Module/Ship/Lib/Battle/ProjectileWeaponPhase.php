@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib\Battle;
 
+use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Ship\ShipRoleEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -11,6 +12,8 @@ use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\PlanetFieldInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 {
@@ -25,18 +28,22 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 
     private ModuleValueCalculatorInterface $moduleValueCalculator;
 
+    private BuildingManagerInterface $buildingManager;
+
     public function __construct(
         ShipSystemManagerInterface $shipSystemManager,
         EntryCreatorInterface $entryCreator,
         ShipRemoverInterface $shipRemover,
         ApplyDamageInterface $applyDamage,
-        ModuleValueCalculatorInterface $moduleValueCalculator
+        ModuleValueCalculatorInterface $moduleValueCalculator,
+        BuildingManagerInterface $buildingManager
     ) {
         $this->shipSystemManager = $shipSystemManager;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
         $this->applyDamage = $applyDamage;
         $this->moduleValueCalculator = $moduleValueCalculator;
+        $this->buildingManager = $buildingManager;
     }
 
     public function fire(
@@ -105,6 +112,52 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                 if ($destroyMsg !== null) {
                     $msg[] = $destroyMsg;
                 }
+            }
+        }
+
+        return $msg;
+    }
+
+    public function fireAtBuilding(
+        ShipInterface $attacker,
+        PlanetFieldInterface $target,
+        $isOrbitField
+    ): array {
+        $msg = [];
+
+        for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
+            if (!$attacker->getTorpedos() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
+                break;
+            }
+            $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
+
+            if ($attacker->getTorpedoCount() === 0) {
+                $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
+            }
+
+            $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
+
+            $msg[] = sprintf(_("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $attacker->getTorpedo()->getName(), $target->getBuilding()->getName(), $target->getFieldId());
+
+            if ($attacker->getHitChance() < rand(1, 100)) {
+                $msg[] = "Das Gebäude wurde verfehlt";
+                continue;
+            }
+            $isCritical = rand(1, 100) <= $attacker->getTorpedo()->getCriticalChance();
+            $damage_wrapper = new DamageWrapper(
+                $this->getProjectileWeaponDamage($attacker, $isCritical),
+                $attacker
+            );
+            $damage_wrapper->setCrit($isCritical);
+            $damage_wrapper->setShieldDamageFactor($attacker->getTorpedo()->getShieldDamageFactor());
+            $damage_wrapper->setHullDamageFactor($attacker->getTorpedo()->getHullDamageFactor());
+            $damage_wrapper->setIsTorpedoDamage(true);
+
+            $msg = array_merge($msg, $this->applyDamage->damageBuilding($damage_wrapper, $target, $isOrbitField));
+
+            if ($target->getIntegrity() === 0) {
+
+                $this->buildingManager->remove($target);
             }
         }
 
