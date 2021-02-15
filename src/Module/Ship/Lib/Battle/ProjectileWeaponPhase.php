@@ -121,7 +121,8 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
     public function fireAtBuilding(
         ShipInterface $attacker,
         PlanetFieldInterface $target,
-        $isOrbitField
+        $isOrbitField,
+        &$antiParticleCount
     ): array {
         $msg = [];
 
@@ -139,6 +140,11 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 
             $msg[] = sprintf(_("Die %s feuert einen %s auf das Gebäude %s auf Feld %d"), $attacker->getName(), $attacker->getTorpedo()->getName(), $target->getBuilding()->getName(), $target->getFieldId());
 
+            if ($antiParticleCount > 0) {
+                $antiParticleCount--;
+                $msg[] = "Der Torpedo wurde vom orbitalem Torpedoabwehrsystem abgefangen";
+                continue;
+            }
             if ($attacker->getHitChance() < rand(1, 100)) {
                 $msg[] = "Das Gebäude wurde verfehlt";
                 continue;
