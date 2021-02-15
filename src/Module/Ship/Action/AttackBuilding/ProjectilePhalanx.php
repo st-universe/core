@@ -94,7 +94,15 @@ final class ProjectilePhalanx
 
     public function getTorpedoCount(): int
     {
-        return $this->getTorpedo() != null ? ($this->colony->getStorage()[$this->getTorpedo()->getGoodId()]->getAmount() ?? 0) : 0;
+        if ($this->getTorpedo() != null) {
+            $stor = $this->colony->getStorage()[$this->getTorpedo()->getGoodId()];
+
+            if ($stor) {
+                return $stor->getAmount();
+            }
+        }
+
+        return  0;
     }
 
     public function getTorpedo()
