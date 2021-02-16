@@ -107,7 +107,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         return $shipsToShuffle;
     }
 
-    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations): void
+    public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations, $isColonyDefense = false): void
     {
         $alert_user_id = $alertShip->getUserId();
         $lead_user_id = $leadShip->getUser()->getId();
@@ -148,7 +148,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle(true);
 
-        $pm = sprintf(_('Eigene Schiffe auf [b][color=red]Alarm-Rot[/color][/b], Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        $pm = sprintf(_('Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %d|%d') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
         foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
@@ -158,7 +158,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
-        $pm = sprintf(_('Fremde Schiffe auf [b][color=red]Alarm-Rot[/color][/b], Kampf in Sektor %d|%d') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        $pm = sprintf(_('Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %d|%d') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
         foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
             $pm .= $value . "\n";
         }
@@ -175,7 +175,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             return;
         }
 
-        $informations[] = sprintf(_('[b][color=red]Alarm-Rot[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
+        $informations[] = sprintf(_('[b][color=red]%s[/color][/b] fremder Schiffe auf Feld %d|%d, Angriff durchgeführt') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
         $informations = array_merge($informations, $this->shipAttackCycle->getMessages());
     }
 }
