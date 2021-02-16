@@ -35,6 +35,9 @@ class Fleet implements FleetInterface
     /** @Column(type="integer") */
     private $ships_id = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $defended_colony_id;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -51,6 +54,12 @@ class Fleet implements FleetInterface
      * @JoinColumn(name="ships_id", referencedColumnName="id")
      */
     private $fleetLeader;
+
+    /**
+     * @ManyToOne(targetEntity="Colony", inversedBy="defenders")
+     * @JoinColumn(name="defended_colony_id", referencedColumnName="id")
+     */
+    private $defendedColony;
 
     public function __construct()
     {
@@ -119,7 +128,7 @@ class Fleet implements FleetInterface
                     }
                     return $ship->getSx() === $leader->getSX() && $ship->getSy() === $leader->getSY();
                 }
-				if ($ship->getSystem() !== null) {
+                if ($ship->getSystem() !== null) {
                     return false;
                 }
                 return $ship->getCx() === $leader->getCX() && $ship->getCy() === $leader->getCY();
@@ -135,6 +144,17 @@ class Fleet implements FleetInterface
     public function setUser(UserInterface $user): FleetInterface
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getDefendedColony(): ?ColonyInterface
+    {
+        return $this->defendedColony;
+    }
+
+    public function setDefendedColony(?ColonyInterface $defendedColony): FleetInterface
+    {
+        $this->defendedColony = $defendedColony;
         return $this;
     }
 

@@ -47,6 +47,8 @@ use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
 use Stu\Module\Ship\Action\ChangeName\ChangeName;
 use Stu\Module\Ship\Action\Colonize\Colonize;
+use Stu\Module\Ship\Action\ColonyDefending\StartDefending;
+use Stu\Module\Ship\Action\ColonyDefending\StopDefending;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleet;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequest;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequestInterface;
@@ -253,7 +255,9 @@ return [
         Colonize::ACTION_IDENTIFIER => autowire(Colonize::class),
         RenameCrew::ACTION_IDENTIFIER => autowire(RenameCrew::class),
         SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class),
-        TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class)
+        TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class),
+        StartDefending::ACTION_IDENTIFIER => autowire(StartDefending::class),
+        StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

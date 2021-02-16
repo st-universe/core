@@ -118,6 +118,11 @@ interface ColonyInterface
     public function getStorage(): Collection;
 
     /**
+     * @return FleetInterface[]
+     */
+    public function getDefenders(): Collection;
+
+    /**
      * @return ColonyProduction[]
      */
     public function getProductionRaw(): array;

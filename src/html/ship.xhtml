@@ -615,6 +615,25 @@
 												</a>
 											</div>
 										</tal:block>
+										<tal:block tal:condition="SHIP/isFleetLeader">
+											<div tal:condition="not:CURRENT_COLONY/isFree" style="margin-top: 5px;">
+												<a tal:condition="not:SHIP/getFleet/getDefendedColony"
+													href="?B_START_DEFENDING=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+													onmouseover="cp('defend','buttons/defend1')"
+													onmouseout="cp('defend','buttons/defend2')">
+													<img src="/assets/buttons/defend2.gif" name="defend" /> Kolonie
+													verteidigen
+												</a>
+
+												<a tal:condition="SHIP/getFleet/getDefendedColony"
+													href="?B_STOP_DEFENDING=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+													onmouseover="cp('defend','buttons/defend2')"
+													onmouseout="cp('defend','buttons/defend1')">
+													<img src="/assets/buttons/defend1.gif" name="defend" /> Verteidigung
+													beenden
+												</a>
+											</div>
+										</tal:block>
 										<tal:block tal:condition="not:OWNS_CURRENT_COLONY">
 											<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif"
 												style="width: 15px; height: 15px;" />
@@ -785,6 +804,7 @@
 										</tal:block>
 									</td>
 									<td colspan="3">
+										<img tal:condition="data/getDefendedColony" src="/assets/buttons/defend1.gif" />
 										<span tal:condition="not:data/showManagement"
 											tal:content="structure bbcode:data/getName">NAME</span>
 										<tal:block tal:condition="data/showManagement">

@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Doctrine\Common\Collections\Collection;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -77,5 +78,10 @@ final class FleetNfsItem implements FleetNfsItemInterface
     public function getUser(): UserInterface
     {
         return $this->fleet->getUser();
+    }
+
+    public function getDefendedColony(): ?ColonyInterface
+    {
+        return $this->fleet->getDefendedColony();
     }
 }

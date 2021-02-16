@@ -185,6 +185,11 @@ final class ShipMover implements ShipMoverInterface
     ) {
         //echo "- CAP: ".$leadShip->foobar()."\n";
 
+        if ($leadShip->isFleetLeader() && $leadShip->getFleet()->getDefendedColony() !== null) {
+            $this->addInformation(_('Flug während Kolonie-Verteidigung nicht möglich'));
+            return;
+        }
+
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);
