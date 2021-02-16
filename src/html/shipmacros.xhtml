@@ -3,7 +3,7 @@
   <tr>
     <th style="width: 140px;">Klasse</th>
     <th>Name</th>
-    <th style="width: 22px;"></th>
+    <th style="width: 30px;"></th>
     <th style="width: 70px;" title="im System (außerhalb)">x|y <img src="assets/buttons/info2.gif"
         style="height:16px;" /></th>
     <th style="width: 100px;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.gif" style="height:16px;" />
@@ -106,7 +106,7 @@
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRump/getId}_cloaked.png" style="opacity:0.55;"
-    tal:attributes="title ship/getRump/getName"  />
+    tal:attributes="title ship/getRump/getName" />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRump/getId}.png"
     tal:attributes="title ship/getRump/getName" />
 </metal:macro>
