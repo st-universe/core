@@ -31,18 +31,18 @@
 												</span>
 											</div>
 										</td>
-										<td style="width: 35%;">
+										<td style="width: 25%;">
 											<img tal:condition="fleet/getDefendedColony"
 												src="/assets/buttons/defend1.gif" />
 											<span tal:condition="fleet/getDefendedColony"
 												tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
 										</td>
-										<td style="width: 10%;">
+										<td style="width: 15%;">
 											<input type="text" name="fleetname" style="width: 150px;"
 												tal:attributes="value fleet/getName" />
 											<input type="submit" value="Name ändern" name="B_FLEET_CHANGE_NAME" />
 										</td>
-										<td style="width: 15%; text-align: right;"
+										<td style="width: 20%; text-align: right;"
 											tal:define="availableShips fleet/getAvailableShips">
 											<tal:block tal:condition="availableShips">
 												<select name="id" style="width: 150px;">
