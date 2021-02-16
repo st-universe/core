@@ -105,7 +105,7 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
-  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRump/getId}_cloaked.png" style="opacity:0.2;"
+  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRump/getId}_cloaked.png" style="opacity:0.55;"
     tal:attributes="title ship/getRump/getName"  />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRump/getId}.png"
     tal:attributes="title ship/getRump/getName" />
