@@ -3,6 +3,7 @@
 namespace Stu\Module\Ship\Lib;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -23,4 +24,6 @@ interface FleetNfsItemInterface
     public function getLeadShip(): ShipInterface;
 
     public function getUser(): UserInterface;
+
+    public function getDefendedColony(): ?ColonyInterface;
 }

@@ -126,6 +126,11 @@ class Colony implements ColonyInterface
      */
     private $torpedo;
 
+    /**
+     * @OneToMany(targetEntity="Fleet", mappedBy="defendedColony")
+     */
+    private $defenders;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
@@ -145,6 +150,7 @@ class Colony implements ColonyInterface
     public function __construct()
     {
         $this->storage = new ArrayCollection();
+        $this->defenders = new ArrayCollection();
     }
 
     public function getId(): int
@@ -462,6 +468,11 @@ class Colony implements ColonyInterface
     public function getStorage(): Collection
     {
         return $this->storage;
+    }
+
+    public function getDefenders(): Collection
+    {
+        return $this->defenders;
     }
 
     /**

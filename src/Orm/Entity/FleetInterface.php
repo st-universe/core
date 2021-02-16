@@ -31,5 +31,9 @@ interface FleetInterface
 
     public function setUser(UserInterface $user): FleetInterface;
 
+    public function getDefendedColony(): ?ColonyInterface;
+
+    public function setDefendedColony(?ColonyInterface $defendedColony): FleetInterface;
+
     public function getCrewSum(): int;
 }
