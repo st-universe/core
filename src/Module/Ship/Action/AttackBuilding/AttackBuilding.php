@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
@@ -45,6 +46,8 @@ final class AttackBuilding implements ActionControllerInterface
 
     private ColonyStorageManagerInterface $colonyStorageManager;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     private array $messages = [];
 
     public function __construct(
@@ -57,7 +60,8 @@ final class AttackBuilding implements ActionControllerInterface
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
         PrivateMessageSenderInterface $privateMessageSender,
         ModuleRepositoryInterface $moduleRepository,
-        ColonyStorageManagerInterface $colonyStorageManager
+        ColonyStorageManagerInterface $colonyStorageManager,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->planetFieldRepository = $planetFieldRepository;
@@ -69,6 +73,7 @@ final class AttackBuilding implements ActionControllerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->moduleRepository = $moduleRepository;
         $this->colonyStorageManager = $colonyStorageManager;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -143,7 +148,14 @@ final class AttackBuilding implements ActionControllerInterface
             $this->addMessageMerge($this->fightLib->ready($attackship));
         }
 
-        // DEFENSE
+        // DEFENDING FLEETS
+        $informations = [];
+        foreach ($colony->getDefenders() as $fleet) {
+            $this->alertRedHelper->performAttackCycle($fleet->getLeadShip(), $ship, $informations, true);
+        }
+        $this->addMessageMerge($informations);
+
+        // ORBITAL DEFENSE
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX);
         $defendingPhalanx = new EnergyPhalanx($colony, $this->moduleRepository->find(1));
 
@@ -168,7 +180,7 @@ final class AttackBuilding implements ActionControllerInterface
             $this->addMessageMerge($this->projectileWeaponPhase->fire($defendingPhalanx, $attackerPool));
         }
 
-        // OFFENSE
+        // OFFENSE OF ATTACKING SHIPS
         $isMoon = $colony->getPlanetType()->getIsMoon();
         $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
         $attackerPool = $this->fightLib->filterInactiveShips($attacker);
