@@ -32,11 +32,10 @@
 											</div>
 										</td>
 										<td style="width: 25%;">
-											<tal:block tal:condition="fleet/getDefendedColony">
-												<img src="/assets/buttons/defend1.gif" title="verteidigt die Kolonie" />
-												<span
-													tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
-											</tal:block>
+											<img tal:condition="fleet/getDefendedColony"
+												src="/assets/buttons/defend1.gif" />
+											<span tal:condition="fleet/getDefendedColony"
+												tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
 										</td>
 										<td style="width: 15%;">
 											<input type="text" name="fleetname" style="width: 150px;"
