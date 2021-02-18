@@ -503,9 +503,10 @@
 								</td>
 								<td tal:condition="SHIP/getSystem">
 									<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
-										<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}">
+										<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
+										title="Karte des Systems öffnen" >
 											<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif"
-												style="width: 15px; height: 15px;" title="Sternensystem" />
+												style="width: 15px; height: 15px;" />
 											<span>${SHIP/getSystem/getName}
 												(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
 										</a>
