@@ -17,6 +17,8 @@ use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
+use Stu\Module\Tal\StatusBarColorEnum;
+use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -1549,6 +1551,36 @@ class Ship implements ShipInterface
 
     public function __toString()
     {
-        return $this->getName(); // . '(' . $this->getId() == null ? 'null' : $this->getId() . ')';
+        return $this->getName();
+    }
+
+    public function getHullStatusBar()
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
+            ->setLabel(_('Hülle'))
+            ->setMaxValue($this->getMaxHuell())
+            ->setValue($this->getHuell())
+            ->render();
+    }
+
+    public function getShieldStatusBar()
+    {
+        return (new TalStatusBar())
+            ->setColor($this->getShieldState() ? StatusBarColorEnum::STATUSBAR_SHIELD_ON : StatusBarColorEnum::STATUSBAR_SHIELD_OFF)
+            ->setLabel(_('Schilde'))
+            ->setMaxValue($this->getMaxShield())
+            ->setValue($this->getShield())
+            ->render();
+    }
+
+    public function getEpsStatusBar()
+    {
+        return (new TalStatusBar())
+            ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
+            ->setLabel(_('Energie'))
+            ->setMaxValue($this->getMaxEps())
+            ->setValue($this->getEps())
+            ->render();
     }
 }
