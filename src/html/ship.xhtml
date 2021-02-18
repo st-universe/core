@@ -517,6 +517,7 @@
 										<span>${SHIP/getSystem/getName}
 											(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
 									</tal:block>
+									<br />
 									<a
 										href="ship.php?B_LEAVE_STARSYSTEM=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 										<img src="assets/buttons/sysleave1.gif" name="sysleave"
@@ -666,7 +667,7 @@
 								</td>
 								<td>
 									<input type="text" size="3" name="warpcoreload" id="warpcoreload" value="1" />
-									<input type="submit" class="button" name="B_LOAD_WARPCORE" value="aufladen"
+									<input type="submit" class="button" name="B_LOAD_WARPCORE" value="Aufladen"
 										id="loadwarpcorebutton" /> <input type="button" class="button" value="max"
 										onClick="$('warpcoreload').value = 9999; $('loadwarpcorebutton').click()" />
 									<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" />
