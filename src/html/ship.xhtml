@@ -504,7 +504,7 @@
 								<td tal:condition="SHIP/getSystem">
 									<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
 										<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
-										title="Karte des Systems öffnen" >
+											title="Karte des Systems öffnen">
 											<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif"
 												style="width: 15px; height: 15px;" />
 											<span>${SHIP/getSystem/getName}
@@ -741,6 +741,23 @@
 									</tal:block>
 								</td>
 							</tr>
+						</table>
+						<br />
+						<table class="tcal"
+							tal:conditon="php:SHIP.isFleetLeader() AND SHIP.getFleet().getShipCount() > 1">
+							<tr>
+								<th colspan=1><img src="assets/buttons/fleet.gif" title="Flottenstatus" />
+									<span>Flottenstatus</span>
+								</th>
+							</tr>
+							<tal:block tal:repeat="ship SHIP/getFleet/getShips">
+								<tr tal:condition="php:SHIP.getId() != ship.getId()">
+									<td style="background-color: #000000 ! important">
+										<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+											<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /></a>
+									</td>
+								</tr>
+							</tal:block>
 						</table>
 					</td>
 				</tr>
