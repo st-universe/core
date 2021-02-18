@@ -15,7 +15,7 @@ final class TalStatusBar
 
     private int $value = 0;
 
-    private int $sizeModifier = 1;
+    private float $sizeModifier = 1;
 
     public function setColor(string $color): TalStatusBar
     {
@@ -41,7 +41,7 @@ final class TalStatusBar
         return $this;
     }
 
-    public function setSizeModifier(int $modifier): TalStatusBar
+    public function setSizeModifier(float $modifier): TalStatusBar
     {
         $this->sizeModifier = $modifier;
         return $this;
@@ -71,7 +71,7 @@ final class TalStatusBar
              />',
             $this->label,
             $color,
-            round($amount) * $this->sizeModifier,
+            (int) (round($amount) * $this->sizeModifier),
             $this->label,
             $this->value,
             $this->maxValue
