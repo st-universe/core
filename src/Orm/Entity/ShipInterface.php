@@ -371,4 +371,10 @@ interface ShipInterface
     public function getDockedTo(): ?ShipInterface;
 
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface;
+
+    public function getHullStatusBar();
+
+    public function getShieldStatusBar();
+
+    public function getEpsStatusBar();
 }

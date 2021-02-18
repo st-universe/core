@@ -757,6 +757,58 @@
 										<a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
 											<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /></a>
 									</td>
+									<td>
+										<div style="width: 100%">
+											<div style="width: 33%; float: left;">
+												<table class="tcal">
+													<tr>
+														<th style="width: 20px; text-align: center;">
+															<img src="assets/buttons/modul_1.gif" />
+														</th>
+														<td style="vertical-align: middle; text-align: center;">
+															<span
+																tal:replace="structure ship/getHullStatusBar">HULL</span>
+														</td>
+														<td style="text-align: center; width: 60px;">
+															${ship/getHuell}
+														</td>
+													</tr>
+												</table>
+											</div>
+											<div style="width: 33%; float: left;">
+												<table class="tcal">
+													<tr>
+														<th style="width: 20px; text-align: center;">
+															<img src="assets/buttons/modul_2.gif" />
+														</th>
+														<td style="text-align: center; vertical-align: middle;">
+															<span
+																tal:replace="structure ship/getShieldStatusBar">SHIELDS</span>
+														</td>
+														<td style="text-align: center; width: 60px;">
+															${ship/getShield}
+														</td>
+													</tr>
+												</table>
+											</div>
+											<div style="width: 33%; float: left;">
+												<table class="tcal">
+													<tr>
+														<th style="text-align: center; width: 20px;">
+															<img src="assets/buttons/modul_8.gif" />
+														</th>
+														<td style="vertical-align: middle; text-align: center;">
+															<span
+																tal:replace="structure ship/getEpsStatusBar">EPS</span>
+														</td>
+														<td style="text-align: center; width: 60px;">
+															${ship/getEps}
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</td>
 								</tr>
 							</tal:block>
 						</table>
