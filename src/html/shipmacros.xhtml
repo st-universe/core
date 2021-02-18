@@ -715,7 +715,7 @@
             <img src="assets/buttons/modul_1.gif" />
           </th>
           <td style="vertical-align: middle; text-align: center;">
-            <span tal:replace="structure HULL_STATUS_BAR">EPS</span>
+            <span tal:replace="structure SHIP/getHullStatusBar">EPS</span>
           </td>
           <td style="text-align: center; width: 60px;">
             ${SHIP/getHuell}
@@ -730,7 +730,7 @@
             <img src="assets/buttons/modul_2.gif" />
           </th>
           <td style="text-align: center; vertical-align: middle;">
-            <span tal:replace="structure SHIELD_STATUS_BAR">SCHILDE</span>
+            <span tal:replace="structure SHIP/getShieldStatusBar">SCHILDE</span>
           </td>
           <td style="text-align: center; width: 60px;">
             ${SHIP/getShield}
@@ -745,7 +745,7 @@
             <img src="assets/buttons/modul_8.gif" />
           </th>
           <td style="vertical-align: middle; text-align: center;">
-            <span tal:replace="structure EPS_STATUS_BAR">EPS</span>
+            <span tal:replace="structure SHIP/getEpsStatusBar">EPS</span>
           </td>
           <td style="text-align: center; width: 60px;">
             ${SHIP/getEps}

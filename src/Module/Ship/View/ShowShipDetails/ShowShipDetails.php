@@ -37,32 +37,5 @@ final class ShowShipDetails implements ViewControllerInterface
         $game->setMacro('html/shipmacros.xhtml/shipdetails');
 
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar(
-            'HULL_STATUS_BAR',
-            (new TalStatusBar())
-                ->setColor(StatusBarColorEnum::STATUSBAR_GREEN)
-                ->setLabel(_('Hülle'))
-                ->setMaxValue($ship->getMaxHuell())
-                ->setValue($ship->getHuell())
-                ->render()
-        );
-        $game->setTemplateVar(
-            'SHIELD_STATUS_BAR',
-            (new TalStatusBar())
-                ->setColor($ship->getShieldState() === true ? StatusBarColorEnum::STATUSBAR_BLUE : StatusBarColorEnum::STATUSBAR_DARKBLUE)
-                ->setLabel(_('Schilde'))
-                ->setMaxValue($ship->getMaxShield())
-                ->setValue($ship->getShield())
-                ->render()
-        );
-        $game->setTemplateVar(
-            'EPS_STATUS_BAR',
-            (new TalStatusBar())
-                ->setColor(StatusBarColorEnum::STATUSBAR_YELLOW)
-                ->setLabel(_('Energie'))
-                ->setMaxValue($ship->getMaxEps())
-                ->setValue($ship->getEps())
-                ->render()
-        );
     }
 }

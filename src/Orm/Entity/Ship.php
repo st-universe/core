@@ -1561,6 +1561,7 @@ class Ship implements ShipInterface
             ->setLabel(_('Hülle'))
             ->setMaxValue($this->getMaxHuell())
             ->setValue($this->getHuell())
+            ->setSizeModifier(1.6)
             ->render();
     }
 
@@ -1571,6 +1572,7 @@ class Ship implements ShipInterface
             ->setLabel(_('Schilde'))
             ->setMaxValue($this->getMaxShield())
             ->setValue($this->getShield())
+            ->setSizeModifier(1.6)
             ->render();
     }
 
@@ -1581,6 +1583,7 @@ class Ship implements ShipInterface
             ->setLabel(_('Energie'))
             ->setMaxValue($this->getMaxEps())
             ->setValue($this->getEps())
+            ->setSizeModifier(1.6)
             ->render();
     }
 }
