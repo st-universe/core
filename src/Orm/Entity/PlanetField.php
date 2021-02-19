@@ -207,6 +207,9 @@ class PlanetField implements PlanetFieldInterface
         if ($this->isActive()) {
             return 'cfa';
         }
+        if ($this->hasHighDamage()) {
+            return 'cfhd';
+        }
         return 'cfd';
     }
 
@@ -339,6 +342,9 @@ class PlanetField implements PlanetFieldInterface
         }
         if ($this->isActive()) {
             return $this->getBuilding()->getName() . " (aktiviert) auf " . $this->getFieldTypeName();
+        }
+        if ($this->hasHighDamage()) {
+            return $this->getBuilding()->getName() . " (stark beschädigt) auf " . $this->getFieldTypeName();
         }
         return $this->getBuilding()->getName() . " (deaktiviert) auf " . $this->getFieldTypeName();
     }

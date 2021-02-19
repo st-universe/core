@@ -189,6 +189,13 @@ td.l {
     margin: 0;
 }
 
+.cfhd {
+    border: 1px solid #b10000;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
 .cfb {
     border: 1px dashed #FFFFFF;
     text-align: center;
