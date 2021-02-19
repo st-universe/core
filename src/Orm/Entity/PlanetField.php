@@ -205,12 +205,19 @@ class PlanetField implements PlanetFieldInterface
             return 'cfb';
         }
         if ($this->isActive()) {
+            if ($this->isDamaged()) {
+                return 'cfld';
+            }
             return 'cfa';
         }
         if ($this->hasHighDamage()) {
             return 'cfhd';
         }
-        return 'cfd';
+        if ($this->hasBuilding() && $this->isActivateable()) {
+            return 'cfd';
+        }
+
+        return 'cfu';
     }
 
     public function getBuildingState(): string
@@ -341,12 +348,18 @@ class PlanetField implements PlanetFieldInterface
             return $this->getBuilding()->getName() . " auf " . $this->getFieldTypeName();
         }
         if ($this->isActive()) {
+            if ($this->isDamaged()) {
+                return $this->getBuilding()->getName() . " (aktiviert, beschädigt) auf " . $this->getFieldTypeName();
+            }
             return $this->getBuilding()->getName() . " (aktiviert) auf " . $this->getFieldTypeName();
         }
         if ($this->hasHighDamage()) {
             return $this->getBuilding()->getName() . " (stark beschädigt) auf " . $this->getFieldTypeName();
         }
-        return $this->getBuilding()->getName() . " (deaktiviert) auf " . $this->getFieldTypeName();
+        if ($this->isActivateable()) {
+            return $this->getBuilding()->getName() . " (deaktiviert) auf " . $this->getFieldTypeName();
+        }
+        return $this->getBuilding()->getName() . " auf " . $this->getFieldTypeName();
     }
 
     public function getBuildProgress(): int

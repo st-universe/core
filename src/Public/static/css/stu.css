@@ -183,7 +183,21 @@ td.l {
 }
 
 .cfd {
+    border: 1px solid #006fda;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.cfu {
     border: 1px solid #505656;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.cfld {
+    border: 1px solid #c2b942;
     text-align: center;
     padding: 0;
     margin: 0;
