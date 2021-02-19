@@ -197,14 +197,14 @@ td.l {
 }
 
 .cfld {
-    border: 1px solid #c2b942;
+    border: 1px dashed #c2b942;
     text-align: center;
     padding: 0;
     margin: 0;
 }
 
 .cfhd {
-    border: 1px solid #8A0808;
+    border: 1px dashed #8A0808;
     text-align: center;
     padding: 0;
     margin: 0;
