@@ -22,7 +22,8 @@ final class BuildingManager implements BuildingManagerInterface
         $this->colonyRepository = $colonyRepository;
     }
 
-    public function activate(PlanetFieldInterface $field): void {
+    public function activate(PlanetFieldInterface $field): void
+    {
         if (!$field->isActivateable()) {
             return;
         }
@@ -75,6 +76,13 @@ final class BuildingManager implements BuildingManagerInterface
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
+
+        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
+            $colony->setShields(0);
+        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
+            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
+        }
+
         $this->colonyRepository->save($colony);
 
         $building->postDeactivation($colony);
@@ -105,10 +113,18 @@ final class BuildingManager implements BuildingManagerInterface
         $field->clearBuilding();
 
         $this->planetFieldRepository->save($field);
+
+        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
+            $colony->setShields(0);
+        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
+            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
+        }
+
         $this->colonyRepository->save($colony);
     }
 
-    public function finish(PlanetFieldInterface $field, bool $activate = true): void {
+    public function finish(PlanetFieldInterface $field, bool $activate = true): void
+    {
         $building = $field->getBuilding();
         $colony = $field->getColony();
 
