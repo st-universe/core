@@ -9,27 +9,17 @@ use Stu\Component\Colony\Storage\ColonyStorageManager;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class BuildingAction implements BuildingActionInterface
 {
-    private PlanetFieldRepositoryInterface $planetFieldRepository;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
     private ColonyStorageManager $colonyStorageManager;
 
     private BuildingManagerInterface $buildingManager;
 
     public function __construct(
-        PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository,
         ColonyStorageManager $colonyStorageManager,
         BuildingManagerInterface $buildingManager
     ) {
-        $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyRepository = $colonyRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->buildingManager = $buildingManager;
     }
@@ -120,7 +110,7 @@ final class BuildingAction implements BuildingActionInterface
         );
 
         $game->addInformation(_('Es konnten folgende Waren recycled werden'));
-        
+
         foreach ($building->getCosts() as $value) {
             $halfAmount = $value->getHalfAmount();
             if ($colony->getStorageSum() + $halfAmount > $colony->getMaxStorage()) {
