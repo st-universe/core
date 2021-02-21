@@ -106,6 +106,15 @@ final class BuildingManager implements BuildingManagerInterface
 
         $this->deactivate($field);
 
+        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
+            $colony->setShields(0);
+        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
+            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
+        }
+        //else if (!empty(array_intersect($field->getBuilding()->getFunctions()->getKeys(), BuildingEnum::BUILDING_FUNCTION_MODULEFABS))) {
+        //cancel module queue
+        //}
+
         $colony
             ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
             ->setMaxEps($colony->getMaxEps() - $building->getEpsStorage());
@@ -113,13 +122,6 @@ final class BuildingManager implements BuildingManagerInterface
         $field->clearBuilding();
 
         $this->planetFieldRepository->save($field);
-
-        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
-            $colony->setShields(0);
-        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
-            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
-        }
-
         $this->colonyRepository->save($colony);
     }
 
