@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -14,12 +15,16 @@ final class BuildingManager implements BuildingManagerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ModuleQueueLibInterface $moduleQueueLib;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ModuleQueueLibInterface $moduleQueueLib
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->moduleQueueLib = $moduleQueueLib;
     }
 
     public function activate(PlanetFieldInterface $field): void
@@ -74,15 +79,9 @@ final class BuildingManager implements BuildingManagerInterface
 
         $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
         $field->setActive(0);
+        $this->consequences($field, $colony);
 
         $this->planetFieldRepository->save($field);
-
-        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
-            $colony->setShields(0);
-        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
-            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
-        }
-
         $this->colonyRepository->save($colony);
 
         $building->postDeactivation($colony);
@@ -105,15 +104,7 @@ final class BuildingManager implements BuildingManagerInterface
         $colony = $field->getColony();
 
         $this->deactivate($field);
-
-        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
-            $colony->setShields(0);
-        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
-            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
-        }
-        //else if (!empty(array_intersect($field->getBuilding()->getFunctions()->getKeys(), BuildingEnum::BUILDING_FUNCTION_MODULEFABS))) {
-        //cancel module queue
-        //}
+        $this->consequences($field, $colony);
 
         $colony
             ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
@@ -123,6 +114,17 @@ final class BuildingManager implements BuildingManagerInterface
 
         $this->planetFieldRepository->save($field);
         $this->colonyRepository->save($colony);
+    }
+
+    private function consequences($field, $colony)
+    {
+        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
+            $colony->setShields(0);
+        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
+            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
+        } else if (!empty(array_intersect($field->getBuilding()->getFunctions()->getKeys(), BuildingEnum::BUILDING_FUNCTION_MODULEFABS))) {
+            $this->moduleQueueLib->cancelModuleQueues($colony, $field->getBuilding());
+        }
     }
 
     public function finish(PlanetFieldInterface $field, bool $activate = true): void

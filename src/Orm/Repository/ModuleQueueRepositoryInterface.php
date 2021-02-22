@@ -18,6 +18,11 @@ interface ModuleQueueRepositoryInterface extends ObjectRepository
         int $buildingFunction
     ): ?ModuleQueueInterface;
 
+    public function getByColonyAndBuilding(
+        int $colonyId,
+        array $buildingFunctions
+    ): array;
+
     public function prototype(): ModuleQueueInterface;
 
     public function save(ModuleQueueInterface $moduleQueue): void;
