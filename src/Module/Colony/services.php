@@ -17,6 +17,8 @@ use Stu\Module\Colony\Lib\ColonyResetter;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Module\Colony\Lib\CommodityConsumption;
 use Stu\Module\Colony\Lib\CommodityConsumptionInterface;
+use Stu\Module\Colony\Lib\ModuleQueueLib;
+use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
 use Stu\Module\Colony\Lib\PlanetColonization;
 use Stu\Module\Colony\Lib\PlanetColonizationInterface;
 use Stu\Module\Colony\Lib\PlanetFieldTypeRetriever;
@@ -176,6 +178,7 @@ return [
     ColonyGuiHelperInterface::class => autowire(ColonyGuiHelper::class),
     ColonyLoaderInterface::class => autowire(ColonyLoader::class),
     GiveUpRequestInterface::class => autowire(GiveUpRequest::class),
+    ModuleQueueLibInterface::class => autowire(ModuleQueueLib::class),
     ShowAcademyRequestInterface::class => autowire(ShowAcademyRequest::class),
     ShowAirfieldRequestInterface::class => autowire(ShowAirfieldRequest::class),
     ShowBeamFromRequestInterface::class => autowire(ShowBeamFromRequest::class),

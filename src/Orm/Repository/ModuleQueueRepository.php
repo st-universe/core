@@ -29,6 +29,16 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         ]);
     }
 
+    public function getByColonyAndBuilding(
+        int $colonyId,
+        array $buildingFunctions
+    ): array {
+        return $this->findBy([
+            'colony_id' => $colonyId,
+            'buildingfunction' => $buildingFunctions
+        ]);
+    }
+
     public function prototype(): ModuleQueueInterface
     {
         return new ModuleQueue();
