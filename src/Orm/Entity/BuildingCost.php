@@ -90,6 +90,6 @@ class BuildingCost implements BuildingCostInterface
 
     public function getHalfAmount(): int
     {
-        return (int) floor($this->getAmount() / 2);
+        return (int) ceil($this->getAmount() / 2);
     }
 }
