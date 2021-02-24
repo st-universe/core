@@ -46,7 +46,7 @@ final class FightLib implements FightLibInterface
     private function alertLevelBasedReaction(ShipInterface $ship): array
     {
         $msg = [];
-        if ($ship->getRump()->isEscapePods()) {
+        if ($ship->getRump()->isEscapePods() || $ship->getIsDestroyed()) {
             return $msg;
         }
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew() || $ship->getRump()->isTrumfield()) {

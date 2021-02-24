@@ -108,6 +108,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 count(distinct ship_id) as shipc
             FROM stu_flight_sig fs
             WHERE fs.to_direction != 0
+            AND fs.user_id > 100
             AND fs.time > :maxAge
             GROUP BY fs.user_id
             ORDER BY 2 DESC
