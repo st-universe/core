@@ -56,7 +56,10 @@ final class ApplyDamage implements ApplyDamageInterface
         if ($ship->getHuell() > $damage) {
             if ($damage_wrapper->isCrit()) {
                 $systemName = $this->destroyRandomShipSystem($ship);
-                $msg[] = "- Kritischer Hüllen-Treffer zerstört System: " . $systemName;
+
+                if ($systemName !== null) {
+                    $msg[] = "- Kritischer Hüllen-Treffer zerstört System: " . $systemName;
+                }
             }
             $huelleVorher = $ship->getHuell();
             $ship->setHuell($huelleVorher - $damage);
@@ -122,20 +125,26 @@ final class ApplyDamage implements ApplyDamageInterface
         }
 
         for ($i = 1; $i <= $systemsToDamage; $i++) {
-            $systemName = $this->damageRandomShipSystem($ship, $msg);
+            $this->damageRandomShipSystem($ship, $msg);
         }
 
         return true;
     }
 
-    private function destroyRandomShipSystem(ShipInterface $ship): string
+    private function destroyRandomShipSystem(ShipInterface $ship): ?string
     {
         $healthySystems = $ship->getHealthySystems();
         shuffle($healthySystems);
 
-        $healthySystems[0]->setStatus(0);
-        $healthySystems[0]->setMode(ShipSystemModeEnum::MODE_OFF);
+        $system = $healthySystems[0];
+
+        if ($system === null) {
+            return null;
+        }
+        $system->setStatus(0);
+        $system->setMode(ShipSystemModeEnum::MODE_OFF);
         $this->shipSystemManager->handleDestroyedSystem($ship, $healthySystems[0]->getSystemType());
+        //catch invalidsystemexception
 
         return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
     }
@@ -146,7 +155,10 @@ final class ApplyDamage implements ApplyDamageInterface
         shuffle($healthySystems);
 
         $system = $healthySystems[0];
-        $this->damageShipSystem($ship, $system, rand(1, 70), $msg);
+        if ($system !== null) {
+            $this->damageShipSystem($ship, $system, rand(1, 70), $msg);
+            //catch invalidsystemexception
+        }
     }
 
     public function damageShipSystem($ship, $system, $dmg, &$msg): void
