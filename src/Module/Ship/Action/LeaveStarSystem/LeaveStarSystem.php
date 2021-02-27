@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LeaveStarSystem;
 
 use request;
-use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Component\Ship\System\Exception\SystemDamagedException;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
@@ -17,6 +15,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 
 final class LeaveStarSystem implements ActionControllerInterface
 {
@@ -30,16 +29,20 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private ActivatorDeactivatorHelperInterface $helper;
 
+    private AstroEntryLibInterface $astroEntryLib;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        ActivatorDeactivatorHelperInterface $helper
+        ActivatorDeactivatorHelperInterface $helper,
+        AstroEntryLibInterface $astroEntryLib
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->helper = $helper;
+        $this->astroEntryLib = $astroEntryLib;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -152,6 +155,10 @@ final class LeaveStarSystem implements ActionControllerInterface
         $ship->setSystem(null);
         $ship->setSX(0);
         $ship->setSY(0);
+
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            $this->astroEntryLib->cancelAstroFinalizing($ship);
+        }
     }
 
 

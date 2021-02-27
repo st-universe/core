@@ -11,4 +11,8 @@ use Stu\Orm\Entity\AstronomicalEntryInterface;
 interface AstroEntryRepositoryInterface extends ObjectRepository
 {
     public function prototype(): AstronomicalEntryInterface;
+
+    public function getByUserAndSystem($userId, $starSystemId): ?AstronomicalEntryInterface;
+
+    public function save(AstronomicalEntryInterface $entry): void;
 }

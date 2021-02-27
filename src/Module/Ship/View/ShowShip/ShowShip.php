@@ -6,8 +6,8 @@ namespace Stu\Module\Ship\View\ShowShip;
 
 use NavPanel;
 use request;
-//use Stu\Component\Database\DatabaseCategoryTypeEnum;
 use Stu\Component\Player\ColonizationCheckerInterface;
+use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
@@ -15,6 +15,8 @@ use Stu\Lib\SessionInterface;
 use Stu\Module\Ship\Lib\FleetNfsItem;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -41,6 +43,8 @@ final class ShowShip implements ViewControllerInterface
 
     private TachyonScanRepositoryInterface $tachyonScanRepository;
 
+    private AstroEntryRepositoryInterface $astroEntryRepository;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -49,7 +53,8 @@ final class ShowShip implements ViewControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         ColonizationCheckerInterface $colonizationChecker,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
-        TachyonScanRepositoryInterface $tachyonScanRepository
+        TachyonScanRepositoryInterface $tachyonScanRepository,
+        AstroEntryRepositoryInterface $astroEntryRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
@@ -59,6 +64,7 @@ final class ShowShip implements ViewControllerInterface
         $this->colonizationChecker = $colonizationChecker;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->tachyonScanRepository = $tachyonScanRepository;
+        $this->astroEntryRepository = $astroEntryRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -138,7 +144,6 @@ final class ShowShip implements ViewControllerInterface
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
         $starsystem = null;
         if ($ship->getSystem() !== null) {
-            //$entry = $this->databaseEntryRepository->getByCategoryIdAndObjectId(DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM, $ship->getSystem()->getId());
             $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($ship->getSystem()->getDatabaseEntry(), $user);
         }
 
@@ -163,6 +168,8 @@ final class ShowShip implements ViewControllerInterface
             'HAS_NBS',
             $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
         );
+
+        $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
@@ -171,5 +178,18 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
+    }
+
+    private function getAstroState(ShipInterface $ship)
+    {
+        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUserId(), $ship->getSystemsId());
+
+        if ($astroEntry === null) {
+            $state = AstronomicalMappingEnum::PLANNABLE;
+        } else {
+            $state = $astroEntry->getState();
+        }
+
+        return new AstroStateWrapper($state);
     }
 }

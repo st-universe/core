@@ -5,13 +5,23 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class CloakShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    private AstroEntryLibInterface $astroEntryLib;
+
+    public function __construct(
+        AstroEntryLibInterface $astroEntryLib
+    ) {
+        $this->astroEntryLib = $astroEntryLib;
+    }
+
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
         if ($ship->traktorBeamToShip()) {
@@ -51,6 +61,10 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
     {
         $ship->deactivateTraktorBeam();
         $ship->setDockedTo(null);
+
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            $this->astroEntryLib->cancelAstroFinalizing($ship);
+        }
 
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_OFF);
