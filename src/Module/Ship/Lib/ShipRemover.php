@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
@@ -23,7 +24,7 @@ final class ShipRemover implements ShipRemoverInterface
     private ShipSystemRepositoryInterface $shipSystemRepository;
 
     private ShipStorageRepositoryInterface $shipStorageRepository;
-    
+
     private ShipStorageManagerInterface $shipStorageManager;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
@@ -40,6 +41,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipLeaverInterface $shipLeaver;
 
+    private AstroEntryLibInterface $astroEntryLib;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
@@ -50,7 +53,8 @@ final class ShipRemover implements ShipRemoverInterface
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        ShipLeaverInterface $shipLeaver
+        ShipLeaverInterface $shipLeaver,
+        AstroEntryLibInterface $astroEntryLib
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
@@ -62,6 +66,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipLeaver = $shipLeaver;
+        $this->astroEntryLib = $astroEntryLib;
     }
 
     public function destroy(ShipInterface $ship): ?string
@@ -74,9 +79,12 @@ final class ShipRemover implements ShipRemoverInterface
             $this->changeFleetLeader($ship);
         }
 
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            $this->astroEntryLib->cancelAstroFinalizing($ship);
+        }
+
         //leave ship if there is crew
-        if ($ship->getCrewCount() > 0)
-        {
+        if ($ship->getCrewCount() > 0) {
             $msg = $this->shipLeaver->leave($ship);
         }
 
@@ -89,11 +97,11 @@ final class ShipRemover implements ShipRemoverInterface
              $this->remove($ship);
              return $msg;
             }
-        */
+         */
 
         $ship->setFormerRumpId($ship->getRump()->getId());
         $ship->setRump($this->shipRumpRepository->find(ShipEnum::TRUMFIELD_CLASS));
-        $ship->setHuell((int) round($ship->getMaxHuell()/20));
+        $ship->setHuell((int) round($ship->getMaxHuell() / 20));
         $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplan(null);
         $ship->setShield(0);
@@ -119,15 +127,14 @@ final class ShipRemover implements ShipRemoverInterface
     {
         $intactModules = [];
 
-        foreach($ship->getSystems() as $system)
-        {
-            if ($system->getModule() !== null
-                && $system->getStatus() == 100)
-            {
+        foreach ($ship->getSystems() as $system) {
+            if (
+                $system->getModule() !== null
+                && $system->getStatus() == 100
+            ) {
                 $module = $system->getModule();
 
-                if (!array_key_exists($module->getId(), $intactModules))
-                {
+                if (!array_key_exists($module->getId(), $intactModules)) {
                     $intactModules[$module->getId()] = $module;
                 }
             }
@@ -135,8 +142,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         //leave 50% of all intact modules
         $leaveCount = (int) ceil(count($intactModules) / 2);
-        for ($i = 1; $i <= $leaveCount; $i++)
-        {
+        for ($i = 1; $i <= $leaveCount; $i++) {
             $module = $intactModules[array_rand($intactModules)];
             unset($intactModules[$module->getId()]);
 

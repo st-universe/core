@@ -63,6 +63,8 @@ interface ShipInterface
 
     public function getSubspaceState(): bool;
 
+    public function getAstroState(): bool;
+
     public function getEps(): int;
 
     public function setEps(int $eps): ShipInterface;
@@ -182,6 +184,10 @@ interface ShipInterface
     public function getState(): int;
 
     public function setState(int $state): ShipInterface;
+
+    public function getAstroStartTurn(): ?int;
+
+    public function setAstroStartTurn(?int $turn): ShipInterface;
 
     /**
      * @return ShipCrewInterface[]
@@ -361,6 +367,8 @@ interface ShipInterface
     public function hasTachyonScanner(): bool;
 
     public function hasSubspaceScanner(): bool;
+
+    public function hasAstroLaboratory(): bool;
 
     public function hasWarpcore(): bool;
 

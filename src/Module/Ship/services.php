@@ -20,6 +20,8 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelper;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AlertRedHelper;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
+use Stu\Module\Ship\Lib\AstroEntryLib;
+use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ModuleValueCalculator;
 use Stu\Module\Ship\Lib\ModuleValueCalculatorInterface;
 use Stu\Module\Ship\Lib\PositionChecker;
@@ -27,6 +29,7 @@ use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycle;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Control\GameController;
+use Stu\Module\Ship\Action\ActivateAstroLaboratory\ActivateAstroLaboratory;
 use Stu\Module\Ship\Action\ActivateCloak\ActivateCloak;
 use Stu\Module\Ship\Action\ActivateSubspace\ActivateSubspace;
 use Stu\Module\Ship\Action\ActivateTachyon\ActivateTachyon;
@@ -38,6 +41,7 @@ use Stu\Module\Ship\Action\ActivateTorpedo\ActivateTorpedo;
 use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
 use Stu\Module\Ship\Action\AddDockPrivilege\AddDockPrivilege;
+use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
 use Stu\Module\Ship\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
@@ -52,6 +56,7 @@ use Stu\Module\Ship\Action\ColonyDefending\StopDefending;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleet;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequest;
 use Stu\Module\Ship\Action\CreateFleet\CreateFleetRequestInterface;
+use Stu\Module\Ship\Action\DeactivateAstroLaboratory\DeactivateAstroLaboratory;
 use Stu\Module\Ship\Action\DeactivateCloak\DeactivateCloak;
 use Stu\Module\Ship\Action\DeactivateSubspace\DeactivateSubspace;
 use Stu\Module\Ship\Action\DeactivateTachyon\DeactivateTachyon;
@@ -132,6 +137,7 @@ use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
+use Stu\Module\Ship\View\ShowAstroEntry\ShowAstroEntry;
 use Stu\Module\Ship\View\ShowBeamFrom\ShowBeamFrom;
 use Stu\Module\Ship\View\ShowBeamFromColony\ShowBeamFromColony;
 use Stu\Module\Ship\View\ShowBeamTo\ShowBeamTo;
@@ -167,6 +173,7 @@ return [
     ShipAttackCycleInterface::class => autowire(ShipAttackCycle::class),
     ActivatorDeactivatorHelperInterface::class => autowire(ActivatorDeactivatorHelper::class),
     AlertRedHelperInterface::class => autowire(AlertRedHelper::class),
+    AstroEntryLibInterface::class => autowire(AstroEntryLib::class),
     ShipLeaverInterface::class => autowire(ShipLeaver::class),
     TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
@@ -184,6 +191,8 @@ return [
         RenameFleet::ACTION_IDENTIFIER => autowire(RenameFleet::class),
         LeaveFleet::ACTION_IDENTIFIER => autowire(LeaveFleet::class),
         JoinFleet::ACTION_IDENTIFIER => autowire(JoinFleet::class),
+        ActivateAstroLaboratory::ACTION_IDENTIFIER => autowire(ActivateAstroLaboratory::class),
+        DeactivateAstroLaboratory::ACTION_IDENTIFIER => autowire(DeactivateAstroLaboratory::class),
         ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),
         ActivateSubspace::ACTION_IDENTIFIER => autowire(ActivateSubspace::class),
         ActivateTachyon::ACTION_IDENTIFIER => autowire(ActivateTachyon::class),
@@ -257,13 +266,15 @@ return [
         SalvageEmergencyPods::ACTION_IDENTIFIER => autowire(SalvageEmergencyPods::class),
         TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class),
         StartDefending::ACTION_IDENTIFIER => autowire(StartDefending::class),
-        StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class)
+        StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class),
+        PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowShip::VIEW_IDENTIFIER => autowire(ShowShip::class),
         ShowAlertLevel::VIEW_IDENTIFIER => autowire(ShowAlertLevel::class),
+        ShowAstroEntry::VIEW_IDENTIFIER => autowire(ShowAstroEntry::class),
         ShowEpsTransfer::VIEW_IDENTIFIER => autowire(ShowEpsTransfer::class),
         ShowBeamTo::VIEW_IDENTIFIER => autowire(ShowBeamTo::class),
         ShowBeamFrom::VIEW_IDENTIFIER => autowire(ShowBeamFrom::class),
