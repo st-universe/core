@@ -242,12 +242,12 @@
           </td>
           <td tal:content="data/getName" style="vertical-align: middle;">NAME</td>
           <td>
-            <div style="display: inline-block; width: 50px;">
+            <div style="display: inline-block; width: 55px;">
               <div style="display: inline-block; vertical-align: middle;"><img src="assets/buttons/e_trans2.gif"
                   title="Energie" /></div>
               ${data/getEpsCost}
             </div>
-            <div style="display: inline-block; width: 50px;" tal:repeat="cost data/getBuildingCosts">
+            <div style="display: inline-block; width: 55px;" tal:repeat="cost data/getBuildingCosts">
               <div style="display: inline-block; vertical-align: middle;"><img
                   src="assets/goods/${cost/getCommodityId}.gif" tal:attributes="title cost/getCommodity/getName" />
               </div>
