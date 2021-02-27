@@ -12,6 +12,7 @@ use Stu\Orm\Entity\AllianceBoardPost;
 use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
+use Stu\Orm\Entity\AstronomicalEntry;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
@@ -271,6 +272,11 @@ return [
         ContainerInterface $c
     ): FlightSignatureRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(FlightSignature::class);
+    },
+    AstroEntryRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): AstroEntryRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(AstronomicalEntry::class);
     },
     GameConfigRepositoryInterface::class => function (
         ContainerInterface $c
