@@ -16,9 +16,9 @@ interface AstronomicalEntryInterface
 
     public function setState(int $state): AstronomicalEntryInterface;
 
-    public function getSystemId(): int;
+    public function getSystem(): StarSystemInterface;
 
-    public function setSystemId(int $systemId): AstronomicalEntryInterface;
+    public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface;
 
     public function getStarsystemMap1(): ?StarSystemMapInterface;
 
