@@ -483,14 +483,14 @@
 									</a>
 									<br />
 									<tal:block tal:condition="ASTRO_STATE/isPlannable">
-										<a tal:condition="SHIP/getAstroState"
+										<a tal:condition="php:SHIP.getSystem() AND SHIP.getAstroState()"
 											href="?B_PLAN_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 											onmouseover="cp('astroButton','buttons/map2')"
 											onmouseout="cp('astroButton','buttons/map1')">
 											<img src="/assets/buttons/map1.gif" name="astroButton" />
 											<span>System kartographieren</span>
 										</a>
-										<tal:block tal:condition="not:SHIP/getAstroState">
+										<tal:block tal:condition="php:SHIP.isOverSystem() OR !SHIP.getAstroState()">
 											<img src="/assets/buttons/map1.gif" />
 											<span>System nicht kartographiert</span>
 										</tal:block>
