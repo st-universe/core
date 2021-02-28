@@ -16,22 +16,4 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
     {
         return new AstronomicalEntry();
     }
-
-    public function getByUserAndSystem($userId, $starSystemId): ?AstronomicalEntryInterface
-    {
-        return $this->findBy(
-            [
-                'user_id' => $userId,
-                'systems_id' => $starSystemId
-            ]
-        );
-    }
-
-    public function save(AstronomicalEntryInterface $entry): void
-    {
-        $em = $this->getEntityManager();
-
-        $em->persist($entry);
-        $em->flush();
-    }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -31,8 +31,6 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private CrewRepositoryInterface $crewRepository;
 
-    private AstroEntryLibInterface $astroEntryLib;
-
     public function __construct(
         ShipCrewRepositoryInterface $shipCrewRepository,
         FleetRepositoryInterface $fleetRepository,
@@ -40,8 +38,7 @@ final class ShipLeaver implements ShipLeaverInterface
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        CrewRepositoryInterface $crewRepository,
-        AstroEntryLibInterface $astroEntryLib
+        CrewRepositoryInterface $crewRepository
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
         $this->fleetRepository = $fleetRepository;
@@ -50,7 +47,6 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->crewRepository = $crewRepository;
-        $this->astroEntryLib = $astroEntryLib;
     }
 
     public function leave(ShipInterface $ship): string
@@ -59,10 +55,6 @@ final class ShipLeaver implements ShipLeaverInterface
 
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader($ship);
-        }
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
         $ship->setAlertState(1);

@@ -169,9 +169,6 @@ class Ship implements ShipInterface
     /** @Column(type="smallint", length=3) */
     private $state = 0;
 
-    /** @Column(type="integer", nullable=true) */
-    private $astro_start_turn;
-
     /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
@@ -441,11 +438,6 @@ class Ship implements ShipInterface
     public function getSubspaceState(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
-    }
-
-    public function getAstroState(): bool
-    {
-        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
     public function getEps(): int
@@ -828,17 +820,6 @@ class Ship implements ShipInterface
     public function setState(int $state): ShipInterface
     {
         $this->state = $state;
-        return $this;
-    }
-
-    public function getAstroStartTurn(): ?int
-    {
-        return $this->astro_start_turn;
-    }
-
-    public function setAstroStartTurn(?int $turn): ShipInterface
-    {
-        $this->astro_start_turn = $turn;
         return $this;
     }
 
@@ -1540,11 +1521,6 @@ class Ship implements ShipInterface
     public function hasSubspaceScanner(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER);
-    }
-
-    public function hasAstroLaboratory(): bool
-    {
-        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
     public function hasWarpcore(): bool

@@ -3,16 +3,11 @@
 namespace Stu\Module\Tick\Ship;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\AstroEntryLib;
-use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
@@ -24,31 +19,22 @@ final class ShipTick implements ShipTickInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private array $msg = [];
 
     private ShipSystemManagerInterface $shipSystemManager;
 
     private ShipLeaverInterface $shipLeaver;
 
-    private GameControllerInterface $game;
-
-    private AstroEntryLibInterface $astroEntryLib;
-
-    private array $msg = [];
-
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        ShipLeaverInterface $shipLeaver,
-        GameControllerInterface $game,
-        AstroEntryLibInterface $astroEntryLib
+        ShipLeaverInterface $shipLeaver
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipLeaver = $shipLeaver;
-        $this->game = $game;
-        $this->astroEntryLib = $astroEntryLib;
     }
 
     public function work(ShipInterface $ship): void
@@ -132,17 +118,6 @@ final class ShipTick implements ShipTickInterface
         //echo "--- Generated Id ".$ship->getId()." - eps: ".$eps." - usage: ".$ship->getEpsUsage()." - old eps: ".$ship->getEps()." - wk: ".$wkuse."\n";
         $ship->setEps($eps);
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() - $wkuse);
-
-        if (
-            $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
-            && $this->game->getCurrentRound() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
-        ) {
-            $this->astroEntryLib->finish($ship);
-            $this->msg[] = sprintf(
-                _('Die Kartographierung des Systems %s wurde vollendet'),
-                $ship->getSystem()->getName()
-            );
-        }
 
         $this->shipRepository->save($ship);
 
