@@ -94,9 +94,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ])
             ->getResult();
 
-        foreach ($userColonyFields as $field) {
-            $result[] = $field['id'];
-        }
+        array_merge($result, $userColonyFields);
 
         echo "- c: " . count($result) . "\n";
 
@@ -120,9 +118,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             ])
             ->getResult();
 
-        foreach ($otherColonyFields as $field) {
-            $result[] = $field['id'];
-        }
+        array_merge($result, $otherColonyFields);
         echo "- c: " . count($result) . "\n";
 
         if (count($result) < AstronomicalMappingEnum::MEASUREMENT_COUNT) {
@@ -145,9 +141,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 ])
                 ->getResult();
 
-            foreach ($otherFields as $field) {
-                $result[] = $field['id'];
-            }
+            array_merge($result, $otherFields);
         }
 
         return $result;
