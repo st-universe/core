@@ -47,10 +47,12 @@ final class PlanAstroMapping implements ActionControllerInterface
         );
 
         if ($ship->getSystem() == null) {
+            $game->addInformation('debug1');
             return;
         }
 
         if ($this->astroEntryRepository->getByUserAndSystem($userId, $ship->getSystemsId()) !== null) {
+            $game->addInformation('debug2');
             return;
         }
 
