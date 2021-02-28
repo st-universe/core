@@ -29,6 +29,9 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     /** @Column(type="smallint", length=1) */
     private $state = 0;
 
+    /** @Column(type="integer", nullable=true) */
+    private $astro_start_turn;
+
     /** @Column(type="integer") * */
     private $systems_id;
 
@@ -114,6 +117,17 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     public function setState(int $state): AstronomicalEntryInterface
     {
         $this->state = $state;
+        return $this;
+    }
+
+    public function getAstroStartTurn(): ?int
+    {
+        return $this->astro_start_turn;
+    }
+
+    public function setAstroStartTurn(?int $turn): AstronomicalEntryInterface
+    {
+        $this->astro_start_turn = $turn;
         return $this;
     }
 

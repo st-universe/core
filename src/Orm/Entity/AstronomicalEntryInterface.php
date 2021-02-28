@@ -16,6 +16,10 @@ interface AstronomicalEntryInterface
 
     public function setState(int $state): AstronomicalEntryInterface;
 
+    public function getAstroStartTurn(): ?int;
+
+    public function setAstroStartTurn(?int $turn): AstronomicalEntryInterface;
+
     public function getSystem(): StarSystemInterface;
 
     public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface;

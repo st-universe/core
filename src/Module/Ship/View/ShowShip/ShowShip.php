@@ -170,11 +170,7 @@ final class ShowShip implements ViewControllerInterface
             $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
         );
 
-        $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship));
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
-            $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $ship->getAstroStartTurn());
-            $game->setTemplateVar('ASTRO_LEFT', $turnsLeft);
-        }
+        $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
@@ -185,7 +181,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CURRENT_COLONY', $colony);
     }
 
-    private function getAstroState(ShipInterface $ship)
+    private function getAstroState(ShipInterface $ship, GameControllerInterface $game)
     {
         $system = $ship->getSystem() !== null ? $ship->getSystem() : $ship->isOverSystem();
 
@@ -199,6 +195,10 @@ final class ShowShip implements ViewControllerInterface
             } else {
                 $state = $astroEntry->getState();
             }
+        }
+        if ($state === AstronomicalMappingEnum::FINISHING) {
+            $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $astroEntry->getAstroStartTurn());
+            $game->setTemplateVar('ASTRO_LEFT', $turnsLeft);
         }
         return new AstroStateWrapper($state);
     }

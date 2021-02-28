@@ -69,6 +69,7 @@ final class StartAstroMapping implements ActionControllerInterface
         }
 
         $entry->setState(AstronomicalMappingEnum::FINISHING);
+        $entry->setAstroStartTurn($game->getCurrentRound()->getTurn());
         $this->astroEntryRepository->save($entry);
 
         $ship->setEps($ship->getEps() - AstroLaboratoryShipSystem::FINALIZING_ENERGY_COST);
