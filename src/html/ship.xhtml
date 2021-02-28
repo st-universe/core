@@ -516,7 +516,7 @@
 											<img src="/assets/buttons/map1.gif" name="astroButton" />
 											<span>Kartographierung finalisieren</span>
 										</a>
-										<tal:block tal:condition="not:SHIP/getAstroState">
+										<tal:block tal:condition="php:SHIP.isOverSystem() OR !SHIP.getAstroState()">
 											<img src="/assets/buttons/map1.gif" />
 											<span>Kartographierung ist geplant</span>
 										</tal:block>
