@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\AstroEntryLib;
@@ -36,6 +37,8 @@ final class ShipTick implements ShipTickInterface
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;
 
+    private CreateDatabaseEntryInterface $createDatabaseEntry;
+
     private array $msg = [];
 
     public function __construct(
@@ -45,7 +48,8 @@ final class ShipTick implements ShipTickInterface
         ShipLeaverInterface $shipLeaver,
         GameControllerInterface $game,
         AstroEntryLibInterface $astroEntryLib,
-        DatabaseUserRepositoryInterface $databaseUserRepository
+        DatabaseUserRepositoryInterface $databaseUserRepository,
+        CreateDatabaseEntryInterface $createDatabaseEntry
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -54,6 +58,7 @@ final class ShipTick implements ShipTickInterface
         $this->game = $game;
         $this->astroEntryLib = $astroEntryLib;
         $this->databaseUserRepository = $databaseUserRepository;
+        $this->createDatabaseEntry = $createDatabaseEntry;
     }
 
     public function work(ShipInterface $ship): void
@@ -147,15 +152,10 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
-        $state = $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING;
-        $round = $this->game->getCurrentRound()->getTurn();
-        $roundBool = $round >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH);
-
-        echo "- stateBool:" . $state . " - round:" . $round . " - roundBool:" . $roundBool . "\n";
         if (
-            $state && $roundBool
+            $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
+            && $this->game->getCurrentRound()->getTurn() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
-            echo "- drin\n";
             $this->astroEntryLib->finish($ship);
             $this->msg[] = sprintf(
                 _('Die Kartographierung des Systems %s wurde vollendet'),
@@ -179,8 +179,6 @@ final class ShipTick implements ShipTickInterface
                     }
                 }
             }
-        } else {
-            echo "- error\n";
         }
     }
 
