@@ -481,8 +481,8 @@
 										<img src="/assets/buttons/lupe1.gif" name="sectorScanButton" />
 										<span>Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen</span>
 									</a>
-									<br />
 									<tal:block tal:condition="ASTRO_STATE/isPlannable">
+										<br />
 										<a tal:condition="php:SHIP.getSystem() AND SHIP.getAstroState()"
 											href="?B_PLAN_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 											onmouseover="cp('astroButton','buttons/map2')"
@@ -496,6 +496,7 @@
 										</tal:block>
 									</tal:block>
 									<tal:block tal:condition="ASTRO_STATE/isPlanned">
+										<br />
 										<a tal:condition="SHIP/getAstroState" href="javascript:void(0);"
 											onclick="showAstroEntryWindow()"
 											onmouseover="cp('astroButton','buttons/map2')"
@@ -509,6 +510,7 @@
 										</tal:block>
 									</tal:block>
 									<tal:block tal:condition="ASTRO_STATE/isMeasured">
+										<br />
 										<a tal:condition="php:SHIP.getSystem() AND SHIP.getAstroState()"
 											href="?B_START_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 											onmouseover="cp('astroButton','buttons/map2')"
@@ -522,10 +524,12 @@
 										</tal:block>
 									</tal:block>
 									<tal:block tal:condition="ASTRO_STATE/isFinishing">
+										<br />
 										<img src="/assets/buttons/map1.gif" />
 										<span>Kartographierung wird finalisiert</span>
 									</tal:block>
 									<tal:block tal:condition="ASTRO_STATE/isDone">
+										<br />
 										<img src="/assets/buttons/map1.gif" />
 										<span>System ist kartographiert</span>
 									</tal:block>

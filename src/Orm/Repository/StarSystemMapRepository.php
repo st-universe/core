@@ -126,8 +126,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                     JOIN stu_map_ftypes ft
                     ON sm.field_id = ft.id
                     WHERE sm.systems_id = :systemId
-                    AND ft.colonies_classes_id IS NULL
-                    AND ft.x_damage_system = 0
+                    AND ft.x_damage_system <= 10
                     ORDER BY RANDOM()
                     LIMIT :theLimit',
                     $rsm
