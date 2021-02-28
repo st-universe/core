@@ -509,7 +509,7 @@
 										</tal:block>
 									</tal:block>
 									<tal:block tal:condition="ASTRO_STATE/isMeasured">
-										<a tal:condition="SHIP/getAstroState"
+										<a tal:condition="php:SHIP.getSystem() AND SHIP.getAstroState()"
 											href="?B_START_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 											onmouseover="cp('astroButton','buttons/map2')"
 											onmouseout="cp('astroButton','buttons/map1')">
