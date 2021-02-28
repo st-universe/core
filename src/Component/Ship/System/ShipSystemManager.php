@@ -36,21 +36,19 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     {
         $system = $this->lookupSystem($shipSystemId);
 
-        if (!$force)
-        {
+        if (!$force) {
             $this->checkActivationConditions($ship, $system, $shipSystemId);
         }
         $ship->setEps($ship->getEps() - $system->getEnergyUsageForActivation());
-        
+
         $system->activate($ship);
     }
-    
+
     public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void
     {
         $system = $this->lookupSystem($shipSystemId);
-        
-        if (!$force)
-        {
+
+        if (!$force) {
             $this->checkDeactivationConditions($ship, $system, $shipSystemId);
         }
 
@@ -80,7 +78,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
     public function lookupSystem(int $shipSystemId): ShipSystemTypeInterface
     {
         $system = $this->systemList[$shipSystemId] ?? null;
-        if ($system === null){
+        if ($system === null) {
             throw new InvalidSystemException();
         }
 
@@ -104,9 +102,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if (!$shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF) {
             throw new SystemNotActivableException();
         }
-        
-        if ($shipSystem->getMode() === ShipSystemModeEnum::MODE_ON
-            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON) {
+
+        if (
+            $shipSystem->getMode() === ShipSystemModeEnum::MODE_ON
+            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON
+        ) {
             throw new AlreadyActiveException();
         }
 
@@ -118,7 +118,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new InsufficientCrewException();
         }
 
-        $reason;
+        $reason = null;
         if (!$system->checkActivationConditions($ship, $reason)) {
             throw new ActivationConditionsNotMetException($reason);
         }
@@ -137,9 +137,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         if (!$shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_ON) {
             throw new SystemNotDeactivableException();
         }
-        
-        if ($shipSystem->getMode() === ShipSystemModeEnum::MODE_OFF
-            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF) {
+
+        if (
+            $shipSystem->getMode() === ShipSystemModeEnum::MODE_OFF
+            || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF
+        ) {
             throw new AlreadyOffException();
         }
     }
