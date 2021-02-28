@@ -46,7 +46,7 @@ final class PlanAstroMapping implements ActionControllerInterface
             $userId
         );
 
-        if ($ship->getSystem() == null) {
+        if ($ship->getSystem() === null) {
             $game->addInformation('debug1');
             return;
         }
@@ -65,7 +65,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         $astroEntry = $this->astroEntryRepository->prototype();
         $astroEntry->setUser($game->getUser());
         $astroEntry->setState(AstronomicalMappingEnum::PLANNED);
-        $astroEntry->setSystemId($ship->getSystemsId());
+        $astroEntry->setSystemId($ship->getSystem()->getId());
         $this->obtainMeasurementFields($astroEntry);
 
         $this->astroEntryRepository->save($astroEntry);
