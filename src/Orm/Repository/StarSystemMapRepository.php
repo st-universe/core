@@ -66,11 +66,17 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $result = [];
 
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addEntityResult(StarSystemMap::class, 'm');
+        $rsm->addFieldResult('m', 'id', 'id');
+        $rsm->addFieldResult('m', 'sx', 'sx');
+        $rsm->addFieldResult('m', 'sy', 'sy');
+        $rsm->addFieldResult('m', 'systems_id', 'systems_id');
+        $rsm->addFieldResult('m', 'field_id', 'field_id');
 
         $userColonyFields = $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT sm.id as id FROM stu_sys_map sm
+                'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id
+                FROM stu_sys_map sm
                 WHERE sm.systems_id = :systemId
                 AND EXISTS (SELECT c.id
                             FROM stu_colonies c
@@ -96,7 +102,8 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
 
         $otherColonyFields = $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT sm.id as id FROM stu_sys_map sm
+                'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id
+                FROM stu_sys_map sm
                 JOIN stu_map_ftypes ft
                 ON sm.field_id = ft.id
                 WHERE sm.systems_id = :systemId
@@ -121,14 +128,15 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         if (count($result) < AstronomicalMappingEnum::MEASUREMENT_COUNT) {
             $otherFields = $this->getEntityManager()
                 ->createNativeQuery(
-                    'SELECT sm.id as id FROM stu_sys_map sm
-                JOIN stu_map_ftypes ft
-                ON sm.field_id = ft.id
-                WHERE sm.systems_id = :systemId
-                AND ft.colonies_classes_id IS NULL
-                AND ft.x_damage_system = 0
-                ORDER BY RANDOM()
-                LIMIT :theLimit',
+                    'SELECT sm.id as id, sm.sx as sx, sm.sy as sy, sm.systems_id as systems_id, sm.field_id as field_id 
+                    FROM stu_sys_map sm
+                    JOIN stu_map_ftypes ft
+                    ON sm.field_id = ft.id
+                    WHERE sm.systems_id = :systemId
+                    AND ft.colonies_classes_id IS NULL
+                    AND ft.x_damage_system = 0
+                    ORDER BY RANDOM()
+                    LIMIT :theLimit',
                     $rsm
                 )
                 ->setParameters([

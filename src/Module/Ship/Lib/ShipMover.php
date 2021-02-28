@@ -714,19 +714,19 @@ final class ShipMover implements ShipMoverInterface
 
         if ($astroEntry->getState() == AstronomicalMappingEnum::PLANNED) {
             if ($astroEntry->getStarsystemMap1() === $nextField) {
-                $astroEntry->setStarsystemMapId1(null);
+                $astroEntry->setStarsystemMap1(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             } else if ($astroEntry->getStarsystemMap2() === $nextField) {
-                $astroEntry->setStarsystemMapId2(null);
+                $astroEntry->setStarsystemMap2(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             } else if ($astroEntry->getStarsystemMap3() === $nextField) {
-                $astroEntry->setStarsystemMapId3(null);
+                $astroEntry->setStarsystemMap3(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             } else if ($astroEntry->getStarsystemMap4() === $nextField) {
-                $astroEntry->setStarsystemMapId4(null);
+                $astroEntry->setStarsystemMap4(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             } else if ($astroEntry->getStarsystemMap5() === $nextField) {
-                $astroEntry->setStarsystemMapId5(null);
+                $astroEntry->setStarsystemMap5(null);
                 $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
             }
 
