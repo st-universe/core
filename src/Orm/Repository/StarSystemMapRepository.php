@@ -108,7 +108,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             )
             ->setParameters([
                 'systemId' => $starSystemId,
-                'ids' => $result,
+                'ids' => count($result) > 0 ? $result : [0],
                 'theLimit' => AstronomicalMappingEnum::MEASUREMENT_COUNT - count($result)
             ])
             ->getResult();
