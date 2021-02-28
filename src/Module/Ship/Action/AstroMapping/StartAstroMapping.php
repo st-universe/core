@@ -47,12 +47,14 @@ final class StartAstroMapping implements ActionControllerInterface
         );
 
         if ($ship->getSystem() === null) {
+            $game->addInformation('debug3');
             return;
         }
 
-        $entry = $this->astroEntryRepository->getByUserAndSystem($userId, $ship->getSystemsId());
+        $entry = $this->astroEntryRepository->getByUserAndSystem($userId, $ship->getSystem()->getId());
 
         if ($entry === null || $entry->getState() !== AstronomicalMappingEnum::MEASURED) {
+            $game->addInformation('debug4');
             return;
         }
 
