@@ -8,6 +8,7 @@ use NavPanel;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
@@ -170,6 +171,10 @@ final class ShowShip implements ViewControllerInterface
         );
 
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship));
+        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            $turnsLeft = AstronomicalMappingEnum::TURNS_TO_FINISH - ($game->getCurrentRound()->getTurn() - $ship->getAstroStartTurn());
+            $game->setTemplateVar('ASTRO_LEFT', $turnsLeft);
+        }
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);

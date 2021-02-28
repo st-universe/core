@@ -526,7 +526,10 @@
 									<tal:block tal:condition="ASTRO_STATE/isFinishing">
 										<br />
 										<img src="/assets/buttons/map1.gif" />
-										<span>Kartographierung wird finalisiert</span>
+										<span tal:condition="php:ASTRO_LEFT > 1">Kartographierung wird finalisiert (noch
+											${ASTRO_LEFT} Ticks)</span>
+										<span tal:condition="php:ASTRO_LEFT EQ 1">Kartographierung wird finalisiert
+											(noch 1 Tick)</span>
 									</tal:block>
 									<tal:block tal:condition="ASTRO_STATE/isDone">
 										<br />
