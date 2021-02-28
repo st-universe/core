@@ -30,6 +30,16 @@ final class AstroLaboratoryShipSystem extends AbstractShipSystemType implements 
             return false;
         }
 
+        if (!$ship->getLss()) {
+            $reason = _('die Langstreckensensoren nicht aktiv sind');
+            return false;
+        }
+
+        if (!$ship->getNbs()) {
+            $reason = _('die Nahbereichssensoren nicht aktiv sind');
+            return false;
+        }
+
         return true;
     }
 
