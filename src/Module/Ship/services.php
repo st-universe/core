@@ -42,6 +42,7 @@ use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
 use Stu\Module\Ship\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
+use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
 use Stu\Module\Ship\Action\AttackBuilding\AttackBuilding;
 use Stu\Module\Ship\Action\BeamFrom\BeamFrom;
@@ -267,7 +268,8 @@ return [
         TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class),
         StartDefending::ACTION_IDENTIFIER => autowire(StartDefending::class),
         StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class),
-        PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class)
+        PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
+        StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
