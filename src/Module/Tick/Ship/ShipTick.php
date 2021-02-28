@@ -148,7 +148,7 @@ final class ShipTick implements ShipTickInterface
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
         $state = $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING;
-        $round = $this->game->getCurrentRound();
+        $round = $this->game->getCurrentRound()->getTurn();
         $roundBool = $round >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH);
 
         echo "- stateBool:" . $state . " - round:" . $round . " - roundBool:" . $roundBool . "\n";
