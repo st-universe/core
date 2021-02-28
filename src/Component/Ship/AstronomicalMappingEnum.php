@@ -15,5 +15,4 @@ final class AstronomicalMappingEnum
 
     //other
     public const MEASUREMENT_COUNT = 5;
-    public const TURNS_TO_FINISH = 3;
 }

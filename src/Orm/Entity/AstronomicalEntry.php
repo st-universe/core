@@ -134,9 +134,9 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this->starsystem_map_1;
     }
 
-    public function setStarsystemMapId1(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap1(?StarSystemMapInterface $starsystem_map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_1 = $id;
+        $this->starsystem_map_1 = $starsystem_map;
         return $this;
     }
     public function getStarsystemMap2(): ?StarSystemMapInterface
@@ -144,9 +144,9 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this->starsystem_map_2;
     }
 
-    public function setStarsystemMapId2(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap2(?StarSystemMapInterface $starsystem_map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_2 = $id;
+        $this->starsystem_map_2 = $starsystem_map;
         return $this;
     }
     public function getStarsystemMap3(): ?StarSystemMapInterface
@@ -154,9 +154,9 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this->starsystem_map_3;
     }
 
-    public function setStarsystemMapId3(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap3(?StarSystemMapInterface $starsystem_map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_3 = $id;
+        $this->starsystem_map_3 = $starsystem_map;
         return $this;
     }
     public function getStarsystemMap4(): ?StarSystemMapInterface
@@ -164,9 +164,9 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this->starsystem_map_4;
     }
 
-    public function setStarsystemMapId4(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap4(?StarSystemMapInterface $starsystem_map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_4 = $id;
+        $this->starsystem_map_4 = $starsystem_map;
         return $this;
     }
     public function getStarsystemMap5(): ?StarSystemMapInterface
@@ -174,18 +174,9 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this->starsystem_map_5;
     }
 
-    public function setStarsystemMapId5(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap5(?StarSystemMapInterface $starsystem_map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_5 = $id;
+        $this->starsystem_map_5 = $starsystem_map;
         return $this;
-    }
-
-    public function isMeasured(): bool
-    {
-        return $this->starsystem_map_id_1 == null
-            && $this->starsystem_map_id_2 == null
-            && $this->starsystem_map_id_3 == null
-            && $this->starsystem_map_id_4 == null
-            && $this->starsystem_map_id_5 == null;
     }
 }

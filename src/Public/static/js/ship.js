@@ -94,11 +94,6 @@ function showSectorScanWindow() {
 	openPJsWin(elt, 1);
 	ajax_update(elt, 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
 }
-function showAstroEntryWindow() {
-	elt = 'astroentry';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'ship.php?id=' + shipid + '&SHOW_ASTRO_ENTRY=1');
-}
 function openStarMap(obj, cx, cy) {
 	var pos = findObject(obj);
 	elt = 'starmap';

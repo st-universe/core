@@ -33,7 +33,5 @@ interface StarSystemMapRepositoryInterface extends ObjectRepository
         int $endSy
     ): array;
 
-    public function getRandomFieldsForAstroMeasurement(int $starSystemId): array;
-
     public function save(StarSystemMapInterface $starSystemMap): void;
 }

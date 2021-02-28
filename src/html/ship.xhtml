@@ -97,8 +97,7 @@
 							onmouseover="cp('shinfo','buttons/info2');" onmouseout="cp('shinfo','buttons/info1');">
 							<img src="assets/buttons/info1.gif" title="Schiffsinformationen anzeigen" name="shinfo" />
 						</a>
-						<a tal:condition="ASTRO_STATE/isDone" href="javascript:void(0);"
-							onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');"
+						<a href="javascript:void(0);" onclick="openStarMap(this,'${SHIP/getMapCX}','${SHIP/getMapCY}');"
 							onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
 							<img src="assets/buttons/map1.gif" title="Karte anzeigen" name="shimap" />
 						</a>
@@ -322,26 +321,6 @@
 									</td>
 								</tr>
 							</tal:block>
-							<tal:block tal:condition="SHIP/hasAstroLaboratory">
-								<tr>
-									<td colspan="2">
-										<a tal:condition="not:SHIP/getAstroState"
-											href="?B_ACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-											onmouseover="cp('astro','buttons/map1')"
-											onmouseout="cp('astro','buttons/map2')">
-											<img src="/assets/buttons/map2.gif" name="astro" /> Astrometrisches Labor
-											aktivieren
-										</a>
-
-										<a href="?B_DEACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-											tal:condition="SHIP/getAstroState" onmouseover="cp('astro','buttons/map2')"
-											onmouseout="cp('astro','buttons/map1')">
-											<img src="/assets/buttons/map1.gif" name="astro" /> Astrometrisches Labor
-											deaktivieren
-										</a>
-									</td>
-								</tr>
-							</tal:block>
 						</table>
 						<tal:block tal:condition="SHIP/isFleetLeader">
 							<br />
@@ -482,54 +461,7 @@
 										<img src="/assets/buttons/lupe1.gif" name="sectorScanButton" />
 										<span>Sektor ${SHIP/getPosX}|${SHIP/getPosY} scannen</span>
 									</a>
-									<br />
-									<tal:block tal:condition="ASTRO_STATE/isPlannable">
-										<a tal:condition="SHIP/getAstroState"
-											href="?B_PLAN_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-											onmouseover="cp('astroButton','buttons/map2')"
-											onmouseout="cp('astroButton','buttons/map1')">
-											<img src="/assets/buttons/map1.gif" name="astroButton" />
-											<span>System kartographieren</span>
-										</a>
-										<tal:block tal:condition="not:SHIP/getAstroState">
-											<img src="/assets/buttons/map1.gif" />
-											<span>System nicht kartographiert</span>
-										</tal:block>
-									</tal:block>
-									<tal:block tal:condition="ASTRO_STATE/isPlanned">
-										<a tal:condition="SHIP/getAstroState" href="javascript:void(0);"
-											onclick="showAstroEntryWindow()"
-											onmouseover="cp('astroButton','buttons/map2')"
-											onmouseout="cp('astroButton','buttons/map1')">
-											<img src="/assets/buttons/map1.gif" name="astroButton" />
-											<span>Messpunkte ansehen</span>
-										</a>
-										<tal:block tal:condition="not:SHIP/getAstroState">
-											<img src="/assets/buttons/map1.gif" />
-											<span>Kartographierung ist geplant</span>
-										</tal:block>
-									</tal:block>
-									<tal:block tal:condition="ASTRO_STATE/isMeasured">
-										<a tal:condition="SHIP/getAstroState"
-											href="?B_START_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-											onmouseover="cp('astroButton','buttons/map2')"
-											onmouseout="cp('astroButton','buttons/map1')">
-											<img src="/assets/buttons/map1.gif" name="astroButton" />
-											<span>Kartographierung finalisieren</span>
-										</a>
-										<tal:block tal:condition="not:SHIP/getAstroState">
-											<img src="/assets/buttons/map1.gif" />
-											<span>Kartographierung ist geplant</span>
-										</tal:block>
-									</tal:block>
-									<tal:block tal:condition="ASTRO_STATE/isFinishing">
-										<img src="/assets/buttons/map1.gif" />
-										<span>Kartographierung wird finalisiert</span>
-									</tal:block>
-									<tal:block tal:condition="ASTRO_STATE/isDone">
-										<img src="/assets/buttons/map1.gif" />
-										<span>System ist kartographiert</span>
-									</tal:block>
+
 									<tal:block tal:condition="not:TACHYON_ACTIVE">
 										<tal:block tal:condition="SHIP/getTachyonState">
 											<br />
@@ -551,7 +483,7 @@
 												aktiv</span>
 										</a>
 										<tal:block tal:condition="not:SHIP/getTachyonState">
-											<img src="/assets/buttons/ascan1.gif" />
+											<img src="/assets/buttons/ascan1.gif" name="tachyonScanButton" />
 											<span>Tachyon-Scan in Sektor ${SHIP/getPosX}|${SHIP/getPosY} noch
 												aktiv</span>
 										</tal:block>

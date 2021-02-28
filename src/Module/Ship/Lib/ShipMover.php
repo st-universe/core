@@ -4,7 +4,6 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Exception\InvalidParamException;
 use Stu\Component\Map\MapEnum;
-use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
@@ -22,8 +21,6 @@ use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
-use Stu\Orm\Entity\StarSystemMapInterface;
-use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 
 final class ShipMover implements ShipMoverInterface
 {
@@ -47,8 +44,6 @@ final class ShipMover implements ShipMoverInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
-    private AstroEntryRepositoryInterface $astroEntryRepository;
-
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -71,8 +66,7 @@ final class ShipMover implements ShipMoverInterface
         ShipSystemManagerInterface $shipSystemManager,
         ApplyDamageInterface $applyDamage,
         AlertRedHelperInterface $alertRedHelper,
-        FlightSignatureRepositoryInterface $flightSignatureRepository,
-        AstroEntryRepositoryInterface $astroEntryRepository
+        FlightSignatureRepositoryInterface $flightSignatureRepository
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -84,7 +78,6 @@ final class ShipMover implements ShipMoverInterface
         $this->applyDamage = $applyDamage;
         $this->alertRedHelper = $alertRedHelper;
         $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->astroEntryRepository = $astroEntryRepository;
     }
 
     private function setDestination(
@@ -462,20 +455,10 @@ final class ShipMover implements ShipMoverInterface
         if ($ship->isTraktorbeamActive()) {
             $ship->setEps($ship->getEps() - $ship->getTraktorShip()->getRump()->getFlightEcost());
             $this->$met($ship->getTraktorShip());
-
-            //check astro stuff for tractor
-            if ($ship->getSystem() !== null) {
-                $this->checkAstronomicalStuff($ship->getTraktorShip(), $nextField);
-            }
         }
 
         //create flight signatures
         $this->addFlightSignatures($ship, $flightMethod, $currentField, $nextField, $leadShip->getSystem() !== null);
-
-        //check astro stuff
-        if ($ship->getSystem() !== null) {
-            $this->checkAstronomicalStuff($ship, $nextField);
-        }
 
         //Einflugschaden Feldschaden
         if ($nextField->getFieldType()->getSpecialDamage() && (($ship->getSystem() !== null && $nextField->getFieldType()->getSpecialDamageInnerSystem()) || ($ship->getSystem() === null && !$ship->getWarpState() && !$nextField->getFieldType()->getSpecialDamageInnerSystem()))) {
@@ -698,52 +681,6 @@ final class ShipMover implements ShipMoverInterface
 
         $this->flightSignatures[] = $fromSignature;
         $this->flightSignatures[] = $toSignature;
-    }
-
-    private function checkAstronomicalStuff(ShipInterface $ship, StarSystemMapInterface $nextField): void
-    {
-        if (!$ship->getAstroState()) {
-            return;
-        }
-
-        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUser(), $ship->getSystemsId());
-
-        if ($astroEntry === null) {
-            return;
-        }
-
-        if ($astroEntry->getState() == AstronomicalMappingEnum::PLANNED) {
-            if ($astroEntry->getStarsystemMap1() === $nextField) {
-                $astroEntry->setStarsystemMapId1(null);
-                $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap2() === $nextField) {
-                $astroEntry->setStarsystemMapId2(null);
-                $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap3() === $nextField) {
-                $astroEntry->setStarsystemMapId3(null);
-                $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap4() === $nextField) {
-                $astroEntry->setStarsystemMapId4(null);
-                $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            } else if ($astroEntry->getStarsystemMap5() === $nextField) {
-                $astroEntry->setStarsystemMapId5(null);
-                $this->addInformation(sprintf(_('Die %s hat einen Kartographierungs-Messpunkt erreicht (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
-            }
-
-            if ($astroEntry->isMeasured()) {
-                $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
-                $this->addInformation(sprintf(_('Die %s hat alle Kartographierungs-Messpunkte erreicht'), $ship->getName()));
-            }
-        }
-
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING && $astroEntry->getState() === AstronomicalMappingEnum::FINISHING) {
-            $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-            $ship->setAstroStartTurn(null);
-            $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
-            $this->addInformation(sprintf(_('Die %s hat die Kartographierungs-Finalisierung abgebrochen'), $ship->getName()));
-        }
-
-        $this->astroEntryRepository->save($astroEntry);
     }
 
     private function createSignature($ship, $field, bool $isSystem): FlightSignatureInterface
