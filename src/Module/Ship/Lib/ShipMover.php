@@ -740,6 +740,7 @@ final class ShipMover implements ShipMoverInterface
             $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
             $ship->setAstroStartTurn(null);
             $astroEntry->setState(AstronomicalMappingEnum::MEASURED);
+            $astroEntry->setAstroStartTurn(null);
             $this->addInformation(sprintf(_('Die %s hat die Kartographierungs-Finalisierung abgebrochen'), $ship->getName()));
         }
 
