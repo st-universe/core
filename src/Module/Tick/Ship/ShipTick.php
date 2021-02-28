@@ -16,6 +16,7 @@ use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipSystemInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipTick implements ShipTickInterface
@@ -33,6 +34,8 @@ final class ShipTick implements ShipTickInterface
 
     private AstroEntryLibInterface $astroEntryLib;
 
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
+
     private array $msg = [];
 
     public function __construct(
@@ -41,7 +44,8 @@ final class ShipTick implements ShipTickInterface
         ShipSystemManagerInterface $shipSystemManager,
         ShipLeaverInterface $shipLeaver,
         GameControllerInterface $game,
-        AstroEntryLibInterface $astroEntryLib
+        AstroEntryLibInterface $astroEntryLib,
+        DatabaseUserRepositoryInterface $databaseUserRepository
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -49,6 +53,7 @@ final class ShipTick implements ShipTickInterface
         $this->shipLeaver = $shipLeaver;
         $this->game = $game;
         $this->astroEntryLib = $astroEntryLib;
+        $this->databaseUserRepository = $databaseUserRepository;
     }
 
     public function work(ShipInterface $ship): void
@@ -133,6 +138,15 @@ final class ShipTick implements ShipTickInterface
         $ship->setEps($eps);
         $ship->setWarpcoreLoad($ship->getWarpcoreLoad() - $wkuse);
 
+        $this->checkForFinishedAstroMapping($ship);
+
+        $this->shipRepository->save($ship);
+
+        $this->sendMessages($ship);
+    }
+
+    private function checkForFinishedAstroMapping(ShipInterface $ship): void
+    {
         if (
             $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
             && $this->game->getCurrentRound() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
@@ -142,11 +156,25 @@ final class ShipTick implements ShipTickInterface
                 _('Die Kartographierung des Systems %s wurde vollendet'),
                 $ship->getSystem()->getName()
             );
+
+            $databaseEntry = $ship->getSystem()->getDatabaseEntry();
+            if ($databaseEntry !== null) {
+                $userId = $ship->getUserId();
+                $databaseEntryId = $databaseEntry->getId();
+
+                if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
+                    $entry = $this->createDatabaseEntry->createDatabaseEntryForUser($ship->getUser(), $databaseEntryId);
+
+                    if ($entry !== null) {
+                        $this->msg[] = sprintf(
+                            _('Neuer Datenbankeintrag: %s (+%d Punkte)'),
+                            $entry->getDescription(),
+                            $entry->getCategory()->getPoints()
+                        );
+                    }
+                }
+            }
         }
-
-        $this->shipRepository->save($ship);
-
-        $this->sendMessages($ship);
     }
 
     private function getSystemDescription(ShipSystemInterface $shipSystem): string
