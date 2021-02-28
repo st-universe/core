@@ -44,7 +44,8 @@ if ($rumpId !== 0) {
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_TACHYON_SCANNER,
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_TROOP_QUARTERS,
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR,
-        ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR,
+        ModuleSpecialAbilityEnum::MODULE_SPECIAL_ASTRO_LABORATORY
     ];
 
     $moduleTypes = [

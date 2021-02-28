@@ -73,12 +73,6 @@ final class ShowSectorScan implements ViewControllerInterface
         if ($mapField->getFieldType()->getIsSystem()) {
             $game->checkDatabaseItem($ship->getCurrentMapField()->getSystem()->getSystemType()->getDatabaseEntryId());
         }
-        if ($ship->getSystem() !== null) {
-            $databaseEntry = $ship->getSystem()->getDatabaseEntry();
-            if ($databaseEntry !== null) {
-                $game->checkDatabaseItem($databaseEntry->getId());
-            }
-        }
 
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $ship->getSystem() !== null, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
