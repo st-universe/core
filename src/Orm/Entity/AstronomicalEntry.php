@@ -132,81 +132,63 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     {
         return $this->starsystem_map_1;
     }
-    public function getStarsystemMapId1(): ?int
-    {
-        return $this->starsystem_map_id_1;
-    }
 
-    public function setStarsystemMapId1(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap1(?StarSystemMapInterface $map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_1 = $id;
+        $this->starsystem_map_1 = $map;
         return $this;
     }
+
     public function getStarsystemMap2(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_2;
     }
-    public function getStarsystemMapId2(): ?int
-    {
-        return $this->starsystem_map_id_2;
-    }
 
-    public function setStarsystemMapId2(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap2(?StarSystemMapInterface $map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_2 = $id;
+        $this->starsystem_map_2 = $map;
         return $this;
     }
+
     public function getStarsystemMap3(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_3;
     }
 
-    public function getStarsystemMapId3(): ?int
+    public function setStarsystemMap3(?StarSystemMapInterface $map): AstronomicalEntryInterface
     {
-        return $this->starsystem_map_id_3;
-    }
-
-    public function setStarsystemMapId3(?int $id): AstronomicalEntryInterface
-    {
-        $this->starsystem_map_id_3 = $id;
+        $this->starsystem_map_3 = $map;
         return $this;
     }
+
     public function getStarsystemMap4(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_4;
     }
-    public function getStarsystemMapId4(): ?int
-    {
-        return $this->starsystem_map_id_4;
-    }
 
-    public function setStarsystemMapId4(?int $id): AstronomicalEntryInterface
+    public function setStarsystemMap4(?StarSystemMapInterface $map): AstronomicalEntryInterface
     {
-        $this->starsystem_map_id_4 = $id;
+        $this->starsystem_map_4 = $map;
         return $this;
     }
+
     public function getStarsystemMap5(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_5;
     }
 
-    public function getStarsystemMapId5(): ?int
+    public function setStarsystemMap5(?StarSystemMapInterface $map): AstronomicalEntryInterface
     {
-        return $this->starsystem_map_id_5;
-    }
-
-    public function setStarsystemMapId5(?int $id): AstronomicalEntryInterface
-    {
-        $this->starsystem_map_id_5 = $id;
+        $this->starsystem_map_5 = $map;
         return $this;
     }
 
     public function isMeasured(): bool
     {
-        return $this->starsystem_map_id_1 == null
-            && $this->starsystem_map_id_2 == null
-            && $this->starsystem_map_id_3 == null
-            && $this->starsystem_map_id_4 == null
-            && $this->starsystem_map_id_5 == null;
+        return $this->starsystem_map_1 == null
+            && $this->starsystem_map_2 == null
+            && $this->starsystem_map_3 == null
+            && $this->starsystem_map_4 == null
+            && $this->starsystem_map_5 == null;
     }
 }
