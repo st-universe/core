@@ -132,6 +132,10 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     {
         return $this->starsystem_map_1;
     }
+    public function getStarsystemMapId1(): ?int
+    {
+        return $this->starsystem_map_id_1;
+    }
 
     public function setStarsystemMapId1(?int $id): AstronomicalEntryInterface
     {
@@ -141,6 +145,10 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     public function getStarsystemMap2(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_2;
+    }
+    public function getStarsystemMapId2(): ?int
+    {
+        return $this->starsystem_map_id_2;
     }
 
     public function setStarsystemMapId2(?int $id): AstronomicalEntryInterface
@@ -153,6 +161,11 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this->starsystem_map_3;
     }
 
+    public function getStarsystemMapId3(): ?int
+    {
+        return $this->starsystem_map_id_3;
+    }
+
     public function setStarsystemMapId3(?int $id): AstronomicalEntryInterface
     {
         $this->starsystem_map_id_3 = $id;
@@ -161,6 +174,10 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     public function getStarsystemMap4(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_4;
+    }
+    public function getStarsystemMapId4(): ?int
+    {
+        return $this->starsystem_map_id_4;
     }
 
     public function setStarsystemMapId4(?int $id): AstronomicalEntryInterface
@@ -171,6 +188,11 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     public function getStarsystemMap5(): ?StarSystemMapInterface
     {
         return $this->starsystem_map_5;
+    }
+
+    public function getStarsystemMapId5(): ?int
+    {
+        return $this->starsystem_map_id_5;
     }
 
     public function setStarsystemMapId5(?int $id): AstronomicalEntryInterface

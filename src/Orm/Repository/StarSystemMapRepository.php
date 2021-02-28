@@ -92,6 +92,8 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
             $result[] = $field['id'];
         }
 
+        echo "- c: " . count($result) . "\n";
+
         $otherColonyFields = $this->getEntityManager()
             ->createNativeQuery(
                 'SELECT sm.id as id FROM stu_sys_map sm
@@ -114,6 +116,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         foreach ($otherColonyFields as $field) {
             $result[] = $field['id'];
         }
+        echo "- c: " . count($result) . "\n";
 
         if (count($result) < AstronomicalMappingEnum::MEASUREMENT_COUNT) {
             $otherFields = $this->getEntityManager()
