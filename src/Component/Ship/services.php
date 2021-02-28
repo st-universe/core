@@ -9,6 +9,7 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
 use Stu\Component\Ship\System\Type\CloakShipSystem;
 use Stu\Component\Ship\System\Type\EnergyWeaponShipSystem;
 use Stu\Component\Ship\System\Type\EpsShipSystem;
@@ -49,7 +50,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_COMPUTER => autowire(ComputerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS => autowire(TroopQuartersShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_DEFLECTOR => autowire(DeflectorShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => autowire(SubspaceSensorShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => autowire(SubspaceSensorShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY => autowire(AstroLaboratoryShipSystem::class)
         ]
     )
 ];
