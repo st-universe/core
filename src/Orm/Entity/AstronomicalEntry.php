@@ -30,7 +30,7 @@ class AstronomicalEntry implements AstronomicalEntryInterface
     private $state = 0;
 
     /** @Column(type="integer") * */
-    private $systems_id = 0;
+    private $systems_id;
 
     /** @Column(type="integer", nullable=true) * */
     private $starsystem_map_id_1;
@@ -117,15 +117,14 @@ class AstronomicalEntry implements AstronomicalEntryInterface
         return $this;
     }
 
-    public function getSystemId(): int
+    public function getSystem(): StarSystemInterface
     {
-        return $this->systems_id;
+        return $this->starSystem;
     }
 
-    public function setSystemId(int $systemId): AstronomicalEntryInterface
+    public function setSystem(StarSystemInterface $starSystem): AstronomicalEntryInterface
     {
-        $this->systems_id = $systemId;
-
+        $this->starSystem = $starSystem;
         return $this;
     }
 

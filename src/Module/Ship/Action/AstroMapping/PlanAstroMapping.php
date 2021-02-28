@@ -65,7 +65,7 @@ final class PlanAstroMapping implements ActionControllerInterface
         $astroEntry = $this->astroEntryRepository->prototype();
         $astroEntry->setUser($game->getUser());
         $astroEntry->setState(AstronomicalMappingEnum::PLANNED);
-        $astroEntry->setSystemId($ship->getSystem()->getId());
+        $astroEntry->setSystem($ship->getSystem());
         $this->obtainMeasurementFields($astroEntry);
 
         $this->astroEntryRepository->save($astroEntry);
@@ -76,7 +76,7 @@ final class PlanAstroMapping implements ActionControllerInterface
 
     private function obtainMeasurementFields(AstronomicalEntryInterface $entry)
     {
-        $fieldIds = $this->starSystemMapRepository->getRandomFieldsForAstroMeasurement($entry->getSystemId());
+        $fieldIds = $this->starSystemMapRepository->getRandomFieldsForAstroMeasurement($entry->getSystem()->getId());
 
         $entry->setStarsystemMapId1($fieldIds[0]);
         $entry->setStarsystemMapId2($fieldIds[1]);
