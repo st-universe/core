@@ -147,10 +147,12 @@ final class ShipTick implements ShipTickInterface
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void
     {
+        echo "- checkForFinishedAstroMapping\n";
         if (
             $ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING
             && $this->game->getCurrentRound() >= ($ship->getAstroStartTurn() + AstronomicalMappingEnum::TURNS_TO_FINISH)
         ) {
+            echo "- drin\n";
             $this->astroEntryLib->finish($ship);
             $this->msg[] = sprintf(
                 _('Die Kartographierung des Systems %s wurde vollendet'),
@@ -174,6 +176,8 @@ final class ShipTick implements ShipTickInterface
                     }
                 }
             }
+        } else {
+            echo "- error\n";
         }
     }
 

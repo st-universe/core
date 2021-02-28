@@ -74,7 +74,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $this->leaveStarSystem($ship);
+        $this->leaveStarSystem($ship, $game);
         if ($ship->isTraktorbeamActive()) {
             $this->leaveStarSystemTraktor($ship, $game);
         }
@@ -100,7 +100,7 @@ final class LeaveStarSystem implements ActionControllerInterface
                         $userId
                     );
 
-                    $this->leaveStarSystem($reloadedShip);
+                    $this->leaveStarSystem($reloadedShip, $game);
                     if ($reloadedShip->isTraktorbeamActive()) {
                         $this->leaveStarSystemTraktor($reloadedShip, $game);
                     }
@@ -138,7 +138,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
-        $this->leaveStarSystem($ship->getTraktorShip());
+        $this->leaveStarSystem($ship->getTraktorShip(), $game);
         $ship->setEps($ship->getEps() - 1);
 
         $this->shipRepository->save($ship->getTraktorShip());
@@ -147,7 +147,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit aus dem System gezogen");
     }
 
-    private function leaveStarSystem(ShipInterface $ship): void
+    private function leaveStarSystem(ShipInterface $ship, GameControllerInterface $game): void
     {
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
@@ -158,6 +158,7 @@ final class LeaveStarSystem implements ActionControllerInterface
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
+            $game->addInformation(sprintf(_('Die %s hat die Kartographierungs-Finalisierung abgebrochen'), $ship->getName()));
         }
     }
 
