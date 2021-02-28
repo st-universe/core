@@ -40,5 +40,11 @@ interface AstronomicalEntryInterface
 
     public function setStarsystemMapId5(?int $id): AstronomicalEntryInterface;
 
+    public function getStarsystemMapId1(): ?int;
+    public function getStarsystemMapId2(): ?int;
+    public function getStarsystemMapId3(): ?int;
+    public function getStarsystemMapId4(): ?int;
+    public function getStarsystemMapId5(): ?int;
+
     public function isMeasured(): bool;
 }
