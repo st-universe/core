@@ -182,14 +182,19 @@ final class ShowShip implements ViewControllerInterface
 
     private function getAstroState(ShipInterface $ship)
     {
-        $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUserId(), $ship->getSystemsId());
+        $system = $ship->getSystem() !== null ? $ship->getSystem() : $ship->isOverSystem();
 
-        if ($astroEntry === null) {
-            $state = AstronomicalMappingEnum::PLANNABLE;
+        if ($system === null) {
+            $state = AstronomicalMappingEnum::NONE;
         } else {
-            $state = $astroEntry->getState();
-        }
+            $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUserId(), $system->getId());
 
+            if ($astroEntry === null) {
+                $state = AstronomicalMappingEnum::PLANNABLE;
+            } else {
+                $state = $astroEntry->getState();
+            }
+        }
         return new AstroStateWrapper($state);
     }
 }
