@@ -19,7 +19,7 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
 
     public function getByUserAndSystem($userId, $starSystemId): ?AstronomicalEntryInterface
     {
-        return $this->findBy(
+        return $this->findOneBy(
             [
                 'user_id' => $userId,
                 'systems_id' => $starSystemId
