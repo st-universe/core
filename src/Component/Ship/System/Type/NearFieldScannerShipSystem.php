@@ -29,10 +29,14 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_OFF);
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
 
-        if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
-            $this->astroEntryLib->cancelAstroFinalizing($ship);
+        //other consequences
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY)->setMode(ShipSystemModeEnum::MODE_OFF);
+
+            if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+                $this->astroEntryLib->cancelAstroFinalizing($ship);
+            }
         }
     }
 
