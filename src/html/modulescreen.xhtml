@@ -190,7 +190,7 @@
             <input class="specialModuleRadio" type="checkbox"
               tal:attributes="checked module/isChosen;disabled not:HAS_STORAGE/${module/getModule/getGoodId}/1"
               name="mod_${THIS/getModuleType}[]" value="${module/getModule/getId}"
-              onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getCrew})" />
+              onchange="toggleSpecialModuleDisplay(${THIS/getModuleType},${module/getModule/getId},${module/getModule/getCrew})" />
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>

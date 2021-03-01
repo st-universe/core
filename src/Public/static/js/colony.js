@@ -252,13 +252,15 @@ function replaceTabImage(type, moduleId, goodId, module_crew, module_lvl) {
 	enableShipBuildButton();
 }
 var disabledSlots = new Set();
-function toggleSpecialModuleDisplay(type, module_crew) {
+function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 	let innerHTML = '';
 	let checkedCount = 0;
 	Element.select($('module_select_tab_' + type), '.specialModuleRadio').each(function (elem) {
 		if (elem.checked) {
 			innerHTML = innerHTML.concat($(elem.value + '_content').innerHTML);
-			updateCrewCount(elem.value, module_crew, 0);
+			if (elem.value == module_id) {
+				updateCrewCount(elem.value, module_crew, 0);
+			}
 			checkedCount++;
 		} else {
 			updateCrewCount(elem.value, 0, 0);
