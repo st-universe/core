@@ -61,6 +61,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
     {
         $ship->deactivateTraktorBeam();
         $ship->setDockedTo(null);
+        $ship->cancelRepair();
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
