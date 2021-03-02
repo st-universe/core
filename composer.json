@@ -1,5 +1,6 @@
 {
   "name": "st-universe/core",
+  "license": "MIT",
   "autoload": {
     "classmap": [
       "src/Lib",
