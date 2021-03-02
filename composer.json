@@ -1,5 +1,6 @@
 {
   "name": "st-universe/core",
+  "description": "ST-Universe Browsergame Source Code",
   "license": "MIT",
   "autoload": {
     "classmap": [
