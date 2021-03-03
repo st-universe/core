@@ -40,9 +40,9 @@ final class UnloadBattery implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        
+
         $load = request::postInt('ebattload');
-        
+
         if ($load < 1) {
             return;
         }
@@ -57,7 +57,7 @@ final class UnloadBattery implements ActionControllerInterface
             $game->addInformationMerge($msg);
             return;
         }
-        
+
         $game->addInformation($this->unloadBattery($ship, $load));
     }
 
@@ -71,7 +71,7 @@ final class UnloadBattery implements ActionControllerInterface
             return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName());
         }
         if (!$ship->isEBattUseable()) {
-            return sprintf(_('%s: Die Batterie kann erst wieder am ' . $ship->getEBattWaitingTime() . ' genutzt werden'), $ship->getName());
+            return sprintf(_('%s: Die Batterie kann erst wieder am ' . date('d.m.Y H:i', $ship->getEBattWaitingTime()) . ' genutzt werden'), $ship->getName());
         }
         if ($ship->getEps() >= $ship->getMaxEps()) {
             return sprintf(_('%s: Der Energiespeicher ist voll'), $ship->getName());
@@ -93,8 +93,11 @@ final class UnloadBattery implements ActionControllerInterface
 
         $this->shipRepository->save($ship);
 
-        return sprintf(_('%s: Die Ersatzbatterie wurde um %d Einheiten entladen'), $ship->getName(),
-                            $load);
+        return sprintf(
+            _('%s: Die Ersatzbatterie wurde um %d Einheiten entladen'),
+            $ship->getName(),
+            $load
+        );
     }
 
     public function performSessionCheck(): bool
