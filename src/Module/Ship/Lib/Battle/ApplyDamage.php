@@ -136,11 +136,10 @@ final class ApplyDamage implements ApplyDamageInterface
         $healthySystems = $ship->getHealthySystems();
         shuffle($healthySystems);
 
-        $system = $healthySystems[0];
-
-        if ($system === null) {
+        if (empty($healthySystems)) {
             return null;
         }
+        $system = $healthySystems[0];
         $system->setStatus(0);
         $system->setMode(ShipSystemModeEnum::MODE_OFF);
         $this->shipSystemManager->handleDestroyedSystem($ship, $healthySystems[0]->getSystemType());
@@ -154,8 +153,8 @@ final class ApplyDamage implements ApplyDamageInterface
         $healthySystems = $ship->getHealthySystems();
         shuffle($healthySystems);
 
-        $system = $healthySystems[0];
-        if ($system !== null) {
+        if (count($healthySystems) > 0) {
+            $system = $healthySystems[0];
             $this->damageShipSystem($ship, $system, rand(1, 70), $msg);
             //catch invalidsystemexception
         }
