@@ -158,9 +158,7 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
 
                 $this->buildingManager->remove($target);
 
-                if ($this->getEnergyWeapon($attacker)->getFiringMode() === self::FIRINGMODE_FOCUS) {
-                    break;
-                }
+                break;
             }
             //deactivate if high damage
             else if ($target->hasHighDamage()) {

@@ -164,6 +164,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
             if ($target->getIntegrity() === 0) {
 
                 $this->buildingManager->remove($target);
+                break;
             }
             //deactivate if high damage
             else if ($target->hasHighDamage()) {
