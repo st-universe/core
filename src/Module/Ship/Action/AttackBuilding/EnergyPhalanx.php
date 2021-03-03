@@ -87,7 +87,7 @@ final class EnergyPhalanx
 
     public function getBaseDamage()
     {
-        return 200;
+        return 250;
     }
 
     public function getModuleLevel()
@@ -97,7 +97,7 @@ final class EnergyPhalanx
 
     public function getPhaserVolleys(): int
     {
-        return 2;
+        return 3;
     }
 
     public function getPhaserShieldDamageFactor(): int

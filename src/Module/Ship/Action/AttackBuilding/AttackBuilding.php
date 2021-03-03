@@ -184,7 +184,7 @@ final class AttackBuilding implements ActionControllerInterface
         $isMoon = $colony->getPlanetType()->getIsMoon();
         $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
         $attackerPool = $this->fightLib->filterInactiveShips($attacker);
-        $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE) * 3;
+        $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE) * 6;
 
         foreach ($attackerPool as $attacker) {
             if ($isOrbitField) {
