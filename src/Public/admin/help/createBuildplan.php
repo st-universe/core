@@ -79,6 +79,7 @@ if ($rumpId !== 0) {
             $plan->setName($planname);
             $plan->setSignature($signature);
             $plan->setBuildtime(0);
+            $buildplanRepo->save($plan);
 
             $crew_usage = $rump->getBaseCrew();
 
