@@ -127,6 +127,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                     ON sm.field_id = ft.id
                     WHERE sm.systems_id = :systemId
                     AND ft.x_damage_system <= 10
+                    AND ft.x_damage <= 10
                     ORDER BY RANDOM()
                     LIMIT :theLimit',
                     $rsm
