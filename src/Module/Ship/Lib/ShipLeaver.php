@@ -138,6 +138,8 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private function changeFleetLeader(ShipInterface $obj): void
     {
+        echo "- changeFleetLeader\n";
+
         $ship = current(
             array_filter(
                 $obj->getFleet()->getShips()->toArray(),
@@ -155,10 +157,12 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->shipRepository->save($obj);
 
         if (!$ship) {
+            echo "- deleteFleet\n";
             $this->fleetRepository->delete($fleet);
 
             return;
         }
+        echo "- newLeader\n";
         $fleet->setLeadShip($ship);
 
         $this->fleetRepository->save($fleet);
