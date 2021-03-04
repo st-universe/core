@@ -151,6 +151,8 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotDeactivableException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Deaktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
+        } catch (SystemNotFoundException $e) {
+            $game->addInformation(sprintf(_('%s: System %s nicht vorhanden'), $ship->getName(), $systemName));
         }
     }
 
