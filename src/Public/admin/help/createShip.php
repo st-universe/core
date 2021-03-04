@@ -33,22 +33,24 @@ if ($buildplanId > 0) {
     $plan = $buildplanRepo->find($buildplanId);
     $cx = request::postIntFatal('cx');
     $cy = request::postIntFatal('cy');
+    $shipcount = request::postIntFatal('shipcount');
 
-    $ship = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
-    $ship->setCx($cx);
-    $ship->setCy($cy);
-    $ship->setEps($ship->getTheoreticalMaxEps());
-    $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
+    for ($i = 0; $i < $shipcount; $i++) {
+        $ship = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
+        $ship->setCx($cx);
+        $ship->setCy($cy);
+        $ship->setEps($ship->getMaxEps());
+        $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
 
-    $shipRepo->save($ship);
+        $shipRepo->save($ship);
 
-    for ($i = 1; $i <= $plan->getCrew(); $i++) {
-        $crewCreator->create($userId);
+        for ($i = 1; $i <= $plan->getCrew(); $i++) {
+            $crewCreator->create($userId);
+        }
+        $crewCreator->createShipCrew($ship);
     }
-    $crewCreator->createShipCrew($ship);
 
-    echo 'Schiff erstellt';
-
+    echo 'Schiff/e erstellt';
 } else {
     if ($userId > 0) {
         $buildplans = $buildplanRepo->getByUser($userId);
@@ -69,7 +71,8 @@ if ($buildplanId > 0) {
 
         printf(
             '<br /><br />
-            Koordinaten<br /><input type="text" size="3" name="cx" /> | <input type="text" size="3" name="cy" /><br /><br />
+            Koordinaten<br /><input type="text" size="3" name="cx" /> | <input type="text" size="3" name="cy" /><br />
+            Anzahl<br /><input type="text" size="3" name="shipcount" value="1"/><br /><br />
             <input type="submit" value="Schiff erstellen" /></form>'
         );
     } else {
