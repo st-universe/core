@@ -1554,6 +1554,7 @@ class Ship implements ShipInterface
 
     public function getMaxTorpedos(): int
     {
+        //TODO plus torp trans module
         return $this->getRump()->getBaseTorpedoStorage();
     }
 
