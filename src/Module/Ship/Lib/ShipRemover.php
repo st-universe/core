@@ -75,8 +75,15 @@ final class ShipRemover implements ShipRemoverInterface
 
         $this->shipSystemManager->deactivateAll($ship);
 
+        $fleet = $ship->getFleet();
+
         if ($ship->isFleetLeader()) {
             $this->changeFleetLeader($ship);
+        } else if ($fleet !== null) {
+            $fleet->getShips()->removeElement($ship);
+
+            $ship->setFleet(null);
+            $ship->setFleetId(null);
         }
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
@@ -110,7 +117,6 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setDockedTo(null);
         $ship->setName(_('Trümmer'));
         $ship->setIsDestroyed(true);
-        $ship->setFleet(null);
         $ship->cancelRepair();
 
         $this->leaveSomeIntactModules($ship);
