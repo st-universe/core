@@ -47,8 +47,8 @@ final class BuildingEnum
     public const BUILDING_FUNCTION_PARTICLE_PHALANX = 27;
     public const BUILDING_FUNCTION_ANTI_PARTICLE = 28;
 
-    public const SHIELD_GENERATOR_CAPACITY = 2000;
-    public const SHIELD_BATTERY_CAPACITY = 5000;
+    public const SHIELD_GENERATOR_CAPACITY = 4000;
+    public const SHIELD_BATTERY_CAPACITY = 10000;
 
     // other
     public const BUILDMENU_SOCIAL = 1;
