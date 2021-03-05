@@ -163,6 +163,16 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
 
             if ($target->getIntegrity() === 0) {
 
+
+                $this->entryCreator->addColonyEntry(
+                    sprintf(
+                        _('Das Gebäude %s auf Kolonie %s wurde von der %s zerstört'),
+                        $target->getBuilding()->getName(),
+                        $target->getColony()->getName(),
+                        $attacker->getName()
+                    )
+                );
+
                 $this->buildingManager->remove($target);
                 break;
             }
