@@ -199,6 +199,13 @@ if ($rumpId !== 0) {
                 $user->getUserName()
             );
         }
+        foreach ($userRepo->getNonNpcList() as $user) {
+            printf(
+                '<a href="?userId=%d">%s</a><br />',
+                $user->getId(),
+                $user->getUserName()
+            );
+        }
     }
 }
 $db->commit();
