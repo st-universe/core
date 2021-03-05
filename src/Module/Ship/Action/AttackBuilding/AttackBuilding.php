@@ -81,11 +81,6 @@ final class AttackBuilding implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        if ($userId != 126 && $userId != 102) {
-            $game->addInformation("not yet implemented..");
-            return;
-        }
-
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
