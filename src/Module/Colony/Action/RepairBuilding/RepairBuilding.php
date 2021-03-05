@@ -47,7 +47,7 @@ final class RepairBuilding implements ActionControllerInterface
 
         $field = $this->planetFieldRepository->getByColonyAndFieldId(
             $colony->getId(),
-            (int)request::indInt('fid')
+            (int) request::indInt('fid')
         );
 
         if ($field === null) {
@@ -64,7 +64,7 @@ final class RepairBuilding implements ActionControllerInterface
             return;
         }
         $integrity = round((100 / $field->getBuilding()->getIntegrity()) * $field->getIntegrity());
-        $eps = (int)round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
+        $eps = (int) round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
         if ($eps > $colony->getEps()) {
             $game->addInformationf(
                 _('Zur Reparatur wird %d Energie benötigt - Es sind jedoch nur %d vorhanden'),
@@ -78,7 +78,7 @@ final class RepairBuilding implements ActionControllerInterface
         $costs = $field->getBuilding()->getCosts();
 
         foreach ($costs as $cost) {
-            $amount = round(($cost->getAmount() / 100) * $integrity);
+            $amount = (int) ceil(($cost->getAmount() / 100) * $integrity);
             $commodityId = $cost->getGoodId();
 
             if (!$storage->containsKey($commodityId)) {
@@ -103,7 +103,7 @@ final class RepairBuilding implements ActionControllerInterface
             $this->colonyStorageManager->lowerStorage(
                 $colony,
                 $cost->getGood(),
-                (int) round(($cost->getAmount() / 100) * $integrity)
+                (int) ceil(($cost->getAmount() / 100) * $integrity)
             );
         }
         $colony->clearCache();
