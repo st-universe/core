@@ -152,7 +152,7 @@ final class AttackBuilding implements ActionControllerInterface
 
         // ORBITAL DEFENSE
         $count = $colony->getBuildingWithFunctionCount(BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX);
-        $defendingPhalanx = new EnergyPhalanx($colony, $this->moduleRepository->find(1));
+        $defendingPhalanx = new EnergyPhalanx($colony, $this->moduleRepository);
 
         for ($i = 0; $i < $count; $i++) {
             $attackerPool = $this->fightLib->filterInactiveShips($attacker);
