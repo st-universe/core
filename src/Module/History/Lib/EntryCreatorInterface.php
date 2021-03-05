@@ -8,5 +8,10 @@ interface EntryCreatorInterface
 {
     public function addShipEntry(string $text, int $userId = GameEnum::USER_NOONE): void;
 
+    public function addColonyEntry(
+        string $text,
+        int $userId = GameEnum::USER_NOONE
+    ): void;
+
     public function addAllianceEntry(string $text, int $userId = GameEnum::USER_NOONE): void;
 }
