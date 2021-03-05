@@ -5,21 +5,24 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\AttackBuilding;
 
 use Stu\Orm\Entity\ColonyInterface;
-use Stu\Orm\Entity\ModuleInterface;
+use Stu\Orm\Repository\ModuleRepositoryInterface;
 
 final class EnergyPhalanx
 {
 
     private ColonyInterface $colony;
 
-    private ModuleInterface $module;
+    private ModuleRepositoryInterface $moduleRepository;
+
+    private bool $isDisruptor;
 
     public function __construct(
         ColonyInterface $colony,
-        ModuleInterface $module
+        ModuleRepositoryInterface $moduleRepository
     ) {
         $this->colony = $colony;
-        $this->module = $module;
+        $this->moduleRepository = $moduleRepository;
+        $this->isDisruptor = in_array($colony->getUser()->getFactionId(), [2, 3]);
     }
 
     // ShipInterface stuff
@@ -40,7 +43,7 @@ final class EnergyPhalanx
 
     public function getName(): string
     {
-        return in_array($this->colony->getUser()->getFactionId(), [2, 3]) ? 'Orbitale Disruptorphalanx' : 'Orbitale Phaserphalanx';
+        return $this->isDisruptor ? 'Orbitale Disruptorphalanx' : 'Orbitale Phaserphalanx';
     }
 
     public function getPhaser(): bool
@@ -50,7 +53,7 @@ final class EnergyPhalanx
 
     public function getHitChance(): int
     {
-        return 86;
+        return $this->isDisruptor ? 67 : 86;
     }
 
     public function getUser()
@@ -70,12 +73,12 @@ final class EnergyPhalanx
 
     public function getModuleId()
     {
-        return 1;
+        return $this->isDisruptor ? 3 : 1;
     }
 
     public function getModule()
     {
-        return $this->module;
+        return $this->moduleRepository->find($this->getModuleId());
     }
 
     // ShipRumpInterface stuff
@@ -87,7 +90,7 @@ final class EnergyPhalanx
 
     public function getBaseDamage()
     {
-        return 250;
+        return $this->isDisruptor ? 180 : 250;
     }
 
     public function getModuleLevel()
@@ -97,7 +100,7 @@ final class EnergyPhalanx
 
     public function getPhaserVolleys(): int
     {
-        return 3;
+        return $this->isDisruptor ? 5 : 3;
     }
 
     public function getPhaserShieldDamageFactor(): int
