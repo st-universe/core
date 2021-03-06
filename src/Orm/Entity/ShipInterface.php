@@ -232,6 +232,8 @@ interface ShipInterface
 
     public function isMatrixScannerHealthy(): bool;
 
+    public function isTorpedoStorageHealthy(): bool;
+
     public function getEffectiveEpsProduction(): int;
 
     public function getWarpcoreUsage(): int;

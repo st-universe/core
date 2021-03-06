@@ -13,6 +13,11 @@ interface TorpedoTypeRepositoryInterface extends ObjectRepository
     /**
      * @return TorpedoTypeInterface[]
      */
+    public function getAll(): array;
+
+    /**
+     * @return TorpedoTypeInterface[]
+     */
     public function getForUser(int $userId): array;
 
     /**

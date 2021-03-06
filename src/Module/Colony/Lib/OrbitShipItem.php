@@ -5,6 +5,7 @@ declare(strict_types=0);
 
 namespace Stu\Module\Colony\Lib;
 
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\TorpedoTypeInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -90,6 +91,10 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function getPossibleTorpedoTypes(): array
     {
+        if ($this->ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+            return $this->torpedoTypeRepository->getAll();
+        }
+
         return $this->torpedoTypeRepository->getByLevel($this->ship->getRump()->getTorpedoLevel());
     }
 

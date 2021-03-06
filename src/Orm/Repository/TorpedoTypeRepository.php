@@ -10,6 +10,19 @@ use Stu\Orm\Entity\TorpedoType;
 
 final class TorpedoTypeRepository extends EntityRepository implements TorpedoTypeRepositoryInterface
 {
+    public function getAll(): array
+    {
+        /** @noinspection SyntaxError */
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT t FROM %s t INDEX BY t.id
+                ORDER BY t.id ASC',
+                TorpedoType::class
+            )
+        )
+            ->getResult();
+    }
+
     public function getForUser(int $userId): array
     {
         /** @noinspection SyntaxError */

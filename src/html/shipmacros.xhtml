@@ -176,6 +176,14 @@
               </a>
             </tal:block>
           </tal:block>
+          <tal:block tal:condition="SHIP/isTorpedoStorageHealthy">
+            <a href="javascript:void(0);" onclick="showBTorpTransferWindow(${ship/getId}, true);">
+              <img src="assets/buttons/btorp_down1.png" title="Torpedos zur ${nameWithoutMarkup} beamen" />
+            </a>
+            <a href="javascript:void(0);" onclick="showBTorpTransferWindow(${ship/getId}, false);">
+              <img src="assets/buttons/btorp_up1.png" title="Torpedos von der ${nameWithoutMarkup} beamen" />
+            </a>
+          </tal:block>
           <tal:block tal:condition="not:ship/traktorbeamNotPossible">
             <tal:block tal:condition="not:SHIP/isTraktorBeamActive">
               <a href="?B_ACTIVATE_TRAKTOR=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
@@ -623,8 +631,37 @@
           <img tal:condition="not:IS_UNLOAD" src="assets/buttons/bt_up1.png" title="Truppen wegbeamen" />
           <input type="text" size="4" name="tcount" id="ttransfer_value" />
           <input type="submit" class="button" value="beamen" name="B_TROOP_TRANSFER" id="ttransfer_button" />
-          <input type="button" class="button" value="max" name="B_MAX_TTRANSFER"
+          <input type="button" class="button" value="max"
             onclick="$('ttransfer_value').value = '${MAXIMUM}'; $('ttransfer_button').click()" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</metal:block>
+<metal:block metal:define-macro="show_torpedo_transfer">
+  <form action="ship.php" method="post">
+    <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+    <input type="hidden" name="target" tal:attributes="value target/getId" />
+    <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+
+    <tal:block tal:condition="IS_UNLOAD">
+      <input type="hidden" name="isUnload" tal:attributes="value IS_UNLOAD" />
+    </tal:block>
+    <table class="tcal">
+      <tr>
+        <td>Ziel: <span tal:replace="structure bbcode:target/getName">...</span></td>
+      </tr>
+      <tr>
+        <td>Verfügbare Torpedos: ${MAXIMUM}</td>
+      </tr>
+      <tr>
+        <td>
+          <img tal:condition="IS_UNLOAD" src="assets/buttons/btorp_down1.png" title="Torpedos hinbeamen" />
+          <img tal:condition="not:IS_UNLOAD" src="assets/buttons/btorp_up1.png" title="Torpedos wegbeamen" />
+          <input type="text" size="4" name="tcount" id="torptransfer_value" />
+          <input type="submit" class="button" value="beamen" name="B_TORPEDO_TRANSFER" id="torptransfer_button" />
+          <input type="button" class="button" value="max"
+            onclick="$('torptransfer_value').value = '${MAXIMUM}'; $('torptransfer_button').click()" />
         </td>
       </tr>
     </table>
