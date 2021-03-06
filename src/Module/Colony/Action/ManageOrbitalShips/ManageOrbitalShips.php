@@ -27,6 +27,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
+use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -274,7 +275,13 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     if ($shipobj->getUser() !== $user && $count <= $shipobj->getTorpedoCount()) {
                         throw new Exception;
                     }
-                    $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());
+
+                    if ($shipobj->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
+                        $possibleTorpedoTypes = $this->torpedoTypeRepository->getAll();
+                    } else {
+                        $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());
+                    }
+
                     if (
                         $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
                             !array_key_exists($torp_type[$shipobj->getId()], $possibleTorpedoTypes))
@@ -312,6 +319,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                     $this->shipSystemManager->deactivate($shipobj, ShipSystemTypeEnum::SYSTEM_TORPEDO);
                                 } catch (AlreadyOffException $e) {
                                 } catch (SystemNotDeactivableException $e) {
+                                } catch (SystemNotFoundException $e) {
                                 }
                             }
                             $msg[] = sprintf(

@@ -981,6 +981,11 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER);
     }
 
+    public function isTorpedoStorageHealthy(): bool
+    {
+        return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE);
+    }
+
     public function getEffectiveEpsProduction(): int
     {
         if ($this->effectiveEpsProduction === null) {
