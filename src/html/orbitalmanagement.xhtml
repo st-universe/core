@@ -30,17 +30,19 @@
               </tal:block>
               <tal:block tal:condition="not:ship/ownedByUser">
                 <img src="assets/ships/${ship/getRumpId}.png" tal:attributes="title ship/getRumpName" />
-              </tal:block>        
+              </tal:block>
             </td>
             <td tal:condition="not:ship/ownedByUser" tal:content="structure bbcode:ship/getName">NAME</td>
             <td tal:condition="ship/ownedByUser">
-              <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span tal:content="structure bbcode:ship/getName">NAME</span></a>
+              <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span
+                  tal:content="structure bbcode:ship/getName">NAME</span></a>
             </td>
             <tal:block tal:condition="not:ship/isDestroyed">
               <td tal:condition="ship/ownedByUser">
                 <div tal:condition="ship/canMan">
                   <input type="checkbox" name="man[${ship/getId}]" />
-                  <span>Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span tal:replace="ship/getCrewSlots">CREW</span>)
+                  <span>Hochbeamen</span> (<span tal:replace="ship/getCrewCount">CREW</span>/<span
+                    tal:replace="ship/getCrewSlots">CREW</span>)
                 </div>
                 <div tal:condition="ship/getCrewCount">
                   <input type="checkbox" name="unman[${ship/getId}]" />
@@ -50,31 +52,39 @@
               <td tal:condition="not:ship/ownedByUser"> </td>
               <td>
                 <div>
-                  <img class="center" src="assets/buttons/batt.gif" title="Ersatzbatterie" />
+                  <img class="center" onclick="this.up('div').down('input').value=${ship/getEbattMax}"
+                    src="assets/buttons/batt.gif" title="Ersatzbatterie" />
                   <input type="text" size="3" name="batt[${ship/getId}]" />
                   <span tal:condition="ship/ownedByUser">${ship/getEBatt}/${ship/getEbattMax}</span>
                 </div>
               </td>
               <td>
                 <div>
-                  <img class="center" src="assets/buttons/warpk.gif" title="Warpkernladung" />
+                  <img class="center" onclick="this.up('div').down('input').value=${ship/getWarpcoreCapacity}"
+                    src="assets/buttons/warpk.gif" title="Warpkernladung" />
                   <input type="text" size="3" name="wk[${ship/getId}]" />
                   <span tal:condition="ship/ownedByUser">${ship/getWarpCoreLoad}/${ship/getWarpcoreCapacity}</span>
                 </div>
               </td>
               <td>
                 <div tal:condition="ship/canLoadTorpedos">
-                  <img class="center" tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.gif" title="Torpedos" />
-                  <img class="center" tal:condition="ship/getTorpedoCount" src="assets/goods/${ship/getTorpedoType/getGoodId}.gif" tal:attributes="title ship/getTorpedoType/getName" />
+                  <img class="center" onclick="this.up('div').down('input').value=${ship/getTorpedoCapacity}"
+                    tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.gif" title="Torpedos" />
+                  <img class="center" tal:condition="ship/getTorpedoCount"
+                    src="assets/goods/${ship/getTorpedoType/getGoodId}.gif"
+                    tal:attributes="title ship/getTorpedoType/getName" />
                   <tal:block tal:condition="ship/ownedByUser">
-                    <input type="text" size="3" name="torp[${ship/getId}]" tal:attributes="value ship/getTorpedoCount" />
+                    <input type="text" size="3" name="torp[${ship/getId}]"
+                      tal:attributes="value ship/getTorpedoCount" />
                     <span>Max.</span> ${ship/getTorpedoCapacity}
                   </tal:block>
                   <input tal:condition="not:ship/ownedByUser" type="text" size="3" name="torp[${ship/getId}]" />
                   <tal:block tal:condition="not:ship/getTorpedoCount">
                     <tal:block tal:repeat="data ship/getPossibleTorpedoTypes">
-                      <img class="center" src="assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getName" />
-                      <input type="radio" name="torp_type[${ship/getId}]" tal:attributes="checked repeat/data/start; value data/getId" />
+                      <img class="center" src="assets/goods/${data/getGoodId}.gif"
+                        tal:attributes="title data/getName" />
+                      <input type="radio" name="torp_type[${ship/getId}]"
+                        tal:attributes="checked repeat/data/start; value data/getId" />
                     </tal:block>
                   </tal:block>
                 </div>
@@ -84,8 +94,10 @@
         </tal:block>
       </table>
       <br />
-      <input type="submit" style="cursor: pointer" id="B_MANAGE_ORBITAL_SHIPS" name="B_MANAGE_ORBITAL_SHIPS" value="Ausführen" />
+      <input type="submit" style="cursor: pointer" id="B_MANAGE_ORBITAL_SHIPS" name="B_MANAGE_ORBITAL_SHIPS"
+        value="Ausführen" />
     </form>
   </metal:macro>
 </metal:macro>
+
 </html>
