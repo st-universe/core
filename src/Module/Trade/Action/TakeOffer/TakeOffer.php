@@ -157,7 +157,8 @@ final class TakeOffer implements ActionControllerInterface
             $userId,
             $selectedOffer->getUserId(),
             sprintf(
-                'Es wurden insgesamt %d %s gegen %d %s getauscht',
+                'Am %s wurden insgesamt %d %s gegen %d %s getauscht',
+                $selectedOffer->getTradePostId()->getName(),
                 $selectedOffer->getOfferedGoodCount() * $amount,
                 $selectedOffer->getOfferedCommodity()->getName(),
                 $selectedOffer->getWantedGoodCount() * $amount,
