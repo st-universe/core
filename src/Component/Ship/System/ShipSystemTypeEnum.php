@@ -26,6 +26,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_ASTRO_LABORATORY = 17;
     public const SYSTEM_SUBSPACE_SCANNER = 18;
     public const SYSTEM_MATRIX_SCANNER = 19;
+    public const SYSTEM_TORPEDO_STORAGE = 20;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -84,6 +85,8 @@ final class ShipSystemTypeEnum
                 return _('Subraumfeldsensoren');
             case ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER:
                 return _('Matrixsensoren');
+            case ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE:
+                return _('Torpedolager');
         }
         return '';
     }

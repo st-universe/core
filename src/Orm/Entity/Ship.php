@@ -13,6 +13,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
+use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -1554,8 +1555,9 @@ class Ship implements ShipInterface
 
     public function getMaxTorpedos(): int
     {
-        //TODO plus torp trans module
-        return $this->getRump()->getBaseTorpedoStorage();
+        return $this->getRump()->getBaseTorpedoStorage()
+            + ($this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)
+                ? TorpedoStorageShipSystem::TORPEDO_CAPACITY : 0);
     }
 
     public function getDockedShips(): Collection
