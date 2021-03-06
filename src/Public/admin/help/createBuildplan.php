@@ -80,18 +80,12 @@ if ($rumpId !== 0) {
             $plan->setName($planname);
             $plan->setSignature($signature);
             $plan->setBuildtime(0);
-            $buildplanRepo->save($plan);
+            $plan->setCrew($rump->getCrew100P());
 
-            $crew_usage = $rump->getBaseCrew();
+            $buildplanRepo->save($plan);
 
             foreach ($moduleList as $moduleId) {
                 $module = $moduleRepo->find($moduleId);
-
-                if ($module->getLevel() > $rump->getModuleLevel()) {
-                    $crew_usage += $module->getCrew() + 1;
-                } else {
-                    $crew_usage += $module->getCrew();
-                }
 
                 $mod = $buildplanModuleRepo->prototype();
                 $mod->setModuleType($module->getType());
@@ -105,7 +99,6 @@ if ($rumpId !== 0) {
 
             foreach ($moduleSpecialList as $moduleId) {
                 $module = $moduleRepo->find($moduleId);
-                $crew_usage += $module->getCrew();
 
                 $mod = $buildplanModuleRepo->prototype();
                 $mod->setModuleType($module->getType());
@@ -113,12 +106,8 @@ if ($rumpId !== 0) {
                 $mod->setModule($module);
                 $mod->setModuleSpecial(ModuleSpecialAbilityEnum::getHash($module->getSpecials()));
 
-
                 $buildplanModuleRepo->save($mod);
             }
-
-            $plan->setCrew($crew_usage);
-            $buildplanRepo->save($plan);
         }
 
         echo 'Bauplan angelegt';
@@ -194,13 +183,6 @@ if ($rumpId !== 0) {
         }
     } else {
         foreach ($userRepo->getNpcList() as $user) {
-            printf(
-                '<a href="?userId=%d">%s</a><br />',
-                $user->getId(),
-                $user->getUserName()
-            );
-        }
-        foreach ($userRepo->getNonNpcList() as $user) {
             printf(
                 '<a href="?userId=%d">%s</a><br />',
                 $user->getId(),
