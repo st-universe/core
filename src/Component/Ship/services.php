@@ -28,6 +28,8 @@ use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Ship\System\Type\DeflectorShipSystem;
 use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
+use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
+
 use function DI\autowire;
 use function DI\create;
 
@@ -53,7 +55,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_DEFLECTOR => autowire(DeflectorShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER => autowire(SubspaceSensorShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY => autowire(AstroLaboratoryShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER => autowire(MatrixScannerShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER => autowire(MatrixScannerShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE => autowire(TorpedoStorageShipSystem::class)
         ]
     )
 ];

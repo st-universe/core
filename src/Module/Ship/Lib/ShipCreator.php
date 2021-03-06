@@ -211,6 +211,9 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_MATRIX_SENSOR:
                     $systems[ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER] = $module;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE:
+                    $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE] = $module;
+                    break;
             }
         }
     }

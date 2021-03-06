@@ -274,7 +274,6 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     if ($shipobj->getUser() !== $user && $count <= $shipobj->getTorpedoCount()) {
                         throw new Exception;
                     }
-                    //TODO aerie rump needs torpedolevel
                     $possibleTorpedoTypes = $this->torpedoTypeRepository->getByLevel((int) $shipobj->getRump()->getTorpedoLevel());
                     if (
                         $shipobj->getTorpedoCount() == 0 && (!isset($torp_type[$shipobj->getId()]) ||
