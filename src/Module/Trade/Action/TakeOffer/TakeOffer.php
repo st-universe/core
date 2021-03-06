@@ -64,6 +64,10 @@ final class TakeOffer implements ActionControllerInterface
         $offerId = $this->takeOfferRequest->getOfferId();
         $amount = $this->takeOfferRequest->getAmount();
 
+        if ($amount < 1) {
+            return;
+        }
+
         /** @var TradeOfferInterface $selectedOffer */
         $selectedOffer = $this->tradeOfferRepository->find($offerId);
 

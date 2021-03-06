@@ -22,7 +22,7 @@ final class CreateOfferRequest implements CreateOfferRequestInterface
 
     public function getWantedAmount(): int
     {
-        return $this->bodyParameter('wcount')->int()->required();
+        return $this->bodyParameter('wcount')->int()->defaultsTo(0);
     }
 
     public function getGiveGoodId(): int
@@ -32,12 +32,11 @@ final class CreateOfferRequest implements CreateOfferRequestInterface
 
     public function getGiveAmount(): int
     {
-        return $this->bodyParameter('gcount')->int()->required();
+        return $this->bodyParameter('gcount')->int()->defaultsTo(0);
     }
 
     public function getOfferAmount(): int
     {
         return $this->bodyParameter('amount')->int()->required();
     }
-
 }
