@@ -521,4 +521,16 @@ class ShipRumpModuleLevel implements ShipRumpModuleLevelInterface
 
         return $this;
     }
+
+    public function getMandatoryModulesCount(): int
+    {
+        return $this->getModuleMandatory1() +
+            $this->getModuleMandatory2() +
+            $this->getModuleMandatory3() +
+            $this->getModuleMandatory4() +
+            $this->getModuleMandatory5() +
+            $this->getModuleMandatory6() +
+            $this->getModuleMandatory7() +
+            $this->getModuleMandatory8();
+    }
 }
