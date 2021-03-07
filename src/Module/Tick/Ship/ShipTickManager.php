@@ -13,7 +13,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -27,8 +26,6 @@ final class ShipTickManager implements ShipTickManagerInterface
     private ShipTickInterface $shipTick;
 
     private ShipRepositoryInterface $shipRepository;
-
-    private FleetRepositoryInterface $fleetRepository;
 
     private UserRepositoryInterface $userRepository;
 
@@ -45,7 +42,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         ShipRemoverInterface $shipRemover,
         ShipTickInterface $shipTick,
         ShipRepositoryInterface $shipRepository,
-        FleetRepositoryInterface $fleetRepository,
         UserRepositoryInterface $userRepository,
         CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
@@ -56,7 +52,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->shipRemover = $shipRemover;
         $this->shipTick = $shipTick;
         $this->shipRepository = $shipRepository;
-        $this->fleetRepository = $fleetRepository;
         $this->userRepository = $userRepository;
         $this->crewRepository = $crewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
