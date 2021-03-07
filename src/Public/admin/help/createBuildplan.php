@@ -38,6 +38,10 @@ $rumpId = request::indInt('rumpId');
 if ($rumpId !== 0) {
     $rump = $shipRumpRepo->find($rumpId);
 
+    $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
+        $rump->getId()
+    );
+
     $specialModuleTypes = [
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_CLOAK,
         ModuleSpecialAbilityEnum::MODULE_SPECIAL_RPG,
@@ -62,7 +66,7 @@ if ($rumpId !== 0) {
     $moduleList = request::postArray('mod');
     $moduleSpecialList = request::postArray('special_mod');
 
-    if (count($moduleList) === count($moduleTypes)) {
+    if (count($moduleList) >= $mod_level->getMandatoryModulesCount()) {
         $user = $userRepo->find($userId);
 
         $signature = ShipBuildplan::createSignature(array_merge($moduleList, $moduleSpecialList));
@@ -121,13 +125,20 @@ if ($rumpId !== 0) {
 
         foreach ($moduleTypes as $moduleTypeId) {
 
+            $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
+                $rump->getId()
+            );
+
+            if (
+                $mod_level->{'getModuleLevel' . $moduleTypeId}() === 0
+                && $mod_level->{'getModuleMandatory' . $moduleTypeId}() === 0
+            ) {
+                continue;
+            }
+
             printf(
                 '<div>Modul: %s</div>',
                 ModuleTypeDescriptionMapper::getDescription($moduleTypeId)
-            );
-
-            $mod_level = $shipRumpModuleLevelRepo->getByShipRump(
-                $rump->getId()
             );
 
             $min_level = $mod_level->{'getModuleLevel' . $moduleTypeId . 'Min'}();
@@ -183,6 +194,13 @@ if ($rumpId !== 0) {
         }
     } else {
         foreach ($userRepo->getNpcList() as $user) {
+            printf(
+                '<a href="?userId=%d">%s</a><br />',
+                $user->getId(),
+                $user->getUserName()
+            );
+        }
+        foreach ($userRepo->getNonNpcList() as $user) {
             printf(
                 '<a href="?userId=%d">%s</a><br />',
                 $user->getId(),
