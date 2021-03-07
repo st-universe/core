@@ -119,6 +119,7 @@ use Stu\Module\Ship\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
+use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
@@ -228,6 +229,7 @@ return [
         SetYellowAlert::ACTION_IDENTIFIER => autowire(SetYellowAlert::class),
         SetRedAlert::ACTION_IDENTIFIER => autowire(SetRedAlert::class),
         EpsTransfer::ACTION_IDENTIFIER => autowire(EpsTransfer::class),
+        TorpedoTransfer::ACTION_IDENTIFIER => autowire(TorpedoTransfer::class),
         BeamTo::ACTION_IDENTIFIER => autowire(BeamTo::class),
         BeamFrom::ACTION_IDENTIFIER => autowire(BeamFrom::class),
         BeamToColony::ACTION_IDENTIFIER => autowire(BeamToColony::class),
