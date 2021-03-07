@@ -103,14 +103,16 @@ final class TorpedoTransfer implements ActionControllerInterface
                 $target->getMaxTorpedos() - $target->getTorpedoCount()
             );
 
-            if ($amount > 0 && $target->getRump()->getTorpedoLevel() !== $ship->getTorpedo()->getLevel()) {
-                $game->addInformation(sprintf(_('Die %s kann den Torpedotyp nicht ausrüsten'), $target->getName()));
-                return;
-            }
+            if ($amount > 0) {
+                if ($target->getRump()->getTorpedoLevel() !== $ship->getTorpedo()->getLevel()) {
+                    $game->addInformation(sprintf(_('Die %s kann den Torpedotyp nicht ausrüsten'), $target->getName()));
+                    return;
+                }
 
-            $ship->setTorpedoCount($ship->getTorpedoCount() - $amount);
-            $target->setTorpedoCount($target->getTorpedoCount() + $amount);
-            $target->setTorpedo($ship->getTorpedo());
+                $ship->setTorpedoCount($ship->getTorpedoCount() - $amount);
+                $target->setTorpedoCount($target->getTorpedoCount() + $amount);
+                $target->setTorpedo($ship->getTorpedo());
+            }
         } else {
             $amount = min(
                 $requestedTransferCount,
@@ -118,9 +120,11 @@ final class TorpedoTransfer implements ActionControllerInterface
                 $ship->getMaxTorpedos() - $ship->getTorpedoCount()
             );
 
-            $ship->setTorpedoCount($ship->getTorpedoCount() + $amount);
-            $ship->setTorpedo($target->getTorpedo());
-            $target->setTorpedoCount($target->getTorpedoCount() - $amount);
+            if ($amount > 0) {
+                $ship->setTorpedoCount($ship->getTorpedoCount() + $amount);
+                $ship->setTorpedo($target->getTorpedo());
+                $target->setTorpedoCount($target->getTorpedoCount() - $amount);
+            }
         }
 
         if ($ship->getTorpedoCount() === 0) {
