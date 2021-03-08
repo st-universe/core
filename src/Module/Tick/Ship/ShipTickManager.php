@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
-use Exception;
-
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -63,9 +61,6 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     public function work(): void
     {
-        //TODO remove asap!
-        throw new Exception('Verhuxt und zugenäht!');
-
         $this->checkForCrewLimitation();
         $this->removeEmptyEscapePods();
 

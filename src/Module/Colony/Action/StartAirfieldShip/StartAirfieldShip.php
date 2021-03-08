@@ -15,7 +15,6 @@ use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Repository\BuildplanHangarRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ColonyStorageRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
@@ -35,8 +34,6 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private ShipCreatorInterface $shipCreator;
 
-    private ColonyStorageRepositoryInterface $colonyStorageRepository;
-
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
     private ColonyStorageManagerInterface $colonyStorageManager;
@@ -51,7 +48,6 @@ final class StartAirfieldShip implements ActionControllerInterface
         BuildplanHangarRepositoryInterface $buildplanHangarRepository,
         CrewCreatorInterface $crewCreator,
         ShipCreatorInterface $shipCreator,
-        ColonyStorageRepositoryInterface $colonyStorageRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
@@ -62,7 +58,6 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->buildplanHangarRepository = $buildplanHangarRepository;
         $this->crewCreator = $crewCreator;
         $this->shipCreator = $shipCreator;
-        $this->colonyStorageRepository = $colonyStorageRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
