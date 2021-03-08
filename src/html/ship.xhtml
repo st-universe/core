@@ -338,16 +338,16 @@
 									<td colspan="2">
 										<a tal:condition="not:SHIP/getAstroState"
 											href="?B_ACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-											onmouseover="cp('astro','buttons/map1')"
-											onmouseout="cp('astro','buttons/map2')">
-											<img src="/assets/buttons/map2.gif" name="astro" /> Astrometrisches Labor
+											onmouseover="cp('astro','buttons/map2')"
+											onmouseout="cp('astro','buttons/map1')">
+											<img src="/assets/buttons/map1.gif" name="astro" /> Astrometrisches Labor
 											aktivieren
 										</a>
 
 										<a href="?B_DEACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-											tal:condition="SHIP/getAstroState" onmouseover="cp('astro','buttons/map2')"
-											onmouseout="cp('astro','buttons/map1')">
-											<img src="/assets/buttons/map1.gif" name="astro" /> Astrometrisches Labor
+											tal:condition="SHIP/getAstroState" onmouseover="cp('astro','buttons/map1')"
+											onmouseout="cp('astro','buttons/map2')">
+											<img src="/assets/buttons/map2.gif" name="astro" /> Astrometrisches Labor
 											deaktivieren
 										</a>
 									</td>
@@ -511,13 +511,13 @@
 										<br />
 										<a tal:condition="SHIP/getAstroState" href="javascript:void(0);"
 											onclick="showAstroEntryWindow()"
-											onmouseover="cp('astroButton','buttons/map2')"
-											onmouseout="cp('astroButton','buttons/map1')">
-											<img src="/assets/buttons/map1.gif" name="astroButton" />
+											onmouseover="cp('astroButton','buttons/map1')"
+											onmouseout="cp('astroButton','buttons/map2')">
+											<img src="/assets/buttons/map2.gif" name="astroButton" />
 											<span>Messpunkte ansehen</span>
 										</a>
 										<tal:block tal:condition="not:SHIP/getAstroState">
-											<img src="/assets/buttons/map1.gif" />
+											<img src="/assets/buttons/map2.gif" />
 											<span>Kartographierung ist geplant</span>
 										</tal:block>
 									</tal:block>
