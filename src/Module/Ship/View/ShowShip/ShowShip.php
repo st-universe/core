@@ -19,6 +19,7 @@ use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
+use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
@@ -46,6 +47,8 @@ final class ShowShip implements ViewControllerInterface
 
     private AstroEntryRepositoryInterface $astroEntryRepository;
 
+    private DatabaseUserRepositoryInterface $databaseUserRepository;
+
     public function __construct(
         SessionInterface $session,
         ShipLoaderInterface $shipLoader,
@@ -55,7 +58,8 @@ final class ShowShip implements ViewControllerInterface
         ColonizationCheckerInterface $colonizationChecker,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         TachyonScanRepositoryInterface $tachyonScanRepository,
-        AstroEntryRepositoryInterface $astroEntryRepository
+        AstroEntryRepositoryInterface $astroEntryRepository,
+        DatabaseUserRepositoryInterface $databaseUserRepository
     ) {
         $this->session = $session;
         $this->shipLoader = $shipLoader;
@@ -66,6 +70,7 @@ final class ShowShip implements ViewControllerInterface
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->astroEntryRepository = $astroEntryRepository;
+        $this->databaseUserRepository = $databaseUserRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -188,12 +193,16 @@ final class ShowShip implements ViewControllerInterface
         if ($system === null) {
             $state = AstronomicalMappingEnum::NONE;
         } else {
-            $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUserId(), $system->getId());
-
-            if ($astroEntry === null) {
-                $state = AstronomicalMappingEnum::PLANNABLE;
+            if ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
+                $state = AstronomicalMappingEnum::DONE;
             } else {
-                $state = $astroEntry->getState();
+                $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUserId(), $system->getId());
+
+                if ($astroEntry === null) {
+                    $state = AstronomicalMappingEnum::PLANNABLE;
+                } else {
+                    $state = $astroEntry->getState();
+                }
             }
         }
         if ($state === AstronomicalMappingEnum::FINISHING) {
