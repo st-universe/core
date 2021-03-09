@@ -44,6 +44,9 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel'));
         $game->setTemplateFile('html/trade.xhtml');
 
+        $game->setTemplateVar('POST_ID', 0);
+        $game->setTemplateVar('COMMODITY_ID', 0);
+
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
         $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
