@@ -32,7 +32,7 @@ interface TradeOfferRepositoryInterface extends ObjectRepository
     /**
      * @return TradeOfferInterface[]
      */
-    public function getByUserLicenses(int $userId, ?int $commodityId, ?bool $offer): array;
+    public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, ?bool $offer): array;
 
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int;
 

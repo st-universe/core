@@ -60,7 +60,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         ]);
     }
 
-    public function getByUserLicenses(int $userId, ?int $commodityId, ?bool $offer): array
+    public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, ?bool $offer): array
     {
         /** @noinspection SyntaxError */
         return $this->getEntityManager()
@@ -68,11 +68,12 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
                 sprintf(
                     'SELECT to FROM %s to WHERE to.posts_id IN (
                         SELECT tl.posts_id FROM %s tl WHERE tl.user_id = :userId
-                    ) %s
+                    ) %s %s
                     ORDER BY to.date DESC',
                     TradeOffer::class,
                     TradeLicense::class,
-                    $commodityId != null ? sprintf(' AND to.%s = %d ', $offer ? 'gg_id' : 'wg_id', $commodityId) : ''
+                    $commodityId != null ? sprintf(' AND to.%s = %d ', $offer ? 'gg_id' : 'wg_id', $commodityId) : '',
+                    $tradePostId != null ? sprintf(' AND to.posts_id = %d ', $tradePostId) : ''
                 )
             )
             ->setParameters([
