@@ -27,7 +27,7 @@
 						<td>Handelsposten:</td>
 						<td>
 							<select name="pid">
-								<option value="0">ALLE</option>
+								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data TRADE_LICENSES">
 									<option tal:content="data/getTradePost/getName"
 										tal:attributes="value data/getTradePost/getId; selected php:POST_ID==data.getTradePost().getId()">
@@ -51,8 +51,18 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input type="submit" class="button" name="B_TRADE_SEARCH_OFFER" value="in Angeboten" />
-							<input type="submit" class="button" name="B_TRADE_SEARCH_DEMAND" value="in Nachfragen" />
+							<div style="float:left;">
+								<input type="submit" class="button" name="B_TRADE_SEARCH_OFFER" value="in Angeboten" />
+								<input type="submit" class="button" name="B_TRADE_SEARCH_DEMAND"
+									value="in Nachfragen" />
+							</div>
+							<div style="float:right;">
+								<a href="trade.php" onmouseover="cp('tradeSearchReset','buttons/x2');"
+									onmouseout="cp('tradeSearchReset','buttons/x1');">
+									<img src="/assets/buttons/x2.gif" title="Auswahl zurücksetzen"
+										name="tradeSearchReset">
+								</a>
+							</div>
 						</td>
 					</tr>
 				</table>
