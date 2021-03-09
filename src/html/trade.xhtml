@@ -30,7 +30,7 @@
 								<option value="0">ALLE</option>
 								<tal:block tal:repeat="data TRADE_LICENSES">
 									<option tal:content="data/getTradePost/getName"
-										tal:attributes="value data/getTradePost/getId">
+										tal:attributes="value data/getTradePost/getId; selected php:POST_ID==data.getTradePost().getId()">
 										NAME</option>
 								</tal:block>
 							</select>
@@ -42,7 +42,9 @@
 							<select name="cid">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data SELECTABLE_GOODS">
-									<option tal:content="data/getName" tal:attributes="value data/getId">NAME</option>
+									<option tal:content="data/getName"
+										tal:attributes="value data/getId; selected php:COMMODITY_ID==data.getId()">
+										NAME</option>
 								</tal:block>
 							</select>
 						</td>

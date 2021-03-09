@@ -51,6 +51,9 @@ final class ShowSearchDemand implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel'));
         $game->setTemplateFile('html/trade.xhtml');
 
+        $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
+        $game->setTemplateVar('COMMODITY_ID', $commodityId);
+
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
         $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
