@@ -9,13 +9,16 @@
 			<table class="tcal">
 				<tr>
 					<td>
-						<div id="writekntitle" class="selected" style="float: left; width: 100px; padding: 5px;" >Titel</div>
-						<br style="clear: both;" />
-						<div id="writekntitleinput" style="clear: both; margin: 5px;">
-							<input type="text" name="title" style="width: 100%;" />
+						<div id="writekntitle" class="selected" style="float: left; width: 100px; padding: 5px;">Titel
+							(6 bis 80 Zeichen)
 						</div>
 						<br style="clear: both;" />
-						<div id="writeknplot" class="selected" style="float: left; width: 300px; padding: 5px;" >zu Plot hinzufügen</div>
+						<div id="writekntitleinput" style="clear: both; margin: 5px;">
+							<input type="text" name="title" style="width: 100%;" maxlength="80" />
+						</div>
+						<br style="clear: both;" />
+						<div id="writeknplot" class="selected" style="float: left; width: 300px; padding: 5px;">zu Plot
+							hinzufügen</div>
 						<br style="clear: both;" />
 						<div id="writeknplotselect" style="clear: both; margin: 5px;">
 							<metal:macro metal:use-macro="plotselect" />
@@ -24,7 +27,8 @@
 							<select name="plotid" style="width: 500px;">
 								<option value="0">------------------------------</option>
 								<tal:block tal:repeat="plot ACTIVE_RPG_PLOTS">
-									<option value="runtime" tal:attributes="value plot/getId;" tal:content="structure plot/getTitle"></option>
+									<option value="runtime" tal:attributes="value plot/getId;"
+										tal:content="structure plot/getTitle"></option>
 								</tal:block>
 							</select>
 						</metal:macro>
@@ -39,11 +43,13 @@
 				<tr>
 					<td>
 						<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
-						<input value="1" type="checkbox" name="markposting" /> <span>Lesezeichen bei diesem Beitrag setzen</span>
+						<input value="1" type="checkbox" name="markposting" /> <span>Lesezeichen bei diesem Beitrag
+							setzen</span>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</metal:macro>
 </metal:macro>
+
 </html>
