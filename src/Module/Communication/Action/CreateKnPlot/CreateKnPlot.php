@@ -41,6 +41,11 @@ final class CreateKnPlot implements ActionControllerInterface
             return;
         }
 
+        if (mb_strlen($title) > 80) {
+            $game->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
+            return;
+        }
+
         $plot = $this->rpgPlotRepository->prototype()
             ->setTitle($title)
             ->setDescription($description)
