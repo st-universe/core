@@ -68,8 +68,13 @@ final class AddKnPost implements ActionControllerInterface
         } else {
             $post->setTitle($title);
 
-            if (mb_strlen($title) < 10) {
-                $game->addInformation(_('Der Titel ist zu kurz (mindestens 10 Zeichen)'));
+            if (mb_strlen($title) < 6) {
+                $game->addInformation(_('Der Titel ist zu kurz (mindestens 6 Zeichen)'));
+                return;
+            }
+
+            if (mb_strlen($title) > 80) {
+                $game->addInformation(_('Der Titel ist zu lang (maximal 80 Zeichen)'));
                 return;
             }
         }
