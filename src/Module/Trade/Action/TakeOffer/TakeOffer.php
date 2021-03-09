@@ -112,10 +112,10 @@ final class TakeOffer implements ActionControllerInterface
             return;
         }
         if ($amount * $selectedOffer->getWantedGoodCount() > $storage->getAmount()) {
-            $amount = floor($storage->getAmount() / $selectedOffer->getWantedGoodCount());
+            $amount = (int) floor($storage->getAmount() / $selectedOffer->getWantedGoodCount());
         }
         if ($amount * $selectedOffer->getOfferedGoodCount() - $amount * $selectedOffer->getWantedGoodCount() > $freeStorage) {
-            $amount = floor($freeStorage / ($selectedOffer->getOfferedGoodCount() - $selectedOffer->getWantedGoodCount()));
+            $amount = (int) floor($freeStorage / ($selectedOffer->getOfferedGoodCount() - $selectedOffer->getWantedGoodCount()));
             if ($amount <= 0) {
                 $game->addInformation(_('Es steht für diese Transaktion nicht genügend Platz in deinem Warenkonto zur Verfügung'));
                 return;
