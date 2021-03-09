@@ -26,7 +26,13 @@
         <metal:macro metal:use-macro="shipimage" /></a>
     </td>
     <td>
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" tal:content="structure bbcode:ship/getName">.</a>
+      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+        <img tal:condition="php:ship.getState() EQ 1" src="assets/buttons/rep2.gif" title="Schiff wird repariert"
+          style="height:20px;" />
+        <img tal:condition="php:ship.getState() EQ 2" src="assets/buttons/map1.gif" title="Schiff kartographiert"
+          style="height:20px;" />
+        <span tal:content="structure bbcode:ship/getName">NAME</span>
+      </a>
     </td>
     <td style="text-align: center;">
       <img src="assets/buttons/alert${ship/getAlertState}_1.gif" title="Alarmstufe" />
