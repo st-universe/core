@@ -26,7 +26,7 @@
 					<tr>
 						<td>Handelsposten:</td>
 						<td>
-							<select name="pid">
+							<select name="pid" style="width:100%;">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data TRADE_LICENSES">
 									<option tal:content="data/getTradePost/getName"
@@ -39,7 +39,7 @@
 					<tr>
 						<td>Ware:</td>
 						<td>
-							<select name="cid">
+							<select name="cid" style="width:100%;">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data SELECTABLE_GOODS">
 									<option tal:content="data/getName"
@@ -60,7 +60,7 @@
 								<a href="trade.php" onmouseover="cp('tradeSearchReset','buttons/x2');"
 									onmouseout="cp('tradeSearchReset','buttons/x1');">
 									<img src="/assets/buttons/x2.gif" title="Auswahl zurücksetzen"
-										name="tradeSearchReset">
+										name="tradeSearchReset" />
 								</a>
 							</div>
 						</td>
