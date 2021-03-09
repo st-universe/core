@@ -57,7 +57,7 @@ final class TradeLicenseRepository extends EntityRepository implements TradeLice
     {
         return $this->findBy([
             'user_id' => $userId
-        ]);
+        ], ['posts_id' => 'asc']);
     }
 
     public function getAmountByUser(int $userId): int

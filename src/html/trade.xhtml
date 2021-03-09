@@ -24,7 +24,21 @@
 						<th colspan="2">Suche</th>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td>Handelsposten:</td>
+						<td>
+							<select name="pid">
+								<option value="0">ALLE</option>
+								<tal:block tal:repeat="data TRADE_LICENSES">
+									<option tal:content="data/getTradePost/getName"
+										tal:attributes="value data/getTradePost/getId">
+										NAME</option>
+								</tal:block>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Ware:</td>
+						<td>
 							<select name="cid">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data SELECTABLE_GOODS">
@@ -34,10 +48,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td colspan="2">
 							<input type="submit" class="button" name="B_TRADE_SEARCH_OFFER" value="in Angeboten" />
-						</td>
-						<td>
 							<input type="submit" class="button" name="B_TRADE_SEARCH_DEMAND" value="in Nachfragen" />
 						</td>
 					</tr>

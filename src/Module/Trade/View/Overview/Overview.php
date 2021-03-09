@@ -44,10 +44,9 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel'));
         $game->setTemplateFile('html/trade.xhtml');
 
-        $game->setTemplateVar(
-            'TRADE_LICENSE_COUNT',
-            $this->tradeLicenseRepository->getAmountByUser($userId)
-        );
+        $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
+        $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
+        $game->setTemplateVar('TRADE_LICENSE_COUNT', count($tradeLicenses));
 
         $commodityList = $this->commodityRepository->getViewable();
         $game->setTemplateVar('SELECTABLE_GOODS', $commodityList);
@@ -59,7 +58,7 @@ final class Overview implements ViewControllerInterface
                 function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
                     return new TradeOfferItem($tradeOffer, $user);
                 },
-                $this->tradeOfferRepository->getByUserLicenses($userId, null, null)
+                $this->tradeOfferRepository->getByUserLicenses($userId, null, null, null)
             )
         );
     }
