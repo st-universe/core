@@ -19,7 +19,9 @@
 										style="cursor: auto ! important;">&nbsp;</div>
 									<div tal:condition="data/getMapped" class="lssobj"
 										style="cursor: auto ! important;">
-										<img src="/assets/map/mapped.png" title="ist kartographiert" />
+										<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${data/getMapped}">
+											<img src="/assets/map/mapped.png" title="ist kartographiert" />
+										</a>
 									</div>
 								</td>
 							</tr>
