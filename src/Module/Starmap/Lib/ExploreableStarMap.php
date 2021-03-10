@@ -29,9 +29,6 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     /** @Column(type="integer", nullable=true) * */
     private ?int $user_id = 0;
 
-    /** @Column(type="integer") * */
-    private int $mapped = 0;
-
     private bool $hide = false;
 
     /**
@@ -69,11 +66,6 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     public function getUserId(): ?int
     {
         return $this->user_id;
-    }
-
-    public function getMapped(): int
-    {
-        return $this->mapped;
     }
 
     public function setHide(bool $hide): ExploreableStarMapInterface
