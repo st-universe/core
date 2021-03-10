@@ -89,7 +89,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
                 LEFT JOIN stu_systems sys
                     ON m.systems_id = sys.id
                 LEFT JOIN stu_database_user dbu
-                    ON um.user_id = :userId
+                    ON dbu.user_id = :userId
                     AND sys.database_id = dbu.database_id
                 WHERE m.cx
                 BETWEEN :startX AND :endX AND m.cy = :cy
