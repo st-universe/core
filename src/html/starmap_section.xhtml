@@ -13,7 +13,15 @@
 							</tr>
 							<tr tal:repeat="yrow MAP_FIELDS">
 								<th tal:content="yrow/getRow">y</th>
-								<td tal:repeat="data yrow/getFields" class="lss" style="runtime" tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}"><div class="lssobj" style="cursor: auto ! important;">&nbsp;</div></td>
+								<td tal:repeat="data yrow/getFields" class="lss" style="runtime"
+									tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
+									<div tal:condition="not:data/getMapped" class="lssobj"
+										style="cursor: auto ! important;">&nbsp;</div>
+									<div tal:condition="data/getMapped" class="lssobj"
+										style="cursor: auto ! important;">
+										<img src="/assets/map/mapped.png" title="ist kartographiert" />
+									</div>
+								</td>
 							</tr>
 						</table>
 					</td>
@@ -24,21 +32,26 @@
 			<table class="tcal">
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href NAV_UP" style="display: block;" tal:condition="HAS_NAV_UP">/\</a>
+						<a href="runtime" tal:attributes="href NAV_UP" style="display: block;"
+							tal:condition="HAS_NAV_UP">/\</a>
 					</td>
 				</tr>
 				<tr>
-					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT" style="display: block;">&lt;</a></td>
+					<td><a href="runtime" tal:attributes="href NAV_LEFT" tal:condition="HAS_NAV_LEFT"
+							style="display: block;">&lt;</a></td>
 					<td style="text-align: center;" tal:content="SECTION_ID">SEC</td>
-					<td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT" tal:condition="HAS_NAV_RIGHT" style="display: block;">&gt;</a></td>
+					<td style="text-align: right;"><a href="runtime" tal:attributes="href NAV_RIGHT"
+							tal:condition="HAS_NAV_RIGHT" style="display: block;">&gt;</a></td>
 				</tr>
 				<tr>
 					<td style="text-align: center" colspan="3">
-						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN" style="display: block;">\/</a>
+						<a href="runtime" tal:attributes="href NAV_DOWN" tal:condition="HAS_NAV_DOWN"
+							style="display: block;">\/</a>
 					</td>
 				</tr>
 			</table>
 		</div>
 	</metal:macro>
 </metal:macro>
+
 </html>
