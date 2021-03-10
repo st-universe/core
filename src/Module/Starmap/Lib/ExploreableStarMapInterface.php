@@ -16,8 +16,6 @@ interface ExploreableStarMapInterface
 
     public function getUserId(): ?int;
 
-    public function getMapped(): int;
-
     public function setHide(bool $hide): ExploreableStarMapInterface;
 
     public function getFieldStyle(): string;
