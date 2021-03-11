@@ -74,9 +74,6 @@ final class InterceptShip implements ActionControllerInterface
         if (!$target->getWarpState()) {
             return;
         }
-        if ($target->getUser() === $game->getUser()) {
-            return;
-        }
         if (!$ship->canIntercept()) {
             return;
         }
@@ -91,7 +88,6 @@ final class InterceptShip implements ActionControllerInterface
                 } catch (AlreadyOffException $e) {
                 }
                 $this->shipRepository->save($fleetShip);
-
             }
 
             $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
@@ -105,8 +101,12 @@ final class InterceptShip implements ActionControllerInterface
             $this->shipRepository->save($target);
         }
 
-        $this->privateMessageSender->send($userId, (int)$target->getUserId(), $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP);
+        $this->privateMessageSender->send(
+            $userId,
+            (int) $target->getUserId(),
+            $pm,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
         if ($ship->getFleetId()) {
             foreach ($ship->getFleet()->getShips() as $fleetShip) {
                 try {
@@ -114,7 +114,6 @@ final class InterceptShip implements ActionControllerInterface
                 } catch (AlreadyOffException $e) {
                 }
                 $this->shipRepository->save($fleetShip);
-
             }
         } else {
             try {

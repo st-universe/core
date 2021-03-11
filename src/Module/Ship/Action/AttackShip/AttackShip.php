@@ -56,8 +56,7 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUser()->isVacationRequestOldEnough())
-        {
+        if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
@@ -73,9 +72,6 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if ($target->getUser()->getId() == $userId) {
-            return;
-        }
         if ($target->getRump()->isTrumfield()) {
             return;
         }
@@ -102,17 +98,14 @@ final class AttackShip implements ActionControllerInterface
             $defender = [];
 
             // only uncloaked defenders fight
-            foreach ($target->getFleet()->getShips()->toArray() as $defShip)
-            {
-                if (!$defShip->getCloakState())
-                {
+            foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
+                if (!$defShip->getCloakState()) {
                     $defender[] = $defShip;
                 }
             }
 
             // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
-            if (empty($defender))
-            {
+            if (empty($defender)) {
                 $defender = $target->getFleet()->getShips()->toArray();
             }
 
@@ -129,7 +122,7 @@ final class AttackShip implements ActionControllerInterface
         }
         $this->privateMessageSender->send(
             $userId,
-            (int)$target_user_id,
+            (int) $target_user_id,
             $pm,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
