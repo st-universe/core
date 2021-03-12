@@ -169,6 +169,4 @@ interface ShipRumpInterface
     public function getCrew120P(): int;
 
     public function getCrewObj(): ?ShipRumpCategoryRoleCrewInterface;
-
-    public function getFractionId(): int;
 }
