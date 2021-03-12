@@ -640,4 +640,10 @@ class ShipRump implements ShipRumpInterface
         }
         return $this->crewobj;
     }
+
+    public function getFractionId(): int
+    {
+        //last digit of id shows fraction id
+        return $this->getId() % 10;
+    }
 }

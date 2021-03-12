@@ -5,6 +5,17 @@
       <th colspan="2">Rumpfdetails</th>
     </tr>
     <tr>
+      <td colspan="2">
+        <img src="assets/ships/${RUMP/getId}.png" tal:attributes="title RUMP/getName" />
+      </td>
+    </tr>
+    <tr>
+      <td class="darkbg">Fraktion</td>
+      <td>
+        <img src="assets/rassen/${RUMP/getFractionId}s.gif">
+      </td>
+    </tr>
+    <tr>
       <td class="darkbg">Kategorie</td>
       <td tal:content="RUMP/getShipRumpCategory/getName">CATEGORY</td>
     </tr>
@@ -41,8 +52,8 @@
       <td tal:content="RUMP/getBaseSensorRange">SENSORRANGE</td>
     </tr>
     <tr>
-      <td class="darkbg">Punkte</td>
-      <td tal:content="RUMP/getShipRumpCategory/getPoints">POINTS</td>
+      <td class="darkbg">max. Crew</td>
+      <td tal:content="RUMP/getCrew120P">CREW</td>
     </tr>
     <tr>
       <td class="darkbg">Baukosten</td>
@@ -51,7 +62,8 @@
           <img src="assets/buttons/e_trans2.gif" title="Energie" /> ${RUMP/getEpsCost}
         </div>
         <div tal:repeat="data RUMP/getBuildingCosts">
-          <img src="assets/goods/${data/getCommodity/getId}.gif" tal:attributes="title data/getCommodity/getName" /> ${data/getAmount}
+          <img src="assets/goods/${data/getCommodity/getId}.gif" tal:attributes="title data/getCommodity/getName" />
+          ${data/getAmount}
         </div>
       </td>
     </tr>
@@ -96,35 +108,37 @@
 </metal:macro>
 <metal:block metal:define-macro="initial_js">
   <script language="Javascript">
-			var sstr = '${THIS/getSessionString}';
-		</script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/database.js"><!-- stuniverse --></script>
+    var sstr = '${THIS/getSessionString}';
+  </script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/database.js">< !--stuniverse --></script>
 </metal:block>
 <metal:macro metal:define-macro="commodityLocations">
   <table tal:condition="COLONY_LOCATIONS" class="use" style="width: 500px;">
     <tr>
-        <th>Anzahl</th>
-        <th>auf Kolonie</th>
+      <th>Anzahl</th>
+      <th>auf Kolonie</th>
     </tr>
     <tr tal:repeat="storageWrapper COLONY_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
       <td tal:content="storageWrapper/getAmount">AMOUNT</td>
       <td tal:define="colony storageWrapper/getColony">
-        <a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" >
-          <metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /><span tal:replace="structure bbcode:colony/getName">NAME</span>
+        <a href="colony.php?SHOW_COLONY=1&id=${colony/getId}">
+          <metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /><span
+            tal:replace="structure bbcode:colony/getName">NAME</span>
         </a>
       </td>
     </tr>
   </table>
   <table tal:condition="SHIP_LOCATIONS" class="use" style="width: 500px;">
     <tr>
-        <th>Anzahl</th>
-        <th>auf Schiff</th>
+      <th>Anzahl</th>
+      <th>auf Schiff</th>
     </tr>
     <tr tal:repeat="storageWrapper SHIP_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
       <td tal:content="storageWrapper/getAmount">AMOUNT</td>
       <td tal:define="ship storageWrapper/getShip">
-        <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" >
-          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span tal:replace="structure bbcode:ship/getName">NAME</span>
+        <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+            tal:replace="structure bbcode:ship/getName">NAME</span>
         </a>
       </td>
     </tr>
@@ -132,32 +146,35 @@
   <table tal:condition="php: POST_LOCATIONS OR OFFER_LOCATIONS" class="use" style="width: 500px;">
     <tal:block tal:condition="POST_LOCATIONS">
       <tr>
-          <th>Anzahl</th>
-          <th>im Lager der Warenbörse</th>
+        <th>Anzahl</th>
+        <th>im Lager der Warenbörse</th>
       </tr>
       <tr tal:repeat="storageWrapper POST_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
         <td tal:content="storageWrapper/getAmount">AMOUNT</td>
         <td tal:define="ship storageWrapper/getTradepost/getShip">
-          <a href="trade.php?SHOW_ACCOUNTS=1" >
-            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span tal:replace="structure bbcode:ship/getName">NAME</span>
+          <a href="trade.php?SHOW_ACCOUNTS=1">
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+              tal:replace="structure bbcode:ship/getName">NAME</span>
           </a>
         </td>
       </tr>
     </tal:block>
     <tal:block tal:condition="OFFER_LOCATIONS">
       <tr>
-          <th>Anzahl</th>
-          <th>in Angeboten an der Warenbörse</th>
+        <th>Anzahl</th>
+        <th>in Angeboten an der Warenbörse</th>
       </tr>
       <tr tal:repeat="storageWrapper OFFER_LOCATIONS" tal:attributes="class string:row${repeat/storageWrapper/odd}">
         <td tal:content="storageWrapper/getAmount">AMOUNT</td>
         <td tal:define="ship storageWrapper/getTradepost/getShip">
-          <a href="trade.php?SHOW_ACCOUNTS=1" >
-            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span tal:replace="structure bbcode:ship/getName">NAME</span>
+          <a href="trade.php?SHOW_ACCOUNTS=1">
+            <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" /><span
+              tal:replace="structure bbcode:ship/getName">NAME</span>
           </a>
         </td>
       </tr>
     </tal:block>
   </table>
 </metal:macro>
+
 </html>
