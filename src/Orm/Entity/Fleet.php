@@ -38,6 +38,9 @@ class Fleet implements FleetInterface
     /** @Column(type="integer", nullable=true) * */
     private $defended_colony_id;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $blocked_colony_id;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -60,6 +63,12 @@ class Fleet implements FleetInterface
      * @JoinColumn(name="defended_colony_id", referencedColumnName="id")
      */
     private $defendedColony;
+
+    /**
+     * @ManyToOne(targetEntity="Colony", inversedBy="blockers")
+     * @JoinColumn(name="blocked_colony_id", referencedColumnName="id")
+     */
+    private $blockedColony;
 
     public function __construct()
     {
@@ -155,6 +164,17 @@ class Fleet implements FleetInterface
     public function setDefendedColony(?ColonyInterface $defendedColony): FleetInterface
     {
         $this->defendedColony = $defendedColony;
+        return $this;
+    }
+
+    public function getBlockedColony(): ?ColonyInterface
+    {
+        return $this->blockedColony;
+    }
+
+    public function setBlockedColony(?ColonyInterface $blockedColony): FleetInterface
+    {
+        $this->blockedColony = $blockedColony;
         return $this;
     }
 

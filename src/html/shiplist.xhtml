@@ -37,6 +37,11 @@
 												<span
 													tal:replace="structure bbcode:fleet/getDefendedColony/getName">NAME</span>
 											</tal:block>
+											<tal:block tal:condition="fleet/getBlockedColony">
+												<img src="/assets/buttons/block1.png" title="blockiert die Kolonie" />
+												<span
+													tal:replace="structure bbcode:fleet/getBlockedColony/getName">NAME</span>
+											</tal:block>
 										</td>
 										<td style="width: 15%;">
 											<input type="text" name="fleetname" style="width: 150px;"

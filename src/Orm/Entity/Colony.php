@@ -131,6 +131,11 @@ class Colony implements ColonyInterface
      */
     private $defenders;
 
+    /**
+     * @OneToMany(targetEntity="Fleet", mappedBy="blockedColony")
+     */
+    private $blockers;
+
     private $has_active_building_by_function = [];
 
     private $positive_effect_secondary;
@@ -151,6 +156,7 @@ class Colony implements ColonyInterface
     {
         $this->storage = new ArrayCollection();
         $this->defenders = new ArrayCollection();
+        $this->blockers = new ArrayCollection();
     }
 
     public function getId(): int
@@ -473,6 +479,11 @@ class Colony implements ColonyInterface
     public function getDefenders(): Collection
     {
         return $this->defenders;
+    }
+
+    public function getBlockers(): Collection
+    {
+        return $this->blockers;
     }
 
     /**

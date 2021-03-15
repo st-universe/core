@@ -26,4 +26,6 @@ interface FleetNfsItemInterface
     public function getUser(): UserInterface;
 
     public function getDefendedColony(): ?ColonyInterface;
+
+    public function getBlockedColony(): ?ColonyInterface;
 }

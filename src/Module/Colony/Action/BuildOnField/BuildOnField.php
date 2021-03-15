@@ -112,6 +112,13 @@ final class BuildOnField implements ActionControllerInterface
             return;
         }
 
+        $isMoon = $colony->getPlanetType()->getIsMoon();
+        $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
+        if ($isOrbitField && !$colony->getBlockers()->isEmpty()) {
+            $game->addInformation(_('Der Orbit kann nicht bebaut werden während die Kolonie blockiert wird'));
+            return;
+        }
+
         if (
             $building->hasLimitColony() &&
             $this->planetFieldRepository->getCountByColonyAndBuilding($colonyId, $buildingId) >= $building->getLimitColony()
