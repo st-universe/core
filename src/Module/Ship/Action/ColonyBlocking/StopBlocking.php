@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\ColonyDefending;
+namespace Stu\Module\Ship\Action\ColonyBlocking;
 
 use request;
 
@@ -15,9 +15,9 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
-final class StartDefending implements ActionControllerInterface
+final class StopBlocking implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_DEFENDING';
+    public const ACTION_IDENTIFIER = 'B_STOP_BLOCKING';
 
     private ShipLoaderInterface $shipLoader;
 
@@ -64,27 +64,18 @@ final class StartDefending implements ActionControllerInterface
             return;
         }
 
-        if ($currentColony->isFree()) {
-            return;
-        }
-
         $fleet = $ship->getFleet();
-        if ($fleet->getBlockedColony() !== null || $fleet->getDefendedColony() !== null) {
+        if ($fleet->getBlockedColony() === null) {
             return;
         }
 
-        if ($currentColony->getUser()->isVacationRequestOldEnough()) {
-            $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
-            return;
-        }
-
-        $fleet->setDefendedColony($currentColony);
+        $fleet->setBlockedColony(null);
         $this->fleetRepository->save($fleet);
 
-        $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s verteidigt'), $currentColony->getName(), $fleet->getName());
+        $text = sprintf(_('Die Flotte %s hat die Blockierung der Kolonie %s aufgehoben'), $fleet->getName(), $currentColony->getName());
         $game->addInformation($text);
 
-        if ($userId !== $currentColony->getUser()->getId()) {
+        if (!$currentColony->isFree() && $userId !== $currentColony->getUser()->getId()) {
             $this->privateMessageSender->send(
                 $userId,
                 (int) $currentColony->getUser()->getId(),

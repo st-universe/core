@@ -65,6 +65,9 @@ final class StopDefending implements ActionControllerInterface
         }
 
         $fleet = $ship->getFleet();
+        if ($fleet->getDefendedColony() === null) {
+            return;
+        }
 
         $fleet->setDefendedColony(null);
         $this->fleetRepository->save($fleet);

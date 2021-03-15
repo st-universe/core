@@ -63,6 +63,14 @@ final class RepairBuilding implements ActionControllerInterface
         if ($field->isInConstruction()) {
             return;
         }
+
+        $isMoon = $colony->getPlanetType()->getIsMoon();
+        $isOrbitField = $isMoon ? $field->getFieldId() < 14 : $field->getFieldId() < 20;
+        if ($isOrbitField && !$colony->getBlockers()->isEmpty()) {
+            $game->addInformation(_('Gebäude im Orbit können nicht repariert werden während die Kolonie blockiert wird'));
+            return;
+        }
+
         $integrity = round((100 / $field->getBuilding()->getIntegrity()) * $field->getIntegrity());
         $eps = (int) round(($field->getBuilding()->getEpsCost() / 100) * $integrity);
         if ($eps > $colony->getEps()) {

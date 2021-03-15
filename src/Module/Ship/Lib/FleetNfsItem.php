@@ -84,4 +84,9 @@ final class FleetNfsItem implements FleetNfsItemInterface
     {
         return $this->fleet->getDefendedColony();
     }
+
+    public function getBlockedColony(): ?ColonyInterface
+    {
+        return $this->fleet->getBlockedColony();
+    }
 }

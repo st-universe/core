@@ -123,6 +123,11 @@ interface ColonyInterface
     public function getDefenders(): Collection;
 
     /**
+     * @return FleetInterface[]
+     */
+    public function getBlockers(): Collection;
+
+    /**
      * @return ColonyProduction[]
      */
     public function getProductionRaw(): array;

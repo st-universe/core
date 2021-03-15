@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\ColonyDefending;
+namespace Stu\Module\Ship\Action\ColonyBlocking;
 
 use request;
-
+use Stu\Component\Building\BuildingEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -15,9 +15,9 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
-final class StartDefending implements ActionControllerInterface
+final class StartBlocking implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_DEFENDING';
+    public const ACTION_IDENTIFIER = 'B_START_BLOCKING';
 
     private ShipLoaderInterface $shipLoader;
 
@@ -78,10 +78,19 @@ final class StartDefending implements ActionControllerInterface
             return;
         }
 
-        $fleet->setDefendedColony($currentColony);
+        if (
+            $currentColony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ENERGY_PHALANX)
+            || $currentColony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_PARTICLE_PHALANX)
+            || $currentColony->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ANTI_PARTICLE)
+        ) {
+            $game->addInformation(_('Aktion nicht möglich, die Kolonie verfügt über aktive Orbitalverteidigung'));
+            return;
+        }
+
+        $fleet->setBlockedColony($currentColony);
         $this->fleetRepository->save($fleet);
 
-        $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s verteidigt'), $currentColony->getName(), $fleet->getName());
+        $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s blockiert'), $currentColony->getName(), $fleet->getName());
         $game->addInformation($text);
 
         if ($userId !== $currentColony->getUser()->getId()) {

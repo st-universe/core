@@ -197,6 +197,11 @@ final class ShipMover implements ShipMoverInterface
             return;
         }
 
+        if ($leadShip->isFleetLeader() && $leadShip->getFleet()->getBlockedColony() !== null) {
+            $this->addInformation(_('Flug während Kolonie-Blockierung nicht möglich'));
+            return;
+        }
+
         $this->setDestination($leadShip, $destinationX, $destinationY);
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);

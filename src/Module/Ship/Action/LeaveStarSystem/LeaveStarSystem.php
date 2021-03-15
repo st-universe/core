@@ -65,6 +65,11 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
 
+        if ($ship->isFleetLeader() && $ship->getFleet()->getBlockedColony() !== null) {
+            $game->addInformation(_('Verlassen des Systems während Kolonie-Blockierung nicht möglich'));
+            return;
+        }
+
         if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_WARPDRIVE, $game)) {
             return;
         }
