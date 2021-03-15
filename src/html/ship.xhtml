@@ -721,16 +721,16 @@
 
 												<a tal:condition="php:!SHIP.getFleet().getDefendedColony() AND !SHIP.getFleet().getBlockedColony()"
 													href="?B_START_BLOCKING=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-													onmouseover="cp('block','buttons/block1')"
-													onmouseout="cp('block','buttons/block2')">
+													onmouseover="cp('block','buttons/block1','png')"
+													onmouseout="cp('block','buttons/block2','png')">
 													<img src="/assets/buttons/block2.png" name="block"
 														title="Kolonie blockieren" />
 												</a>
 
 												<a tal:condition="SHIP/getFleet/getBlockedColony"
 													href="?B_STOP_BLOCKING=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-													onmouseover="cp('block','buttons/block2')"
-													onmouseout="cp('block','buttons/block1')">
+													onmouseover="cp('block','buttons/block2','png')"
+													onmouseout="cp('block','buttons/block1','png')">
 													<img src="/assets/buttons/block1.png" name="block"
 														title="Blockierung der Kolonie beenden" />
 												</a>
