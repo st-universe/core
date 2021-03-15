@@ -978,6 +978,8 @@
 									<td colspan="3">
 										<img tal:condition="data/getDefendedColony" src="/assets/buttons/defend1.gif"
 											title="verteidigt die Kolonie" />
+										<img tal:condition="data/getBlockedColony" src="/assets/buttons/block1.png"
+											title="blockiert die Kolonie" />
 										<span tal:condition="not:data/showManagement"
 											tal:content="structure bbcode:data/getName">NAME</span>
 										<tal:block tal:condition="data/showManagement">
