@@ -273,8 +273,8 @@ return [
         TroopTransfer::ACTION_IDENTIFIER => autowire(TroopTransfer::class),
         StartDefending::ACTION_IDENTIFIER => autowire(StartDefending::class),
         StopDefending::ACTION_IDENTIFIER => autowire(StopDefending::class),
-        StartBlocking::ACTION_IDENTIFIER => autowire(StartDefending::class),
-        StopBlocking::ACTION_IDENTIFIER => autowire(StopDefending::class),
+        StartBlocking::ACTION_IDENTIFIER => autowire(StartBlocking::class),
+        StopBlocking::ACTION_IDENTIFIER => autowire(StopBlocking::class),
         PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
         StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class)
     ],
