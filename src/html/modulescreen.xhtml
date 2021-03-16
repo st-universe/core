@@ -17,7 +17,7 @@
       <div class="moduleScreenGrid">
         <div>
           <div class="box">
-            <div class="box_title" style="margin: 0; padding: 0">Modulauswahl</div>
+            <div class="box_title" style="margin: 0; padding: 0">Modultyp-Auswahl</div>
             <div class="box_body">
               <table class="tcal" id="module_select_tabs">
                 <tr>
@@ -186,11 +186,16 @@
         </tr>
       </tal:block>
       <tr tal:condition="not:THIS/getAvailableModules">
-        <td>Keine Module dieses Typs montierbar</td>
+        <td>Keine Module dieses Typs installierbar</td>
       </tr>
     </table>
     <table class="tcal" tal:define="rump THIS/getRump" tal:condition="THIS/allowMultiple">
       <tal:block tal:condition="THIS/getAvailableModules" tal:repeat="module THIS/getAvailableModules">
+        <tr>
+          <th colspan="2">Modulbezeichnung</th>
+          <th>lagernd</th>
+          <th>Auswirkungen</th>
+        </tr>
         <tr>
           <td style="width: 50px;">
             <input class="specialModuleRadio" type="checkbox"
@@ -200,7 +205,8 @@
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
-          <td style="width: 30px; text-align: center;" tal:content="module/getModule/getLevel">LEVEL</td>
+          <td style="width: 30px; text-align: center;"
+            tal:content="HAS_STORAGE/${module/getModule/getGoodId}/getAmount">STORED</td>
           <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
             <metal:macro metal:use-macro="moduleselector_stats_type_${THIS/getModuleType}" />
           </td>
