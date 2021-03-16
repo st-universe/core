@@ -43,6 +43,16 @@ class ColonyStorageGoodCountWrapper
 
     /**
      */
+    public function getAmount()
+    { #{{{
+        if (!isset($this->storage[$this->goodId])) {
+            return 0;
+        }
+        return $this->storage[$this->goodId]->getAmount();
+    } # }}}
+
+    /**
+     */
     public function __call($name, $arg)
     { #{{{
         return $this->__get($name);

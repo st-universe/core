@@ -155,6 +155,11 @@
       <input type="hidden" name="module_level_${THIS/getModuleType}" id="module_level_${THIS/getModuleType}"
         tal:attributes="value THIS/getRump/getModuleLevels/getModuleLevel${THIS/getModuleType}" />
       <tal:block tal:condition="THIS/getAvailableModules">
+        <tr>
+          <th colspan="3">Modulbezeichnung</th>
+          <th>lagernd</th>
+          <th>Auswirkungen</th>
+        </tr>
         <tr tal:condition="THIS/allowEmptySlot">
           <td class="module_positive" style="width: 3px;"></td>
           <td colspan="4">
@@ -173,14 +178,15 @@
             <img src="assets/goods/${module/getModule/getGoodId}.gif" />
           </td>
           <td style="width: 300px;" tal:content="module/getModule/getName">NAME</td>
-          <td style="width: 30px; text-align: center;" tal:content="module/getModule/getLevel">LEVEL</td>
+          <td style="width: 30px; text-align: center;"
+            tal:content="HAS_STORAGE/${module/getModule/getGoodId}/getAmount">STORED</td>
           <td id="${module/getModule/getId}_content" tal:define="modSel THIS">
             <metal:macro metal:use-macro="moduleselector_stats_type_${THIS/getModuleType}" />
           </td>
         </tr>
       </tal:block>
       <tr tal:condition="not:THIS/getAvailableModules">
-        <td>Keine Module dieses Typs vorhanden</td>
+        <td>Keine Module dieses Typs montierbar</td>
       </tr>
     </table>
     <table class="tcal" tal:define="rump THIS/getRump" tal:condition="THIS/allowMultiple">
