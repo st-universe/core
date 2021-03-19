@@ -37,7 +37,7 @@ final class FinishBuildJobs implements ProcessTickInterface
     {
         $result = $this->planetFieldRepository->getByConstructionFinish(time());
         foreach ($result as $field) {
-            $this->buildingManager->finish($field);
+            $this->buildingManager->finish($field, $field->getActivateAfterBuild());
             $colony = $field->getColony();
 
             $txt = sprintf(
@@ -49,7 +49,7 @@ final class FinishBuildJobs implements ProcessTickInterface
 
             $this->privateMessageSender->send(
                 GameEnum::USER_NOONE,
-                (int)$colony->getUserId(),
+                (int) $colony->getUserId(),
                 $txt,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
             );
