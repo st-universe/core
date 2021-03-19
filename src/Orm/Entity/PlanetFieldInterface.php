@@ -28,6 +28,10 @@ interface PlanetFieldInterface
 
     public function setActive(int $aktiv): PlanetFieldInterface;
 
+    public function getActivateAfterBuild(): bool;
+
+    public function setActivateAfterBuild(bool $activateAfterBuild): PlanetFieldInterface;
+
     public function setBuildMode(bool $value): void;
 
     public function getFieldTypeName(): string;
