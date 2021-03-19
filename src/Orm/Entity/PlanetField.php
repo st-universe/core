@@ -54,6 +54,9 @@ class PlanetField implements PlanetFieldInterface
     /** @Column(type="integer") */
     private $aktiv = 0;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $activate_after_build = true;
+
     /**
      * @ManyToOne(targetEntity="Building")
      * @JoinColumn(name="buildings_id", referencedColumnName="id")
@@ -141,6 +144,17 @@ class PlanetField implements PlanetFieldInterface
     public function setActive(int $aktiv): PlanetFieldInterface
     {
         $this->aktiv = $aktiv;
+        return $this;
+    }
+
+    public function getActivateAfterBuild(): bool
+    {
+        return $this->activate_after_build;
+    }
+
+    public function setActivateAfterBuild(bool $activateAfterBuild): PlanetFieldInterface
+    {
+        $this->activate_after_build = $activateAfterBuild;
         return $this;
     }
 
