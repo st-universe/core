@@ -1234,7 +1234,7 @@
               <span>Fertigstellung</span>: <span tal:replace="datetime:FIELD/getBuildtime">DATE</span>
             </div>
           </div>
-          <tal:block tal:condition="FIELD/isActivateAble">
+          <tal:block tal:condition="FIELD/getBuilding/isActivateable">
             <div class="fabutton" tal:condition="FIELD/getActivateAfterBuild">
               <a href="?id=${COLONY/getId}&B_DEACTIVATE=1&fid=${FIELD/getFieldId}&sstr=${THIS/getSessionString}"
                 class="fabutton">Nach Bau deaktivieren</a>
