@@ -54,7 +54,7 @@ class PlanetField implements PlanetFieldInterface
     /** @Column(type="integer") */
     private $aktiv = 0;
 
-    /** @Column(type="boolean", nullable=true) */
+    /** @Column(type="boolean") */
     private $activate_after_build = true;
 
     /**

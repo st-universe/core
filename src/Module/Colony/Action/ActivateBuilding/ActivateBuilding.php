@@ -54,11 +54,16 @@ final class ActivateBuilding implements ActionControllerInterface
             return;
         }
 
-        $this->buildingAction->activate(
-            $colony,
-            $field,
-            $game
-        );
+        if ($field->isInConstruction()) {
+            $field->setActivateAfterBuild(true);
+            $game->addInformation("Gebäude wird nach Bau aktiviert");
+        } else {
+            $this->buildingAction->activate(
+                $colony,
+                $field,
+                $game
+            );
+        }
     }
 
     public function performSessionCheck(): bool
