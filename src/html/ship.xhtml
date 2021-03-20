@@ -152,44 +152,75 @@
 								</td>
 							</tr>
 						</table>
-						<table tal:condition="SHIP/getLss" tal:define="panel VISUAL_NAV_PANEL" class="lssarea"
-							cellpadding="0" cellspacing="0">
-							<tr>
-								<td style="text-align: center; height: 30px;">
-									<a phptal:cache="1d per SHIP/getId"
-										href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img
-											src="assets/buttons/lss1.gif" name="lss_panel"
-											title="Langstreckensensoren deaktivieren" /></a>
-								</td>
-								<td class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.</td>
-							</tr>
-							<tr tal:repeat="row panel/getRows">
-								<tal:block tal:repeat="entry row/getEntries">
-									<td tal:condition="entry/getRow" style="width: 30px;"
-										tal:attributes="class entry/getCSSClass" tal:content="entry/getRow"
-										phptal:cache="1d per entry/getRow">.</td>
-									<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
-										tal:attributes="class entry/getCSSClass"
-										style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
-										<tal:block tal:condition="entry/isClickable">
-											<div class="lssobj imgOverlayText"
-												onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
-												<img tal:condition="php:SHIP.getSubspaceState() AND code"
-													src="assets/subspace/generated/${code}.png" />
-												<div class="centered" tal:content="entry/getDisplayCount">.</div>
-											</div>
-										</tal:block>
-										<tal:block tal:condition="not:entry/isClickable">
-											<div class="imgOverlayText">
-												<img tal:condition="php:SHIP.getSubspaceState() AND code"
-													src="assets/subspace/generated/${code}.png" />
-												<div class="centered" tal:content="entry/getDisplayCount">.</div>
-											</div>
-										</tal:block>
+						<div tal:condition="SHIP/getLss" style="float:left;">
+							<table tal:define="panel VISUAL_NAV_PANEL" class="lssarea" cellpadding="0" cellspacing="0">
+								<tr>
+									<td style="text-align: center; height: 30px;">
+										<a phptal:cache="1d per SHIP/getId"
+											href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img
+												src="assets/buttons/lss1.gif" name="lss_panel"
+												title="Langstreckensensoren deaktivieren" /></a>
 									</td>
-								</tal:block>
-							</tr>
-						</table>
+									<td class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.</td>
+								</tr>
+								<tr tal:repeat="row panel/getRows">
+									<tal:block tal:repeat="entry row/getEntries">
+										<td tal:condition="entry/getRow" style="width: 30px;"
+											tal:attributes="class entry/getCSSClass" tal:content="entry/getRow"
+											phptal:cache="1d per entry/getRow">.</td>
+										<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
+											tal:attributes="class entry/getCSSClass"
+											style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
+											<tal:block tal:condition="entry/isClickable">
+												<div class="lssobj imgOverlayText"
+													onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
+													<img tal:condition="php:SHIP.getSubspaceState() AND code"
+														src="assets/subspace/generated/${code}.png" />
+													<div class="centered" tal:content="entry/getDisplayCount">.</div>
+												</div>
+											</tal:block>
+											<tal:block tal:condition="not:entry/isClickable">
+												<div class="imgOverlayText">
+													<img tal:condition="php:SHIP.getSubspaceState() AND code"
+														src="assets/subspace/generated/${code}.png" />
+													<div class="centered" tal:content="entry/getDisplayCount">.</div>
+												</div>
+											</tal:block>
+										</td>
+									</tal:block>
+								</tr>
+							</table>
+						</div>
+						<div tal:condition="SHIP/getLss" style="float:left; margin-left:5px;">
+							<table class="tcal">
+								<tr>
+									<td colspan="3" style="text-align: center;">
+										<input type="submit" value="" class="button upButton" name="B_MOVE_UP"
+											tal:attributes="disabled NAV_PANEL/getUp/isDisabled" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="submit" value="" class="button leftButton" name="B_MOVE_LEFT"
+											tal:attributes="disabled NAV_PANEL/getLeft/isDisabled" />
+									</td>
+									<td style="text-align: center; font-weight: bold;">
+										<input type="text" onfocus="focusNavApplet();" onblur="blurNavApplet();"
+											name="navapp" style="text-align: center;" size="1" value="1" />
+									</td>
+									<td>
+										<input type="submit" value="" class="button rightButton" name="B_MOVE_RIGHT"
+											tal:attributes="disabled NAV_PANEL/getRight/isDisabled" />
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3" style="text-align: center;">
+										<input type="submit" value="" class="button downButton" name="B_MOVE_DOWN"
+											tal:attributes="disabled NAV_PANEL/getDown/isDisabled" />
+									</td>
+								</tr>
+							</table>
+						</div>
 					</td>
 					<td style="vertical-align: top; width: 33%;">
 						<table class="tcal">
