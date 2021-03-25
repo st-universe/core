@@ -79,12 +79,12 @@ final class BuildingManager implements BuildingManagerInterface
 
         $colony->setMaxBev($colony->getMaxBev() - $building->getHousing());
         $field->setActive(0);
-        $this->consequences($field, $colony);
 
         $this->planetFieldRepository->save($field);
         $this->colonyRepository->save($colony);
 
         $building->postDeactivation($colony);
+        $this->consequences($building, $colony);
     }
 
     public function remove(
@@ -104,7 +104,6 @@ final class BuildingManager implements BuildingManagerInterface
         $colony = $field->getColony();
 
         $this->deactivate($field);
-        $this->consequences($field, $colony);
 
         $colony
             ->setMaxStorage($colony->getMaxStorage() - $building->getStorage())
@@ -114,16 +113,18 @@ final class BuildingManager implements BuildingManagerInterface
 
         $this->planetFieldRepository->save($field);
         $this->colonyRepository->save($colony);
+
+        $this->consequences($building, $colony);
     }
 
-    private function consequences($field, $colony)
+    private function consequences($building, $colony)
     {
-        if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
+        if ($building->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
             $colony->setShields(0);
-        } else if ($field->getBuilding()->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
+        } else if ($building->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
             $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
-        } else if (!empty(array_intersect($field->getBuilding()->getFunctions()->getKeys(), BuildingEnum::BUILDING_FUNCTION_MODULEFABS))) {
-            $this->moduleQueueLib->cancelModuleQueues($colony, $field->getBuilding());
+        } else if (!empty(array_intersect($building->getFunctions()->getKeys(), BuildingEnum::BUILDING_FUNCTION_MODULEFABS))) {
+            $this->moduleQueueLib->cancelModuleQueues($colony, $building);
         }
     }
 
