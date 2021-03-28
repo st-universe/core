@@ -176,7 +176,7 @@ final class ShipCreator implements ShipCreatorInterface
         foreach ($systems as $sysId => $module) {
             $obj = $this->shipSystemRepository->prototype();
             $obj->setShip($ship);
-            $ship->getSystems()->add($obj);
+            $ship->getSystems()->set((int) $sysId, $obj);
             $obj->setSystemType((int) $sysId);
             if ($module !== 0) {
                 $obj->setModule($module);
