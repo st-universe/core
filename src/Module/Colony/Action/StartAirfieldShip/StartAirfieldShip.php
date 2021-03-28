@@ -6,8 +6,6 @@ namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\System\ShipSystemManager;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -44,8 +42,6 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private ShipSystemManager $shipSystemManager;
-
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         CommodityRepositoryInterface $commodityRepository,
@@ -55,8 +51,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManager $shipSystemManager
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
@@ -67,7 +62,6 @@ final class StartAirfieldShip implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -155,10 +149,6 @@ final class StartAirfieldShip implements ActionControllerInterface
                 $this->colonyStorageManager->lowerStorage($colony, $defaultTorpedoType->getCommodity(), $count);
             }
         }
-        if ($hangar->getBuildplan()->getCrew() > 0) {
-            $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
-        }
-
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {
             $ship->setEps($ship->getTheoreticalMaxEps());
             $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
