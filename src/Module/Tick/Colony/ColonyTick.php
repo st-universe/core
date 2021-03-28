@@ -7,11 +7,14 @@ use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Research\ResearchState;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -19,6 +22,7 @@ use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
@@ -45,6 +49,14 @@ final class ColonyTick implements ColonyTickInterface
 
     private BuildingManagerInterface $buildingManager;
 
+    private CrewCreatorInterface $crewCreator;
+
+    private ShipCreatorInterface $shipCreator;
+
+    private ShipRepositoryInterface $shipRepository;
+
+    private ShipSystemManagerInterface $shipSystemManager;
+
     private array $msg = [];
 
     public function __construct(
@@ -57,7 +69,11 @@ final class ColonyTick implements ColonyTickInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         CreateDatabaseEntryInterface $createDatabaseEntry,
-        BuildingManagerInterface $buildingManager
+        BuildingManagerInterface $buildingManager,
+        CrewCreatorInterface $crewCreator,
+        ShipCreatorInterface $shipCreator,
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -69,6 +85,11 @@ final class ColonyTick implements ColonyTickInterface
         $this->colonyRepository = $colonyRepository;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->buildingManager = $buildingManager;
+
+        $this->crewCreator = $crewCreator;
+        $this->shipCreator = $shipCreator;
+        $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function work(ColonyInterface $colony): void
@@ -227,9 +248,13 @@ final class ColonyTick implements ColonyTickInterface
                     $this->researchedRepository,
                     $this->shipRumpUserRepository,
                     $this->privateMessageSender,
-                    $this->createDatabaseEntry
-                )
-                )->advance(
+                    $this->createDatabaseEntry,
+                    $this->crewCreator,
+                    $this->shipCreator,
+                    $this->colonyRepository,
+                    $this->shipRepository,
+                    $this->shipSystemManager
+                ))->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()
                 );
@@ -335,8 +360,12 @@ final class ColonyTick implements ColonyTickInterface
             $text .= $msg . "\n";
         }
 
-        $this->privateMessageSender->send(GameEnum::USER_NOONE, (int)$colony->getUserId(), $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY);
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $colony->getUserId(),
+            $text,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+        );
 
         $this->msg = [];
     }
@@ -362,5 +391,4 @@ final class ColonyTick implements ColonyTickInterface
             }
         }
     }
-
 }
