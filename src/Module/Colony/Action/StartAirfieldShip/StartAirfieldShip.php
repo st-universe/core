@@ -6,7 +6,7 @@ namespace Stu\Module\Colony\Action\StartAirfieldShip;
 
 use request;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
-use Stu\Component\Ship\System\ShipSystemManager;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -44,7 +44,7 @@ final class StartAirfieldShip implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private ShipSystemManager $shipSystemManager;
+    private ShipSystemManagerInterface $shipSystemManager;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -56,7 +56,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManager $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->commodityRepository = $commodityRepository;
