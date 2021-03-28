@@ -43,4 +43,8 @@ interface ResearchInterface
     public function setUpperMoonLimit(int $upperMoonLimit): ResearchInterface;
 
     public function getGood(): CommodityInterface;
+
+    public function getRewardBuildplanId(): ?int;
+
+    public function getRewardBuildplan(): ?ShipBuildplanInterface;
 }

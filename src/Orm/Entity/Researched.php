@@ -30,9 +30,6 @@ class Researched implements ResearchedInterface
     /** @Column(type="integer") * */
     private $finished = 0;
 
-    /** @Column(type="integer", nullable=true) * */
-    private $reward_buildplan_id;
-
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Research")
      * @JoinColumn(name="research_id", referencedColumnName="id")
@@ -44,12 +41,6 @@ class Researched implements ResearchedInterface
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
-
-    /**
-     * @ManyToOne(targetEntity="ShipBuildplan")
-     * @JoinColumn(name="reward_buildplan_id", referencedColumnName="id")
-     */
-    private $rewardBuildplan;
 
     public function getId(): int
     {
@@ -70,11 +61,6 @@ class Researched implements ResearchedInterface
     {
         $this->user = $user;
         return $this;
-    }
-
-    public function getRewardBuildplan(): ?ShipBuildplanInterface
-    {
-        return $this->rewardBuildplan;
     }
 
     public function getActive(): int
@@ -99,11 +85,6 @@ class Researched implements ResearchedInterface
         $this->finished = $finished;
 
         return $this;
-    }
-
-    public function getRewardBuildplanId(): ?int
-    {
-        return $this->reward_buildplan_id;
     }
 
     public function getResearch(): ResearchInterface

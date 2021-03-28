@@ -45,11 +45,20 @@ class Research implements ResearchInterface
     /** @Column(type="smallint") * */
     private $upper_moonlimit;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $reward_buildplan_id;
+
     /**
      * @ManyToOne(targetEntity="Stu\Orm\Entity\Commodity")
      * @JoinColumn(name="good_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $good;
+
+    /**
+     * @ManyToOne(targetEntity="ShipBuildplan")
+     * @JoinColumn(name="reward_buildplan_id", referencedColumnName="id")
+     */
+    private $rewardBuildplan;
 
     public function getId(): int
     {
@@ -164,8 +173,18 @@ class Research implements ResearchInterface
         return $this;
     }
 
+    public function getRewardBuildplanId(): ?int
+    {
+        return $this->reward_buildplan_id;
+    }
+
     public function getGood(): CommodityInterface
     {
         return $this->good;
+    }
+
+    public function getRewardBuildplan(): ?ShipBuildplanInterface
+    {
+        return $this->rewardBuildplan;
     }
 }
