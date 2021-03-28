@@ -129,7 +129,7 @@ final class ShipCreator implements ShipCreatorInterface
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
 
-        return $this->shipRepository->find($ship->getId());
+        return $ship;
     }
 
     private function createByModuleList(ShipInterface $ship, array $modules): void
@@ -176,6 +176,7 @@ final class ShipCreator implements ShipCreatorInterface
         foreach ($systems as $sysId => $module) {
             $obj = $this->shipSystemRepository->prototype();
             $obj->setShip($ship);
+            $ship->getSystems()->add($obj);
             $obj->setSystemType((int) $sysId);
             if ($module !== 0) {
                 $obj->setModule($module);
