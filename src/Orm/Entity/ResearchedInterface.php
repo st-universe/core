@@ -16,6 +16,8 @@ interface ResearchedInterface
 
     public function setFinished(int $finished): ResearchedInterface;
 
+    public function getRewardBuildplanId(): ?int;
+
     public function setResearch(ResearchInterface $research): ResearchedInterface;
 
     public function getResearch(): ResearchInterface;
@@ -23,6 +25,8 @@ interface ResearchedInterface
     public function getUser(): UserInterface;
 
     public function setUser(UserInterface $user): ResearchedInterface;
+
+    public function getRewardBuildplan(): ?ShipBuildplanInterface;
 
     public function getResearchId(): int;
 

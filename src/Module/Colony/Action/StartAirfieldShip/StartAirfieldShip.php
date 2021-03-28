@@ -157,6 +157,7 @@ final class StartAirfieldShip implements ActionControllerInterface
         }
         if ($hangar->getBuildplan()->getCrew() > 0) {
             $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            $this->shipRepository->save($ship);
         }
 
         if ($rump->hasSpecialAbility(ShipRumpSpecialAbilityEnum::FULLY_LOADED_START)) {

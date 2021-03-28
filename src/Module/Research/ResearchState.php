@@ -5,11 +5,19 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\System\ShipSystemManager;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Message\Lib\PrivateMessageSender;
+use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ResearchedInterface;
+use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class ResearchState implements ResearchStateInterface
@@ -22,16 +30,36 @@ final class ResearchState implements ResearchStateInterface
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
 
+    private CrewCreatorInterface $crewCreator;
+
+    private ShipCreatorInterface $shipCreator;
+
+    private ColonyRepositoryInterface $colonyRepository;
+
+    private ShipRepositoryInterface $shipRepository;
+
+    private ShipSystemManagerInterface $shipSystemManager;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        CreateDatabaseEntryInterface $createDatabaseEntry
+        CreateDatabaseEntryInterface $createDatabaseEntry,
+        CrewCreatorInterface $crewCreator,
+        ShipCreatorInterface $shipCreator,
+        ColonyRepositoryInterface $colonyRepository,
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->createDatabaseEntry = $createDatabaseEntry;
+        $this->crewCreator = $crewCreator;
+        $this->shipCreator = $shipCreator;
+        $this->colonyRepository = $colonyRepository;
+        $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function finish(ResearchedInterface $state): void
@@ -46,8 +74,50 @@ final class ResearchState implements ResearchStateInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
         );
 
+        $this->createRewardShip($state);
         $this->createDatabaseEntries($state);
         $this->createShipRumpEntries($state);
+    }
+
+    private function createRewardShip(ResearchedInterface $state): void
+    {
+        if ($state->getRewardBuildplan() === null) {
+            return;
+        }
+
+        $userColonies = $this->colonyRepository->getOrderedListByUser($state->getUser());
+
+        if (empty($userColonies)) {
+            return;
+        }
+
+        $userId = $state->getUser()->getId();
+        $plan = $state->getRewardBuildplan();
+        $ship = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), current($userColonies));
+
+        $ship->setEps($ship->getTheoreticalMaxEps());
+        $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
+        $ship->setEBatt($ship->getMaxEBatt());
+
+        if ($plan->getCrew() > 0) {
+            $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+        }
+
+        $this->shipRepository->save($ship);
+
+        for ($j = 1; $j <= $plan->getCrew(); $j++) {
+            $this->crewCreator->create($userId);
+        }
+        $this->crewCreator->createShipCrew($ship);
+
+        $txt = sprintf(_("Als Belohnung für den Abschluss der Forschung wurde dir ein Schiff vom Typ %s überstellt"), $plan->getRump()->getName());
+
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $userId,
+            $txt,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
     }
 
     private function createShipRumpEntries(ResearchedInterface $state): void
