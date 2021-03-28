@@ -81,7 +81,7 @@ final class ResearchState implements ResearchStateInterface
 
     private function createRewardShip(ResearchedInterface $state): void
     {
-        if ($state->getRewardBuildplan() === null) {
+        if ($state->getResearch()->getRewardBuildplan() === null) {
             return;
         }
 
@@ -92,7 +92,7 @@ final class ResearchState implements ResearchStateInterface
         }
 
         $userId = $state->getUser()->getId();
-        $plan = $state->getRewardBuildplan();
+        $plan = $state->getResearch()->getRewardBuildplan();
         $ship = $this->shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId(), current($userColonies));
 
         $ship->setEps($ship->getTheoreticalMaxEps());
