@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Research;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
-use Stu\Module\Message\Lib\PrivateMessageSender;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ResearchedInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
