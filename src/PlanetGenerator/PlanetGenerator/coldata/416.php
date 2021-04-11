@@ -28,7 +28,7 @@ $uphases = 0;
 
 // config
 
-$land = rand(23, 24);
+$land = rand(18, 19);
 $berge = rand(7, 10);
 $eisf = rand(3, 5);
 $wasser = rand(3, 6);
