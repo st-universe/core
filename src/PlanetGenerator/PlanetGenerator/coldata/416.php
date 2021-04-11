@@ -28,11 +28,11 @@ $uphases = 0;
 
 // config
 
-$land = rand(18, 19);
+$land = rand(8, 11);
 $berge = rand(7, 10);
 $eisf = rand(3, 5);
-$wasser = rand(3, 6);
-$eiswasser = rand(3, 6);
+$wasser = rand(1, 3);
+$eiswasser = rand(3, 5);
 
 
 $uerde = rand(4, 8);
