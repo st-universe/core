@@ -38,8 +38,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
     public function activate(ShipInterface $ship): void
     {
         $ship->cancelRepair();
-        $ship->setDockedTo(null);
-        $ship->getDockedShips()->clear();
+        $this->undock($ship);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
 
         if ($ship->traktorBeamFromShip()) {
@@ -55,6 +54,16 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
                 $ship->deactivateTraktorBeam();
             }
         }
+    }
+
+    private function undock(ShipInterface $ship): void
+    {
+        $ship->setDockedTo(null);
+        foreach ($ship->getDockedShips() as $dockedShip) {
+            $dockedShip->setDockedTo(null);
+            $this->shipRepository->save($dockedShip);
+        }
+        $ship->getDockedShips()->clear();
     }
 
     public function deactivate(ShipInterface $ship): void
