@@ -22,14 +22,12 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->traktorBeamToShip())
-        {
+        if ($ship->traktorBeamToShip()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');
             return false;
         }
 
-        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE))
-        {
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPCORE)) {
             $reason = _('der Warpkern zerstört ist');
             return false;
         }
@@ -41,23 +39,24 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
     {
         $ship->cancelRepair();
         $ship->setDockedTo(null);
+        $ship->getDockedShips()->clear();
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
-        
+
         if ($ship->traktorBeamFromShip()) {
             if ($ship->getEps() > $this->getEnergyUsageForActivation()) {
                 $traktorShip = $ship->getTraktorShip();
-                
+
                 $traktorShip->cancelRepair();
-                
+
                 $ship->setEps($ship->getEps() - $this->getEnergyUsageForActivation());
-                
+
                 $this->shipRepository->save($traktorShip);
             } else {
                 $ship->deactivateTraktorBeam();
             }
         }
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_OFF);
