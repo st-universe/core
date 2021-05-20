@@ -177,6 +177,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     );
                 } else {
                     $this->crewCreator->createShipCrew($shipobj);
+                    $shipobj->getUser()->lowerFreeCrewCount($shipobj->getBuildplan()->getCrew());
                     $msg[] = sprintf(
                         _('%s: Die Crew wurde hochgebeamt'),
                         $shipobj->getName()

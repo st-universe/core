@@ -28,7 +28,7 @@ interface UserInterface
 
     public function setFaction(FactionInterface $faction): UserInterface;
 
-    public function getFaction():? FactionInterface;
+    public function getFaction(): ?FactionInterface;
 
     public function getActive(): int;
 
@@ -122,6 +122,8 @@ interface UserInterface
     public function isContactable(): bool;
 
     public function getFreeCrewCount(): int;
+
+    public function lowerFreeCrewCount(int $amount): void;
 
     public function getCrewCountDebris(): int;
 

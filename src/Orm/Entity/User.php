@@ -138,8 +138,7 @@ class User implements UserInterface
     public function getUserName(): string
     {
         //wenn UMODE aktiv, eine Info an den Namen anhängen
-        if ($this->isVacationRequestOldEnough())
-        {
+        if ($this->isVacationRequestOldEnough()) {
             return $this->username . '[b][color=red] (UMODE)[/color][/b]';
         }
         return $this->username;
@@ -200,7 +199,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFaction():? FactionInterface
+    public function getFaction(): ?FactionInterface
     {
         return $this->faction;
     }
@@ -468,11 +467,11 @@ class User implements UserInterface
             if ($this->getAllianceId() == $user->getAllianceId()) {
                 return true;
             }
-            
+
             $result = $container->get(AllianceRelationRepositoryInterface::class)->getActiveByTypeAndAlliancePair(
                 [AllianceEnum::ALLIANCE_RELATION_FRIENDS, AllianceEnum::ALLIANCE_RELATION_ALLIED],
-                (int)$user->getAllianceId(),
-                (int)$this->getAllianceId()
+                (int) $user->getAllianceId(),
+                (int) $this->getAllianceId()
             );
             if ($result !== null) {
                 return true;
@@ -480,12 +479,12 @@ class User implements UserInterface
         }
         $contact = $container->get(ContactRepositoryInterface::class)->getByUserAndOpponent(
             $this->getId(),
-            (int)$userId
+            (int) $userId
         );
-        
+
         return $contact !== null && $contact->isFriendly();
     }
-    
+
     public function getSessionDataUnserialized(): array
     {
         if ($this->sessiondataUnserialized === null) {
@@ -508,9 +507,14 @@ class User implements UserInterface
             // @todo refactor
             global $container;
 
-            $this->free_crew_count = $container->get(CrewRepositoryInterface::class)->getFreeAmountByUser((int)$this->getId());
+            $this->free_crew_count = $container->get(CrewRepositoryInterface::class)->getFreeAmountByUser((int) $this->getId());
         }
         return $this->free_crew_count;
+    }
+
+    public function lowerFreeCrewCount(int $amount): void
+    {
+        $this->free_crew_count -= $amount;
     }
 
     public function getCrewCountDebris(): int
@@ -521,13 +525,13 @@ class User implements UserInterface
 
             $this->crew_count_debris = $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
-                    (int)$this->getId(),
+                    (int) $this->getId(),
                     ShipEnum::SHIP_CATEGORY_DEBRISFIELD
                 );
 
             $this->crew_count_debris += $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
-                    (int)$this->getId(),
+                    (int) $this->getId(),
                     ShipEnum::SHIP_CATEGORY_ESCAPE_PODS
                 );
         }
@@ -547,7 +551,7 @@ class User implements UserInterface
 
             $colonyRepository = $container->get(ColonyRepositoryInterface::class);
 
-            $this->global_crew_limit = (int)array_reduce(
+            $this->global_crew_limit = (int) array_reduce(
                 $colonyRepository->getOrderedListByUser($this),
                 function (int $sum, ColonyInterface $colony): int {
                     return $colony->getCrewLimit() + $sum;
@@ -564,7 +568,7 @@ class User implements UserInterface
             // @todo refactor
             global $container;
 
-            $this->used_crew_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUser((int)$this->getId());
+            $this->used_crew_count = $container->get(ShipCrewRepositoryInterface::class)->getAmountByUser((int) $this->getId());
         }
         return $this->used_crew_count;
     }
@@ -583,7 +587,7 @@ class User implements UserInterface
             // @todo refactor
             global $container;
 
-            $this->crew_in_training = $container->get(CrewTrainingRepositoryInterface::class)->getCountByUser((int)$this->getId());
+            $this->crew_in_training = $container->get(CrewTrainingRepositoryInterface::class)->getCountByUser((int) $this->getId());
         }
         return $this->crew_in_training;
     }
@@ -607,14 +611,15 @@ class User implements UserInterface
         return $alliance->getAcceptApplications() && $this->getAlliance() === null && ($alliance->getFactionId() == 0 || $this->getFactionId() == $alliance->getFactionId());
     }
 
-    public function isNpc(): bool {
+    public function isNpc(): bool
+    {
         return $this->getId() < 100;
     }
 
-    public function isAdmin(): bool {
+    public function isAdmin(): bool
+    {
         // @todo refactor
         global $container;
         return in_array($this->getId(),  $container->get(ConfigInterface::class)->get('game.admins'));
     }
-
 }
