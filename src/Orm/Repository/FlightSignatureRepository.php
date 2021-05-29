@@ -6,8 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-
-use Stu\Module\Maintenance\OldFlightSignatureDeletion;
+use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Orm\Entity\FlightSignature;
 use Stu\Orm\Entity\FlightSignatureInterface;
 use Stu\Orm\Entity\StarSystemMap;
@@ -49,7 +48,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 )
             )
             ->setParameters([
-                'maxAge' => time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE,
+                'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'sx' => $colony->getSx(),
                 'sy' => $colony->getSy(),
                 'systemsId' => $colony->getSystem()->getId(),
@@ -73,7 +72,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 )
             )
             ->setParameters([
-                'maxAge' => time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE,
+                'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'fieldId' => $field->getId(),
                 'ignoreId' => $ignoreId
             ])
@@ -115,7 +114,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             LIMIT 10',
             $rsm
         )
-            ->setParameter('maxAge', time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE)
+            ->setParameter('maxAge', time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED)
             ->getResult();
     }
 }
