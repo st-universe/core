@@ -6,7 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-
+use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Maintenance\OldFlightSignatureDeletion;
@@ -267,7 +267,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             $rsm->addScalarResult('d3c', 'd3c', 'integer');
             $rsm->addScalarResult('d4c', 'd4c', 'integer');
 
-            $maxAge = time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE;
+            $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
         }
 
         return $this->getEntityManager()->createNativeQuery(
@@ -345,7 +345,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             $rsm->addScalarResult('d3c', 'd3c', 'integer');
             $rsm->addScalarResult('d4c', 'd4c', 'integer');
 
-            $maxAge = time() - OldFlightSignatureDeletion::SIGNATURE_MAX_AGE;
+            $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
         }
 
         return $this->getEntityManager()->createNativeQuery(
