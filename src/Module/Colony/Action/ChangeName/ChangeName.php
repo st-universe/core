@@ -7,6 +7,7 @@ namespace Stu\Module\Colony\Action\ChangeName;
 use JBBCode\Parser;
 use request;
 use Stu\Component\Colony\ColonyEnum;
+use Stu\Lib\EmojiRemover;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -46,7 +47,7 @@ final class ChangeName implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_OPTION]);
 
-        $value = $this->changeNameRequest->getName();
+        $value = EmojiRemover::clearEmojis($this->changeNameRequest->getName());
 
         if (mb_strlen($this->bbCodeParser->parse($value)->getAsText()) < 3) {
             $game->addInformation(_('Der Name ist zu kurz (Minium: 3 Zeichen)'));
