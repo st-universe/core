@@ -9,6 +9,7 @@ namespace Stu\Orm\Entity;
  * @Table(
  *     name="stu_map_ftypes",
  *     indexes={
+ *          @Index(name="map_ftypes_type_idx", columns={"type"})
  *     }
  * )
  **/

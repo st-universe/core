@@ -14,7 +14,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
  *         @Index(name="ship_system_ship_idx", columns={"ships_id"}),
  *         @Index(name="ship_system_status_idx", columns={"status"}),
  *         @Index(name="ship_system_type_idx", columns={"system_type"}),
- *         @Index(name="ship_system_module_idx", columns={"module_id"})
+ *         @Index(name="ship_system_module_idx", columns={"module_id"}),
+ *         @Index(name="ship_system_mode_idx", columns={"mode"})
  *     }
  * )
  **/
@@ -38,7 +39,7 @@ class ShipSystem implements ShipSystemInterface
 
     /** @Column(type="smallint") * */
     private $status = 0;
-    
+
     /** @Column(type="smallint") * */
     private $mode = 1;
 
@@ -102,20 +103,15 @@ class ShipSystem implements ShipSystemInterface
 
     public function getCssClass(): string
     {
-        if ($this->getStatus() < 1)
-        {
+        if ($this->getStatus() < 1) {
             return _("sysStatus0");
-        } elseif ($this->getStatus() < 26)
-        {
+        } elseif ($this->getStatus() < 26) {
             return _("sysStatus1to25");
-        } elseif ($this->getStatus() < 51)
-        {
+        } elseif ($this->getStatus() < 51) {
             return _("sysStatus26to50");
-        } elseif ($this->getStatus() < 76)
-        {
+        } elseif ($this->getStatus() < 76) {
             return _("sysStatus51to75");
-        } else
-        {
+        } else {
             return _("sysStatus76to100");
         }
     }
