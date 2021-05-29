@@ -8,6 +8,7 @@ use Stu\Exception\AccessViolation;
 use JBBCode\Parser;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
+use Stu\Lib\EmojiRemover;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -52,9 +53,9 @@ final class EditDetails implements ActionControllerInterface
     {
         $user = $game->getUser();
         $alliance = $user->getAlliance();
-        $allianceId = (int)$alliance->getId();
+        $allianceId = (int) $alliance->getId();
 
-        $name = $this->editDetailsRequest->getName();
+        $name = EmojiRemover::clearEmojis($this->editDetailsRequest->getName());
         $faction_mode = $this->editDetailsRequest->getFactionMode();
         $description = $this->editDetailsRequest->getDescription();
         $homepage = $this->editDetailsRequest->getHomepage();

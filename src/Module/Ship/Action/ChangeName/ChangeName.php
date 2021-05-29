@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\ChangeName;
 
 use JBBCode\Parser;
 use request;
+use Stu\Lib\EmojiRemover;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -47,7 +48,7 @@ final class ChangeName implements ActionControllerInterface
             $userId
         );
 
-        $value = $this->changeNameRequest->getName();
+        $value = EmojiRemover::clearEmojis($this->changeNameRequest->getName());
 
         if (mb_strlen($this->bbCodeParser->parse($value)->getAsText()) < 3) {
             $game->addInformation(_('Der Schiffname ist zu kurz (Minimum 3 Zeichen)'));

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\RenameFleet;
 
 use Stu\Exception\AccessViolation;
+use Stu\Lib\EmojiRemover;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -27,7 +28,7 @@ final class RenameFleet implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $newName = $this->renameFleetRequest->getNewName();
+        $newName = EmojiRemover::clearEmojis($this->renameFleetRequest->getNewName());
         if (mb_strlen($newName) === 0) {
             return;
         }
