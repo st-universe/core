@@ -595,7 +595,7 @@ class Colony implements ColonyInterface
 
     public function getBevFood(): int
     {
-        return (int) ceil(($this->getWorkers() + $this->getWorkless()) * ColonyTick::PEOPLE_FOOD);
+        return (int) ceil(($this->getWorkers() + $this->getWorkless()) / ColonyTick::PEOPLE_FOOD);
     }
 
     public function getPopulation(): int
