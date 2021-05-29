@@ -11,7 +11,7 @@ namespace Stu\Orm\Entity;
  *     indexes={
  *         @Index(name="flight_sig_user_idx", columns={"user_id"}),
  *         @Index(name="flight_sig_map_idx", columns={"map_id"}),
- *         @Index(name="flight_sig_starsystem_map_idx", columns={"starsystem_map_id"})
+ *         @Index(name="flight_sig_starsystem_map_idx", columns={"starsystem_map_id"}),
  *         @Index(name="flight_sig_sensor_result_idx", columns={"from_direction","to_direction","time"})
  *     }
  * )
