@@ -13,4 +13,6 @@ interface BuildingGoodRepositoryInterface extends ObjectRepository
     public function getByBuilding(int $buildingId): array;
 
     public function getProductionByColony(int $colonyId, int $planetTypeId): iterable;
+
+    public function getProductionByCommodityAndUser(int $commodityId, int $userId): int;
 }
