@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
+
 /**
  * @Entity
  * @Table(name="stu_researched")
@@ -107,5 +109,14 @@ class Researched implements ResearchedInterface
     public function getProgress(): int
     {
         return $this->getResearch()->getPoints() - $this->getActive();
+    }
+
+    public function getAdditional(): int
+    {
+        global $container;
+
+        $amount = $container->get(BuildingGoodRepositoryInterface::class)->getProductionByCommodityAndUser($this->getResearch()->getGoodId(), $this->getUserId());
+
+        return max(0, $amount);
     }
 }

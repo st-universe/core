@@ -39,4 +39,30 @@ final class BuildingGoodRepository extends EntityRepository implements BuildingG
             'planetTypeId' => $planetTypeId
         ])->getResult();
     }
+
+    public function getProductionByCommodityAndUser(int $commodityId, int $userId): int
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('gc', 'gc', 'integer');
+
+        return (int) $this->getEntityManager()->createNativeQuery(
+            'SELECT SUM(c.count) as gc
+            FROM stu_colonies d
+            LEFT JOIN stu_colonies_fielddata b
+                ON b.colonies_id = d.id
+                AND b.aktiv = :state
+            LEFT JOIN stu_buildings_goods c
+                ON c.buildings_id = b.buildings_id
+            LEFT JOIN stu_goods a
+                ON c.goods_id = a.id
+            WHERE d.user_id = :userId
+                AND a.id = :commodityId
+                AND c.count != 0',
+            $rsm
+        )->setParameters([
+            'state' => 1,
+            'userId' => $userId,
+            'commodityId' => $commodityId
+        ])->getSingleScalarResult();
+    }
 }
