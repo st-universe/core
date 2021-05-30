@@ -46,7 +46,7 @@ final class LoadWarpcore implements ActionControllerInterface
             $userId
         );
 
-        $load = (int)request::postIntFatal('warpcoreload');
+        $requestedLoad = (int) request::postIntFatal('warpcoreload');
 
         if (request::postString('fleet')) {
             $msg = [];
@@ -55,7 +55,7 @@ final class LoadWarpcore implements ActionControllerInterface
                 if ($ship->getWarpcoreLoad() >= $ship->getWarpcoreCapacity()) {
                     continue;
                 }
-                $load = $this->loadWarpCore($ship, $load);
+                $load = $this->loadWarpCore($ship, $requestedLoad);
                 if (!$load) {
                     $game->addInformation(sprintf(
                         _('%s: Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:'),
@@ -66,8 +66,11 @@ final class LoadWarpcore implements ActionControllerInterface
                     }
                     continue;
                 }
-                $game->addInformation(sprintf(_('%s: Der Warpkern wurde um %d Einheiten aufgeladen'), $ship->getName(),
-                    $load));
+                $game->addInformation(sprintf(
+                    _('%s: Der Warpkern wurde um %d Einheiten aufgeladen'),
+                    $ship->getName(),
+                    $load
+                ));
             }
             $game->addInformationMerge($msg);
             return;
@@ -76,7 +79,7 @@ final class LoadWarpcore implements ActionControllerInterface
             $game->addInformation(_('Der Warpkern ist bereits vollständig geladen'));
             return;
         }
-        $load = $this->loadWarpCore($ship, $load);
+        $load = $this->loadWarpCore($ship, $requestedLoad);
         if (!$load) {
             $game->addInformation(
                 _('Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:')
@@ -98,7 +101,7 @@ final class LoadWarpcore implements ActionControllerInterface
                 return null;
             }
             if ($storage->getAmount() < ($count * $loadCost)) {
-                $count = (int)($storage->getAmount() / $loadCost);
+                $count = (int) ($storage->getAmount() / $loadCost);
             }
         }
         if ($ship->getWarpcoreLoad() + $count * ShipEnum::WARPCORE_LOAD > $ship->getWarpcoreCapacity()) {
@@ -106,14 +109,14 @@ final class LoadWarpcore implements ActionControllerInterface
         } else {
             $load = $count * ShipEnum::WARPCORE_LOAD;
         }
-        
+
         $commodityAmount = (int) ceil($load / ShipEnum::WARPCORE_LOAD);
-        
+
         foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
             $this->shipStorageManager->lowerStorage(
                 $ship,
                 $shipStorage[$commodityId]->getCommodity(),
-                $loadCost*$commodityAmount
+                $loadCost * $commodityAmount
             );
         }
 
