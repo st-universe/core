@@ -27,6 +27,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_SUBSPACE_SCANNER = 18;
     public const SYSTEM_MATRIX_SCANNER = 19;
     public const SYSTEM_TORPEDO_STORAGE = 20;
+    public const SYSTEM_SHUTTLE_RAMP = 21;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -87,6 +88,8 @@ final class ShipSystemTypeEnum
                 return _('Matrixsensoren');
             case ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE:
                 return _('Torpedolager');
+            case ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP:
+                return _('Shuttle-Rampe');
         }
         return '';
     }
