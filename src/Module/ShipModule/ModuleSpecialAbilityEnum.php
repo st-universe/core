@@ -14,6 +14,7 @@ final class ModuleSpecialAbilityEnum
     public const MODULE_SPECIAL_SUBSPACE_FIELD_SENSOR = 7;
     public const MODULE_SPECIAL_MATRIX_SENSOR = 8;
     public const MODULE_SPECIAL_TORPEDO_STORAGE = 9;
+    public const MODULE_SPECIAL_SHUTTLE_RAMP = 10;
 
     public static function getDescription(int $specialId): string
     {
@@ -34,6 +35,8 @@ final class ModuleSpecialAbilityEnum
                 return _('Matrix-Sensor');
             case static::MODULE_SPECIAL_TORPEDO_STORAGE:
                 return _('Torpedo-Lager');
+            case static::MODULE_SPECIAL_SHUTTLE_RAMP:
+                return _('Shuttle-Rampe');
         }
         return '';
     }

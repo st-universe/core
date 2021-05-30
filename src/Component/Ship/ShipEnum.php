@@ -41,4 +41,5 @@ final class ShipEnum
     public const SHIELD_REGENERATION_TIME = 900;
     public const SHIP_CATEGORY_DEBRISFIELD = 7;
     public const SHIP_CATEGORY_ESCAPE_PODS = 9;
+    public const SHIP_CATEGORY_WORKBEE = 10;
 }
