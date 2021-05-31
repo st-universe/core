@@ -1462,8 +1462,8 @@ class Ship implements ShipInterface
 
     public function getRepairDuration(): int
     {
-        $ticks = ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
-        $ticks = max($ticks, ceil(count($this->getDamagedSystems()) / 2));
+        $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
+        $ticks = max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
 
         return $ticks;
     }

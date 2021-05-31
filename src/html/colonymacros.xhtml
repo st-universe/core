@@ -1545,10 +1545,9 @@
         <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
           style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
       </td>
-      <td>
+      <td tal:define="buttonName cancel${data/getShip/getId}">
         <a href="?B_CANCEL_REPAIR=1&shipid=${data/getShip/getId}&sstr=${THIS/getSessionString}"
-          tal:define="buttonName cancel${data/getShip/getId}" onmouseover="cp('${buttonName}','buttons/x2');"
-          onmouseout="cp('${buttonName}','buttons/x1');">
+          onmouseover="cp('${buttonName}','buttons/x2');" onmouseout="cp('${buttonName}','buttons/x1');">
           <span tal:content="data/getShip/getRepairDuration">DURATION</span> Ticks
           <img src="assets/buttons/x1.gif" tal:attributes="name ${buttonName}" title="Reparatur abbrechen" />
         </a>
