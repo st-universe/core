@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\CancelShipRepair;
 
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -27,6 +28,8 @@ final class CancelShipRepair implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowColony::VIEW_IDENTIFIER);
+
         $userId = $game->getUser()->getId();
         $shipId = $this->request->getShipId();
 
