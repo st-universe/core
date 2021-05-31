@@ -1534,9 +1534,9 @@
     </tr>
     <tr tal:repeat="data SHIP_REPAIR_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
       <td style="text-align: center; vertical-align: middle;">
-        <img src="assets/ships/${data/getShip/getRump/getId}.png" />
+        <img src="assets/ships/${data/getShip/getRump/getId}.png" title="${data/getShip/getRump/getName}" />
       </td>
-      <td style="text-align: center; vertical-align: middle" tal:content="data/getShip/getRump/getName">RUMP</td>
+      <td style="text-align: center; vertical-align: middle" tal:content="data/getShip/getName">NAME</td>
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.gif" title="Hülle" style="width: 12px; height: 12px;" />
         ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
