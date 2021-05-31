@@ -1209,7 +1209,7 @@
   </div>
 </metal:macro>
 <metal:macro metal:define-macro="fieldaction">
-  <table class="use" style="width: 500px;">
+  <table class="use" style="width: 600px;">
     <tr>
       <td>
         <div style="width: 100%;" tal:condition="FIELD/isInConstruction">
@@ -1530,7 +1530,7 @@
 <metal:macro metal:define-macro="ship_repairprogress">
   <table class="tcal">
     <tr>
-      <th colspan="4">Schiffe in Reparatur</th>
+      <th colspan="5">Schiffe in Reparatur</th>
     </tr>
     <tr tal:repeat="data SHIP_REPAIR_PROGRESS" style="height: 50px" tal:attributes="class string:row${repeat/data/odd}">
       <td style="text-align: center; vertical-align: middle;">
@@ -1544,6 +1544,14 @@
       <td tal:condition="data/getShip/getDamagedSystems" style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
           style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
+      </td>
+      <td>
+        <a href="?B_CANCEL_REPAIR=1&shipid=${data/getShip/getId}&sstr=${THIS/getSessionString}"
+          tal:define="buttonName cancel${data/getShip/getId}" onmouseover="cp('${buttonName}','buttons/x2');"
+          onmouseout="cp('${buttonName}','buttons/x1');">
+          <span tal:content="data/getShip/getRepairDuration">DURATION</span> Ticks
+          <img src="assets/buttons/x1.gif" tal:attributes="name ${buttonName}" title="Reparatur abbrechen" />
+        </a>
       </td>
     </tr>
   </table>

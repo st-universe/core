@@ -11,6 +11,7 @@
 				<tr>
 					<th>Klasse</th>
 					<th>Name</th>
+					<th>Dauer in Ticks</th>
 					<th></th>
 				</tr>
 				<tal:block tal:repeat="ship REPAIRABLE_SHIP_LIST">
@@ -20,6 +21,7 @@
 							<metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
 						</td>
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
+						<td tal:content="structure bbcode:ship/getRepairDuration">DURATION</td>
 						<td>
 							<div tal:condition="ship/canBeRepaired">
 								<a href="?id=${COLONY/getId}&B_REPAIR_SHIP=1&ship_id=${ship/getId}&fid=${FIELD/getFieldId}">Reparieren</a>

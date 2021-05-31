@@ -1460,6 +1460,14 @@ class Ship implements ShipInterface
         return true;
     }
 
+    public function getRepairDuration(): int
+    {
+        $ticks = ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
+        $ticks = max($ticks, ceil(count($this->getDamagedSystems()) / 2));
+
+        return $ticks;
+    }
+
     public function cancelRepair(): void
     {
         if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
