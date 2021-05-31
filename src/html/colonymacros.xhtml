@@ -1546,7 +1546,7 @@
           style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
       </td>
       <td>
-        <a href="?B_CANCEL_REPAIR=1&shipid=${data/getShip/getId}&sstr=${THIS/getSessionString}"
+        <a href="?id=${COLONY/getId}&B_CANCEL_REPAIR=1&shipid=${data/getShip/getId}&sstr=${THIS/getSessionString}"
           onmouseover="cp('cancel${data/getShip/getId}','buttons/x2');"
           onmouseout="cp('cancel${data/getShip/getId}','buttons/x1');">
           <span tal:content="data/getShip/getRepairDuration">DURATION</span> Ticks
