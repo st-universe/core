@@ -41,6 +41,9 @@ use Stu\Module\Colony\Action\BuildOnField\BuildOnField;
 use Stu\Module\Colony\Action\BuildShip\BuildShip;
 use Stu\Module\Colony\Action\BuildTorpedos\BuildTorpedos;
 use Stu\Module\Colony\Action\CancelModuleCreation\CancelModuleCreation;
+use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepair;
+use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepairRequest;
+use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepairRequestInterface;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequency;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequest;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequestInterface;
@@ -170,6 +173,7 @@ return [
     ChangeFrequencyRequestInterface::class => autowire(ChangeFrequencyRequest::class),
     ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
+    CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),
     ColonyResetterInterface::class => autowire(ColonyResetter::class),
     CommodityConsumptionInterface::class => autowire(CommodityConsumption::class),
     PlanetColonizationInterface::class => autowire(PlanetColonization::class),
@@ -223,6 +227,7 @@ return [
         BuildTorpedos::ACTION_IDENTIFIER => autowire(BuildTorpedos::class),
         CancelModuleCreation::ACTION_IDENTIFIER => autowire(CancelModuleCreation::class),
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
+        CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class),
         CreateModules::ACTION_IDENTIFIER => autowire(CreateModules::class),
         DeactivateBuilding::ACTION_IDENTIFIER => autowire(DeactivateBuilding::class),
         DeactivateShields::ACTION_IDENTIFIER => autowire(DeactivateShields::class),

@@ -348,6 +348,8 @@ interface ShipInterface
 
     public function canBeRepaired(): bool;
 
+    public function getRepairDuration(): int;
+
     public function cancelRepair(): void;
 
     public function getRepairRate(): int;

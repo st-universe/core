@@ -116,9 +116,8 @@ final class RepairShip implements ActionControllerInterface
             $game->addInformation(_('Das Schiff wurde zur Reparaturwarteschlange hinzugefügt'));
             return;
         }
-        $ticks = ceil(($ship->getMaxHuell() - $ship->getHuell()) / $ship->getRepairRate());
-        $ticks = max($ticks, ceil(count($ship->getDamagedSystems()) / 2));
-        
+
+        $ticks = $ship->getRepairDuration();
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
     }
 
