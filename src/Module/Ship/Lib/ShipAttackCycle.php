@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
 use Stu\Module\Ship\Lib\Battle\ProjectileWeaponPhaseInterface;
@@ -17,8 +13,6 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
     private ShipRepositoryInterface $shipRepository;
-
-    private ShipSystemManagerInterface $shipSystemManager;
 
     private EnergyWeaponPhaseInterface $energyWeaponPhase;
 
@@ -46,13 +40,11 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager,
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
         FightLibInterface $fightLib
     ) {
         $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
         $this->energyWeaponPhase = $energyWeaponPhase;
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->fightLib = $fightLib;
