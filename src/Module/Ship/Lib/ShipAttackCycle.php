@@ -36,7 +36,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private array $usedShips = ['attacker' => [], 'defender' => []];
 
-    private bool $singleMode = false;
+    private bool $oneWay = false;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
@@ -53,11 +53,11 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     public function init(
         array $attackingShips,
         array $defendingShips,
-        bool $singleMode = false
+        bool $oneWay = false
     ): void {
         $this->attacker = $attackingShips;
         $this->defender = $defendingShips;
-        $this->singleMode = $singleMode;
+        $this->oneWay = $oneWay;
         $this->firstStrike = true;
         $this->messages = [];
         $this->usedShips = ['attacker' => [], 'defender' => []];
@@ -106,7 +106,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 break;
             }
 
-            if ($this->firstStrike || $this->singleMode) {
+            if ($this->firstStrike) {
                 $this->firstStrike = false;
 
                 [$attackingShip, $targetShipPool] = $this->getFixture('attacker', $attackerPool, $defenderPool);
@@ -120,7 +120,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                 $readyDefender = array_filter(
                     $defenderPool,
                     function (ShipInterface $ship): bool {
-                        return !array_key_exists($ship->getId(), $this->usedShips['defender']) && $this->canFire($ship);
+                        return !$this->oneWay && !array_key_exists($ship->getId(), $this->usedShips['defender']) && $this->canFire($ship);
                     }
                 );
                 if ($readyAttacker === [] && $readyDefender === []) {
@@ -130,7 +130,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
                     [$attackingShip, $targetShipPool] = $this->getFixture('defender', $readyDefender, $attackerPool);
                 } else {
                     $random = rand(1, 2);
-                    if ($readyDefender === [] || $random === 1) {
+                    if ($readyDefender === [] || $random === 1 || $this->oneWay) {
                         [$attackingShip, $targetShipPool] = $this->getFixture('attacker', $readyAttacker, $defenderPool);
                     } else {
                         [$attackingShip, $targetShipPool] = $this->getFixture('defender', $readyDefender, $attackerPool);
