@@ -132,6 +132,19 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
 
+        //is tractor beam system still healthy?
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
+            $game->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
+            return;
+        }
+
+        //is nbs system still healthy?
+        if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_NBS)) {
+            $game->addInformation("Abbruch, die Nahbereichssensoren wurden bei dem Angriff zerstört");
+            $this->abort($ship, $game);
+            return;
+        }
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($target->getShieldState()) {
