@@ -86,8 +86,10 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         foreach ($this->attacker as $attacker) {
             $this->addMessageMerge($this->fightLib->ready($attacker));
         }
-        foreach ($this->defender as $defender) {
-            $this->addMessageMerge($this->fightLib->ready($defender));
+        if (!$this->oneWay) {
+            foreach ($this->defender as $defender) {
+                $this->addMessageMerge($this->fightLib->ready($defender));
+            }
         }
 
         while (true) {
