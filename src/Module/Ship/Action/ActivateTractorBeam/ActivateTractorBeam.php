@@ -67,13 +67,15 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-
-        $targetName = $target->getName();
-
+        if (!$this->positionChecker->checkPosition($ship, $target)) {
+            return;
+        }
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
+
+        $targetName = $target->getName();
 
         // activate system
         if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
@@ -82,10 +84,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         if ($target->getRump()->isTrumfield()) {
             $game->addInformation("Das Trümmerfeld kann nicht erfasst werden");
-            $this->abort($ship, $game);
-            return;
-        }
-        if (!$this->positionChecker->checkPosition($ship, $target)) {
             $this->abort($ship, $game);
             return;
         }
@@ -108,17 +106,14 @@ final class ActivateTractorBeam implements ActionControllerInterface
             && !$target->getUser()->isFriend($userId)
             && $target->getUser()->getId() !== $userId
         ) {
-            if ($ship->isFleetLeader()) {
-                $defender = $ship->getFleet()->getShips()->toArray();
-            } else {
-                $defender = [$ship->getId() => $ship];
-            }
+            $defender = [$ship->getId() => $ship];
+
             if ($target->getFleetId()) {
                 $attacker = $target->getFleet()->getShips()->toArray();
             } else {
                 $attacker = [$target->getId() => $target];
             }
-            $this->shipAttackCycle->init($attacker, $defender);
+            $this->shipAttackCycle->init($attacker, $defender, true);
             $this->shipAttackCycle->cycle();
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
 
