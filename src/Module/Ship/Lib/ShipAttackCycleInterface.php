@@ -9,12 +9,12 @@ interface ShipAttackCycleInterface
     /**
      * @param ShipInterface[] $attackingShips indexed by ship id
      * @param ShipInterface $defendingShips indexed by ship id
-     * @param bool $singleMode
+     * @param bool $oneWay only attackers fire
      */
     public function init(
         array $attackingShips,
         array $defendingShips,
-        bool $singleMode = false
+        bool $oneWay = false
     ): void;
 
     public function cycle(bool $isAlertRed = false);
