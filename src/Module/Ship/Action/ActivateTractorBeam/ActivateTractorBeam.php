@@ -70,6 +70,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
 
@@ -77,6 +78,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         // activate system
         if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game)) {
+            $game->setView(ShowShip::VIEW_IDENTIFIER);
             return;
         }
 
@@ -177,6 +179,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
         // deactivate system
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
         $this->shipRepository->save($ship);
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool
