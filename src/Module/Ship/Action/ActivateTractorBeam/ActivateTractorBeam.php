@@ -131,6 +131,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         if ($ship->getIsDestroyed()) {
             return;
         }
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         //is tractor beam system still healthy?
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
@@ -145,7 +146,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($target->getShieldState()) {
             $game->addInformation("Die " . $targetName . " kann aufgrund der aktiven Schilde nicht erfasst werden");
