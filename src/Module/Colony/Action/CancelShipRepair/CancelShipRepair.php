@@ -10,7 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 
 final class CancelShipRepair implements ActionControllerInterface
 {
@@ -18,17 +18,17 @@ final class CancelShipRepair implements ActionControllerInterface
 
     private CancelShipRepairRequestInterface $request;
 
-    private ShipLoaderInterface $shipLoader;
-
     private PrivateMessageSenderInterface $privateMessageSender;
+
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
 
     public function __construct(
         CancelShipRepairRequestInterface $request,
-        ShipLoaderInterface $shipLoader,
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->request = $request;
-        $this->shipLoader = $shipLoader;
+        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -39,12 +39,15 @@ final class CancelShipRepair implements ActionControllerInterface
         $userId = $game->getUser()->getId();
         $shipId = $this->request->getShipId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            $shipId,
-            $userId
-        );
+        $obj = $this->colonyShipRepairRepository->getByShip($shipId);
+        $ship = $obj->getShip();
+        $colony = $obj->getColony();
 
         if ($ship->getState() !== ShipStateEnum::SHIP_STATE_REPAIR) {
+            return;
+        }
+
+        if ($colony->getUserId() != $userId) {
             return;
         }
 
