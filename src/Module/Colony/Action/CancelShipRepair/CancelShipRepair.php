@@ -8,6 +8,8 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class CancelShipRepair implements ActionControllerInterface
@@ -18,12 +20,16 @@ final class CancelShipRepair implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         CancelShipRepairRequestInterface $request,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->request = $request;
         $this->shipLoader = $shipLoader;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,6 +50,15 @@ final class CancelShipRepair implements ActionControllerInterface
 
         $ship->cancelRepair();
         $game->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
+
+        if ($ship->getUserId() != $userId) {
+            $this->privateMessageSender->send(
+                $userId,
+                $ship->getUserId(),
+                sprintf("Die Reparatur der %s in Sektor %s wurde abgebrochen.", $ship->getName(), $ship->getSectorString()),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
+        }
     }
 
     public function performSessionCheck(): bool

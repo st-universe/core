@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
@@ -31,6 +34,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -38,7 +43,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -47,6 +53,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function work(int $tickId): void
@@ -66,8 +73,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             //echo "Processing Colony ".$colony->getId()." at ".microtime()."\n";
 
             //handle colony only if vacation mode not active
-            if (!$colony->getUser()->isVacationRequestOldEnough())
-            {
+            if (!$colony->getUser()->isVacationRequestOldEnough()) {
                 $this->colonyTick->work($colony);
             }
         }
@@ -99,45 +105,71 @@ final class ColonyTickManager implements ColonyTickManagerInterface
     private function repairShips(int $tickId): void
     {
         foreach ($this->colonyShipRepairRepository->getMostRecentJobs($tickId) as $obj) {
+
+            $ship = $obj->getShip();
+            $colony = $obj->getColony();
+
             if (!$obj->getField()->isActive()) {
                 continue;
             }
-            $obj->getShip()->setHuell($obj->getShip()->getHuell() + $obj->getShip()->getRepairRate());
+            $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
 
             //repair ship systems
-            $damagedSystems = $obj->getShip()->getDamagedSystems();
-            if (!empty($damagedSystems))
-            {
+            $damagedSystems = $ship->getDamagedSystems();
+            if (!empty($damagedSystems)) {
                 $firstSystem = $damagedSystems[0];
                 $firstSystem->setStatus(100);
 
-                if ($obj->getShip()->getCrewCount() > 0)
-                {
-                    $firstSystem->setMode($this->shipSystemManager->
-                        lookupSystem($firstSystem->getSystemType())->getDefaultMode());
+                if ($ship->getCrewCount() > 0) {
+                    $firstSystem->setMode($this->shipSystemManager->lookupSystem($firstSystem->getSystemType())->getDefaultMode());
                 }
 
                 // maximum of two systems get repaired
-                if (count($damagedSystems) > 1)
-                {
+                if (count($damagedSystems) > 1) {
                     $secondSystem = $damagedSystems[1];
                     $secondSystem->setStatus(100);
 
-                    if ($obj->getShip()->getCrewCount() > 0)
-                    {
-                        $secondSystem->setMode($this->shipSystemManager->
-                            lookupSystem($secondSystem->getSystemType())->getDefaultMode());
+                    if ($ship->getCrewCount() > 0) {
+                        $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
                     }
                 }
             }
 
-            if (!$obj->getShip()->canBeRepaired()) {
-                $obj->getShip()->setHuell($obj->getShip()->getMaxHuell());
-                $obj->getShip()->setState(ShipStateEnum::SHIP_STATE_NONE);
+            if (!$ship->canBeRepaired()) {
+                $ship->setHuell($ship->getMaxHuell());
+                $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
                 $this->colonyShipRepairRepository->delete($obj);
+
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUserId(),
+                    sprintf(
+                        "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
+                        $ship->getName(),
+                        $ship->getSectorString(),
+                        $colony->getName(),
+                        $colony->getUser()->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+
+                if ($ship->getUserId() != $colony->getUserId()) {
+                    $this->privateMessageSender->send(
+                        GameEnum::USER_NOONE,
+                        $colony->getUserId(),
+                        sprintf(
+                            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
+                            $ship->getName(),
+                            $ship->getUser()->getName(),
+                            $ship->getSectorString(),
+                            $colony->getName()
+                        ),
+                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                    );
+                }
             }
-            $this->shipRepository->save($obj->getShip());
+            $this->shipRepository->save($ship);
         }
     }
 
@@ -150,5 +182,4 @@ final class ColonyTickManager implements ColonyTickManagerInterface
     {
         @unlink(self::LOCKFILE_DIR . $tickId . '.lock');
     }
-
 }
