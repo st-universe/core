@@ -1064,11 +1064,15 @@
 										</tal:block>
 									</td>
 									<td colspan="3">
+										<img tal:condition="data/getDefendedColony" src="/assets/buttons/defend1.gif"
+											title="verteidigt die Kolonie" />
+										<img tal:condition="data/getBlockedColony" src="/assets/buttons/block1.png"
+											title="blockiert die Kolonie" />
 										<span tal:condition="not:data/showManagement"
-											tal:content="structure data/getName">NAME</span>
+											tal:content="structure bbcode:data/getName">NAME</span>
 										<tal:block tal:condition="data/showManagement">
 											<a href="?SHOW_SHIP=1&id=${data/getLeadShip/getId}"
-												tal:content="structure data/getName">NAME</a>
+												tal:content="structure bbcode:data/getName">NAME</a>
 										</tal:block>
 										<span style="display: none;" id="hidefleet${data/getId}">
 											(<a href="javascript:void(0);"
