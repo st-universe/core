@@ -59,15 +59,14 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
         $target = $targetPool[array_rand($targetPool)];
 
         for ($i = 1; $i <= $attacker->getRump()->getPhaserVolleys(); $i++) {
+            if (count($targetPool) === 0) {
+                break;
+            }
             if (!$attacker->getPhaser() || $attacker->getEps() < $this->getEnergyWeaponEnergyCosts()) {
                 break;
             }
             $attacker->setEps($attacker->getEps() - $this->getEnergyWeaponEnergyCosts());
             if ($this->getEnergyWeapon($attacker)->getFiringMode() === self::FIRINGMODE_RANDOM) {
-                if (count($targetPool) === 0) {
-                    break;
-                }
-
                 $target = $targetPool[array_rand($targetPool)];
             }
 
