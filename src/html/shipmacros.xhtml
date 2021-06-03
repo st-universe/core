@@ -27,7 +27,8 @@
     </td>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-        <img tal:condition="php:ship.getState() EQ 1" src="assets/buttons/rep2.gif" title="Schiff wird repariert"
+        <img tal:condition="php:ship.getState() EQ 1" src="assets/buttons/rep2.gif"
+          tal:attributes="title string:Schiff wird repariert (noch ${ship/getRepairDuration} Runden)"
           style="height:20px;" />
         <img tal:condition="php:ship.getState() EQ 2" src="assets/buttons/map1.gif" title="Schiff kartographiert"
           style="height:20px;" />
