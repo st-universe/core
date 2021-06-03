@@ -1537,7 +1537,7 @@
         <img src="assets/ships/${data/getShip/getRump/getId}.png" title="${data/getShip/getRump/getName}" />
       </td>
       <td style="text-align: center; vertical-align: middle" tal:content="data/getShip/getName">
-        <span tal:replace="structure bbcode:data/getShip/getName">NAME</span></td>
+        <span tal:content="structure bbcode:data/getShip/getName">NAME</span></td>
       <td style="text-align: center; vertical-align: middle">
         <img src="assets/buttons/modul_1.gif" title="Hülle" style="width: 12px; height: 12px;" />
         ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
