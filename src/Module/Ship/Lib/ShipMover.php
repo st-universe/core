@@ -309,7 +309,7 @@ final class ShipMover implements ShipMoverInterface
         return false;
     }
 
-    private function getReadyForFlight(ShipInterface $leadShip, ShipInterface ...$ships): void
+    private function getReadyForFlight(ShipInterface $leadShip, array $ships): void
     {
         foreach ($ships as $ship) {
             $ship->setDockedTo(null);
