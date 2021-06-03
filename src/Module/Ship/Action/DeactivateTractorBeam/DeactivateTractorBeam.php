@@ -55,8 +55,8 @@ final class DeactivateTractorBeam implements ActionControllerInterface
         if ($userId != $ship->getTraktorShip()->getUserId()) {
             $this->privateMessageSender->send(
                 $userId,
-                (int)$ship->getTraktorShip()->getUserId(),
-                "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in SeKtor " . $ship->getSectorString() . " deaktiviert",
+                (int) $ship->getTraktorShip()->getUserId(),
+                "Der auf die " . $ship->getTraktorShip()->getName() . " gerichtete Traktorstrahl wurde in Sektor " . $ship->getSectorString() . " deaktiviert",
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         }

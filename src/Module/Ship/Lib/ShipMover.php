@@ -309,7 +309,7 @@ final class ShipMover implements ShipMoverInterface
         return false;
     }
 
-    private function getReadyForFlight(ShipInterface $leadShip, array $ships): void
+    private function getReadyForFlight(ShipInterface $leadShip, ShipInterface ...$ships): void
     {
         foreach ($ships as $ship) {
             $ship->setDockedTo(null);
@@ -317,15 +317,7 @@ final class ShipMover implements ShipMoverInterface
                 $ship->cancelRepair();
                 $this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getId()));
             }
-            if ($ship->isTraktorbeamActive() && $ship->getTraktorShip()->getFleetId()) {
-                $this->deactivateTraktorBeam(
-                    $ship,
-                    sprintf(
-                        _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
-                        $ship->getTraktorShip()->getName()
-                    )
-                );
-            }
+
             if ($ship->getTraktorMode() == 2) {
                 $this->addLostShip($ship, $leadShip, sprintf(_('Die %s wird von einem Traktorstrahl gehalten'), $ship->getName()));
                 continue;
@@ -375,6 +367,18 @@ final class ShipMover implements ShipMoverInterface
                     $ship->getName()
                 ));
                 continue;
+            }
+            if (
+                $ship->getTraktorMode() == 1 && $ship->getTraktorShip()->getFleetId()
+                && $ship->getTraktorShip()->getFleet()->getShipCount() > 1
+            ) {
+                $this->deactivateTraktorBeam(
+                    $ship,
+                    sprintf(
+                        _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde deaktiviert'),
+                        $ship->getTraktorShip()->getName()
+                    )
+                );
             }
         }
     }
