@@ -111,9 +111,6 @@ use Stu\Module\Ship\Action\MoveShipDown\MoveShipDown;
 use Stu\Module\Ship\Action\MoveShipLeft\MoveShipLeft;
 use Stu\Module\Ship\Action\MoveShipRight\MoveShipRight;
 use Stu\Module\Ship\Action\MoveShipUp\MoveShipUp;
-use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleet;
-use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequest;
-use Stu\Module\Ship\Action\PriorizeFleet\PriorizeFleetRequestInterface;
 use Stu\Module\Ship\Action\RenameCrew\RenameCrew;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleet;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
@@ -192,7 +189,6 @@ return [
     LeaveFleetRequestInterface::class => autowire(LeaveFleetRequest::class),
     JoinFleetRequestInterface::class => autowire(JoinFleetRequest::class),
     ShipLoaderInterface::class => autowire(ShipLoader::class),
-    PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
@@ -200,7 +196,6 @@ return [
         RenameFleet::ACTION_IDENTIFIER => autowire(RenameFleet::class),
         LeaveFleet::ACTION_IDENTIFIER => autowire(LeaveFleet::class),
         JoinFleet::ACTION_IDENTIFIER => autowire(JoinFleet::class),
-        PriorizeFleet::ACTION_IDENTIFIER => autowire(PriorizeFleet::class),
         ActivateAstroLaboratory::ACTION_IDENTIFIER => autowire(ActivateAstroLaboratory::class),
         DeactivateAstroLaboratory::ACTION_IDENTIFIER => autowire(DeactivateAstroLaboratory::class),
         ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),

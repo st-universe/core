@@ -25,8 +25,6 @@ interface FleetRepositoryInterface extends ObjectRepository
      */
     public function getByUser(int $userId): iterable;
 
-    public function getHighestSortByUser(int $userId): int;
-
     /**
      * @return FleetInterface[]
      */
