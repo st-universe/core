@@ -46,7 +46,10 @@
 										<td style="width: 15%;">
 											<input type="text" name="fleetname" style="width: 150px;"
 												tal:attributes="value fleet/getName" />
-											<input type="submit" value="Name ändern" name="B_FLEET_CHANGE_NAME" />
+											<button type="submit" name="B_FLEET_CHANGE_NAME" value="Name ändern"
+												title="Name ändern">
+												<img src="assets/buttons/knedit2.png" alt="Name ändern" />
+											</button>
 										</td>
 										<td style="width: 20%; text-align: right;"
 											tal:define="availableShips fleet/getAvailableShips">
@@ -56,7 +59,10 @@
 														tal:attributes="value data/getId"
 														tal:content="bbcode2txt:data/getName">.</option>
 												</select>
-												<input type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen" />
+												<button type="submit" name="B_JOIN_FLEET" value="Schiff hinzufügen"
+													title="Schiff hinzufügen">
+													<img src="assets/buttons/fl_join2.png" alt="Schiff hinzufügen" />
+												</button>
 											</tal:block>
 											<a href="?B_FLEET_UP=1&id=${fleet/getId}">
 												<img src="assets/buttons/bt_up1.png"
