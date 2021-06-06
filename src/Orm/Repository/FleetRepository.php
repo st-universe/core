@@ -50,8 +50,18 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
     {
         return $this->findBy(
             ['user_id' => $userId],
-            ['id' => 'desc']
+            ['sort' => 'desc', 'id' => 'desc']
         );
+    }
+
+    public function getHighestSortByUser(int $userId): int
+    {
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT COALESCE(MAX(GREATEST(f.sort, f.id)), 0) + 1 FROM stu_fleets f
+            WHERE f.user_id = :userId'
+        )->setParameters([
+            'userId' => $userId
+        ])->getSingleScalarResult();
     }
 
     public function getByPositition(

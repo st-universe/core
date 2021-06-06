@@ -39,5 +39,9 @@ interface FleetInterface
 
     public function setBlockedColony(?ColonyInterface $blockedColony): FleetInterface;
 
+    public function getSort(): ?int;
+
+    public function setSort(?int $sort): FleetInterface;
+
     public function getCrewSum(): int;
 }
