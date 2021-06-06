@@ -41,6 +41,9 @@ class Fleet implements FleetInterface
     /** @Column(type="integer", nullable=true) * */
     private $blocked_colony_id;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $sort;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -175,6 +178,18 @@ class Fleet implements FleetInterface
     public function setBlockedColony(?ColonyInterface $blockedColony): FleetInterface
     {
         $this->blockedColony = $blockedColony;
+        return $this;
+    }
+
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    public function setSort(?int $sort): FleetInterface
+    {
+        $this->sort = $sort;
+
         return $this;
     }
 
