@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\Ship;
@@ -56,9 +57,13 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
 
     public function getHighestSortByUser(int $userId): int
     {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('newsort', 'newsort');
+
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT COALESCE(MAX(GREATEST(f.sort, f.id)), 0) + 1 FROM stu_fleets f
-            WHERE f.user_id = :userId'
+            'SELECT COALESCE(MAX(GREATEST(f.sort, f.id)), 0) + 1 as newsort FROM stu_fleets f
+            WHERE f.user_id = :userId',
+            $rsm
         )->setParameters([
             'userId' => $userId
         ])->getSingleScalarResult();
