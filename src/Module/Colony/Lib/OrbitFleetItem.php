@@ -15,7 +15,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
 
     private int $userId;
 
-    private FleetInterface $fleet;
+    private $fleet = null;
 
     public function __construct(
         int $fleetId,
@@ -42,7 +42,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
             return false;
         }
 
-        if ($this->fleet == null) {
+        if ($this->fleet === null) {
             $this->loadFleet();
         }
 
@@ -55,7 +55,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
             return _('Einzelschiffe');
         }
 
-        if ($this->fleet == null) {
+        if ($this->fleet === null) {
             $this->loadFleet();
         }
 
@@ -68,7 +68,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
             return null;
         }
 
-        if ($this->fleet == null) {
+        if ($this->fleet === null) {
             $this->loadFleet();
         }
 
@@ -81,7 +81,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
             return 0;
         }
 
-        if ($this->fleet == null) {
+        if ($this->fleet === null) {
             $this->loadFleet();
         }
 
