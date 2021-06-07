@@ -18,7 +18,13 @@
         </tr>
         <tal:block tal:repeat="fleet ORBIT_SHIP_LIST">
           <tr>
-            <td colspan="6" tal:content="structure bbcode:fleet/getName">FLEETNAME</td>
+            <td colspan="6">
+              <span tal:replace="structure bbcode:fleet/getName">FLEETNAME</span>
+              <tal:block tal:condition="fleet/isFleetOwnedByUser">
+                <span> von </span>
+                <span tal:replace="structure bbcode:fleet/getOwnerName">USERNAME</span>
+              </tal:block>
+            </td>
           </tr>
           <tr tal:repeat="ship fleet/getShips" tal:attributes="class string:row${repeat/ship/odd}">
             <td>

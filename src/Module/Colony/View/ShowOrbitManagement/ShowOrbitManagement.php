@@ -8,6 +8,7 @@ use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
+use Stu\Module\Colony\Lib\OrbitFleetItemInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -73,21 +74,31 @@ final class ShowOrbitManagement implements ViewControllerInterface
             );
         }
 
+        usort(
+            $list,
+            function (OrbitFleetItemInterface $a, OrbitFleetItemInterface $b): int {
+                return $a->getSort() <=> $b->getSort();
+            }
+        );
+
         $game->appendNavigationPart(
             'colony.php',
             _('Kolonien')
         );
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%s',
+            sprintf(
+                '?%s=1&id=%s',
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             ),
             $colony->getName()
         );
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%d',
+            sprintf(
+                '?%s=1&id=%d',
                 static::VIEW_IDENTIFIER,
-                $colony->getId()),
+                $colony->getId()
+            ),
             _('Orbitalmanagement')
         );
         $game->setPagetitle(sprintf('%s Orbit', $colony->getName()));
