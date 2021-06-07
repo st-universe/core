@@ -77,7 +77,7 @@ final class ShowOrbitManagement implements ViewControllerInterface
         usort(
             $list,
             function (OrbitFleetItemInterface $a, OrbitFleetItemInterface $b): int {
-                return $a->getSort() <=> $b->getSort();
+                return $b->getSort() <=> $a->getSort();
             }
         );
 

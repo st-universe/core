@@ -78,7 +78,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
     public function getSort(): int
     {
         if ($this->fleetId == 0) {
-            return 0;
+            return PHP_INT_MAX;
         }
 
         if ($this->fleet === null) {
