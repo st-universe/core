@@ -20,7 +20,7 @@
           <tr>
             <td colspan="6">
               <span tal:replace="structure bbcode:fleet/getName">FLEETNAME</span>
-              <tal:block tal:condition="fleet/isFleetOwnedByUser">
+              <tal:block tal:condition="not:fleet/isFleetOwnedByUser">
                 <span> von </span>
                 <span tal:replace="structure bbcode:fleet/getOwnerName">USERNAME</span>
               </tal:block>
