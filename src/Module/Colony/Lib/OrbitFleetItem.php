@@ -36,7 +36,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
         $this->fleet =  $fleetRepo->find($this->fleetId);
     }
 
-    public function isFleetOwnedByUser(): bool
+    public function isForeignFleet(): bool
     {
         if ($this->fleetId == 0) {
             return false;
@@ -46,7 +46,7 @@ final class OrbitFleetItem implements OrbitFleetItemInterface
             $this->loadFleet();
         }
 
-        return $this->fleet->getUserId() == $this->userId;
+        return $this->fleet->getUserId() !== $this->userId;
     }
 
     public function getName(): string
