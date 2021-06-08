@@ -31,22 +31,16 @@ final class MovePm implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->addInformation(_('1'));
-
         $userId = $game->getUser()->getId();
 
         $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
-        $game->addInformation(_('2'));
         $fromCategory = $pm->getCategory();
 
         if ($fromCategory === null || $fromCategory->isPMOutDir()) {
-            $game->addInformation(_('3'));
             return;
         }
-        $game->addInformation(_('4'));
         $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
 
-        $game->addInformation(_('5'));
         if ($destination === null || $destination->getUserId() !== $userId) {
             $game->addInformation(_('Dieser Ordner existiert nicht'));
             return;
@@ -59,7 +53,7 @@ final class MovePm implements ActionControllerInterface
 
         $this->privateMessageRepository->save($pm);
 
-        $game->addInformation(_('Die Nachricht wurde verscheben'));
+        $game->addInformation(_('Die Nachricht wurde verschoben'));
     }
 
     public function performSessionCheck(): bool
