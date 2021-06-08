@@ -9,7 +9,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
-use Stu\Module\Maintenance\OldFlightSignatureDeletion;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
