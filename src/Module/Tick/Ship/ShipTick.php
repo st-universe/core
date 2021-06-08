@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -192,7 +193,7 @@ final class ShipTick implements ShipTickInterface
             return;
         }
         $text = "Tickreport der " . $ship->getName() . "\n";
-        foreach ($this->msg as $msg) {
+        foreach ($this->msg as $key => $msg) {
             $text .= $msg . "\n";
         }
 

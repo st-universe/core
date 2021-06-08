@@ -34,9 +34,7 @@ use Stu\Orm\Repository\StarSystemRepositoryInterface;
  *     indexes={
  *         @Index(name="outer_system_location_idx", columns={"systems_id","cx","cy"}),
  *         @Index(name="inner_system_location_idx", columns={"systems_id","sx","sy"}),
- *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
- *         @Index(name="ship_tick_1_idx", columns={"user_id, plans_id"}),
- *         @Index(name="ship_tick_2_idx", columns={"is_destroyed"})
+ *         @Index(name="ship_rump_idx", columns={"rumps_id"})
  *     }
  * )
  **/
