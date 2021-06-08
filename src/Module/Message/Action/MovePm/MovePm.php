@@ -33,14 +33,14 @@ final class MovePm implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $cat = $this->privateMessageFolderRepository->find($this->movePmRequest->getCategoryId());
+        $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
+        $fromCategory = $pm->getCategory();
 
-        if ($cat === null || $cat->isPMOutDir()) {
+        if ($fromCategory === null || $fromCategory->isPMOutDir()) {
             return;
         }
 
         $destination = $this->privateMessageFolderRepository->find($this->movePmRequest->getDestinationCategoryId());
-        $pm = $this->privateMessageRepository->find($this->movePmRequest->getPmId());
 
         if ($destination === null || $destination->getUserId() !== $userId) {
             $game->addInformation(_('Dieser Ordner existiert nicht'));

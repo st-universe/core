@@ -10,11 +10,6 @@ final class MovePmRequest implements MovePmRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getCategoryId(): int
-    {
-        return $this->queryParameter('pmcat')->int()->required();
-    }
-
     public function getPmId(): int
     {
         return $this->queryParameter('move_pm')->int()->required();
