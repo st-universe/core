@@ -71,14 +71,12 @@ final class ShowScan implements ViewControllerInterface
             $game->checkDatabaseItem($target->getRump()->getDatabaseId());
         }
 
-        if ($userId !== $target->getUserId()) {
-            $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
-                (int) $target->getUserId(),
-                sprintf(_('Der Spieler %s hat dein Schiff %s gescannt.'), $game->getUser()->getName(), $target->getName()),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $target->getUserId(),
+            sprintf(_('Der Spieler %s hat dein Schiff %s gescannt.'), $game->getUser()->getName(), $target->getName()),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);
