@@ -173,6 +173,9 @@ class Ship implements ShipInterface
     /** @Column(type="integer", nullable=true) */
     private $astro_start_turn;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $is_fleet_leader;
+
     /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
@@ -843,6 +846,17 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function getIsFleetLeader(): ?bool
+    {
+        return $this->is_fleet_leader;
+    }
+
+    public function setIsFleetLeader(?bool $isFleetLeader): ShipInterface
+    {
+        $this->is_fleet_leader = $isFleetLeader;
+        return $this;
+    }
+
     public function getCrewlist(): Collection
     {
         return $this->crew;
@@ -899,10 +913,7 @@ class Ship implements ShipInterface
 
     public function isFleetLeader(): bool
     {
-        if ($this->getFleet() === null) {
-            return false;
-        }
-        return $this->getFleet()->getLeadShip()->getId() === $this->getId();
+        return $this->getIsFleetLeader() ?? false;
     }
 
     public function getUser(): UserInterface

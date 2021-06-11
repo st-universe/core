@@ -136,23 +136,24 @@ final class ShipLeaver implements ShipLeaverInterface
         return $pods;
     }
 
-    private function changeFleetLeader(ShipInterface $obj): void
+    private function changeFleetLeader(ShipInterface $oldLeader): void
     {
         $ship = current(
             array_filter(
-                $obj->getFleet()->getShips()->toArray(),
-                function (ShipInterface $ship) use ($obj): bool {
-                    return $ship !== $obj;
+                $oldLeader->getFleet()->getShips()->toArray(),
+                function (ShipInterface $ship) use ($oldLeader): bool {
+                    return $ship !== $oldLeader;
                 }
             )
         );
 
-        $fleet = $obj->getFleet();
+        $fleet = $oldLeader->getFleet();
 
-        $obj->setFleet(null);
-        $fleet->getShips()->removeElement($obj);
+        $oldLeader->setFleet(null);
+        $oldLeader->setIsFleetLeader(false);
+        $fleet->getShips()->removeElement($oldLeader);
 
-        $this->shipRepository->save($obj);
+        $this->shipRepository->save($oldLeader);
 
         if (!$ship) {
             $this->fleetRepository->delete($fleet);
@@ -161,6 +162,9 @@ final class ShipLeaver implements ShipLeaverInterface
         }
 
         $fleet->setLeadShip($ship);
+        $ship->setIsFleetLeader(true);
+
+        $this->shipRepository->save($ship);
         $this->fleetRepository->save($fleet);
     }
 
