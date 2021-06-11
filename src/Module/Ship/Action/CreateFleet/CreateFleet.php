@@ -54,6 +54,7 @@ final class CreateFleet implements ActionControllerInterface
         $this->fleetRepository->save($fleet);
 
         $ship->setFleet($fleet);
+        $ship->setIsFleetLeader(true);
 
         $this->shipRepository->save($ship);
 
