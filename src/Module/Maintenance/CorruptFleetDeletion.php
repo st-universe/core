@@ -29,7 +29,7 @@ final class CorruptFleetDeletion implements MaintenanceHandlerInterface
             ) {
                 foreach ($fleet->getShips() as $fleetShip) {
                     $fleetShip->setFleet(null);
-                    $fleetShip->setIsFleetLeader(null);
+                    $fleetShip->setIsFleetLeader(false);
 
                     $this->shipRepository->save($fleetShip);
                 }
