@@ -189,9 +189,9 @@ interface ShipInterface
 
     public function setAstroStartTurn(?int $turn): ShipInterface;
 
-    public function getIsFleetLeader(): ?bool;
+    public function getIsFleetLeader(): bool;
 
-    public function setIsFleetLeader(?bool $isFleetLeader): ShipInterface;
+    public function setIsFleetLeader(bool $isFleetLeader): ShipInterface;
 
     /**
      * @return ShipCrewInterface[]
