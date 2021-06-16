@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowSectorScan;
 
 use request;
-
+use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -77,7 +77,7 @@ final class ShowSectorScan implements ViewControllerInterface
 
                 if ($wrapper->getRump() == null) {
                     if ($sig->isCloaked()) {
-                        if ($sig->getTime() > (time() - 43200)) {
+                        if ($sig->getTime() > (time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_CLOAKED)) {
                             $this->fadedSignaturesCloaked[$id] = $id;
                         }
                     } else {
