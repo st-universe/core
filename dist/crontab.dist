@@ -1,0 +1,5 @@
+* * * * * cd /path/to/stuniverse-source && php src/admin/cron/processtick.php
+0 12,15,18,21,0 * * * cd /path/to/stuniverse-source && php src/admin/cron/tickmanager.php
+0 12,15,18,21,0 * * * cd /path/to/stuniverse-source && php src/admin/cron/colonytick.php
+0 12,15,18,21,0 * * * cd /path/to/stuniverse-source && php src/admin/cron/shiptick.php
+0 3 * * * cd /path/to/stuniverse-source && php src/admin/cron/maintenance.php

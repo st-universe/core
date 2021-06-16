@@ -20,6 +20,24 @@ es sein, dass der Hostname (stu-db) nicht aufgelöst werden kann. In diesem
 Fall muss für die im `docker-compose.yml` File hinterlegte IP ein Eintrag in
 der Hosts-Datei des Betriebssystems gemacht werden.
 
+Server-Deployment
+-----------------
+
+Code:
+
+- Repository auschecken
+- make init-production
+- make dirs
+- rsync -rv --delete-after --exclude=assets --links --exclude=config.json --exclude=src/Public/admin/manage --exclude=src/Public/avatare/* src bin vendor Makefile cli-config.php config.dist.json /path/to/stuniverse-source/
+- cd /path/to/stuniverse-source && make clearCache && make migrateDatabase
+
+Assets:
+
+- Repository auschecken
+- php generator/building_generator/gen.php
+- php generator/field_generator/generator.php
+- rsync -rv --delete-after --exclude=dist --exclude=".git" . /path/to/stuniverse-source/assets/
+
 API
 ---
 
