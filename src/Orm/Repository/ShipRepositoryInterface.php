@@ -85,6 +85,11 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
+    public function getEscapePodsByCrewOwner(int $userId): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
     public function getPlayerShipsForTick(): iterable;
 
     /**

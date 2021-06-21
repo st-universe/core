@@ -10,6 +10,7 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
@@ -194,6 +195,27 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             )
         )->setParameters([
             'categoryId' => ShipEnum::SHIP_CATEGORY_ESCAPE_PODS
+        ])->getResult();
+    }
+
+    public function getEscapePodsByCrewOwner(int $userId): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                LEFT JOIN %s sr
+                WITH s.rumps_id = sr.id
+                LEFT JOIN %s sc
+                WITH sc.ships_id = s.id
+                WHERE sr.category_id = :categoryId
+                AND sc.user_id = :userId',
+                Ship::class,
+                ShipRump::class,
+                ShipCrew::class
+            )
+        )->setParameters([
+            'categoryId' => ShipEnum::SHIP_CATEGORY_ESCAPE_PODS,
+            'userId' => $userId
         ])->getResult();
     }
 
