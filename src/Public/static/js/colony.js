@@ -193,6 +193,12 @@ function showSectorScanWindow(id) {
 	ajax_update(elt, 'colony.php?id=' + id + '&SHOW_SECTOR_SCAN=1');
 }
 
+function showPodLocationWindow() {
+	elt = 'podlocations';
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
+}
+
 function triggerBeamTo() {
 	var shipid = $('selshipid').value;
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
