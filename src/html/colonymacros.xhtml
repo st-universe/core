@@ -129,8 +129,8 @@
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
             <span tal:replace="USER/getUsedCrewCount">USED</span>
-            (<a href="?SHOW_PODS_LOCATIONS=1&sstr=${THIS/getSessionString}"><span tal:content="USER/getCrewCountDebris"
-                title="In Rettungskapseln">DEBRIS</span></a>)
+            (<a href="javascript:void(0);" onclick="showPodLocationWindow();"><span
+                tal:content="USER/getCrewCountDebris" title="In Rettungskapseln">DEBRIS</span></a>)
           </td>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
