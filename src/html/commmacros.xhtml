@@ -140,12 +140,13 @@
     tal:repeat="item PM_NAVLET" class="action" onclick="goToUrl('pm.php?pmcat=${item/getId}')">
     <tal:block tal:define="new_pm_amount item/getCategoryCountNew">
       <tal:block tal:condition="new_pm_amount">
-        <img src="/assets/buttons/pmnavlet_${repeat/item/key}_1.png" width="30" height="30" />
+        <img src="/assets/buttons/pmnavlet_${repeat/item/key}_1.png" width="30" height="30"
+          title="${item/getDescription}" />
         <div style="margin-top: 5px; color: red; text-decoration: blink" tal:content="new_pm_amount">COUNT</div>
       </tal:block>
       <tal:block tal:condition="not:new_pm_amount">
         <img src="/assets/buttons/pmnavlet_${repeat/item/key}_0.png" width="30" height="30" id="newpm${repeat/item/key}"
-          onmouseover="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_1', 'png')"
+          title="${item/getDescription}" onmouseover="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_1', 'png')"
           onmouseout="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_0', 'png')" />
         <div style="margin-top: 5px">0</div>
       </tal:block>
