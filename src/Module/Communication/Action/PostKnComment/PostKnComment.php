@@ -84,7 +84,7 @@ final class PostKnComment implements ActionControllerInterface
 
         // send notifications to other commentators
         foreach ($post->getComments() as $comment) {
-            $commentatorId = $comment->getUserId();
+            $commentatorId = $comment->getUser()->getId();
 
             if (!isset($commentatorId)) {
                 continue;
