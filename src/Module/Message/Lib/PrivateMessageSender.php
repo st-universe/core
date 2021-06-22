@@ -31,7 +31,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $senderId,
         int $recipientId,
         string $text,
-        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
     ): void {
         if ($senderId == $recipientId) {
             return;
@@ -50,10 +50,12 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         if ($senderId != GameEnum::USER_NOONE) {
 
-            $folder = $this->privateMessageFolderRepository->getByUserAndSpecial($senderId,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT);
+            $folder = $this->privateMessageFolderRepository->getByUserAndSpecial(
+                $senderId,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT
+            );
 
-            $newobj = clone($pm);
+            $newobj = clone ($pm);
             $newobj->setSender($pm->getRecipient());
             $newobj->setRecipient($pm->getSender());
             $newobj->setCategory($folder);

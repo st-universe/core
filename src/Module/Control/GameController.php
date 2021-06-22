@@ -199,7 +199,7 @@ final class GameController implements GameControllerInterface
 
         $this->gameInformations[] = $notification;
     }
-    
+
     public function addInformationMerge(array $info): void
     {
         $notificationArray = array();
@@ -232,7 +232,7 @@ final class GameController implements GameControllerInterface
     public function sendInformation(
         $recipient_id,
         $sender_id = GameEnum::USER_NOONE,
-        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
     ): void {
 
         $textOnlyArray = array();
@@ -268,6 +268,7 @@ final class GameController implements GameControllerInterface
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
             ];
             $folder = [];
 

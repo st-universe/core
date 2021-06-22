@@ -132,12 +132,16 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
         return $this->getSpecial() == PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT;
     }
 
+    /**
+     * specifies if you can move a private message to this folder
+     */
     public function isDropable(): bool
     {
         switch ($this->getSpecial()) {
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP:
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY:
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE:
+            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM:
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT:
                 return false;
         }
@@ -148,5 +152,4 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     {
         return $this->getSpecial() === 0;
     }
-
 }

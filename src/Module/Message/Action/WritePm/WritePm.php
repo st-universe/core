@@ -7,9 +7,9 @@ namespace Stu\Module\Message\Action\WritePm;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\View\Overview\Overview;
 use Stu\Orm\Repository\IgnoreListRepositoryInterface;
-use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -21,7 +21,6 @@ final class WritePm implements ActionControllerInterface
 
     private IgnoreListRepositoryInterface $ignoreListRepository;
 
-    private PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository;
 
     private PrivateMessageRepositoryInterface $privateMessageRepository;
 
@@ -32,14 +31,12 @@ final class WritePm implements ActionControllerInterface
     public function __construct(
         WritePmRequestInterface $writePmRequest,
         IgnoreListRepositoryInterface $ignoreListRepository,
-        PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository
     ) {
         $this->writePmRequest = $writePmRequest;
         $this->ignoreListRepository = $ignoreListRepository;
-        $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
@@ -70,7 +67,7 @@ final class WritePm implements ActionControllerInterface
             return;
         }
 
-        $this->privateMessageSender->send($userId, $recipient->getId(), $text);
+        $this->privateMessageSender->send($userId, $recipient->getId(), $text, PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN);
 
         $replyPm = $this->privateMessageRepository->find($this->writePmRequest->getReplyPmId());
 
