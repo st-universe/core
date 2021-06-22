@@ -18,7 +18,7 @@ final class PrivateMessageFolderSpecialEnum
         self::PM_SPECIAL_SHIP => 'Schiffe',
         self::PM_SPECIAL_COLONY => 'Kolonien',
         self::PM_SPECIAL_TRADE => 'Handel',
-        self::PM_SPECIAL_SYSTEM => 'System-Meldung',
+        self::PM_SPECIAL_SYSTEM => 'Systemmeldungen',
         self::PM_SPECIAL_PMOUT => 'Postausgang'
     ];
 }
