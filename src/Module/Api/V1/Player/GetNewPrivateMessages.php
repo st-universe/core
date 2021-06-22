@@ -37,6 +37,7 @@ final class GetNewPrivateMessages extends Action
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
         ];
 
         return $response->withData(array_map(

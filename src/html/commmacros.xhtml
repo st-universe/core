@@ -1,9 +1,9 @@
 <html xmlns:stu="stu">
 <metal:block metal:define-macro="initial_js">
   <script language="Javascript">
-			var sstr = '${THIS/getSessionString}';
-		</script>
-  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/comm.js"><!-- stuniverse --></script>
+    var sstr = '${THIS/getSessionString}';
+  </script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/comm.js">< !--stuniverse --></script>
 </metal:block>
 
 <metal:macro metal:define-macro="knnavigation">
@@ -24,7 +24,8 @@
   <table>
     <tr>
       <td tal:repeat="item KN_NAVIGATION">
-        <a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+        <a href="?SHOW_PLOT=1&plotid=${PLOT/getId}&mark=${item/mark}" tal:content="item/page"
+          tal:attributes="class item/cssclass">PAGE</a>
       </td>
     </tr>
   </table>
@@ -34,7 +35,8 @@
   <table>
     <tr>
       <td tal:repeat="item PM_NAVIGATION">
-        <a href="?pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
+        <a href="?pmcat=${CATEGORY/getId}&mark=${item/mark}" tal:content="item/page"
+          tal:attributes="class item/cssclass">PAGE</a>
       </td>
     </tr>
   </table>
@@ -45,12 +47,16 @@
     <li id="item_${cat/getId}" style="width: 100%; display: block;">
       <div class="iblock" style="width: 90%">
         <span style="color: #cecece; cursor: move;">&gt;</span>
-        <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?pmcat=${cat/getId}" tal:content="structure cat/getDescription">DESCRIPTION</a>
-        <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?pmcat=${cat/getId}" style="color: #c2b942;" tal:content="structure cat/getDescription">DESCRIPTION</a>
+        <a tal:condition="not:php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?pmcat=${cat/getId}"
+          tal:content="structure cat/getDescription">DESCRIPTION</a>
+        <a tal:condition="php:markcat AND cat.getId() EQ CATEGORY.getId()" href="?pmcat=${cat/getId}"
+          style="color: #c2b942;" tal:content="structure cat/getDescription">DESCRIPTION</a>
         (<span tal:replace="cat/getCategoryCountNew">CATNEW</span>/<span tal:replace="cat/getCategoryCount">CAT</span>)
       </div>
       <div class="iblock right" style="width: 8%">
-        <a href="javascript:void(0);" onclick="showPMCategoryWindow(${cat/getId});" onmouseover="cp('catedit${cat/getId}','buttons/knedit2', 'png')" onmouseout="cp('catedit${cat/getId}','buttons/knedit1', 'png')">
+        <a href="javascript:void(0);" onclick="showPMCategoryWindow(${cat/getId});"
+          onmouseover="cp('catedit${cat/getId}','buttons/knedit2', 'png')"
+          onmouseout="cp('catedit${cat/getId}','buttons/knedit1', 'png')">
           <img src="assets/buttons/knedit1.png" title="Editieren" name="catedit${cat/getId}" />
         </a>
       </div>
@@ -73,12 +79,16 @@
         <span style="color: #cecece">&gt;</span> <a href="?WRITE_PM=1">Nachricht verfassen</a>
         <div tal:condition="markcat">
           <br />
-          <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="markAllPMs();">Alle selektieren</a><br />
-          <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="unMarkAllPMs();">Alle deselektieren</a>
+          <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="markAllPMs();">Alle
+            selektieren</a><br />
+          <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="unMarkAllPMs();">Alle
+            deselektieren</a>
           <br /><br />
-          <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteAllMarkedPMs();">Alle selektierten löschen</a>
+          <span style="color: #cecece">&gt;</span> <a href="javascript:void(0);" onclick="deleteAllMarkedPMs();">Alle
+            selektierten löschen</a>
           <br /><br />
-          <span style="color: #cecece">&gt;</span> <a href="?B_DELETE_ALL_PMS=1&pmcat=${CATEGORY/getId}&sstr=${THIS/getSessionString}">Ordner leeren</a>
+          <span style="color: #cecece">&gt;</span> <a
+            href="?B_DELETE_ALL_PMS=1&pmcat=${CATEGORY/getId}&sstr=${THIS/getSessionString}">Ordner leeren</a>
         </div>
       </td>
     </tr>
@@ -109,7 +119,8 @@
         </ul>
         <tal:block metal:use-macro="html/commmacros.xhtml/catsortjs" />
         <br style="clear: both;" /><br />
-        <span style="color: #cecece;">&gt;</span> <a href="javascript:void(0);" onclick="openNewCatWindow();">Neuer Ordner</a>
+        <span style="color: #cecece;">&gt;</span> <a href="javascript:void(0);" onclick="openNewCatWindow();">Neuer
+          Ordner</a>
       </td>
     </tr>
   </table>
@@ -117,21 +128,25 @@
 
 <tal:block metal:define-macro="catsortjs">
   <script type="text/javascript" defer="defer">
-      Sortable.create('catlist',{tag:'li',
-          onUpdate: updateCategoryOrder,
+      Sortable.create('catlist', {
+        tag: 'li',
+        onUpdate: updateCategoryOrder,
       });
   </script>
 </tal:block>
 
 <metal:macro metal:define-macro="newpmnavlet">
-  <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left" tal:repeat="item PM_NAVLET" class="action" onclick="goToUrl('pm.php?pmcat=${item/getId}')">
+  <div style="width: 30px; height: 100%; margin: 7px 5px 7px 5px; text-align: center; float: left"
+    tal:repeat="item PM_NAVLET" class="action" onclick="goToUrl('pm.php?pmcat=${item/getId}')">
     <tal:block tal:define="new_pm_amount item/getCategoryCountNew">
       <tal:block tal:condition="new_pm_amount">
         <img src="/assets/buttons/pmnavlet_${repeat/item/key}_1.png" width="30" height="30" />
         <div style="margin-top: 5px; color: red; text-decoration: blink" tal:content="new_pm_amount">COUNT</div>
       </tal:block>
       <tal:block tal:condition="not:new_pm_amount">
-        <img src="/assets/buttons/pmnavlet_${repeat/item/key}_0.png" width="30" height="30" id="newpm${repeat/item/key}" onmouseover="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_1', 'png')" onmouseout="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_0', 'png')"  />
+        <img src="/assets/buttons/pmnavlet_${repeat/item/key}_0.png" width="30" height="30" id="newpm${repeat/item/key}"
+          onmouseover="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_1', 'png')"
+          onmouseout="cp(this.id,'buttons/pmnavlet_${repeat/item/key}_0', 'png')" />
         <div style="margin-top: 5px">0</div>
       </tal:block>
     </tal:block>
@@ -159,7 +174,8 @@
       <tr>
         <td>Name</td>
         <td>
-          <input type="text" style="width: 100px;" value="runtime" id="catname" tal:attributes="value PM_CATEGORY/getDescription" name="catname" />
+          <input type="text" style="width: 100px;" value="runtime" id="catname"
+            tal:attributes="value PM_CATEGORY/getDescription" name="catname" />
           <input type="button" class="button" value="Ändern" onclick="changeCategoryName();" />
         </td>
       </tr>
@@ -183,7 +199,8 @@
 <metal:macro metal:define-macro="movepmcategories">
   <select name="movecat_${post/getId}">
     <tal:block tal:repeat="cat PM_CATEGORIES">
-      <option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime" tal:content="structure cat/getDescription">DESCRIPTION</option>
+      <option tal:condition="cat/isDropable" tal:attributes="value cat/getId" value="runtime"
+        tal:content="structure cat/getDescription">DESCRIPTION</option>
     </tal:block>
   </select>
   <input type="button" class="button" onclick="movePm(${post/getId});" value="=>" title="Verschieben" />
@@ -191,7 +208,8 @@
 
 <tal:block metal:define-macro="clmodeselector">
   <select name="runtime" tal:attributes="name divname;id divname">
-    <option tal:repeat="item THIS/getContactlistModes" tal:attributes="value item/mode" tal:content="item/name">NAME</option>
+    <option tal:repeat="item THIS/getContactlistModes" tal:attributes="value item/mode" tal:content="item/name">NAME
+    </option>
   </select>
 </tal:block>
 
@@ -200,9 +218,8 @@
     <tr tal:repeat="contactoption THIS/getContactlistModes">
       <td>
         <div tal:condition="not:php:contact.getMode() EQ repeat.contactoption.key"
-             tal:attributes="class string:cltype${contactoption/mode}"
-             tal:content="contactoption/name"
-             onclick="switchContactMode(${contact/getId},${contactoption/mode});">MODE</div>
+          tal:attributes="class string:cltype${contactoption/mode}" tal:content="contactoption/name"
+          onclick="switchContactMode(${contact/getId},${contactoption/mode});">MODE</div>
       </td>
     </tr>
   </table>
@@ -210,8 +227,11 @@
 
 <tal:block metal:define-macro="clmodeview">
   <tal:block tal:condition="contact">
-    <span tal:condition="div" class="cltype${contact/getMode}" id="contact${contact/getId}" onclick="showContactModeSwitcher('${div}',${contact/getId});" tal:content="clmodeDescription:contact/getMode">MODE</span>
-    <span tal:condition="not:div" class="cltype${contact/getMode}" style="cursor: auto;" tal:content="clmodeDescription:contact/getMode">MODE</span>
+    <span tal:condition="div" class="cltype${contact/getMode}" id="contact${contact/getId}"
+      onclick="showContactModeSwitcher('${div}',${contact/getId});"
+      tal:content="clmodeDescription:contact/getMode">MODE</span>
+    <span tal:condition="not:div" class="cltype${contact/getMode}" style="cursor: auto;"
+      tal:content="clmodeDescription:contact/getMode">MODE</span>
   </tal:block>
 </tal:block>
 <metal:macro metal:define-macro="write_quick_pm">
@@ -253,26 +273,29 @@
       </tr>
       <tr>
         <td colspan="2">
-          <textarea style="width: 100%; height: 100px;" name="comment" id="comment"/>
+          <textarea style="width: 100%; height: 100px;" name="comment" id="comment" />
         </td>
       </tr>
       <tr>
         <td style="width: 200px">
-          <span id="commentTextLength">0</span>/250 <span>Zeichen</span>
+          <span id="commentTextLength">0</span>/<span tal:replace="CHARLIMIT">LIMIT</span> <span>Zeichen</span>
         </td>
         <td style="text-align: right;">
-          <input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken" id="postCommentButton" />
+          <input type="button" class="button" onclick="postComment(${POST/getId})" value="Abschicken"
+            id="postCommentButton" />
         </td>
       </tr>
     </table>
   </div>
-  <div style="width: 100%; text-align: right;"><input type="button" class="button" value="Kommentar schreiben" onclick="Element.hide(this.parentNode);Element.show($('writecomment'))" /></div>
+  <div style="width: 100%; text-align: right;"><input type="button" class="button" value="Kommentar schreiben"
+      onclick="Element.hide(this.parentNode);Element.show($('writecomment'))" /></div>
   <br />
   <tal:block tal:repeat="data COMMENTS">
     <table class="tcal">
       <tr>
         <td rowspan="2" style="width: 40px">
-          <img tal:condition="data/getUserAvatarPath" src="runtime" tal:attributes="src data/getUserAvatarPath" style="width: 40px" />
+          <img tal:condition="data/getUserAvatarPath" src="runtime" tal:attributes="src data/getUserAvatarPath"
+            style="width: 40px" />
         </td>
         <th style="text-align: center;">
           <span tal:replace="structure bbcode:data/getDisplayUserName">NAME</span>
@@ -280,10 +303,8 @@
         </th>
         <th style="width: 120px; text-align: center;" tal:content="datetime:data/getDate">DATE</th>
         <th style="width: 20px">
-          <a tal:condition="data/isDeleteable"
-            href="javascript:void(0);"
-            onclick="deletePostingComment(${data/getPostId}, ${data/getId})"
-            title="Löschen"
+          <a tal:condition="data/isDeleteable" href="javascript:void(0);"
+            onclick="deletePostingComment(${data/getPostId}, ${data/getId})" title="Löschen"
             onmouseover="cp('delComment${data/getId}','buttons/x2')"
             onmouseout="cp('delComment${data/getId}','buttons/x1')">
             <img src="/assets/buttons/x1.gif" name="delComment${data/getId}" /></a>
@@ -297,23 +318,23 @@
   </tal:block>
   <div class="divhead" tal:condition="not:COMMENTS" style="text-align: center;">Keine Kommentare vorhanden</div>
   <script type="text/javascript">
-      $('comment').addEventListener(
-          "keyup",
-          function() {
-              limit = 250;
+    $('comment').addEventListener(
+      "keyup",
+      function () {
+        limit = 250;
 
-              var length = this.value.length;
-              $('commentTextLength').innerHTML = length;
-              if (length > limit) {
-                  $('commentTextLength').addClassName('error');
-                  $('postCommentButton').disabled = true;
-              } else {
-                  $('commentTextLength').removeClassName('error');
-                  $('postCommentButton').disabled = false;
-              }
-          },
-          false
-      );
+        var length = this.value.length;
+        $('commentTextLength').innerHTML = length;
+        if (length > limit) {
+          $('commentTextLength').addClassName('error');
+          $('postCommentButton').disabled = true;
+        } else {
+          $('commentTextLength').removeClassName('error');
+          $('postCommentButton').disabled = false;
+        }
+      },
+      false
+    );
   </script>
 </metal:macro>
 
@@ -329,7 +350,8 @@
       <div class="box">
         <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
           <div tal:condition="post/getUser">
-            <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span tal:replace="post/getUser/getId">ID</span>)
+            <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span
+              tal:replace="post/getUser/getId">ID</span>)
           </div>
           <div tal:condition="not:post/getUser" tal:content="structure bbcode:post/getUserName">USER</div>
         </div>
@@ -338,7 +360,8 @@
             <div class="knGridText">
               <div style="padding: 10px;">
                 <span tal:content="post/getTitle" class="knh1">TITLE</span>
-                <span tal:condition="post/getPlot">(<a href="?SHOW_PLOT=1&plotid=${post/getPlot/getId}" target="_blank">Zum Plot</a>)</span>
+                <span tal:condition="post/getPlot">(<a href="?SHOW_PLOT=1&plotid=${post/getPlot/getId}"
+                    target="_blank">Zum Plot</a>)</span>
                 <br />
                 <br />
                 <span tal:content="structure nl2br:post/getText">TEXT</span>
@@ -346,12 +369,16 @@
             </div>
             <div class="knGridUser">
               <div class="segment">
-                <div class="negative" tal:condition="post/isNewerThanMark" tal:content="datetime:post/getDate">DATE</div>
-                <div tal:condition="not: post/isNewerThanMark" tal:content="datetime:post/getDate" style="text-align: center; width: 100%">DATE</div>
+                <div class="negative" tal:condition="post/isNewerThanMark" tal:content="datetime:post/getDate">DATE
+                </div>
+                <div tal:condition="not: post/isNewerThanMark" tal:content="datetime:post/getDate"
+                  style="text-align: center; width: 100%">DATE</div>
               </div>
               <div class="segment">
                 <div tal:condition="post/getUser/isNpc">NPC</div>
-                <img class="knUserAvatar" src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br /><br />
+                <img class="knUserAvatar" src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br />
+                <a id="kn_post_${post/getId}" title="Beitrag-ID"><span tal:replace="post/getId">POSTID</span></a>
+                <br />
               </div>
               <div class="segment" tal:condition="post/displayContactLinks" tal:define="id post/getUser/getId">
                 <img src="/assets/rassen/${post/getUser/getFactionId}s.png" />
@@ -359,14 +386,19 @@
                 <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
               </div>
               <div class="segment">
-                <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1" onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')" onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">
+                <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1"
+                  onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')"
+                  onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">
                   <img src="/assets/buttons/lese1.png" title="Lesezeichen setzen" name="mark${post/getId}" />
                 </a>
                 <tal:block tal:condition="post/isEditAble">
-                  <a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2', 'png')" onmouseout="cp('edit${post/getId}','buttons/knedit1', 'png')">
+                  <a href="?EDIT_KN=1&knid=${post/getId}" onmouseover="cp('edit${post/getId}','buttons/knedit2', 'png')"
+                    onmouseout="cp('edit${post/getId}','buttons/knedit1', 'png')">
                     <img src="/assets/buttons/knedit1.png" title="Beitrag editieren" name="edit${post/getId}" />
                   </a>
-                  <a href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}" onmouseover="cp('x${post/getId}','buttons/x2', 'png')" onmouseout="cp('x${post/getId}','buttons/x1', 'png')">
+                  <a href="?B_DEL_KN=1&knid=${post/getId}&sstr=${THIS/getSessionString}"
+                    onmouseover="cp('x${post/getId}','buttons/x2', 'png')"
+                    onmouseout="cp('x${post/getId}','buttons/x1', 'png')">
                     <img src="/assets/buttons/x1.png" title="Beitrag editieren" name="x${post/getId}" />
                   </a>
                 </tal:block>
@@ -378,11 +410,13 @@
               </div>
               <div class="segment" id="kn_rating_${post/getId}" tal:define="userCanRate post/userCanRate">
                 <div tal:condition="userCanRate" class="knRatingNegative" onclick="rateKnPost(${post/getId},-1)">-</div>
-                <div style="display: inline-block" tal:condition="post/getRatingBar" tal:content="structure post/getRatingBar">STATUS</div>
+                <div style="display: inline-block" tal:condition="post/getRatingBar"
+                  tal:content="structure post/getRatingBar">STATUS</div>
                 <div tal:condition="userCanRate" class="knRatingPositive" onclick="rateKnPost(${post/getId},1)">+</div>
               </div>
               <div class="segment">
-                <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount} <span>Kommentare</span></a>
+                <a href="javascript:void(0);" onclick="showKnComments(${post/getId});">${post/getCommentCount}
+                  <span>Kommentare</span></a>
               </div>
             </div>
           </div>
@@ -394,4 +428,5 @@
     <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
   </tal:block>
 </metal:macro>
+
 </html>

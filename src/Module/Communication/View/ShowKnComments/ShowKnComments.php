@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\ShowKnComments;
 
+use Stu\Module\Communication\Action\PostKnComment\PostKnComment;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -46,5 +47,6 @@ final class ShowKnComments implements ViewControllerInterface
         $game->setMacro('html/commmacros.xhtml/kncomments');
         $game->setTemplateVar('POST', $post);
         $game->setTemplateVar('COMMENTS', $list);
+        $game->setTemplateVar('CHARLIMIT', PostKnComment::CHARACTER_LIMIT);
     }
 }

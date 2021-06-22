@@ -8,6 +8,6 @@ interface PrivateMessageSenderInterface
         int $senderId,
         int $recipientId,
         string $text,
-        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN
+        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
     ): void;
 }
