@@ -7,7 +7,7 @@
 </metal:block>
 
 <metal:macro metal:define-macro="knnavigation">
-  <table tal:condition="KN_NAVIGATION">
+  <table tal:condition="exists: KN_NAVIGATION">
     <tr>
       <td tal:repeat="item KN_NAVIGATION">
         <a href="?SHOW_KN=1&mark=${item/mark}" tal:content="item/page" tal:attributes="class item/cssclass">PAGE</a>
