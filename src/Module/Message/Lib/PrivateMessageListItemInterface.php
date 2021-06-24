@@ -15,6 +15,8 @@ interface PrivateMessageListItemInterface
 
     public function getText(): string;
 
+    public function getHref(): ?string;
+
     public function getNew(): bool;
 
     public function getId(): int;
