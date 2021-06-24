@@ -277,6 +277,9 @@ interface ShipInterface
 
     public function getBeamFactor(): int;
 
+    /**
+     * return "x|y (System-Name)"
+     */
     public function getSectorString(): string;
 
     public function getBuildplan(): ?ShipBuildplanInterface;

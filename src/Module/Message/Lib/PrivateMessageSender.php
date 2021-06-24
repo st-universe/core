@@ -31,7 +31,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         int $senderId,
         int $recipientId,
         string $text,
-        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+        int $category = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+        string $href = null
     ): void {
         if ($senderId == $recipientId) {
             return;
@@ -42,6 +43,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         $pm->setDate(time());
         $pm->setCategory($folder);
         $pm->setText($text);
+        $pm->setHref($href);
         $pm->setRecipient($this->userRepository->find($recipientId));
         $pm->setSender($this->userRepository->find($senderId));
         $pm->setNew(true);

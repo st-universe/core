@@ -30,6 +30,10 @@ interface PrivateMessageInterface
 
     public function setCategoryId(int $categoryId): PrivateMessageInterface;
 
+    public function getHref(): ?string;
+
+    public function setHref(?string $href): PrivateMessageInterface;
+
     public function getCategory(): PrivateMessageFolderInterface;
 
     public function setCategory(PrivateMessageFolderInterface $folder): PrivateMessageInterface;

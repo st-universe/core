@@ -8,8 +8,8 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Communication\View\ShowKnComments\ShowKnComments;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Orm\Entity\KnCommentInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
@@ -99,7 +99,15 @@ final class PostKnComment implements ActionControllerInterface
                     $post->getId()
                 );
 
-                $this->privateMessageSender->send(GameEnum::USER_NOONE, $commentatorId, $text);
+                $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
+
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $commentatorId,
+                    $text,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                    $href
+                );
             }
         }
     }

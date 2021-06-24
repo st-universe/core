@@ -44,6 +44,9 @@ class PrivateMessage implements PrivateMessageInterface
     /** @Column(type="integer") */
     private $cat_id = 0;
 
+    /** @Column(type="string", nullable=true) */
+    private $href;
+
     /**
      * @ManyToOne(targetEntity="PrivateMessageFolder")
      * @JoinColumn(name="cat_id", referencedColumnName="id", onDelete="CASCADE")
@@ -132,6 +135,17 @@ class PrivateMessage implements PrivateMessageInterface
         return $this;
     }
 
+    public function getHref(): ?string
+    {
+        return $this->href;
+    }
+
+    public function setHref(?string $href): PrivateMessageInterface
+    {
+        $this->href = $href;
+        return $this;
+    }
+
     public function getCategory(): PrivateMessageFolderInterface
     {
         return $this->category;
@@ -164,5 +178,4 @@ class PrivateMessage implements PrivateMessageInterface
         $this->receivingUser = $recipient;
         return $this;
     }
-
 }
