@@ -25,6 +25,13 @@
                   <div style="padding: 10px;">
                     <span tal:content="structure bbcode:nl2br:post/getText">TEXT</span>
                   </div>
+                  <div tal:condition="post/getHref">
+                    <a href="${post/getHref}&sstr=${THIS/getSessionString}" title="ansehen"
+                      onmouseover="cp('forward${post/getId}','buttons/lupe2', 'png');"
+                      onmouseout="cp('forward${post/getId}','buttons/lupe1', 'png');">
+                      <img src="/assets/buttons/lupe1.png" style="height:32px;" name="forward${post/getId}" />
+                    </a>
+                  </div>
                 </div>
                 <div class="knGridUser">
                   <div class="segment">

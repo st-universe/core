@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Communication\View\ShowSingleKn;
+
+use Stu\Component\Communication\Kn\KnFactoryInterface;
+use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Control\ViewControllerInterface;
+use Stu\Orm\Repository\KnPostRepositoryInterface;
+
+final class ShowSingleKn implements ViewControllerInterface
+{
+    public const VIEW_IDENTIFIER = 'SHOW_SINGLE_KN';
+
+    private ShowSingleKnRequestInterface $showSingleKnRequest;
+
+    private KnPostRepositoryInterface $knPostRepository;
+
+    private KnFactoryInterface $knFactory;
+
+    public function __construct(
+        ShowSingleKnRequestInterface $showSingleKnRequest,
+        KnPostRepositoryInterface $knPostRepository,
+        KnFactoryInterface $knFactory
+    ) {
+        $this->showSingleKnRequest = $showSingleKnRequest;
+        $this->knPostRepository = $knPostRepository;
+        $this->knFactory = $knFactory;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $user = $game->getUser();
+        $post = $this->knPostRepository->find($this->showSingleKnRequest->getPostId());
+
+        if ($post === null) {
+            return;
+        }
+
+        $game->setPageTitle(_('Kommunikationsnetzwerk'));
+        $game->setTemplateFile('html/comm.xhtml');
+        $game->appendNavigationPart('comm.php', _('KommNet'));
+
+        $knPostings = [];
+        $knPostings[] = $this->knFactory->createKnItem(
+            $post,
+            $user
+        );
+
+        $game->setTemplateVar('KN_POSTINGS', $knPostings);
+    }
+}

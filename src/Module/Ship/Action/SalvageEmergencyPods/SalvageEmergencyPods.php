@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use request;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -27,7 +28,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipRepositoryInterface $shipRepository;
-    
+
     private ShipRemoverInterface $shipRemover;
 
     public function __construct(
@@ -73,18 +74,19 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $targetUserId = $target->getCrewList()->current()->getCrew()->getUser()->getId();
         if ($targetUserId !== $userId) {
             $this->privateMessageSender->send(
-                $userId,
+                GameEnum::USER_NOONE,
                 $targetUserId,
                 sprintf(
-                    _('Der Siedler hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an deine Kolonien überstellt.'),
+                    _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an deine Kolonien überstellt.'),
+                    $game->getUser()->getName(),
                     $target->getCrewCount()
                 ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
             );
         }
-        
+
         $this->shipCrewRepository->truncateByShip((int) $target->getId());
-        
+
         /**
          * 
          //remove entity if crew was on escape pods
@@ -95,8 +97,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             } else
             {
             }
-        */
-            
+         */
+
         $ship->setEps($ship->getEps() - 1);
 
         $this->shipRepository->save($ship);
