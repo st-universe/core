@@ -7,10 +7,11 @@
       <metal:macro metal:use-macro="html/commmacros.xhtml/kn" tal:define="navigation_macro string:knnavigation" />
     </div>
     <div style="width: 24%; float: left">
-      <div class="box">
+      <div class="box" tal:condition="exists: KN_START">
         <div class="box_title">Kommunikations-Netzwerk</div>
         <div class="box_body">
-          <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')" onmouseout="cp('writekn','buttons/knedit1', 'png')">
+          <a href="?WRITE_KN=1" onmouseover="cp('writekn','buttons/knedit2', 'png')"
+            onmouseout="cp('writekn','buttons/knedit1', 'png')">
             <img src="/assets/buttons/knedit1.png" title="+ Beitrag" name="writekn" />
             Beitrag schreiben
           </a>
@@ -18,10 +19,12 @@
           <strong>Übersicht</strong><br />
           <ul>
             <li tal:condition="HAS_NEW_KN_POSTINGS">
-              <span style="color: #cecece">&gt;</span> <a href="?user_mark=1"></a>Neue Beiträge ab Lesezeichen: <span tal:replace="NEW_KN_POSTING_COUNT">...</span>
+              <span style="color: #cecece">&gt;</span> <a href="?user_mark=1"></a>Neue Beiträge ab Lesezeichen: <span
+                tal:replace="NEW_KN_POSTING_COUNT">...</span>
             </li>
             <li>
-              <span style="color: #cecece">&gt;</span> <a href="comm.php">Alle Beiträge</a> (<a href="?mark=${KN_START}">aufsteigend</a>)
+              <span style="color: #cecece">&gt;</span> <a href="comm.php">Alle Beiträge</a> (<a
+                href="?mark=${KN_START}">aufsteigend</a>)
             </li>
           </ul>
           <div class="seperator"> </div>
@@ -36,7 +39,7 @@
               <span style="color: #cecece">&gt;</span> <a href="?SHOW_PLOTLIST=1">Liste aller Plots</a>
             </li>
             <li>
-              <span style="color: #cecece">&gt;</span>  <a href="?SHOW_CREATE_PLOT=1">Neuen Plot erstellen</a>
+              <span style="color: #cecece">&gt;</span> <a href="?SHOW_CREATE_PLOT=1">Neuen Plot erstellen</a>
             </li>
           </ul>
         </div>
@@ -44,4 +47,5 @@
     </div>
   </metal:macro>
 </metal:macro>
+
 </html>

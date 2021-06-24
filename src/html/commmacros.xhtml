@@ -386,7 +386,7 @@
                 <metal:block metal:use-macro="html/macros.xhtml/pmwindow" />
                 <metal:block metal:use-macro="html/macros.xhtml/userprofile" />
               </div>
-              <div class="segment">
+              <div class="segment" tal:condition="exists: KN_OFFSET">
                 <a href="?mark=${KN_OFFSET}&markid=${post/getId}&B_SET_KNMARK=1"
                   onmouseover="cp('mark${post/getId}','buttons/lese2', 'png')"
                   onmouseout="cp('mark${post/getId}','buttons/lese1', 'png')">
