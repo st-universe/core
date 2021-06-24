@@ -74,6 +74,11 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return $this->message->getText();
     }
 
+    public function getHref(): ?string
+    {
+        return $this->message->getHref();
+    }
+
     public function getNew(): bool
     {
         return $this->message->getNew();
