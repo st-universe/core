@@ -101,11 +101,14 @@ final class InterceptShip implements ActionControllerInterface
             $this->shipRepository->save($target);
         }
 
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+
         $this->privateMessageSender->send(
             $userId,
-            (int) $target->getUserId(),
+            (int) $target->getUser()->getId(),
             $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $href
         );
         if ($ship->getFleetId()) {
             foreach ($ship->getFleet()->getShips() as $fleetShip) {

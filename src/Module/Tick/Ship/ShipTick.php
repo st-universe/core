@@ -164,7 +164,7 @@ final class ShipTick implements ShipTickInterface
 
             $databaseEntry = $ship->getSystem()->getDatabaseEntry();
             if ($databaseEntry !== null) {
-                $userId = $ship->getUserId();
+                $userId = $ship->getUser()->getId();
                 $databaseEntryId = $databaseEntry->getId();
 
                 if ($databaseEntryId > 0 && $this->databaseUserRepository->exists($userId, $databaseEntryId) === false) {
@@ -193,15 +193,18 @@ final class ShipTick implements ShipTickInterface
             return;
         }
         $text = "Tickreport der " . $ship->getName() . "\n";
-        foreach ($this->msg as $key => $msg) {
+        foreach ($this->msg as $msg) {
             $text .= $msg . "\n";
         }
 
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+
         $this->privateMessageSender->send(
             GameEnum::USER_NOONE,
-            (int) $ship->getUserId(),
+            (int) $ship->getUser()->getId(),
             $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $href
         );
 
         $this->msg = [];
