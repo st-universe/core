@@ -105,7 +105,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->createQuery(
                 sprintf(
                     'SELECT p FROM %s p
-                    WHERE p.text like :content OR p.titel like :content
+                    WHERE UPPER(p.text) like UPPER(:content) OR UPPER(p.titel) like UPPER(:content)
                     ORDER BY p.id DESC',
                     KnPost::class
                 )

@@ -150,6 +150,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $load
                     );
                     if ($shipobj->getUser() !== $user) {
+
+                        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $shipobj->getId());
+
                         $this->privateMessageSender->send(
                             $userId,
                             (int) $shipobj->getUserId(),
@@ -160,7 +163,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $shipobj->getName(),
                                 $load
                             ),
-                            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                            $href
                         );
                     }
                 }
@@ -235,9 +239,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                 $load
                             );
                             if ($shipobj->getUser() !== $user) {
+
+                                $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $shipobj->getId());
+
                                 $this->privateMessageSender->send(
                                     $userId,
-                                    (int) $shipobj->getUserId(),
+                                    (int) $shipobj->getUser()->getId(),
                                     sprintf(
                                         _('Die Kolonie %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
                                         $colony->getName(),
@@ -245,7 +252,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                                         $shipobj->getName(),
                                         $load
                                     ),
-                                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+                                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+                                    $href
                                 );
                             }
                         }
