@@ -8,11 +8,12 @@ use NavPanel;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
-use Stu\Component\Ship\ShipStateEnum;
+use Stu\Exception\ShipDoesNotExistException;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Control\GameController;
 use Stu\Module\Ship\Lib\FleetNfsItem;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
@@ -79,10 +80,18 @@ final class ShowShip implements ViewControllerInterface
         $userId = $user->getId();
         $ownsCurrentColony = false;
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
-        );
+        try {
+            $ship = $this->shipLoader->getByIdAndUser(
+                request::indInt('id'),
+                $userId
+            );
+        } catch (ShipDoesNotExistException $e) {
+            $game->addInformation(_('Dieses Schiff existiert nicht!'));
+
+            $game->setView(GameController::DEFAULT_VIEW);
+
+            return;
+        }
 
         $colony = $this->colonyRepository->getByPosition(
             $ship->getSystem(),
