@@ -44,6 +44,26 @@
           </ul>
         </div>
       </div>
+      <br />
+      <div class="box">
+        <div class="box_title">Suche</div>
+        <div class="box_body">
+          <form method="post" action="comm.php">
+            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+            <ul>
+              <li>
+                <input type="text" name="search" style="width: 150px;" />
+              </li>
+              <li>
+                <input type="submit" class="button" value="nach Spieler-ID suchen" name="SHOW_USER_SEARCH" />
+              </li>
+              <li>
+                <input type="submit" class="button" value="nach Text suchen" name="SHOW_POST_SEARCH" />
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
     </div>
   </metal:macro>
 </metal:macro>

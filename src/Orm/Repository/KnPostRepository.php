@@ -46,7 +46,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     {
         return $this->findBy(
             ['user_id' => $userId],
-            );
+        );
     }
 
     public function getByPlot(RpgPlotInterface $plot, ?int $offset, ?int $limit): array
@@ -95,6 +95,20 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             )
             ->setMaxResults(3)
             ->setParameters(['postId' => $mark])
+            ->getResult();
+    }
+
+    public function searchByContent(string $content): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT p FROM %s p
+                    WHERE p.text like :content OR p.titel like :content',
+                    KnPost::class
+                )
+            )
+            ->setParameters(['content' => sprintf('%%%s%%', $content)])
             ->getResult();
     }
 }
