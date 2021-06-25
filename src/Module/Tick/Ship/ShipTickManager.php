@@ -12,6 +12,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -117,47 +118,64 @@ final class ShipTickManager implements ShipTickManagerInterface
                         PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
                     );
                 } else {
-                    $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($user->getId());
+                    $crewToQuit = $crewOnShips - $crewLimit;
 
-                    if ($randomShipId == null) {
-                        continue;
-                    }
+                    while ($crewToQuit > 0) {
+                        $quitAmount = $this->letCrewQuit($user);
 
-                    $randomShip = $this->shipRepository->find($randomShipId);
-                    $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
-                    //deactivate ship
-                    $this->shipSystemManager->deactivateAll($randomShip);
-                    $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+                        if ($quitAmount === null) {
+                            break;
+                        }
 
-                    $this->shipRepository->save($randomShip);
-
-                    $crewArray = [];
-                    foreach ($randomShip->getCrewlist() as $shipCrew) {
-                        $crewArray[] = $shipCrew->getCrew();
-                    }
-                    $randomShip->getCrewlist()->clear();
-
-                    //remove crew
-                    $this->shipCrewRepository->truncateByShip($randomShipId);
-                    foreach ($crewArray as $crew) {
-                        $this->crewRepository->delete($crew);
-                    }
-
-                    $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
-                    $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
-                        (int) $user->getId(),
-                        $msg,
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-                    );
-
-                    //do alert red stuff
-                    if ($doAlertRedCheck) {
-                        $this->doAlertRedCheck($randomShip);
+                        $crewToQuit -= $quitAmount;
                     }
                 }
             }
         }
+    }
+
+    private function letCrewQuit(UserInterface $user): ?int
+    {
+        $randomShipId = $this->shipRepository->getRandomShipIdWithCrewByUser($user->getId());
+
+        if ($randomShipId === null) {
+            return null;
+        }
+
+        $randomShip = $this->shipRepository->find($randomShipId);
+        $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
+        //deactivate ship
+        $this->shipSystemManager->deactivateAll($randomShip);
+        $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+
+        $this->shipRepository->save($randomShip);
+
+        $crewArray = [];
+        foreach ($randomShip->getCrewlist() as $shipCrew) {
+            $crewArray[] = $shipCrew->getCrew();
+        }
+        $randomShip->getCrewlist()->clear();
+
+        //remove crew
+        $this->shipCrewRepository->truncateByShip($randomShipId);
+        foreach ($crewArray as $crew) {
+            $this->crewRepository->delete($crew);
+        }
+
+        $msg = sprintf(_('Wegen Überschreitung des globalen Crewlimits hat die Crew der %s gemeutert und das Schiff verlassen'), $randomShip->getName());
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            (int) $user->getId(),
+            $msg,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
+
+        //do alert red stuff
+        if ($doAlertRedCheck) {
+            $this->doAlertRedCheck($randomShip);
+        }
+
+        return count($crewArray);
     }
 
     private function doAlertRedCheck($ship): void
