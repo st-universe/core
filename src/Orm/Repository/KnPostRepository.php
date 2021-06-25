@@ -46,6 +46,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
     {
         return $this->findBy(
             ['user_id' => $userId],
+            ['id' => 'desc']
         );
     }
 
@@ -104,7 +105,8 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
             ->createQuery(
                 sprintf(
                     'SELECT p FROM %s p
-                    WHERE p.text like :content OR p.titel like :content',
+                    WHERE p.text like :content OR p.titel like :content
+                    ORDER BY p.id DESC',
                     KnPost::class
                 )
             )

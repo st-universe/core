@@ -52,7 +52,7 @@
             <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
             <ul>
               <li>
-                <input type="text" name="search" style="width: 150px;" />
+                <input type="text" name="search" style="width: 150px;" onkeypress="return event.keyCode != 13;" />
               </li>
               <li>
                 <input type="submit" class="button" value="nach Spieler-ID suchen" name="SHOW_USER_SEARCH" />

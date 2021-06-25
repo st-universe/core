@@ -15,6 +15,8 @@ final class ShowPostSearchResult implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_POST_SEARCH';
 
+    public const MINIMUM_SEARCH_WORD_LENGTH = 3;
+
     private ShowSearchResultRequestInterface $showSearchResultRequest;
 
     private KnPostRepositoryInterface $knPostRepository;
@@ -35,13 +37,16 @@ final class ShowPostSearchResult implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        if (strlen($this->showSearchResultRequest->getSearchString()) < 3) {
-            return;
-        }
-
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setTemplateFile('html/comm.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
+
+        if (strlen($this->showSearchResultRequest->getSearchString()) < static::MINIMUM_SEARCH_WORD_LENGTH) {
+            $game->setTemplateVar('KN_POSTINGS', null);
+            $game->addInformation(sprintf('Der Suchbegriff muss mindestens %d Zeichen lang sein!', static::MINIMUM_SEARCH_WORD_LENGTH));
+
+            return;
+        }
 
         $game->setTemplateVar(
             'KN_POSTINGS',

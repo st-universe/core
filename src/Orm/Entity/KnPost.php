@@ -13,7 +13,8 @@ use Doctrine\Common\Collections\Collection;
  *     name="stu_kn",
  *     indexes={
  *         @Index(name="plot_idx", columns={"plot_id"}),
- *         @Index(name="kn_post_date_idx", columns={"date"})
+ *         @Index(name="kn_post_date_idx", columns={"date"}),
+ *         @Index(name="kn_post_user_idx", columns={"user_id"})
  *     }
  * )
  **/
