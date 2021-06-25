@@ -59,6 +59,10 @@ use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlot;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequest;
 use Stu\Module\Communication\View\ShowKnPlot\ShowKnPlotRequestInterface;
 use Stu\Module\Communication\View\ShowPlotList\ShowPlotList;
+use Stu\Module\Communication\View\ShowSearchResult\ShowPostSearchResult;
+use Stu\Module\Communication\View\ShowSearchResult\ShowSearchResultRequest;
+use Stu\Module\Communication\View\ShowSearchResult\ShowSearchResultRequestInterface;
+use Stu\Module\Communication\View\ShowSearchResult\ShowUserSearchResult;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKn;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequest;
 use Stu\Module\Communication\View\ShowSingleKn\ShowSingleKnRequestInterface;
@@ -85,6 +89,7 @@ return [
     CreateKnPlotRequestInterface::class => autowire(CreateKnPlotRequest::class),
     EndKnPlotRequestInterface::class => autowire(EndKnPlotRequest::class),
     ShowSingleKnRequestInterface::class => autowire(ShowSingleKnRequest::class),
+    ShowSearchResultRequestInterface::class => autowire(ShowSearchResultRequest::class),
     'COMMUNICATION_ACTIONS' => [
         SetKnMark::ACTION_IDENTIFIER => autowire(SetKnMark::class),
         AddKnPost::ACTION_IDENTIFIER => autowire(AddKnPost::class),
@@ -110,6 +115,8 @@ return [
         ShowWriteKn::VIEW_IDENTIFIER => autowire(ShowWriteKn::class),
         ShowEditKn::VIEW_IDENTIFIER => autowire(ShowEditKn::class),
         ShowKnRating::VIEW_IDENTIFIER => autowire(ShowKnRating::class),
-        ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class)
+        ShowSingleKn::VIEW_IDENTIFIER => autowire(ShowSingleKn::class),
+        ShowPostSearchResult::VIEW_IDENTIFIER => autowire(ShowPostSearchResult::class),
+        ShowUserSearchResult::VIEW_IDENTIFIER => autowire(ShowUserSearchResult::class)
     ]
 ];
