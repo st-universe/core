@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Exception\AccessViolation;
+use Stu\Exception\ShipDoesNotExistException;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -22,7 +23,11 @@ final class ShipLoader implements ShipLoaderInterface
     {
         $ship = $this->shipRepository->find($shipId);
 
-        if ($ship === null || $ship->getUserId() != $userId) {
+        if ($ship === null) {
+            throw new ShipDoesNotExistException();
+        }
+
+        if ($ship->getUserId() != $userId) {
             throw new AccessViolation();
         }
 
