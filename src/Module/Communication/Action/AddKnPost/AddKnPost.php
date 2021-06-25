@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
+use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -27,18 +32,22 @@ final class AddKnPost implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->userRepository = $userRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -84,6 +93,8 @@ final class AddKnPost implements ActionControllerInterface
 
         $this->knPostRepository->save($post);
 
+        $this->notifyPlotMembers($post, $plot);
+
         $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
 
         if ($mark) {
@@ -93,6 +104,31 @@ final class AddKnPost implements ActionControllerInterface
         }
 
         $game->setView(GameController::DEFAULT_VIEW);
+    }
+
+    private function notifyPlotMembers(KnPostInterface $post, RpgPlotInterface $plot): void
+    {
+        foreach ($plot->getMembers() as $member) {
+            if ($member->getUser() !== $post->getUser()) {
+                $user = $member->getUser();
+
+                $text = sprintf(
+                    _('Der Spieler %s hat einen neuen Beitrag zum Plot "%s" hinzugefügt.'),
+                    $post->getUser()->getName(),
+                    $plot->getTitle()
+                );
+
+                $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
+
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $user->getId(),
+                    $text,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                    $href
+                );
+            }
+        }
     }
 
     public function performSessionCheck(): bool
