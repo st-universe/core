@@ -129,11 +129,14 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformationMergeDown($msg);
 
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getTraktorShip()->getId());
+
         $this->privateMessageSender->send(
             (int) $ship->getUserId(),
             (int) $ship->getTraktorShip()->getUserId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $href
         );
     }
 
@@ -166,11 +169,14 @@ final class EscapeTractorBeam implements ActionControllerInterface
             );
         } else {
 
+            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getTraktorShip()->getId());
+
             $this->privateMessageSender->send(
                 (int) $ship->getUserId(),
                 (int) $ship->getTraktorShip()->getUserId(),
                 sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $shipName),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                $href
             );
         }
     }

@@ -356,15 +356,18 @@ final class ColonyTick implements ColonyTickInterface
             return;
         }
         $text = "Tickreport der Kolonie " . $colony->getName() . "\n";
-        foreach ($this->msg as $key => $msg) {
+        foreach ($this->msg as $msg) {
             $text .= $msg . "\n";
         }
+
+        $href = sprintf(_('colony.php?SHOW_COLONY=1&id=%d'), $colony->getId());
 
         $this->privateMessageSender->send(
             GameEnum::USER_NOONE,
             (int) $colony->getUserId(),
             $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
+            $href
         );
 
         $this->msg = [];

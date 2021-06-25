@@ -71,6 +71,8 @@ final class ShowScan implements ViewControllerInterface
             $game->checkDatabaseItem($target->getRump()->getDatabaseId());
         }
 
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+
         $this->privateMessageSender->send(
             GameEnum::USER_NOONE,
             (int) $target->getUserId(),
@@ -81,7 +83,8 @@ final class ShowScan implements ViewControllerInterface
                 $target->getName(),
                 $target->getSectorString()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $href
         );
 
         $game->setTemplateVar('targetShip', $target);

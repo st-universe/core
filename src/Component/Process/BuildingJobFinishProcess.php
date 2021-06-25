@@ -52,11 +52,14 @@ final class BuildingJobFinishProcess implements BuildingJobFinishProcessInterfac
             $field->getFieldId()
         );
 
+        $href = sprintf(_('colony.php?SHOW_COLONY=1&id=%d'), $colony->getId());
+
         $this->privateMessageSender->send(
             GameEnum::USER_NOONE,
             (int)$colony->getUserId(),
             $txt,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
+            $href
         );
     }
 }
