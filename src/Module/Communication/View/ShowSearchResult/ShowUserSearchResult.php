@@ -46,6 +46,10 @@ final class ShowUserSearchResult implements ViewControllerInterface
             return;
         }
 
+        $posts = $this->knPostRepository->getByUser($this->showSearchResultRequest->getSearchId());
+
+        $game->addInformation(sprintf('Es wurden %d Beiträge gefunden', count($posts)));
+
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
@@ -55,7 +59,7 @@ final class ShowUserSearchResult implements ViewControllerInterface
                         $user
                     );
                 },
-                $this->knPostRepository->getByUser($this->showSearchResultRequest->getSearchId())
+                $posts
             )
         );
     }
