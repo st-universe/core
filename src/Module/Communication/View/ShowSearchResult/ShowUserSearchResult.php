@@ -35,13 +35,16 @@ final class ShowUserSearchResult implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        if ($this->showSearchResultRequest->getSearchId() == 0) {
-            return;
-        }
-
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
         $game->setTemplateFile('html/comm.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
+
+        if ($this->showSearchResultRequest->getSearchId() == 0) {
+            $game->setTemplateVar('KN_POSTINGS', null);
+            $game->addInformation('Bitte eine Spieler-ID angeben!');
+
+            return;
+        }
 
         $game->setTemplateVar(
             'KN_POSTINGS',
