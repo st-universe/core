@@ -88,7 +88,7 @@ final class ShowShip implements ViewControllerInterface
         } catch (ShipDoesNotExistException $e) {
             $game->addInformation(_('Dieses Schiff existiert nicht!'));
 
-            $game->setView(GameController::DEFAULT_VIEW);
+            $game->setTemplateFile('html/ship.xhtml');
 
             return;
         }
