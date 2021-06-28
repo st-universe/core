@@ -1,7 +1,6 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<metal:macro metal:fill-slot="body">
-		<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<tal:block tal:define="FIGHT_RESULTS FIGHT_RESULTS|false">
 			<div tal:condition="FIGHT_RESULTS" style="width: 150px;">
@@ -25,6 +24,7 @@
 			</div>
 		</tal:block>
 		<tal:block tal:condition="exists: SHIP">
+			<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
 			<form action="ship.php" method="post" name="shipform" id="shipform">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
 				<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
