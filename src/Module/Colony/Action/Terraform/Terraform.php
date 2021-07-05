@@ -148,13 +148,16 @@ final class Terraform implements ActionControllerInterface
 
         $this->colonyRepository->save($colony);
 
-        $message = $this->messageFactory->createTerraformingJobProcessMessage()
-            ->setTerraformingId($obj->getId());
-
-        $this->delayedJobPublisher->publish(
-            $message,
-            $terraf->getDuration()
-        );
+        /**
+         * 
+         *$message = $this->messageFactory->createTerraformingJobProcessMessage()
+         *    ->setTerraformingId($obj->getId());
+         *
+         *$this->delayedJobPublisher->publish(
+         *    $message,
+         *    $terraf->getDuration()
+         *);
+         */
 
         $game->addInformationf(
             _('%s wird durchgeführt - Fertigstellung: %s'),

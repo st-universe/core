@@ -241,13 +241,15 @@ final class BuildOnField implements ActionControllerInterface
 
         $this->planetFieldRepository->save($field);
 
-        $message = $this->messageFactory->createBuildingJobProcessMessage()
-            ->setPlanetFieldId($field->getId());
 
-        $this->delayedJobPublisher->publish(
-            $message,
-            $building->getBuildtime()
-        );
+        /**
+         *$message = $this->messageFactory->createBuildingJobProcessMessage()
+         *    ->setPlanetFieldId($field->getId());
+         *$this->delayedJobPublisher->publish(
+         *    $message,
+         *    $building->getBuildtime()
+         *);
+         */
 
         $game->addInformationf(
             _('%s wird gebaut - Fertigstellung: %s'),
