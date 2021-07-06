@@ -194,7 +194,7 @@ $builder->addDefinitions(
     require_once __DIR__ . '/../Component/Ship/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__ . '/../Component/Logging/services.php'
+    require_once __DIR__ . '/../Module/Logging/services.php'
 );
 $builder->addDefinitions(
     require_once __DIR__ . '/../Component/Admin/services.php'
