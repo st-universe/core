@@ -20,8 +20,6 @@ use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Redis;
-use Stu\Lib\LoggerUtil;
-use Stu\Lib\LoggerUtilInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -65,7 +63,6 @@ $builder->addDefinitions([
         }
     },
     SessionInterface::class => autowire(Session::class),
-    LoggerUtilInterface::class => autowire(LoggerUtil::class),
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);
         $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
@@ -195,6 +192,9 @@ $builder->addDefinitions(
 );
 $builder->addDefinitions(
     require_once __DIR__ . '/../Component/Ship/services.php'
+);
+$builder->addDefinitions(
+    require_once __DIR__ . '/../Component/Logging/services.php'
 );
 $builder->addDefinitions(
     require_once __DIR__ . '/../Component/Admin/services.php'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Lib;
+namespace Stu\Component\Logging;
 
 final class LoggerEnum
 {
