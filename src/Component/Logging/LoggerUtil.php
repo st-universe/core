@@ -19,7 +19,7 @@ final class LoggerUtil implements LoggerUtilInterface
 
     private bool $doLog;
 
-    function __construct(ConfigInterface $config)
+    public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
     }
