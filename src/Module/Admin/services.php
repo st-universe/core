@@ -27,6 +27,7 @@ use Stu\Module\Admin\View\Playerlist\Playerlist;
 use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
 use Stu\Module\Admin\Action\Ticks\DoManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
+use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
@@ -46,7 +47,8 @@ return [
         DoColonyCorrection::ACTION_IDENTIFIER => autowire(DoColonyCorrection::class),
         DoManualColonyTick::ACTION_IDENTIFIER => autowire(DoManualColonyTick::class),
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class),
-        DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class)
+        DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class),
+        DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class),
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
