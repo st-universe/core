@@ -228,6 +228,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getPlayerShipsForTick(): iterable
     {
+        //TODO only ships with crew!, rename method
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s WHERE s.user_id > 100 AND s.plans_id > 0',

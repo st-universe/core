@@ -27,7 +27,7 @@ final class ShipLoader implements ShipLoaderInterface
             throw new ShipDoesNotExistException();
         }
 
-        if ($ship->getUserId() != $userId) {
+        if ($ship->getUser()->getId() != $userId) {
             throw new AccessViolation();
         }
 
