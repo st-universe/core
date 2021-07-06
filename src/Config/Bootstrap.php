@@ -20,6 +20,8 @@ use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Redis;
+use Stu\Lib\LoggerUtil;
+use Stu\Lib\LoggerUtilInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Module\Control\GameController;
 use Stu\Module\Control\GameControllerInterface;
@@ -32,13 +34,13 @@ use Usox\IpIntel\IpIntel;
 use Usox\IpIntel\IpIntelInterface;
 use function DI\autowire;
 
-require_once __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $builder = new ContainerBuilder();
 
 $builder->addDefinitions([
     ConfigInterface::class => function (): ConfigInterface {
-        $path = __DIR__.'/../../';
+        $path = __DIR__ . '/../../';
         return new Config(
             [
                 sprintf('%s/config.dist.json', $path),
@@ -63,6 +65,7 @@ $builder->addDefinitions([
         }
     },
     SessionInterface::class => autowire(Session::class),
+    LoggerUtilInterface::class => autowire(LoggerUtil::class),
     EntityManagerInterface::class => function (ContainerInterface $c): EntityManagerInterface {
         $config = $c->get(ConfigInterface::class);
         $cacheDriver = new DoctrineCacheBridge($c->get(CacheItemPoolInterface::class));
@@ -85,7 +88,7 @@ $builder->addDefinitions([
                 'driver' => 'pdo_pgsql',
                 'user' => $config->get('db.user'),
                 'password' => $config->get('db.pass'),
-                'dbname'=> $config->get('db.database'),
+                'dbname' => $config->get('db.database'),
                 'host'  => $config->get('db.host'),
                 'charset' => 'utf8',
             ],
@@ -116,8 +119,7 @@ $builder->addDefinitions([
             ->setOptionValue(ComputerPasswordGenerator::OPTION_LOWER_CASE, true)
             ->setOptionValue(ComputerPasswordGenerator::OPTION_NUMBERS, true)
             ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
-            ->setOptionValue(ComputerPasswordGenerator::OPTION_LENGTH, 10)
-        ;
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_LENGTH, 10);
 
         return $generator;
     },
@@ -132,96 +134,96 @@ $builder->addDefinitions([
 ]);
 
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Database/services.php'
+    require_once __DIR__ . '/../Module/Database/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Research/services.php'
+    require_once __DIR__ . '/../Module/Research/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Maindesk/services.php'
+    require_once __DIR__ . '/../Module/Maindesk/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Crew/services.php'
+    require_once __DIR__ . '/../Module/Crew/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Notes/services.php'
+    require_once __DIR__ . '/../Module/Notes/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/History/services.php'
+    require_once __DIR__ . '/../Module/History/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/PlayerProfile/services.php'
+    require_once __DIR__ . '/../Module/PlayerProfile/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Trade/services.php'
+    require_once __DIR__ . '/../Module/Trade/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/PlayerSetting/services.php'
+    require_once __DIR__ . '/../Module/PlayerSetting/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Ship/services.php'
+    require_once __DIR__ . '/../Module/Ship/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Alliance/services.php'
+    require_once __DIR__ . '/../Module/Alliance/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Colony/services.php'
+    require_once __DIR__ . '/../Module/Colony/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Starmap/services.php'
+    require_once __DIR__ . '/../Module/Starmap/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Index/services.php'
+    require_once __DIR__ . '/../Module/Index/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Building/services.php'
+    require_once __DIR__ . '/../Module/Building/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Communication/services.php'
+    require_once __DIR__ . '/../Module/Communication/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Admin/services.php'
+    require_once __DIR__ . '/../Module/Admin/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Api/services.php'
+    require_once __DIR__ . '/../Module/Api/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Message/services.php'
+    require_once __DIR__ . '/../Module/Message/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Player/services.php'
+    require_once __DIR__ . '/../Component/Player/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Ship/services.php'
+    require_once __DIR__ . '/../Component/Ship/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Admin/services.php'
+    require_once __DIR__ . '/../Component/Admin/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Communication/services.php'
+    require_once __DIR__ . '/../Component/Communication/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Building/services.php'
+    require_once __DIR__ . '/../Component/Building/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Colony/services.php'
+    require_once __DIR__ . '/../Component/Colony/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Queue/services.php'
+    require_once __DIR__ . '/../Component/Queue/services.php'
 );
 $builder->addDefinitions(
-    require_once __DIR__.'/../Component/Process/services.php'
+    require_once __DIR__ . '/../Component/Process/services.php'
 );
 
 $builder->addDefinitions([
     'maintenance_handler' => require_once __DIR__ . '/../Module/Maintenance/services.php',
 ]);
 $builder->addDefinitions(
-    require_once __DIR__.'/../Module/Tick/services.php'
+    require_once __DIR__ . '/../Module/Tick/services.php'
 );
 
 $builder->addDefinitions(
-    require_once __DIR__.'/../Orm/Repository/services.php',
+    require_once __DIR__ . '/../Orm/Repository/services.php',
 );
 
 /**

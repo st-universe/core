@@ -13,7 +13,10 @@ class ColonyProduction
     function __construct(&$data = array())
     {
         $this->data = $data;
-        $this->data['gc'] += $this->data['pc'];
+
+        if (!empty($data)) {
+            $this->data['gc'] += $this->data['pc'];
+        }
     }
 
     public function getGoodId()
@@ -99,5 +102,4 @@ class ColonyProduction
 
         return $container->get(CommodityRepositoryInterface::class)->find((int) $this->getGoodId());
     }
-
 }
