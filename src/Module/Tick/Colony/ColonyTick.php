@@ -95,7 +95,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->loggerUtil = new \Stu\Module\Logging\LoggerUtil($config);
+        $this->loggerUtil = new LoggerUtil($config);
     }
 
     public function work(ColonyInterface $colony): void
