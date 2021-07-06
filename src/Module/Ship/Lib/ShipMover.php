@@ -558,8 +558,8 @@ final class ShipMover implements ShipMoverInterface
     {
         $this->addInformation($msg);
         $this->privateMessageSender->send(
-            (int) $ship->getUserId(),
-            (int) $ship->getTraktorShip()->getUserId(),
+            (int) $ship->getUser()->getId(),
+            (int) $ship->getTraktorShip()->getUser()->getId(),
             sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getSectorString()),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
@@ -577,14 +577,18 @@ final class ShipMover implements ShipMoverInterface
         if ($ship === $leadShip) {
             $this->updateDestination($ship->getPosX(), $ship->getPosY());
         } else {
-            $this->leaveFleet($ship);
+            $this->leaveFleet($ship, $msg !== null);
         }
     }
 
-    private function leaveFleet(ShipInterface $ship)
+    private function leaveFleet(ShipInterface $ship, bool $addLeaveInfo = true)
     {
         $ship->leaveFleet();
-        $this->addInformation(sprintf(_('Die %s hat die Flotte verlassen (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
+
+        if ($addLeaveInfo) {
+
+            $this->addInformation(sprintf(_('Die %s hat die Flotte verlassen (%d|%d)'), $ship->getName(), $ship->getPosX(), $ship->getPosY()));
+        }
     }
 
     private function getNextField(ShipInterface $leadShip, $flightMethod)
