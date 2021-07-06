@@ -93,7 +93,9 @@ final class AddKnPost implements ActionControllerInterface
 
         $this->knPostRepository->save($post);
 
-        $this->notifyPlotMembers($post, $plot);
+        if ($plot !== null) {
+            $this->notifyPlotMembers($post, $plot);
+        }
 
         $game->addInformation(_('Der Beitrag wurde hinzugefügt'));
 
