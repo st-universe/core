@@ -31,7 +31,7 @@ final class ApplyDamage implements ApplyDamageInterface
         $msg = [];
         if ($ship->getShieldState()) {
             $damage = (int) $damage_wrapper->getDamageRelative($ship, ShipEnum::DAMAGE_MODE_SHIELDS);
-            if ($damage > $ship->getShield()) {
+            if ($damage >= $ship->getShield()) {
                 $msg[] = "- Schildschaden: " . $ship->getShield();
                 $msg[] = "-- Schilde brechen zusammen!";
 
