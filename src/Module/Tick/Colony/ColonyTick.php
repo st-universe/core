@@ -3,10 +3,12 @@
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
+use Stu\Component\Logging\LoggerUtil;
 use Stu\Component\Logging\LoggerUtilInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -77,7 +79,7 @@ final class ColonyTick implements ColonyTickInterface
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        LoggerUtilInterface $loggerUtil
+        ConfigInterface $config
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -93,7 +95,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = new LoggerUtil($config);
     }
 
     public function work(ColonyInterface $colony): void
