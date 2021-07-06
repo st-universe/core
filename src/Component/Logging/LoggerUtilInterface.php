@@ -1,6 +1,6 @@
 <?php
 
-namespace Stu\Component\Logging;
+namespace Stu\Module\Logging;
 
 interface LoggerUtilInterface
 {
