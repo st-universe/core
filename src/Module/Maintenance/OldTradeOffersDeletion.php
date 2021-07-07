@@ -93,6 +93,8 @@ final class OldTradeOffersDeletion implements MaintenanceHandlerInterface
 
     private function sendMessage(int $userId, array $pmArray)
     {
+        $pm = '';
+
         foreach ($pmArray as $value) {
             $pm .= $value . "\n";
         }
