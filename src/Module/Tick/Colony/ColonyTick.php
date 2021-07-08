@@ -98,7 +98,10 @@ final class ColonyTick implements ColonyTickInterface
 
     public function work(ColonyInterface $colony): void
     {
-        $startTime = microtime(true);
+        $this->loggerUtil->init('tick');
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
 
         $this->mainLoop($colony);
 
@@ -111,8 +114,10 @@ final class ColonyTick implements ColonyTickInterface
 
         $endTime = microtime(true);
 
-        $this->loggerUtil->init('tick');
-        $this->loggerUtil->log(sprintf("Colony-Id: %6d, seconds: %F", $colony->getId(), $endTime - $startTime));
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("Colony-Id: %6d, seconds: %F", $colony->getId(), $endTime - $startTime));
+        }
     }
 
     private function mainLoop(ColonyInterface $colony)
