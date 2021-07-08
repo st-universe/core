@@ -216,6 +216,9 @@ final class ColonyTick implements ColonyTickInterface
         $sum = $colony->getStorageSum();
         $storage = $colony->getStorage();
 
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
         foreach ($production as $commodityId => $obj) {
             $amount = $obj->getProduction();
 
@@ -247,6 +250,14 @@ final class ColonyTick implements ColonyTickInterface
                 $sum -= $amount;
             }
         }
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tforeach1, seconds: %F", $endTime - $startTime));
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
         foreach ($production as $commodityId => $obj) {
             if ($obj->getProduction() <= 0 || !$obj->getGood()->isSaveable()) {
                 continue;
@@ -269,7 +280,14 @@ final class ColonyTick implements ColonyTickInterface
             );
             $sum += $obj->getProduction();
         }
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tforeach2, seconds: %F", $endTime - $startTime));
+        }
 
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
         $current_research = $this->researchedRepository->getCurrentResearch($colony->getUserId());
 
         if ($current_research && $current_research->getActive()) {
@@ -290,6 +308,11 @@ final class ColonyTick implements ColonyTickInterface
                 );
             }
         }
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tresearch, seconds: %F", $endTime - $startTime));
+        }
+
         if ($colony->getPopulation() > $colony->getMaxBev()) {
             $this->proceedEmigration($colony);
             return;
@@ -312,7 +335,7 @@ final class ColonyTick implements ColonyTickInterface
 
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\storage, seconds: %F", $endTime - $startTime));
+            $this->loggerUtil->log(sprintf("\tstorage, seconds: %F", $endTime - $startTime));
         }
     }
 
@@ -342,7 +365,14 @@ final class ColonyTick implements ColonyTickInterface
     private function proceedFood(ColonyInterface $colony): array
     {
         $foodvalue = $colony->getBevFood();
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
         $prod = &$colony->getProductionRaw();
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tgetProd, seconds: %F", $endTime - $startTime));
+        }
         if (!array_key_exists(CommodityTypeEnum::GOOD_FOOD, $prod)) {
             $obj = new ColonyProduction();
             $obj->setGoodId(CommodityTypeEnum::GOOD_FOOD);
