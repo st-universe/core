@@ -294,7 +294,8 @@ final class ColonyTick implements ColonyTickInterface
             $this->colonyStorageManager->upperStorage(
                 $colony,
                 $commodity,
-                $obj->getProduction()
+                $obj->getProduction(),
+                false
             );
             if ($this->loggerUtil->doLog()) {
                 $endTimeM = microtime(true);
