@@ -48,6 +48,11 @@ final class LoggerUtil implements LoggerUtilInterface
         return $this->doLog;
     }
 
+    public function doLog(): bool
+    {
+        return $this->doLog;
+    }
+
     public function log(string $message): void
     {
         if ($this->doLog) {
