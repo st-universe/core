@@ -112,14 +112,14 @@ final class ColonyTick implements ColonyTickInterface
         $this->proceedModules($colony);
         $this->sendMessages($colony);
 
-        if ($this->loggerUtil->doLog()) {
-            $startTimeF = microtime(true);
-        }
-        $this->colonyStorageManager->flush();
-        if ($this->loggerUtil->doLog()) {
-            $endTimeF = microtime(true);
-            $this->loggerUtil->log(sprintf("\tflush, seconds: %F", $endTimeF - $startTimeF));
-        }
+        //if ($this->loggerUtil->doLog()) {
+        //  $startTimeF = microtime(true);
+        //}
+        //$this->colonyStorageManager->flush();
+        //if ($this->loggerUtil->doLog()) {
+        //    $endTimeF = microtime(true);
+        //    $this->loggerUtil->log(sprintf("\tflush, seconds: %F", $endTimeF - $startTimeF));
+        //}
 
         $endTime = microtime(true);
 
