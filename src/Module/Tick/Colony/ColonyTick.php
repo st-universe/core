@@ -101,6 +101,7 @@ final class ColonyTick implements ColonyTickInterface
         $startTime = microtime(true);
 
         $this->mainLoop($colony);
+
         $this->proceedStorage($colony);
 
         $this->colonyRepository->save($colony);
@@ -116,6 +117,10 @@ final class ColonyTick implements ColonyTickInterface
 
     private function mainLoop(ColonyInterface $colony)
     {
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
+
         $i = 1;
         $storage = $colony->getStorage();
 
@@ -154,6 +159,11 @@ final class ColonyTick implements ColonyTickInterface
             break;
         }
         $colony->setEps(min($colony->getMaxEps(), $colony->getEps() + $colony->getEpsProduction()));
+
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmainLoop, seconds: %F", $endTime - $startTime));
+        }
     }
 
     private function deactivateBuilding(ColonyInterface $colony, PlanetFieldInterface $field, int $commodityId): void
@@ -192,6 +202,10 @@ final class ColonyTick implements ColonyTickInterface
 
     private function proceedStorage(ColonyInterface $colony): void
     {
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
+
         $emigrated = 0;
         $production = $this->proceedFood($colony);
         $sum = $colony->getStorageSum();
@@ -289,6 +303,11 @@ final class ColonyTick implements ColonyTickInterface
         }
         if ($emigrated == 0) {
             $this->proceedImmigration($colony);
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\storage, seconds: %F", $endTime - $startTime));
         }
     }
 
