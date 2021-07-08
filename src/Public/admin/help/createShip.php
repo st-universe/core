@@ -62,6 +62,7 @@ if ($torptypeId > 0 || $noTorps) {
             $crewCreator->create($userId);
         }
         $crewCreator->createShipCrew($ship);
+        $db->flush();
     }
 
     echo $shipcount . ' Schiff(e) erstellt, mit Wurstblinkern!';

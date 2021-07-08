@@ -21,7 +21,8 @@ final class ColonyCorrector implements ColonyCorrectorInterface
         $this->entityManager = $entityManager;
     }
 
-    public function correct(): void {
+    public function correct(): void
+    {
         $database = $this->entityManager->getConnection();
 
         foreach ($this->colonyRepository->getColonized() as $colony) {
@@ -31,7 +32,7 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 'SELECT SUM(a.bev_use) FROM stu_buildings a LEFT
                     JOIN stu_colonies_fielddata scf on a.id = scf.buildings_id
                     WHERE scf.aktiv = 1 AND scf.colonies_id = :colonyId',
-                    ['colonyId' => $colonyId],
+                ['colonyId' => $colonyId],
                 0
             );
             $housing = (int) $database->fetchColumn(
@@ -82,5 +83,7 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 $this->colonyRepository->save($colony);
             }
         }
+
+        $this->entityManager->flush();
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Ticks;
 
 use request;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -25,16 +26,20 @@ final class DoManualColonyTick implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ColonyTickManagerInterface $colonyTickManager,
         ColonyTickInterface $colonyTick,
         ColonyRepositoryInterface $colonyRepository,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->colonyTickManager = $colonyTickManager;
         $this->colonyTick = $colonyTick;
         $this->colonyRepository = $colonyRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,6 +63,7 @@ final class DoManualColonyTick implements ActionControllerInterface
             $colony = $this->colonyRepository->find($colonyId);
 
             $this->colonyTick->work($colony, $commodityArray);
+            $this->entityManager->flush();
 
             $game->addInformation("Der Kolonie-Tick für diese Kolonie wurde durchgeführt!");
         }

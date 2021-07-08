@@ -18,4 +18,5 @@ foreach ($handlerList as $process) {
     $process->work();
 }
 
+$db->flush();
 $db->commit();
