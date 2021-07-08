@@ -259,7 +259,12 @@ final class ColonyTick implements ColonyTickInterface
             $startTime = microtime(true);
         }
         foreach ($production as $commodityId => $obj) {
-            if ($obj->getProduction() <= 0 || !$this->commodityArray[$commodityId]->isSaveable()) {
+            if ($this->loggerUtil->doLog()) {
+                $startTimeC = microtime(true);
+            }
+
+            $commodity = $this->commodityArray[$commodityId];
+            if ($obj->getProduction() <= 0 || !$commodity->isSaveable()) {
                 continue;
             }
             if ($sum >= $colony->getMaxStorage()) {
@@ -268,17 +273,21 @@ final class ColonyTick implements ColonyTickInterface
             if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
                 $this->colonyStorageManager->upperStorage(
                     $colony,
-                    $this->commodityArray[$commodityId],
+                    $commodity,
                     $colony->getMaxStorage() - $sum
                 );
                 break;
             }
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $this->commodityArray[$commodityId],
+                $commodity,
                 $obj->getProduction()
             );
             $sum += $obj->getProduction();
+            if ($this->loggerUtil->doLog()) {
+                $endTimeC = microtime(true);
+                $this->loggerUtil->log(sprintf("\t\tcommodity: %s, seconds: %F", $commodity->getName(), $endTimeC - $startTimeC));
+            }
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
