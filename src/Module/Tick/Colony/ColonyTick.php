@@ -17,9 +17,9 @@ use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\CommodityInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
@@ -29,8 +29,6 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 final class ColonyTick implements ColonyTickInterface
 {
     public const PEOPLE_FOOD = 7;
-
-    private CommodityRepositoryInterface $commodityRepository;
 
     private ResearchedRepositoryInterface $researchedRepository;
 
@@ -63,7 +61,6 @@ final class ColonyTick implements ColonyTickInterface
     private array $msg = [];
 
     public function __construct(
-        CommodityRepositoryInterface $commodityRepository,
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
@@ -79,7 +76,6 @@ final class ColonyTick implements ColonyTickInterface
         ShipSystemManagerInterface $shipSystemManager,
         LoggerUtilInterface $loggerUtil
     ) {
-        $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->moduleQueueRepository = $moduleQueueRepository;
@@ -143,13 +139,13 @@ final class ColonyTick implements ColonyTickInterface
 
                 $field = $this->getBuildingToDeactivateByGood($colony, $commodityId);
                 //echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
-                $this->deactivateBuilding($colony, $field, $commodityId);
+                $this->deactivateBuilding($colony, $field, $pro->getGood());
                 $rewind = 1;
             }
             if ($rewind == 0 && $colony->getEpsProduction() < 0 && $colony->getEps() + $colony->getEpsProduction() < 0) {
                 $field = $this->getBuildingToDeactivateByEpsUsage($colony,);
                 //echo $i." hit by eps ".$field->getFieldId()." - complete usage ".$colony->getEpsProduction()." - usage ".$field->getBuilding()->getEpsProduction()." MT ".microtime()."\n";
-                $this->deactivateBuilding($colony, $field, 0);
+                $this->deactivateBuilding($colony, $field);
                 $rewind = 1;
             }
             if ($rewind == 1) {
@@ -171,12 +167,12 @@ final class ColonyTick implements ColonyTickInterface
         }
     }
 
-    private function deactivateBuilding(ColonyInterface $colony, PlanetFieldInterface $field, int $commodityId): void
+    private function deactivateBuilding(ColonyInterface $colony, PlanetFieldInterface $field, CommodityInterface $commodity = null): void
     {
-        if ($commodityId === 0) {
+        if ($commodity === null) {
             $ext = "Energie";
         } else {
-            $ext = $this->commodityRepository->find($commodityId)->getName();
+            $ext = $commodity->getName();
         }
         $building = $field->getBuilding();
 
@@ -244,7 +240,7 @@ final class ColonyTick implements ColonyTickInterface
             if ($amount > 0) {
                 $this->colonyStorageManager->lowerStorage(
                     $colony,
-                    $this->commodityRepository->find($commodityId),
+                    $obj->getGood(),
                     $amount
                 );
                 $sum -= $amount;
@@ -268,14 +264,14 @@ final class ColonyTick implements ColonyTickInterface
             if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
                 $this->colonyStorageManager->upperStorage(
                     $colony,
-                    $this->commodityRepository->find($commodityId),
+                    $obj->getGood(),
                     $colony->getMaxStorage() - $sum
                 );
                 break;
             }
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $this->commodityRepository->find($commodityId),
+                $obj->getGood(),
                 $obj->getProduction()
             );
             $sum += $obj->getProduction();
