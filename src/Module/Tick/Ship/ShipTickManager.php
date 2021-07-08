@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -38,6 +39,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRemoverInterface $shipRemover,
@@ -47,7 +50,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         CrewRepositoryInterface $crewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        AlertRedHelperInterface $alertRedHelper
+        AlertRedHelperInterface $alertRedHelper,
+        EntityManagerInterface $entityManager
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
@@ -58,6 +62,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->alertRedHelper = $alertRedHelper;
+        $this->entityManager = $entityManager;
     }
 
     public function work(): void
@@ -75,6 +80,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
         $this->handleNPCShips();
         $this->lowerTrumfieldHuell();
+
+        $this->entityManager->flush();
     }
 
     private function removeEmptyEscapePods(): void
