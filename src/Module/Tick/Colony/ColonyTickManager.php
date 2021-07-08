@@ -13,6 +13,7 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\CrewTrainingRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -36,6 +37,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     public function __construct(
         ColonyTickInterface $colonyTick,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
@@ -44,7 +47,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyTick = $colonyTick;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
@@ -54,6 +58,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->privateMessageSender = $privateMessageSender;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function work(int $tickId): void
@@ -67,6 +72,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private function colonyLoop(int $tickId): void
     {
+        $commodityArray = $this->commodityRepository->getAll();
         $colonyList = $this->colonyRepository->getByTick($tickId);
 
         foreach ($colonyList as $colony) {
@@ -74,7 +80,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
             //handle colony only if vacation mode not active
             if (!$colony->getUser()->isVacationRequestOldEnough()) {
-                $this->colonyTick->work($colony);
+                $this->colonyTick->work($colony, $commodityArray);
             }
         }
     }
