@@ -107,7 +107,7 @@ final class ColonyTick implements ColonyTickInterface
 
         $this->proceedStorage($colony);
 
-        $this->colonyRepository->save($colony);
+        $this->colonyRepository->save($colony, false);
 
         $this->proceedModules($colony);
         $this->sendMessages($colony);
