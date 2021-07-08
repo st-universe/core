@@ -17,7 +17,7 @@ use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 //use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\Lib\ShipCreatorInterface2;
+//use Stu\Module\Ship\Lib\ShipCreatorInterface2;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -56,7 +56,7 @@ final class ColonyTick implements ColonyTickInterface
 
     private ShipCreatorInterface $shipCreator;
 
-    private ShipCreatorInterface2 $shipCreator2;
+    //private ShipCreatorInterface2 $shipCreator2;
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -79,7 +79,7 @@ final class ColonyTick implements ColonyTickInterface
         BuildingManagerInterface $buildingManager,
         CrewCreatorInterface $crewCreator,
         ShipCreatorInterface $shipCreator,
-        ShipCreatorInterface2 $shipCreator2,
+        //ShipCreatorInterface2 $shipCreator2,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager
         //LoggerUtilInterface $loggerUtil
