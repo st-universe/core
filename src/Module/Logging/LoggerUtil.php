@@ -26,9 +26,10 @@ final class LoggerUtil implements LoggerUtilInterface
 
     public function init(string $channel = 'stu', int $level = LoggerEnum::LEVEL_INFO): void
     {
+        $this->level = $level;
+
         if ($this->checkDoLog()) {
             $this->logger = new Logger($channel);
-            $this->level = $level;
             $this->logger->pushHandler(
                 new StreamHandler(
                     $this->config->get('debug.logfile_path')
