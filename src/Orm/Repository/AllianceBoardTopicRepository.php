@@ -20,7 +20,7 @@ final class AllianceBoardTopicRepository extends EntityRepository implements All
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
+        $em->flush();
     }
 
     public function delete(AllianceBoardTopicInterface $post): void

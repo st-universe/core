@@ -34,7 +34,7 @@ final class KnCommentRepository extends EntityRepository implements KnCommentRep
         $em = $this->getEntityManager();
 
         $em->persist($comment);
-        //$em->flush();
+        $em->flush();
     }
 
     public function delete(KnCommentInterface $comment): void
