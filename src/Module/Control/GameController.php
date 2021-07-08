@@ -524,11 +524,10 @@ final class GameController implements GameControllerInterface
                     }
                 }
                 $config->handle($this);
+                $this->entityManager->flush();
                 return;
             }
         }
-
-        $this->entityManager->flush();
     }
 
     private function executeView(array $views): void
