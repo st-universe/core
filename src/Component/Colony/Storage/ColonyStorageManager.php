@@ -22,7 +22,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $this->loggerUtil->init('csm');
     }
 
-    public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount, bool $flush = true): void
+    public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
         $storage = $colony->getStorage();
 
@@ -48,10 +48,10 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         }
         $stor->setAmount($storedAmount - $amount);
 
-        $this->colonyStorageRepository->save($stor, $flush);
+        $this->colonyStorageRepository->save($stor);
     }
 
-    public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount, bool $flush = true): void
+    public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -77,7 +77,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        $this->colonyStorageRepository->save($stor, $flush);
+        $this->colonyStorageRepository->save($stor);
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\t\t\tsave, seconds: %F", $endTime - $startTime));
@@ -91,10 +91,5 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\t\t\tclearCache, seconds: %F", $endTime - $startTime));
         }
-    }
-
-    public function flush(): void
-    {
-        $this->colonyStorageRepository->flush();
     }
 }

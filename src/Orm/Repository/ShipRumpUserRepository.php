@@ -13,9 +13,9 @@ final class ShipRumpUserRepository extends EntityRepository implements ShipRumpU
     public function isAvailableForUser(int $shipRumpId, int $userId): bool
     {
         return $this->count([
-                'rump_id' => $shipRumpId,
-                'user_id' => $userId,
-            ]) > 0;
+            'rump_id' => $shipRumpId,
+            'user_id' => $userId,
+        ]) > 0;
     }
 
     public function prototype(): ShipRumpUserInterface
@@ -28,6 +28,6 @@ final class ShipRumpUserRepository extends EntityRepository implements ShipRumpU
         $em = $this->getEntityManager();
 
         $em->persist($shipRumpUser);
-        $em->flush();
+        //$em->flush();
     }
 }

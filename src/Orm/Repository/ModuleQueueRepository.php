@@ -49,7 +49,7 @@ final class ModuleQueueRepository extends EntityRepository implements ModuleQueu
         $em = $this->getEntityManager();
 
         $em->persist($moduleQueue);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(ModuleQueueInterface $moduleQueue): void

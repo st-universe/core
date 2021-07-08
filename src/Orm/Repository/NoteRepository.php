@@ -23,14 +23,16 @@ final class NoteRepository extends EntityRepository implements NoteRepositoryInt
         return new Note();
     }
 
-    public function save(NoteInterface $note): void {
+    public function save(NoteInterface $note): void
+    {
         $em = $this->getEntityManager();
 
         $em->persist($note);
-        $em->flush();
+        //$em->flush();
     }
 
-    public function delete(NoteInterface $note): void {
+    public function delete(NoteInterface $note): void
+    {
         $em = $this->getEntityManager();
 
         $em->remove($note);

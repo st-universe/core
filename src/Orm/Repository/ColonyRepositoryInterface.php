@@ -15,7 +15,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
 {
     public function prototype(): ColonyInterface;
 
-    public function save(ColonyInterface $post, bool $flush = true): void;
+    public function save(ColonyInterface $post): void;
 
     public function delete(ColonyInterface $post): void;
 

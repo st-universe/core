@@ -21,7 +21,7 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(DockingPrivilegeInterface $post): void
@@ -35,10 +35,10 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
     public function existsForTargetAndTypeAndShip(int $targetId, int $privilegeType, int $shipId): bool
     {
         return $this->count([
-                'ships_id' => $shipId,
-                'target' => $targetId,
-                'privilege_type' => $privilegeType,
-            ]) > 0;
+            'ships_id' => $shipId,
+            'target' => $targetId,
+            'privilege_type' => $privilegeType,
+        ]) > 0;
     }
 
     public function getByShip(int $shipId): array

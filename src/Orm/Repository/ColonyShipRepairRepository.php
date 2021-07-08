@@ -60,7 +60,7 @@ implements
         $em = $this->getEntityManager();
 
         $em->persist($colonyShipRepair);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(ColonyShipRepairInterface $colonyShipRepair): void

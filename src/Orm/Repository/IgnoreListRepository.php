@@ -20,7 +20,7 @@ final class IgnoreListRepository extends EntityRepository implements IgnoreListR
         $em = $this->getEntityManager();
 
         $em->persist($ignoreList);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(IgnoreListInterface $ignoreList): void

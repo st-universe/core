@@ -61,7 +61,7 @@ final class AllianceBoardPostRepository extends EntityRepository implements Alli
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(AllianceBoardPostInterface $post): void

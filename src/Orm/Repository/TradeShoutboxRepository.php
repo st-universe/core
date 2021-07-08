@@ -52,7 +52,7 @@ final class TradeShoutboxRepository extends EntityRepository implements TradeSho
         $em = $this->getEntityManager();
 
         $em->persist($tradeShoutbox);
-        $em->flush();
+        //$em->flush();
     }
 
     public function truncateByUser(int $userId): void

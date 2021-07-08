@@ -112,15 +112,6 @@ final class ColonyTick implements ColonyTickInterface
         $this->proceedModules($colony);
         $this->sendMessages($colony);
 
-        //if ($this->loggerUtil->doLog()) {
-        //  $startTimeF = microtime(true);
-        //}
-        //$this->colonyStorageManager->flush();
-        //if ($this->loggerUtil->doLog()) {
-        //    $endTimeF = microtime(true);
-        //    $this->loggerUtil->log(sprintf("\tflush, seconds: %F", $endTimeF - $startTimeF));
-        //}
-
         $endTime = microtime(true);
 
         if ($this->loggerUtil->doLog()) {
@@ -254,8 +245,7 @@ final class ColonyTick implements ColonyTickInterface
                 $this->colonyStorageManager->lowerStorage(
                     $colony,
                     $this->commodityArray[$commodityId],
-                    $amount,
-                    false
+                    $amount
                 );
                 $sum -= $amount;
             }
@@ -284,8 +274,7 @@ final class ColonyTick implements ColonyTickInterface
                 $this->colonyStorageManager->upperStorage(
                     $colony,
                     $commodity,
-                    $colony->getMaxStorage() - $sum,
-                    false
+                    $colony->getMaxStorage() - $sum
                 );
                 break;
             }
@@ -295,8 +284,7 @@ final class ColonyTick implements ColonyTickInterface
             $this->colonyStorageManager->upperStorage(
                 $colony,
                 $commodity,
-                $obj->getProduction(),
-                false
+                $obj->getProduction()
             );
             if ($this->loggerUtil->doLog()) {
                 $endTimeM = microtime(true);
@@ -374,8 +362,7 @@ final class ColonyTick implements ColonyTickInterface
                 $this->colonyStorageManager->upperStorage(
                     $colony,
                     $queue->getModule()->getCommodity(),
-                    $queue->getAmount(),
-                    false
+                    $queue->getAmount()
                 );
 
                 $this->msg[] = sprintf(

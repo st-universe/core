@@ -527,6 +527,8 @@ final class GameController implements GameControllerInterface
                 return;
             }
         }
+
+        $this->entityManager->flush();
     }
 
     private function executeView(array $views): void

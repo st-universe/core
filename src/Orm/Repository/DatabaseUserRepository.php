@@ -35,9 +35,9 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     public function exists(int $userId, int $databaseEntryId): bool
     {
         return $this->count([
-                'user_id' => $userId,
-                'database_id' => $databaseEntryId
-            ]) > 0;
+            'user_id' => $userId,
+            'database_id' => $databaseEntryId
+        ]) > 0;
     }
 
     public function prototype(): DatabaseUserInterface
@@ -49,7 +49,7 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
     {
         $em = $this->getEntityManager();
         $em->persist($entry);
-        $em->flush();
+        //$em->flush();
     }
 
     public function getTopList(): array

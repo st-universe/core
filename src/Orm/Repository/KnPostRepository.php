@@ -21,7 +21,7 @@ final class KnPostRepository extends EntityRepository implements KnPostRepositor
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(KnPostInterface $post): void

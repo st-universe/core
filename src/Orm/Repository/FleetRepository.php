@@ -24,7 +24,7 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         $em = $this->getEntityManager();
 
         $em->persist($fleet);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(FleetInterface $fleet): void

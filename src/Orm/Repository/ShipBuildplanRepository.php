@@ -42,8 +42,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         int $userId,
         int $shipRumpId,
         string $signature
-    ): ?ShipBuildplanInterface
-    {
+    ): ?ShipBuildplanInterface {
         return $this->findOneBy([
             'user_id' => $userId,
             'rump_id' => $shipRumpId,
@@ -61,7 +60,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         $em = $this->getEntityManager();
 
         $em->persist($shipBuildplan);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(ShipBuildplanInterface $shipBuildplan): void
