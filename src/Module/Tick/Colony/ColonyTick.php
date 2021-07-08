@@ -14,7 +14,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
-//use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 //use Stu\Module\Ship\Lib\ShipCreatorInterface2;
@@ -62,7 +62,7 @@ final class ColonyTick implements ColonyTickInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
-    //private LoggerUtilInterface $loggerUtil;
+    private LoggerUtilInterface $loggerUtil;
 
     private array $msg = [];
 
@@ -81,8 +81,8 @@ final class ColonyTick implements ColonyTickInterface
         ShipCreatorInterface $shipCreator,
         //ShipCreatorInterface2 $shipCreator2,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
-        //LoggerUtilInterface $loggerUtil
+        ShipSystemManagerInterface $shipSystemManager,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->commodityRepository = $commodityRepository;
         $this->researchedRepository = $researchedRepository;
@@ -96,10 +96,10 @@ final class ColonyTick implements ColonyTickInterface
         $this->buildingManager = $buildingManager;
         $this->crewCreator = $crewCreator;
         $this->shipCreator = $shipCreator;
-        $this->shipCreator2 = $shipCreator2;
+        //$this->shipCreator2 = $shipCreator2;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        //$this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function work(ColonyInterface $colony): void
