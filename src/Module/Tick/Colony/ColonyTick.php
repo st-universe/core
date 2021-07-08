@@ -112,6 +112,15 @@ final class ColonyTick implements ColonyTickInterface
         $this->proceedModules($colony);
         $this->sendMessages($colony);
 
+        if ($this->loggerUtil->doLog()) {
+            $startTimeF = microtime(true);
+        }
+        $this->colonyStorageManager->flush();
+        if ($this->loggerUtil->doLog()) {
+            $endTimeF = microtime(true);
+            $this->loggerUtil->log(sprintf("\tflush, seconds: %F", $endTimeF - $startTimeF));
+        }
+
         $endTime = microtime(true);
 
         if ($this->loggerUtil->doLog()) {
@@ -274,7 +283,8 @@ final class ColonyTick implements ColonyTickInterface
                 $this->colonyStorageManager->upperStorage(
                     $colony,
                     $commodity,
-                    $colony->getMaxStorage() - $sum
+                    $colony->getMaxStorage() - $sum,
+                    false
                 );
                 break;
             }
