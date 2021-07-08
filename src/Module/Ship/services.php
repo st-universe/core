@@ -132,7 +132,6 @@ use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Ship\Lib\ShipCreator;
 use Stu\Module\Ship\Lib\ShipCreator2;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-use Stu\Module\Ship\Lib\ShipCreatorInterface2;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipMover;
@@ -188,7 +187,6 @@ return [
     TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
-    ShipCreatorInterface2::class => autowire(ShipCreator2::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),
     DeleteFleetRequestInterface::class => autowire(DeleteFleetRequest::class),
     RenameFleetRequestInterface::class => autowire(RenameFleetRequest::class),
