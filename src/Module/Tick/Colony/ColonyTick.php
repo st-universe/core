@@ -278,11 +278,18 @@ final class ColonyTick implements ColonyTickInterface
                 );
                 break;
             }
+            if ($this->loggerUtil->doLog()) {
+                $startTimeM = microtime(true);
+            }
             $this->colonyStorageManager->upperStorage(
                 $colony,
                 $commodity,
                 $obj->getProduction()
             );
+            if ($this->loggerUtil->doLog()) {
+                $endTimeM = microtime(true);
+                $this->loggerUtil->log(sprintf("\t\t\tupper, seconds: %F", $endTimeM - $startTimeM));
+            }
             $sum += $obj->getProduction();
             if ($this->loggerUtil->doLog()) {
                 $endTimeC = microtime(true);
