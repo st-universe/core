@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\Action\Ticks;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,6 +15,14 @@ use Stu\Orm\Repository\GameConfigRepositoryInterface;
 final class DoManualMaintenance implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MAINTENANCE';
+
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(
+        EntityManagerInterface $entityManager
+    ) {
+        $this->entityManager = $entityManager;
+    }
 
     public function handle(GameControllerInterface $game): void
     {
@@ -38,6 +47,7 @@ final class DoManualMaintenance implements ActionControllerInterface
             )
         );
         $maintenance->handle();
+        $this->entityManager->flush();
 
         $game->addInformation("Der Wartungs-Tick wurde durchgeführt!");
     }

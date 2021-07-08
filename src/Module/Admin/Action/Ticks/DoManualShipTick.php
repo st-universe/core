@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Admin\Action\Ticks;
 
 use request;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -22,14 +23,18 @@ final class DoManualShipTick implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipTickManagerInterface $shipTickManager,
         ShipTickInterface $shipTick,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipTickManager = $shipTickManager;
         $this->shipTick = $shipTick;
         $this->shipRepository = $shipRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -37,27 +42,24 @@ final class DoManualShipTick implements ActionControllerInterface
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
 
         // only Admins can trigger ticks
-        if (!$game->getUser()->isAdmin())
-        {
+        if (!$game->getUser()->isAdmin()) {
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
 
         //check if single or all ships
-        if (!request::getVarByMethod(request::postvars(), 'shiptickid'))
-        {
+        if (!request::getVarByMethod(request::postvars(), 'shiptickid')) {
             $this->shipTickManager->work();
             $game->addInformation("Der Schiff-Tick für alle Schiffe wurde durchgeführt!");
-        } else 
-        {
+        } else {
             $shipId = request::postInt('shiptickid');
             $ship = $this->shipRepository->find($shipId);
-    
+
             $this->shipTick->work($ship);
-            
+            $this->entityManager->flush();
+
             $game->addInformation("Der Schiff-Tick für dieses Schiff wurde durchgeführt!");
         }
-
     }
 
     public function performSessionCheck(): bool
