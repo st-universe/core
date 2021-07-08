@@ -42,4 +42,15 @@ final class CommodityRepository extends EntityRepository implements CommodityRep
             'view' => true
         ], ['sort' => 'asc']);
     }
+
+    public function getAll(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT c FROM %s c
+                INDEX BY c.id',
+                Commodity::class
+            )
+        )->getResult();
+    }
 }

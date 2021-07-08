@@ -58,6 +58,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private array $commodityArray;
+
     private array $msg = [];
 
     public function __construct(
@@ -92,12 +94,14 @@ final class ColonyTick implements ColonyTickInterface
         $this->loggerUtil = $loggerUtil;
     }
 
-    public function work(ColonyInterface $colony): void
+    public function work(ColonyInterface $colony, array $commodityArray): void
     {
         $this->loggerUtil->init('tick');
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
+
+        $this->commodityArray = $commodityArray;
 
         $this->mainLoop($colony);
 
@@ -139,7 +143,7 @@ final class ColonyTick implements ColonyTickInterface
 
                 $field = $this->getBuildingToDeactivateByGood($colony, $commodityId);
                 //echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
-                $this->deactivateBuilding($colony, $field, $pro->getGood());
+                $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
                 $rewind = 1;
             }
             if ($rewind == 0 && $colony->getEpsProduction() < 0 && $colony->getEps() + $colony->getEpsProduction() < 0) {
@@ -240,7 +244,7 @@ final class ColonyTick implements ColonyTickInterface
             if ($amount > 0) {
                 $this->colonyStorageManager->lowerStorage(
                     $colony,
-                    $obj->getGood(),
+                    $this->commodityArray[$commodityId],
                     $amount
                 );
                 $sum -= $amount;
@@ -255,7 +259,7 @@ final class ColonyTick implements ColonyTickInterface
             $startTime = microtime(true);
         }
         foreach ($production as $commodityId => $obj) {
-            if ($obj->getProduction() <= 0 || !$obj->getGood()->isSaveable()) {
+            if ($obj->getProduction() <= 0 || !$this->commodityArray[$commodityId]->isSaveable()) {
                 continue;
             }
             if ($sum >= $colony->getMaxStorage()) {
@@ -264,14 +268,14 @@ final class ColonyTick implements ColonyTickInterface
             if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
                 $this->colonyStorageManager->upperStorage(
                     $colony,
-                    $obj->getGood(),
+                    $this->commodityArray[$commodityId],
                     $colony->getMaxStorage() - $sum
                 );
                 break;
             }
             $this->colonyStorageManager->upperStorage(
                 $colony,
-                $obj->getGood(),
+                $this->commodityArray[$commodityId],
                 $obj->getProduction()
             );
             $sum += $obj->getProduction();
