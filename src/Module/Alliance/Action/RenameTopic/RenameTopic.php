@@ -46,7 +46,7 @@ final class RenameTopic implements ActionControllerInterface
         }
 
         $topic->setName($name);
-        $topic->save();
+        $this->allianceBoardTopicRepository->save($topic);
 
         $game->addInformation(_('Das Thema wurde umbenannt'));
     }

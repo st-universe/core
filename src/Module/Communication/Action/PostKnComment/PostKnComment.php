@@ -78,7 +78,15 @@ final class PostKnComment implements ActionControllerInterface
                 $post->getId()
             );
 
-            $this->privateMessageSender->send(GameEnum::USER_NOONE, $post->getUserId(), $text);
+            $href = sprintf(_('comm.php?SHOW_SINGLE_KN=1&id=%d'), $post->getId());
+
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $post->getUserId(),
+                $text,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+                $href
+            );
         }
 
 
