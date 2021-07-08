@@ -254,7 +254,8 @@ final class ColonyTick implements ColonyTickInterface
                 $this->colonyStorageManager->lowerStorage(
                     $colony,
                     $this->commodityArray[$commodityId],
-                    $amount
+                    $amount,
+                    false
                 );
                 $sum -= $amount;
             }
@@ -373,7 +374,8 @@ final class ColonyTick implements ColonyTickInterface
                 $this->colonyStorageManager->upperStorage(
                     $colony,
                     $queue->getModule()->getCommodity(),
-                    $queue->getAmount()
+                    $queue->getAmount(),
+                    false
                 );
 
                 $this->msg[] = sprintf(

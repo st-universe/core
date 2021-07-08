@@ -22,7 +22,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $this->loggerUtil->init('csm');
     }
 
-    public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
+    public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount, bool $flush = true): void
     {
         $storage = $colony->getStorage();
 
@@ -48,7 +48,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         }
         $stor->setAmount($storedAmount - $amount);
 
-        $this->colonyStorageRepository->save($stor);
+        $this->colonyStorageRepository->save($stor, $flush);
     }
 
     public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount, bool $flush = true): void
