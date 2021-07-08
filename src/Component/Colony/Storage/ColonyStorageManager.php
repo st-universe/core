@@ -51,7 +51,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         $this->colonyStorageRepository->save($stor);
     }
 
-    public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
+    public function upperStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount, bool $flush = true): void
     {
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
@@ -77,7 +77,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        $this->colonyStorageRepository->save($stor);
+        $this->colonyStorageRepository->save($stor, $flush);
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\t\t\tsave, seconds: %F", $endTime - $startTime));
@@ -91,5 +91,10 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\t\t\tclearCache, seconds: %F", $endTime - $startTime));
         }
+    }
+
+    public function flush(): void
+    {
+        $this->colonyStorageRepository->flush();
     }
 }
