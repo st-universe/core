@@ -87,6 +87,7 @@ if ($rumpId !== 0) {
             $plan->setBuildtime(0);
 
             $buildplanRepo->save($plan);
+            $db->flush();
 
             $crew_usage = $rump->getBaseCrew();
 
@@ -124,6 +125,7 @@ if ($rumpId !== 0) {
 
             $plan->setCrew($crew_usage);
             $buildplanRepo->save($plan);
+            $db->flush();
         }
 
         echo 'Bauplan angelegt';

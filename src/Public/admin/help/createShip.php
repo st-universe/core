@@ -56,6 +56,7 @@ if ($torptypeId > 0 || $noTorps) {
         }
 
         $shipRepo->save($ship);
+        $db->flush();
 
         for ($j = 1; $j <= $plan->getCrew(); $j++) {
             $crewCreator->create($userId);
