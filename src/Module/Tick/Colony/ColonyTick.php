@@ -111,7 +111,7 @@ final class ColonyTick implements ColonyTickInterface
         $endTime = microtime(true);
 
         $this->loggerUtil->init('tick');
-        $this->loggerUtil->log(sprintf('Colony-Id: %d, seconds: %f\$.6f', $colony->getId(), $endTime - $startTime));
+        $this->loggerUtil->log(sprintf('Colony-Id: %d, seconds: %F', $colony->getId(), $endTime - $startTime));
     }
 
     private function mainLoop(ColonyInterface $colony)
