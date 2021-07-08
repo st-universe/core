@@ -3,7 +3,6 @@
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
-use Noodlehaus\ConfigInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
@@ -17,7 +16,6 @@ use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
-//use Stu\Module\Ship\Lib\ShipCreatorInterface2;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -56,8 +54,6 @@ final class ColonyTick implements ColonyTickInterface
 
     private ShipCreatorInterface $shipCreator;
 
-    //private ShipCreatorInterface2 $shipCreator2;
-
     private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
@@ -79,7 +75,6 @@ final class ColonyTick implements ColonyTickInterface
         BuildingManagerInterface $buildingManager,
         CrewCreatorInterface $crewCreator,
         ShipCreatorInterface $shipCreator,
-        //ShipCreatorInterface2 $shipCreator2,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         LoggerUtilInterface $loggerUtil
@@ -96,7 +91,6 @@ final class ColonyTick implements ColonyTickInterface
         $this->buildingManager = $buildingManager;
         $this->crewCreator = $crewCreator;
         $this->shipCreator = $shipCreator;
-        //$this->shipCreator2 = $shipCreator2;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->loggerUtil = $loggerUtil;
@@ -116,8 +110,8 @@ final class ColonyTick implements ColonyTickInterface
 
         $endTime = microtime(true);
 
-        //$this->loggerUtil->init('tick');
-        //$this->loggerUtil->log(sprintf('Colony-Id: %d, seconds: %d', $colony->getId(), $endTime - $startTime));
+        $this->loggerUtil->init('tick');
+        $this->loggerUtil->log(sprintf('Colony-Id: %d, seconds: %d', $colony->getId(), $endTime - $startTime));
     }
 
     private function mainLoop(ColonyInterface $colony)
