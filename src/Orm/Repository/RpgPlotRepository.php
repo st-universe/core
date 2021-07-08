@@ -29,7 +29,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
         $em = $this->getEntityManager();
 
         $em->persist($rpgPlot);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(RpgPlotInterface $rpgPlot): void
@@ -74,6 +74,6 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
 
     public function getOrderedList(): array
     {
-       return $this->findBy([], ['start_date' => 'asc']);
+        return $this->findBy([], ['start_date' => 'asc']);
     }
 }

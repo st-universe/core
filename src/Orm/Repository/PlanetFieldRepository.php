@@ -29,7 +29,7 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         $em = $this->getEntityManager();
 
         $em->persist($planetField);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(PlanetFieldInterface $planetField): void

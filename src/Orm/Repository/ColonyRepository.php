@@ -21,15 +21,13 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         return new Colony();
     }
 
-    public function save(ColonyInterface $post, bool $flush = true): void
+    public function save(ColonyInterface $post): void
     {
         $em = $this->getEntityManager();
 
         $em->persist($post);
 
-        if ($flush) {
-            $em->flush();
-        }
+        //$em->flush();
     }
 
     public function delete(ColonyInterface $post): void

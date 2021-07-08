@@ -20,23 +20,23 @@ final class TradeTransferRepository extends EntityRepository implements TradeTra
         $em = $this->getEntityManager();
 
         $em->persist($tradeTransfer);
-        $em->flush();
+        //$em->flush();
     }
 
     public function getSumByPostAndUser(int $tradePostId, int $userId): int
     {
-       return (int) $this->getEntityManager()
-           ->createQuery(
-               sprintf(
-                   'SELECT SUM(t.count) as amount FROM %s t WHERE t.posts_id = :tradePostId AND t.user_id = :userId AND t.date > :date',
-                   TradeTransfer::class,
-               )
-           )
-           ->setParameters([
-               'tradePostId' => $tradePostId,
-               'userId' => $userId,
-               'date' => time() - 86400
-           ])
-           ->getSingleScalarResult();
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT SUM(t.count) as amount FROM %s t WHERE t.posts_id = :tradePostId AND t.user_id = :userId AND t.date > :date',
+                    TradeTransfer::class,
+                )
+            )
+            ->setParameters([
+                'tradePostId' => $tradePostId,
+                'userId' => $userId,
+                'date' => time() - 86400
+            ])
+            ->getSingleScalarResult();
     }
 }

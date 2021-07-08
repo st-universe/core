@@ -63,7 +63,7 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
         $em = $this->getEntityManager();
 
         $em->persist($obj);
-        $em->flush();
+        //$em->flush();
     }
 
     public function deleteOldScans(int $threshold): void

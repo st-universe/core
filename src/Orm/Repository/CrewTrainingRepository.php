@@ -18,7 +18,7 @@ final class CrewTrainingRepository extends EntityRepository implements CrewTrain
         $em = $this->getEntityManager();
 
         $em->persist($researched);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(CrewTrainingInterface $researched): void

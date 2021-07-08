@@ -32,6 +32,6 @@ final class AstroEntryRepository extends EntityRepository implements AstroEntryR
         $em = $this->getEntityManager();
 
         $em->persist($entry);
-        $em->flush();
+        //$em->flush();
     }
 }

@@ -35,6 +35,6 @@ final class DatabaseEntryRepository extends EntityRepository implements Database
         $em = $this->getEntityManager();
 
         $em->persist($entry);
-        $em->flush();
+        //$em->flush();
     }
 }

@@ -40,10 +40,10 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         $rsm->addFieldResult('r', 'name', 'name');
 
         return $this->getEntityManager()->createNativeQuery(
-                'SELECT r.id, r.name FROM stu_research r
+            'SELECT r.id, r.name FROM stu_research r
                 WHERE CAST(r.id AS TEXT) LIKE :factionId
                 OR CAST(r.id AS TEXT) LIKE \'%%0\'',
-                $rsm
+            $rsm
         )
             ->setParameter('factionId', sprintf('%%%d', $factionId))
             ->getResult();
@@ -86,6 +86,6 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
         $em = $this->getEntityManager();
 
         $em->persist($research);
-        $em->flush();
+        //$em->flush();
     }
 }

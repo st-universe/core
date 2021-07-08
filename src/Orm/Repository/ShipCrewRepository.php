@@ -20,7 +20,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(ShipCrewInterface $post): void

@@ -23,7 +23,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function delete(TradeOfferInterface $post): void

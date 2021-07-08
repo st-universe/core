@@ -26,7 +26,7 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             $em->persist($obj);
         }
 
-        $em->flush();
+        //$em->flush();
     }
 
     public function getVisibleSignatureCount($colony): int

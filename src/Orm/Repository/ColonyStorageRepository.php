@@ -19,21 +19,13 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         return new ColonyStorage();
     }
 
-    public function flush(): void
-    {
-        $em = $this->getEntityManager();
-        $em->flush();
-    }
-
-    public function save(ColonyStorageInterface $post, bool $flush = true): void
+    public function save(ColonyStorageInterface $post): void
     {
         $em = $this->getEntityManager();
 
         $em->persist($post);
 
-        if ($flush) {
-            $em->flush();
-        }
+        //$em->flush();
     }
 
     public function delete(ColonyStorageInterface $post): void
