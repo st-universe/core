@@ -130,9 +130,15 @@ final class ColonyTick implements ColonyTickInterface
         $storage = $colony->getStorage();
 
         while (true) {
+            if ($colony->getId() === 1088) {
+                echo "while\n";
+            }
             $rewind = 0;
             $production = $colony->getProductionRaw();
             foreach ($production as $commodityId => $pro) {
+                if ($colony->getId() === 1088) {
+                    echo "foreach:" . $commodityId . "\n";
+                }
                 if ($pro->getProduction() >= 0) {
                     continue;
                 }
