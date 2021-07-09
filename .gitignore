@@ -4,6 +4,7 @@ src/Public/avatare
 docu/de/_build/*
 vendor
 config.json
+config.json.backup
 src/Public/assets
 src/Public/version_*
 backup
