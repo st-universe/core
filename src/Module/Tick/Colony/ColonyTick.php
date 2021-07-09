@@ -142,7 +142,7 @@ final class ColonyTick implements ColonyTickInterface
                 }
 
                 $field = $this->getBuildingToDeactivateByGood($colony, $commodityId);
-                //echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
+                // echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
                 $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
                 $rewind = 1;
             }
