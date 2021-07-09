@@ -3,6 +3,7 @@
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Lib\ColonyProduction\ColonyProduction;
@@ -62,6 +63,8 @@ final class ColonyTick implements ColonyTickInterface
 
     private array $msg = [];
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
@@ -76,7 +79,8 @@ final class ColonyTick implements ColonyTickInterface
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        EntityManagerInterface $entityManager
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
@@ -92,6 +96,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->loggerUtil = $loggerUtil;
+        $this->entityManager = $entityManager;
     }
 
     public function work(ColonyInterface $colony, array $commodityArray): void
@@ -187,6 +192,7 @@ final class ColonyTick implements ColonyTickInterface
         $building = $field->getBuilding();
 
         $this->buildingManager->deactivate($field);
+        $this->entityManager->flush();
 
         $this->mergeProduction($colony, $building->getGoods());
 
