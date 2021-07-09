@@ -41,7 +41,7 @@
     "webroot": "/path/to/webroot",
     "temp_dir": "/tmp",
     "base_url": "https://change.me",
-    "version": "VERSIONSTRING",
+    "version": 1337,
     "language": "de_DE",
     "user_avatar_path": "avatare/user/",
     "alliance_avatar_path": "avatare/alliance/",
@@ -51,7 +51,10 @@
     },
     "registration_enabled": false,
     "email_sender_address": "some@e.mail",
-    "admins": [101, 102],
+    "admins": [
+      101,
+      102
+    ],
     "admin": {
       "id": 101,
       "username": "adminuser",
