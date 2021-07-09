@@ -398,7 +398,7 @@ final class GameController implements GameControllerInterface
     public function getJavascriptPath(): string
     {
         return sprintf(
-            '/version_%s/static',
+            '/version_%d/static',
             $this->config->get('game.version')
         );
     }
