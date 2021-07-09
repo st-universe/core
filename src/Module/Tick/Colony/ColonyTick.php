@@ -154,7 +154,7 @@ final class ColonyTick implements ColonyTickInterface
             }
             if ($rewind == 0 && $colony->getEpsProduction() < 0 && $colony->getEps() + $colony->getEpsProduction() < 0) {
                 $field = $this->getBuildingToDeactivateByEpsUsage($colony,);
-                //echo $i." hit by eps ".$field->getFieldId()." - complete usage ".$colony->getEpsProduction()." - usage ".$field->getBuilding()->getEpsProduction()." MT ".microtime()."\n";
+                echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
                 $this->deactivateBuilding($colony, $field);
                 $rewind = 1;
             }
