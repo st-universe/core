@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Crew\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Orm\Entity\CrewInterface;
 use Stu\Orm\Entity\CrewRaceInterface;
@@ -26,18 +27,22 @@ final class CrewCreator implements CrewCreatorInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         CrewRaceRepositoryInterface $crewRaceRepository,
         ShipRumpCategoryRoleCrewRepositoryInterface $shipRumpCategoryRoleCrewRepository,
         ShipCrewRepositoryInterface $shipCrewRepository,
         CrewRepositoryInterface $crewRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->crewRaceRepository = $crewRaceRepository;
         $this->shipRumpCategoryRoleCrewRepository = $shipRumpCategoryRoleCrewRepository;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->crewRepository = $crewRepository;
         $this->userRepository = $userRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function create(int $userId): CrewInterface
@@ -97,7 +102,6 @@ final class CrewCreator implements CrewCreatorInterface
                 $crewToSetup--;
                 if (($crew = $this->crewRepository->getFreeByUserAndType($userId, $i)) === null) {
                     $crew = $this->crewRepository->getFreeByUser($userId);
-
                 }
                 $sc = $this->shipCrewRepository->prototype();
                 $sc->setCrew($crew);
@@ -106,6 +110,7 @@ final class CrewCreator implements CrewCreatorInterface
                 $sc->setSlot($i);
 
                 $this->shipCrewRepository->save($sc);
+                $this->entityManager->flush();
             }
         }
     }
