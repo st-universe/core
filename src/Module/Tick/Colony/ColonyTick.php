@@ -140,7 +140,7 @@ final class ColonyTick implements ColonyTickInterface
                 if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
                     continue;
                 }
-                echo "coloId:" . $colony->getId() . ", commodity:" . $this->commodityArray[$commodityId] . "\n";
+                echo "coloId:" . $colony->getId() . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
                 $field = $this->getBuildingToDeactivateByGood($colony, $commodityId);
                 // echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
                 $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
