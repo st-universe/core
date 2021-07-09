@@ -54,7 +54,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
         $msg = [];
 
         for ($i = 1; $i <= $attacker->getRump()->getTorpedoVolleys(); $i++) {
-            if ($targetPool === []) {
+            if (count($targetPool) === 0) {
                 break;
             }
             $target = $targetPool[array_rand($targetPool)];

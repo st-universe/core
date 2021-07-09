@@ -135,15 +135,9 @@ final class ColonyTick implements ColonyTickInterface
         $storage = $colony->getStorage();
 
         while (true) {
-            if ($colony->getId() === 1088) {
-                echo "while\n";
-            }
             $rewind = 0;
             $production = $colony->getProductionRaw();
             foreach ($production as $commodityId => $pro) {
-                if ($colony->getId() === 1088) {
-                    echo "foreach:" . $commodityId . "\n";
-                }
                 if ($pro->getProduction() >= 0) {
                     continue;
                 }
@@ -151,7 +145,7 @@ final class ColonyTick implements ColonyTickInterface
                 if ($storageItem !== null && $storageItem->getAmount() + $pro->getProduction() >= 0) {
                     continue;
                 }
-                echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
+                //echo "coloId:" . $colony->getId() . ", production:" . $pro->getProduction() . ", commodityId:" . $commodityId . ", commodity:" . $this->commodityArray[$commodityId]->getName() . "\n";
                 $field = $this->getBuildingToDeactivateByGood($colony, $commodityId);
                 // echo $i." hit by good ".$field->getFieldId()." - produce ".$pro->getProduction()." MT ".microtime()."\n";
                 $this->deactivateBuilding($colony, $field, $this->commodityArray[$commodityId]);
@@ -159,7 +153,7 @@ final class ColonyTick implements ColonyTickInterface
             }
             if ($rewind == 0 && $colony->getEpsProduction() < 0 && $colony->getEps() + $colony->getEpsProduction() < 0) {
                 $field = $this->getBuildingToDeactivateByEpsUsage($colony,);
-                echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
+                //echo $i . " hit by eps " . $field->getFieldId() . " - complete usage " . $colony->getEpsProduction() . " - usage " . $field->getBuilding()->getEpsProduction() . " MT " . microtime() . "\n";
                 $this->deactivateBuilding($colony, $field);
                 $rewind = 1;
             }
