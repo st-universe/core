@@ -11,6 +11,7 @@ use Stu\Orm\Repository\GameTurnRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
+use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class ResetManager implements ResetManagerInterface
@@ -25,6 +26,8 @@ final class ResetManager implements ResetManagerInterface
 
     private GameTurnRepositoryInterface $gameTurnRepository;
 
+    private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
+
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
@@ -37,6 +40,7 @@ final class ResetManager implements ResetManagerInterface
         KnPostRepositoryInterface $knPostRepository,
         HistoryRepositoryInterface $historyRepository,
         GameTurnRepositoryInterface $gameTurnRepository,
+        RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         EntityManagerInterface $entityManager
@@ -46,6 +50,7 @@ final class ResetManager implements ResetManagerInterface
         $this->knPostRepository = $knPostRepository;
         $this->historyRepository = $historyRepository;
         $this->gameTurnRepository = $gameTurnRepository;
+        $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->entityManager = $entityManager;
@@ -59,6 +64,7 @@ final class ResetManager implements ResetManagerInterface
 
         $this->resetColonySurfaceMasks();
         $this->deleteKnPostings();
+        $this->deleteKnPlotMembers();
         $this->deleteKnPlots();
         $this->deleteHistory();
         $this->resetGameTurns();
@@ -95,6 +101,16 @@ final class ResetManager implements ResetManagerInterface
     {
         foreach ($this->historyRepository->findAll() as $entry) {
             $this->historyRepository->delete($entry);
+        }
+    }
+
+    /**
+     * Deletes all rpg plot members
+     */
+    private function deleteKnPlotMembers(): void
+    {
+        foreach ($this->rpgPlotMemberRepository->findAll() as $plotMember) {
+            $this->rpgPlotMemberRepository->delete($plotMember);
         }
     }
 
