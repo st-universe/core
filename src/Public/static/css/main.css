@@ -222,6 +222,16 @@ input.text {
     text-decoration: none;
     padding: 2px 2px 2px 4px;
 }
+#gamestate_4
+{
+    background: #0069c3;
+    color: #FFFFFF;
+    text-align: center;
+    width: 90px;
+    border: 1px solid #2d3243;
+    text-decoration: none;
+    padding: 2px 2px 2px 4px;
+}
 .divhead {
     background-color : #262323;
     color : #8897cf;
