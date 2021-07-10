@@ -9,6 +9,7 @@ use Noodlehaus\ConfigInterface;
 use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\MaintenanceGameStateException;
+use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\TickGameStateException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
@@ -472,6 +473,10 @@ final class GameController implements GameControllerInterface
                 if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE) {
                     throw new MaintenanceGameStateException();
                 }
+
+                if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION) {
+                    throw new RelocationGameStateException();
+                }
             }
 
             $this->executeCallback($actions);
@@ -497,6 +502,11 @@ final class GameController implements GameControllerInterface
         } catch (MaintenanceGameStateException $e) {
             $this->setPageTitle(_('Wartungsmodus'));
             $this->setTemplateFile('html/maintenance.xhtml');
+
+            $this->talPage->setVar('THIS', $this);
+        } catch (RelocationGameStateException $e) {
+            $this->setPageTitle(_('Umzugsmodus'));
+            $this->setTemplateFile('html/relocation.xhtml');
 
             $this->talPage->setVar('THIS', $this);
         } catch (StuException $e) {
@@ -566,6 +576,8 @@ final class GameController implements GameControllerInterface
                 return _('Online');
             case GameEnum::CONFIG_GAMESTATE_VALUE_MAINTENANCE:
                 return _('Wartung');
+            case GameEnum::CONFIG_GAMESTATE_VALUE_RELOCATION:
+                return _('Umzug');
             case GameEnum::CONFIG_GAMESTATE_VALUE_TICK:
                 return _('Tick');
         }
