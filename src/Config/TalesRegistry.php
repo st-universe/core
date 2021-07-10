@@ -69,9 +69,14 @@ TalesRegistry::registerPrefix(
     }
 );
 TalesRegistry::registerPrefix(
+    'nl2brBbCode',
+    function ($src, $nothrow): string {
+        return 'nl2br(\Stu\Module\Tal\TalHelper::getBBCodeParser()->parse(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')->getAsHtml())';
+    }
+);
+TalesRegistry::registerPrefix(
     'formatSeconds',
     function ($src, $nothrow): string {
         return '\Stu\Module\Tal\TalHelper::formatSeconds(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
     }
 );
-
