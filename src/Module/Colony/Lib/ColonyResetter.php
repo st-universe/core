@@ -60,12 +60,13 @@ final class ColonyResetter implements ColonyResetterInterface
     }
 
     public function reset(
-        ColonyInterface $colony
+        ColonyInterface $colony,
+        bool $sendMessage = true
     ): void {
         $this->colonyLibFactory->createColonySurface($colony)->updateSurface();
 
-        $this->resetBlockers($colony);
-        $this->resetDefenders($colony);
+        $this->resetBlockers($colony, $sendMessage);
+        $this->resetDefenders($colony, $sendMessage);
 
         $colony->setEps(0)
             ->setMaxEps(0)
@@ -90,20 +91,24 @@ final class ColonyResetter implements ColonyResetterInterface
         $this->planetFieldRepository->truncateByColony($colony);
     }
 
-    private function resetBlockers(ColonyInterface $colony): void
+    private function resetBlockers(ColonyInterface $colony, bool $sendMessage = true): void
     {
         foreach ($colony->getBlockers() as $blockerFleet) {
-            $this->sendMessage($colony, $blockerFleet, false);
+            if ($sendMessage) {
+                $this->sendMessage($colony, $blockerFleet, false);
+            }
             $blockerFleet->setBlockedColony(null);
             $this->fleetRepository->save($blockerFleet);
         }
         $colony->getBlockers()->clear();
     }
 
-    private function resetDefenders(ColonyInterface $colony): void
+    private function resetDefenders(ColonyInterface $colony, bool $sendMessage = true): void
     {
         foreach ($colony->getDefenders() as $defenderFleet) {
-            $this->sendMessage($colony, $defenderFleet, true);
+            if ($sendMessage) {
+                $this->sendMessage($colony, $defenderFleet, true);
+            }
             $defenderFleet->setDefendedColony(null);
             $this->fleetRepository->save($defenderFleet);
         }
