@@ -323,7 +323,8 @@ final class ColonyTick implements ColonyTickInterface
                     $this->shipCreator,
                     $this->colonyRepository,
                     $this->shipRepository,
-                    $this->shipSystemManager
+                    $this->shipSystemManager,
+                    $this->entityManager;
                 ))->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()
