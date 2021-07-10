@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Admin\Reset;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Player\Deletion\PlayerDeletionInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
@@ -28,6 +29,8 @@ final class ResetManager implements ResetManagerInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PlayerDeletionInterface $playerDeletion,
         ColonyRepositoryInterface $colonyRepository,
@@ -35,7 +38,8 @@ final class ResetManager implements ResetManagerInterface
         HistoryRepositoryInterface $historyRepository,
         GameTurnRepositoryInterface $gameTurnRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
-        PlanetFieldRepositoryInterface $planetFieldRepository
+        PlanetFieldRepositoryInterface $planetFieldRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->playerDeletion = $playerDeletion;
         $this->colonyRepository = $colonyRepository;
@@ -44,11 +48,14 @@ final class ResetManager implements ResetManagerInterface
         $this->gameTurnRepository = $gameTurnRepository;
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->planetFieldRepository = $planetFieldRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function performReset(): void
     {
         $this->playerDeletion->handleReset();
+
+        $this->entityManager->flush();
 
         $this->resetColonySurfaceMasks();
         $this->deleteKnPostings();
