@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -38,6 +39,8 @@ final class ResearchState implements ResearchStateInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
@@ -47,7 +50,8 @@ final class ResearchState implements ResearchStateInterface
         ShipCreatorInterface $shipCreator,
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        EntityManagerInterface $entityManager
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
@@ -58,6 +62,7 @@ final class ResearchState implements ResearchStateInterface
         $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->entityManager = $entityManager;
     }
 
     public function finish(ResearchedInterface $state): void
@@ -106,6 +111,7 @@ final class ResearchState implements ResearchStateInterface
         for ($j = 1; $j <= $plan->getCrew(); $j++) {
             $this->crewCreator->create($userId);
         }
+        $this->entityManager->flush();
         $this->crewCreator->createShipCrew($ship);
 
         $txt = sprintf(_("Als Belohnung für den Abschluss der Forschung wurde dir ein Schiff vom Typ %s überstellt"), $plan->getRump()->getName());
