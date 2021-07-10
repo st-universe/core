@@ -6,5 +6,5 @@ use Stu\Orm\Entity\ColonyInterface;
 
 interface ColonyResetterInterface
 {
-    public function reset(ColonyInterface $colony): void;
+    public function reset(ColonyInterface $colony, bool $sendMessage = true): void;
 }
