@@ -31,6 +31,9 @@ function takeTradeOffer(offerid) {
 function changeSearchCommodity(id) {
 	document.getElementById('commoditySelect').value = id;
 }
+function changeSearchTradepost(id) {
+	document.getElementById('tradepostSelect').value = id;
+}
 function showTradeLicenceList(obj, postId) {
 	var elt = 'licencelist';
 	var pos = findObject(obj);
