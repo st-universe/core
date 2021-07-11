@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -37,6 +38,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         BuildingRepositoryInterface $buildingRepository,
@@ -46,7 +49,8 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ShipRepositoryInterface $shipRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ResearchedRepositoryInterface $researchedRepository,
-        FlightSignatureRepositoryInterface $flightSignatureRepository
+        FlightSignatureRepositoryInterface $flightSignatureRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
@@ -57,6 +61,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->researchedRepository = $researchedRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function createOrbitShipItem(
@@ -98,6 +103,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->buildingRepository,
             $this->colonyRepository,
             $this->researchedRepository,
+            $this->entityManager,
             $colony,
             $buildingId,
             $showUnderground
