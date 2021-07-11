@@ -39,7 +39,7 @@
 					<tr>
 						<td>Ware:</td>
 						<td>
-							<select name="cid" style="width:100%;">
+							<select name="cid" id="commoditySelect" style="width:100%;">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data SELECTABLE_GOODS">
 									<option tal:content="data/getName"
@@ -99,12 +99,18 @@
 						</a>
 					</td>
 					<td>
-						<img src="assets/goods/${data/getOfferedCommodity/getId}.gif"
-							tal:attributes="title data/getOfferedCommodity/getName" /> ${data/getOfferedGoodCount}
+						<a href="javascript:void(0);"
+							onclick="changeSearchCommodity(${data/getOfferedCommodity/getId});">
+							<img src="assets/goods/${data/getOfferedCommodity/getId}.gif"
+								tal:attributes="title data/getOfferedCommodity/getName" /> ${data/getOfferedGoodCount}
+						</a>
 					</td>
 					<td>
-						<img src="assets/goods/${data/getWantedCommodity/getId}.gif"
-							tal:attributes="title data/getWantedCommodity/getName" /> ${data/getWantedGoodCount}
+						<a href="javascript:void(0);"
+							onclick="changeSearchCommodity(${data/getWantedCommodity/getId});">
+							<img src="assets/goods/${data/getWantedCommodity/getId}.gif"
+								tal:attributes="title data/getWantedCommodity/getName" /> ${data/getWantedGoodCount}
+						</a>
 					</td>
 					<td tal:content="data/getOfferCount">AMOUNT</td>
 					<td>

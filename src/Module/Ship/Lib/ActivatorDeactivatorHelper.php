@@ -142,12 +142,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         ShipInterface $ship,
         int $systemId,
         GameControllerInterface $game
-    ): void {
+    ): bool {
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
 
         try {
             $this->shipSystemManager->deactivate($ship, $systemId);
             $game->addInformation(sprintf(_('%s: System %s deaktiviert'), $ship->getName(), $systemName));
+            return true;
         } catch (AlreadyOffException $e) {
             $game->addInformation(sprintf(_('%s: System %s ist bereits deaktiviert'), $ship->getName(), $systemName));
         } catch (SystemNotDeactivableException $e) {
@@ -157,6 +158,8 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } catch (SystemNotFoundException $e) {
             $game->addInformation(sprintf(_('%s: System %s nicht vorhanden'), $ship->getName(), $systemName));
         }
+
+        return false;
     }
 
     public function deactivateFleet(
@@ -171,9 +174,17 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
             $userId
         );
 
+        $success = false;
         foreach ($ship->getFleet()->getShips() as $ship) {
-            $this->deactivateIntern($ship, $systemId, $game);
-            $this->shipRepository->save($ship);
+            if ($this->deactivateIntern($ship, $systemId, $game)) {
+                $success = true;
+                $this->shipRepository->save($ship);
+            }
+        }
+
+        // only show info if at least one ship was able to change
+        if (!$success) {
+            return;
         }
 
         $systemName = ShipSystemTypeEnum::getDescription($systemId);
