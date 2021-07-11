@@ -1,60 +1,68 @@
 server {
-				listen 80;
-				listen [::]:80;
-				server_name some-stuniverse.domain;
+	listen 80;
+	listen [::]:80;
+	server_name some-stuniverse.domain;
+	return 301 https://some-stuniverse.domain$request_uri;
+}
+server {
+	listen 443 ssl;
+	listen [::]:443 ssl;
 
-				access_log /path/to/logfiles/nginx-access_log main;
-				error_log /path/to/logfiles/nginx-error_log info;
+	server_name some-stuniverse.domain;
 
-				root /path/to/stuniverse-source/src/Public;
+	ssl_certificate     /path/to/ssl.crt;
+	ssl_certificate_key /path/to/ssl.key;
 
-				rewrite ^/version_\d+/(.*)$ /$1 last;
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
 
-				location /assets {
-								alias /path/to/stuniverse-assets/assets;
+	root /path/to/stuniverse-source/src/Public;
 
-								index index.html;
+	rewrite ^/version_\d+/(.*)$ /$1 last;
 
-				}
+	location /assets {
+		alias /path/to/stuniverse-assets;
 
-				location /api/ {
-								if ($request_method = 'OPTIONS') {
-												add_header 'Access-Control-Allow-Origin' '*';
-												add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
-												add_header 'Access-Control-Allow-Headers' 'content-type,x-requested-with,authorization';
-												return 204;
-								}
-								try_files $uri /api.php$is_args$args;
-								fastcgi_split_path_info ^(.+\.php)(/.+)$;
-								include fastcgi_params;
-								fastcgi_param SCRIPT_FILENAME $realpath_root/api.php;
-								fastcgi_param SCRIPT_NAME api.php;
-								fastcgi_index index.php;
-								fastcgi_pass 127.0.0.1:9000;
+		index index.html;
+	}
 
-				}
+	location /api/ {
+		if ($request_method = 'OPTIONS') {
+			add_header 'Access-Control-Allow-Origin' '*';
+			add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+			add_header 'Access-Control-Allow-Headers' 'content-type,x-requested-with,authorization';
+			return 204;
+		}
+		try_files $uri /api.php$is_args$args;
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		include fastcgi_params;
+		fastcgi_param SCRIPT_FILENAME $realpath_root/api.php;
+		fastcgi_param SCRIPT_NAME api.php;
+		fastcgi_index index.php;
+		fastcgi_pass 127.0.0.1:9000;
+	}
 
-				location ~ [^/]\.php(/|$) {
-								fastcgi_buffers 16 16k;
-								fastcgi_buffer_size 32k;
-								fastcgi_pass 127.0.0.1:9000;
-								fastcgi_index index.php;
-								fastcgi_split_path_info ^(.+\.php)(/.+)$;
-								fastcgi_param SCRIPT_FILENAME $request_filename;
-								include fastcgi_params;
-				}
+	location ~ [^/]\.php(/|$) {
+		fastcgi_buffers 16 16k;
+		fastcgi_buffer_size 32k;
+		fastcgi_pass 127.0.0.1:9000;
+		fastcgi_read_timeout 300;
+		fastcgi_index index.php;
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_param SCRIPT_FILENAME $request_filename;
+		include fastcgi_params;
+	}
 
-				location ~ /admin {
-								auth_basic "Restricted";
-								auth_basic_user_file /path/to/htpasswd-file/htpasswd;
+	location ~ /admin {
+		auth_basic "Restricted";
+		auth_basic_user_file /path/to/.htpasswd;
+	}
 
-				}
 
+	location ~ /\. {
+		deny all;
+	}
 
-				location ~ /\. {
-								deny all;
-				}
-
-				index index.html index.php;
+	index index.html index.php;
 }
 

@@ -24,6 +24,7 @@ interface ShipSystemManagerInterface
     /**
      * @throws InvalidSystemException
      * @throws SystemNotFoundException
+     * @throws DeactivationConditionsNotMetException
      */
     public function deactivate(ShipInterface $ship, int $shipSystemId, bool $force = false): void;
 

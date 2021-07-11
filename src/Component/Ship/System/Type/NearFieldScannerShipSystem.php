@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -19,6 +20,16 @@ final class NearFieldScannerShipSystem extends AbstractShipSystemType implements
         AstroEntryLibInterface $astroEntryLib
     ) {
         $this->astroEntryLib = $astroEntryLib;
+    }
+
+    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool
+    {
+        if ($ship->getAlertState() === ShipAlertStateEnum::ALERT_RED) {
+            $reason = _('die Alarmstufe Rot ist');
+            return false;
+        }
+
+        return true;
     }
 
     public function activate(ShipInterface $ship): void
