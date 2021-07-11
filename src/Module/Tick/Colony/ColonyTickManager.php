@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Colony;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipStateEnum;
@@ -68,6 +69,8 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     public function work(int $tickId): void
     {
+        throw new Exception("verbrennt die Huxe!");
+
         $this->setLock($tickId);
         $this->colonyLoop($tickId);
         $this->proceedCrewTraining($tickId);
