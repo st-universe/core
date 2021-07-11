@@ -1,14 +1,31 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Tick\Ship\ShipTickManagerInterface;
 
 require_once __DIR__ . '/../../Config/Bootstrap.php';
 
-$db = $container->get(EntityManagerInterface::class);
+$entityManager = $container->get(EntityManagerInterface::class);
 
-$db->beginTransaction();
+$entityManager->beginTransaction();
 
-$container->get(ShipTickManagerInterface::class)->work();
+try {
+    $container->get(ShipTickManagerInterface::class)->work();
+    $entityManager->commit();
+} catch (Exception $e) {
+    $entityManager->rollback();
 
-$db->commit();
+    $emailSender = $container->get(FailureEmailSenderInterface::class);
+    $emailSender->sendMail(
+        "stu shiptick failure",
+        sprintf(
+            "Current system time: %s\nThe shiptick cron caused an error:\n\n%s\n\n%s",
+            date('Y-m-d H:i:s'),
+            $e->getMessage(),
+            $e->getTraceAsString()
+        )
+    );
+
+    throw $e;
+}
