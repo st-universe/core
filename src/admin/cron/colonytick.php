@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 
 require_once __DIR__ . '/../../Config/Bootstrap.php';
