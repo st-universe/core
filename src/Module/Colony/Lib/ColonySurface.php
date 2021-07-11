@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
@@ -25,6 +26,8 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private ResearchedRepositoryInterface $researchedRepository;
 
+    private EntityManagerInterface $entityManager;
+
     private ColonyInterface $colony;
 
     private ?int $buildingId;
@@ -36,6 +39,7 @@ final class ColonySurface implements ColonySurfaceInterface
         BuildingRepositoryInterface $buildingRepository,
         ColonyRepositoryInterface $colonyRepository,
         ResearchedRepositoryInterface $researchedRepository,
+        EntityManagerInterface $entityManager,
         ColonyInterface $colony,
         ?int $buildingId = null,
         bool $showUnderground = true
@@ -46,6 +50,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->buildingId = $buildingId;
         $this->colonyRepository = $colonyRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->entityManager = $entityManager;
         $this->showUnderground = $showUnderground;
     }
 
@@ -234,6 +239,9 @@ final class ColonySurface implements ColonySurfaceInterface
             $this->planetFieldRepository->save($fields[$key]);
             $i++;
         }
+
+        $this->entityManager->flush();
+
         return $fields;
     }
 
