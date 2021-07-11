@@ -5,11 +5,27 @@ use Stu\Module\Tick\Colony\ColonyTickManagerInterface;
 
 require_once __DIR__ . '/../../Config/Bootstrap.php';
 
-$db = $container->get(EntityManagerInterface::class);
+$entityManager = $container->get(EntityManagerInterface::class);
 
-$db->beginTransaction();
+$entityManager->beginTransaction();
 
-$tickManager = $container->get(ColonyTickManagerInterface::class);
-$tickManager->work(1);
+try {
+    $tickManager = $container->get(ColonyTickManagerInterface::class);
+    $tickManager->work(1);
+    $entityManager->commit();
+} catch (Exception $e) {
+    $entityManager->rollback();
 
-$db->commit();
+    $emailSender = $container->get(FailureEmailSenderInterface::class);
+    $emailSender->sendMail(
+        "stu colonytick failure",
+        sprintf(
+            "Current system time: %s\nThe colonytick cron caused an error:\n\n%s\n\n%s",
+            date('Y-m-d H:i:s'),
+            $e->getMessage(),
+            $e->getTraceAsString()
+        )
+    );
+
+    throw $e;
+}
