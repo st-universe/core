@@ -26,7 +26,7 @@
 					<tr>
 						<td>Handelsposten:</td>
 						<td>
-							<select name="pid" style="width:100%;">
+							<select name="pid" id="tradepostSelect" style="width:100%;">
 								<option value="0">----------------------</option>
 								<tal:block tal:repeat="data TRADE_LICENSES">
 									<option tal:content="data/getTradePost/getName"
@@ -116,7 +116,9 @@
 					<td>
 						<metal:macro metal:use-macro="html/trademacros.xhtml/tradepost"
 							tal:define="handle string:hdlo${data/getId};id data/getTradepostId" />
-						<span tal:replace="data/getTradePost/getName">TRADEPOST</span>
+						<a href="javascript:void(0);" onclick="changeSearchTradepost(${data/getTradepostId});">
+							<span tal:replace="data/getTradePost/getName">TRADEPOST</span>
+						</a>
 					</td>
 					<td tal:define="id data/getUserId">
 						<metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
