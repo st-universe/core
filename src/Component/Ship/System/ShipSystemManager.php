@@ -8,6 +8,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\Exception\ActivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\AlreadyActiveException;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Component\Ship\System\Exception\DeactivationConditionsNotMetException;
 use Stu\Component\Ship\System\Exception\InsufficientCrewException;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Exception\InvalidSystemException;
@@ -143,6 +144,11 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             || $shipSystem->getMode() === ShipSystemModeEnum::MODE_ALWAYS_OFF
         ) {
             throw new AlreadyOffException();
+        }
+
+        $reason = null;
+        if (!$system->checkDeactivationConditions($ship, $reason)) {
+            throw new DeactivationConditionsNotMetException($reason);
         }
     }
 

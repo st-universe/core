@@ -1200,10 +1200,10 @@ class Ship implements ShipInterface
         }
 
         if ($this->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW) {
-            $result += 1;
+            $result += ShipAlertStateEnum::ALERT_YELLOW_EPS_USAGE;
         }
         if ($this->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-            $result += 2;
+            $result += ShipAlertStateEnum::ALERT_RED_EPS_USAGE;
         }
 
         $this->epsUsage = $result;

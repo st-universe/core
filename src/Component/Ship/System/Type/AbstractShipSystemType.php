@@ -16,6 +16,11 @@ abstract class AbstractShipSystemType implements ShipSystemTypeInterface
         return true;
     }
 
+    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool
+    {
+        return true;
+    }
+
     public function getEnergyUsageForActivation(): int
     {
         return 1;
