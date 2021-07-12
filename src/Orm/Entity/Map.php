@@ -70,6 +70,11 @@ class Map implements MapInterface
     private $mapRegion;
 
     /**
+     * @OneToMany(targetEntity="Ship", mappedBy="map", fetch="EXTRA_LAZY")
+     */
+    private $ships;
+
+    /**
      * @OneToMany(targetEntity="FlightSignature", mappedBy="map")
      * @OrderBy({"time" = "DESC"})
      */
@@ -77,6 +82,7 @@ class Map implements MapInterface
 
     public function __construct()
     {
+        $this->ships = new ArrayCollection();
         $this->signatures = new ArrayCollection();
     }
 
@@ -186,6 +192,11 @@ class Map implements MapInterface
         $style = "background-image: url('/assets/map/" . $this->getFieldId() . ".gif');";
         $style .= $this->getBorder();
         return $style;
+    }
+
+    public function getShips(): Collection
+    {
+        return $this->ships;
     }
 
     public function getSignatures(): Collection

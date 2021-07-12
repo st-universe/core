@@ -48,6 +48,11 @@ class StarSystemMap implements StarSystemMapInterface
     private $mapFieldType;
 
     /**
+     * @OneToMany(targetEntity="Ship", mappedBy="starsystem_map", fetch="EXTRA_LAZY")
+     */
+    private $ships;
+
+    /**
      * @OneToMany(targetEntity="FlightSignature", mappedBy="starsystem_map")
      * @OrderBy({"time" = "DESC"})
      */
@@ -55,6 +60,7 @@ class StarSystemMap implements StarSystemMapInterface
 
     public function __construct()
     {
+        $this->ships = new ArrayCollection();
         $this->signatures = new ArrayCollection();
     }
 
@@ -124,6 +130,11 @@ class StarSystemMap implements StarSystemMapInterface
     public function getFieldStyle(): string
     {
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".gif');";
+    }
+
+    public function getShips(): Collection
+    {
+        return $this->ships;
     }
 
     public function getSignatures(): Collection

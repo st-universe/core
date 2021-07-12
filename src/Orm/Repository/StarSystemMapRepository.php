@@ -45,9 +45,11 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT m FROM %s m WHERE m.systems_id = :starSystemId AND
+                    'SELECT m FROM %s m
+                    WHERE m.systems_id = :starSystemId AND
                         m.sx BETWEEN :startSx AND :endSx AND
-                        m.sy BETWEEN :startSy AND :endSy',
+                        m.sy BETWEEN :startSy AND :endSy
+                    ORDER BY m.sy, m.sx',
                     StarSystemMap::class
                 )
             )

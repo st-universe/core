@@ -16,6 +16,8 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Orm\Entity\MapInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 
 final class LeaveStarSystem implements ActionControllerInterface
 {
@@ -27,6 +29,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private MapRepositoryInterface $mapRepository;
+
     private ActivatorDeactivatorHelperInterface $helper;
 
     private AstroEntryLibInterface $astroEntryLib;
@@ -35,12 +39,14 @@ final class LeaveStarSystem implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
+        MapRepositoryInterface $mapRepository,
         ActivatorDeactivatorHelperInterface $helper,
         AstroEntryLibInterface $astroEntryLib
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->mapRepository = $mapRepository;
         $this->helper = $helper;
         $this->astroEntryLib = $astroEntryLib;
     }
@@ -79,9 +85,13 @@ final class LeaveStarSystem implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $this->leaveStarSystem($ship, $game);
+
+        //the destination map field
+        $outerMap = $this->mapRepository->getByCoordinates($ship->getSystem()->getCx(), $ship->getSystem()->getCy());
+
+        $this->leaveStarSystem($ship, $outerMap, $game);
         if ($ship->isTraktorbeamActive()) {
-            $this->leaveStarSystemTraktor($ship, $game);
+            $this->leaveStarSystemTraktor($ship, $outerMap, $game);
         }
         if ($ship->isFleetLeader()) {
             $msg = array();
@@ -105,9 +115,9 @@ final class LeaveStarSystem implements ActionControllerInterface
                         $userId
                     );
 
-                    $this->leaveStarSystem($reloadedShip, $game);
+                    $this->leaveStarSystem($reloadedShip, $outerMap, $game);
                     if ($reloadedShip->isTraktorbeamActive()) {
-                        $this->leaveStarSystemTraktor($reloadedShip, $game);
+                        $this->leaveStarSystemTraktor($reloadedShip, $outerMap, $game);
                     }
                     $this->shipRepository->save($reloadedShip);
                 }
@@ -125,7 +135,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function leaveStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
+    private function leaveStarSystemTraktor(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
         if ($ship->getTraktorShip()->getFleetId()) {
             $name = $ship->getTraktorShip()->getName();
@@ -143,7 +153,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
-        $this->leaveStarSystem($ship->getTraktorShip(), $game);
+        $this->leaveStarSystem($ship->getTraktorShip(), $map, $game);
         $ship->setEps($ship->getEps() - 1);
 
         $this->shipRepository->save($ship->getTraktorShip());
@@ -152,7 +162,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit aus dem System gezogen");
     }
 
-    private function leaveStarSystem(ShipInterface $ship, GameControllerInterface $game): void
+    private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
@@ -160,6 +170,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $ship->setSystem(null);
         $ship->setSX(0);
         $ship->setSY(0);
+        $ship->setMap($map);
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);

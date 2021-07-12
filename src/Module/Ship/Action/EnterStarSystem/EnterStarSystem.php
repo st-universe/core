@@ -15,7 +15,9 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class EnterStarSystem implements ActionControllerInterface
 {
@@ -27,14 +29,18 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
+        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -82,15 +88,18 @@ final class EnterStarSystem implements ActionControllerInterface
                 break;
         }
 
+        // the destination starsystem map field
+        $starsystemMap = $this->starSystemMapRepository->getByCoordinates($system->getId(), $posx, $posy);
+
         try {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
         } catch (AlreadyOffException $e) {
         }
 
         // @todo Beschädigung bei Systemeinflug
-        $this->enterStarSystem($ship, $system, $posx, $posy);
+        $this->enterStarSystem($ship, $starsystemMap, $system, $posx, $posy);
         if ($ship->isTraktorbeamActive()) {
-            $this->enterStarSystemTraktor($ship, $game);
+            $this->enterStarSystemTraktor($ship, $starsystemMap, $game);
         }
 
         if ($ship->isFleetLeader()) {
@@ -120,9 +129,9 @@ final class EnterStarSystem implements ActionControllerInterface
                 } catch (AlreadyOffException $e) {
                 }
 
-                $this->enterStarSystem($fleetShip, $system, $posx, $posy);
+                $this->enterStarSystem($fleetShip, $starsystemMap, $system, $posx, $posy);
                 if ($fleetShip->isTraktorbeamActive()) {
-                    $this->enterStarSystemTraktor($fleetShip, $game);
+                    $this->enterStarSystemTraktor($fleetShip, $starsystemMap, $game);
                 }
 
                 $fleetShip->setEps($fleetShip->getEps() - 1);
@@ -144,7 +153,7 @@ final class EnterStarSystem implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function enterStarSystemTraktor(ShipInterface $ship, GameControllerInterface $game): void
+    private function enterStarSystemTraktor(ShipInterface $ship, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
     {
         if ($ship->getEps() < 1) {
             $name = $ship->getTraktorShip()->getName();
@@ -154,6 +163,7 @@ final class EnterStarSystem implements ActionControllerInterface
         }
         $this->enterStarSystem(
             $ship->getTraktorShip(),
+            $starsystemMap,
             $ship->getSystem(),
             $ship->getPosX(),
             $ship->getPosY()
@@ -167,11 +177,12 @@ final class EnterStarSystem implements ActionControllerInterface
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit in das System gezogen");
     }
 
-    private function enterStarSystem(ShipInterface $ship, StarSystemInterface $starSystem, int $posx, int $posy): void
+    private function enterStarSystem(ShipInterface $ship, StarSystemMapInterface $starsystemMap, StarSystemInterface $starSystem, int $posx, int $posy): void
     {
         $ship->setSystem($starSystem);
         $ship->setSX($posx);
         $ship->setSY($posy);
+        $ship->setStarsystemMap($starsystemMap);
 
         $this->shipRepository->save($ship);
     }

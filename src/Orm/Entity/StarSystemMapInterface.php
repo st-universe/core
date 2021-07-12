@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface StarSystemMapInterface
 {
     public function getId(): int;
@@ -27,4 +29,8 @@ interface StarSystemMapInterface
     public function getMapRegion(): ?MapRegionInterface;
 
     public function getFieldStyle(): string;
+
+    public function getShips(): Collection;
+
+    public function getSignatures(): Collection;
 }
