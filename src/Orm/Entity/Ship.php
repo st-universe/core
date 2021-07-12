@@ -176,6 +176,12 @@ class Ship implements ShipInterface
     /** @Column(type="boolean") */
     private $is_fleet_leader = false;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $map_id;
+
+    /** @Column(type="integer", nullable=true) * */
+    private $starsystem_map_id;
+
     /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
@@ -248,6 +254,18 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="ShipStorage", mappedBy="ship", indexBy="goods_id")
      */
     private $storage;
+
+    /**
+     * @ManyToOne(targetEntity="Map")
+     * @JoinColumn(name="map_id", referencedColumnName="id")
+     */
+    private $map;
+
+    /**
+     * @ManyToOne(targetEntity="StarSystemMap")
+     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
+     */
+    private $starsystem_map;
 
     private $epsUsage;
 
@@ -1152,6 +1170,30 @@ class Ship implements ShipInterface
     public function getMaxStorage(): int
     {
         return $this->getRump()->getStorage();
+    }
+
+    public function getMap(): ?MapInterface
+    {
+        return $this->map;
+    }
+
+    public function setMap(?MapInterface $map): ShipInterface
+    {
+        $this->map = $map;
+        $this->starsystem_map = null;
+        return $this;
+    }
+
+    public function getStarsystemMap(): ?StarSystemMapInterface
+    {
+        return $this->starsystem_map;
+    }
+
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface
+    {
+        $this->starsystem_map = $starsystem_map;
+        $this->map = null;
+        return $this;
     }
 
     public function getBeamFactor(): int

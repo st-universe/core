@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface MapInterface
 {
     public function getId(): int;
@@ -37,4 +39,8 @@ interface MapInterface
     public function getMapBorderType(): ?MapBorderTypeInterface;
 
     public function getMapRegion(): ?MapRegionInterface;
+
+    public function getShips(): Collection;
+
+    public function getSignatures(): Collection;
 }

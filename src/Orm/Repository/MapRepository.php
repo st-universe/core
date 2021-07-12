@@ -47,7 +47,9 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT m FROM %s m WHERE m.cx BETWEEN :startCx AND :endCx AND m.cy BETWEEN :startCy AND :endCy',
+                    'SELECT m FROM %s m
+                    WHERE m.cx BETWEEN :startCx AND :endCx AND m.cy BETWEEN :startCy AND :endCy
+                    ORDER BY m.cy, m.cx',
                     Map::class
                 )
             )

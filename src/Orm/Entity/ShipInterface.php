@@ -275,6 +275,14 @@ interface ShipInterface
 
     public function getMaxStorage(): int;
 
+    public function getMap(): ?MapInterface;
+
+    public function setMap(?MapInterface $map): ShipInterface;
+
+    public function getStarsystemMap(): ?StarSystemMapInterface;
+
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface;
+
     public function getBeamFactor(): int;
 
     /**

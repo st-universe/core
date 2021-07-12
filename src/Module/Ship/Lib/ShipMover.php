@@ -455,12 +455,20 @@ final class ShipMover implements ShipMoverInterface
             $this->deactivateTraktorBeam($ship, sprintf(_('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getPosX(), $ship->getPosY()));
         }
 
+        //MOVE!
         $met = 'fly' . $flightMethod;
         $this->$met($ship);
+        if ($ship->getSystem() === null) {
+            $ship->setMap($nextField);
+        } else {
+            $ship->setStarsystemMap($nextField);
+        }
         $this->hasTravelled = true;
         if ($ship === $leadShip) {
             $this->leaderMovedToNextField = true;
         }
+
+
         if (!$this->isFleetMode() && $ship->getFleetId()) {
             $this->leaveFleet($ship);
         }
