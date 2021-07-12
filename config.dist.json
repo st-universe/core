@@ -21,7 +21,6 @@
     }
   },
   "cache": {
-    "redis_socket": "/path/to/redis.sock",
     "redis_host": "localhost",
     "redis_port": 6379
   },
