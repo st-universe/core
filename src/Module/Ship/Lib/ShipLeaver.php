@@ -123,11 +123,13 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setHuell(1);
         $pods->setMaxHuell(1);
 
-        $pods->setSX($ship->getSx());
-        $pods->setSY($ship->getSy());
+        $pods->setSx($ship->getSx());
+        $pods->setSy($ship->getSy());
         $pods->setSystem($ship->getSystem());
-        $pods->setCX($ship->getCx());
-        $pods->setCY($ship->getCy());
+        $pods->setCx($ship->getCx());
+        $pods->setCy($ship->getCy());
+        $pods->setMap($ship->getMap());
+        $pods->setStarsystemMap($ship->getStarsystemMap());
 
         //return to save place
         $this->returnToSafety($pods, $ship);

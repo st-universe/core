@@ -951,7 +951,7 @@ class Ship implements ShipInterface
             $this->setSX($value);
             return;
         }
-        $this->setCX($value);
+        $this->setCx($value);
     }
 
     public function setPosY($value): void
@@ -960,7 +960,7 @@ class Ship implements ShipInterface
             $this->setSY($value);
             return;
         }
-        $this->setCY($value);
+        $this->setCy($value);
     }
 
     public function getSystem(): ?StarSystemInterface
@@ -1180,7 +1180,6 @@ class Ship implements ShipInterface
     public function setMap(?MapInterface $map): ShipInterface
     {
         $this->map = $map;
-        $this->starsystem_map = null;
         return $this;
     }
 
@@ -1192,7 +1191,6 @@ class Ship implements ShipInterface
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface
     {
         $this->starsystem_map = $starsystem_map;
-        $this->map = null;
         return $this;
     }
 

@@ -28,6 +28,7 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
 {
@@ -45,6 +46,8 @@ final class ShipCreator implements ShipCreatorInterface
 
     private ModuleSpecialRepositoryInterface $moduleSpecialRepository;
 
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
@@ -52,7 +55,8 @@ final class ShipCreator implements ShipCreatorInterface
         UserRepositoryInterface $userRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        ModuleSpecialRepositoryInterface $moduleSpecialRepository
+        ModuleSpecialRepositoryInterface $moduleSpecialRepository,
+        StarSystemMapRepositoryInterface $starSystemMapRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
@@ -61,6 +65,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleSpecialRepository = $moduleSpecialRepository;
+        $this->starSystemMapRepository = $starSystemMapRepository;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
@@ -116,11 +121,14 @@ final class ShipCreator implements ShipCreatorInterface
 
         $this->shipRepository->save($ship);
         if ($colony) {
-            $ship->setSX($colony->getSX());
-            $ship->setSY($colony->getSY());
+            $starsystemMap = $this->starSystemMapRepository->getByCoordinates($colony->getSystem()->getId(), $colony->getSx(), $colony->getSy());
+
+            $ship->setSx($colony->getSx());
+            $ship->setSy($colony->getSy());
             $ship->setSystem($colony->getSystem());
-            $ship->setCX($colony->getSystem()->getCX());
-            $ship->setCY($colony->getSystem()->getCY());
+            $ship->setCx($colony->getSystem()->getCx());
+            $ship->setCy($colony->getSystem()->getCy());
+            $ship->setStarsystemMap($starsystemMap);
             $this->shipRepository->save($ship);
         }
 
