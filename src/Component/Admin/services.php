@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Admin;
+namespace Stu\Component\Admin;
 
 use Stu\Component\Admin\Notification\FailureEmailSender;
 use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
