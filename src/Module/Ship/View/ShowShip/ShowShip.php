@@ -13,7 +13,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Control\GameController;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetNfsItem;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
@@ -31,6 +32,8 @@ final class ShowShip implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_SHIP';
 
     private SessionInterface $session;
+
+    private LoggerUtilInterface $loggerUtil;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -52,6 +55,7 @@ final class ShowShip implements ViewControllerInterface
 
     public function __construct(
         SessionInterface $session,
+        LoggerUtilInterface $loggerUtil,
         ShipLoaderInterface $shipLoader,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
@@ -63,6 +67,7 @@ final class ShowShip implements ViewControllerInterface
         DatabaseUserRepositoryInterface $databaseUserRepository
     ) {
         $this->session = $session;
+        $this->loggerUtil = $loggerUtil;
         $this->shipLoader = $shipLoader;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
@@ -76,6 +81,11 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init(
+            "stu",
+            $game->getUser()->getId() == 126 ? LoggerEnum::LEVEL_ERROR : LoggerEnum::LEVEL_INFO
+        );
+
         $user = $game->getUser();
         $userId = $user->getId();
         $ownsCurrentColony = false;
@@ -177,7 +187,13 @@ final class ShowShip implements ViewControllerInterface
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
-        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel($ship, $game->getUser(), $ship->getTachyonState(), $tachyonFresh));
+        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
+            $ship,
+            $game->getUser(),
+            $this->loggerUtil,
+            $ship->getTachyonState(),
+            $tachyonFresh
+        ));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',

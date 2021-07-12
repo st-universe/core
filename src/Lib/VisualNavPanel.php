@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Stu\Component\Map\MapEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -14,14 +15,22 @@ class VisualNavPanel
 
     private $user;
 
+    private LoggerUtilInterface $loggerUtil;
+
     private $isTachyonSystemActive;
 
     private $tachyonFresh;
 
-    function __construct(ShipInterface $ship, UserInterface $user, bool $isTachyonSystemActive, bool $tachyonFresh)
-    {
+    function __construct(
+        ShipInterface $ship,
+        UserInterface $user,
+        LoggerUtilInterface $loggerUtil,
+        bool $isTachyonSystemActive,
+        bool $tachyonFresh
+    ) {
         $this->ship = $ship;
         $this->user = $user;
+        $this->loggerUtil = $loggerUtil;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
     }
@@ -93,14 +102,26 @@ class VisualNavPanel
 
     function loadLSS()
     {
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
         if ($this->getShip()->getSystem() !== null) {
             $result = $this->getInnerSystemResult();
         } else {
             $result = $this->getOuterSystemResult();
         }
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tloadLSS-query, seconds: %F", $endTime - $startTime));
+        }
+
         $cx = $this->getShip()->getPosX();
         $cy = $this->getShip()->getPosY();
         $y = 0;
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
         foreach ($result as $data) {
             if ($data['posy'] < 1) {
                 continue;
@@ -118,6 +139,11 @@ class VisualNavPanel
             $entry->currentShipPosY = $cy;
             $rows[$y]->addEntry($entry);
         }
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tloadLSS-loop, seconds: %F", $endTime - $startTime));
+        }
+
         $this->rows = $rows;
     }
 
