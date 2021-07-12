@@ -53,17 +53,10 @@ $builder->addDefinitions([
             return new ArrayCachePool();
         } else {
             $redis = new Redis();
-
-            if ($config->has('cache.redis_socket')) {
-
-                $redis->connect($config->get('cache.redis_socket'));
-            } else {
-
-                $redis->connect(
-                    $config->get('cache.redis_host'),
-                    $config->get('cache.redis_port')
-                );
-            }
+            $redis->connect(
+                $config->get('cache.redis_host'),
+                $config->get('cache.redis_port')
+            );
             $redis->setOption(Redis::OPT_PREFIX, $config->get('db.database'));
 
             return new RedisCachePool($redis);
