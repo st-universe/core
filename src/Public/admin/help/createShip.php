@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
@@ -27,6 +28,7 @@ $userRepo = $container->get(UserRepositoryInterface::class);
 $shipCreator = $container->get(ShipCreatorInterface::class);
 $shipRepo = $container->get(ShipRepositoryInterface::class);
 $crewCreator = $container->get(CrewCreatorInterface::class);
+$mapRepo = $container->get(MapRepositoryInterface::class);
 
 $userId = request::indInt('userId');
 $buildplanId = request::indInt('buildplanId');
@@ -44,6 +46,8 @@ if ($torptypeId > 0 || $noTorps) {
         $ship = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
         $ship->setCx($cx);
         $ship->setCy($cy);
+        $outerMap = $mapRepo->getByCoordinates($ship->getSystem()->getCx(), $ship->getSystem()->getCy());
+        $ship->setMap($outerMap);
         $ship->setEps($ship->getMaxEps());
         $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
         $ship->setShield($ship->getMaxShield());
