@@ -12,6 +12,7 @@ use DI\ContainerBuilder;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\Generator\PasswordGeneratorInterface;
 use JBBCode\Parser;
@@ -56,7 +57,14 @@ $builder->addDefinitions([
 
             if ($config->has('cache.redis_socket')) {
 
-                $redis->connect($config->get('cache.redis_socket'));
+                try {
+                    $redis->connect($config->get('cache.redis_socket'));
+                } catch (Exception $e) {
+                    $redis->connect(
+                        $config->get('cache.redis_host'),
+                        $config->get('cache.redis_port')
+                    );
+                }
             } else {
 
                 $redis->connect(
