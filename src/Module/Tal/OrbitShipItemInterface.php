@@ -16,6 +16,8 @@ interface OrbitShipItemInterface
 
     public function getRump(): ShipRumpInterface;
 
+    public function getRumpName(): string;
+
     public function getHull(): int;
 
     public function getShield(): int;
