@@ -39,13 +39,13 @@ server {
 		fastcgi_param SCRIPT_FILENAME $realpath_root/api.php;
 		fastcgi_param SCRIPT_NAME api.php;
 		fastcgi_index index.php;
-		fastcgi_pass 127.0.0.1:9000;
+		fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
 	}
 
 	location ~ [^/]\.php(/|$) {
 		fastcgi_buffers 16 16k;
 		fastcgi_buffer_size 32k;
-		fastcgi_pass 127.0.0.1:9000;
+		fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
 		fastcgi_read_timeout 300;
 		fastcgi_index index.php;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;

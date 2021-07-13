@@ -501,7 +501,7 @@ class Colony implements ColonyInterface
 
             $this->productionRaw = [];
             foreach ($result as $data) {
-                if ($data['gc'] != 0) {
+                if (($data['gc'] + $data['pc']) != 0) {
                     $this->productionRaw[$data['goods_id']] = new ColonyProduction($data);
                 }
             }
