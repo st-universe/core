@@ -126,7 +126,7 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive
         );
 
-        if ($shipId == 6005) {
+        if ($shipId == 6005 || $shipId == 5617) {
             $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResultsNew(
                 $ship,
                 false,
