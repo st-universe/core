@@ -232,9 +232,8 @@ class Ship implements ShipInterface
      */
     private $torpedo;
 
-    //TODO test if fetch="EAGER" is performance boost
     /**
-     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"}, fetch="EAGER")
+     * @OneToMany(targetEntity="ShipSystem", mappedBy="ship", indexBy="system_type", cascade={"remove"}, fetch="EXTRA_LAZY")
      * @OrderBy({"system_type" = "ASC"})
      */
     private $systems;
