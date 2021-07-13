@@ -658,7 +658,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ON s.user_id = u.id
                 WHERE s.%s = :fieldId
                 AND s.id != :ignoreId
-                AND s.fleets_id IS NULL',
+                AND s.fleets_id IS NULL
+                AND s.is_base = :isBase',
                 $showCloaked ? '' : ' AND ss2.mode > 1 ',
                 $isSystem ? 'starsystem_map_id' : 'map_id'
             ),
