@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\Action\AddKnPost;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameController;
@@ -12,7 +13,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Entity\RpgPlotInterface;
-use Stu\Orm\Entity\RpgPlotMemberInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
@@ -34,13 +34,16 @@ final class AddKnPost implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         AddKnPostRequestInterface $addKnPostRequest,
         KnPostRepositoryInterface $knPostRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         RpgPlotRepositoryInterface $rpgPlotRepository,
         UserRepositoryInterface $userRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        EntityManagerInterface $entityManager
     ) {
         $this->addKnPostRequest = $addKnPostRequest;
         $this->knPostRepository = $knPostRepository;
@@ -48,6 +51,7 @@ final class AddKnPost implements ActionControllerInterface
         $this->rpgPlotRepository = $rpgPlotRepository;
         $this->userRepository = $userRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -92,6 +96,7 @@ final class AddKnPost implements ActionControllerInterface
         $post->setDate(time());
 
         $this->knPostRepository->save($post);
+        $this->entityManager->flush();
 
         if ($plot !== null) {
             $this->notifyPlotMembers($post, $plot);
