@@ -17,6 +17,7 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetNfsItem;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\ShipNfsIterator;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
@@ -125,11 +126,20 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive
         );
 
-        $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
-            $ship,
-            false,
-            $tachyonActive
-        );
+        if ($shipId == 6005) {
+            $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResultsNew(
+                $ship,
+                false,
+                $tachyonActive
+            ), $userId);
+        } else {
+
+            $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
+                $ship,
+                false,
+                $tachyonActive
+            );
+        }
 
         $fleets = $this->fleetRepository->getByPositition(
             $ship->getSystem(),

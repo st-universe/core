@@ -13,6 +13,8 @@ interface ShipInterface
      */
     public function getUserId(): int;
 
+    public function getUserName(): string;
+
     public function getFleetId(): ?int;
 
     public function setFleetId(?int $fleetId): ShipInterface;
@@ -136,6 +138,8 @@ interface ShipInterface
     public function setEBattWaitingTime(int $batteryCooldown): ShipInterface;
 
     public function isBase(): bool;
+
+    public function isTrumfield(): bool;
 
     public function setIsBase(bool $isBase): ShipInterface;
 
@@ -376,6 +380,10 @@ interface ShipInterface
     public function getRump(): ShipRumpInterface;
 
     public function setRump(ShipRumpInterface $shipRump): ShipInterface;
+
+    public function getRumpId(): int;
+
+    public function getRumpName(): string;
 
     public function hasPhaser(): bool;
 

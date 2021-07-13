@@ -23,7 +23,8 @@
   <tr tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-        <metal:macro metal:use-macro="shipimage" /></a>
+        <metal:macro metal:use-macro="shipimage" />
+      </a>
     </td>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
@@ -112,10 +113,10 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
-  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRump/getId}_cloaked.png" style="opacity:0.55;"
-    tal:attributes="title ship/getRump/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRump/getId}.png"
-    tal:attributes="title ship/getRump/getName" />
+  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
+    tal:attributes="title ship/getRumpName" />
+  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+    tal:attributes="title ship/getRumpName" />
 </metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
@@ -244,7 +245,8 @@
   <tal:block tal:condition="ship/isOwnedByCurrentUser">
     <td style="width: 200px; background-color: #000000 !important;">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-        <metal:macro metal:use-macro="shipimage" /></a>
+        <metal:macro metal:use-macro="shipimage" />
+      </a>
     </td>
     <td>
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}"><span tal:content="structure bbcode:ship/getName">.</span></a>
@@ -258,7 +260,7 @@
       <span tal:content="structure bbcode:ship/getName">.</span>
     </td>
   </tal:block>
-  <tal:block tal:condition="not:ship/getRump/isTrumfield">
+  <tal:block tal:condition="not:ship/isTrumfield">
     <td style="width: 160px;">
       <span tal:replace="ship/getHuell"></span>/<span tal:replace="ship/getMaxHuell"></span>
       <tal:block tal:condition="ship/getShieldState">
@@ -267,16 +269,16 @@
     </td>
     <td>
       <a href="javascript:void(0);" onclick="openPmWindow(${ship/getUserId})"
-        title="Nachricht an ${bbcode2txt:ship/getUser/getName} verfassen"
+        title="Nachricht an ${bbcode2txt:ship/getUserName} verfassen"
         onmouseover="cp('nbsPm${ship/getId}','buttons/msg2')" onmouseout="cp('nbsPm${ship/getId}','buttons/msg1')">
         <img src="/assets/buttons/msg1.gif" name="nbsPm${ship/getId}" /></a>
-      <span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span> (${ship/getUserId})
+      <span tal:replace="structure bbcode:ship/getUserName">USERNAME</span> (${ship/getUserId})
     </td>
   </tal:block>
-  <tal:block tal:condition="ship/getRump/isTrumfield">
+  <tal:block tal:condition="ship/isTrumfield">
     <td style="width: 160px;" tal:content="ship/getHuell">HULL</td>
     <td>
-      <span tal:replace="structure bbcode:ship/getUser/getName">USERNAME</span>
+      <span tal:replace="structure bbcode:ship/getUserName">USERNAME</span>
     </td>
   </tal:block>
 </metal:block>
