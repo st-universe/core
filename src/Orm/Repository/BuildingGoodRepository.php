@@ -24,7 +24,7 @@ final class BuildingGoodRepository extends EntityRepository implements BuildingG
         $rsm->addScalarResult('pc', 'pc', 'integer');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT a.id as goods_id, a.id as global_goods_id, SUM(c.count) as gc, MAX(d.count) as pc
+            'SELECT a.id as goods_id, a.id as global_goods_id, SUM(c.count) as gc, COALESCE(MAX(d.count),0) as pc
             FROM stu_goods a
                 LEFT JOIN stu_colonies_fielddata b ON b.colonies_id = :colonyId AND b.aktiv = :state
                 LEFT JOIN stu_buildings_goods c ON c.goods_id = a.id AND c.buildings_id = b.buildings_id
