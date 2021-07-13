@@ -11,9 +11,9 @@ $config = $container->get(ConfigInterface::class);
 
 $whoops = new Run();
 
-//if ($config->get('debug.debug_mode') === true) {
-if (true === true) {
-//    error_reporting(E_ALL);
+if ($config->get('debug.debug_mode') === true) {
+    //if (true === true) {
+    //    error_reporting(E_ALL);
     error_reporting(E_ALL & ~E_NOTICE);
 
     if (Whoops\Util\Misc::isCommandLine()) {
@@ -24,7 +24,6 @@ if (true === true) {
     }
 
     $whoops->prependHandler($handler);
-
 } else {
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
@@ -52,6 +51,5 @@ $whoops->prependHandler(function (Throwable $e, $inspector, $run) use ($logger) 
             'trace' => $e->getTrace()
         ]
     );
-
 });
 $whoops->register();
