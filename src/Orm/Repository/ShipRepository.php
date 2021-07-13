@@ -254,25 +254,82 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     ' LEFT JOIN stu_flight_sig fs1
         ON fs1.starsystem_map_id = a.id
         AND fs1.user_id != %d
-        AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+        AND (fs1.FROM_direction = 1 OR fs1.to_direction = 1)
         AND fs1.time > %d
     LEFT JOIN stu_flight_sig fs2
         ON fs2.starsystem_map_id = a.id
         AND fs2.user_id != %d
-        AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+        AND (fs2.FROM_direction = 2 OR fs2.to_direction = 2)
         AND fs2.time > %d
     LEFT JOIN stu_flight_sig fs3
         ON fs3.starsystem_map_id = a.id
         AND fs3.user_id != %d
-        AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+        AND (fs3.FROM_direction = 3 OR fs3.to_direction = 3)
         AND fs3.time > %d
     LEFT JOIN stu_flight_sig fs4
         ON fs4.starsystem_map_id = a.id
         AND fs4.user_id != %d
-        AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+        AND (fs4.FROM_direction = 4 OR fs4.to_direction = 4)
         AND fs4.time > %d ';
 
     public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('posx', 'posx', 'integer');
+        $rsm->addScalarResult('posy', 'posy', 'integer');
+        $rsm->addScalarResult('sysid', 'sysid', 'integer');
+        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
+        $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
+        $rsm->addScalarResult('type', 'type', 'integer');
+        $rsm->addScalarResult('field_id', 'field_id', 'integer');
+
+        if ($doSubspace) {
+            $rsm->addScalarResult('d1c', 'd1c', 'integer');
+            $rsm->addScalarResult('d2c', 'd2c', 'integer');
+            $rsm->addScalarResult('d3c', 'd3c', 'integer');
+            $rsm->addScalarResult('d4c', 'd4c', 'integer');
+
+            $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
+        }
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT a.sx as posx,a.sy as posy,a.systems_id as sysid, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount, d.type, a.field_id
+            %s
+            FROM stu_sys_map a
+            LEFT JOIN stu_ships b
+                ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM stu_ships_systems ss
+                                    WHERE b.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+            LEFT JOIN stu_ships c
+                ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy
+                AND EXISTS (SELECT ss2.id
+                                    FROM stu_ships_systems ss2
+                                    WHERE c.id = ss2.ships_id
+                                    AND ss2.system_type = :systemId
+                                    AND ss2.mode > 1)
+            %s 
+            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id WHERE
+			a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
+            GROUP BY a.sy, a.sx, a.systems_id, d.type, a.field_id ORDER BY a.sy,a.sx',
+                $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '',
+                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_STAR_JOIN, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge) : ''
+            ),
+            $rsm
+        )->setParameters([
+            'starSystemId' => $systemId,
+            'sxStart' => $sx - $sensorRange,
+            'sxEnd' => $sx + $sensorRange,
+            'syStart' => $sy - $sensorRange,
+            'syEnd' => $sy + $sensorRange,
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+        ])->getResult();
+    }
+
+    public function getSubspaceResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -333,25 +390,116 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     ' LEFT JOIN stu_flight_sig fs1
         ON fs1.map_id = a.id
         AND fs1.user_id != %d
-        AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+        AND (fs1.FROM_direction = 1 OR fs1.to_direction = 1)
         AND fs1.time > %d
     LEFT JOIN stu_flight_sig fs2
         ON fs2.map_id = a.id
         AND fs2.user_id != %d
-        AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+        AND (fs2.FROM_direction = 2 OR fs2.to_direction = 2)
         AND fs2.time > %d
     LEFT JOIN stu_flight_sig fs3
         ON fs3.map_id = a.id
         AND fs3.user_id != %d
-        AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+        AND (fs3.FROM_direction = 3 OR fs3.to_direction = 3)
         AND fs3.time > %d
     LEFT JOIN stu_flight_sig fs4
         ON fs4.map_id = a.id
         AND fs4.user_id != %d
-        AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+        AND (fs4.FROM_direction = 4 OR fs4.to_direction = 4)
         AND fs4.time > %d ';
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('posx', 'posx', 'integer');
+        $rsm->addScalarResult('posy', 'posy', 'integer');
+        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
+        $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
+        $rsm->addScalarResult('type', 'type', 'integer');
+        $rsm->addScalarResult('field_id', 'field_id', 'integer');
+
+        if ($doSubspace) {
+            $rsm->addScalarResult('d1c', 'd1c', 'integer');
+            $rsm->addScalarResult('d2c', 'd2c', 'integer');
+            $rsm->addScalarResult('d3c', 'd3c', 'integer');
+            $rsm->addScalarResult('d4c', 'd4c', 'integer');
+
+            $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
+        }
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT a.cx as posx,a.cy as posy, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount, d.type, a.field_id
+            %s
+            FROM stu_map a
+            LEFT JOIN stu_ships b
+                ON b.cx=a.cx AND b.cy=a.cy
+                AND NOT EXISTS (SELECT ss.id
+                                    FROM stu_ships_systems ss
+                                    WHERE b.id = ss.ships_id
+                                    AND ss.system_type = :systemId
+                                    AND ss.mode > 1)
+            LEFT JOIN stu_ships c
+                ON c.cx = a.cx AND c.cy=a.cy
+                AND EXISTS (SELECT ss2.id
+                                    FROM stu_ships_systems ss2
+                                    WHERE c.id = ss2.ships_id
+                                    AND ss2.system_type = :systemId
+                                    AND ss2.mode > 1)
+            %s
+            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+            WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
+                $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '',
+                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_MAP_JOIN, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge) : ''
+            ),
+            $rsm
+        )->setParameters([
+            'sxStart' => $cx - $sensorRange,
+            'sxEnd' => $cx + $sensorRange,
+            'syStart' => $cy - $sensorRange,
+            'syEnd' => $cy + $sensorRange,
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+        ])->getResult();
+    }
+
+    public function getSensorResultOuterSystemNew(array $mapIds): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('mapid', 'mapid', 'integer');
+        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
+        $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT a.id as mapid, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount
+                FROM stu_map a
+                LEFT JOIN stu_ships b
+                    ON a.id = b.map_id
+                    AND b.map_id in (:mapIds)
+                    AND NOT EXISTS (SELECT ss.id
+                                        FROM stu_ships_systems ss
+                                        WHERE b.id = ss.ships_id
+                                        AND ss.system_type = :systemId
+                                        AND ss.mode > 1)
+                LEFT JOIN stu_ships c
+                    ON a.id = c.map_id
+                    AND c.map_id in (:mapIds)
+                    AND EXISTS (SELECT ss2.id
+                                        FROM stu_ships_systems ss2
+                                        WHERE c.id = ss2.ships_id
+                                        AND ss2.system_type = :systemId
+                                        AND ss2.mode > 1)
+                WHERE a.id in (:mapIds)
+                GROUP BY a.id',
+            ),
+            $rsm
+        )->setParameters([
+            'mapIds' => $mapIds,
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+        ])->getResult();
+    }
+
+    public function getSubspaceResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -460,6 +608,68 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ]);
         }
         return $query->getResult();
+    }
+
+    public function getSingleShipScannerResultsNew(
+        ShipInterface $ship,
+        bool $isBase,
+        bool $showCloaked = false
+    ): iterable {
+
+        $isSystem = $ship->getSystem() !== null;
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('rumpid', 'rumpid', 'integer');
+        $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
+        $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
+        $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
+        $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
+        $rsm->addScalarResult('isbase', 'isbase', 'boolean');
+        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('hull', 'hull', 'integer');
+        $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
+        $rsm->addScalarResult('shield', 'shield', 'integer');
+        $rsm->addScalarResult('userid', 'userid', 'integer');
+        $rsm->addScalarResult('username', 'username', 'string');
+        $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
+        $rsm->addScalarResult('rumpname', 'rumpname', 'string');
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT s.id, s.rumps_id as rumpid , ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
+                    ss3.mode as shieldstate, s.is_destroyed as isdestroyed, s.is_base as isbase, s.name,
+                    s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, u.id as userid, u.username,
+                    r.category_id as rumpcategoryid, r.name as rumpname
+                FROM stu_ships s
+                LEFT JOIN stu_ships_systems ss
+                ON s.id = ss.ships_id
+                AND ss.system_type = :warpdriveType
+                LEFT JOIN stu_ships_systems ss2
+                ON s.id = ss2.ships_id
+                AND ss2.system_type = :cloakType
+                %s
+                LEFT JOIN stu_ships_systems ss3
+                ON s.id = ss3.ships_id
+                AND ss3.system_type = :shieldType
+                JOIN stu_rumps r
+                ON s.rumps_id = r.id
+                JOIN stu_user u
+                ON s.user_id = u.id
+                AND u.id != :ignoreId
+                WHERE s.%s = :fieldId',
+                $showCloaked ? '' : ' AND ss2.mode > 1 ',
+                $isSystem ? 'starsystem_map_id' : 'map_id'
+            ),
+            $rsm
+        )->setParameters([
+            'fieldId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'ignoreId' => $ship->getId(),
+            'isBase' => $isBase,
+            'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
+            'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+        ])->getResult();
     }
 
     public function isCloakedShipAtLocation(

@@ -4,7 +4,6 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -101,10 +100,20 @@ interface ShipRepositoryInterface extends ObjectRepository
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable;
 
+    //TODO remove, if not used
     /**
      * @return ShipInterface[]
      */
     public function getSingleShipScannerResults(
+        ShipInterface $ship,
+        bool $isBase,
+        bool $showCloaked = false
+    ): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
+    public function getSingleShipScannerResultsNew(
         ShipInterface $ship,
         bool $isBase,
         bool $showCloaked = false

@@ -294,6 +294,11 @@ class Ship implements ShipInterface
         return $this->user_id;
     }
 
+    public function getUserName(): string
+    {
+        return $this->getUser()->getUserName();
+    }
+
     public function getFleetId(): ?int
     {
         return $this->fleets_id;
@@ -679,6 +684,11 @@ class Ship implements ShipInterface
     public function isBase(): bool
     {
         return $this->is_base;
+    }
+
+    public function isTrumfield(): bool
+    {
+        return $this->getRump()->isTrumfield();
     }
 
     public function setIsBase(bool $isBase): ShipInterface
@@ -1580,6 +1590,16 @@ class Ship implements ShipInterface
     public function getRump(): ShipRumpInterface
     {
         return $this->rump;
+    }
+
+    public function getRumpId(): int
+    {
+        return $this->rumps_id;
+    }
+
+    public function getRumpName(): string
+    {
+        return $this->getRump()->getName();
     }
 
     public function setRump(ShipRumpInterface $shipRump): ShipInterface
