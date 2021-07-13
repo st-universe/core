@@ -67,9 +67,15 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_OFF);
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->setMode(ShipSystemModeEnum::MODE_OFF);
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
+        }
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_PHASER)->setMode(ShipSystemModeEnum::MODE_OFF);
+        }
+        if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO)->setMode(ShipSystemModeEnum::MODE_OFF);
+        }
 
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_CLOAK)->setMode(ShipSystemModeEnum::MODE_ON);
     }
