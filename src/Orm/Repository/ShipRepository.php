@@ -310,7 +310,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
                 WHERE a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
                 GROUP BY a.sy, a.sx, a.id, d.type ORDER BY a.sy,a.sx',
-                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_STAR_COUNT, $ignoreId, $maxAge) : ''
+                $doSubspace ? sprintf(self::FLIGHT_SIGNATURE_STAR_COUNT, $ignoreId, $maxAge) : ''
             ),
             $rsm
         )->setParameters([
@@ -385,7 +385,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
                 WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
-                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_MAP_COUNT, $ignoreId, $maxAge) : ''
+                $doSubspace ? sprintf(self::FLIGHT_SIGNATURE_MAP_COUNT, $ignoreId, $maxAge) : ''
             ),
             $rsm
         )->setParameters([
