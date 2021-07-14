@@ -44,4 +44,9 @@ final class ShipNfsIterator implements Iterator
     {
         return isset($this->ships[$this->position]);
     }
+
+    public function count(): int
+    {
+        return count($this->ships);
+    }
 }
