@@ -198,7 +198,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',
-            $fnbs !== [] || $nbs !== [] || $singleShipsNbs !== []
+            $fnbs !== [] || $nbs !== [] || $singleShipsNbs->count() > 0
         );
 
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
