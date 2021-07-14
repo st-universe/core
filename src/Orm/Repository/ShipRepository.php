@@ -371,23 +371,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.id, a.sx as posx,a.sy as posy, d.type
-                %s
-                FROM stu_sys_map a
-                LEFT JOIN stu_ships b
-                    ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy
+                'SELECT a.id, a.sx as posx,a.sy as posy, d.type,
+                (select count(distinct b.id)from stu_ships b
+                    where a.id = b.starsystem_map_id
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ships_systems ss
                                         WHERE b.id = ss.ships_id
                                         AND ss.system_type = :systemId
-                                        AND ss.mode > 1)
-                LEFT JOIN stu_ships c
-                    ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy
+                                        AND ss.mode > 1)) as shipcount,
+                (select count(distinct c.id) from stu_ships c
+                    where a.id = c.starsystem_map_id
                     AND EXISTS (SELECT ss2.id
-                                    FROM stu_ships_systems ss2
-                                    WHERE c.id = ss2.ships_id
-                                    AND ss2.system_type = :systemId
-                                    AND ss2.mode > 1)
+                                        FROM stu_ships_systems ss2
+                                        WHERE c.id = ss2.ships_id
+                                        AND ss2.system_type = :systemId
+                                        AND ss2.mode > 1)) as cloakcount
+                %s
+                FROM stu_sys_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
                 WHERE a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
                 GROUP BY a.sy, a.sx, a.id, d.type ORDER BY a.sy,a.sx',
