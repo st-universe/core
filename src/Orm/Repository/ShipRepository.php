@@ -448,14 +448,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
                 (select count(distinct b.id)from stu_ships b
-                    where a.id = b.map_id
+                    where b.cx=a.cx AND b.cy=a.cy
                     AND NOT EXISTS (SELECT ss.id
                                         FROM stu_ships_systems ss
                                         WHERE b.id = ss.ships_id
                                         AND ss.system_type = :systemId
                                         AND ss.mode > 1)) as shipcount,
                 (select count(distinct c.id) from stu_ships c
-                    where a.id = c.map_id
+                    where c.cx = a.cx AND c.cy=a.cy
                     AND EXISTS (SELECT ss2.id
                                         FROM stu_ships_systems ss2
                                         WHERE c.id = ss2.ships_id
