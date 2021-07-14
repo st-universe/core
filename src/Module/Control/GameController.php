@@ -13,7 +13,6 @@ use Stu\Exception\RelocationGameStateException;
 use Stu\Exception\TickGameStateException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Message\Lib\ContactListModeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -66,8 +65,6 @@ final class GameController implements GameControllerInterface
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
 
-    private ColonyLibFactoryInterface $colonyLibFactory;
-
     private array $gameInformations = [];
 
     private array $siteNavigation = [];
@@ -104,8 +101,7 @@ final class GameController implements GameControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
-        CreateDatabaseEntryInterface $createDatabaseEntry,
-        ColonyLibFactoryInterface $colonyLibFactory
+        CreateDatabaseEntryInterface $createDatabaseEntry
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -121,7 +117,6 @@ final class GameController implements GameControllerInterface
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
-        $this->colonyLibFactory = $colonyLibFactory;
     }
 
     public function setView(string $view, array $viewContext = []): void

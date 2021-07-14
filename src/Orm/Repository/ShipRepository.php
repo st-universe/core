@@ -386,27 +386,27 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-    private const FLIGHT_SIGNATURE_MAP_JOIN =
-    ' LEFT JOIN stu_flight_sig fs1
-        ON fs1.map_id = a.id
-        AND fs1.user_id != %d
-        AND (fs1.FROM_direction = 1 OR fs1.to_direction = 1)
-        AND fs1.time > %d
-    LEFT JOIN stu_flight_sig fs2
-        ON fs2.map_id = a.id
-        AND fs2.user_id != %d
-        AND (fs2.FROM_direction = 2 OR fs2.to_direction = 2)
-        AND fs2.time > %d
-    LEFT JOIN stu_flight_sig fs3
-        ON fs3.map_id = a.id
-        AND fs3.user_id != %d
-        AND (fs3.FROM_direction = 3 OR fs3.to_direction = 3)
-        AND fs3.time > %d
-    LEFT JOIN stu_flight_sig fs4
-        ON fs4.map_id = a.id
-        AND fs4.user_id != %d
-        AND (fs4.FROM_direction = 4 OR fs4.to_direction = 4)
-        AND fs4.time > %d ';
+    private const FLIGHT_SIGNATURE_MAP_COUNT =
+    ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
+    where fs1.map_id = a.id
+    AND fs1.user_id != %1$d
+    AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+    AND fs1.time > %2$d) as d1c,
+    (select count(distinct fs2.ship_id) from stu_flight_sig fs2
+    where fs2.map_id = a.id
+    AND fs2.user_id != %1$d
+    AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+    AND fs2.time > %2$d) as d2c,
+    (select count(distinct fs3.ship_id) from stu_flight_sig fs3
+    where fs3.map_id = a.id
+    AND fs3.user_id != %1$d
+    AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+    AND fs3.time > %2$d) as d3c,
+    (select count(distinct fs4.ship_id) from stu_flight_sig fs4
+    where fs4.map_id = a.id
+    AND fs4.user_id != %1$d
+    AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+    AND fs4.time > %2$d) as d4c ';
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
     {
@@ -416,7 +416,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
         $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('field_id', 'field_id', 'integer');
 
         if ($doSubspace) {
             $rsm->addScalarResult('d1c', 'd1c', 'integer');
@@ -429,28 +428,27 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT a.cx as posx,a.cy as posy, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount, d.type, a.field_id
-            %s
-            FROM stu_map a
-            LEFT JOIN stu_ships b
-                ON b.cx=a.cx AND b.cy=a.cy
-                AND NOT EXISTS (SELECT ss.id
-                                    FROM stu_ships_systems ss
-                                    WHERE b.id = ss.ships_id
-                                    AND ss.system_type = :systemId
-                                    AND ss.mode > 1)
-            LEFT JOIN stu_ships c
-                ON c.cx = a.cx AND c.cy=a.cy
-                AND EXISTS (SELECT ss2.id
-                                    FROM stu_ships_systems ss2
-                                    WHERE c.id = ss2.ships_id
-                                    AND ss2.system_type = :systemId
-                                    AND ss2.mode > 1)
-            %s
-            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-            WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd GROUP BY a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
-                $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '',
-                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_MAP_JOIN, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge) : ''
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                (select count(distinct b.id)from stu_ships b
+                    where a.id = b.map_id
+                    AND NOT EXISTS (SELECT ss.id
+                                        FROM stu_ships_systems ss
+                                        WHERE b.id = ss.ships_id
+                                        AND ss.system_type = :systemId
+                                        AND ss.mode > 1)) as shipcount,
+                (select count(distinct c.id) from stu_ships c
+                    where a.id = c.map_id
+                    AND EXISTS (SELECT ss2.id
+                                        FROM stu_ships_systems ss2
+                                        WHERE c.id = ss2.ships_id
+                                        AND ss2.system_type = :systemId
+                                        AND ss2.mode > 1)) as cloakcount
+                %s 
+                FROM stu_map a
+                LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                GROUP BY a.id, a.cy, a.cx, d.type, a.field_id ORDER BY a.cy,a.cx',
+                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_MAP_COUNT, $ignoreId, $maxAge) : ''
             ),
             $rsm
         )->setParameters([
