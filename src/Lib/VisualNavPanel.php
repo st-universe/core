@@ -90,26 +90,14 @@ class VisualNavPanel
         // @todo refactor
         global $container;
 
-        if ($this->user->getId() == 126) {
-            return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystemNew(
-                $this->getShip()->getSystem()->getId(),
-                $this->getShip()->getSx(),
-                $this->getShip()->getSy(),
-                $this->getShip()->getSensorRange(),
-                $this->getShip()->getSubspaceState(),
-                $this->user->getId()
-            );
-        } else {
-
-            return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
-                $this->getShip()->getSystem()->getId(),
-                $this->getShip()->getSx(),
-                $this->getShip()->getSy(),
-                $this->getShip()->getSensorRange(),
-                $this->getShip()->getSubspaceState(),
-                $this->user->getId()
-            );
-        }
+        return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
+            $this->getShip()->getSystem()->getId(),
+            $this->getShip()->getSx(),
+            $this->getShip()->getSy(),
+            $this->getShip()->getSensorRange(),
+            $this->getShip()->getSubspaceState(),
+            $this->user->getId()
+        );
     }
 
     function loadLSS()
