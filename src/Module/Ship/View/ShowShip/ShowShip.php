@@ -82,10 +82,7 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init(
-            "stu",
-            $game->getUser()->getId() == 126 ? LoggerEnum::LEVEL_ERROR : LoggerEnum::LEVEL_INFO
-        );
+        $this->loggerUtil->init();
 
         $user = $game->getUser();
         $userId = $user->getId();
@@ -205,7 +202,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
-        $game->setTemplateVar('STATION_NBS', $stationNbs);
+        $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
