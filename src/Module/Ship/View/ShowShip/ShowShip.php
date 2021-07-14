@@ -126,11 +126,11 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive
         );
 
-        $singleShipsNbs = $this->shipRepository->getSingleShipScannerResults(
+        $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
             false,
             $tachyonActive
-        );
+        ), $userId);
 
         $fleets = $this->fleetRepository->getByPositition(
             $ship->getSystem(),
