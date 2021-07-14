@@ -120,11 +120,11 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive = !empty($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship));
         }
 
-        $nbs = $this->shipRepository->getSingleShipScannerResults(
+        $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
             true,
             $tachyonActive
-        );
+        ), $userId);
 
         $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
@@ -198,14 +198,14 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',
-            $fnbs !== [] || $nbs !== [] || $singleShipsNbs->count() > 0
+            $fnbs !== [] || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
         );
 
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
-        $game->setTemplateVar('STATION_NBS', $nbs);
+        $game->setTemplateVar('STATION_NBS', $stationNbs);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
