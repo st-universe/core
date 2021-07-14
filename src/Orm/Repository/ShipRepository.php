@@ -247,88 +247,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->getResult();
     }
 
-    private const FLIGHT_SIGNATURE_COLUMNS =
-    ' , count(distinct fs1.ship_id) as d1c, count(distinct fs2.ship_id) as d2c, count(distinct fs3.ship_id) as d3c, count(distinct fs4.ship_id) as d4c ';
-
-    private const FLIGHT_SIGNATURE_STAR_JOIN =
-    ' LEFT JOIN stu_flight_sig fs1
-        ON fs1.starsystem_map_id = a.id
-        AND fs1.user_id != %d
-        AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
-        AND fs1.time > %d
-    LEFT JOIN stu_flight_sig fs2
-        ON fs2.starsystem_map_id = a.id
-        AND fs2.user_id != %d
-        AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
-        AND fs2.time > %d
-    LEFT JOIN stu_flight_sig fs3
-        ON fs3.starsystem_map_id = a.id
-        AND fs3.user_id != %d
-        AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
-        AND fs3.time > %d
-    LEFT JOIN stu_flight_sig fs4
-        ON fs4.starsystem_map_id = a.id
-        AND fs4.user_id != %d
-        AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
-        AND fs4.time > %d ';
-
-    public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('posx', 'posx', 'integer');
-        $rsm->addScalarResult('posy', 'posy', 'integer');
-        $rsm->addScalarResult('sysid', 'sysid', 'integer');
-        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
-        $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
-        $rsm->addScalarResult('type', 'type', 'integer');
-        $rsm->addScalarResult('field_id', 'field_id', 'integer');
-
-        if ($doSubspace) {
-            $rsm->addScalarResult('d1c', 'd1c', 'integer');
-            $rsm->addScalarResult('d2c', 'd2c', 'integer');
-            $rsm->addScalarResult('d3c', 'd3c', 'integer');
-            $rsm->addScalarResult('d4c', 'd4c', 'integer');
-
-            $maxAge = time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED;
-        }
-
-        return $this->getEntityManager()->createNativeQuery(
-            sprintf(
-                'SELECT a.sx as posx,a.sy as posy,a.systems_id as sysid, count(distinct b.id) as shipcount, count(distinct c.id) as cloakcount, d.type, a.field_id
-            %s
-            FROM stu_sys_map a
-            LEFT JOIN stu_ships b
-                ON b.systems_id = a.systems_id AND b.sx = a.sx AND b.sy = a.sy
-                AND NOT EXISTS (SELECT ss.id
-                                    FROM stu_ships_systems ss
-                                    WHERE b.id = ss.ships_id
-                                    AND ss.system_type = :systemId
-                                    AND ss.mode > 1)
-            LEFT JOIN stu_ships c
-                ON c.systems_id = a.systems_id AND c.sx = a.sx AND c.sy = a.sy
-                AND EXISTS (SELECT ss2.id
-                                    FROM stu_ships_systems ss2
-                                    WHERE c.id = ss2.ships_id
-                                    AND ss2.system_type = :systemId
-                                    AND ss2.mode > 1)
-            %s 
-            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id WHERE
-			a.systems_id = :starSystemId AND a.sx BETWEEN :sxStart AND :sxEnd AND a.sy BETWEEN :syStart AND :syEnd
-            GROUP BY a.sy, a.sx, a.systems_id, d.type, a.field_id ORDER BY a.sy,a.sx',
-                $doSubspace ? ShipRepository::FLIGHT_SIGNATURE_COLUMNS : '',
-                $doSubspace ? sprintf(ShipRepository::FLIGHT_SIGNATURE_STAR_JOIN, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge, $ignoreId, $maxAge) : ''
-            ),
-            $rsm
-        )->setParameters([
-            'starSystemId' => $systemId,
-            'sxStart' => $sx - $sensorRange,
-            'sxEnd' => $sx + $sensorRange,
-            'syStart' => $sy - $sensorRange,
-            'syEnd' => $sy + $sensorRange,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
-        ])->getResult();
-    }
-
     private const FLIGHT_SIGNATURE_STAR_COUNT =
     ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
     where fs1.starsystem_map_id = a.id
@@ -351,7 +269,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultInnerSystemNew(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
+    public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -478,63 +396,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+
     public function getSingleShipScannerResults(
-        ShipInterface $ship,
-        bool $isBase,
-        bool $showCloaked = false
-    ): iterable {
-        $cloakSql = sprintf(
-            ' AND ( (s.user_id = %d) OR NOT EXISTS (SELECT ss.id
-                            FROM %s ss
-                            WHERE s.id = ss.ships_id
-                            AND ss.system_type = %d
-                            AND ss.mode > 1)) ',
-            $ship->getUser()->getId(),
-            ShipSystem::class,
-            ShipSystemTypeEnum::SYSTEM_CLOAK
-        );
-
-        if ($ship->getSystem() === null) {
-            $query = $this->getEntityManager()->createQuery(
-                sprintf(
-                    'SELECT s FROM %s s
-                    WHERE s.systems_id is null
-                    AND s.cx = :cx AND s.cy = :cy
-                    AND s.fleets_id IS NULL
-                    %s
-                    AND s.is_base = :isBase AND s.id != :ignoreId',
-                    Ship::class,
-                    $showCloaked ? '' : $cloakSql
-                )
-            )->setParameters([
-                'cx' => $ship->getCx(),
-                'cy' => $ship->getCy(),
-                'ignoreId' => $ship->getId(),
-                'isBase' => $isBase
-            ]);
-        } else {
-            $query = $this->getEntityManager()->createQuery(
-                sprintf(
-                    'SELECT s FROM %s s
-                    WHERE s.systems_id = :starSystemId
-                    AND s.sx = :sx AND s.sy = :sy AND s.fleets_id IS NULL
-                    %s
-                    AND s.is_base = :isBase AND s.id != :ignoreId',
-                    Ship::class,
-                    $showCloaked ? '' : $cloakSql
-                )
-            )->setParameters([
-                'starSystemId' => $ship->getSystem()->getId(),
-                'sx' => $ship->getSx(),
-                'sy' => $ship->getSy(),
-                'ignoreId' => $ship->getId(),
-                'isBase' => $isBase
-            ]);
-        }
-        return $query->getResult();
-    }
-
-    public function getSingleShipScannerResultsNew(
         ShipInterface $ship,
         bool $isBase,
         bool $showCloaked = false
