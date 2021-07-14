@@ -203,7 +203,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
         $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
-        $game->setTemplateVar('SHIP_NBS', $singleShipsNbs);
+        $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
