@@ -1060,9 +1060,8 @@
 										</td>
 										<td>
 											<div id="fleetuser${data/getId}" style="display: none;">
-												<a href="javascript:void(0);"
-													onclick="openPmWindow(${data/getUser/getId})"
-													title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen"
+												<a href="javascript:void(0);" onclick="openPmWindow(${data/getUserId})"
+													title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
 													onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
 													onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
 													<img src="/assets/buttons/msg1.gif" name="nbsPm${data/getId}" />
