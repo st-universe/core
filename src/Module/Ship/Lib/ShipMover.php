@@ -479,6 +479,11 @@ final class ShipMover implements ShipMoverInterface
         if ($ship->isTraktorbeamActive()) {
             $ship->setEps($ship->getEps() - $ship->getTraktorShip()->getRump()->getFlightEcost());
             $this->$met($ship->getTraktorShip());
+            if ($ship->getSystem() === null) {
+                $ship->getTraktorShip()->setMap($nextField);
+            } else {
+                $ship->getTraktorShip()->setStarsystemMap($nextField);
+            }
 
             //check astro stuff for tractor
             if ($ship->getSystem() !== null) {
