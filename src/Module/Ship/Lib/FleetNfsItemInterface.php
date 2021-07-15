@@ -13,6 +13,8 @@ interface FleetNfsItemInterface
 
     public function getVisibleShips(): Collection;
 
+    public function getVisibleShipsCount(): int;
+
     public function isFleetOfCurrentShip(): bool;
 
     public function showManagement(): bool;
@@ -24,6 +26,10 @@ interface FleetNfsItemInterface
     public function getLeadShip(): ShipInterface;
 
     public function getUser(): UserInterface;
+
+    public function getUserId(): int;
+
+    public function getUserName(): string;
 
     public function getDefendedColony(): ?ColonyInterface;
 

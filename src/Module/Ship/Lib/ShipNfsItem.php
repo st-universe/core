@@ -22,11 +22,11 @@ final class ShipNfsItem
 
     public function getId()
     {
-        return $this->values['id'];
+        return $this->values['shipid'];
     }
     public function getName()
     {
-        return $this->values['name'];
+        return $this->values['shipname'];
     }
     public function getHuell()
     {

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
@@ -396,24 +397,26 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-
-    public function getSingleShipScannerResults(
+    public function getFleetShipsScannerResults(
         ShipInterface $ship,
-        bool $isBase,
         bool $showCloaked = false
     ): iterable {
 
         $isSystem = $ship->getSystem() !== null;
 
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id', 'integer');
+        $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
+        $rsm->addScalarResult('fleetname', 'fleetname', 'string');
+        $rsm->addScalarResult('isdefending', 'isdefending', 'boolean');
+        $rsm->addScalarResult('isblocking', 'isblocking', 'boolean');
+        $rsm->addScalarResult('shipid', 'shipid', 'integer');
         $rsm->addScalarResult('rumpid', 'rumpid', 'integer');
         $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
         $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
         $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
         $rsm->addScalarResult('isbase', 'isbase', 'boolean');
-        $rsm->addScalarResult('name', 'name', 'string');
+        $rsm->addScalarResult('shipname', 'shipname', 'string');
         $rsm->addScalarResult('hull', 'hull', 'integer');
         $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
         $rsm->addScalarResult('shield', 'shield', 'integer');
@@ -424,8 +427,73 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
-                'SELECT s.id, s.rumps_id as rumpid , ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
-                    ss3.mode as shieldstate, s.is_destroyed as isdestroyed, s.is_base as isbase, s.name,
+                'SELECT f.id as fleetid, f.name as fleetname, f.defended_colony_id is not null as isdefending,
+                    f.blocked_colony_id is not null as isblocking, s.id as shipid, s.rumps_id as rumpid,
+                    ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, s.is_destroyed as isdestroyed,
+                    s.is_base as isbase, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield,
+                    u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname
+                FROM stu_ships s
+                LEFT JOIN stu_ships_systems ss
+                ON s.id = ss.ships_id
+                AND ss.system_type = :warpdriveType
+                LEFT JOIN stu_ships_systems ss2
+                ON s.id = ss2.ships_id
+                AND ss2.system_type = :cloakType
+                LEFT JOIN stu_ships_systems ss3
+                ON s.id = ss3.ships_id
+                AND ss3.system_type = :shieldType
+                JOIN stu_rumps r
+                ON s.rumps_id = r.id
+                JOIN stu_fleets f
+                ON s.fleets_id = f.id
+                JOIN stu_user u
+                ON s.user_id = u.id
+                WHERE s.%s = :fieldId
+                AND s.id != :ignoreId
+                %s
+                ORDER BY f.sort desc, (case when s.is_fleet_leader then 0 else 1 end)',
+                $isSystem ? 'starsystem_map_id' : 'map_id',
+                $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
+            ),
+            $rsm
+        )->setParameters([
+            'fieldId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'ignoreId' => $ship->getId(),
+            'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
+            'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+        ])->getResult();
+    }
+
+    public function getSingleShipScannerResults(
+        ShipInterface $ship,
+        bool $isBase,
+        bool $showCloaked = false
+    ): iterable {
+
+        $isSystem = $ship->getSystem() !== null;
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('shipid', 'shipid', 'integer');
+        $rsm->addScalarResult('rumpid', 'rumpid', 'integer');
+        $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
+        $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
+        $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
+        $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
+        $rsm->addScalarResult('isbase', 'isbase', 'boolean');
+        $rsm->addScalarResult('shipname', 'shipname', 'string');
+        $rsm->addScalarResult('hull', 'hull', 'integer');
+        $rsm->addScalarResult('maxhull', 'maxhull', 'integer');
+        $rsm->addScalarResult('shield', 'shield', 'integer');
+        $rsm->addScalarResult('userid', 'userid', 'integer');
+        $rsm->addScalarResult('username', 'username', 'string');
+        $rsm->addScalarResult('rumpcategoryid', 'rumpcategoryid', 'integer');
+        $rsm->addScalarResult('rumpname', 'rumpname', 'string');
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT s.id as shipid, s.rumps_id as rumpid , ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
+                    ss3.mode as shieldstate, s.is_destroyed as isdestroyed, s.is_base as isbase, s.name as shipname,
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname
                 FROM stu_ships s
@@ -435,7 +503,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_ships_systems ss2
                 ON s.id = ss2.ships_id
                 AND ss2.system_type = :cloakType
-                %s
                 LEFT JOIN stu_ships_systems ss3
                 ON s.id = ss3.ships_id
                 AND ss3.system_type = :shieldType
@@ -446,9 +513,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.%s = :fieldId
                 AND s.id != :ignoreId
                 AND s.fleets_id IS NULL
-                AND s.is_base = :isBase',
-                $showCloaked ? '' : ' AND ss2.mode > 1 ',
-                $isSystem ? 'starsystem_map_id' : 'map_id'
+                AND s.is_base = :isBase
+                %s',
+                $isSystem ? 'starsystem_map_id' : 'map_id',
+                $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
             $rsm
         )->setParameters([

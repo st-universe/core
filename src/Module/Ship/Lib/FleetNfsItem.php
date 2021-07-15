@@ -50,6 +50,11 @@ final class FleetNfsItem implements FleetNfsItemInterface
             );
     }
 
+    public function getVisibleShipsCount(): int
+    {
+        return $this->getVisibleShips()->count();
+    }
+
     public function isFleetOfCurrentShip(): bool
     {
         return $this->fleet->getShips()->containsKey($this->currentShip->getId());
@@ -78,6 +83,16 @@ final class FleetNfsItem implements FleetNfsItemInterface
     public function getUser(): UserInterface
     {
         return $this->fleet->getUser();
+    }
+
+    public function getUserId(): int
+    {
+        return $this->getUser()->getId();
+    }
+
+    public function getUserName(): string
+    {
+        return $this->getUser()->getUserName();
     }
 
     public function getDefendedColony(): ?ColonyInterface
