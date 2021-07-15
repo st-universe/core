@@ -33,7 +33,7 @@ final class FleetNfsItemNew
 
     public function getVisibleShips(): iterable
     {
-        return new ShipNfsIterator($this->ships, $this->currentShip->getUser->getId());
+        return new ShipNfsIterator($this->ships, $this->currentShip->getUser()->getId());
     }
 
     public function getVisibleShipsCount(): int
