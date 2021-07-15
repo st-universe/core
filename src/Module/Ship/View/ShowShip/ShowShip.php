@@ -138,7 +138,7 @@ final class ShowShip implements ViewControllerInterface
         );
 
         $fnbs = [];
-        if ($userId === 126) {
+        if (true) {
             $fnbs = new FleetNfsIterator(
                 $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive),
                 $ship,
@@ -205,7 +205,7 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar(
             'HAS_NBS',
             //todo change to ->count()
-            (($userId === 126) ? $fnbs->count() > 0 : ($fnbs !== [])) || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
+            ((true) ? $fnbs->count() > 0 : ($fnbs !== [])) || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
         );
 
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
