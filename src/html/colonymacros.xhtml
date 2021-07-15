@@ -545,7 +545,8 @@
                     onmouseout="cp('shields','buttons/shldac1')">
                     <img src="/assets/buttons/shldac1.gif" name="shields" /> Deaktivieren
                   </a>
-                  <input type="text" size="4" name="load" id="loadshield_value" />
+                  <input type="text" size="4" name="load" id="loadshield_value"
+                    onkeydown="event.key == 'Enter' &&  $('loadshield_button').click()" />
                   <input type="submit" class="button" value="laden" name="B_LOAD_SHIELDS" id="loadshield_button" />
                   <input type="button" class="button" value="max"
                     onclick="$('loadshield_value').value = '${COLONY/getMaxShields}'; $('loadshield_button').click()" />
@@ -555,7 +556,8 @@
                 <td>Schildfrequenz in MHz (max. 6 Stellen):</td>
                 <td>
                   <input type="text" size="5" name="frequency" class="goodAmount"
-                    tal:attributes="value COLONY/getShieldFrequency" />
+                    tal:attributes="value COLONY/getShieldFrequency"
+                    onkeydown="event.key == 'Enter' &&  $('changeFrequencyButton').click()" />
                   <input type="submit" class="button" name="B_CHANGE_FREQUENCY" value="ändern"
                     id="changeFrequencyButton" />
                 </td>
@@ -806,8 +808,8 @@
         <tr>
           <td>
             <input type="test" value="runtime" tal:attributes="value COLONY/getName" name="colname"
-              style="width: 250px;" />
-            <input type="submit" name="B_CHANGE_NAME" value="Ändern" />
+              style="width: 250px;" onkeydown="event.key == 'Enter' && $('changecolonynamebutton').click()" />
+            <input type="submit" id="changecolonynamebutton" name="B_CHANGE_NAME" value="Ändern" />
           </td>
         </tr>
       </table>
@@ -838,8 +840,9 @@
       <br />
       <div class="divhead">Bevölkerungslimit</div>
       <div class="divbody">
-        <input type="text" size="4" name="poplimit" value="runtime" tal:attributes="value COLONY/getPopulationLimit" />
-        <input type="submit" name="B_SET_POPULATIONLIMIT" value="Ändern" />
+        <input type="text" size="4" name="poplimit" value="runtime" tal:attributes="value COLONY/getPopulationLimit"
+          onkeydown="event.key == 'Enter' && $('setpopulationlimitbutton').click()" />
+        <input type="submit" id="setpopulationlimitbutton" name="B_SET_POPULATIONLIMIT" value="Ändern" />
       </div>
       <br />
       <div class="divhead">Kolonie aufgeben</div>
@@ -1819,7 +1822,7 @@
   </td>
 </metal:macro>
 <metal:macro metal:define-macro="colonymenu_container">
-  <div class="colonymenu_container">
+  <div class="colonymenu_container" onkeydown="return event.key != 'Enter';">
     <form action="colony.php" method="post">
       <metal:macro metal:define-slot="containment" />
     </form>
