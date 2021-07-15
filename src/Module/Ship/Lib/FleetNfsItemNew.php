@@ -28,7 +28,7 @@ final class FleetNfsItemNew
 
     public function isHidden(): bool
     {
-        return $this->session->hasSessionValue('hiddenfleets', $this->fleet->getId());
+        return $this->session->hasSessionValue('hiddenfleets', $this->getId());
     }
 
     public function getVisibleShips(): iterable
