@@ -14,6 +14,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\FleetNfsItem;
 use Stu\Module\Ship\Lib\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipNfsIterator;
@@ -22,6 +23,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 use VisualNavPanel;
@@ -35,6 +37,8 @@ final class ShowShip implements ViewControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     private ShipLoaderInterface $shipLoader;
+
+    private FleetRepositoryInterface $fleetRepository;
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -54,6 +58,7 @@ final class ShowShip implements ViewControllerInterface
         SessionInterface $session,
         LoggerUtilInterface $loggerUtil,
         ShipLoaderInterface $shipLoader,
+        FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
         ColonizationCheckerInterface $colonizationChecker,
@@ -65,6 +70,7 @@ final class ShowShip implements ViewControllerInterface
         $this->session = $session;
         $this->loggerUtil = $loggerUtil;
         $this->shipLoader = $shipLoader;
+        $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->colonizationChecker = $colonizationChecker;
@@ -123,11 +129,41 @@ final class ShowShip implements ViewControllerInterface
             $tachyonActive
         ), $userId);
 
-        $fleetNbs = new FleetNfsIterator(
-            $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive),
-            $ship,
-            $this->session
+        $fleets = $this->fleetRepository->getByPositition(
+            $ship->getSystem(),
+            $ship->getCx(),
+            $ship->getCy(),
+            $ship->getSx(),
+            $ship->getSy()
         );
+
+        $fnbs = [];
+        if (true) {
+            $fnbs = new FleetNfsIterator(
+                $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive),
+                $ship,
+                $this->session
+            );
+        } else {
+
+            foreach ($fleets as $fleet) {
+
+                $fleetNfsItem = new FleetNfsItem(
+                    $this->session,
+                    $fleet,
+                    $ship,
+                    $tachyonActive
+                );
+
+                if ($fleetNfsItem->getVisibleShips()->count() > 0) {
+                    if ($fleetNfsItem->isFleetOfCurrentShip()) {
+                        array_unshift($fnbs, $fleetNfsItem);
+                    } else {
+                        $fnbs[] = $fleetNfsItem;
+                    }
+                }
+            }
+        }
 
         $canColonize = false;
         if ($colony) {
@@ -168,13 +204,14 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',
-            $fleetNbs->count() > 0 || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
+            //todo change to ->count()
+            ((true) ? $fnbs->count() > 0 : ($fnbs !== [])) || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
         );
 
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
-        $game->setTemplateVar('FLEET_NBS', $fleetNbs);
+        $game->setTemplateVar('FLEET_NBS', $fnbs);
         $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
         $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
