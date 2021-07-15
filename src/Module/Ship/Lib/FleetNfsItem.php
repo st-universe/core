@@ -4,85 +4,104 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Stu\Lib\SessionInterface;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 
-final class FleetNfsItem
+final class FleetNfsItem implements FleetNfsItemInterface
 {
-    private array $ships;
+    private SessionInterface $session;
+
+    private FleetInterface $fleet;
 
     private ShipInterface $currentShip;
 
-    private SessionInterface $session;
-
+    private bool $showCloaked;
 
     public function __construct(
-        array $ships,
+        SessionInterface $session,
+        FleetInterface $fleet,
         ShipInterface $currentShip,
-        SessionInterface $session
+        bool $showCloaked
     ) {
-        $this->ships = $ships;
         $this->session = $session;
+        $this->fleet = $fleet;
         $this->currentShip = $currentShip;
+        $this->showCloaked = $showCloaked;
     }
 
     public function isHidden(): bool
     {
-        return $this->session->hasSessionValue('hiddenfleets', $this->getId());
+        return $this->session->hasSessionValue('hiddenfleets', $this->fleet->getId());
     }
 
-    public function getVisibleShips(): iterable
+    public function getVisibleShips(): Collection
     {
-        return new ShipNfsIterator($this->ships, $this->currentShip->getUser()->getId());
+        return $this->fleet->getShips()
+            ->filter(
+                function (ShipInterface $ship): bool {
+                    return $ship !== $this->currentShip && ($this->showCloaked ||
+                        $ship->getCloakState() === false ||
+                        $ship->getUser() === $this->currentShip->getUser());
+                }
+            );
     }
 
     public function getVisibleShipsCount(): int
     {
-        return count($this->ships);
+        return $this->getVisibleShips()->count();
     }
 
     public function isFleetOfCurrentShip(): bool
     {
-        return $this->currentShip->getFleet()->getId() === $this->ships[0]['fleetid'];
+        return $this->fleet->getShips()->containsKey($this->currentShip->getId());
     }
 
     public function showManagement(): bool
     {
-        return $this->currentShip->getUser()->getId() === $this->ships[0]['user_id'];
+        return $this->fleet->getUser() === $this->currentShip->getUser();
     }
 
     public function getName(): string
     {
-        return $this->ships[0]['fleetname'];
+        return $this->fleet->getName();
     }
 
     public function getId(): int
     {
-        return $this->ships[0]['fleetid'];
+        return $this->fleet->getId();
     }
 
-    public function getLeadShip(): ShipNfsItem
+    public function getLeadShip(): ShipInterface
     {
-        return new ShipNfsItem($this->ships[0], $this->currentShip->getUser()->getId());
+        return $this->fleet->getLeadShip();
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->fleet->getUser();
     }
 
     public function getUserId(): int
     {
-        return $this->ships[0]['userid'];
+        return $this->getUser()->getId();
     }
 
     public function getUserName(): string
     {
-        return $this->ships[0]['username'];
+        return $this->getUser()->getUserName();
     }
 
-    public function getDefendedColony(): bool
+    public function getDefendedColony(): ?ColonyInterface
     {
-        return $this->ships[0]['isdefending'];
+        return $this->fleet->getDefendedColony();
     }
 
-    public function getBlockedColony(): bool
+    public function getBlockedColony(): ?ColonyInterface
     {
-        return  $this->ships[0]['isblocking'];
+        return $this->fleet->getBlockedColony();
     }
 }

@@ -53,9 +53,9 @@ final class FleetNfsIterator implements Iterator
         $this->position = 0;
     }
 
-    public function current(): FleetNfsItem
+    public function current(): FleetNfsItemNew
     {
-        return new FleetNfsItem($this->fleets[$this->position], $this->currentShip, $this->session);
+        return new FleetNfsItemNew($this->fleets[$this->position], $this->currentShip, $this->session);
     }
 
     public function key(): int
