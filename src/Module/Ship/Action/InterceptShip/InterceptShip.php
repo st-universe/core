@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\InterceptShip;
 
 use request;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
@@ -16,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 
 final class InterceptShip implements ActionControllerInterface
 {
@@ -31,18 +33,26 @@ final class InterceptShip implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        AlertRedHelperInterface $alertRedHelper,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
+        $this->alertRedHelper = $alertRedHelper;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -126,7 +136,17 @@ final class InterceptShip implements ActionControllerInterface
 
             $this->shipRepository->save($ship);
         }
-        // @todo TBD Red alert
+        $this->entityManager->flush();
+
+        $informations = [];
+
+        //Alarm-Rot check allgemein
+        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+        shuffle($shipsToShuffle);
+        foreach ($shipsToShuffle as $alertShip) {
+            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+        }
+        $game->addInformationMergeDown($informations);
     }
 
     public function performSessionCheck(): bool

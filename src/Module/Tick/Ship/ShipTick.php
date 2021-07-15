@@ -12,7 +12,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
-use Stu\Module\Ship\Lib\AstroEntryLib;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -25,7 +24,6 @@ final class ShipTick implements ShipTickInterface
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipRepositoryInterface $shipRepository;
-
 
     private ShipSystemManagerInterface $shipSystemManager;
 
