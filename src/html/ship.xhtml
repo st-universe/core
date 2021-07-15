@@ -1030,7 +1030,7 @@
 								<tal:block tal:condition="not:data/isHidden">
 									<tr>
 										<td colspan="2">
-											<span tal:replace="data/getVisibleShips/count">COUNT</span> Schiffe
+											<span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
 											<tal:block tal:condition="data/showManagement">
 												<tal:block tal:condition="not:SHIP/getFleetId">
 													(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}"
@@ -1067,9 +1067,8 @@
 													onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
 													<img src="/assets/buttons/msg1.gif" name="nbsPm${data/getId}" />
 												</a>
-												<span
-													tal:content="structure bbcode:data/getUser/getName">USERNAME</span>
-												(${data/getUser/getId})
+												<span tal:content="structure bbcode:data/getUserName">USERNAME</span>
+												(${data/getUserId})
 											</div>
 										</td>
 									</tr>
@@ -1089,7 +1088,7 @@
 								<tal:block tal:condition="data/isHidden">
 									<tr>
 										<td colspan="2">
-											<span tal:replace="data/getVisibleShips/count">COUNT</span> Schiffe
+											<span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
 											<tal:block tal:condition="data/showManagement">
 												<tal:block tal:condition="not:SHIP/getFleetId">
 													(<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}"
@@ -1119,9 +1118,8 @@
 										</td>
 										<td>
 											<div id="fleetuser${data/getId}">
-												<a href="javascript:void(0);"
-													onclick="openPmWindow(${data/getUser/getId})"
-													title="Nachricht an ${bbcode2txt:data/getUser/getName} verfassen"
+												<a href="javascript:void(0);" onclick="openPmWindow(${data/getUserId})"
+													title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
 													onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
 													onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
 													<img src="/assets/buttons/msg1.gif" name="nbsPm${data/getId}" />

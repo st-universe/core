@@ -103,6 +103,14 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
+    public function getFleetShipsScannerResults(
+        ShipInterface $ship,
+        bool $showCloaked = false
+    ): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
     public function getSingleShipScannerResults(
         ShipInterface $ship,
         bool $isBase,

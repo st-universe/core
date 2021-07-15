@@ -13,9 +13,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetNfsItem;
+use Stu\Module\Ship\Lib\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipNfsIterator;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
@@ -138,20 +138,29 @@ final class ShowShip implements ViewControllerInterface
         );
 
         $fnbs = [];
-        foreach ($fleets as $fleet) {
-
-            $fleetNfsItem = new FleetNfsItem(
-                $this->session,
-                $fleet,
+        if ($userId === 126) {
+            $fnbs = new FleetNfsIterator(
+                $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive),
                 $ship,
-                $tachyonActive
+                $this->session
             );
+        } else {
 
-            if ($fleetNfsItem->getVisibleShips()->count() > 0) {
-                if ($fleetNfsItem->isFleetOfCurrentShip()) {
-                    array_unshift($fnbs, $fleetNfsItem);
-                } else {
-                    $fnbs[] = $fleetNfsItem;
+            foreach ($fleets as $fleet) {
+
+                $fleetNfsItem = new FleetNfsItem(
+                    $this->session,
+                    $fleet,
+                    $ship,
+                    $tachyonActive
+                );
+
+                if ($fleetNfsItem->getVisibleShips()->count() > 0) {
+                    if ($fleetNfsItem->isFleetOfCurrentShip()) {
+                        array_unshift($fnbs, $fleetNfsItem);
+                    } else {
+                        $fnbs[] = $fleetNfsItem;
+                    }
                 }
             }
         }
@@ -195,7 +204,8 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
         $game->setTemplateVar(
             'HAS_NBS',
-            $fnbs !== [] || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
+            //todo change to ->count()
+            (($userId === 126) ? $fnbs->count() > 0 : ($fnbs !== [])) || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
         );
 
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
