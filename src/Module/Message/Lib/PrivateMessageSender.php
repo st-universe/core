@@ -62,6 +62,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $newobj->setRecipient($pm->getSender());
             $newobj->setCategory($folder);
             $newobj->setNew(false);
+            $newobj->setHref(null);
 
             $this->privateMessageRepository->save($newobj);
         }
