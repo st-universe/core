@@ -25,7 +25,8 @@
 		</tal:block>
 		<tal:block tal:condition="exists: SHIP">
 			<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
-			<form action="ship.php" method="post" name="shipform" id="shipform">
+			<form action="ship.php" method="post" name="shipform" id="shipform"
+				onkeydown="return event.key != 'Enter';">
 				<metal:macro metal:use-macro="html/shipmacros.xhtml/hiddenshipid" />
 				<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 				<table class="tcal">
@@ -84,8 +85,10 @@
 						</td>
 						<td style="text-align: center;" tal:content="SHIP/getCrewCount">CREW</td>
 						<td style="text-align: center;">
-							<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName" /> <input
-								type="submit" class="button" name="B_CHANGE_NAME" value="ändern" />
+							<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"
+								onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()" /> <input
+								type="submit" class="button" id="changeshipnamebutton" name="B_CHANGE_NAME"
+								value="ändern" />
 						</td>
 					</tr>
 					<tr>
@@ -827,7 +830,8 @@
 										${SHIP/getWarpcoreLoad}/${SHIP/getWarpcoreCapacity}
 									</td>
 									<td>
-										<input type="text" size="3" name="warpcoreload" id="warpcoreload" value="1" />
+										<input type="text" size="3" name="warpcoreload" id="warpcoreload" value="1"
+											onkeydown="event.key == 'Enter' && $('loadwarpcorebutton').click();" />
 										<input type="submit" class="button" name="B_LOAD_WARPCORE" value="aufladen"
 											id="loadwarpcorebutton" /> <input type="button" class="button" value="max"
 											onClick="$('warpcoreload').value = 9999; $('loadwarpcorebutton').click()" />
@@ -861,8 +865,9 @@
 								<tr>
 									<td tal:condition="SHIP/isEBattUseable">
 										Einheiten
-										<input type="text" size="5" name="ebattload" id="ebattload" /> <input
-											type="submit" class="button" name="B_USE_BATTERY" value="entladen"
+										<input type="text" size="5" name="ebattload" id="ebattload"
+											onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
+										<input type="submit" class="button" name="B_USE_BATTERY" value="entladen"
 											id="unloadBatteryButton" />
 										<input type="button" class="button"
 											onclick="$('ebattload').value = ${SHIP/getEbatt}; $('unloadBatteryButton').click();"
