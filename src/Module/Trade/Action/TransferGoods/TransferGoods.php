@@ -54,6 +54,10 @@ final class TransferGoods implements ActionControllerInterface
         $amount = $this->transferGoodsRequest->getAmount();
         $destinationTradePostId = $this->transferGoodsRequest->getDestinationTradePostId();
 
+        if ($destinationTradePostId == -1) {
+            return;
+        }
+
         $selectedStorage = $this->tradeStorageRepository->find($this->transferGoodsRequest->getStorageId());
         if ($selectedStorage === null || $selectedStorage->getUserId() !== $userId) {
             throw new AccessViolation();

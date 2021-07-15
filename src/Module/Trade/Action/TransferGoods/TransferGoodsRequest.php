@@ -17,12 +17,11 @@ final class TransferGoodsRequest implements TransferGoodsRequestInterface
 
     public function getAmount(): int
     {
-        return $this->queryParameter('count')->int()->required();
+        return $this->queryParameter('count')->int()->defaultsTo(0);
     }
 
     public function getDestinationTradePostId(): int
     {
-        return $this->queryParameter('target')->int()->required();
+        return $this->queryParameter('target')->int()->defaultsTo(-1);
     }
-
 }
