@@ -113,6 +113,19 @@ final class ColonyTickManager implements ColonyTickManagerInterface
             $this->crewTrainingRepository->delete($obj);
             $user[$obj->getUserId()]++;
         }
+
+        // send message for crew training
+        foreach ($user as $userId => $count) {
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $userId,
+                sprintf(
+                    "Es wurden erfolgreich %d Crewman ausgebildet.",
+                    $count
+                ),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+            );
+        }
     }
 
     private function repairShips(int $tickId): void
@@ -156,7 +169,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,
-                    $ship->getUserId(),
+                    $ship->getUser()->getId(),
                     sprintf(
                         "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
                         $ship->getName(),
@@ -167,7 +180,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
                     PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
                 );
 
-                if ($ship->getUserId() != $colony->getUserId()) {
+                if ($ship->getUser()->getId() != $colony->getUserId()) {
                     $this->privateMessageSender->send(
                         GameEnum::USER_NOONE,
                         $colony->getUserId(),
