@@ -20,109 +20,108 @@ function blurNavApplet() {
 }
 
 function showALvlWindow() {
-	elt = 'alvl';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_ALVL=1');
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ALVL=1');
 }
 
 function showETransferWindow(target) {
-	elt = 'etrans';
+	closeAjaxWindow();
 	openWindow('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_ETRANSFER=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ETRANSFER=1&target=' + target);
 }
 
 function showBToWindow(target) {
-	elt = 'beam'
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
 }
 
 function showBFromWindow(target) {
-	elt = 'beam'
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
 }
 
 function triggerBeamTo(target) {
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
 }
 
 function triggerBeamFrom(target) {
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
 }
 
 function showBToColonyWindow(target) {
-	elt = 'beam';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
 }
 
 function showBFromColonyWindow(target) {
-	elt = 'beam';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
 }
 
 function showBTroopTransferWindow(target, targetIsColony, isUnload) {
-	elt = 'troop';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	colonyParam = targetIsColony ? '&isColony=1' : '';
 	directionParam = isUnload ? '&isUnload=1' : '';
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TROOP_TRANSFER=1&target=' + target + colonyParam + directionParam);
 }
 
 function showBTorpTransferWindow(target, isUnload) {
-	elt = 'torp';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	directionParam = isUnload ? '&isUnload=1' : '';
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_TORP_TRANSFER=1&target=' + target + directionParam);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_TORP_TRANSFER=1&target=' + target + directionParam);
 }
 
 function triggerBeamToColony(target) {
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMTO=1&target=' + target);
 }
 
 function triggerBeamFromColony(target) {
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_COLONY_BEAMFROM=1&target=' + target);
 }
 
 function showSelfdestructWindow(target) {
-	elt = 'selfdestruct';
+	closeAjaxWindow();
 	openWindow('elt', 1, 300);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SELFDESTRUCT_AJAX=1&target=' + target);
 }
 function showScanWindow(shipid, target) {
-	elt = 'scan';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_SCAN=1&target=' + target);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SCAN=1&target=' + target);
 }
 function showSectorScanWindow() {
-	elt = 'sectorscan';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
 }
 function showAstroEntryWindow() {
-	elt = 'astroentry';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ASTRO_ENTRY=1');
 }
 function openStarMap(obj, cx, cy) {
+	closeAjaxWindow();
 	var pos = findObject(obj);
-	elt = 'starmap';
 	openWindowPosition('elt', 1, 300, pos[0], pos[1]);
 	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy);
 }
 function showMapBy(cx, cy) {
-	elt = 'starmap';
 	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy);
 }
 function showShipDetails(id) {
-	elt = 'shipdetails'
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
-	new Ajax.Updater('elt', 'ship.php?id=' + shipid + '&SHOW_SHIPDETAILS=1&id=' + id);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SHIPDETAILS=1&id=' + id);
 }
 function editDockPrivileges() {
-	elt = 'dockprivileges';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_DOCKPRIVILEGE_CONFIG=1&id=' + shipid);
 }
@@ -134,7 +133,7 @@ function deleteDockPrivilege(id, sstr) {
 	ajax_update('dockprivilegelist', 'ship.php?B_DELETE_DOCKPRIVILEGE=1&id=' + shipid + "&privilegeid=" + id + "&sstr=" + sstr);
 }
 function openTradeMenu(postid) {
-	elt = 'trademenu';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_TRADEMENU=1&id=' + shipid + '&postid=' + postid);
 }
@@ -155,17 +154,17 @@ function switchTransferToAccount(postid) {
 	$('transfertoaccount').addClassName('selected');
 }
 function showRegionInfo(region) {
-	elt = 'regioninfo';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_REGION_INFO=1&id=' + shipid + '&region=' + region);
 }
 function showColonization(colonyId) {
-	elt = 'colonization';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_COLONIZATION=1&id=' + shipid + '&colid=' + colonyId);
 }
 function showColonyScan() {
-	elt = 'colonyscan';
+	closeAjaxWindow();
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_COLONY_SCAN=1&id=' + shipid);
 }
