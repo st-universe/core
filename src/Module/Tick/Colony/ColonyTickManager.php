@@ -103,6 +103,7 @@ final class ColonyTickManager implements ColonyTickManagerInterface
                 continue;
             }
             if ($obj->getUser()->getGlobalCrewLimit() - $obj->getUser()->getUsedCrewCount() - $obj->getUser()->getFreeCrewCount() <= 0) {
+                $this->crewTrainingRepository->delete($obj);
                 continue;
             }
             if (!$obj->getColony()->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY)) {
@@ -116,6 +117,10 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
         // send message for crew training
         foreach ($user as $userId => $count) {
+            if ($count === 0) {
+                continue;
+            }
+
             $this->privateMessageSender->send(
                 GameEnum::USER_NOONE,
                 $userId,
