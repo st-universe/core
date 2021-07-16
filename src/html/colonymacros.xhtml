@@ -931,13 +931,15 @@
           <td style="vertical-align: middle; text-align: center;" tal:content="data/getAmountInStock">
           </td>
           <td style="vertical-align: middle; text-align: center;">
-            <input type="text" size="2" name="module[${data/getModuleId}]" />
+            <input type="text" size="2" name="module[${data/getModuleId}]"
+              onkeydown="event.key == 'Enter' && $('producebutton').click()" />
           </td>
         </tr>
         <tr>
           <td colspan="3"></td>
           <td>
-            <input type="submit" style="cursor: pointer;" name="B_CREATE_MODULES" value="Herstellen" />
+            <input type="submit" style="cursor: pointer;" id="producebutton" name="B_CREATE_MODULES"
+              value="Herstellen" />
           </td>
         </tr>
       </table>
