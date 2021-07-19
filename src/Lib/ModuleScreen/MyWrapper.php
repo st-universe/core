@@ -4,26 +4,18 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleScreen;
 
-/**
- * @access public
- */
-class MyWrapper
-{ #{{{
+final class MyWrapper
+{
 
     private $modSels = null;
 
-    /**
-     */
     public function register($modSel)
-    { #{{{
+    {
         $this->modeSels[$modSel->getModuleType()] = $modSel;
-    } # }}}
+    }
 
-    /**
-     */
-    public function __get($moduleType)
-    { #{{{
+    public function __get($moduleType): ModuleSelectorInterface
+    {
         return $this->modSels[$moduleType];
-    } # }}}
-
+    }
 }
