@@ -31,11 +31,7 @@ interface ShipInterface
 
     public function getSx(): int;
 
-    public function setSx(int $sx): ShipInterface;
-
     public function getSy(): int;
-
-    public function setSy(int $sy): ShipInterface;
 
     public function getFlightDirection(): int;
 
@@ -220,13 +216,7 @@ interface ShipInterface
 
     public function setUser(UserInterface $user): ShipInterface;
 
-    public function setPosX(int $value): void;
-
-    public function setPosY($value): void;
-
     public function getSystem(): ?StarSystemInterface;
-
-    public function setSystem(?StarSystemInterface $starSystem): ShipInterface;
 
     public function getWarpcoreCapacity(): int;
 
@@ -392,6 +382,8 @@ interface ShipInterface
     public function hasCloak(): bool;
 
     public function hasTachyonScanner(): bool;
+
+    public function hasShuttleRamp(): bool;
 
     public function hasSubspaceScanner(): bool;
 

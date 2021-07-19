@@ -105,6 +105,11 @@ class StarSystemMap implements StarSystemMapInterface
         return $this;
     }
 
+    public function getSystem(): StarSystemInterface
+    {
+        return $this->starSystem;
+    }
+
     public function getFieldId(): int
     {
         return $this->field_id;
