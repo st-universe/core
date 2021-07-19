@@ -10,9 +10,11 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
+use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ShipLeaver implements ShipLeaverInterface
@@ -33,6 +35,10 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private AstroEntryLibInterface $astroEntryLib;
 
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+
+    private MapRepositoryInterface $mapRepository;
+
     public function __construct(
         ShipCrewRepositoryInterface $shipCrewRepository,
         FleetRepositoryInterface $fleetRepository,
@@ -41,7 +47,9 @@ final class ShipLeaver implements ShipLeaverInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipSystemManagerInterface $shipSystemManager,
         CrewRepositoryInterface $crewRepository,
-        AstroEntryLibInterface $astroEntryLib
+        AstroEntryLibInterface $astroEntryLib,
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        MapRepositoryInterface $mapRepository
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
         $this->fleetRepository = $fleetRepository;
@@ -51,6 +59,8 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->crewRepository = $crewRepository;
         $this->astroEntryLib = $astroEntryLib;
+        $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->mapRepository = $mapRepository;
     }
 
     public function leave(ShipInterface $ship): string
@@ -123,11 +133,6 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setHuell(1);
         $pods->setMaxHuell(1);
 
-        $pods->setSx($ship->getSx());
-        $pods->setSy($ship->getSy());
-        $pods->setSystem($ship->getSystem());
-        $pods->setCx($ship->getCx());
-        $pods->setCy($ship->getCy());
         $pods->setMap($ship->getMap());
         $pods->setStarsystemMap($ship->getStarsystemMap());
 
@@ -179,31 +184,46 @@ final class ShipLeaver implements ShipLeaverInterface
             && (($pods->getSystem() !== null && $field->getFieldType()->getSpecialDamageInnerSystem()) || ($pods->getSystem() === null && !$field->getFieldType()->getSpecialDamageInnerSystem()))
         ) {
             $met = 'fly' . $ship->getFlightDirection();
-            $this->$met($pods);
+            $newXY = $this->$met($pods);
+
+            if ($pods->getSystem() !== null) {
+                $map = $this->starSystemMapRepository->getByCoordinates(
+                    $pods->getSystem()->getId,
+                    $newXY[0],
+                    $newXY[1]
+                );
+                $pods->setStarsystemMap($map);
+            } else {
+                $map = $this->mapRepository->getByCoordinates(
+                    $newXY[0],
+                    $newXY[1]
+                );
+                $pods->setMap($map);
+            }
         }
     }
 
     //flee upwardss
-    private function fly2(ShipInterface $pods)
+    private function fly2(ShipInterface $pods): array
     {
-        $pods->setPosY($pods->getPosY() - 1);
+        return [$pods->getPosX(), $pods->getPosY() - 1];
     }
 
     //flee downwards
-    private function fly4(ShipInterface $pods)
+    private function fly4(ShipInterface $pods): array
     {
-        $pods->setPosY($pods->getPosY() + 1);
+        return [$pods->getPosX(), $pods->getPosY() + 1];
     }
 
     //flee right
-    private function fly3(ShipInterface $pods)
+    private function fly3(ShipInterface $pods): array
     {
-        $pods->setPosX($pods->getPosX() - 1);
+        return [$pods->getPosX() - 1, $pods->getPosY()];
     }
 
     //flee left
-    private function fly1(ShipInterface $pods)
+    private function fly1(ShipInterface $pods): array
     {
-        $pods->setPosX($pods->getPosX() + 1);
+        return [$pods->getPosX() + 1, $pods->getPosY()];
     }
 }
