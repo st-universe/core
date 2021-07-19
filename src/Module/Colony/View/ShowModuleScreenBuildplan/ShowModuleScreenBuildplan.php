@@ -11,6 +11,7 @@ use Stu\Lib\ModuleScreen\ModuleScreenTab;
 use Stu\Lib\ModuleScreen\ModuleScreenTabWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelector;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
+use Stu\Lib\ModuleScreen\MyWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -66,10 +67,11 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             $moduleScreenTabs->register(new ModuleScreenTab($i, $colony, $rump, $plan));
         }
 
+        $myWrapper = new MyWrapper();
         $moduleSelectors = [];
         for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
             if ($i == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $moduleSelectors[] = new ModuleSelectorSpecial(
+                $moduleSelectors[$i] = new ModuleSelectorSpecial(
                     $i,
                     $colony,
                     $rump,
@@ -77,7 +79,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                     $plan
                 );
             } else {
-                $moduleSelectors[] = new ModuleSelector(
+                $moduleSelectors[$i] = new ModuleSelector(
                     $i,
                     $colony,
                     $rump,
@@ -85,6 +87,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                     $plan,
                 );
             }
+            $myWrapper->register($moduleSelectors[$i]);
         }
 
         $game->appendNavigationPart(
@@ -92,11 +95,13 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
             _('Kolonien')
         );
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%s',
+            sprintf(
+                '?%s=1&id=%s',
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             ),
-            $colony->getName());
+            $colony->getName()
+        );
 
         $game->appendNavigationPart(
             sprintf(
@@ -113,6 +118,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $game->setTemplateVar('PLAN', $plan);
         $game->setTemplateVar('MODULE_SCREEN_TABS', $moduleScreenTabs);
         $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
+        $game->setTemplateVar('MY_WRAPPER', $myWrapper);
         $game->setTemplateVar('MODULE_SLOTS', range(1, ShipModuleTypeEnum::MODULE_TYPE_COUNT));
         $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($colony->getStorage()));
     }
