@@ -17,6 +17,7 @@ use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\UserInterface;
 
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
@@ -77,14 +78,17 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     }
 
     public function getByInnerSystemLocation(
-        int $starStstemId,
+        int $starSystemId,
         int $sx,
         int $sy
     ): iterable {
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-                WHERE s.systems_id = :starSystemId AND s.sx = :sx AND s.sy = :sy
+                JOIN %s sm
+                WITH s.starsystem_map_id = sm.id
+                WHERE sm.systems_id = :starSystemId
+                AND sm.sx = :sx AND sm.sy = :sy
                 AND NOT EXISTS (SELECT ss.id
                                     FROM %s ss
                                     WHERE s.id = ss.ships_id
@@ -92,10 +96,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                     AND ss.mode > 1)
                 ORDER BY s.is_destroyed ASC, s.fleets_id DESC, s.id ASC',
                 Ship::class,
+                StarSystemMap::class,
                 ShipSystem::class
             )
         )->setParameters([
-            'starSystemId' => $starStstemId,
+            'starSystemId' => $starSystemId,
             'sx' => $sx,
             'sy' => $sy,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK

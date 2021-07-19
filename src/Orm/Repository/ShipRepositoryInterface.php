@@ -33,7 +33,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      * @return ShipInterface[]
      */
     public function getByInnerSystemLocation(
-        int $starStstemId,
+        int $starSystemId,
         int $sx,
         int $sy
     ): iterable;
