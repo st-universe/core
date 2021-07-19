@@ -22,19 +22,18 @@ use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
-use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
-use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
  * @Table(
  *     name="stu_ships",
  *     indexes={
- *         @Index(name="outer_system_location_idx", columns={"systems_id","cx","cy"}),
- *         @Index(name="inner_system_location_idx", columns={"systems_id","sx","sy"}),
- *         @Index(name="ship_rump_idx", columns={"rumps_id"})
+ *         @Index(name="ship_map_idx", columns={"map_id"}),
+ *         @Index(name="ship_starsystem_map_idx", columns={"starsystem_map_id"}),
+ *         @Index(name="outer_system_location_idx", columns={"cx","cy"}),
+ *         @Index(name="ship_rump_idx", columns={"rumps_id"}),
+ *         @Index(name="ship_user_idx", columns={"user_id"})
  *     }
  * )
  **/
@@ -59,20 +58,11 @@ class Ship implements ShipInterface
     /** @Column(type="integer", nullable=true) */
     private $fleets_id;
 
-    /** @Column(type="integer", nullable=true) */
-    private $systems_id;
-
     /** @Column(type="integer", length=5) */
     private $cx = 0;
 
     /** @Column(type="integer", length=5) */
     private $cy = 0;
-
-    /** @Column(type="smallint", length=3) */
-    private $sx = 0;
-
-    /** @Column(type="smallint", length=3) */
-    private $sy = 0;
 
     /** @Column(type="smallint", length=1) */
     private $direction = 0;
@@ -221,12 +211,6 @@ class Ship implements ShipInterface
     private $crew;
 
     /**
-     * @ManyToOne(targetEntity="StarSystem")
-     * @JoinColumn(name="systems_id", referencedColumnName="id")
-     */
-    private $starSystem;
-
-    /**
      * @ManyToOne(targetEntity="TorpedoType")
      * @JoinColumn(name="torpedo_type", referencedColumnName="id")
      */
@@ -269,11 +253,7 @@ class Ship implements ShipInterface
 
     private $epsUsage;
 
-    private $mapfield;
-
     private $effectiveEpsProduction;
-
-    private $isOverStarSystem;
 
     public function __construct()
     {
@@ -1080,16 +1060,8 @@ class Ship implements ShipInterface
         if ($this->getSystem() !== null) {
             return null;
         }
-        if ($this->isOverStarSystem === null) {
-            // @todo refactor
-            global $container;
 
-            $this->isOverStarSystem = $container->get(StarSystemRepositoryInterface::class)->getByCoordinates(
-                (int) $this->getCX(),
-                (int) $this->getCY()
-            );
-        }
-        return $this->isOverStarSystem;
+        return $this->getMap()->getSystem();
     }
 
     public function isWarpPossible(): bool
