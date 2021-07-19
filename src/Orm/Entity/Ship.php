@@ -945,7 +945,7 @@ class Ship implements ShipInterface
 
     public function getSystem(): ?StarSystemInterface
     {
-        return $this->getStarsystemMap()->getSystem();
+        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getSystem() : null;
     }
 
     public function getWarpcoreCapacity(): int
