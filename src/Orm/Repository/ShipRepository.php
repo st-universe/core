@@ -269,8 +269,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultInnerSystem(int $systemId, int $sx, int $sy, int $sensorRange, bool $doSubspace, $ignoreId): iterable
+    public function getSensorResultInnerSystem(ShipInterface $ship): iterable
     {
+        $doSubspace = $ship->getSubspaceState();
+        $map = $ship->getStarsystemMap();
+        $sensorRange = $ship->getSensorRange();
+        $ignoreId = $ship->getUser()->getId();
+
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
         $rsm->addScalarResult('posy', 'posy', 'integer');
@@ -313,11 +318,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'starSystemId' => $systemId,
-            'sxStart' => $sx - $sensorRange,
-            'sxEnd' => $sx + $sensorRange,
-            'syStart' => $sy - $sensorRange,
-            'syEnd' => $sy + $sensorRange,
+            'starSystemId' => $ship->getStarsystemMap()->getSystem()->getId(),
+            'sxStart' => $map->getSx() - $sensorRange,
+            'sxEnd' => $map->getSx() + $sensorRange,
+            'syStart' => $map->getSy() - $sensorRange,
+            'syEnd' => $map->getSy() + $sensorRange,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\System\Type;
 
 use Stu\Component\Ship\System\ShipSystemModeEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -29,11 +28,6 @@ final class ShuttleRampShipSystem extends AbstractShipSystemType implements Ship
     public function getEnergyUsageForActivation(): int
     {
         return 0;
-    }
-
-    public function getPriority(): int
-    {
-        return ShipSystemTypeEnum::SYSTEM_PRIORITIES[ShipSystemTypeEnum::SYSTEM_PRIORITY_STANDARD];
     }
 
     public function getEnergyConsumption(): int

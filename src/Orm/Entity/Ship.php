@@ -312,7 +312,7 @@ class Ship implements ShipInterface
 
     public function getSystemsId(): ?int
     {
-        return $this->systems_id;
+        return $this->getSystem()->getId();
     }
 
     public function getCx(): int
@@ -339,24 +339,12 @@ class Ship implements ShipInterface
 
     public function getSx(): int
     {
-        return $this->sx;
-    }
-
-    public function setSx(int $sx): ShipInterface
-    {
-        $this->sx = $sx;
-        return $this;
+        return $this->getStarsystemMap()->getSx();
     }
 
     public function getSy(): int
     {
-        return $this->sy;
-    }
-
-    public function setSy(int $sy): ShipInterface
-    {
-        $this->sy = $sy;
-        return $this;
+        return $this->getStarsystemMap()->getSy();
     }
 
     public function getFlightDirection(): int
@@ -955,33 +943,9 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function setPosX(int $value): void
-    {
-        if ($this->getSystem() !== null) {
-            $this->setSX($value);
-            return;
-        }
-        $this->setCx($value);
-    }
-
-    public function setPosY($value): void
-    {
-        if ($this->getSystem() !== null) {
-            $this->setSY($value);
-            return;
-        }
-        $this->setCy($value);
-    }
-
     public function getSystem(): ?StarSystemInterface
     {
-        return $this->starSystem;
-    }
-
-    public function setSystem(?StarSystemInterface $starSystem): ShipInterface
-    {
-        $this->starSystem = $starSystem;
-        return $this;
+        return $this->getStarsystemMap()->getSystem();
     }
 
     public function getWarpcoreCapacity(): int
@@ -1190,6 +1154,12 @@ class Ship implements ShipInterface
     public function setMap(?MapInterface $map): ShipInterface
     {
         $this->map = $map;
+
+        if ($map !== null) {
+            $this->setCx($map->getCx());
+            $this->setCy($map->getCy());
+        }
+
         return $this;
     }
 
@@ -1411,29 +1381,9 @@ class Ship implements ShipInterface
         return $this->dockedShips->count();
     }
 
-    // @todo interface
     public function getCurrentMapField()
     {
-        if ($this->mapfield === null) {
-            // @todo refactor
-            global $container;
-            if ($this->getSystem() === null) {
-                $this->mapfield = $container->get(MapRepositoryInterface::class)->getByCoordinates(
-                    $this->getCX(),
-                    $this->getCY()
-                );
-            } else {
-                // @todo refactor
-                global $container;
-
-                $this->mapfield = $container->get(StarSystemMapRepositoryInterface::class)->getByCoordinates(
-                    $this->getSystem()->getId(),
-                    $this->getSX(),
-                    $this->getSY()
-                );
-            }
-        }
-        return $this->mapfield;
+        $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();
     }
 
     private function getShieldRegenerationPercentage(): int
@@ -1626,6 +1576,11 @@ class Ship implements ShipInterface
     public function hasTachyonScanner(): bool
     {
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
+    }
+
+    public function hasShuttleRamp(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP);
     }
 
     public function hasSubspaceScanner(): bool

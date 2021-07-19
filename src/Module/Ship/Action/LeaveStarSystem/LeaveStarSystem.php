@@ -167,9 +167,6 @@ final class LeaveStarSystem implements ActionControllerInterface
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
         }
-        $ship->setSystem(null);
-        $ship->setSX(0);
-        $ship->setSY(0);
         $ship->setMap($map);
         $ship->setStarsystemMap(null);
 

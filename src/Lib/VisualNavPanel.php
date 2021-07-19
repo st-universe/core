@@ -91,12 +91,7 @@ class VisualNavPanel
         global $container;
 
         return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
-            $this->getShip()->getSystem()->getId(),
-            $this->getShip()->getSx(),
-            $this->getShip()->getSy(),
-            $this->getShip()->getSensorRange(),
-            $this->getShip()->getSubspaceState(),
-            $this->user->getId()
+            $this->getShip()
         );
     }
 

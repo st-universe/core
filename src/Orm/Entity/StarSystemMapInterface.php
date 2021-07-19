@@ -20,6 +20,8 @@ interface StarSystemMapInterface
 
     public function setSystemId(int $systemId): StarSystemMapInterface;
 
+    public function getSystem(): StarSystemInterface;
+
     public function getFieldId(): int;
 
     public function setFieldId(int $fieldId): StarSystemMapInterface;

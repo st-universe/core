@@ -6,9 +6,6 @@ namespace Stu\Module\Ship\Action\TorpedoTransfer;
 
 use request;
 
-use Stu\Component\Crew\CrewEnum;
-use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -24,16 +21,12 @@ final class TorpedoTransfer implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private ShipSystemManagerInterface $shipSystemManager;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipRepositoryInterface $shipRepository
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
-        $this->shipSystemManager = $shipSystemManager;
     }
 
     public function handle(GameControllerInterface $game): void

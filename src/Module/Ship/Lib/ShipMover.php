@@ -627,28 +627,24 @@ final class ShipMover implements ShipMoverInterface
     //down
     private function fly2(ShipInterface $ship)
     {
-        $ship->setPosY($ship->getPosY() + 1);
         $ship->setFlightDirection(ShipEnum::DIRECTION_BOTTOM);
     }
 
     //up
     private function fly4(ShipInterface $ship)
     {
-        $ship->setPosY($ship->getPosY() - 1);
         $ship->setFlightDirection(ShipEnum::DIRECTION_TOP);
     }
 
     //right
     private function fly3(ShipInterface $ship)
     {
-        $ship->setPosX($ship->getPosX() + 1);
         $ship->setFlightDirection(ShipEnum::DIRECTION_RIGHT);
     }
 
     //left
     private function fly1(ShipInterface $ship)
     {
-        $ship->setPosX($ship->getPosX() - 1);
         $ship->setFlightDirection(ShipEnum::DIRECTION_LEFT);
     }
 
