@@ -32,6 +32,11 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
+    public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
     public function getByInnerSystemLocation(
         int $starSystemId,
         int $sx,

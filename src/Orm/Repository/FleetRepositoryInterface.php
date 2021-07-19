@@ -27,16 +27,5 @@ interface FleetRepositoryInterface extends ObjectRepository
 
     public function getHighestSortByUser(int $userId): int;
 
-    /**
-     * @return FleetInterface[]
-     */
-    public function getByPositition(
-        ?StarSystemInterface $starSystem,
-        int $cx,
-        int $cy,
-        int $sx,
-        int $sy
-    ): iterable;
-
     public function getNonNpcFleetList(): iterable;
 }

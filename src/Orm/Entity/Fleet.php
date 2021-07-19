@@ -126,27 +126,7 @@ class Fleet implements FleetInterface
         // @todo refactor
         global $container;
 
-        return array_filter(
-            $container->get(ShipRepositoryInterface::class)->getByUser($this->getUser()),
-            function (ShipInterface $ship): bool {
-                if ($ship->isBase() || $ship->getFleet() !== null) {
-                    return false;
-                }
-                $leader = $this->getLeadShip();
-                $system = $leader->getSystem();
-
-                if ($system !== null) {
-                    if ($ship->getSystem() === null || $system->getId() !== $ship->getSystem()->getId()) {
-                        return false;
-                    }
-                    return $ship->getSx() === $leader->getSX() && $ship->getSy() === $leader->getSY();
-                }
-                if ($ship->getSystem() !== null) {
-                    return false;
-                }
-                return $ship->getCx() === $leader->getCX() && $ship->getCy() === $leader->getCY();
-            }
-        );
+        return $container->get(ShipRepositoryInterface::class)->getPossibleFleetMembers($this);
     }
 
     public function getUser(): UserInterface
