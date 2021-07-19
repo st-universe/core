@@ -126,7 +126,7 @@ class Fleet implements FleetInterface
         // @todo refactor
         global $container;
 
-        return $container->get(ShipRepositoryInterface::class)->getPossibleFleetMembers($this);
+        return $container->get(ShipRepositoryInterface::class)->getPossibleFleetMembers($this->getLeadShip());
     }
 
     public function getUser(): UserInterface
