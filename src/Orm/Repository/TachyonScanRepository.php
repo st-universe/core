@@ -29,30 +29,24 @@ final class TachyonScanRepository extends EntityRepository implements TachyonSca
         $rsm->addFieldResult('t', 'starsystem_map_id', 'starsystem_map_id');
         $rsm->addFieldResult('t', 'scan_time', 'scan_time');
 
+        $isSystem = $ship->getSystem() !== null;
+
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT ts.id as id, ts.user_id as user_id, ts.map_id as map_id, ts.starsystem_map_id as starsystem_map_id,
-                        ts.scan_time as scan_time
+            sprintf(
+                'SELECT ts.id as id, ts.user_id as user_id, ts.map_id as map_id,
+                    ts.starsystem_map_id as starsystem_map_id, ts.scan_time as scan_time
                 FROM stu_tachyon_scan ts
+                JOIN %s mf
+                ON ts.%s = mf.id
+                AND mf.id = :mapId
                 WHERE ts.scan_time > :theTime
-                AND ts.user_id = :userId
-                AND (CASE WHEN :isSystem = true
-                                THEN EXISTS (SELECT ss.id
-                                                FROM stu_sys_map ss
-                                                WHERE ss.id = ts.starsystem_map_id
-                                                AND ss.sx = :sx and ss.sy = :sy and ss.systems_id = :systemId)
-                                ELSE EXISTS (SELECT m.id
-                                                FROM stu_map m
-                                                WHERE m.id = ts.map_id
-                                                AND m.cx = :cx and m.cy = :cy)
-                            END)',
+                AND ts.user_id = :userId',
+                $isSystem ? 'stu_sys_map' : 'stu_map',
+                $isSystem ? 'starsystem_map_id' : 'map_id'
+            ),
             $rsm
         )->setParameters([
-            'isSystem' => $ship->getSystem() !== null,
-            'systemId' => $ship->getSystem() !== null ? $ship->getSystem()->getId() : 0,
-            'sx' => $ship->getSx(),
-            'sy' => $ship->getSy(),
-            'cx' => $ship->getCx(),
-            'cy' => $ship->getCy(),
+            'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
             'theTime' => time() - TachyonScannerShipSystem::DECLOAK_INTERVAL,
             'userId' => $ship->getUser()->getId()
         ])->getResult();
