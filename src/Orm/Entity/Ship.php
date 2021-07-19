@@ -1383,7 +1383,7 @@ class Ship implements ShipInterface
 
     public function getCurrentMapField()
     {
-        $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();
+        return $this->getStarsystemMap() !== null ? $this->getStarsystemMap() : $this->getMap();
     }
 
     private function getShieldRegenerationPercentage(): int
