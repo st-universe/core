@@ -97,7 +97,7 @@ final class EnterStarSystem implements ActionControllerInterface
         }
 
         // @todo Beschädigung bei Systemeinflug
-        $this->enterStarSystem($ship, $starsystemMap, $posx, $posy);
+        $this->enterStarSystem($ship, $starsystemMap);
         if ($ship->isTraktorbeamActive()) {
             $this->enterStarSystemTraktor($ship, $starsystemMap, $game);
         }
@@ -129,7 +129,7 @@ final class EnterStarSystem implements ActionControllerInterface
                 } catch (AlreadyOffException $e) {
                 }
 
-                $this->enterStarSystem($fleetShip, $starsystemMap, $posx, $posy);
+                $this->enterStarSystem($fleetShip, $starsystemMap);
                 if ($fleetShip->isTraktorbeamActive()) {
                     $this->enterStarSystemTraktor($fleetShip, $starsystemMap, $game);
                 }
@@ -163,9 +163,7 @@ final class EnterStarSystem implements ActionControllerInterface
         }
         $this->enterStarSystem(
             $ship->getTraktorShip(),
-            $starsystemMap,
-            $ship->getPosX(),
-            $ship->getPosY()
+            $starsystemMap
         );
         // @todo Beschädigung bei Systemeinflug
         $ship->setEps($ship->getEps() - 1);
@@ -176,7 +174,7 @@ final class EnterStarSystem implements ActionControllerInterface
         $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit in das System gezogen");
     }
 
-    private function enterStarSystem(ShipInterface $ship, StarSystemMapInterface $starsystemMap, int $posx, int $posy): void
+    private function enterStarSystem(ShipInterface $ship, StarSystemMapInterface $starsystemMap): void
     {
         $ship->setStarsystemMap($starsystemMap);
         $ship->setMap(null);

@@ -69,48 +69,6 @@ final class FleetRepository extends EntityRepository implements FleetRepositoryI
         ])->getSingleScalarResult();
     }
 
-    public function getByPositition(
-        ?StarSystemInterface $starSystem,
-        int $cx,
-        int $cy,
-        int $sx,
-        int $sy
-    ): iterable {
-        if ($starSystem === null) {
-            $query = $this->getEntityManager()->createQuery(
-                sprintf(
-                    'SELECT f FROM %s f LEFT JOIN %s s WITH s.id = f.ships_id WHERE s.starSystem IS NULL
-                AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.is_base = :isBase',
-                    Fleet::class,
-                    Ship::class
-                )
-            )->setParameters([
-                'isBase' => 0,
-                'cx' => $cx,
-                'cy' => $cy,
-                'sx' => $sx,
-                'sy' => $sy
-            ]);
-        } else {
-            $query = $this->getEntityManager()->createQuery(
-                sprintf(
-                    'SELECT f FROM %s f LEFT JOIN %s s WITH s.id = f.ships_id WHERE s.starSystem = :starSystem
-                AND s.cx = :cx AND s.cy = :cy AND s.sx = :sx AND s.sy = :sy AND s.is_base = :isBase',
-                    Fleet::class,
-                    Ship::class
-                )
-            )->setParameters([
-                'isBase' => 0,
-                'starSystem' => $starSystem,
-                'cx' => $cx,
-                'cy' => $cy,
-                'sx' => $sx,
-                'sy' => $sy
-            ]);
-        }
-        return $query->getResult();
-    }
-
     public function getNonNpcFleetList(): iterable
     {
         return $this->getEntityManager()->createQuery(

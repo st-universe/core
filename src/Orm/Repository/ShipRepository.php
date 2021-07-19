@@ -77,6 +77,26 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable
+    {
+        $isSystem = $fleetLeader->getSystem() !== null;
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.%s = :mapId
+                AND s.fleets_id IS NULL
+                AND s.user_id = :userId
+                AND s.is_base = false',
+                Ship::class,
+                $isSystem ? 'starsystem_map_id' : 'map_id'
+            )
+        )->setParameters([
+            'userId' => $fleetLeader->getUser()->getId(),
+            'mapId' => $isSystem ? $fleetLeader->getStarsystemMap()->getId() : $fleetLeader->getMap()->getId()
+        ])->getResult();
+    }
+
     public function getByInnerSystemLocation(
         int $starSystemId,
         int $sx,
@@ -557,33 +577,29 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 sprintf(
                     'SELECT COUNT(s.id) FROM %s s
                     WHERE s.systems_id is null
-                    AND s.cx = :cx AND s.cy = :cy
+                    AND s.map_id = :mapId
                     %s
                     AND s.user_id != :ignoreId',
                     Ship::class,
                     $cloakSql
                 )
             )->setParameters([
-                'cx' => $ship->getCx(),
-                'cy' => $ship->getCy(),
-                'ignoreId' => $ship->getUserId()
+                'mapId' => $ship->getMap()->getId(),
+                'ignoreId' => $ship->getUser()->getId()
             ]);
         } else {
             $query = $this->getEntityManager()->createQuery(
                 sprintf(
                     'SELECT COUNT(s.id) FROM %s s
-                    WHERE s.systems_id = :starSystemId
-                    AND s.sx = :sx AND s.sy = :sy
+                    WHERE s.starsystem_map_id = :starsystemMapId
                     %s
                     AND s.user_id != :ignoreId',
                     Ship::class,
                     $cloakSql
                 )
             )->setParameters([
-                'starSystemId' => $ship->getSystem()->getId(),
-                'sx' => $ship->getSx(),
-                'sy' => $ship->getSy(),
-                'ignoreId' => $ship->getUserId()
+                'starsystemMapId' => $ship->getStarsystemMap()->getId(),
+                'ignoreId' => $ship->getUser()->getId()
             ]);
         }
         return $query->getSingleScalarResult() > 0;
