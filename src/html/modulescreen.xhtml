@@ -113,7 +113,7 @@
                     <div id="module_type_${slot}" tal:condition="not:exists:PLAN/getModule/${slot}"
                       style="display: none;">
                     </div>
-                    <tal:block tal:condition="exists:PLAN/getModule/${slot}">
+                    <tal:block tal:condition="exists:PLAN/getModule/${slot}" tal:define="modSel MY_WRAPPER/${slot}">
                       <div id="module_type_${slot}" tal:define="module PLAN/getModule/${slot}">
                         <metal:macro metal:use-macro="html/modulescreen.xhtml/moduleselector_stats_type_${slot}" />
                         <script type="text/Javascript" tal:condition="module">
