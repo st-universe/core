@@ -105,7 +105,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
 
         $game->appendNavigationPart(
             sprintf(
-                '?id=%d&SHOW_MODULE_SCREEN=1&planid=%d',
+                '?id=%d&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=%d',
                 $colony->getId(),
                 $plan->getId()
             ),
