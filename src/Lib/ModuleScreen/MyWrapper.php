@@ -11,7 +11,7 @@ final class MyWrapper
 
     public function register($modSel)
     {
-        $this->modeSels[$modSel->getModuleType()] = $modSel;
+        $this->modSels[$modSel->getModuleType()] = $modSel;
     }
 
     public function __get($moduleType): ModuleSelectorInterface
