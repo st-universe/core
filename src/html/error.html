@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Error - Star Trek Universe</title>
@@ -17,13 +18,13 @@
     div.phaser {
       animation-iteration-count: infinite;
       padding-top: 8px;
-      height:0px;
-      width:1px;
-      border-bottom:1px solid #ffa600;
+      height: 0px;
+      width: 1px;
+      border-bottom: 1px solid #ffa600;
       -webkit-animation: increase 3s;
-      -moz-animation:    increase 3s;
-      -o-animation:      increase 3s;
-      animation:         increase 3s;
+      -moz-animation: increase 3s;
+      -o-animation: increase 3s;
+      animation: increase 3s;
       animation-fill-mode: forwards;
     }
 
@@ -109,33 +110,36 @@
 
     function startAnimation(element) {
       element.addEventListener('webkitAnimationEnd', () => destroy(), false);
-      element.addEventListener('animationend', () => destroy(),  false);
+      element.addEventListener('animationend', () => destroy(), false);
       element.addEventListener('oanimationend', () => destroy(), false);
 
       setTimeout('restart()', 4000);
     }
   </script>
 </head>
+
 <body style="background: #000000" onload="startAnimation(document.getElementById('phaser'));">
-<div class="header">
-  <a href="/">
-    <img src="/assets/main/banner.png" />
-  </a>
-</div>
-<div class="box message">
-  <div class="box_title">Ein Fehler ist aufgetreten</div>
-  <div class="box_body">
-    Keine Panik - Fehler passieren.<br />
-    Vielleicht hast Du einen Bug gefunden - wende dich in diesem Fall an das STU-Team.<br />
-    <a href="https://forum.stuniverse.de" target="_blank">Forum</a> | <a href="http://chat.stuniverse.de" target="_blank">Chat</a>
+  <div class="header">
+    <a href="/">
+      <img src="/assets/main/banner.png" />
+    </a>
   </div>
-</div>
-<div class="content">
- <div style="display: grid; grid-template-columns: 160px 200px 158px;">
-   <div><img src="/assets/ships/8101.gif" /></div>
-   <div class="phaser" id="phaser"></div>
-   <div><img src="/assets/ships/8102.gif" id="foe" /></div>
- </div>
-</div>
+  <div class="box message">
+    <div class="box_title">Ein Fehler ist aufgetreten</div>
+    <div class="box_body">
+      Keine Panik - Fehler passieren.<br />
+      Vielleicht hast Du einen Bug gefunden - wende dich in diesem Fall an das STU-Team.<br />
+      <a href="https://forum.st-universe.de" target="_blank">Forum</a> | <a href="http://chat.stuniverse.de"
+        target="_blank">Chat</a>
+    </div>
+  </div>
+  <div class="content">
+    <div style="display: grid; grid-template-columns: 160px 200px 158px;">
+      <div><img src="/assets/ships/8101.gif" /></div>
+      <div class="phaser" id="phaser"></div>
+      <div><img src="/assets/ships/8102.gif" id="foe" /></div>
+    </div>
+  </div>
 </body>
+
 </html>
