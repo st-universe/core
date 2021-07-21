@@ -8,8 +8,6 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Tal\StatusBarColorEnum;
-use Stu\Module\Tal\TalStatusBar;
 
 final class ShowShipDetails implements ViewControllerInterface
 {
