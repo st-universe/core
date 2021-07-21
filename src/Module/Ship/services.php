@@ -125,6 +125,7 @@ use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
+use Stu\Module\Ship\Action\StartWorkbee\StartWorkbee;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
@@ -167,6 +168,7 @@ use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
+
 use function DI\autowire;
 
 return [
@@ -283,7 +285,8 @@ return [
         StopBlocking::ACTION_IDENTIFIER => autowire(StopBlocking::class),
         PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
         StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class),
-        Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class)
+        Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class),
+        StartWorkbee::ACTION_IDENTIFIER => autowire(StartWorkbee::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

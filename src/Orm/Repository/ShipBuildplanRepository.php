@@ -51,7 +51,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
-    public function getWorkbeeBuildplan(int $fractionId): ?ShipBuildplanInterface
+    public function getWorkbeeBuildplan(int $factionId): ?ShipBuildplanInterface
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -65,7 +65,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                 )
             )
             ->setParameters([
-                'rumpId' => 160 + $fractionId
+                'rumpId' => 160 + $factionId
             ])
             ->getOneOrNullResult();
     }
