@@ -124,13 +124,13 @@ use Stu\Module\Ship\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
+use Stu\Module\Ship\Action\Shutdown\Shutdown;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
 use Stu\Module\Ship\Lib\ShipCreator;
-use Stu\Module\Ship\Lib\ShipCreator2;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
 use Stu\Module\Ship\Lib\ShipLoader;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -282,7 +282,8 @@ return [
         StartBlocking::ACTION_IDENTIFIER => autowire(StartBlocking::class),
         StopBlocking::ACTION_IDENTIFIER => autowire(StopBlocking::class),
         PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
-        StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class)
+        StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class),
+        Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

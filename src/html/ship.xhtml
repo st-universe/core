@@ -107,6 +107,12 @@
 								onmouseover="cp('shimap','buttons/map2');" onmouseout="cp('shimap','buttons/map1');">
 								<img src="assets/buttons/map1.gif" title="Karte anzeigen" name="shimap" />
 							</a>
+							<a href="?B_SHUTDOWN=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+								onmouseover="cp('shutdown','buttons/shutdown2');"
+								onmouseout="cp('shutdown','buttons/shutdown1');">
+								<img src="assets/buttons/shutdown1.gif" title="Energieverbrauch minimieren"
+									name="shutdown" />
+							</a>
 						</td>
 						<td colspan="2">
 							<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;"
