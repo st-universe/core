@@ -44,7 +44,7 @@ if ($torptypeId > 0 || $noTorps) {
 
     for ($i = 0; $i < $shipcount; $i++) {
         $ship = $shipCreator->createBy($userId, $plan->getRump()->getId(), $plan->getId());
-        $outerMap = $mapRepo->getByCoordinates($ship->getCx(), $ship->getCy());
+        $outerMap = $mapRepo->getByCoordinates($cx, $cy);
         $ship->setMap($outerMap);
         $ship->setEps($ship->getMaxEps());
         $ship->setWarpcoreLoad($ship->getWarpcoreCapacity());
