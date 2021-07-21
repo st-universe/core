@@ -220,6 +220,9 @@ final class ShipCreator implements ShipCreatorInterface
                 case ModuleSpecialAbilityEnum::MODULE_SPECIAL_TORPEDO_STORAGE:
                     $systems[ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE] = $module;
                     break;
+                case ModuleSpecialAbilityEnum::MODULE_SPECIAL_SHUTTLE_RAMP:
+                    $systems[ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP] = $module;
+                    break;
             }
         }
     }
