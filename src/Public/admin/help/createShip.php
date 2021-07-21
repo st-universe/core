@@ -63,6 +63,8 @@ if ($torptypeId > 0 || $noTorps) {
         for ($j = 1; $j <= $plan->getCrew(); $j++) {
             $crewCreator->create($userId);
         }
+        $db->flush();
+
         $crewCreator->createShipCrew($ship);
         $db->flush();
     }
