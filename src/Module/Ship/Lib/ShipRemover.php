@@ -107,7 +107,7 @@ final class ShipRemover implements ShipRemoverInterface
          */
 
         $ship->setFormerRumpId($ship->getRump()->getId());
-        $ship->setRump($this->shipRumpRepository->find(ShipEnum::TRUMFIELD_CLASS));
+        $ship->setRump($this->shipRumpRepository->find(ShipEnum::SHIP_CATEGORY_TRUMFIELD));
         $ship->setHuell((int) round($ship->getMaxHuell() / 20));
         $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplan(null);

@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
 
 final class ShipBuildplanRepository extends EntityRepository implements ShipBuildplanRepositoryInterface
@@ -48,6 +49,25 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             'rump_id' => $shipRumpId,
             'signature' => $signature
         ]);
+    }
+
+    public function getWorkbeeBuildplan(int $fractionId): ?ShipBuildplanInterface
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT sb FROM %s sb
+                    JOIN %s sr
+                    WITH sb.rump_id = sr.id
+                    WHERE sr.id = :rumpId',
+                    ShipBuildplan::class,
+                    ShipRump::class
+                )
+            )
+            ->setParameters([
+                'rumpId' => 160 + $fractionId
+            ])
+            ->getOneOrNullResult();
     }
 
     public function prototype(): ShipBuildplanInterface

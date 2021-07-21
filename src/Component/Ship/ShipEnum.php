@@ -36,12 +36,14 @@ final class ShipEnum
     public const DIRECTION_RIGHT = 3;
     public const DIRECTION_TOP = 4;
 
-    //other
-    public const TRUMFIELD_CLASS = 8;
-    public const SHIELD_REGENERATION_TIME = 900;
+    //rump categories
     public const SHIP_CATEGORY_DEBRISFIELD = 7;
+    public const SHIP_CATEGORY_TRUMFIELD = 8;
     public const SHIP_CATEGORY_ESCAPE_PODS = 9;
     public const SHIP_CATEGORY_WORKBEE = 10;
     public const SHIP_CATEGORY_CONSTRUCTION = 11;
     public const SHIP_CATEGORY_STATION = 12;
+
+    //other
+    public const SHIELD_REGENERATION_TIME = 900;
 }

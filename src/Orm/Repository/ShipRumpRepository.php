@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ShipRump;
@@ -97,7 +98,10 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT r FROM %s r INDEX BY r.id WHERE r.is_buildable = :state AND r.id IN (
+                    'SELECT r FROM %s r INDEX BY r.id
+                    WHERE r.is_buildable = :state
+                    AND r.category_id != :ignoreCategory
+                    AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
                     ) AND r.good_id IN (
                         SELECT cs.goods_id FROM %s cs WHERE cs.colonies_id = :colonyId
@@ -109,6 +113,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             )
             ->setParameters([
                 'state' => 1,
+                'ignoreCategory' => ShipEnum::SHIP_CATEGORY_WORKBEE,
                 'userId' => $userId,
                 'colonyId' => $colonyId
             ])
