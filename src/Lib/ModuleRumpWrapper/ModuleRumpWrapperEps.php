@@ -12,6 +12,9 @@ final class ModuleRumpWrapperEps extends ModuleRumpWrapperBase implements Module
 
     public function getValue(): int
     {
+        if ($this->doLog()) {
+            $this->loggerUtil->log(sprintf("getRumpBaseEps: %d", $this->rump->getBaseEps()));
+        }
         return (new ModuleValueCalculator())->calculateModuleValue(
             $this->rump,
             current($this->modules)->getModule(),

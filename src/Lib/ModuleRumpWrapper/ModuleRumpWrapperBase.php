@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Lib\ModuleRumpWrapper;
 
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\BuildplanModuleInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 
@@ -14,14 +15,17 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
 
     protected $rump;
 
+    protected $loggerUtil;
+
     /**
      * @param ShipRumpInterface $rump
      * @param BuildplanModuleInterface[] $modules
      */
-    public function __construct(ShipRumpInterface $rump, array $modules)
+    public function __construct(ShipRumpInterface $rump, array $modules, LoggerUtilInterface $loggerUtil = null)
     {
         $this->modules = $modules;
         $this->rump = $rump;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function getModule(): iterable
@@ -29,4 +33,8 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
         return $this->modules;
     }
 
+    protected function doLog(): bool
+    {
+        return $this->loggerUtil !== null && $this->loggerUtil->doLog();
+    }
 }
