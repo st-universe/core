@@ -1610,7 +1610,7 @@ class Ship implements ShipInterface
             && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }
 
-    private function getStoredShuttleCount(): int
+    public function getStoredShuttleCount(): int
     {
         $count = 0;
 
