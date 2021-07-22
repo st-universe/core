@@ -100,6 +100,11 @@ class Commodity implements CommodityInterface
         return $this->getType() === CommodityTypeEnum::GOOD_TYPE_STANDARD;
     }
 
+    public function isShuttle(): bool
+    {
+        return in_array($this->getId(), CommodityTypeEnum::BASE_IDS_SHUTTLE);
+    }
+
     /**
      * @deprecated
      */

@@ -9,6 +9,7 @@ final class CommodityTypeEnum
     public const GOOD_TYPE_STANDARD = 1;
     public const GOOD_TYPE_EFFECT = 2;
 
+    // commodity IDs
     public const GOOD_FOOD = 1;
     public const GOOD_BUILDING_MATERIALS = 2;
     public const GOOD_DEUTERIUM = 5;
@@ -16,7 +17,12 @@ final class CommodityTypeEnum
     public const GOOD_DILITHIUM = 8;
     public const GOOD_LATINUM = 50;
 
-    public static function getDescription(int $commodityId): string {
+    //base value for e.g. shuttles
+    public const BASE_ID_WORKBEE = 60;
+    public const BASE_IDS_SHUTTLE =  [self::BASE_ID_WORKBEE];
+
+    public static function getDescription(int $commodityId): string
+    {
         switch ($commodityId) {
             case CommodityTypeEnum::GOOD_DEUTERIUM:
                 return _("Deuterium");

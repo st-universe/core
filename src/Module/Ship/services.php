@@ -100,6 +100,7 @@ use Stu\Module\Ship\Action\InterceptShip\InterceptShip;
 use Stu\Module\Ship\Action\JoinFleet\JoinFleet;
 use Stu\Module\Ship\Action\JoinFleet\JoinFleetRequest;
 use Stu\Module\Ship\Action\JoinFleet\JoinFleetRequestInterface;
+use Stu\Module\Ship\Action\LandShuttle\LandShuttle;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleet;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequest;
 use Stu\Module\Ship\Action\LeaveFleet\LeaveFleetRequestInterface;
@@ -126,6 +127,7 @@ use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
 use Stu\Module\Ship\Action\StartWorkbee\StartWorkbee;
+use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
@@ -286,7 +288,9 @@ return [
         PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
         StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class),
         Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class),
-        StartWorkbee::ACTION_IDENTIFIER => autowire(StartWorkbee::class)
+        StartWorkbee::ACTION_IDENTIFIER => autowire(StartWorkbee::class),
+        StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
+        LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

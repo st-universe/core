@@ -137,6 +137,8 @@ interface ShipInterface
 
     public function isTrumfield(): bool;
 
+    public function isShuttle(): bool;
+
     public function setIsBase(bool $isBase): ShipInterface;
 
     public function getDatabaseId(): int;
@@ -398,6 +400,8 @@ interface ShipInterface
     public function getDockedTo(): ?ShipInterface;
 
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface;
+
+    public function hasFreeShuttleSpace(): bool;
 
     public function getHullStatusBar();
 

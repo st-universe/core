@@ -68,6 +68,10 @@ interface ShipRumpInterface
 
     public function setSpecialSlots(int $specialSlots): ShipRumpInterface;
 
+    public function getShuttleSlots(): int;
+
+    public function setShuttleSlots(int $shuttleSlots): ShipRumpInterface;
+
     public function getPhaserVolleys(): int;
 
     public function setPhaserVolleys(int $phaserVolleys): ShipRumpInterface;
