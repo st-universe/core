@@ -6,14 +6,15 @@ namespace Stu\Module\Ship\Action\SalvageEmergencyPods;
 
 use request;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Entity\ShipCrewInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -29,20 +30,20 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
-    private ShipRemoverInterface $shipRemover;
+    private TroopTransferUtilityInterface $troopTransferUtility;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
-        ShipRemoverInterface $shipRemover
+        TroopTransferUtilityInterface  $troopTransferUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
-        $this->shipRemover = $shipRemover;
+        $this->troopTransferUtility = $troopTransferUtility;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -85,7 +86,16 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             );
         }
 
-        $this->shipCrewRepository->truncateByShip((int) $target->getId());
+        if ($this->isOwnCrewAndShipGotFreeTroopQuarters($ship, $target)) {
+            foreach ($target->getCrewlist() as $shipCrew) {
+                $shipCrew->setShip($ship);
+                $this->shipCrewRepository->save($shipCrew);
+            }
+            $game->addInformation(_('Die Crew wurde auf dieses Schiff gerettet'));
+        } else {
+            $this->shipCrewRepository->truncateByShip((int) $target->getId());
+            $game->addInformation(_('Die Crew wurde geborgen und an den Besitzer überstellt'));
+        }
 
         /**
          * 
@@ -102,8 +112,13 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $ship->setEps($ship->getEps() - 1);
 
         $this->shipRepository->save($ship);
+    }
 
-        $game->addInformation(_('Die Crew wurde geborgen und an den Besitzer überstellt'));
+    private function isOwnCrewAndShipGotFreeTroopQuarters(ShipInterface $ship, ShipInterface $target): bool
+    {
+        return $ship->getUser() === $target->getUser()
+            && $ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && $this->troopTransferUtility->getFreeQuarters($ship) >= $target->getCrewCount();
     }
 
     public function performSessionCheck(): bool
