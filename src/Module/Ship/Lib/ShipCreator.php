@@ -118,8 +118,14 @@ final class ShipCreator implements ShipCreatorInterface
         ];
 
         foreach ($moduleTypeList as $moduleTypeId => $wrapperCallable) {
+            if ($this->loggerUtil->doLog()) {
+                $this->loggerUtil->log(sprintf("moduleTypeId: %d", $moduleTypeId));
+            }
             $buildplanModules = $ship->getBuildplan()->getModulesByType($moduleTypeId);
             if ($buildplanModules !== []) {
+                if ($this->loggerUtil->doLog()) {
+                    $this->loggerUtil->log(sprintf("wrapperCallable!"));
+                }
                 /** @var ModuleRumpWrapperInterface $wrapper */
                 $wrapper = $wrapperCallable($ship);
                 $wrapper->apply($ship);
