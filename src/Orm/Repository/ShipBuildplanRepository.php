@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRump;
@@ -65,7 +66,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                 )
             )
             ->setParameters([
-                'rumpId' => 160 + $factionId
+                'rumpId' => ShipRumpEnum::SHIP_RUMP_BASE_ID_WORKBEE + $factionId
             ])
             ->getOneOrNullResult();
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -107,7 +107,7 @@ final class ShipRemover implements ShipRemoverInterface
          */
 
         $ship->setFormerRumpId($ship->getRump()->getId());
-        $ship->setRump($this->shipRumpRepository->find(ShipEnum::SHIP_CATEGORY_TRUMFIELD));
+        $ship->setRump($this->shipRumpRepository->find(ShipRumpEnum::SHIP_CATEGORY_TRUMFIELD));
         $ship->setHuell((int) round($ship->getMaxHuell() / 20));
         $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplan(null);

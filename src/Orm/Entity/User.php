@@ -7,7 +7,7 @@ namespace Stu\Orm\Entity;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -526,13 +526,13 @@ class User implements UserInterface
             $this->crew_count_debris = $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
                     (int) $this->getId(),
-                    ShipEnum::SHIP_CATEGORY_DEBRISFIELD
+                    ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD
                 );
 
             $this->crew_count_debris += $container->get(CrewRepositoryInterface::class)
                 ->getAmountByUserAndShipRumpCategory(
                     (int) $this->getId(),
-                    ShipEnum::SHIP_CATEGORY_ESCAPE_PODS
+                    ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
                 );
         }
         return $this->crew_count_debris;

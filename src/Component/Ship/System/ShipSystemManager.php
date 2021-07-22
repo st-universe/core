@@ -111,12 +111,12 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new AlreadyActiveException();
         }
 
-        if ($ship->getEps() < $system->getEnergyUsageForActivation()) {
-            throw new InsufficientEnergyException();
-        }
-
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
             throw new InsufficientCrewException();
+        }
+
+        if ($ship->getEps() < $system->getEnergyUsageForActivation()) {
+            throw new InsufficientEnergyException();
         }
 
         $reason = null;

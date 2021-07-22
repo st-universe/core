@@ -18,6 +18,8 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperProjectileWeapon;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
@@ -48,6 +50,8 @@ final class ShipCreator implements ShipCreatorInterface
 
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipSystemRepositoryInterface $shipSystemRepository,
@@ -56,7 +60,8 @@ final class ShipCreator implements ShipCreatorInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleSpecialRepositoryInterface $moduleSpecialRepository,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
@@ -66,10 +71,17 @@ final class ShipCreator implements ShipCreatorInterface
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleSpecialRepository = $moduleSpecialRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
     {
+        if ($userId = 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+            $this->loggerUtil->init();
+        }
+
         $ship = $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
         $ship->setBuildplan($this->shipBuildplanRepository->find($shipBuildplanId));
@@ -133,6 +145,10 @@ final class ShipCreator implements ShipCreatorInterface
             $ship,
             $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
         );
+
+        if ($this->loggerUtil->doLog()) {
+            $this->loggerUtil->log(sprintf("maxEps: ", $ship->getMaxEps()));
+        }
 
         return $ship;
     }

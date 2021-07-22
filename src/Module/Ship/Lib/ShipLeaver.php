@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -119,7 +120,7 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private function launchEscapePods(ShipInterface $ship): ?ShipInterface
     {
-        $shipRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + 100);
+        $shipRump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_ESCAPE_PODS);
 
         // faction does not have escape pods
         if ($shipRump == null) {
