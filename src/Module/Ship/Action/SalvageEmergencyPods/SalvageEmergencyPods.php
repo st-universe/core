@@ -116,7 +116,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private function isOwnCrewAndShipGotFreeTroopQuarters(ShipInterface $ship, ShipInterface $target): bool
     {
-        return $ship->getUser() === $target->getUser()
+        return $ship->getUser() === current($target->getCrewlist()->getValues())->getCrew()->getUser()
             && $ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
             && $this->troopTransferUtility->getFreeQuarters($ship) >= $target->getCrewCount();
     }
