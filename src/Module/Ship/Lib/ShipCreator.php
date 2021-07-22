@@ -77,11 +77,7 @@ final class ShipCreator implements ShipCreatorInterface
 
     public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
     {
-        if ($userId == 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        } else {
-            $this->loggerUtil->init();
-        }
+        $this->loggerUtil->init();
 
         $ship = $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
