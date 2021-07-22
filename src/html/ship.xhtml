@@ -393,10 +393,9 @@
 								<tal:block tal:condition="SHIP/hasShuttleRamp">
 									<tr>
 										<td colspan="2">
-											<a href="?B_START_WORKBEE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-												onmouseover="cp('workbee','buttons/decloak2')"
-												onmouseout="cp('workbee','buttons/decloak1')">
-												<img src="/assets/buttons/decloak1.gif" name="workbee" />
+											<a href="?B_START_WORKBEE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
+												<img src="/assets/goods/6${SHIP/getUser/getFactionId}.png"
+													name="workbee" />
 												Workbee starten
 											</a>
 										</td>
