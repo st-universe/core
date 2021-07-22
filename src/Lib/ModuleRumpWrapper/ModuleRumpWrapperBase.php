@@ -21,7 +21,7 @@ abstract class ModuleRumpWrapperBase implements ModuleRumpWrapperInterface
      * @param ShipRumpInterface $rump
      * @param BuildplanModuleInterface[] $modules
      */
-    public function __construct(ShipRumpInterface $rump, array $modules, LoggerUtilInterface $loggerUtil = null)
+    public function __construct(ShipRumpInterface $rump, array $modules, ?LoggerUtilInterface $loggerUtil)
     {
         if ($loggerUtil !== null) {
             $loggerUtil->log("__construct-ModuleRumpWrapperBase");
