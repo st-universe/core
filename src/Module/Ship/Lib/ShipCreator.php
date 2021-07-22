@@ -147,7 +147,7 @@ final class ShipCreator implements ShipCreatorInterface
         );
 
         if ($this->loggerUtil->doLog()) {
-            $this->loggerUtil->log(sprintf("maxEps: ", $ship->getMaxEps()));
+            $this->loggerUtil->log(sprintf("maxEps: %d", $ship->getMaxEps()));
         }
 
         return $ship;
