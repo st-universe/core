@@ -122,6 +122,9 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $special_slots = 0;
 
+    /** @column(type="smallint", nullable=true) * */
+    private $shuttle_slots = 0;
+
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
@@ -330,6 +333,16 @@ class ShipRump implements ShipRumpInterface
     public function setSpecialSlots(int $specialSlots): ShipRumpInterface
     {
         $this->special_slots = $specialSlots;
+        return $this;
+    }
+    public function getShuttleSlots(): int
+    {
+        return $this->shuttle_slots;
+    }
+
+    public function setShuttleSlots(int $shuttleSlots): ShipRumpInterface
+    {
+        $this->shuttle_slots = $shuttleSlots;
         return $this;
     }
 
