@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Entity\Ship;
@@ -220,7 +220,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ShipRump::class
             )
         )->setParameters([
-            'categoryId' => ShipEnum::SHIP_CATEGORY_ESCAPE_PODS
+            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS
         ])->getResult();
     }
 
@@ -240,7 +240,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 ShipCrew::class
             )
         )->setParameters([
-            'categoryId' => ShipEnum::SHIP_CATEGORY_ESCAPE_PODS,
+            'categoryId' => ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS,
             'userId' => $userId
         ])->getResult();
     }

@@ -7,7 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Database\DatabaseEntryTypeEnum;
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\DatabaseEntry;
 use Stu\Orm\Entity\ShipRump;
@@ -113,7 +113,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             )
             ->setParameters([
                 'state' => 1,
-                'ignoreCategory' => ShipEnum::SHIP_CATEGORY_WORKBEE,
+                'ignoreCategory' => ShipRumpEnum::SHIP_CATEGORY_WORKBEE,
                 'userId' => $userId,
                 'colonyId' => $colonyId
             ])

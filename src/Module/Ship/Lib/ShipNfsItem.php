@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 
 final class ShipNfsItem
 {
@@ -74,7 +74,7 @@ final class ShipNfsItem
     }
     public function isTrumfield()
     {
-        return $this->values['rumpcategoryid'] === ShipEnum::SHIP_CATEGORY_DEBRISFIELD;;
+        return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;;
     }
     public function getRumpId()
     {
