@@ -10,6 +10,7 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
@@ -38,6 +39,8 @@ final class LandShuttle implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private PositionCheckerInterface $positionChecker;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
@@ -47,7 +50,8 @@ final class LandShuttle implements ActionControllerInterface
         ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager,
         TroopTransferUtilityInterface $troopTransferUtility,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        PositionCheckerInterface $positionChecker
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
@@ -58,6 +62,7 @@ final class LandShuttle implements ActionControllerInterface
         $this->entityManager = $entityManager;
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
+        $this->positionChecker = $positionChecker;
     }
 
     public function handle(GameControllerInterface $game): void
