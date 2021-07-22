@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Logging\LoggerUtilInterface;
 
 interface ShipInterface
 {
@@ -401,7 +402,7 @@ interface ShipInterface
 
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface;
 
-    public function hasFreeShuttleSpace(): bool;
+    public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil): bool;
 
     public function getHullStatusBar();
 
