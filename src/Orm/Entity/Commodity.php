@@ -102,7 +102,7 @@ class Commodity implements CommodityInterface
 
     public function isShuttle(): bool
     {
-        return in_array($this->getId(), CommodityTypeEnum::BASE_IDS_SHUTTLE);
+        return in_array(intdiv($this->getId(), 10), CommodityTypeEnum::BASE_IDS_SHUTTLE);
     }
 
     /**
