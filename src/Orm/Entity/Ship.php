@@ -18,6 +18,7 @@ use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
@@ -1599,8 +1600,12 @@ class Ship implements ShipInterface
         return $this;
     }
 
-    public function hasFreeShuttleSpace(): bool
+    public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil = null): bool
     {
+        if ($loggerUtil !== null) {
+            $loggerUtil->log(sprintf('rumpShuttleSlots: %d', $this->getRump()->getShuttleSlots()));
+            $loggerUtil->log(sprintf('storedShuttleCount: %d', $this->getStoredShuttleCount()));
+        }
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)
             && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }

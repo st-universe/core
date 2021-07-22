@@ -10,6 +10,8 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -41,6 +43,8 @@ final class StoreShuttle implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
@@ -51,7 +55,8 @@ final class StoreShuttle implements ActionControllerInterface
         EntityManagerInterface $entityManager,
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipRemoverInterface $shipRemover,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
@@ -63,10 +68,17 @@ final class StoreShuttle implements ActionControllerInterface
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
         $this->positionChecker = $positionChecker;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        if ($game->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+            $this->loggerUtil->init();
+        }
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -110,7 +122,7 @@ final class StoreShuttle implements ActionControllerInterface
         }
 
         // check if shuttle slot available
-        if (!$ship->hasFreeShuttleSpace()) {
+        if (!$ship->hasFreeShuttleSpace($this->loggerUtil)) {
             $game->addInformation(_("Die Shuttle-Rampe ist belegt"));
             return;
         }
