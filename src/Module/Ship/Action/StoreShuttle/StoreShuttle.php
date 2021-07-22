@@ -73,11 +73,7 @@ final class StoreShuttle implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        } else {
-            $this->loggerUtil->init();
-        }
+        $this->loggerUtil->init();
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
