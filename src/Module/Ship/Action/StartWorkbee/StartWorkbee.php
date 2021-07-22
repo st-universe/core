@@ -152,7 +152,7 @@ final class StartWorkbee implements ActionControllerInterface
             $plan->getId()
         );
 
-        $this->entityManager->flush;
+        $this->entityManager->flush();
 
         //reload ship with systems
         $workbee = $this->shipRepository->find($workbee->getId());
