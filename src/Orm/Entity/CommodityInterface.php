@@ -28,6 +28,8 @@ interface CommodityInterface
 
     public function isSaveable(): bool;
 
+    public function isShuttle(): bool;
+
     public function isIllegal($network): bool;
 
     public function getTransferCount(): int;

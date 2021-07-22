@@ -76,6 +76,10 @@ final class ShipNfsItem
     {
         return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_DEBRISFIELD;;
     }
+    public function isShuttle()
+    {
+        return $this->values['rumpcategoryid'] === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
+    }
     public function getRumpId()
     {
         return $this->values['rumpid'];

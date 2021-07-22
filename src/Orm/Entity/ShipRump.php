@@ -122,7 +122,7 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $special_slots = 0;
 
-    /** @column(type="smallint", nullable=true) * */
+    /** @column(type="smallint") * */
     private $shuttle_slots = 0;
 
     /**
@@ -335,6 +335,7 @@ class ShipRump implements ShipRumpInterface
         $this->special_slots = $specialSlots;
         return $this;
     }
+
     public function getShuttleSlots(): int
     {
         return $this->shuttle_slots;

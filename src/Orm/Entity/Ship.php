@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -657,6 +658,11 @@ class Ship implements ShipInterface
     public function isTrumfield(): bool
     {
         return $this->getRump()->isTrumfield();
+    }
+
+    public function isShuttle(): bool
+    {
+        return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
     }
 
     public function setIsBase(bool $isBase): ShipInterface
@@ -1591,6 +1597,25 @@ class Ship implements ShipInterface
     {
         $this->dockedTo = $dockedTo;
         return $this;
+    }
+
+    public function hasFreeShuttleSpace(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)
+            && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
+    }
+
+    private function getStoredShuttleCount(): int
+    {
+        $count = 0;
+
+        foreach ($this->getStorage() as $stor) {
+            if ($stor->getCommodity()->isShuttle()) {
+                $count += $stor->getAmount();
+            }
+        }
+
+        return $count;
     }
 
     public function __toString()
