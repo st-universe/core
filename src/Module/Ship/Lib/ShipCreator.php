@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperComputer;
@@ -163,10 +164,12 @@ final class ShipCreator implements ShipCreatorInterface
     {
         $systems = array();
 
-        //default systems, that every ship should have
-        $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM] = 0;
+        //default systems, that almost every ship should have
+        if ($ship->getRump()->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_SHUTTLE) {
+            $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR] = 0;
+            $systems[ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM] = 0;
+        }
         $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
-        $systems[ShipSystemTypeEnum::SYSTEM_DEFLECTOR] = 0;
         //TODO transporter
 
         foreach ($modules as $key => $module) {

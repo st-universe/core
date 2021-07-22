@@ -113,7 +113,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
             )
             ->setParameters([
                 'state' => 1,
-                'ignoreCategory' => ShipRumpEnum::SHIP_CATEGORY_WORKBEE,
+                'ignoreCategory' => ShipRumpEnum::SHIP_CATEGORY_SHUTTLE,
                 'userId' => $userId,
                 'colonyId' => $colonyId
             ])
