@@ -89,31 +89,31 @@ final class ShipCreator implements ShipCreatorInterface
 
         $moduleTypeList = [
             ShipModuleTypeEnum::MODULE_TYPE_HULL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperHull($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_HULL));
+                return new ModuleRumpWrapperHull($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_HULL), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_SHIELDS => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperShield($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS));
+                return new ModuleRumpWrapperShield($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_EPS => function (ShipInterface $ship): ModuleRumpWrapperInterface {
                 return new ModuleRumpWrapperEps($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_EPS), $this->loggerUtil);
             },
             ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperImpulseDrive($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE));
+                return new ModuleRumpWrapperImpulseDrive($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_WARPCORE => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperWarpcore($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_WARPCORE));
+                return new ModuleRumpWrapperWarpcore($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_WARPCORE), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_COMPUTER => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperComputer($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_COMPUTER));
+                return new ModuleRumpWrapperComputer($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_COMPUTER), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_PHASER => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperEnergyWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_PHASER));
+                return new ModuleRumpWrapperEnergyWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_PHASER), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperProjectileWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO));
+                return new ModuleRumpWrapperProjectileWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperSpecial($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL));
+                return new ModuleRumpWrapperSpecial($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL), null);
             },
         ];
 
