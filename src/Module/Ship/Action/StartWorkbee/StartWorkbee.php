@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\StartWorkbee;
 
 use request;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -15,7 +16,6 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -39,6 +39,8 @@ final class StartWorkbee implements ActionControllerInterface
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
@@ -46,7 +48,8 @@ final class StartWorkbee implements ActionControllerInterface
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         CommodityRepositoryInterface $commodityRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipCrewRepositoryInterface $shipCrewRepository
+        ShipCrewRepositoryInterface $shipCrewRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
@@ -55,6 +58,7 @@ final class StartWorkbee implements ActionControllerInterface
         $this->commodityRepository = $commodityRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -147,6 +151,11 @@ final class StartWorkbee implements ActionControllerInterface
             $rump->getId(),
             $plan->getId()
         );
+
+        $this->entityManager->flush;
+
+        //reload ship with systems
+        $workbee = $this->shipRepository->find($workbee->getId());
 
         $workbee->setEps($workbee->getMaxEps());
         $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
