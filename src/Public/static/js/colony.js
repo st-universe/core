@@ -200,23 +200,30 @@ function showPodLocationWindow() {
 }
 
 function openShuttleManagement(ship, colony) {
-	elt = 'shuttlemanagement';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&colony=' + colony);
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'colony.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&colony=' + colony);
 }
 
 function decreaseShuttleAmount(cid) {
 	old = parseInt($('shuttleAmount_' + cid).value);
-	console.log(old);
+
 	if (old > 0) {
 		$('shuttleAmount_' + cid).value = old - 1;
+
+		current = parseInt($('storedshuttles').value);
+		$('storedshuttles').value = current - 1;
 	}
 }
 
 function increaseShuttleAmount(cid, maxOf, maxTotal) {
 	old = parseInt($('shuttleAmount_' + cid).value);
-	console.log(old);
-	$('shuttleAmount_' + cid).value = old + 1;
+	current = parseInt($('storedshuttles').value);
+
+	if (old < maxOf && current < maxTotal) {
+		$('shuttleAmount_' + cid).value = old + 1;
+		$('storedshuttles').value = current + 1;
+	}
 }
 
 function triggerBeamTo() {

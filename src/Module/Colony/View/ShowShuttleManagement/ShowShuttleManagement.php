@@ -49,11 +49,13 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $game->setMacro('html/colonymacros.xhtml/shuttlemanagement');
 
         $shuttles = [];
+        $currentlyStored = 0;
 
         foreach ($ship->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 $smi = new ShuttleManagementItem($stor->getCommodity());
                 $smi->setCurrentLoad($stor->getAmount());
+                $currentlyStored += $stor->getAmount();
 
                 $shuttles[$stor->getCommodity()->getId()] = $smi;
             }
@@ -76,7 +78,8 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('COLONY', $colony);
-        $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles); // array aller Shuttle-Typen, mit currentAnzahl und maxAnzahl
+        $game->setTemplateVar('CURRENTLY_STORED', $currentlyStored);
+        $game->setTemplateVar('AVAILABLE_SHUTTLES', $shuttles);
         $game->setTemplateVar('ERROR', false);
     }
 }
