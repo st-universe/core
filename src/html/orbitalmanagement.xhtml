@@ -99,7 +99,8 @@
               <td>
                 <tal:block tal:condition="ship/hasShuttleRamp">
                   <div tal:condition="ship/isShuttleRampHealthy">
-                    <a href="javascript:void(0);" onclick="openShuttleManagement(${ship/getId}, ${COLONY/getId});">
+                    <a href="javascript:void(0);"
+                      onclick="openShuttleManagement(this, ${ship/getId}, ${COLONY/getId});">
                       Shuttle-Management öffnen
                     </a>
                   </div>

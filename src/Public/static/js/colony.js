@@ -199,9 +199,11 @@ function showPodLocationWindow() {
 	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
 }
 
-function openShuttleManagement(ship, colony) {
+function openShuttleManagement(obj, ship, colony) {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
+
+	var pos = findObject(obj);
+	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
 	ajax_update('elt', 'colony.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&colony=' + colony);
 }
 
