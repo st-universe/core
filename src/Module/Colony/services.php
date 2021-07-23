@@ -154,6 +154,9 @@ use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequestInterface;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequest;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyardRequestInterface;
+use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagement;
+use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequest;
+use Stu\Module\Colony\View\ShowShuttleManagement\ShowShuttleManagementRequestInterface;
 use Stu\Module\Colony\View\ShowSocial\ShowSocial;
 use Stu\Module\Colony\View\ShowSocial\ShowSocialRequest;
 use Stu\Module\Colony\View\ShowSocial\ShowSocialRequestInterface;
@@ -209,6 +212,7 @@ return [
     ShowShipDisassemblyRequestInterface::class => autowire(ShowShipDisassemblyRequest::class),
     ShowShipRepairRequestInterface::class => autowire(ShowShipRepairRequest::class),
     ShowShipyardRequestInterface::class => autowire(ShowShipyardRequest::class),
+    ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     ShowSocialRequestInterface::class => autowire(ShowSocialRequest::class),
     ShowStorageRequestInterface::class => autowire(ShowStorageRequest::class),
     ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
@@ -287,6 +291,7 @@ return [
         ShowShipDisassembly::VIEW_IDENTIFIER => autowire(ShowShipDisassembly::class),
         ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
-        ShowPodsLocations::VIEW_IDENTIFIER => autowire(ShowPodsLocations::class)
+        ShowPodsLocations::VIEW_IDENTIFIER => autowire(ShowPodsLocations::class),
+        ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class)
     ]
 ];

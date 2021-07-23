@@ -110,7 +110,7 @@ final class LandShuttle implements ActionControllerInterface
         }
 
         // check if shuttle slot available
-        if (!$target->hasFreeShuttleSpace()) {
+        if (!$target->hasFreeShuttleSpace(null)) {
             $game->addInformation(_("Die Shuttle-Rampe des Zielschiffs ist belegt"));
             return;
         }
