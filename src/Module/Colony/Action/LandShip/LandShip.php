@@ -53,7 +53,7 @@ final class LandShip implements ActionControllerInterface
         $game->setView(ShowColony::VIEW_IDENTIFIER);
 
         $ship = $this->shipRepository->find(request::getIntFatal('shipid'));
-        if ($ship->getUserId() !== $game->getUser()->getId() || !$ship->canLandOnCurrentColony()) {
+        if ($ship->getUser()->getId() !== $game->getUser()->getId() || !$ship->canLandOnCurrentColony()) {
             return;
         }
         if (!$colony->storagePlaceLeft()) {
