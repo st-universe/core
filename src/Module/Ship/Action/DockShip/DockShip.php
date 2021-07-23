@@ -19,7 +19,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -108,7 +108,7 @@ final class DockShip implements ActionControllerInterface
 
         try {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-        } catch (AlreadyOffException $e) {
+        } catch (ShipSystemException $e) {
         }
 
         $ship->cancelRepair();
@@ -119,7 +119,7 @@ final class DockShip implements ActionControllerInterface
 
         $this->privateMessageSender->send(
             $userId,
-            (int)$target->getUserId(),
+            (int)$target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
@@ -148,10 +148,10 @@ final class DockShip implements ActionControllerInterface
                 continue;
             }
             $ship->cancelRepair();
-            
+
             try {
                 $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
-            } catch (AlreadyOffException $e) {
+            } catch (ShipSystemException $e) {
             }
 
             $ship->setDockedTo($target);
