@@ -73,7 +73,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
         foreach ($colony->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
-                if (in_array($stor->getCommodity()->getId(), $shuttles)) {
+                if (array_key_exists($stor->getCommodity()->getId(), $shuttles)) {
                     $smi = $shuttles[$stor->getCommodity()->getId()];
                     $smi->setColonyLoad($stor->getAmount());
                 } else {
