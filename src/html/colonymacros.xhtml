@@ -1761,8 +1761,8 @@
 </metal:macro>
 <metal:macro metal:define-macro="shuttlemanagement">
   <form action="colony.php" method="post">
-    <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
-    <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+    <input type="hidden" name="cid" tal:attributes="value COLONY/getId" />
+    <input type="hidden" name="sid" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <tal:block tal:condition="not:ERROR">
       <table class="tcal" tal:condition="AVAILABLE_SHUTTLES">
@@ -1786,6 +1786,16 @@
             <a href="javascript:void(0);"
               onclick="increaseShuttleAmount(${data/getCommodityId}, ${data/getMaxUnits}, ${SHIP/getRump/getShuttleSlots});">
               <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan=2></td>
+          <td>
+            <span>Summe:</span>
+          </td>
+          <td>
+            <input readonly="readonly" type="text" id="storedshuttles" name="stored"
+              tal:attributes="value CURRENTLY_STORED" />
           </td>
         </tr>
       </table>
