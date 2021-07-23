@@ -1399,6 +1399,9 @@ class Ship implements ShipInterface
         if (!$this->getRump()->getGoodId()) {
             return false;
         }
+        if ($this->isShuttle()) {
+            return false;
+        }
         // @todo refactor
         global $container;
 
