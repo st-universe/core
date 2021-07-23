@@ -188,9 +188,9 @@ function showBFromWindow() {
 }
 
 function showSectorScanWindow(id) {
-	elt = 'sectorscan';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?id=' + id + '&SHOW_SECTOR_SCAN=1');
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'colony.php?id=' + id + '&SHOW_SECTOR_SCAN=1');
 }
 
 function showPodLocationWindow() {
