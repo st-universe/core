@@ -7,6 +7,8 @@ namespace Stu\Module\Colony\View\ShowShuttleManagement;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -20,18 +22,24 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShowShuttleManagementRequestInterface $request,
         ShipRepositoryInterface $shipRepository,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->request = $request;
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $ship = $this->shipRepository->find($this->request->getShipId());
         $colony = $this->colonyRepository->find($this->request->getColonyId());
 
@@ -56,6 +64,8 @@ final class ShowShuttleManagement implements ViewControllerInterface
                 $smi = new ShuttleManagementItem($stor->getCommodity());
                 $smi->setCurrentLoad($stor->getAmount());
                 $currentlyStored += $stor->getAmount();
+
+                $this->loggerUtil->log(sprintf("currentLoad: %d", $smi->getCurrentLoad()));
 
                 $shuttles[$stor->getCommodity()->getId()] = $smi;
             }
