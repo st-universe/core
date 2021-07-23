@@ -212,7 +212,7 @@ function decreaseShuttleAmount(cid) {
 		$('shuttleAmount_' + cid).value = old - 1;
 
 		current = parseInt($('storedshuttles').value);
-		$('storedshuttles').value = current - 1;
+		$('storedshuttles').innerHTML = current - 1;
 	}
 }
 
@@ -222,7 +222,7 @@ function increaseShuttleAmount(cid, maxOf, maxTotal) {
 
 	if (old < maxOf && current < maxTotal) {
 		$('shuttleAmount_' + cid).value = old + 1;
-		$('storedshuttles').value = current + 1;
+		$('storedshuttles').innerHTML = current + 1;
 	}
 }
 
