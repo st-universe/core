@@ -132,4 +132,9 @@ final class OrbitShipItem implements OrbitShipItemInterface
     {
         return $this->ship->hasShuttleRamp();
     }
+
+    public function isShuttleRampHealthy(): bool
+    {
+        return $this->ship->isShuttleRampHealthy();
+    }
 }
