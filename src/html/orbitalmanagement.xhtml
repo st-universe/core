@@ -15,6 +15,7 @@
           <th>Batterie</th>
           <th>Warpkern</th>
           <th>Torpedos</th>
+          <th>Shuttles</th>
         </tr>
         <tal:block tal:repeat="fleet ORBIT_SHIP_LIST">
           <tr>
@@ -93,6 +94,21 @@
                         tal:attributes="checked repeat/data/start; value data/getId" />
                     </tal:block>
                   </tal:block>
+                </div>
+              </td>
+              <td>
+                <tal:block tal:condition="ship/hasShuttleRamp">
+                  <div tal:condition="ship/isShuttleRampHealthy">
+                    <a href="javascript:void(0);" onclick="openShuttleManagement(${SHIP/getId}, ${COLONY/getId});">
+                      Shuttle-Management öffnen
+                    </a>
+                  </div>
+                  <div tal:condition="not:ship/isShuttleRampHealthy">
+                    <span>Shuttle-Rampe ist defekt</span>
+                  </div>
+                </tal:block>
+                <div tal:condition="not:ship/hasShuttleRamp">
+                  <span>keine Shuttle-Rampe verbaut</span>
                 </div>
               </td>
             </tal:block>

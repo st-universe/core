@@ -199,6 +199,22 @@ function showPodLocationWindow() {
 	ajax_update(elt, 'colony.php?SHOW_PODS_LOCATIONS=1');
 }
 
+function openShuttleManagement(ship, colony) {
+	elt = 'shuttlemanagement';
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'colony.php?SHOW_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&colony=' + colony);
+}
+
+function decreaseShuttleAmount(cid) {
+	old = $('shuttleAmount_' + cid).value;
+	$('shuttleAmount_' + cid).val(old - 1);
+}
+
+function increaseShuttleAmount(cid) {
+	old = $('shuttleAmount_' + cid).value;
+	$('shuttleAmount_' + cid).val(old + 1);
+}
+
 function triggerBeamTo() {
 	var shipid = $('selshipid').value;
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
