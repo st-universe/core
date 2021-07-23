@@ -127,4 +127,9 @@ final class OrbitShipItem implements OrbitShipItemInterface
     {
         return $this->ship->getRump()->getName();
     }
+
+    public function hasShuttleRamp(): bool
+    {
+        return $this->ship->hasShuttleRamp();
+    }
 }
