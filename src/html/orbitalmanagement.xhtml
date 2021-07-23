@@ -19,7 +19,7 @@
         </tr>
         <tal:block tal:repeat="fleet ORBIT_SHIP_LIST">
           <tr>
-            <td colspan="6">
+            <td colspan="7">
               <span tal:replace="structure bbcode:fleet/getName">FLEETNAME</span>
               <tal:block tal:condition="fleet/isForeignFleet">
                 <span> von </span>

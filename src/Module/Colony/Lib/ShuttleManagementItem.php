@@ -24,13 +24,33 @@ final class ShuttleManagementItem
         $this->currentLoad = $load;
     }
 
+    public function getCurrentLoad(): int
+    {
+        return $this->currentLoad;
+    }
+
     public function setColonyLoad(int $load): void
     {
         $this->colonyLoad = $load;
     }
 
+    public function getColonyLoad(): int
+    {
+        return $this->colonyLoad;
+    }
+
+    public function getMaxUnits(): int
+    {
+        return $this->getCurrentLoad() + $this->getColonyLoad();
+    }
+
     public function getCommodityId(): int
     {
         return $this->commodity->getId();
+    }
+
+    public function getCommodityName(): string
+    {
+        return $this->commodity->getName();
     }
 }

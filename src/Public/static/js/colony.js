@@ -207,10 +207,13 @@ function openShuttleManagement(ship, colony) {
 
 function decreaseShuttleAmount(cid) {
 	old = $('shuttleAmount_' + cid).value;
-	$('shuttleAmount_' + cid).val(old - 1);
+
+	if (old > 0) {
+		$('shuttleAmount_' + cid).val(old - 1);
+	}
 }
 
-function increaseShuttleAmount(cid) {
+function increaseShuttleAmount(cid, maxOf, maxTotal) {
 	old = $('shuttleAmount_' + cid).value;
 	$('shuttleAmount_' + cid).val(old + 1);
 }
