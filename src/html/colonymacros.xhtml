@@ -1794,8 +1794,8 @@
             <span>Summe:</span>
           </td>
           <td>
-            <input readonly="readonly" type="text" id="storedshuttles" name="stored"
-              tal:attributes="value CURRENTLY_STORED" />
+            <span id="storedshuttles" tal:content="CURRENTLY_STORED">SUM</span>/<span
+              tal:replace="SHIP/getRump/getShuttleSlots"></span>
           </td>
         </tr>
       </table>
