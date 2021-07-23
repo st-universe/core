@@ -1772,15 +1772,19 @@
         </tr>
         <tr tal:repeat="data AVAILABLE_SHUTTLES">
           <td>
+            <img src="assets/goods/${data/getCommodityId}.png" title="${data/getCommodityName}" />
+          </td>
+          <td>
             <a href="javascript:void(0);" onclick="decreaseShuttleAmount(${data/getCommodityId});">
               <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
           </td>
           <td>
             <input readonly="readonly" type="text" id="shuttleAmount_${data/getCommodityId}"
-              name="shuttlecount[${data/getCommodityId}]" size="2" />
+              value="${data/getCurrentLoad}" name="shuttlecount[${data/getCommodityId}]" size="2" />
           </td>
           <td>
-            <a href="javascript:void(0);" onclick="increaseShuttleAmount(${data/getCommodityId});">
+            <a href="javascript:void(0);"
+              onclick="increaseShuttleAmount(${data/getCommodityId}, ${data/getMaxUnits}, ${SHIP/getRump/getShuttleSlots});">
               <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
           </td>
         </tr>
