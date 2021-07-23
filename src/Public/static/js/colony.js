@@ -206,16 +206,17 @@ function openShuttleManagement(ship, colony) {
 }
 
 function decreaseShuttleAmount(cid) {
-	old = $('shuttleAmount_' + cid).value;
-
+	old = parseInt($('shuttleAmount_' + cid).value);
+	console.log(old);
 	if (old > 0) {
-		$('shuttleAmount_' + cid).val(old - 1);
+		$('shuttleAmount_' + cid).value = old - 1;
 	}
 }
 
 function increaseShuttleAmount(cid, maxOf, maxTotal) {
-	old = $('shuttleAmount_' + cid).value;
-	$('shuttleAmount_' + cid).val(old + 1);
+	old = parseInt($('shuttleAmount_' + cid).value);
+	console.log(old);
+	$('shuttleAmount_' + cid).value = old + 1;
 }
 
 function triggerBeamTo() {
