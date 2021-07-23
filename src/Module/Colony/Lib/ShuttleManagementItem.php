@@ -10,9 +10,9 @@ final class ShuttleManagementItem
 {
     private CommodityInterface $commodity;
 
-    private int $currentLoad;
+    private int $currentLoad = 0;
 
-    private int $colonyLoad;
+    private int $colonyLoad = 0;
 
     public function __construct(CommodityInterface $commodity)
     {
