@@ -113,7 +113,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         }
 
         foreach ($commodities as $key => $commodityId) {
-            $wantedCount = $shuttlecount[$commodityId];
+            $wantedCount = (int)$shuttlecount[$commodityId];
 
             $smi = $shuttles[(int)$commodityId];
 
