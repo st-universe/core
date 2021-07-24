@@ -94,8 +94,6 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
                 $smi->setCurrentLoad($stor->getAmount());
                 $currentlyStored += $stor->getAmount();
 
-                $this->loggerUtil->log(sprintf("currentLoad: %d", $smi->getCurrentLoad()));
-
                 $shuttles[$stor->getCommodity()->getId()] = $smi;
             }
         }
