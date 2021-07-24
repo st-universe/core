@@ -1779,6 +1779,7 @@
               <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
           </td>
           <td>
+            <input type="hidden" name="shuttles[]" tal:attributes="value data/getCommodityId" />
             <input readonly="readonly" type="text" id="shuttleAmount_${data/getCommodityId}"
               tal:attributes="value data/getCurrentLoad" name="shuttlecount[${data/getCommodityId}]" size="2" />
           </td>
