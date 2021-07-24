@@ -13,10 +13,10 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -34,8 +34,6 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private ColonyRepositoryInterface $colonyRepository;
-
     private ShipRepositoryInterface $shipRepository;
 
     private PositionCheckerInterface $positionChecker;
@@ -46,7 +44,6 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
-        ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
         PositionCheckerInterface $positionChecker
     ) {
@@ -55,7 +52,6 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
-        $this->colonyRepository = $colonyRepository;
         $this->shipRepository = $shipRepository;
         $this->positionChecker = $positionChecker;
     }
@@ -77,6 +73,8 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
             return;
         }
+
+        $isForeignShip = $userId !== $ship->getUser()->getId();
 
         $commodities = request::postArray('shuttles');
         $shuttlecount = request::postArrayFatal('shuttlecount');
@@ -112,7 +110,9 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             }
         }
 
-        foreach ($commodities as $key => $commodityId) {
+        $msgArray = [];
+
+        foreach ($commodities as $commodityId) {
             $wantedCount = (int)$shuttlecount[$commodityId];
 
             $smi = $shuttles[(int)$commodityId];
@@ -121,19 +121,43 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
                 continue;
             }
 
+            if ($isForeignShip && $smi->getCurrentLoad() > $wantedCount) {
+                continue;
+            }
+
             if ($smi->getCurrentLoad() !== $wantedCount) {
-                $msg = $this->transferShuttles(
+                $msgArray[] = $this->transferShuttles(
                     (int)$commodityId,
                     $smi->getCurrentLoad(),
                     $wantedCount,
                     $ship,
                     $colony
                 );
-
-                $game->addInformation($msg);
             }
         }
-        //$this->colonyRepository->save($colony);
+
+        $game->addInformationMerge($msgArray);
+
+        if ($isForeignShip && !empty($msgArray)) {
+            $pm = sprintf(
+                _('Die Kolonie %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
+                $colony->getName(),
+                $colony->getUser()->getName(),
+                $ship->getPosX(),
+                $ship->getPosY()
+            );
+            foreach ($msgArray as $value) {
+                $pm .= $value . "\n";
+            }
+            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+            $this->privateMessageSender->send(
+                $userId,
+                $ship->getUser()->getId,
+                $pm,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                $href
+            );
+        }
     }
 
     private function transferShuttles(

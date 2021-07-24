@@ -124,8 +124,8 @@ final class StartWorkbee implements ActionControllerInterface
         }
 
         // check if ship has excess crew
-        if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < 1) {
-            $game->addInformation(_('Es wird 1 freier Crewman benötigt um den Workbee zu starten'));
+        if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < $plan->getCrew()) {
+            $game->addInformation(sprintf(_('Es werden %d freie Crewman benötigt um den Workbee zu starten'), $plan->getCrew()));
             return;
         }
 
@@ -163,9 +163,12 @@ final class StartWorkbee implements ActionControllerInterface
         $workbee->setMap($ship->getMap());
         $workbee->setStarsystemMap($ship->getStarsystemMap());
 
-        $shipCrew = current($ship->getCrewlist()->getValues());
-        $shipCrew->setShip($workbee);
-        $this->shipCrewRepository->save($shipCrew);
+        $shipCrewArray = $ship->getCrewlist()->getValues();
+        for ($i = 0; $i < $plan->getCrew(); $i++) {
+            $shipCrew = $shipCrewArray[i];
+            $shipCrew->setShip($workbee);
+            $this->shipCrewRepository->save($shipCrew);
+        }
 
         $this->shipRepository->save($workbee);
     }
