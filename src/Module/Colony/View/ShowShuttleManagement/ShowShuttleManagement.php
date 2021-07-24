@@ -47,11 +47,6 @@ final class ShowShuttleManagement implements ViewControllerInterface
             return;
         }
 
-        if ($game->getUser() !== $ship->getUser()) {
-            $game->addInformation("Diese Funktion ist derzeit nur bei eigenen Schiffen möglich");
-            return;
-        }
-
         $game->setPageTitle("Shuttle Management");
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/colonymacros.xhtml/shuttlemanagement');
