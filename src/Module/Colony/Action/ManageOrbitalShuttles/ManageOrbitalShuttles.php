@@ -152,7 +152,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
             $this->privateMessageSender->send(
                 $userId,
-                $ship->getUser()->getId,
+                $ship->getUser()->getId(),
                 $pm,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                 $href
