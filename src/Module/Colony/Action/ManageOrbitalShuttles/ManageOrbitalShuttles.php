@@ -68,7 +68,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $userId = $user->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            request::indInt('cid'),
+            request::indInt('id'),
             $userId
         );
 
