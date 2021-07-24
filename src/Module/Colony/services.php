@@ -63,6 +63,7 @@ use Stu\Module\Colony\Action\GiveUp\GiveUpRequestInterface;
 use Stu\Module\Colony\Action\LandShip\LandShip;
 use Stu\Module\Colony\Action\LoadShields\LoadShields;
 use Stu\Module\Colony\Action\ManageOrbitalShips\ManageOrbitalShips;
+use Stu\Module\Colony\Action\ManageOrbitalShuttles\ManageOrbitalShuttles;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
@@ -241,6 +242,7 @@ return [
         LandShip::ACTION_IDENTIFIER => autowire(LandShip::class),
         LoadShields::ACTION_IDENTIFIER => autowire(LoadShields::class),
         ManageOrbitalShips::ACTION_IDENTIFIER => autowire(ManageOrbitalShips::class),
+        ManageOrbitalShuttles::ACTION_IDENTIFIER => autowire(ManageOrbitalShuttles::class),
         RemoveBuilding::ACTION_IDENTIFIER => autowire(RemoveBuilding::class),
         RepairBuilding::ACTION_IDENTIFIER => autowire(RepairBuilding::class),
         RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
