@@ -1761,7 +1761,7 @@
 </metal:macro>
 <metal:macro metal:define-macro="shuttlemanagement">
   <form action="colony.php" method="post">
-    <input type="hidden" name="cid" tal:attributes="value COLONY/getId" />
+    <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
     <input type="hidden" name="sid" tal:attributes="value SHIP/getId" />
     <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
     <tal:block tal:condition="not:ERROR">
