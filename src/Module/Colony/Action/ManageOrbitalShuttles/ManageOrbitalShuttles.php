@@ -115,7 +115,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         foreach ($commodities as $key => $commodityId) {
             $wantedCount = $shuttlecount[$commodityId];
 
-            $smi = $shuttles[$commodityId];
+            $smi = $shuttles[(int)$commodityId];
 
             if ($wantedCount > $smi->getMaxUnits()) {
                 continue;
@@ -123,7 +123,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
             if ($smi->getCurrentLoad() !== $wantedCount) {
                 $msg = $this->transferShuttles(
-                    $commodityId,
+                    (int)$commodityId,
                     $smi->getCurrentLoad(),
                     $wantedCount,
                     $ship,
