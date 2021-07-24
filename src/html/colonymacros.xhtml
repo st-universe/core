@@ -1775,7 +1775,8 @@
             <img src="assets/goods/${data/getCommodityId}.png" title="${data/getCommodityName}" />
           </td>
           <td>
-            <a href="javascript:void(0);" onclick="decreaseShuttleAmount(${data/getCommodityId});">
+            <a tal:condition="SHIP/isOwnedByCurrentUser" href="javascript:void(0);"
+              onclick="decreaseShuttleAmount(${data/getCommodityId});">
               <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
           </td>
           <td>
