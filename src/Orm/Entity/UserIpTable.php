@@ -8,7 +8,15 @@ use DateTimeInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserIpTableRepository")
- * @Table(name="stu_user_iptable",indexes={@Index(name="session_idx", columns={"session"})})
+ * @Table(
+ *     name="stu_user_iptable",
+ *     indexes={
+ *         @Index(name="session_idx", columns={"session"}),
+ *         @Index(name="iptable_start_idx", columns={"startDate"}),
+ *         @Index(name="iptable_end_idx", columns={"endDate"}),
+ *         @Index(name="iptable_ip_idx", columns={"ip"})
+ *     }
+ * )
  **/
 class UserIpTable implements UserIpTableInterface
 {
@@ -76,41 +84,49 @@ class UserIpTable implements UserIpTableInterface
         return $this;
     }
 
-    public function getSessionId(): string {
+    public function getSessionId(): string
+    {
         return $this->session;
     }
 
-    public function setSessionId(string $sessionId): UserIpTableInterface {
+    public function setSessionId(string $sessionId): UserIpTableInterface
+    {
         $this->session = $sessionId;
 
         return $this;
     }
 
-    public function getUserAgent(): string {
+    public function getUserAgent(): string
+    {
         return $this->agent;
     }
 
-    public function setUserAgent(string $userAgent): UserIpTableInterface {
+    public function setUserAgent(string $userAgent): UserIpTableInterface
+    {
         $this->agent = $userAgent;
 
         return $this;
     }
 
-    public function getStartDate(): ?DateTimeInterface {
+    public function getStartDate(): ?DateTimeInterface
+    {
         return $this->startDate;
     }
 
-    public function setStartDate(DateTimeInterface $startDate): UserIpTableInterface {
+    public function setStartDate(DateTimeInterface $startDate): UserIpTableInterface
+    {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    public function getEndDate(): ?DateTimeInterface {
+    public function getEndDate(): ?DateTimeInterface
+    {
         return $this->endDate;
     }
 
-    public function setEndDate(DateTimeInterface $endDate): UserIpTableInterface {
+    public function setEndDate(DateTimeInterface $endDate): UserIpTableInterface
+    {
         $this->endDate = $endDate;
 
         return $this;
