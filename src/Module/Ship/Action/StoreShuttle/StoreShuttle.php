@@ -146,6 +146,7 @@ final class StoreShuttle implements ActionControllerInterface
     {
         foreach ($target->getCrewlist() as $shipCrew) {
             $shipCrew->setShip($ship);
+            $ship->getCrewlist()->add($shipCrew);
             $this->shipCrewRepository->save($shipCrew);
         }
         $target->getCrewlist()->clear();
