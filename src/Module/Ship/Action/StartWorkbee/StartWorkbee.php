@@ -167,6 +167,8 @@ final class StartWorkbee implements ActionControllerInterface
         for ($i = 0; $i < $plan->getCrew(); $i++) {
             $shipCrew = $shipCrewArray[$i];
             $shipCrew->setShip($workbee);
+            $ship->getCrewlist()->removeElement($shipCrew);
+
             $this->shipCrewRepository->save($shipCrew);
         }
 
