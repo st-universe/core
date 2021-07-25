@@ -216,7 +216,7 @@
           </div>
           <div style="float:left; margin-right:4px;"
             tal:condition="php:SHIP.isShuttle() AND ship.isOwnedByCurrentUser()">
-            <a href="?B_LAND_SHUTTLE=1&id=${target/getId}&shuttle=${SHIP/getId}&sstr=${sstr}"
+            <a href="?B_LAND_SHUTTLE=1&id=${ship/getId}&shuttle=${SHIP/getId}&sstr=${sstr}"
               onmouseover="cp('land_${ship/getId}','buttons/landshuttle2', 'png')"
               onmouseout="cp('land_${ship/getId}','buttons/landshuttle1', 'png')">
               <img src="assets/buttons/landshuttle1.png" name="land_${ship/getId}" title="In Shuttle-Rampe landen" />
