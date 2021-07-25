@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Admin\Notification\FailureEmailSenderInterface;
 use Stu\Module\Tick\Maintenance\Maintenance;
 use Stu\Orm\Repository\GameConfigRepositoryInterface;
 
