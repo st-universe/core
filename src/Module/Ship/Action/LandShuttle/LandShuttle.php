@@ -72,11 +72,11 @@ final class LandShuttle implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
+            request::indInt('shuttle'),
             $userId
         );
 
-        $target = $this->shipRepository->find(request::getIntFatal('target'));
+        $target = $this->shipRepository->find(request::getIntFatal('id'));
         if ($target === null) {
             return;
         }
@@ -132,7 +132,7 @@ final class LandShuttle implements ActionControllerInterface
         $this->landWorkbee($ship, $target);
 
         $game->addInformation("Shuttle erfolgreich gelandet");
-        $game->redirectTo('./ship.php?SHOW_SHIP=1&id=' . $target->getId());
+        //$game->redirectTo('./ship.php?SHOW_SHIP=1&id=' . $target->getId());
     }
 
     private function landWorkbee(ShipInterface $ship, ShipInterface $target): void
