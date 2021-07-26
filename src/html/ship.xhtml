@@ -394,7 +394,6 @@
 									<tr tal:define="default php:current(SHIP.getStoredShuttles()).getId()">
 										<td>
 											<select name="shid" onchange="cp('shuttle','goods/' + this.value, 'png')">
-												<option value="0" disabled>Shuttle wählen</option>
 												<option tal:repeat="data SHIP/getStoredShuttles"
 													tal:content="data/getName" value="runtime"
 													tal:attributes="value data/getId">NAME
