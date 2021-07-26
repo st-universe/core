@@ -52,7 +52,7 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         ]);
     }
 
-    public function getWorkbeeBuildplan(int $factionId): ?ShipBuildplanInterface
+    public function getShuttleBuildplan(int $commodityId): ?ShipBuildplanInterface
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -60,13 +60,13 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                     'SELECT sb FROM %s sb
                     JOIN %s sr
                     WITH sb.rump_id = sr.id
-                    WHERE sr.id = :rumpId',
+                    WHERE sr.good_id = :commodityId',
                     ShipBuildplan::class,
                     ShipRump::class
                 )
             )
             ->setParameters([
-                'rumpId' => ShipRumpEnum::SHIP_RUMP_BASE_ID_WORKBEE + $factionId
+                'commodityId' => $commodityId
             ])
             ->getOneOrNullResult();
     }
