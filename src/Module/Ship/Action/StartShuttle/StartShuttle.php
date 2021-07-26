@@ -129,6 +129,12 @@ final class StartShuttle implements ActionControllerInterface
             return;
         }
 
+        // check if ship got enough energy
+        if ($ship->getEps() < $rump->getBaseEps()) {
+            $game->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseEps(), $rump->getName()));
+            return;
+        }
+
         // remove shuttle from storage
         $this->shipStorageManager->lowerStorage(
             $ship,
@@ -173,6 +179,9 @@ final class StartShuttle implements ActionControllerInterface
         }
 
         $this->shipRepository->save($shuttle);
+
+        $ship->setEps($ship->getEps() - $shuttle->getMaxEps());
+        $this->shipRepository->save($ship);
     }
 
     public function performSessionCheck(): bool

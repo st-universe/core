@@ -136,13 +136,13 @@ final class StoreShuttle implements ActionControllerInterface
             1
         );
 
-        // land workbee and transfer crew
-        $this->storeWorkbee($ship, $target);
+        // land shuttle and transfer crew
+        $this->storeShuttle($ship, $target);
 
         $game->addInformation("Shuttle erfolgreich eingesammelt");
     }
 
-    private function storeWorkbee(ShipInterface $ship, ShipInterface $target): void
+    private function storeShuttle(ShipInterface $ship, ShipInterface $target): void
     {
         foreach ($target->getCrewlist() as $shipCrew) {
             $shipCrew->setShip($ship);
