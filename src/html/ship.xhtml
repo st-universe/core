@@ -390,12 +390,19 @@
 										</td>
 									</tr>
 								</tal:block>
-								<tal:block tal:condition="SHIP/hasShuttleRamp">
+								<tal:block tal:condition="php: SHIP.hasShuttleRamp() AND SHIP.getStoredShuttles() ">
 									<tr>
 										<td>
+											<select name="shid">
+												<option tal:repeat="data SHIP/getStoredShuttles"
+													tal:content="data/getName" value="runtime"
+													tal:attributes="value data/getId"
+													onchange="id = this.value; cp('shuttle','goods/6' + id, 'png')">NAME
+												</option>
+											</select>
 											<a href="?B_START_WORKBEE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
 												<img src="/assets/goods/6${SHIP/getUser/getFactionId}.png"
-													name="workbee" />
+													name="shuttle" />
 												Workbee starten
 											</a>
 										</td>

@@ -406,6 +406,8 @@ interface ShipInterface
 
     public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil): bool;
 
+    public function getStoredShuttles(): array;
+
     public function getStoredShuttleCount(): int;
 
     public function getHullStatusBar();
