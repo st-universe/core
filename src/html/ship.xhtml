@@ -391,7 +391,7 @@
 									</tr>
 								</tal:block>
 								<tal:block tal:condition="php: SHIP.hasShuttleRamp() AND SHIP.getStoredShuttles() ">
-									<tr tal:define="default php:current(SHIP.getStoredShuttles()).getId()">
+									<tr tal:define="defaultId php:current(SHIP.getStoredShuttles()).getId()">
 										<td>
 											<select name="shid" onchange="cp('shuttle','goods/' + this.value, 'png')">
 												<option tal:repeat="data SHIP/getStoredShuttles"
@@ -399,7 +399,7 @@
 													tal:attributes="value data/getId">NAME
 												</option>
 											</select>
-											<img src="/assets/buttons/${default}.png" name="shuttle" />
+											<img src="/assets/buttons/${defaultId}.png" name="shuttle" />
 											<input type="submit" class="button" name="B_START_SHUTTLE"
 												value="Shuttle starten" />
 										</td>
