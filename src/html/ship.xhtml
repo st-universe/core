@@ -393,17 +393,16 @@
 								<tal:block tal:condition="php: SHIP.hasShuttleRamp() AND SHIP.getStoredShuttles() ">
 									<tr>
 										<td>
-											<select name="shid" onchange="cp('shuttle','goods/' + this.value, 'png')">
+											<select name="shid" onload="cp('shuttle','goods/' + this.value, 'png')"
+												onchange="cp('shuttle','goods/' + this.value, 'png')">
 												<option tal:repeat="data SHIP/getStoredShuttles"
 													tal:content="data/getName" value="runtime"
 													tal:attributes="value data/getId">NAME
 												</option>
 											</select>
-											<a href="?B_START_WORKBEE=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}">
-												<img src="/assets/goods/6${SHIP/getUser/getFactionId}.png"
-													name="shuttle" />
-												Shuttle starten
-											</a>
+											<img src="/assets/buttons/x1.png" name="shuttle" />
+											<input type="submit" class="button" name="B_START_SHUTTLE"
+												value="Shuttle starten" />
 										</td>
 										<td>
 											<span tal:replace="SHIP/getStoredShuttleCount">SHUTTLECOUNT</span> /
