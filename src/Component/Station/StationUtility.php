@@ -31,7 +31,6 @@ final class StationUtility
         ) {
             return false;
         }
-        return true;
 
         if (
             !$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_DURANIUM)
