@@ -30,6 +30,8 @@ interface CommodityInterface
 
     public function isShuttle(): bool;
 
+    public function isWorkbee(): bool;
+
     public function isIllegal($network): bool;
 
     public function getTransferCount(): int;

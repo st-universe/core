@@ -410,6 +410,8 @@ interface ShipInterface
 
     public function getStoredShuttleCount(): int;
 
+    public function canBuildConstruction(): bool;
+
     public function getHullStatusBar();
 
     public function getShieldStatusBar();

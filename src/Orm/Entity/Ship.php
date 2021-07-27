@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Station\StationUtility;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -1642,6 +1643,11 @@ class Ship implements ShipInterface
         }
 
         return $count;
+    }
+
+    public function canBuildConstruction(): bool
+    {
+        return StationUtility::canShipBuildConstruction($this);
     }
 
     public function __toString()
