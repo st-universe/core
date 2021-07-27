@@ -1647,7 +1647,7 @@ class Ship implements ShipInterface
 
     public function canBuildConstruction(): bool
     {
-        return true; //StationUtility::canShipBuildConstruction($this);
+        return StationUtility::canShipBuildConstruction($this);
     }
 
     public function __toString()
