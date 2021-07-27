@@ -11,7 +11,6 @@ final class StationUtility
 {
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
-        return true;
 
         // check if ship has at least 5 workbees
         $workbeeCount = 0;
@@ -23,6 +22,8 @@ final class StationUtility
         if ($workbeeCount < 5) {
             return false;
         }
+
+        return true;
 
         // check if ship has at least 200 bm and 100 dura
         if (
