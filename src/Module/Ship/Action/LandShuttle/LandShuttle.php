@@ -128,13 +128,13 @@ final class LandShuttle implements ActionControllerInterface
             1
         );
 
-        // land workbee and transfer crew
-        $this->landWorkbee($ship, $target);
+        // land shuttle and transfer crew
+        $this->landShuttle($ship, $target);
 
         $game->addInformation("Shuttle erfolgreich gelandet");
     }
 
-    private function landWorkbee(ShipInterface $ship, ShipInterface $target): void
+    private function landShuttle(ShipInterface $ship, ShipInterface $target): void
     {
         foreach ($ship->getCrewlist() as $shipCrew) {
             $shipCrew->setShip($target);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\StartWorkbee;
+namespace Stu\Module\Ship\Action\StartShuttle;
 
 use request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,9 +21,9 @@ use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class StartWorkbee implements ActionControllerInterface
+final class StartShuttle implements ActionControllerInterface
 {
-    public const ACTION_IDENTIFIER = 'B_START_WORKBEE';
+    public const ACTION_IDENTIFIER = 'B_START_SHUTTLE';
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -72,7 +72,9 @@ final class StartWorkbee implements ActionControllerInterface
             $userId
         );
 
-        $plan = $this->shipBuildplanRepository->getWorkbeeBuildplan($game->getUser()->getFaction()->getId());
+        $commodityId = request::postIntFatal('shid');
+
+        $plan = $this->shipBuildplanRepository->getShuttleBuildplan($commodityId);
 
         if ($plan === null) {
             return;
@@ -87,8 +89,6 @@ final class StartWorkbee implements ActionControllerInterface
             );
             return;
         }
-
-        //TODO check if user has researched workbees
 
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
@@ -111,7 +111,7 @@ final class StartWorkbee implements ActionControllerInterface
             return;
         }
 
-        // check if ship storage contains workbee commodity
+        // check if ship storage contains shuttle commodity
         $storage = $ship->getStorage();
 
         if (!$storage->containsKey($rump->getGoodId())) {
@@ -125,28 +125,34 @@ final class StartWorkbee implements ActionControllerInterface
 
         // check if ship has excess crew
         if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < $plan->getCrew()) {
-            $game->addInformation(sprintf(_('Es werden %d freie Crewman benötigt um den Workbee zu starten'), $plan->getCrew()));
+            $game->addInformation(sprintf(_('Es werden %d freie Crewman für den Start des %s benötigt'), $plan->getCrew(), $rump->getName()));
             return;
         }
 
-        // remove workbee from storage
+        // check if ship got enough energy
+        if ($ship->getEps() < $rump->getBaseEps()) {
+            $game->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseEps(), $rump->getName()));
+            return;
+        }
+
+        // remove shuttle from storage
         $this->shipStorageManager->lowerStorage(
             $ship,
             $rump->getCommodity(),
             1
         );
 
-        // start workbee and transfer crew
-        $this->startWorkbee($ship, $plan);
+        // start shuttle and transfer crew
+        $this->startShuttle($ship, $plan);
 
-        $game->addInformation("Workbee wurde erfolgreich gestartet");
+        $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
     }
 
-    private function startWorkbee(ShipInterface $ship, ShipBuildplanInterface $plan): void
+    private function startShuttle(ShipInterface $ship, ShipBuildplanInterface $plan): void
     {
         $rump = $plan->getRump();
 
-        $workbee = $this->shipCreator->createBy(
+        $shuttle = $this->shipCreator->createBy(
             $ship->getUser()->getId(),
             $rump->getId(),
             $plan->getId()
@@ -155,24 +161,27 @@ final class StartWorkbee implements ActionControllerInterface
         $this->entityManager->flush();
 
         //reload ship with systems
-        $workbee = $this->shipRepository->find($workbee->getId());
+        $shuttle = $this->shipRepository->find($shuttle->getId());
 
-        $workbee->setEps($workbee->getMaxEps());
-        $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        $shuttle->setEps($shuttle->getMaxEps());
+        $shuttle->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
 
-        $workbee->setMap($ship->getMap());
-        $workbee->setStarsystemMap($ship->getStarsystemMap());
+        $shuttle->setMap($ship->getMap());
+        $shuttle->setStarsystemMap($ship->getStarsystemMap());
 
         $shipCrewArray = $ship->getCrewlist()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
             $shipCrew = $shipCrewArray[$i];
-            $shipCrew->setShip($workbee);
+            $shipCrew->setShip($shuttle);
             $ship->getCrewlist()->removeElement($shipCrew);
 
             $this->shipCrewRepository->save($shipCrew);
         }
 
-        $this->shipRepository->save($workbee);
+        $this->shipRepository->save($shuttle);
+
+        $ship->setEps($ship->getEps() - $shuttle->getMaxEps());
+        $this->shipRepository->save($ship);
     }
 
     public function performSessionCheck(): bool

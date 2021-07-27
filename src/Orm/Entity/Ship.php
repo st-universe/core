@@ -1619,6 +1619,19 @@ class Ship implements ShipInterface
             && $this->getRump()->getShuttleSlots() - $this->getStoredShuttleCount() > 0;
     }
 
+    public function getStoredShuttles(): array
+    {
+        $shuttles = [];
+
+        foreach ($this->getStorage() as $stor) {
+            if ($stor->getCommodity()->isShuttle()) {
+                $shuttles[] = $stor->getCommodity();
+            }
+        }
+
+        return $shuttles;
+    }
+
     public function getStoredShuttleCount(): int
     {
         $count = 0;

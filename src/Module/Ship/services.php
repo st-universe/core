@@ -127,7 +127,7 @@ use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
 use Stu\Module\Ship\Action\ShowFleet\ShowFleet;
 use Stu\Module\Ship\Action\Shutdown\Shutdown;
-use Stu\Module\Ship\Action\StartWorkbee\StartWorkbee;
+use Stu\Module\Ship\Action\StartShuttle\StartShuttle;
 use Stu\Module\Ship\Action\StoreShuttle\StoreShuttle;
 use Stu\Module\Ship\Action\TorpedoTransfer\TorpedoTransfer;
 use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
@@ -289,7 +289,7 @@ return [
         PlanAstroMapping::ACTION_IDENTIFIER => autowire(PlanAstroMapping::class),
         StartAstroMapping::ACTION_IDENTIFIER => autowire(StartAstroMapping::class),
         Shutdown::ACTION_IDENTIFIER => autowire(Shutdown::class),
-        StartWorkbee::ACTION_IDENTIFIER => autowire(StartWorkbee::class),
+        StartShuttle::ACTION_IDENTIFIER => autowire(StartShuttle::class),
         StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
         LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class),
         BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class)
