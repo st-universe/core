@@ -11,6 +11,8 @@ final class StationUtility
 {
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
+        return true;
+
         // check if ship has at least 5 workbees
         $workbeeCount = 0;
         foreach ($ship->getStorage() as $stor) {
