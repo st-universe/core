@@ -405,6 +405,14 @@
 										</td>
 									</tr>
 								</tal:block>
+								<tal:block tal:condition="SHIP/canBuildConstruction">
+									<tr>
+										<td>
+											<input type="submit" class="button" name="B_BUILD_CONSTRUCTION"
+												value="Konstrukt errichten" />
+										</td>
+									</tr>
+								</tal:block>
 								<tal:block tal:condition="SHIP/hasAstroLaboratory">
 									<tr>
 										<td colspan="2">

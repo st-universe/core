@@ -15,6 +15,7 @@ final class CommodityTypeEnum
     public const GOOD_DEUTERIUM = 5;
     public const GOOD_ANTIMATTER = 6;
     public const GOOD_DILITHIUM = 8;
+    public const GOOD_DURANIUM = 21;
     public const GOOD_LATINUM = 50;
 
     //base value for e.g. shuttles

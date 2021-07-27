@@ -105,6 +105,11 @@ class Commodity implements CommodityInterface
         return in_array(intdiv($this->getId(), 10) * 10, CommodityTypeEnum::BASE_IDS_SHUTTLE);
     }
 
+    public function isWorkbee(): bool
+    {
+        return intdiv($this->getId(), 10) * 10 === CommodityTypeEnum::BASE_ID_WORKBEE;
+    }
+
     /**
      * @deprecated
      */
