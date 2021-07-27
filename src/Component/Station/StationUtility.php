@@ -23,7 +23,6 @@ final class StationUtility
             return false;
         }
 
-        return true;
 
         // check if ship has at least 200 bm and 100 dura
         if (
@@ -32,6 +31,8 @@ final class StationUtility
         ) {
             return false;
         }
+        return true;
+
         if (
             !$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_DURANIUM)
             || $ship->getStorage()->get(CommodityTypeEnum::GOOD_DURANIUM)->getAmount() < 50
