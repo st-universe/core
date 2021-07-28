@@ -627,4 +627,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
         return $result != null ? $result['id'] : null;
     }
+
+    public function isBaseOnLocation(ShipInterface $ship): bool
+    {
+        $query = $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(s.id) FROM %s s
+                WHERE s.starsystem_map_id = :starsystemMapId
+                AND s.map_id = :mapId
+                AND s.is_base = true',
+                Ship::class,
+            )
+        )->setParameters([
+            'starsystemMapId' => $ship->getStarsystemMap()->getId(),
+            'mapId' => $ship->getMap()->getId()
+        ]);
+
+        return $query->getSingleScalarResult() > 0;
+    }
 }

@@ -98,7 +98,11 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        //TODO check if there already is a base
+        // check if there already is a base
+        if ($this->shipRepository->isBaseOnLocation($ship)) {
+            $game->addInformation(_("Hier ist bereits eine Station errichtet"));
+            return;
+        }
 
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
