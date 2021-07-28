@@ -176,6 +176,9 @@ $builder->addDefinitions(
     require_once __DIR__ . '/../Module/Ship/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__ . '/../Module/Station/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__ . '/../Module/Alliance/services.php'
 );
 $builder->addDefinitions(

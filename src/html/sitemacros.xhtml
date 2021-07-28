@@ -454,7 +454,7 @@
     tal:define="title string:Schiffe; url string:ship.php; icon_url string:ships" />
   <tal:block tal:condition="THIS/getUser/hasStationsNavigation">
     <metal:macro metal:use-macro="navigation_item"
-      tal:define="title string:Stationen; url string:stations.php; icon_url string:station" />
+      tal:define="title string:Stationen; url string:station.php; icon_url string:station" />
   </tal:block>
   <metal:macro metal:use-macro="navigation_item"
     tal:define="title string:KommNet; url string:comm.php; icon_url string:comm" />
