@@ -115,8 +115,8 @@
 							</a>
 						</td>
 						<td colspan="2">
-							<img tal:repeat="mod SHIP/getBuildplan/getModules" style="margin-right: 5px;"
-								src="assets/goods/${mod/getModule/getGoodId}.gif" />
+							<img tal:condition="SHIP/getBuildplan" tal:repeat="mod SHIP/getBuildplan/getModules"
+								style="margin-right: 5px;" src="assets/goods/${mod/getModule/getGoodId}.gif" />
 						</td>
 						<td colspan="4">
 							<img tal:repeat="sys SHIP/getSystems" title="${sys/getName}: ${sys/getStatus}%"

@@ -26,6 +26,8 @@ final class BuildConstruction implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD_CONSTRUCTION';
 
+    public const NEEDED_WORKBEES = 5;
+
     private ShipRepositoryInterface $shipRepository;
 
     private ShipLoaderInterface $shipLoader;
@@ -85,6 +87,8 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
+        //TODO check if there already is a base
+
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP)) {
             $game->addInformation(_("Die Shuttle-Rampe ist zerstört"));
             return;
@@ -106,27 +110,35 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
+        //calculate needed eps and crew
         $workbeePlans = [];
         $neededCrew = 0;
         $neededEps = 0;
-        foreach ($ship->getStoredShuttles() as $shuttleCommodity) {
+        foreach ($ship->getStorage() as $stor) {
 
-            if (count($workbeePlans) === 5) {
+            if (count($workbeePlans) === self::NEEDED_WORKBEES) {
                 break;
             }
 
-            if (!$shuttleCommodity->isWorkbee()) {
+            $commodity = $stor->getCommodity();
+
+            if (!$commodity->isWorkbee()) {
                 continue;
             }
 
-            $plan = $this->shipBuildplanRepository->getShuttleBuildplan($shuttleCommodity->getId());
+            $plan = $this->shipBuildplanRepository->getShuttleBuildplan($commodity->getId());
             if ($plan === null) {
                 continue;
             }
 
-            $workbeePlans[] = $plan;
-            $neededCrew += $plan->getCrew();
-            $neededEps += $plan->getRump()->getBaseEps();
+            $amount = $stor->getAmount();
+            $stillNeeded = self::NEEDED_WORKBEES - count($workbeePlans);
+
+            for ($i = 0; $i < min($amount, $stillNeeded); $i++) {
+                $workbeePlans[] = $plan;
+                $neededCrew += $plan->getCrew();
+                $neededEps += $plan->getRump()->getBaseEps();
+            }
         }
 
         // check if ship has excess crew
