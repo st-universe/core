@@ -195,7 +195,7 @@ final class BuildConstruction implements ActionControllerInterface
 
             $this->shipStorageManager->lowerStorage(
                 $ship,
-                $rump->getCommodity(),
+                $commodity,
                 $amount
             );
         }
