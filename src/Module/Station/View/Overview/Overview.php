@@ -2,27 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\Overview;
+namespace Stu\Module\Station\View\Overview;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    public const VIEW_IDENTIFIER = 'SHOW_SHIP_LIST';
+    public const VIEW_IDENTIFIER = 'SHOW_STATION_LIST';
 
-    private FleetRepositoryInterface $fleetRepository;
 
     private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
-        FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository
     ) {
-        $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
     }
 
@@ -30,17 +26,19 @@ final class Overview implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $fleets = $this->fleetRepository->getByUser($userId);
-        $bases = [];
-        $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
+        $fleets = [];
+        $bases = $this->shipRepository->getByUserAndFleetAndBase($userId, null, true);
+        $ships = [];
 
         $game->appendNavigationPart(
-            'ship.php',
-            _('Schiffe')
+            'station.php',
+            _('Stationen')
         );
-        $game->setPageTitle(_('/ Schiffe'));
+        $game->setPageTitle(_('/ Stationen'));
+        //TODO shiplist separation != stations
         $game->setTemplateFile('html/shiplist.xhtml');
 
+        //TODO clean vars
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
         $game->setTemplateVar(
             'SHIPS_AVAILABLE',
