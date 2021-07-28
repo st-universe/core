@@ -1115,6 +1115,16 @@ class Ship implements ShipInterface
         return $this->getRump()->getStorage();
     }
 
+    public function getBeamableStorage(): array
+    {
+        return array_filter(
+            $this->getStorage()->getValues(),
+            function (ShipStorageInterface $storage): bool {
+                return $storage->getCommodity()->isBeamable() === true;
+            }
+        );
+    }
+
     public function getMap(): ?MapInterface
     {
         return $this->map;

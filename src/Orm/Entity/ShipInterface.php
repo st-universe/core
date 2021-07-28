@@ -272,6 +272,11 @@ interface ShipInterface
 
     public function getMaxStorage(): int;
 
+    /**
+     * @return ShipStorageInterface[] Indexed by commodityId, ordered by commodityId
+     */
+    public function getBeamableStorage(): array;
+
     public function getMap(): ?MapInterface;
 
     public function setMap(?MapInterface $map): ShipInterface;
