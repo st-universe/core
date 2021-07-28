@@ -592,6 +592,16 @@ class User implements UserInterface
         return $this->crew_in_training;
     }
 
+    public function hasStationsNavigation(): bool
+    {
+        if ($this->isNpc()) {
+            return true;
+        }
+
+        //TODO check if user has researched constructions
+        return $this->getId() === 126 || $this->getId() === 102;
+    }
+
     public function maySignup(int $allianceId): bool
     {
         // @todo refactor
