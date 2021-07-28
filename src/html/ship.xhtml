@@ -411,7 +411,7 @@
 								</tal:block>
 								<tal:block tal:condition="SHIP/canBuildConstruction">
 									<tr>
-										<td>
+										<td colspan="2">
 											<input type="submit" class="button" name="B_BUILD_CONSTRUCTION"
 												value="Konstrukt errichten" />
 										</td>
@@ -1205,7 +1205,7 @@
 						${SHIP/getStorageSum}/${SHIP/getMaxStorage}</th>
 				<tr>
 					<td>
-						<tal:block tal:repeat="good SHIP/getStorage">
+						<tal:block tal:repeat="good SHIP/getSortedStorage">
 							<tal:block tal:condition="good/getAmount">
 								<div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
 									<img src="assets/goods/${good/getCommodity/getId}.gif"
