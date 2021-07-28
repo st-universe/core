@@ -19,7 +19,7 @@ final class CommodityTypeEnum
     public const GOOD_LATINUM = 50;
 
     //base value for e.g. shuttles
-    public const BASE_ID_WORKBEE = 60;
+    public const BASE_ID_WORKBEE = 20060;
     public const BASE_IDS_SHUTTLE =  [self::BASE_ID_WORKBEE];
 
     public static function getDescription(int $commodityId): string
