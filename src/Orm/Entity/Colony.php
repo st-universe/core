@@ -117,6 +117,7 @@ class Colony implements ColonyInterface
 
     /**
      * @OneToMany(targetEntity="ColonyStorage", mappedBy="colony", indexBy="goods_id")
+     * @OrderBy({"goods_id" = "ASC"})
      */
     private $storage;
 
@@ -455,16 +456,6 @@ class Colony implements ColonyInterface
             $this->getStorage()->getValues(),
             function (ColonyStorageInterface $storage): bool {
                 return $storage->getCommodity()->isBeamable() === true;
-            }
-        );
-
-        usort(
-            $filteredArray,
-            function (ColonyStorageInterface $a, ColonyStorageInterface $b): int {
-                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
-                    return 0;
-                }
-                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
             }
         );
 

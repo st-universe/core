@@ -374,7 +374,7 @@
       </tr>
       <tr>
         <td style="width: 100%;">
-          <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
+          <tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
@@ -386,7 +386,7 @@
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
-          <tal:block tal:condition="not:SHIP/getSortedStorage">
+          <tal:block tal:condition="not:SHIP/getStorage">
             Keine Waren vorhanden
           </tal:block>
         </td>
@@ -441,7 +441,7 @@
       </tr>
       <tr>
         <td style="width: 100%;">
-          <tal:block tal:condition="targetShip/getSortedStorage" tal:repeat="good targetShip/getSortedStorage">
+          <tal:block tal:condition="targetShip/getStorage" tal:repeat="good targetShip/getStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
@@ -453,7 +453,7 @@
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
-          <tal:block tal:condition="not:targetShip/getSortedStorage">
+          <tal:block tal:condition="not:targetShip/getStorage">
             Keine Waren vorhanden
           </tal:block>
         </td>
@@ -512,7 +512,7 @@
       </tr>
       <tr>
         <td style="width: 100%;">
-          <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
+          <tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
             <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
             <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
               <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
@@ -524,7 +524,7 @@
             </div>
             <br tal:condition="repeat/good/odd" style="clear: both;" />
           </tal:block>
-          <tal:block tal:condition="not:SHIP/getSortedStorage">
+          <tal:block tal:condition="not:SHIP/getStorage">
             Keine Waren vorhanden
           </tal:block>
         </td>
@@ -1009,7 +1009,7 @@
               </tr>
               <tr>
                 <td>
-                  <tal:block tal:condition="SHIP/getSortedStorage" tal:repeat="good SHIP/getSortedStorage">
+                  <tal:block tal:condition="SHIP/getStorage" tal:repeat="good SHIP/getStorage">
                     <input type="hidden" name="goods[]" tal:attributes="value good/getCommodity/getId" />
                     <div tal:condition="repeat/good/odd" style="float: right; width: 50%;">
                       <metal:macro metal:use-macro="macros.xhtml/commoditySelection"
@@ -1021,7 +1021,7 @@
                     </div>
                     <br tal:condition="repeat/good/odd" style="clear: both;" />
                   </tal:block>
-                  <tal:block tal:condition="not:SHIP/getSortedStorage">
+                  <tal:block tal:condition="not:SHIP/getStorage">
                     Keine Waren vorhanden
                   </tal:block>
                 </td>

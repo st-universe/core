@@ -239,6 +239,7 @@ class Ship implements ShipInterface
 
     /**
      * @OneToMany(targetEntity="ShipStorage", mappedBy="ship", indexBy="goods_id")
+     * @OrderBy({"goods_id" = "ASC"})
      */
     private $storage;
 
@@ -1091,23 +1092,6 @@ class Ship implements ShipInterface
     {
         $this->torpedo = $torpedoType;
         return $this;
-    }
-
-    public function getSortedStorage(): array
-    {
-        $array = $this->getStorage()->getValues();
-
-        usort(
-            $array,
-            function (ShipStorageInterface $a, ShipStorageInterface $b): int {
-                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
-                    return 0;
-                }
-                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
-            }
-        );
-
-        return array_values($array);
     }
 
     public function getStorage(): Collection
