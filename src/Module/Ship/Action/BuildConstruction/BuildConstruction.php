@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 
 use request;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -268,6 +269,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setName($rump->getName());
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());
+        $construction->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
 
         $construction->setMap($ship->getMap());
         $construction->setStarsystemMap($ship->getStarsystemMap());

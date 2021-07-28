@@ -639,8 +639,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 Ship::class,
             )
         )->setParameters([
-            'starsystemMapId' => $ship->getStarsystemMap()->getId(),
-            'mapId' => $ship->getMap()->getId()
+            'starsystemMapId' => $ship->getStarsystemMap() ? $ship->getStarsystemMap()->getId() : null,
+            'mapId' => $ship->getMap() ? $ship->getMap()->getId() : null
         ]);
 
         return $query->getSingleScalarResult() > 0;
