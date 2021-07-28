@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -17,6 +18,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -27,6 +29,11 @@ final class BuildConstruction implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_BUILD_CONSTRUCTION';
 
     public const NEEDED_WORKBEES = 5;
+
+    public const NEEDED_RESOURCES = [
+        CommodityTypeEnum::GOOD_BUILDING_MATERIALS => 100,
+        CommodityTypeEnum::GOOD_DURANIUM => 50
+    ];
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -44,6 +51,8 @@ final class BuildConstruction implements ActionControllerInterface
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
+    private CommodityRepositoryInterface $commodityRepository;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
@@ -52,7 +61,8 @@ final class BuildConstruction implements ActionControllerInterface
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
@@ -62,6 +72,7 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->commodityRepository = $commodityRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -178,6 +189,17 @@ final class BuildConstruction implements ActionControllerInterface
             $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
         }
 
+        // use build ressources
+        foreach (self::NEEDED_RESOURCES as $key => $amount) {
+            $commodity = $this->commodityRepository->find($key);
+
+            $this->shipStorageManager->lowerStorage(
+                $ship,
+                $rump->getCommodity(),
+                $amount
+            );
+        }
+
         // build construction
         $construction = $this->buildConstruction($ship);
 
@@ -238,6 +260,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction = $this->shipRepository->prototype();
         $construction->setUser($ship->getUser());
         $construction->setRump($rump);
+        $construction->setIsBase(true);
         $construction->setName($rump->getName());
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());

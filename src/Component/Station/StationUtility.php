@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Component\Ship\Station;
 
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Orm\Entity\ShipInterface;
 
 final class StationUtility
@@ -12,31 +13,25 @@ final class StationUtility
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
 
-        // check if ship has at least 5 workbees
+        // check if ship has the required workbee amount
         $workbeeCount = 0;
         foreach ($ship->getStorage() as $stor) {
             if ($stor->getCommodity()->isWorkbee()) {
                 $workbeeCount += $stor->getAmount();
             }
         }
-        if ($workbeeCount < 5) {
+        if ($workbeeCount < BuildConstruction::NEEDED_WORKBEES) {
             return false;
         }
 
-
-        // check if ship has at least 200 bm and 100 dura
-        if (
-            !$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_BUILDING_MATERIALS)
-            || $ship->getStorage()->get(CommodityTypeEnum::GOOD_BUILDING_MATERIALS)->getAmount() < 100
-        ) {
-            return false;
-        }
-
-        if (
-            !$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_DURANIUM)
-            || $ship->getStorage()->get(CommodityTypeEnum::GOOD_DURANIUM)->getAmount() < 50
-        ) {
-            return false;
+        // check if ship has the needed resources
+        foreach (BuildConstruction::NEEDED_RESOURCES as $key => $amount) {
+            if (
+                !$ship->getStorage()->containsKey($key)
+                || $ship->getStorage()->get($key)->getAmount() < $amount
+            ) {
+                return false;
+            }
         }
 
         return true;
