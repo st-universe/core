@@ -122,8 +122,8 @@ function showShipDetails(id) {
 }
 function editDockPrivileges() {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'ship.php?SHOW_DOCKPRIVILEGE_CONFIG=1&id=' + shipid);
+	openPJsWin('dockprivilegelist', 1);
+	ajax_update('dockprivilegelist', 'ship.php?SHOW_DOCKPRIVILEGE_CONFIG=1&id=' + shipid);
 }
 function addDockPrivilege() {
 	var value = $('docktype').value;
