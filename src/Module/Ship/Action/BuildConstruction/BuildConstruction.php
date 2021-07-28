@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 
 use request;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -16,7 +17,6 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -33,8 +33,6 @@ final class BuildConstruction implements ActionControllerInterface
 
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
-    private CommodityRepositoryInterface $commodityRepository;
-
     private ShipStorageManagerInterface $shipStorageManager;
 
     private ShipCrewRepositoryInterface $shipCrewRepository;
@@ -46,7 +44,6 @@ final class BuildConstruction implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipCreatorInterface $shipCreator,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
-        CommodityRepositoryInterface $commodityRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager
@@ -55,7 +52,6 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipLoader = $shipLoader;
         $this->shipCreator = $shipCreator;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
-        $this->commodityRepository = $commodityRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
@@ -75,16 +71,6 @@ final class BuildConstruction implements ActionControllerInterface
         if (!$ship->canBuildConstruction()) {
             return;
         }
-
-        $commodityId = request::postIntFatal('shid');
-
-        $plan = $this->shipBuildplanRepository->getShuttleBuildplan($commodityId);
-
-        if ($plan === null) {
-            return;
-        }
-
-        $rump = $plan->getRump();
 
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
@@ -115,48 +101,84 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        // check if ship storage contains shuttle commodity
-        $storage = $ship->getStorage();
+        $workbeePlans = [];
+        $neededCrew = 0;
+        $neededEps = 0;
+        foreach ($ship->getStoredShuttles() as $shuttleCommodity) {
 
-        if (!$storage->containsKey($rump->getGoodId())) {
-            $game->addInformationf(
-                _('Es wird %d %s benötigt'),
-                1,
-                $this->commodityRepository->find((int) $rump->getGoodId())->getName()
-            );
-            return;
+            if (count($workbeePlans) === 5) {
+                break;
+            }
+
+            if (!$shuttleCommodity->isWorkbee()) {
+                continue;
+            }
+
+            $plan = $this->shipBuildplanRepository->getShuttleBuildplan($shuttleCommodity->getId());
+            if ($plan === null) {
+                continue;
+            }
+
+            $workbeePlans[] = $plan;
+            $neededCrew += $plan->getCrew();
+            $neededEps += $plan->getRump()->getBaseEps();
         }
 
         // check if ship has excess crew
-        if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < $plan->getCrew()) {
-            $game->addInformation(sprintf(_('Es werden %d freie Crewman für den Start des %s benötigt'), $plan->getCrew(), $rump->getName()));
+        if ($ship->getCrewCount() - $ship->getBuildplan()->getCrew() < $neededCrew) {
+            $game->addInformation(sprintf(
+                _('Nicht genügend Crew für den Start der %d Workbees vorhanden, benötigt wird %d'),
+                count($workbeePlans),
+                $neededCrew
+            ));
             return;
         }
 
         // check if ship got enough energy
-        if ($ship->getEps() < $rump->getBaseEps()) {
-            $game->addInformation(sprintf(_('Es wird %d Energie für den Start des %s benötigt'), $rump->getBaseEps(), $rump->getName()));
+        if ($ship->getEps() < $neededEps) {
+            $game->addInformation(sprintf(
+                _('Es wird insgesamt %d Energie für den Start der %d Workbees benötigt'),
+                $neededEps,
+                count($workbeePlans)
+            ));
             return;
         }
 
-        // remove shuttle from storage
-        $this->shipStorageManager->lowerStorage(
-            $ship,
-            $rump->getCommodity(),
-            1
-        );
+        //start workbees
+        $workbees = [];
+        foreach ($workbeePlans as $plan) {
+            $rump = $plan->getRump();
 
-        // start shuttle and transfer crew
-        $this->startShuttle($ship, $plan);
+            // remove shuttle from storage
+            $this->shipStorageManager->lowerStorage(
+                $ship,
+                $rump->getCommodity(),
+                1
+            );
 
-        $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
+            // start workbee and transfer crew
+            $workbees[] = $this->startWorkbee($ship, $plan);
+            $game->addInformation(sprintf(_('%s wurde erfolgreich gestartet'), $rump->getName()));
+        }
+
+        // build construction
+        $construction = $this->buildConstruction($ship);
+
+        // dock workbees to construction
+        foreach ($workbees as $workbee) {
+            $workbee->setDockedTo($construction);
+            $this->shipRepository->save($workbee);
+        }
+
+        $game->addInformation(sprintf(_('%s wurde erfolgreich errichtet'), $construction->getName()));
+        $game->addInformation('Die gestarteten Workbees haben an das Konstrukt angedockt');
     }
 
-    private function startShuttle(ShipInterface $ship, ShipBuildplanInterface $plan): void
+    private function startWorkbee(ShipInterface $ship, ShipBuildplanInterface $plan): ShipInterface
     {
         $rump = $plan->getRump();
 
-        $shuttle = $this->shipCreator->createBy(
+        $workbee = $this->shipCreator->createBy(
             $ship->getUser()->getId(),
             $rump->getId(),
             $plan->getId()
@@ -165,27 +187,50 @@ final class BuildConstruction implements ActionControllerInterface
         $this->entityManager->flush();
 
         //reload ship with systems
-        $shuttle = $this->shipRepository->find($shuttle->getId());
+        $workbee = $this->shipRepository->find($workbee->getId());
 
-        $shuttle->setEps($shuttle->getMaxEps());
-        $shuttle->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        $workbee->setEps($workbee->getMaxEps());
+        $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->setMode(ShipSystemModeEnum::MODE_ALWAYS_ON);
+        $workbee->getShipSystem(ShipSystemTypeEnum::SYSTEM_NBS)->setMode(ShipSystemModeEnum::MODE_ON);
 
-        $shuttle->setMap($ship->getMap());
-        $shuttle->setStarsystemMap($ship->getStarsystemMap());
+        $workbee->setMap($ship->getMap());
+        $workbee->setStarsystemMap($ship->getStarsystemMap());
 
         $shipCrewArray = $ship->getCrewlist()->getValues();
         for ($i = 0; $i < $plan->getCrew(); $i++) {
             $shipCrew = $shipCrewArray[$i];
-            $shipCrew->setShip($shuttle);
+            $shipCrew->setShip($workbee);
             $ship->getCrewlist()->removeElement($shipCrew);
 
             $this->shipCrewRepository->save($shipCrew);
         }
 
-        $this->shipRepository->save($shuttle);
+        $this->shipRepository->save($workbee);
 
-        $ship->setEps($ship->getEps() - $shuttle->getMaxEps());
+        $ship->setEps($ship->getEps() - $workbee->getMaxEps());
         $this->shipRepository->save($ship);
+
+        return $workbee;
+    }
+
+    private function buildConstruction(ShipInterface $ship): ShipInterface
+    {
+        $rump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION);
+
+
+        $construction = $this->shipRepository->prototype();
+        $construction->setUser($ship->getUser());
+        $construction->setRump($rump);
+        $construction->setName($rump->getName());
+        $construction->setHuell($rump->getBaseHull());
+        $construction->setMaxHuell($rump->getBaseHull());
+
+        $construction->setMap($ship->getMap());
+        $construction->setStarsystemMap($ship->getStarsystemMap());
+
+        $this->shipRepository->save($construction);
+
+        return $construction;
     }
 
     public function performSessionCheck(): bool
