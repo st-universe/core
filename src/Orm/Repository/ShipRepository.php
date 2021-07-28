@@ -635,8 +635,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $query = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
-                WHERE s.starsystem_map_id = :starsystemMapId
-                AND s.%s = :mapId
+                WHERE s.%s = :mapId
                 AND s.is_base = true',
                 Ship::class,
                 $isSystem ? 'starsystem_map_id' : 'map_id',
