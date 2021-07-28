@@ -98,7 +98,7 @@ final class AddDockPrivilege implements ActionControllerInterface
             $this->dockingPrivilegeRepository->save($dock);
         }
 
-        $game->addInformation("Dockrechte wurden geändert")
+        $game->addInformation("Dockrechte wurden geändert");
     }
 
     public function performSessionCheck(): bool
