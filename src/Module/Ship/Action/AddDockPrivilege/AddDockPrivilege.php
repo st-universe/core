@@ -59,7 +59,6 @@ final class AddDockPrivilege implements ActionControllerInterface
         $type = (int) request::getIntFatal('type');
         $mode = (int) request::getIntFatal('mode');
 
-        $game->setView(ShowDockingPrivileges::VIEW_IDENTIFIER);
         if ($mode != ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW && $mode != ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
             return;
         }
@@ -98,6 +97,8 @@ final class AddDockPrivilege implements ActionControllerInterface
 
             $this->dockingPrivilegeRepository->save($dock);
         }
+
+        $game->addInformation("Dockrechte wurden geändert")
     }
 
     public function performSessionCheck(): bool
