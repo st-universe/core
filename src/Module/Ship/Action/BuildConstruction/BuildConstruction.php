@@ -20,6 +20,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class BuildConstruction implements ActionControllerInterface
 {
@@ -39,6 +40,8 @@ final class BuildConstruction implements ActionControllerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private ShipRumpRepositoryInterface $shipRumpRepository;
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
@@ -46,7 +49,8 @@ final class BuildConstruction implements ActionControllerInterface
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ShipCrewRepositoryInterface $shipCrewRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
@@ -55,6 +59,7 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipStorageManager = $shipStorageManager;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
+        $this->shipRumpRepository = $shipRumpRepository;
     }
 
     public function handle(GameControllerInterface $game): void
