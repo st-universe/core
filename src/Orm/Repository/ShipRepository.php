@@ -630,17 +630,19 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function isBaseOnLocation(ShipInterface $ship): bool
     {
+        $isSystem = $ship->getSystem() !== null;
+
         $query = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
                 WHERE s.starsystem_map_id = :starsystemMapId
-                AND s.map_id = :mapId
+                AND s.%s = :mapId
                 AND s.is_base = true',
                 Ship::class,
+                $isSystem ? 'starsystem_map_id' : 'map_id',
             )
         )->setParameters([
-            'starsystemMapId' => $ship->getStarsystemMap() ? $ship->getStarsystemMap()->getId() : null,
-            'mapId' => $ship->getMap() ? $ship->getMap()->getId() : null
+            'mapId' => $isSystem  ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()
         ]);
 
         return $query->getSingleScalarResult() > 0;
