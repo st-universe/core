@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowStationCosts;
 
 use request;
-
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -83,8 +82,19 @@ final class ShowStationCosts implements ViewControllerInterface
         foreach ($plan->getModules() as $mod) {
             $mods[] = new StationCostWrapper($mod, $ship->getStorage()->get($mod->getModule()->getGoodId()));
         }
-
         $game->setTemplateVar('MODS', $mods);
+
+        $dockedWorkbees = 0;
+        foreach ($ship->getDockedShips() as $docked) {
+            $commodity = $docked->getRump()->getCommodity();
+            if ($commodity !== null && $commodity->isWorkbee()) {
+                $dockedWorkbees += 1;
+            }
+        }
+
+        $game->setTemplateVar('DOCKED', $dockedWorkbees);
+        $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $ship->getRump()->getNeededWorkbees() ? 'red' : 'green');
+
         $game->setTemplateVar('ERROR', false);
     }
 }
