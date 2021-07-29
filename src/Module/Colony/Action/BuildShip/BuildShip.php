@@ -178,7 +178,7 @@ final class BuildShip implements ActionControllerInterface
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
-            $selector = new ModuleSelector($module->getType(), $colony, $rump, $userId);
+            $selector = new ModuleSelector($module->getType(), $colony, null, $rump, $userId);
             if (!array_key_exists($module->getId(), $selector->getAvailableModules())) {
                 return;
             }

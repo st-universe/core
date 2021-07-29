@@ -872,10 +872,19 @@
 											</td>
 											<td style="width: 10%;">
 												<div class="radio">
-													<input type="radio" value="${data/getId}" name="plan_select" />
+													<input type="radio" value="${data/getId}" name="plan_select"
+														onchange="showModuleSelectTab(${data/getId})" />
 												</div>
 											</td>
 										</tr>
+
+										<tr>
+											<tal:block tal:repeat="selector MODULE_SELECTORS">
+												<div id="selector_${selector/getDummyId}" style="display: none;"
+													tal:content="structure selector/render">CONTENT</div>
+											</tal:block>
+										</tr>
+
 										<tr>
 											<td colspan="4">
 												<div style="width: 100%; text-align: center;">

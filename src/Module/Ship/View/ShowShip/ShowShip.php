@@ -8,7 +8,9 @@ use NavPanel;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Exception\ShipDoesNotExistException;
+use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
@@ -227,6 +229,23 @@ final class ShowShip implements ViewControllerInterface
         if ($progress === null) {
             $plans = $this->shipBuildplanRepository->getStationBuildplansByUser($game->getUser()->getId());
             $game->setTemplateVar('POSSIBLE_STATIONS', $plans);
+
+            $moduleSelectors = [];
+            foreach ($plans as $plan) {
+                $ms = new ModuleSelectorSpecial(
+                    ShipModuleTypeEnum::MODULE_TYPE_SPECIAL,
+                    null,
+                    $ship,
+                    $plan->getRump(),
+                    $game->getUser()->getId()
+                );
+
+                $ms->setDummyId($plan->getId());
+
+                $moduleSelectors[] = $ms;
+            }
+
+            $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
         }
     }
 }
