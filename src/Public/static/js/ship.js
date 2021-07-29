@@ -178,6 +178,8 @@ function showStationInformation(rumpid) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&id=' + shipid + '$rid=' + rumpid);
 }
+function toggleSpecialModuleDisplay(type, module_id, module_crew) {
+}
 currentTab = false;
 function showModuleSelectTab(tabId) {
 	if (currentTab) {
