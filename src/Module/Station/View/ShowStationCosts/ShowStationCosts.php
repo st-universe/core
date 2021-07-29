@@ -10,20 +10,25 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
 final class ShowStationCosts implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_STATION_COSTS';
 
+    private ShipLoaderInterface $shipLoader;
+
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        ShipLoaderInterface $shipLoader,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         LoggerUtilInterface $loggerUtil
     ) {
+        $this->shipLoader = $shipLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->loggerUtil = $loggerUtil;
     }
@@ -35,6 +40,11 @@ final class ShowStationCosts implements ViewControllerInterface
         $this->loggerUtil->log('A');
 
         $game->setTemplateVar('ERROR', true);
+
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $game->getUser()->getId()
+        );
 
         $game->setPageTitle(_('Baukosten'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
@@ -68,6 +78,13 @@ final class ShowStationCosts implements ViewControllerInterface
         $this->loggerUtil->log('F');
 
         $game->setTemplateVar('PLAN', $plan);
+
+        $mods = [];
+        foreach ($plan->getModules() as $mod) {
+            $mods[] = new StationCostWrapper($mod, $ship->getStorage()->get($mod->getModule()->getGoodId()));
+        }
+
+        $game->setTemplateVar('MODS', $mods);
         $game->setTemplateVar('ERROR', false);
     }
 }
