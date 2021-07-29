@@ -76,12 +76,14 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'SELECT bp FROM %s bp INDEX BY r.id
-                    JOIN %s r WITH bp.rump_id = r.id
+                    'SELECT bp FROM %s bp
+                    JOIN %s r
+                    WITH bp.rump_id = r.id
                     WHERE r.category_id = :category
                     AND r.id IN (
                         SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
-                    )',
+                    )
+                    ORDER BY r.id ASC',
                     ShipBuildplan::class,
                     ShipRump::class,
                     ShipRumpUser::class
