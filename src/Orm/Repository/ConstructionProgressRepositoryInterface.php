@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ConstructionProgressInterface;
 
 /**
+ * @method null|ShipInterface find(integer $id)
  * @method ConstructionProgressInterface[] findAll()
  */
 interface ConstructionProgressRepositoryInterface extends ObjectRepository
