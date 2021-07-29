@@ -93,7 +93,7 @@ final class ShowStationCosts implements ViewControllerInterface
         }
 
         $game->setTemplateVar('DOCKED', $dockedWorkbees);
-        $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $ship->getRump()->getNeededWorkbees() ? 'red' : 'green');
+        $game->setTemplateVar('WORKBEECOLOR', $dockedWorkbees < $plan->getRump()->getNeededWorkbees() ? 'red' : 'green');
 
         $game->setTemplateVar('ERROR', false);
     }
