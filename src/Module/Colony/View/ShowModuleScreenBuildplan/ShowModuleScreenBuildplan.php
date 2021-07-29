@@ -74,6 +74,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                 $moduleSelectors[$i] = new ModuleSelectorSpecial(
                     $i,
                     $colony,
+                    null,
                     $rump,
                     $userId,
                     $plan
@@ -82,6 +83,7 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
                 $moduleSelectors[$i] = new ModuleSelector(
                     $i,
                     $colony,
+                    null,
                     $rump,
                     $userId,
                     $plan,

@@ -11,6 +11,7 @@ use Stu\Module\ShipModule\ModuleTypeDescriptionMapper;
 use Stu\Module\Tal\TalPageInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpModuleLevelRepositoryInterface;
@@ -25,11 +26,13 @@ class ModuleSelector implements ModuleSelectorInterface
     private $templateFile = 'html/ajaxempty.xhtml';
     private $template;
     private $colony;
+    private $ship;
     private $buildplan;
 
     public function __construct(
         $moduleType,
-        ColonyInterface $colony,
+        ?ColonyInterface $colony,
+        ?ShipInterface $ship,
         ShipRumpInterface $rump,
         int $userId,
         ?ShipBuildplanInterface $buildplan = null
@@ -38,6 +41,7 @@ class ModuleSelector implements ModuleSelectorInterface
         $this->rump = $rump;
         $this->userId = $userId;
         $this->colony = $colony;
+        $this->ship = $ship;
         $this->buildplan = $buildplan;
     }
 
@@ -106,12 +110,21 @@ class ModuleSelector implements ModuleSelectorInterface
         if ($this->modules === null) {
             $this->modules = [];
             if ($this->getModuleType() == ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
-                $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeColonyAndRump(
-                    (int)$this->getColony()->getId(),
-                    (int)$this->getModuleType(),
-                    $this->getRump()->getId(),
-                    $this->getRump()->getShipRumpRole()->getId()
-                );
+                if ($this->getColony() !== null) {
+                    $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeColonyAndRump(
+                        (int)$this->getColony()->getId(),
+                        (int)$this->getModuleType(),
+                        $this->getRump()->getId(),
+                        $this->getRump()->getShipRumpRole()->getId()
+                    );
+                } else {
+                    $modules = $container->get(ModuleRepositoryInterface::class)->getBySpecialTypeShipAndRump(
+                        (int)$this->ship->getId(),
+                        (int)$this->getModuleType(),
+                        $this->getRump()->getId(),
+                        $this->getRump()->getShipRumpRole()->getId()
+                    );
+                }
             } else {
                 $mod_level = $container->get(ShipRumpModuleLevelRepositoryInterface::class)->getByShipRump(
                     $this->getRump()->getId()

@@ -23,6 +23,16 @@ interface ModuleRepositoryInterface extends ObjectRepository
     /**
      * @return ModuleInterface[]
      */
+    public function getBySpecialTypeShipAndRump(
+        int $shipId,
+        int $moduleTypeId, // 1 bis 9: ShipModuleTypeEnum
+        int $shipRumpId,
+        int $shipRumpRoleId
+    ): array;
+
+    /**
+     * @return ModuleInterface[]
+     */
     public function getByTypeColonyAndLevel(
         int $colonyId,
         int $moduleTypeId,

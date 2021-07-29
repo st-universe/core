@@ -68,6 +68,7 @@ final class ShowModuleScreen implements ViewControllerInterface
                 $moduleSelectors[] = new ModuleSelectorSpecial(
                     $i,
                     $colony,
+                    null,
                     $rump,
                     $userId
                 );
@@ -75,6 +76,7 @@ final class ShowModuleScreen implements ViewControllerInterface
                 $moduleSelectors[] = new ModuleSelector(
                     $i,
                     $colony,
+                    null,
                     $rump,
                     $userId
                 );
@@ -86,11 +88,13 @@ final class ShowModuleScreen implements ViewControllerInterface
             _('Kolonien')
         );
         $game->appendNavigationPart(
-            sprintf('?%s=1&id=%s',
+            sprintf(
+                '?%s=1&id=%s',
                 ShowColony::VIEW_IDENTIFIER,
                 $colony->getId()
             ),
-            $colony->getName());
+            $colony->getName()
+        );
 
         $game->appendNavigationPart(
             sprintf(
