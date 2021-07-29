@@ -32,7 +32,7 @@ interface ModuleSelectorInterface
 
     public function hasModuleSelected(): ModuleSelectWrapper;
 
-    public function getColony(): ColonyInterface;
+    public function getColony(): ?ColonyInterface;
 
     public function getBuildplan(): ?ShipBuildplanInterface;
 

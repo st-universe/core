@@ -152,7 +152,7 @@ class ModuleSelector implements ModuleSelectorInterface
         return new ModuleSelectWrapper($this->buildplan);
     }
 
-    public function getColony(): ColonyInterface
+    public function getColony(): ?ColonyInterface
     {
         return $this->colony;
     }
