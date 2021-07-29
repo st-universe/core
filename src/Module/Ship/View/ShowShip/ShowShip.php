@@ -22,6 +22,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 use VisualNavPanel;
@@ -50,6 +51,8 @@ final class ShowShip implements ViewControllerInterface
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;
 
+    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
+
     public function __construct(
         SessionInterface $session,
         LoggerUtilInterface $loggerUtil,
@@ -60,7 +63,8 @@ final class ShowShip implements ViewControllerInterface
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
         TachyonScanRepositoryInterface $tachyonScanRepository,
         AstroEntryRepositoryInterface $astroEntryRepository,
-        DatabaseUserRepositoryInterface $databaseUserRepository
+        DatabaseUserRepositoryInterface $databaseUserRepository,
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository
     ) {
         $this->session = $session;
         $this->loggerUtil = $loggerUtil;
@@ -72,6 +76,7 @@ final class ShowShip implements ViewControllerInterface
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->astroEntryRepository = $astroEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
+        $this->shipBuildplanRepository = $shipBuildplanRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -171,6 +176,8 @@ final class ShowShip implements ViewControllerInterface
             $fleetNbs->count() > 0 || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
         );
 
+        $this->doConstructionStuff($ship, $game);
+
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
@@ -206,5 +213,20 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('ASTRO_LEFT', $turnsLeft);
         }
         return new AstroStateWrapper($state);
+    }
+
+    private function doConstructionStuff(ShipInterface $ship, GameControllerInterface $game): void
+    {
+        if (!$ship->isConstruction()) {
+            return;
+        }
+
+        $progress =  $ship->getConstructionProgress();
+        $game->setTemplateVar('PROGRESS', $progress);
+
+        if ($progress === null) {
+            $plans = $this->shipBuildplanRepository->getStationBuildplansByUser($game->getUser()->getId());
+            $game->setTemplateVar('POSSIBLE_STATIONS', $plans);
+        }
     }
 }
