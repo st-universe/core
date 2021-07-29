@@ -104,6 +104,9 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="integer") * */
     private $buildtime = 0;
 
+    /** @column(type="smallint", nullable=true) * */
+    private $needed_workbees;
+
     /** @column(type="smallint") * */
     private $sort = 0;
 
@@ -554,6 +557,11 @@ class ShipRump implements ShipRumpInterface
     {
         $this->commodity = $commodity;
         return $this;
+    }
+
+    public function getNeededWorkbees(): ?int
+    {
+        return $this->needed_workbees;
     }
 
     public function getDatabaseEntry(): ?DatabaseEntryInterface

@@ -148,6 +148,8 @@ interface ShipRumpInterface
 
     public function setCommodity(?CommodityInterface $commodity): ShipRumpInterface;
 
+    public function getNeededWorkbees(): ?int;
+
     public function getDatabaseEntry(): ?DatabaseEntryInterface;
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): ShipRumpInterface;
