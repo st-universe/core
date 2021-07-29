@@ -877,9 +877,11 @@
 												</div>
 											</td>
 										</tr>
-
 										<tr>
-											<td>
+											<th colspan="4">Auswahl der Spezialmodule</th>
+										</tr>
+										<tr>
+											<td colspan="4">
 												<tal:block tal:repeat="selector MODULE_SELECTORS">
 													<div id="selector_${selector/getDummyId}" style="display: none;"
 														tal:content="structure selector/render">CONTENT</div>
