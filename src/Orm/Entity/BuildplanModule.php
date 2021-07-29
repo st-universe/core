@@ -71,6 +71,18 @@ class BuildplanModule implements BuildplanModuleInterface
         return $this;
     }
 
+    public function getModuleCount(): int
+    {
+        return $this->module_count;
+    }
+
+    public function setModuleCount(int $moduleCount): BuildplanModuleInterface
+    {
+        $this->module_count = $moduleCount;
+
+        return $this;
+    }
+
     public function getModuleSpecial(): ?int
     {
         return $this->module_special;

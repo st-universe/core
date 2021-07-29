@@ -860,12 +860,13 @@
 												<span tal:replace="data/getRump/getName">NAME</span>
 											</td>
 											<td style="width: 30%;">
-												<a href="javascript:void(0);" onclick="showStationCosts()">
+												<a href="javascript:void(0);" onclick="showStationCosts(${data/getId})">
 													<span>Baukosten</span>
 												</a>
 											</td>
 											<td style="width: 30%;">
-												<a href="javascript:void(0);" onclick="showStationInformation()">
+												<a href="javascript:void(0);"
+													onclick="showStationInformation(${data/getRump/getId})">
 													<span>Informationen</span>
 												</a>
 											</td>
@@ -876,8 +877,12 @@
 											</td>
 										</tr>
 										<tr>
-											<td colspan="4"><input type="submit" class="button" name="B_BUILD_STATION"
-													value="Stationsbau beginnen" /></td>
+											<td colspan="4">
+												<div style="width: 100%; text-align: center;">
+													<input type="submit" class="button" name="B_BUILD_STATION"
+														value="Stationsbau beginnen" />
+												</div>
+											</td>
 										</tr>
 									</tal:block>
 									<tr tal:condition="not:POSSIBLE_STATIONS">
