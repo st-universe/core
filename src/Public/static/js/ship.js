@@ -182,6 +182,10 @@ currentTab = false;
 function showModuleSelectTab(tabId) {
 	if (currentTab) {
 		currentTab.hide();
+
+		currentTab.select('input').each(function (tab) {
+			tab.selected = false;
+		});
 	}
 	$('selector_' + tabId).show();
 	currentTab = $('selector_' + tabId);
