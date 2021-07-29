@@ -185,7 +185,7 @@ function showModuleSelectTab(tabId) {
 	if (currentTab) {
 		currentTab.hide();
 
-		currentTab.select('input').each(function (tab) {
+		currentTab.getElementsByTagName('input').each(function (tab) {
 			tab.selected = false;
 		});
 	}
