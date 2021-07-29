@@ -15,10 +15,12 @@
         <th style="width: 100px;">Level</th>
         <th style="width: 100px;">Anzahl</th>
       </tr>
-      <tr tal:repeat="mod PLAN/getModules">
-        <td><img src="assets/goods/${mod/getModule/getGoodId}.gif" title="${mod/getModule/getName}" /></td>
-        <td><span tal:replace="mod/getModule/getLevel">LEVEL</span></td>
-        <td><span tal:replace="mod/getModuleCount">LEVEL</span></td>
+      <tr tal:repeat="mod MODS">
+        <td><img src="assets/goods/${mod/getGoodId}.gif" title="${mod/getName}" /></td>
+        <td><span tal:replace="mod/getLevel">LEVEL</span></td>
+        <td style="color: ${mod/getColor}"><span tal:replace="mod/getStoredAmount">CURRENT</span>/<span
+            tal:replace="mod/getNeededAmount">NEEDED</span>
+        </td>
       </tr>
     </table>
   </tal:block>
