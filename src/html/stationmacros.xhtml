@@ -4,11 +4,13 @@
     <table class="tcal">
       <tr>
         <td colspan="2" style="width: 250px;">Bauzeit in Ticks</td>
-        <td style="width: 100px;"><span tal:replace="PLAN/getRump/getBuildtime">DURATION</span></td>
+        <td style="width: 100px; text-align: center;"><span tal:replace="PLAN/getRump/getBuildtime">DURATION</span></td>
       </tr>
       <tr>
         <td colspan="2" style="width: 250px;">benötigte angedockte Workbees</td>
-        <td style="width: 100px;"><span tal:replace="PLAN/getRump/getNeededWorkbees">WORKBEES</span></td>
+        <td style="color: ${WORKBEECOLOR}; width: 100px; text-align: center;"><span
+            tal:replace="DOCKED">DOCKED</span>/<span tal:replace="PLAN/getRump/getNeededWorkbees">WORKBEES</span>
+        </td>
       </tr>
       <tr>
         <th style="width: 50px;">Modul</th>
