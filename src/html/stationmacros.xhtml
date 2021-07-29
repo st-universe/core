@@ -1,0 +1,27 @@
+<html xmlns:stu="stu">
+<metal:macro metal:define-macro="stationcost">
+  <tal:block tal:condition="not:ERROR">
+    <table class="tcal">
+      <tr>
+        <td style="width: 150px;">Bauzeit in Ticks</td>
+        <td style="width: 100px;"><span tal:replace="PLAN/getRump/getBuildtime">DURATION</span></td>
+      </tr>
+      <tr>
+        <td style="width: 150px;">benötigte angedockte Workbees</td>
+        <td style="width: 100px;"><span tal:replace="PLAN/getRump/getNeededWorkbees">WORKBEES</span></td>
+      </tr>
+      <tr>
+        <th style="width: 50px;">Modul</th>
+        <th style="width: 100px;">Level</th>
+        <th style="width: 100px;">Anzahl</th>
+      </tr>
+      <tr tal:repeat="mod PLAN/getModules">
+        <td><img src="assets/goods/${mod/getModule/getGoodId}.gif" title="${mod/getModule/getName}" /></td>
+        <td><span tal:replace="mod/getModule/getLevel">LEVEL</span></td>
+        <td><span tal:replace="mod/getModuleCount">LEVEL</span></td>
+      </tr>
+    </table>
+  </tal:block>
+</metal:macro>
+
+</html>

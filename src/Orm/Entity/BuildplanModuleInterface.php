@@ -14,6 +14,10 @@ interface BuildplanModuleInterface
 
     public function setModuleType(int $moduleType): BuildplanModuleInterface;
 
+    public function getModuleCount(): int;
+
+    public function setModuleCount(int $moduleCount): BuildplanModuleInterface;
+
     public function getModuleSpecial(): ?int;
 
     public function setModuleSpecial(?int $moduleSpecial): BuildplanModuleInterface;
