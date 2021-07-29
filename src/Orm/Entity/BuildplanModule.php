@@ -33,8 +33,8 @@ class BuildplanModule implements BuildplanModuleInterface
     /** @Column(type="smallint", nullable=true) * */
     private $module_special;
 
-    /** @Column(type="smallint", nullable=true) * */
-    private $module_count;
+    /** @Column(type="smallint") * */
+    private $module_count = 1;
 
     /**
      * @ManyToOne(targetEntity="Module")
