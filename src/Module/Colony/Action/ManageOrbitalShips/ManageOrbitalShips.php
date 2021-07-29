@@ -191,9 +191,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 }
             }
             if (
-                isset($unman[$shipobj->getId()]) && $shipobj->getUserId() == $userId && $shipobj->getCrewCount() > 0
+                isset($unman[$shipobj->getId()]) && $shipobj->getUser()->getId() == $userId && $shipobj->getCrewCount() > 0
             ) {
                 $this->shipCrewRepository->truncateByShip((int) $shipobj->getId());
+                $shipobj->getCrewlist()->clear();
                 $msg[] = sprintf(
                     _('%s: Die Crew wurde runtergebeamt'),
                     $shipobj->getName()
