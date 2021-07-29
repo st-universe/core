@@ -10,6 +10,7 @@ use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipRumpBuildingFunction;
+use Stu\Orm\Entity\ShipRumpUser;
 
 final class ShipBuildplanRepository extends EntityRepository implements ShipBuildplanRepositoryInterface
 {
