@@ -25,6 +25,7 @@ use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 /**
@@ -666,6 +667,11 @@ class Ship implements ShipInterface
     public function isShuttle(): bool
     {
         return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_SHUTTLE;
+    }
+
+    public function isConstruction(): bool
+    {
+        return $this->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION;
     }
 
     public function setIsBase(bool $isBase): ShipInterface
@@ -1642,6 +1648,16 @@ class Ship implements ShipInterface
     public function canBuildConstruction(): bool
     {
         return StationUtility::canShipBuildConstruction($this);
+    }
+
+    public function getConstructionProgress(): ?ConstructionProgressInterface
+    {
+        // @todo refactor
+        global $container;
+
+        $constructionProgressRepository = $container->get(ConstructionProgressRepositoryInterface::class);
+
+        return $constructionProgressRepository->getByShip($this->getId());
     }
 
     public function __toString()

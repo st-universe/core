@@ -168,6 +168,16 @@ function showColonyScan() {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_COLONY_SCAN=1&id=' + shipid);
 }
+function showStationCosts() {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'station.php?SHOW_STATION_COSTS=1&id=' + shipid);
+}
+function showStationInformation() {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&id=' + shipid);
+}
 function hideFleet(fleetid) {
 	$('nbstab').select('.fleet' + fleetid).each(function (obj) {
 		obj.hide();

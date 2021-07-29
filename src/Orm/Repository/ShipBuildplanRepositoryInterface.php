@@ -21,6 +21,11 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
 
     public function getShuttleBuildplan(int $commodityId): ?ShipBuildplanInterface;
 
+    /**
+     * @return ShipBuildplanInterface[]
+     */
+    public function getStationBuildplansByUser(int $userId): array;
+
     public function prototype(): ShipBuildplanInterface;
 
     public function save(ShipBuildplanInterface $shipBuildplan): void;

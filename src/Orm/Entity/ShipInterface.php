@@ -140,6 +140,8 @@ interface ShipInterface
 
     public function isShuttle(): bool;
 
+    public function isConstruction(): bool;
+
     public function setIsBase(bool $isBase): ShipInterface;
 
     public function getDatabaseId(): int;
@@ -414,6 +416,8 @@ interface ShipInterface
     public function getStoredShuttleCount(): int;
 
     public function canBuildConstruction(): bool;
+
+    public function getConstructionProgress(): ?ConstructionProgressInterface;
 
     public function getHullStatusBar();
 

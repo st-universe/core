@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\Station;
 
-use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -12,6 +11,9 @@ final class StationUtility
 {
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
+        if (!$ship->isShuttleRampHealthy()) {
+            return false;
+        }
 
         // check if ship has the required workbee amount
         $workbeeCount = 0;

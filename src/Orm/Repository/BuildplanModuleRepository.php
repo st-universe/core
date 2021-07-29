@@ -12,9 +12,10 @@ final class BuildplanModuleRepository extends EntityRepository implements Buildp
 {
     public function getByBuildplan(int $buildplanId): array
     {
-        return $this->findBy([
-            'buildplan_id' => $buildplanId
-        ]);
+        return $this->findBy(
+            ['buildplan_id' => $buildplanId],
+            ['module_type' => 'asc']
+        );
     }
 
     public function getByBuildplanAndModuleType(int $buildplanId, int $moduleType): array
