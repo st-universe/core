@@ -10,11 +10,13 @@ use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Exception\ShipDoesNotExistException;
+use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -83,7 +85,7 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
+        $this->loggerUtil->init('stu', $game->getUser()->getId() === 126 ? LoggerEnum::LEVEL_ERROR : LoggerEnum::LEVEL_INFO);
 
         $user = $game->getUser();
         $userId = $user->getId();
@@ -232,6 +234,9 @@ final class ShowShip implements ViewControllerInterface
 
             $moduleSelectors = [];
             foreach ($plans as $plan) {
+
+                $this->loggerUtil->log(sprintf(''));
+
                 $ms = new ModuleSelectorSpecial(
                     ShipModuleTypeEnum::MODULE_TYPE_SPECIAL,
                     null,
@@ -246,6 +251,7 @@ final class ShowShip implements ViewControllerInterface
             }
 
             $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
+            $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($ship->getStorage()));
         }
     }
 }
