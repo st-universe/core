@@ -53,10 +53,10 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $base_reactor = 0;
 
-    /** @column(type="smallint") * */
+    /** @column(type="integer") * */
     private $base_hull = 0;
 
-    /** @column(type="smallint") * */
+    /** @column(type="integer") * */
     private $base_shield = 0;
 
     /** @column(type="smallint") * */
@@ -95,7 +95,7 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $eps_cost = 0;
 
-    /** @column(type="smallint") * */
+    /** @column(type="integer") * */
     private $storage = 0;
 
     /** @column(type="smallint") * */
