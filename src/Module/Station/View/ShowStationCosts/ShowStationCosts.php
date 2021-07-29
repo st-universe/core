@@ -45,12 +45,12 @@ final class ShowStationCosts implements ViewControllerInterface
         $wantedPlanId = (int)request::getIntFatal('pid');
         $plans = $this->shipBuildplanRepository->getStationBuildplansByUser($userId);
 
-        $this->loggerUtil->log('wantedPlanId: ' + $wantedPlanId);
+        $this->loggerUtil->log(sprintf('wantedPlanId: %d', $wantedPlanId));
 
         $plan = null;
         foreach ($plans as $p) {
 
-            $this->loggerUtil->log('p->id: ' + $p->getId());
+            $this->loggerUtil->log(sprintf('p->id: %d', $p->getId()));
             if ($p->getId() === $wantedPlanId) {
                 $this->loggerUtil->log('D');
                 $plan = $p;
