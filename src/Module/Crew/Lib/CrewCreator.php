@@ -109,6 +109,8 @@ final class CrewCreator implements CrewCreatorInterface
                 $sc->setUser($ship->getUser());
                 $sc->setSlot($i);
 
+                $ship->getCrewlist()->add($sc);
+
                 $this->shipCrewRepository->save($sc);
                 $this->entityManager->flush();
             }
