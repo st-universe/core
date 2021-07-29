@@ -26,12 +26,16 @@ class BuildplanModule implements BuildplanModuleInterface
 
     /** @Column(type="smallint") * */
     private $module_type = 0;
-    
+
     /** @Column(type="integer") * */
     private $module_id = 0;
-    
+
     /** @Column(type="smallint", nullable=true) * */
     private $module_special;
+
+    /** @Column(type="smallint", nullable=true) * */
+    private $module_count;
+
     /**
      * @ManyToOne(targetEntity="Module")
      * @JoinColumn(name="module_id", referencedColumnName="id", onDelete="CASCADE")
