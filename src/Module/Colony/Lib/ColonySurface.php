@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Faction\FactionEnum;
 use Stu\Module\Building\BuildingFunctionTypeEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\BuildingRepositoryInterface;
@@ -28,6 +30,8 @@ final class ColonySurface implements ColonySurfaceInterface
 
     private EntityManagerInterface $entityManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     private ColonyInterface $colony;
 
     private ?int $buildingId;
@@ -40,6 +44,7 @@ final class ColonySurface implements ColonySurfaceInterface
         ColonyRepositoryInterface $colonyRepository,
         ResearchedRepositoryInterface $researchedRepository,
         EntityManagerInterface $entityManager,
+        LoggerUtilInterface $loggerUtil,
         ColonyInterface $colony,
         ?int $buildingId = null,
         bool $showUnderground = true
@@ -51,6 +56,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $this->colonyRepository = $colonyRepository;
         $this->researchedRepository = $researchedRepository;
         $this->entityManager = $entityManager;
+        $this->loggerUtil = $loggerUtil;
         $this->showUnderground = $showUnderground;
     }
 
@@ -68,6 +74,11 @@ final class ColonySurface implements ColonySurfaceInterface
 
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
+
+            if ($building->getBuildableFields() === null) {
+                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->log(sprintf('Es kommt gleich bei colonyId %d zu einem Fehler. buildingId: %d', $this->colony->getId(), $this->buildingId));
+            }
 
             array_walk(
                 $fields,
