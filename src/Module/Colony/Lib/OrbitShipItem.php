@@ -40,8 +40,9 @@ final class OrbitShipItem implements OrbitShipItemInterface
 
     public function canMan(): bool
     {
-        return $this->ship->getCrewCount() == 0 &&
-            $this->ship->getBuildplan()->getCrew() > 0;
+        return $this->ship->getCrewCount() == 0
+            && $this->ship->getBuildplan() !== null
+            && $this->ship->getBuildplan()->getCrew() > 0;
     }
 
     public function getCrewCount(): int
