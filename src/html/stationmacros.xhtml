@@ -3,11 +3,11 @@
   <tal:block tal:condition="not:ERROR">
     <table class="tcal">
       <tr>
-        <td style="width: 150px;">Bauzeit in Ticks</td>
+        <td colspan="2" style="width: 250px;">Bauzeit in Ticks</td>
         <td style="width: 100px;"><span tal:replace="PLAN/getRump/getBuildtime">DURATION</span></td>
       </tr>
       <tr>
-        <td style="width: 150px;">benötigte angedockte Workbees</td>
+        <td colspan="2" style="width: 250px;">benötigte angedockte Workbees</td>
         <td style="width: 100px;"><span tal:replace="PLAN/getRump/getNeededWorkbees">WORKBEES</span></td>
       </tr>
       <tr>
@@ -15,7 +15,7 @@
         <th style="width: 100px;">Level</th>
         <th style="width: 100px;">Anzahl</th>
       </tr>
-      <tr tal:repeat="mod MODS">
+      <tr style="text-align: center;" tal:repeat="mod MODS">
         <td><img src="assets/goods/${mod/getGoodId}.gif" title="${mod/getName}" /></td>
         <td><span tal:replace="mod/getLevel">LEVEL</span></td>
         <td style="color: ${mod/getColor}"><span tal:replace="mod/getStoredAmount">CURRENT</span>/<span
