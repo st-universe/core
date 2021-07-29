@@ -879,10 +879,12 @@
 										</tr>
 
 										<tr>
-											<tal:block tal:repeat="selector MODULE_SELECTORS">
-												<div id="selector_${selector/getDummyId}" style="display: none;"
-													tal:content="structure selector/render">CONTENT</div>
-											</tal:block>
+											<td>
+												<tal:block tal:repeat="selector MODULE_SELECTORS">
+													<div id="selector_${selector/getDummyId}" style="display: none;"
+														tal:content="structure selector/render">CONTENT</div>
+												</tal:block>
+											</td>
 										</tr>
 
 										<tr>
