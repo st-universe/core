@@ -85,12 +85,16 @@ final class BuildStation implements ActionControllerInterface
             return;
         }
 
+        $this->loggerUtil->log('B');
+
         $rump = $plan->getRump();
 
         // check if enough workbees
         if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $rump)) {
             return;
         }
+
+        $this->loggerUtil->log('C');
 
         $availableMods = $this->getSpecialModules($ship, $rump);
 
@@ -107,13 +111,19 @@ final class BuildStation implements ActionControllerInterface
             }
         }
 
+        $this->loggerUtil->log('D');
+
         // try to consume needed goods
         if (!$this->consumeNeededModules($ship, $plan, $wantedSpecialModules)) {
             return;
         }
 
+        $this->loggerUtil->log('E');
+
         // transform construction
         $this->startTransformation($ship, $rump);
+
+        $this->loggerUtil->log('F');
 
         $game->addInformation(sprintf(_(
             '%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks',
