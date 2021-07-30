@@ -9,6 +9,7 @@ use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Station\StationUtilityInterface;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
@@ -26,7 +27,6 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 use VisualNavPanel;
@@ -55,7 +55,7 @@ final class ShowShip implements ViewControllerInterface
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;
 
-    private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
+    private StationUtilityInterface $stationUtility;
 
     public function __construct(
         SessionInterface $session,
@@ -68,7 +68,7 @@ final class ShowShip implements ViewControllerInterface
         TachyonScanRepositoryInterface $tachyonScanRepository,
         AstroEntryRepositoryInterface $astroEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
+        StationUtilityInterface $stationUtility
     ) {
         $this->session = $session;
         $this->loggerUtil = $loggerUtil;
@@ -80,7 +80,7 @@ final class ShowShip implements ViewControllerInterface
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->astroEntryRepository = $astroEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
-        $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->stationUtility = $stationUtility;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -203,7 +203,10 @@ final class ShowShip implements ViewControllerInterface
             if ($this->databaseUserRepository->exists($game->getUser()->getId(), $system->getDatabaseEntry()->getId())) {
                 $state = AstronomicalMappingEnum::DONE;
             } else {
-                $astroEntry = $this->astroEntryRepository->getByUserAndSystem($ship->getUserId(), $system->getId());
+                $astroEntry = $this->astroEntryRepository->getByUserAndSystem(
+                    $ship->getUser()->getId(),
+                    $system->getId()
+                );
 
                 if ($astroEntry === null) {
                     $state = AstronomicalMappingEnum::PLANNABLE;
@@ -229,13 +232,11 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('PROGRESS', $progress);
 
         if ($progress === null) {
-            $plans = $this->shipBuildplanRepository->getStationBuildplansByUser($game->getUser()->getId());
+            $plans = $this->stationUtility->getStationBuildplansByUser($game->getUser()->getId());
             $game->setTemplateVar('POSSIBLE_STATIONS', $plans);
 
             $moduleSelectors = [];
             foreach ($plans as $plan) {
-
-                $this->loggerUtil->log(sprintf(''));
 
                 $ms = new ModuleSelectorSpecial(
                     ShipModuleTypeEnum::MODULE_TYPE_SPECIAL,
@@ -246,7 +247,6 @@ final class ShowShip implements ViewControllerInterface
                 );
 
                 $ms->setDummyId($plan->getId());
-
                 $moduleSelectors[] = $ms;
             }
 

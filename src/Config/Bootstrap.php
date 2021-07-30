@@ -212,6 +212,9 @@ $builder->addDefinitions(
     require_once __DIR__ . '/../Component/Ship/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__ . '/../Component/Station/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__ . '/../Module/Logging/services.php'
 );
 $builder->addDefinitions(
