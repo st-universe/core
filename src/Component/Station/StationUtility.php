@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -14,10 +16,15 @@ final class StationUtility implements StationUtilityInterface
 {
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
-        ShipBuildplanRepositoryInterface $shipBuildplanRepository
+        ShipBuildplanRepositoryInterface $shipBuildplanRepository,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
+        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
@@ -56,9 +63,13 @@ final class StationUtility implements StationUtilityInterface
 
     public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?ShipBuildplanInterface
     {
+        $this->loggerUtil->log(sprintf('getBuidplanIfResearchedByUser. planId: %d, userId: %d', $planId, $userId));
+
         $plans = $this->getStationBuildplansByUser($userId);
 
         foreach ($plans as $plan) {
+            $this->loggerUtil->log(sprintf('planId: %d', $plan->getId()));
+
             if ($plan->getId() === $planId) {
                 return $plan;
             }
