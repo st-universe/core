@@ -185,8 +185,8 @@ function showModuleSelectTab(tabId) {
 	if (currentTab) {
 		currentTab.hide();
 
-		currentTab.getElementsByTagName('input').forEach(function (tab) {
-			tab.selected = false;
+		Element.select(currentTab, '.specialModuleRadio').each(function (elem) {
+			elem.checked = false;
 		});
 	}
 	$('selector_' + tabId).show();
