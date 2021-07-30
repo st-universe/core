@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Action\BuildConstruction;
 use request;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\ShipAlertStateEnum;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -20,14 +21,18 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
+use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
 final class BuildConstruction implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD_CONSTRUCTION';
+
+    public const CONSTRUCTION_LIMIT_PER_USER = 2;
 
     public const NEEDED_WORKBEES = 5;
 
@@ -52,7 +57,11 @@ final class BuildConstruction implements ActionControllerInterface
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
+    private ShipRumpUserRepositoryInterface $shipRumpUserRepository;
+
     private CommodityRepositoryInterface $commodityRepository;
+
+    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
@@ -63,7 +72,9 @@ final class BuildConstruction implements ActionControllerInterface
         ShipCrewRepositoryInterface $shipCrewRepository,
         EntityManagerInterface $entityManager,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        CommodityRepositoryInterface $commodityRepository
+        ShipRumpUserRepositoryInterface $shipRumpUserRepository,
+        CommodityRepositoryInterface $commodityRepository,
+        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository
     ) {
         $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
@@ -73,7 +84,9 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipCrewRepository = $shipCrewRepository;
         $this->entityManager = $entityManager;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->shipRumpUserRepository = $shipRumpUserRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -91,6 +104,11 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
+        $rumpId = $ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION;
+        if (!$this->shipRumpUserRepository->isAvailableForUser($rumpId, $userId)) {
+            return;
+        }
+
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
@@ -102,6 +120,12 @@ final class BuildConstruction implements ActionControllerInterface
         // check if there already is a base
         if ($this->shipRepository->isBaseOnLocation($ship)) {
             $game->addInformation(_("Hier ist bereits eine Station errichtet"));
+            return;
+        }
+
+        // check if the construction limit is reached
+        if ($this->shipRepository->getAmountByUserAndRump($userId, $rumpId) >= self::CONSTRUCTION_LIMIT_PER_USER) {
+            $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden', self::CONSTRUCTION_LIMIT_PER_USER)));
             return;
         }
 
@@ -206,7 +230,10 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // build construction
-        $construction = $this->buildConstruction($ship);
+        $construction = $this->buildConstruction($ship, $rumpId);
+
+        // allow docking for owner
+        $this->allowDockingForOwner($ship);
 
         // dock workbees to construction
         foreach ($workbees as $workbee) {
@@ -257,10 +284,9 @@ final class BuildConstruction implements ActionControllerInterface
         return $workbee;
     }
 
-    private function buildConstruction(ShipInterface $ship): ShipInterface
+    private function buildConstruction(ShipInterface $ship, int $rumpId): ShipInterface
     {
-        $rump = $this->shipRumpRepository->find($ship->getUser()->getFactionId() + ShipRumpEnum::SHIP_RUMP_BASE_ID_CONSTRUCTION);
-
+        $rump = $this->shipRumpRepository->find($rumpId);
 
         $construction = $this->shipRepository->prototype();
         $construction->setUser($ship->getUser());
@@ -277,6 +303,17 @@ final class BuildConstruction implements ActionControllerInterface
         $this->shipRepository->save($construction);
 
         return $construction;
+    }
+
+    private function allowDockingForOwner(ShipInterface $ship): void
+    {
+        $dock = $this->dockingPrivilegeRepository->prototype();
+        $dock->setPrivilegeMode(ShipEnum::DOCK_PRIVILEGE_MODE_ALLOW);
+        $dock->setPrivilegeType(ShipEnum::DOCK_PRIVILEGE_USER);
+        $dock->setTargetId($ship->getUser()->getId());
+        $dock->setShip($ship);
+
+        $this->dockingPrivilegeRepository->save($dock);
     }
 
     public function performSessionCheck(): bool
