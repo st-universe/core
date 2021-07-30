@@ -54,7 +54,7 @@ final class StationUtility implements StationUtilityInterface
         return $this->shipBuildplanRepository->getStationBuildplansByUser($userId);
     }
 
-    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ShipBuildplanInterface
+    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?ShipBuildplanInterface
     {
         $plans = $this->getStationBuildplansByUser($userId);
 
