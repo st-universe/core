@@ -13,7 +13,7 @@ interface StationUtilityInterface
      */
     public function getStationBuildplansByUser(int $userId): array;
 
-    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ShipBuildplanInterface;
+    public function getBuidplanIfResearchedByUser(int $planId, int $userId): ?ShipBuildplanInterface;
 
     public function getDockedWorkbeeCount(ShipInterface $ship): int;
 
