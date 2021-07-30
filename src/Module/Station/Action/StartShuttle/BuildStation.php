@@ -21,6 +21,7 @@ use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -40,13 +41,16 @@ final class BuildStation implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
+    private ConstructionProgressRepositoryInterface $constructionProgressRepository;
+
     public function __construct(
         StationUtilityInterface $stationUtility,
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         LoggerUtilInterface $loggerUtil,
         ModuleRepositoryInterface $moduleRepository,
-        ShipStorageManagerInterface $shipStorageManager
+        ShipStorageManagerInterface $shipStorageManager,
+        ConstructionProgressRepositoryInterface $constructionProgressRepository
     ) {
         $this->stationUtility = $stationUtility;
         $this->shipLoader = $shipLoader;
@@ -54,6 +58,7 @@ final class BuildStation implements ActionControllerInterface
         $this->loggerUtil = $loggerUtil;
         $this->moduleRepository = $moduleRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->constructionProgressRepository = $constructionProgressRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -125,6 +130,12 @@ final class BuildStation implements ActionControllerInterface
         $ship->setRump($rump);
 
         $this->shipRepository->save($ship);
+
+        $progress = $this->constructionProgressRepository->prototype();
+        $progress->setShipId($ship->getId());
+        $progress->setRemainingTicks($rump->getBuildtime());
+
+        $this->constructionProgressRepository->save($progress);
     }
 
     private function getModuleIfAllowed(int $wantedModId, array $availableMods): ModuleInterface
