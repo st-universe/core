@@ -12,6 +12,7 @@ $em->beginTransaction();
 
 $container->get(GameControllerInterface::class)->main(
     $container->get('SHIP_ACTIONS'),
+    $container->get('STATION_ACTIONS'),
     $container->get('SHIP_VIEWS')
 );
 

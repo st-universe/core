@@ -112,7 +112,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
             $sectorString .= ' (' . $colony->getSystem()->getName() . '-System)';
         }
 
-        foreach ($ships as $key => $ship) {
+        foreach ($ships as $ship) {
             $shipobj = $this->shipRepository->find((int) $ship);
             if ($shipobj === null) {
                 continue;
@@ -170,8 +170,10 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 }
             }
             if (
-                isset($man[$shipobj->getId()]) &&
-                $shipobj->getCrewCount() == 0 && $shipobj->getBuildplan()->getCrew() > 0 && $shipobj->getUserId() == $userId
+                isset($man[$shipobj->getId()])
+                && $shipobj->getCrewCount() == 0
+                && $shipobj->getBuildplan()->getCrew() > 0
+                && $shipobj->getUser()->getId() == $userId
             ) {
                 if ($shipobj->getBuildplan()->getCrew() > $shipobj->getUser()->getFreeCrewCount()) {
                     $msg[] = sprintf(
