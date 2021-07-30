@@ -75,7 +75,7 @@ final class ColonySurface implements ColonySurfaceInterface
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
 
-            if ($building->getBuildableFields() === null) {
+            if ($building === null) {
                 $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log(sprintf('Es kommt gleich bei colonyId %d zu einem Fehler. buildingId: %d', $this->colony->getId(), $this->buildingId));
             }
