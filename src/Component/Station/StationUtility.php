@@ -10,7 +10,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
-final class StationUtility
+final class StationUtility implements StationUtilityInterface
 {
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
