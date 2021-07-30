@@ -127,11 +127,11 @@ final class BuildStation implements ActionControllerInterface
 
         $this->loggerUtil->log('F');
 
-        $game->addInformation(sprintf(_(
-            '%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks',
+        $game->addInformation(sprintf(
+            _('%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks'),
             $rump->getName(),
             $rump->getBuildtime()
-        )));
+        ));
     }
 
     private function startTransformation(ShipInterface $ship, ShipRumpInterface $rump): void
