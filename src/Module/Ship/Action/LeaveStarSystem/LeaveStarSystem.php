@@ -164,6 +164,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
+        //TODO reset direction based on leaving position
+
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
         }
