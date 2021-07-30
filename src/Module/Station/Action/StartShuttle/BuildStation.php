@@ -91,6 +91,7 @@ final class BuildStation implements ActionControllerInterface
 
         // check if enough workbees
         if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $rump)) {
+            $game->addInformation('Nicht genügend Workbees angedockt');
             return;
         }
 
@@ -115,6 +116,7 @@ final class BuildStation implements ActionControllerInterface
 
         // try to consume needed goods
         if (!$this->consumeNeededModules($ship, $plan, $wantedSpecialModules)) {
+            $game->addInformation('Nicht alle erforderlichen Module geladen');
             return;
         }
 
