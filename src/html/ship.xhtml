@@ -848,66 +848,6 @@
 									</tr>
 								</table>
 							</tal:block>
-							<tal:block tal:condition="SHIP/isConstruction">
-								<br />
-								<table class="tcal" tal:condition="not: PROGRESS">
-									<tr>
-										<th colspan="4">Erforschte Stationstypen</th>
-									</tr>
-									<tal:block tal:condition="POSSIBLE_STATIONS">
-										<tr tal:repeat="data POSSIBLE_STATIONS">
-											<td style="width: 30%;">
-												<span tal:replace="data/getRump/getName">NAME</span>
-											</td>
-											<td style="width: 30%;">
-												<a href="javascript:void(0);" onclick="showStationCosts(${data/getId})">
-													<span>Baukosten</span>
-												</a>
-											</td>
-											<td style="width: 30%;">
-												<a href="javascript:void(0);"
-													onclick="showStationInformation(${data/getRump/getId})">
-													<span>Informationen</span>
-												</a>
-											</td>
-											<td style="width: 10%;">
-												<div class="radio">
-													<input type="radio" value="${data/getId}" name="plan_select"
-														onchange="showModuleSelectTab(${data/getId})" />
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<th colspan="4">Auswahl der Spezialmodule</th>
-										</tr>
-										<tr>
-											<td colspan="4">
-												<tal:block tal:repeat="selector MODULE_SELECTORS">
-													<div id="selector_${selector/getDummyId}" style="display: none;"
-														tal:content="structure selector/render">CONTENT</div>
-												</tal:block>
-											</td>
-										</tr>
-
-										<tr>
-											<td colspan="4">
-												<div style="width: 100%; text-align: center;">
-													<input type="submit" class="button" name="B_BUILD_STATION"
-														value="Stationsbau beginnen" />
-												</div>
-											</td>
-										</tr>
-									</tal:block>
-									<tr tal:condition="not:POSSIBLE_STATIONS">
-										<td colspan="4">keine Einträge</td>
-									</tr>
-								</table>
-								<table class="tcal" tal:condition="PROGRESS">
-									<tr>
-										<th colspan="2">Baufortschritt</th>
-									</tr>
-								</table>
-							</tal:block>
 						</td>
 						<td style="vertical-align: top; width: 33%;">
 							<table class="tcal" tal:condition="SHIP/isWarpcoreHealthy">
@@ -973,6 +913,66 @@
 									</td>
 								</tr>
 							</table>
+							<tal:block tal:condition="SHIP/isConstruction">
+								<br />
+								<table class="tcal" tal:condition="not: PROGRESS">
+									<tr>
+										<th colspan="4">Erforschte Stationstypen</th>
+									</tr>
+									<tal:block tal:condition="POSSIBLE_STATIONS">
+										<tr tal:repeat="data POSSIBLE_STATIONS">
+											<td style="width: 30%;">
+												<span tal:replace="data/getRump/getName">NAME</span>
+											</td>
+											<td style="width: 30%;">
+												<a href="javascript:void(0);" onclick="showStationCosts(${data/getId})">
+													<span>Baukosten</span>
+												</a>
+											</td>
+											<td style="width: 30%;">
+												<a href="javascript:void(0);"
+													onclick="showStationInformation(${data/getRump/getId})">
+													<span>Informationen</span>
+												</a>
+											</td>
+											<td style="width: 10%;">
+												<div class="radio">
+													<input type="radio" value="${data/getId}" name="plan_select"
+														onchange="showModuleSelectTab(${data/getId})" />
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th colspan="4">Auswahl der Spezialmodule</th>
+										</tr>
+										<tr>
+											<td colspan="4">
+												<tal:block tal:repeat="selector MODULE_SELECTORS">
+													<div id="selector_${selector/getDummyId}" style="display: none;"
+														tal:content="structure selector/render">CONTENT</div>
+												</tal:block>
+											</td>
+										</tr>
+
+										<tr>
+											<td colspan="4">
+												<div style="width: 100%; text-align: center;">
+													<input type="submit" class="button" name="B_BUILD_STATION"
+														value="Stationsbau beginnen" />
+												</div>
+											</td>
+										</tr>
+									</tal:block>
+									<tr tal:condition="not:POSSIBLE_STATIONS">
+										<td colspan="4">keine Einträge</td>
+									</tr>
+								</table>
+								<table class="tcal" tal:condition="PROGRESS">
+									<tr>
+										<th colspan="2">Baufortschritt</th>
+									</tr>
+								</table>
+							</tal:block>
 							<table class="tcal" tal:condition="SHIP/isTraktorBeamActive">
 								<tr>
 									<th colspan="2"><img src="assets/buttons/trak.gif" title="Traktorstrahl" />
