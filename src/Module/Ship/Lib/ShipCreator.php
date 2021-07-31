@@ -118,7 +118,7 @@ final class ShipCreator implements ShipCreatorInterface
             },
             ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship, ConstructionProgressInterface $progress): ModuleRumpWrapperInterface {
                 $specialMods = $progress === null ? $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) :
-                    $progress->getSpecialModules()->getValues();
+                    []; //$progress->getSpecialModules()->getValues();
                 return new ModuleRumpWrapperSpecial($ship->getRump(), $specialMods, null);
             },
         ];
