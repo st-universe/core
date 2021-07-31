@@ -21,6 +21,7 @@ use Stu\Orm\Entity\ModuleInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -43,6 +44,8 @@ final class BuildStation implements ActionControllerInterface
 
     private ConstructionProgressRepositoryInterface $constructionProgressRepository;
 
+    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
+
     public function __construct(
         StationUtilityInterface $stationUtility,
         ShipLoaderInterface $shipLoader,
@@ -50,7 +53,8 @@ final class BuildStation implements ActionControllerInterface
         LoggerUtilInterface $loggerUtil,
         ModuleRepositoryInterface $moduleRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ConstructionProgressRepositoryInterface $constructionProgressRepository
+        ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
     ) {
         $this->stationUtility = $stationUtility;
         $this->shipLoader = $shipLoader;
@@ -59,6 +63,7 @@ final class BuildStation implements ActionControllerInterface
         $this->moduleRepository = $moduleRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->constructionProgressRepository = $constructionProgressRepository;
+        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -123,7 +128,7 @@ final class BuildStation implements ActionControllerInterface
         $this->loggerUtil->log('E');
 
         // transform construction
-        $this->startTransformation($ship, $rump);
+        $this->startTransformation($ship, $rump, $wantedSpecialModules);
 
         $this->loggerUtil->log('F');
 
@@ -134,8 +139,11 @@ final class BuildStation implements ActionControllerInterface
         ));
     }
 
-    private function startTransformation(ShipInterface $ship, ShipRumpInterface $rump): void
-    {
+    private function startTransformation(
+        ShipInterface $ship,
+        ShipRumpInterface $rump,
+        array $wantedSpecialModules
+    ): void {
         $ship->setName(sprintf('%s in Bau', $rump->getName()));
         $ship->setHuell(intdiv($rump->getBaseHull(), 2));
         $ship->setMaxHuell($rump->getBaseHull());
@@ -148,6 +156,14 @@ final class BuildStation implements ActionControllerInterface
         $progress->setRemainingTicks($rump->getBuildtime());
 
         $this->constructionProgressRepository->save($progress);
+
+        foreach ($wantedSpecialModules as $mod) {
+            $progressModule = $this->constructionProgressModuleRepository->prototype();
+            $progressModule->setConstructionProgress($progress);
+            $progressModule->setModule($mod);
+
+            $this->constructionProgressModuleRepository->save($progressModule);
+        }
     }
 
     private function getModuleIfAllowed(int $wantedModId, array $availableMods): ModuleInterface
