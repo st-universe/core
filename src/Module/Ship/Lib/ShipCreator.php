@@ -83,7 +83,8 @@ final class ShipCreator implements ShipCreatorInterface
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
     ): ShipInterface {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init();
+        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $ship = $progress !== null ? $this->shipRepository->find($progress->getShipId()) : $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
