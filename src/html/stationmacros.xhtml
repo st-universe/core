@@ -27,5 +27,31 @@
     </table>
   </tal:block>
 </metal:macro>
+<metal:macro metal:define-macro="stationinfo">
+  <tal:block tal:condition="not:ERROR">
+    <div style="padding-left: 5px; float: left; width: 205px">
+      <div class="divhead">Informationen (Basis-Werte)</div>
+      <div class="divbody">
+        <span>Crewanzahl:</span> ${RUMP/getBaseCrew}<br />
+        <span>Hüllenpunkte:</span> ${RUMP/getBaseHull}<br />
+        <span>Schildpunkte:</span> ${RUMP/getBaseShield}<br />
+        <span>EPS:</span> ${RUMP/getBaseEps}<br />
+        <span>Reaktorleistung:</span> ${RUMP/getBaseReactor}<br />
+        <span>Ersatzbatterie:</span> ${RUMP/getEBatt}<br />
+        <span>Sensorreichtweite:</span> ${RUMP/getBaseSensorRange}<br />
+        <span>Trefferchance (eff.):</span> ${RUMP/getHitChance}%<br />
+        <span>Energiewaffenschaden:</span> ${RUMP/getBaseDamage}<br />
+        <span>Energiewaffen-Salven:</span> ${RUMP/getPhaserVolleys}<br />
+        <span>Torpedolevel</span>: ${RUMP/getTorpedoLevel}<br />
+        <span>Torpedo-Salven</span>: ${RUMP/getTorpedoVolleys}<br />
+        <span>Torpedolagerraum</span>: ${RUMP/getBaseTorpedoStorage}<br />
+        <span>Beam-Faktor</span>: ${RUMP/getBeamFactor}<br />
+        <span>Lagerraum:</span> ${RUMP/getStorage}<br />
+        <span>Shuttlekapazität:</span> ${RUMP/getShuttleSlots}<br />
+        <span>Andockplätze:</span> ${RUMP/getDockingSlots}<br />
+      </div>
+    </div>
+  </tal:block>
+</metal:macro>
 
 </html>
