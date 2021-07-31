@@ -33,5 +33,5 @@ final class StationEnum
         ShipRumpEnum::SHIP_ROLE_BASE => PHP_INT_MAX,
         ShipRumpEnum::SHIP_ROLE_OUTPOST => PHP_INT_MAX,
         ShipRumpEnum::SHIP_ROLE_DEPOT_SMALL => PHP_INT_MAX
-    ]
+    ];
 }
