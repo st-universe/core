@@ -171,7 +171,7 @@ final class ShipCreator implements ShipCreatorInterface
     private function createByModuleList(
         ShipInterface $ship,
         array $modules,
-        ConstructionProgressInterface $progress
+        ?ConstructionProgressInterface $progress
     ): void {
         $systems = array();
 
