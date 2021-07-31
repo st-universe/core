@@ -77,6 +77,7 @@ class ConstructionProgress implements ConstructionProgressInterface
 
     public function __toString()
     {
-        return $this->getId !== null ? sprintf('constructionProgressId: %d, shipId: %d', $this->getId(), $this->getShipId()) : 'constructionProgressId: null';
+        return $this->getId !== null ? sprintf('constructionProgressId: %d, shipId: %d', $this->getId(), $this->getShipId()) :
+            sprintf('constructionProgressId: null, shipId: %d', $this->getShipId());
     }
 }
