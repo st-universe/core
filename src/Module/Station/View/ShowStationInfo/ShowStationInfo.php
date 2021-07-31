@@ -56,6 +56,9 @@ final class ShowStationInfo implements ViewControllerInterface
         $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
         $game->setTemplateVar('LIMIT', $limit === PHP_INT_MAX ? 'unbegrenzt' : $limit);
 
+        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
+        $game->setTemplateVar('LOCATION', $location);
+
         $game->setTemplateVar('ERROR', false);
     }
 }
