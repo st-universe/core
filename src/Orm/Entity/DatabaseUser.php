@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseUserRepository")
  * @Table(
  *     name="stu_database_user",
  *     options={"engine":"InnoDB"},
  *     uniqueConstraints={@UniqueConstraint(name="entry_user_idx", columns={"database_id", "user_id"})}
  * )
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseUserRepository")
  **/
 class DatabaseUser implements DatabaseUserInterface
 {

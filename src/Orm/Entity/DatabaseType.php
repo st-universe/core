@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseTypeRepository")
  * @Table(
  *     name="stu_database_types",
  *     options={"engine":"InnoDB"}
  * )
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseTypeRepository")
  **/
 class DatabaseType implements DatabaseTypeInterface
 {

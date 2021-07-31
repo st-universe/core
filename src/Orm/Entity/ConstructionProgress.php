@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ConstructionProgressRepository")
  * @Table(
@@ -28,6 +31,16 @@ class ConstructionProgress implements ConstructionProgressInterface
     /** @Column(type="integer") */
     private $remaining_ticks = 0;
 
+    /**
+     * @OneToMany(targetEntity="ConstructionProgressModule", mappedBy="progress")
+     */
+    private $specialModules;
+
+    public function __construct()
+    {
+        $this->specialModules = new ArrayCollection();
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -38,6 +51,11 @@ class ConstructionProgress implements ConstructionProgressInterface
         $this->ship_id = $shipId;
 
         return $this;
+    }
+
+    public function getSpecialModules(): Collection
+    {
+        return $this->specialModules;
     }
 
     public function getRemainingTicks(): int

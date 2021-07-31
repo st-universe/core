@@ -29,6 +29,7 @@ use Stu\Orm\Entity\ColonyStorage;
 use Stu\Orm\Entity\ColonyTerraforming;
 use Stu\Orm\Entity\Commodity;
 use Stu\Orm\Entity\ConstructionProgress;
+use Stu\Orm\Entity\ConstructionProgressModule;
 use Stu\Orm\Entity\Contact;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\CrewRace;
@@ -203,6 +204,11 @@ return [
         ContainerInterface $c
     ): ConstructionProgressRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgress::class);
+    },
+    ConstructionProgressModuleRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): ConstructionProgressModuleRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(ConstructionProgressModule::class);
     },
     ContactRepositoryInterface::class => function (
         ContainerInterface $c

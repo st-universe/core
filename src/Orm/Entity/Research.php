@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
- * @Table(name="stu_research")
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchRepository")
+ * @Table(name="stu_research")
  **/
 class Research implements ResearchInterface
 {
