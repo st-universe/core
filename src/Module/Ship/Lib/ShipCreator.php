@@ -19,6 +19,7 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperProjectileWeapon;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -82,7 +83,7 @@ final class ShipCreator implements ShipCreatorInterface
         ?ColonyInterface $colony = null,
         ?ConstructionProgressInterface $progress = null
     ): ShipInterface {
-        $this->loggerUtil->init();
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $ship = $progress !== null ? $this->shipRepository->find($progress->getShipId()) : $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
@@ -153,7 +154,10 @@ final class ShipCreator implements ShipCreatorInterface
 
         $this->createByModuleList(
             $ship,
-            $this->buildplanModuleRepository->getByBuildplan($ship->getBuildplan()->getId())
+            $this->buildplanModuleRepository->getByBuildplan(
+                $ship->getBuildplan()->getId()
+            ),
+            $progress
         );
 
         if ($this->loggerUtil->doLog()) {
@@ -163,8 +167,11 @@ final class ShipCreator implements ShipCreatorInterface
         return $ship;
     }
 
-    private function createByModuleList(ShipInterface $ship, array $modules): void
-    {
+    private function createByModuleList(
+        ShipInterface $ship,
+        array $modules,
+        ConstructionProgressInterface $progress
+    ): void {
         $systems = array();
 
         //default systems, that almost every ship should have
@@ -206,6 +213,11 @@ final class ShipCreator implements ShipCreatorInterface
                 case ShipModuleTypeEnum::MODULE_TYPE_SPECIAL:
                     $this->addSpecialSystems($module->getModule(), $systems);
                     break;
+            }
+        }
+        if ($progress !== null) {
+            foreach ($progress->getSpecialModules() as $mod) {
+                $this->addSpecialSystems($mod->getModule(), $systems);
             }
         }
         foreach ($systems as $sysId => $module) {
