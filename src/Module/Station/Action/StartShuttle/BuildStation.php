@@ -96,6 +96,13 @@ final class BuildStation implements ActionControllerInterface
             return;
         }
 
+        // check if the location is allowed
+        $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
+        if (!$this->locationAllowed($ship, $location)) {
+            $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden', $rump->getName(), $location)));
+            return;
+        }
+
         // check if enough workbees
         if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $rump)) {
             $game->addInformation('Nicht genügend Workbees angedockt');
@@ -131,6 +138,30 @@ final class BuildStation implements ActionControllerInterface
             $rump->getName(),
             $rump->getBuildtime()
         ));
+    }
+
+    private function locationAllowed(ShipInterface $ship, $location): bool
+    {
+        if ($location === StationEnum::BUILDABLE_EVERYWHERE) {
+            return true;
+        }
+
+        $inSystem = $ship->getSystem();
+        if ($inSystem && $location === StationEnum::BUILDABLE_INSIDE_SYSTEM) {
+            return true;
+        }
+
+        $overSystem = $ship->isOverSystem();
+        if ($overSystem && $location === StationEnum::BUILDABLE_OVER_SYSTEM) {
+            return true;
+        }
+
+        $outsideSystem = !$inSystem && !$overSystem;
+        if ($outsideSystem && $location === StationEnum::BUILDABLE_OUTSIDE_SYSTEM) {
+            return true;
+        }
+
+        return false;
     }
 
     private function startTransformation(
