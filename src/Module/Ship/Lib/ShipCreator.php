@@ -30,6 +30,7 @@ use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\ShipSystemRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Module\ShipModule\ModuleSpecialAbilityEnum;
+use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShipCreator implements ShipCreatorInterface
@@ -74,11 +75,16 @@ final class ShipCreator implements ShipCreatorInterface
         $this->loggerUtil = $loggerUtil;
     }
 
-    public function createBy(int $userId, int $shipRumpId, int $shipBuildplanId, ?ColonyInterface $colony = null): ShipInterface
-    {
+    public function createBy(
+        int $userId,
+        int $shipRumpId,
+        int $shipBuildplanId,
+        ?ColonyInterface $colony = null,
+        ?ConstructionProgressInterface $progress = null
+    ): ShipInterface {
         $this->loggerUtil->init();
 
-        $ship = $this->shipRepository->prototype();
+        $ship = $progress !== null ? $this->shipRepository->find($progress->getShipId()) : $this->shipRepository->prototype();
         $ship->setUser($this->userRepository->find($userId));
         $ship->setBuildplan($this->shipBuildplanRepository->find($shipBuildplanId));
         $ship->setRump($this->shipRumpRepository->find($shipRumpId));
@@ -108,8 +114,10 @@ final class ShipCreator implements ShipCreatorInterface
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO => function (ShipInterface $ship): ModuleRumpWrapperInterface {
                 return new ModuleRumpWrapperProjectileWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO), null);
             },
-            ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperSpecial($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL), null);
+            ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship, ConstructionProgressInterface $progress): ModuleRumpWrapperInterface {
+                $specialMods = $progress === null ? $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) :
+                    $progress->getSpecialModules()->getValues();
+                return new ModuleRumpWrapperSpecial($ship->getRump(), $specialMods, null);
             },
         ];
 
@@ -167,7 +175,7 @@ final class ShipCreator implements ShipCreatorInterface
         $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
         //TODO transporter
 
-        foreach ($modules as $key => $module) {
+        foreach ($modules as $module) {
             switch ($module->getModule()->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SHIELDS:
                     $systems[ShipSystemTypeEnum::SYSTEM_SHIELDS] = $module->getModule();
@@ -180,7 +188,9 @@ final class ShipCreator implements ShipCreatorInterface
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_WARPCORE:
                     $systems[ShipSystemTypeEnum::SYSTEM_WARPCORE] = $module->getModule();
-                    $systems[ShipSystemTypeEnum::SYSTEM_WARPDRIVE] = $module->getModule();
+                    if ($ship->getRump()->getCategoryId() !== ShipRumpEnum::SHIP_CATEGORY_STATION) {
+                        $systems[ShipSystemTypeEnum::SYSTEM_WARPDRIVE] = $module->getModule();
+                    }
                     break;
                 case ShipModuleTypeEnum::MODULE_TYPE_COMPUTER:
                     $systems[ShipSystemTypeEnum::SYSTEM_COMPUTER] = $module->getModule();

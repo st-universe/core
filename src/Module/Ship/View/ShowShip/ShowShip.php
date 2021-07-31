@@ -228,7 +228,7 @@ final class ShowShip implements ViewControllerInterface
             return;
         }
 
-        $progress =  $ship->getConstructionProgress();
+        $progress =  $this->stationUtility->getConstructionProgress($ship);
         $game->setTemplateVar('PROGRESS', $progress);
 
         if ($progress === null) {

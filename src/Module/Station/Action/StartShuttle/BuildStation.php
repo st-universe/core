@@ -141,13 +141,16 @@ final class BuildStation implements ActionControllerInterface
 
     private function startTransformation(
         ShipInterface $ship,
-        ShipRumpInterface $rump,
+        ShipBuildplanInterface $plan,
         array $wantedSpecialModules
     ): void {
+        $rump = $plan->getRump();
+
         $ship->setName(sprintf('%s in Bau', $rump->getName()));
         $ship->setHuell(intdiv($rump->getBaseHull(), 2));
         $ship->setMaxHuell($rump->getBaseHull());
         $ship->setRump($rump);
+        $ship->setBuildplan($plan);
 
         $this->shipRepository->save($ship);
 

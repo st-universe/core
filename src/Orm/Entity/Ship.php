@@ -1650,16 +1650,6 @@ class Ship implements ShipInterface
         return StationUtility::canShipBuildConstruction($this);
     }
 
-    public function getConstructionProgress(): ?ConstructionProgressInterface
-    {
-        // @todo refactor
-        global $container;
-
-        $constructionProgressRepository = $container->get(ConstructionProgressRepositoryInterface::class);
-
-        return $constructionProgressRepository->getByShip($this->getId());
-    }
-
     public function __toString()
     {
         return $this->getName();

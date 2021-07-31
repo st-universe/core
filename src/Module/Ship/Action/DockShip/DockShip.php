@@ -83,7 +83,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
         if (!$this->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
-            $game->addInformation('Das Andocken wurden verweigert');
+            $game->addInformation('Das Andocken wurde verweigert');
             return;
         }
         if ($ship->isFleetLeader()) {

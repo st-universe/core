@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Stu\Component\Map\MapEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -117,6 +118,10 @@ class VisualNavPanel
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
+
+        $canMove = $this->getShip()->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
+            || $this->getShip()->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+
         foreach ($result as $data) {
             if ($data['posy'] < 1) {
                 continue;
@@ -129,7 +134,7 @@ class VisualNavPanel
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new VisualNavPanelEntry($data, $this->isTachyonSystemActive, $this->tachyonFresh);
+            $entry = new VisualNavPanelEntry($data, $this->isTachyonSystemActive, $this->tachyonFresh, $canMove);
             $entry->currentShipPosX = $cx;
             $entry->currentShipPosY = $cy;
             $rows[$y]->addEntry($entry);
