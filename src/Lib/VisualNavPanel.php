@@ -119,9 +119,6 @@ class VisualNavPanel
             $startTime = microtime(true);
         }
 
-        $canMove = $this->getShip()->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
-            || $this->getShip()->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
-
         foreach ($result as $data) {
             if ($data['posy'] < 1) {
                 continue;
@@ -134,7 +131,12 @@ class VisualNavPanel
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            $entry = new VisualNavPanelEntry($data, $this->isTachyonSystemActive, $this->tachyonFresh, $canMove);
+            $entry = new VisualNavPanelEntry(
+                $data,
+                $this->isTachyonSystemActive,
+                $this->tachyonFresh,
+                $this->getShip()->canMove()
+            );
             $entry->currentShipPosX = $cx;
             $entry->currentShipPosY = $cy;
             $rows[$y]->addEntry($entry);
