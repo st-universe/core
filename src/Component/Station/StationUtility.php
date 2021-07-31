@@ -12,6 +12,7 @@ use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
+use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 
@@ -21,6 +22,8 @@ final class StationUtility implements StationUtilityInterface
 
     private ConstructionProgressRepositoryInterface $constructionProgressRepository;
 
+    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
+
     private ShipCreatorInterface $shipCreator;
 
     private LoggerUtilInterface $loggerUtil;
@@ -28,11 +31,13 @@ final class StationUtility implements StationUtilityInterface
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
+        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
         ShipCreatorInterface $shipCreator,
         LoggerUtilInterface $loggerUtil
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
+        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
         $this->shipCreator = $shipCreator;
         $this->loggerUtil = $loggerUtil;
         $this->loggerUtil->init();
@@ -126,7 +131,8 @@ final class StationUtility implements StationUtilityInterface
         // transform ship
         $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
 
-        // delete progresss
+        // delete progress
+        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
         $this->constructionProgressRepository->delete($progress);
     }
 }

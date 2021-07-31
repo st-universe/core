@@ -15,4 +15,6 @@ interface ConstructionProgressModuleRepositoryInterface extends ObjectRepository
     public function save(ConstructionProgressModuleInterface $constructionProgressModule): void;
 
     public function delete(ConstructionProgressModuleInterface $constructionProgressModule): void;
+
+    public function truncateByProgress(int $progressId): void;
 }
