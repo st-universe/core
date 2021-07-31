@@ -1598,6 +1598,11 @@ class Ship implements ShipInterface
         return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPCORE);
     }
 
+    public function hasWarpdrive(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+    }
+
     public function getMaxTorpedos(): int
     {
         return $this->getRump()->getBaseTorpedoStorage()
