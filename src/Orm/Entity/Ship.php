@@ -1156,6 +1156,12 @@ class Ship implements ShipInterface
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface
     {
         $this->starsystem_map = $starsystem_map;
+
+        if ($starsystem_map !== null) {
+            $this->setCx($starsystem_map->getSystem()->getCx());
+            $this->setCy($starsystem_map->getSystem()->getCy());
+        }
+
         return $this;
     }
 
