@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -88,6 +89,13 @@ final class BuildStation implements ActionControllerInterface
 
         $rump = $plan->getRump();
 
+        // check if the limit is reached
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
+        if ($this->shipRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
+            $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden', $limit, $rump->getName())));
+            return;
+        }
+
         // check if enough workbees
         if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $rump)) {
             $game->addInformation('Nicht genügend Workbees angedockt');
@@ -116,7 +124,7 @@ final class BuildStation implements ActionControllerInterface
         }
 
         // transform construction
-        $this->startTransformation($ship, $rump, $wantedSpecialModules);
+        $this->startTransformation($ship, $plan, $wantedSpecialModules);
 
         $game->addInformation(sprintf(
             _('%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks'),

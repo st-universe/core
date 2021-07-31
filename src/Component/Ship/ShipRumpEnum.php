@@ -14,11 +14,14 @@ final class ShipRumpEnum
     public const SHIP_CATEGORY_CONSTRUCTION = 11;
     public const SHIP_CATEGORY_STATION = 12;
 
-    // rump roles TODO
-    public const SHIP_ROLE_SENSOR = 12;
-    public const SHIP_ROLE_DEPOT_SMALL = 12;
+    // rump roles
+    public const SHIP_ROLE_CONSTRUCTION = 10;
+    public const SHIP_ROLE_DEPOT_SMALL = 11;
     public const SHIP_ROLE_DEPOT_LARGE = 12;
-    public const SHIP_ROLE_BASE_LARGE = 12;
+    public const SHIP_ROLE_SHIPYARD = 13;
+    public const SHIP_ROLE_SENSOR = 14;
+    public const SHIP_ROLE_OUTPOST = 15;
+    public const SHIP_ROLE_BASE = 16;
 
     // rump offsets
     public const SHIP_RUMP_BASE_ID_ESCAPE_PODS = 100;

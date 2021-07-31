@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\View\ShowStationInfo;
 
 use request;
+use Stu\Component\Station\StationEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
@@ -49,7 +50,11 @@ final class ShowStationInfo implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateVar('RUMP', $this->shipRumpRepository->find($rumpId));
+        $rump = $this->shipRumpRepository->find($rumpId);
+        $game->setTemplateVar('RUMP', $rump);
+
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
+        $game->setTemplateVar('LIMIT', $limit === PHP_INT_MAX ? 'unbegrenzt' : $limit);
 
         $game->setTemplateVar('ERROR', false);
     }
