@@ -40,5 +40,8 @@ final class ConstructionProgressModuleRepository extends EntityRepository implem
         );
         $q->setParameter('progressId', $progressId);
         $q->execute();
+
+        $em = $this->getEntityManager();
+        $em->flush();
     }
 }
