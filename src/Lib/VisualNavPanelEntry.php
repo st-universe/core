@@ -11,11 +11,14 @@ class VisualNavPanelEntry
 
     private $tachyonFresh;
 
-    function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false)
+    private $canMove;
+
+    function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false, bool $canMove = true)
     {
         $this->data = $entry;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
+        $this->canMove = $canMove;
     }
 
     function getPosX()
@@ -135,6 +138,9 @@ class VisualNavPanelEntry
 
     function isClickAble()
     {
+        if (!$this->canMove) {
+            return false;
+        }
         if (!$this->isCurrentShipPosition() && ($this->getPosX() == $this->currentShipPosX || $this->getPosY() == $this->currentShipPosY)) {
             return true;
         }

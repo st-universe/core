@@ -8,6 +8,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -37,6 +38,8 @@ final class ShipTick implements ShipTickInterface
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
 
+    private StationUtilityInterface $stationUtility;
+
     private array $msg = [];
 
     public function __construct(
@@ -47,7 +50,8 @@ final class ShipTick implements ShipTickInterface
         GameControllerInterface $game,
         AstroEntryLibInterface $astroEntryLib,
         DatabaseUserRepositoryInterface $databaseUserRepository,
-        CreateDatabaseEntryInterface $createDatabaseEntry
+        CreateDatabaseEntryInterface $createDatabaseEntry,
+        StationUtilityInterface $stationUtility
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
@@ -57,10 +61,18 @@ final class ShipTick implements ShipTickInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->createDatabaseEntry = $createDatabaseEntry;
+        $this->stationUtility = $stationUtility;
     }
 
     public function work(ShipInterface $ship): void
     {
+        // do construction stuff
+        if ($this->doConstructionStuff($ship)) {
+            $this->shipRepository->save($ship);
+            $this->sendMessages($ship);
+            return;
+        }
+
         // ship offline
         if ($ship->getCrewCount() == 0 && $ship->getBuildplan()->getCrew() > 0) {
             return;
@@ -146,6 +158,42 @@ final class ShipTick implements ShipTickInterface
         $this->shipRepository->save($ship);
 
         $this->sendMessages($ship);
+    }
+
+    private function doConstructionStuff(ShipInterface $ship): bool
+    {
+        $progress =  $this->stationUtility->getConstructionProgress($ship);
+
+        if ($progress === null) {
+            return false;
+        }
+
+        if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $ship->getRump())) {
+            $this->msg[] = sprintf(
+                _('Nicht genügend Workbees (%d/%d) angedockt um den Bau weiterführen zu können'),
+                $this->stationUtility->getDockedWorkbeeCount($ship),
+                $ship->getRump()->getNeededWorkbees()
+            );
+            return true;
+        }
+
+        if ($progress->getRemainingTicks() === 1) {
+            $this->stationUtility->finishStation($ship, $progress);
+
+            $this->msg[] = sprintf(
+                _('%s: Bau bei %s fertiggestellt'),
+                $ship->getRump()->getName(),
+                $ship->getSectorString()
+            );
+        } else {
+            $this->stationUtility->reduceRemainingTicks($progress);
+
+            // raise hull
+            $increase = intdiv($ship->getMaxHuell(), 2 * $ship->getRump()->getBuildtime());
+            $ship->setHuell($ship->getHuell() + $increase);
+        }
+
+        return true;
     }
 
     private function checkForFinishedAstroMapping(ShipInterface $ship): void

@@ -46,6 +46,11 @@ class ConstructionProgress implements ConstructionProgressInterface
         return $this->id;
     }
 
+    public function getShipId(): int
+    {
+        return $this->ship_id;
+    }
+
     public function setShipId(int $shipId): ConstructionProgressInterface
     {
         $this->ship_id = $shipId;

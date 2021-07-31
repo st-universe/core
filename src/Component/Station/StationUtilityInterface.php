@@ -2,6 +2,7 @@
 
 namespace Stu\Component\Station;
 
+use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -18,4 +19,10 @@ interface StationUtilityInterface
     public function getDockedWorkbeeCount(ShipInterface $ship): int;
 
     public function hasEnoughDockedWorkbees(ShipInterface $ship, ShipRumpInterface $rump): bool;
+
+    public function getConstructionProgress(ShipInterface $ship): ?ConstructionProgressInterface;
+
+    public function reduceRemainingTicks(ConstructionProgressInterface $progress): void;
+
+    public function finishStation(ShipInterface $ship, ConstructionProgressInterface $progress): void;
 }

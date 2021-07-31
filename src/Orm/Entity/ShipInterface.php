@@ -417,8 +417,6 @@ interface ShipInterface
 
     public function canBuildConstruction(): bool;
 
-    public function getConstructionProgress(): ?ConstructionProgressInterface;
-
     public function getHullStatusBar();
 
     public function getShieldStatusBar();
