@@ -245,7 +245,10 @@
 						<td style="vertical-align: top; width: 33%;">
 							<table class="tcal">
 								<tr>
-									<th colspan="2"><img src="assets/buttons/gefecht.gif" /> Schiffskontrolle</th>
+									<th tal:condition="not:SHIP/isBase" colspan="2"><img
+											src="assets/buttons/gefecht.gif" /> Schiffskontrolle</th>
+									<th tal:condition="SHIP/isBase" colspan="2"><img src="assets/buttons/gefecht.gif" />
+										Stationskontrolle</th>
 								</tr>
 								<tr>
 									<td colspan="2">

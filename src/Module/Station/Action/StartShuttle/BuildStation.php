@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\BuildStation;
 
 use request;
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\Storage\Exception\CommodityMissingException;
 use Stu\Component\Ship\Storage\Exception\QuantityTooSmallException;
@@ -13,7 +12,6 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -70,9 +68,7 @@ final class BuildStation implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-
-        $this->loggerUtil->log('A');
+        $this->loggerUtil->init();
 
         $game->setTemplateVar('ERROR', true);
 
@@ -90,8 +86,6 @@ final class BuildStation implements ActionControllerInterface
             return;
         }
 
-        $this->loggerUtil->log('B');
-
         $rump = $plan->getRump();
 
         // check if enough workbees
@@ -99,8 +93,6 @@ final class BuildStation implements ActionControllerInterface
             $game->addInformation('Nicht genügend Workbees angedockt');
             return;
         }
-
-        $this->loggerUtil->log('C');
 
         $availableMods = $this->getSpecialModules($ship, $rump);
 
@@ -117,20 +109,14 @@ final class BuildStation implements ActionControllerInterface
             }
         }
 
-        $this->loggerUtil->log('D');
-
         // try to consume needed goods
         if (!$this->consumeNeededModules($ship, $plan, $wantedSpecialModules)) {
             $game->addInformation('Nicht alle erforderlichen Module geladen');
             return;
         }
 
-        $this->loggerUtil->log('E');
-
         // transform construction
         $this->startTransformation($ship, $rump, $wantedSpecialModules);
-
-        $this->loggerUtil->log('F');
 
         $game->addInformation(sprintf(
             _('%s befindet sich nun im Bau. Fertigstellung bestenfalls in %d Ticks'),

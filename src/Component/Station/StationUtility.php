@@ -35,7 +35,7 @@ final class StationUtility implements StationUtilityInterface
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->shipCreator = $shipCreator;
         $this->loggerUtil = $loggerUtil;
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init();
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {
