@@ -224,7 +224,7 @@ final class ShowShip implements ViewControllerInterface
 
     private function doConstructionStuff(ShipInterface $ship, GameControllerInterface $game): void
     {
-        if (!$ship->isConstruction()) {
+        if (!$ship->isConstruction() && !$ship->isBase()) {
             return;
         }
 
