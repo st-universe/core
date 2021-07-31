@@ -971,6 +971,11 @@
 								<tr>
 									<th colspan="2">Baufortschritt</th>
 								</tr>
+								<tr>
+									<td style="width: 70%;">Verbleibende Ticks:</td>
+									<td style="width: 30%; text-align: center;"><span
+											tal:replace="PROGRESS/getRemainingTicks">TICKS</span></td>
+								</tr>
 							</table>
 							<table class="tcal" tal:condition="SHIP/isTraktorBeamActive">
 								<tr>
