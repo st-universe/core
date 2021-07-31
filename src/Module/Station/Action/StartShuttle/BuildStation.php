@@ -92,14 +92,14 @@ final class BuildStation implements ActionControllerInterface
         // check if the limit is reached
         $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[$rump->getRoleId()];
         if ($this->shipRepository->getAmountByUserAndRump($userId, $rump->getId()) >= $limit) {
-            $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden', $limit, $rump->getName())));
+            $game->addInformation(sprintf(_('Es können nur %d %s errichtet werden'), $limit, $rump->getName()));
             return;
         }
 
         // check if the location is allowed
         $location = StationEnum::BUILDABLE_LOCATIONS_PER_ROLE[$rump->getRoleId()];
         if (!$this->locationAllowed($ship, $location)) {
-            $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden', $rump->getName(), $location)));
+            $game->addInformation(sprintf(_('Stationen vom Typ %s können nur %s errichtet werden'), $rump->getName(), $location));
             return;
         }
 
