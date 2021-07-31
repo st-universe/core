@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Station\StationEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -31,8 +32,6 @@ use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 final class BuildConstruction implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_BUILD_CONSTRUCTION';
-
-    public const CONSTRUCTION_LIMIT_PER_USER = 2;
 
     public const NEEDED_WORKBEES = 5;
 
@@ -124,8 +123,9 @@ final class BuildConstruction implements ActionControllerInterface
         }
 
         // check if the construction limit is reached
-        if ($this->shipRepository->getAmountByUserAndRump($userId, $rumpId) >= self::CONSTRUCTION_LIMIT_PER_USER) {
-            $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden', self::CONSTRUCTION_LIMIT_PER_USER)));
+        $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[ShipRumpEnum::SHIP_ROLE_CONSTRUCTION];
+        if ($this->shipRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
+            $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden', $limit)));
             return;
         }
 
