@@ -168,16 +168,18 @@ function showColonyScan() {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_COLONY_SCAN=1&id=' + shipid);
 }
-function showStationCosts(planid) {
+function showStationCosts(obj, planid) {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
+
+	var pos = findObject(obj);
+	openWindowPosition('elt', 1, 200, pos[0] - 400, pos[1]);
 	ajax_update('elt', 'station.php?SHOW_STATION_COSTS=1&id=' + shipid + '&pid=' + planid);
 }
 function showStationInformation(obj, rumpid) {
 	closeAjaxWindow();
 
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
+	openWindowPosition('elt', 1, 200, pos[0] - 650, pos[1]);
 	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&rid=' + rumpid);
 }
 function toggleSpecialModuleDisplay(type, module_id, module_crew) {
