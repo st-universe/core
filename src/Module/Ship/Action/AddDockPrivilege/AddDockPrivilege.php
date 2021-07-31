@@ -46,7 +46,7 @@ final class AddDockPrivilege implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        // $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
 
