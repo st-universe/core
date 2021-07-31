@@ -29,4 +29,16 @@ final class ConstructionProgressModuleRepository extends EntityRepository implem
         $em->remove($constructionProgressModule);
         $em->flush();
     }
+
+    public function truncateByProgress(int $progressId): void
+    {
+        $q = $this->getEntityManager()->createQuery(
+            sprintf(
+                'delete from %s t where t.progress_id = :progressId',
+                ConstructionProgressModule::class
+            )
+        );
+        $q->setParameter('progressId', $progressId);
+        $q->execute();
+    }
 }
