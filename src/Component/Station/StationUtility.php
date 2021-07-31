@@ -131,9 +131,8 @@ final class StationUtility implements StationUtilityInterface
         // transform ship
         $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
 
-        // delete progress
-        $progress->getSpecialModules()->clear();
-        $this->constructionProgressModuleRepository->truncateByProgress($progress->getId());
-        $this->constructionProgressRepository->delete($progress);
+        // set progress finished
+        $progress->setRemainingTicks(0);
+        $this->constructionProgressRepository->save($progress);
     }
 }
