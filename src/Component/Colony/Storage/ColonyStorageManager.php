@@ -19,7 +19,7 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
     ) {
         $this->colonyStorageRepository = $colonyStorageRepository;
         $this->loggerUtil = $loggerUtil;
-        $this->loggerUtil->init('csm');
+        $this->loggerUtil->init();
     }
 
     public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void
