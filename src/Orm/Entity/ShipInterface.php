@@ -403,6 +403,8 @@ interface ShipInterface
 
     public function hasWarpcore(): bool;
 
+    public function hasWarpdrive(): bool;
+
     public function getMaxTorpedos(): int;
 
     public function getDockedShips(): Collection;
