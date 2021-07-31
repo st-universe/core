@@ -9,10 +9,10 @@ use Stu\Component\Ship\ShipRumpEnum;
 final class StationEnum
 {
     // where can the station type be build
-    public const BUILDABLE_EVERYWHERE = 1;
-    public const BUILDABLE_OVER_SYSTEM = 2;
-    public const BUILDABLE_INSIDE_SYSTEM = 3;
-    public const BUILDABLE_OUTSIDE_SYSTEM = 4;
+    public const BUILDABLE_EVERYWHERE = 'überall';
+    public const BUILDABLE_OVER_SYSTEM = 'über einem System';
+    public const BUILDABLE_INSIDE_SYSTEM = 'innerhalb eines Systems';
+    public const BUILDABLE_OUTSIDE_SYSTEM = 'außerhalb eines Systems';
 
     // station role buildable locations
     public const BUILDABLE_LOCATIONS_PER_ROLE = [
