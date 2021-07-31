@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
- * @Table(name="stu_buildings_upgrades_cost",indexes={@Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})})
  * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeCostRepository")
+ * @Table(
+ *      name="stu_buildings_upgrades_cost",
+ *      indexes={@Index(name="buildings_upgrades_idx", columns={"buildings_upgrades_id"})}
+ * )
  **/
 class BuildingUpgradeCost implements BuildingUpgradeCostInterface
 {
@@ -63,7 +65,8 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
         return $this;
     }
 
-    public function getGoodId(): int {
+    public function getGoodId(): int
+    {
         return $this->good_id;
     }
 
@@ -74,15 +77,18 @@ class BuildingUpgradeCost implements BuildingUpgradeCostInterface
         return $this;
     }
 
-    public function getAmount(): int {
+    public function getAmount(): int
+    {
         return $this->amount;
     }
 
-    public function getGood(): CommodityInterface {
+    public function getGood(): CommodityInterface
+    {
         return $this->good;
     }
 
-    public function getUpgrade(): BuildingUpgradeInterface {
+    public function getUpgrade(): BuildingUpgradeInterface
+    {
         return $this->upgrade;
     }
 }

@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Orm\Repository;
+
+use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\ConstructionProgressModule;
+use Stu\Orm\Entity\ConstructionProgressModuleInterface;
+
+final class ConstructionProgressModuleRepository extends EntityRepository implements ConstructionProgressModuleRepositoryInterface
+{
+    public function prototype(): ConstructionProgressModuleInterface
+    {
+        return new ConstructionProgressModule();
+    }
+
+    public function save(ConstructionProgressModuleInterface $constructionProgressModule): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($constructionProgressModule);
+    }
+
+    public function delete(ConstructionProgressModuleInterface $constructionProgressModule): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->remove($constructionProgressModule);
+        $em->flush();
+    }
+}

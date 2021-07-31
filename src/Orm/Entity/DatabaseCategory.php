@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
- * @Table(name="stu_database_categories")
  * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseCategoryRepository")
+ * @Table(name="stu_database_categories")
  **/
 class DatabaseCategory implements DatabaseCategoryInterface
 {

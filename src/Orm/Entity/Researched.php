@@ -7,9 +7,8 @@ namespace Stu\Orm\Entity;
 use Stu\Orm\Repository\BuildingGoodRepositoryInterface;
 
 /**
- * @Entity
- * @Table(name="stu_researched")
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchedRepository")
+ * @Table(name="stu_researched")
  **/
 class Researched implements ResearchedInterface
 {

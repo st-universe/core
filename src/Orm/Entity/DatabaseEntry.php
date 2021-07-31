@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseEntryRepository")
  * @Table(
  *     name="stu_database_entrys",
  *     options={"engine":"InnoDB"},
  *     indexes={@Index(name="database_entry_category_id_idx", columns={"category_id"})}
  * )
- * @Entity(repositoryClass="Stu\Orm\Repository\DatabaseEntryRepository")
  **/
 class DatabaseEntry implements DatabaseEntryInterface
 {

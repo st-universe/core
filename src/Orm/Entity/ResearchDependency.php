@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 /**
- * @Entity
- * @Table(name="stu_research_dependencies")
  * @Entity(repositoryClass="Stu\Orm\Repository\ResearchDependencyRepository")
+ * @Table(name="stu_research_dependencies")
  **/
 class ResearchDependency implements ResearchDependencyInterface
 {

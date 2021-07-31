@@ -8,14 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeRepository")
  * @Table(
  *     name="stu_buildings_upgrades",
  *     indexes={
  *          @Index(name="upgrade_from_research_idx", columns={"upgrade_from", "research_id"})
  *     }
  * )
- * @Entity(repositoryClass="Stu\Orm\Repository\BuildingUpgradeRepository")
  **/
 class BuildingUpgrade implements BuildingUpgradeInterface
 {
@@ -58,7 +57,8 @@ class BuildingUpgrade implements BuildingUpgradeInterface
      */
     private $upgradeFromBuilding;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->upgradeCosts = new ArrayCollection();
     }
 
