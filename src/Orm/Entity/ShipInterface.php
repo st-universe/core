@@ -355,6 +355,8 @@ interface ShipInterface
 
     public function canIntercept(): bool;
 
+    public function canMove(): bool;
+
     public function isOwnedByCurrentUser(): bool;
 
     public function canLandOnCurrentColony(): bool;

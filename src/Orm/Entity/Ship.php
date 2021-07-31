@@ -1386,6 +1386,12 @@ class Ship implements ShipInterface
         return !$this->getTraktorMode();
     }
 
+    public function canMove(): bool
+    {
+        return $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)
+            || $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE);
+    }
+
     public function isOwnedByCurrentUser(): bool
     {
         global $container;
