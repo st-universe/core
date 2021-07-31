@@ -966,12 +966,12 @@
 										<td colspan="4">keine Einträge</td>
 									</tr>
 								</table>
-								<table class="tcal" tal:condition="PROGRESS">
-									<tr>
-										<th colspan="2">Baufortschritt</th>
-									</tr>
-								</table>
 							</tal:block>
+							<table class="tcal" tal:condition="exists: PROGRESS">
+								<tr>
+									<th colspan="2">Baufortschritt</th>
+								</tr>
+							</table>
 							<table class="tcal" tal:condition="SHIP/isTraktorBeamActive">
 								<tr>
 									<th colspan="2"><img src="assets/buttons/trak.gif" title="Traktorstrahl" />
