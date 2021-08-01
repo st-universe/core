@@ -830,20 +830,25 @@
   <div style="float: left; width: 250px">
     <table class="tcal">
       <tr>
-        <th colspan="2">Crew</th>
+        <th colspan="4">Crew</th>
       </tr>
       <tr>
-        <td class="darkbg">Minimal-Crew</td>
+        <td colspan="3" class="darkbg">Minimal-Crew</td>
         <td class="darkbg"><span tal:replace="SHIP/getBuildplan/getCrew">CREW</span></td>
       </tr>
       <tr>
         <td class="darkbg"></td>
+        <td class="darkbg"><strong>Position</strong></td>
         <td class="darkbg"><strong>Name</strong></td>
+        <td class="darkbg"><strong>Rang</strong></td>
       </tr>
       <tr tal:repeat="data SHIP/getCrewlist">
         <td>
           <img
             src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
+        </td>
+        <td>
+          <div tal:content="data/getPosition">POSITION</div>
         </td>
         <td style="vertical-align: middle;">
           <metal:macro metal:define-macro="crewslot">
@@ -859,6 +864,9 @@
           </metal:macro>
           <metal:macro metal:use-macro="crewslot" tal:define="CREW data/getCrew" />
           <div tal:content="data/getCrew/getTypeDescription">NAME</div>
+        </td>
+        <td>
+          <div tal:content="data/getCrew/getTypeDescription">RANG</div>
         </td>
       </tr>
     </table>

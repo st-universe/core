@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Crew\CrewEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
  * @Table(
@@ -80,6 +82,11 @@ class ShipCrew implements ShipCrewInterface
         $this->slot = $slot;
 
         return $this;
+    }
+
+    public function getPosition(): string
+    {
+        return CrewEnum::getDescription($this->getSlot());
     }
 
     public function getUserId(): int

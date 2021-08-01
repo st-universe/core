@@ -17,11 +17,34 @@ final class CrewEnum
     public const CREW_GENDER_MALE = 1;
     public const CREW_GENDER_FEMALE = 2;
 
-    public const CREW_ORDER = [CrewEnum::CREW_TYPE_CAPTAIN,
-                                CrewEnum::CREW_TYPE_COMMAND,
-                                CrewEnum::CREW_TYPE_SECURITY,
-                                CrewEnum::CREW_TYPE_SCIENCE,
-                                CrewEnum::CREW_TYPE_TECHNICAL,
-                                CrewEnum::CREW_TYPE_NAVIGATION,
-                                CrewEnum::CREW_TYPE_CREWMAN];
+    public const CREW_ORDER = [
+        CrewEnum::CREW_TYPE_CAPTAIN,
+        CrewEnum::CREW_TYPE_COMMAND,
+        CrewEnum::CREW_TYPE_SECURITY,
+        CrewEnum::CREW_TYPE_SCIENCE,
+        CrewEnum::CREW_TYPE_TECHNICAL,
+        CrewEnum::CREW_TYPE_NAVIGATION,
+        CrewEnum::CREW_TYPE_CREWMAN
+    ];
+
+    public static function getDescription(int $crewType): string
+    {
+        switch ($crewType) {
+            case self::CREW_TYPE_CAPTAIN:
+                return _("Captain");
+            case self::CREW_TYPE_COMMAND:
+                return _("Commander");
+            case self::CREW_TYPE_SECURITY:
+                return _("Sicherheit");
+            case self::CREW_TYPE_SCIENCE:
+                return _("Wissenschaftler");
+            case self::CREW_TYPE_TECHNICAL:
+                return _("Ingenieur");
+            case self::CREW_TYPE_NAVIGATION:
+                return _("Navigator");
+            case self::CREW_TYPE_CREWMAN:
+                return _("Crewman");
+        }
+        return '';
+    }
 }
