@@ -14,6 +14,8 @@ interface ShipCrewInterface
 
     public function setSlot(int $slot): ShipCrewInterface;
 
+    public function getPosition(): string;
+
     public function getUserId(): int;
 
     public function getUser(): UserInterface;
