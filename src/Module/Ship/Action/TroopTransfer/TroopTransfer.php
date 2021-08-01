@@ -136,7 +136,10 @@ final class TroopTransfer implements ActionControllerInterface
                 $array = $ship->getCrewlist()->getValues();
 
                 for ($i = 0; $i < $amount; $i++) {
-                    $this->shipCrewRepository->delete($array[$i]);
+                    $sc = $array[$i];
+                    $ship->getCrewlist()->removeElement($sc);
+                    $this->shipCrewRepository->delete($sc);
+
                     $shipCrew--;
                 }
             } else {
@@ -161,6 +164,8 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc->setUser($ship->getUser());
                     $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
 
+                    $ship->getCrewlist()->add($sc);
+
                     $this->shipCrewRepository->save($sc);
                     $this->entityManager->flush();
                     $shipCrew++;
@@ -180,6 +185,8 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc = $array[$i];
                     $sc->setShip($target);
                     $this->shipCrewRepository->save($sc);
+
+                    $ship->getCrewlist()->removeElement($sc);
                     $shipCrew--;
                 }
 
@@ -209,6 +216,9 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc = $array[$i];
                     $sc->setShip($ship);
                     $this->shipCrewRepository->save($sc);
+
+                    $ship->getCrewlist()->add($sc);
+
                     $shipCrew++;
                 }
 
