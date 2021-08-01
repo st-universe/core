@@ -167,13 +167,13 @@
             </a>
           </div>
           <div style="float:left; margin-right:4px;">
-            <a href="javascript:void(0);" onclick="showBToWindow(this,${ship/getId})"
+            <a href="javascript:void(0);" onclick="showBToWindow(${ship/getId})"
               onmouseover="cp('bto_${ship/getId}','buttons/b_down2')"
               onmouseout="cp('bto_${ship/getId}','buttons/b_down1')">
               <img src="assets/buttons/b_down1.gif" name="bto_${ship/getId}"
                 title="Zur ${nameWithoutMarkup} runterbeamen" />
             </a>
-            <a href="javascript:void(0);" onclick="showBFromWindow(this,${ship/getId})"
+            <a href="javascript:void(0);" onclick="showBFromWindow(${ship/getId})"
               onmouseover="cp('bfr_${ship/getId}','buttons/b_up2')"
               onmouseout="cp('bfr_${ship/getId}','buttons/b_up1')">
               <img src="assets/buttons/b_up1.gif" name="bfr_${ship/getId}"
