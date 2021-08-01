@@ -31,15 +31,17 @@ function showETransferWindow(target) {
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_ETRANSFER=1&target=' + target);
 }
 
-function showBToWindow(target) {
+function showBToWindow(obj, target) {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
+	var pos = findObject(obj);
+	openWindowPosition('elt', 1, 200, pos[0], pos[1] - 400);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
 }
 
-function showBFromWindow(target) {
+function showBFromWindow(obj, target) {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
+	var pos = findObject(obj);
+	openWindowPosition('elt', 1, 200, pos[0], pos[1] - 400);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
 }
 
