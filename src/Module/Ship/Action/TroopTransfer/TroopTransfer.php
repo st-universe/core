@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\TroopTransfer;
 
 use request;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
@@ -32,14 +33,16 @@ final class TroopTransfer implements ActionControllerInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     private TroopTransferUtilityInterface $transferUtility;
-    
+
     private ShipCrewRepositoryInterface $shipCrewRepository;
 
     private CrewRepositoryInterface $crewRepository;
 
     private ActivatorDeactivatorHelperInterface $helper;
-    
+
     private ShipSystemManagerInterface $shipSystemManager;
+
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
@@ -49,7 +52,8 @@ final class TroopTransfer implements ActionControllerInterface
         ShipCrewRepositoryInterface $shipCrewRepository,
         CrewRepositoryInterface $crewRepository,
         ActivatorDeactivatorHelperInterface $helper,
-        ShipSystemManagerInterface $shipSystemManager
+        ShipSystemManagerInterface $shipSystemManager,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -59,6 +63,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->crewRepository = $crewRepository;
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -99,18 +104,17 @@ final class TroopTransfer implements ActionControllerInterface
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
-        
+
         $isColony = request::has('isColony');
         $isUnload = request::has('isUnload');
-        
-        if ($isColony)
-        {
+
+        if ($isColony) {
             $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
         } else {
             $target = $this->shipRepository->find((int)request::postIntFatal('target'));
         }
-        
-        
+
+
         if ($target === null) {
             return;
         }
@@ -124,32 +128,30 @@ final class TroopTransfer implements ActionControllerInterface
         $requestedTransferCount = request::postInt('tcount');
 
         $shipCrew = $ship->getCrewCount();
-        
-        if ($isColony)
-        {
-            if ($isUnload)
-            {
+
+        if ($isColony) {
+            if ($isUnload) {
                 $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship));
-                
+
                 $array = $ship->getCrewlist()->getValues();
-                
+
                 for ($i = 0; $i < $amount; $i++) {
                     $this->shipCrewRepository->delete($array[$i]);
                     $shipCrew--;
                 }
-            }
-            else {
-                $amount = min($requestedTransferCount, $ship->getUser()->getFreeCrewCount(),
-                                $this->transferUtility->getFreeQuarters($ship));
+            } else {
+                $amount = min(
+                    $requestedTransferCount,
+                    $ship->getUser()->getFreeCrewCount(),
+                    $this->transferUtility->getFreeQuarters($ship)
+                );
 
-                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF)
-                {
-                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game))
-                    {
+                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
+                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
                         return;
                     }
                 }
-                
+
                 for ($i = 0; $i < $amount; $i++) {
                     $crew = $this->crewRepository->getFreeByUser($userId);
 
@@ -158,19 +160,19 @@ final class TroopTransfer implements ActionControllerInterface
                     $sc->setShip($ship);
                     $sc->setUser($ship->getUser());
                     $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
-    
+
                     $this->shipCrewRepository->save($sc);
+                    $this->entityManager->flush();
                     $shipCrew++;
                 }
             }
-            
-        }
-        else
-        {
-            if ($isUnload)
-            {
-                $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship),
-                            $this->transferUtility->getFreeQuarters($target));
+        } else {
+            if ($isUnload) {
+                $amount = min(
+                    $requestedTransferCount,
+                    $this->transferUtility->getBeamableTroopCount($ship),
+                    $this->transferUtility->getFreeQuarters($target)
+                );
 
                 $array = $ship->getCrewlist()->getValues();
 
@@ -181,20 +183,21 @@ final class TroopTransfer implements ActionControllerInterface
                     $shipCrew--;
                 }
 
-                if ($amount > 0 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
-                    && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT))
-                {
+                if (
+                    $amount > 0 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
+                    && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+                ) {
                     $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
                 }
-            }
-            else {
-                $amount = min($requestedTransferCount, $target->getCrewCount(),
-                            $this->transferUtility->getFreeQuarters($ship));
+            } else {
+                $amount = min(
+                    $requestedTransferCount,
+                    $target->getCrewCount(),
+                    $this->transferUtility->getFreeQuarters($ship)
+                );
 
-                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF)
-                {
-                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game))
-                    {
+                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
+                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
                         return;
                     }
                 }
@@ -210,15 +213,14 @@ final class TroopTransfer implements ActionControllerInterface
                 }
 
                 // no crew left
-                if ($amount == $targetCrewCount)
-                {
+                if ($amount == $targetCrewCount) {
                     $this->shipSystemManager->deactivateAll($target);
                     $target->setAlertState(1);
                     $this->shipRepository->save($target);
                 }
             }
         }
-        
+
         $this->shipRepository->save($ship);
 
         $game->addInformation(
@@ -231,11 +233,9 @@ final class TroopTransfer implements ActionControllerInterface
             )
         );
 
-        if ($shipCrew <= $ship->getBuildplan()->getCrew())
-        {
+        if ($shipCrew <= $ship->getBuildplan()->getCrew()) {
             $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
-
     }
 
     public function performSessionCheck(): bool
