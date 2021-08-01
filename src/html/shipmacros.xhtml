@@ -776,6 +776,17 @@
     </table>
   </form>
 </metal:block>
+<metal:macro metal:define-macro="crewslot">
+  <div id="rn_crew_${CREW/getId}">
+    <div onclick="showRenameCrew(this,${CREW/getId});" tal:content="CREW/getName" class="action"
+      style="font-weight: bold;">NAME</div>
+    <div id="rn_crew_${CREW/getId}_input" style="display: none;">
+      <input type="text" size="15" tal:attributes="value CREW/getName" id="rn_crew_${CREW/getId}_value"
+        name="rn_crew_${CREW/getId}_value" />
+      <input type="button" class="button" value="Ok" onclick="renameCrew(${CREW/getId})" />
+    </div>
+  </div>
+</metal:macro>
 <metal:block metal:define-macro="shipdetails">
   <br />
   <div style="width: 100%">
@@ -851,19 +862,7 @@
           <div tal:content="data/getPosition">POSITION</div>
         </td>
         <td style="vertical-align: middle;">
-          <metal:macro metal:define-macro="crewslot">
-            <div id="rn_crew_${CREW/getId}">
-              <div onclick="showRenameCrew(this,${CREW/getId});" tal:content="CREW/getName" class="action"
-                style="font-weight: bold;">NAME</div>
-              <div id="rn_crew_${CREW/getId}_input" style="display: none;">
-                <input type="text" size="15" tal:attributes="value CREW/getName" id="rn_crew_${CREW/getId}_value"
-                  name="rn_crew_${CREW/getId}_value" />
-                <input type="button" class="button" value="Ok" onclick="renameCrew(${CREW/getId})" />
-              </div>
-            </div>
-          </metal:macro>
           <metal:macro metal:use-macro="crewslot" tal:define="CREW data/getCrew" />
-          <div tal:content="data/getCrew/getTypeDescription">NAME</div>
         </td>
         <td>
           <div tal:content="data/getCrew/getTypeDescription">RANG</div>
