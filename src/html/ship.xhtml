@@ -986,6 +986,12 @@
 									<td style="width: 30%; text-align: center;"><span
 											tal:replace="PROGRESS/getRemainingTicks">TICKS</span></td>
 								</tr>
+								<tr>
+									<td style="width: 70%;">benötigte angedockte Workbees:</td>
+									<td style="width: 30%; text-align: center; color: ${WORKBEECOLOR};"><span
+											tal:replace="DOCKED">DOCKED</span>/<span tal:replace="NEEDED">NEEDED</span>
+									</td>
+								</tr>
 							</table>
 							<table class="tcal" tal:condition="SHIP/isTraktorBeamActive">
 								<tr>
