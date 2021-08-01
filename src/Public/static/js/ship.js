@@ -96,9 +96,10 @@ function showScanWindow(shipid, target) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SCAN=1&target=' + target);
 }
-function showSectorScanWindow() {
+function showSectorScanWindow(obj) {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
+	var pos = findObject(obj);
+	openWindowPosition('elt', 1, 200, pos[0], pos[1] - 400);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
 }
 function showAstroEntryWindow() {
