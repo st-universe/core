@@ -111,7 +111,10 @@ final class ShipSystemManager implements ShipSystemManagerInterface
             throw new AlreadyActiveException();
         }
 
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
+        if (
+            $ship->getBuildplan()->getCrew() > 0
+            && $ship->getCrewCount() < $ship->getBuildplan()->getCrew()
+        ) {
             throw new InsufficientCrewException();
         }
 
