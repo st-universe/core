@@ -225,7 +225,7 @@ final class BuildStation implements ActionControllerInterface
 
             $stor = $ship->getStorage()[$commodity->getId()];
 
-            if ($stor === null || $stor->getAmount < $buildplanModule->getModuleCount()) {
+            if ($stor === null || $stor->getAmount() < $buildplanModule->getModuleCount()) {
                 return false;
             }
         }
