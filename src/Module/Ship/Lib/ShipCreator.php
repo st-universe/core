@@ -116,9 +116,8 @@ final class ShipCreator implements ShipCreatorInterface
             ShipModuleTypeEnum::MODULE_TYPE_TORPEDO => function (ShipInterface $ship): ModuleRumpWrapperInterface {
                 return new ModuleRumpWrapperProjectileWeapon($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_TORPEDO), null);
             },
-            ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship, ConstructionProgressInterface $progress): ModuleRumpWrapperInterface {
-                $specialMods = $progress === null ? $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) :
-                    []; //$progress->getSpecialModules()->getValues();
+            ShipModuleTypeEnum::MODULE_TYPE_SPECIAL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
+                $specialMods = $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SPECIAL); //$progress->getSpecialModules()->getValues();
                 return new ModuleRumpWrapperSpecial($ship->getRump(), $specialMods, null);
             },
         ];
