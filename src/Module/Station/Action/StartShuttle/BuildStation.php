@@ -219,24 +219,32 @@ final class BuildStation implements ActionControllerInterface
 
     public function consumeNeededModules(ShipInterface $ship, ShipBuildplanInterface $plan, array $wantedSpecialModules): bool
     {
-        $this->loggerUtil->log('consumeNeededModules');
-        try {
-            $this->loggerUtil->log('standardModules');
-            foreach ($plan->getModules() as $buildplanModule) {
-                $commodity = $buildplanModule->getModule()->getCommodity();
-                $this->loggerUtil->log(sprintf('commodityId: %d', $commodity->getId()));
+        // check if everything is available in required numbers
+        foreach ($plan->getModules() as $buildplanModule) {
+            $commodity = $buildplanModule->getModule()->getCommodity();
 
-                $this->shipStorageManager->lowerStorage($ship, $commodity, $buildplanModule->getModuleCount());
-            }
+            $stor = $ship->getStorage()[$commodity->getId()];
 
-            $this->loggerUtil->log('specialModules');
-            foreach ($wantedSpecialModules as $mod) {
-                $this->loggerUtil->log(sprintf('commodityId: %d', $mod->getCommodity()->getId()));
-                $this->shipStorageManager->lowerStorage($ship, $mod->getCommodity(), 1);
+            if ($stor === null || $stor->getAmount < $buildplanModule->getModuleCount()) {
+                return false;
             }
-        } catch (CommodityMissingException | QuantityTooSmallException $e) {
-            $this->loggerUtil->log('^ERROR, commodity missing ot quantity too small!');
-            return false;
+        }
+        foreach ($wantedSpecialModules as $mod) {
+            $stor = $ship->getStorage()[$mod->getCommodity()->getId()];
+
+            if ($stor === null) {
+                return false;
+            }
+        }
+
+        // consume the module commodities
+        foreach ($plan->getModules() as $buildplanModule) {
+            $commodity = $buildplanModule->getModule()->getCommodity();
+
+            $this->shipStorageManager->lowerStorage($ship, $commodity, $buildplanModule->getModuleCount());
+        }
+        foreach ($wantedSpecialModules as $mod) {
+            $this->shipStorageManager->lowerStorage($ship, $mod->getCommodity(), 1);
         }
 
         return true;
