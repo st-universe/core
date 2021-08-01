@@ -868,7 +868,9 @@
       <span>Schildregeneration:</span> ${SHIP/getShieldRegenerationRate}<br />
       <span>Reaktorleistung:</span> ${SHIP/getReactorOutput}<br />
       <span>Sensorreichtweite:</span> ${SHIP/getSensorRange}<br />
-      <span tal:condition="SHIP/canMove">Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
+      <tal:block tal:condition="SHIP/canMove">
+        <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
+      </tal:block>
       <span>Beam-Faktor</span>: ${SHIP/getRump/getBeamFactor}<br />
       <span>Torpedolagerraum</span>: ${SHIP/getMaxTorpedos}<br />
       <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
