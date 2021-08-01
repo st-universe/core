@@ -13,6 +13,7 @@ use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -69,7 +70,7 @@ final class BuildStation implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->loggerUtil->init();
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $game->setTemplateVar('ERROR', true);
 
@@ -218,17 +219,23 @@ final class BuildStation implements ActionControllerInterface
 
     public function consumeNeededModules(ShipInterface $ship, ShipBuildplanInterface $plan, array $wantedSpecialModules): bool
     {
+        $this->loggerUtil->log('consumeNeededModules');
         try {
+            $this->loggerUtil->log('standardModules');
             foreach ($plan->getModules() as $buildplanModule) {
                 $commodity = $buildplanModule->getModule()->getCommodity();
+                $this->loggerUtil->log(sprintf('commodityId: %d', $commodity->getId()));
 
                 $this->shipStorageManager->lowerStorage($ship, $commodity, $buildplanModule->getModuleCount());
             }
 
+            $this->loggerUtil->log('specialModules');
             foreach ($wantedSpecialModules as $mod) {
+                $this->loggerUtil->log(sprintf('commodityId: %d', $mod->getCommodity()->getId()));
                 $this->shipStorageManager->lowerStorage($ship, $mod->getCommodity(), 1);
             }
         } catch (CommodityMissingException | QuantityTooSmallException $e) {
+            $this->loggerUtil->log('^ERROR, commodity missing ot quantity too small!');
             return false;
         }
 
