@@ -20,14 +20,18 @@
 					<td tal:content="board/getTopicCount">TOPICS</td>
 					<td tal:content="board/getPostCount">POSTINGS</td>
 					<td tal:condition="RECENT_POST">
-						<a href="?SHOW_TOPIC=1&bid=${board/getId}&tid=${RECENT_POST/getTopicId}" tal:content="structure RECENT_POST/getTopic/getName">NAME</a><br />
+						<a href="?SHOW_TOPIC=1&bid=${board/getId}&tid=${RECENT_POST/getTopicId}"
+							tal:content="structure RECENT_POST/getTopic/getName">NAME</a><br />
 						<span tal:replace="datetime:RECENT_POST/getDate">DATE</span> von:<br />
 						<span tal:replace="structure bbcode:RECENT_POST/getUser/getName">NAME</span>
 					</td>
 					<td tal:condition="not:RECENT_POST">-</td>
 					<td style="text-align: center;" tal:condition="EDITABLE" tal:define="handle THIS/getUniqId">
-						<a href="javascript:void(0)" onclick="openBoardSettings(this,${board/getId})" onmouseover="cp('${handle}','buttons/b_down2')" onmouseout="cp('${handle}','buttons/b_down1')">
-							<img src="assets/buttons/b_down1.gif" name="runtime" title="Editieren" tal:attributes="name handle" />
+						<a href="javascript:void(0)" onclick="openBoardSettings(this,${board/getId})"
+							onmouseover="cp('${handle}','buttons/b_down2')"
+							onmouseout="cp('${handle}','buttons/b_down1')">
+							<img src="assets/buttons/b_down1.png" name="runtime" title="Editieren"
+								tal:attributes="name handle" />
 						</a>
 					</td>
 				</tal:block>
@@ -40,10 +44,12 @@
 					<th>Forum erstellen</th>
 				</tr>
 				<td>
-					Name <input type="text" size="20" name="board" /> <input type="submit" class="button" value="Erstellen" name="B_ADD_BOARD" />
+					Name <input type="text" size="20" name="board" /> <input type="submit" class="button"
+						value="Erstellen" name="B_ADD_BOARD" />
 				</td>
 			</table>
 		</form>
 	</tal:block>
 </tal:block>
+
 </html>

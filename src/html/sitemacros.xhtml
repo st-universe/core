@@ -37,11 +37,11 @@
 
                 <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel öffnen"
                   onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
-                  <img src="/assets/buttons/notiz1.gif" name="headerNotiz" />
+                  <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
                 </a>
                 <a href="/pm.php?WRITE_PM=1" onmouseover="cp('writePm','buttons/msg2')"
                   onmouseout="cp('writePm','buttons/msg1')">
-                  <img src="/assets/buttons/msg1.gif" name="writePm" title="Neue Nachricht schreiben" />
+                  <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben" />
                 </a>
               </div>
             </div>
@@ -63,7 +63,7 @@
                 <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
               </div>
               <div style="padding-top: 5px;">
-                <img style="width: 15px" src="/assets/goods/${CURRENT_RESEARCH/getResearch/getGoodId}.gif"
+                <img style="width: 15px" src="/assets/goods/${CURRENT_RESEARCH/getResearch/getGoodId}.png"
                   tal:attributes="title CURRENT_RESEARCH/getResearch/getGood/getName" />
                 <span tal:content="CURRENT_RESEARCH/getProgress">POINTSLEFT</span> / <span
                   tal:content="CURRENT_RESEARCH/getResearch/getPoints">POINTS</span> (+<span
@@ -112,7 +112,7 @@
         <div style="width: 100%; padding-left: 10px; padding-right: 10px">
           <tal:block metal:use-macro="navigation" />
           <div class="border_box navigation_item_servertime">
-            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
+            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
             <span>Version: <a href="https://forum.st-universe.de/viewforum.php?f=12"><span
@@ -177,11 +177,11 @@
 
                 <a href="javascript:void(0);" onclick="event.stopPropagation(); openNotes()" title="Notizzettel öffnen"
                   onmouseover="cp('headerNotiz','buttons/notiz2')" onmouseout="cp('headerNotiz','buttons/notiz1')">
-                  <img src="/assets/buttons/notiz1.gif" name="headerNotiz" />
+                  <img src="/assets/buttons/notiz1.png" name="headerNotiz" />
                 </a>
                 <a href="/pm.php?WRITE_PM=1" onmouseover="cp('writePm','buttons/msg2')"
                   onmouseout="cp('writePm','buttons/msg1')">
-                  <img src="/assets/buttons/msg1.gif" name="writePm" title="Neue Nachricht schreiben" />
+                  <img src="/assets/buttons/msg1.png" name="writePm" title="Neue Nachricht schreiben" />
                 </a>
               </div>
             </div>
@@ -193,30 +193,30 @@
         <div class="header_box header_box_research border_box action" tal:condition="CURRENT_RESEARCH"
           onclick="showResearchDetails(${CURRENT_RESEARCH/getResearch/getId}); return false;">
           <div class="center" tal:content="CURRENT_RESEARCH/getResearch/getName">RESEARCH</div>
-          <img style="width: 12px; height: 12px;" src="/assets/buttons/menu_forsch1.gif"
+          <img style="width: 12px; height: 12px;" src="/assets/buttons/menu_forsch1.png"
             title="Forschung: ${CURRENT_RESEARCH/getResearch/getName}" />
           <span tal:replace="structure CURRENT_RESEARCH_STATUS">STATUSBAR</span>
         </div>
         <div class="header_box header_box_research border_box action" tal:condition="not:CURRENT_RESEARCH"
           onclick="goToUrl('/research.php')">
-          <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_forsch0.gif" title="Forschung" />
+          <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_forsch0.png" title="Forschung" />
           <div style="margin-top: 5px">Keine Forschung</div>
         </div>
         <div class="header_box header_box_logout border_box action" onclick="goToUrl('/index.php?B_LOGOUT=1')">
           <div>
-            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_logout0.gif" title="Logout" />
+            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_logout0.png" title="Logout" />
             <div style="margin-top: 5px">Logout</div>
           </div>
         </div>
         <div class="header_box header_box_help border_box action" onclick="goToUrl('http://stuniverse-wiki.eu')">
           <div>
-            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_doku0.gif" title="Wiki" />
+            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_doku0.png" title="Wiki" />
             <div style="margin-top: 5px">Wiki</div>
           </div>
         </div>
         <div class="header_box header_box_settings border_box action" onclick="goToUrl('/options.php')">
           <div>
-            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_option0.gif" title="Einstellungen" />
+            <img style="width: 30px; height: 30px;" src="/assets/buttons/menu_option0.png" title="Einstellungen" />
             <div style="margin-top: 5px">Einstellungen</div>
           </div>
         </div>
@@ -226,7 +226,7 @@
         <div style="width: 100%; padding-left: 10px; padding-right: 10px">
           <tal:block metal:use-macro="adminnavigation" />
           <div class="border_box navigation_item_servertime">
-            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.gif" />
+            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
             <span>Version: <span tal:replace="GAME_VERSION" /></span><br />
@@ -392,7 +392,7 @@
           <th style="width: 18px;">
             <a href="javascript:void(0);" onclick="closeAjaxWindow();" onmouseover="cp('ajaxclose','buttons/x2');"
               onmouseout="cp('ajaxclose','buttons/x1');">
-              <img src="/assets/buttons/x1.gif" name="ajaxclose" title="Fenster schließen" />
+              <img src="/assets/buttons/x1.png" name="ajaxclose" title="Fenster schließen" />
             </a>
           </th>
         </tr>
