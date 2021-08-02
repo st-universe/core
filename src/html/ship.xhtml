@@ -52,7 +52,7 @@
 						tal:content="entry/getRow" phptal:cache="1d per entry/getRow">.</td>
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
 						tal:attributes="class entry/getCSSClass"
-						style="background-image: url(assets/map/${entry/getMapfieldType}.gif)">
+						style="background-image: url(assets/map/${entry/getMapfieldType}.png)">
 						<tal:block tal:condition="entry/isClickable">
 							<div class="lssobj imgOverlayText"
 								onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
@@ -501,14 +501,14 @@
 				<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
 					<a href="database.php?SHOW_ENTRY=1&cat=7&ent=${STARSYSTEM_ENTRY_TAL/getId}"
 						title="Karte des Systems öffnen">
-						<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif"
+						<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.png"
 							style="width: 15px; height: 15px;" />
 						<span>${SHIP/getSystem/getName}
 							(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
 					</a>
 				</tal:block>
 				<tal:block tal:condition="not:STARSYSTEM_ENTRY_TAL/wasDiscovered">
-					<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.gif"
+					<img src="assets/map/${SHIP/getSystem/getMapField/getFieldId}.png"
 						style="width: 15px; height: 15px;" title="Sternensystem" />
 					<span>${SHIP/getSystem/getName}
 						(${SHIP/getSystem/getCx}|${SHIP/getSystem/getCy})</span>
@@ -521,7 +521,7 @@
 			</td>
 			<tal:block tal:condition="not:SHIP/getSystem">
 				<td tal:condition="SHIP/isOverSystem">
-					<img src="assets/map/${SHIP/isOverSystem/getMapField/getFieldId}.gif"
+					<img src="assets/map/${SHIP/isOverSystem/getMapField/getFieldId}.png"
 						style="width: 15px; height: 15px;" title="Sternensystem" />
 					${SHIP/isOverSystem/getName}<br />
 					<a tal:condition="SHIP/hasWarpdrive"

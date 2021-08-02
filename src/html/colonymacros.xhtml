@@ -92,19 +92,19 @@
         </tr>
         <tr>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getPositiveEffectPrimary">VALUE</span>
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getPositiveEffectSecondary">VALUE</span>
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getNegativeEffect">VALUE</span>
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getCrewLimit">VALUE</span>
           </td>
         </tr>
@@ -123,25 +123,25 @@
         </tr>
         <tr>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getGlobalCrewLimit">LIMIT</span>
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getUsedCrewCount">USED</span>
             (<a href="javascript:void(0);" onclick="showPodLocationWindow();"><span
                 tal:content="USER/getCrewCountDebris" title="In Rettungskapseln">DEBRIS</span></a>)
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getFreeCrewCount">FREE</span>
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getInTrainingCrewCount">FREE</span>
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getCrewLeftCount">SLOTS</span>
           </td>
         </tr>
@@ -180,19 +180,19 @@
         </tr>
         <tr>
           <td>
-            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.gif" title="Freie Bevölkerung" />
+            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
             <span tal:replace="COLONY/getWorkless" />
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Freie Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
             <span tal:replace="USER/getTrainableCrewCountMax" />
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Freie Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
             <span tal:replace="USER/getInTrainingCrewCount" />
           </td>
           <td>
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Freie Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
             <span tal:replace="USER/getCrewLeftCount" />
           </td>
         </tr>
@@ -522,7 +522,7 @@
           <img src="/assets/planets/${COLONY/getColonyClass}.gif" style="width: 15px; height: 15px;" /> <span>Planet
             <span tal:replace="COLONY/getPlanetName" /></span> (${COLONY/getSX}|${COLONY/getSY})
           <span>in Sternensystem</span>
-          <img src="/assets/map/${COLONY/getSystem/getMapField/getFieldId}.gif" style="width: 15px; height: 15px;" />
+          <img src="/assets/map/${COLONY/getSystem/getMapField/getFieldId}.png" style="width: 15px; height: 15px;" />
           ${COLONY/getSystem/getName} (${COLONY/getSystem/getCX}|${COLONY/getSystem/getCY})
         </div>
       </div>
@@ -588,26 +588,26 @@
         <tr>
           <td>
             <span>Gesamt</span><br />
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Bevölkerung" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             ${COLONY/getPopulation}
           </td>
           <td>
             <span>Arbeiter</span><br />
-            <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.gif" title="Arbeiter" /> ${COLONY/getWorkers}
+            <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.png" title="Arbeiter" /> ${COLONY/getWorkers}
           </td>
           <td>
             <span>Verfügbar</span><br />
-            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.gif" title="Freie Bevölkerung" />
+            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.png" title="Freie Bevölkerung" />
             ${COLONY/getWorkless}
           </td>
           <td>
             <span>Wohnraum</span><br />
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Wohnraum" />
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Wohnraum" />
             ${COLONY/getFreeHousing} (${COLONY/getMaxBev})
           </td>
           <td>
             <span>Wachstum</span><br />
-            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.gif" title="Wachstum" />
+            <img src="assets/bev/bev_unused_5_${THIS/getUser/getFactionId}.png" title="Wachstum" />
             ${IMMIGRATION_SYMBOL}${COLONY/getImmigration}
           </td>
         </tr>
@@ -1136,11 +1136,11 @@
         <td style="vertical-align: top; width: 110px;">
           <strong>Auswirkungen</strong>
           <div tal:condition="building/getHousing">
-            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Wohnraum" /> +<span
+            <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Wohnraum" /> +<span
               tal:replace="building/getHousing">HOUSING</span>
           </div>
           <div tal:condition="building/getWorkers">
-            <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.gif" title="Arbeiter" /> -<span
+            <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.png" title="Arbeiter" /> -<span
               tal:replace="building/getWorkers">WORKERS</span>
           </div>
           <div tal:condition="building/getStorage">
@@ -1332,11 +1332,11 @@
       <td tal:condition="FIELD/hasBuilding" style="vertical-align: top; width: 100px;">
         <strong>Auswirkungen</strong>
         <div tal:condition="FIELD/getBuilding/getHousing">
-          <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.gif" title="Wohnraum" /> +<span
+          <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Wohnraum" /> +<span
             tal:replace="FIELD/getBuilding/getHousing">HOUSING</span>
         </div>
         <div tal:condition="FIELD/getBuilding/getWorkers">
-          <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.gif" title="Arbeiter" /> -<span
+          <img src="assets/bev/bev_used_5_${THIS/getUser/getFactionId}.png" title="Arbeiter" /> -<span
             tal:replace="FIELD/getBuilding/getWorkers">WORKERS</span>
         </div>
         <div tal:condition="FIELD/getBuilding/getStorage">
