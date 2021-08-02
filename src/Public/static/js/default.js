@@ -172,7 +172,7 @@ function ajax_update(elt, url) {
         new Ajax.Updater(elt, url, { method: 'get', evalScripts: true });
 }
 function selectMapFieldType(type) {
-        $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.gif" />';
+        $('fieldtypeselector').innerHTML = '<img src="' + gfx_path + '/map/' + type + '.png" />';
         selectedFieldType = type;
 }
 function toggleMapfieldType(obj) {
@@ -181,7 +181,7 @@ function toggleMapfieldType(obj) {
         }
         if (tmpfield == 0) {
                 tmpfield = obj.parentNode.style.backgroundImage;
-                obj.parentNode.style.backgroundImage = "url(" + gfx_path + "/map/" + selectedFieldType + ".gif)";
+                obj.parentNode.style.backgroundImage = "url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
                 return;
         }
         obj.parentNode.style.backgroundImage = tmpfield;
@@ -194,7 +194,7 @@ function setNewFieldType(obj, fieldid) {
                 return;
         }
         ajax_update(false, '/admin/?B_EDIT_FIELD=1&field=' + fieldid + '&type=' + selectedFieldType);
-        obj.parentNode.style.backgroundImage = "url(" + gfx_path + "/map/" + selectedFieldType + ".gif)";
+        obj.parentNode.style.backgroundImage = "url(" + gfx_path + "/map/" + selectedFieldType + ".png)";
         tmpfield = obj.parentNode.style.backgroundImage;
 }
 
@@ -206,7 +206,7 @@ function openSystemFieldSelector(fieldid) {
 function selectNewSystemMapField(fieldid, cx, cy, typeid, type) {
         ajax_update(false, '/admin/?B_EDIT_SYSTEM_FIELD=1&field=' + fieldid + '&type=' + typeid);
         field = $(cx + '_' + cy);
-        field.style.backgroundImage = "url(" + gfx_path + "/map/" + type + ".gif)";
+        field.style.backgroundImage = "url(" + gfx_path + "/map/" + type + ".png)";
         closeAjaxWindow();
 }
 function findObject(obj) {
@@ -293,7 +293,7 @@ function openPJsWin(elt, exclusive, width, offsety) {
                 return overlib('<div id=' + elt + '></div>', OLWIDTH, BGCOLOR, '#8897cf', TEXTCOLOR, '#8897cf', FGCOLOR, '#000000', CELLPAD, 0, 0, 0, 0, HAUTO, VAUTO, DRAGGABLE, ALTCUT, STICKY);
         }
 }
-function cp(obj, file, ending = 'gif') {
+function cp(obj, file, ending = 'png') {
         document.images[obj].src = gfx_path + "/" + file + "." + ending;
 }
 function updatePMNavlet() {
