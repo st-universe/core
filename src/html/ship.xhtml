@@ -52,12 +52,13 @@
 						tal:content="entry/getRow" phptal:cache="1d per entry/getRow">.</td>
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
 						tal:attributes="class entry/getCSSClass"
-						style="background-image: url(assets/map/${entry/getMapfieldType}.png)">
+						style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw; background-size: contain;">
 						<tal:block tal:condition="entry/isClickable">
 							<div class="lssobj imgOverlayText"
 								onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
-									src="assets/subspace/generated/${code}.png" />
+									src="assets/subspace/generated/${code}.png"
+									style="width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw;" />
 								<div class="centered" tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
@@ -65,7 +66,8 @@
 						<tal:block tal:condition="not:entry/isClickable">
 							<div class="imgOverlayText">
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
-									src="assets/subspace/generated/${code}.png" />
+									src="assets/subspace/generated/${code}.png"
+									style="width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw;" />
 								<div class="centered" tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
