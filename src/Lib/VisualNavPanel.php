@@ -185,4 +185,9 @@ class VisualNavPanel
 
         return number_format(min($perColumn, 2.5), 1);
     }
+
+    function getViewportForFont()
+    {
+        return $this->getViewportForFont / 2;
+    }
 }
