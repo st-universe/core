@@ -66,7 +66,7 @@ final class ShowMapOverall implements ViewControllerInterface
                 continue;
             }
 
-            $types[$data->getFieldId()] = imagecreatefromgif(
+            $types[$data->getFieldId()] = imagecreatefrompng(
                 $webrootWithoutPublic . '/../../assets/map/' . $data->getFieldType()->getType() . '.png'
             );
             imagecopyresized($img, $types[$data->getFieldId()], $curx, $cury, 0, 0, 15, 15, 30, 30);
