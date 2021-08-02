@@ -52,7 +52,7 @@
 			</tr>
 			<tr tal:repeat="row panel/getRows">
 				<tal:block tal:repeat="entry row/getEntries">
-					<td tal:condition="entry/getRow" style="font-size: ${viewportFont}vw;"
+					<td tal:condition="entry/getRow" style="width: ${viewportScale}vw; font-size: ${viewportFont}vw;"
 						tal:attributes="class entry/getCSSClass" tal:content="entry/getRow"
 						phptal:cache="1d per entry/getRow">.</td>
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
