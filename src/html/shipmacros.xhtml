@@ -755,7 +755,7 @@
       <tr>
         <td style="width: 450px;">
           <div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
-            <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.gif" />
+            <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
             ${data/getStatus}%
           </div>
         </td>
@@ -890,7 +890,7 @@
     <div class="divhead">Systemstatus</div>
     <div class="divbody">
       <div tal:repeat="data SHIP/getSystems">
-        <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.gif" />
+        <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
         ${data/getStatus}%
       </div>
     </div>
