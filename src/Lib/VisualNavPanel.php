@@ -188,14 +188,14 @@ class VisualNavPanel
     }
 
 
-    private $viewport = null;
-    private $viewportPerColumn = null;
-    private $viewportForFont = null;
+    private $viewport;
+    private $viewportPerColumn;
+    private $viewportForFont;
 
     private function getViewport()
     {
         $this->loggerUtil->log('ask-viewport');
-        if ($this->viewportPerColumn === null) {
+        if (!$this->viewportPerColumn) {
             $this->loggerUtil->log('calc-viewport');
             $navPercentage = $this->getShip()->isBase() ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
@@ -207,7 +207,7 @@ class VisualNavPanel
     function getViewportPerColumn()
     {
         $this->loggerUtil->log('ask-viewportPerC');
-        if ($this->viewportPerColumn === null) {
+        if (!$this->viewportPerColumn) {
             $this->loggerUtil->log('calc-viewportPerC');
             $this->viewportPerColumn = number_format($this->getViewport(), 1);
         }
@@ -217,7 +217,7 @@ class VisualNavPanel
     function getViewportForFont()
     {
         $this->loggerUtil->log('ask-viewportForF');
-        if ($this->viewportForFont === null) {
+        if (!$this->viewportForFont) {
             $this->loggerUtil->log('calc-viewportForF');
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);
         }
