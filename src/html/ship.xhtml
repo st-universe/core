@@ -54,7 +54,8 @@
 						tal:attributes="class entry/getCSSClass"
 						style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw; background-size: cover;">
 						<tal:block tal:condition="entry/isClickable">
-							<div class="lssobj imgOverlayText"
+							<div style="width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw;"
+								class="lssobj imgOverlayText"
 								onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
