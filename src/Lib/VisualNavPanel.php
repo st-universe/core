@@ -35,9 +35,6 @@ class VisualNavPanel
         $this->ship = $ship;
         $this->user = $user;
         $this->loggerUtil = $loggerUtil;
-        if ($user->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
 
@@ -194,32 +191,26 @@ class VisualNavPanel
 
     private function getViewport()
     {
-        $this->loggerUtil->log('ask-viewport');
         if (!$this->viewportPerColumn) {
             $navPercentage = $this->getShip()->isBase() ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
             $this->viewport = min($perColumn, 2.0);
-            $this->loggerUtil->log(sprintf('calc-viewport: %f', $this->viewport));
         }
         return $this->viewport;
     }
 
     function getViewportPerColumn()
     {
-        $this->loggerUtil->log('ask-viewportPerC');
         if (!$this->viewportPerColumn) {
             $this->viewportPerColumn = number_format($this->getViewport(), 1);
-            $this->loggerUtil->log(sprintf('calc-viewportPerC: %f', $this->viewportPerColumn));
         }
         return $this->viewportPerColumn;
     }
 
     function getViewportForFont()
     {
-        $this->loggerUtil->log('ask-viewportForF');
         if (!$this->viewportForFont) {
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);
-            $this->loggerUtil->log(sprintf('calc-viewportForF: %f', $this->viewportForFont));
         }
         return $this->viewportForFont;
     }
