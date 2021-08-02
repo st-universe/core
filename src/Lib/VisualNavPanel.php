@@ -189,6 +189,8 @@ class VisualNavPanel
 
 
     private $viewport = null;
+    private $viewportPerColumn = null;
+    private $viewportForFont = null;
 
     private function getViewport()
     {
@@ -202,8 +204,6 @@ class VisualNavPanel
         return $this->viewport;
     }
 
-    private $viewportPerColumn = null;
-
     function getViewportPerColumn()
     {
         $this->loggerUtil->log('ask-viewportPerC');
@@ -213,8 +213,6 @@ class VisualNavPanel
         }
         return $this->viewportPerColumn;
     }
-
-    private $viewportForFont = null;
 
     function getViewportForFont()
     {
