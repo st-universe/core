@@ -37,21 +37,22 @@
 		</tal:block>
 	</table>
 	<div tal:condition="SHIP/getLss" style="float:left;">
-		<table tal:define="panel VISUAL_NAV_PANEL; viewportScale panel/getViewportPerColumn" class="lssarea"
-			cellpadding="0" cellspacing="0">
+		<table
+			tal:define="panel VISUAL_NAV_PANEL; viewportFont panel/getViewportForFont; viewportScale panel/getViewportPerColumn"
+			class="lssarea" cellpadding="0" cellspacing="0">
 			<tr>
 				<td style="text-align: center; height: 30px;">
 					<a phptal:cache="1d per SHIP/getId" href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img
 							src="assets/buttons/lss1.png" name="lss_panel"
 							title="Langstreckensensoren deaktivieren" /></a>
 				</td>
-				<td style="font-size: ${viewportScale}vw;" class="th" tal:repeat="row panel/getHeadRow"
+				<td style="font-size: ${viewportFont}vw;" class="th" tal:repeat="row panel/getHeadRow"
 					tal:content="row/value">.
 				</td>
 			</tr>
 			<tr tal:repeat="row panel/getRows">
 				<tal:block tal:repeat="entry row/getEntries">
-					<td tal:condition="entry/getRow" style="font-size: ${viewportScale}vw;"
+					<td tal:condition="entry/getRow" style="font-size: ${viewportFont}vw;"
 						tal:attributes="class entry/getCSSClass" tal:content="entry/getRow"
 						phptal:cache="1d per entry/getRow">.</td>
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
@@ -64,7 +65,7 @@
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
 									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-								<div style="font-size: ${viewportScale}vw;" class="centered"
+								<div style="font-size: ${viewportFont}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
@@ -74,7 +75,7 @@
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
 									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-								<div style="font-size: ${viewportScale}vw;" class="centered"
+								<div style="font-size: ${viewportFont}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
