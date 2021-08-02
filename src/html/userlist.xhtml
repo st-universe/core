@@ -54,7 +54,7 @@
             <span tal:condition="not:data/getAlliance">-</span>
           </div>
           <div class="userListItemButtons" tal:define="id data/getId">
-            <img src="assets/rassen/${data/getFactionId}s.gif" />
+            <img src="assets/rassen/${data/getFactionId}s.png" />
             <metal:macro metal:use-macro="html/macros.xhtml/userprofile" />
             <metal:macro metal:use-macro="html/macros.xhtml/pmwindow" />
             ID: <tal:block tal:replace="data/getId">ID</tal:block>

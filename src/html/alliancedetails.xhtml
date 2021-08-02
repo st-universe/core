@@ -10,21 +10,24 @@
 				<div style="padding-top: 10px; width: 50%; float: left;">
 					<div>
 						<tal:block tal:condition="CAN_EDIT">
-						<a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
-						<a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
-						<a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
+							<a href="alliance.php?EDIT_ALLIANCE=1" class="linkbutton">Editieren</a>
+							<a href="alliance.php?SHOW_APPLICATIONS=1" class="linkbutton">Bewerbungen anzeigen</a>
+							<a href="alliance.php?SHOW_MANAGEMENT=1" class="linkbutton">Verwaltung</a>
 						</tal:block>
 						<a href="alliance.php?SHOW_LIST=1" class="linkbutton">Allianzliste</a>
 					</div>
 					<div style="margin-top: 10px;" tal:condition="CAN_SIGNUP">
-						<a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}" class="linkbutton">Bewerben</a>
+						<a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}"
+							class="linkbutton">Bewerben</a>
 					</div>
 					<div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
-						<a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}" class="linkbutton">Allianz verlassen</a>
+						<a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}"
+							class="linkbutton">Allianz verlassen</a>
 					</div>
 				</div>
 				<div style="padding-top: 10px; width: 50%; text-align: right; float: left">
-					<a tal:condition="php:THIS.getUser().getAllianceId() EQ ALLIANCE.getId()" href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
+					<a tal:condition="php:THIS.getUser().getAllianceId() EQ ALLIANCE.getId()"
+						href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
 					<div style="margin-top: 10px" tal:condition="CAN_MANAGE_FOREIGN_RELATIONS">
 						<a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
 					</div>
@@ -65,7 +68,8 @@
 					<td>
 						<span tal:replace="data/relation/getTypeDescription">TYPE</span>
 						mit
-						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}" tal:content="structure bbcode:data/opponent/getName">NAME</a>
+						<a href="?SHOW_ALLIANCE=1&id=${data/opponent/getId}"
+							tal:content="structure bbcode:data/opponent/getName">NAME</a>
 					</td>
 				</tr>
 			</table>
@@ -88,11 +92,11 @@
 					<table style="width: 100%">
 						<tr tal:repeat="data MEMBERS">
 							<td tal:condition="IS_IN_ALLIANCE" tal:attributes="class data/getOnlineStateCssClass">
-								<img src="assets/rassen/${data/getUser/getFactionId}s.gif" />
+								<img src="assets/rassen/${data/getUser/getFactionId}s.png" />
 								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
 							</td>
 							<td tal:condition="not:IS_IN_ALLIANCE">
-								<img src="assets/rassen/${data/getUser/getFactionId}s.gif" />
+								<img src="assets/rassen/${data/getUser/getFactionId}s.png" />
 								<span tal:replace="structure bbcode:data/getUser/getName">NAME</span>
 							</td>
 							<td style="width: 36px;" tal:define="id data/getUserId">
@@ -106,4 +110,5 @@
 		</div>
 	</tal:block>
 </tal:block>
+
 </html>

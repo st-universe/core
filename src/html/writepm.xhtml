@@ -13,15 +13,20 @@
 					</tr>
 					<tr>
 						<td tal:condition="not:REPLY">
-							Siedler-ID <input type="text" name="recipient" style="width: 50px;" tal:attributes="value RECIPIENT_ID" />
+							Siedler-ID <input type="text" name="recipient" style="width: 50px;"
+								tal:attributes="value RECIPIENT_ID" />
 							<select name="recid" onchange="updateRecipient();">
 								<option value="0">------------------</option>
-								<option tal:repeat="contact CONTACT_LIST" tal:attributes="value contact/getRecipient/getId" tal:content="bbcode2txt:contact/getRecipient/getName">NAME</option>
-							</select>	
+								<option tal:repeat="contact CONTACT_LIST"
+									tal:attributes="value contact/getRecipient/getId"
+									tal:content="bbcode2txt:contact/getRecipient/getName">NAME</option>
+							</select>
 						</td>
 						<td tal:condition="REPLY">
-							<input type="hidden" name="recipient" value="runtime" tal:attributes="value REPLY/getSender/getId" />
-							<span tal:replace="structure bbcode:REPLY/getSender/getName">NAME</span> (<span tal:replace="REPLY/getSender/getId">ID</span>)
+							<input type="hidden" name="recipient" value="runtime"
+								tal:attributes="value REPLY/getSender/getId" />
+							<span tal:replace="structure bbcode:REPLY/getSender/getName">NAME</span> (<span
+								tal:replace="REPLY/getSender/getId">ID</span>)
 						</td>
 					</tr>
 					<tr>
@@ -43,11 +48,13 @@
 						<table class="tcal">
 							<tr>
 								<td>
-									<img src="assets/rassen/${post/getSender/getFactionId}s.gif" />
+									<img src="assets/rassen/${post/getSender/getFactionId}s.png" />
 									<span>Von:</span>
-									<span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span tal:replace="post/getSender/getId">ID</span>)
+									<span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span
+										tal:replace="post/getSender/getId">ID</span>)
 								</td>
-								<td tal:content="datetime:post/getDate" style="width: 120px; text-align: center;">DATE</td>
+								<td tal:content="datetime:post/getDate" style="width: 120px; text-align: center;">DATE
+								</td>
 							</tr>
 						</table>
 						<table class="tcal">
@@ -67,4 +74,5 @@
 		</form>
 	</metal:macro>
 </metal:macro>
+
 </html>

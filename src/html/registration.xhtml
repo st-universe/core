@@ -7,37 +7,46 @@
 			<div style="display: inline-block; width: 300px; padding-right: 5px;">
 				<div class="divhead">Loginname</div>
 				<div class="divbody">
-					<input type="text" class="text" size="25" name="loginname" id="loginname" onblur="checkLogin(this,this.value)" />
+					<input type="text" class="text" size="25" name="loginname" id="loginname"
+						onblur="checkLogin(this,this.value)" />
 					<span id="loginerror" style="display: none; color: #FF0000;">Fehler</span>
 					<span id="loginok" style="display: none; color: Green;">OK</span>
-					<div id="logindup" style="color: #FFAA00; display: none;">Dieser Loginname ist bereits registriert</div>
+					<div id="logindup" style="color: #FFAA00; display: none;">Dieser Loginname ist bereits registriert
+					</div>
 					<div style="font-size: 80%; padding-top: 5px;">Minimum 6 Buchstaben/Zahlen</div>
 				</div>
 				<br />
 				<div class="divhead">E-Mail Adresse</div>
 				<div class="divbody">
-					<input type="text" class="text" size="25" name="email" id="email" onblur="checkEmail(this,this.value)" />
+					<input type="text" class="text" size="25" name="email" id="email"
+						onblur="checkEmail(this,this.value)" />
 					<span id="emailerror" style="display: none; color: #FF0000;">Fehler</span>
 					<span id="emailok" style="display: none; color: Green;">OK</span>
-					<div id="emaildup" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist bereits registriert</div>
+					<div id="emaildup" style="color: #FFAA00; display: none;">Diese E-Mailadresse ist bereits
+						registriert</div>
 				</div>
-        <br />
-        <div class="divhead">Einladungs-Code</div>
-        <div class="divbody">
-          <input tal:attributes="value TOKEN" type="text" class="text" size="25" name="token" id="token" onblur="checkToken(this,this.value)" />
-          <span id="tokenerror" style="display: none; color: #FF0000;">Fehler</span>
-          <span id="tokenok" style="display: none; color: Green;">OK</span>
-        </div>
+				<br />
+				<div class="divhead">Einladungs-Code</div>
+				<div class="divbody">
+					<input tal:attributes="value TOKEN" type="text" class="text" size="25" name="token" id="token"
+						onblur="checkToken(this,this.value)" />
+					<span id="tokenerror" style="display: none; color: #FF0000;">Fehler</span>
+					<span id="tokenok" style="display: none; color: Green;">OK</span>
+				</div>
 				<br />
 				<div class="divhead">Regeln</div>
 				<div class="divbody">
 					<input type="checkbox" onclick="$('asberror').hide()" id="asb" name="asb" />Ich habe die
-          <a href="http://stuniverse-wiki.eu/index.php?title=Spielregeln" target="_blank" style="text-decoration: underline">Spielregeln</a> und den
-          <a href="/?SHOW_INFOS=1" target="_blank" style="text-decoration: underline">Datenschutzhinweis</a> gelesen und bin damit einverstanden.
-					<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln/der Datenschutzhinweis wurde(n) nicht akzeptiert</div>
+					<a href="http://stuniverse-wiki.eu/index.php?title=Spielregeln" target="_blank"
+						style="text-decoration: underline">Spielregeln</a> und den
+					<a href="/?SHOW_INFOS=1" target="_blank" style="text-decoration: underline">Datenschutzhinweis</a>
+					gelesen und bin damit einverstanden.
+					<div id="asberror" style="display:none; color: #FF0000">Die Spielregeln/der Datenschutzhinweis
+						wurde(n) nicht akzeptiert</div>
 				</div>
 				<br />
-				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_REGISTER" value="Registrieren" class="button" onclick="checkSubmit();" />
+				<input tal:condition="REGISTRATION_POSSIBLE" type="submit" name="B_REGISTER" value="Registrieren"
+					class="button" onclick="checkSubmit();" />
 				<tal:block tal:condition="not:REGISTRATION_POSSIBLE">
 					<div class="divhead">Hinweis</div>
 					<div class="divbody">Im Moment sind leider keine weiteren Anmeldungen möglich</div>
@@ -53,10 +62,15 @@
 				<div id="factionerror" style="display:none; color: #FF0000">Es wurde keine Fraktion gewählt</div>
 				<div class="divhead">Fraktion wählen</div>
 				<tal:block tal:repeat="data POSSIBLE_FACTIONS">
-					<div class="divbody" style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}" onclick="toggleFaction(${data/getId}); selectFaction(${data/getId});" tal:condition="data/hasFreePlayerSlots">
+					<div class="divbody"
+						style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}"
+						onclick="toggleFaction(${data/getId}); selectFaction(${data/getId});"
+						tal:condition="data/hasFreePlayerSlots">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>
-					<div class="divbody" style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}" tal:condition="not:data/hasFreePlayerSlots" onclick="toggleFaction(${data/getId})">
+					<div class="divbody"
+						style="display: block; cursor: pointer; background-color: ${data/getDarkerColor}"
+						tal:condition="not:data/hasFreePlayerSlots" onclick="toggleFaction(${data/getId})">
 						<metal:macro metal:use-macro="faction_entry" />
 					</div>
 				</tal:block>
@@ -65,13 +79,15 @@
 	</metal:macro>
 	<metal:macro metal:define-macro="faction_entry">
 		<div id="fachead_${data/getId}">
-			<img src="assets/rassen/${data/getId}s.gif" /> <strong tal:content="data/getName">NAME</strong>
+			<img src="assets/rassen/${data/getId}s.png" /> <strong tal:content="data/getName">NAME</strong>
 			<span tal:condition="data/getPlayerLimit">
-				(<span tal:replace="data/getPlayerAmount">AMOUNT</span>/<span tal:replace="data/getPlayerLimit">LIMIT</span>)
+				(<span tal:replace="data/getPlayerAmount">AMOUNT</span>/<span
+					tal:replace="data/getPlayerLimit">LIMIT</span>)
 			</span>
 		</div>
 		<div id="facinfo_${data/getId}" style="display: none;">
-			<div tal:condition="not:data/hasFreePlayerSlots" style="font-weight: bold"><br />Diese Fraktion kann nicht ausgewählt werden da alle vorgesehen Spielerslots belegt sind</div>
+			<div tal:condition="not:data/hasFreePlayerSlots" style="font-weight: bold"><br />Diese Fraktion kann nicht
+				ausgewählt werden da alle vorgesehen Spielerslots belegt sind</div>
 			<br />
 			${data/getDescription}
 		</div>
