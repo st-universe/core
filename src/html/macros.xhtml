@@ -54,7 +54,7 @@
   <table style="width: 100%;">
     <tr>
       <td style="width: 20px;">
-        <img src="/assets/goods/${commodityId}.gif" onclick="this.up('tr').down('.goodAmount').value=${amount}"
+        <img src="/assets/goods/${commodityId}.png" onclick="this.up('tr').down('.goodAmount').value=${amount}"
           style="cursor: pointer;" title="${name}" />
       </td>
       <td style="width: 60px; vertical-align: middle;">
@@ -76,7 +76,7 @@
           <div onmouseover="cp('aup','buttons/b_up2')" onmouseout="cp('aup','buttons/b_up1')"
             style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_UP"
             onclick="showMapBy('${NAV_UP/x}','${NAV_UP/y}');">
-            <img src="assets/buttons/b_up1.gif" name="aup" />
+            <img src="assets/buttons/b_up1.png" name="aup" />
           </div>
         </td>
         <td>&nbsp;</td>
@@ -87,7 +87,7 @@
           <div onmouseover="cp('aleft','buttons/b_from2')" onmouseout="cp('aleft','buttons/b_from1')"
             style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_LEFT"
             onclick="showMapBy('${NAV_LEFT/x}','${NAV_LEFT/y}');">
-            <img src="assets/buttons/b_from1.gif" name="aleft" />
+            <img src="assets/buttons/b_from1.png" name="aleft" />
           </div>
         </td>
         <td style="width: 30px;">&nbsp;</td>
@@ -116,7 +116,7 @@
           <div onmouseover="cp('aright','buttons/b_to2')" onmouseout="cp('aright','buttons/b_to1')"
             style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_RIGHT"
             onclick="showMapBy('${NAV_RIGHT/x}','${NAV_RIGHT/y}');">
-            <img src="assets/buttons/b_to1.gif" name="aright" />
+            <img src="assets/buttons/b_to1.png" name="aright" />
           </div>
         </td>
       </tr>
@@ -127,7 +127,7 @@
           <div onmouseover="cp('adown','buttons/b_down2')" onmouseout="cp('adown','buttons/b_down1')"
             style="width: 100%; display: block; cursor: pointer; text-align: center;" tal:condition="HAS_NAV_DOWN"
             onclick="showMapBy('${NAV_DOWN/x}','${NAV_DOWN/y}');">
-            <img src="assets/buttons/b_down1.gif" name="adown" />
+            <img src="assets/buttons/b_down1.png" name="adown" />
           </div>
         </td>
         <td>&nbsp;</td>

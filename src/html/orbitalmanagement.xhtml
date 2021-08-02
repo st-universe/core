@@ -60,7 +60,7 @@
               <td>
                 <div>
                   <img class="center" onclick="this.up('div').down('input').value=${ship/getEbattMax}"
-                    src="assets/buttons/batt.gif" title="Ersatzbatterie" />
+                    src="assets/buttons/batt.png" title="Ersatzbatterie" />
                   <input type="text" size="3" name="batt[${ship/getId}]" />
                   <span tal:condition="ship/ownedByUser">${ship/getEBatt}/${ship/getEbattMax}</span>
                 </div>
@@ -68,7 +68,7 @@
               <td>
                 <div>
                   <img class="center" onclick="this.up('div').down('input').value=${ship/getWarpcoreCapacity}"
-                    src="assets/buttons/warpk.gif" title="Warpkernladung" />
+                    src="assets/buttons/warpk.png" title="Warpkernladung" />
                   <input type="text" size="3" name="wk[${ship/getId}]" />
                   <span tal:condition="ship/ownedByUser">${ship/getWarpCoreLoad}/${ship/getWarpcoreCapacity}</span>
                 </div>
@@ -76,9 +76,9 @@
               <td>
                 <div tal:condition="ship/canLoadTorpedos">
                   <img class="center" onclick="this.up('div').down('input').value=${ship/getTorpedoCapacity}"
-                    tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.gif" title="Torpedos" />
+                    tal:condition="not:ship/getTorpedoCount" src="assets/buttons/torp.png" title="Torpedos" />
                   <img class="center" tal:condition="ship/getTorpedoCount"
-                    src="assets/goods/${ship/getTorpedoType/getGoodId}.gif"
+                    src="assets/goods/${ship/getTorpedoType/getGoodId}.png"
                     tal:attributes="title ship/getTorpedoType/getName" />
                   <tal:block tal:condition="ship/ownedByUser">
                     <input type="text" size="3" name="torp[${ship/getId}]"
@@ -88,7 +88,7 @@
                   <input tal:condition="not:ship/ownedByUser" type="text" size="3" name="torp[${ship/getId}]" />
                   <tal:block tal:condition="not:ship/getTorpedoCount">
                     <tal:block tal:repeat="data ship/getPossibleTorpedoTypes">
-                      <img class="center" src="assets/goods/${data/getGoodId}.gif"
+                      <img class="center" src="assets/goods/${data/getGoodId}.png"
                         tal:attributes="title data/getName" />
                       <input type="radio" name="torp_type[${ship/getId}]"
                         tal:attributes="checked repeat/data/start; value data/getId" />

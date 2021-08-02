@@ -274,12 +274,12 @@ function showModuleSelectTab(obj, tabId) {
 }
 function replaceTabImage(type, moduleId, goodId, module_crew, module_lvl) {
 	if (moduleId == 0) {
-		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.gif';
+		$('tab_image_mod_' + type).src = 'assets/buttons/modul_' + type + '.png';
 		$('module_type_' + type).innerHTML = '';
 		updateCrewCount(type, 0, 0);
 	} else {
 		Element.removeClassName($('module_tab_' + type), 'module_select_base_mandatory');
-		$('tab_image_mod_' + type).src = 'assets/goods/' + goodId + '.gif';
+		$('tab_image_mod_' + type).src = 'assets/goods/' + goodId + '.png';
 		$('module_type_' + type).innerHTML = $(moduleId + '_content').innerHTML;
 		$('module_type_' + type).show();
 		updateCrewCount(type, module_crew, module_lvl);

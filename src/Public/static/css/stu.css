@@ -717,25 +717,25 @@ tr.fleetLeader {
 }
 
 input.upButton {
-    background:url(/assets/buttons/b_up1.gif) no-repeat;
+    background:url(/assets/buttons/b_up1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
 
 input.downButton {
-    background:url(/assets/buttons/b_down1.gif) no-repeat;
+    background:url(/assets/buttons/b_down1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
 
 input.leftButton {
-    background:url(/assets/buttons/b_from1.gif) no-repeat;
+    background:url(/assets/buttons/b_from1.png) no-repeat;
     height: 22px;
     width: 22px;
 }
 
 input.rightButton {
-    background:url(/assets/buttons/b_to1.gif) no-repeat;
+    background:url(/assets/buttons/b_to1.png) no-repeat;
     height: 22px;
     width: 22px;
 }

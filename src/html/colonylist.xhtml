@@ -24,7 +24,8 @@
 				<tr tal:repeat="colony COLONY_LIST" tal:attributes="class string:row${repeat/colony/odd}">
 					<td style="text-align: center;">
 						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}">
-							<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" /></a>
+							<metal:macro metal:use-macro="html/colonymacros.xhtml/colonyimage_base" />
+						</a>
 					</td>
 					<td style="vertical-align: middle;" tal:define="system colony/getSystem">
 						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%"
@@ -59,7 +60,7 @@
 						${colony/getStorageSum}/${colony/getMaxStorage}
 						(${addPlusCharacter:colony/getProductionSum})<br />
 						<div tal:repeat="stor colony/getGoodUseView">
-							<img src="assets/goods/${stor/good/getId}.gif" title="runtime"
+							<img src="assets/goods/${stor/good/getId}.png" title="runtime"
 								tal:attributes="title stor/good/getName" />
 							<span style="color: #FF0000;" tal:content="stor/production">COUNT</span> (<span
 								tal:replace="stor/turnsleft">TURNS</span> Runden)
@@ -128,7 +129,7 @@
 						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
 							<td style="vertical-align: middle;">
 								<div style="display: table-cell; width: 55px;">
-									<img src="assets/goods/${prod/getGoodId}.gif"
+									<img src="assets/goods/${prod/getGoodId}.png"
 										tal:attributes="title prod/getGood/getName" />
 								</div>
 								<div style="display: table-cell; vertical-align: middle"

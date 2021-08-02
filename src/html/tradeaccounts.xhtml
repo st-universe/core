@@ -3,16 +3,16 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/trademacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-    <div class="box" tal:condition="not:ACCOUNTS">
-      <div class="box_title">Meldung</div>
-      <div class="box_body">
-        <span>Keine Warenkonten vorhanden</span>
-      </div>
-    </div>
-    <tal:block tal:repeat="data ACCOUNTS">
-      <table class="tcal">
-        <tr>
-          <th colspan="5" tal:content="structure data/getShip/getName">POST</th>
+		<div class="box" tal:condition="not:ACCOUNTS">
+			<div class="box_title">Meldung</div>
+			<div class="box_body">
+				<span>Keine Warenkonten vorhanden</span>
+			</div>
+		</div>
+		<tal:block tal:repeat="data ACCOUNTS">
+			<table class="tcal">
+				<tr>
+					<th colspan="5" tal:content="structure data/getShip/getName">POST</th>
 				</tr>
 				<tr tal:define="ship data/getShip">
 					<td rowspan="5">
@@ -23,8 +23,11 @@
 							Waren lagernd
 						</div>
 						<div style="float: left; width: 100px;" tal:repeat="stor data/getStorage">
-							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})" style="display: block; padding: 4px;" class="tradebutton">
-								<img src="assets/goods/${stor/getGood/getId}.gif" tal:attributes="title stor/getGood/getName" /> <span tal:replace="stor/getAmount">COUNT</span>
+							<a href="javascript:void(0);" onclick="showTradeOfferMenu(${stor/getId})"
+								style="display: block; padding: 4px;" class="tradebutton">
+								<img src="assets/goods/${stor/getGood/getId}.png"
+									tal:attributes="title stor/getGood/getName" /> <span
+									tal:replace="stor/getAmount">COUNT</span>
 							</a>
 						</div>
 					</td>
@@ -33,8 +36,12 @@
 							Waren in Angeboten
 						</div>
 						<div style="float: left; width: 100px;" tal:repeat="stor data/getOfferStorage">
-							<a href="javascript:void(0);" onclick="showTradeOfferByGood(${data/getId},${stor/commodity_id})" style="display: block; padding: 4px;" class="tradebutton">
-								<img src="assets/goods/${stor/commodity_id}.gif" tal:attributes="title stor/commodity_name" /> <span tal:replace="stor/amount">COUNT</span>
+							<a href="javascript:void(0);"
+								onclick="showTradeOfferByGood(${data/getId},${stor/commodity_id})"
+								style="display: block; padding: 4px;" class="tradebutton">
+								<img src="assets/goods/${stor/commodity_id}.png"
+									tal:attributes="title stor/commodity_name" /> <span
+									tal:replace="stor/amount">COUNT</span>
 							</a>
 						</div>
 					</td>
@@ -45,7 +52,8 @@
 					<td class="darkbg">Handelsnetz</td>
 					<td>
 						<img src="assets/rassen/${data/getTradeNetwork}s.gif" />
-						<a href="javascript:void(0);" onclick="openShoutbox(${data/getTradeNetwork})">Schwarzes Brett</a>
+						<a href="javascript:void(0);" onclick="openShoutbox(${data/getTradeNetwork})">Schwarzes
+							Brett</a>
 					</td>
 				</tr>
 				<tr>
@@ -58,8 +66,10 @@
 				<tr>
 					<td class="darkbg">Lagerraum</td>
 					<td>
-						<span tal:condition="data/isOverStorage" class="negative" tal:content="data/getStorageSum">STORAGESUM</span>
-						<span tal:condition="not:data/isOverStorage" class="positive" tal:content="data/getStorageSum">STORAGESUM</span>
+						<span tal:condition="data/isOverStorage" class="negative"
+							tal:content="data/getStorageSum">STORAGESUM</span>
+						<span tal:condition="not:data/isOverStorage" class="positive"
+							tal:content="data/getStorageSum">STORAGESUM</span>
 						(<span tal:content="data/getStorageCapacity">STORAGE</span> pro Siedler)
 					</td>
 				</tr>
@@ -67,7 +77,8 @@
 					<td class="darkbg">Ausgestellte Lizenzen</td>
 					<td>
 						<span tal:content="data/getLicenseCount">LIZENZEN</span>
-						(<a href="javascript:void(0)" onclick="showTradeLicenceList(this,${data/getId});">Liste anzeigen</a>)
+						(<a href="javascript:void(0)" onclick="showTradeLicenceList(this,${data/getId});">Liste
+							anzeigen</a>)
 					</td>
 				</tr>
 			</table>
@@ -75,4 +86,5 @@
 		</tal:block>
 	</metal:macro>
 </metal:macro>
+
 </html>

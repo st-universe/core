@@ -59,10 +59,10 @@
       <td class="darkbg">Baukosten</td>
       <td>
         <div>
-          <img src="assets/buttons/e_trans2.gif" title="Energie" /> ${RUMP/getEpsCost}
+          <img src="assets/buttons/e_trans2.png" title="Energie" /> ${RUMP/getEpsCost}
         </div>
         <div tal:repeat="data RUMP/getBuildingCosts">
-          <img src="assets/goods/${data/getCommodity/getId}.gif" tal:attributes="title data/getCommodity/getName" />
+          <img src="assets/goods/${data/getCommodity/getId}.png" tal:attributes="title data/getCommodity/getName" />
           ${data/getAmount}
         </div>
       </td>

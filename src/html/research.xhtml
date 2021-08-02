@@ -13,11 +13,12 @@
         </div>
         <div>
           <div class="researchListItemName">
-            <a href="javascript:void(0);" onclick="showResearchDetails(${data/getId});" tal:content="data/getName">NAME</a>
+            <a href="javascript:void(0);" onclick="showResearchDetails(${data/getId});"
+              tal:content="data/getName">NAME</a>
           </div>
           <div class="researchListItemDescription" tal:content="data/getDescription">DESCRIPTION</div>
           <div class="researchListItemNeeds">
-            <img src="/assets/goods/${data/getGoodId}.gif" tal:attributes="title data/getGood/getName" />
+            <img src="/assets/goods/${data/getGoodId}.png" tal:attributes="title data/getGood/getName" />
             <span tal:content="data/getPoints">POINTS</span> <span tal:content="data/getGood/getName">NAME</span>
           </div>
         </div>
@@ -35,7 +36,8 @@
           </div>
           <div>
             <div class="finishedResearchListItemName">
-              <a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearch/getId});" tal:content="data/getResearch/getName">NAME</a>
+              <a href="javascript:void(0);" onclick="showResearchDetails(${data/getResearch/getId});"
+                tal:content="data/getResearch/getName">NAME</a>
             </div>
             <div>
               <span style="width: 180px;" tal:condition="data/getFinished">Erforscht am ${date:data/getFinished}</span>
@@ -47,4 +49,5 @@
     </div>
   </metal:macro>
 </metal:macro>
+
 </html>
