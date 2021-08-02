@@ -61,7 +61,7 @@
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
 									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-								<div style="font-size: ${viewportScale};" class="centered"
+								<div style="font-size: ${viewportScale}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
@@ -71,7 +71,8 @@
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
 									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-								<div style="font-size: 0.6vw;" class="centered" tal:content="entry/getDisplayCount">.
+								<div style="font-size: ${viewportScale}vw;" class="centered"
+									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
 						</tal:block>
