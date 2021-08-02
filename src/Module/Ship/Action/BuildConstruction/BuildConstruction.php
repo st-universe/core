@@ -125,7 +125,7 @@ final class BuildConstruction implements ActionControllerInterface
         // check if the construction limit is reached
         $limit = StationEnum::BUILDABLE_LIMITS_PER_ROLE[ShipRumpEnum::SHIP_ROLE_CONSTRUCTION];
         if ($this->shipRepository->getAmountByUserAndRump($userId, $rumpId) >= $limit) {
-            $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden', $limit)));
+            $game->addInformation(sprintf(_('Es können nur %d Konstrukte errichtet werden'), $limit));
             return;
         }
 
@@ -201,7 +201,7 @@ final class BuildConstruction implements ActionControllerInterface
             return;
         }
 
-        //start workbees
+        // start workbees
         $workbees = [];
         foreach ($workbeePlans as $plan) {
             $rump = $plan->getRump();
