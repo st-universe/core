@@ -178,12 +178,17 @@ class VisualNavPanel
         return $row;
     }
 
+
+    private $viewport = null;
+
     private function getViewport()
     {
-        $navPercentage = $this->getShip()->isBase() ? 50 : 33;
-        $perColumn = $navPercentage / count($this->getHeadRow());
-
-        return min($perColumn, 2.5);
+        if ($this->viewportPerColumn === null) {
+            $navPercentage = $this->getShip()->isBase() ? 50 : 33;
+            $perColumn = $navPercentage / count($this->getHeadRow());
+            $this->viewport = min($perColumn, 2.5);
+        }
+        return $this->viewport;
     }
 
     private $viewportPerColumn = null;
