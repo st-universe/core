@@ -1551,7 +1551,7 @@
       </td>
       <td tal:condition="data/getShip/getDamagedSystems" style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
-          style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.gif" />
+          style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.png" />
       </td>
       <td>
         <a href="?id=${COLONY/getId}&B_CANCEL_REPAIR=1&shipid=${data/getShip/getId}&sstr=${THIS/getSessionString}"
