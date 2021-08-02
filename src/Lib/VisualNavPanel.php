@@ -198,7 +198,7 @@ class VisualNavPanel
         if (!$this->viewportPerColumn) {
             $navPercentage = $this->getShip()->isBase() ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
-            $this->viewport = min($perColumn, 2.5);
+            $this->viewport = min($perColumn, 2.0);
             $this->loggerUtil->log(sprintf('calc-viewport: %f', $this->viewport));
         }
         return $this->viewport;
