@@ -60,8 +60,7 @@
 						style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
 						<tal:block tal:condition="entry/isClickable">
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
-								class="lssobj imgOverlayText"
-								onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
+								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
 									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />

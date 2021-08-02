@@ -147,6 +147,11 @@ class VisualNavPanelEntry
         return false;
     }
 
+    function getOnClick()
+    {
+        return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
+    }
+
     function getRow()
     {
         return $this->row;
