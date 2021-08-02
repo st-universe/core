@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Stu\Component\Map\MapEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -34,6 +35,9 @@ class VisualNavPanel
         $this->ship = $ship;
         $this->user = $user;
         $this->loggerUtil = $loggerUtil;
+        if ($user->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
 
@@ -188,7 +192,9 @@ class VisualNavPanel
 
     private function getViewport()
     {
+        $this->loggerUtil->log('ask-viewport');
         if ($this->viewportPerColumn === null) {
+            $this->loggerUtil->log('calc-viewport');
             $navPercentage = $this->getShip()->isBase() ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
             $this->viewport = min($perColumn, 2.5);
@@ -200,7 +206,9 @@ class VisualNavPanel
 
     function getViewportPerColumn()
     {
+        $this->loggerUtil->log('ask-viewportPerC');
         if ($this->viewportPerColumn === null) {
+            $this->loggerUtil->log('calc-viewportPerC');
             $this->viewportPerColumn = number_format($this->getViewport(), 1);
         }
         return $this->viewportPerColumn;
@@ -210,7 +218,9 @@ class VisualNavPanel
 
     function getViewportForFont()
     {
+        $this->loggerUtil->log('ask-viewportForF');
         if ($this->viewportForFont === null) {
+            $this->loggerUtil->log('calc-viewportForF');
             $this->viewportForFont = number_format($this->getViewport() / 2, 1);
         }
         return $this->viewportForFont;
