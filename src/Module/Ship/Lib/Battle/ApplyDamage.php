@@ -66,7 +66,7 @@ final class ApplyDamage implements ApplyDamageInterface
             $msg[] = "- Hüllenschaden: " . $damage . " - Status: " . $ship->getHuell();
 
             if (!$this->checkForDamagedShipSystems($ship, $huelleVorher, $msg)) {
-                $this->damageRandomShipSystem($ship, $msg);
+                $this->damageRandomShipSystem($ship, $msg, (int)ceil((100 * $damage * rand(1, 5)) / $ship->getMaxHuell()));
             }
 
             if ($disablemessage) {
@@ -153,14 +153,15 @@ final class ApplyDamage implements ApplyDamageInterface
         return ShipSystemTypeEnum::getDescription($healthySystems[0]->getSystemType());
     }
 
-    private function damageRandomShipSystem(ShipInterface $ship, &$msg): void
+    private function damageRandomShipSystem(ShipInterface $ship, &$msg, $percent = null): void
     {
         $healthySystems = $ship->getHealthySystems();
         shuffle($healthySystems);
 
         if (count($healthySystems) > 0) {
             $system = $healthySystems[0];
-            $this->damageShipSystem($ship, $system, rand(1, 70), $msg);
+
+            $this->damageShipSystem($ship, $system, $percent ?? rand(1, 70), $msg);
             //catch invalidsystemexception
         }
     }
