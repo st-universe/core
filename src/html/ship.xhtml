@@ -45,7 +45,8 @@
 							src="assets/buttons/lss1.png" name="lss_panel"
 							title="Langstreckensensoren deaktivieren" /></a>
 				</td>
-				<td class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.</td>
+				<td style="font-size: 0.6vw;" class="th" tal:repeat="row panel/getHeadRow" tal:content="row/value">.
+				</td>
 			</tr>
 			<tr tal:repeat="row panel/getRows">
 				<tal:block tal:repeat="entry row/getEntries">
