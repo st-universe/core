@@ -14,6 +14,8 @@ class VisualNavPanel
 {
     private $ship;
 
+    private $showOuterMap;
+
     private $user;
 
     private LoggerUtilInterface $loggerUtil;
@@ -34,6 +36,9 @@ class VisualNavPanel
         $this->loggerUtil = $loggerUtil;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
+
+        $this->showOuterMap = $this->getShip()->getSystem() === null
+            || $this->getShip()->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR;
     }
 
     function getShip()
@@ -101,10 +106,7 @@ class VisualNavPanel
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        if (
-            $this->getShip()->getSystem() === null
-            || $this->getShip()->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
-        ) {
+        if ($this->showOuterMap) {
             $result = $this->getOuterSystemResult();
         } else {
             $result = $this->getInnerSystemResult();
@@ -164,15 +166,22 @@ class VisualNavPanel
                 $min++;
                 continue;
             }
-            if ($this->getShip()->getSystem() === null && $min > MapEnum::MAP_MAX_X) {
+            if ($this->showOuterMap && $min > MapEnum::MAP_MAX_X) {
                 break;
             }
-            if ($this->getShip()->getSystem() !== null && $min > $this->getShip()->getSystem()->getMaxX()) {
+            if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {
                 break;
             }
             $row[]['value'] = $min;
             $min++;
         }
         return $row;
+    }
+
+    function getViewportPerColumn()
+    {
+        $navPercentage = $this->getShip()->isBase() ? 50 : 33;
+
+        return number_format($navPercentage / count($this->getHeadRow()), 1);
     }
 }
