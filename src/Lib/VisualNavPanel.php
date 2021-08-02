@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Stu\Component\Map\MapEnum;
-use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -101,10 +101,13 @@ class VisualNavPanel
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        if ($this->getShip()->getSystem() !== null) {
-            $result = $this->getInnerSystemResult();
-        } else {
+        if (
+            $this->getShip()->getSystem() === null
+            || $this->getShip()->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR
+        ) {
             $result = $this->getOuterSystemResult();
+        } else {
+            $result = $this->getInnerSystemResult();
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
