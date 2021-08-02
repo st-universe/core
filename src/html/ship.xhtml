@@ -37,7 +37,8 @@
 		</tal:block>
 	</table>
 	<div tal:condition="SHIP/getLss" style="float:left;">
-		<table tal:define="panel VISUAL_NAV_PANEL" class="lssarea" cellpadding="0" cellspacing="0">
+		<table tal:define="panel VISUAL_NAV_PANEL; viewportScale panel/getViewportPerColumn" class="lssarea"
+			cellpadding="0" cellspacing="0">
 			<tr>
 				<td style="text-align: center; height: 30px;">
 					<a phptal:cache="1d per SHIP/getId" href="ship.php?B_DEACTIVATE_LSS=1&id=${SHIP/getId}"><img
@@ -52,15 +53,16 @@
 						tal:content="entry/getRow" phptal:cache="1d per entry/getRow">.</td>
 					<td tal:condition="not:entry/getRow" tal:define="code entry/getSubspaceCode"
 						tal:attributes="class entry/getCSSClass"
-						style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw; background-size: cover;">
+						style="background-image: url(assets/map/${entry/getMapfieldType}.png); width: ${viewportScale}vw; height: ${viewportScale}vw; background-size: cover;">
 						<tal:block tal:condition="entry/isClickable">
-							<div style="width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw;"
+							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText"
 								onclick="moveToPosition(${entry/getPosX},${entry/getPosY});">
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
-									style="width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw;" />
-								<div style="font-size: 0.6vw;" class="centered" tal:content="entry/getDisplayCount">.
+									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+								<div style="font-size: ${viewportScale};" class="centered"
+									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
 						</tal:block>
@@ -68,7 +70,7 @@
 							<div class="imgOverlayText">
 								<img tal:condition="php:SHIP.getSubspaceState() AND code"
 									src="assets/subspace/generated/${code}.png"
-									style="width: ${panel/getViewportPerColumn}vw; height: ${panel/getViewportPerColumn}vw;" />
+									style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								<div style="font-size: 0.6vw;" class="centered" tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
