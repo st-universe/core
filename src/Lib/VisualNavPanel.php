@@ -154,28 +154,33 @@ class VisualNavPanel
         $this->rows = $rows;
     }
 
+    private $headRow = null;
+
     function getHeadRow()
     {
-        $cx = $this->getShip()->getPosX();
-        $cy = $this->getShip()->getPosY();
-        $range = $this->getShip()->getSensorRange();
-        $min = $cx - $range;
-        $max = $cx + $range;
-        while ($min <= $max) {
-            if ($min < 1) {
+        if ($this->headRow === null) {
+            $cx = $this->getShip()->getPosX();
+            $range = $this->getShip()->getSensorRange();
+            $min = $cx - $range;
+            $max = $cx + $range;
+            while ($min <= $max) {
+                if ($min < 1) {
+                    $min++;
+                    continue;
+                }
+                if ($this->showOuterMap && $min > MapEnum::MAP_MAX_X) {
+                    break;
+                }
+                if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {
+                    break;
+                }
+                $row[]['value'] = $min;
                 $min++;
-                continue;
             }
-            if ($this->showOuterMap && $min > MapEnum::MAP_MAX_X) {
-                break;
-            }
-            if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {
-                break;
-            }
-            $row[]['value'] = $min;
-            $min++;
+
+            $this->headRow = $row;
         }
-        return $row;
+        return $this->headRow;
     }
 
 
