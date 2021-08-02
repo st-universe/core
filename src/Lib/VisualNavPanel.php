@@ -178,16 +178,21 @@ class VisualNavPanel
         return $row;
     }
 
-    function getViewportPerColumn()
+    private function getViewport()
     {
         $navPercentage = $this->getShip()->isBase() ? 50 : 33;
         $perColumn = $navPercentage / count($this->getHeadRow());
 
-        return number_format(min($perColumn, 2.5), 1);
+        return min($perColumn, 2.5);
+    }
+
+    function getViewportPerColumn()
+    {
+        return number_format($this->getViewport(), 1);
     }
 
     function getViewportForFont()
     {
-        return $this->getViewportForFont / 2;
+        return number_format($this->getViewport() / 2, 1);
     }
 }
