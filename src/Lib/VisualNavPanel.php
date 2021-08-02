@@ -186,13 +186,23 @@ class VisualNavPanel
         return min($perColumn, 2.5);
     }
 
+    private $viewportPerColumn = null;
+
     function getViewportPerColumn()
     {
-        return number_format($this->getViewport(), 1);
+        if ($this->viewportPerColumn === null) {
+            $this->viewportPerColumn = number_format($this->getViewport(), 1);
+        }
+        return $this->viewportPerColumn;
     }
+
+    private $viewportForFont = null;
 
     function getViewportForFont()
     {
-        return number_format($this->getViewport() / 2, 1);
+        if ($this->viewportForFont === null) {
+            $this->viewportForFont = number_format($this->getViewport() / 2, 1);
+        }
+        return $this->viewportForFont;
     }
 }
