@@ -6,6 +6,8 @@ namespace Stu\Component\Ship\Nbs;
 
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipNfsIterator;
 use Stu\Orm\Entity\ShipInterface;
@@ -14,14 +16,18 @@ use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 
 final class NbsUtility implements NbsUtilityInterface
 {
+    private LoggerUtilInterface $loggerUtil;
+
     private TachyonScanRepositoryInterface $tachyonScanRepository;
 
     private ShipRepositoryInterface $shipRepository;
 
     public function __construct(
+        LoggerUtilInterface $loggerUtil,
         TachyonScanRepositoryInterface $tachyonScanRepository,
         ShipRepositoryInterface $shipRepository
     ) {
+        $this->loggerUtil = $loggerUtil;
         $this->tachyonScanRepository = $tachyonScanRepository;
         $this->shipRepository = $shipRepository;
     }
@@ -38,6 +44,12 @@ final class NbsUtility implements NbsUtilityInterface
         bool $tachyonActive,
         int $mapId = null
     ): void {
+        if ($ship->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
+
+        $this->loggerUtil->log(sprintf('setNbsTemplateVars, mit mapId: %d', $mapId ?? 0));
+
         $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
             true,
