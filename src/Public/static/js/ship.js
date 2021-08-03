@@ -96,11 +96,15 @@ function showScanWindow(shipid, target) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SCAN=1&target=' + target);
 }
-function showSectorScanWindow(obj) {
+function showSectorScanWindow(obj, x, y) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 200, pos[0], pos[1] - 400);
-	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
+	if (x && y) {
+		ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SENSOR_SCAN=1&cx=' + x + '&cy=' + y);
+	} else {
+		ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SECTOR_SCAN=1');
+	}
 }
 function showAstroEntryWindow() {
 	closeAjaxWindow();

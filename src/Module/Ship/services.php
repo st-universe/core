@@ -171,7 +171,6 @@ use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
 use Stu\Module\Ship\View\ShowTradeMenuTransfer\ShowTradeMenuTransfer;
 use Stu\Module\Ship\View\ShowTroopTransfer\ShowTroopTransfer;
-use Stu\Module\Station\Action\BuildStation\BuildStation;
 
 use function DI\autowire;
 
@@ -293,8 +292,7 @@ return [
         StartShuttle::ACTION_IDENTIFIER => autowire(StartShuttle::class),
         StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
         LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class),
-        BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class),
-        BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class)
+        BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

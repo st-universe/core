@@ -62,5 +62,23 @@
     </table>
   </tal:block>
 </metal:macro>
+<metal:macro metal:define-macro="sensorscan">
+  <tal:block tal:condition="not:ERROR">
+    <div style="width: 505px; float: left;">
+      <div class="divhead">Signaturen</div>
+      <div class="divbody">
+        <metal:macro metal:use-macro="html/shipmacros.xhtml/sectorscan">
+      </div>
+    </div>
+    <div style="margin-left: 5px; width: 200px; float: left;">
+      <div class="divhead">Scan</div>
+      <div class="divbody">
+        <tal:block tal:condition="HAS_NBS">
+          <metal:macro metal:use-macro="html/shipmacros.xhtml/nbsblock" />
+        </tal:block>
+      </div>
+    </div>
+  </tal:block>
+</metal:macro>
 
 </html>

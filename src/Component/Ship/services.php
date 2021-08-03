@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship;
 
+use Stu\Component\Ship\Nbs\NbsUtility;
+use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\Storage\ShipStorageManager;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManager;
@@ -36,6 +38,7 @@ use function DI\create;
 
 return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
+    NbsUtilityInterface::class => autowire(NbsUtility::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
             ShipSystemTypeEnum::SYSTEM_CLOAK => autowire(CloakShipSystem::class),

@@ -19,6 +19,163 @@
     <th style="width: 35px;"></th>
   </tr>
 </metal:macro>
+<metal:macro metal:define-macro="nbsblock">
+  <tal:block tal:condition="not:HAS_NBS">
+    <table tal:condition="not:CLOAK_NBS" class="tcal">
+      <tr>
+        <td>Es befinden sich keine Schiffe in diesem Sektor</td>
+      </tr>
+    </table>
+  </tal:block>
+  <tal:block tal:condition="CLOAK_NBS">
+    <table class="tcal">
+      <tr>
+        <td style="color: #f1a005;">Es befinden sich getarnte Schiffe in diesem Sektor</td>
+      </tr>
+    </table>
+  </tal:block>
+  <tal:block tal:condition="HAS_NBS">
+    <table class="tcal nbs" id="nbstab">
+      <metal:block metal:use-macro="nbslist_header" />
+      <tal:block tal:condition="STATION_NBS">
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="4">Stationen</td>
+        </tr>
+        <tr tal:repeat="ship STATION_NBS" tal:attributes="class string:row${repeat/ship/odd}">
+          <form id="nbsf_${ship/getId}" method="post" action="ship.php">
+            <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+            <input type="hidden" name="target" tal:attributes="value ship/getId" />
+            <input type="hidden" name="B_ATTACK_SHIP" value="1" />
+            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+            <metal:block metal:use-macro="nbslist_body" />
+          </form>
+        </tr>
+      </tal:block>
+      <tal:block tal:condition="FLEET_NBS">
+        <tal:block tal:repeat="data FLEET_NBS">
+          <tal:block tal:condition="not:data/isHidden">
+            <tr>
+              <td colspan="2">
+                <span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
+                <tal:block tal:condition="data/showManagement">
+                  <tal:block tal:condition="not:SHIP/getFleetId">
+                    (<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}" title="Flotte beitreten">+</a>)
+                  </tal:block>
+                </tal:block>
+              </td>
+              <td colspan="3">
+                <img tal:condition="data/getDefendedColony" src="/assets/buttons/defend1.png"
+                  title="verteidigt die Kolonie" />
+                <img tal:condition="data/getBlockedColony" src="/assets/buttons/block1.png"
+                  title="blockiert die Kolonie" />
+                <span tal:condition="not:data/showManagement" tal:content="structure bbcode:data/getName">NAME</span>
+                <tal:block tal:condition="data/showManagement">
+                  <a href="?SHOW_SHIP=1&id=${data/getLeadShip/getId}"
+                    tal:content="structure bbcode:data/getName">NAME</a>
+                </tal:block>
+                <span id="hidefleet${data/getId}">
+                  (<a href="javascript:void(0);" onclick="hideFleet(${data/getId});">zuklappen</a>)
+                </span>
+                <span style="display: none;" id="showfleet${data/getId}">
+                  (<a href="javascript:void(0);" onclick="showFleet(${data/getId});">aufklappen</a>)
+                </span>
+              </td>
+              <td>
+                <div id="fleetuser${data/getId}" style="display: none;">
+                  <a href="javascript:void(0);" onclick="openPmWindow(${data/getUserId})"
+                    title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
+                    onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
+                    onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
+                    <img src="/assets/buttons/msg1.png" name="nbsPm${data/getId}" />
+                  </a>
+                  <span tal:content="structure bbcode:data/getUserName">USERNAME</span>
+                  (${data/getUserId})
+                </div>
+              </td>
+            </tr>
+            <tal:block tal:repeat="ship data/getVisibleShips">
+              <tr tal:attributes="class string:row${repeat/ship/odd} fleet${data/getId}">
+                <form id="nbsf_${ship/getId}" method="post" action="ship.php">
+                  <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+                  <input type="hidden" name="target" tal:attributes="value ship/getId" />
+                  <input type="hidden" name="B_ATTACK_SHIP" value="1" />
+                  <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                  <metal:block metal:use-macro="nbslist_body" />
+                </form>
+              </tr>
+            </tal:block>
+          </tal:block>
+          <tal:block tal:condition="data/isHidden">
+            <tr>
+              <td colspan="2">
+                <span tal:replace="data/getVisibleShipsCount">COUNT</span> Schiffe
+                <tal:block tal:condition="data/showManagement">
+                  <tal:block tal:condition="not:SHIP/getFleetId">
+                    (<a href="?B_JOIN_FLEET=1&id=${SHIP/getId}&fleetid=${data/getId}" title="Flotte beitreten">+</a>)
+                  </tal:block>
+                </tal:block>
+              </td>
+              <td colspan="3">
+                <img tal:condition="data/getDefendedColony" src="/assets/buttons/defend1.png"
+                  title="verteidigt die Kolonie" />
+                <img tal:condition="data/getBlockedColony" src="/assets/buttons/block1.png"
+                  title="blockiert die Kolonie" />
+                <span tal:condition="not:data/showManagement" tal:content="structure bbcode:data/getName">NAME</span>
+                <tal:block tal:condition="data/showManagement">
+                  <a href="?SHOW_SHIP=1&id=${data/getLeadShip/getId}"
+                    tal:content="structure bbcode:data/getName">NAME</a>
+                </tal:block>
+                <span style="display: none;" id="hidefleet${data/getId}">
+                  (<a href="javascript:void(0);" onclick="hideFleet(${data/getId});">zuklappen</a>)
+                </span>
+                <span id="showfleet${data/getId}">
+                  (<a href="javascript:void(0);" onclick="showFleet(${data/getId});">aufklappen</a>)
+                </span>
+              </td>
+              <td>
+                <div id="fleetuser${data/getId}">
+                  <a href="javascript:void(0);" onclick="openPmWindow(${data/getUserId})"
+                    title="Nachricht an ${bbcode2txt:data/getUserName} verfassen"
+                    onmouseover="cp('nbsPm${data/getId}','buttons/msg2')"
+                    onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
+                    <img src="/assets/buttons/msg1.png" name="nbsPm${data/getId}" />
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tal:block tal:repeat="ship data/getVisibleShips">
+              <tr tal:attributes="class string:row${repeat/ship/odd} fleet${data/getId}" style="display: none;">
+                <form id="nbsf_${ship/getId}" method="post" action="ship.php">
+                  <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+                  <input type="hidden" name="target" tal:attributes="value ship/getId" />
+                  <input type="hidden" name="B_ATTACK_SHIP" value="1" />
+                  <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+                  <metal:block metal:use-macro="nbslist_body" />
+                </form>
+              </tr>
+            </tal:block>
+          </tal:block>
+        </tal:block>
+      </tal:block>
+      <tal:block tal:condition="SHIP_NBS">
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="4">Einzelschiffe</td>
+        </tr>
+        <tr tal:repeat="ship SHIP_NBS" tal:attributes="class string:row${repeat/ship/odd}">
+          <form id="nbsf_${ship/getId}" method="post" action="ship.php">
+            <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+            <input type="hidden" name="target" tal:attributes="value ship/getId" />
+            <input type="hidden" name="B_ATTACK_SHIP" value="1" />
+            <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+            <metal:block metal:use-macro="nbslist_body" />
+          </form>
+        </tr>
+      </tal:block>
+    </table>
+  </tal:block>
+</metal:macro>
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
