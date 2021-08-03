@@ -141,7 +141,7 @@ class VisualNavPanel
                 $data,
                 $this->isTachyonSystemActive,
                 $this->tachyonFresh,
-                $this->getShip()->canMove()
+                $this->getShip()
             );
             $entry->currentShipPosX = $cx;
             $entry->currentShipPosY = $cy;
@@ -194,7 +194,7 @@ class VisualNavPanel
         if (!$this->viewportPerColumn) {
             $navPercentage = $this->getShip()->isBase() ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
-            $this->viewport = min($perColumn, 2.0);
+            $this->viewport = min($perColumn, 1.7);
         }
         return $this->viewport;
     }

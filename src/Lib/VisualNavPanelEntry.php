@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Orm\Entity\ShipInterface;
+
 class VisualNavPanelEntry
 {
 
@@ -11,14 +14,14 @@ class VisualNavPanelEntry
 
     private $tachyonFresh;
 
-    private $canMove;
+    private $ship;
 
-    function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false, bool $canMove = true)
+    function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false, ShipInterface $ship = null)
     {
         $this->data = $entry;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
-        $this->canMove = $canMove;
+        $this->ship = $ship;
     }
 
     function getPosX()
@@ -138,7 +141,10 @@ class VisualNavPanelEntry
 
     function isClickAble()
     {
-        if (!$this->canMove) {
+        if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
+            return true;
+        }
+        if (!$this->ship->canMove()) {
             return false;
         }
         if (!$this->isCurrentShipPosition() && ($this->getPosX() == $this->currentShipPosX || $this->getPosY() == $this->currentShipPosY)) {
@@ -149,6 +155,9 @@ class VisualNavPanelEntry
 
     function getOnClick()
     {
+        if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
+            return 'showSectorScanWindow(this);';
+        }
         return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
     }
 
