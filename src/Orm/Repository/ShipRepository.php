@@ -428,10 +428,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
-        bool $showCloaked = false
+        bool $showCloaked = false,
+        int $mapId = null
     ): iterable {
 
-        $isSystem = $ship->getSystem() !== null;
+        $isSystem = $mapId === null && $ship->getSystem() !== null;
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
@@ -486,7 +487,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'fieldId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'fieldId' => $mapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,

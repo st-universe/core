@@ -65,7 +65,7 @@ final class NbsUtility implements NbsUtilityInterface
         ), $ship->getUser()->getId());
 
         $fleetNbs = new FleetNfsIterator(
-            $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive),
+            $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive, $mapId),
             $ship,
             $session
         );
