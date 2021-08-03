@@ -99,7 +99,7 @@ function showScanWindow(shipid, target) {
 function showSectorScanWindow(obj, x, y) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0], pos[1] - 400);
+	openWindowPosition('elt', 1, 800, pos[0], pos[1] - 400);
 	if (x && y) {
 		ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SENSOR_SCAN=1&cx=' + x + '&cy=' + y);
 	} else {
