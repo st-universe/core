@@ -87,6 +87,8 @@ final class ShowSensorScan implements ViewControllerInterface
         $tachyonActive = $this->nbsUtility->isTachyonActive($ship);
         $this->nbsUtility->setNbsTemplateVars($ship, $game, null, $tachyonActive, $mapField->getId());
 
+
+        $game->setTemplateVar('MAPFIELD', $mapField);
         $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
