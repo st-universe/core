@@ -44,11 +44,6 @@ final class NbsUtility implements NbsUtilityInterface
         bool $tachyonActive,
         int $mapId = null
     ): void {
-        if ($ship->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
-        $this->loggerUtil->log(sprintf('setNbsTemplateVars, mit mapId: %d', $mapId ?? 0));
 
         $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
