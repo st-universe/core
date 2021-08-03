@@ -12,7 +12,7 @@ final class FleetNfsIterator implements Iterator
 {
     private ShipInterface $currentShip;
 
-    private SessionInterface $session;
+    private ?SessionInterface $session;
 
     protected int $position = 0;
 
