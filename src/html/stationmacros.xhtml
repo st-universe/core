@@ -175,7 +175,7 @@
   <tal:block tal:condition="ship/isOwnedByCurrentUser">
     <td style="width: 200px; background-color: #000000 !important;">
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}">
-        <metal:macro metal:use-macro="shipimage" />
+        <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
       </a>
     </td>
     <td>
@@ -184,7 +184,7 @@
   </tal:block>
   <tal:block tal:condition="not:ship/isOwnedByCurrentUser">
     <td style="width: 200px; background-color: #000000 !important;">
-      <metal:macro metal:use-macro="shipimage" />
+      <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" />
     </td>
     <td>
       <span tal:content="structure bbcode:ship/getName">.</span>
