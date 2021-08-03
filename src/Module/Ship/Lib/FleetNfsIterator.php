@@ -19,7 +19,7 @@ final class FleetNfsIterator implements Iterator
     private array $fleets = [];
 
 
-    public function __construct(array $ships, $currentShip, SessionInterface $session)
+    public function __construct(array $ships, $currentShip, ?SessionInterface $session)
     {
         $this->currentShip = $currentShip;
         $this->session = $session;

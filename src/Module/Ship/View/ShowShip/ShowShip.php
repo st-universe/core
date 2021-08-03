@@ -8,6 +8,7 @@ use NavPanel;
 use request;
 use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
+use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Exception\ShipDoesNotExistException;
@@ -17,18 +18,13 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\FleetNfsIterator;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\Lib\ShipNfsIterator;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\TachyonScanRepositoryInterface;
 use VisualNavPanel;
 
 final class ShowShip implements ViewControllerInterface
@@ -41,19 +37,17 @@ final class ShowShip implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ColonyRepositoryInterface $colonyRepository;
 
     private ColonizationCheckerInterface $colonizationChecker;
 
     private DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory;
 
-    private TachyonScanRepositoryInterface $tachyonScanRepository;
-
     private AstroEntryRepositoryInterface $astroEntryRepository;
 
     private DatabaseUserRepositoryInterface $databaseUserRepository;
+
+    private NbsUtilityInterface $nbsUtility;
 
     private StationUtilityInterface $stationUtility;
 
@@ -61,25 +55,23 @@ final class ShowShip implements ViewControllerInterface
         SessionInterface $session,
         LoggerUtilInterface $loggerUtil,
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
         ColonizationCheckerInterface $colonizationChecker,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory,
-        TachyonScanRepositoryInterface $tachyonScanRepository,
         AstroEntryRepositoryInterface $astroEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
+        NbsUtilityInterface $nbsUtility,
         StationUtilityInterface $stationUtility
     ) {
         $this->session = $session;
         $this->loggerUtil = $loggerUtil;
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->colonizationChecker = $colonizationChecker;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
-        $this->tachyonScanRepository = $tachyonScanRepository;
         $this->astroEntryRepository = $astroEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
+        $this->nbsUtility = $nbsUtility;
         $this->stationUtility = $stationUtility;
     }
 
@@ -117,26 +109,8 @@ final class ShowShip implements ViewControllerInterface
 
         // check if tachyon scan still active
         if (!$tachyonActive) {
-            $tachyonActive = !empty($this->tachyonScanRepository->findActiveByShipLocationAndOwner($ship));
+            $tachyonActive = $this->nbsUtility->isTachyonActive($ship);
         }
-
-        $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
-            $ship,
-            true,
-            $tachyonActive
-        ), $userId);
-
-        $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
-            $ship,
-            false,
-            $tachyonActive
-        ), $userId);
-
-        $fleetNbs = new FleetNfsIterator(
-            $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive),
-            $ship,
-            $this->session
-        );
 
         $canColonize = false;
         if ($colony) {
@@ -175,19 +149,12 @@ final class ShowShip implements ViewControllerInterface
             $tachyonFresh
         ));
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
-        $game->setTemplateVar(
-            'HAS_NBS',
-            $fleetNbs->count() > 0 || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
-        );
 
         $this->doConstructionStuff($ship, $game);
 
+        $this->nbsUtility->setNbsTemplateVars($ship, $game, $this->session, $tachyonActive);
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
-        $game->setTemplateVar('CLOAK_NBS', !$tachyonActive && $ship->getTachyonState() && $this->shipRepository->isCloakedShipAtLocation($ship));
-        $game->setTemplateVar('FLEET_NBS', $fleetNbs);
-        $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
-        $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);

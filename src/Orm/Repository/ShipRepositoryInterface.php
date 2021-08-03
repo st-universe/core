@@ -119,7 +119,8 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getSingleShipScannerResults(
         ShipInterface $ship,
         bool $isBase,
-        bool $showCloaked = false
+        bool $showCloaked = false,
+        int $mapId = null
     ): iterable;
 
     public function isCloakedShipAtLocation(ShipInterface $ship): bool;

@@ -19,7 +19,7 @@ final class FleetNfsItem
     public function __construct(
         array $ships,
         ShipInterface $currentShip,
-        SessionInterface $session
+        ?SessionInterface $session
     ) {
         $this->ships = $ships;
         $this->session = $session;
@@ -28,7 +28,7 @@ final class FleetNfsItem
 
     public function isHidden(): bool
     {
-        return $this->session->hasSessionValue('hiddenfleets', $this->getId());
+        return $this->session !== null && $this->session->hasSessionValue('hiddenfleets', $this->getId());
     }
 
     public function getVisibleShips(): iterable

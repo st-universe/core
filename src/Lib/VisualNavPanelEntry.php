@@ -156,7 +156,7 @@ class VisualNavPanelEntry
     function getOnClick()
     {
         if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
-            return 'showSectorScanWindow(this);';
+            return sprintf('showSectorScanWindow(this, %d, %d);', $this->getPosX(), $this->getPosY());
         }
         return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
     }
