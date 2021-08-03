@@ -13,8 +13,7 @@ final class FleetNfsItem
 
     private ShipInterface $currentShip;
 
-    private SessionInterface $session;
-
+    private ?SessionInterface $session;
 
     public function __construct(
         array $ships,
