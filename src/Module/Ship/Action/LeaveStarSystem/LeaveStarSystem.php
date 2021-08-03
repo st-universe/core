@@ -169,13 +169,14 @@ final class LeaveStarSystem implements ActionControllerInterface
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
         }
-        $ship->setMap($map);
-        $ship->setStarsystemMap(null);
 
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
             $game->addInformation(sprintf(_('Die %s hat die Kartographierungs-Finalisierung abgebrochen'), $ship->getName()));
         }
+
+        $ship->setMap($map);
+        $ship->setStarsystemMap(null);
     }
 
 
