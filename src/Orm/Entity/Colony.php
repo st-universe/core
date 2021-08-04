@@ -554,7 +554,7 @@ class Colony implements ColonyInterface
                 $this->getSy()
             );
 
-            foreach ($shiplist as $key => $obj) {
+            foreach ($shiplist as $obj) {
                 $this->shiplist[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
                 if (!array_key_exists('name', $this->shiplist[$obj->getFleetId()])) {
                     if ($obj->getFleetId() == 0) {

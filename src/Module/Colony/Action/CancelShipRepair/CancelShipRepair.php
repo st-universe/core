@@ -54,10 +54,10 @@ final class CancelShipRepair implements ActionControllerInterface
         $ship->cancelRepair();
         $game->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getName()));
 
-        if ($ship->getUserId() != $userId) {
+        if ($ship->getUser()->getId() != $userId) {
             $this->privateMessageSender->send(
                 $userId,
-                $ship->getUserId(),
+                $ship->getUser()->getId(),
                 sprintf("Die Reparatur der %s in Sektor %s wurde abgebrochen.", $ship->getName(), $ship->getSectorString()),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );

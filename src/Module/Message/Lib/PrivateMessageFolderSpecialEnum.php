@@ -17,7 +17,7 @@ final class PrivateMessageFolderSpecialEnum
     public const DEFAULT_CATEGORIES = [
         self::PM_SPECIAL_MAIN => 'Persönlich',
         self::PM_SPECIAL_SHIP => 'Schiffe',
-        self::PM_SPECIAL_SHIP => 'Stationen',
+        self::PM_SPECIAL_STATION => 'Stationen',
         self::PM_SPECIAL_COLONY => 'Kolonien',
         self::PM_SPECIAL_TRADE => 'Handel',
         self::PM_SPECIAL_SYSTEM => 'Systemmeldungen',
