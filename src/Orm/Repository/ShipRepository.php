@@ -169,7 +169,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'fleets_id' => $fleetId,
                 'is_base' => $isBase,
             ],
-            $isBase ? ['max_huelle' => 'desc'] : ['id' => 'asc']
+            $isBase ? ['max_huelle' => 'desc', 'id' => 'asc'] : ['id' => 'asc']
         );
     }
 
