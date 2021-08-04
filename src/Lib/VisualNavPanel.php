@@ -160,7 +160,7 @@ class VisualNavPanel
     function getHeadRow()
     {
         if ($this->headRow === null) {
-            $cx = $this->showOuterMap ? $this->getShip()->getCx : $this->getShip()->getPosX();
+            $cx = $this->showOuterMap ? $this->getShip()->getCx() : $this->getShip()->getPosX();
             $range = $this->getShip()->getSensorRange();
             $min = $cx - $range;
             $max = $cx + $range;
