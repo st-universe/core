@@ -59,6 +59,16 @@ final class ShowSensorScan implements ViewControllerInterface
 
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
+
+        if (
+            $cx < $ship->getCx() - $ship->getSensorRange()
+            || $cx > $ship->getCx() + $ship->getSensorRange()
+            || $cy < $ship->getCy() - $ship->getSensorRange()
+            || $cy > $ship->getCy() + $ship->getSensorRange()
+        ) {
+            return;
+        }
+
         $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
 
 
