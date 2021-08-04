@@ -64,18 +64,20 @@
 </metal:macro>
 <metal:macro metal:define-macro="sensorscan">
   <tal:block tal:condition="not:ERROR">
-    <div style="width: 40%; float: left;">
-      <div class="divhead">Signaturen</div>
-      <div class="divbody">
-        <metal:macro metal:use-macro="sectorscan" />
-      </div>
-    </div>
-    <div style="margin-left: 5px; width: 59%; float: left;">
-      <div class="divhead">Aktueller Scan</div>
-      <div class="divbody">
-        <metal:macro metal:use-macro="nbsblock" />
-      </div>
-    </div>
+    <table class="tcal">
+      <tr>
+        <th style="width: 40%;">Signaturen</th>
+        <th style="width: 60%;">Aktueller Scan</th>
+      </tr>
+      <tr>
+        <td>
+          <metal:macro metal:use-macro="sectorscan" />
+        </td>
+        <td>
+          <metal:macro metal:use-macro="nbsblock" />
+        </td>
+      </tr>
+    </table>
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="sectorscan">
