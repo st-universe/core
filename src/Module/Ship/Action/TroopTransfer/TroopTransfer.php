@@ -231,6 +231,13 @@ final class TroopTransfer implements ActionControllerInterface
                 if ($amount == $targetCrewCount) {
                     $this->shipSystemManager->deactivateAll($target);
                     $target->setAlertState(1);
+
+                    foreach ($target->getDockedShips() as $dockedShip) {
+                        $dockedShip->setDockedTo(null);
+                        $this->shipRepository->save($dockedShip);
+                    }
+
+                    $target->getDockedShips()->clear();
                     $this->shipRepository->save($target);
                 }
             }
