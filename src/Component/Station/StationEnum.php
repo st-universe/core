@@ -17,7 +17,7 @@ final class StationEnum
     // station role buildable locations
     public const BUILDABLE_LOCATIONS_PER_ROLE = [
         ShipRumpEnum::SHIP_ROLE_SHIPYARD => self::BUILDABLE_INSIDE_SYSTEM,
-        ShipRumpEnum::SHIP_ROLE_SENSOR => self::BUILDABLE_OUTSIDE_SYSTEM,
+        ShipRumpEnum::SHIP_ROLE_SENSOR => self::BUILDABLE_EVERYWHERE,
         ShipRumpEnum::SHIP_ROLE_DEPOT_LARGE => self::BUILDABLE_INSIDE_SYSTEM,
         ShipRumpEnum::SHIP_ROLE_BASE => self::BUILDABLE_OVER_SYSTEM,
         ShipRumpEnum::SHIP_ROLE_OUTPOST => self::BUILDABLE_OUTSIDE_SYSTEM,
