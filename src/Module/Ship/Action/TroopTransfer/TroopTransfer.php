@@ -173,6 +173,11 @@ final class TroopTransfer implements ActionControllerInterface
             }
         } else {
             if ($isUnload) {
+                if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+                    $game->addInformation(sprintf(_('Die %s hat keine Lebenserhaltungssysteme'), $target->getName()));
+                    return;
+                }
+
                 $amount = min(
                     $requestedTransferCount,
                     $this->transferUtility->getBeamableTroopCount($ship),
