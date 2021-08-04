@@ -17,6 +17,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class EscapeTractorBeam implements ActionControllerInterface
@@ -100,7 +101,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function escape($ship, $game): void
+    private function escape(ShipInterface $ship, $game): void
     {
         $otherShip = $ship->getTraktorShip();
 
@@ -109,17 +110,20 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $this->shipRepository->save($otherShip);
 
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $otherShip->getId());
+
         $this->privateMessageSender->send(
-            (int) $ship->getUserId(),
-            (int) $otherShip->getUserId(),
+            $ship->getUser()->getId(),
+            $otherShip->getUser()->getId(),
             sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $otherShip->getName(), $ship->getSectorString()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $otherShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $href
         );
 
         $game->addInformation(_('Der Fluchtversuch ist gelungen'));
     }
 
-    private function sufferDeflectorDamage($ship, GameControllerInterface $game): void
+    private function sufferDeflectorDamage(ShipInterface $ship, GameControllerInterface $game): void
     {
         $msg = [];
         $msg[] = _('Der Fluchtversuch ist fehlgeschlagen:');
@@ -132,23 +136,26 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getTraktorShip()->getId());
 
         $this->privateMessageSender->send(
-            (int) $ship->getUserId(),
-            (int) $ship->getTraktorShip()->getUserId(),
+            $ship->getUserId(),
+            $ship->getTraktorShip()->getUserId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $ship->getTraktorShip()->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
     }
 
-    private function sufferHullDamage($ship, $game): void
+    private function sufferHullDamage(ShipInterface $ship, $game): void
     {
-        $otherUserId = $ship->getTraktorShip()->getUserId();
+        $otherShip = $ship->getTraktorShip();
+        $otherUserId = $otherShip->getUser()->getId();
         $shipName = $ship->getName();
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
 
         $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHuell() * rand(10, 25) / 100)), $ship);
         $game->addInformationMergeDown($damageMsg);
+
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $otherShip->getId());
 
         if ($ship->getIsDestroyed()) {
             $this->entryCreator->addShipEntry(
@@ -162,18 +169,16 @@ final class EscapeTractorBeam implements ActionControllerInterface
             }
 
             $this->privateMessageSender->send(
-                (int) $ship->getUserId(),
-                (int) $otherUserId,
+                $ship->getUser()->getId(),
+                $otherUserId,
                 sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $shipName),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $otherShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         } else {
 
-            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getTraktorShip()->getId());
-
             $this->privateMessageSender->send(
-                (int) $ship->getUserId(),
-                (int) $ship->getTraktorShip()->getUserId(),
+                $ship->getUser()->getId(),
+                $otherUserId,
                 sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $shipName),
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
                 $href

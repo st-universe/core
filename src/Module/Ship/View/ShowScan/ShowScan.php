@@ -83,7 +83,7 @@ final class ShowScan implements ViewControllerInterface
                 $target->getName(),
                 $target->getSectorString()
             ),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $target->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
 

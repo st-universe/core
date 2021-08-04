@@ -253,7 +253,7 @@ final class ShipTick implements ShipTickInterface
             GameEnum::USER_NOONE,
             (int) $ship->getUser()->getId(),
             $text,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $ship->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
 

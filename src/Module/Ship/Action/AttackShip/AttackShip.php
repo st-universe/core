@@ -87,7 +87,8 @@ final class AttackShip implements ActionControllerInterface
             $ship->setDockedTo(null);
         }
         $fleet = false;
-        $target_user_id = $target->getUserId();
+        $target_user_id = $target->getUser()->getId();
+        $isTargetBase = $target->isBase();
         if ($ship->isFleetLeader()) {
             $attacker = $ship->getFleet()->getShips()->toArray();
             $fleet = true;
@@ -117,14 +118,14 @@ final class AttackShip implements ActionControllerInterface
         $this->shipAttackCycle->cycle();
 
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
-        foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
+        foreach ($this->shipAttackCycle->getMessages() as $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(
             $userId,
             (int) $target_user_id,
             $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
         if ($ship->getIsDestroyed()) {

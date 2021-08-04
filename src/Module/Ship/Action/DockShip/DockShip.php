@@ -121,7 +121,7 @@ final class DockShip implements ActionControllerInterface
             $userId,
             (int)$target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
         );
         $game->addInformation('Andockvorgang abgeschlossen');
     }

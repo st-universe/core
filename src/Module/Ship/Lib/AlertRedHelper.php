@@ -109,8 +109,9 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations, $isColonyDefense = false): void
     {
-        $alert_user_id = $alertShip->getUserId();
+        $alert_user_id = $alertShip->getUser()->getId();
         $lead_user_id = $leadShip->getUser()->getId();
+        $isAlertShipBase = $alertShip->isBase();
 
         if ($alertShip->getFleetId()) {
             $attacker = [];
@@ -149,17 +150,19 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->shipAttackCycle->cycle(true);
 
         $pm = sprintf(_('Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %d|%d') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
-        foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
+        foreach ($this->shipAttackCycle->getMessages() as $value) {
             $pm .= $value . "\n";
         }
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $alertShip->getId());
         $this->privateMessageSender->send(
             (int) $lead_user_id,
             (int) $alert_user_id,
             $pm,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $isAlertShipBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $alertShip->getIsDestroyed() ? null : $href
         );
         $pm = sprintf(_('Fremde Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %d|%d') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
-        foreach ($this->shipAttackCycle->getMessages() as $key => $value) {
+        foreach ($this->shipAttackCycle->getMessages() as $value) {
             $pm .= $value . "\n";
         }
         $this->privateMessageSender->send(

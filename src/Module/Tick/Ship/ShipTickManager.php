@@ -174,7 +174,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             GameEnum::USER_NOONE,
             (int) $user->getId(),
             $msg,
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            $randomShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
         //do alert red stuff
