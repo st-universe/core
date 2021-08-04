@@ -189,7 +189,7 @@ final class ShipLeaver implements ShipLeaverInterface
 
             if ($pods->getSystem() !== null) {
                 $map = $this->starSystemMapRepository->getByCoordinates(
-                    $pods->getSystem()->getId,
+                    $pods->getSystem()->getId(),
                     $newXY[0],
                     $newXY[1]
                 );
