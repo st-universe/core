@@ -35,6 +35,7 @@ final class GetNewPrivateMessages extends Action
         $pmFolder = [
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM

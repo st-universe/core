@@ -139,6 +139,7 @@ class PrivateMessageFolder implements PrivateMessageFolderInterface
     {
         switch ($this->getSpecial()) {
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP:
+            case PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION:
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY:
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE:
             case PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM:
