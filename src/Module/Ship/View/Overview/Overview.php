@@ -31,7 +31,6 @@ final class Overview implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $fleets = $this->fleetRepository->getByUser($userId);
-        $bases = [];
         $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
 
         $game->appendNavigationPart(
@@ -49,10 +48,6 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateVar(
             'FLEETS',
             $fleets
-        );
-        $game->setTemplateVar(
-            'BASES',
-            $bases
         );
         $game->setTemplateVar(
             'SHIPS',

@@ -26,35 +26,15 @@ final class Overview implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $fleets = [];
         $bases = $this->shipRepository->getByUserAndFleetAndBase($userId, null, true);
-        $ships = [];
 
         $game->appendNavigationPart(
             'station.php',
             _('Stationen')
         );
         $game->setPageTitle(_('/ Stationen'));
-        //TODO shiplist separation != stations
-        $game->setTemplateFile('html/shiplist.xhtml');
+        $game->setTemplateFile('html/stationlist.xhtml');
 
-        //TODO clean vars
-        $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
-        $game->setTemplateVar(
-            'SHIPS_AVAILABLE',
-            $fleets !== [] || $ships !== [] || $bases !== []
-        );
-        $game->setTemplateVar(
-            'FLEETS',
-            $fleets
-        );
-        $game->setTemplateVar(
-            'BASES',
-            $bases
-        );
-        $game->setTemplateVar(
-            'SHIPS',
-            $ships
-        );
+        $game->setTemplateVar('BASES', $bases);
     }
 }
