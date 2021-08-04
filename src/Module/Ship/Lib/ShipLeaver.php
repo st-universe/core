@@ -72,6 +72,10 @@ final class ShipLeaver implements ShipLeaverInterface
             $this->changeFleetLeader($ship);
         }
 
+        if ($ship->getDockedShipCount() > 0) {
+            $this->undockShips($ship);
+        }
+
         if ($ship->getState() === ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
@@ -174,6 +178,14 @@ final class ShipLeaver implements ShipLeaverInterface
 
         $this->shipRepository->save($ship);
         $this->fleetRepository->save($fleet);
+    }
+
+    private function undockShips(ShipInterface $ship): void
+    {
+        foreach ($ship->getDockedShips() as $dockedShip) {
+            $dockedShip->setDockedTo(null);
+            $this->shipRepository->save($dockedShip);
+        }
     }
 
     private function returnToSafety(ShipInterface $pods, ShipInterface $ship)

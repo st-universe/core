@@ -202,6 +202,12 @@ final class ManageOrbitalShips implements ActionControllerInterface
                     $shipobj->getName()
                 );
 
+                foreach ($shipobj->getDockedShips() as $dockedShip) {
+                    $dockedShip->setDockedTo(null);
+                    $this->shipRepository->save($dockedShip);
+                }
+                $shipobj->getDockedShips()->clear();
+
                 $this->shipSystemManager->deactivateAll($shipobj);
                 $shipobj->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
             }
