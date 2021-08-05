@@ -385,6 +385,17 @@ ul.menu li div:hover, div.arrow:hover {
     color: #FF0000;
 }
 
+.starmap {
+    border: 1px solid #2d2d2d;
+    padding: 0 ! important;
+    padding-top: 8px;
+    color: #FFFFFF;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+
 .lss {
     border: 1px solid #2d2d2d;
     padding: 0 ! important;
