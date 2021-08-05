@@ -380,7 +380,7 @@
             </a>
           </div>
         </tal:block>
-        <div style="float:left; margin-right:4px;" tal:condition="ship/isBase">
+        <div style="float:left; margin-right:4px;" tal:condition="php: ship.isBase() AND NOT ship.getIsDestroyed()">
           <a tal:condition="not:SHIP/getDockedTo"
             href="?B_DOCK=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
             onmouseover="cp('dock_${ship/getId}','buttons/dock2')"
