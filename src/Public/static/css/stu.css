@@ -398,6 +398,7 @@ ul.menu li div:hover, div.arrow:hover {
 
 .lss {
     border: 1px solid #2d2d2d;
+    background-repeat: no-repeat;
     padding: 0 ! important;
     padding-top: 8px;
     color: #FFFFFF;
@@ -407,6 +408,7 @@ ul.menu li div:hover, div.arrow:hover {
 
 .lss_current {
     border: 1px solid #9b9b9b;
+    background-repeat: no-repeat;
     padding-top: 8px;
     padding: 0 ! important;
     color: #FFFFFF;
