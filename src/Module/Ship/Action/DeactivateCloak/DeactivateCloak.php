@@ -18,7 +18,7 @@ final class DeactivateCloak implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_CLOAK';
 
     private ActivatorDeactivatorHelperInterface $helper;
-    
+
     private AlertRedHelperInterface $alertRedHelper;
 
     private ShipLoaderInterface $shipLoader;
@@ -36,10 +36,8 @@ final class DeactivateCloak implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, $game);
-        
+
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -52,11 +50,16 @@ final class DeactivateCloak implements ActionControllerInterface
         //Alarm-Rot check
         $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
         shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip)
-        {
+        foreach ($shipsToShuffle as $alertShip) {
             $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
         }
         $game->addInformationMergeDown($informations);
+
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool

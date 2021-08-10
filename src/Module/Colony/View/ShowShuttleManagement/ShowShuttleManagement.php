@@ -81,14 +81,6 @@ final class ShowShuttleManagement implements ViewControllerInterface
         }
 
         $smi = current($shuttles);
-        $this->loggerUtil->log(
-            sprintf(
-                "size: %d, currentLoad: %d, colonyLoad: %d",
-                count($shuttles),
-                $smi->getCurrentLoad(),
-                $smi->getColonyLoad()
-            )
-        );
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('COLONY', $colony);

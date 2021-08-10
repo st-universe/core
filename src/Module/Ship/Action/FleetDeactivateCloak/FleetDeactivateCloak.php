@@ -35,8 +35,6 @@ final class FleetDeactivateCloak implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $this->helper->deactivateFleet(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_CLOAK, $game);
 
         $userId = $game->getUser()->getId();
@@ -51,11 +49,16 @@ final class FleetDeactivateCloak implements ActionControllerInterface
         //Alarm-Rot check
         $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
         shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip)
-        {
+        foreach ($shipsToShuffle as $alertShip) {
             $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
         }
         $game->addInformationMergeDown($informations);
+
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool
