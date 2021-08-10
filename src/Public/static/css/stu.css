@@ -396,6 +396,11 @@ ul.menu li div:hover, div.arrow:hover {
     vertical-align: middle;
 }
 
+.starmapInner {
+    width: 28px;
+    height: 28px;
+}
+
 .lss {
     border: 1px solid #2d2d2d;
     background-repeat: no-repeat;
