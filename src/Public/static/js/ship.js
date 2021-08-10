@@ -184,7 +184,7 @@ function showStationInformation(obj, rumpid) {
 	closeAjaxWindow();
 
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] + 400, pos[1]);
+	openWindowPosition('elt', 1, 200, pos[0] + 210, pos[1] - 180);
 	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&rid=' + rumpid);
 }
 function toggleSpecialModuleDisplay(type, module_id, module_crew) {
