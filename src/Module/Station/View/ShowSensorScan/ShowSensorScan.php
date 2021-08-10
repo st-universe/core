@@ -60,6 +60,8 @@ final class ShowSensorScan implements ViewControllerInterface
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
 
+        $game->setTemplateVar('ERROR', true);
+
         if (
             $cx < $ship->getCx() - $ship->getSensorRange()
             || $cx > $ship->getCx() + $ship->getSensorRange()
@@ -72,11 +74,10 @@ final class ShowSensorScan implements ViewControllerInterface
         $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
 
 
-        $game->setPageTitle("Sensor Scan");
+        $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/stationmacros.xhtml/sensorscan');
 
-        $game->setTemplateVar('ERROR', true);
 
         if ($mapField === null) {
             return;
