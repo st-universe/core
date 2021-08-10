@@ -101,8 +101,8 @@
               <th tal:content="yrow/getRow">y</th>
               <td tal:repeat="data yrow/getFields" class="starmap" style="runtime"
                 tal:attributes="style string:${data/getFieldStyle};id string:${data/getCX}_${data/getCY}">
-                <div tal:condition="not:data/getMapped" class="lssobj" style="cursor: auto ! important;">&nbsp;</div>
-                <div tal:condition="data/getMapped" class="lssobj" style="cursor: auto ! important;">
+                <div tal:condition="not:data/getMapped" class="starmap" style="cursor: auto ! important;">&nbsp;</div>
+                <div tal:condition="data/getMapped" class="starmap" style="cursor: auto ! important;">
                   <a href="database.php?SHOW_ENTRY=1&cat=7&ent=${data/getMapped}">
                     <img src="/assets/map/mapped.png" title="ist kartographiert" style="height: 28px; width: 28px;" />
                   </a>
