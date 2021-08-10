@@ -114,7 +114,7 @@ function showAstroEntryWindow() {
 function openStarMap(obj, cx, cy) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 300, pos[0], pos[1]);
+	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
 	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy);
 }
 function showMapBy(cx, cy) {
