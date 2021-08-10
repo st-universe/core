@@ -97,7 +97,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
             $type = $this->getFieldId();
         }
 
-        $style = "background-image: url('assets/map/" . $type . ".png'); width: 30px; height: 30px;";
+        $style = "background-image: url('assets/map/" . $type . ".png');";
         $style .= $borderStyle;
         return $style;
     }
