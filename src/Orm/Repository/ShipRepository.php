@@ -252,6 +252,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    public function getStationConstructions(): iterable
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                JOIN %s r
+                WITH s.rumps_id = r.id
+                WHERE s.user_id > 100
+                AND r.category_id = :catId',
+                Ship::class,
+                ShipRump::class
+            )
+        )->setParameter('catId', ShipRumpEnum::SHIP_CATEGORY_CONSTRUCTION)
+            ->getResult();
+    }
+
     public function getPlayerShipsForTick(): iterable
     {
         return $this->getEntityManager()->createQuery(

@@ -79,7 +79,8 @@ final class ShipTickManager implements ShipTickManagerInterface
             }
         }
         $this->handleNPCShips();
-        $this->lowerTrumfieldHuell();
+        $this->lowerTrumfieldHull();
+        $this->lowerStationConstructionHull();
 
         $this->entityManager->flush();
     }
@@ -197,9 +198,32 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
     }
 
-    private function lowerTrumfieldHuell(): void
+    private function lowerTrumfieldHull(): void
     {
         foreach ($this->shipRepository->getDebrisFields() as $ship) {
+            $lower = rand(5, 15);
+            if ($ship->getHuell() <= $lower) {
+
+                $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUser()->getId(),
+                    $msg,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+                );
+
+                $this->shipRemover->remove($ship);
+                continue;
+            }
+            $ship->setHuell($ship->getHuell() - $lower);
+
+            $this->shipRepository->save($ship);
+        }
+    }
+
+    private function lowerStationConstructionHull(): void
+    {
+        foreach ($this->shipRepository->getStationConstructions() as $ship) {
             $lower = rand(5, 15);
             if ($ship->getHuell() <= $lower) {
                 $this->shipRemover->remove($ship);
