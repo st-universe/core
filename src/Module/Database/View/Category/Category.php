@@ -25,8 +25,7 @@ final class Category implements ViewControllerInterface
         CategoryRequestInterface $categoryRequest,
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository,
         DatabaseCategoryTalFactoryInterface $databaseCategoryTalFactory
-    )
-    {
+    ) {
         $this->categoryRequest = $categoryRequest;
         $this->databaseCategoryRepository = $databaseCategoryRepository;
         $this->databaseCategoryTalFactory = $databaseCategoryTalFactory;
@@ -44,15 +43,16 @@ final class Category implements ViewControllerInterface
         $category_description = $category->getDescription();
 
         $game->appendNavigationPart(
+            'database.php',
+            _('Datenbank')
+        );
+        $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1&cat=%d',
                 static::VIEW_IDENTIFIER,
                 $category_id
             ),
-            sprintf(
-                _('Datenbank: %s'),
-                $category_description
-            )
+            $category_description
         );
         $game->setPageTitle(
             sprintf(

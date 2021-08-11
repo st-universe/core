@@ -77,15 +77,16 @@ final class DatabaseEntry implements ViewControllerInterface
         $entry_name = $entry->getDescription();
 
         $game->appendNavigationPart(
+            'database.php',
+            _('Datenbank')
+        );
+        $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1&cat=%d',
                 Category::VIEW_IDENTIFIER,
                 $category_id,
             ),
-            sprintf(
-                'Datenbank: %s',
-                $category->getDescription(),
-            )
+            $category->getDescription()
         );
         $game->appendNavigationPart(
             sprintf(
