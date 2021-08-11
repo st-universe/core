@@ -18,4 +18,6 @@ interface DatabaseUserRepositoryInterface extends ObjectRepository
     public function save(DatabaseUserInterface $entry): void;
 
     public function getTopList(): array;
+
+    public function getCountForUser(int $userId): int;
 }
