@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Alliance\View\Management;
 
 use Stu\Component\Alliance\AllianceEnum;
+use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
@@ -24,23 +25,31 @@ final class Management implements ViewControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private AllianceActionManagerInterface $allianceActionManager;
+
     public function __construct(
         ShipRumpRepositoryInterface $shipRumpRepository,
         AllianceJobRepositoryInterface $allianceJobRepository,
         ColonyRepositoryInterface $colonyRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        AllianceActionManagerInterface $allianceActionManager
     ) {
         $this->shipRumpRepository = $shipRumpRepository;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
+        $this->allianceActionManager = $allianceActionManager;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $alliance = $game->getUser()->getAlliance();
         $userId = $game->getUser()->getId();
-        $allianceId = (int) $alliance->getId();
+        $allianceId = $alliance->getId();
+
+        if (!$this->allianceActionManager->mayEdit($allianceId, $userId)) {
+            return;
+        }
 
         $list = [];
         foreach ($this->userRepository->getByAlliance($allianceId) as $member) {

@@ -77,6 +77,19 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ]);
     }
 
+    public function getByUserAndRump(int $userId, int $rumpId): iterable
+    {
+        return $this->findBy([
+            'user_id' => $userId,
+            'rumps_id' => $rumpId
+        ], [
+            'map_id' => 'asc',
+            'starsystem_map_id' => 'asc',
+            'fleets_id' => 'asc',
+            'is_fleet_leader' => 'desc'
+        ]);
+    }
+
     public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable
     {
         $isSystem = $fleetLeader->getSystem() !== null;

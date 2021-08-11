@@ -1,5 +1,6 @@
 <html xmlns:stu="stu">
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:use-macro="html/alliancemacros.xhtml/initial_js" />
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<table class="tcal">
@@ -34,7 +35,10 @@
 					<div style="display: inline-block; padding-left: 10px; text-align: center;"
 						tal:repeat="rump data/getShipRumpList">
 						${rump/amount} ${rump/name}<br />
-						<img src="assets/ships/${rump/rump_id}.png" tal:attributes="title rump/name" />
+						<a href="javascript:void(0);"
+							onclick="showMemberRumpInfo(this, ${data/getId}, ${rump/rump_id});">
+							<img src="assets/ships/${rump/rump_id}.png" title="${rump/name} (Klick für Details)" />
+						</a>
 					</div>
 				</td>
 				<td style="width: 200px; text-align: center;" tal:condition="not:data/isCurrentUser">
