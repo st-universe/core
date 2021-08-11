@@ -307,7 +307,7 @@
         </a>
       </div>
       <div style="float:left; margin-right:4px;" tal:condition="SHIP/canIntercept">
-        <a tal:condition="ship/isInterceptable"
+        <a tal:condition="php: ship.isInterceptable() AND SHIP.hasWarpdrive()"
           href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
           onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
           <img src="assets/buttons/inc1.png" name="int_${ship/getId}" title="${nameWithoutMarkup} abfangen" />
@@ -399,7 +399,7 @@
     <td colspan="2" style="text-align: center;">
       <tal:block tal:condition="SHIP/getWarpState">
         <tal:block tal:condition="SHIP/canIntercept">
-          <a tal:condition="ship/isInterceptable"
+          <a tal:condition="php: ship.isInterceptable() AND SHIP.hasWarpdrive()"
             href="?B_INTERCEPT=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${THIS/getSessionString}"
             onmouseover="cp('int_${ship/getId}','buttons/inc2')" onmouseout="cp('int_${ship/getId}','buttons/inc1')">
             <img src="assets/buttons/inc1.png" name="int_${ship/getId}" title="${bbcode2txt:ship/getName} abfangen" />
