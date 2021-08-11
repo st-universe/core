@@ -25,6 +25,10 @@ final class DiscovererRanking implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(
+            'database.php',
+            _('Datenbank')
+        );
+        $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
                 static::VIEW_IDENTIFIER

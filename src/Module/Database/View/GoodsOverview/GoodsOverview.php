@@ -18,9 +18,9 @@ final class GoodsOverview implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_GOODS_OVERVIEW';
 
     private ColonyStorageRepositoryInterface $colonyStorageRepository;
-   
+
     private ShipStorageRepositoryInterface $shipStorageRepository;
-    
+
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     private TradeStorageRepositoryInterface $tradeStorageRepository;
@@ -40,6 +40,10 @@ final class GoodsOverview implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $game->appendNavigationPart(
+            'database.php',
+            _('Datenbank')
+        );
+        $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
                 static::VIEW_IDENTIFIER
@@ -50,33 +54,31 @@ final class GoodsOverview implements ViewControllerInterface
         $game->showMacro('html/database.xhtml/goods_overview');
 
         $goodsOverview = [];
-        
+
         // add storage of colonies
         $coloniesStorage = $this->colonyStorageRepository->getByUserAccumulated($game->getUser()->getId());
         foreach ($coloniesStorage as $data) {
             $goodsOverview[$data['commodity_id']] = new StorageWrapper($data['commodity_id'], $data['amount']);
         }
-        
+
         // add storage of ships
         $shipsStorage = $this->shipStorageRepository->getByUserAccumulated($game->getUser()->getId());
         foreach ($shipsStorage as $data) {
             if (array_key_exists($data['commodity_id'], $goodsOverview)) {
                 $storageWrapper = $goodsOverview[$data['commodity_id']];
                 $storageWrapper->addAmount($data['amount']);
-            }
-            else {
+            } else {
                 $goodsOverview[$data['commodity_id']] = new StorageWrapper($data['commodity_id'], $data['amount']);
             }
         }
-        
+
         // add storage of trade posts
         $tradepostsStorage = $this->tradeStorageRepository->getByUserAccumulated($game->getUser()->getId());
         foreach ($tradepostsStorage as $data) {
             if (array_key_exists($data['commodity_id'], $goodsOverview)) {
                 $storageWrapper = $goodsOverview[$data['commodity_id']];
                 $storageWrapper->addAmount($data['amount']);
-            }
-            else {
+            } else {
                 $goodsOverview[$data['commodity_id']] = new StorageWrapper($data['commodity_id'], $data['amount']);
             }
         }
@@ -87,8 +89,7 @@ final class GoodsOverview implements ViewControllerInterface
             if (array_key_exists($data['commodity_id'], $goodsOverview)) {
                 $storageWrapper = $goodsOverview[$data['commodity_id']];
                 $storageWrapper->addAmount($data['amount']);
-            }
-            else {
+            } else {
                 $goodsOverview[$data['commodity_id']] = new StorageWrapper($data['commodity_id'], $data['amount']);
             }
         }
@@ -102,7 +103,7 @@ final class GoodsOverview implements ViewControllerInterface
                 return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
             }
         );
-        
+
         $game->setTemplateVar('GOODS_LIST', $goodsOverview);
     }
 }

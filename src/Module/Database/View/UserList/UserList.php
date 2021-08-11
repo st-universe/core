@@ -45,6 +45,10 @@ final class UserList implements ViewControllerInterface
         $pagination = $this->userListRequest->getPagination();
 
         $game->appendNavigationPart(
+            'database.php',
+            _('Datenbank')
+        );
+        $game->appendNavigationPart(
             sprintf(
                 'database.php?%s=1',
                 static::VIEW_IDENTIFIER,
