@@ -34,7 +34,19 @@ final class DiscovererRanking implements ViewControllerInterface
         $game->setPageTitle(_('/ Datenbank / Die 10 besten Entdecker'));
         $game->showMacro('html/database.xhtml/top_research_user');
 
-        $game->setTemplateVar('DISCOVERER_LIST', $this->getTopResearchUser());
+        $topList = $this->getTopResearchUser();
+        $game->setTemplateVar('DISCOVERER_LIST', $topList);
+
+        $containsUser = false;
+        foreach ($topList as $element) {
+            if ($element->getUserId() === $game->getUser()->getId()) {
+                $containsUser = true;
+            }
+        }
+
+        if (!$containsUser) {
+            $game->setTemplateVar('USER_COUNT', $this->databaseUserRepository->getCountForUser($game->getUser()->getId()));
+        }
     }
 
     private function getTopResearchUser()

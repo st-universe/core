@@ -64,4 +64,19 @@ final class DatabaseUserRepository extends EntityRepository implements DatabaseU
             $rsm
         )->getArrayResult();
     }
+
+    public function getCountForUser(int $userId): int
+    {
+        return (int) $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT COUNT(dbu.id) FROM %s dbu WHERE dbu.user_id = :userId',
+                    DatabaseUser::class
+                )
+            )
+            ->setParameters([
+                'userId' => $userId
+            ])
+            ->getSingleScalarResult();
+    }
 }

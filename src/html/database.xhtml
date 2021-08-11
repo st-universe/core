@@ -63,6 +63,17 @@
 						<td tal:content="entry/getPoints">POINTS</td>
 					</tr>
 				</table>
+				<tal:block tal:condition="exists: USER_COUNT">
+					<br />
+					<table class="tcal">
+						<tr>
+							<td>
+								Eigene Punkte:
+							</td>
+							<td tal:content="USER_COUNT">POINTS</td>
+						</tr>
+					</table>
+				</tal:block>
 			</div>
 		</tal:block>
 	</tal:block>
