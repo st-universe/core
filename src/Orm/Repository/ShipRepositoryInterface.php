@@ -32,6 +32,11 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
+    public function getByUserAndRump(int $userId, int $rumpId): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
     public function getPossibleFleetMembers(ShipInterface $fleetLeader): iterable;
 
     /**

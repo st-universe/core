@@ -100,6 +100,7 @@ use Stu\Module\Alliance\View\NewTopic\NewTopicRequest;
 use Stu\Module\Alliance\View\NewTopic\NewTopicRequestInterface;
 use Stu\Module\Alliance\View\Overview\Overview;
 use Stu\Module\Alliance\View\Relations\Relations;
+use Stu\Module\Alliance\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Alliance\View\Topic\TopicRequest;
 use Stu\Module\Alliance\View\Topic\TopicRequestInterface;
@@ -183,5 +184,6 @@ return [
         Create::VIEW_IDENTIFIER => autowire(Create::class),
         Edit::VIEW_IDENTIFIER => autowire(Edit::class),
         Relations::VIEW_IDENTIFIER => autowire(Relations::class),
+        ShowMemberRumpInfo::VIEW_IDENTIFIER => autowire(ShowMemberRumpInfo::class)
     ]
 ];
