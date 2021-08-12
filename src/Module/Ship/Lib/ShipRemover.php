@@ -106,6 +106,8 @@ final class ShipRemover implements ShipRemoverInterface
             }
          */
 
+        $this->leaveSomeIntactModules($ship);
+
         $ship->setFormerRumpId($ship->getRump()->getId());
         $ship->setRump($this->shipRumpRepository->find(ShipRumpEnum::SHIP_CATEGORY_TRUMFIELD));
         $ship->setHuell((int) round($ship->getMaxHuell() / 20));
@@ -119,9 +121,8 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setIsDestroyed(true);
         $ship->cancelRepair();
 
-        $this->leaveSomeIntactModules($ship);
-
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
+        $ship->getSystems()->clear();
         // @todo Torpedos löschen
 
         $this->shipRepository->save($ship);
@@ -129,8 +130,12 @@ final class ShipRemover implements ShipRemoverInterface
         return $msg;
     }
 
-    private function leaveSomeIntactModules($ship): void
+    private function leaveSomeIntactModules(ShipInterface $ship): void
     {
+        if ($ship->isShuttle()) {
+            return;
+        }
+
         $intactModules = [];
 
         foreach ($ship->getSystems() as $system) {
