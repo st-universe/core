@@ -11,6 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
+use Stu\Orm\Entity\ColonyInterface;
+use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
@@ -62,13 +64,30 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $rump = $this->shipRumpRepository->find($rumpId);
 
+        $wantedAmount = request::postIntFatal('amount');
+        $amount = 0;
+        while ($amount < $wantedAmount && $this->produceShip($rump, $colony, $game)) {
+            $amount++;
+        }
+
+        $this->colonyRepository->save($colony);
+
+        if ($amount < $wantedAmount) {
+            $game->addInformationf(_('Es wurden daher nur %d Stück %s-Klasse gebaut'), $amount, $rump->getName());
+        } else {
+            $game->addInformationf(_('%d Stück %s-Klasse wurden gebaut'), $amount, $rump->getName());
+        }
+    }
+
+    private function produceShip(ShipRumpInterface $rump, ColonyInterface $colony, GameControllerInterface $game): bool
+    {
         if ($rump->getEpsCost() > $colony->getEps()) {
             $game->addInformationf(
                 _('Es wird %d Energie benötigt - Vorhanden ist nur %d'),
                 $rump->getEpsCost(),
                 $colony->getEps()
             );
-            return;
+            return false;
         }
         $storage = $colony->getStorage();
         foreach ($rump->getBuildingCosts() as $cost) {
@@ -80,7 +99,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
                     $cost->getAmount(),
                     $cost->getCommodity()->getName()
                 );
-                return;
+                return false;
             }
             if ($stor->getAmount() < $cost->getAmount()) {
                 $game->addInformationf(
@@ -89,7 +108,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
                     $cost->getCommodity()->getName(),
                     $stor->getAmount()
                 );
-                return;
+                return false;
             }
         }
         foreach ($rump->getBuildingCosts() as $cost) {
@@ -99,9 +118,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $this->colonyStorageManager->upperStorage($colony, $rump->getCommodity(), 1);
 
-        $this->colonyRepository->save($colony);
-
-        $game->addInformationf(_('%s-Klasse wurde gebaut'), $rump->getName());
+        return true;
     }
 
     public function performSessionCheck(): bool

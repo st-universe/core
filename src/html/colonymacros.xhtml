@@ -262,7 +262,10 @@
       </table>
       <div tal:condition="BUILDABLE_SHIPS" style="width: 100%; text-align: center">
         <br />
-        <input type="submit" style="cursor: pointer;" name="B_BUILD_FIGHTER_SHIPYARD_RUMP" value="Schiff bauen" />
+        <input type="text" size="3" name="amount" value="1"
+          onkeydown="event.key == 'Enter' && $('buildshipbutton').click();" />
+        <input type="submit" style="cursor: pointer;" id="buildshipbutton" name="B_BUILD_FIGHTER_SHIPYARD_RUMP"
+          value="Schiff(e) bauen" />
       </div>
     </div>
   </metal:macro>
