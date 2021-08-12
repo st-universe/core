@@ -101,7 +101,7 @@ final class AttackShip implements ActionControllerInterface
             // only uncloaked defenders fight
             foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
                 if (!$defShip->getCloakState()) {
-                    $defender[] = $defShip;
+                    $defender[$defShip->getId()] = $defShip;
                 }
             }
 
