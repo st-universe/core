@@ -274,6 +274,9 @@ final class ColonyTick implements ColonyTickInterface
                 continue;
             }
             if ($sum >= $colony->getMaxStorage()) {
+                if ($colony->getUser()->isStorageNotification()) {
+                    //TODO send pm and or email
+                }
                 break;
             }
             if ($sum + $obj->getProduction() > $colony->getMaxStorage()) {
