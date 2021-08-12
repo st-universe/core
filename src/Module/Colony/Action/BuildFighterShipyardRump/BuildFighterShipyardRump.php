@@ -64,7 +64,7 @@ final class BuildFighterShipyardRump implements ActionControllerInterface
 
         $rump = $this->shipRumpRepository->find($rumpId);
 
-        $wantedAmount = request::postIntFatal('amount');
+        $wantedAmount = 1;
         $amount = 0;
         while ($amount < $wantedAmount && $this->produceShip($rump, $colony, $game)) {
             $amount++;
