@@ -34,7 +34,6 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->log(sprintf('Shiplist-start, timestamp: %F', microtime(true)));
 
         $userId = $game->getUser()->getId();
 
@@ -43,6 +42,8 @@ final class Overview implements ViewControllerInterface
         } else {
             $this->loggerUtil->init();
         }
+
+        $this->loggerUtil->log(sprintf('Shiplist-start, timestamp: %F', microtime(true)));
 
         $fleets = $this->fleetRepository->getByUser($userId);
         $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
