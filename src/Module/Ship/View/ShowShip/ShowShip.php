@@ -18,6 +18,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
@@ -77,11 +78,19 @@ final class ShowShip implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
+        if ($game->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+            $this->loggerUtil->init();
+        }
 
         $user = $game->getUser();
         $userId = $user->getId();
         $ownsCurrentColony = false;
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
 
         try {
             $ship = $this->shipLoader->getByIdAndUser(
@@ -94,6 +103,15 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateFile('html/ship.xhtml');
 
             return;
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmark1, seconds: %F", $endTime - $startTime));
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
         }
 
         $colony = $this->colonyRepository->getByPosition(
@@ -120,6 +138,15 @@ final class ShowShip implements ViewControllerInterface
             $ownsCurrentColony = $colony->getUser() === $user;
         }
 
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmark2, seconds: %F", $endTime - $startTime));
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
+
         //Forschungseintrag erstellen, damit System-Link optional erstellt werden kann
         $starsystem = null;
         if ($ship->getSystem() !== null) {
@@ -141,19 +168,54 @@ final class ShowShip implements ViewControllerInterface
         if ($starsystem !== null) {
             $game->setTemplateVar('STARSYSTEM_ENTRY_TAL', $starsystem);
         }
-        $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
-            $ship,
-            $game->getUser(),
-            $this->loggerUtil,
-            $ship->getTachyonState(),
-            $tachyonFresh
-        ));
+        if ($ship->getLss()) {
+            $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
+                $ship,
+                $game->getUser(),
+                $this->loggerUtil,
+                $ship->getTachyonState(),
+                $tachyonFresh
+            ));
+        }
         $game->setTemplateVar('NAV_PANEL', new NavPanel($ship));
+
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmark3, seconds: %F", $endTime - $startTime));
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
 
         $this->doConstructionStuff($ship, $game);
 
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmark4, seconds: %F", $endTime - $startTime));
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
+
         $this->nbsUtility->setNbsTemplateVars($ship, $game, $this->session, $tachyonActive);
+
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmark5, seconds: %F", $endTime - $startTime));
+        }
+
+        if ($this->loggerUtil->doLog()) {
+            $startTime = microtime(true);
+        }
+
         $game->setTemplateVar('ASTRO_STATE', $this->getAstroState($ship, $game));
+
+        if ($this->loggerUtil->doLog()) {
+            $endTime = microtime(true);
+            $this->loggerUtil->log(sprintf("\tmark6, seconds: %F", $endTime - $startTime));
+        }
         $game->setTemplateVar('TACHYON_ACTIVE', $tachyonActive);
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
