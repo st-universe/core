@@ -31,6 +31,8 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Exception\StuException;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -64,6 +66,8 @@ final class GameController implements GameControllerInterface
     private Ubench $benchmark;
 
     private CreateDatabaseEntryInterface $createDatabaseEntry;
+
+    private LoggerUtilInterface $loggerUtil;
 
     private array $gameInformations = [];
 
@@ -101,7 +105,8 @@ final class GameController implements GameControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
-        CreateDatabaseEntryInterface $createDatabaseEntry
+        CreateDatabaseEntryInterface $createDatabaseEntry,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -117,6 +122,14 @@ final class GameController implements GameControllerInterface
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
+        $this->loggerUtil = $loggerUtil;
+
+        if ($session->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+
+            $this->loggerUtil->init();
+        }
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -593,6 +606,7 @@ final class GameController implements GameControllerInterface
 
     public function getBenchmarkResult(): array
     {
+        $this->loggerUtil->log(sprintf('getBenchmarkResult, timestamp: %F', microtime(true)));
         $this->benchmark->end();
 
         return [

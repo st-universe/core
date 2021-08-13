@@ -220,6 +220,8 @@ final class ShowShip implements ViewControllerInterface
         $game->setTemplateVar('CAN_COLONIZE_CURRENT_COLONY', $canColonize);
         $game->setTemplateVar('OWNS_CURRENT_COLONY', $ownsCurrentColony);
         $game->setTemplateVar('CURRENT_COLONY', $colony);
+
+        $this->loggerUtil->log(sprintf('ShowShip.php-end, timestamp: %F', microtime(true)));
     }
 
     private function getAstroState(ShipInterface $ship, GameControllerInterface $game)
