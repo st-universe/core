@@ -7,6 +7,8 @@ namespace Stu\Module\Ship\View\Overview;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -18,17 +20,29 @@ final class Overview implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->log(sprintf('Shiplist-start, timestamp: %F', microtime(true)));
+
         $userId = $game->getUser()->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+            $this->loggerUtil->init();
+        }
 
         $fleets = $this->fleetRepository->getByUser($userId);
         $ships = $this->shipRepository->getByUserAndFleetAndBase($userId, null, false);
@@ -53,5 +67,7 @@ final class Overview implements ViewControllerInterface
             'SHIPS',
             $ships
         );
+
+        $this->loggerUtil->log(sprintf('Shiplist-end, timestamp: %F', microtime(true)));
     }
 }
