@@ -124,7 +124,7 @@ final class GameController implements GameControllerInterface
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->loggerUtil = $loggerUtil;
 
-        if ($session->getUser()->getId() === 126) {
+        if ($session->getUser() !== null && $session->getUser()->getId() === 126) {
             $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         } else {
 
