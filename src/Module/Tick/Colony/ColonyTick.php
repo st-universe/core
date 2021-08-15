@@ -26,6 +26,7 @@ use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
+use Stu\Orm\Repository\UserAwardRepositoryInterface;
 
 final class ColonyTick implements ColonyTickInterface
 {
@@ -59,11 +60,14 @@ final class ColonyTick implements ColonyTickInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private EntityManagerInterface $entityManager;
+
+    private UserAwardRepositoryInterface $userAwardRepository;
+
     private array $commodityArray;
 
     private array $msg = [];
 
-    private EntityManagerInterface $entityManager;
 
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
@@ -80,7 +84,8 @@ final class ColonyTick implements ColonyTickInterface
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         LoggerUtilInterface $loggerUtil,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserAwardRepositoryInterface $userAwardRepository
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
@@ -97,6 +102,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->loggerUtil = $loggerUtil;
         $this->entityManager = $entityManager;
+        $this->userAwardRepository = $userAwardRepository;
     }
 
     public function work(ColonyInterface $colony, array $commodityArray): void
@@ -327,7 +333,8 @@ final class ColonyTick implements ColonyTickInterface
                     $this->colonyRepository,
                     $this->shipRepository,
                     $this->shipSystemManager,
-                    $this->entityManager
+                    $this->entityManager,
+                    $this->userAwardRepository
                 ))->advance(
                     $current_research,
                     $production[$current_research->getResearch()->getGoodId()]->getProduction()
