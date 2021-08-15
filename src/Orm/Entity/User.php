@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
-use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
@@ -119,11 +116,6 @@ class User implements UserInterface
      */
     private $faction;
 
-    /**
-     * @OneToMany(targetEntity="UserAward", mappedBy="user", indexBy="type", cascade={"remove"}, fetch="EAGER")
-     */
-    private $awards;
-
     private $used_crew_count;
 
     private $crew_in_training;
@@ -137,11 +129,6 @@ class User implements UserInterface
     private $sessiondataUnserialized;
 
     private $friends;
-
-    public function __construct()
-    {
-        $this->awards = new ArrayCollection();
-    }
 
     public function getId(): int
     {
@@ -215,11 +202,6 @@ class User implements UserInterface
     public function getFaction(): ?FactionInterface
     {
         return $this->faction;
-    }
-
-    public function getAwards(): Collection
-    {
-        return $this->awards;
     }
 
     public function getActive(): int
@@ -616,7 +598,8 @@ class User implements UserInterface
             return true;
         }
 
-        return $this->getAwards()->containsKey(UserAwardEnum::RESEARCHED_STATIONS);
+        //TODO check if user has researched constructions
+        return $this->getId() === 126 || $this->getId() === 102;
     }
 
     public function maySignup(int $allianceId): bool
