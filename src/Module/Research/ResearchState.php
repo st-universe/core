@@ -74,7 +74,7 @@ final class ResearchState implements ResearchStateInterface
 
     public function advance(ResearchedInterface $state, int $amount): void
     {
-        if ($state->getUser()->getId() === 126 || $state->getActive() - $amount <= 0) {
+        if ($state->getActive() - $amount <= 0) {
             $this->finish($state);
         } else {
             $state->setActive($state->getActive() - $amount);
