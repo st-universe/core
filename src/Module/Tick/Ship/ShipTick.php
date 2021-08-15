@@ -172,7 +172,7 @@ final class ShipTick implements ShipTickInterface
             return false;
         }
 
-        if ($ship->getUser()->getId() !== 126 && !$this->stationUtility->hasEnoughDockedWorkbees($ship, $ship->getRump())) {
+        if (!$this->stationUtility->hasEnoughDockedWorkbees($ship, $ship->getRump())) {
             $this->msg[] = sprintf(
                 _('Nicht genügend Workbees (%d/%d) angedockt um den Bau weiterführen zu können'),
                 $this->stationUtility->getDockedWorkbeeCount($ship),

@@ -79,7 +79,7 @@ final class ShowShip implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_INFO);
         } else {
             $this->loggerUtil->init();
         }

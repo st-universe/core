@@ -6,6 +6,8 @@ namespace Stu\Module\Research;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Player\UserAwardEnum;
+use Stu\Component\Research\ResearchEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -18,6 +20,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
+use Stu\Orm\Repository\UserAwardRepositoryInterface;
 
 final class ResearchState implements ResearchStateInterface
 {
@@ -41,6 +44,8 @@ final class ResearchState implements ResearchStateInterface
 
     private EntityManagerInterface $entityManager;
 
+    private UserAwardRepositoryInterface $userAwardRepository;
+
     public function __construct(
         ResearchedRepositoryInterface $researchedRepository,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
@@ -51,7 +56,8 @@ final class ResearchState implements ResearchStateInterface
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserAwardRepositoryInterface $userAwardRepository
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
@@ -63,6 +69,18 @@ final class ResearchState implements ResearchStateInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->entityManager = $entityManager;
+        $this->userAwardRepository = $userAwardRepository;
+    }
+
+    public function advance(ResearchedInterface $state, int $amount): void
+    {
+        if ($state->getActive() - $amount <= 0) {
+            $this->finish($state);
+        } else {
+            $state->setActive($state->getActive() - $amount);
+        }
+
+        $this->researchedRepository->save($state);
     }
 
     public function finish(ResearchedInterface $state): void
@@ -80,6 +98,7 @@ final class ResearchState implements ResearchStateInterface
         $this->createRewardShip($state);
         $this->createDatabaseEntries($state);
         $this->createShipRumpEntries($state);
+        $this->createAward($state);
     }
 
     private function createRewardShip(ResearchedInterface $state): void
@@ -147,14 +166,19 @@ final class ResearchState implements ResearchStateInterface
         }
     }
 
-    public function advance(ResearchedInterface $state, int $amount): void
+    private function createAward(ResearchedInterface $state): void
     {
-        if ($state->getActive() - $amount <= 0) {
-            $this->finish($state);
-        } else {
-            $state->setActive($state->getActive() - $amount);
-        }
+        $user = $state->getUser();
 
-        $this->researchedRepository->save($state);
+        if (
+            $state->getResearch()->getId() ===
+            (ResearchEnum::RESEARCH_OFFSET_CONSTRUCTION + $user->getFaction()->getId())
+        ) {
+            $award = $this->userAwardRepository->prototype();
+            $award->setUser($user);
+            $award->setType(UserAwardEnum::RESEARCHED_STATIONS);
+
+            $this->userAwardRepository->save($award);
+        }
     }
 }
