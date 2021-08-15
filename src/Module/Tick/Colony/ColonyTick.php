@@ -322,7 +322,7 @@ final class ColonyTick implements ColonyTickInterface
         $current_research = $this->researchedRepository->getCurrentResearch($colony->getUserId());
 
         if ($current_research && $current_research->getActive()) {
-            if ($colony->getUser()->getId() === 126 || isset($production[$current_research->getResearch()->getGoodId()])) {
+            if (isset($production[$current_research->getResearch()->getGoodId()])) {
                 (new ResearchState(
                     $this->researchedRepository,
                     $this->shipRumpUserRepository,
@@ -337,7 +337,7 @@ final class ColonyTick implements ColonyTickInterface
                     $this->userAwardRepository
                 ))->advance(
                     $current_research,
-                    $colony->getUser()->getId() === 126 ? 1 : $production[$current_research->getResearch()->getGoodId()]->getProduction()
+                    $production[$current_research->getResearch()->getGoodId()]->getProduction()
                 );
             }
         }
