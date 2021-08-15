@@ -2,6 +2,8 @@
 
 namespace Stu\Orm\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface UserInterface
 {
     public function getId(): int;
@@ -29,6 +31,8 @@ interface UserInterface
     public function setFaction(FactionInterface $faction): UserInterface;
 
     public function getFaction(): ?FactionInterface;
+
+    public function getAwards(): Collection;
 
     public function getActive(): int;
 
