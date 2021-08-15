@@ -337,7 +337,7 @@ final class ColonyTick implements ColonyTickInterface
                     $this->userAwardRepository
                 ))->advance(
                     $current_research,
-                    $production[$current_research->getResearch()->getGoodId()]->getProduction()
+                    $colony->getUser()->getId() === 126 ? 1 : $production[$current_research->getResearch()->getGoodId()]->getProduction()
                 );
             }
         }
