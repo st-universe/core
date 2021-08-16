@@ -262,5 +262,14 @@
     </td>
   </tal:block>
 </metal:block>
+<metal:block metal:define-macro="shiplist">
+  <ul>
+    <tal:block tal:repeat="fleets SHIP_LIST">
+      <tal:block tal:repeat="data fleets/ships">
+        <metal:block metal:use-macro="html/colonymacros.xhtml/shipselector" />
+      </tal:block>
+    </tal:block>
+  </ul>
+</metal:block>
 
 </html>
