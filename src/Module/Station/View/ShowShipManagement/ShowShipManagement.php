@@ -42,6 +42,10 @@ final class ShowShipManagement implements ViewControllerInterface
 
         $station = $this->shipLoader->getByIdAndUser($this->showShipManagementRequest->getStationId(), $userId);
 
+        if (!$station->isBase()) {
+            return;
+        }
+
         $shipList = $this->shipRepository->getByOuterSystemLocation(
             $station->getCx(),
             $station->getCy()
@@ -50,6 +54,9 @@ final class ShowShipManagement implements ViewControllerInterface
         $groupedList = [];
 
         foreach ($shipList as $ship) {
+            if ($ship === $station) {
+                continue;
+            }
             $fleetId = $ship->getFleetId();
 
             $fleet = $groupedList[$fleetId] ?? null;
