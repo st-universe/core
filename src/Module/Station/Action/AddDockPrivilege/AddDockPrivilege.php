@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\AddDockPrivilege;
+namespace Stu\Module\Station\Action\AddDockPrivilege;
 
 use request;
 use Stu\Component\Ship\ShipEnum;
@@ -10,7 +10,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;

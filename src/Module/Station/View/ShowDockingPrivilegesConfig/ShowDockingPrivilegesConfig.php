@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowDockingPrivilegesConfig;
+namespace Stu\Module\Station\View\ShowDockingPrivilegesConfig;
 
 use request;
 use Stu\Module\Control\GameControllerInterface;
@@ -32,7 +32,7 @@ final class ShowDockingPrivilegesConfig implements ViewControllerInterface
 
         $game->setPageTitle(_('Dockrechte'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/dockprivileges');
+        $game->setMacro('html/stationmacros.xhtml/dockprivileges');
 
         $game->setTemplateVar('SHIP', $ship);
     }

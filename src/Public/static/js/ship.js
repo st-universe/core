@@ -125,18 +125,6 @@ function showShipDetails(id) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SHIPDETAILS=1&id=' + id);
 }
-function editDockPrivileges() {
-	elt = 'dockprivileges';
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'ship.php?SHOW_DOCKPRIVILEGE_CONFIG=1&id=' + shipid);
-}
-function addDockPrivilege() {
-	var value = $('docktype').value;
-	ajax_update('dockprivilegelist', 'ship.php?B_ADD_DOCKPRIVILEGE=1&id=' + shipid + "&type=" + $('docktype').value + "&target=" + $('docktarget_' + value).value + "&mode=" + $('dockmode').value + "&sstr=" + $('dock_sstr').value);
-}
-function deleteDockPrivilege(id, sstr) {
-	ajax_update('dockprivilegelist', 'ship.php?B_DELETE_DOCKPRIVILEGE=1&id=' + shipid + "&privilegeid=" + id + "&sstr=" + sstr);
-}
 function openTradeMenu(postid) {
 	closeAjaxWindow();
 	openPJsWin('elt', 1);
@@ -173,20 +161,6 @@ function showColonyScan() {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_COLONY_SCAN=1&id=' + shipid);
 }
-function showStationCosts(obj, planid) {
-	closeAjaxWindow();
-
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] + 360, pos[1] - 180);
-	ajax_update('elt', 'station.php?SHOW_STATION_COSTS=1&id=' + shipid + '&pid=' + planid);
-}
-function showStationInformation(obj, rumpid) {
-	closeAjaxWindow();
-
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] + 210, pos[1] - 180);
-	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&rid=' + rumpid);
-}
 function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 }
 currentTab = false;
@@ -218,18 +192,6 @@ function showFleet(fleetid) {
 	$('showfleet' + fleetid).hide();
 	$('fleetuser' + fleetid).hide();
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
-}
-function getShipList() {
-	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
-}
-function openShuttleManagement(obj, ship, station) {
-	closeAjaxWindow();
-
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
-	ajax_update('elt', 'station.php?SHOW_STATION_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&station=' + station);
 }
 function showFightLog() {
 	openPJsWin('fightresult_content', 1);

@@ -40,7 +40,6 @@ use Stu\Module\Ship\Action\ActivateShields\ActivateShields;
 use Stu\Module\Ship\Action\ActivateTorpedo\ActivateTorpedo;
 use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
-use Stu\Module\Ship\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
 use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
 use Stu\Module\Ship\Action\AttackShip\AttackShip;
@@ -71,7 +70,6 @@ use Stu\Module\Ship\Action\DeactivateShields\DeactivateShields;
 use Stu\Module\Ship\Action\DeactivateTorpedo\DeactivateTorpedo;
 use Stu\Module\Ship\Action\DeactivateTractorBeam\DeactivateTractorBeam;
 use Stu\Module\Ship\Action\DeactivateWarp\DeactivateWarp;
-use Stu\Module\Ship\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleet;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequest;
 use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequestInterface;
@@ -157,7 +155,6 @@ use Stu\Module\Ship\View\ShowBeamToColony\ShowBeamToColony;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
-use Stu\Module\Ship\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Ship\View\ShowRegionInfo\ShowRegionInfo;
 use Stu\Module\Ship\View\ShowRenameCrew\ShowRenameCrew;
@@ -251,8 +248,6 @@ return [
         AttackBuilding::ACTION_IDENTIFIER => autowire(AttackBuilding::class),
         AttackShip::ACTION_IDENTIFIER => autowire(AttackShip::class),
         InterceptShip::ACTION_IDENTIFIER => autowire(InterceptShip::class),
-        AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
-        DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
         DockShip::ACTION_IDENTIFIER => autowire(DockShip::class),
         DoTachyonScan::ACTION_IDENTIFIER => autowire(DoTachyonScan::class),
         UndockShip::ACTION_IDENTIFIER => autowire(UndockShip::class),
@@ -313,7 +308,6 @@ return [
         ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
         ShowTorpedoTransfer::VIEW_IDENTIFIER => autowire(ShowTorpedoTransfer::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
-        ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuPayment::VIEW_IDENTIFIER => autowire(ShowTradeMenuPayment::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
