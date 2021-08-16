@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Station\Action\UndockShip;
 
 use request;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -23,14 +24,18 @@ final class UndockShip implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -75,6 +80,8 @@ final class UndockShip implements ActionControllerInterface
 
         $this->shipRepository->save($station);
         $this->shipRepository->save($target);
+
+        $this->entityManager->flush();
 
         $game->addInformation(sprintf(_('Die %s wurde erfolgreich abgedockt'), $target->getName()));
     }
