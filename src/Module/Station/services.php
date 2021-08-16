@@ -7,12 +7,16 @@ namespace Stu\Module\Station;
 use Stu\Module\Control\GameController;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
+use Stu\Module\Station\Action\ManageOrbitalShuttles\ManageShuttles;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagementRequest;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagementRequestInterface;
+use Stu\Module\Station\View\ShowShuttleManagement\ShowShuttleManagement;
+use Stu\Module\Station\View\ShowShuttleManagement\ShowShuttleManagementRequest;
+use Stu\Module\Station\View\ShowShuttleManagement\ShowShuttleManagementRequestInterface;
 use Stu\Module\Station\View\ShowStationCosts\ShowStationCosts;
 use Stu\Module\Station\View\ShowStationInfo\ShowStationInfo;
 use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplist;
@@ -24,9 +28,11 @@ use function DI\autowire;
 return [
     ShowShipManagementRequestInterface::class => autowire(ShowShipManagementRequest::class),
     ShowStationShiplistRequestInterface::class => autowire(ShowStationShiplistRequest::class),
+    ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     'STATION_ACTIONS' => [
         BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
-        ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class)
+        ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),
+        ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -36,6 +42,7 @@ return [
         ShowSensorScan::VIEW_IDENTIFIER => autowire(ShowSensorScan::class),
         ShowStationInfo::VIEW_IDENTIFIER => autowire(ShowStationInfo::class),
         ShowShipManagement::VIEW_IDENTIFIER => autowire(ShowShipManagement::class),
-        ShowStationShiplist::VIEW_IDENTIFIER => autowire(ShowStationShiplist::class)
+        ShowStationShiplist::VIEW_IDENTIFIER => autowire(ShowStationShiplist::class),
+        ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class)
     ],
 ];

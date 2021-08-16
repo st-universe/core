@@ -1,6 +1,7 @@
 <html xmlns:stu="stu">
 <metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
   <metal:macro metal:fill-slot="body">
+    <metal:macro metal:use-macro="html/stationmacros.xhtml/initial_js" />
     <metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
     <form action="station.php" method="post" name="stationmanform">
       <input type="hidden" name="id" tal:attributes="value STATION/getId" />
