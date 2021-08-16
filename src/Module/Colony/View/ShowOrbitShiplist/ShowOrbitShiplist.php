@@ -56,5 +56,6 @@ final class ShowOrbitShiplist implements ViewControllerInterface
             'ORBIT_SHIP_LIST',
             $orbitShipList
         );
+        $game->setTemplateVar('CAN_UNDOCK', false);
     }
 }
