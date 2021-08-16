@@ -8,7 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
+use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 
 final class DeleteDockPrivilege implements ActionControllerInterface
