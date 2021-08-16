@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\View\ShowDockingPrivileges;
+namespace Stu\Module\Station\View\ShowDockingPrivileges;
 
 use request;
 use Stu\Module\Control\GameControllerInterface;
@@ -30,7 +30,7 @@ final class ShowDockingPrivileges implements ViewControllerInterface
             $userId
         );
 
-        $game->showMacro('html/shipmacros.xhtml/dockprivilegelist');
+        $game->showMacro('html/stationmacros.xhtml/dockprivilegelist');
 
         $game->setTemplateVar('SHIP', $ship);
     }

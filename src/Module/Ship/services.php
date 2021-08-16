@@ -154,7 +154,6 @@ use Stu\Module\Ship\View\ShowBeamTo\ShowBeamTo;
 use Stu\Module\Ship\View\ShowBeamToColony\ShowBeamToColony;
 use Stu\Module\Ship\View\ShowColonization\ShowColonization;
 use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
-use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Ship\View\ShowRegionInfo\ShowRegionInfo;
 use Stu\Module\Ship\View\ShowRenameCrew\ShowRenameCrew;
@@ -307,7 +306,6 @@ return [
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
         ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
         ShowTorpedoTransfer::VIEW_IDENTIFIER => autowire(ShowTorpedoTransfer::class),
-        ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
         ShowTradeMenuPayment::VIEW_IDENTIFIER => autowire(ShowTradeMenuPayment::class),
         ShowTradeMenuTransfer::VIEW_IDENTIFIER => autowire(ShowTradeMenuTransfer::class),
