@@ -36,3 +36,16 @@ function openShuttleManagement(obj, ship, station) {
 	openWindowPosition('elt', 1, 200, pos[0] - 200, pos[1]);
 	ajax_update('elt', 'station.php?SHOW_STATION_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&station=' + station);
 }
+function showBeamToWindow() {
+	var shipid = $('selshipid').value;
+	elt = 'beam'
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
+}
+
+function showBeamFromWindow() {
+	var shipid = $('selshipid').value;
+	elt = 'beam'
+	openPJsWin(elt, 1);
+	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
+}
