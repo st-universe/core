@@ -15,12 +15,9 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StationUtility implements StationUtilityInterface
 {
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     private ConstructionProgressRepositoryInterface $constructionProgressRepository;
@@ -30,13 +27,11 @@ final class StationUtility implements StationUtilityInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ShipCreatorInterface $shipCreator,
         LoggerUtilInterface $loggerUtil
     ) {
-        $this->shipRepository = $shipRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->shipCreator = $shipCreator;
@@ -147,10 +142,7 @@ final class StationUtility implements StationUtilityInterface
     {
         $result = [];
 
-        $shiplist = $this->shipRepository->getByOuterSystemLocation(
-            $station->getCx(),
-            $station->getCy()
-        );
+        $shiplist = $station->getDockedShips();
 
         foreach ($shiplist as $obj) {
             if ($obj === $station) {

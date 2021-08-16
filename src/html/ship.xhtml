@@ -1030,14 +1030,14 @@
 					<tr tal:condition="SHIP/isBase">
 						<td style="vertical-align: top; width: 33%;">
 							<div class="box">
-								<div class="box_title">Schiffe im Bereich</div>
+								<div class="box_title">Angedockte Schiffe (auswählen zum Abdocken)</div>
 								<div class="box_body">
 									<ul id="shipselector">
 										<metal:block tal:condition="FIRST_MANAGE_SHIP"
 											metal:use-macro="html/colonymacros.xhtml/shipselector"
 											tal:define="data FIRST_MANAGE_SHIP" />
 										<li tal:condition="not:FIRST_MANAGE_SHIP" style="text-align: center">Keine
-											Schiffe in der Nähe</li>
+											Schiffe angedockt</li>
 									</ul>
 									<br />
 									<div style="display: flex;">

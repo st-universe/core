@@ -26,8 +26,8 @@ function showStationInformation(obj, rumpid) {
 }
 function getShipList() {
 	closeAjaxWindow();
-	openPJsWin('elt', 1);
-	ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
+	openPJsWin('shiplist', 1);
+	ajax_update('shiplist', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
 }
 function openShuttleManagement(obj, ship, station) {
 	closeAjaxWindow();

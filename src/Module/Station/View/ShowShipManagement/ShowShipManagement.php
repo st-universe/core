@@ -10,7 +10,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Colony\Lib\OrbitFleetItemInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowShipManagement implements ViewControllerInterface
 {
@@ -20,19 +19,15 @@ final class ShowShipManagement implements ViewControllerInterface
 
     private ShowShipManagementRequestInterface $showShipManagementRequest;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ColonyLibFactoryInterface $colonyLibFactory;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShowShipManagementRequestInterface $showShipManagementRequest,
-        ShipRepositoryInterface $shipRepository,
         ColonyLibFactoryInterface $colonyLibFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->showShipManagementRequest = $showShipManagementRequest;
-        $this->shipRepository = $shipRepository;
         $this->colonyLibFactory = $colonyLibFactory;
     }
 
@@ -46,10 +41,7 @@ final class ShowShipManagement implements ViewControllerInterface
             return;
         }
 
-        $shipList = $this->shipRepository->getByOuterSystemLocation(
-            $station->getCx(),
-            $station->getCy()
-        );
+        $shipList = $station->getDockedShips();
 
         $groupedList = [];
 
