@@ -9,7 +9,7 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
+use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\FactionRepositoryInterface;
