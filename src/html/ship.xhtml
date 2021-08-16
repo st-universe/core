@@ -4,8 +4,15 @@
 		<tr>
 			<th colspan="3"><a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}"><img src="assets/buttons/lss2.png"
 						title="Langstreckensensoren aktivieren" /></a>
-				Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}">Langstreckensensoren
-					aktivieren</a>)</th>
+				<tal:block tal:condition="not:SHIP/isBase">
+					Navigation Applet (<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}">Langstreckensensoren
+						aktivieren</a>)
+				</tal:block>
+				<tal:block tal:condition="SHIP/isBase">
+					<a href="?B_ACTIVATE_LSS=1&id=${SHIP/getId}">Langstreckensensoren
+						aktivieren</a>
+				</tal:block>
+			</th>
 		</tr>
 		<tal:block tal:condition="SHIP/canMove">
 			<tr>
@@ -502,9 +509,6 @@
 					<img src="/assets/buttons/info1.png" name="mapRegionButton" />
 					${SHIP/getCurrentMapField/getMapRegion/getDescription}
 				</a>
-				<div tal:condition="SHIP/isBase">
-					<a href="javascript:void(0);" onclick="editDockPrivileges()">Dockrechte</a>
-				</div>
 			</td>
 			<td tal:condition="SHIP/getSystem">
 				<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">
@@ -1025,6 +1029,42 @@
 					</tr>
 					<tr tal:condition="SHIP/isBase">
 						<td style="vertical-align: top; width: 33%;">
+							<div class="box">
+								<div class="box_title">Schiffe im Bereich</div>
+								<div class="box_body">
+									<ul id="shipselector">
+										<metal:block tal:condition="FIRST_MANAGE_SHIP"
+											metal:use-macro="html/colonymacros.xhtml/shipselector"
+											tal:define="data FIRST_MANAGE_SHIP" />
+										<li tal:condition="not:FIRST_MANAGE_SHIP" style="text-align: center">Keine
+											Schiffe in der Nähe</li>
+									</ul>
+									<br />
+									<div style="display: flex; justify-content: space-around;">
+										<div style="width: 50%; float: left;" tal:condition="FIRST_MANAGE_SHIP">
+											<a href="javascript:void(0);" onclick="showBFromWindow();"
+												onmouseover="cp('beamfrom','buttons/b_down2')"
+												onmouseout="cp('beamfrom','buttons/b_down1')"><img
+													src="assets/buttons/b_down1.png" name="beamfrom"
+													title="Von Schiff beamen" /></a>
+											<a href="javascript:void(0);" onclick="showBToWindow();"
+												onmouseover="cp('beamto','buttons/b_up2')"
+												onmouseout="cp('beamto','buttons/b_up1')"><img
+													src="assets/buttons/b_up1.png" name="beamto"
+													title="Zu Schiff beamen" /></a>
+											<a href="javascript:void(0);" onclick="getManageShipList();">Liste</a> | <a
+												href="?SHOW_ORBITAL_SHIPS=1&id=${COLONY/getId}">Management</a>
+										</div>
+										<div style="width: 50%; float: left;">
+											<a href="javascript:void(0);" onclick="editDockPrivileges()"
+												onmouseover="cp('dockPrivButton','buttons/dock2')"
+												onmouseout="cp('dockPrivButton','buttons/dock1')">
+												<img src="/assets/buttons/dock1.png" name="dockPrivButton"
+													title="Dockrechte bearbeiten" />Dockrechte</a>
+										</div>
+									</div>
+								</div>
+							</div>
 							<metal:macro metal:use-macro="control_mid" />
 							<metal:macro metal:use-macro="control_right" />
 						</td>
