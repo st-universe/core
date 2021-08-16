@@ -25,8 +25,4 @@ interface StationUtilityInterface
     public function reduceRemainingTicks(ConstructionProgressInterface $progress): void;
 
     public function finishStation(ShipInterface $ship, ConstructionProgressInterface $progress): void;
-
-    public function canManageShips(ShipInterface $ship): bool;
-
-    public function getManageableShipList(ShipInterface $station): array;
 }
