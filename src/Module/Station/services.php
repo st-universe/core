@@ -7,6 +7,7 @@ namespace Stu\Module\Station;
 use Stu\Module\Control\GameController;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
+use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
@@ -24,7 +25,8 @@ return [
     ShowShipManagementRequestInterface::class => autowire(ShowShipManagementRequest::class),
     ShowStationShiplistRequestInterface::class => autowire(ShowStationShiplistRequest::class),
     'STATION_ACTIONS' => [
-        BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class)
+        BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
+        ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

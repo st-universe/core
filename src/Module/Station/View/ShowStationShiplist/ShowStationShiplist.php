@@ -41,6 +41,10 @@ final class ShowStationShiplist implements ViewControllerInterface
             $userId
         );
 
+        if (!$station->isBase()) {
+            return;
+        }
+
         $shipList = [];
 
         foreach ($this->stationUtility->getManageableShipList($station) as $entry) {
