@@ -156,6 +156,9 @@ final class StationUtility implements StationUtilityInterface
             if ($obj === $station) {
                 continue;
             }
+            if ($obj->getWarpState()) {
+                continue;
+            }
             $result[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
             if (!array_key_exists('name', $result[$obj->getFleetId()])) {
                 if ($obj->getFleetId() == 0) {
