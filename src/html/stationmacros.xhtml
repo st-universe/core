@@ -1,4 +1,10 @@
 <html xmlns:stu="stu">
+<metal:block metal:define-macro="initial_js">
+  <script language="Javascript">
+    var sstr = '${THIS/getSessionString}';
+  </script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js">< !--stuniverse --></script>
+</metal:block>
 <metal:macro metal:define-macro="stationcost">
   <tal:block tal:condition="not:ERROR">
     <table class="tcal">
@@ -271,5 +277,51 @@
     </tal:block>
   </ul>
 </metal:block>
+<metal:macro metal:define-macro="shuttlemanagement">
+  <form action="station.php" method="post">
+    <input type="hidden" name="id" tal:attributes="value STATION/getId" />
+    <input type="hidden" name="sid" tal:attributes="value SHIP/getId" />
+    <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+    <tal:block tal:condition="not:ERROR">
+      <table class="tcal" tal:condition="AVAILABLE_SHUTTLES">
+        <tr>
+          <th>Shuttle-Typ</th>
+          <th colspan="3">Menge</th>
+        </tr>
+        <tr tal:repeat="data AVAILABLE_SHUTTLES">
+          <td>
+            <img src="assets/goods/${data/getCommodityId}.png" title="${data/getCommodityName}" />
+          </td>
+          <td>
+            <a tal:condition="SHIP/isOwnedByCurrentUser" href="javascript:void(0);"
+              onclick="decreaseShuttleAmount(${data/getCommodityId});">
+              <img src="assets/buttons/b_down1.png" title="Anzahl senken" /></a>
+          </td>
+          <td>
+            <input type="hidden" name="shuttles[]" tal:attributes="value data/getCommodityId" />
+            <input readonly="readonly" type="text" id="shuttleAmount_${data/getCommodityId}"
+              tal:attributes="value data/getCurrentLoad" name="shuttlecount[${data/getCommodityId}]" size="2" />
+          </td>
+          <td>
+            <a href="javascript:void(0);"
+              onclick="increaseShuttleAmount(${data/getCommodityId}, ${data/getMaxUnits}, ${SHIP/getRump/getShuttleSlots});">
+              <img src="assets/buttons/b_up1.png" title="Anzahl erhöhen" /></a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td>
+            <span>Summe:</span>
+          </td>
+          <td>
+            <span id="storedshuttles" tal:content="CURRENTLY_STORED">SUM</span>/<span
+              tal:replace="SHIP/getRump/getShuttleSlots"></span>
+          </td>
+        </tr>
+      </table>
+      <input type="submit" style="cursor: pointer;" name="B_MANAGE_STATION_SHUTTLES" value="Transfer starten" />
+    </tal:block>
+  </form>
+</metal:macro>
 
 </html>
