@@ -62,5 +62,6 @@ final class ShowStationShiplist implements ViewControllerInterface
         $game->setMacro('html/stationmacros.xhtml/shiplist');
         $game->setTemplateVar('STATION', $station);
         $game->setTemplateVar('SHIP_LIST', $shipList);
+        $game->setTemplateVar('CAN_UNDOCK', true);
     }
 }
