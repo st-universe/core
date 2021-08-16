@@ -655,13 +655,18 @@
     <table class="use" style="width: 100%;" onmouseover="shipSelectorHover(this)"
       onmouseout="shipSelectorHoverEnd(this)" onclick="shipSelectorChoose(this);">
       <tr>
-        <td class="darkbg" colspan="4">
+        <td class="darkbg" colspan="5">
           <a tal:condition="data/ownedByUser" type="hidden" href="ship.php?SHOW_SHIP=1&id=${data/getId}" />
           <span tal:replace="structure bbcode:data/getName">SHIPNAME</span> | <span
             tal:replace="structure bbcode:data/getUserName">USERNAME</span>
         </td>
       </tr>
       <tr>
+        <td style="width: 20px; vertical-align: middle;">
+          <a tal:condition="CAN_UNDOCK"
+            href="ship.php?id=${SHIP/getId}&B_UNDOCK_SHIP=1&target=${data/getId}&sstr=${THIS/getSessionString}"><img
+              src="/assets/buttons/dock1.png" title="abdocken" /></a>
+        </td>
         <td style="width: 120px; vertical-align: middle;">
           <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship data" />
         </td>
