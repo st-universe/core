@@ -6,29 +6,25 @@ namespace Stu\Module\Station\Action\ManageOrbitalShuttles;
 
 use request;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Orm\Entity\ColonyInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ManageShuttles implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MANAGE_STATION_SHUTTLES';
 
-    private ColonyLoaderInterface $colonyLoader;
+    private ShipLoaderInterface $shipLoader;
 
     private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ColonyStorageManagerInterface $colonyStorageManager;
 
     private ShipStorageManagerInterface $shipStorageManager;
 
@@ -39,17 +35,15 @@ final class ManageShuttles implements ActionControllerInterface
     private PositionCheckerInterface $positionChecker;
 
     public function __construct(
-        ColonyLoaderInterface $colonyLoader,
+        ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
-        ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
         ShipRepositoryInterface $shipRepository,
         PositionCheckerInterface $positionChecker
     ) {
-        $this->colonyLoader = $colonyLoader;
+        $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
-        $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
         $this->shipRepository = $shipRepository;
@@ -63,14 +57,14 @@ final class ManageShuttles implements ActionControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        $colony = $this->colonyLoader->byIdAndUser(
+        $station = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
         $ship = $this->shipRepository->find(request::indInt('sid'));
 
-        if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
+        if (!$this->positionChecker->checkPosition($station, $ship)) {
             return;
         }
 
@@ -96,7 +90,7 @@ final class ManageShuttles implements ActionControllerInterface
             }
         }
 
-        foreach ($colony->getStorage() as $stor) {
+        foreach ($station->getStorage() as $stor) {
             if ($stor->getCommodity()->isShuttle()) {
                 if (array_key_exists($stor->getCommodity()->getId(), $shuttles)) {
                     $smi = $shuttles[$stor->getCommodity()->getId()];
@@ -131,7 +125,7 @@ final class ManageShuttles implements ActionControllerInterface
                     $smi->getCurrentLoad(),
                     $wantedCount,
                     $ship,
-                    $colony
+                    $station
                 );
             }
         }
@@ -140,9 +134,10 @@ final class ManageShuttles implements ActionControllerInterface
 
         if ($isForeignShip && !empty($msgArray)) {
             $pm = sprintf(
-                _('Die Kolonie %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
-                $colony->getName(),
-                $colony->getUser()->getName(),
+                _('Die %s %s des Spielers %s transferiert Shuttles in Sektor %d|%d') . "\n",
+                $station->getRump()->getName(),
+                $station->getName(),
+                $station->getUser()->getName(),
                 $ship->getPosX(),
                 $ship->getPosY()
             );
@@ -165,19 +160,19 @@ final class ManageShuttles implements ActionControllerInterface
         int $current,
         int $wanted,
         ShipInterface $ship,
-        ColonyInterface $colony
+        ShipInterface $station
     ): string {
         $commodity = $this->commodityRepository->find($commodityId);
         $diff = abs($wanted - $current);
 
         if ($current < $wanted) {
             $this->shipStorageManager->upperStorage($ship, $commodity, $diff);
-            $this->colonyStorageManager->lowerStorage($colony, $commodity, $diff);
+            $this->shipStorageManager->lowerStorage($station, $commodity, $diff);
 
             $msg = _('Es wurden %d %s zur %s transferiert');
         } else {
             $this->shipStorageManager->lowerStorage($ship, $commodity, $diff);
-            $this->colonyStorageManager->upperStorage($colony, $commodity, $diff);
+            $this->shipStorageManager->upperStorage($station, $commodity, $diff);
 
             $msg = _('Es wurden %d %s von der %s transferiert');
         }
