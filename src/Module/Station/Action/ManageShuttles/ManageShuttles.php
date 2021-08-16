@@ -10,12 +10,12 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
-use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Orm\Entity\ShipInterface;
 
 final class ManageShuttles implements ActionControllerInterface
@@ -52,7 +52,7 @@ final class ManageShuttles implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowOrbitManagement::VIEW_IDENTIFIER);
+        $game->setView(ShowShipManagement::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
         $userId = $user->getId();
