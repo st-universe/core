@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Station;
 
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
@@ -12,32 +13,32 @@ use Stu\Orm\Entity\ConstructionProgressInterface;
 use Stu\Orm\Entity\ShipBuildplanInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
-use Stu\Orm\Repository\ConstructionProgressModuleRepositoryInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StationUtility implements StationUtilityInterface
 {
+    private ShipRepositoryInterface $shipRepository;
+
     private ShipBuildplanRepositoryInterface $shipBuildplanRepository;
 
     private ConstructionProgressRepositoryInterface $constructionProgressRepository;
-
-    private ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository;
 
     private ShipCreatorInterface $shipCreator;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        ShipRepositoryInterface $shipRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
         ShipCreatorInterface $shipCreator,
         LoggerUtilInterface $loggerUtil
     ) {
+        $this->shipRepository = $shipRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
-        $this->constructionProgressModuleRepository = $constructionProgressModuleRepository;
         $this->shipCreator = $shipCreator;
         $this->loggerUtil = $loggerUtil;
         $this->loggerUtil->init();
@@ -134,5 +135,33 @@ final class StationUtility implements StationUtilityInterface
         // set progress finished
         $progress->setRemainingTicks(0);
         $this->constructionProgressRepository->save($progress);
+    }
+
+    public function canManageShips(ShipInterface $ship): bool
+    {
+        return $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST ||
+            $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE;
+    }
+
+    public function getManageableShipList(ShipInterface $station): array
+    {
+        $result = [];
+
+        $shiplist = $this->shipRepository->getByOuterSystemLocation(
+            $station->getCx(),
+            $station->getCy()
+        );
+
+        foreach ($shiplist as $obj) {
+            $result[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
+            if (!array_key_exists('name', $result[$obj->getFleetId()])) {
+                if ($obj->getFleetId() == 0) {
+                    $result[$obj->getFleetId()]['name'] = _('Einzelschiffe');
+                } else {
+                    $result[$obj->getFleetId()]['name'] = $obj->getFleet()->getName();
+                }
+            }
+        }
+        return $result;
     }
 }
