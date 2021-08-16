@@ -37,15 +37,17 @@ function openShuttleManagement(obj, ship, station) {
 	ajax_update('elt', 'station.php?SHOW_STATION_SHUTTLE_MANAGEMENT=1&ship=' + ship + '&station=' + station);
 }
 function showBeamToWindow() {
-	var shipid = $('selshipid').value;
-	elt = 'beam'
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMTO=1&target=' + shipid);
+	closeAjaxWindow();
+
+	var target = $('selshipid').value;
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMTO=1&target=' + target);
 }
 
 function showBeamFromWindow() {
-	var shipid = $('selshipid').value;
-	elt = 'beam'
-	openPJsWin(elt, 1);
-	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
+	closeAjaxWindow();
+
+	var target = $('selshipid').value;
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_BEAMFROM=1&target=' + target);
 }
