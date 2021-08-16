@@ -6,10 +6,13 @@ namespace Stu\Module\Station;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
+use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\ManageOrbitalShuttles\ManageShuttles;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\View\Overview\Overview;
+use Stu\Module\Station\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
 use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagementRequest;
@@ -32,7 +35,9 @@ return [
     'STATION_ACTIONS' => [
         BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
         ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),
-        ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class)
+        ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class),
+        AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
+        DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -43,6 +48,7 @@ return [
         ShowStationInfo::VIEW_IDENTIFIER => autowire(ShowStationInfo::class),
         ShowShipManagement::VIEW_IDENTIFIER => autowire(ShowShipManagement::class),
         ShowStationShiplist::VIEW_IDENTIFIER => autowire(ShowStationShiplist::class),
-        ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class)
+        ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
+        ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class)
     ],
 ];

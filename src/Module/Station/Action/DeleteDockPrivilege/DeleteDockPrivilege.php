@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Ship\Action\DeleteDockPrivilege;
+namespace Stu\Module\Station\Action\DeleteDockPrivilege;
 
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowDockingPrivileges\ShowDockingPrivileges;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 
 final class DeleteDockPrivilege implements ActionControllerInterface

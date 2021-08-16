@@ -462,6 +462,7 @@
   </script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js">< !--stuniverse --></script>
   <script type="text/javascript" src="${THIS/getJavascriptPath}/js/shipmanagement.js">< !--stuniverse --></script>
+  <script type="text/javascript" src="${THIS/getJavascriptPath}/js/station.js">< !--stuniverse --></script>
 </metal:block>
 <metal:block metal:define-macro="show_ship_alvl">
   <table style="width: 100%;" tal:define="sstr THIS/getSessionString">
@@ -1053,77 +1054,6 @@
       </div>
     </div>
   </div>
-</metal:block>
-<metal:block metal:define-macro="dockprivileges">
-  <br /><br />
-  <div id="dockprivilegelist">
-    <metal:macro metal:define-macro="dockprivilegelist">
-      <input type="hidden" id="dock_sstr" tal:attributes="value THIS/getSessionString" />
-      <table class="tcal" style="width: 400px;">
-        <tr>
-          <th>Ziel</th>
-          <th>Modus</th>
-          <th></th>
-        </tr>
-        <tr tal:repeat="data SHIP/getDockPrivileges">
-          <td tal:content="structure bbcode:data/getTargetName">NAME</td>
-          <td class="positive" tal:condition="data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE</td>
-          <td class="negative" tal:condition="not:data/isDockingAllowed" tal:content="data/getPrivilegeModeString">MODE
-          </td>
-          <td>
-            <div style="cursor: pointer;" onclick="deleteDockPrivilege(${data/getId},'${THIS/getSessionString}')"
-              onmouseover="cp('dcfg_${repeat/data/index}','buttons/x2');"
-              onmouseout="cp('dcfg_${repeat/data/index}','buttons/x1');">
-              <img src="assets/buttons/x1.png" title="Einstellung löschen" name="dcfg_${repeat/data/index}" />
-            </div>
-          </td>
-        </tr>
-      </table>
-    </metal:macro>
-    <metal:macro metal:use-macro="dockprivilegelist" />
-  </div>
-  <br />
-  <table class="tcal">
-    <tr>
-      <th colspan="2">Neuer Eintrag</th>
-    </tr>
-    <tr>
-      <td>
-        <select id="docktype"
-          onchange="$('dock_opt1').hide();$('dock_opt2').hide();$('dock_opt3').hide();$('dock_opt'+this.value).show();">
-          <option value="1">Siedler</option>
-          <option value="2">Allianz</option>
-          <option value="3">Rasse</option>
-        </select>
-      </td>
-      <td>
-        <span id="dock_opt1">
-          Siedler-ID: <input type="text" size="6" name="docktarget" id="docktarget_1" />
-        </span>
-        <span id="dock_opt2" style="display: none;">
-          Allianz-ID: <input type="text" size="6" id="docktarget_2" name="docktarget" />
-        </span>
-        <span id="dock_opt3" style="display: none;">
-          Rasse: <select name="docktarget" id="docktarget_3">
-            <option value="1">Föderation</option>
-            <option value="2">Romulaner</option>
-            <option value="3">Klingonen</option>
-            <option value="4">Cardassianer</option>
-            <option value="5">Ferengi</option>
-          </select>
-        </span>
-        <select id="dockmode">
-          <option value="1">Erlauben</option>
-          <option value="2">Verbieten</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" style="text-align: center;">
-        <input class="button" type="button" value="Erstellen" onclick="addDockPrivilege();" />
-      </td>
-    </tr>
-  </table>
 </metal:block>
 <metal:macro metal:define-macro="trademenu">
   <div id="trademenucontent" style="width: 400px;">
