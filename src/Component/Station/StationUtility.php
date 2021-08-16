@@ -153,6 +153,9 @@ final class StationUtility implements StationUtilityInterface
         );
 
         foreach ($shiplist as $obj) {
+            if ($obj === $station) {
+                continue;
+            }
             $result[$obj->getFleetId()]['ships'][$obj->getId()] = $obj;
             if (!array_key_exists('name', $result[$obj->getFleetId()])) {
                 if ($obj->getFleetId() == 0) {
