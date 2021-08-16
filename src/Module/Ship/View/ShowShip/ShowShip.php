@@ -22,7 +22,6 @@ use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
-use Stu\Module\Tal\OrbitShipItem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -190,7 +189,6 @@ final class ShowShip implements ViewControllerInterface
         }
 
         $this->doConstructionStuff($ship, $game);
-        $this->doStationStuff($ship, $game);
 
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
@@ -295,32 +293,6 @@ final class ShowShip implements ViewControllerInterface
 
             $game->setTemplateVar('MODULE_SELECTORS', $moduleSelectors);
             $game->setTemplateVar('HAS_STORAGE', new ColonyStorageGoodWrapper($ship->getStorage()));
-        }
-    }
-
-    private function doStationStuff(ShipInterface $ship, GameControllerInterface $game): void
-    {
-        if ($this->stationUtility->canManageShips($ship)) {
-            $shipList = $this->stationUtility->getManageableShipList($ship);
-            if ($shipList !== []) {
-                // if selected, return the current target
-                $target = request::postInt('target');
-
-                if ($target) {
-                    foreach ($shipList as $key => $fleet) {
-                        foreach ($fleet['ships'] as $idx => $ship) {
-                            if ($idx == $target) {
-                                $firstOrbitShip = $ship;
-                            }
-                        }
-                    }
-                }
-                if ($firstOrbitShip === null) {
-                    $firstOrbitShip = current(current($shipList)['ships']);
-                }
-            }
-
-            $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
         }
     }
 }
