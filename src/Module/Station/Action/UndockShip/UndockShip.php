@@ -79,7 +79,6 @@ final class UndockShip implements ActionControllerInterface
         $target->setEps(100);
         $station->getDockedShips()->removeElement($target);
 
-        $this->shipRepository->save($station);
         $this->shipRepository->save($target);
 
         $this->entityManager->flush();

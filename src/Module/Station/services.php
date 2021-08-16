@@ -13,6 +13,7 @@ use Stu\Module\Station\Action\ManageOrbitalShuttles\ManageShuttles;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\Action\UndockShip\UndockShip;
 use Stu\Module\Station\View\Overview\Overview;
+use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Station\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
 use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
@@ -51,6 +52,7 @@ return [
         ShowShipManagement::VIEW_IDENTIFIER => autowire(ShowShipManagement::class),
         ShowStationShiplist::VIEW_IDENTIFIER => autowire(ShowStationShiplist::class),
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
+        ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
         ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class)
     ],
 ];
