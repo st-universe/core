@@ -194,7 +194,7 @@ class Ship implements ShipInterface
     private $dockedTo;
 
     /**
-     * @OneToMany(targetEntity="Ship", mappedBy="dockedTo" indexBy="id")
+     * @OneToMany(targetEntity="Ship", mappedBy="dockedTo", indexBy="id")
      */
     private $dockedShips;
 
