@@ -11,7 +11,7 @@ use Stu\Module\Station\Action\BuildStation\BuildStation;
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\ManageOrbitalShuttles\ManageShuttles;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
-use Stu\Module\Station\Action\UndockShip\UndockShip;
+use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
 use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
 use Stu\Module\Station\View\ShowDockingPrivilegesConfig\ShowDockingPrivilegesConfig;
@@ -40,7 +40,7 @@ return [
         ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class),
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
         DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
-        UndockShip::ACTION_IDENTIFIER => autowire(UndockShip::class)
+        UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

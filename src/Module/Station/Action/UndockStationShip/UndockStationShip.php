@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Station\Action\UndockShip;
+namespace Stu\Module\Station\Action\UndockStationShip;
 
 use request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +14,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class UndockShip implements ActionControllerInterface
+final class UndockStationShip implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_UNDOCK_SHIP';
 
