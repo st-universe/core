@@ -219,6 +219,11 @@ function showFleet(fleetid) {
 	$('fleetuser' + fleetid).hide();
 	ajaxrequest('ship.php?B_SHOW_FLEET=1&id=' + shipid + '&fleet=' + fleetid);
 }
+function getShipList() {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_STATION_SHIPLIST=1');
+}
 function showFightLog() {
 	openPJsWin('fightresult_content', 1);
 	$('fightresult_content').innerHTML = $('fightlog').innerHTML;

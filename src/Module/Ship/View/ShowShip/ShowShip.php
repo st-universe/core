@@ -321,6 +321,8 @@ final class ShowShip implements ViewControllerInterface
             }
 
             $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
+        } else {
+            $game->setTemplateVar('FIRST_MANAGE_SHIP', null);
         }
     }
 }
