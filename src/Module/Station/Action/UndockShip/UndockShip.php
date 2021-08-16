@@ -73,6 +73,7 @@ final class UndockShip implements ActionControllerInterface
         $target->setDockedTo(null);
         $station->getDockedShips()->removeElement($target);
 
+        $this->shipRepository->save($station);
         $this->shipRepository->save($target);
 
         $game->addInformation(sprintf(_('Die %s wurde erfolgreich abgedockt'), $target->getName()));
