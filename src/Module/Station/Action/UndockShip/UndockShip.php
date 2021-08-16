@@ -81,6 +81,6 @@ final class UndockShip implements ActionControllerInterface
 
     public function performSessionCheck(): bool
     {
-        return true;
+        return false;
     }
 }
