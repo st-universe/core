@@ -324,7 +324,6 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('CAN_UNDOCK', true);
         } else {
             $game->setTemplateVar('FIRST_MANAGE_SHIP', null);
-            $game->setTemplateVar('CAN_UNDOCK', false);
         }
     }
 }
