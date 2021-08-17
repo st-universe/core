@@ -1441,7 +1441,7 @@ class Ship implements ShipInterface
 
     public function canBeAttacked(): bool
     {
-        return !$this->getRump()->isTrumfield();
+        return !$this->getRump()->isTrumfield() && !$this->getWarpState();
     }
 
     public function canAttack(): bool
