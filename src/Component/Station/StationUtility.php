@@ -134,8 +134,9 @@ final class StationUtility implements StationUtilityInterface
 
     public function canManageShips(ShipInterface $ship): bool
     {
-        return $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST ||
-            $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE;
+        return $ship->getRump()->getShipRumpRole() !== null
+            && ($ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_OUTPOST
+                || $ship->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE);
     }
 
     public function getManageableShipList(ShipInterface $station): array
