@@ -107,7 +107,6 @@ final class ShowColony implements ViewControllerInterface
             new ColonyMenu($menuId)
         );
         $game->setTemplateVar('FIRST_ORBIT_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
-        $game->setTemplateVar('CAN_UNDOCK', false);
         $game->setTemplateVar('COLONY_SURFACE', $this->colonyLibFactory->createColonySurface($colony));
         $game->setTemplateVar('IMMIGRATION_SYMBOL', $immigrationSymbol);
 

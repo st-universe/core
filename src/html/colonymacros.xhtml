@@ -663,7 +663,7 @@
       </tr>
       <tr>
         <td style="width: 20px; vertical-align: middle;">
-          <a tal:condition="CAN_UNDOCK"
+          <a tal:condition="exists: CAN_UNDOCK"
             href="ship.php?id=${SHIP/getId}&B_UNDOCK_SHIP=1&target=${data/getId}&sstr=${THIS/getSessionString}"><img
               src="/assets/buttons/dock1.png" title="abdocken" /></a>
         </td>
