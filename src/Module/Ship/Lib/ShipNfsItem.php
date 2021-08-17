@@ -58,7 +58,7 @@ final class ShipNfsItem
     }
     public function canBeAttacked()
     {
-        return !$this->isTrumfield();
+        return !$this->isTrumfield() && !$this->getWarpState();
     }
     public function isInterceptable()
     {
