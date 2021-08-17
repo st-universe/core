@@ -1,6 +1,6 @@
 <?php
 
-use Stu\PlanetGenerator;
+use Stu\PlanetGenerator\PlanetGenerator;
 
 $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse L - Basisklasse Wald";
 
