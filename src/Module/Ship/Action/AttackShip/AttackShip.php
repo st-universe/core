@@ -72,6 +72,10 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
+        if (!$target->canBeAttacked()) {
+            return;
+        }
+
         if ($target->getRump()->isTrumfield()) {
             return;
         }
