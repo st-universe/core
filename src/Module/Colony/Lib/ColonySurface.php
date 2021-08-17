@@ -16,7 +16,7 @@ use Stu\Orm\Repository\BuildingRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
-use Stu\PlanetGenerator\PlanetGenerator;
+use Stu\PlanetGenerator;
 
 final class ColonySurface implements ColonySurfaceInterface
 {
