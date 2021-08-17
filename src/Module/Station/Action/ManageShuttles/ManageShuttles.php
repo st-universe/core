@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stu\Module\Station\Action\ManageOrbitalShuttles;
+namespace Stu\Module\Station\Action\ManageShuttles;
 
 use request;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
