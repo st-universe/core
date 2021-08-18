@@ -147,7 +147,8 @@ class VisualNavPanel
                 $data,
                 $this->isTachyonSystemActive,
                 $this->tachyonFresh,
-                $this->getShip()
+                $this->getShip(),
+                $this->system === null
             );
             if ($this->system === null) {
                 $entry->currentShipPosX = $cx;
