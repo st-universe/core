@@ -12,6 +12,7 @@ use Stu\Component\Ship\System\ShipSystemManager;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\AstroLaboratoryShipSystem;
+use Stu\Component\Ship\System\Type\BeamBlockerShipSystem;
 use Stu\Component\Ship\System\Type\CloakShipSystem;
 use Stu\Component\Ship\System\Type\EnergyWeaponShipSystem;
 use Stu\Component\Ship\System\Type\EpsShipSystem;
@@ -61,7 +62,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY => autowire(AstroLaboratoryShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER => autowire(MatrixScannerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE => autowire(TorpedoStorageShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP => autowire(ShuttleRampShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP => autowire(ShuttleRampShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => autowire(BeamBlockerShipSystem::class)
         ]
     )
 ];

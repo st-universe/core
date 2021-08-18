@@ -10,6 +10,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -78,6 +79,10 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }
+        if ($target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)) {
+            $game->addInformation(sprintf(_('Die %s hat einen Beamblocker aktiviert. Zum Warentausch andocken.'), $target->getName()));
+            return;
+        }
         if ($ship->getMaxStorage() <= $ship->getStorageSum()) {
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
@@ -143,8 +148,12 @@ final class BeamFrom implements ActionControllerInterface
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
                 $count = $ship->getMaxStorage() - $ship->getStorageSum();
             }
-            $game->addInformation(sprintf(_('%d %s (Energieverbrauch: %d)'), $count, $commodity->getName(),
-                ceil($count / $transferAmount)));
+            $game->addInformation(sprintf(
+                _('%d %s (Energieverbrauch: %d)'),
+                $count,
+                $commodity->getName(),
+                ceil($count / $transferAmount)
+            ));
 
             $count = (int) $count;
 
@@ -154,8 +163,11 @@ final class BeamFrom implements ActionControllerInterface
             $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
         }
         if ($target->getUserId() != $ship->getUserId()) {
-            $game->sendInformation($target->getUserId(), $ship->getUserId(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
+            $game->sendInformation(
+                $target->getUserId(),
+                $ship->getUserId(),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            );
         }
 
         $this->shipRepository->save($ship);
