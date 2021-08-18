@@ -96,12 +96,12 @@ function showScanWindow(shipid, target) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_SCAN=1&target=' + target);
 }
-function showSectorScanWindow(obj, x, y, loadSystemSensorScan) {
+function showSectorScanWindow(obj, x, y, sysid, loadSystemSensorScan) {
 	closeAjaxWindow();
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 800, pos[0] - 250, pos[1] - 250);
 	if (x && y) {
-		ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SENSOR_SCAN=1&cx=' + x + '&cy=' + y);
+		ajax_update('elt', 'station.php?id=' + shipid + '&SHOW_SENSOR_SCAN=1&cx=' + x + '&cy=' + y + '&sysid=' + sysid);
 		if (loadSystemSensorScan) {
 			ajax_update('systemsensorscan', 'station.php?id=' + shipid + '&SHOW_SYSTEM_SENSOR_SCAN=1&cx=' + x + '&cy=' + y);
 		}
