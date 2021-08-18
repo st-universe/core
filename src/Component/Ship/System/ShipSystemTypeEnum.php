@@ -28,6 +28,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_MATRIX_SCANNER = 19;
     public const SYSTEM_TORPEDO_STORAGE = 20;
     public const SYSTEM_SHUTTLE_RAMP = 21;
+    public const SYSTEM_BEAM_BLOCKER = 22;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -90,6 +91,8 @@ final class ShipSystemTypeEnum
                 return _('Torpedolager');
             case ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP:
                 return _('Shuttle-Rampe');
+            case ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER:
+                return _('Beamblocker');
         }
         return '';
     }

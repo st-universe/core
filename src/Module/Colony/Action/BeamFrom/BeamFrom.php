@@ -12,6 +12,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -62,15 +63,18 @@ final class BeamFrom implements ActionControllerInterface
         if ($target === null) {
             return;
         }
-        
-        if ($target->getUser()->isVacationRequestOldEnough())
-        {
+
+        if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }
 
         if ($target->getShieldState() && $target->getUserId() != $userId) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
+            return;
+        }
+        if ($target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)) {
+            $game->addInformation(sprintf(_('Die %s hat einen Beamblocker aktiviert. Zum Warentausch andocken.'), $target->getName()));
             return;
         }
         if (!$colony->storagePlaceLeft()) {
@@ -150,7 +154,8 @@ final class BeamFrom implements ActionControllerInterface
             }
 
             $eps_usage = ceil($count / $transferAmount);
-            $game->addInformationf(_('%d %s (Energieverbrauch: %d)'),
+            $game->addInformationf(
+                _('%d %s (Energieverbrauch: %d)'),
                 $count,
                 $commodity->getName(),
                 $eps_usage

@@ -181,6 +181,10 @@ final class ShipCreator implements ShipCreatorInterface
         $systems[ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT] = 0;
         //TODO transporter
 
+        if ($ship->getRump()->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_STATION) {
+            $systems[ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER] = 0;
+        }
+
         foreach ($modules as $module) {
             switch ($module->getModule()->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SHIELDS:
