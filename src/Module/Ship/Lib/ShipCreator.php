@@ -136,7 +136,9 @@ final class ShipCreator implements ShipCreatorInterface
             }
         }
 
-        $ship->setName($ship->getRump()->getName());
+        if ($ship->getName() === null || $ship->getName() == sprintf('%s in Bau', $ship->getRump()->getName())) {
+            $ship->setName($ship->getRump()->getName());
+        }
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
         $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
         $ship->setMaxEBatt();
