@@ -459,7 +459,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
-        int $mapId = null
+        int $mapId = null,
+        int $sysMapId = null
     ): iterable {
 
         $isSystem = $mapId === null && $ship->getSystem() !== null;
@@ -517,7 +518,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'fieldId' => $mapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
+            'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
@@ -529,7 +530,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ShipInterface $ship,
         bool $isBase,
         bool $showCloaked = false,
-        int $mapId = null
+        int $mapId = null,
+        int $sysMapId = null
     ): iterable {
 
         $isSystem = $mapId === null && $ship->getSystem() !== null;
@@ -581,7 +583,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'fieldId' => $mapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
+            'fieldId' => $mapId ?? $sysMapId ?? ($isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId()),
             'ignoreId' => $ship->getId(),
             'isBase' => $isBase,
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
