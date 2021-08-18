@@ -16,12 +16,15 @@ class VisualNavPanelEntry
 
     private $ship;
 
+    private $tachyonRange;
+
     function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false, ShipInterface $ship = null)
     {
         $this->data = $entry;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
         $this->ship = $ship;
+        $this->tachyonRange = $ship !== null ? ($ship->isBase() ? 7 : 3) : 0;
     }
 
     function getPosX()
@@ -92,10 +95,11 @@ class VisualNavPanelEntry
             if ($this->tachyonFresh) {
                 return "?";
             }
+
             if (
                 $this->isTachyonSystemActive
-                && abs($this->getPosX() - $this->currentShipPosX) < 3
-                && abs($this->getPosY() - $this->currentShipPosY) < 3
+                && abs($this->getPosX() - $this->currentShipPosX) < $this->tachyonRange
+                && abs($this->getPosY() - $this->currentShipPosY) < $this->tachyonRange
             ) {
                 return "?";
             }
