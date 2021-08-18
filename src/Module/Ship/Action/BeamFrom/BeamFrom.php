@@ -160,7 +160,9 @@ final class BeamFrom implements ActionControllerInterface
             $this->shipStorageManager->lowerStorage($target, $commodity, $count);
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
-            $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
+            if ($ship->getDockedTo() !== $target && $target->getDockedTo() !== $ship) {
+                $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
+            }
         }
         if ($target->getUserId() != $ship->getUserId()) {
             $game->sendInformation(
