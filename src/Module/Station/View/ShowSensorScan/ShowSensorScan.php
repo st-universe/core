@@ -14,6 +14,7 @@ use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StarSystemMapRepositoryInterface;
 
 final class ShowSensorScan implements ViewControllerInterface
 {
@@ -27,6 +28,8 @@ final class ShowSensorScan implements ViewControllerInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private StarSystemMapRepositoryInterface $starSystemMapRepository;
+
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
     private NbsUtilityInterface $nbsUtility;
@@ -38,12 +41,14 @@ final class ShowSensorScan implements ViewControllerInterface
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         MapRepositoryInterface $mapRepository,
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         NbsUtilityInterface $nbsUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->mapRepository = $mapRepository;
+        $this->starSystemMapRepository = $starSystemMapRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->nbsUtility = $nbsUtility;
     }
@@ -59,25 +64,40 @@ final class ShowSensorScan implements ViewControllerInterface
 
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
+        $sysid = request::getIntFatal('sysid');
 
         $game->setTemplateVar('ERROR', true);
 
-        if (
-            $cx < $ship->getCx() - $ship->getSensorRange()
-            || $cx > $ship->getCx() + $ship->getSensorRange()
-            || $cy < $ship->getCy() - $ship->getSensorRange()
-            || $cy > $ship->getCy() + $ship->getSensorRange()
-        ) {
-            return;
+        if ($sysid === 0) {
+
+            if (
+                $cx < $ship->getCx() - $ship->getSensorRange()
+                || $cx > $ship->getCx() + $ship->getSensorRange()
+                || $cy < $ship->getCy() - $ship->getSensorRange()
+                || $cy > $ship->getCy() + $ship->getSensorRange()
+            ) {
+                return;
+            }
+
+            $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
+        } else {
+            $mapField = $this->starSystemMapRepository->getByCoordinates($sysid, $cx, $cy);
+
+            $system = $mapField->getSystem();
+
+            if (
+                $system->getCx() < $ship->getCx() - $ship->getSensorRange()
+                || $system->getCx() > $ship->getCx() + $ship->getSensorRange()
+                || $system->getCy() < $ship->getCy() - $ship->getSensorRange()
+                || $system->getCy() > $ship->getCy() + $ship->getSensorRange()
+            ) {
+                return;
+            }
         }
-
-        $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
-
 
         $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/stationmacros.xhtml/sensorscan');
-
 
         if ($mapField === null) {
             return;
