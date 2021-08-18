@@ -87,6 +87,9 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(sprintf(_('Der Lagerraum der %s ist voll'), $ship->getName()));
             return;
         }
+
+        $isDockTransfer = $ship->getDockedTo() === $target || $target->getDockedTo() === $ship;
+
         $goods = request::postArray('goods');
         $gcount = request::postArray('count');
 
@@ -152,7 +155,7 @@ final class BeamFrom implements ActionControllerInterface
                 _('%d %s (Energieverbrauch: %d)'),
                 $count,
                 $commodity->getName(),
-                ceil($count / $transferAmount)
+                $isDockTransfer ? 0 : ceil($count / $transferAmount)
             ));
 
             $count = (int) $count;
@@ -160,7 +163,7 @@ final class BeamFrom implements ActionControllerInterface
             $this->shipStorageManager->lowerStorage($target, $commodity, $count);
             $this->shipStorageManager->upperStorage($ship, $commodity, $count);
 
-            if ($ship->getDockedTo() !== $target && $target->getDockedTo() !== $ship) {
+            if (!$isDockTransfer) {
                 $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
             }
         }
