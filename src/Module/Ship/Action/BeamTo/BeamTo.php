@@ -91,8 +91,11 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(_("Es wurde keine Waren zum Beamen ausgewählt"));
             return;
         }
-        $game->addInformation(sprintf(_('Die %s hat folgende Waren zur %s transferiert'), $ship->getName(),
-            $target->getName()));
+        $game->addInformation(sprintf(
+            _('Die %s hat folgende Waren zur %s transferiert'),
+            $ship->getName(),
+            $target->getName()
+        ));
         foreach ($goods as $key => $value) {
             $commodityId = (int) $value;
 
@@ -137,19 +140,28 @@ final class BeamTo implements ActionControllerInterface
             if ($target->getStorageSum() + $count > $target->getMaxStorage()) {
                 $count = $target->getMaxStorage() - $target->getStorageSum();
             }
-            $game->addInformation(sprintf(_('%d %s (Energieverbrauch: %d)'), $count, $commodity->getName(),
-                ceil($count / $transferAmount)));
+            $game->addInformation(sprintf(
+                _('%d %s (Energieverbrauch: %d)'),
+                $count,
+                $commodity->getName(),
+                ceil($count / $transferAmount)
+            ));
 
             $count = (int) $count;
 
             $this->shipStorageManager->lowerStorage($ship, $commodity, $count);
             $this->shipStorageManager->upperStorage($target, $commodity, $count);
 
-            $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
+            if ($ship->getDockedTo() !== $target && $target->getDockedTo() !== $ship) {
+                $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
+            }
         }
         if ($target->getUserId() != $ship->getUserId()) {
-            $game->sendInformation($target->getUserId(), $ship->getUserId(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
+            $game->sendInformation(
+                $target->getUserId(),
+                $ship->getUserId(),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
+            );
         }
         $this->shipRepository->save($ship);
     }
