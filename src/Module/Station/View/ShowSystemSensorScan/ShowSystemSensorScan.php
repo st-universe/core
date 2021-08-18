@@ -7,6 +7,7 @@ namespace Stu\Module\Station\View\ShowSystemSensorScan;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use VisualNavPanel;
@@ -19,12 +20,16 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        MapRepositoryInterface $mapRepository
+        MapRepositoryInterface $mapRepository,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->mapRepository = $mapRepository;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
