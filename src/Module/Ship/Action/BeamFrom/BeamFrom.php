@@ -79,7 +79,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(sprintf(_('Die %s befindet sich im Warp'), $target->getName()));
             return;
         }
-        if ($target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)) {
+        if ($ship->getDockedTo() !== $target && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)) {
             $game->addInformation(sprintf(_('Die %s hat einen Beamblocker aktiviert. Zum Warentausch andocken.'), $target->getName()));
             return;
         }
