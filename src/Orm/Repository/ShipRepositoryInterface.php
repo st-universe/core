@@ -122,7 +122,8 @@ interface ShipRepositoryInterface extends ObjectRepository
     public function getFleetShipsScannerResults(
         ShipInterface $ship,
         bool $showCloaked = false,
-        int $mapId = null
+        int $mapId = null,
+        int $sysMapId = null
     ): iterable;
 
     /**
@@ -132,7 +133,8 @@ interface ShipRepositoryInterface extends ObjectRepository
         ShipInterface $ship,
         bool $isBase,
         bool $showCloaked = false,
-        int $mapId = null
+        int $mapId = null,
+        int $sysMapId = null
     ): iterable;
 
     public function isCloakedShipAtLocation(ShipInterface $ship): bool;

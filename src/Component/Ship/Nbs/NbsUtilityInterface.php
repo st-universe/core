@@ -15,6 +15,7 @@ interface NbsUtilityInterface
         GameControllerInterface $game,
         ?SessionInterface $session,
         bool $tachyonActive,
-        int $mapId = null
+        int $mapId = null,
+        int $sysMapId = null
     ): void;
 }

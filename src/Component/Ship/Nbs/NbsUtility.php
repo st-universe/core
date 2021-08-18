@@ -42,25 +42,33 @@ final class NbsUtility implements NbsUtilityInterface
         GameControllerInterface $game,
         ?SessionInterface $session,
         bool $tachyonActive,
-        int $mapId = null
+        int $mapId = null,
+        int $sysMapId = null
     ): void {
 
         $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
             true,
             $tachyonActive,
-            $mapId
+            $mapId,
+            $sysMapId
         ), $ship->getUser()->getId());
 
         $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
             false,
             $tachyonActive,
-            $mapId
+            $mapId,
+            $sysMapId
         ), $ship->getUser()->getId());
 
         $fleetNbs = new FleetNfsIterator(
-            $this->shipRepository->getFleetShipsScannerResults($ship, $tachyonActive, $mapId),
+            $this->shipRepository->getFleetShipsScannerResults(
+                $ship,
+                $tachyonActive,
+                $mapId,
+                $sysMapId
+            ),
             $ship,
             $session
         );
