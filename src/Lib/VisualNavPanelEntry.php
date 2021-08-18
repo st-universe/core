@@ -18,12 +18,20 @@ class VisualNavPanelEntry
 
     private $tachyonRange;
 
-    function __construct(&$entry = array(), bool $isTachyonSystemActive = false, bool $tachyonFresh = false, ShipInterface $ship = null)
-    {
+    private $loadSystemSensorScan;
+
+    function __construct(
+        &$entry = array(),
+        bool $isTachyonSystemActive = false,
+        bool $tachyonFresh = false,
+        ShipInterface $ship = null,
+        bool $loadSystemSensorScan = false
+    ) {
         $this->data = $entry;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
         $this->ship = $ship;
+        $this->loadSystemSensorScan = $loadSystemSensorScan;
         $this->tachyonRange = $ship !== null ? ($ship->isBase() ? 7 : 3) : 0;
     }
 
@@ -160,7 +168,12 @@ class VisualNavPanelEntry
     function getOnClick()
     {
         if ($this->ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
-            return sprintf('showSectorScanWindow(this, %d, %d);', $this->getPosX(), $this->getPosY());
+            return sprintf(
+                'showSectorScanWindow(this, %d, %d, %s);',
+                $this->getPosX(),
+                $this->getPosY(),
+                $this->loadSystemSensorScan ? 'true' : 'false'
+            );
         }
         return sprintf('moveToPosition(%d,%d);', $this->getPosX(), $this->getPosY());
     }
