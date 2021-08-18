@@ -27,6 +27,7 @@ use Stu\Module\Station\View\ShowStationInfo\ShowStationInfo;
 use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplist;
 use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplistRequest;
 use Stu\Module\Station\View\ShowStationShiplist\ShowStationShiplistRequestInterface;
+use Stu\Module\Station\View\ShowSystemSensorScan\ShowSystemSensorScan;
 
 use function DI\autowire;
 
@@ -53,6 +54,7 @@ return [
         ShowStationShiplist::VIEW_IDENTIFIER => autowire(ShowStationShiplist::class),
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
-        ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class)
+        ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
+        ShowSystemSensorScan::VIEW_IDENTIFIER => autowire(ShowSystemSensorScan::class)
     ],
 ];

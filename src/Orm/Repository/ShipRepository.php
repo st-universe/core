@@ -17,6 +17,7 @@ use Stu\Orm\Entity\ShipSystem;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\UserInterface;
 
@@ -323,7 +324,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultInnerSystem(ShipInterface $ship): iterable
+    public function getSensorResultInnerSystem(ShipInterface $ship, StarSystemInterface $system = null): iterable
     {
         $doSubspace = $ship->getSubspaceState();
         $map = $ship->getStarsystemMap();
@@ -372,11 +373,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ),
             $rsm
         )->setParameters([
-            'starSystemId' => $ship->getStarsystemMap()->getSystem()->getId(),
-            'sxStart' => $map->getSx() - $sensorRange,
-            'sxEnd' => $map->getSx() + $sensorRange,
-            'syStart' => $map->getSy() - $sensorRange,
-            'syEnd' => $map->getSy() + $sensorRange,
+            'starSystemId' => $system ? $system->getId() : $ship->getStarsystemMap()->getSystem()->getId(),
+            'sxStart' => $system ? 1 : $map->getSx() - $sensorRange,
+            'sxEnd' => $system ? $system->getMaxX() : $map->getSx() + $sensorRange,
+            'syStart' => $system ? 1 : $map->getSy() - $sensorRange,
+            'syEnd' => $system ? $system->getMaxY() : $map->getSy() + $sensorRange,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
         ])->getResult();
     }

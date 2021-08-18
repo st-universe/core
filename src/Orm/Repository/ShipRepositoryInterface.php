@@ -4,6 +4,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -111,7 +112,7 @@ interface ShipRepositoryInterface extends ObjectRepository
      */
     public function getNpcShipsForTick(): iterable;
 
-    public function getSensorResultInnerSystem(ShipInterface $ship): iterable;
+    public function getSensorResultInnerSystem(ShipInterface $ship, StarSystemInterface $system = null): iterable;
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable;
 

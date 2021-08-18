@@ -7,6 +7,7 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\UserMapRepositoryInterface;
@@ -25,18 +26,22 @@ class VisualNavPanel
 
     private $tachyonFresh;
 
+    private $system;
+
     function __construct(
         ShipInterface $ship,
         UserInterface $user,
         LoggerUtilInterface $loggerUtil,
         bool $isTachyonSystemActive,
-        bool $tachyonFresh
+        bool $tachyonFresh,
+        StarSystemInterface $system = null
     ) {
         $this->ship = $ship;
         $this->user = $user;
         $this->loggerUtil = $loggerUtil;
         $this->isTachyonSystemActive = $isTachyonSystemActive;
         $this->tachyonFresh = $tachyonFresh;
+        $this->system = $system;
 
         $this->showOuterMap = $this->getShip()->getSystem() === null
             || $this->getShip()->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR;
@@ -98,7 +103,8 @@ class VisualNavPanel
         global $container;
 
         return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
-            $this->getShip()
+            $this->getShip(),
+            $this->system
         );
     }
 
@@ -107,7 +113,7 @@ class VisualNavPanel
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }
-        if ($this->showOuterMap) {
+        if ($this->system === null && $this->showOuterMap) {
             $result = $this->getOuterSystemResult();
         } else {
             $result = $this->getInnerSystemResult();
@@ -143,8 +149,10 @@ class VisualNavPanel
                 $this->tachyonFresh,
                 $this->getShip()
             );
-            $entry->currentShipPosX = $cx;
-            $entry->currentShipPosY = $cy;
+            if ($this->system === null) {
+                $entry->currentShipPosX = $cx;
+                $entry->currentShipPosY = $cy;
+            }
             $rows[$y]->addEntry($entry);
         }
         if ($this->loggerUtil->doLog()) {
@@ -162,18 +170,20 @@ class VisualNavPanel
         if ($this->headRow === null) {
             $cx = $this->showOuterMap ? $this->getShip()->getCx() : $this->getShip()->getPosX();
             $range = $this->getShip()->getSensorRange();
-            $min = $cx - $range;
-            $max = $cx + $range;
+            $min = $this->system ? 1 : $cx - $range;
+            $max = $this->system ? $this->system->getMaxX() : $cx + $range;
             while ($min <= $max) {
                 if ($min < 1) {
                     $min++;
                     continue;
                 }
-                if ($this->showOuterMap && $min > MapEnum::MAP_MAX_X) {
-                    break;
-                }
-                if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {
-                    break;
+                if ($this->system === null) {
+                    if ($this->showOuterMap && $min > MapEnum::MAP_MAX_X) {
+                        break;
+                    }
+                    if (!$this->showOuterMap && $min > $this->getShip()->getSystem()->getMaxX()) {
+                        break;
+                    }
                 }
                 $row[]['value'] = $min;
                 $min++;
@@ -192,7 +202,7 @@ class VisualNavPanel
     private function getViewport()
     {
         if (!$this->viewportPerColumn) {
-            $navPercentage = $this->getShip()->isBase() ? 50 : 33;
+            $navPercentage = ($this->system === null && $this->getShip()->isBase()) ? 50 : 33;
             $perColumn = $navPercentage / count($this->getHeadRow());
             $this->viewport = min($perColumn, 1.7);
         }
