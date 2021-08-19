@@ -171,7 +171,7 @@ class VisualNavPanel
         if ($this->headRow === null) {
             $cx = $this->showOuterMap ? $this->getShip()->getCx() : $this->getShip()->getPosX();
             $range = $this->getShip()->getSensorRange();
-            $min = $this->system ? 0 : $cx - $range;
+            $min = $this->system ? 1 : $cx - $range;
             $max = $this->system ? $this->system->getMaxX() : $cx + $range;
             while ($min <= $max) {
                 if ($min < 1) {
