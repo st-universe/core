@@ -932,7 +932,8 @@
 							title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img
 								src="assets/buttons/info2.png" style="height:16px;" /></th>
 						<th style="text-align: center;">Batterie</th>
-						<th style="text-align: center;">Crew</th>
+						<th style="text-align: center;" title="aktuell (Minimum, Kapazität)">Crew <img
+								src="assets/buttons/info2.png" style="height:16px;" /></th>
 						<th style="text-align: center;">Name</th>
 						<td rowspan="3" style="text-align: center;">
 							<a href="javascript:void(0);" onclick="showSelfdestructWindow(${SHIP/getId});"
@@ -972,7 +973,12 @@
 						<td style="text-align: center;">
 							${SHIP/getEBatt}
 						</td>
-						<td style="text-align: center;" tal:content="SHIP/getCrewCount">CREW</td>
+						<td style="text-align: center;">
+							<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(
+							<span tal:condition="SHIP/getBuildplan" tal:replace="SHIP/getBuildplan/getCrew">MIN</span>
+							<span tal:condition="not:SHIP/getBuildplan">kA</span>,&nbsp;
+							<span tal:replace="SHIP/getRump/getCrew120P">MAX</span>)
+						</td>
 						<td style="text-align: center;">
 							<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"
 								onkeydown="event.key == 'Enter' &amp;&amp;  $('changeshipnamebutton').click()" /> <input
