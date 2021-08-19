@@ -178,6 +178,7 @@ final class EnterStarSystem implements ActionControllerInterface
     {
         $ship->setStarsystemMap($starsystemMap);
         $ship->setMap(null);
+        $ship->setDockedTo(null);
 
         $this->shipRepository->save($ship);
     }
