@@ -154,6 +154,11 @@ final class DockShip implements ActionControllerInterface
             } catch (ShipSystemException $e) {
             }
 
+            try {
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            } catch (ShipSystemException $e) {
+            }
+
             $ship->setDockedTo($target);
 
             $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
