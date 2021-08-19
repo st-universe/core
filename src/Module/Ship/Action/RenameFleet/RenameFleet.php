@@ -33,6 +33,11 @@ final class RenameFleet implements ActionControllerInterface
             return;
         }
 
+        if (mb_strlen($newName) > 200) {
+            $game->addInformation(_('Der Name ist zu lang (Maximum: 200 Zeichen)'));
+            return;
+        }
+
         $fleet = $this->fleetRepository->find($this->renameFleetRequest->getFleetId());
 
         if ($fleet === null || $fleet->getUserId() !== $game->getUser()->getId()) {
