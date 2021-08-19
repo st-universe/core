@@ -132,8 +132,10 @@ final class ShowSensorScan implements ViewControllerInterface
         $tachyonActive = $this->nbsUtility->isTachyonActive($ship);
 
         if ($mapField->getSystem()) {
+            $this->loggerUtil->log('system!');
             $this->nbsUtility->setNbsTemplateVars($ship, $game, null, $tachyonActive, null, $mapField->getId());
         } else {
+            $this->loggerUtil->log('not:system!');
             $this->nbsUtility->setNbsTemplateVars($ship, $game, null, $tachyonActive, $mapField->getId(), null);
         }
 
