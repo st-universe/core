@@ -95,11 +95,15 @@ final class RepairShip implements ActionControllerInterface
             return;
         }
         if (!$ship->canBeRepaired()) {
-            $game->addInformation(_('Das Schiff kann nicht repariert werden'));
+            $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
             return;
         }
         if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
-            $game->addInformation(_('Das Schiff wird bereits repariert'));
+            $game->addInformation(_('Das Schiff wird bereits repariert.'));
+            return;
+        }
+        if ($ship->getState() == ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
+            $game->addInformation(_('Das Schiff kartographiert derzeit und kann daher nicht repariert werden.'));
             return;
         }
 
