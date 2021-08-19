@@ -120,7 +120,7 @@ class VisualNavPanel
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tloadLSS-query, seconds: %F", $endTime - $startTime));
+            //$this->loggerUtil->log(sprintf("\tloadLSS-query, seconds: %F", $endTime - $startTime));
         }
 
         $cx = $this->getShip()->getPosX();
@@ -158,7 +158,7 @@ class VisualNavPanel
         }
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\tloadLSS-loop, seconds: %F", $endTime - $startTime));
+            //$this->loggerUtil->log(sprintf("\tloadLSS-loop, seconds: %F", $endTime - $startTime));
         }
 
         $this->rows = $rows;

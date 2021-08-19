@@ -10,6 +10,8 @@ use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -34,6 +36,8 @@ final class ShowSensorScan implements ViewControllerInterface
 
     private NbsUtilityInterface $nbsUtility;
 
+    private LoggerUtilInterface $loggerUtil;
+
     private $fadedSignaturesUncloaked = [];
     private $fadedSignaturesCloaked = [];
 
@@ -43,7 +47,8 @@ final class ShowSensorScan implements ViewControllerInterface
         MapRepositoryInterface $mapRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
-        NbsUtilityInterface $nbsUtility
+        NbsUtilityInterface $nbsUtility,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -51,11 +56,18 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->nbsUtility = $nbsUtility;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+            $this->loggerUtil->init();
+        }
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -65,6 +77,8 @@ final class ShowSensorScan implements ViewControllerInterface
         $cx = request::getIntFatal('cx');
         $cy = request::getIntFatal('cy');
         $sysid = request::getIntFatal('sysid');
+
+        $this->loggerUtil->log(sprintf('cx: %d, cy: %d, sysid: %d', $cx, $cy, $sysid));
 
         $game->setTemplateVar('ERROR', true);
 
