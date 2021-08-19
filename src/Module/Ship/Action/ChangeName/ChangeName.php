@@ -50,6 +50,11 @@ final class ChangeName implements ActionControllerInterface
 
         $value = EmojiRemover::clearEmojis($this->changeNameRequest->getName());
 
+        if (mb_strlen($value) > 255) {
+            $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
+            return;
+        }
+
         if (mb_strlen($this->bbCodeParser->parse($value)->getAsText()) < 3) {
             $game->addInformation(_('Der Schiffname ist zu kurz (Minimum 3 Zeichen)'));
             return;
