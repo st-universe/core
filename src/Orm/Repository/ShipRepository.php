@@ -463,7 +463,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $sysMapId = null
     ): iterable {
 
-        $isSystem = $mapId === null && $ship->getSystem() !== null;
+        $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('fleetid', 'fleetid', 'integer');
@@ -534,7 +534,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         int $sysMapId = null
     ): iterable {
 
-        $isSystem = $mapId === null && $ship->getSystem() !== null;
+        $isSystem = $sysMapId !== null || ($mapId === null && $ship->getSystem() !== null);
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('shipid', 'shipid', 'integer');
