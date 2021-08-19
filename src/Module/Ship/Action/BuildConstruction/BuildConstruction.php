@@ -233,7 +233,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction = $this->buildConstruction($ship, $rumpId);
 
         // allow docking for owner
-        $this->allowDockingForOwner($ship);
+        $this->allowDockingForOwner($construction);
 
         // dock workbees to construction
         foreach ($workbees as $workbee) {
