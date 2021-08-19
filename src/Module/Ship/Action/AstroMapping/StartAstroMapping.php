@@ -56,6 +56,11 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
+        if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
+            $game->addInformation(_('Kartographieren nicht möglich. Das Schiff wird derzeit repariert.'));
+            return;
+        }
+
         // system needs to be active
         if (!$ship->getAstroState()) {
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, das Astrometrische Labor muss aktiviert sein![/color][/b]'));
