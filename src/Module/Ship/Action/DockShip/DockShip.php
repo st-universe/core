@@ -83,6 +83,14 @@ final class DockShip implements ActionControllerInterface
             return;
         }
         if (!$this->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
+
+            $this->privateMessageSender->send(
+                $userId,
+                $target->getUser()->getId(),
+                sprintf('Der Andockversuch der %s von Spieler %s wurde verweigert', $ship->getName(), $ship->getUser()->getName()),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+            );
+
             $game->addInformation('Das Andocken wurde verweigert');
             return;
         }
