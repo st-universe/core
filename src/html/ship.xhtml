@@ -974,10 +974,11 @@
 							${SHIP/getEBatt}
 						</td>
 						<td style="text-align: center;">
-							<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(
-							<span tal:condition="SHIP/getBuildplan" tal:replace="SHIP/getBuildplan/getCrew">MIN</span>
-							<span tal:condition="not:SHIP/getBuildplan">kA</span>,&nbsp;
-							<span tal:replace="SHIP/getRump/getCrew120P">MAX</span>)
+							<span tal:replace="SHIP/getCrewCount">CURRENT</span>&nbsp;(<span
+								tal:condition="SHIP/getBuildplan"
+								tal:replace="SHIP/getBuildplan/getCrew">MIN</span><span
+								tal:condition="not:SHIP/getBuildplan">kA</span>,&nbsp;<span
+								tal:replace="SHIP/getRump/getCrew120P">MAX</span>)
 						</td>
 						<td style="text-align: center;">
 							<input type="text" name="shipname" size="25" tal:attributes="value SHIP/getName"
