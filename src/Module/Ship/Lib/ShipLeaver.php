@@ -64,7 +64,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->mapRepository = $mapRepository;
     }
 
-    public function leave(ShipInterface $ship): string
+    public function evacuate(ShipInterface $ship): string
     {
         $this->shipSystemManager->deactivateAll($ship);
 

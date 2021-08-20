@@ -92,7 +92,7 @@ final class ShipRemover implements ShipRemoverInterface
 
         //leave ship if there is crew
         if ($ship->getCrewCount() > 0) {
-            $msg = $this->shipLeaver->leave($ship);
+            $msg = $this->shipLeaver->evacuate($ship);
         }
 
         /**

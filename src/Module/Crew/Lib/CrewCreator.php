@@ -89,7 +89,7 @@ final class CrewCreator implements CrewCreatorInterface
         foreach (CrewEnum::CREW_ORDER as $i) {
             $j = 1;
             if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
-                $slot = 'getJob6Crew20p';
+                $slot = 'getJob6Crew';
             } else {
                 $slot = 'getJob' . $i . 'Crew';
             }

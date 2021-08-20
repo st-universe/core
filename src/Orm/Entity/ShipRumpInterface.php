@@ -167,9 +167,7 @@ interface ShipRumpInterface
 
     public function hasSpecialAbility(int $value): bool;
 
-    public function getCrew100P(): int;
-
-    public function getCrew120P(): int;
+    public function getMaxCrewCount(): int;
 
     public function getCrewObj(): ?ShipRumpCategoryRoleCrewInterface;
 

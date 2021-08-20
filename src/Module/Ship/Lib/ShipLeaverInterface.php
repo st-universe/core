@@ -6,5 +6,5 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface ShipLeaverInterface
 {
-    public function leave(ShipInterface $ship): string;
+    public function evacuate(ShipInterface $ship): string;
 }

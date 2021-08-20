@@ -47,9 +47,6 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     private $job_6_crew = 0;
 
     /** @Column(type="smallint") * */
-    private $job_6_crew_20p = 0;
-
-    /** @Column(type="smallint") * */
     private $job_7_crew = 0;
 
     /**
@@ -155,18 +152,6 @@ class ShipRumpCategoryRoleCrew implements ShipRumpCategoryRoleCrewInterface
     public function setJob6Crew(int $job6crew): ShipRumpCategoryRoleCrewInterface
     {
         $this->job_6_crew = $job6crew;
-
-        return $this;
-    }
-
-    public function getJob6Crew20p(): int
-    {
-        return $this->job_6_crew_20p;
-    }
-
-    public function setJob6Crew20p(int $job6crew20p): ShipRumpCategoryRoleCrewInterface
-    {
-        $this->job_6_crew_20p = $job6crew20p;
 
         return $this;
     }
