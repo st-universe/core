@@ -11,6 +11,8 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class TroopQuartersShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public const QUARTER_COUNT = 100;
+
     public function activate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->setMode(ShipSystemModeEnum::MODE_ON);

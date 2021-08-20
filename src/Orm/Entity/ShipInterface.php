@@ -209,6 +209,8 @@ interface ShipInterface
 
     public function getCrewCount(): int;
 
+    public function getMaxCrewCount(): int;
+
     public function leaveFleet(): void;
 
     public function getFleet(): ?FleetInterface;
