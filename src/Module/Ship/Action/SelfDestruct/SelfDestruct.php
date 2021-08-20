@@ -51,18 +51,28 @@ final class SelfDestruct implements ActionControllerInterface
         }
 
         $game->setView(Overview::VIEW_IDENTIFIER);
-        
+
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
-        $this->entryCreator->addShipEntry(
-            sprintf(
-                _('Die %s hat sich in Sektor %s selbst zerstört'), $ship->getName(), $ship->getSectorString()
-            ),
-            $userId
+        $msg = sprintf(
+            _('Die %s hat sich in Sektor %s selbst zerstört'),
+            $ship->getName(),
+            $ship->getSectorString()
         );
+        if ($ship->isBase()) {
+            $this->entryCreator->addStationEntry(
+                $msg,
+                $userId
+            );
+        } else {
+            $this->entryCreator->addShipEntry(
+                $msg,
+                $userId
+            );
+        }
+
 
         $destroyMsg = $this->shipRemover->destroy($ship);
-        if ($destroyMsg !== null)
-        {
+        if ($destroyMsg !== null) {
             $game->addInformation($destroyMsg);
         }
     }
