@@ -10,8 +10,10 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 final class EntryCreator implements EntryCreatorInterface
 {
     public const HISTORY_SHIP = 1;
-    public const HISTORY_COLONY = 2;
-    public const HISTORY_ALLIANCE = 3;
+    public const HISTORY_STATION = 2;
+    public const HISTORY_COLONY = 3; //2
+    public const HISTORY_ALLIANCE = 4; //3
+    public const HISTORY_OTHER = 5; //4
     private HistoryRepositoryInterface $historyRepository;
 
     public function __construct(
@@ -25,6 +27,13 @@ final class EntryCreator implements EntryCreatorInterface
         int $userId = GameEnum::USER_NOONE
     ): void {
         $this->addEntry(self::HISTORY_SHIP, $text, $userId);
+    }
+
+    public function addStationEntry(
+        string $text,
+        int $userId = GameEnum::USER_NOONE
+    ): void {
+        $this->addEntry(self::HISTORY_STATION, $text, $userId);
     }
 
     public function addColonyEntry(

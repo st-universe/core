@@ -6,6 +6,7 @@ namespace Stu\Module\History\View\Overview;
 
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\History\Lib\EntryCreator;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
@@ -14,13 +15,12 @@ final class Overview implements ViewControllerInterface
 
     private const LIMIT = 50;
 
-    private const HISTORY_TYPE_DEFAULT = 1;
-
     private array $possibleTypes = [
-        self::HISTORY_TYPE_DEFAULT => "Schiffe",
-        2 => "Kolonie",
-        3 => "Diplomatie",
-        4 => "Sonstiges"
+        EntryCreator::HISTORY_SHIP => "Schiffe",
+        EntryCreator::HISTORY_STATION => "Station",
+        EntryCreator::HISTORY_COLONY => "Kolonie",
+        EntryCreator::HISTORY_ALLIANCE => "Diplomatie",
+        EntryCreator::HISTORY_OTHER => "Sonstiges"
     ];
 
     private OverviewRequestInterface $overviewRequest;
@@ -37,7 +37,7 @@ final class Overview implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $type = $this->overviewRequest->getTypeId(array_keys($this->possibleTypes), self::HISTORY_TYPE_DEFAULT);
+        $type = $this->overviewRequest->getTypeId(array_keys($this->possibleTypes), EntryCreator::HISTORY_SHIP);
         $count = $this->overviewRequest->getCount(self::LIMIT);
 
         if ($count < 1 || $count > self::MAX_LIMIT) {
