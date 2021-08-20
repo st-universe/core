@@ -45,9 +45,6 @@ class ShipBuildplan implements ShipBuildplanInterface
     /** @Column(type="smallint") * */
     private $crew = 0;
 
-    /** @Column(type="smallint") * */
-    private $crew_percentage = 0;
-
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="buildplan")
      */
@@ -167,20 +164,6 @@ class ShipBuildplan implements ShipBuildplanInterface
     public function setCrew(int $crew): ShipBuildplanInterface
     {
         $this->crew = $crew;
-
-        return $this;
-    }
-
-    //@deprecated
-    public function getCrewPercentage(): int
-    {
-        return $this->crew_percentage;
-    }
-
-    //@deprecated
-    public function setCrewPercentage(int $crewPercentage): ShipBuildplanInterface
-    {
-        $this->crew_percentage = $crewPercentage;
 
         return $this;
     }
