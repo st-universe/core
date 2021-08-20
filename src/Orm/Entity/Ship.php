@@ -898,7 +898,7 @@ class Ship implements ShipInterface
     public function getMaxCrewCount(): int
     {
         return $this->getRump()->getMaxCrewCount()
-            + $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) ? TroopQuartersShipSystem::QUARTER_COUNT : 0;
+            + ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) ? TroopQuartersShipSystem::QUARTER_COUNT : 0);
     }
 
     public function leaveFleet(): void
