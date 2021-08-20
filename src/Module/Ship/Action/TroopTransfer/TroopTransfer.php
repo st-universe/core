@@ -8,6 +8,9 @@ use request;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Crew\CrewEnum;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Component\Ship\System\Exception\SystemNotActivableException;
+use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -17,6 +20,7 @@ use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
@@ -127,120 +131,24 @@ final class TroopTransfer implements ActionControllerInterface
         }
         $requestedTransferCount = request::postInt('tcount');
 
-        $shipCrew = $ship->getCrewCount();
+        $amount = 0;
 
-        if ($isColony) {
-            if ($isUnload) {
-                $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship));
-
-                $array = $ship->getCrewlist()->getValues();
-
-                for ($i = 0; $i < $amount; $i++) {
-                    $sc = $array[$i];
-                    $ship->getCrewlist()->removeElement($sc);
-                    $this->shipCrewRepository->delete($sc);
-
-                    $shipCrew--;
+        try {
+            if ($isColony) {
+                if ($isUnload) {
+                    $amount = $this->transferToColony($requestedTransferCount, $ship);
+                } else {
+                    $amount = $this->transferFromColony($requestedTransferCount, $ship, $game);
                 }
             } else {
-                $amount = min(
-                    $requestedTransferCount,
-                    $ship->getUser()->getFreeCrewCount(),
-                    $this->transferUtility->getFreeQuarters($ship)
-                );
-
-                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
-                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                        return;
-                    }
-                }
-
-                for ($i = 0; $i < $amount; $i++) {
-                    $crew = $this->crewRepository->getFreeByUser($userId);
-
-                    $sc = $this->shipCrewRepository->prototype();
-                    $sc->setCrew($crew);
-                    $sc->setShip($ship);
-                    $sc->setUser($ship->getUser());
-                    $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
-
-                    $ship->getCrewlist()->add($sc);
-
-                    $this->shipCrewRepository->save($sc);
-                    $this->entityManager->flush();
-                    $shipCrew++;
+                if ($isUnload) {
+                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $game);
+                } else {
+                    $amount = $this->transferFromShip($requestedTransferCount, $ship, $target, $game);
                 }
             }
-        } else {
-            if ($isUnload) {
-                if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
-                    $game->addInformation(sprintf(_('Die %s hat keine Lebenserhaltungssysteme'), $target->getName()));
-                    return;
-                }
-
-                $amount = min(
-                    $requestedTransferCount,
-                    $this->transferUtility->getBeamableTroopCount($ship),
-                    $this->transferUtility->getFreeQuarters($target)
-                );
-
-                $array = $ship->getCrewlist()->getValues();
-
-                for ($i = 0; $i < $amount; $i++) {
-                    $sc = $array[$i];
-                    $sc->setShip($target);
-                    $this->shipCrewRepository->save($sc);
-
-                    $ship->getCrewlist()->removeElement($sc);
-                    $shipCrew--;
-                }
-
-                if (
-                    $amount > 0 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
-                    && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
-                ) {
-                    $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
-                }
-            } else {
-                $amount = min(
-                    $requestedTransferCount,
-                    $target->getCrewCount(),
-                    $this->transferUtility->getFreeQuarters($ship)
-                );
-
-                if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
-                    if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
-                        return;
-                    }
-                }
-
-                $array = $target->getCrewlist()->getValues();
-                $targetCrewCount = $target->getCrewCount();
-
-                for ($i = 0; $i < $amount; $i++) {
-                    $sc = $array[$i];
-                    $sc->setShip($ship);
-                    $this->shipCrewRepository->save($sc);
-
-                    $ship->getCrewlist()->add($sc);
-
-                    $shipCrew++;
-                }
-
-                // no crew left
-                if ($amount == $targetCrewCount) {
-                    $this->shipSystemManager->deactivateAll($target);
-                    $target->setAlertState(1);
-
-                    foreach ($target->getDockedShips() as $dockedShip) {
-                        $dockedShip->setDockedTo(null);
-                        $this->shipRepository->save($dockedShip);
-                    }
-
-                    $target->getDockedShips()->clear();
-                    $this->shipRepository->save($target);
-                }
-            }
+        } catch (ShipSystemException $e) {
+            return;
         }
 
         $this->shipRepository->save($ship);
@@ -255,9 +163,132 @@ final class TroopTransfer implements ActionControllerInterface
             )
         );
 
-        if ($shipCrew <= $ship->getBuildplan()->getCrew()) {
+        if ($ship->getCrewCount() <= $ship->getBuildplan()->getCrew()) {
             $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game);
         }
+    }
+
+    private function transferToColony(int $requestedTransferCount, ShipInterface $ship): int
+    {
+        $amount = min($requestedTransferCount, $this->transferUtility->getBeamableTroopCount($ship));
+
+        $array = $ship->getCrewlist()->getValues();
+
+        for ($i = 0; $i < $amount; $i++) {
+            $sc = $array[$i];
+            $ship->getCrewlist()->removeElement($sc);
+            $this->shipCrewRepository->delete($sc);
+        }
+
+        return $amount;
+    }
+
+    private function transferFromColony(int $requestedTransferCount, ShipInterface $ship, GameControllerInterface $game): int
+    {
+        $amount = min(
+            $requestedTransferCount,
+            $ship->getUser()->getFreeCrewCount(),
+            $this->transferUtility->getFreeQuarters($ship)
+        );
+
+        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
+            if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+                throw new SystemNotActivableException();
+            }
+        }
+
+        for ($i = 0; $i < $amount; $i++) {
+            $crew = $this->crewRepository->getFreeByUser($game->getUser()->getId());
+
+            $sc = $this->shipCrewRepository->prototype();
+            $sc->setCrew($crew);
+            $sc->setShip($ship);
+            $sc->setUser($ship->getUser());
+            $sc->setSlot(CrewEnum::CREW_TYPE_CREWMAN);
+
+            $ship->getCrewlist()->add($sc);
+
+            $this->shipCrewRepository->save($sc);
+            $this->entityManager->flush();
+        }
+
+        return $amount;
+    }
+
+    private function transferToShip(int $requestedTransferCount, ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): int
+    {
+        if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+            $game->addInformation(sprintf(_('Die %s hat keine Lebenserhaltungssysteme'), $target->getName()));
+
+            throw new SystemNotFoundException();
+        }
+
+        $amount = min(
+            $requestedTransferCount,
+            $this->transferUtility->getBeamableTroopCount($ship),
+            $this->transferUtility->getFreeQuarters($target)
+        );
+
+        $array = $ship->getCrewlist()->getValues();
+
+        for ($i = 0; $i < $amount; $i++) {
+            $sc = $array[$i];
+            $sc->setShip($target);
+            $this->shipCrewRepository->save($sc);
+
+            $ship->getCrewlist()->removeElement($sc);
+        }
+
+        if (
+            $amount > 0 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
+            && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+        ) {
+            $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+        }
+
+        return $amount;
+    }
+
+    private function transferFromShip(int $requestedTransferCount, ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): int
+    {
+        $amount = min(
+            $requestedTransferCount,
+            $target->getCrewCount(),
+            $this->transferUtility->getFreeQuarters($ship)
+        );
+
+        if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
+            if (!$this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS, $game)) {
+                throw new SystemNotActivableException();
+            }
+        }
+
+        $array = $target->getCrewlist()->getValues();
+        $targetCrewCount = $target->getCrewCount();
+
+        for ($i = 0; $i < $amount; $i++) {
+            $sc = $array[$i];
+            $sc->setShip($ship);
+            $this->shipCrewRepository->save($sc);
+
+            $ship->getCrewlist()->add($sc);
+        }
+
+        // no crew left
+        if ($amount == $targetCrewCount) {
+            $this->shipSystemManager->deactivateAll($target);
+            $target->setAlertState(1);
+
+            foreach ($target->getDockedShips() as $dockedShip) {
+                $dockedShip->setDockedTo(null);
+                $this->shipRepository->save($dockedShip);
+            }
+
+            $target->getDockedShips()->clear();
+            $this->shipRepository->save($target);
+        }
+
+        return $amount;
     }
 
     public function performSessionCheck(): bool

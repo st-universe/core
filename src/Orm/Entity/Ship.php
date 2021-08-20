@@ -15,6 +15,7 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\InsufficientEnergyException;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
+use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Station\StationUtility;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
@@ -892,6 +893,12 @@ class Ship implements ShipInterface
     public function getCrewCount(): int
     {
         return $this->getCrewlist()->count();
+    }
+
+    public function getMaxCrewCount(): int
+    {
+        return $this->getRump()->getMaxCrewCount()
+            + $this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) ? TroopQuartersShipSystem::QUARTER_COUNT : 0;
     }
 
     public function leaveFleet(): void
