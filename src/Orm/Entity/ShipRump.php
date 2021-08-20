@@ -632,14 +632,9 @@ class ShipRump implements ShipRumpInterface
         return $count;
     }
 
-    public function getCrew100P(): int
+    public function getMaxCrewCount(): int
     {
         return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew();
-    }
-
-    public function getCrew120P(): int
-    {
-        return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew20p();
     }
 
     public function getCrewObj(): ?ShipRumpCategoryRoleCrewInterface

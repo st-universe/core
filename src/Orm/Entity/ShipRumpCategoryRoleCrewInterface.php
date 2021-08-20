@@ -38,10 +38,6 @@ interface ShipRumpCategoryRoleCrewInterface
 
     public function setJob6Crew(int $job6crew): ShipRumpCategoryRoleCrewInterface;
 
-    public function getJob6Crew20p(): int;
-
-    public function setJob6Crew20p(int $job6crew20p): ShipRumpCategoryRoleCrewInterface;
-
     public function getJob7Crew(): int;
 
     public function setJob7Crew(int $job7crew): ShipRumpCategoryRoleCrewInterface;

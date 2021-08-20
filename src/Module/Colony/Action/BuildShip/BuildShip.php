@@ -168,7 +168,7 @@ final class BuildShip implements ActionControllerInterface
             $modules[current($module)] = $mod;
             $sigmod[$i] = $mod->getId();
         }
-        if ($crew_usage > $rump->getCrew120P()) {
+        if ($crew_usage > $rump->getMaxCrewCount()) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             return;
         }

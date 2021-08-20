@@ -81,7 +81,7 @@ final class ShipTick implements ShipTickInterface
         // leave ship
         if ($ship->getCrewCount() > 0 && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
-            $this->msg[] = $this->shipLeaver->leave($ship);
+            $this->msg[] = $this->shipLeaver->evacuate($ship);
             $this->sendMessages($ship);
             return;
         }
@@ -134,7 +134,7 @@ final class ShipTick implements ShipTickInterface
 
                     if ($ship->getCrewCount() > 0 && $system->getSystemType() == ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
                         $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');
-                        $this->msg[] = $this->shipLeaver->leave($ship);
+                        $this->msg[] = $this->shipLeaver->evacuate($ship);
                         $this->sendMessages($ship);
                         return;
                     }
