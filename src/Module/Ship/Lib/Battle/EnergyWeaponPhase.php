@@ -97,10 +97,24 @@ final class EnergyWeaponPhase implements EnergyWeaponPhaseInterface
                         $attacker->getUser()->getId()
                     );
                 } else {
-                    $this->entryCreator->addShipEntry(
-                        'Die ' . $target->getName() . ' (' . $target->getRump()->getName() . ') wurde in Sektor ' . $target->getSectorString() . ' von der ' . $attacker->getName() . ' zerstört',
-                        $attacker->getUser()->getId()
+                    $msg = sprintf(
+                        'Die %s (%s) wurde in Sektor %s von der %s zerstört',
+                        $target->getName(),
+                        $target->getRump()->getName(),
+                        $target->getSectorString(),
+                        $attacker->getName()
                     );
+                    if ($target->isBase()) {
+                        $this->entryCreator->addStationEntry(
+                            $msg,
+                            $attacker->getUser()->getId()
+                        );
+                    } else {
+                        $this->entryCreator->addShipEntry(
+                            $msg,
+                            $attacker->getUser()->getId()
+                        );
+                    }
                 }
 
                 $targetId = $target->getId();
