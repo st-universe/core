@@ -637,12 +637,6 @@ class ShipRump implements ShipRumpInterface
         return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew();
     }
 
-    //@deprecated
-    public function getCrew110P(): int
-    {
-        return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew10p();
-    }
-
     public function getCrew120P(): int
     {
         return $this->getBaseCrewCount() + $this->getCrewObj()->getJob6Crew20p();
