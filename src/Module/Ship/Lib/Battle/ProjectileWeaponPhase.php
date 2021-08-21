@@ -103,7 +103,7 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                         $attacker->getUser()->getId()
                     );
                 } else {
-                    $msg = sprintf(
+                    $entryMsg = sprintf(
                         'Die %s (%s) wurde in Sektor %s von der %s zerstört',
                         $target->getName(),
                         $target->getRump()->getName(),
@@ -112,12 +112,12 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                     );
                     if ($target->isBase()) {
                         $this->entryCreator->addStationEntry(
-                            $msg,
+                            $entryMsg,
                             $attacker->getUser()->getId()
                         );
                     } else {
                         $this->entryCreator->addShipEntry(
-                            $msg,
+                            $entryMsg,
                             $attacker->getUser()->getId()
                         );
                     }
