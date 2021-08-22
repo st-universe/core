@@ -84,7 +84,7 @@ final class BuildShip implements ActionControllerInterface
             return;
         }
 
-        $buildung_function = null;
+        $building_function = null;
         foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($rump) as $bfunc) {
             if ($colony->hasActiveBuildingWithFunction($bfunc->getBuildingFunction())) {
                 $building_function = $bfunc;

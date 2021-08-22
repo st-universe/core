@@ -27,8 +27,6 @@ use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassembly;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequest;
 use Stu\Module\Colony\View\ShowShipDisassembly\ShowShipDisassemblyRequestInterface;
 use Stu\Module\Colony\View\ShowShipRepair\ShowShipRepairRequest;
-use Stu\Module\Control\GameController;
-
 use Stu\Module\Colony\Action\ActivateBuilding\ActivateBuilding;
 use Stu\Module\Colony\Action\ActivateBuildings\ActivateBuildings;
 use Stu\Module\Colony\Action\ActivateShields\ActivateShields;
@@ -65,6 +63,7 @@ use Stu\Module\Colony\Action\LoadShields\LoadShields;
 use Stu\Module\Colony\Action\ManageOrbitalShips\ManageOrbitalShips;
 use Stu\Module\Colony\Action\ManageOrbitalShuttles\ManageOrbitalShuttles;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
+use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplan;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
@@ -170,6 +169,8 @@ use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequestInterface;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
+use Stu\Module\Control\GameController;
+
 use function DI\autowire;
 
 return [
@@ -257,7 +258,8 @@ return [
         DeactivateBuildings::ACTION_IDENTIFIER => autowire(DeactivateBuildings::class),
         DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
         ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class),
-        ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class)
+        ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class),
+        RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
