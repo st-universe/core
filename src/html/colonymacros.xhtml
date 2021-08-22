@@ -1014,7 +1014,6 @@
       <table class="tcal">
         <tr>
           <th></th>
-          <th></th>
           <th>Anzahl Schiffe</th>
           <th>Bauzeit</th>
           <th></th>
@@ -1022,30 +1021,21 @@
         </tr>
         <tal:block tal:repeat="data AVAILABLE_BUILDPLANS">
           <tr tal:attributes="class string:row${repeat/data/odd}" style="cursor: pointer;" title="Details">
-            <form action="colony.php" method="post">
-              <input type="hidden" name="id" tal:attributes="value data/getId" />
-              <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
-              <td tal:content="data/getName" class="selectable"
-                onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
-              <td><input type="text" name="buildplanname" style="width: 300px;" tal:attributes="value data/getName" />
-                <button type="submit" name="B_BUILDPLAN_CHANGE_NAME" value="Name ändern" title="Name ändern">
-                  <img src="assets/buttons/knedit2.png" alt="Name ändern" />
-                </button>
-              </td>
-              <td tal:content="data/getShipCount" class="selectable"
-                onclick="toggleTableRowVisible('buildplan_${data/getId}');">ANZAHL</td>
-              <td tal:content="formatSeconds:data/getBuildtime"
-                onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
-              <td style="text-align: center;">
-                <a class="linkbutton"
-                  href="?id=${COLONY/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauen</a>
-              </td>
-              <td style="text-align: center;">
-                <a tal:condition="data/isDeleteable" class="linkbutton linkbutton_red"
-                  href="?id=${COLONY/getId}&B_DEL_BUILDPLAN=1&planid=${data/getId}&sstr=${THIS/getSessionString}"
-                  title="Löschen">X</a>
-              </td>
-            </form>
+            <td tal:content="data/getName" class="selectable"
+              onclick="toggleTableRowVisible('buildplan_${data/getId}');">NAME</td>
+            <td tal:content="data/getShipCount" class="selectable"
+              onclick="toggleTableRowVisible('buildplan_${data/getId}');">ANZAHL</td>
+            <td tal:content="formatSeconds:data/getBuildtime"
+              onclick="toggleTableRowVisible('buildplan_${data/getId}');">BUILDTIME</td>
+            <td style="text-align: center;">
+              <a class="linkbutton"
+                href="?id=${COLONY/getId}&SHOW_MODULE_SCREEN_BUILDPLAN=1&planid=${data/getId}">Bauplan auswählen</a>
+            </td>
+            <td style="text-align: center;">
+              <a tal:condition="data/isDeleteable" class="linkbutton linkbutton_red"
+                href="?id=${COLONY/getId}&B_DEL_BUILDPLAN=1&planid=${data/getId}&sstr=${THIS/getSessionString}"
+                title="Löschen">X</a>
+            </td>
           </tr>
           <tr title="Details schließen" onclick="toggleTableRowVisible('buildplan_${data/getId}');"
             id="buildplan_${data/getId}" style="cursor: pointer; display: none;"

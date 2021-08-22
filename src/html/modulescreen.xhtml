@@ -68,6 +68,29 @@
               </div>
             </div>
           </div>
+          <tal:block tal:condition="PLAN">
+            <br />
+            <div class="box" tal:condition="">
+              <div class="box_title">Bauplan</div>
+              <div class="box_body">
+                <div>
+                  <input type="hidden" name="planid" tal:attributes="value PLAN/getId" />
+                  <input type="text" name="buildplanname" tal:attributes="value PLAN/getName" />
+                  <button type="submit" name="B_BUILDPLAN_CHANGE_NAME" value="Name ändern" title="Name ändern">
+                    <img src="assets/buttons/knedit2.png" alt="Name ändern" />
+                  </button>
+                </div>
+                <div tal:repeat="cost RUMP/getBuildingCosts">
+                  <img src="assets/goods/${cost/getCommodity/getId}.png"
+                    tal:attributes="title cost/getCommodity/getName" /> ${cost/getAmount}
+                </div>
+                <div>
+                  <img src="assets/buttons/time.png" title="Bauzeit" /> <span
+                    tal:content="formatSeconds:RUMP/getBuildtime"></span>
+                </div>
+              </div>
+            </div>
+          </tal:block>
           <br />
           <div class="box">
             <div class="box_title">Beschreibung</div>
