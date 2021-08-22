@@ -561,6 +561,7 @@ final class GameController implements GameControllerInterface
 
             if (request::indString($request_key)) {
                 $config->handle($this);
+                $this->entityManager->flush();
                 return;
             }
         }
@@ -569,9 +570,8 @@ final class GameController implements GameControllerInterface
 
         if ($view !== null) {
             $view->handle($this);
+            $this->entityManager->flush();
         }
-
-        $this->entityManager->flush();
     }
 
     public function getGameStats(): array
