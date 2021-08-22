@@ -17,6 +17,7 @@ use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class CreateBuildplan implements ActionControllerInterface
 {
@@ -30,16 +31,20 @@ final class CreateBuildplan implements ActionControllerInterface
 
     private ShipRumpRepositoryInterface $shipRumpRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository
+        ShipRumpRepositoryInterface $shipRumpRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpRepository = $shipRumpRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -135,6 +140,7 @@ final class CreateBuildplan implements ActionControllerInterface
         $plan->setCrew($crew_usage);
 
         $this->shipBuildplanRepository->save($plan);
+        $this->entityManager->flush();
 
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
@@ -145,6 +151,9 @@ final class CreateBuildplan implements ActionControllerInterface
 
             $this->buildplanModuleRepository->save($mod);
         }
+
+        $game->setView('SHOW_MODULE_SCREEN_BUILDPLAN');
+        request::setVar('planid', $plan->getId());
     }
 
     public function performSessionCheck(): bool
