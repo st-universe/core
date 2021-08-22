@@ -64,6 +64,8 @@ use Stu\Module\Colony\Action\ManageOrbitalShips\ManageOrbitalShips;
 use Stu\Module\Colony\Action\ManageOrbitalShuttles\ManageOrbitalShuttles;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplan;
+use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequest;
+use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
 use Stu\Module\Colony\Action\RepairBuilding\RepairBuilding;
 use Stu\Module\Colony\Action\RepairShip\RepairShip;
 use Stu\Module\Colony\Action\ScrollBuildMenu\ScrollBuildMenu;
@@ -220,6 +222,7 @@ return [
     ShowSurfaceRequestInterface::class => autowire(ShowSurfaceRequest::class),
     ShowTorpedoFabRequestInterface::class => autowire(ShowTorpedoFabRequest::class),
     ColonyCorrectorInterface::class => autowire(ColonyCorrector::class),
+    RenameBuildplanRequestInterface::class => autowire(RenameBuildplanRequest::class),
     'COLONY_ACTIONS' => [
         GiveUp::ACTION_IDENTIFIER => autowire(GiveUp::class),
         ActivateBuilding::ACTION_IDENTIFIER => autowire(ActivateBuilding::class),
