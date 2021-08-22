@@ -190,11 +190,19 @@ final class BuildShip implements ActionControllerInterface
         $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
         $plan = $this->shipBuildplanRepository->getByUserShipRumpAndSignature($userId, $rump->getId(), $signature);
         if ($plan === null) {
-            $planname = sprintf(
-                _('Bauplan %s %s'),
-                $rump->getName(),
-                date('d.m.Y H:i')
-            );
+            if (
+                request::has('buildplanname')
+                && request::indString('buildplanname') != ''
+                && request::indString('buildplanname') != 'Bauplanname'
+            ) {
+                $planname = request::indString('buildplanname');
+            } else {
+                $planname = sprintf(
+                    _('Bauplan %s %s'),
+                    $rump->getName(),
+                    date('d.m.Y H:i')
+                );
+            }
             $game->addInformationf(
                 _('Lege neuen Bauplan an: %s'),
                 $planname
