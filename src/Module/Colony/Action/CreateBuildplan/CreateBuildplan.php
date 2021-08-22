@@ -16,7 +16,6 @@ use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Repository\BuildplanModuleRepositoryInterface;
 use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpBuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 
 final class CreateBuildplan implements ActionControllerInterface
@@ -33,13 +32,11 @@ final class CreateBuildplan implements ActionControllerInterface
 
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
-        ShipRumpBuildingFunctionRepositoryInterface $shipRumpBuildingFunctionRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpRepositoryInterface $shipRumpRepository
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
-        $this->shipRumpBuildingFunctionRepository = $shipRumpBuildingFunctionRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpRepository = $shipRumpRepository;
