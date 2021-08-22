@@ -37,7 +37,6 @@ final class ShipStorageRepository extends EntityRepository implements ShipStorag
         $em = $this->getEntityManager();
 
         $em->persist($shipStorage);
-        //$em->flush();
     }
 
     public function delete(ShipStorageInterface $shipStorage): void

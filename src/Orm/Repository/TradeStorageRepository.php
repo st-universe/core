@@ -23,7 +23,6 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(TradeStorageInterface $post): void

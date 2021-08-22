@@ -20,7 +20,6 @@ final class TradeTransactionRepository extends EntityRepository implements Trade
         $em = $this->getEntityManager();
 
         $em->persist($tradeTransaction);
-        //$em->flush();
     }
 
     public function getLatestTransactions(int $offered, int $wanted): array

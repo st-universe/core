@@ -21,7 +21,6 @@ final class AllianceJobRepository extends EntityRepository implements AllianceJo
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(AllianceJobInterface $post): void

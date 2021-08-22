@@ -67,7 +67,6 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $em = $this->getEntityManager();
 
         $em->persist($map);
-        //$em->flush();
     }
 
     public function getExplored(int $userId, int $startX, int $endX, int $cy): array

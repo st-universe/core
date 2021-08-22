@@ -21,7 +21,6 @@ final class DockingPrivilegeRepository extends EntityRepository implements Docki
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(DockingPrivilegeInterface $post): void

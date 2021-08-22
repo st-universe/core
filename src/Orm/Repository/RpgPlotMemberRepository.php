@@ -28,7 +28,6 @@ final class RpgPlotMemberRepository extends EntityRepository implements RpgPlotM
         $em = $this->getEntityManager();
 
         $em->persist($rpgPlotMember);
-        //$em->flush();
     }
 
     public function delete(RpgPlotMemberInterface $rpgPlotMember): void

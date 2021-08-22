@@ -21,7 +21,6 @@ final class PrivateMessageFolderRepository extends EntityRepository implements P
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(PrivateMessageFolderInterface $post): void
