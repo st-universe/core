@@ -6,12 +6,10 @@ namespace Stu\Module\Colony\Action\RemoveBuilding;
 
 use request;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
-use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
-use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class RemoveBuilding implements ActionControllerInterface
@@ -22,23 +20,15 @@ final class RemoveBuilding implements ActionControllerInterface
 
     private PlanetFieldRepositoryInterface $planetFieldRepository;
 
-    private ColonyStorageManagerInterface $colonyStorageManager;
-
-    private ColonyRepositoryInterface $colonyRepository;
-
     private BuildingActionInterface $buildingAction;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyStorageManagerInterface $colonyStorageManager,
-        ColonyRepositoryInterface $colonyRepository,
         BuildingActionInterface $buildingAction
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->planetFieldRepository = $planetFieldRepository;
-        $this->colonyStorageManager = $colonyStorageManager;
-        $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
     }
 
