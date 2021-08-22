@@ -51,10 +51,9 @@ final class CreateBuildplan implements ActionControllerInterface
     {
         $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
         if ($rump === null) {
+            $game->setView('SHOW_MODULE_SCREEN');
             return;
         }
-
-        $game->setView('SHOW_MODULE_SCREEN');
 
         $modules = array();
         $sigmod = array();
@@ -70,6 +69,7 @@ final class CreateBuildplan implements ActionControllerInterface
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     ModuleTypeDescriptionMapper::getDescription($i)
                 );
+                $game->setView('SHOW_MODULE_SCREEN');
                 return;
             }
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
@@ -85,6 +85,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
                 if ($specialCount > $rump->getSpecialSlots()) {
                     $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    $game->setView('SHOW_MODULE_SCREEN');
                     return;
                 }
                 continue;
@@ -103,6 +104,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 }
             } else {
                 if (!$rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
+                    $game->setView('SHOW_MODULE_SCREEN');
                     return;
                 }
             }
@@ -111,6 +113,7 @@ final class CreateBuildplan implements ActionControllerInterface
         }
         if ($crew_usage > $rump->getMaxCrewCount()) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
+            $game->setView('SHOW_MODULE_SCREEN');
             return;
         }
         $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
