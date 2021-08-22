@@ -26,8 +26,6 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         $em = $this->getEntityManager();
 
         $em->persist($post);
-
-        //$em->flush();
     }
 
     public function delete(ColonyInterface $post): void

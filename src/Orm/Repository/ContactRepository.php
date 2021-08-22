@@ -21,7 +21,6 @@ final class ContactRepository extends EntityRepository implements ContactReposit
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(ContactInterface $post): void

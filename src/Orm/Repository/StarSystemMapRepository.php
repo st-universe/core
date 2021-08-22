@@ -151,6 +151,5 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
         $em = $this->getEntityManager();
 
         $em->persist($starSystemMap);
-        //$em->flush();
     }
 }

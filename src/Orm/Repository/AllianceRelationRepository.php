@@ -21,7 +21,6 @@ final class AllianceRelationRepository extends EntityRepository implements Allia
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(AllianceRelationInterface $post): void

@@ -7,6 +7,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\GameConfigInterface;
 
+/**
+ * @method GameConfigInterface[] findAll()
+ */
 interface GameConfigRepositoryInterface extends ObjectRepository
 {
     public function save(GameConfigInterface $post): void;

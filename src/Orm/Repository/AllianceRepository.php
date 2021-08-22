@@ -20,7 +20,6 @@ final class AllianceRepository extends EntityRepository implements AllianceRepos
         $em = $this->getEntityManager();
 
         $em->persist($post);
-        //$em->flush();
     }
 
     public function delete(AllianceInterface $post): void
