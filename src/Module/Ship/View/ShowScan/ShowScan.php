@@ -75,7 +75,7 @@ final class ShowScan implements ViewControllerInterface
 
         $this->privateMessageSender->send(
             GameEnum::USER_NOONE,
-            (int) $target->getUserId(),
+            $target->getUser()->getId(),
             sprintf(
                 _('Die %s von Spieler %s hat dein Schiff %s bei %s gescannt.'),
                 $ship->getName(),
