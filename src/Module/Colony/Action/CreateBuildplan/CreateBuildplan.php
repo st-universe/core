@@ -59,6 +59,8 @@ final class CreateBuildplan implements ActionControllerInterface
             $this->exitOnError($game);
         }
 
+        $game->setView('SHOW_MODULE_SCREEN_BUILDPLAN');
+
         $modules = array();
         $sigmod = array();
         $crew_usage = $rump->getBaseCrew();
