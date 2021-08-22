@@ -12,7 +12,7 @@ final class RenameBuildplanRequest implements RenameBuildplanRequestInterface
 
     public function getId(): int
     {
-        return $this->queryParameter('id')->int()->required();
+        return $this->queryParameter('planid')->int()->required();
     }
 
     public function getNewName(): string
