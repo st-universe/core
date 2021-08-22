@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\View\ShowModuleScreenBuildplan;
 
+use request;
 use Stu\Exception\AccessViolation;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
@@ -48,11 +49,11 @@ final class ShowModuleScreenBuildplan implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            $this->showModuleScreenBuildplanRequest->getColonyId(),
+            request::indInt('id'),
             $userId
         );
 
-        $plan = $this->shipBuildplanRepository->find($this->showModuleScreenBuildplanRequest->getBuildplanId());
+        $plan = $this->shipBuildplanRepository->find(request::indInt('planid'),);
         if ($plan === null || $plan->getUserId() !== $userId) {
             return;
         }
