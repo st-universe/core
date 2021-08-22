@@ -49,6 +49,7 @@ use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoType;
 use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoTypeRequest;
 use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoTypeRequestInterface;
 use Stu\Module\Colony\Action\ChangeName\ChangeName;
+use Stu\Module\Colony\Action\CreateBuildplan\CreateBuildplan;
 use Stu\Module\Colony\Action\CreateModules\CreateModules;
 use Stu\Module\Colony\Action\DeactivateBuilding\DeactivateBuilding;
 use Stu\Module\Colony\Action\DeactivateBuildings\DeactivateBuildings;
@@ -234,6 +235,7 @@ return [
         BuildFighterShipyardRump::ACTION_IDENTIFIER => autowire(BuildFighterShipyardRump::class),
         BuildOnField::ACTION_IDENTIFIER => autowire(BuildOnField::class),
         BuildShip::ACTION_IDENTIFIER => autowire(BuildShip::class),
+        CreateBuildplan::ACTION_IDENTIFIER => autowire(CreateBuildplan::class),
         BuildTorpedos::ACTION_IDENTIFIER => autowire(BuildTorpedos::class),
         CancelModuleCreation::ACTION_IDENTIFIER => autowire(CancelModuleCreation::class),
         ChangeName::ACTION_IDENTIFIER => autowire(ChangeName::class),
