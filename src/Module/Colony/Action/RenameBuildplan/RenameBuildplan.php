@@ -6,6 +6,7 @@ namespace Stu\Module\Colony\Action\RenameBuildplan;
 
 use Stu\Exception\AccessViolation;
 use Stu\Lib\EmojiRemover;
+use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
@@ -28,6 +29,8 @@ final class RenameBuildplan implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
+
         $newName = EmojiRemover::clearEmojis($this->renameBuildplanRequest->getNewName());
         if (mb_strlen($newName) === 0) {
             return;
