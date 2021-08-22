@@ -570,6 +570,8 @@ final class GameController implements GameControllerInterface
         if ($view !== null) {
             $view->handle($this);
         }
+
+        $this->entityManager->flush();
     }
 
     public function getGameStats(): array
