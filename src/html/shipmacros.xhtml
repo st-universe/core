@@ -1004,7 +1004,9 @@
       </tr>
       <tr>
         <td colspan="3" class="darkbg">Minimal-Crew</td>
-        <td class="darkbg"><span tal:replace="SHIP/getBuildplan/getCrew">CREW</span></td>
+        <td class="darkbg"><span tal:condition="SHIP/getBuildplan"
+            tal:replace="SHIP/getBuildplan/getCrew">CREW</span><span tal:condition="not:SHIP/getBuildplan">kA</span>
+        </td>
       </tr>
       <tr>
         <td class="darkbg"></td>
