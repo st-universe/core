@@ -18,6 +18,8 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
+use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 
@@ -55,11 +57,13 @@ final class CreateBuildplan implements ActionControllerInterface
 
     private function exitOnError(GameControllerInterface $game): void
     {
-        $game->setView('SHOW_MODULE_SCREEN');
+        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
+
         if ($game->getUser()->getId() === 126) {
             $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         } else {
@@ -180,7 +184,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
         $this->loggerUtil->log('J');
 
-        $game->setView('SHOW_MODULE_SCREEN_BUILDPLAN');
+        $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
         request::setVar('planid', $plan->getId());
 
         $this->loggerUtil->log('K');
