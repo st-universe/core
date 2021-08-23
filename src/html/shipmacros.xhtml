@@ -291,7 +291,7 @@
   <tal:block tal:condition="SHIP/displayNbsActions"
     tal:define="sstr string:${THIS/getSessionString}; nameWithoutMarkup bbcode2txt:ship/getName">
     <td style="width: 30px; text-align: center;">
-      <tal:block tal:condition="php:SHIP.canAttack() AND ship.canBeAttacked()">
+      <tal:block tal:condition="php:SHIP.canAttack() AND (ship.getCloakState() OR ship.canBeAttacked())">
         <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
           onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
           onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
