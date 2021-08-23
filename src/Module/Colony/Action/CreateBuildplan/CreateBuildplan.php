@@ -18,6 +18,8 @@ use Stu\Orm\Repository\ModuleRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 
 final class CreateBuildplan implements ActionControllerInterface
 {
@@ -33,18 +35,22 @@ final class CreateBuildplan implements ActionControllerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         BuildplanModuleRepositoryInterface $buildplanModuleRepository,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->entityManager = $entityManager;
+        $this->loggerUtil = $loggerUtil;
     }
 
     private function exitOnError(GameControllerInterface $game): void
@@ -54,17 +60,24 @@ final class CreateBuildplan implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
-        if ($rump === null) {
-            $this->exitOnError($game);
+        if ($game->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        } else {
+            $this->loggerUtil->init();
         }
 
-        $game->setView('SHOW_MODULE_SCREEN_BUILDPLAN');
+        $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
+        if ($rump === null) {
+            $this->loggerUtil->log('A');
+            $this->exitOnError($game);
+        }
+        $this->loggerUtil->log('B');
 
         $modules = array();
         $sigmod = array();
         $crew_usage = $rump->getBaseCrew();
         for ($i = 1; $i <= ShipModuleTypeEnum::MODULE_TYPE_COUNT; $i++) {
+            $this->loggerUtil->log(sprintf('%d', $i));
             $module = request::postArray('mod_' . $i);
             if (
                 $i != ShipModuleTypeEnum::MODULE_TYPE_SPECIAL
@@ -75,6 +88,7 @@ final class CreateBuildplan implements ActionControllerInterface
                     _('Es wurde kein Modul des Typs %s ausgewählt'),
                     ModuleTypeDescriptionMapper::getDescription($i)
                 );
+                $this->loggerUtil->log('C');
                 $this->exitOnError($game);
             }
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
@@ -90,6 +104,7 @@ final class CreateBuildplan implements ActionControllerInterface
 
                 if ($specialCount > $rump->getSpecialSlots()) {
                     $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
+                    $this->loggerUtil->log('D');
                     $this->exitOnError($game);
                 }
                 continue;
@@ -114,10 +129,13 @@ final class CreateBuildplan implements ActionControllerInterface
             $modules[current($module)] = $mod;
             $sigmod[$i] = $mod->getId();
         }
+        $this->loggerUtil->log('E');
         if ($crew_usage > $rump->getMaxCrewCount()) {
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
+            $this->loggerUtil->log('F');
             $this->exitOnError($game);
         }
+        $this->loggerUtil->log('G');
         $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
         if (
             request::has('buildplanname')
@@ -132,6 +150,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 date('d.m.Y H:i')
             );
         }
+        $this->loggerUtil->log('H');
         $game->addInformationf(
             _('Lege neuen Bauplan an: %s'),
             $planname
@@ -147,6 +166,8 @@ final class CreateBuildplan implements ActionControllerInterface
         $this->shipBuildplanRepository->save($plan);
         $this->entityManager->flush();
 
+        $this->loggerUtil->log('I');
+
         foreach ($modules as $obj) {
             $mod = $this->buildplanModuleRepository->prototype();
             $mod->setModuleType((int) $obj->getType());
@@ -157,8 +178,12 @@ final class CreateBuildplan implements ActionControllerInterface
             $this->buildplanModuleRepository->save($mod);
         }
 
+        $this->loggerUtil->log('J');
+
         $game->setView('SHOW_MODULE_SCREEN_BUILDPLAN');
         request::setVar('planid', $plan->getId());
+
+        $this->loggerUtil->log('K');
     }
 
     public function performSessionCheck(): bool
