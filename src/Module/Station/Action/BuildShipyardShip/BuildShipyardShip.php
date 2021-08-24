@@ -95,8 +95,7 @@ final class BuildShipyardShip implements ActionControllerInterface
                 $game->addInformationf(_('Es wird 1 %s benötigt'), $module->getName());
                 return;
             }
-        }
-        foreach ($modules as $module) {
+
             $this->shipStorageManager->lowerStorage($shipyard, $module->getCommodity(), 1);
         }
 
