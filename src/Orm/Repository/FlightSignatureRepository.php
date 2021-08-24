@@ -49,7 +49,6 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->setParameters([
                 'maxAgeUncloaked' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'maxAgeCloaked' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_CLOAKED,
-                'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'sx' => $colony->getSx(),
                 'sy' => $colony->getSy(),
                 'systemsId' => $colony->getSystem()->getId(),
