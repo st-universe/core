@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
@@ -952,17 +953,27 @@ class Ship implements ShipInterface
 
     public function getModules(): array
     {
-        $modulesFromSystems = [];
+        $modules = [];
 
-        foreach ($this->getSystems() as $system) {
-            $module = $system->getModule();
+        foreach ($this->getBuildplan()->getModules() as $obj) {
+            $module = $obj->getModule();
+            $index = $module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL ? $module->getId() : $module->getType();
+            $modules[$index] = $module;
+        }
 
-            if ($module !== null) {
-                $modulesFromSystems[$module->getType()] = $module;
+        if ($this->isBase()) {
+
+            foreach ($this->getSystems() as $system) {
+                $module = $system->getModule();
+
+                if ($module !== null) {
+                    $index = $module->getType() === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL ? $module->getId() : $module->getType();
+                    $modules[$index] = $module;
+                }
             }
         }
 
-        return $modulesFromSystems;
+        return $modules;
     }
 
     public function getWarpcoreCapacity(): int
