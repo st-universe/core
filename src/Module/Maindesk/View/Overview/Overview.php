@@ -15,6 +15,7 @@ use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 use Stu\Orm\Repository\HistoryRepositoryInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
+use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -30,6 +31,8 @@ final class Overview implements ViewControllerInterface
 
     private ColonyShipQueueRepositoryInterface $colonyShipQueueRepository;
 
+    private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
+
     private UserRepositoryInterface $userRepository;
 
     private KnFactoryInterface $knFactory;
@@ -42,6 +45,7 @@ final class Overview implements ViewControllerInterface
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         KnPostRepositoryInterface $knPostRepository,
         ColonyShipQueueRepositoryInterface $colonyShipQueueRepository,
+        ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         UserRepositoryInterface $userRepository,
         KnFactoryInterface $knFactory,
         ColonyLimitCalculatorInterface $colonyLimitCalculator
@@ -51,6 +55,7 @@ final class Overview implements ViewControllerInterface
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->knPostRepository = $knPostRepository;
         $this->colonyShipQueueRepository = $colonyShipQueueRepository;
+        $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
         $this->userRepository = $userRepository;
         $this->knFactory = $knFactory;
         $this->colonyLimitCalculator = $colonyLimitCalculator;
@@ -98,7 +103,10 @@ final class Overview implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'SHIP_BUILD_PROGRESS',
-            $this->colonyShipQueueRepository->getByUser($userId)
+            array_merge(
+                $this->colonyShipQueueRepository->getByUser($userId),
+                $this->shipyardShipQueueRepository->getByUser($userId)
+            )
         );
         $game->setTemplateVar(
             'RECENT_ALLIANCE_BOARD_TOPICS',

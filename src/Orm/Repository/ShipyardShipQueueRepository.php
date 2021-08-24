@@ -30,6 +30,13 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         $em->flush();
     }
 
+    public function getByUser(int $userId): array
+    {
+        return $this->findBy([
+            'user_id' => $userId
+        ]);
+    }
+
     public function getAmountByShipyard(int $shipId): int
     {
         return $this->count([
