@@ -106,13 +106,10 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
                     JOIN %s r
                     WITH bp.rump_id = r.id
                     WHERE r.category_id != :category
-                    AND r.id IN (
-                        SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
-                    )
+                    AND bp.user_id = :userId
                     ORDER BY r.id ASC',
                     ShipBuildplan::class,
-                    ShipRump::class,
-                    ShipRumpUser::class
+                    ShipRump::class
                 )
             )
             ->setParameters([
