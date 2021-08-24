@@ -225,6 +225,8 @@ interface ShipInterface
 
     public function getSystem(): ?StarSystemInterface;
 
+    public function getModules(): array;
+
     public function getWarpcoreCapacity(): int;
 
     public function getReactorCapacity(): int;
