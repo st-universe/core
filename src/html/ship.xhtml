@@ -1095,7 +1095,8 @@
 						</td>
 						<td style="vertical-align: top; width: 67%;">
 							<metal:macro metal:use-macro="control_nav" />
-							<tal:block tal:condition="SHIP/getRump/isShipyard">
+							<tal:block
+								tal:condition="php: SHIP.getRump().isShipyard() AND SHIP.getConstructionHubState()">
 								<metal:macro metal:use-macro="html/stationmacros.xhtml/shipyardoptions" />
 							</tal:block>
 						</td>
