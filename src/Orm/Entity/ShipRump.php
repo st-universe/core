@@ -585,6 +585,11 @@ class ShipRump implements ShipRumpInterface
         return $this->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_ESCAPE_PODS;
     }
 
+    public function isShipyard(): bool
+    {
+        return $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD;
+    }
+
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface
     {
         if ($this->module_levels === null) {

@@ -97,6 +97,31 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             ->getResult();
     }
 
+    public function getShipyardBuildplansByUser(int $userId): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT bp FROM %s bp
+                    JOIN %s r
+                    WITH bp.rump_id = r.id
+                    WHERE r.category_id != :category
+                    AND r.id IN (
+                        SELECT ru.rump_id FROM %s ru WHERE ru.user_id = :userId
+                    )
+                    ORDER BY r.id ASC',
+                    ShipBuildplan::class,
+                    ShipRump::class,
+                    ShipRumpUser::class
+                )
+            )
+            ->setParameters([
+                'category' => ShipRumpEnum::SHIP_CATEGORY_STATION,
+                'userId' => $userId
+            ])
+            ->getResult();
+    }
+
     public function prototype(): ShipBuildplanInterface
     {
         return new ShipBuildplan();

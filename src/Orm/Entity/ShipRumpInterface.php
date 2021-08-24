@@ -158,6 +158,8 @@ interface ShipRumpInterface
 
     public function isEscapePods(): bool;
 
+    public function isShipyard(): bool;
+
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface;
 
     /**

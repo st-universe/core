@@ -64,6 +64,8 @@ interface ShipInterface
 
     public function getAstroState(): bool;
 
+    public function getConstructionHubState(): bool;
+
     public function getEps(): int;
 
     public function setEps(int $eps): ShipInterface;

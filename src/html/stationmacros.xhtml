@@ -439,5 +439,58 @@
     </table>
   </div>
 </metal:block>
+<metal:macro metal:define-macro="shipyardoptions">
+  <table class="tcal">
+    <tr>
+      <th></th>
+      <th>Anzahl Schiffe</th>
+      <th>Bauzeit</th>
+      <th></th>
+    </tr>
+    <tal:block tal:repeat="data AVAILABLE_BUILDPLANS">
+      <tr tal:attributes="class string:row${repeat/data/odd}" style="cursor: pointer;" title="Details">
+        <td tal:content="data/getName" class="selectable" onclick="toggleTableRowVisible('buildplan_${data/getId}');">
+          NAME</td>
+        <td tal:content="data/getShipCount" class="selectable"
+          onclick="toggleTableRowVisible('buildplan_${data/getId}');">ANZAHL</td>
+        <td tal:content="formatSeconds:data/getBuildtime" onclick="toggleTableRowVisible('buildplan_${data/getId}');">
+          BUILDTIME</td>
+        <td style="text-align: center;">
+          <a class="linkbutton" href="station.php?id=${SHIP/getId}&B_BUILD_SHIPYARD_SHIP=1&planid=${data/getId}">Schiff
+            bauen</a>
+        </td>
+      </tr>
+      <tr title="Details schließen" onclick="toggleTableRowVisible('buildplan_${data/getId}');"
+        id="buildplan_${data/getId}" style="cursor: pointer; display: none;"
+        tal:attributes="class string:row${repeat/data/odd}">
+        <td colspan="4">
+          <table style="width: 100%">
+            <tr>
+              <td>Rumpf</td>
+              <td>
+                <div style="display: table-cell;">
+                  <img src="assets/ships/${data/getRump/getId}.png" />
+                </div>
+                <span style="display: table-cell; vertical-align: middle;"
+                  tal:content="data/getRump/getName">NAME</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Module</td>
+              <td>
+                <img src="assets/goods/${module/getModule/getGoodId}.png" tal:attributes="name module/getModule/getName"
+                  tal:repeat="module data/getModules" />
+              </td>
+            </tr>
+            <tr>
+              <td>Crewbedarf</td>
+              <td tal:content="data/getCrew">CREW</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tal:block>
+  </table>
+</metal:macro>
 
 </html>
