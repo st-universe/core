@@ -952,21 +952,17 @@ class Ship implements ShipInterface
 
     public function getModules(): array
     {
-        if ($this->isBase()) {
-            $modulesFromSystems = [];
+        $modulesFromSystems = [];
 
-            foreach ($this->getSystems() as $system) {
-                $module = $system->getModule();
+        foreach ($this->getSystems() as $system) {
+            $module = $system->getModule();
 
-                if ($module !== null) {
-                    $modulesFromSystems[$module->getType()] = $module;
-                }
+            if ($module !== null) {
+                $modulesFromSystems[$module->getType()] = $module;
             }
-
-            return $modulesFromSystems;
-        } else {
-            return $this->getBuildplan()->getModules();
         }
+
+        return $modulesFromSystems;
     }
 
     public function getWarpcoreCapacity(): int
