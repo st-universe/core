@@ -36,7 +36,8 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                     FROM %s fs
                     JOIN %s ssm
                     WITH fs.starsystem_map_id = ssm.id
-                    WHERE fs.time > :maxAge
+                    WHERE (fs.is_cloaked = false AND fs.time > :maxAgeUncloaked
+                      OR fs.is_cloaked = true AND fs.time > :maxAgeCloaked)
                     AND ssm.sx = :sx
                     AND ssm.sy = :sy
                     AND ssm.systems_id = :systemsId
@@ -46,6 +47,8 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
                 )
             )
             ->setParameters([
+                'maxAgeUncloaked' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
+                'maxAgeCloaked' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_CLOAKED,
                 'maxAge' => time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_UNCLOAKED,
                 'sx' => $colony->getSx(),
                 'sy' => $colony->getSy(),
