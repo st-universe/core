@@ -39,13 +39,13 @@ class UserInvitation implements UserInvitationInterface
 
     /**
      * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
     /**
      * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="invited_user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="invited_user_id", referencedColumnName="id")
      */
     private $invited_user;
 
@@ -99,7 +99,8 @@ class UserInvitation implements UserInvitationInterface
         return $this;
     }
 
-    public function isValid(int $ttl): bool {
+    public function isValid(int $ttl): bool
+    {
         return $this->getInvitedUser() === null && time() < $this->getDate()->getTimestamp() + $ttl;
     }
 }
