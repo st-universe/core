@@ -73,19 +73,21 @@ final class ShowScan implements ViewControllerInterface
 
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
-        $this->privateMessageSender->send(
-            GameEnum::USER_NOONE,
-            $target->getUser()->getId(),
-            sprintf(
-                _('Die %s von Spieler %s hat dein Schiff %s bei %s gescannt.'),
-                $ship->getName(),
-                $game->getUser()->getName(),
-                $target->getName(),
-                $target->getSectorString()
-            ),
-            $target->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
-            $href
-        );
+        if ($game->getUser() !== $target->getUser()) {
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $target->getUser()->getId(),
+                sprintf(
+                    _('Die %s von Spieler %s hat dein Schiff %s bei %s gescannt.'),
+                    $ship->getName(),
+                    $game->getUser()->getName(),
+                    $target->getName(),
+                    $target->getSectorString()
+                ),
+                $target->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                $href
+            );
+        }
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);
