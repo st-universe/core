@@ -75,7 +75,7 @@ final class ShowSectorScan implements ViewControllerInterface
             if (!array_key_exists($id, $filteredSigs)) {
                 $wrapper = new SignatureWrapper($sig);
 
-                if ($wrapper->getRump() === null) {
+                if ($wrapper->getRump() == null) {
                     if ($sig->isCloaked()) {
                         if ($sig->getTime() > (time() - FlightSignatureVisibilityEnum::SIG_VISIBILITY_CLOAKED)) {
                             $this->fadedSignaturesCloaked[$id] = $id;
