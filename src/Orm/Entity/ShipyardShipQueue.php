@@ -44,9 +44,6 @@ class ShipyardShipQueue implements ShipyardShipQueueInterface
     /** @Column(type="integer") * */
     private $stop_date = 0;
 
-    /** @Column(type="smallint") * */
-    private $building_function_id = 0;
-
     /**
      * @ManyToOne(targetEntity="ShipBuildplan")
      * @JoinColumn(name="buildplan_id", referencedColumnName="id", onDelete="CASCADE")
