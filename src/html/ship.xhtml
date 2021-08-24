@@ -286,27 +286,40 @@
 				</td>
 			</tr>
 		</tal:block>
-		<tal:block tal:condition="SHIP/hasAstroLaboratory">
-			<tr>
-				<td colspan="2">
-					<a tal:condition="not:SHIP/getAstroState"
-						href="?B_ACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-						onmouseover="cp('astro','buttons/map2')" onmouseout="cp('astro','buttons/map1')">
-						<img src="/assets/buttons/map1.png" name="astro" /> Astrometrisches
-						Labor
-						aktivieren
-					</a>
+		<tr tal:condition="SHIP/hasAstroLaboratory">
+			<td colspan="2">
+				<a tal:condition="not:SHIP/getAstroState"
+					href="?B_ACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+					onmouseover="cp('astro','buttons/map2')" onmouseout="cp('astro','buttons/map1')">
+					<img src="/assets/buttons/map1.png" name="astro" /> Astrometrisches
+					Labor
+					aktivieren
+				</a>
 
-					<a href="?B_DEACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-						tal:condition="SHIP/getAstroState" onmouseover="cp('astro','buttons/map1')"
-						onmouseout="cp('astro','buttons/map2')">
-						<img src="/assets/buttons/map2.png" name="astro" /> Astrometrisches
-						Labor
-						deaktivieren
-					</a>
-				</td>
-			</tr>
-		</tal:block>
+				<a href="?B_DEACTIVATE_ASTRO=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+					tal:condition="SHIP/getAstroState" onmouseover="cp('astro','buttons/map1')"
+					onmouseout="cp('astro','buttons/map2')">
+					<img src="/assets/buttons/map2.png" name="astro" /> Astrometrisches
+					Labor
+					deaktivieren
+				</a>
+			</td>
+		</tr>
+		<tr tal:condition="SHIP/getRump/isShipyard">
+			<td colspan="2">
+				<a tal:condition="not:SHIP/getConstructionHubState"
+					href="station.php?B_ACTIVATE_HUB=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+					onmouseover="cp('conhub','buttons/rep2')" onmouseout="cp('conhub','buttons/rep1')">
+					<img src="/assets/buttons/rep1.png" name="conhub" /> Werfthub aktivieren
+				</a>
+
+				<a href="station.php?B_DEACTIVATE_HUB=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+					tal:condition="SHIP/getConstructionHubState" onmouseover="cp('conhub','buttons/rep1')"
+					onmouseout="cp('conhub','buttons/rep2')">
+					<img src="/assets/buttons/rep2.png" name="conhub" /> Werfthub deaktivieren
+				</a>
+			</td>
+		</tr>
 	</table>
 	<tal:block tal:condition="SHIP/isFleetLeader">
 		<br />
@@ -1082,6 +1095,9 @@
 						</td>
 						<td style="vertical-align: top; width: 67%;">
 							<metal:macro metal:use-macro="control_nav" />
+							<tal:block tal:condition="SHIP/getRump/isShipyard">
+								<metal:macro metal:use-macro="html/stationmacros.xhtml/shipyardoptions" />
+							</tal:block>
 						</td>
 					</tr>
 				</table>

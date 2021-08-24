@@ -450,6 +450,11 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_ASTRO_LABORATORY);
     }
 
+    public function getConstructionHubState(): bool
+    {
+        return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB);
+    }
+
     public function getEps(): int
     {
         return $this->eps;

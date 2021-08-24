@@ -307,10 +307,10 @@ final class ShowShip implements ViewControllerInterface
                 $target = request::postInt('target');
 
                 if ($target) {
-                    foreach ($shipList as $key => $fleet) {
-                        foreach ($fleet['ships'] as $idx => $ship) {
+                    foreach ($shipList as $fleet) {
+                        foreach ($fleet['ships'] as $idx => $fleetship) {
                             if ($idx == $target) {
-                                $firstOrbitShip = $ship;
+                                $firstOrbitShip = $fleetship;
                             }
                         }
                     }
@@ -324,6 +324,10 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('CAN_UNDOCK', true);
         } else {
             $game->setTemplateVar('FIRST_MANAGE_SHIP', null);
+        }
+
+        if ($ship->getRump()->isShipyard()) {
+            $game->setTemplateVar('AVAILABLE_BUILDPLANS', $this->stationUtility->getShipyardBuildplansByUser($game->getUser()->getId()));
         }
     }
 }

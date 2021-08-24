@@ -27,6 +27,7 @@ use Stu\Component\Ship\System\Type\TractorBeamShipSystem;
 use Stu\Component\Ship\System\Type\WarpcoreShipSystem;
 use Stu\Component\Ship\System\Type\WarpdriveShipSystem;
 use Stu\Component\Ship\System\Type\ComputerShipSystem;
+use Stu\Component\Ship\System\Type\ConstructionHubShipSystem;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Ship\System\Type\DeflectorShipSystem;
 use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
@@ -63,7 +64,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_MATRIX_SCANNER => autowire(MatrixScannerShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE => autowire(TorpedoStorageShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP => autowire(ShuttleRampShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => autowire(BeamBlockerShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => autowire(BeamBlockerShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB => autowire(ConstructionHubShipSystem::class)
         ]
     )
 ];

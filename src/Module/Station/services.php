@@ -6,8 +6,11 @@ namespace Stu\Module\Station;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Station\Action\ActivateConstructionHub\ActivateConstructionHub;
 use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
+use Stu\Module\Station\Action\BuildShipyardShip\BuildShipyardShip;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
+use Stu\Module\Station\Action\DeactivateConstructionHub\DeactivateConstructionHub;
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\Action\ManageShuttles\ManageShuttles;
@@ -37,11 +40,14 @@ return [
     ShowShuttleManagementRequestInterface::class => autowire(ShowShuttleManagementRequest::class),
     'STATION_ACTIONS' => [
         BuildStation::ACTION_IDENTIFIER => autowire(BuildStation::class),
+        BuildShipyardShip::ACTION_IDENTIFIER => autowire(BuildShipyardShip::class),
         ManageShips::ACTION_IDENTIFIER => autowire(ManageShips::class),
         ManageShuttles::ACTION_IDENTIFIER => autowire(ManageShuttles::class),
         AddDockPrivilege::ACTION_IDENTIFIER => autowire(AddDockPrivilege::class),
         DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
-        UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class)
+        UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class),
+        ActivateConstructionHub::ACTION_IDENTIFIER => autowire(ActivateConstructionHub::class),
+        DeactivateConstructionHub::ACTION_IDENTIFIER => autowire(DeactivateConstructionHub::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
