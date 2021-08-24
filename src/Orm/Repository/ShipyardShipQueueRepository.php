@@ -76,4 +76,20 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
             ])
             ->execute();
     }
+
+    public function getFinishedJobs(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT sq FROM %s sq WHERE sq.stop_date = :stopDate AND sq.finish_date <= :time',
+                    ShipyardShipQueue::class
+                )
+            )
+            ->setParameters([
+                'stopDate' => 0,
+                'time' => time()
+            ])
+            ->getResult();
+    }
 }
