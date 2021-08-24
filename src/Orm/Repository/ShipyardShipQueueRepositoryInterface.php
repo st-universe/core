@@ -19,4 +19,6 @@ interface ShipyardShipQueueRepositoryInterface
     public function stopQueueByShipyard(int $shipId): void;
 
     public function restartQueueByShipyard(int $shipId): void;
+
+    public function getFinishedJobs(): array;
 }
