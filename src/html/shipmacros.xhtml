@@ -899,7 +899,7 @@
     </tr>
     <tr tal:condition="targetShip/getBuildplan">
       <td>verbaute Module</td>
-      <td><img tal:repeat="mod targetShip/getBuildplan/getModules" style="margin-right: 5px;"
+      <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
           src="assets/goods/${mod/getModule/getGoodId}.png" /></td>
     </tr>
   </table>
