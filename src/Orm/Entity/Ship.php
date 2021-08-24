@@ -950,25 +950,6 @@ class Ship implements ShipInterface
         return $this->getStarsystemMap() !== null ? $this->getStarsystemMap()->getSystem() : null;
     }
 
-    public function getModules(): array
-    {
-        if ($this->isBase()) {
-            $modulesFromSystems = [];
-
-            foreach ($this->getSystems() as $system) {
-                $module = $system->getModule();
-
-                if ($module !== null) {
-                    $modulesFromSystems[$module->getType()] = $module;
-                }
-            }
-
-            return $modulesFromSystems;
-        } else {
-            return $this->getBuildplan()->getModules();
-        }
-    }
-
     public function getWarpcoreCapacity(): int
     {
         return $this->getTheoreticalReactorOutput() * ShipEnum::WARPCORE_CAPACITY_MULTIPLIER;
