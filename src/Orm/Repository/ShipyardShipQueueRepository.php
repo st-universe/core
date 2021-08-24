@@ -65,7 +65,7 @@ final class ShipyardShipQueueRepository extends EntityRepository implements Ship
         $this->getEntityManager()
             ->createQuery(
                 sprintf(
-                    'UPDATE %s sq SET sq.finish_date = (:time + sq.finish_date - sq.stop_date), sq.stop_date = :stopDate WHERE sq.ship_id = :shipId',
+                    'UPDATE %s sq SET sq.finish_date = (:time - sq.stop_date + sq.finish_date), sq.stop_date = :stopDate WHERE sq.ship_id = :shipId',
                     ShipyardShipQueue::class
                 )
             )
