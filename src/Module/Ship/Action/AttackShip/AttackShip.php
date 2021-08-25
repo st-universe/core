@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class AttackShip implements ActionControllerInterface
@@ -90,34 +91,12 @@ final class AttackShip implements ActionControllerInterface
         if ($ship->getDockedTo()) {
             $ship->setDockedTo(null);
         }
-        $fleet = false;
+
         $target_user_id = $target->getUser()->getId();
         $isTargetBase = $target->isBase();
-        if ($ship->isFleetLeader()) {
-            $attacker = $ship->getFleet()->getShips()->toArray();
-            $fleet = true;
-        } else {
-            $attacker = [$ship->getId() => $ship];
-        }
-        if ($target->getFleetId()) {
-            $defender = [];
 
-            // only uncloaked defenders fight
-            foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
-                if (!$defShip->getCloakState()) {
-                    $defender[$defShip->getId()] = $defShip;
-                }
-            }
+        [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
 
-            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
-            if (empty($defender)) {
-                $defender = $target->getFleet()->getShips()->toArray();
-            }
-
-            $fleet = true;
-        } else {
-            $defender = [$target->getId() => $target];
-        }
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle();
 
@@ -146,6 +125,59 @@ final class AttackShip implements ActionControllerInterface
             $game->addInformationMerge($this->shipAttackCycle->getMessages());
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
+    }
+
+    private function getAttackerDefender(ShipInterface $ship, ShipInterface $target): array
+    {
+        $fleet = false;
+
+        if ($ship->isFleetLeader()) {
+            $attacker = $ship->getFleet()->getShips()->toArray();
+            $fleet = true;
+        } else {
+            $attacker = [$ship->getId() => $ship];
+        }
+        if ($target->getFleetId()) {
+            $defender = [];
+
+            // only uncloaked defenders fight
+            foreach ($target->getFleet()->getShips()->toArray() as $defShip) {
+                if (!$defShip->getCloakState()) {
+                    $defender[$defShip->getId()] = $defShip;
+
+                    if (
+                        $defShip->getDockedTo() !== null
+                        && $defShip->getDockedTo()->getUser()->getId() > 100
+                        && $defShip->getDockedTo()->canAttack()
+                    ) {
+                        $defender[$defShip->getDockedTo()->getId()] = $defShip->getDockedTo();
+                    }
+                }
+            }
+
+            // if all defenders were cloaked, they obviously were scanned and enter the fight as a whole fleet
+            if (empty($defender)) {
+                $defender = $target->getFleet()->getShips()->toArray();
+            }
+
+            $fleet = true;
+        } else {
+            $defender = [$target->getId() => $target];
+
+            if (
+                $target->getDockedTo() !== null
+                && $target->getDockedTo()->getUser()->getId() > 100
+                && $target->getDockedTo()->canAttack()
+            ) {
+                $defender[$target->getDockedTo()->getId()] = $target->getDockedTo();
+            }
+        }
+
+        return [
+            $attacker,
+            $defender,
+            $fleet
+        ];
     }
 
     public function performSessionCheck(): bool
