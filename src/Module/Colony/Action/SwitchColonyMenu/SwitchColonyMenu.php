@@ -15,6 +15,7 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
+use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\BuildingFunctionRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -107,6 +108,11 @@ final class SwitchColonyMenu implements ActionControllerInterface
                     $game->setView(ShowAcademy::VIEW_IDENTIFIER);
                     return;
                 }
+            case ColonyEnum::MENU_WASTE:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_WAREHOUSE)) {
+                    $game->setView(ShowWaste::VIEW_IDENTIFIER);
+                    return;
+                }
             case ColonyEnum::MENU_INFO:
             default:
                 $game->setView("SHOW_MANAGEMENT");
@@ -117,10 +123,10 @@ final class SwitchColonyMenu implements ActionControllerInterface
     private function hasSpecialBuilding(ColonyInterface $colony, $function)
     {
         return $this->planetFieldRepository->getCountByColonyAndBuildingFunctionAndState(
-                $colony->getId(),
-                [$function],
-                [0,1]
-            );
+            $colony->getId(),
+            [$function],
+            [0, 1]
+        );
     }
 
     public function performSessionCheck(): bool

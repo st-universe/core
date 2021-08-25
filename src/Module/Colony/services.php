@@ -172,6 +172,7 @@ use Stu\Module\Colony\View\ShowSurface\ShowSurfaceRequestInterface;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFab;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequest;
 use Stu\Module\Colony\View\ShowTorpedoFab\ShowTorpedoFabRequestInterface;
+use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Module\Control\GameController;
 
 use function DI\autowire;
@@ -301,6 +302,7 @@ return [
         ShowGiveUp::VIEW_IDENTIFIER => autowire(ShowGiveUp::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowPodsLocations::VIEW_IDENTIFIER => autowire(ShowPodsLocations::class),
-        ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class)
+        ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
+        ShowWaste::VIEW_IDENTIFIER => autowire(ShowWaste::class)
     ]
 ];

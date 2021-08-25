@@ -1071,6 +1071,29 @@
     </div>
   </metal:macro>
 </metal:block>
+<metal:block metal:define-macro="cm_waste">
+  <metal:macro metal:use-macro="colonymenu_sub_container">
+    <div metal:fill-slot="containment">
+      <br />
+      <table class="use" style="width: 433px;">
+        <tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor COLONY/getStorage">
+          <td style="vertical-align: middle;">
+            <div style="display: table-cell; width: 55px;">
+              <img src="assets/goods/${stor/getCommodity/getId}.png" tal:attributes="title stor/getCommodity/getName" />
+            </div>
+            <div style="display: table-cell; width: 40px; vertical-align:middle;">
+              <span tal:replace="stor/getAmount">AMOUNT</span>
+            </div>
+            <div style="display: table-cell; vertical-align: middle" tal:content="stor/getCommodity/getName">NAME</div>
+          </td>
+          <td style="vertical-align: middle;">
+            <span>FOOBAR</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </metal:macro>
+</metal:block>
 <metal:block metal:define-macro="entity_not_available">
   <div class="box">
     <div class="box_body">Das Ziel wurde nicht gefunden</div>
@@ -1325,10 +1348,16 @@
             <div class="fabutton" tal:condition="BUILDING_FUNCTION/isAcademy">
               <a href="javascript:void(0)" onclick="switchColonyMenu(12);cClick();" class="fabutton">Akademie</a>
             </div>
-            <div class="fabutton" tal:condition="BUILDING_FUNCTION/isWarehouse">
-              <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_GOODS_OVERVIEW=1')"
-                class="fabutton">Warenübersicht</a>
-            </div>
+            <tal:block tal:condition="BUILDING_FUNCTION/isWarehouse">
+              <div class="fabutton">
+                <a href="javascript:void(0)" onclick="goToUrl('database.php?SHOW_GOODS_OVERVIEW=1')"
+                  class="fabutton">Warenübersicht</a>
+              </div>
+              <div class="fabutton">
+                <a href="javascript:void(0)" onclick="switchColonyMenu(13);cClick();"
+                  class="fabutton">Müllverbrennung</a>
+              </div>
+            </tal:block>
             <br />
           </div>
           <tal:block tal:condition="FIELD/hasBuilding">
