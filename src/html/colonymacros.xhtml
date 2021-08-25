@@ -1074,6 +1074,8 @@
 <metal:block metal:define-macro="cm_waste">
   <metal:macro metal:use-macro="colonymenu_sub_container">
     <div metal:fill-slot="containment">
+      <input type="hidden" name="id" value="runtime" tal:attributes="value COLONY/getId" />
+      <input type="hidden" name="sstr" value="runtime" tal:attributes="value THIS/getSessionString" />
       <br />
       <table class="use" style="width: 433px;">
         <tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor COLONY/getStorage">
@@ -1092,7 +1094,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2"></td>
+          <td></td>
           <td>
             <input type="submit" style="cursor: pointer;" id="removewastebutton" name="B_REMOVE_WASTE"
               value="Waren entsorgen" />
