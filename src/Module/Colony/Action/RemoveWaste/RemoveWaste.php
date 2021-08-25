@@ -75,7 +75,7 @@ final class RemoveWaste implements ActionControllerInterface
             }
             $count = (int)$count;
 
-            if ($count < 0) {
+            if ($count < 1) {
                 continue;
             }
 
