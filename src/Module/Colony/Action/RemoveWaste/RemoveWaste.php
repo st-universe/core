@@ -68,11 +68,17 @@ final class RemoveWaste implements ActionControllerInterface
 
         $storage = $colony->getStorage();
 
+        $wasted = [];
         foreach ($commodities as $commodityId => $count) {
             if (!$storage->containsKey((int)$commodityId)) {
                 continue;
             }
             $count = (int)$count;
+
+            if ($count < 0) {
+                continue;
+            }
+
             $commodity = $this->commodityRepository->find((int)$commodityId);
 
             if ($commodity === null) {
@@ -86,10 +92,13 @@ final class RemoveWaste implements ActionControllerInterface
             }
 
             $this->colonyStorageManager->lowerStorage($colony, $commodity, $count);
-
-            $this->colonyRepository->save($colony);
+            $wasted[] = sprintf('%d %s', $count, $commodity->getName());
         }
-        $game->addInformation(_('Die Waren wurden entsorgt'));
+        $this->colonyRepository->save($colony);
+        $game->addInformation(_('Die folgenden Waren wurden entsorgt:'));
+        foreach ($wasted as $msg) {
+            $game->addInformation($msg);
+        }
     }
 
     public function performSessionCheck(): bool
