@@ -64,6 +64,7 @@ use Stu\Module\Colony\Action\LoadShields\LoadShields;
 use Stu\Module\Colony\Action\ManageOrbitalShips\ManageOrbitalShips;
 use Stu\Module\Colony\Action\ManageOrbitalShuttles\ManageOrbitalShuttles;
 use Stu\Module\Colony\Action\RemoveBuilding\RemoveBuilding;
+use Stu\Module\Colony\Action\RemoveWaste\RemoveWaste;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplan;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequest;
 use Stu\Module\Colony\Action\RenameBuildplan\RenameBuildplanRequestInterface;
@@ -265,7 +266,8 @@ return [
         DisassembleShip::ACTION_IDENTIFIER => autowire(DisassembleShip::class),
         ChangeFrequency::ACTION_IDENTIFIER => autowire(ChangeFrequency::class),
         ChangeTorpedoType::ACTION_IDENTIFIER => autowire(ChangeTorpedoType::class),
-        RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class)
+        RenameBuildplan::ACTION_IDENTIFIER => autowire(RenameBuildplan::class),
+        RemoveWaste::ACTION_IDENTIFIER => autowire(RemoveWaste::class)
     ],
     'COLONY_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
