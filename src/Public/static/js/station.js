@@ -17,12 +17,12 @@ function showStationCosts(obj, planid) {
 	openWindowPosition('elt', 1, 200, pos[0] + 360, pos[1] - 180);
 	ajax_update('elt', 'station.php?SHOW_STATION_COSTS=1&id=' + shipid + '&pid=' + planid);
 }
-function showStationInformation(obj, rumpid) {
+function showStationInformation(obj, planid) {
 	closeAjaxWindow();
 
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 200, pos[0] + 210, pos[1] - 180);
-	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&rid=' + rumpid);
+	ajax_update('elt', 'station.php?SHOW_STATION_INFO=1&pid=' + planid);
 }
 function getShipList() {
 	closeAjaxWindow();
