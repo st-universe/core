@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\View\ShowWaste;
 
 use ColonyMenu;
+use request;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -32,7 +33,7 @@ final class ShowWaste implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $colony = $this->colonyLoader->byIdAndUser(
-            $this->showBuildPlansRequest->getColonyId(),
+            request::indInt('id'),
             $userId
         );
 
