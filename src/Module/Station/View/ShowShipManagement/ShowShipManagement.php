@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\ShowShipManagement;
 
+use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -21,14 +22,18 @@ final class ShowShipManagement implements ViewControllerInterface
 
     private ColonyLibFactoryInterface $colonyLibFactory;
 
+    private StationUtilityInterface $stationUtility;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShowShipManagementRequestInterface $showShipManagementRequest,
-        ColonyLibFactoryInterface $colonyLibFactory
+        ColonyLibFactoryInterface $colonyLibFactory,
+        StationUtilityInterface $stationUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->showShipManagementRequest = $showShipManagementRequest;
         $this->colonyLibFactory = $colonyLibFactory;
+        $this->stationUtility = $stationUtility;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,6 +43,10 @@ final class ShowShipManagement implements ViewControllerInterface
         $station = $this->shipLoader->getByIdAndUser($this->showShipManagementRequest->getStationId(), $userId);
 
         if (!$station->isBase()) {
+            return;
+        }
+
+        if (!$this->stationUtility->canManageShips($station)) {
             return;
         }
 

@@ -70,6 +70,12 @@ final class DockShip implements ActionControllerInterface
         if (!$this->positionChecker->checkPosition($target, $ship)) {
             return;
         }
+        if ($ship->getDockedTo()) {
+            return;
+        }
+        if (!$target->isBase()) {
+            return;
+        }
 
         if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
             $game->addInformationf(
@@ -79,9 +85,6 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if (!$target->isBase()) {
-            return;
-        }
         if (!$this->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
 
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
@@ -106,9 +109,7 @@ final class DockShip implements ActionControllerInterface
             $this->fleetDock($ship, $target, $game);
             return;
         }
-        if ($ship->getDockedTo()) {
-            return;
-        }
+
         if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
             $game->addInformation('Zum Andocken wird 1 Energie benötigt');
             return;
