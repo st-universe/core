@@ -301,30 +301,30 @@ final class ShowShip implements ViewControllerInterface
     private function doStationStuff(ShipInterface $ship, GameControllerInterface $game): void
     {
         if ($this->stationUtility->canManageShips($ship)) {
-            $shipList = $this->stationUtility->getManageableShipList($ship);
-            if ($shipList !== []) {
-                // if selected, return the current target
-                $target = request::postInt('target');
+            $game->setTemplateVar('CAN_MANAGE', true);
+        }
 
-                if ($target) {
-                    foreach ($shipList as $fleet) {
-                        foreach ($fleet['ships'] as $idx => $fleetship) {
-                            if ($idx == $target) {
-                                $firstOrbitShip = $fleetship;
-                            }
+        $shipList = $this->stationUtility->getManageableShipList($ship);
+        if ($shipList !== []) {
+            // if selected, return the current target
+            $target = request::postInt('target');
+
+            if ($target) {
+                foreach ($shipList as $fleet) {
+                    foreach ($fleet['ships'] as $idx => $fleetship) {
+                        if ($idx == $target) {
+                            $firstOrbitShip = $fleetship;
                         }
                     }
                 }
-                if ($firstOrbitShip === null) {
-                    $firstOrbitShip = current(current($shipList)['ships']);
-                }
             }
-
-            $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
-            $game->setTemplateVar('CAN_UNDOCK', true);
-        } else {
-            $game->setTemplateVar('FIRST_MANAGE_SHIP', null);
+            if ($firstOrbitShip === null) {
+                $firstOrbitShip = current(current($shipList)['ships']);
+            }
         }
+
+        $game->setTemplateVar('FIRST_MANAGE_SHIP', $firstOrbitShip ? new OrbitShipItem($firstOrbitShip) : null);
+        $game->setTemplateVar('CAN_UNDOCK', true);
 
         if ($ship->getRump()->isShipyard()) {
             $game->setTemplateVar('AVAILABLE_BUILDPLANS', $this->stationUtility->getShipyardBuildplansByUser($game->getUser()->getId()));
