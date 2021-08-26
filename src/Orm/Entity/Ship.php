@@ -1395,14 +1395,19 @@ class Ship implements ShipInterface
         return $this->dockingPrivileges;
     }
 
+    private function getDockingSlotCount(): int
+    {
+        return $this->isBase() && empty($this->getSystems()) ? 50 : $this->getRump()->getDockingSlots();
+    }
+
     public function hasFreeDockingSlots(): bool
     {
-        return $this->getRump()->getDockingSlots() > $this->getDockedShipCount();
+        return $this->getDockingSlotCount() > $this->getDockedShipCount();
     }
 
     public function getFreeDockingSlotCount(): int
     {
-        return $this->getRump()->getDockingSlots() - $this->getDockedShipCount();
+        return $this->getDockingSlotCount() - $this->getDockedShipCount();
     }
 
     public function getDockedShipCount(): int
