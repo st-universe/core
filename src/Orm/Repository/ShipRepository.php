@@ -511,7 +511,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.%s = :fieldId
                 AND s.id != :ignoreId
                 %s
-                ORDER BY f.sort desc, (case when s.is_fleet_leader then 0 else 1 end)',
+                ORDER BY f.sort desc, f.id desc, (case when s.is_fleet_leader then 0 else 1 end)',
                 $isSystem ? 'starsystem_map_id' : 'map_id',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
