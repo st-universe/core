@@ -91,6 +91,7 @@ use Stu\Orm\Entity\ShipyardShipQueue;
 use Stu\Orm\Entity\StarSystem;
 use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemType;
+use Stu\Orm\Entity\StationShipRepair;
 use Stu\Orm\Entity\TachyonScan;
 use Stu\Orm\Entity\Terraforming;
 use Stu\Orm\Entity\TerraformingCost;
@@ -536,6 +537,11 @@ return [
         ContainerInterface $c
     ): StarSystemTypeRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(StarSystemType::class);
+    },
+    StationShipRepairRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): StationShipRepairRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(StationShipRepair::class);
     },
     TerraformingRepositoryInterface::class => function (
         ContainerInterface $c
