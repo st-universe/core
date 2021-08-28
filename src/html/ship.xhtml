@@ -1075,9 +1075,10 @@
 												onmouseout="cp('beamto','buttons/b_up1')"><img
 													src="assets/buttons/b_up1.png" name="beamto"
 													title="Zu Schiff beamen" /></a>
-											<a href="javascript:void(0);" onclick="getShipList();">Liste</a> | <a
-												tal:condition="exists:CAN_MANAGE"
-												href="station.php?SHOW_SHIP_MANAGEMENT=1&id=${SHIP/getId}">Management</a>
+											<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
+											<tal:block tal:condition="exists:CAN_MANAGE"> |<a
+													href="station.php?SHOW_SHIP_MANAGEMENT=1&id=${SHIP/getId}">Management</a>
+											</tal:block>
 										</div>
 										<div style="width: 50%; float: left;">
 											<a href="javascript:void(0);" onclick="editDockPrivileges()"
