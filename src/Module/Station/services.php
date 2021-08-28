@@ -14,6 +14,7 @@ use Stu\Module\Station\Action\DeactivateConstructionHub\DeactivateConstructionHu
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
 use Stu\Module\Station\Action\ManageShuttles\ManageShuttles;
+use Stu\Module\Station\Action\RepairShip\RepairShip;
 use Stu\Module\Station\Action\UndockStationShip\UndockStationShip;
 use Stu\Module\Station\View\Overview\Overview;
 use Stu\Module\Station\View\ShowDockingPrivileges\ShowDockingPrivileges;
@@ -22,6 +23,7 @@ use Stu\Module\Station\View\ShowSensorScan\ShowSensorScan;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagementRequest;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagementRequestInterface;
+use Stu\Module\Station\View\ShowShipRepair\ShowShipRepair;
 use Stu\Module\Station\View\ShowShuttleManagement\ShowShuttleManagement;
 use Stu\Module\Station\View\ShowShuttleManagement\ShowShuttleManagementRequest;
 use Stu\Module\Station\View\ShowShuttleManagement\ShowShuttleManagementRequestInterface;
@@ -47,7 +49,8 @@ return [
         DeleteDockPrivilege::ACTION_IDENTIFIER => autowire(DeleteDockPrivilege::class),
         UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class),
         ActivateConstructionHub::ACTION_IDENTIFIER => autowire(ActivateConstructionHub::class),
-        DeactivateConstructionHub::ACTION_IDENTIFIER => autowire(DeactivateConstructionHub::class)
+        DeactivateConstructionHub::ACTION_IDENTIFIER => autowire(DeactivateConstructionHub::class),
+        RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
@@ -61,6 +64,7 @@ return [
         ShowShuttleManagement::VIEW_IDENTIFIER => autowire(ShowShuttleManagement::class),
         ShowDockingPrivileges::VIEW_IDENTIFIER => autowire(ShowDockingPrivileges::class),
         ShowDockingPrivilegesConfig::VIEW_IDENTIFIER => autowire(ShowDockingPrivilegesConfig::class),
-        ShowSystemSensorScan::VIEW_IDENTIFIER => autowire(ShowSystemSensorScan::class)
+        ShowSystemSensorScan::VIEW_IDENTIFIER => autowire(ShowSystemSensorScan::class),
+        ShowShipRepair::VIEW_IDENTIFIER => autowire(ShowShipRepair::class)
     ],
 ];

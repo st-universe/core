@@ -1079,6 +1079,9 @@
 											<tal:block tal:condition="exists:CAN_MANAGE"> |<a
 													href="station.php?SHOW_SHIP_MANAGEMENT=1&id=${SHIP/getId}">Management</a>
 											</tal:block>
+											<tal:block tal:condition="exists:CAN_REPAIR"> |<a
+													href="station.php?SHOW_SHIP_REPAIR=1&id=${SHIP/getId}">Reparatur</a>
+											</tal:block>
 										</div>
 										<div style="width: 50%; float: left;">
 											<a href="javascript:void(0);" onclick="editDockPrivileges()"

@@ -304,6 +304,10 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('CAN_MANAGE', true);
         }
 
+        if ($this->stationUtility->canRepairShips($ship)) {
+            $game->setTemplateVar('CAN_REPAIR', true);
+        }
+
         $shipList = $this->stationUtility->getManageableShipList($ship);
         if ($shipList !== []) {
             // if selected, return the current target
