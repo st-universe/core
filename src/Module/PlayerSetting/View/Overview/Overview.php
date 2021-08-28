@@ -11,6 +11,7 @@ use Stu\Module\PlayerSetting\Lib\InvitationItem;
 use Stu\Orm\Entity\UserInvitationInterface;
 use Stu\Orm\Repository\NewsRepositoryInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
@@ -21,22 +22,25 @@ final class Overview implements ViewControllerInterface
 
     private NewsRepositoryInterface $newsRepository;
 
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
         UserInvitationRepositoryInterface $userInvitationRepository,
         ConfigInterface $config,
-        NewsRepositoryInterface $newsRepository
+        NewsRepositoryInterface $newsRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
         $this->newsRepository = $newsRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
 
-        if ($user === null)
-        {
+        if ($user === null) {
             $game->setPageTitle(_('Star Trek Universe'));
             $game->setTemplateFile('html/index.xhtml');
 
@@ -63,7 +67,7 @@ final class Overview implements ViewControllerInterface
             'INVITATIONS',
             array_map(
                 function (UserInvitationInterface $userInvitation): InvitationItem {
-                    return new InvitationItem($this->config, $userInvitation);
+                    return new InvitationItem($this->config, $userInvitation, $this->userRepository);
                 },
                 $invitations
             )

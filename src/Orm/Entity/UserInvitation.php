@@ -37,21 +37,33 @@ class UserInvitation implements UserInvitationInterface
     /** @Column(type="string") */
     private $token = '';
 
-    /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
-     * @ManyToOne(targetEntity="User")
-     * @JoinColumn(name="invited_user_id", referencedColumnName="id")
-     */
-    private $invited_user;
-
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(int $userId): UserInvitationInterface
+    {
+        $this->user_id = $userId;
+
+        return $this;
+    }
+
+    public function getInvitedUserId(): ?int
+    {
+        return $this->invited_user_id;
+    }
+
+    public function setInvitedUserId(?int $userId): UserInvitationInterface
+    {
+        $this->invited_user_id = $userId;
+
+        return $this;
     }
 
     public function getDate(): DateTimeInterface
@@ -63,28 +75,6 @@ class UserInvitation implements UserInvitationInterface
     {
         $this->date = $date;
 
-        return $this;
-    }
-
-    public function getUser(): UserInterface
-    {
-        return $this->user;
-    }
-
-    public function setUser(UserInterface $user): UserInvitationInterface
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    public function getInvitedUser(): ?UserInterface
-    {
-        return $this->invited_user;
-    }
-
-    public function setInvitedUser(?UserInterface $user): UserInvitationInterface
-    {
-        $this->invited_user = $user;
         return $this;
     }
 
@@ -101,6 +91,6 @@ class UserInvitation implements UserInvitationInterface
 
     public function isValid(int $ttl): bool
     {
-        return $this->getInvitedUser() === null && time() < $this->getDate()->getTimestamp() + $ttl;
+        return $this->invited_user_id === null && time() < $this->getDate()->getTimestamp() + $ttl;
     }
 }
