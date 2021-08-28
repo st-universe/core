@@ -26,7 +26,7 @@ final class InvitePlayer implements InvitePlayerInterface
 
         $invitation = $this->userInvitationRepository
             ->prototype()
-            ->setUser($user)
+            ->setUserId($user->getId())
             ->setDate(new DateTime())
             ->setToken($token);
 

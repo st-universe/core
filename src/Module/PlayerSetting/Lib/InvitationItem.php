@@ -7,6 +7,7 @@ namespace Stu\Module\PlayerSetting\Lib;
 use Noodlehaus\ConfigInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Entity\UserInvitationInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class InvitationItem implements InvitationItemInterface
 {
@@ -14,12 +15,16 @@ final class InvitationItem implements InvitationItemInterface
 
     private UserInvitationInterface $userInvitation;
 
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
         ConfigInterface $config,
-        UserInvitationInterface $userInvitation
+        UserInvitationInterface $userInvitation,
+        UserRepositoryInterface $userRepository
     ) {
         $this->userInvitation = $userInvitation;
         $this->config = $config;
+        $this->userRepository = $userRepository;
     }
 
     public function getLink(): string
@@ -33,7 +38,8 @@ final class InvitationItem implements InvitationItemInterface
 
     public function getInvitedUser(): ?UserInterface
     {
-        return $this->userInvitation->getInvitedUser();
+        return $this->userInvitation->getInvitedUserId()
+            ? $this->userRepository->find($this->userInvitation->getInvitedUserId()) : null;
     }
 
     public function getDate(): int

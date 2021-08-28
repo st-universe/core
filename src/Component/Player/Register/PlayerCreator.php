@@ -76,7 +76,7 @@ final class PlayerCreator implements PlayerCreatorInterface
             $faction
         );
 
-        $invitation->setInvitedUser($player);
+        $invitation->setInvitedUserId($player->getId());
 
         $this->userInvitationRepository->save($invitation);
     }

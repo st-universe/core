@@ -12,13 +12,13 @@ interface UserInvitationInterface
 
     public function setDate(DateTimeInterface $date): UserInvitationInterface;
 
-    public function getUser(): UserInterface;
+    public function getUserId(): int;
 
-    public function setUser(UserInterface $user): UserInvitationInterface;
+    public function setUserId(int $userId): UserInvitationInterface;
 
-    public function getInvitedUser(): ?UserInterface;
+    public function getInvitedUserId(): ?int;
 
-    public function setInvitedUser(?UserInterface $user): UserInvitationInterface;
+    public function setInvitedUserId(?int $userId): UserInvitationInterface;
 
     public function getToken(): string;
 
