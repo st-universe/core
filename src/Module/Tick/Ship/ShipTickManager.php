@@ -272,7 +272,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             $ship = $obj->getShip();
             $station = $obj->getStation();
 
-            if (!$station->getShipSystem(ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB)->getMode() > ShipSystemModeEnum::MODE_OFF) {
+            if ($station->getCrewCount() < $station->getBuildplan()->getCrew()) {
                 continue;
             }
             $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
