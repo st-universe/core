@@ -10,6 +10,7 @@ use Stu\Component\Player\ColonizationCheckerInterface;
 use Stu\Component\Ship\AstronomicalMappingEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
@@ -27,6 +28,8 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\AstroEntryRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
+use Stu\Orm\Repository\ShipyardShipQueueRepositoryInterface;
+use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 use VisualNavPanel;
 
 final class ShowShip implements ViewControllerInterface
@@ -51,6 +54,10 @@ final class ShowShip implements ViewControllerInterface
 
     private NbsUtilityInterface $nbsUtility;
 
+    private StationShipRepairRepositoryInterface $stationShipRepairRepository;
+
+    private ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository;
+
     private StationUtilityInterface $stationUtility;
 
     public function __construct(
@@ -63,6 +70,8 @@ final class ShowShip implements ViewControllerInterface
         AstroEntryRepositoryInterface $astroEntryRepository,
         DatabaseUserRepositoryInterface $databaseUserRepository,
         NbsUtilityInterface $nbsUtility,
+        StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         StationUtilityInterface $stationUtility
     ) {
         $this->session = $session;
@@ -74,6 +83,8 @@ final class ShowShip implements ViewControllerInterface
         $this->astroEntryRepository = $astroEntryRepository;
         $this->databaseUserRepository = $databaseUserRepository;
         $this->nbsUtility = $nbsUtility;
+        $this->stationShipRepairRepository = $stationShipRepairRepository;
+        $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
         $this->stationUtility = $stationUtility;
     }
 
@@ -306,6 +317,16 @@ final class ShowShip implements ViewControllerInterface
 
         if ($this->stationUtility->canRepairShips($ship)) {
             $game->setTemplateVar('CAN_REPAIR', true);
+
+            $shipRepairProgress = $this->stationShipRepairRepository->getByStation(
+                $ship->getId()
+            );
+
+            $game->setTemplateVar('SHIP_REPAIR_PROGRESS', $shipRepairProgress);
+        }
+
+        if ($ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD) {
+            $game->setTemplateVar('SHIP_BUILD_PROGRESS', $this->shipyardShipQueueRepository->getByShipyard($ship->getId()));
         }
 
         $shipList = $this->stationUtility->getManageableShipList($ship);

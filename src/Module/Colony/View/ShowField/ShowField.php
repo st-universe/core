@@ -64,15 +64,8 @@ final class ShowField implements ViewControllerInterface
         }
 
         $shipRepairProgress = $this->colonyShipRepairRepository->getByColonyField(
-            (int) $colony->getId(),
-            (int) $field->getFieldId()
-        );
-
-        usort(
-            $shipRepairProgress,
-            function (ColonyShipRepairInterface $a, ColonyShipRepairInterface $b): int {
-                return $a->getId() <=> $b->getId();
-            }
+            $colony->getId(),
+            $field->getFieldId()
         );
 
         $game->setPageTitle(sprintf('Feld %d - Informationen', $field->getFieldId()));

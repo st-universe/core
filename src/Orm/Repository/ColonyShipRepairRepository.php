@@ -24,7 +24,7 @@ implements
         return $this->findBy([
             'colony_id' => $colonyId,
             'field_id' => $fieldId
-        ]);
+        ], ['id' => 'asc']);
     }
 
     public function getByShip(int $shipId): ColonyShipRepairInterface

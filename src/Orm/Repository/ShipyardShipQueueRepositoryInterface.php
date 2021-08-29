@@ -12,6 +12,8 @@ interface ShipyardShipQueueRepositoryInterface
 
     public function delete(ShipyardShipQueueInterface $post): void;
 
+    public function getByShipyard(int $stationId): array;
+
     public function getByUser(int $userId): array;
 
     public function getAmountByShipyard(int $shipId): int;

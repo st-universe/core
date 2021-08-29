@@ -23,7 +23,7 @@ implements
     {
         return $this->findBy([
             'station_id' => $stationId
-        ]);
+        ], ['id' => 'asc']);
     }
 
     public function getByShip(int $shipId): StationShipRepairInterface
