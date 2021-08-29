@@ -1076,10 +1076,10 @@
 													src="assets/buttons/b_up1.png" name="beamto"
 													title="Zu Schiff beamen" /></a>
 											<a href="javascript:void(0);" onclick="getShipList();">Liste</a>
-											<tal:block tal:condition="exists:CAN_MANAGE"> |<a
+											<tal:block tal:condition="exists:CAN_MANAGE"> | <a
 													href="station.php?SHOW_SHIP_MANAGEMENT=1&id=${SHIP/getId}">Management</a>
 											</tal:block>
-											<tal:block tal:condition="exists:CAN_REPAIR"> |<a
+											<tal:block tal:condition="exists:CAN_REPAIR"> | <a
 													href="station.php?SHOW_SHIP_REPAIR=1&id=${SHIP/getId}">Reparatur</a>
 											</tal:block>
 										</div>
@@ -1100,8 +1100,13 @@
 						</td>
 						<td style="vertical-align: top; width: 67%;">
 							<metal:macro metal:use-macro="control_nav" />
+							<tal:block tal:condition="exists: SHIP_REPAIR_PROGRESS">
+								<metal:macro metal:use-macro="html/stationmacros.xhtml/ship_repairprogress" />
+							</tal:block>
 							<tal:block
 								tal:condition="php: SHIP.getRump().isShipyard() AND SHIP.getConstructionHubState()">
+								<metal:macro metal:use-macro="html/colonymacros.xhtml/ship_buildprogress"
+									tal:condition="exists: SHIP_BUILD_PROGRESS" />
 								<metal:macro metal:use-macro="html/stationmacros.xhtml/shipyardoptions" />
 							</tal:block>
 						</td>
