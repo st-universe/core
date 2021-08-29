@@ -28,6 +28,7 @@ use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipRepository")
@@ -1530,6 +1531,7 @@ class Ship implements ShipInterface
             // @todo inject
             global $container;
             $container->get(ColonyShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
+            $container->get(StationShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
             $container->get(ShipRepositoryInterface::class)->save($this);
         }
     }
