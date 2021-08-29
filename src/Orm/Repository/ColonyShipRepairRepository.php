@@ -44,11 +44,12 @@ implements
         $rsm->addFieldResult('c', 'field_id', 'field_id');
 
         return $this->getEntityManager()->createNativeQuery(
-            'SELECT c.id,c.colony_id,c.ship_id,c.field_id FROM stu_colonies_shiprepair c WHERE c.colony_id IN (
-                        SELECT id FROM stu_colonies WHERE user_id IN (
-                            SELECT id FROM stu_user WHERE tick = :tickId
-                )
-            )',
+            'SELECT  c.id, c.colony_id, c.ship_id, c.field_id
+            FROM    (
+                    SELECT  *, ROW_NUMBER() OVER (PARTITION BY colony_id, field_id ORDER BY id ASC) rn
+                    FROM    stu_colonies_shiprepair
+                    ) c
+            WHERE   c.rn = 1',
             $rsm
         )
             ->setParameter('tickId', $tickId)
