@@ -9,13 +9,13 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -42,6 +42,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private AlertRedHelperInterface $alertRedHelper;
 
+    private ColonyShipRepairRepositoryInterface $colonyShipRepairRepository;
+
     private StationShipRepairRepositoryInterface $stationShipRepairRepository;
 
     private EntityManagerInterface $entityManager;
@@ -56,6 +58,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipSystemManagerInterface $shipSystemManager,
         AlertRedHelperInterface $alertRedHelper,
+        ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
         EntityManagerInterface $entityManager
     ) {
@@ -68,6 +71,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->alertRedHelper = $alertRedHelper;
+        $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->stationShipRepairRepository = $stationShipRepairRepository;
         $this->entityManager = $entityManager;
     }
@@ -86,7 +90,8 @@ final class ShipTickManager implements ShipTickManagerInterface
             }
         }
         $this->handleNPCShips();
-        $this->repairShips();
+        $this->repairShipsOnColonies(1);
+        $this->repairShipsOnStations();
         $this->lowerTrumfieldHull();
         $this->lowerStationConstructionHull();
 
@@ -265,7 +270,78 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
     }
 
-    private function repairShips(): void
+    private function repairShipsOnColonies(int $tickId): void
+    {
+        foreach ($this->colonyShipRepairRepository->getMostRecentJobs($tickId) as $obj) {
+
+            $ship = $obj->getShip();
+            $colony = $obj->getColony();
+
+            if (!$obj->getField()->isActive()) {
+                continue;
+            }
+            $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
+
+            //repair ship systems
+            $damagedSystems = $ship->getDamagedSystems();
+            if (!empty($damagedSystems)) {
+                $firstSystem = $damagedSystems[0];
+                $firstSystem->setStatus(100);
+
+                if ($ship->getCrewCount() > 0) {
+                    $firstSystem->setMode($this->shipSystemManager->lookupSystem($firstSystem->getSystemType())->getDefaultMode());
+                }
+
+                // maximum of two systems get repaired
+                if (count($damagedSystems) > 1) {
+                    $secondSystem = $damagedSystems[1];
+                    $secondSystem->setStatus(100);
+
+                    if ($ship->getCrewCount() > 0) {
+                        $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
+                    }
+                }
+            }
+
+            if (!$ship->canBeRepaired()) {
+                $ship->setHuell($ship->getMaxHuell());
+                $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+                $this->colonyShipRepairRepository->delete($obj);
+
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUser()->getId(),
+                    sprintf(
+                        "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
+                        $ship->getName(),
+                        $ship->getSectorString(),
+                        $colony->getName(),
+                        $colony->getUser()->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+
+                if ($ship->getUser()->getId() != $colony->getUserId()) {
+                    $this->privateMessageSender->send(
+                        GameEnum::USER_NOONE,
+                        $colony->getUserId(),
+                        sprintf(
+                            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
+                            $ship->getName(),
+                            $ship->getUser()->getName(),
+                            $ship->getSectorString(),
+                            $colony->getName()
+                        ),
+                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+                    );
+                }
+            }
+            $this->shipRepository->save($ship);
+        }
+    }
+
+    private function repairShipsOnStations(): void
     {
         foreach ($this->stationShipRepairRepository->getMostRecentJobs() as $obj) {
 
