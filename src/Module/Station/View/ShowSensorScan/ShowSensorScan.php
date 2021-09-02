@@ -136,16 +136,16 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $game->setTemplateVar('MAPFIELD', $mapField);
-        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId));
+        $game->setTemplateVar('SIGNATURES', $this->getSignatures($mapField, $userId, $sysid !== 0));
         $game->setTemplateVar('OTHER_SIG_COUNT', empty($this->fadedSignaturesUncloaked) ? null : count($this->fadedSignaturesUncloaked));
         $game->setTemplateVar('OTHER_CLOAKED_COUNT', empty($this->fadedSignaturesCloaked) ? null : count($this->fadedSignaturesCloaked));
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('ERROR', false);
     }
 
-    private function getSignatures($field, $ignoreId)
+    private function getSignatures($field, $ignoreId, bool $isSystem)
     {
-        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field, false, $ignoreId);
+        $allSigs = $this->flightSignatureRepository->getVisibleSignatures($field, $isSystem, $ignoreId);
 
         $filteredSigs = [];
 

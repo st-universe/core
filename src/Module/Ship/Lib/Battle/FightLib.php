@@ -49,6 +49,9 @@ final class FightLib implements FightLibInterface
         if ($ship->getRump()->isEscapePods() || $ship->getIsDestroyed()) {
             return $msg;
         }
+        if ($ship->getBuildplan() === null) {
+            return $msg;
+        }
         if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew() || $ship->getRump()->isTrumfield()) {
             return $msg;
         }
