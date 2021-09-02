@@ -81,6 +81,9 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->checkForCrewLimitation();
         $this->removeEmptyEscapePods();
 
+        $this->repairShipsOnColonies(1);
+        $this->repairShipsOnStations();
+
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
 
@@ -90,8 +93,6 @@ final class ShipTickManager implements ShipTickManagerInterface
             }
         }
         $this->handleNPCShips();
-        $this->repairShipsOnColonies(1);
-        $this->repairShipsOnStations();
         $this->lowerTrumfieldHull();
         $this->lowerStationConstructionHull();
 

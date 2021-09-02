@@ -365,7 +365,8 @@ class Colony implements ColonyInterface
 
     public function getShieldState(): bool
     {
-        return $this->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR);
+        return $this->hasActiveBuildingWithFunction(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)
+            && $this->getShields() > 0;
     }
 
     public function getShieldFrequency(): ?int
