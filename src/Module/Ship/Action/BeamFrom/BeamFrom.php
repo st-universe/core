@@ -145,7 +145,7 @@ final class BeamFrom implements ActionControllerInterface
 
             $transferAmount = $commodity->getTransferCount() * $ship->getBeamFactor();
 
-            if (ceil($count / $transferAmount) > $ship->getEps()) {
+            if (!$isDockTransfer && ceil($count / $transferAmount) > $ship->getEps()) {
                 $count = $ship->getEps() * $transferAmount;
             }
             if ($ship->getStorageSum() + $count > $ship->getMaxStorage()) {
