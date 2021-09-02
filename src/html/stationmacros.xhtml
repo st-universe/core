@@ -493,7 +493,7 @@
   </table>
 </metal:macro>
 <metal:macro metal:define-macro="ship_repairprogress">
-  <table class="tcal">
+  <table class="tcal" tal:condition="SHIP_REPAIR_PROGRESS">
     <tr>
       <th colspan="5">Schiffe in Reparatur</th>
     </tr>
