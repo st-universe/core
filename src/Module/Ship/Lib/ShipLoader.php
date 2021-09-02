@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Exception\AccessViolation;
 use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\ShipIsDestroyedException;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -25,6 +26,10 @@ final class ShipLoader implements ShipLoaderInterface
 
         if ($ship === null) {
             throw new ShipDoesNotExistException();
+        }
+
+        if ($ship->getIsDestroyed()) {
+            throw new ShipIsDestroyedException();
         }
 
         if ($ship->getUser()->getId() != $userId) {

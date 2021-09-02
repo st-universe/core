@@ -10,6 +10,8 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
+use Stu\Exception\ShipDoesNotExistException;
+use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\TickGameStateException;
 use Stu\Lib\LoginException;
 use Stu\Lib\SessionInterface;
@@ -493,7 +495,6 @@ final class GameController implements GameControllerInterface
                     throw new RelocationGameStateException();
                 }
             }
-
             $this->executeCallback($actions);
             $this->executeView($views);
         } catch (SessionInvalidException $e) {
@@ -524,6 +525,12 @@ final class GameController implements GameControllerInterface
             $this->setTemplateFile('html/relocation.xhtml');
 
             $this->talPage->setVar('THIS', $this);
+        } catch (ShipDoesNotExistException $e) {
+            $this->addInformation(_('Dieses Schiff existiert nicht!'));
+            $this->setTemplateFile('html/ship.xhtml');
+        } catch (ShipIsDestroyedException $e) {
+            $this->addInformation('Dieses Schiff wurde zerstört!');
+            $this->setTemplateFile('html/ship.xhtml');
         } catch (StuException $e) {
             throw $e;
         } catch (\Throwable $e) {
