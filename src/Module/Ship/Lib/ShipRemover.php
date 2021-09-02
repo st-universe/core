@@ -127,6 +127,11 @@ final class ShipRemover implements ShipRemoverInterface
 
         $this->shipRepository->save($ship);
 
+        foreach ($ship->getDockedShips() as $dockedShip) {
+            $dockedShip->setDockedTo(null);
+            $this->shipRepository->save($dockedShip);
+        }
+
         return $msg;
     }
 
