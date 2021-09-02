@@ -12,7 +12,6 @@ use Stu\Component\Ship\Nbs\NbsUtilityInterface;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Station\StationUtilityInterface;
-use Stu\Exception\ShipDoesNotExistException;
 use Stu\Lib\ColonyStorageGoodWrapper\ColonyStorageGoodWrapper;
 use Stu\Lib\ModuleScreen\ModuleSelectorSpecial;
 use Stu\Module\Control\GameControllerInterface;
@@ -104,18 +103,10 @@ final class ShowShip implements ViewControllerInterface
             $startTime = microtime(true);
         }
 
-        try {
-            $ship = $this->shipLoader->getByIdAndUser(
-                request::indInt('id'),
-                $userId
-            );
-        } catch (ShipDoesNotExistException $e) {
-            $game->addInformation(_('Dieses Schiff existiert nicht!'));
-
-            $game->setTemplateFile('html/ship.xhtml');
-
-            return;
-        }
+        $ship = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId
+        );
 
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
