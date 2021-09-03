@@ -44,10 +44,13 @@ class Colony implements ColonyInterface
     private $user_id = 0;
 
     /** @Column(type="smallint", length=3) */
-    private $sx = 0;
+    private $sx = 0; //TODO wech!
 
     /** @Column(type="smallint", length=3) */
-    private $sy = 0;
+    private $sy = 0; //TODO wech!
+
+    /** @Column(type="integer", nullable=true) * */
+    private $starsystem_map_id;
 
     /** @Column(type="integer") */
     private $systems_id = 0;
@@ -108,6 +111,12 @@ class Colony implements ColonyInterface
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
     private $starSystem;
+
+    /**
+     * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
+     * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
+     */
+    private $starsystem_map;
 
     /**
      * @ManyToOne(targetEntity="User")
@@ -424,15 +433,21 @@ class Colony implements ColonyInterface
         return true;
     }
 
-    public function getSystem(): StarSystemInterface
+    public function getStarsystemMap(): ?StarSystemMapInterface
     {
-        return $this->starSystem;
+        return $this->starsystem_map;
     }
 
-    public function setStarSystem(StarSystemInterface $starSystem): ColonyInterface
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ColonyInterface
     {
-        $this->starSystem = $starSystem;
+        $this->starsystem_map = $starsystem_map; //TODO remove?
+
         return $this;
+    }
+
+    public function getSystem(): StarSystemInterface
+    {
+        return $this->starSystem; //TODO use starsystem_map->getSystem
     }
 
     public function getEpsProduction(): int
