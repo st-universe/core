@@ -99,9 +99,11 @@ interface ColonyInterface
 
     public function isInSystem(): bool;
 
-    public function getSystem(): StarSystemInterface;
+    public function getStarsystemMap(): ?StarSystemMapInterface;
 
-    public function setStarSystem(StarSystemInterface $starSystem): ColonyInterface;
+    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ColonyInterface;
+
+    public function getSystem(): StarSystemInterface;
 
     public function getEpsProduction(): int;
 
