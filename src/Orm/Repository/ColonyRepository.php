@@ -11,7 +11,7 @@ use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PlanetType;
-use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMap;
 use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
@@ -57,14 +57,18 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT c FROM %s c INDEX BY c.id WHERE c.user_id = :userId AND c.colonies_classes_id IN (
+                'SELECT c FROM %s c INDEX BY c.id
+                 JOIN %s sm
+                 WITH c.starsystem_map_id = sm.id
+                 WHERE c.user_id = :userId AND c.colonies_classes_id IN (
                     SELECT pt.id FROM %s pt WHERE pt.allow_start = :allowStart
-                ) AND c.systems_id IN (
+                ) AND sm.systems_id IN (
                     SELECT m.systems_id FROM %s m WHERE m.systems_id > 0 AND m.region_id IN (
                         SELECT mrs.region_id from %s mrs WHERE mrs.faction_id = :factionId
                     )
                 )',
                 Colony::class,
+                StarSystemMap::class,
                 PlanetType::class,
                 Map::class,
                 MapRegionSettlement::class
