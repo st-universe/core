@@ -51,9 +51,7 @@ final class StartBlocking implements ActionControllerInterface
         );
 
         $currentColony = $this->colonyRepository->getByPosition(
-            $ship->getSystem(),
-            $ship->getPosX(),
-            $ship->getPosY()
+            $ship->getStarsystemMap()
         );
 
         if ($currentColony === null) {

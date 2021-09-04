@@ -66,9 +66,7 @@ final class ShowColonyScan implements ViewControllerInterface
         }
 
         $colony = $this->colonyRepository->getByPosition(
-            $ship->getSystem(),
-            $ship->getPosX(),
-            $ship->getPosY()
+            $ship->getStarsystemMap()
         );
 
         if ($colony === null) {

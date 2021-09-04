@@ -1465,9 +1465,7 @@ class Ship implements ShipInterface
         $colonyRepository = $container->get(ColonyRepositoryInterface::class);
 
         $currentColony = $colonyRepository->getByPosition(
-            $this->getSystem(),
-            $this->getPosX(),
-            $this->getPosY()
+            $this->getStarsystemMap()
         );
 
         if ($currentColony === null) {
