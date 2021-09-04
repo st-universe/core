@@ -91,7 +91,7 @@
   <table class="tcal">
     <tr tal:condition="exists: SYSTEM_INTERN">
       <th colspan="3" tal:condition="MAPFIELD/getColony">
-        <span tal:content="MAPFIELD/getColony/getUser/getName">USERNAME</span>
+        <span tal:replace="structure bbcode:MAPFIELD/getColony/getUser/getName">USERNAME</span>
       </th>
     </tr>
     <tr>
