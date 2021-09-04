@@ -42,6 +42,11 @@ class StarSystemMap implements StarSystemMapInterface
     private $starSystem;
 
     /**
+     * @OneToOne(targetEntity="Colony", mappedBy="starsystem_map")
+     */
+    private $colony;
+
+    /**
      * @ManyToOne(targetEntity="MapFieldType")
      * @JoinColumn(name="field_id", referencedColumnName="id")
      */
@@ -125,6 +130,11 @@ class StarSystemMap implements StarSystemMapInterface
     public function getFieldType(): MapFieldTypeInterface
     {
         return $this->mapFieldType;
+    }
+
+    public function getColony(): ?ColonyInterface
+    {
+        return $this->colony;
     }
 
     public function getMapRegion(): ?MapRegionInterface

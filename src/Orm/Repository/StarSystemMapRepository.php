@@ -82,9 +82,7 @@ final class StarSystemMapRepository extends EntityRepository implements StarSyst
                 WHERE sm.systems_id = :systemId
                 AND EXISTS (SELECT c.id
                             FROM stu_colonies c
-                            WHERE c.systems_id = sm.systems_id
-                            AND c.sx = sm.sx
-                            AND c.sy = sm.sy
+                            WHERE c.starsystem_map_id = sm.id
                             AND c.user_id != :noOne)
                 ORDER BY RANDOM()
                 LIMIT 2',

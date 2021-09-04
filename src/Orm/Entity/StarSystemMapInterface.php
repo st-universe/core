@@ -28,6 +28,8 @@ interface StarSystemMapInterface
 
     public function getFieldType(): MapFieldTypeInterface;
 
+    public function getColony(): ?ColonyInterface;
+
     public function getMapRegion(): ?MapRegionInterface;
 
     public function getFieldStyle(): string;
