@@ -117,9 +117,9 @@ final class ShowShip implements ViewControllerInterface
             $startTime = microtime(true);
         }
 
-        $colony = $this->colonyRepository->getByPosition(
+        $colony = $ship->getStarsystemMap() ? $this->colonyRepository->getByPosition(
             $ship->getStarsystemMap()
-        );
+        ) : null;
 
         $shipId = $ship->getId();
 
