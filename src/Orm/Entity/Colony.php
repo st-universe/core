@@ -24,7 +24,7 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
  *     name="stu_colonies",
  *     indexes={
  *         @Index(name="colony_user_idx", columns={"user_id"}),
- *         @Index(name="location_idx", columns={"systems_id","sx","sy"})
+ *         @Index(name="colony_sys_map_idx", columns={"starsystem_map_id"})
  *     }
  * )
  **/
@@ -43,17 +43,8 @@ class Colony implements ColonyInterface
     /** @Column(type="integer") */
     private $user_id = 0;
 
-    /** @Column(type="smallint", length=3) */
-    private $sx = 0; //TODO wech!
-
-    /** @Column(type="smallint", length=3) */
-    private $sy = 0; //TODO wech!
-
     /** @Column(type="integer", nullable=true) * */
     private $starsystem_map_id;
-
-    /** @Column(type="integer") */
-    private $systems_id = 0;
 
     /** @Column(type="string") */
     private $name = '';
@@ -105,12 +96,6 @@ class Colony implements ColonyInterface
      * @JoinColumn(name="colonies_classes_id", referencedColumnName="id")
      */
     private $planetType;
-
-    /**
-     * @ManyToOne(targetEntity="StarSystem")
-     * @JoinColumn(name="systems_id", referencedColumnName="id")
-     */
-    private $starSystem;
 
     /**
      * @OneToOne(targetEntity="StarSystemMap", inversedBy="colony")
@@ -186,29 +171,17 @@ class Colony implements ColonyInterface
 
     public function getSx(): int
     {
-        return $this->sx;
-    }
-
-    public function setSx(int $sx): ColonyInterface
-    {
-        $this->sx = $sx;
-        return $this;
+        return $this->getStarsystemMap()->getSx();
     }
 
     public function getSy(): int
     {
-        return $this->sy;
-    }
-
-    public function setSy(int $sy): ColonyInterface
-    {
-        $this->sy = $sy;
-        return $this;
+        return $this->getStarsystemMap()->getSy();
     }
 
     public function getSystemsId(): int
     {
-        return $this->systems_id;
+        return $this->getSystem()->getId();
     }
 
     public function getName(): string
@@ -429,8 +402,7 @@ class Colony implements ColonyInterface
 
     public function isInSystem(): bool
     {
-        // true by default
-        return true;
+        return $this->getStarsystemMap() !== null;
     }
 
     public function getStarsystemMap(): ?StarSystemMapInterface
@@ -438,16 +410,9 @@ class Colony implements ColonyInterface
         return $this->starsystem_map;
     }
 
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ColonyInterface
-    {
-        $this->starsystem_map = $starsystem_map; //TODO remove?
-
-        return $this;
-    }
-
     public function getSystem(): StarSystemInterface
     {
-        return $this->starSystem; //TODO use starsystem_map->getSystem
+        return $this->getStarsystemMap()->getSystem();
     }
 
     public function getEpsProduction(): int

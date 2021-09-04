@@ -90,6 +90,11 @@
 <metal:macro metal:define-macro="sectorscan">
   <table class="tcal">
     <tr>
+      <th colspan="3">
+        <span tal:content="MAPFIELD/getColony/getUser/getName">USERNAME</span>
+      </th>
+    </tr>
+    <tr>
       <td rowspan="2" style="width: 30px; vertical-align: top;">
         <img src="assets/map/${MAPFIELD/getFieldId}.png" />
       </td>

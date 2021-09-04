@@ -15,11 +15,7 @@ interface ColonyInterface
 
     public function getSx(): int;
 
-    public function setSx(int $sx): ColonyInterface;
-
     public function getSy(): int;
-
-    public function setSy(int $sy): ColonyInterface;
 
     public function getSystemsId(): int;
 
@@ -100,8 +96,6 @@ interface ColonyInterface
     public function isInSystem(): bool;
 
     public function getStarsystemMap(): ?StarSystemMapInterface;
-
-    public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ColonyInterface;
 
     public function getSystem(): StarSystemInterface;
 
