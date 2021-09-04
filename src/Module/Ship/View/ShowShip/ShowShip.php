@@ -118,9 +118,7 @@ final class ShowShip implements ViewControllerInterface
         }
 
         $colony = $this->colonyRepository->getByPosition(
-            $ship->getSystem(),
-            $ship->getPosX(),
-            $ship->getPosY()
+            $ship->getStarsystemMap()
         );
 
         $shipId = $ship->getId();

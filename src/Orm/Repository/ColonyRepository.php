@@ -12,6 +12,7 @@ use Stu\Orm\Entity\Map;
 use Stu\Orm\Entity\MapRegionSettlement;
 use Stu\Orm\Entity\PlanetType;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class ColonyRepository extends EntityRepository implements ColonyRepositoryInterface
@@ -75,12 +76,10 @@ final class ColonyRepository extends EntityRepository implements ColonyRepositor
         ])->getResult();
     }
 
-    public function getByPosition(?StarSystemInterface $starSystem, int $sx, int $sy): ?ColonyInterface
+    public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface
     {
         return $this->findOneBy([
-            'systems_id' => $starSystem,
-            'sx' => $sx,
-            'sy' => $sy
+            'starsystem_map_id' => $sysmap->getId()
         ]);
     }
 

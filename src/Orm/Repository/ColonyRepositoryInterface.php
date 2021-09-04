@@ -5,6 +5,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\StarSystemInterface;
+use Stu\Orm\Entity\StarSystemMapInterface;
 use Stu\Orm\Entity\UserInterface;
 
 /**
@@ -26,7 +27,7 @@ interface ColonyRepositoryInterface extends ObjectRepository
      */
     public function getStartingByFaction(int $factionId): iterable;
 
-    public function getByPosition(?StarSystemInterface $starSystem, int $sx, int $sy): ?ColonyInterface;
+    public function getByPosition(StarSystemMapInterface $sysmap): ?ColonyInterface;
 
     /**
      * @return ColonyInterface[]
