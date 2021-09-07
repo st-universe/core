@@ -17,6 +17,7 @@ use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\PlanetGenerator\PlanetGenerator;
+use Stu\PlanetGenerator\PlanetGeneratorFileMissingException;
 
 final class ColonySurface implements ColonySurfaceInterface
 {
@@ -67,7 +68,11 @@ final class ColonySurface implements ColonySurfaceInterface
         $fields = $this->planetFieldRepository->getByColony($this->colony->getId(), $this->showUnderground);
 
         if ($fields === []) {
-            $this->updateSurface();
+            try {
+                $this->updateSurface();
+            } catch (PlanetGeneratorFileMissingException $e) {
+                return $fields;
+            }
 
             $fields = $this->planetFieldRepository->getByColony($this->colony->getId(), $this->showUnderground);
         }
