@@ -29,9 +29,9 @@
 					</td>
 					<td style="vertical-align: middle;" tal:define="system colony/getSystem">
 						<a href="colony.php?SHOW_COLONY=1&id=${colony/getId}" style="font-size: 120%">
-							<img tal:condition="colony/isBlocked" src="assets/buttons/block1.png"
+							<img tal:condition="colony/isBlocked" src="assets/buttons/block2.png"
 								title="Kolonie wird blockiert" style="height:20px;" /> <img
-								tal:condition="colony/isDefended" src="assets/buttons/defend2.png"
+								tal:condition="colony/isDefended" src="assets/buttons/defend1.png"
 								title="Kolonie wird verteidigt" style="height:20px;" /> <span
 								tal:content="structure bbcode:colony/getName">NAME</span></a>
 						<div>
