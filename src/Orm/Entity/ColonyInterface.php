@@ -113,10 +113,14 @@ interface ColonyInterface
      */
     public function getStorage(): Collection;
 
+    public function isDefended(): bool;
+
     /**
      * @return FleetInterface[]
      */
     public function getDefenders(): Collection;
+
+    public function isBlocked(): bool;
 
     /**
      * @return FleetInterface[]

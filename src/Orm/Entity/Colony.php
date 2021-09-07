@@ -448,9 +448,19 @@ class Colony implements ColonyInterface
         return $this->storage;
     }
 
+    public function isDefended(): bool
+    {
+        return !$this->getDefenders()->isEmpty();
+    }
+
     public function getDefenders(): Collection
     {
         return $this->defenders;
+    }
+
+    public function isBlocked(): bool
+    {
+        return !$this->getBlockers()->isEmpty();
     }
 
     public function getBlockers(): Collection
