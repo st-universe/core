@@ -120,6 +120,16 @@ final class ColonyListItem implements ColonyListItemInterface
         return $this->commodityConsumption->getConsumption($this->colony);
     }
 
+    public function isDefended(): bool
+    {
+        return $this->colony->isDefended();
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->colony->isBlocked();
+    }
+
     public function getStorageStatusBar(): string
     {
         return (new TalStatusBar())

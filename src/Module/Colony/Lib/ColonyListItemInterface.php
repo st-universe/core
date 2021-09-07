@@ -48,6 +48,10 @@ interface ColonyListItemInterface
 
     public function getGoodUseView(): array;
 
+    public function isDefended(): bool;
+
+    public function isBlocked(): bool;
+
     public function getStorageStatusBar(): string;
 
     public function getEpsStatusBar(): string;
