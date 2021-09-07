@@ -10,6 +10,7 @@ use Stu\Module\Station\Action\ActivateConstructionHub\ActivateConstructionHub;
 use Stu\Module\Station\Action\AddDockPrivilege\AddDockPrivilege;
 use Stu\Module\Station\Action\BuildShipyardShip\BuildShipyardShip;
 use Stu\Module\Station\Action\BuildStation\BuildStation;
+use Stu\Module\Station\Action\CancelShipRepair\CancelShipRepair;
 use Stu\Module\Station\Action\DeactivateConstructionHub\DeactivateConstructionHub;
 use Stu\Module\Station\Action\DeleteDockPrivilege\DeleteDockPrivilege;
 use Stu\Module\Station\Action\ManageShips\ManageShips;
@@ -50,7 +51,8 @@ return [
         UndockStationShip::ACTION_IDENTIFIER => autowire(UndockStationShip::class),
         ActivateConstructionHub::ACTION_IDENTIFIER => autowire(ActivateConstructionHub::class),
         DeactivateConstructionHub::ACTION_IDENTIFIER => autowire(DeactivateConstructionHub::class),
-        RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class)
+        RepairShip::ACTION_IDENTIFIER => autowire(RepairShip::class),
+        CancelShipRepair::ACTION_IDENTIFIER => autowire(CancelShipRepair::class)
     ],
     'STATION_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
