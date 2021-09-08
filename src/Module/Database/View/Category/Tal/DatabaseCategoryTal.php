@@ -44,7 +44,7 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 
     public function displayDefaultList(): bool
     {
-        return !$this->isCategoryStarSystems() && !$this->isCategoryTradePosts();
+        return !$this->isCategoryStarSystems() && !$this->isCategoryTradePosts() && !$this->isCategoryPlanetTypes();
     }
 
     public function getEntries(): array
