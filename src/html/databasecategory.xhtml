@@ -89,7 +89,7 @@
 		</tr>
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">
-				<td><img src="assets/planets/${data/getId}.gif" /></td>
+				<td><img src="assets/planets/${data/getObjectId}.gif" /></td>
 				<td>
 					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
 						tal:content="data/getDescription">NAME</a>
