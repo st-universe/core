@@ -3,6 +3,7 @@
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<metal:macro metal:use-macro="category_starsystems" tal:condition="CATEGORY/isCategoryStarSystems" />
+		<metal:macro metal:use-macro="category_starsystem_types" tal:condition="CATEGORY/isCategoryStarSystemTypes" />
 		<metal:macro metal:use-macro="category_tradeposts" tal:condition="CATEGORY/isCategoryTradePosts" />
 		<metal:macro metal:use-macro="category_planettypes" tal:condition="CATEGORY/isCategoryPlanetTypes" />
 		<table class="use" tal:condition="CATEGORY/displayDefaultList">
@@ -108,6 +109,48 @@
 				<td></td>
 				<td>???</td>
 				<td></td>
+				<td>---</td>
+			</tal:block>
+		</tr>
+	</table>
+</metal:macro>
+<metal:macro metal:define-macro="category_starsystem_types">
+	<table class="use">
+		<tr>
+			<th></th>
+			<th>Beschreibung</th>
+			<th>Entdeckung</th>
+		</tr>
+		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+			<tal:block tal:condition="data/wasDiscovered">
+				<td>
+					<table>
+						<tr>
+							<td><img src="assets/map/${data/getObject/getId}11.png" /></td>
+							<td><img src="assets/map/${data/getObject/getId}12.png" /></td>
+							<td><img src="assets/map/${data/getObject/getId}13.png" /></td>
+						</tr>
+						<tr>
+							<td><img src="assets/map/${data/getObject/getId}21.png" /></td>
+							<td><img src="assets/map/${data/getObject/getId}22.png" /></td>
+							<td><img src="assets/map/${data/getObject/getId}23.png" /></td>
+						</tr>
+						<tr>
+							<td><img src="assets/map/${data/getObject/getId}31.png" /></td>
+							<td><img src="assets/map/${data/getObject/getId}32.png" /></td>
+							<td><img src="assets/map/${data/getObject/getId}33.png" /></td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+						tal:content="data/getDescription">NAME</a>
+				</td>
+				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
+			</tal:block>
+			<tal:block tal:condition="not:data/wasDiscovered">
+				<td></td>
+				<td>???</td>
 				<td>---</td>
 			</tal:block>
 		</tr>

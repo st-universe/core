@@ -27,6 +27,11 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
         $this->user = $user;
     }
 
+    public function isCategoryStarSystemTypes(): bool
+    {
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STAR_SYSTEM_TYPE;
+    }
+
     public function isCategoryStarSystems(): bool
     {
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STARSYSTEM;
@@ -44,7 +49,10 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
 
     public function displayDefaultList(): bool
     {
-        return !$this->isCategoryStarSystems() && !$this->isCategoryTradePosts() && !$this->isCategoryPlanetTypes();
+        return !$this->isCategoryStarSystems()
+            && !$this->isCategoryTradePosts()
+            && !$this->isCategoryStarSystemTypes()
+            && !$this->isCategoryPlanetTypes();
     }
 
     public function getEntries(): array

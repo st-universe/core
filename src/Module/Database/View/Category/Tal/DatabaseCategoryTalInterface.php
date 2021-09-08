@@ -6,6 +6,8 @@ interface DatabaseCategoryTalInterface
 {
     public function isCategoryStarSystems(): bool;
 
+    public function isCategoryStarSystemTypes(): bool;
+
     public function isCategoryTradePosts(): bool;
 
     public function isCategoryPlanetTypes(): bool;
