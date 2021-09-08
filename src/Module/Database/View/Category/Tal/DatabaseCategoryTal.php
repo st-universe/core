@@ -37,6 +37,11 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_TRADEPOST;
     }
 
+    public function isCategoryPlanetTypes(): bool
+    {
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE;
+    }
+
     public function displayDefaultList(): bool
     {
         return !$this->isCategoryStarSystems() && !$this->isCategoryTradePosts();
