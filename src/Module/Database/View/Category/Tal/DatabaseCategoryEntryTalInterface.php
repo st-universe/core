@@ -10,6 +10,8 @@ interface DatabaseCategoryEntryTalInterface
 
     public function getId(): int;
 
+    public function getObjectId(): int;
+
     public function getDescription(): string;
 
     public function getDiscoveryDate(): int;
