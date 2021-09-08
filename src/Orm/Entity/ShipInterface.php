@@ -434,4 +434,6 @@ interface ShipInterface
     public function getShieldStatusBar();
 
     public function getEpsStatusBar();
+
+    public function getHullColorStyle(): string;
 }

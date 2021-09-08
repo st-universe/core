@@ -206,7 +206,7 @@
       (${ship/getCx}|${ship/getCy})
     </td>
     <td>
-      ${ship/getHuell}/${ship/getMaxHuell}
+      <span tal:attributes="style string:${ship/getHullColorStyle};">${ship/getHuell}</span>/${ship/getMaxHuell}
     </td>
     <td>
       <span tal:condition="ship/getShieldState" class="activeshield"
