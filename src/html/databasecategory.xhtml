@@ -4,6 +4,7 @@
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<metal:macro metal:use-macro="category_starsystems" tal:condition="CATEGORY/isCategoryStarSystems" />
 		<metal:macro metal:use-macro="category_tradeposts" tal:condition="CATEGORY/isCategoryTradePosts" />
+		<metal:macro metal:use-macro="category_planettypes" tal:condition="CATEGORY/isCategoryPlanetTypes" />
 		<table class="use" tal:condition="CATEGORY/displayDefaultList">
 			<tr>
 				<th>Beschreibung</th>
@@ -12,7 +13,8 @@
 			<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 				<tal:block tal:condition="data/wasDiscovered">
 					<td>
-						<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+						<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+							tal:content="data/getDescription">NAME</a>
 					</td>
 					<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 				</tal:block>
@@ -34,10 +36,12 @@
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
-					<span tal:replace="data/getObject/getCX">CX</span>|<span tal:replace="data/getObject/getCY">CY</span>
+					<span tal:replace="data/getObject/getCX">CX</span>|<span
+						tal:replace="data/getObject/getCY">CY</span>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>
@@ -59,10 +63,12 @@
 		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
 			<tal:block tal:condition="data/wasDiscovered">
 				<td>
-					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}" tal:content="data/getDescription">NAME</a>
+					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+						tal:content="data/getDescription">NAME</a>
 				</td>
 				<td>
-					<span tal:replace="data/getObject/getCX">CX</span>|<span tal:replace="data/getObject/getCY">CY</span>
+					<span tal:replace="data/getObject/getCX">CX</span>|<span
+						tal:replace="data/getObject/getCY">CY</span>
 				</td>
 				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
 			</tal:block>
@@ -74,4 +80,28 @@
 		</tr>
 	</table>
 </metal:macro>
+<metal:macro metal:define-macro="category_planettypes">
+	<table class="use">
+		<tr>
+			<th></th>
+			<th>Beschreibung</th>
+			<th>Entdeckung</th>
+		</tr>
+		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+			<tal:block tal:condition="data/wasDiscovered">
+				<td><img src="assets/planets/${data/getId}.gif" /></td>
+				<td>
+					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+						tal:content="data/getDescription">NAME</a>
+				</td>
+				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
+			</tal:block>
+			<tal:block tal:condition="not:data/wasDiscovered">
+				<td>???</td>
+				<td>---</td>
+			</tal:block>
+		</tr>
+	</table>
+</metal:macro>
+
 </html>
