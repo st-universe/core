@@ -86,6 +86,11 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         return $this->databaseEntry->getId();
     }
 
+    public function getObjectId(): int
+    {
+        return $this->databaseEntry->getObjectId();
+    }
+
     public function getDescription(): string
     {
         return $this->databaseEntry->getDescription();
