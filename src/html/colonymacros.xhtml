@@ -1599,7 +1599,7 @@
         <img src="assets/buttons/modul_1.png" title="Hülle" style="width: 12px; height: 12px;" />
         ${data/getShip/getHuell}/${data/getShip/getMaxHuell}
       </td>
-      <td tal:condition="data/getShip/getDamagedSystems" style="text-align: center; vertical-align: middle">
+      <td style="text-align: center; vertical-align: middle">
         <img tal:repeat="sys data/getShip/getDamagedSystems" title="${sys/getName}: ${sys/getStatus}%"
           style="margin-right: 5px;" class="${sys/getCssClass}" src="assets/system/${sys/getSystemType}.png" />
       </td>
