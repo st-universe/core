@@ -908,6 +908,12 @@ class Ship implements ShipInterface
             + ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) ? TroopQuartersShipSystem::QUARTER_COUNT : 0);
     }
 
+    public function hasEnoughCrew(): bool
+    {
+        return $this->getBuildplan()->getCrew() <= 0
+            || $this->getCrewCount() >= $this->getBuildplan()->getCrew();
+    }
+
     public function leaveFleet(): void
     {
         $fleet = $this->getFleet();
