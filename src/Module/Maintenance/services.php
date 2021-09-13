@@ -14,7 +14,8 @@ return [
     OldTachyonScanDeletion::class => autowire(OldTachyonScanDeletion::class),
     OldTradeOffersDeletion::class => autowire(OldTradeOffersDeletion::class),
     CorruptFleetDeletion::class => autowire(CorruptFleetDeletion::class),
-    OldFlightSignatureDeletion::class => autowire(OldFlightSignatureDeletion::class)
-    //TODO handler to delete knPlots older than a week with to postings -> repo query
+    OldFlightSignatureDeletion::class => autowire(OldFlightSignatureDeletion::class),
+    ColonyCorrector::class => autowire(ColonyCorrector::class)
+    //TODO handler to delete knPlots older than a week with no postings -> repo query
     // -> PMs to plot owner and participants
 ];
