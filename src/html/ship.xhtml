@@ -406,7 +406,8 @@
 						onmouseover="cp('dock','buttons/dock1')" onmouseout="cp('dock','buttons/dock2')">
 						<img src="assets/buttons/dock2.png" title="Abdocken" name="dock" />
 					</a>
-					<a tal:condition="SHIP/getDockedTo/isOwnedByCurrentUser" href="?id=${SHIP/getDockedTo/getId}"
+					<a tal:condition="SHIP/getDockedTo/isOwnedByCurrentUser"
+						href="?SHOW_SHIP=1&id=${SHIP/getDockedTo/getId}"
 						onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
 						onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
 						<img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation" />
