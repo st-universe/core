@@ -349,7 +349,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             $ship = $obj->getShip();
             $station = $obj->getStation();
 
-            if ($station->getCrewCount() < $station->getBuildplan()->getCrew()) {
+            if (!$station->hasEnoughCrew()) {
                 continue;
             }
             $ship->setHuell($ship->getHuell() + $ship->getRepairRate());

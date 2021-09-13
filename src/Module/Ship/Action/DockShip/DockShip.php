@@ -77,7 +77,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
+        if (!$ship->hasEnoughCrew()) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
                 $ship->getBuildplan()->getCrew()
@@ -107,6 +107,7 @@ final class DockShip implements ActionControllerInterface
         }
         if ($ship->isFleetLeader()) {
             $this->fleetDock($ship, $target, $game);
+            //TODO PM raus schicken!
             return;
         }
 

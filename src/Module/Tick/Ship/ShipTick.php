@@ -87,7 +87,7 @@ final class ShipTick implements ShipTickInterface
         }
 
         // not enough crew
-        if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew()) {
+        if (!$ship->hasEnoughCrew()) {
             $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig!');
             $eps = $ship->getEps();
         } else {

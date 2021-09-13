@@ -102,7 +102,7 @@ final class AttackBuilding implements ActionControllerInterface
             return;
         }
 
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
+        if (!$ship->hasEnoughCrew()) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
                 $ship->getBuildplan()->getCrew()

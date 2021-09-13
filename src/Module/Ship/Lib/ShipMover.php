@@ -416,7 +416,7 @@ final class ShipMover implements ShipMoverInterface
         $nextField
     ) {
         // zu wenig Crew
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
+        if (!$ship->hasEnoughCrew()) {
             $this->addLostShip(
                 $ship,
                 $leadShip,

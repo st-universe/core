@@ -52,7 +52,7 @@ final class FightLib implements FightLibInterface
         if ($ship->getBuildplan() === null) {
             return $msg;
         }
-        if ($ship->getCrewCount() < $ship->getBuildplan()->getCrew() || $ship->getRump()->isTrumfield()) {
+        if (!$ship->hasEnoughCrew() || $ship->getRump()->isTrumfield()) {
             return $msg;
         }
         if ($ship->getDockedTo()) {
