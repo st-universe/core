@@ -7,7 +7,7 @@ namespace Stu\Module\Maintenance;
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
-final class ColonyCorrector
+final class ColonyCorrector implements MaintenanceHandlerInterface
 {
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -21,7 +21,12 @@ final class ColonyCorrector
         $this->entityManager = $entityManager;
     }
 
-    public function correct(bool $doDump = false): void
+    public function handle(): void
+    {
+        $this->correct(false);
+    }
+
+    public function correct(bool $doDump = true): void
     {
         $database = $this->entityManager->getConnection();
 
@@ -66,13 +71,15 @@ final class ColonyCorrector
                 $eps !== $colony->getMaxEps() ||
                 $max_free < $colony->getWorkless()
             ) {
-                var_dump([
-                    ['worker' => $worker, 'actual' => $colony->getWorkers()],
-                    ['housing' => $housing, 'actual' => $colony->getMaxBev()],
-                    ['storage' => $storage, 'actual' => $colony->getMaxStorage()],
-                    ['eps' => $eps, 'actual' => $colony->getMaxEps()],
-                    ['max_free' => $max_free, 'actual' => $colony->getWorkless()],
-                ]);
+                if ($doDump) {
+                    var_dump([
+                        ['worker' => $worker, 'actual' => $colony->getWorkers()],
+                        ['housing' => $housing, 'actual' => $colony->getMaxBev()],
+                        ['storage' => $storage, 'actual' => $colony->getMaxStorage()],
+                        ['eps' => $eps, 'actual' => $colony->getMaxEps()],
+                        ['max_free' => $max_free, 'actual' => $colony->getWorkless()],
+                    ]);
+                }
 
                 $colony->setWorkers($worker);
                 $colony->setMaxBev($housing);
