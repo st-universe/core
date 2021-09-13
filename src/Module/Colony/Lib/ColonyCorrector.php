@@ -21,7 +21,7 @@ final class ColonyCorrector implements ColonyCorrectorInterface
         $this->entityManager = $entityManager;
     }
 
-    public function correct(): void
+    public function correct(bool $doDump = true): void
     {
         $database = $this->entityManager->getConnection();
 
@@ -66,13 +66,15 @@ final class ColonyCorrector implements ColonyCorrectorInterface
                 $eps !== $colony->getMaxEps() ||
                 $max_free < $colony->getWorkless()
             ) {
-                var_dump([
-                    ['worker' => $worker, 'actual' => $colony->getWorkers()],
-                    ['housing' => $housing, 'actual' => $colony->getMaxBev()],
-                    ['storage' => $storage, 'actual' => $colony->getMaxStorage()],
-                    ['eps' => $eps, 'actual' => $colony->getMaxEps()],
-                    ['max_free' => $max_free, 'actual' => $colony->getWorkless()],
-                ]);
+                if ($doDump) {
+                    var_dump([
+                        ['worker' => $worker, 'actual' => $colony->getWorkers()],
+                        ['housing' => $housing, 'actual' => $colony->getMaxBev()],
+                        ['storage' => $storage, 'actual' => $colony->getMaxStorage()],
+                        ['eps' => $eps, 'actual' => $colony->getMaxEps()],
+                        ['max_free' => $max_free, 'actual' => $colony->getWorkless()],
+                    ]);
+                }
 
                 $colony->setWorkers($worker);
                 $colony->setMaxBev($housing);
