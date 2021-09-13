@@ -59,8 +59,11 @@ final class EnterStarSystem implements ActionControllerInterface
         if (!$system) {
             return;
         }
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
-            $game->addInformation(_('Das Schiff hat keine Crew'));
+        if (!$ship->hasEnoughCrew()) {
+            $game->addInformationf(
+                _("Es werden %d Crewmitglieder benötigt"),
+                $ship->getBuildplan()->getCrew()
+            );
             return;
         }
 
@@ -113,8 +116,11 @@ final class EnterStarSystem implements ActionControllerInterface
                 }
             );
             foreach ($result as $fleetShip) {
-                if ($fleetShip->getBuildplan()->getCrew() > 0 && $fleetShip->getCrewCount() === 0) {
-                    $msg[] = "Die " . $fleetShip->getName() . " hat die Flotte verlassen. Grund: Keine Crew";
+                if (!$fleetShip->hasEnoughCrew()) {
+                    $msg[] = sprintf(
+                        _("Die %s hat die Flotte verlassen. Grund: Zu wenig Crew"),
+                        $fleetShip->getName()
+                    );
                     $fleetShip->leaveFleet();
                     continue;
                 }

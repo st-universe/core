@@ -64,7 +64,7 @@ final class BuildShipyardShip implements ActionControllerInterface
             return;
         }
 
-        if ($shipyard->getCrewCount() < $shipyard->getBuildplan()->getCrew()) {
+        if (!$shipyard->hasEnoughCrew()) {
             $game->addInformationf(_('Nicht genügend Crew vorhanden. (%d notwendig)'), $shipyard->getBuildplan()->getCrew());
             return;
         }

@@ -64,8 +64,8 @@ final class UnloadBattery implements ActionControllerInterface
     private function unloadBattery(ShipInterface $ship, int $load): string
     {
         // cancel conditions
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() === 0) {
-            return sprintf(_('%s: Das Schiff hat keine Crew'), $ship->getName());
+        if (!$ship->hasEnoughCrew()) {
+            return sprintf(_('%s: Das Schiff hat zu wenig Crew'), $ship->getName());
         }
         if (!$ship->getEBatt()) {
             return sprintf(_('%s: Die Ersatzbatterie ist leer'), $ship->getName());

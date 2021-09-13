@@ -43,7 +43,7 @@ final class EpsTransfer implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        if ($ship->getBuildplan()->getCrew() > 0 && $ship->getCrewCount() == 0) {
+        if (!$ship->hasEnoughCrew()) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
                 $ship->getBuildplan()->getCrew()
