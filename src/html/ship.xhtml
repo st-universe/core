@@ -406,6 +406,11 @@
 						onmouseover="cp('dock','buttons/dock1')" onmouseout="cp('dock','buttons/dock2')">
 						<img src="assets/buttons/dock2.png" title="Abdocken" name="dock" />
 					</a>
+					<a tal:condition="SHIP/getDockedTo/isOwnedByCurrentUser" href="?id=${SHIP/getDockedTo/getId}"
+						onmouseover="cp('dockedstation','buttons/pmnavlet_7_1.png')"
+						onmouseout="cp('dockedstation','buttons/pmnavlet_7_0.png')">
+						<img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation" />
+					</a>
 					<a tal:condition="SHIP/dockedOnTradepost" href="javascript:void(0);"
 						onclick="openTradeMenu(${SHIP/getDockedTo/getTradePostId});"
 						onmouseover="cp('trade','buttons/menu_trade1')" onmouseout="cp('trade','buttons/menu_trade0')">
