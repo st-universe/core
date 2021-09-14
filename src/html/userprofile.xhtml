@@ -79,7 +79,7 @@
 		<tal:block tal:condition="PROFILE/getDescription">
 			<div class="divhead" style="width: 530px;">Beschreibung</div>
 			<div class="divbody" style="width: 530px; word-wrap: break-word;"
-				tal:content="structure nl2br:bbcode2txt:PROFILE/getDescription">DESCRIPTION</div>
+				tal:content="structure nl2brBbCode:PROFILE/getDescription">DESCRIPTION</div>
 			<br />
 		</tal:block>
 		<div style="width: 530px;">
