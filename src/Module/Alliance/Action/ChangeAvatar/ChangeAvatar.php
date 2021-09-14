@@ -70,6 +70,11 @@ final class ChangeAvatar implements ActionControllerInterface
 
         $img = imagecreatefrompng($file['tmp_name']);
 
+        if (!$img) {
+            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            return;
+        }
+
         if (imagesx($img) > 600) {
             $game->addInformation(_('Das Bild darf maximal 600 Pixel breit sein'));
             return;
