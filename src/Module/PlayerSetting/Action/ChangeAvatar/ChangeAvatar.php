@@ -48,6 +48,12 @@ final class ChangeAvatar implements ActionControllerInterface
         }
         $imageName = md5($user->getId() . "_" . time());
         $img = imagecreatefrompng($file['tmp_name']);
+
+        if (!$img) {
+            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            return;
+        }
+
         $newImage = imagecreatetruecolor(150, 150);
         imagecopy($newImage, $img, 0, 0, 0, 0, 150, 150);
         imagepng(
