@@ -410,7 +410,8 @@
 						href="?SHOW_SHIP=1&id=${SHIP/getDockedTo/getId}"
 						onmouseover="cp('dockedstation','buttons/pmnavlet_7_1')"
 						onmouseout="cp('dockedstation','buttons/pmnavlet_7_0')">
-						<img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation" />
+						<img src="assets/buttons/pmnavlet_7_0.png" title="Zu Station wechseln" name="dockedstation"
+							style="height: 20px;" />
 					</a>
 					<a tal:condition="SHIP/dockedOnTradepost" href="javascript:void(0);"
 						onclick="openTradeMenu(${SHIP/getDockedTo/getTradePostId});"
