@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerSetting\Action\ChangeAvatar;
 
+use Exception;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -47,7 +48,13 @@ final class ChangeAvatar implements ActionControllerInterface
             @unlink($user->getFullAvatarPath());
         }
         $imageName = md5($user->getId() . "_" . time());
-        $img = imagecreatefrompng($file['tmp_name']);
+
+        try {
+            $img = imagecreatefrompng($file['tmp_name']);
+        } catch (Exception $e) {
+            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            return;
+        }
 
         if (!$img) {
             $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
