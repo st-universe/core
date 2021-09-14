@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\ChangeAvatar;
 
+use Exception;
 use Stu\Exception\AccessViolation;
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
@@ -68,7 +69,12 @@ final class ChangeAvatar implements ActionControllerInterface
         }
         $imageName = md5($alliance->getId() . "_" . time());
 
-        $img = imagecreatefrompng($file['tmp_name']);
+        try {
+            $img = imagecreatefrompng($file['tmp_name']);
+        } catch (Exception $e) {
+            $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
+            return;
+        }
 
         if (!$img) {
             $game->addInformation(_('Fehler: Das Bild konnte nicht als PNG geladen werden!'));
