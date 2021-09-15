@@ -17,6 +17,9 @@ final class PositionChecker implements PositionCheckerInterface
 
     public function checkColonyPosition(ColonyInterface $col, ShipInterface $ship): bool
     {
+        if ($ship->getSystem() === null) {
+            return false;
+        }
         if ($col->getSystemsId() != $ship->getSystem()->getId()) {
             return false;
         }
