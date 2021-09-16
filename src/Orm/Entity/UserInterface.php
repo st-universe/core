@@ -88,6 +88,10 @@ interface UserInterface
 
     public function setSaveLogin(bool $save_login): UserInterface;
 
+    public function getFleetFixedDefault(): bool;
+
+    public function setFleetFixedDefault(bool $fleetFixedDefault): UserInterface;
+
     public function getTick(): int;
 
     public function setTick(int $tick): UserInterface;
