@@ -223,10 +223,22 @@ final class ShipMover implements ShipMoverInterface
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
+
             $this->leaderMovedToNextField = false;
 
             $currentField = $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY());
             $nextField = $this->getNextField($leadShip, $flightMethod);
+
+            if ($this->isFleetMode() && $leadShip->getFleet()->isFleetFixed()) {
+                $reasons =  $this->reasonsNotAllShipsCanFly($ships);
+
+                if (!empty($reasons)) {
+                    $this->updateDestination($leadShip->getPosX(), $leadShip->getPosY());
+                    $this->addInformation(_('Der Weiterflug wurde aus folgenden Gründen abgebrochen:'));
+                    $this->addInformationMerge($reasons);
+                    break;
+                }
+            }
 
             // move every ship by one field
             foreach ($ships as $ship) {
@@ -616,6 +628,47 @@ final class ShipMover implements ShipMoverInterface
             case ShipEnum::DIRECTION_BOTTOM:
                 return $this->getFieldData($leadShip, $leadShip->getPosX(), $leadShip->getPosY() + 1);
         }
+    }
+
+    private function reasonsNotAllShipsCanFly(array $ships): array
+    {
+        $reasons = [];
+
+        foreach ($ships as $ship) {
+            // zu wenig Crew
+            if (!$ship->hasEnoughCrew()) {
+                $reasons[] = sprintf(
+                    _('Die %s hat ungenügend Crew'),
+                    $ship->getName()
+                );
+
+                continue;
+            }
+
+            $flight_ecost = $ship->getRump()->getFlightEcost();
+
+            //Traktorstrahl Kosten
+            if ($ship->isTraktorbeamActive() && $ship->getEps() < ($ship->getTraktorShip()->getRump()->getFlightEcost() + $flight_ecost)) {
+                $reasons[] = sprintf(
+                    _('Die %s hat nicht genug Energie für den Traktor-Flug (%d benötigt)'),
+                    $ship->getName(),
+                    $ship->getTraktorShip()->getRump()->getFlightEcost() + $flight_ecost
+                );
+
+                continue;
+            }
+
+            //zu wenig E zum weiterfliegen
+            if ($ship->getEps() < $flight_ecost) {
+                $reasons[] = sprintf(
+                    _('Die %s hat nicht genug Energie für den Flug (%d benötigt)'),
+                    $ship->getName(),
+                    $flight_ecost
+                );
+            }
+        }
+
+        return $reasons;
     }
 
     private function updateDestination(&$posx, &$posy)
