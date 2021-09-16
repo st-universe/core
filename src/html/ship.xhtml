@@ -845,8 +845,20 @@
 	<table class="tcal" tal:condition="php:SHIP.isFleetLeader() AND SHIP.getFleet().getShipCount() > 1">
 		<tr>
 			<th colspan="2">
-				<img src="assets/buttons/fleet.png" title="Flottenstatus" />
-				<span>Flottenstatus</span>
+				<div>
+					<div style="display: inline-block;width: 80%;">
+						<img src="assets/buttons/fleet.png" title="Flottenstatus" />
+						<span>Flottenstatus</span>
+					</div>
+					<div style="display: inline-block;" title="Schiffe gehen nicht verloren">
+						<span><input style="display: none;" type="submit" class="button" name="B_CHANGE_FLEET_FIXATION"
+								id="changefixationbutton" /><input type="checkbox" name="fleetfixed"
+								tal:attributes="checked SHIP/getFleet/isFleetFixed"
+								onchange="$('changefixationbutton').click();" />
+							fixiert
+							<img src="assets/buttons/info2.png" style="height:16px;" /></span>
+					</div>
+				</div>
 			</th>
 		</tr>
 		<tal:block tal:repeat="ship SHIP/getFleet/getShips">
