@@ -44,6 +44,9 @@ class Fleet implements FleetInterface
     /** @Column(type="integer", nullable=true) * */
     private $sort;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $is_fixed = false;
+
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -171,6 +174,17 @@ class Fleet implements FleetInterface
     {
         $this->sort = $sort;
 
+        return $this;
+    }
+
+    public function isFleetFixed(): bool
+    {
+        return $this->is_fixed;
+    }
+
+    public function setIsFleetFixed(bool $isFixed): FleetInterface
+    {
+        $this->is_fixed = $isFixed;
         return $this;
     }
 
