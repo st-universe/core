@@ -373,13 +373,6 @@ final class ShipMover implements ShipMoverInterface
                     continue;
                 }
             }
-            if ($ship->getEps() == 0) {
-                $this->addLostShip($ship, $leadShip, sprintf(
-                    _('Die %s hat nicht genug Energie für den Flug'),
-                    $ship->getName()
-                ));
-                continue;
-            }
             if (
                 $ship->getTraktorMode() == 1 && $ship->getTraktorShip()->getFleetId()
                 && $ship->getTraktorShip()->getFleet()->getShipCount() > 1
