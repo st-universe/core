@@ -95,6 +95,9 @@ class User implements UserInterface
     /** @Column(type="boolean") */
     private $save_login = true;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $fleet_fixed_default = false;
+
     /** @Column(type="smallint") */
     private $tick = 1;
 
@@ -369,6 +372,17 @@ class User implements UserInterface
     public function setSaveLogin(bool $save_login): UserInterface
     {
         $this->save_login = $save_login;
+        return $this;
+    }
+
+    public function getFleetFixedDefault(): bool
+    {
+        return $this->fleet_fixed_default;
+    }
+
+    public function setFleetFixedDefault(bool $fleetFixedDefault): UserInterface
+    {
+        $this->fleet_fixed_default = $fleetFixedDefault;
         return $this;
     }
 
