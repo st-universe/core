@@ -50,6 +50,11 @@ final class ChangeSettings implements ActionControllerInterface
                     $this->changeSettingsRequest->getShowOnlineState() === 1 ? true : false
                 );
             },
+            function (UserInterface $user): void {
+                $user->setFleetFixedDefault(
+                    $this->changeSettingsRequest->getFleetsFixedDefault() === 1 ? true : false
+                );
+            },
         ];
         foreach ($settings as $callable) {
             $callable($user);

@@ -11,4 +11,6 @@ interface ChangeSettingsRequestInterface
     public function getStorageNotification(): int;
 
     public function getShowOnlineState(): int;
+
+    public function getFleetsFixedDefault(): int;
 }
