@@ -95,7 +95,7 @@ class User implements UserInterface
     /** @Column(type="boolean") */
     private $save_login = true;
 
-    /** @Column(type="boolean", nullable=true) */
+    /** @Column(type="boolean") */
     private $fleet_fixed_default = false;
 
     /** @Column(type="smallint") */
