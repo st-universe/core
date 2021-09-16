@@ -281,7 +281,7 @@ final class ColonyTick implements ColonyTickInterface
             }
             if ($sum >= $colony->getMaxStorage()) {
                 if ($colony->getUser()->isStorageNotification()) {
-                    //TODO send pm and or email
+                    $this->msg[] = _('Das Lager der Kolonie ist voll');
                 }
                 break;
             }
@@ -291,6 +291,9 @@ final class ColonyTick implements ColonyTickInterface
                     $commodity,
                     $colony->getMaxStorage() - $sum
                 );
+                if ($colony->getUser()->isStorageNotification()) {
+                    $this->msg[] = _('Das Lager der Kolonie ist voll');
+                }
                 break;
             }
             if ($this->loggerUtil->doLog()) {
