@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Laminas\Mail\Message;
+use Laminas\Mail\Exception\RuntimeException;
+use Laminas\Mail\Transport\Sendmail;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -17,14 +22,18 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private ConfigInterface $config;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ConfigInterface $config
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->userRepository = $userRepository;
+        $this->config = $config;
     }
 
     public function send(
@@ -38,17 +47,23 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             return;
         }
         $folder = $this->privateMessageFolderRepository->getByUserAndSpecial((int)$recipientId, (int)$category);
+        $recipient = $this->userRepository->find($recipientId);
+        $sender = $this->userRepository->find($senderId);
 
         $pm = $this->privateMessageRepository->prototype();
         $pm->setDate(time());
         $pm->setCategory($folder);
         $pm->setText($text);
         $pm->setHref($href);
-        $pm->setRecipient($this->userRepository->find($recipientId));
-        $pm->setSender($this->userRepository->find($senderId));
+        $pm->setRecipient($recipient);
+        $pm->setSender($sender);
         $pm->setNew(true);
 
         $this->privateMessageRepository->save($pm);
+
+        if ($category === PrivateMessageFolderSpecialEnum::PM_SPECIAL_MAIN && $recipient->isEmailNotification()) {
+            $this->sendEmailNotification($sender->getUserName(), $text, $recipient);
+        }
 
         if ($senderId != GameEnum::USER_NOONE) {
 
@@ -65,6 +80,21 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $newobj->setHref(null);
 
             $this->privateMessageRepository->save($newobj);
+        }
+    }
+
+    private function sendEmailNotification(string $senderName, string $message, UserInterface $user): void
+    {
+        $mail = new Message();
+        $mail->addTo($user->getEmail());
+        $mail->setSubject(sprintf(_('Neue Privatnachricht von Spieler %s'), $senderName));
+        $mail->setFrom($this->config->get('game.email_sender_address'));
+        $mail->setBody($message);
+
+        try {
+            $transport = new Sendmail();
+            $transport->send($mail);
+        } catch (RuntimeException $e) {
         }
     }
 }
