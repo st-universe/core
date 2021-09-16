@@ -9,6 +9,8 @@ use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -24,16 +26,20 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private ConfigInterface $config;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         UserRepositoryInterface $userRepository,
-        ConfigInterface $config
+        ConfigInterface $config,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->userRepository = $userRepository;
         $this->config = $config;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function send(
@@ -95,6 +101,9 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $transport = new Sendmail();
             $transport->send($mail);
         } catch (RuntimeException $e) {
+            $this->loggerUtil->init("mail", LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log($e->getMessage());
+            return;
         }
     }
 }
