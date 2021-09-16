@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ChangeFleetFixation implements ActionControllerInterface
@@ -39,6 +40,8 @@ final class ChangeFleetFixation implements ActionControllerInterface
         if (!$ship->isFleetLeader()) {
             return;
         }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $fleet = $ship->getFleet();
         if (request::postString('fleetfixed')) {
