@@ -43,5 +43,9 @@ interface FleetInterface
 
     public function setSort(?int $sort): FleetInterface;
 
+    public function isFleetFixed(): bool;
+
+    public function setIsFleetFixed(bool $isFixed): FleetInterface;
+
     public function getCrewSum(): int;
 }
