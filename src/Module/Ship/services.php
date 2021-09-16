@@ -50,6 +50,7 @@ use Stu\Module\Ship\Action\BeamTo\BeamTo;
 use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
+use Stu\Module\Ship\Action\ChangeFleetFixation\ChangeFleetFixation;
 use Stu\Module\Ship\Action\ChangeName\ChangeName;
 use Stu\Module\Ship\Action\Colonize\Colonize;
 use Stu\Module\Ship\Action\ColonyBlocking\StartBlocking;
@@ -286,7 +287,8 @@ return [
         StartShuttle::ACTION_IDENTIFIER => autowire(StartShuttle::class),
         StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
         LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class),
-        BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class)
+        BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class),
+        ChangeFleetFixation::ACTION_IDENTIFIER => autowire(ChangeFleetFixation::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

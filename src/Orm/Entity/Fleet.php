@@ -44,7 +44,7 @@ class Fleet implements FleetInterface
     /** @Column(type="integer", nullable=true) * */
     private $sort;
 
-    /** @Column(type="boolean", nullable=true) */
+    /** @Column(type="boolean") */
     private $is_fixed = false;
 
     /**
