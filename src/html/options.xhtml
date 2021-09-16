@@ -48,7 +48,8 @@
                                         <td>Neues Passwort wiederholen</td>
                                         <td><input type="password" style="width: 150px;" name="pass2" class="text" />
                                                 <input type="submit" name="B_CHANGE_PASSWORD" value="ändern"
-                                                        class="button" /></td>
+                                                        class="button" />
+                                        </td>
                                 </tr>
                                 <tr>
                                         <td colspan="2">Das Passwort muss aus mindestens 6 Zeichen bestehen. Bitte gib
@@ -144,16 +145,17 @@
                 <br />
                 <form action="options.php" method="post">
                         <table class="tcal">
-                                <th colspan="4">Accounteinstellungen</th>
+                                <th colspan="2">Accounteinstellungen</th>
                                 <tr>
-                                        <!--
                                         <td>
-                                                <input type="checkbox" name="email_not" value="1" tal:attributes="checked THIS/getUser/isEmailNotification" />
+                                                <input type="checkbox" name="email_not" value="1"
+                                                        tal:attributes="checked THIS/getUser/isEmailNotification" />
                                         </td>
                                         <td>
                                                 Emailbenachrichtigung bei privaten Nachrichten
                                         </td>
-                                        -->
+                                </tr>
+                                <tr>
                                         <td>
                                                 <input type="checkbox" name="save_login" value="1"
                                                         tal:attributes="checked THIS/getUser/isSaveLogin" />
@@ -170,12 +172,24 @@
                                         <td>
                                                 Nachricht bei vollen Lagern zum Tick
                                         </td>
+                                </tr>
+                                <tr>
                                         <td>
                                                 <input type="checkbox" name="show_online" value="1"
                                                         tal:attributes="checked THIS/getUser/isShowOnlineState" />
                                         </td>
                                         <td>
                                                 Online Status öffentlich
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td>
+                                                <input type="checkbox" name="fleets_fixed" value="1"
+                                                        tal:attributes="checked THIS/getUser/getFleetFixedDefault" />
+                                        </td>
+                                        <td>
+                                                Flotten standardmäßig fixieren, sodass keine Schiffe beim Flug verloren
+                                                gehen können.
                                         </td>
                                 </tr>
                                 <tr>
