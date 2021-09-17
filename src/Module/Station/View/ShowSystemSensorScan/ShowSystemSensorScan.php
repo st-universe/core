@@ -45,7 +45,8 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true
         );
 
         $cx = request::getIntFatal('cx');
