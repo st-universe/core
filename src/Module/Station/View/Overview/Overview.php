@@ -27,6 +27,7 @@ final class Overview implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         $bases = $this->shipRepository->getByUserAndFleetAndBase($userId, null, true);
+        $uplinkBases = $this->shipRepository->getByUplink($userId);
 
         $game->appendNavigationPart(
             'station.php',
@@ -35,6 +36,6 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Stationen'));
         $game->setTemplateFile('html/stationlist.xhtml');
 
-        $game->setTemplateVar('BASES', $bases);
+        $game->setTemplateVar('BASES', array_merge($bases, $uplinkBases));
     }
 }

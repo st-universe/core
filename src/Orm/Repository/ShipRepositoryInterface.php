@@ -70,6 +70,11 @@ interface ShipRepositoryInterface extends ObjectRepository
     /**
      * @return ShipInterface[]
      */
+    public function getByUplink(int $userId): iterable;
+
+    /**
+     * @return ShipInterface[]
+     */
     public function getWithTradeLicensePayment(
         int $userId,
         int $tradePostShipId,

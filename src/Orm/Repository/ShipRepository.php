@@ -10,6 +10,7 @@ use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
@@ -184,6 +185,26 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ],
             $isBase ? ['max_huelle' => 'desc', 'id' => 'asc'] : ['id' => 'asc']
         );
+    }
+
+    public function getByUplink(int $userId): iterable
+    {
+        //TODO and uplink system has to be on
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                JOIN %s sc
+                WITH s.id = sc.ships_id
+                JOIN %s c
+                WITH sc.crew_id = c.id
+                WHERE s.user_id != :userId
+                AND c.user_id = :userId',
+                Ship::class,
+                ShipCrew::class,
+                Crew::class
+            )
+        )->setParameter('userId', $userId)
+            ->getResult();
     }
 
     public function getWithTradeLicensePayment(
