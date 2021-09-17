@@ -16,7 +16,7 @@ final class DeactivateTachyon implements ActionControllerInterface
     public const ACTION_IDENTIFIER = 'B_DEACTIVATE_TACHYON';
 
     private ActivatorDeactivatorHelperInterface $helper;
-    
+
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper
     ) {
@@ -27,7 +27,7 @@ final class DeactivateTachyon implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER, $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER, $game, true);
     }
 
     public function performSessionCheck(): bool

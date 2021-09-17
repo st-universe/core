@@ -27,7 +27,7 @@ final class DeactivateSubspace implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER, $game);
+        $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_SUBSPACE_SCANNER, $game, true);
     }
 
     public function performSessionCheck(): bool
