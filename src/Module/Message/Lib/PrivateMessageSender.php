@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use JBBCode\Parser;
 use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Transport\Sendmail;
@@ -28,18 +29,22 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private Parser $bbcodeParser;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         UserRepositoryInterface $userRepository,
         ConfigInterface $config,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        Parser $bbcodeParser
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->loggerUtil = $loggerUtil;
+        $this->bbcodeParser = $bbcodeParser;
     }
 
     public function send(
@@ -93,7 +98,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
     {
         $mail = new Message();
         $mail->addTo($user->getEmail());
-        $mail->setSubject(sprintf(_('Neue Privatnachricht von Spieler %s'), $senderName));
+        $senderNameAsText = $this->bbcodeParser->parse($senderName)->getAsText();
+        $mail->setSubject(sprintf(_('Neue Privatnachricht von Spieler %s'), $senderNameAsText));
         $mail->setFrom($this->config->get('game.email_sender_address'));
         $mail->setBody($message);
 
