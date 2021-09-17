@@ -415,6 +415,8 @@ interface ShipInterface
 
     public function hasNbsLss(): bool;
 
+    public function hasUplink(): bool;
+
     public function getMaxTorpedos(): int;
 
     public function getDockedShips(): Collection;

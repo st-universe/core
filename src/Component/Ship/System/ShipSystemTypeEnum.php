@@ -30,6 +30,7 @@ final class ShipSystemTypeEnum
     public const SYSTEM_SHUTTLE_RAMP = 21;
     public const SYSTEM_BEAM_BLOCKER = 22;
     public const SYSTEM_CONSTRUCTION_HUB = 23;
+    public const SYSTEM_UPLINK = 24;
 
     // system priorites
     public const SYSTEM_PRIORITY_STANDARD = 1;
@@ -96,6 +97,8 @@ final class ShipSystemTypeEnum
                 return _('Beamblocker');
             case ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB:
                 return _('Werfthub');
+            case ShipSystemTypeEnum::SYSTEM_UPLINK:
+                return _('Uplink');
         }
         return '';
     }

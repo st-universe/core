@@ -191,6 +191,10 @@ final class ShipCreator implements ShipCreatorInterface
             $systems[ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB] = 0;
         }
 
+        if ($ship->getRump()->getRoleId() === ShipRumpEnum::SHIP_ROLE_SENSOR) {
+            $systems[ShipSystemTypeEnum::SYSTEM_UPLINK] = 0;
+        }
+
         foreach ($modules as $module) {
             switch ($module->getModule()->getType()) {
                 case ShipModuleTypeEnum::MODULE_TYPE_SHIELDS:
