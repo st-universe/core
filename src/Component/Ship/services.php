@@ -34,6 +34,7 @@ use Stu\Component\Ship\System\Type\MatrixScannerShipSystem;
 use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
+use Stu\Component\Ship\System\Type\UplinkShipSystem;
 
 use function DI\autowire;
 use function DI\create;
@@ -65,7 +66,8 @@ return [
             ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE => autowire(TorpedoStorageShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_SHUTTLE_RAMP => autowire(ShuttleRampShipSystem::class),
             ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER => autowire(BeamBlockerShipSystem::class),
-            ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB => autowire(ConstructionHubShipSystem::class)
+            ShipSystemTypeEnum::SYSTEM_CONSTRUCTION_HUB => autowire(ConstructionHubShipSystem::class),
+            ShipSystemTypeEnum::SYSTEM_UPLINK => autowire(UplinkShipSystem::class)
         ]
     )
 ];
