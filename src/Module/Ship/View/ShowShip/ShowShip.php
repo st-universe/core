@@ -105,7 +105,8 @@ final class ShowShip implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true
         );
 
         if ($this->loggerUtil->doLog()) {

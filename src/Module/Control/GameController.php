@@ -33,6 +33,7 @@ use Stu\Orm\Repository\ResearchedRepositoryInterface;
 use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Exception\StuException;
+use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Ubench;
@@ -530,6 +531,9 @@ final class GameController implements GameControllerInterface
             $this->setTemplateFile('html/ship.xhtml');
         } catch (ShipIsDestroyedException $e) {
             $this->addInformation('Dieses Schiff wurde zerstört!');
+            $this->setTemplateFile('html/ship.xhtml');
+        } catch (UnallowedUplinkOperation $e) {
+            $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
             $this->setTemplateFile('html/ship.xhtml');
         } catch (StuException $e) {
             throw $e;
