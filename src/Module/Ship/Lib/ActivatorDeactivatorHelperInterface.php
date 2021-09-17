@@ -22,7 +22,8 @@ interface ActivatorDeactivatorHelperInterface
     public function deactivate(
         int $shipId,
         int $systemId,
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        bool $allowUplink = false
     ): void;
 
     public function deactivateFleet(
