@@ -27,7 +27,7 @@ final class ActivateTachyon implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER, $game);
+        $this->helper->activate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER, $game, true);
     }
 
     public function performSessionCheck(): bool

@@ -44,13 +44,15 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
     public function activate(
         int $shipId,
         int $systemId,
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        bool $allowUplink = false
     ): bool {
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
             $shipId,
-            $userId
+            $userId,
+            $allowUplink
         );
 
         if ($this->activateIntern($ship, $systemId, $game)) {
