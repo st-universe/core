@@ -41,4 +41,19 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
 
         return $count;
     }
+
+    public function foreignerCount(ShipInterface $ship): int
+    {
+        $count = 0;
+
+        $user = $ship->getUser();
+
+        foreach ($ship->getCrewlist() as $shipCrew) {
+            if ($shipCrew->getCrew()->getUser() !== $user) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
 }
