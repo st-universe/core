@@ -29,4 +29,6 @@ interface ShipCrewInterface
     public function getShip(): ShipInterface;
 
     public function setShip(ShipInterface $ship): ShipCrewInterface;
+
+    public function isForeigner(): bool;
 }
