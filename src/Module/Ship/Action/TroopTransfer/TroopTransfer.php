@@ -18,6 +18,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -55,6 +57,8 @@ final class TroopTransfer implements ActionControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -66,7 +70,8 @@ final class TroopTransfer implements ActionControllerInterface
         ShipSystemManagerInterface $shipSystemManager,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         EntityManagerInterface $entityManager,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -79,6 +84,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtil;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -302,6 +308,7 @@ final class TroopTransfer implements ActionControllerInterface
 
             if ($isUplinkSituation) {
                 $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_ON);
+                $this->sendUplinkMessage(true, true, $ship, $target);
             }
         }
 
@@ -349,9 +356,15 @@ final class TroopTransfer implements ActionControllerInterface
             }
         }
 
-        //no foreigners left, shut down uplink
-        if ($this->transferUtility->foreignerCount($target) === 0) {
-            $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_OFF);
+        if ($amount > 0 && $isUplinkSituation) {
+
+            //no foreigners left, shut down uplink
+            if ($this->transferUtility->foreignerCount($target) === 0) {
+                $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_OFF);
+                $this->sendUplinkMessage(false, false, $ship, $target);
+            } else {
+                $this->sendUplinkMessage(false, true, $ship, $target);
+            }
         }
 
         // no crew left
@@ -369,6 +382,28 @@ final class TroopTransfer implements ActionControllerInterface
         }
 
         return $amount;
+    }
+
+    private function sendUplinkMessage(bool $isUnload, bool $isOn, ShipInterface $ship, ShipInterface $target): void
+    {
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+
+        $msg = sprintf(
+            _('Die %s von Spieler %s hat 1 Crewman %s deiner Station %s gebeamt. Der Uplink ist %s'),
+            $ship->getName(),
+            $ship->getUser()->getUserName(),
+            $isUnload ? 'zu' : 'von',
+            $target->getName(),
+            $isOn ? 'aktiviert' : 'deaktiviert'
+        );
+
+        $this->privateMessageSender->send(
+            $ship->getUser()->getId(),
+            $target->getUser()->getId(),
+            $msg,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            $href
+        );
     }
 
     public function performSessionCheck(): bool
