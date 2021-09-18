@@ -12,6 +12,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Repository\ShipCrewRepositoryInterface;
 
 final class DumpForeignCrewman implements ActionControllerInterface
 {
@@ -19,16 +20,20 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private ShipCrewRepositoryInterface $shipCrewRepository;
+
     private ShipLeaverInterface $shipLeaver;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipCrewRepositoryInterface $shipCrewRepository,
         ShipLeaverInterface $shipLeaver,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipCrewRepository = $shipCrewRepository;
         $this->shipLeaver = $shipLeaver;
         $this->privateMessageSender = $privateMessageSender;
     }
@@ -46,9 +51,13 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
         $shipCrewId = request::getIntFatal('scid');
 
-        $shipCrew = $ship->getCrewlist()->get($shipCrewId);
+        $shipCrew = $this->shipCrewRepository->find($shipCrewId);
 
         if ($shipCrew === null) {
+            return;
+        }
+
+        if ($shipCrew->getShip() !== $ship) {
             return;
         }
 
