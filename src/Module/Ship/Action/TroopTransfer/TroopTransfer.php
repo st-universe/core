@@ -164,7 +164,7 @@ final class TroopTransfer implements ActionControllerInterface
                     if ($target->hasUplink()) {
                         $this->loggerUtil->log('C');
                         $isUplinkSituation = true;
-                        $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $ship);
+                        $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $target);
                     } else {
                         return;
                     }
