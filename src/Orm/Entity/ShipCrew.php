@@ -127,4 +127,9 @@ class ShipCrew implements ShipCrewInterface
         $this->ship = $ship;
         return $this;
     }
+
+    public function isForeigner(): bool
+    {
+        return $this->getShip()->getUser() !== $this->getCrew()->getUser();
+    }
 }
