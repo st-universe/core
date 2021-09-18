@@ -1026,7 +1026,7 @@
           <a tal:condition="php:SHIP.getUser().getId() NOT EQ data.getCrew().getUser().getId()"
             href="?B_DUMP_CREWMAN=1&scid=${data/getId}" onmouseover="cp('dump_${data/getId}','buttons/x2')"
             onmouseout="cp('dump_${data/getId}','buttons/x1')">
-            <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen">
+            <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen" />
           </a>
         </td>
         <td>
