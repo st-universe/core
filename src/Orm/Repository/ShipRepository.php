@@ -503,6 +503,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
         $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
+        $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
         $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
         $rsm->addScalarResult('isbase', 'isbase', 'boolean');
         $rsm->addScalarResult('shipname', 'shipname', 'string');
@@ -518,7 +519,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT f.id as fleetid, f.name as fleetname, f.defended_colony_id is not null as isdefending,
                     f.blocked_colony_id is not null as isblocking, s.id as shipid, s.rumps_id as rumpid,
-                    ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, s.is_destroyed as isdestroyed,
+                    ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate, ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed,
                     s.is_base as isbase, s.name as shipname, s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield,
                     u.id as userid, u.username, r.category_id as rumpcategoryid, r.name as rumpname
                 FROM stu_ships s
@@ -531,6 +532,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_ships_systems ss3
                 ON s.id = ss3.ships_id
                 AND ss3.system_type = :shieldType
+                LEFT JOIN stu_ships_systems ss4
+                ON s.id = ss4.ships_id
+                AND ss4.system_type = :uplinkType
                 JOIN stu_rumps r
                 ON s.rumps_id = r.id
                 JOIN stu_fleets f
@@ -551,6 +555,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
         ])->getResult();
     }
 
@@ -570,6 +575,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('warpstate', 'warpstate', 'integer');
         $rsm->addScalarResult('cloakstate', 'cloakstate', 'integer');
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'integer');
+        $rsm->addScalarResult('uplinkstate', 'uplinkstate', 'integer');
         $rsm->addScalarResult('isdestroyed', 'isdestroyed', 'boolean');
         $rsm->addScalarResult('isbase', 'isbase', 'boolean');
         $rsm->addScalarResult('shipname', 'shipname', 'string');
@@ -584,7 +590,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createNativeQuery(
             sprintf(
                 'SELECT s.id as shipid, s.rumps_id as rumpid , ss.mode as warpstate, COALESCE(ss2.mode,0) as cloakstate,
-                    ss3.mode as shieldstate, s.is_destroyed as isdestroyed, s.is_base as isbase, s.name as shipname,
+                    ss3.mode as shieldstate, COALESCE(ss4.status,0) as uplinkstate, s.is_destroyed as isdestroyed, s.is_base as isbase, s.name as shipname,
                     s.huelle as hull, s.max_huelle as maxhull, s.schilde as shield, u.id as userid, u.username,
                     r.category_id as rumpcategoryid, r.name as rumpname
                 FROM stu_ships s
@@ -597,6 +603,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_ships_systems ss3
                 ON s.id = ss3.ships_id
                 AND ss3.system_type = :shieldType
+                LEFT JOIN stu_ships_systems ss4
+                ON s.id = ss4.ships_id
+                AND ss4.system_type = :uplinkType
                 JOIN stu_rumps r
                 ON s.rumps_id = r.id
                 JOIN stu_user u
@@ -617,6 +626,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'cloakType' => ShipSystemTypeEnum::SYSTEM_CLOAK,
             'warpdriveType' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
+            'uplinkType' => ShipSystemTypeEnum::SYSTEM_UPLINK
         ])->getResult();
     }
 
