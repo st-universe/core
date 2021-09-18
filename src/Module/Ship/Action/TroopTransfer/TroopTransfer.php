@@ -171,11 +171,15 @@ final class TroopTransfer implements ActionControllerInterface
                 }
 
                 if ($isUnload) {
+                    $this->loggerUtil->log('D');
                     if ($isUplinkSituation) {
+                        $this->loggerUtil->log('E');
                         if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $user)) {
                             $game->addInformation(_("Benötigte Andockerlaubnis wurde verweigert"));
                         }
+                        $this->loggerUtil->log('F');
                         if (!$target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_UPLINK)) {
+                            $this->loggerUtil->log('G');
                             $game->addInformation(_("Das Ziel verfügt über keinen intakten Uplink"));
                         }
                         return;
