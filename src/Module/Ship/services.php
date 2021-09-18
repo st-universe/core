@@ -77,6 +77,7 @@ use Stu\Module\Ship\Action\DeleteFleet\DeleteFleetRequestInterface;
 use Stu\Module\Ship\Action\DisplayNotOwner\DisplayNotOwner;
 use Stu\Module\Ship\Action\DockShip\DockShip;
 use Stu\Module\Ship\Action\DoTachyonScan\DoTachyonScan;
+use Stu\Module\Ship\Action\DumpForeignCrewman\DumpForeignCrewman;
 use Stu\Module\Ship\Action\EnterStarSystem\EnterStarSystem;
 use Stu\Module\Ship\Action\EpsTransfer\EpsTransfer;
 use Stu\Module\Ship\Action\EscapeTractorBeam\EscapeTractorBeam;
@@ -291,7 +292,8 @@ return [
         StoreShuttle::ACTION_IDENTIFIER => autowire(StoreShuttle::class),
         LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class),
         BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class),
-        ChangeFleetFixation::ACTION_IDENTIFIER => autowire(ChangeFleetFixation::class)
+        ChangeFleetFixation::ACTION_IDENTIFIER => autowire(ChangeFleetFixation::class),
+        DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

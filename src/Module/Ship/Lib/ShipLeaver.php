@@ -8,6 +8,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -106,6 +107,29 @@ final class ShipLeaver implements ShipLeaverInterface
         }
 
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
+    }
+
+    public function dumpCrewman(ShipCrewInterface $shipCrew): string
+    {
+        $ship = $shipCrew->getShip();
+
+        //create pods entity
+        $pods = $this->launchEscapePods($ship);
+
+        if ($pods == null) {
+            $crew = $shipCrew->getCrew();
+            $this->shipCrewRepository->delete($shipCrew);
+            $this->crewRepository->delete($crew);
+
+            return _('Der Crewman wurde exekutiert!');
+        }
+
+        //transfer crewman into pods
+        $shipCrew->setShip($pods);
+        $ship->getCrewlist()->removeElement($shipCrew);
+        $this->shipCrewRepository->save($shipCrew);
+
+        return _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
     }
 
     private function letCrewDie(ShipInterface $ship): void

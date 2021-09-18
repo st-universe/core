@@ -212,7 +212,7 @@ class Ship implements ShipInterface
     private $user;
 
     /**
-     * @OneToMany(targetEntity="ShipCrew", mappedBy="ship")
+     * @OneToMany(targetEntity="ShipCrew", mappedBy="ship", indexBy="id")
      * @OrderBy({"id" = "ASC"})
      */
     private $crew;
