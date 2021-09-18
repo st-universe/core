@@ -23,7 +23,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
     private ColonyRepositoryInterface $colonyRepository;
 
     private ShipRepositoryInterface $shipRepository;
-    
+
     private TroopTransferUtilityInterface $transferUtility;
 
     public function __construct(
@@ -47,47 +47,55 @@ final class ShowTroopTransfer implements ViewControllerInterface
             $user->getId()
         );
 
-        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS))
-        {
+        if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)) {
             return;
         }
 
         $isColony = request::has('isColony');
         $isUnload = request::has('isUnload');
 
-        if ($isColony)
-        {
+        if ($isColony) {
             $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
-            
-            if ($isUnload)
-            {
+
+            if ($isUnload) {
                 $game->setPageTitle(_('Truppen zur Kolonie beamen'));
                 $max = $this->transferUtility->getBeamableTroopCount($ship);
-            }
-            else {
-                $max = min($ship->getUser()->getFreeCrewCount(),
-                            $this->transferUtility->getFreeQuarters($ship));
+            } else {
+                $max = min(
+                    $ship->getUser()->getFreeCrewCount(),
+                    $this->transferUtility->getFreeQuarters($ship)
+                );
                 $game->setPageTitle(_('Truppen von Kolonie beamen'));
             }
-            
-        }
-        else
-        {
+        } else {
             $target = $this->shipRepository->find((int)request::getIntFatal('target'));
 
-            if ($isUnload)
-            {
-                $max = min($this->transferUtility->getBeamableTroopCount($ship),
-                            $this->transferUtility->getFreeQuarters($target));
+            $isUplinkSituation = false;
+
+            if ($target->getUser() !== $user) {
+                if ($target->hasUplink()) {
+                    $isUplinkSituation = true;
+                    $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $ship);
+                } else {
+                    return;
+                }
+            }
+
+            if ($isUnload) {
+                $max = min(
+                    $this->transferUtility->getBeamableTroopCount($ship),
+                    $this->transferUtility->getFreeQuarters($target),
+                    $isUplinkSituation ? ($ownForeignerCount === 0 ? 1 : 0) : PHP_INT_MAX
+                );
                 $game->setPageTitle(_('Truppen zu Schiff beamen'));
-            }
-            else {
-                $max = min($target->getCrewCount(),
-                            $this->transferUtility->getFreeQuarters($ship));
+            } else {
+                $max = min(
+                    $target->getCrewCount(),
+                    $this->transferUtility->getFreeQuarters($ship),
+                    $isUplinkSituation ? $ownForeignerCount : PHP_INT_MAX
+                );
                 $game->setPageTitle(_('Truppen von Schiff beamen'));
-
             }
-
         }
 
         $game->setTemplateFile('html/ajaxwindow.xhtml');
@@ -97,8 +105,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
             return;
         }
 
-        if ($target->getUser() !== $ship->getUser())
-        {
+        if ($target->getUser() !== $ship->getUser()) {
             return;
         }
 

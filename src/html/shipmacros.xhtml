@@ -340,7 +340,7 @@
             </a>
           </div>
           <div style="float:left; margin-right:4px;"
-            tal:condition="php:ship.isOwnedByCurrentUser() AND SHIP.isTroopQuartersHealthy()">
+            tal:condition="php:(ship.isOwnedByCurrentUser() OR ship.hasUplink()) AND SHIP.isTroopQuartersHealthy()">
             <a href="javascript:void(0);" onclick="showBTroopTransferWindow(${ship/getId}, false, true);">
               <img src="assets/buttons/bt_down1.png" title="Truppen zur ${nameWithoutMarkup} beamen" />
             </a>

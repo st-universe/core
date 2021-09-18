@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\DockShip;
 
 use request;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
@@ -16,10 +15,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Entity\UserInterface;
-use Stu\Orm\Repository\DockingPrivilegeRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 
 final class DockShip implements ActionControllerInterface
 {
@@ -27,7 +25,7 @@ final class DockShip implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository;
+    private DockPrivilegeUtilityInterface $dockPrivilegeUtility;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
@@ -39,14 +37,14 @@ final class DockShip implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        DockingPrivilegeRepositoryInterface $dockingPrivilegeRepository,
+        DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
-        $this->dockingPrivilegeRepository = $dockingPrivilegeRepository;
+        $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
@@ -85,7 +83,7 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
-        if (!$this->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
+        if (!$this->dockPrivilegeUtility->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
 
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
@@ -107,7 +105,6 @@ final class DockShip implements ActionControllerInterface
         }
         if ($ship->isFleetLeader()) {
             $this->fleetDock($ship, $target, $game);
-            //TODO PM raus schicken!
             return;
         }
 
@@ -185,45 +182,13 @@ final class DockShip implements ActionControllerInterface
 
             $freeSlots--;
         }
+        $this->privateMessageSender->send(
+            $game->getUser()->getId(),
+            $target->getUser()->getId(),
+            'Die Flotte ' . $ship->getFleet()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+        );
         $game->addInformationMerge($msg);
-    }
-
-    private function checkPrivilegeFor(int $shipId, UserInterface $user): bool
-    {
-        $privileges = $this->dockingPrivilegeRepository->getByShip($shipId);
-        if ($privileges === []) {
-            return false;
-        }
-        $allowed = false;
-        foreach ($privileges as $key => $priv) {
-            switch ($priv->getPrivilegeType()) {
-                case ShipEnum::DOCK_PRIVILEGE_USER:
-                    if ($priv->getTargetId() == $user->getId()) {
-                        if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
-                            return false;
-                        }
-                        $allowed = true;
-                    }
-                    break;
-                case ShipEnum::DOCK_PRIVILEGE_ALLIANCE:
-                    if ($priv->getTargetId() == $user->getAllianceId()) {
-                        if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
-                            return false;
-                        }
-                        $allowed = true;
-                    }
-                    break;
-                case ShipEnum::DOCK_PRIVILEGE_FACTION:
-                    if ($priv->getTargetId() == $user->getFactionId()) {
-                        if ($priv->getPrivilegeMode() == ShipEnum::DOCK_PRIVILEGE_MODE_DENY) {
-                            return false;
-                        }
-                        $allowed = true;
-                    }
-                    break;
-            }
-        }
-        return $allowed;
     }
 
     public function performSessionCheck(): bool

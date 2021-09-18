@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\UserInterface;
 
 final class TroopTransferUtility implements TroopTransferUtilityInterface
 {
@@ -26,5 +27,18 @@ final class TroopTransferUtility implements TroopTransferUtilityInterface
         $max = $ship->getCrewCount() - $ship->getBuildplan()->getCrew();
 
         return max(0, $max);
+    }
+
+    public function ownForeignerCount(UserInterface $user, ShipInterface $ship): int
+    {
+        $count = 0;
+
+        foreach ($ship->getCrewlist() as $shipCrew) {
+            if ($shipCrew->getCrew()->getUser() === $user) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }
