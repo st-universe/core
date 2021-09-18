@@ -16,6 +16,8 @@ use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -51,6 +53,8 @@ final class TroopTransfer implements ActionControllerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
@@ -61,7 +65,8 @@ final class TroopTransfer implements ActionControllerInterface
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -73,10 +78,13 @@ final class TroopTransfer implements ActionControllerInterface
         $this->shipSystemManager = $shipSystemManager;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->entityManager = $entityManager;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $user = $game->getUser();
@@ -148,10 +156,13 @@ final class TroopTransfer implements ActionControllerInterface
                 }
             } else {
 
+                $this->loggerUtil->log('A');
                 $isUplinkSituation = false;
 
                 if ($target->getUser() !== $user) {
+                    $this->loggerUtil->log('B');
                     if ($target->hasUplink()) {
+                        $this->loggerUtil->log('C');
                         $isUplinkSituation = true;
                         $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $ship);
                     } else {
@@ -251,6 +262,8 @@ final class TroopTransfer implements ActionControllerInterface
 
             throw new SystemNotFoundException();
         }
+
+        $this->loggerUtil->log(sprintf('ownForeignerCount: %d', $ownForeignerCount));
 
         $amount = min(
             $requestedTransferCount,
