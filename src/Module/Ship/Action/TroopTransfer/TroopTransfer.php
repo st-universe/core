@@ -17,6 +17,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -46,6 +47,8 @@ final class TroopTransfer implements ActionControllerInterface
 
     private ShipSystemManagerInterface $shipSystemManager;
 
+    private DockPrivilegeUtilityInterface $dockPrivilegeUtility;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -57,6 +60,7 @@ final class TroopTransfer implements ActionControllerInterface
         CrewRepositoryInterface $crewRepository,
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
+        DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
@@ -67,6 +71,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->crewRepository = $crewRepository;
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
+        $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->entityManager = $entityManager;
     }
 
@@ -74,7 +79,8 @@ final class TroopTransfer implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $userId = $game->getUser()->getId();
+        $user = $game->getUser();
+        $userId = $user->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -141,10 +147,27 @@ final class TroopTransfer implements ActionControllerInterface
                     $amount = $this->transferFromColony($requestedTransferCount, $ship, $game);
                 }
             } else {
+
+                $isUplinkSituation = false;
+
+                if ($target->getUser() !== $user) {
+                    if ($target->hasUplink()) {
+                        $isUplinkSituation = true;
+                        $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $ship);
+                    } else {
+                        return;
+                    }
+                }
+
                 if ($isUnload) {
-                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $game);
+                    if ($isUplinkSituation && !$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $user)) {
+                        $game->addInformation(_("Benötigte Andockerlaubnis wurde verweigert"));
+                        return;
+                    }
+
+                    $amount = $this->transferToShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownForeignerCount, $game);
                 } else {
-                    $amount = $this->transferFromShip($requestedTransferCount, $ship, $target, $game);
+                    $amount = $this->transferFromShip($requestedTransferCount, $ship, $target, $isUplinkSituation, $ownForeignerCount, $game);
                 }
             }
         } catch (ShipSystemException $e) {
@@ -215,8 +238,14 @@ final class TroopTransfer implements ActionControllerInterface
         return $amount;
     }
 
-    private function transferToShip(int $requestedTransferCount, ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): int
-    {
+    private function transferToShip(
+        int $requestedTransferCount,
+        ShipInterface $ship,
+        ShipInterface $target,
+        bool $isUplinkSituation,
+        int $ownForeignerCount,
+        GameControllerInterface $game
+    ): int {
         if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
             $game->addInformation(sprintf(_('Die %s hat keine Lebenserhaltungssysteme'), $target->getName()));
 
@@ -226,7 +255,8 @@ final class TroopTransfer implements ActionControllerInterface
         $amount = min(
             $requestedTransferCount,
             $this->transferUtility->getBeamableTroopCount($ship),
-            $this->transferUtility->getFreeQuarters($target)
+            $this->transferUtility->getFreeQuarters($target),
+            $isUplinkSituation ? ($ownForeignerCount === 0 ? 1 : 0) : PHP_INT_MAX
         );
 
         $array = $ship->getCrewlist()->getValues();
@@ -249,12 +279,19 @@ final class TroopTransfer implements ActionControllerInterface
         return $amount;
     }
 
-    private function transferFromShip(int $requestedTransferCount, ShipInterface $ship, ShipInterface $target, GameControllerInterface $game): int
-    {
+    private function transferFromShip(
+        int $requestedTransferCount,
+        ShipInterface $ship,
+        ShipInterface $target,
+        bool $isUplinkSituation,
+        int $ownForeignerCount,
+        GameControllerInterface $game
+    ): int {
         $amount = min(
             $requestedTransferCount,
             $target->getCrewCount(),
-            $this->transferUtility->getFreeQuarters($ship)
+            $this->transferUtility->getFreeQuarters($ship),
+            $isUplinkSituation ? $ownForeignerCount : PHP_INT_MAX
         );
 
         if ($amount > 0 && $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)->getMode() == ShipSystemModeEnum::MODE_OFF) {
