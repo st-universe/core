@@ -316,12 +316,21 @@ final class TroopTransfer implements ActionControllerInterface
         $array = $target->getCrewlist()->getValues();
         $targetCrewCount = $target->getCrewCount();
 
-        for ($i = 0; $i < $amount; $i++) {
-            $sc = $array[$i];
-            $sc->setShip($ship);
-            $this->shipCrewRepository->save($sc);
+        $i = 0;
+        foreach ($array as $shipCrew) {
+            if ($isUplinkSituation && $shipCrew->getCrew()->getUser() !== $ship->getUser()) {
+                continue;
+            }
 
-            $ship->getCrewlist()->add($sc);
+            $shipCrew->setShip($ship);
+            $this->shipCrewRepository->save($shipCrew);
+
+            $ship->getCrewlist()->add($shipCrew);
+            $i++;
+
+            if ($i === $amount) {
+                break;
+            }
         }
 
         // no crew left
