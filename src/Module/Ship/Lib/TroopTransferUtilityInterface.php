@@ -12,4 +12,6 @@ interface TroopTransferUtilityInterface
     public function getBeamableTroopCount(ShipInterface $ship): int;
 
     public function ownForeignerCount(UserInterface $user, ShipInterface $ship): int;
+
+    public function foreignerCount(ShipInterface $ship): int;
 }

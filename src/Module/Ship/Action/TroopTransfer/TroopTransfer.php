@@ -171,8 +171,13 @@ final class TroopTransfer implements ActionControllerInterface
                 }
 
                 if ($isUnload) {
-                    if ($isUplinkSituation && !$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $user)) {
-                        $game->addInformation(_("Benötigte Andockerlaubnis wurde verweigert"));
+                    if ($isUplinkSituation) {
+                        if (!$this->dockPrivilegeUtility->checkPrivilegeFor($target->getId(), $user)) {
+                            $game->addInformation(_("Benötigte Andockerlaubnis wurde verweigert"));
+                        }
+                        if (!$target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_UPLINK)) {
+                            $game->addInformation(_("Das Ziel verfügt über keinen intakten Uplink"));
+                        }
                         return;
                     }
 
@@ -282,11 +287,17 @@ final class TroopTransfer implements ActionControllerInterface
             $ship->getCrewlist()->removeElement($sc);
         }
 
-        if (
-            $amount > 0 && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
-            && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
-        ) {
-            $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+        if ($amount > 0) {
+            if (
+                $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
+                && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+            ) {
+                $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+            }
+
+            if ($isUplinkSituation) {
+                $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_ON);
+            }
         }
 
         return $amount;
@@ -331,6 +342,11 @@ final class TroopTransfer implements ActionControllerInterface
             if ($i === $amount) {
                 break;
             }
+        }
+
+        //no foreigners left, shut down uplink
+        if ($this->transferUtility->foreignerCount($target) === 0) {
+            $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_UPLINK)->setMode(ShipSystemModeEnum::MODE_OFF);
         }
 
         // no crew left
