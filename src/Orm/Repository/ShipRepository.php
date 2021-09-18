@@ -189,7 +189,6 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getByUplink(int $userId): iterable
     {
-        //TODO and uplink system has to be on
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
@@ -197,13 +196,22 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WITH s.id = sc.ships_id
                 JOIN %s c
                 WITH sc.crew_id = c.id
+                JOIN %s ss
+                WITH ss.ships_id = s.id
                 WHERE s.user_id != :userId
-                AND c.user_id = :userId',
+                AND c.user_id = :userId
+                AND ss.system_type = :systemType
+                AND ss.mode >= :mode',
                 Ship::class,
                 ShipCrew::class,
-                Crew::class
+                Crew::class,
+                ShipSystem::class
             )
-        )->setParameter('userId', $userId)
+        )->setParameters([
+            'userId' => $userId,
+            'systemType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
+            'mode' => ShipSystemModeEnum::MODE_ON
+        ])
             ->getResult();
     }
 
