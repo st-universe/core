@@ -76,7 +76,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
             if ($target->getUser() !== $user) {
                 if ($target->hasUplink()) {
                     $isUplinkSituation = true;
-                    $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $ship);
+                    $ownForeignerCount = $this->transferUtility->ownForeignerCount($user, $target);
                 } else {
                     return;
                 }
