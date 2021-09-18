@@ -54,6 +54,8 @@ final class ShowTroopTransfer implements ViewControllerInterface
         $isColony = request::has('isColony');
         $isUnload = request::has('isUnload');
 
+        $isUplinkSituation = false;
+
         if ($isColony) {
             $target = $this->colonyRepository->find((int)request::getIntFatal('target'));
 
@@ -70,7 +72,6 @@ final class ShowTroopTransfer implements ViewControllerInterface
         } else {
             $target = $this->shipRepository->find((int)request::getIntFatal('target'));
 
-            $isUplinkSituation = false;
 
             if ($target->getUser() !== $user) {
                 if ($target->hasUplink()) {
@@ -105,7 +106,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
             return;
         }
 
-        if ($target->getUser() !== $ship->getUser()) {
+        if (!$isUplinkSituation && $target->getUser() !== $ship->getUser()) {
             return;
         }
 
