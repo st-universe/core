@@ -346,6 +346,7 @@ final class TroopTransfer implements ActionControllerInterface
             }
 
             $shipCrew->setShip($ship);
+            $target->getCrewlist()->removeElement($shipCrew);
             $this->shipCrewRepository->save($shipCrew);
 
             $ship->getCrewlist()->add($shipCrew);
