@@ -100,4 +100,9 @@ final class ShipNfsItem
     {
         return $this->userId == $this->getUserId();
     }
+
+    public function hasUplink(): bool
+    {
+        return $this->values['uplinkstate'] > 0;
+    }
 }
