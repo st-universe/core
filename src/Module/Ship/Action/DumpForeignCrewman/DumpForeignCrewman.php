@@ -100,6 +100,6 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }
