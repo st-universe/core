@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -41,6 +42,8 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         ShipCrewRepositoryInterface $shipCrewRepository,
         FleetRepositoryInterface $fleetRepository,
@@ -51,7 +54,8 @@ final class ShipLeaver implements ShipLeaverInterface
         CrewRepositoryInterface $crewRepository,
         AstroEntryLibInterface $astroEntryLib,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
-        MapRepositoryInterface $mapRepository
+        MapRepositoryInterface $mapRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
         $this->fleetRepository = $fleetRepository;
@@ -63,6 +67,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->mapRepository = $mapRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function evacuate(ShipInterface $ship): string
@@ -171,6 +176,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->returnToSafety($pods, $ship);
 
         $this->shipRepository->save($pods);
+        $this->entityManager->flush();
         return $pods;
     }
 
