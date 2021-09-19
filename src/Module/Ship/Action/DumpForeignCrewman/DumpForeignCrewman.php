@@ -80,7 +80,7 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
         $name = $shipCrew->getCrew()->getName();
 
-        $msg = $this->shipLeaver->dumpCrewman($shipCrew);
+        $msg = $this->shipLeaver->dumpCrewman($shipCrew->getId());
 
         $this->privateMessageSender->send(
             $userId,
