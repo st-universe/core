@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Orm\Entity\ShipCrewInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -109,8 +109,9 @@ final class ShipLeaver implements ShipLeaverInterface
         return _('Die Crew hat das Schiff in den Rettungskapseln verlassen!');
     }
 
-    public function dumpCrewman(ShipCrewInterface $shipCrew): string
+    public function dumpCrewman(int $shipCrewId): string
     {
+        $shipCrew = $this->shipCrewRepository->find($shipCrewId);
         $ship = $shipCrew->getShip();
 
         //create pods entity
@@ -161,6 +162,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setName(sprintf(_('Rettungskapseln von (%d)'), $ship->getId()));
         $pods->setHuell(1);
         $pods->setMaxHuell(1);
+        $pods->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
 
         $pods->setMap($ship->getMap());
         $pods->setStarsystemMap($ship->getStarsystemMap());
