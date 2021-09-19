@@ -7,6 +7,8 @@ namespace Stu\Module\Ship\Action\DumpForeignCrewman;
 use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
@@ -26,36 +28,51 @@ final class DumpForeignCrewman implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
         ShipLeaverInterface $shipLeaver,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->shipLeaver = $shipLeaver;
         $this->privateMessageSender = $privateMessageSender;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
+
+        $this->loggerUtil->log('A');
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
         );
 
+        $this->loggerUtil->log('B');
+
         $shipCrewId = request::getIntFatal('scid');
 
         $shipCrew = $this->shipCrewRepository->find($shipCrewId);
 
+        $this->loggerUtil->log('C');
+
         if ($shipCrew === null) {
+            $this->loggerUtil->log('D');
             return;
         }
+
+        $this->loggerUtil->log('E');
 
         if ($shipCrew->getShip() !== $ship) {
             return;
