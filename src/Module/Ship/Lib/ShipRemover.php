@@ -113,6 +113,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setHuell((int) round($ship->getMaxHuell() / 20));
         $ship->setUser($this->userRepository->find(GameEnum::USER_NOONE));
         $ship->setBuildplan(null);
+        $ship->setIsBase(false);
         $ship->setShield(0);
         $ship->setEps(0);
         $ship->setAlertState(1);
