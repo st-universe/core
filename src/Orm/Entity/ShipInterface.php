@@ -428,6 +428,8 @@ interface ShipInterface
 
     public function setDockedTo(?ShipInterface $dockedTo): ShipInterface;
 
+    public function setDockedToId(?int $dockedToId): ShipInterface;
+
     public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil): bool;
 
     public function getStoredShuttles(): array;
