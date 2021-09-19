@@ -122,7 +122,7 @@ final class ShipLeaver implements ShipLeaverInterface
         //create pods entity
         $pods = $this->launchEscapePods($ship);
 
-        if ($pods == null) {
+        if (true) { //($pods == null) {//TODO CHANGE!
             $crew = $shipCrew->getCrew();
             $this->shipCrewRepository->delete($shipCrew);
             $this->crewRepository->delete($crew);
