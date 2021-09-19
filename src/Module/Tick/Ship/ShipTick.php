@@ -88,7 +88,15 @@ final class ShipTick implements ShipTickInterface
 
         // not enough crew
         if (!$ship->hasEnoughCrew()) {
-            $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig!');
+            $this->msg[] = _('Zu wenig Crew an Bord, Schiff ist nicht voll funktionsfähig! Systeme werden deaktiviert!');
+
+            //deactivate all systems except life support
+            foreach ($ship->getActiveSystems() as $system) {
+                if ($system->getSystemType() != ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
+                    $this->shipSystemManager->deactivate($ship, $system->getSystemType(), true);
+                }
+            }
+
             $eps = $ship->getEps();
         } else {
             $eps = $ship->getEps() + $ship->getReactorCapacity();
