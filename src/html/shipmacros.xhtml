@@ -1023,7 +1023,8 @@
         <td>
           <img
             src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
-          <a tal:condition="data/isForeigner" href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}"
+          <a tal:condition="data/isForeigner"
+            href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}&sstr=${THIS/getSessionString}"
             onmouseover="cp('dump_${data/getId}','buttons/x2')" onmouseout="cp('dump_${data/getId}','buttons/x1')">
             <img src="/assets/buttons/x2.png" name="dump_${data/getId}" title="Crewman entfernen" />
           </a>
