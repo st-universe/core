@@ -1685,6 +1685,12 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function setDockedToId(?int $dockedToId): ShipInterface
+    {
+        $this->dock = $dockedToId;
+        return $this;
+    }
+
     public function hasFreeShuttleSpace(?LoggerUtilInterface $loggerUtil = null): bool
     {
         if ($loggerUtil !== null) {

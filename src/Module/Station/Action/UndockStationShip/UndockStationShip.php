@@ -76,6 +76,7 @@ final class UndockStationShip implements ActionControllerInterface
 
         $target->cancelRepair();
         $target->setDockedTo(null);
+        $target->setDockedToId(null);
         $station->getDockedShips()->remove($target->getId());
 
         $this->shipRepository->save($target);
