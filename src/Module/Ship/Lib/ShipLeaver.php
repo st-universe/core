@@ -122,7 +122,7 @@ final class ShipLeaver implements ShipLeaverInterface
         //create pods entity
         $pods = $this->launchEscapePods($ship);
 
-        if (true) { //($pods == null) {//TODO CHANGE!
+        if ($pods == null) {
             $crew = $shipCrew->getCrew();
             $this->shipCrewRepository->delete($shipCrew);
             $this->crewRepository->delete($crew);
@@ -131,9 +131,15 @@ final class ShipLeaver implements ShipLeaverInterface
         }
 
         //transfer crewman into pods
-        $shipCrew->setShip($pods);
+        $newShipCrew = $this->shipCrewRepository->prototype();
+        $newShipCrew->setCrew($shipCrew->getCrew());
+        $newShipCrew->setShip($ship);
+        $newShipCrew->setUser($ship->getUser());
+
+        //$shipCrew->setShip($pods);
         $ship->getCrewlist()->removeElement($shipCrew);
-        $this->shipCrewRepository->save($shipCrew);
+        $this->shipCrewRepository->delete($shipCrew);
+        $this->shipCrewRepository->save($newShipCrew);
 
         return _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
     }
