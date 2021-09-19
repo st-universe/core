@@ -10,9 +10,9 @@ interface ShipCrewInterface
 
     public function setCrewId(int $crewId): ShipCrewInterface;
 
-    public function getShipsId(): int;
+    public function getShipId(): int;
 
-    public function setShipsId(int $shipsId): ShipCrewInterface;
+    public function setShipId(int $shipId): ShipCrewInterface;
 
     public function getSlot(): int;
 
