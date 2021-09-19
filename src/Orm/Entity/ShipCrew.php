@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Orm\Entity;
 
 use Stu\Component\Crew\CrewEnum;
+// uniqueConstraints={@UniqueConstraint(name="ship_crew_crew_idx", columns={"crew_id"})}
 
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\ShipCrewRepository")
@@ -68,6 +69,18 @@ class ShipCrew implements ShipCrewInterface
     public function setCrewId(int $crewId): ShipCrewInterface
     {
         $this->crew_id = $crewId;
+
+        return $this;
+    }
+
+    public function getShipsId(): int
+    {
+        return $this->ships_id;
+    }
+
+    public function setShipsId(int $shipsId): ShipCrewInterface
+    {
+        $this->ships_id = $shipsId;
 
         return $this;
     }
