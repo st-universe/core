@@ -140,6 +140,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $ship->getCrewlist()->removeElement($shipCrew);
         $this->shipCrewRepository->delete($shipCrew);
         $this->shipCrewRepository->save($newShipCrew);
+        $this->entityManager->flush();
 
         return _('Der Crewman hat das Schiff in einer Rettungskapsel verlassen!');
     }
