@@ -73,14 +73,14 @@ class ShipCrew implements ShipCrewInterface
         return $this;
     }
 
-    public function getShipsId(): int
+    public function getShipId(): int
     {
         return $this->ships_id;
     }
 
-    public function setShipsId(int $shipsId): ShipCrewInterface
+    public function setShipId(int $shipId): ShipCrewInterface
     {
-        $this->ships_id = $shipsId;
+        $this->ships_id = $shipId;
 
         return $this;
     }
