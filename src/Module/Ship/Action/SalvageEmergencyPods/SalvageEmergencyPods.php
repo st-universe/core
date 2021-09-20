@@ -119,6 +119,8 @@ final class SalvageEmergencyPods implements ActionControllerInterface
     ): void {
         $userId = $game->getUser()->getId();
 
+        $sentGameInfoForForeignCrew = false;
+
         foreach ($crewmanPerUser as $ownerId => $count) {
 
             if ($ownerId !== $userId) {
@@ -137,7 +139,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                         $this->shipCrewRepository->delete($shipCrew);
                     }
                 }
-                $game->addInformation(_('Die fremden Crewman wurde geborgen und an ihre(n) Besitzer überstellt'));
+                if (!$sentGameInfoForForeignCrew) {
+                    $game->addInformation(_('Die fremden Crewman wurde geborgen und an ihre(n) Besitzer überstellt'));
+                    $sentGameInfoForForeignCrew = true;
+                }
             } else {
                 if ($this->gotEnoughFreeTroopQuarters($ship, $count)) {
                     foreach ($target->getCrewlist() as $shipCrew) {
