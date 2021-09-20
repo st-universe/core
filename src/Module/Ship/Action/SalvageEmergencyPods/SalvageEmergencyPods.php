@@ -148,6 +148,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
                     foreach ($target->getCrewlist() as $shipCrew) {
                         if ($shipCrew->getCrew()->getUser() === $game->getUser()) {
                             $shipCrew->setShip($ship);
+                            $ship->getCrewlist()->add($shipCrew);
                             $this->shipCrewRepository->save($shipCrew);
                         }
                     }
