@@ -40,6 +40,9 @@ class Map implements MapInterface
     private $systems_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
+    private $influence_area_id = 0;
+
+    /** @Column(type="integer", nullable=true) * */
     private $bordertype_id = 0;
 
     /** @Column(type="integer", nullable=true) * */
@@ -50,6 +53,12 @@ class Map implements MapInterface
      * @JoinColumn(name="systems_id", referencedColumnName="id")
      */
     private $starSystem;
+
+    /**
+     * @ManyToOne(targetEntity="StarSystem")
+     * @JoinColumn(name="influence_area_id", referencedColumnName="id")
+     */
+    private $influenceArea;
 
     /**
      * @ManyToOne(targetEntity="MapFieldType")
@@ -135,6 +144,17 @@ class Map implements MapInterface
         return $this;
     }
 
+    public function getInfluenceAreaId(): ?int
+    {
+        return $this->influence_area_id;
+    }
+
+    public function setInfluenceAreaId(?int $influenceAreaId): MapInterface
+    {
+        $this->influence_area_id = $influenceAreaId;
+        return $this;
+    }
+
     public function getBordertypeId(): ?int
     {
         return $this->bordertype_id;
@@ -160,6 +180,17 @@ class Map implements MapInterface
     public function getSystem(): ?StarSystemInterface
     {
         return $this->starSystem;
+    }
+
+    public function getInfluenceArea(): ?StarSystemInterface
+    {
+        return $this->influenceArea;
+    }
+
+    public function setInfluenceArea(?StarSystemInterface $influenceArea): MapInterface
+    {
+        $this->influenceArea = $influenceArea;
+        return $this;
     }
 
     public function getFieldType(): MapFieldTypeInterface

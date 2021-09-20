@@ -24,6 +24,10 @@ interface MapInterface
 
     public function setSystemsId(?int $systems_id): MapInterface;
 
+    public function getInfluenceAreaId(): ?int;
+
+    public function setInfluenceAreaId(?int $influenceAreaId): MapInterface;
+
     public function getBordertypeId(): ?int;
 
     public function setBordertypeId(?int $bordertype_id): MapInterface;
@@ -33,6 +37,10 @@ interface MapInterface
     public function setRegionId(?int $region_id): MapInterface;
 
     public function getSystem(): ?StarSystemInterface;
+
+    public function getInfluenceArea(): ?StarSystemInterface;
+
+    public function setInfluenceArea(?StarSystemInterface $influenceArea): MapInterface;
 
     public function getFieldType(): MapFieldTypeInterface;
 
