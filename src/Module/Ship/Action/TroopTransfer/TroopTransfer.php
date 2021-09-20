@@ -14,6 +14,7 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Type\UplinkShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -190,6 +191,10 @@ final class TroopTransfer implements ActionControllerInterface
                             $this->loggerUtil->log('G');
                             $game->addInformation(_("Das Ziel verfügt über keinen intakten Uplink"));
                             return;
+                        }
+
+                        if ($this->transferUtility->foreignerCount($target) >= UplinkShipSystem::MAX_FOREIGNERS) {
+                            $game->addInformation(_("Maximale Anzahl an fremden Crewman ist bereits erreicht"));
                         }
                     }
 
