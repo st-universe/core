@@ -72,30 +72,10 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         }
         $ship->cancelRepair();
 
-        $targetUserId = $target->getCrewList()->current()->getCrew()->getUser()->getId();
-        if ($targetUserId !== $userId) {
-            $this->privateMessageSender->send(
-                GameEnum::USER_NOONE,
-                $targetUserId,
-                sprintf(
-                    _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an deine Kolonien überstellt.'),
-                    $game->getUser()->getName(),
-                    $target->getCrewCount()
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
-            );
-        }
+        $crewmanPerUser = $this->determineCrewmanPerUser($target);
 
-        if ($this->isOwnCrewAndShipGotFreeTroopQuarters($ship, $target)) {
-            foreach ($target->getCrewlist() as $shipCrew) {
-                $shipCrew->setShip($ship);
-                $this->shipCrewRepository->save($shipCrew);
-            }
-            $game->addInformation(_('Die Crew wurde auf dieses Schiff gerettet'));
-        } else {
-            $this->shipCrewRepository->truncateByShip((int) $target->getId());
-            $game->addInformation(_('Die Crew wurde geborgen und an den Besitzer überstellt'));
-        }
+        //send PMs to crew owners
+        $this->sendPMsToCrewOwners($crewmanPerUser, $ship, $target, $game);
 
         /**
          * 
@@ -114,11 +94,76 @@ final class SalvageEmergencyPods implements ActionControllerInterface
         $this->shipRepository->save($ship);
     }
 
-    private function isOwnCrewAndShipGotFreeTroopQuarters(ShipInterface $ship, ShipInterface $target): bool
+    private function determineCrewmanPerUser(ShipInterface $target): array
     {
-        return $ship->getUser() === current($target->getCrewlist()->getValues())->getCrew()->getUser()
-            && $ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
-            && $this->troopTransferUtility->getFreeQuarters($ship) >= $target->getCrewCount();
+        $crewmanPerUser = [];
+
+        foreach ($target->getCrewList() as $shipCrew) {
+            $crewUserId = $shipCrew->getCrew()->getUser()->getId();
+
+            if (!array_key_exists($crewUserId, $crewmanPerUser)) {
+                $crewmanPerUser[$crewUserId] = 1;
+            } else {
+                $crewmanPerUser[$crewUserId]++;
+            }
+        }
+
+        return $crewmanPerUser;
+    }
+
+    private function sendPMsToCrewOwners(
+        array $crewmanPerUser,
+        ShipInterface $ship,
+        ShipInterface $target,
+        GameControllerInterface $game
+    ): void {
+        $userId = $game->getUser()->getId();
+
+        foreach ($crewmanPerUser as $ownerId => $count) {
+
+            if ($ownerId !== $userId) {
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ownerId,
+                    sprintf(
+                        _('Der Siedler %s hat %d deiner Crewmitglieder aus Rettungskapseln geborgen und an deine Kolonien überstellt.'),
+                        $game->getUser()->getName(),
+                        $count
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+                );
+                foreach ($target->getCrewlist() as $shipCrew) {
+                    if ($shipCrew->getCrew()->getUser()->getId() === $ownerId) {
+                        $this->shipCrewRepository->delete($shipCrew);
+                    }
+                }
+                $game->addInformation(_('Die fremden Crewman wurde geborgen und an ihre(n) Besitzer überstellt'));
+            } else {
+                if ($this->gotEnoughFreeTroopQuarters($ship, $count)) {
+                    foreach ($target->getCrewlist() as $shipCrew) {
+                        if ($shipCrew->getCrew()->getUser() === $game->getUser()) {
+                            $shipCrew->setShip($ship);
+                            $this->shipCrewRepository->save($shipCrew);
+                        }
+                    }
+                    $game->addInformationf(_('%d eigene Crewman wurde(n) auf dieses Schiff gerettet'), $count);
+                } else {
+                    foreach ($target->getCrewlist() as $shipCrew) {
+                        if ($shipCrew->getCrew()->getUser() === $game->getUser()) {
+                            $this->shipCrewRepository->delete($shipCrew);
+                        }
+                    }
+                    $game->addInformation(_('Deine Crew wurde geborgen und an deine Kolonien überstellt'));
+                }
+            }
+        }
+    }
+
+
+    private function gotEnoughFreeTroopQuarters(ShipInterface $ship, int $count): bool
+    {
+        return $ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS)
+            && $this->troopTransferUtility->getFreeQuarters($ship) >= $count;
     }
 
     public function performSessionCheck(): bool
