@@ -20,6 +20,7 @@ use Stu\Orm\Entity\ShipRumpSpecial;
 use Stu\Orm\Entity\ShipStorage;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\StarSystemMap;
+use Stu\Orm\Entity\User;
 use Stu\Orm\Entity\UserInterface;
 
 final class ShipRepository extends EntityRepository implements ShipRepositoryInterface
@@ -198,14 +199,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WITH sc.crew_id = c.id
                 JOIN %s ss
                 WITH ss.ships_id = s.id
+                JOIN %s u
+                WITH s.user_id = u.id
                 WHERE s.user_id != :userId
                 AND c.user_id = :userId
                 AND ss.system_type = :systemType
-                AND ss.mode >= :mode',
+                AND ss.mode >= :mode
+                AND u.vac_active is false',
                 Ship::class,
                 ShipCrew::class,
                 Crew::class,
-                ShipSystem::class
+                ShipSystem::class,
+                User::class
             )
         )->setParameters([
             'userId' => $userId,
