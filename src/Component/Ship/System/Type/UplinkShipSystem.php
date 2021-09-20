@@ -11,6 +11,8 @@ use Stu\Orm\Entity\ShipInterface;
 
 final class UplinkShipSystem extends AbstractShipSystemType implements ShipSystemTypeInterface
 {
+    public const MAX_FOREIGNERS = 3;
+
     public function getEnergyUsageForActivation(): int
     {
         return 0;
