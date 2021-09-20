@@ -205,7 +205,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND c.user_id = :userId
                 AND ss.system_type = :systemType
                 AND ss.mode >= :mode
-                AND u.vac_active is false',
+                AND u.vac_active = false',
                 Ship::class,
                 ShipCrew::class,
                 Crew::class,
