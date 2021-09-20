@@ -271,7 +271,7 @@ final class TroopTransfer implements ActionControllerInterface
         ShipInterface $ship,
         ShipInterface $target,
         bool $isUplinkSituation,
-        int $ownForeignerCount,
+        ?int $ownForeignerCount,
         GameControllerInterface $game
     ): int {
         if (!$target->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
@@ -321,7 +321,7 @@ final class TroopTransfer implements ActionControllerInterface
         ShipInterface $ship,
         ShipInterface $target,
         bool $isUplinkSituation,
-        int $ownForeignerCount,
+        ?int $ownForeignerCount,
         GameControllerInterface $game
     ): int {
         $amount = min(
