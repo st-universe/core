@@ -8,6 +8,7 @@ use Stu\Component\Map\MapEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
+use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class ShowMapInfluenceAreas implements ViewControllerInterface
 {
@@ -15,10 +16,14 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private StarSystemRepositoryInterface $starSystemRepository;
+
     public function __construct(
-        MapRepositoryInterface $mapRepository
+        MapRepositoryInterface $mapRepository,
+        StarSystemRepositoryInterface $starSystemRepository
     ) {
         $this->mapRepository = $mapRepository;
+        $this->starSystemRepository = $starSystemRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -39,13 +44,13 @@ final class ShowMapInfluenceAreas implements ViewControllerInterface
 
             $id = $data->getInfluenceAreaId();
 
-            $rest = $id % 20;
+            $rest = $id % 200;
 
             $border = imagecreatetruecolor(15, 15);
             if ($data->getSystem()) {
-                $col = imagecolorallocate($border, 255, 255, 255);
+                $col = imagecolorallocate($border, 255, 0, 0);
             } else {
-                $col = imagecolorallocate($border, $rest * 10, $rest * 10, $rest * 10);
+                $col = imagecolorallocate($border, $rest, $rest, $rest);
             }
             imagefill($border, 0, 0, $col);
             imagecopy($img, $border, $curx, $cury, 0, 0, 15, 15);
