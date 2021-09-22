@@ -30,6 +30,44 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
             ->getResult();
     }
 
+    public function getAllWithSystem(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m FROM %s m INDEX BY m.id
+                    WHERE m.cx BETWEEN 1 AND :mapMaxX
+                    AND m.cy BETWEEN 1 AND :mapMaxY
+                    AND m.systems_id IS NOT null',
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'mapMaxX' => MapEnum::MAP_MAX_X,
+                'mapMaxY' => MapEnum::MAP_MAX_Y
+            ])
+            ->getResult();
+    }
+
+    public function getAllWithoutSystem(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                sprintf(
+                    'SELECT m FROM %s m INDEX BY m.id
+                    WHERE m.cx BETWEEN 1 AND :mapMaxX
+                    AND m.cy BETWEEN 1 AND :mapMaxY
+                    AND m.systems_id IS null',
+                    Map::class
+                )
+            )
+            ->setParameters([
+                'mapMaxX' => MapEnum::MAP_MAX_X,
+                'mapMaxY' => MapEnum::MAP_MAX_Y
+            ])
+            ->getResult();
+    }
+
     public function getByCoordinates(int $cx, int $cy): ?MapInterface
     {
         return $this->findOneBy([

@@ -17,6 +17,16 @@ interface MapRepositoryInterface extends ObjectRepository
      */
     public function getAllOrdered(): array;
 
+    /**
+     * @return MapInterface[]
+     */
+    public function getAllWithSystem(): array;
+
+    /**
+     * @return MapInterface[]
+     */
+    public function getAllWithoutSystem(): array;
+
     public function getByCoordinates(int $cx, int $cy): ?MapInterface;
 
     /**
