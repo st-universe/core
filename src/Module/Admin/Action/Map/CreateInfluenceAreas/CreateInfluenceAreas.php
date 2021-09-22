@@ -7,6 +7,8 @@ namespace Stu\Module\Admin\Action\Map\CreateInfluenceAreas;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
@@ -17,18 +19,24 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     private $usedMaps = [];
     private $spreader = [];
     private $mapsByCoords = [];
 
     public function __construct(
-        MapRepositoryInterface $mapRepository
+        MapRepositoryInterface $mapRepository,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->mapRepository = $mapRepository;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
 
         // only Admins can trigger this
@@ -57,6 +65,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             shuffle($this->spreader);
 
             foreach ($this->spreader as $influenceId => $spreaderPerSystem) {
+                $this->loggerUtil->log(sprintf('influenceId: %d', $influenceId));
                 shuffle($spreaderPerSystem);
 
                 foreach ($spreaderPerSystem as $map) {
