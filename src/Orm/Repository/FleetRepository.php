@@ -8,8 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Fleet;
 use Stu\Orm\Entity\FleetInterface;
-use Stu\Orm\Entity\Ship;
-use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 
 final class FleetRepository extends EntityRepository implements FleetRepositoryInterface
