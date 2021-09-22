@@ -120,10 +120,12 @@ final class InterceptShip implements ActionControllerInterface
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
+        $interceptorLeftWarp = false;
         if ($ship->getFleetId()) {
             foreach ($ship->getFleet()->getShips() as $fleetShip) {
                 try {
                     $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                    $interceptorLeftWarp = true;
                 } catch (AlreadyOffException $e) {
                 }
                 $this->shipRepository->save($fleetShip);
@@ -131,6 +133,7 @@ final class InterceptShip implements ActionControllerInterface
         } else {
             try {
                 $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+                $interceptorLeftWarp = true;
             } catch (AlreadyOffException $e) {
             }
 
@@ -138,15 +141,24 @@ final class InterceptShip implements ActionControllerInterface
         }
         $this->entityManager->flush();
 
+        //Alert red check for the target(s)
         $informations = [];
-
-        //Alarm-Rot check allgemein
-        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($target, $informations);
         shuffle($shipsToShuffle);
         foreach ($shipsToShuffle as $alertShip) {
-            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+            $this->alertRedHelper->performAttackCycle($alertShip, $target, $informations);
         }
-        $game->addInformationMergeDown($informations);
+
+        //Alert red check for the interceptor(s)
+        $informations = [];
+        if ($interceptorLeftWarp) {
+            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+            shuffle($shipsToShuffle);
+            foreach ($shipsToShuffle as $alertShip) {
+                $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+            }
+            $game->addInformationMergeDown($informations);
+        }
     }
 
     public function performSessionCheck(): bool
