@@ -65,17 +65,17 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         while (!empty($allMapWithoutSystem)) {
             $round++;
             $this->loggerUtil->log(sprintf('round: %d', $round));
-            shuffle($this->spreader);
+            $this->shuffle_assoc($this->spreader);
 
             foreach ($this->spreader as $influenceId => $spreaderPerSystem) {
                 $this->loggerUtil->log(sprintf('influenceId: %d', $influenceId));
-                shuffle($spreaderPerSystem);
+                $this->shuffle_assoc($spreaderPerSystem);
 
-                foreach ($spreaderPerSystem as $map) {
+                foreach ($spreaderPerSystem as $id => $map) {
                     $neighbour = $this->getRandomFreeNeighbour($map);
 
                     if ($neighbour === null) {
-                        unset($spreaderPerSystem[$map->getId()]);
+                        unset($spreaderPerSystem[$id]);
                         continue;
                     }
 
@@ -98,6 +98,21 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
 
         $game->addInformation("Influence Areas wurden randomisiert verteilt");
+    }
+
+    private function shuffle_assoc(&$array)
+    {
+        $keys = array_keys($array);
+
+        shuffle($keys);
+
+        foreach ($keys as $key) {
+            $new[$key] = $array[$key];
+        }
+
+        $array = $new;
+
+        return true;
     }
 
     private function loadMapByCoords(array $maps): void
