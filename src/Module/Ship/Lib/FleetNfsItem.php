@@ -15,14 +15,18 @@ final class FleetNfsItem
 
     private ?SessionInterface $session;
 
+    private int $userId;
+
     public function __construct(
         array $ships,
         ShipInterface $currentShip,
-        ?SessionInterface $session
+        ?SessionInterface $session,
+        int $userId
     ) {
         $this->ships = $ships;
         $this->session = $session;
         $this->currentShip = $currentShip;
+        $this->userId = $userId;
     }
 
     public function isHidden(): bool
@@ -32,7 +36,7 @@ final class FleetNfsItem
 
     public function getVisibleShips(): iterable
     {
-        return new ShipNfsIterator($this->ships, $this->currentShip->getUser()->getId());
+        return new ShipNfsIterator($this->ships, $this->userId);
     }
 
     public function getVisibleShipsCount(): int
@@ -62,7 +66,7 @@ final class FleetNfsItem
 
     public function getLeadShip(): ShipNfsItem
     {
-        return new ShipNfsItem($this->ships[0], $this->currentShip->getUser()->getId());
+        return new ShipNfsItem($this->ships[0], $this->userId);
     }
 
     public function getUserId(): int

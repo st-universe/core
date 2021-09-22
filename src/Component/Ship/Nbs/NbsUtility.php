@@ -52,7 +52,7 @@ final class NbsUtility implements NbsUtilityInterface
             $tachyonActive,
             $mapId,
             $sysMapId
-        ), $ship->getUser()->getId());
+        ), $game->getUser()->getId());
 
         $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
             $ship,
@@ -60,7 +60,7 @@ final class NbsUtility implements NbsUtilityInterface
             $tachyonActive,
             $mapId,
             $sysMapId
-        ), $ship->getUser()->getId());
+        ), $game->getUser()->getId());
 
         $fleetNbs = new FleetNfsIterator(
             $this->shipRepository->getFleetShipsScannerResults(
@@ -70,7 +70,8 @@ final class NbsUtility implements NbsUtilityInterface
                 $sysMapId
             ),
             $ship,
-            $session
+            $session,
+            $game->getUser()->getId()
         );
 
         $game->setTemplateVar(

@@ -14,15 +14,18 @@ final class FleetNfsIterator implements Iterator
 
     private ?SessionInterface $session;
 
+    private int $userId;
+
     protected int $position = 0;
 
     private array $fleets = [];
 
 
-    public function __construct(array $ships, $currentShip, ?SessionInterface $session)
+    public function __construct(array $ships, $currentShip, ?SessionInterface $session, int $userId)
     {
         $this->currentShip = $currentShip;
         $this->session = $session;
+        $this->userId = $userId;
 
         $currentFleetId = null;
         $currentFleet = null;
@@ -55,7 +58,7 @@ final class FleetNfsIterator implements Iterator
 
     public function current(): FleetNfsItem
     {
-        return new FleetNfsItem($this->fleets[$this->position], $this->currentShip, $this->session);
+        return new FleetNfsItem($this->fleets[$this->position], $this->currentShip, $this->session, $this->userId);
     }
 
     public function key(): int
