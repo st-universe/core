@@ -61,7 +61,10 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             $this->setInfluenceArea($map, $system);
         }
 
+        $round = 0;
         while (!empty($allMapWithoutSystem)) {
+            $round++;
+            $this->loggerUtil->log(sprintf('round: %d', $round));
             shuffle($this->spreader);
 
             foreach ($this->spreader as $influenceId => $spreaderPerSystem) {
@@ -163,6 +166,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     private function addSpreader(MapInterface $map, int $influenceId): void
     {
+        $this->loggerUtil->log(sprintf('addSpreader - mapId: %d, influenceId: %d', $map->getId(), $influenceId));
         if (!array_key_exists($influenceId, $this->spreader)) {
             $this->spreader[$influenceId] = [];
         }
