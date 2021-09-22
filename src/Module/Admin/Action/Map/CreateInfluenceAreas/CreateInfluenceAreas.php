@@ -54,9 +54,9 @@ final class CreateInfluenceAreas implements ActionControllerInterface
         }
 
         while (!empty($allMapWithoutSystem)) {
-            shuffle($spreader);
+            shuffle($this->spreader);
 
-            foreach ($spreader as $influenceId => $spreaderPerSystem) {
+            foreach ($this->spreader as $influenceId => $spreaderPerSystem) {
                 shuffle($spreaderPerSystem);
 
                 foreach ($spreaderPerSystem as $map) {
@@ -79,7 +79,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
                 }
 
                 if (empty($spreaderPerSystem)) {
-                    unset($spreader[$influenceId]);
+                    unset($this->spreader[$influenceId]);
                 }
             }
         }
