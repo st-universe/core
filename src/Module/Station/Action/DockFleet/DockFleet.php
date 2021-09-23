@@ -1,0 +1,136 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Station\Action\DockFleet;
+
+use request;
+use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\PositionCheckerInterface;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Orm\Entity\FleetInterface;
+use Stu\Orm\Repository\FleetRepositoryInterface;
+
+final class DockFleet implements ActionControllerInterface
+{
+    public const ACTION_IDENTIFIER = 'B_DOCK_FLEET';
+
+    private ShipLoaderInterface $shipLoader;
+
+    private FleetRepositoryInterface $fleetRepository;
+
+    private ShipRepositoryInterface $shipRepository;
+
+    private ShipSystemManagerInterface $shipSystemManager;
+
+    private PositionCheckerInterface $positionChecker;
+
+    public function __construct(
+        ShipLoaderInterface $shipLoader,
+        FleetRepositoryInterface $fleetRepository,
+        ShipRepositoryInterface $shipRepository,
+        ShipSystemManagerInterface $shipSystemManager,
+        PositionCheckerInterface $positionChecker
+    ) {
+        $this->shipLoader = $shipLoader;
+        $this->fleetRepository = $fleetRepository;
+        $this->shipRepository = $shipRepository;
+        $this->shipSystemManager = $shipSystemManager;
+        $this->positionChecker = $positionChecker;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
+
+        $userId = $game->getUser()->getId();
+
+        $station = $this->shipLoader->getByIdAndUser(
+            request::indInt('id'),
+            $userId
+        );
+        $targetFleet = $this->fleetRepository->find(request::getIntFatal('fid'));
+        if ($targetFleet === null) {
+            return;
+        }
+        if (!$this->positionChecker->checkPosition($targetFleet->getLeadShip(), $station)) {
+            return;
+        }
+        if ($targetFleet->getUser() != $game->getUser()) {
+            return;
+        }
+        if (!$station->isBase()) {
+            return;
+        }
+
+        if (!$station->hasEnoughCrew()) {
+            $game->addInformationf(
+                _("Es werden %d Crewmitglieder benötigt"),
+                $station->getBuildplan()->getCrew()
+            );
+            return;
+        }
+
+        $this->fleetDock($station, $targetFleet, $game);
+        return;
+
+        //$game->addInformation('Andockvorgang abgeschlossen');
+    }
+
+    private function fleetDock(ShipInterface $station, FleetInterface $targetFleet, GameControllerInterface $game): void
+    {
+        $msg = [];
+        $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();;
+        $freeSlots = $station->getFreeDockingSlotCount();
+        foreach ($targetFleet->getShips() as $ship) {
+            if ($freeSlots <= 0) {
+                $msg[] = _("Es sind alle Dockplätze belegt");
+                break;
+            }
+            if ($ship->getDockedTo()) {
+                continue;
+            }
+            if ($station->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
+                $msg[] = $station->getName() . _(": Nicht genügend Energie vorhanden");
+                break;
+            }
+            if ($ship->getCloakState()) {
+                $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
+                continue;
+            }
+            $ship->cancelRepair();
+
+            try {
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
+            } catch (ShipSystemException $e) {
+            }
+
+            try {
+                $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+            } catch (ShipSystemException $e) {
+            }
+
+            $ship->setDockedTo($station);
+
+            $station->setEps($station->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
+
+            $this->shipRepository->save($ship);
+
+            $freeSlots--;
+        }
+
+        $game->addInformationMerge($msg);
+    }
+
+    public function performSessionCheck(): bool
+    {
+        return true;
+    }
+}

@@ -132,6 +132,9 @@
                 <span id="showfleet${data/getId}">
                   (<a href="javascript:void(0);" onclick="showFleet(${data/getId});">aufklappen</a>)
                 </span>
+                <span tal:condition="php: SHIP.isBase() AND data.getLeadShip().isOwnedByCurrentUser()">
+                  (<a href="station.php?B_DOCK_FLEET=1&id=${SHIP/getId}&fid${data/getId}">andocken</a>)
+                </span>
               </td>
               <td>
                 <div id="fleetuser${data/getId}">
