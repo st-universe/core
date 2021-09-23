@@ -15,6 +15,8 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\FleetInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
@@ -32,22 +34,27 @@ final class DockFleet implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -56,17 +63,22 @@ final class DockFleet implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
+        $this->loggerUtil->log('A');
         $targetFleet = $this->fleetRepository->find(request::getIntFatal('fid'));
         if ($targetFleet === null) {
+            $this->loggerUtil->log('B');
             return;
         }
         if (!$this->positionChecker->checkPosition($targetFleet->getLeadShip(), $station)) {
+            $this->loggerUtil->log('C');
             return;
         }
-        if ($targetFleet->getUser() != $game->getUser()) {
+        if ($targetFleet->getUser() !== $game->getUser()) {
+            $this->loggerUtil->log('D');
             return;
         }
         if (!$station->isBase()) {
+            $this->loggerUtil->log('E');
             return;
         }
 
@@ -79,17 +91,18 @@ final class DockFleet implements ActionControllerInterface
         }
 
         $this->fleetDock($station, $targetFleet, $game);
-        return;
 
         //$game->addInformation('Andockvorgang abgeschlossen');
     }
 
     private function fleetDock(ShipInterface $station, FleetInterface $targetFleet, GameControllerInterface $game): void
     {
+        $this->loggerUtil->log('F');
         $msg = [];
         $msg[] = _("Station aktiviert Andockleitsystem zur Flotte: ") . $targetFleet->getName();;
         $freeSlots = $station->getFreeDockingSlotCount();
         foreach ($targetFleet->getShips() as $ship) {
+            $this->loggerUtil->log('G');
             if ($freeSlots <= 0) {
                 $msg[] = _("Es sind alle Dockplätze belegt");
                 break;
