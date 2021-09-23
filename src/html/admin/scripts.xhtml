@@ -1,18 +1,35 @@
 <html xmlns:stu="stu">
 <tal:block metal:use-macro="../sitemacros.xhtml/admindefaults">
-	<tal:block metal:fill-slot="body">
+    <tal:block metal:fill-slot="body">
         <tal:block metal:use-macro="../sitemacros.xhtml/breadcrumb" />
         <div>
             <a href="/admin/help/createBuildplan.php">create buildplan</a>
         </div>
-        <br /> 
+        <br />
         <div>
             <a href="/admin/help/createShip.php">create ship</a>
         </div>
-        <br />  
+        <br />
         <div>
             <a href="/admin/help/research_tree.php">research tree</a>
         </div>
-	</tal:block>
+        <br />
+        <div>
+            <input type="submit" class="button" name="B_COLONY_CORRECTION" value="Kolonie-Korrektur durchführen"
+                id="colonycorrectionbutton" />
+        </div>
+        <br />
+        <div>
+            <input type="submit" class="button" name="B_INFLUENCE_AREAS" value="Influence Areas neu generieren"
+                id="influenceareabutton" />
+        </div>
+        <div>
+            <br />
+            <a href="/admin/?SHOW_MAP_EDITOR=1">Karteneditor</a>
+            <a href="/admin/?SHOW_MAP_OVERALL=1" target="_blank">Karten Gesamtansicht</a>
+            <a href="/admin/?SHOW_INFLUENCE_AREAS=1" target="_blank">Influence Areas Gesamtansicht</a>
+        </div>
+    </tal:block>
 </tal:block>
+
 </html>
