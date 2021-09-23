@@ -56,9 +56,11 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             $system = $map->getSystem();
             $systemId = $system->getId();
             $allSystems[$systemId] = $system;
-            $this->addSpreader($map, $systemId);
 
+            $this->addSpreader($map, $systemId);
             $this->setInfluenceArea($map, $system);
+
+            $this->spreadInCircle($map, $system);
         }
 
         $round = 0;
@@ -98,6 +100,59 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
 
         $game->addInformation("Influence Areas wurden randomisiert verteilt");
+    }
+
+    private function spreadInCircle(MapInterface $map, StarSystemInterface $system): void
+    {
+        $x = $map->getCx();
+        $y = $map->getCy();
+
+        $circleNeighbours = [];
+
+        //top
+        if ($y > 1 && !$this->isMapUsed($x, $y - 1)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x][$y - 1];
+        }
+
+        //top left
+        if ($y > 1 && $x > 1 && !$this->isMapUsed($x - 1, $y - 1)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x - 1][$y - 1];
+        }
+
+        //top right
+        if ($y > 1 && $x < 120 && !$this->isMapUsed($x + 1, $y - 1)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x + 1][$y - 1];
+        }
+
+        //right
+        if ($x < 120 && !$this->isMapUsed($x + 1, $y)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x + 1][$y];
+        }
+
+        //bottom
+        if ($y < 120 && !$this->isMapUsed($x, $y + 1)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x][$y + 1];
+        }
+
+        //bottom left
+        if ($y < 120 && $x > 1 && !$this->isMapUsed($x - 1, $y + 1)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x - 1][$y + 1];
+        }
+
+        //bottom right
+        if ($y < 120 && $x < 120 && !$this->isMapUsed($x + 1, $y + 1)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x + 1][$y + 1];
+        }
+
+        //left
+        if ($x > 1 && !$this->isMapUsed($x - 1, $y)) {
+            $circleNeighbours[] = $this->mapsByCoords[$x - 1][$y];
+        }
+
+        foreach ($circleNeighbours as $neighbour) {
+            $this->addSpreader($neighbour, $system->getId());
+            $this->setInfluenceArea($neighbour, $system);
+        }
     }
 
     private function shuffle_assoc(&$array)
