@@ -35,7 +35,7 @@ final class CreateInfluenceAreas implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $game->setView(ShowTicks::VIEW_IDENTIFIER);
 
