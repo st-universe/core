@@ -69,6 +69,10 @@ final class CreateInfluenceAreas implements ActionControllerInterface
             $this->loggerUtil->log(sprintf('round: %d', $round));
             $this->shuffle_assoc($this->spreader);
 
+            if (empty($this->spreader)) {
+                break;
+            }
+
             foreach ($this->spreader as $influenceId => $spreaderPerSystem) {
                 $this->loggerUtil->log(sprintf('influenceId: %d', $influenceId));
                 $this->shuffle_assoc($spreaderPerSystem);
