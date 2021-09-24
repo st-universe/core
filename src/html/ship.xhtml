@@ -1073,7 +1073,10 @@
 						<td style="vertical-align: top; width: 33%;">
 							<div class="box">
 								<div class="box_title">Angedockte Schiffe
-									(${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount})</div>
+									(<span tal:condition="php: SHIP.getDockedShipCount() EQ SHIP.getDockingSlotCount()"
+										style="color: red;">${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount}</span><span
+										tal:condition="php: SHIP.getDockedShipCount() NOT EQ SHIP.getDockingSlotCount()">${SHIP/getDockedShipCount}/${SHIP/getDockingSlotCount}</span>)
+								</div>
 								<div class="box_body">
 									<ul id="shipselector">
 										<metal:block tal:condition="FIRST_MANAGE_SHIP"
