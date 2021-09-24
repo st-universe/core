@@ -353,6 +353,8 @@ interface ShipInterface
 
     public function hasFreeDockingSlots(): bool;
 
+    public function getDockingSlotCount(): int;
+
     public function getFreeDockingSlotCount(): int;
 
     public function getDockedShipCount(): int;
