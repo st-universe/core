@@ -8,6 +8,7 @@ use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
@@ -33,6 +34,8 @@ final class CancelOffer implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(Overview::VIEW_IDENTIFIER, ['FILTER_ACTIVE' => true]);
+
         $userId = $game->getUser()->getId();
         $offerId = $this->cancelOfferRequest->getOfferId();
 

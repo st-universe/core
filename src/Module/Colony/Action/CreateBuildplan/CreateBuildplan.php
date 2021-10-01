@@ -64,11 +64,8 @@ final class CreateBuildplan implements ActionControllerInterface
     {
         $game->setView(ShowModuleScreen::VIEW_IDENTIFIER);
 
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        } else {
-            $this->loggerUtil->init();
-        }
+        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init();
 
         $rump = $this->shipRumpRepository->find((int) request::indInt('rump'));
         if ($rump === null) {

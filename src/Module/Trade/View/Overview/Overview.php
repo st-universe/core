@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\Overview;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeOfferItem;
@@ -16,20 +17,26 @@ use Stu\Orm\Repository\TradeOfferRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
+    public const VIEW_IDENTIFIER = 'SHOW_TRADE_LIST';
+
     private TradeLicenseRepositoryInterface $tradeLicenseRepository;
 
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     private CommodityRepositoryInterface $commodityRepository;
 
+    private SessionInterface $session;
+
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        SessionInterface $session
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->session = $session;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -44,8 +51,29 @@ final class Overview implements ViewControllerInterface
         $game->setPageTitle(_('/ Handel'));
         $game->setTemplateFile('html/trade.xhtml');
 
-        $game->setTemplateVar('POST_ID', 0);
-        $game->setTemplateVar('COMMODITY_ID', 0);
+        $isFilterActive = $game->getViewContext()['FILTER_ACTIVE'] ?? false;
+
+        $commodityId = null;
+        $postId = null;
+        $dir = null;
+        if ($isFilterActive) {
+            if ($this->session->getSessionValue('trade_filter_cid')) {
+                $commodityId = $this->session->getSessionValue('trade_filter_cid');
+            }
+            if ($this->session->getSessionValue('trade_filter_pid')) {
+                $postId = $this->session->getSessionValue('trade_filter_pid');
+            }
+            if ($this->session->getSessionValue('trade_filter_dir')) {
+                $dir = $this->session->getSessionValue('trade_filter_dir');
+            }
+        } else {
+            $game->setTemplateVar('COMMODITY_ID', 0);
+            $game->setTemplateVar('POST_ID', 0);
+
+            $this->session->deleteSessionData('trade_filter_cid');
+            $this->session->deleteSessionData('trade_filter_pid');
+            $this->session->deleteSessionData('trade_filter_dir');
+        }
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
@@ -61,7 +89,7 @@ final class Overview implements ViewControllerInterface
                 function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
                     return new TradeOfferItem($tradeOffer, $user);
                 },
-                $this->tradeOfferRepository->getByUserLicenses($userId, null, null, null)
+                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, $dir)
             )
         );
     }

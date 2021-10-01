@@ -80,6 +80,7 @@ return [
     ],
     'TRADE_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
+        Overview::VIEW_IDENTIFIER => autowire(Overview::class),
         ShowAccounts::VIEW_IDENTIFIER => autowire(ShowAccounts::class),
         ShowOfferMenu::VIEW_IDENTIFIER => autowire(ShowOfferMenu::class),
         ShowTransferMenu::VIEW_IDENTIFIER => autowire(ShowTransferMenu::class),
