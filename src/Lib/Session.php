@@ -68,7 +68,7 @@ final class Session implements SessionInterface
     private function isLoggedIn(): bool
     {
         return array_key_exists('uid', $_SESSION)
-            && array_key_exists('login',$_SESSION)
+            && array_key_exists('login', $_SESSION)
             && $_SESSION['login'] == 1;
     }
 
@@ -156,8 +156,9 @@ final class Session implements SessionInterface
         $this->userIpTableRepository->save($ipTableEntry);
     }
 
-    private function buildCookieString(UserInterface $user): string {
-        return sha1($user->getId().$user->getEMail().$user->getCreationDate());
+    private function buildCookieString(UserInterface $user): string
+    {
+        return sha1($user->getId() . $user->getEMail() . $user->getCreationDate());
     }
 
     private function destroySession(?UserInterface $user = null): void
@@ -268,14 +269,25 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function storeSessionData($key, $value): void
+    public function storeSessionData($key, $value, bool $isSingleValue = false): void
     {
+        $stored = false;
+
         $data = $this->user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
-            $data[$key] = array();
+            if ($isSingleValue) {
+                $data[$key] = $value;
+                $stored = true;
+            } else {
+                $data[$key] = array();
+            }
         }
-        if (!array_key_exists($value, $data[$key])) {
+        if (!$isSingleValue && !array_key_exists($value, $data[$key])) {
             $data[$key][$value] = 1;
+            $stored = true;
+        }
+
+        if ($stored) {
             $this->user->setSessionData(serialize($data));
             $this->userRepository->save($this->user);
         }
@@ -284,16 +296,20 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function deleteSessionData($key, $value): void
+    public function deleteSessionData($key, $value = null): void
     {
         $data = $this->user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
             return;
         }
-        if (!array_key_exists($value, $data[$key])) {
-            return;
+        if ($value === null) {
+            unset($data[$key]);
+        } else {
+            if (!array_key_exists($value, $data[$key])) {
+                return;
+            }
+            unset($data[$key][$value]);
         }
-        unset($data[$key][$value]);
         $this->user->setSessionData(serialize($data));
         $this->userRepository->save($this->user);
     }
@@ -311,5 +327,17 @@ final class Session implements SessionInterface
             return false;
         }
         return true;
+    }
+
+    /**
+     * @api
+     */
+    public function getSessionValue($key): mixed
+    {
+        $data = $this->user->getSessionDataUnserialized();
+        if (!array_key_exists($key, $data)) {
+            return false;
+        }
+        return $data[$key];
     }
 }
