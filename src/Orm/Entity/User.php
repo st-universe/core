@@ -416,6 +416,7 @@ class User implements UserInterface
     public function setSessiondata(string $sessiondata): UserInterface
     {
         $this->sessiondata = $sessiondata;
+        $this->sessiondataUnserialized = null;
         return $this;
     }
 
