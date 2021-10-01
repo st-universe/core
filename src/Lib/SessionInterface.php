@@ -22,7 +22,7 @@ interface SessionInterface
 
     public function hasSessionValue($key, $value): bool;
 
-    public function getSessionValue($key): mixed;
+    public function getSessionValue($key);
 
     public function login(string $userName, string $password): void;
 }

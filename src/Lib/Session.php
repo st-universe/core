@@ -332,7 +332,7 @@ final class Session implements SessionInterface
     /**
      * @api
      */
-    public function getSessionValue($key): mixed
+    public function getSessionValue($key)
     {
         $data = $this->user->getSessionDataUnserialized();
         if (!array_key_exists($key, $data)) {
