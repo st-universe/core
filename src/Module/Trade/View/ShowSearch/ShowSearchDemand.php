@@ -7,6 +7,8 @@ namespace Stu\Module\Trade\View\ShowSearch;
 use request;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Trade\TradeEnum;
+use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Trade\Lib\TradeOfferItem;
@@ -26,14 +28,18 @@ final class ShowSearchDemand implements ViewControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
+    private SessionInterface $session;
+
     public function __construct(
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeOfferRepositoryInterface $tradeOfferRepository,
-        CommodityRepositoryInterface $commodityRepository
+        CommodityRepositoryInterface $commodityRepository,
+        SessionInterface $session
     ) {
         $this->tradeLicenseRepository = $tradeLicenseRepository;
         $this->tradeOfferRepository = $tradeOfferRepository;
         $this->commodityRepository = $commodityRepository;
+        $this->session = $session;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -53,6 +59,10 @@ final class ShowSearchDemand implements ViewControllerInterface
 
         $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
+
+        $this->session->storeSessionData('trade_filter_cid', $commodityId, true);
+        $this->session->storeSessionData('trade_filter_pid', $postId, true);
+        $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_DEMAND, true);
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);

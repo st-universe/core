@@ -10,6 +10,7 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
+use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Entity\TradeOfferInterface;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -156,6 +157,8 @@ final class TakeOffer implements ActionControllerInterface
         $this->tradeTransactionRepository->save($transaction);
 
         $game->addInformation(sprintf(_('Das Angebot wurde %d mal angenommen'), $amount));
+
+        $game->setView(Overview::VIEW_IDENTIFIER, ['FILTER_ACTIVE' => true]);
 
         $this->privateMessageSender->send(
             $userId,
