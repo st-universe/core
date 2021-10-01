@@ -60,6 +60,10 @@ final class ShowSearchOffer implements ViewControllerInterface
         $game->setTemplateVar('POST_ID', request::postIntFatal('pid'));
         $game->setTemplateVar('COMMODITY_ID', $commodityId);
 
+        $this->session->deleteSessionData('trade_filter_cid');
+        $this->session->deleteSessionData('trade_filter_pid');
+        $this->session->deleteSessionData('trade_filter_dir');
+
         $this->session->storeSessionData('trade_filter_cid', $commodityId, true);
         $this->session->storeSessionData('trade_filter_pid', $postId, true);
         $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_OFFER, true);
