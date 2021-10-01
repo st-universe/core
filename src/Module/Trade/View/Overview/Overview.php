@@ -67,13 +67,13 @@ final class Overview implements ViewControllerInterface
                 $dir = $this->session->getSessionValue('trade_filter_dir');
             }
         } else {
-            $game->setTemplateVar('COMMODITY_ID', 0);
-            $game->setTemplateVar('POST_ID', 0);
-
             $this->session->deleteSessionData('trade_filter_cid');
             $this->session->deleteSessionData('trade_filter_pid');
             $this->session->deleteSessionData('trade_filter_dir');
         }
+
+        $game->setTemplateVar('COMMODITY_ID', $commodityId ?? 0);
+        $game->setTemplateVar('POST_ID', $postId ?? 0);
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
