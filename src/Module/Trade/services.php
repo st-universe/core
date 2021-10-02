@@ -36,6 +36,7 @@ use Stu\Module\Trade\View\ShowOfferMenu\ShowOfferMenuRequestInterface;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOffer;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequest;
 use Stu\Module\Trade\View\ShowOfferMenuNewOffer\ShowOfferMenuNewOfferRequestInterface;
+use Stu\Module\Trade\View\ShowSearch\ShowSearchBoth;
 use Stu\Module\Trade\View\ShowSearch\ShowSearchDemand;
 use Stu\Module\Trade\View\ShowSearch\ShowSearchOffer;
 use Stu\Module\Trade\View\ShowShoutBox\ShowShoutBox;
@@ -92,6 +93,7 @@ return [
         ShowShoutBox::VIEW_IDENTIFIER => autowire(ShowShoutBox::class),
         ShowShoutBoxList::VIEW_IDENTIFIER => autowire(ShowShoutBoxList::class),
         ShowSearchDemand::VIEW_IDENTIFIER => autowire(ShowSearchDemand::class),
-        ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class)
+        ShowSearchOffer::VIEW_IDENTIFIER => autowire(ShowSearchOffer::class),
+        ShowSearchBoth::VIEW_IDENTIFIER => autowire(ShowSearchBoth::class)
     ],
 ];
