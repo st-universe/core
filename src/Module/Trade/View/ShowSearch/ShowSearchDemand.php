@@ -83,7 +83,7 @@ final class ShowSearchDemand implements ViewControllerInterface
                 function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
                     return new TradeOfferItem($tradeOffer, $user);
                 },
-                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, false)
+                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_DEMAND)
             )
         );
     }
