@@ -186,6 +186,12 @@ final class ShipRemover implements ShipRemoverInterface
         foreach ($ship->getStorage() as $item) {
             $this->shipStorageRepository->delete($item);
         }
+
+        foreach ($ship->getDockedShips() as $dockedShip) {
+            $dockedShip->setDockedTo(null);
+            $this->shipRepository->save($dockedShip);
+        }
+
         $this->shipCrewRepository->truncateByShip((int) $ship->getId());
 
         $this->shipRepository->delete($ship);
