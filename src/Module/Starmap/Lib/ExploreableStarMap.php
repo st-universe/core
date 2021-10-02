@@ -32,6 +32,9 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     /** @Column(type="integer", nullable=true) * */
     private ?int $mapped = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private ?int $influence_id = 0;
+
     private bool $hide = false;
 
     /**
@@ -86,7 +89,11 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     public function getFieldStyle(): string
     {
         if ($this->mapBorderType === null) {
-            $borderStyle = '';
+            if ($this->influence_id === 53) {
+                $borderStyle = 'border: 1px solid #800080';
+            } else {
+                $borderStyle = '';
+            }
         } else {
             $borderStyle = 'border: 1px solid #' . $this->mapBorderType->getColor();
         }
