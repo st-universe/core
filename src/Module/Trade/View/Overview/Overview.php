@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Trade\View\Overview;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -55,7 +56,7 @@ final class Overview implements ViewControllerInterface
 
         $commodityId = null;
         $postId = null;
-        $dir = null;
+        $dir = TradeEnum::FILTER_COMMODITY_IN_BOTH;
         if ($isFilterActive) {
             if ($this->session->getSessionValue('trade_filter_cid')) {
                 $commodityId = $this->session->getSessionValue('trade_filter_cid');

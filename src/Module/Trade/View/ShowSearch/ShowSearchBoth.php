@@ -82,7 +82,7 @@ final class ShowSearchBoth implements ViewControllerInterface
                 function (TradeOfferInterface $tradeOffer) use ($user): TradeOfferItemInterface {
                     return new TradeOfferItem($tradeOffer, $user);
                 },
-                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, null)
+                $this->tradeOfferRepository->getByUserLicenses($userId, $commodityId, $postId, TradeEnum::FILTER_COMMODITY_IN_BOTH)
             )
         );
     }

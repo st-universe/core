@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Trade\TradeEnum;
 use Stu\Orm\Entity\TradeLicense;
 use Stu\Orm\Entity\TradeOffer;
 use Stu\Orm\Entity\TradeOfferInterface;
@@ -59,8 +60,20 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
         ]);
     }
 
-    public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, ?bool $offer): array
+    public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, int $direction): array
     {
+        if ($commodityId !== null) {
+            if ($direction === TradeEnum::FILTER_COMMODITY_IN_BOTH) {
+                $commoditySql = sprintf(' AND (to.gg_id = %1$d OR to.wg_id = %1$d) ', $commodityId);
+            } else if ($direction === TradeEnum::FILTER_COMMODITY_IN_OFFER) {
+                $commoditySql = sprintf(' AND to.gg_id = %d ', $commodityId);
+            } else {
+                $commoditySql = sprintf(' AND to.wg_id = %d ', $commodityId);
+            }
+        } else {
+            $commoditySql = '';
+        }
+
         /** @noinspection SyntaxError */
         return $this->getEntityManager()
             ->createQuery(
@@ -71,7 +84,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
                     ORDER BY to.date DESC',
                     TradeOffer::class,
                     TradeLicense::class,
-                    $commodityId != null ? sprintf(' AND to.%s = %d ', $offer ? 'gg_id' : 'wg_id', $commodityId) : '',
+                    $commoditySql,
                     $tradePostId != null ? sprintf(' AND to.posts_id = %d ', $tradePostId) : ''
                 )
             )
