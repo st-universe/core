@@ -66,7 +66,7 @@ final class ShowSearchBoth implements ViewControllerInterface
 
         $this->session->storeSessionData('trade_filter_cid', $commodityId, true);
         $this->session->storeSessionData('trade_filter_pid', $postId, true);
-        $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_OFFER, true);
+        $this->session->storeSessionData('trade_filter_dir', TradeEnum::FILTER_COMMODITY_IN_BOTH, true);
 
         $tradeLicenses = $this->tradeLicenseRepository->getByUser($userId);
         $game->setTemplateVar('TRADE_LICENSES', $tradeLicenses);
