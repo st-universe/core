@@ -212,7 +212,11 @@ class Map implements MapInterface
     {
         $borderType = $this->getMapBorderType();
         if ($borderType === null) {
-            return '';
+            if ($this->getInfluenceAreaId() === 53) {
+                return 'border: 1px solid #800080';
+            } else {
+                return '';
+            }
         }
         return 'border: 1px solid #' . $borderType->getColor();
     }
