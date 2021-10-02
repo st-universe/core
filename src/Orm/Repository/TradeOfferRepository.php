@@ -62,7 +62,7 @@ final class TradeOfferRepository extends EntityRepository implements TradeOfferR
 
     public function getByUserLicenses(int $userId, ?int $commodityId, ?int $tradePostId, int $direction): array
     {
-        if ($commodityId !== null) {
+        if ($commodityId !== null && $commodityId !== 0) {
             if ($direction === TradeEnum::FILTER_COMMODITY_IN_BOTH) {
                 $commoditySql = sprintf(' AND (to.gg_id = %1$d OR to.wg_id = %1$d) ', $commodityId);
             } else if ($direction === TradeEnum::FILTER_COMMODITY_IN_OFFER) {
