@@ -842,6 +842,19 @@
 		</tr>
 	</table>
 	<br />
+	<tal:block tal:condition="SHIP/getFleet">
+		<table class="tcal" tal:condition="not:SHIP/isFleetLeader">
+			<tr>
+				<th>
+					<div style="display: inline-block;width: 80%;">
+						<a href="?SHOW_SHIP=1&id=${SHIP/getFleet/getLeadShip/getId}">
+							<img src="assets/buttons/fleet.png" title="zum Führungsschiff wechseln" />
+							<span>zum Führungsschiff wechseln</span></a>
+					</div>
+				</th>
+			</tr>
+		</table>
+	</tal:block>
 	<table class="tcal" tal:condition="php:SHIP.isFleetLeader() AND SHIP.getFleet().getShipCount() > 1">
 		<tr>
 			<th colspan="2">
