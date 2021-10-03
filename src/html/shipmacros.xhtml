@@ -949,7 +949,10 @@
   </form>
 </metal:block>
 <metal:macro metal:define-macro="crewslot">
-  <div id="rn_crew_${CREW/getId}">
+  <div id="rn_crew_${CREW/getId}" tal:condition="not:php: CREW.getUser().getId() EQ SHIP.getUser().getId()">
+    <div tal:content="CREW/getName" style="font-weight: bold;">NAME</div>
+  </div>
+  <div id="rn_crew_${CREW/getId}" tal:condition="php: CREW.getUser().getId() EQ SHIP.getUser().getId()">
     <div onclick="showRenameCrew(this,${CREW/getId});" tal:content="CREW/getName" class="action"
       style="font-weight: bold;">NAME</div>
     <div id="rn_crew_${CREW/getId}_input" style="display: none;">
