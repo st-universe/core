@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\View\Overview;
 
+use request;
 use Stu\Module\Control\GameController;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageListItem;
@@ -48,7 +49,7 @@ final class Overview implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
-        $categoryId = $this->showPmCategoryRequest->getCategoryId();
+        $categoryId = request::indInt('pmcat');
 
         $mark = $this->showPmCategoryRequest->getListOffset();
 
