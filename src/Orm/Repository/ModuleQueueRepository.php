@@ -5,11 +5,28 @@ declare(strict_types=1);
 namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stu\Orm\Entity\Colony;
 use Stu\Orm\Entity\ModuleQueue;
 use Stu\Orm\Entity\ModuleQueueInterface;
 
 final class ModuleQueueRepository extends EntityRepository implements ModuleQueueRepositoryInterface
 {
+    public function getByUser(int $userId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT mq FROM %s mq
+                JOIN %s c
+                WITH mq.colony_id = c.id
+                WHERE c.user_id = :userId',
+                ModuleQueue::class,
+                Colony::class
+            )
+        )->setParameters([
+            'userId' => $userId
+        ])->getResult();
+    }
+
     public function getByColony(int $colonyId): array
     {
         return $this->findBy([

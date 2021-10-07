@@ -12,6 +12,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyTerraformingRepositoryInterface;
+use Stu\Orm\Repository\ModuleQueueRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
@@ -26,16 +27,20 @@ final class Overview implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ModuleQueueRepositoryInterface $moduleQueueRepository;
+
     public function __construct(
         ColonyTerraformingRepositoryInterface $colonyTerraformingRepository,
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyLibFactoryInterface $colonyLibFactory,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        ModuleQueueRepositoryInterface $moduleQueueRepository
     ) {
         $this->colonyTerraformingRepository = $colonyTerraformingRepository;
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyLibFactory = $colonyLibFactory;
         $this->colonyRepository = $colonyRepository;
+        $this->moduleQueueRepository = $moduleQueueRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -55,8 +60,7 @@ final class Overview implements ViewControllerInterface
         $productionOverview = [];
         foreach ($colonyList as $colony) {
             foreach ($colony->getProduction() as $prod) {
-                if (!$prod->getGood()->isTradeable())
-                {
+                if (!$prod->getGood()->isTradeable()) {
                     continue;
                 }
 
@@ -66,8 +70,7 @@ final class Overview implements ViewControllerInterface
                     $colonyProduction = $productionOverview[$commodityId];
                     $newProduction = $colonyProduction->getProduction() + $prod->getProduction();
                     $colonyProduction->setProduction($newProduction);
-                }
-                else {
+                } else {
                     $data = [];
                     $data['gc'] = $prod->getProduction();
                     $data['pc'] = 0;
@@ -85,7 +88,7 @@ final class Overview implements ViewControllerInterface
                 return $prod->getProduction() > 0;
             }
         );
-        
+
         usort(
             $productionOverview,
             function (ColonyProduction $a, ColonyProduction $b): int {
@@ -107,7 +110,8 @@ final class Overview implements ViewControllerInterface
             )
         );
         $game->setTemplateVar(
-            'PRODUCTION_LIST', $productionOverview
+            'PRODUCTION_LIST',
+            $productionOverview
         );
         $game->setTemplateVar(
             'TERRAFORMING_LIST',
@@ -117,5 +121,14 @@ final class Overview implements ViewControllerInterface
             'BUILDINGJOB_LIST',
             $this->planetFieldRepository->getInConstructionByUser($userId)
         );
+        $game->setTemplateVar(
+            'MODULE_LIST',
+            $this->fetchModuleList($userId)
+        );
+    }
+
+    private function fetchModuleList(int $userId): array
+    {
+        return $this->moduleQueueRepository->getByUser($userId);
     }
 }
