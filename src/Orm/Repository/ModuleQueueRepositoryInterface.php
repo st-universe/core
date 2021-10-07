@@ -10,6 +10,11 @@ interface ModuleQueueRepositoryInterface extends ObjectRepository
     /**
      * @return ModuleQueueInterface[]
      */
+    public function getByUser(int $userId): array;
+
+    /**
+     * @return ModuleQueueInterface[]
+     */
     public function getByColony(int $colonyId): array;
 
     public function getByColonyAndModuleAndBuilding(

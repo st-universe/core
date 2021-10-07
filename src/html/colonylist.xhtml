@@ -123,6 +123,35 @@
 					</div>
 				</div>
 			</div>
+			<div style="float: right; width: 20%;">
+				<div tal:condition="MODULE_LIST">
+					<table class="tcal">
+						<tr>
+							<th>Modul</th>
+							<th>Ort</th>
+							<th>Menge</th>
+						</tr>
+						<tr tal:attributes="class string:row${repeat/mod/odd}" tal:repeat="mod MODULE_LIST">
+							<td style="vertical-align: middle;">
+								<div style="display: table-cell; width: 55px;">
+									<img src="assets/goods/${mod/getModule/getGoodId}.png"
+										tal:attributes="title mod/getGood/getName" />
+								</div>
+							</td>
+							<td style="vertical-align: middle;">
+								<div style="display: table-cell; width: 55px;">
+									<a href="colony.php?SHOW_COLONY=1&id=${mod/getColony/getId}">
+										<img src="assets/planets/${mod/getColony/getColonyClass}.gif"
+											tal:attributes="title mod/getColony/getName" /></a>
+								</div>
+							</td>
+							<td style="vertical-align: middle;">
+								<span tal:content="mod/getAmount">.</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 			<div style="float: right; width: 30%;">
 				<div tal:condition="PRODUCTION_LIST">
 					<table class="tcal">
