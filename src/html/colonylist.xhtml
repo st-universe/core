@@ -123,6 +123,30 @@
 					</div>
 				</div>
 			</div>
+			<div style="float: right; width: 30%;">
+				<div tal:condition="PRODUCTION_LIST">
+					<table class="tcal">
+						<tr>
+							<th>Ware</th>
+							<th>Gesamtproduktion</th>
+						</tr>
+						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
+							<td style="vertical-align: middle;">
+								<div style="display: table-cell; width: 55px;">
+									<img src="assets/goods/${prod/getGoodId}.png"
+										tal:attributes="title prod/getGood/getName" />
+								</div>
+								<div style="display: table-cell; vertical-align: middle"
+									tal:content="prod/getGood/getName">NAME</div>
+							</td>
+							<td style="vertical-align: middle;">
+								<span tal:content="prod/getProductionDisplay"
+									tal:attributes="class prod/getCssClass">.</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 			<div style="float: right; width: 20%;">
 				<div tal:condition="MODULE_LIST">
 					<table class="tcal">
@@ -147,30 +171,6 @@
 							</td>
 							<td style="vertical-align: middle;">
 								<span tal:content="mod/getAmount">.</span>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<div style="float: right; width: 30%;">
-				<div tal:condition="PRODUCTION_LIST">
-					<table class="tcal">
-						<tr>
-							<th>Ware</th>
-							<th>Gesamtproduktion</th>
-						</tr>
-						<tr tal:attributes="class string:row${repeat/prod/odd}" tal:repeat="prod PRODUCTION_LIST">
-							<td style="vertical-align: middle;">
-								<div style="display: table-cell; width: 55px;">
-									<img src="assets/goods/${prod/getGoodId}.png"
-										tal:attributes="title prod/getGood/getName" />
-								</div>
-								<div style="display: table-cell; vertical-align: middle"
-									tal:content="prod/getGood/getName">NAME</div>
-							</td>
-							<td style="vertical-align: middle;">
-								<span tal:content="prod/getProductionDisplay"
-									tal:attributes="class prod/getCssClass">.</span>
 							</td>
 						</tr>
 					</table>
