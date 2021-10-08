@@ -335,3 +335,9 @@ function showGiveUpWindow(target) {
 	openWindow(elt, 1, 300);
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_GIVEUP_AJAX=1&target=' + target);
 }
+
+function getCommodityLocations(commodityId) {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'database.php?commodityId=' + commodityId + '&SHOW_GOODS_LOCATIONS=1');
+}
