@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Building\Action;
 
+use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
 
 final class Shipyard implements BuildingActionHandlerInterface
@@ -24,13 +25,13 @@ final class Shipyard implements BuildingActionHandlerInterface
         );
     }
 
-    public function deactivate(int $buildingFunctionId, int $colonyId): void
+    public function deactivate(int $buildingFunctionId, ColonyInterface $colony): void
     {
-        $this->colonyShipQueueRepository->stopQueueByColonyAndBuildingFunction($colonyId, $buildingFunctionId);
+        $this->colonyShipQueueRepository->stopQueueByColonyAndBuildingFunction($colony->getId(), $buildingFunctionId);
     }
 
-    public function activate(int $buildingFunctionId, int $colonyId): void
+    public function activate(int $buildingFunctionId, ColonyInterface $colony): void
     {
-        $this->colonyShipQueueRepository->restartQueueByColonyAndBuildingFunction($colonyId, $buildingFunctionId);
+        $this->colonyShipQueueRepository->restartQueueByColonyAndBuildingFunction($colony->getId(), $buildingFunctionId);
     }
 }

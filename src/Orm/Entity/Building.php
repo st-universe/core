@@ -97,7 +97,8 @@ class Building implements BuildingInterface
      */
     private $possibleFieldTypes;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->costs = new ArrayCollection();
         $this->functions = new ArrayCollection();
         $this->commodities = new ArrayCollection();
@@ -357,7 +358,7 @@ class Building implements BuildingInterface
 
             $handler = $buildingFunctionActionMapper->map($buildingFunctionId);
             if ($handler !== null) {
-                $handler->deactivate((int)$colony->getId(), $buildingFunctionId);
+                $handler->deactivate($buildingFunctionId, $colony);
             }
         }
     }
@@ -374,7 +375,7 @@ class Building implements BuildingInterface
 
             $handler = $buildingFunctionActionMapper->map($buildingFunctionId);
             if ($handler !== null) {
-                $handler->activate((int)$colony->getId(), $buildingFunctionId);
+                $handler->activate($buildingFunctionId, $colony);
             }
         }
     }

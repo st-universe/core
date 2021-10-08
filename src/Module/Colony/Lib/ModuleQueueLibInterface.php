@@ -7,5 +7,7 @@ use Stu\Orm\Entity\ColonyInterface;
 
 interface ModuleQueueLibInterface
 {
-    public function cancelModuleQueues(ColonyInterface $colony, BuildingInterface $building);
+    public function cancelModuleQueues(ColonyInterface $colony, int $buildingFunctionId);
+
+    public function cancelModuleQueuesForBuilding(ColonyInterface $colony, BuildingInterface $building);
 }

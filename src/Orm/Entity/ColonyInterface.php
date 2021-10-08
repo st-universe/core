@@ -103,6 +103,8 @@ interface ColonyInterface
 
     public function getBeamFactor(): int;
 
+    public function getPlanetFields(): Collection;
+
     /**
      * @return ColonyStorageInterface[]
      */
