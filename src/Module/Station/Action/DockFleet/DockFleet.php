@@ -92,6 +92,11 @@ final class DockFleet implements ActionControllerInterface
             return;
         }
 
+        if ($station->getShieldState()) {
+            $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
+            return;
+        }
+
         $this->fleetDock($station, $targetFleet, $game);
 
         //$game->addInformation('Andockvorgang abgeschlossen');
