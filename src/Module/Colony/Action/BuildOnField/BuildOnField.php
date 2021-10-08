@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Action\BuildOnField;
 
 use request;
-use Stu\Component\Queue\Message\MessageFactoryInterface;
-use Stu\Component\Queue\Publisher\DelayedJobPublisherInterface;
-use Stu\Component\Queue\PublishInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Colony\Lib\BuildingActionInterface;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Module\Control\ActionControllerInterface;
@@ -41,9 +39,7 @@ final class BuildOnField implements ActionControllerInterface
 
     private BuildingActionInterface $buildingAction;
 
-    private DelayedJobPublisherInterface $delayedJobPublisher;
-
-    private MessageFactoryInterface $messageFactory;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
@@ -54,8 +50,7 @@ final class BuildOnField implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         BuildingActionInterface $buildingAction,
-        DelayedJobPublisherInterface $delayedJobPublisher,
-        MessageFactoryInterface $messageFactory
+        EntityManagerInterface $entityManager
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->buildingFieldAlternativeRepository = $buildingFieldAlternativeRepository;
@@ -65,8 +60,7 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->buildingAction = $buildingAction;
-        $this->delayedJobPublisher = $delayedJobPublisher;
-        $this->messageFactory = $messageFactory;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -150,12 +144,14 @@ final class BuildOnField implements ActionControllerInterface
         foreach ($building->getCosts() as $obj) {
             $commodityId = $obj->getGoodId();
 
+            $currentBuildingCost = [];
+
             if ($field->hasBuilding()) {
 
-                $currentBuildingCost = $field->getBuilding()->getCosts();
+                $currentBuildingCost = $field->getBuilding()->getCosts()->toArray();
 
                 $result = array_filter(
-                    $currentBuildingCost->toArray(),
+                    $currentBuildingCost,
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
                         return $commodityId === $buildingCost->getGoodId();
                     }
@@ -189,7 +185,7 @@ final class BuildOnField implements ActionControllerInterface
             }
             if ($field->hasBuilding()) {
                 $result = array_filter(
-                    $currentBuildingCost->toArray(),
+                    $currentBuildingCost,
                     function (BuildingCostInterface $buildingCost) use ($commodityId): bool {
                         return $commodityId === $buildingCost->getGoodId();
                     }
@@ -228,6 +224,10 @@ final class BuildOnField implements ActionControllerInterface
             $this->buildingAction->remove($colony, $field, $game);
         }
 
+        $this->colonyRepository->save($colony);
+        $this->entityManager->flush();
+        $colony = $this->colonyRepository->find(request::indInt('id'));
+
         foreach ($building->getCosts() as $obj) {
             $this->colonyStorageManager->lowerStorage($colony, $obj->getGood(), $obj->getAmount());
         }
@@ -240,16 +240,6 @@ final class BuildOnField implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $this->planetFieldRepository->save($field);
-
-
-        /**
-         *$message = $this->messageFactory->createBuildingJobProcessMessage()
-         *    ->setPlanetFieldId($field->getId());
-         *$this->delayedJobPublisher->publish(
-         *    $message,
-         *    $building->getBuildtime()
-         *);
-         */
 
         $game->addInformationf(
             _('%s wird gebaut - Fertigstellung: %s'),
