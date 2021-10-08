@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 use Noodlehaus\ConfigInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Lib\SessionInterface;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
 $config = $container->get(ConfigInterface::class);
-$game = $container->get(GameControllerInterface::class);
+//$game = $container->get(GameControllerInterface::class);
+$session = $container->get(SessionInterface::class);
 
 $whoops = new Run();
 
 if (
     $config->get('debug.debug_mode') === true ||
-    ($game->getUser() !== null && $game->getUser()->isAdmin())
+    ($session->getUser() !== null && $session->getUser()->isAdmin())
 ) {
     //if ($config->get('debug.debug_mode') === true) {
     //if (true === true) {
