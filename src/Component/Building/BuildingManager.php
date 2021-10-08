@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
@@ -17,14 +18,18 @@ final class BuildingManager implements BuildingManagerInterface
 
     private ModuleQueueLibInterface $moduleQueueLib;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         ColonyRepositoryInterface $colonyRepository,
-        ModuleQueueLibInterface $moduleQueueLib
+        ModuleQueueLibInterface $moduleQueueLib,
+        EntityManagerInterface $entityManager
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
         $this->moduleQueueLib = $moduleQueueLib;
+        $this->entityManager = $entityManager;
     }
 
     public function activate(PlanetFieldInterface $field): void
@@ -83,6 +88,8 @@ final class BuildingManager implements BuildingManagerInterface
         $this->planetFieldRepository->save($field);
         $this->colonyRepository->save($colony);
 
+        $this->entityManager->flush();
+
         $building->postDeactivation($colony);
         $this->consequences($building, $colony);
     }
@@ -113,6 +120,8 @@ final class BuildingManager implements BuildingManagerInterface
 
         $this->planetFieldRepository->save($field);
         $this->colonyRepository->save($colony);
+
+
 
         $this->consequences($building, $colony);
     }
