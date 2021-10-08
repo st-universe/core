@@ -35,9 +35,12 @@ final class Shutdown implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
 
-        //deactivate all systems except life support
+        //deactivate all systems except life support and troop quarters
         foreach ($ship->getActiveSystems() as $system) {
-            if ($system->getSystemType() != ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT) {
+            if (
+                $system->getSystemType() != ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT &&
+                $system->getSystemType() != ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS
+            ) {
                 $this->helper->deactivate(request::indInt('id'), $system->getSystemType(), $game);
             }
         }
