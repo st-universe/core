@@ -83,6 +83,11 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
+        if ($target->getShieldState()) {
+            $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
+            return;
+        }
+
         if (!$this->dockPrivilegeUtility->checkPrivilegeFor((int) $target->getId(), $game->getUser())) {
 
             $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
