@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Component\Building;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Stu\Module\Colony\Lib\ModuleQueueLibInterface;
 use Stu\Orm\Entity\PlanetFieldInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\PlanetFieldRepositoryInterface;
@@ -16,20 +14,12 @@ final class BuildingManager implements BuildingManagerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private ModuleQueueLibInterface $moduleQueueLib;
-
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
-        ColonyRepositoryInterface $colonyRepository,
-        ModuleQueueLibInterface $moduleQueueLib,
-        EntityManagerInterface $entityManager
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->colonyRepository = $colonyRepository;
-        $this->moduleQueueLib = $moduleQueueLib;
-        $this->entityManager = $entityManager;
     }
 
     public function activate(PlanetFieldInterface $field): void
@@ -61,9 +51,9 @@ final class BuildingManager implements BuildingManagerInterface
         $field->setActive(1);
 
         $this->planetFieldRepository->save($field);
-        $this->colonyRepository->save($colony);
-
         $building->postActivation($colony);
+
+        $this->colonyRepository->save($colony);
     }
 
     public function deactivate(PlanetFieldInterface $field): void
@@ -86,12 +76,8 @@ final class BuildingManager implements BuildingManagerInterface
         $field->setActive(0);
 
         $this->planetFieldRepository->save($field);
-        $this->colonyRepository->save($colony);
-
-        $this->entityManager->flush();
-
         $building->postDeactivation($colony);
-        $this->consequences($building, $colony);
+        $this->colonyRepository->save($colony);
     }
 
     public function remove(
@@ -120,21 +106,6 @@ final class BuildingManager implements BuildingManagerInterface
 
         $this->planetFieldRepository->save($field);
         $this->colonyRepository->save($colony);
-
-
-
-        $this->consequences($building, $colony);
-    }
-
-    private function consequences($building, $colony)
-    {
-        if ($building->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR)) {
-            $colony->setShields(0);
-        } else if ($building->getFunctions()->containsKey(BuildingEnum::BUILDING_FUNCTION_SHIELD_BATTERY)) {
-            $colony->setShields(min($colony->getShields(), $colony->getMaxShields()));
-        } else if (!empty(array_intersect($building->getFunctions()->getKeys(), BuildingEnum::BUILDING_FUNCTION_MODULEFABS))) {
-            $this->moduleQueueLib->cancelModuleQueues($colony, $building);
-        }
     }
 
     public function finish(PlanetFieldInterface $field, bool $activate = true): void

@@ -110,6 +110,11 @@ class Colony implements ColonyInterface
     private $user;
 
     /**
+     * @OneToMany(targetEntity="PlanetField", mappedBy="colony", fetch="EXTRA_LAZY")
+     */
+    private $planetFields;
+
+    /**
      * @OneToMany(targetEntity="ColonyStorage", mappedBy="colony", indexBy="goods_id")
      * @OrderBy({"goods_id" = "ASC"})
      */
@@ -149,6 +154,7 @@ class Colony implements ColonyInterface
 
     public function __construct()
     {
+        $this->planetFields = new ArrayCollection();
         $this->storage = new ArrayCollection();
         $this->defenders = new ArrayCollection();
         $this->blockers = new ArrayCollection();
@@ -426,6 +432,11 @@ class Colony implements ColonyInterface
     public function getBeamFactor(): int
     {
         return 10;
+    }
+
+    public function getPlanetFields(): Collection
+    {
+        return $this->planetFields;
     }
 
     /**
