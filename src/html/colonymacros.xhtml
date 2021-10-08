@@ -1891,7 +1891,7 @@
     <tr tal:attributes="class string:row${repeat/stor/odd}" tal:repeat="stor STORAGE">
       <td style="vertical-align: middle;">
         <div style="display: table-cell; width: 55px;">
-          <a href="javascript:void(0);" onclick="getCommodityLocations(${entry/getCommodityId})">
+          <a href="javascript:void(0);" onclick="getCommodityLocations(${stor/good/getId})">
             <img src="assets/goods/${stor/good/getId}.png" tal:attributes="title stor/good/getName" />
           </a>
         </div>
