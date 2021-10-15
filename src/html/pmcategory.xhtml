@@ -14,11 +14,16 @@
         <br />
         <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post PM_LIST">
           <div class="box">
-            <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
+            <div tal:define="sender post/getSender" class="box_title"
+              style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
               <span tal:condition="not:CATEGORY/isPMOutDir">Von:</span>
               <span tal:condition="CATEGORY/isPMOutDir">An:</span>
-              <span tal:replace="structure bbcode:post/getSender/getName">USER</span> (<span
-                tal:replace="post/getSender/getId">ID</span>)
+              <span tal:replace="structure bbcode:sender/getName">USER</span> (<span
+                tal:replace="sender/getId">ID</span>) <tal:block tal:condition="sender/isShowOnlineState">
+                <img tal:condition="sender/isOnline" src="/assets/buttons/user_online.png" title="User ist online" />
+                <img tal:condition="not:sender/isOnline" src="/assets/buttons/user_offline.png"
+                  title="User ist offline" />
+              </tal:block>
             </div>
             <div class="box_body" style="margin: 0; padding: 0;">
               <div class="pmGrid">
