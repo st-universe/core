@@ -352,7 +352,11 @@
         <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
           <div tal:condition="post/getUser">
             <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span
-              tal:replace="post/getUser/getId">ID</span>)
+              tal:replace="post/getUser/getId">ID</span>) <tal:block tal:condition="post/geUser/isShowOnlineState">
+              <img tal:condition="post/geUser/isOnline" src="/assets/buttons/user_online.png" title="User ist online" />
+              <img tal:condition="not:post/geUser/isOnline" src="/assets/buttons/user_offline.png"
+                title="User ist offline" />
+            </tal:block>
           </div>
           <div tal:condition="not:post/getUser" tal:content="structure bbcode:post/getUserName">USER</div>
         </div>
