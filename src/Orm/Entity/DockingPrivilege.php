@@ -32,7 +32,7 @@ class DockingPrivilege implements DockingPrivilegeInterface
     private $ships_id = 0;
 
     /** @Column(type="integer") * */
-    private $target = 0;
+    private $target = 0; //TODO create refs to user, ally, ship and faction entities and make cascade delete
 
     /** @Column(type="smallint") * */
     private $privilege_type = 0;

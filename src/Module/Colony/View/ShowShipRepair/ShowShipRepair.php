@@ -69,8 +69,8 @@ final class ShowShipRepair implements ViewControllerInterface
             $repairableShips = [];
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
                 /** @var ShipInterface $ship */
-                foreach ($fleet['ships'] as $ship_id => $ship) {
-                    if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
+                foreach ($fleet['ships'] as $ship) {
+                    if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
@@ -87,7 +87,8 @@ final class ShowShipRepair implements ViewControllerInterface
                 _('Kolonien')
             );
             $game->appendNavigationPart(
-                sprintf('?%s=1&id=%d',
+                sprintf(
+                    '?%s=1&id=%d',
                     ShowColony::VIEW_IDENTIFIER,
                     $colony->getId()
                 ),
