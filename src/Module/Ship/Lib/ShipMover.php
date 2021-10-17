@@ -325,7 +325,10 @@ final class ShipMover implements ShipMoverInterface
     {
         foreach ($ships as $ship) {
             $ship->setDockedTo(null);
-            if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
+            if (
+                $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE ||
+                $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+            ) {
                 $ship->cancelRepair();
                 $this->addInformation(sprintf(_('Die Reparatur der %s wurde abgebrochen'), $ship->getId()));
             }

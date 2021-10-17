@@ -46,7 +46,7 @@ final class CancelShipRepair implements ActionControllerInterface
         $station = $repairJob->getStation();
         $target = $repairJob->getShip();
 
-        if ($target->getState() !== ShipStateEnum::SHIP_STATE_REPAIR) {
+        if ($target->getState() !== ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             return;
         }
 

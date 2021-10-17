@@ -1529,7 +1529,10 @@ class Ship implements ShipInterface
 
     public function cancelRepair(): void
     {
-        if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR) {
+        if (
+            $this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE ||
+            $this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+        ) {
             $this->setState(ShipStateEnum::SHIP_STATE_NONE);
 
             // @todo inject
