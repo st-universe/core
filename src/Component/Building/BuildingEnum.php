@@ -27,8 +27,6 @@ final class BuildingEnum
     public const BUILDING_FUNCTION_DESTROYER_SHIPYARD = 21;
     public const BUILDING_FUNCTION_REPAIR_SHIPYARD = 22;
     public const BUILDING_FUNCTION_WAREHOUSE = 23;
-    public const BUILDING_FUNCTION_FABRICATION_HALL = 24;
-    public const BUILDING_FUNCTION_TECH_CENTER = 25;
 
     public const BUILDING_FUNCTION_MODULEFABS = [
         self::BUILDING_FUNCTION_MODULEFAB_TYPE1_LVL1,
@@ -51,6 +49,10 @@ final class BuildingEnum
 
     public const SHIELD_GENERATOR_CAPACITY = 4000;
     public const SHIELD_BATTERY_CAPACITY = 10000;
+
+    // spare parts
+    public const BUILDING_FUNCTION_FABRICATION_HALL = 29;
+    public const BUILDING_FUNCTION_TECH_CENTER = 30;
 
     // other
     public const BUILDMENU_SOCIAL = 1;
