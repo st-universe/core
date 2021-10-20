@@ -96,6 +96,26 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
         return null;
     }
 
+    public function getFabHallBuildingFunctionId(): ?int
+    {
+        foreach ($this->buildingfunctionIds as $func) {
+            if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL) {
+                return $func->getId();
+            }
+        }
+        return null;
+    }
+
+    public function getTechCenterBuildingFunctionId(): ?int
+    {
+        foreach ($this->buildingfunctionIds as $func) {
+            if ($func->getFunction() === BuildingEnum::BUILDING_FUNCTION_TECH_CENTER) {
+                return $func->getId();
+            }
+        }
+        return null;
+    }
+
     private function hasFunction(int $functionId): bool
     {
         return array_key_exists($functionId, $this->buildingfunctionIds);

@@ -1369,11 +1369,13 @@
               </div>
             </tal:block>
             <div class="fabutton" tal:condition="BUILDING_FUNCTION/isFabHall">
-              <a href="javascript:void(0)" onclick="switchColonyMenu(14, 29);cClick();"
+              <a href="javascript:void(0)"
+                onclick="switchColonyMenu(14, ${BUILDING_FUNCTION/getFabHallBuildingFunctionId});cClick();"
                 class="fabutton">Ersatzteilherstellung</a>
             </div>
             <div class="fabutton" tal:condition="BUILDING_FUNCTION/isTechCenter">
-              <a href="javascript:void(0)" onclick="switchColonyMenu(15, 30);cClick();"
+              <a href="javascript:void(0)"
+                onclick="switchColonyMenu(15, ${BUILDING_FUNCTION/getTechCenterBuildingFunctionId});cClick();"
                 class="fabutton">Systemkomponentenherstellung</a>
             </div>
             <br />

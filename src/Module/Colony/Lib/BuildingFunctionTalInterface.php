@@ -25,4 +25,8 @@ interface BuildingFunctionTalInterface
     public function isTechCenter(): bool;
 
     public function getModuleFabBuildingFunctionId(): ?int;
+
+    public function getFabHallBuildingFunctionId(): ?int;
+
+    public function getTechCenterBuildingFunctionId(): ?int;
 }
