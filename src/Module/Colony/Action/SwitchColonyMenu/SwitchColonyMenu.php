@@ -14,6 +14,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowAcademy\ShowAcademy;
 use Stu\Module\Colony\View\ShowFighterShipyard\ShowFighterShipyard;
+use Stu\Module\Colony\View\ShowModuleFab\ShowModuleFab;
 use Stu\Module\Colony\View\ShowShipyard\ShowShipyard;
 use Stu\Module\Colony\View\ShowWaste\ShowWaste;
 use Stu\Orm\Entity\ColonyInterface;
@@ -90,7 +91,7 @@ final class SwitchColonyMenu implements ActionControllerInterface
                 }
             case ColonyEnum::MENU_MODULEFAB:
                 if ($colonySurface->hasModuleFab()) {
-                    $game->setView('SHOW_MODULEFAB');
+                    $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
                     return;
                 }
             case ColonyEnum::MENU_FIGHTER_SHIPYARD:
@@ -111,6 +112,18 @@ final class SwitchColonyMenu implements ActionControllerInterface
             case ColonyEnum::MENU_WASTE:
                 if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_WAREHOUSE)) {
                     $game->setView(ShowWaste::VIEW_IDENTIFIER);
+                    return;
+                }
+            case ColonyEnum::MENU_FAB_HALL:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL)) {
+                    //$game->setView(ShowFabricationHall::VIEW_IDENTIFIER);
+                    $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
+                    return;
+                }
+            case ColonyEnum::MENU_TECH_CENTER:
+                if ($this->hasSpecialBuilding($colony, BuildingEnum::BUILDING_FUNCTION_TECH_CENTER)) {
+                    //$game->setView(ShowTechCenter::VIEW_IDENTIFIER);
+                    $game->setView(ShowModuleFab::VIEW_IDENTIFIER);
                     return;
                 }
             case ColonyEnum::MENU_INFO:

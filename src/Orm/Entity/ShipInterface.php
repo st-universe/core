@@ -333,6 +333,8 @@ interface ShipInterface
     public function getHealthySystems(): array;
 
     /**
+     * highest damage first, then prio
+     * 
      * @return ShipSystemInterface[]
      */
     public function getDamagedSystems(): array;

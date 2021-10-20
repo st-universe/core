@@ -20,5 +20,9 @@ interface BuildingFunctionTalInterface
 
     public function isWarehouse(): bool;
 
+    public function isFabHall(): bool;
+
+    public function isTechCenter(): bool;
+
     public function getModuleFabBuildingFunctionId(): ?int;
 }
