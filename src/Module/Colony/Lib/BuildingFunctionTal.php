@@ -41,6 +41,16 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
         return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_ACADEMY);
     }
 
+    public function isFabHall(): bool
+    {
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_FABRICATION_HALL);
+    }
+
+    public function isTechCenter(): bool
+    {
+        return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_TECH_CENTER);
+    }
+
     public function isShipyard(): bool
     {
         foreach ($this->buildingfunctionIds as $func) {
@@ -51,7 +61,8 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
         return false;
     }
 
-    public function getShipyardBuildingFunctionId(): ?int {
+    public function getShipyardBuildingFunctionId(): ?int
+    {
         foreach ($this->buildingfunctionIds as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getShipyardOptions())) {
                 return $func->getId();
@@ -75,7 +86,8 @@ final class BuildingFunctionTal implements BuildingFunctionTalInterface
         return $this->hasFunction(BuildingEnum::BUILDING_FUNCTION_WAREHOUSE);
     }
 
-    public function getModuleFabBuildingFunctionId(): ?int {
+    public function getModuleFabBuildingFunctionId(): ?int
+    {
         foreach ($this->buildingfunctionIds as $func) {
             if (in_array($func->getFunction(), BuildingFunctionTypeEnum::getModuleFabOptions())) {
                 return $func->getId();

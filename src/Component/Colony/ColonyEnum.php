@@ -37,6 +37,8 @@ final class ColonyEnum
     public const MENU_TORPEDOFAB = 11;
     public const MENU_ACADEMY = 12;
     public const MENU_WASTE = 13;
+    public const MENU_FAB_HALL = 14;
+    public const MENU_TECH_CENTER = 15;
 
     // shield stuff
     public const SHIELDS_PER_EPS = 10;
