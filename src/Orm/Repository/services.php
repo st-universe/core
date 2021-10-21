@@ -66,6 +66,7 @@ use Stu\Orm\Entity\PlanetType;
 use Stu\Orm\Entity\PlanetTypeResearch;
 use Stu\Orm\Entity\PrivateMessage;
 use Stu\Orm\Entity\PrivateMessageFolder;
+use Stu\Orm\Entity\RepairTask;
 use Stu\Orm\Entity\Research;
 use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
@@ -412,6 +413,11 @@ return [
         ContainerInterface $c
     ): PrivateMessageFolderRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(PrivateMessageFolder::class);
+    },
+    RepairTaskRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): RepairTaskRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(RepairTask::class);
     },
     ResearchRepositoryInterface::class => function (
         ContainerInterface $c

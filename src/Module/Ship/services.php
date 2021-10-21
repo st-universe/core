@@ -161,6 +161,7 @@ use Stu\Module\Ship\View\ShowColonyScan\ShowColonyScan;
 use Stu\Module\Ship\View\ShowEpsTransfer\ShowEpsTransfer;
 use Stu\Module\Ship\View\ShowRegionInfo\ShowRegionInfo;
 use Stu\Module\Ship\View\ShowRenameCrew\ShowRenameCrew;
+use Stu\Module\Ship\View\ShowRepairOptions\ShowRepairOptions;
 use Stu\Module\Ship\View\ShowScan\ShowScan;
 use Stu\Module\Ship\View\ShowSectorScan\ShowSectorScan;
 use Stu\Module\Ship\View\ShowSelfDestruct\ShowSelfDestruct;
@@ -319,6 +320,7 @@ return [
         ShowRegionInfo::VIEW_IDENTIFIER => autowire(ShowRegionInfo::class),
         ShowColonization::VIEW_IDENTIFIER => autowire(ShowColonization::class),
         ShowRenameCrew::VIEW_IDENTIFIER => autowire(ShowRenameCrew::class),
+        ShowRepairOptions::VIEW_IDENTIFIER => autowire(ShowRepairOptions::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class)
     ],
 ];

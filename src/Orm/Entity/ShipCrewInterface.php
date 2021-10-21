@@ -26,6 +26,10 @@ interface ShipCrewInterface
 
     public function setUser(UserInterface $user): ShipCrewInterface;
 
+    public function getRepairTask(): ?RepairTaskInterface;
+
+    public function setRepairTask(?RepairTaskInterface $repairTask): ShipCrewInterface;
+
     public function getCrew(): CrewInterface;
 
     public function setCrew(CrewInterface $crew): ShipCrewInterface;

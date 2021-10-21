@@ -1057,6 +1057,12 @@
 								<img src="assets/buttons/shutdown1.png" title="Energieverbrauch minimieren"
 									name="shutdown" />
 							</a>
+							<a tal:condition="SHIP/canBeRepaired" href="javascript:void(0);"
+								onclick="showRepairOptions(${SHIP/getId});"
+								onmouseover="cp('selfrepair','buttons/rep2');"
+								onmouseout="cp('selfrepair','buttons/rep1');">
+								<img src="assets/buttons/rep1.png" title="Öffne Reparaturoptionen" name="selfrepair" />
+							</a>
 						</td>
 						<td colspan="2">
 							<img tal:condition="SHIP/getBuildplan" tal:repeat="mod SHIP/getModules"

@@ -1347,6 +1347,58 @@
     </table>
   </tal:block>
 </metal:macro>
+<metal:macro metal:define-macro="repairoptions">
+  <tal:block tal:condition="THIS/getInformation">
+    <br />
+    <metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" />
+  </tal:block>
+  <br />
+  <tal:block tal:condition="not:ERROR">
+    <table class="tcal">
+      <tr>
+        <th>Beschädigtes System</th>
+        <th>Anzahl Ingenieure</th>
+        <th>Verwendete Teile</th>
+        <th>Sofortreparatur?</th>
+      </tr>
+      <tr>
+        <td>
+          <select name="sid" id="systemSelect" style="width:100%;">
+            <option value="-1">----------------------</option>
+            <tal:block tal:repeat="data REPAIR_OPTIONS">
+              <option tal:content="data/getName" tal:attributes="value data/getId;">
+                NAME</option>
+            </tal:block>
+          </select>
+        </td>
+        <td>
+          <select name="ecount" id="engineerSelect" style="width:100%;">
+            <option value="0">----------------------</option>
+            <tal:block tal:repeat="data ENGINEER_OPTIONS">
+              <option tal:content="data" tal:attributes="value data;">
+                COUNT</option>
+            </tal:block>
+          </select>
+        </td>
+        <td>
+          <label>
+            <input type="radio" name="partschoice" value="1" onchange="replaceTabImage(${THIS/getModuleType},0)" /> nur
+            Ersatzteile</label>
+          <label>
+            <input type="radio" name="partschoice" value="2" onchange="replaceTabImage(${THIS/getModuleType},0)" /> nur
+            Systemkomponenten</label>
+          <label>
+            <input type="radio" name="partschoice" value="3" onchange="replaceTabImage(${THIS/getModuleType},0)" />
+            beides</label>
+        </td>
+        <td>
+          <input type="checkbox" name="instantrepair" /><img title="Die Reparatur wird sofort durchgeführt"
+            src="assets/buttons/info2.png" style="height:16px;" />
+        </td>
+      </tr>
+    </table>
+  </tal:block>
+</metal:macro>
 <metal:macro metal:define-macro="astroentry">
   <table class="tcal">
     <tr tal:condition="ENTRY/getStarsystemMap1">

@@ -38,6 +38,9 @@ class ShipCrew implements ShipCrewInterface
     /** @Column(type="integer") * */
     private $user_id = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $repair_task_id;
+
     /**
      * @ManyToOne(targetEntity="Crew")
      * @JoinColumn(name="crew_id", referencedColumnName="id", onDelete="CASCADE")
@@ -55,6 +58,12 @@ class ShipCrew implements ShipCrewInterface
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
+
+    /**
+     * @ManyToOne(targetEntity="RepairTask")
+     * @JoinColumn(name="repair_task_id", referencedColumnName="id")
+     */
+    private $repairTask;
 
     public function getId(): int
     {
@@ -115,6 +124,17 @@ class ShipCrew implements ShipCrewInterface
     public function setUser(UserInterface $user): ShipCrewInterface
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getRepairTask(): ?RepairTaskInterface
+    {
+        return $this->repairTask;
+    }
+
+    public function setRepairTask(?RepairTaskInterface $repairTask): ShipCrewInterface
+    {
+        $this->repairTask = $repairTask;
         return $this;
     }
 

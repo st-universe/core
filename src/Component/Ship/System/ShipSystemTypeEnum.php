@@ -7,6 +7,7 @@ namespace Stu\Component\Ship\System;
 final class ShipSystemTypeEnum
 {
     // system types
+    public const SYSTEM_HULL = 0;
     public const SYSTEM_EPS = 1;
     public const SYSTEM_IMPULSEDRIVE = 2;
     public const SYSTEM_WARPCORE = 3;
@@ -51,6 +52,8 @@ final class ShipSystemTypeEnum
     public static function getDescription(int $systemType): string
     {
         switch ($systemType) {
+            case ShipSystemTypeEnum::SYSTEM_HULL:
+                return _("Hülle");
             case ShipSystemTypeEnum::SYSTEM_CLOAK:
                 return _("Tarnung");
             case ShipSystemTypeEnum::SYSTEM_NBS:
