@@ -61,8 +61,6 @@ interface ModuleInterface
      */
     public function getCost(): Collection;
 
-    public function getCostSorted(): array;
-
     public function getCommodity(): CommodityInterface;
 
     public function getDescription(): string;
