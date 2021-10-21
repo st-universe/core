@@ -54,7 +54,7 @@ final class ModuleFabricationListItemTal
 
     public function getConstructionCosts(): array
     {
-        return $this->module->getCost();
+        return $this->module->getCost()->toArray();
     }
 
     public function getAmountQueued(): int
