@@ -85,7 +85,6 @@ class Module implements ModuleInterface
 
     /**
      * @OneToMany(targetEntity="ModuleCost", mappedBy="module")
-     * @OrderBy({"sort" = "ASC"})
      */
     private $buildingCosts;
 
@@ -258,6 +257,23 @@ class Module implements ModuleInterface
     public function getCost(): Collection
     {
         return $this->buildingCosts;
+    }
+
+    public function getCostSorted(): array
+    {
+        $array = $this->getCost()->getValues();
+
+        usort(
+            $array,
+            function (ModuleCostInterface $a, ModuleCostInterface $b): int {
+                if ($a->getCommodity()->getSort() == $b->getCommodity()->getSort()) {
+                    return 0;
+                }
+                return ($a->getCommodity()->getSort() < $b->getCommodity()->getSort()) ? -1 : 1;
+            }
+        );
+
+        return array_values($array);
     }
 
     public function getCommodity(): CommodityInterface
