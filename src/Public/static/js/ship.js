@@ -164,6 +164,11 @@ function showColonyScan() {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_COLONY_SCAN=1&id=' + shipid);
 }
+function showRepairOptions(shipid) {
+	closeAjaxWindow();
+	openPJsWin('elt', 1);
+	ajax_update('elt', 'ship.php?id=' + shipid + '&SHOW_REPAIR_OPTIONS=1');
+}
 function toggleSpecialModuleDisplay(type, module_id, module_crew) {
 }
 currentTab = false;
@@ -205,8 +210,8 @@ function showRenameCrew(obj, crew_id) {
 	$('rn_crew_' + crew_id + '_input').show();
 }
 function renameCrew(crew_id) {
-	name = $('rn_crew_' + crew_id + '_value').value;
-	if (name.length < 1) {
+	crewName = $('rn_crew_' + crew_id + '_value').value;
+	if (crewName.length < 1) {
 		$('rn_crew_' + crew_id).show();
 		$('rn_crew_' + crew_id + '_input').hide();
 		return;

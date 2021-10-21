@@ -244,6 +244,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 
     public function getSuitableForShildRegeneration(int $regenerationThreshold): iterable
     {
+        //TODO join with shield ship system and check for state = off
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s WHERE s.is_destroyed = :destroyedState AND s.schilde<s.max_schilde AND s.shield_regeneration_timer <= :regenerationThreshold',
