@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowRepairOptions;
 
 use request;
+use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
@@ -78,7 +79,10 @@ final class ShowRepairOptions implements ViewControllerInterface
         $engineerOptions = [];
         $nextNumber = 1;
         foreach ($ship->getCrewlist() as $shipCrew) {
-            if ($shipCrew->getRepairTask() === null) {
+            if (
+                $shipCrew->getSlot() === CrewEnum::CREW_TYPE_TECHNICAL
+                && $shipCrew->getRepairTask() === null
+            ) {
                 $engineerOptions[] = $nextNumber;
                 $nextNumber++;
             }
