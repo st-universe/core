@@ -75,6 +75,7 @@ final class SelfrepairUtil implements SelfrepairUtilInterface
     {
         $obj = $this->repairTaskRepository->prototype();
 
+        $obj->setUser($ship->getUser());
         $obj->setShip($ship);
         $obj->setSystemType($systemType);
         $obj->setHealingPercentage($this->determineHealingPercentage($repairType));
