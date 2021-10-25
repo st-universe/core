@@ -19,4 +19,12 @@ interface RepairTaskInterface
     public function setShip(ShipInterface $ship): RepairTaskInterface;
 
     public function setFinishTime(int $finishTime): RepairTaskInterface;
+
+    public function getSystemType(): int;
+
+    public function setSystemType(int $systemType): RepairTaskInterface;
+
+    public function getHealingPercentage(): int;
+
+    public function setHealingPercentage(int $healingPercentage): RepairTaskInterface;
 }
