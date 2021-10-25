@@ -136,7 +136,7 @@ final class Selfrepair implements ActionControllerInterface
         return $result;
     }
 
-    private function consumeGoods(ShipInterface $ship, int $repairType, $neededSparePartCount): void
+    private function consumeGoods(ShipInterface $ship, int $repairType, $neededSparePartCount, GameControllerInterface $game): void
     {
         if (
             $repairType === RepairTaskEnum::SPARE_PARTS_ONLY
@@ -144,6 +144,7 @@ final class Selfrepair implements ActionControllerInterface
         ) {
             $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART)->getCommodity();
             $this->shipStorageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
+            $game->addInformationf(_('Für die Reparatur werden %d Ersatzteile verwendet'), $neededSparePartCount);
         }
 
         if (
@@ -152,6 +153,7 @@ final class Selfrepair implements ActionControllerInterface
         ) {
             $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)->getCommodity();
             $this->shipStorageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
+            $game->addInformationf(_('Für die Reparatur werden %d Systemkomponenten verwendet'), $neededSparePartCount);
         }
     }
 
