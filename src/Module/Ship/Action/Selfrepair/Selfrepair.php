@@ -48,7 +48,7 @@ final class Selfrepair implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(request::getIntFatal('id'), $userId);
+        $ship = $this->shipLoader->getByIdAndUser(request::postIntFatal('id'), $userId);
 
         $repairType = request::postIntFatal('partschoice');
 
