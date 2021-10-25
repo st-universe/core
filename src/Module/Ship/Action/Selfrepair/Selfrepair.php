@@ -56,10 +56,6 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        if (request::postIntFatal('sid') === -1) {
-            return;
-        }
-
         $repairOptions = $this->selfrepairUtil->determineRepairOptions($ship);
 
         if (!array_key_exists(request::postIntFatal('sid'), $repairOptions)) {
