@@ -37,4 +37,16 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
             'ship_id' => $shipId
         ]);
     }
+
+    public function truncateByShipId(int $shipId): void
+    {
+        $q = $this->getEntityManager()->createQuery(
+            sprintf(
+                'delete from %s t where t.ship_id = :shipId',
+                RepairTask::class
+            )
+        );
+        $q->setParameter('shipId', $shipId);
+        $q->execute();
+    }
 }
