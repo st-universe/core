@@ -89,21 +89,26 @@ final class Selfrepair implements ActionControllerInterface
 
         $neededSparePartCount = (int) ($ship->getMaxHuell() / 150);
 
-        if (!$this->checkForSpareParts($ship, $neededSparePartCount, $repairType, $game)) {
-            return;
-        }
-
-        $this->consumeGoods($ship, $repairType, $neededSparePartCount);
 
         if (!$isInstantRepair) {
+            if (!$this->checkForSpareParts($ship, $neededSparePartCount, $repairType, $game)) {
+                return;
+            }
+
             $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE);
 
             $freeEngineerCount = $this->selfrepairUtil->determineFreeEngineerCount($ship);
             $duration = RepairTaskEnum::STANDARD_REPAIR_DURATION * (1 - $freeEngineerCount / 10);
 
+            $this->consumeGoods($ship, $repairType, $neededSparePartCount, $game);
             $this->selfrepairUtil->createRepairTask($ship, $systemType, $repairType, time() + (int) $duration);
             $game->addInformationf(_('Das Schiffssystem %s wird repariert. Fertigstellung %s'), ShipSystemTypeEnum::getDescription($systemType), date("d.m.Y H:i", (time() + (int) $duration)));
         } else {
+            if (!$this->checkForSpareParts($ship, 3 * $neededSparePartCount, $repairType, $game)) {
+                return;
+            }
+
+            $this->consumeGoods($ship, $repairType, 3 * $neededSparePartCount, $game);
             $this->selfrepairUtil->instantSelfRepair($ship, $systemType, $repairType);
             $game->addInformationf(_('Das Schiffssystem %s wurde sofort repariert.'), ShipSystemTypeEnum::getDescription($systemType));
         }
