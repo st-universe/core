@@ -87,7 +87,7 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
-        $neededSparePartCount = (int) $ship->getMaxHuell() / 150;
+        $neededSparePartCount = (int) ($ship->getMaxHuell() / 150);
 
         if (!$this->checkForSpareParts($ship, $neededSparePartCount, $repairType, $game)) {
             return;
