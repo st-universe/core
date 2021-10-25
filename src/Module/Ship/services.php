@@ -122,6 +122,7 @@ use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequest;
 use Stu\Module\Ship\Action\RenameFleet\RenameFleetRequestInterface;
 use Stu\Module\Ship\Action\SalvageEmergencyPods\SalvageEmergencyPods;
 use Stu\Module\Ship\Action\SelfDestruct\SelfDestruct;
+use Stu\Module\Ship\Action\Selfrepair\Selfrepair;
 use Stu\Module\Ship\Action\SetGreenAlert\SetGreenAlert;
 use Stu\Module\Ship\Action\SetRedAlert\SetRedAlert;
 use Stu\Module\Ship\Action\SetYellowAlert\SetYellowAlert;
@@ -294,7 +295,8 @@ return [
         LandShuttle::ACTION_IDENTIFIER => autowire(LandShuttle::class),
         BuildConstruction::ACTION_IDENTIFIER => autowire(BuildConstruction::class),
         ChangeFleetFixation::ACTION_IDENTIFIER => autowire(ChangeFleetFixation::class),
-        DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class)
+        DumpForeignCrewman::ACTION_IDENTIFIER => autowire(DumpForeignCrewman::class),
+        Selfrepair::ACTION_IDENTIFIER => autowire(Selfrepair::class)
     ],
     'SHIP_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),

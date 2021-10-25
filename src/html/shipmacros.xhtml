@@ -1354,51 +1354,60 @@
   </tal:block>
   <br />
   <tal:block tal:condition="not:ERROR">
-    <table class="tcal">
-      <tr>
-        <th>Beschädigtes System</th>
-        <th>Anzahl Ingenieure</th>
-        <th>Verwendete Teile</th>
-        <th>Sofortreparatur?</th>
-      </tr>
-      <tr>
-        <td>
-          <select name="sid" id="systemSelect" style="width:100%;">
-            <option value="-1">----------------------</option>
-            <tal:block tal:repeat="data REPAIR_OPTIONS">
-              <option tal:content="data/getName" tal:attributes="value data/getSystemType;">
-                NAME</option>
-            </tal:block>
-          </select>
-        </td>
-        <td>
-          <select name="ecount" id="engineerSelect" style="width:100%;">
+    <form id="selfrepair_form" method="post" action="ship.php">
+      <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+      <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+      <table class="tcal">
+        <tr>
+          <th>Beschädigtes System</th>
+          <th>Anzahl Ingenieure</th>
+          <th>Verwendete Teile</th>
+          <th>Sofortreparatur?</th>
+        </tr>
+        <tr>
+          <td>
+            <select name="sid" id="systemSelect" style="width:100%;">
+              <option value="-1">----------------------</option>
+              <tal:block tal:repeat="data REPAIR_OPTIONS">
+                <option tal:content="data/getName" tal:attributes="value data/getSystemType;">
+                  NAME</option>
+              </tal:block>
+            </select>
+          </td>
+          <td>
+            <span tal:replace="ENGINEER_COUNT"></span>
+            <!-- select name="ecount" id="engineerSelect" style="width:100%;">
             <option value="0">----------------------</option>
-            <tal:block tal:repeat="data ENGINEER_OPTIONS">
+            <tal:block tal:repeat="data ENGINEER_COUNT">
               <option tal:content="data" tal:attributes="value data;">
                 COUNT</option>
             </tal:block>
-          </select>
-        </td>
-        <td>
-          <label>
-            <input type="radio" name="partschoice" value="1" onchange="foobar();" /> nur
-            Ersatzteile</label>
-          <br />
-          <label>
-            <input type="radio" name="partschoice" value="2" onchange="foobar();" /> nur
-            Systemkomponenten</label>
-          <br />
-          <label>
-            <input type="radio" name="partschoice" value="3" onchange="foobar();" />
-            beides</label>
-        </td>
-        <td>
-          <input type="checkbox" name="instantrepair" /><img title="Die Reparatur wird sofort durchgeführt"
-            src="assets/buttons/info2.png" style="height:16px;" />
-        </td>
-      </tr>
-    </table>
+          </select -->
+          </td>
+          <td>
+            <label>
+              <input type="radio" name="partschoice" value="1" /> nur
+              Ersatzteile</label>
+            <br />
+            <label>
+              <input type="radio" name="partschoice" value="2" /> nur
+              Systemkomponenten</label>
+            <br />
+            <label>
+              <input type="radio" name="partschoice" value="3" />
+              beides</label>
+          </td>
+          <td>
+            <input type="checkbox" name="instantrepair" /><img title="Erfordert die dreifache Menge an Teilen"
+              src="assets/buttons/info2.png" style="height:16px;" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4"><input type="submit" class="button" value="Reparatur starten" name="B_SELF_REPAIR"
+              id="selfrepair_button" /></td>
+        </tr>
+      </table>
+    </form>
   </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="astroentry">

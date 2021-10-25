@@ -83,4 +83,26 @@ class RepairTask implements RepairTaskInterface
         $this->finish_time = $finishTime;
         return $this;
     }
+
+    public function getSystemType(): int
+    {
+        return $this->system_type;
+    }
+
+    public function setSystemType(int $systemType): RepairTaskInterface
+    {
+        $this->system_type = $systemType;
+        return $this;
+    }
+
+    public function getHealingPercentage(): int
+    {
+        return $this->healing_percentage;
+    }
+
+    public function setHealingPercentage(int $healingPercentage): RepairTaskInterface
+    {
+        $this->healing_percentage = $healingPercentage;
+        return $this;
+    }
 }

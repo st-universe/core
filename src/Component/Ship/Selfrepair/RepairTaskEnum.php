@@ -20,4 +20,7 @@ final class RepairTaskEnum
 
     public const BOTH_MIN = 35;
     public const BOTH_MAX = 45;
+
+    // repair duration
+    public const STANDARD_REPAIR_DURATION = 10800; //3 hours
 }

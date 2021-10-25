@@ -17,6 +17,8 @@ final class CommodityTypeEnum
     public const GOOD_DILITHIUM = 8;
     public const GOOD_DURANIUM = 21;
     public const GOOD_LATINUM = 50;
+    public const GOOD_SPARE_PART = 10001;
+    public const GOOD_SYSTEM_COMPONENT = 10002;
 
     //base value for e.g. shuttles
     public const BASE_ID_WORKBEE = 20060;
