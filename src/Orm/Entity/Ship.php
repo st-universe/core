@@ -27,6 +27,7 @@ use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
+use Stu\Orm\Repository\RepairTaskRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
 
@@ -1529,16 +1530,20 @@ class Ship implements ShipInterface
 
     public function cancelRepair(): void
     {
-        if (
-            $this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE ||
-            $this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
-        ) {
+        if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
             $this->setState(ShipStateEnum::SHIP_STATE_NONE);
 
             // @todo inject
             global $container;
             $container->get(ColonyShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
             $container->get(StationShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
+            $container->get(ShipRepositoryInterface::class)->save($this);
+        } else if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
+            $this->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+            // @todo inject
+            global $container;
+            $container->get(RepairTaskRepositoryInterface::class)->truncateByShipId($this->getId());
             $container->get(ShipRepositoryInterface::class)->save($this);
         }
     }
