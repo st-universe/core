@@ -115,7 +115,7 @@ final class SelfrepairUtil implements SelfrepairUtilInterface
     private function internalSelfRepair(ShipInterface $ship, int $systemType, int $percentage): void
     {
         if ($systemType === ShipSystemTypeEnum::SYSTEM_HULL) {
-            $ship->setHuell($ship->getMaxHuell() * $percentage / 100);
+            $ship->setHuell((int)($ship->getMaxHuell() * $percentage / 100));
         } else {
             $system = $ship->getShipSystem($systemType);
             $system->setStatus($percentage);
