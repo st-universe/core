@@ -198,6 +198,8 @@
         <img tal:condition="php:ship.getState() EQ 1" src="assets/buttons/rep2.png"
           tal:attributes="title string:Schiff wird repariert (noch ${ship/getRepairDuration} Runden)"
           style="height:20px;" />
+        <img tal:condition="php:ship.getState() EQ 4" src="assets/buttons/rep2.png"
+          tal:attributes="title string:Schiffscrew repariert das Schiff" style="height:20px;" />
         <img tal:condition="php:ship.getState() EQ 2" src="assets/buttons/map1.png" title="Schiff kartographiert"
           style="height:20px;" />
         <span tal:content="structure bbcode:ship/getName">NAME</span>
