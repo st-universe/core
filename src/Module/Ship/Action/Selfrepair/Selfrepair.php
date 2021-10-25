@@ -56,6 +56,10 @@ final class Selfrepair implements ActionControllerInterface
             return;
         }
 
+        if (request::postIntFatal('sid') === -1) {
+            return;
+        }
+
         $repairOptions = $this->selfrepairUtil->determineRepairOptions($ship);
 
         if (!array_key_exists(request::postIntFatal('sid'), $repairOptions)) {
@@ -142,7 +146,7 @@ final class Selfrepair implements ActionControllerInterface
             $repairType === RepairTaskEnum::SPARE_PARTS_ONLY
             || $repairType === RepairTaskEnum::BOTH
         ) {
-            $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART);
+            $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART)->getCommodity();
             $this->shipStorageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
         }
 
@@ -150,7 +154,7 @@ final class Selfrepair implements ActionControllerInterface
             $repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY
             || $repairType === RepairTaskEnum::BOTH
         ) {
-            $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT);
+            $commodity = $ship->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)->getCommodity();
             $this->shipStorageManager->lowerStorage($ship, $commodity, $neededSparePartCount);
         }
     }
