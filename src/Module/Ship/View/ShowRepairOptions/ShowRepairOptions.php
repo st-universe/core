@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\View\ShowRepairOptions;
 
 use request;
+use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\Selfrepair\SelfrepairUtilInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -52,5 +53,9 @@ final class ShowRepairOptions implements ViewControllerInterface
         $game->setTemplateVar('REPAIR_OPTIONS', $repairOptions);
         $game->setTemplateVar('ENGINEER_COUNT', $this->selfrepairUtil->determineFreeEngineerCount($ship));
         $game->setTemplateVar('ERROR', false);
+
+        $game->setTemplateVar('SPARE_PARTS_ONLY_MAX', RepairTaskEnum::SPARE_PARTS_ONLY_MAX);
+        $game->setTemplateVar('SYSTEM_COMPONENTS_ONLY_MAX', RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX);
+        $game->setTemplateVar('BOTH_MAX', RepairTaskEnum::BOTH_MAX);
     }
 }

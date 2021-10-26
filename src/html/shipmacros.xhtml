@@ -1361,10 +1361,14 @@
       <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
       <table class="tcal">
         <tr>
-          <th>Beschädigtes System</th>
-          <th>Anzahl Ingenieure</th>
-          <th>Verwendete Teile</th>
-          <th>Sofortreparatur?</th>
+          <th>Beschädigtes System <img title="Durch die Crew reparierbare Systeme" src="assets/buttons/info2.png"
+              style="height:16px;" /></th>
+          <th>Anzahl Ingenieure <img title="Die Anzahl Ingenieure beschleunigt die Reparatur"
+              src="assets/buttons/info2.png" style="height:16px;" /></th>
+          <th>Verwendete Teile <img title="Umfang der Reparatur" src="assets/buttons/info2.png" style="height:16px;" />
+          </th>
+          <th>Sofortreparatur <img title="Erfordert die dreifache Menge an Teilen" src="assets/buttons/info2.png"
+              style="height:16px;" /></th>
         </tr>
         <tr>
           <td>
@@ -1381,19 +1385,18 @@
           <td>
             <label>
               <input type="radio" name="partschoice" value="1" /> nur
-              Ersatzteile</label>
+              Ersatzteile (max. <span tal:replace="SPARE_PARTS_ONLY_MAX">%)</label>
             <br />
             <label>
               <input type="radio" name="partschoice" value="2" /> nur
-              Systemkomponenten</label>
+              Systemkomponenten (max. <span tal:replace="SYSTEM_COMPONENTS_ONLY_MAX">%)</label>
             <br />
             <label>
               <input type="radio" name="partschoice" value="3" />
-              beides</label>
+              beides (max. <span tal:replace="BOTH_MAX">%)</label>
           </td>
           <td>
-            <input type="checkbox" name="instantrepair" /><img title="Erfordert die dreifache Menge an Teilen"
-              src="assets/buttons/info2.png" style="height:16px;" />
+            <input type="checkbox" name="instantrepair" /> sofort
           </td>
         </tr>
         <tr>
