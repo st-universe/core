@@ -85,7 +85,7 @@ final class SelfrepairUtil implements SelfrepairUtilInterface
         $this->repairTaskRepository->save($obj);
     }
 
-    private function determineHealingPercentage(int $repairType): int
+    public function determineHealingPercentage(int $repairType): int
     {
         $percentage = 0;
 
@@ -100,31 +100,50 @@ final class SelfrepairUtil implements SelfrepairUtilInterface
         return $percentage;
     }
 
-    public function instantSelfRepair($ship, $systemType, $repairType): void
+    public function instantSelfRepair($ship, $systemType, $healingPercentage): bool
     {
-        $this->internalSelfRepair($ship, $systemType, $this->determineHealingPercentage($repairType));
+        return $this->internalSelfRepair(
+            $ship,
+            $systemType,
+            $healingPercentage
+        );
     }
 
-    public function selfRepair(ShipInterface $ship, RepairTaskInterface $repairTask): void
+    public function selfRepair(ShipInterface $ship, RepairTaskInterface $repairTask): bool
     {
         $systemType = $repairTask->getSystemType();
         $percentage = $repairTask->getHealingPercentage();
 
-        $this->internalSelfRepair($ship, $systemType, $percentage);
         $this->repairTaskRepository->delete($repairTask);
+
+        return $this->internalSelfRepair($ship, $systemType, $percentage);
     }
 
-    private function internalSelfRepair(ShipInterface $ship, int $systemType, int $percentage): void
+    private function internalSelfRepair(ShipInterface $ship, int $systemType, int $percentage): bool
     {
+        $result = true;
+
         if ($systemType === ShipSystemTypeEnum::SYSTEM_HULL) {
-            $ship->setHuell((int)($ship->getMaxHuell() * $percentage / 100));
+            $hullPercentage = (int) ($ship->getHuell() * 100 / $ship->getMaxHuell());
+
+            if ($hullPercentage > $percentage) {
+                $result = false;
+            } else {
+                $ship->setHuell((int)($ship->getMaxHuell() * $percentage / 100));
+            }
         } else {
             $system = $ship->getShipSystem($systemType);
-            $system->setStatus($percentage);
 
-            $this->shipSystemRepository->save($system);
+            if ($system->getStatus() > $percentage) {
+                $result = false;
+            } else {
+                $system->setStatus($percentage);
+                $this->shipSystemRepository->save($system);
+            }
         }
 
         $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+        return $result;
     }
 }
