@@ -53,7 +53,7 @@ final class SelfrepairUtil implements SelfrepairUtilInterface
         $repairOptions = [];
 
         //check for hull option
-        $hullPercentage = (int) $ship->getHuell() * 100 / $ship->getMaxHuell();
+        $hullPercentage = (int) ($ship->getHuell() * 100 / $ship->getMaxHuell());
         if ($hullPercentage < RepairTaskEnum::BOTH_MAX) {
             $hullSystem = $this->shipSystemRepository->prototype();
             $hullSystem->setSystemType(ShipSystemTypeEnum::SYSTEM_HULL);
