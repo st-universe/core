@@ -1374,8 +1374,8 @@
           <td>
             <select name="sid" id="systemSelect" style="width:100%;">
               <tal:block tal:repeat="data REPAIR_OPTIONS">
-                <option tal:content="data/getName" tal:attributes="value data/getSystemType;">
-                  NAME</option>
+                <option tal:attributes="value data/getSystemType;"><span tal:replace="data/getName">NAME</span>,
+                  aktuell: <span tal:replace="data/getStatus">STATUS</span>%</option>
               </tal:block>
             </select>
           </td>
