@@ -25,6 +25,5 @@ return [
         autowire(Process\FinishShipBuildJobs::class),
         autowire(Process\FinishTerraformingJobs::class),
         autowire(Process\ShieldRegeneration::class),
-        autowire(Process\RepairTaskJobs::class),
     ],
 ];
