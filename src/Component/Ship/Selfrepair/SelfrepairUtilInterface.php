@@ -11,9 +11,23 @@ interface SelfrepairUtilInterface
 
     public function determineRepairOptions(ShipInterface $ship): array;
 
-    public function createRepairTask(ShipInterface $ship, int $systemType, int $repairType, int $finishTime): void;
+    public function createRepairTask(
+        ShipInterface $ship,
+        int $systemType,
+        int $repairType,
+        int $finishTime
+    ): bool;
 
-    public function instantSelfRepair($ship, $systemType, $repairType): void;
+    public function determineHealingPercentage(int $repairType): int;
 
-    public function selfRepair(ShipInterface $ship, RepairTaskInterface $repairTask): void;
+    public function instantSelfRepair(
+        $ship,
+        $systemType,
+        $healingPercentage
+    ): bool;
+
+    public function selfRepair(
+        ShipInterface $ship,
+        RepairTaskInterface $repairTask
+    ): bool;
 }
