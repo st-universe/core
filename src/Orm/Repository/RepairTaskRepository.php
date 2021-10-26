@@ -49,4 +49,17 @@ final class RepairTaskRepository extends EntityRepository implements RepairTaskR
         $q->setParameter('shipId', $shipId);
         $q->execute();
     }
+
+    public function getFinishedRepairTasks(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT rt FROM %s rt
+                WHERE rt.finish_time <= :actualTime',
+                RepairTask::class
+            )
+        )->setParameters([
+            'actualTime' => time()
+        ])->getResult();
+    }
 }
