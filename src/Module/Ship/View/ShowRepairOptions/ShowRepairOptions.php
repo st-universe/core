@@ -54,8 +54,8 @@ final class ShowRepairOptions implements ViewControllerInterface
         $game->setTemplateVar('ENGINEER_COUNT', $this->selfrepairUtil->determineFreeEngineerCount($ship));
         $game->setTemplateVar('ERROR', false);
 
-        $game->setTemplateVar('SPARE_PARTS_ONLY_MAX', RepairTaskEnum::SPARE_PARTS_ONLY_MAX);
-        $game->setTemplateVar('SYSTEM_COMPONENTS_ONLY_MAX', RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX);
-        $game->setTemplateVar('BOTH_MAX', RepairTaskEnum::BOTH_MAX);
+        $game->setTemplateVar('SPARE_PARTS_ONLY', (int)((RepairTaskEnum::SPARE_PARTS_ONLY_MIN + RepairTaskEnum::SPARE_PARTS_ONLY_MAX) / 2));
+        $game->setTemplateVar('SYSTEM_COMPONENTS_ONLY', (int)((RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MIN + RepairTaskEnum::SYSTEM_COMPONENTS_ONLY_MAX) / 2));
+        $game->setTemplateVar('BOTH', (int)((RepairTaskEnum::BOTH_MIN + RepairTaskEnum::BOTH_MAX) / 2));
     }
 }
