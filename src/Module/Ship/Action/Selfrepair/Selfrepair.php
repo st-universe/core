@@ -109,22 +109,8 @@ final class Selfrepair implements ActionControllerInterface
             }
 
             $this->consumeGoods($ship, $repairType, 3 * $neededSparePartCount, $game);
-            $healingPercentage = $this->selfrepairUtil->determineHealingPercentage($repairType);
-            $isSuccess = $this->selfrepairUtil->instantSelfRepair($ship, $systemType, $healingPercentage);
-
-            if ($isSuccess) {
-                $game->addInformationf(
-                    _('Die Crew hat das System %s auf %d %% reparieren können'),
-                    ShipSystemTypeEnum::getDescription($systemType),
-                    $healingPercentage
-                );
-            } else {
-                $game->addInformationf(
-                    _('Der Reparaturversuch des Systems %s brachte keine Besserung'),
-                    ShipSystemTypeEnum::getDescription($systemType),
-                    $ship->getName()
-                );
-            }
+            $this->selfrepairUtil->instantSelfRepair($ship, $systemType, $repairType);
+            $game->addInformationf(_('Das Schiffssystem %s wurde sofort repariert.'), ShipSystemTypeEnum::getDescription($systemType));
         }
 
         $this->shipRepository->save($ship);
