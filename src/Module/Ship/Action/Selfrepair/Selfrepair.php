@@ -13,6 +13,8 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -30,20 +32,28 @@ final class Selfrepair implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         SelfrepairUtilInterface $selfrepairUtil,
         ShipRepositoryInterface $shipRepository,
-        ShipStorageManagerInterface $shipStorageManager
+        ShipStorageManagerInterface $shipStorageManager,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->selfrepairUtil = $selfrepairUtil;
         $this->shipRepository = $shipRepository;
         $this->shipStorageManager = $shipStorageManager;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
     {
+        if ($game->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
@@ -135,7 +145,7 @@ final class Selfrepair implements ActionControllerInterface
         $result = true;
 
         if (
-            $repairType === RepairTaskEnum::SPARE_PARTS_ONLY || $repairType === RepairTaskEnum::BOTH
+            ($repairType === RepairTaskEnum::SPARE_PARTS_ONLY || $repairType === RepairTaskEnum::BOTH)
             && (!$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_SPARE_PART)
                 || $ship->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART)->getAmount() < $neededSparePartCount)
         ) {
@@ -144,7 +154,7 @@ final class Selfrepair implements ActionControllerInterface
         }
 
         if (
-            $repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY || $repairType === RepairTaskEnum::BOTH
+            ($repairType === RepairTaskEnum::SYSTEM_COMPONENTS_ONLY || $repairType === RepairTaskEnum::BOTH)
             && (!$ship->getStorage()->containsKey(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
                 || $ship->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)->getAmount() < $neededSparePartCount)
         ) {
