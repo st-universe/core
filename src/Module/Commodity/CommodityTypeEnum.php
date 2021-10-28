@@ -33,6 +33,10 @@ final class CommodityTypeEnum
                 return _("Antimaterie");
             case CommodityTypeEnum::GOOD_DILITHIUM:
                 return _("Dilithium");
+            case CommodityTypeEnum::GOOD_SPARE_PART:
+                return _("Ersatzteil");
+            case CommodityTypeEnum::GOOD_SYSTEM_COMPONENT:
+                return _("Systemkomponente");
         }
         return '';
     }
