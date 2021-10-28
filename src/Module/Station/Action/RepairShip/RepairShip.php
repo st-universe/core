@@ -61,7 +61,10 @@ final class RepairShip implements ActionControllerInterface
 
         $repairableShiplist = [];
         foreach ($station->getDockedShips() as $ship) {
-            if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            if (
+                !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+            ) {
                 continue;
             }
             $repairableShiplist[$ship->getId()] = $ship;
@@ -73,10 +76,6 @@ final class RepairShip implements ActionControllerInterface
         }
         if (!$ship->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
-            return;
-        }
-        if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $game->addInformation(_('Das Schiff wird bereits repariert.'));
             return;
         }
         if ($ship->getState() == ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {

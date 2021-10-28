@@ -385,6 +385,11 @@ class Ship implements ShipInterface
             $this->eps -= 2;
         }
 
+        // cancel repair if not on alert green
+        if ($alertState !== ShipAlertStateEnum::ALERT_GREEN) {
+            $this->cancelRepair();
+        }
+
         // now change
         $this->alvl = $alertState;
         $this->reloadEpsUsage();
@@ -1506,7 +1511,15 @@ class Ship implements ShipInterface
 
     public function canBeRepaired(): bool
     {
+        if ($this->getAlertState() !== ShipAlertStateEnum::ALERT_GREEN) {
+            return false;
+        }
+
         if ($this->getShieldState()) {
+            return false;
+        }
+
+        if ($this->getCloakState()) {
             return false;
         }
 
@@ -1528,24 +1541,35 @@ class Ship implements ShipInterface
         return $ticks;
     }
 
-    public function cancelRepair(): void
+    public function cancelRepair(): bool
     {
         if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $this->setState(ShipStateEnum::SHIP_STATE_NONE);
+            $this->setStateNoneAndSave();
 
-            // @todo inject
             global $container;
+            // @todo inject
             $container->get(ColonyShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
             $container->get(StationShipRepairRepositoryInterface::class)->truncateByShipId($this->getId());
-            $container->get(ShipRepositoryInterface::class)->save($this);
+
+            return true;
         } else if ($this->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE) {
-            $this->setState(ShipStateEnum::SHIP_STATE_NONE);
+            $this->setStateNoneAndSave();
 
             // @todo inject
             global $container;
             $container->get(RepairTaskRepositoryInterface::class)->truncateByShipId($this->getId());
-            $container->get(ShipRepositoryInterface::class)->save($this);
+
+            return true;
         }
+
+        return false;
+    }
+
+    private function setStateNoneAndSave(): void
+    {
+        $this->setState(ShipStateEnum::SHIP_STATE_NONE);
+        global $container;
+        $container->get(ShipRepositoryInterface::class)->save($this);
     }
 
     public function getRepairRate(): int

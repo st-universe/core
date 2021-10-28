@@ -131,7 +131,9 @@ final class DockShip implements ActionControllerInterface
         } catch (ShipSystemException $e) {
         }
 
-        $ship->cancelRepair();
+        if ($ship->cancelRepair()) {
+            $game->addInformation("Die Reparatur wurde abgebrochen");
+        }
         $ship->setEps($ship->getEps() - 1);
         $ship->setDockedTo($target);
 
@@ -167,7 +169,10 @@ final class DockShip implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
-            $ship->cancelRepair();
+            if ($ship->cancelRepair()) {
+                $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
+                continue;
+            }
 
             try {
                 $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);

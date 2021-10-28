@@ -78,7 +78,10 @@ final class RepairShip implements ActionControllerInterface
              * @var ShipInterface $ship
              */
             foreach ($fleet['ships'] as $ship) {
-                if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+                if (
+                    !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                    || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+                ) {
                     continue;
                 }
                 foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {
@@ -96,10 +99,6 @@ final class RepairShip implements ActionControllerInterface
         }
         if (!$ship->canBeRepaired()) {
             $game->addInformation(_('Das Schiff kann nicht repariert werden.'));
-            return;
-        }
-        if ($ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
-            $game->addInformation(_('Das Schiff wird bereits repariert.'));
             return;
         }
         if ($ship->getState() == ShipStateEnum::SHIP_STATE_SYSTEM_MAPPING) {
