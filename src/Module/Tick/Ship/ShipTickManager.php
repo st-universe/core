@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Ship;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\RepairTaskEnum;
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
+use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
@@ -50,6 +51,10 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private StationShipRepairRepositoryInterface $stationShipRepairRepository;
 
+    private ColonyStorageManagerInterface $colonyStorageManager;
+
+    private ShipStorageManagerInterface $shipStorageManager;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -64,6 +69,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         AlertRedHelperInterface $alertRedHelper,
         ColonyShipRepairRepositoryInterface $colonyShipRepairRepository,
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
+        ColonyStorageManagerInterface $colonyStorageManager,
+        ShipStorageManagerInterface $shipStorageManager,
         EntityManagerInterface $entityManager
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -77,6 +84,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->alertRedHelper = $alertRedHelper;
         $this->colonyShipRepairRepository = $colonyShipRepairRepository;
         $this->stationShipRepairRepository = $stationShipRepairRepository;
+        $this->colonyStorageManager = $colonyStorageManager;
+        $this->shipStorageManager = $shipStorageManager;
         $this->entityManager = $entityManager;
     }
 
@@ -318,8 +327,10 @@ final class ShipTickManager implements ShipTickManagerInterface
             return false;
         }
 
+        $neededParts = $this->determineSparePartsOnEntity($ship);
+
         // parts stored?
-        if (!$this->enoughSparePartsOnEntity($ship, $entity, $isColony)) {
+        if (!$this->enoughSparePartsOnEntity($neededParts, $entity, $isColony, $ship)) {
             return false;
         }
 
@@ -347,6 +358,9 @@ final class ShipTickManager implements ShipTickManagerInterface
                 }
             }
         }
+
+        // consume spare parts
+        $this->consumeSpareParts($neededParts, $entity, $isColony);
 
         if (!$ship->canBeRepaired()) {
             $repairFinished = true;
@@ -405,7 +419,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         return $repairFinished;
     }
 
-    private function enoughSparePartsOnEntity(ShipInterface $ship, $entity, bool $isColony): bool
+    private function determineSparePartsOnEntity(ShipInterface $ship): array
     {
         $neededSpareParts = 0;
         $neededSystemComponents = 0;
@@ -419,19 +433,34 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         $damagedSystems = $ship->getDamagedSystems();
         if (!empty($damagedSystems)) {
-            $firstSystemLvl = $this->determinSystemLevel($damagedSystems[0]);
+            $firstSystem = $damagedSystems[0];
+            $firstSystemLvl = $this->determinSystemLevel($firstSystem);
+            $healingPercentage = (100 - $firstSystem->getStatus()) / 100;
 
-            $neededSpareParts += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY];
-            $neededSystemComponents += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
+            $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
+            $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
 
             // maximum of two systems get repaired
             if (count($damagedSystems) > 1) {
-                $secondSystemLvl = $this->determinSystemLevel($damagedSystems[1]);
+                $secondSystem = $damagedSystems[1];
+                $secondSystemLvl = $this->determinSystemLevel($secondSystem);
+                $healingPercentage = (100 - $secondSystem->getStatus()) / 100;
 
-                $neededSpareParts += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY];
-                $neededSystemComponents += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
+                $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
+                $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
             }
         }
+
+        return [
+            RepairTaskEnum::SPARE_PARTS_ONLY => $neededSpareParts,
+            RepairTaskEnum::SYSTEM_COMPONENTS_ONLY => $neededSystemComponents
+        ];
+    }
+
+    private function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool
+    {
+        $neededSpareParts = $neededParts[RepairTaskEnum::SPARE_PARTS_ONLY];
+        $neededSystemComponents = $neededParts[RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
 
         if ($neededSpareParts > 0) {
             $spareParts = $entity->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART);
@@ -462,6 +491,19 @@ final class ShipTickManager implements ShipTickManagerInterface
             return $module->getLevel();
         } else {
             return $system->getShip()->getRump()->getModuleLevel();
+        }
+    }
+
+    private function consumeSpareParts(array $neededParts, $entity, bool $isColony): void
+    {
+        foreach ($neededParts as $commodityKey => $amount) {
+            $commodity = $entity->getStorage()->get($commodityKey)->getCommodity();
+
+            if ($isColony) {
+                $this->colonyStorageManager->lowerStorage($entity, $commodity, $amount);
+            } else {
+                $this->shipStorageManager->lowerStorage($entity, $commodity, $amount);
+            }
         }
     }
 
