@@ -125,7 +125,9 @@ final class DockFleet implements ActionControllerInterface
                 $msg[] = $ship->getName() . _(': Das Schiff ist getarnt');
                 continue;
             }
-            $ship->cancelRepair();
+            if ($ship->cancelRepair()) {
+                $msg[] = $ship->getName() . _(': Die Reparatur wurde abgebrochen');
+            }
 
             try {
                 $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);

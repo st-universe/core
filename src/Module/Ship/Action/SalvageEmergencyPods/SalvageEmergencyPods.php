@@ -70,7 +70,9 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $game->addInformation(sprintf(_('Zum Bergen der Rettungskapseln wird %d Energie benötigt'), 1));
             return;
         }
-        $ship->cancelRepair();
+        if ($ship->cancelRepair()) {
+            $game->addInformation("Die Reparatur wurde abgebrochen");
+        }
 
         $crewmanPerUser = $this->determineCrewmanPerUser($target);
 

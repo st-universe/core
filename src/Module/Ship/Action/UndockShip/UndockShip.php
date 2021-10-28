@@ -41,7 +41,7 @@ final class UndockShip implements ActionControllerInterface
         if ($ship->isFleetLeader()) {
             $msg = array();
             $msg[] = _("Flottenbefehl ausgeführt: Abdocken von ") . $ship->getDockedTo()->getName();;
-            foreach ($ship->getFleet()->getShips() as $key => $ship) {
+            foreach ($ship->getFleet()->getShips() as $ship) {
                 if (!$ship->getDockedTo()) {
                     continue;
                 }
@@ -49,7 +49,10 @@ final class UndockShip implements ActionControllerInterface
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     continue;
                 }
-                $ship->cancelRepair();
+                if ($ship->cancelRepair()) {
+                    $msg[] = $ship->getName() . _(": Die Reparatur wurde abgebrochen");
+                    continue;
+                }
                 $ship->setDockedTo(null);
                 $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
@@ -65,7 +68,9 @@ final class UndockShip implements ActionControllerInterface
             $game->addInformation('Zum Abdocken wird 1 Energie benötigt');
             return;
         }
-        $ship->cancelRepair();
+        if ($ship->cancelRepair()) {
+            $game->addInformation("Die Reparatur wurde abgebrochen");
+        }
         $ship->setEps($ship->getEps() - 1);
         $ship->setDockedTo(null);
 

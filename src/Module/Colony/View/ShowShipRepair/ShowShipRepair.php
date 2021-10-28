@@ -70,7 +70,10 @@ final class ShowShipRepair implements ViewControllerInterface
             foreach ($colony->getOrbitShipList($userId) as $fleet) {
                 /** @var ShipInterface $ship */
                 foreach ($fleet['ships'] as $ship) {
-                    if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+                    if (
+                        !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                        || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+                    ) {
                         continue;
                     }
                     foreach ($this->shipRumpBuildingFunctionRepository->getByShipRump($ship->getRump()) as $rump_rel) {

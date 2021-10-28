@@ -386,7 +386,7 @@ interface ShipInterface
 
     public function getRepairDuration(): int;
 
-    public function cancelRepair(): void;
+    public function cancelRepair(): bool;
 
     public function getRepairRate(): int;
 

@@ -47,6 +47,9 @@ interface ShipBuildplanInterface
 
     public function setRump(ShipRumpInterface $shipRump): ShipBuildplanInterface;
 
+    /**
+     * @return BuildplanModuleInterface[]
+     */
     public function getModulesByType($type): array;
 
     public function getModules(): array;

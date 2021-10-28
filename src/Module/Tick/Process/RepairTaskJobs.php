@@ -40,15 +40,29 @@ final class RepairTaskJobs implements ProcessTickInterface
         foreach ($result as $repairTask) {
             $ship = $repairTask->getShip();
 
+            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
+
             if (!$ship->hasEnoughCrew()) {
+
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUser()->getId(),
+                    sprintf(
+                        _('Ungenügend Crew auf der %s vorhanden, daher wurde die Reparatur des Systems %s abgebrochen'),
+                        $ship->getName(),
+                        ShipSystemTypeEnum::getDescription($repairTask->getSystemType())
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                    $href
+                );
+
+                $this->repairTaskRepository->delete($repairTask);
+
                 continue;
             }
 
             $isSuccess = $this->selfrepairUtil->selfRepair($ship, $repairTask);
             $this->shipRepository->save($ship);
-
-            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getId());
-
 
             if ($isSuccess) {
                 $msg = sprintf(

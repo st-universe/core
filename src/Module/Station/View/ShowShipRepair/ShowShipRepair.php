@@ -43,7 +43,10 @@ final class ShowShipRepair implements ViewControllerInterface
 
         $repairableShips = [];
         foreach ($station->getDockedShips() as $ship) {
-            if (!$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE) {
+            if (
+                !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+            ) {
                 continue;
             }
             $repairableShips[$ship->getId()] = $ship;

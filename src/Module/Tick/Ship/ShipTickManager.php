@@ -6,14 +6,18 @@ namespace Stu\Module\Tick\Ship;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Game\GameEnum;
+use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
+use Stu\Orm\Entity\ShipInterface;
+use Stu\Orm\Entity\ShipSystemInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyShipRepairRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
@@ -281,64 +285,11 @@ final class ShipTickManager implements ShipTickManagerInterface
             if (!$obj->getField()->isActive()) {
                 continue;
             }
-            $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
 
-            //repair ship systems
-            $damagedSystems = $ship->getDamagedSystems();
-            if (!empty($damagedSystems)) {
-                $firstSystem = $damagedSystems[0];
-                $firstSystem->setStatus(100);
-
-                if ($ship->getCrewCount() > 0) {
-                    $firstSystem->setMode($this->shipSystemManager->lookupSystem($firstSystem->getSystemType())->getDefaultMode());
-                }
-
-                // maximum of two systems get repaired
-                if (count($damagedSystems) > 1) {
-                    $secondSystem = $damagedSystems[1];
-                    $secondSystem->setStatus(100);
-
-                    if ($ship->getCrewCount() > 0) {
-                        $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
-                    }
-                }
-            }
-
-            if (!$ship->canBeRepaired()) {
-                $ship->setHuell($ship->getMaxHuell());
-                $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
-
+            if ($this->repairShipOnEntity($ship, $colony, true)) {
                 $this->colonyShipRepairRepository->delete($obj);
-
-                $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
-                    $ship->getUser()->getId(),
-                    sprintf(
-                        "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
-                        $ship->getName(),
-                        $ship->getSectorString(),
-                        $colony->getName(),
-                        $colony->getUser()->getName()
-                    ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-                );
-
-                if ($ship->getUser()->getId() != $colony->getUserId()) {
-                    $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
-                        $colony->getUserId(),
-                        sprintf(
-                            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
-                            $ship->getName(),
-                            $ship->getUser()->getName(),
-                            $ship->getSectorString(),
-                            $colony->getName()
-                        ),
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
-                    );
-                }
+                $this->shipRepository->save($ship);
             }
-            $this->shipRepository->save($ship);
         }
     }
 
@@ -352,66 +303,198 @@ final class ShipTickManager implements ShipTickManagerInterface
             if (!$station->hasEnoughCrew()) {
                 continue;
             }
-            $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
 
-            //repair ship systems
-            $damagedSystems = $ship->getDamagedSystems();
-            if (!empty($damagedSystems)) {
-                $firstSystem = $damagedSystems[0];
-                $firstSystem->setStatus(100);
+            if ($this->repairShipOnEntity($ship, $station, false)) {
+                $this->stationShipRepairRepository->delete($obj);
+                $this->shipRepository->save($ship);
+            }
+        }
+    }
 
-                if ($ship->getCrewCount() > 0) {
-                    $firstSystem->setMode($this->shipSystemManager->lookupSystem($firstSystem->getSystemType())->getDefaultMode());
-                }
+    private function repairShipOnEntity(ShipInterface $ship, $entity, bool $isColony): bool
+    {
+        // check for U-Mode
+        if ($entity->getUser()->isVacationRequestOldEnough()) {
+            return false;
+        }
 
-                // maximum of two systems get repaired
-                if (count($damagedSystems) > 1) {
-                    $secondSystem = $damagedSystems[1];
-                    $secondSystem->setStatus(100);
+        // parts stored?
+        if (!$this->enoughSparePartsOnEntity($ship, $entity, $isColony)) {
+            return false;
+        }
 
-                    if ($ship->getCrewCount() > 0) {
-                        $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
-                    }
-                }
+        $repairFinished = false;
+
+        $ship->setHuell($ship->getHuell() + $ship->getRepairRate());
+
+        //repair ship systems
+        $damagedSystems = $ship->getDamagedSystems();
+        if (!empty($damagedSystems)) {
+            $firstSystem = $damagedSystems[0];
+            $firstSystem->setStatus(100);
+
+            if ($ship->getCrewCount() > 0) {
+                $firstSystem->setMode($this->shipSystemManager->lookupSystem($firstSystem->getSystemType())->getDefaultMode());
             }
 
-            if (!$ship->canBeRepaired()) {
-                $ship->setHuell($ship->getMaxHuell());
-                $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+            // maximum of two systems get repaired
+            if (count($damagedSystems) > 1) {
+                $secondSystem = $damagedSystems[1];
+                $secondSystem->setStatus(100);
 
-                $this->stationShipRepairRepository->delete($obj);
+                if ($ship->getCrewCount() > 0) {
+                    $secondSystem->setMode($this->shipSystemManager->lookupSystem($secondSystem->getSystemType())->getDefaultMode());
+                }
+            }
+        }
+
+        if (!$ship->canBeRepaired()) {
+            $repairFinished = true;
+
+            $ship->setHuell($ship->getMaxHuell());
+            $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+
+            $shipOwnerMessage = $isColony ? sprintf(
+                "Die Reparatur der %s wurde in Sektor %s bei der Kolonie %s des Spielers %s fertiggestellt",
+                $ship->getName(),
+                $ship->getSectorString(),
+                $entity->getName(),
+                $entity->getUser()->getName()
+            ) : sprintf(
+                "Die Reparatur der %s wurde in Sektor %s von der %s %s des Spielers %s fertiggestellt",
+                $ship->getName(),
+                $ship->getSectorString(),
+                $entity->getRump()->getName(),
+                $entity->getName(),
+                $entity->getUser()->getName()
+            );
+
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $ship->getUser()->getId(),
+                $shipOwnerMessage,
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
+
+            if ($ship->getUser()->getId() != $entity->getUserId()) {
+                $entityOwnerMessage = $isColony ? sprintf(
+                    "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s fertiggestellt",
+                    $ship->getName(),
+                    $ship->getUser()->getName(),
+                    $ship->getSectorString(),
+                    $entity->getName()
+                ) : sprintf(
+                    "Die Reparatur der %s von Siedler %s wurde in Sektor %s von der %s %s fertiggestellt",
+                    $ship->getName(),
+                    $ship->getUser()->getName(),
+                    $ship->getSectorString(),
+                    $entity->getRump()->getName(),
+                    $entity->getName()
+                );
 
                 $this->privateMessageSender->send(
                     GameEnum::USER_NOONE,
-                    $ship->getUser()->getId(),
-                    sprintf(
-                        "Die Reparatur der %s wurde in Sektor %s von der %s %s des Spielers %s fertiggestellt",
-                        $ship->getName(),
-                        $ship->getSectorString(),
-                        $station->getRump()->getName(),
-                        $station->getName(),
-                        $station->getUser()->getName()
-                    ),
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                    $entity->getUserId(),
+                    $entityOwnerMessage,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
                 );
-
-                if ($ship->getUser()->getId() != $station->getUserId()) {
-                    $this->privateMessageSender->send(
-                        GameEnum::USER_NOONE,
-                        $station->getUserId(),
-                        sprintf(
-                            "Die Reparatur der %s von Siedler %s wurde in Sektor %s von der %s %s fertiggestellt",
-                            $ship->getName(),
-                            $ship->getUser()->getName(),
-                            $ship->getSectorString(),
-                            $station->getRump()->getName(),
-                            $station->getName()
-                        ),
-                        PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
-                    );
-                }
             }
-            $this->shipRepository->save($ship);
         }
+        $this->shipRepository->save($ship);
+
+        return $repairFinished;
+    }
+
+    private function enoughSparePartsOnEntity(ShipInterface $ship, $entity, bool $isColony): bool
+    {
+        $neededSpareParts = 0;
+        $neededSystemComponents = 0;
+
+        $hull = $ship->getHuell();
+        $maxHull = $ship->getMaxHuell();
+
+        if ($hull < $maxHull) {
+            $neededSpareParts += (int)($ship->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
+        }
+
+        $damagedSystems = $ship->getDamagedSystems();
+        if (!empty($damagedSystems)) {
+            $firstSystemLvl = $this->determinSystemLevel($damagedSystems[0]);
+
+            $neededSpareParts += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY];
+            $neededSystemComponents += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$firstSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
+
+            // maximum of two systems get repaired
+            if (count($damagedSystems) > 1) {
+                $secondSystemLvl = $this->determinSystemLevel($damagedSystems[1]);
+
+                $neededSpareParts += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SPARE_PARTS_ONLY];
+                $neededSystemComponents += RepairTaskEnum::SHIPYARD_PARTS_USAGE[$secondSystemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
+            }
+        }
+
+        if ($neededSpareParts > 0) {
+            $spareParts = $entity->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART);
+
+            if ($spareParts === null || $spareParts->getAmount() < $neededSpareParts) {
+                $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity, $isColony);
+                return false;
+            }
+        }
+
+        if ($neededSystemComponents > 0) {
+            $systemComponents = $entity->getStorage()->get(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT);
+
+            if ($systemComponents === null || $systemComponents->getAmount() < $neededSystemComponents) {
+                $this->sendNeededAmountMessage($neededSpareParts, $neededSystemComponents, $ship, $entity, $isColony);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function determinSystemLevel(ShipSystemInterface $system): int
+    {
+        $module = $system->getModule();
+
+        if ($module !== null) {
+            return $module->getLevel();
+        } else {
+            return $system->getShip()->getRump()->getModuleLevel();
+        }
+    }
+
+    private function sendNeededAmountMessage(int $neededSpareParts, int $neededSystemComponents, ShipInterface $ship, $entity, bool $isColony): void
+    {
+        $entityOwnerMessage = $isColony ? sprintf(
+            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s angehalten.\nEs werden folgende Waren benötigt:\n%d %s\n%d %s",
+            $ship->getName(),
+            $ship->getUser()->getName(),
+            $ship->getSectorString(),
+            $entity->getName(),
+            $neededSpareParts,
+            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART),
+            $neededSystemComponents,
+            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
+        ) : sprintf(
+            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der %s %s angehalten.\nEs werden folgende Waren benötigt:\n%d %s\n%d %s",
+            $ship->getName(),
+            $ship->getUser()->getName(),
+            $ship->getSectorString(),
+            $entity->getRump()->getName(),
+            $entity->getName(),
+            $neededSpareParts,
+            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART),
+            $neededSystemComponents,
+            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
+        );
+
+        $this->privateMessageSender->send(
+            GameEnum::USER_NOONE,
+            $entity->getUserId(),
+            $entityOwnerMessage,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+        );
     }
 }
