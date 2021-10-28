@@ -209,7 +209,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $shipobj->getDockedShips()->clear();
 
                 $this->shipSystemManager->deactivateAll($shipobj);
-                $shipobj->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+
+                $shipobj->setAlertStateGreen();
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
                 if ($this->storageContainsNeededCommodities($storage)) {

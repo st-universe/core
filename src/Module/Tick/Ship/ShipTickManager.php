@@ -172,7 +172,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $doAlertRedCheck = $randomShip->getWarpState() || $randomShip->getCloakState();
         //deactivate ship
         $this->shipSystemManager->deactivateAll($randomShip);
-        $randomShip->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+        $randomShip->setAlertStateGreen();
 
         $this->shipRepository->save($randomShip);
 

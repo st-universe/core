@@ -271,8 +271,13 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         }
 
         try {
-            $ship->setAlertState($alertState);
+            $alertMsg = null;
+            $ship->setAlertState($alertState, $alertMsg);
             $this->shipRepository->save($ship);
+
+            if ($alertMsg !== null) {
+                $game->addInformation(sprintf(_('%s: [b][color=FAFA03]%s[/color][/b]'), $ship->getName(), $alertMsg));
+            }
         } catch (InsufficientEnergyException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]Nicht genügend Energie um die Alarmstufe zu wechseln[/color][/b]'), $ship->getName()));
             return false;

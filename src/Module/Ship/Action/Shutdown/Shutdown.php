@@ -46,7 +46,7 @@ final class Shutdown implements ActionControllerInterface
         }
 
         //set alert to green
-        $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+        $ship->setAlertStateGreen();
 
         $game->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
     }

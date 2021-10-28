@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 interface ShipInterface
@@ -44,7 +45,9 @@ interface ShipInterface
 
     public function getAlertState(): int;
 
-    public function setAlertState(int $alertState): ShipInterface;
+    public function setAlertStateGreen(): ShipInterface;
+
+    public function setAlertState(int $alertState, &$msg): ShipInterface;
 
     public function isSystemHealthy(int $systemId): bool;
 

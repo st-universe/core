@@ -295,7 +295,7 @@ final class BuildConstruction implements ActionControllerInterface
         $construction->setName($rump->getName());
         $construction->setHuell($rump->getBaseHull());
         $construction->setMaxHuell($rump->getBaseHull());
-        $construction->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+        $construction->setAlertStateGreen();
 
         $construction->setMap($ship->getMap());
         $construction->setStarsystemMap($ship->getStarsystemMap());
