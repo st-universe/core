@@ -140,7 +140,8 @@ final class ShipCreator implements ShipCreatorInterface
             $ship->setName($ship->getRump()->getName());
         }
         $ship->setSensorRange($ship->getRump()->getBaseSensorRange());
-        $ship->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+
+        $ship->setAlertStateGreen();
         $ship->setMaxEBatt();
 
         $this->shipRepository->save($ship);

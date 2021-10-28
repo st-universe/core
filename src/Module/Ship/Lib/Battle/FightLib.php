@@ -61,8 +61,12 @@ final class FightLib implements FightLibInterface
         }
         if ($ship->getAlertState() == ShipAlertStateEnum::ALERT_GREEN) {
             try {
-                $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW);
+                $alertMsg = null;
+                $ship->setAlertState(ShipAlertStateEnum::ALERT_YELLOW, $alertMsg);
                 $msg[] = "- Erhöhung der Alarmstufe wurde durchgeführt, Grün -> Gelb";
+                if ($alertMsg !== null) {
+                    $msg[] = "- " . $alertMsg;
+                }
                 return $msg;
             } catch (ShipSystemException $e) {
                 $msg[] = "- Nicht genügend Energie vorhanden um auf Alarm-Gelb zu wechseln";

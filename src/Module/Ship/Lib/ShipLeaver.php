@@ -86,7 +86,8 @@ final class ShipLeaver implements ShipLeaverInterface
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
-        $ship->setAlertState(1);
+
+        $ship->setAlertStateGreen();
         $ship->setDockedTo(null);
         $ship->setFleet(null);
         $this->shipRepository->save($ship);
@@ -168,7 +169,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $pods->setName(sprintf(_('Rettungskapseln von (%d)'), $ship->getId()));
         $pods->setHuell(1);
         $pods->setMaxHuell(1);
-        $pods->setAlertState(ShipAlertStateEnum::ALERT_GREEN);
+        $pods->setAlertStateGreen();
 
         $pods->setMap($ship->getMap());
         $pods->setStarsystemMap($ship->getStarsystemMap());

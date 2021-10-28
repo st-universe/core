@@ -116,7 +116,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setIsBase(false);
         $ship->setShield(0);
         $ship->setEps(0);
-        $ship->setAlertState(1);
+        $ship->setAlertStateGreen();
         $ship->setDockedTo(null);
         $ship->setName(_('Trümmer'));
         $ship->setIsDestroyed(true);

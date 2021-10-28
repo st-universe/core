@@ -363,7 +363,13 @@ class Ship implements ShipInterface
         return $this->alvl;
     }
 
-    public function setAlertState(int $alertState): ShipInterface
+    public function setAlertStateGreen(): ShipInterface
+    {
+        $dummyMsg = null;
+        return $this->setAlertState(ShipAlertStateEnum::ALERT_GREEN, $dummyMsg);
+    }
+
+    public function setAlertState(int $alertState, &$msg): ShipInterface
     {
         //check if enough energy
         if (
@@ -387,7 +393,9 @@ class Ship implements ShipInterface
 
         // cancel repair if not on alert green
         if ($alertState !== ShipAlertStateEnum::ALERT_GREEN) {
-            $this->cancelRepair();
+            if ($this->cancelRepair()) {
+                $msg = _('Die Reparatur wurde abgebrochen');
+            }
         }
 
         // now change
