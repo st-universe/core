@@ -100,6 +100,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->checkForCrewLimitation();
         $this->removeEmptyEscapePods();
 
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         $this->repairShipsOnColonies(1);
         $this->repairShipsOnStations();
 
@@ -312,6 +314,8 @@ final class ShipTickManager implements ShipTickManagerInterface
     {
         foreach ($this->stationShipRepairRepository->getMostRecentJobs() as $obj) {
 
+            $this->loggerUtil->log('stationRepairJobId: ' . $obj->getId());
+
             $ship = $obj->getShip();
             $station = $obj->getStation();
 
@@ -502,8 +506,6 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function consumeSpareParts(array $neededParts, $entity, bool $isColony): void
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-
         foreach ($neededParts as $commodityKey => $amount) {
             $this->loggerUtil->log(sprintf('consume, cid: %d, amount: %d', $commodityKey, $amount));
 
