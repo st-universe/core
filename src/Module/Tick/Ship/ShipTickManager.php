@@ -509,27 +509,32 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function sendNeededAmountMessage(int $neededSpareParts, int $neededSystemComponents, ShipInterface $ship, $entity, bool $isColony): void
     {
+        $neededPartsString = sprintf(
+            "%d %s%s",
+            $neededSpareParts,
+            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART),
+            ($neededSystemComponents > 0 ? sprintf(
+                "\n%d %s",
+                $neededSystemComponents,
+                CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
+            ) : '')
+        );
+
         $entityOwnerMessage = $isColony ? sprintf(
-            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s angehalten.\nEs werden folgende Waren benötigt:\n%d %s\n%d %s",
+            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der Kolonie %s angehalten.\nEs werden folgende Waren benötigt:\n%s",
             $ship->getName(),
             $ship->getUser()->getName(),
             $ship->getSectorString(),
             $entity->getName(),
-            $neededSpareParts,
-            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART),
-            $neededSystemComponents,
-            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
+            $neededPartsString
         ) : sprintf(
-            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der %s %s angehalten.\nEs werden folgende Waren benötigt:\n%d %s\n%d %s",
+            "Die Reparatur der %s von Siedler %s wurde in Sektor %s bei der %s %s angehalten.\nEs werden folgende Waren benötigt:\n%s",
             $ship->getName(),
             $ship->getUser()->getName(),
             $ship->getSectorString(),
             $entity->getRump()->getName(),
             $entity->getName(),
-            $neededSpareParts,
-            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART),
-            $neededSystemComponents,
-            CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT)
+            $neededPartsString
         );
 
         $this->privateMessageSender->send(
