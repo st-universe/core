@@ -462,15 +462,15 @@ final class ShipTickManager implements ShipTickManagerInterface
         }
 
         return [
-            RepairTaskEnum::SPARE_PARTS_ONLY => $neededSpareParts,
-            RepairTaskEnum::SYSTEM_COMPONENTS_ONLY => $neededSystemComponents
+            CommodityTypeEnum::GOOD_SPARE_PART => $neededSpareParts,
+            CommodityTypeEnum::GOOD_SYSTEM_COMPONENT => $neededSystemComponents
         ];
     }
 
     private function enoughSparePartsOnEntity(array $neededParts, $entity, bool $isColony, ShipInterface $ship): bool
     {
-        $neededSpareParts = $neededParts[RepairTaskEnum::SPARE_PARTS_ONLY];
-        $neededSystemComponents = $neededParts[RepairTaskEnum::SYSTEM_COMPONENTS_ONLY];
+        $neededSpareParts = $neededParts[CommodityTypeEnum::GOOD_SPARE_PART];
+        $neededSystemComponents = $neededParts[CommodityTypeEnum::GOOD_SYSTEM_COMPONENT];
 
         if ($neededSpareParts > 0) {
             $spareParts = $entity->getStorage()->get(CommodityTypeEnum::GOOD_SPARE_PART);
