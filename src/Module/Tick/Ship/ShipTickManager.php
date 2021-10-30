@@ -13,6 +13,8 @@ use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
@@ -57,6 +59,8 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private EntityManagerInterface $entityManager;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRemoverInterface $shipRemover,
@@ -71,7 +75,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
@@ -87,6 +92,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->entityManager = $entityManager;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function work(): void
@@ -496,7 +502,11 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private function consumeSpareParts(array $neededParts, $entity, bool $isColony): void
     {
+        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
         foreach ($neededParts as $commodityKey => $amount) {
+            $this->loggerUtil->log(sprintf('consume, cid: %d, amount: %d', $commodityKey, $amount));
+
             $commodity = $entity->getStorage()->get($commodityKey)->getCommodity();
 
             if ($isColony) {
