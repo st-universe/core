@@ -100,7 +100,8 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->checkForCrewLimitation();
         $this->removeEmptyEscapePods();
 
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->init();
 
         $this->repairShipsOnColonies(1);
         $this->repairShipsOnStations();
