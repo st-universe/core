@@ -509,6 +509,10 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($neededParts as $commodityKey => $amount) {
             $this->loggerUtil->log(sprintf('consume, cid: %d, amount: %d', $commodityKey, $amount));
 
+            if ($amount < 1) {
+                continue;
+            }
+
             $commodity = $entity->getStorage()->get($commodityKey)->getCommodity();
 
             if ($isColony) {
