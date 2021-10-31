@@ -28,6 +28,8 @@ use Stu\Orm\Repository\TorpedoTypeRepositoryInterface;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -55,6 +57,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
@@ -66,7 +70,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ColonyRepositoryInterface $colonyRepository,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
@@ -79,6 +84,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -314,6 +320,14 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $torp_obj = $possibleTorpedoTypes[$shipobj->getTorpedo()->getId()];
                         $load = $count - $shipobj->getTorpedoCount();
                         if ($load > 0) {
+                            if ($torp_obj === null) {
+                                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+                                $this->loggerUtil->log(sprintf('shipId: %d', $shipobj->getId()));
+                                $this->loggerUtil->log(sprintf('possibleTorpedoTypes: %s', implode(',', $possibleTorpedoTypes)));
+                                $this->loggerUtil->log(sprintf('shipTorpedoCount: %d', $shipobj->getTorpedoCount()));
+                                $this->loggerUtil->log(sprintf('shipTorpedoId: %d', $shipobj->getTorpedo()->getId()));
+                                $this->loggerUtil->log(sprintf('load: %d', $load));
+                            }
                             if (!$storage->containsKey($torp_obj->getGoodId())) {
                                 $msg[] = sprintf(
                                     _('%s: Es sind keine Torpedos des Typs %s auf der Kolonie vorhanden'),
