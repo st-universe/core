@@ -924,6 +924,10 @@ class Ship implements ShipInterface
 
     public function hasEnoughCrew(): bool
     {
+        if ($this->getBuildplan() === null) {
+            return false;
+        }
+
         return $this->getBuildplan()->getCrew() <= 0
             || $this->getCrewCount() >= $this->getBuildplan()->getCrew();
     }
