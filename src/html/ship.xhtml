@@ -736,7 +736,7 @@
 					onkeydown="event.key == 'Enter' && $('unloadBatteryButton').click()" />
 				<input type="submit" class="button" name="B_USE_BATTERY" value="entladen" id="unloadBatteryButton" />
 				<input type="button" class="button"
-					onclick="$('ebattload').value = ${SHIP/getEbatt}; $('unloadBatteryButton').click();" value="max" />
+					onclick="$('ebattload').value = 99999999; $('unloadBatteryButton').click();" value="max" />
 				<span tal:condition="SHIP/isFleetLeader"><input type="checkbox" name="fleet" />
 					Flotte</span>
 			</td>
