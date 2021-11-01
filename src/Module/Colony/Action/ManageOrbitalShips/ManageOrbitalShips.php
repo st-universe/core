@@ -323,7 +323,11 @@ final class ManageOrbitalShips implements ActionControllerInterface
                             if ($torp_obj === null) {
                                 $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
                                 $this->loggerUtil->log(sprintf('shipId: %d', $shipobj->getId()));
-                                $this->loggerUtil->log(sprintf('possibleTorpedoTypes: %s', implode(',', $possibleTorpedoTypes)));
+                                $possTorpTypeIds = [];
+                                foreach ($possibleTorpedoTypes as $torpType) {
+                                    $possTorpTypeIds[] = $torpType->getId();
+                                }
+                                $this->loggerUtil->log(sprintf('possibleTorpedoTypes: %s', implode(',', $possTorpTypeIds)));
                                 $this->loggerUtil->log(sprintf('shipTorpedoCount: %d', $shipobj->getTorpedoCount()));
                                 $this->loggerUtil->log(sprintf('shipTorpedoId: %d', $shipobj->getTorpedo()->getId()));
                                 $this->loggerUtil->log(sprintf('load: %d', $load));
