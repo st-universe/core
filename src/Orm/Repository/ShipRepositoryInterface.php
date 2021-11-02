@@ -142,7 +142,15 @@ interface ShipRepositoryInterface extends ObjectRepository
         int $sysMapId = null
     ): iterable;
 
-    public function isCloakedShipAtLocation(ShipInterface $ship): bool;
+    public function isCloakedShipAtShipLocation(
+        ShipInterface $ship
+    ): bool;
+
+    public function isCloakedShipAtLocation(
+        int $sysMapId,
+        int $mapId,
+        int $ignoreId
+    ): bool;
 
     public function getRandomShipIdWithCrewByUser(int $userId): ?int;
 
