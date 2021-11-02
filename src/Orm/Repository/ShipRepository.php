@@ -636,8 +636,20 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-    public function isCloakedShipAtLocation(
+    public function isCloakedShipAtShipLocation(
         ShipInterface $ship
+    ): bool {
+        return $this->isCloakedShipAtLocation(
+            $ship->getStarsystemMap()->getId(),
+            $ship->getMap()->getId(),
+            $ship->getUser()->getId()
+        );
+    }
+
+    public function isCloakedShipAtLocation(
+        int $sysMapId,
+        int $mapId,
+        int $ignoreId
     ): bool {
 
         $cloakSql = sprintf(
@@ -650,36 +662,20 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ShipSystemTypeEnum::SYSTEM_CLOAK
         );
 
-        if ($ship->getSystem() === null) {
-            $query = $this->getEntityManager()->createQuery(
-                sprintf(
-                    'SELECT COUNT(s.id) FROM %s s
-                    WHERE s.map_id = :mapId
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT COUNT(s.id) FROM %s s
+                    WHERE s.%s = :fieldId
                     %s
                     AND s.user_id != :ignoreId',
-                    Ship::class,
-                    $cloakSql
-                )
-            )->setParameters([
-                'mapId' => $ship->getMap()->getId(),
-                'ignoreId' => $ship->getUser()->getId()
-            ]);
-        } else {
-            $query = $this->getEntityManager()->createQuery(
-                sprintf(
-                    'SELECT COUNT(s.id) FROM %s s
-                    WHERE s.starsystem_map_id = :starsystemMapId
-                    %s
-                    AND s.user_id != :ignoreId',
-                    Ship::class,
-                    $cloakSql
-                )
-            )->setParameters([
-                'starsystemMapId' => $ship->getStarsystemMap()->getId(),
-                'ignoreId' => $ship->getUser()->getId()
-            ]);
-        }
-        return $query->getSingleScalarResult() > 0;
+                Ship::class,
+                $sysMapId !== null ? 'starsystem_map_id' : 'map_id',
+                $cloakSql
+            )
+        )->setParameters([
+            'fieldId' => $mapId ?? $sysMapId,
+            'ignoreId' => $ignoreId
+        ])->getSingleScalarResult() > 0;
     }
 
     public function getRandomShipIdWithCrewByUser(int $userId): ?int
