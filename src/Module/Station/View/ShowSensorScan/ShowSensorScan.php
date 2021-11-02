@@ -7,6 +7,7 @@ namespace Stu\Module\Station\View\ShowSensorScan;
 use request;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\Nbs\NbsUtilityInterface;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -126,7 +127,8 @@ final class ShowSensorScan implements ViewControllerInterface
         $ship->setEps($ship->getEps() - self::ENERGY_COST_SECTOR_SCAN);
         $this->shipRepository->save($ship);
 
-        $tachyonActive = $this->nbsUtility->isTachyonActive($ship);
+        //$tachyonActive = $this->nbsUtility->isTachyonActive($ship);
+        $tachyonActive = $ship->getSystemState(ShipSystemTypeEnum::SYSTEM_TACHYON_SCANNER);
 
         if ($sysid !== 0) {
             $this->loggerUtil->log('system!');

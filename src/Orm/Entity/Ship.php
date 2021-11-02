@@ -414,7 +414,7 @@ class Ship implements ShipInterface
         return $this->getShipSystem($systemId)->getStatus() > 0;
     }
 
-    private function getSystemState(int $systemId): bool
+    public function getSystemState(int $systemId): bool
     {
         if (!$this->hasShipSystem($systemId)) {
             return false;

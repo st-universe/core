@@ -51,6 +51,8 @@ interface ShipInterface
 
     public function isSystemHealthy(int $systemId): bool;
 
+    public function getSystemState(int $systemId): bool;
+
     public function getImpulseState(): bool;
 
     public function getWarpState(): bool;
