@@ -662,7 +662,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             ShipSystemTypeEnum::SYSTEM_CLOAK
         );
 
-        return $this->getEntityManager()->createQuery(
+        $result = $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT COUNT(s.id) FROM %s s
                     WHERE s.%s = :fieldId
@@ -675,7 +675,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'fieldId' => $mapId ?? $sysMapId,
             'ignoreId' => $ignoreId
-        ])->getSingleScalarResult() > 0;
+        ])->getSingleScalarResult();
+
+        return $result > 0;
     }
 
     public function getRandomShipIdWithCrewByUser(int $userId): ?int
