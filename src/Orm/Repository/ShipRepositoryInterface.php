@@ -147,8 +147,8 @@ interface ShipRepositoryInterface extends ObjectRepository
     ): bool;
 
     public function isCloakedShipAtLocation(
-        int $sysMapId,
-        int $mapId,
+        ?int $sysMapId,
+        ?int $mapId,
         int $ignoreId
     ): bool;
 
