@@ -42,7 +42,8 @@ final class DoTachyonScan implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true
         );
 
         // scanner needs to be present
