@@ -47,7 +47,14 @@ final class ChangeName implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_OPTION]);
 
-        $value = CleanTextUtils::clearEmojis($this->changeNameRequest->getName());
+        $text = $this->changeNameRequest->getName();
+
+        if (!CleanTextUtils::checkBBCode($text)) {
+            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            return;
+        }
+
+        $value = CleanTextUtils::clearEmojis($text);
 
         if (mb_strlen($value) > 255) {
             $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));

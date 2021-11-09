@@ -55,6 +55,13 @@ final class EditDetails implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = (int) $alliance->getId();
 
+        $name = $this->changeNameRequest->getName();
+
+        if (!CleanTextUtils::checkBBCode($name)) {
+            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            return;
+        }
+
         $name = CleanTextUtils::clearEmojis($this->editDetailsRequest->getName());
         $faction_mode = $this->editDetailsRequest->getFactionMode();
         $description = $this->editDetailsRequest->getDescription();
@@ -91,7 +98,8 @@ final class EditDetails implements ActionControllerInterface
                 );
                 $this->privateMessageSender->send(GameEnum::USER_NOONE, $applicant->getUserId(), $text);
 
-                $applicant->deleteFromDatabase();
+                //TODO why does this method call exist here?
+                //$applicant->deleteFromDatabase();
             }
         }
 
