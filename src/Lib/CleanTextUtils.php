@@ -19,7 +19,7 @@ class CleanTextUtils
 
 		foreach ($taglist as $tag) {
 			// How often is the open tag?  
-			preg_match_all('/\[' . $tag . '(=[^ ]+)?\]/i', $str, $matches);
+			preg_match_all('/\[' . $tag . '(=[^ ]+?)?\]/i', $str, $matches);
 			$opentags = count($matches['0']);
 
 			// How often is the close tag?  
