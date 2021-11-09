@@ -7,6 +7,7 @@ use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|UserInterface find(integer $id)
+ * @method UserInterface[] findAll()
  */
 interface UserRepositoryInterface extends ObjectRepository
 {

@@ -13,10 +13,13 @@ use Stu\Orm\Repository\AllianceRepositoryInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
+use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class ClearFaultyBBCodes implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_CORRUPT_BBCODES';
+
+    private UserRepositoryInterface $userRepository;
 
     private ShipRepositoryInterface $shipRepository;
 
@@ -29,12 +32,14 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
     private Parser $bbCodeParser;
 
     public function __construct(
+        UserRepositoryInterface $userRepository,
         ShipRepositoryInterface $shipRepository,
         FleetRepositoryInterface $fleetRepository,
         ColonyRepositoryInterface $colonyRepository,
         AllianceRepositoryInterface $allianceRepository,
         Parser $bbCodeParser
     ) {
+        $this->userRepository = $userRepository;
         $this->shipRepository = $shipRepository;
         $this->fleetRepository = $fleetRepository;
         $this->colonyRepository = $colonyRepository;
@@ -51,6 +56,21 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, Spieler ist kein Admin![/color][/b]'));
             return;
         }
+
+        //USERS
+        $game->addInformation("USERS:");
+        $allUsers = $this->userRepository->findAll();
+        foreach ($allUsers as $user) {
+            if (!CleanTextUtils::checkBBCode($user->getName())) {
+                $game->addInformationf(_("user_id: %d, name: %s"), $user->getId(), $user->getName());
+
+                $textOnly = $this->bbCodeParser->parse($user->getName())->getAsText();
+
+                //$user->setName($textOnly);
+                //$this->userRepository->save($user);
+            }
+        }
+        //$game->addInformation("Usernamen wurde bereinigt!");
 
         //SHIPS
         $game->addInformation("SHIPS:");
