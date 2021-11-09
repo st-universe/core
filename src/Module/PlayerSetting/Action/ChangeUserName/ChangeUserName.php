@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\Action\ChangeUserName;
 
 use JBBCode\Parser;
-use Stu\Lib\EmojiRemover;
+use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
@@ -32,7 +32,7 @@ final class ChangeUserName implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $value = EmojiRemover::clearEmojis($this->changeUserNameRequest->getName());
+        $value = CleanTextUtils::clearEmojis($this->changeUserNameRequest->getName());
         $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
 
         if (mb_strlen($valueWithoutMarkup) < 6) {

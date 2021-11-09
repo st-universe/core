@@ -9,6 +9,7 @@ use Stu\Orm\Entity\UserInterface;
 
 /**
  * @method null|ShipInterface find(integer $id)
+ * @method ShipInterface[] findAll()
  */
 interface ShipRepositoryInterface extends ObjectRepository
 {

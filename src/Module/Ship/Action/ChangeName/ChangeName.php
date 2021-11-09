@@ -6,7 +6,7 @@ namespace Stu\Module\Ship\Action\ChangeName;
 
 use JBBCode\Parser;
 use request;
-use Stu\Lib\EmojiRemover;
+use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -48,7 +48,14 @@ final class ChangeName implements ActionControllerInterface
             $userId
         );
 
-        $value = EmojiRemover::clearEmojis($this->changeNameRequest->getName());
+        $text = $this->changeNameRequest->getName();
+
+        if (!CleanTextUtils::checkBBCode($text)) {
+            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            return;
+        }
+
+        $value = CleanTextUtils::clearEmojis($text);
 
         if (mb_strlen($value) > 255) {
             $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
