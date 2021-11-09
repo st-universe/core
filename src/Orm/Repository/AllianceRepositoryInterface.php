@@ -9,6 +9,7 @@ use Stu\Orm\Entity\AllianceInterface;
 
 /**
  * @method null|AllianceInterface find(integer $id)
+ * @method AllianceInterface[] findAll()
  */
 interface AllianceRepositoryInterface extends ObjectRepository
 {

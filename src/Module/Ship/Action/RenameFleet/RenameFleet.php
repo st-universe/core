@@ -28,7 +28,14 @@ final class RenameFleet implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $newName = CleanTextUtils::clearEmojis($this->renameFleetRequest->getNewName());
+        $text = $this->renameFleetRequest->getNewName();
+
+        if (!CleanTextUtils::checkBBCode($text)) {
+            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            return;
+        }
+
+        $newName = CleanTextUtils::clearEmojis($text);
         if (mb_strlen($newName) === 0) {
             return;
         }

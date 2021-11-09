@@ -32,7 +32,14 @@ final class ChangeUserName implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $value = CleanTextUtils::clearEmojis($this->changeUserNameRequest->getName());
+        $text = $this->changeUserNameRequest->getName();
+
+        if (!CleanTextUtils::checkBBCode($text)) {
+            $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
+            return;
+        }
+
+        $value = CleanTextUtils::clearEmojis($text);
         $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
 
         if (mb_strlen($valueWithoutMarkup) < 6) {
