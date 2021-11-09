@@ -7,7 +7,7 @@ namespace Stu\Module\Colony\Action\ChangeName;
 use JBBCode\Parser;
 use request;
 use Stu\Component\Colony\ColonyEnum;
-use Stu\Lib\EmojiRemover;
+use Stu\Lib\CleanTextUtils;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
@@ -47,7 +47,7 @@ final class ChangeName implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_OPTION]);
 
-        $value = EmojiRemover::clearEmojis($this->changeNameRequest->getName());
+        $value = CleanTextUtils::clearEmojis($this->changeNameRequest->getName());
 
         if (mb_strlen($value) > 255) {
             $game->addInformation(_('Der Name ist zu lang (Maximum: 255 Zeichen)'));
