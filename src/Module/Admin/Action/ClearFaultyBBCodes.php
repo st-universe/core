@@ -66,11 +66,11 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
                 $textOnly = $this->bbCodeParser->parse($user->getName())->getAsText();
 
-                //$user->setName($textOnly);
-                //$this->userRepository->save($user);
+                $user->setUsername($textOnly);
+                $this->userRepository->save($user);
             }
         }
-        //$game->addInformation("Usernamen wurde bereinigt!");
+        $game->addInformation("Usernamen wurde bereinigt!");
 
         //SHIPS
         $game->addInformation("SHIPS:");
@@ -81,11 +81,11 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
                 $textOnly = $this->bbCodeParser->parse($ship->getName())->getAsText();
 
-                //$ship->setName($textOnly);
-                //$this->shipRepository->save($ship);
+                $ship->setName($textOnly);
+                $this->shipRepository->save($ship);
             }
         }
-        //$game->addInformation("Schiffsnamen wurde bereinigt!");
+        $game->addInformation("Schiffsnamen wurde bereinigt!");
 
         //FLEETS
         $game->addInformation("FLEETS:");
@@ -96,11 +96,11 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
                 $textOnly = $this->bbCodeParser->parse($fleet->getName())->getAsText();
 
-                // $fleet->setName($textOnly);
-                // $this->fleetRepository->save($fleet);
+                $fleet->setName($textOnly);
+                $this->fleetRepository->save($fleet);
             }
         }
-        //$game->addInformation("Flottennamen wurde bereinigt!");
+        $game->addInformation("Flottennamen wurde bereinigt!");
 
         //COLONIES
         $game->addInformation("COLONIES:");
@@ -111,11 +111,11 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
                 $textOnly = $this->bbCodeParser->parse($colony->getName())->getAsText();
 
-                // $colony->setName($textOnly);
-                // $this->colonyRepository->save($colony);
+                $colony->setName($textOnly);
+                $this->colonyRepository->save($colony);
             }
         }
-        //$game->addInformation("Kolonienamen wurde bereinigt!");
+        $game->addInformation("Kolonienamen wurde bereinigt!");
 
         //ALLIANCES
         $game->addInformation("ALLIANCES:");
@@ -126,11 +126,11 @@ final class ClearFaultyBBCodes implements ActionControllerInterface
 
                 $textOnly = $this->bbCodeParser->parse($ally->getName())->getAsText();
 
-                //$ally->setName($textOnly);
-                // $this->allianceRepository->save($ally);
+                $ally->setName($textOnly);
+                $this->allianceRepository->save($ally);
             }
         }
-        //$game->addInformation("Allianznamen wurde bereinigt!");
+        $game->addInformation("Allianznamen wurde bereinigt!");
     }
 
     public function performSessionCheck(): bool
