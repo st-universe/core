@@ -11,7 +11,7 @@ use Stu\Orm\Repository\HistoryRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private const MAX_LIMIT = 1000;
+    private const MAX_LIMIT = 10000;
 
     private const LIMIT = 50;
 
