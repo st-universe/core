@@ -143,14 +143,14 @@
         </tr>
         <tr>
           <td style="width: 20%" class="darkbg">Crew in Ausbildung</td>
-          <td style="width: 20%" class="darkbg">Noch Ausbildbar</td>
+          <td colspan="2" style="width: 20%" class="darkbg">Noch Ausbildbar</td>
         </tr>
         <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getInTrainingCrewCount">FREE</span>
           </td>
-          <td>
+          <td colspan="2">
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getCrewLeftCount">SLOTS</span>
           </td>
