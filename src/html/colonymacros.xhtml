@@ -88,9 +88,6 @@
               tal:replace="COLONY_SURFACE/getPositiveEffectPrimaryDescription">PRIMARY</span></td>
           <td style="width: 25%" class="darkbg"><span
               tal:replace="COLONY_SURFACE/getPositiveEffectSecondaryDescription">PRIMARY</span></td>
-          <td style="width: 25%" class="darkbg"><span
-              tal:replace="COLONY_SURFACE/getNegativeEffectDescription">PRIMARY</span></td>
-          <td style="width: 25%" class="darkbg">Erzeugte Crew</td>
         </tr>
         <tr>
           <td>
@@ -101,6 +98,13 @@
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getPositiveEffectSecondary">VALUE</span>
           </td>
+        </tr>
+        <tr>
+          <td style="width: 25%" class="darkbg"><span
+              tal:replace="COLONY_SURFACE/getNegativeEffectDescription">PRIMARY</span></td>
+          <td style="width: 25%" class="darkbg">Erzeugte Crew</td>
+        </tr>
+        <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="COLONY/getNegativeEffect">VALUE</span>
@@ -120,8 +124,6 @@
           <td style="width: 20%" class="darkbg">Crewlimit</td>
           <td style="width: 20%" class="darkbg">Crew auf Schiffen</td>
           <td style="width: 20%" class="darkbg">Verfügbare Crew</td>
-          <td style="width: 20%" class="darkbg">Crew in Ausbildung</td>
-          <td style="width: 20%" class="darkbg">Noch Ausbildbar</td>
         </tr>
         <tr>
           <td>
@@ -138,6 +140,12 @@
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getFreeCrewCount">FREE</span>
           </td>
+        </tr>
+        <tr>
+          <td style="width: 20%" class="darkbg">Crew in Ausbildung</td>
+          <td style="width: 20%" class="darkbg">Noch Ausbildbar</td>
+        </tr>
+        <tr>
           <td>
             <img src="assets/bev/bev_free_5_${THIS/getUser/getFactionId}.png" title="Bevölkerung" />
             <span tal:replace="USER/getInTrainingCrewCount">FREE</span>
