@@ -55,7 +55,7 @@ final class EditDetails implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = (int) $alliance->getId();
 
-        $name = $this->changeNameRequest->getName();
+        $name = $this->editDetailsRequest->getName();
 
         if (!CleanTextUtils::checkBBCode($name)) {
             $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
