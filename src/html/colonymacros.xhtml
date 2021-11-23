@@ -1667,9 +1667,7 @@
           <table style="width: 100%; height: 100%;">
             <tr>
               <td style="text-align: center;">
-                <a href="?id=${COLONY/getId}">
-                  <img src="assets/planets/${COLONY/getColonyClass}.gif" />
-                </a>
+                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship targetShip" />
               </td>
             </tr>
             <tr>
@@ -1682,7 +1680,9 @@
             </tr>
             <tr>
               <td style="text-align: center;">
-                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship targetShip" />
+                <a href="?id=${COLONY/getId}">
+                  <img src="assets/planets/${COLONY/getColonyClass}.gif" />
+                </a>
               </td>
             </tr>
           </table>
@@ -1731,9 +1731,7 @@
           <table style="width: 100%; height: 100%;">
             <tr>
               <td style="text-align: center;">
-                <a href="?id=${COLONY/getId}">
-                  <img src="assets/planets/${COLONY/getColonyClass}.gif" />
-                </a>
+                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship targetShip" />
               </td>
             </tr>
             <tr>
@@ -1746,7 +1744,9 @@
             </tr>
             <tr>
               <td style="text-align: center;">
-                <metal:macro metal:use-macro="html/shipmacros.xhtml/shipimage" tal:define="ship targetShip" />
+                <a href="?id=${COLONY/getId}">
+                  <img src="assets/planets/${COLONY/getColonyClass}.gif" />
+                </a>
               </td>
             </tr>
           </table>
