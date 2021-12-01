@@ -91,6 +91,10 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         if ($this->mapBorderType === null) {
             if ($this->influence_id === 53) {
                 $borderStyle = 'border: 1px solid #800080';
+            } if ($this->influence_id === 43) {
+                $borderStyle = 'border: 1px solid #E6E6E6';
+            } if ($this->influence_id === 145) {
+                $borderStyle = 'border: 1px solid #E6E6E6';
             } else {
                 $borderStyle = '';
             }
