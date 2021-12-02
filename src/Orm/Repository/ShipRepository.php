@@ -358,12 +358,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSensorResultInnerSystem(ShipInterface $ship, StarSystemInterface $system = null): iterable
-    {
+    public function getSensorResultInnerSystem(
+        ShipInterface $ship,
+        int $ignoreId,
+        StarSystemInterface $system = null
+    ): iterable {
         $doSubspace = $ship->getSubspaceState();
         $map = $ship->getStarsystemMap();
         $sensorRange = $ship->getSensorRange();
-        $ignoreId = $ship->getUser()->getId();
 
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');

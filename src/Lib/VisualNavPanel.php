@@ -104,6 +104,7 @@ class VisualNavPanel
 
         return $container->get(ShipRepositoryInterface::class)->getSensorResultInnerSystem(
             $this->getShip(),
+            $this->user->getId(),
             $this->system
         );
     }
