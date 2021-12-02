@@ -139,11 +139,14 @@ final class DockShip implements ActionControllerInterface
 
         $this->shipRepository->save($ship);
 
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+
         $this->privateMessageSender->send(
             $userId,
             (int)$target->getUser()->getId(),
             'Die ' . $ship->getName() . ' hat an der ' . $target->getName() . ' angedockt',
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            $href
         );
         $game->addInformation('Andockvorgang abgeschlossen');
     }
@@ -192,11 +195,15 @@ final class DockShip implements ActionControllerInterface
 
             $freeSlots--;
         }
+
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
+
         $this->privateMessageSender->send(
             $game->getUser()->getId(),
             $target->getUser()->getId(),
             'Die Flotte ' . $ship->getFleet()->getName() . ' hat an der ' . $target->getName() . ' angedockt',
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION,
+            $href
         );
         $game->addInformationMerge($msg);
     }
