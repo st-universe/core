@@ -161,6 +161,19 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private function enterStarSystemTraktor(ShipInterface $ship, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
     {
+        if (
+            $ship->getTraktorMode() == 1 && $ship->getTraktorShip()->getFleetId()
+            && $ship->getTraktorShip()->getFleet()->getShipCount() > 1
+        ) {
+            $name = $ship->getTraktorShip()->getName();
+            $ship->deactivateTraktorBeam();
+
+            $game->addInformation(sprintf(
+                _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Systemeinflug deaktiviert'),
+                $name
+            ));
+            return;
+        }
         if ($ship->getEps() < 1) {
             $name = $ship->getTraktorShip()->getName();
             $ship->deactivateTraktorBeam();

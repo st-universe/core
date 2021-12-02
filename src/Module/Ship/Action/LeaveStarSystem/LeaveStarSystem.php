@@ -137,7 +137,10 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private function leaveStarSystemTraktor(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
-        if ($ship->getTraktorShip()->getFleetId()) {
+        if (
+            $ship->getTraktorMode() == 1 && $ship->getTraktorShip()->getFleetId()
+            && $ship->getTraktorShip()->getFleet()->getShipCount() > 1
+        ) {
             $name = $ship->getTraktorShip()->getName();
             $ship->deactivateTraktorBeam();
 
