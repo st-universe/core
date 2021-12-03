@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Notes\Action\DeleteNotes;
 
+use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -14,21 +15,20 @@ final class DeleteNotes implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_DELETE_NOTES';
 
-    private DeleteNotesRequestInterface $deleteNotesRequest;
 
     private NoteRepositoryInterface $noteRepository;
 
     public function __construct(
-        DeleteNotesRequestInterface $deleteNotesRequest,
         NoteRepositoryInterface $noteRepository
     ) {
-        $this->deleteNotesRequest = $deleteNotesRequest;
         $this->noteRepository = $noteRepository;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        foreach ($this->deleteNotesRequest->getNoteIds() as $noteId) {
+        $delnotes = explode(',', request::postStringFatal('delnotes'));
+
+        foreach ($delnotes as $noteId) {
             /** @var NoteInterface $obj */
             $obj = $this->noteRepository->find($noteId);
             if ($obj === null) {

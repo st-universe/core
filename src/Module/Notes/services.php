@@ -6,8 +6,6 @@ namespace Stu\Module\Notes;
 
 use Stu\Module\Control\GameController;
 use Stu\Module\Notes\Action\DeleteNotes\DeleteNotes;
-use Stu\Module\Notes\Action\DeleteNotes\DeleteNotesRequest;
-use Stu\Module\Notes\Action\DeleteNotes\DeleteNotesRequestInterface;
 use Stu\Module\Notes\Action\SaveNote\SaveNote;
 use Stu\Module\Notes\Action\SaveNote\SaveNoteRequest;
 use Stu\Module\Notes\Action\SaveNote\SaveNoteRequestInterface;
@@ -21,7 +19,6 @@ use function DI\autowire;
 return [
     ShowNoteRequestInterface::class => autowire(ShowNoteRequest::class),
     SaveNoteRequestInterface::class => autowire(SaveNoteRequest::class),
-    DeleteNotesRequestInterface::class => autowire(DeleteNotesRequest::class),
     'NOTES_ACTIONS' => [
         SaveNote::ACTION_IDENTIFIER => autowire(SaveNote::class),
         DeleteNotes::ACTION_IDENTIFIER => autowire(DeleteNotes::class),
