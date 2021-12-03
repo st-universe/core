@@ -29,8 +29,13 @@ final class DeleteNotes implements ActionControllerInterface
         $delnotes = explode(',', request::postStringFatal('delnotes'));
 
         foreach ($delnotes as $noteId) {
+
+            if ($noteId == "") {
+                continue;
+            }
+
             /** @var NoteInterface $obj */
-            $obj = $this->noteRepository->find($noteId);
+            $obj = $this->noteRepository->find((int)$noteId);
             if ($obj === null) {
                 continue;
             }
