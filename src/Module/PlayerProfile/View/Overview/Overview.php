@@ -45,7 +45,8 @@ final class Overview implements ViewControllerInterface
         $profile = $this->userRepository->find($this->overviewRequest->getProfileId());
 
         if ($profile === null) {
-            throw new AccessViolation();
+            $game->addInformation(_("Der Spieler existiert nicht!"));
+            return;
         }
 
         $profileId = $profile->getId();
