@@ -51,6 +51,7 @@ final class Overview implements ViewControllerInterface
         if ($profile === null) {
             $game->addInformation(_("Dieser Spieler existiert nicht!"));
             $this->maindesk->handle($game);
+            return;
         }
 
         $profileId = $profile->getId();
