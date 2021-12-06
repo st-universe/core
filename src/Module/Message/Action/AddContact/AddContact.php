@@ -42,7 +42,14 @@ final class AddContact implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $recipient = $this->userRepository->find($this->addContactRequest->getRecipientId());
+        $recipiendIdString = trim($this->addContactRequest->getRecipientId());
+
+        if (!is_numeric($recipiendIdString) || ((int)$recipiendIdString) < 1) {
+            $game->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
+            return;
+        }
+
+        $recipient = $this->userRepository->find((int)$recipiendIdString);
         if ($recipient === null) {
             $game->addInformation(_('Dieser Spieler existiert nicht'));
             return;

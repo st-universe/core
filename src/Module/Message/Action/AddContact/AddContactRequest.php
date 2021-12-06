@@ -10,9 +10,9 @@ final class AddContactRequest implements AddContactRequestInterface
 {
     use CustomControllerHelperTrait;
 
-    public function getRecipientId(): int
+    public function getRecipientId(): string
     {
-        return $this->queryParameter('recid')->int()->required();
+        return $this->queryParameter('recid')->string()->defaultsToIfEmpty('');
     }
 
     public function getModeId(): int

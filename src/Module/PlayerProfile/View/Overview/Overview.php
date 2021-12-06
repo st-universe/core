@@ -45,12 +45,13 @@ final class Overview implements ViewControllerInterface
 
         $userIdString = trim(request::getString('uid'));
 
-        if (!is_int($userIdString) || ((int)$userIdString) < 1) {
+        if (!is_numeric($userIdString) || ((int)$userIdString) < 1) {
             $game->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
+            $this->maindesk->handle($game);
             return;
         }
 
-        $profile = $this->userRepository->find($this->overviewRequest->getProfileId());
+        $profile = $this->userRepository->find((int) $userIdString);
 
         if ($profile === null) {
             $game->addInformation(_("Dieser Spieler existiert nicht!"));
