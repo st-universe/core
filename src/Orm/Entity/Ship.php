@@ -377,7 +377,7 @@ class Ship implements ShipInterface
             && $this->alvl == ShipAlertStateEnum::ALERT_GREEN
         ) {
             if ($this->getEps() < 1) {
-                throw new InsufficientEnergyException();
+                throw new InsufficientEnergyException(1);
             }
             $this->eps -= 1;
         }
@@ -386,7 +386,7 @@ class Ship implements ShipInterface
             && $this->alvl !== ShipAlertStateEnum::ALERT_RED
         ) {
             if ($this->getEps() < 2) {
-                throw new InsufficientEnergyException();
+                throw new InsufficientEnergyException(2);
             }
             $this->eps -= 2;
         }

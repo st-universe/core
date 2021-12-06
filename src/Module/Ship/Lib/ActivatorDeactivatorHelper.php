@@ -79,7 +79,12 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
         } catch (SystemNotActivableException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s besitzt keinen Aktivierungsmodus[/color][/b]'), $ship->getName(), $systemName));
         } catch (InsufficientEnergyException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s kann aufgrund Energiemangels nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
+            $game->addInformation(sprintf(
+                _('%s: [b][color=FF2626]System %s kann aufgrund Energiemangels (%d benötigt) nicht aktiviert werden[/color][/b]'),
+                $ship->getName(),
+                $systemName,
+                $e->getNeededEnergy()
+            ));
         } catch (SystemDamagedException $e) {
             $game->addInformation(sprintf(_('%s: [b][color=FF2626]System %s ist beschädigt und kann daher nicht aktiviert werden[/color][/b]'), $ship->getName(), $systemName));
         } catch (ActivationConditionsNotMetException $e) {
@@ -279,7 +284,7 @@ final class ActivatorDeactivatorHelper implements ActivatorDeactivatorHelperInte
                 $game->addInformation(sprintf(_('%s: [b][color=FAFA03]%s[/color][/b]'), $ship->getName(), $alertMsg));
             }
         } catch (InsufficientEnergyException $e) {
-            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Nicht genügend Energie um die Alarmstufe zu wechseln[/color][/b]'), $ship->getName()));
+            $game->addInformation(sprintf(_('%s: [b][color=FF2626]Nicht genügend Energie um die Alarmstufe zu wechseln (%d benötigt)[/color][/b]'), $ship->getName(), $e->getNeededEnergy()));
             return false;
         }
 

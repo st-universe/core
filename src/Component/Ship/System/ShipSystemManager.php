@@ -116,7 +116,7 @@ final class ShipSystemManager implements ShipSystemManagerInterface
         }
 
         if ($ship->getEps() < $system->getEnergyUsageForActivation()) {
-            throw new InsufficientEnergyException();
+            throw new InsufficientEnergyException($system->getEnergyUsageForActivation());
         }
 
         $reason = null;
