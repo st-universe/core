@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\PlayerProfile\View\Overview;
 
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Maindesk\View\Overview\Overview as MaindeskOverview;
@@ -14,8 +15,6 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private OverviewRequestInterface $overviewRequest;
-
     private UserProfileVisitorRepositoryInterface $userProfileVisitorRepository;
 
     private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
@@ -27,14 +26,12 @@ final class Overview implements ViewControllerInterface
     private MaindeskOverview $maindesk;
 
     public function __construct(
-        OverviewRequestInterface $overviewRequest,
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         ContactRepositoryInterface $contactRepository,
         UserRepositoryInterface $userRepository,
         MaindeskOverview $maindesk
     ) {
-        $this->overviewRequest = $overviewRequest;
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->contactRepository = $contactRepository;
@@ -45,6 +42,13 @@ final class Overview implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+
+        $userIdString = trim(request::getString('uid'));
+
+        if (!is_int($userIdString) || ((int)$userIdString) < 1) {
+            $game->addInformation(_("Ungültiger Wert angegeben. Muss positive Zahl sein!"));
+            return;
+        }
 
         $profile = $this->userRepository->find($this->overviewRequest->getProfileId());
 
