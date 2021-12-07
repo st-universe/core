@@ -30,6 +30,7 @@ use Stu\Module\Admin\Action\Ticks\DoColonyCorrection;
 use Stu\Module\Admin\Action\Ticks\DoManualColonyTick;
 use Stu\Module\Admin\Action\Ticks\DoManualMaintenance;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
+use Stu\Module\Admin\Action\Ticks\DoManualProcessTick2;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
@@ -52,6 +53,7 @@ return [
         DoManualMaintenance::ACTION_IDENTIFIER => autowire(DoManualMaintenance::class),
         DoManualShipTick::ACTION_IDENTIFIER => autowire(DoManualShipTick::class),
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class),
+        DoManualProcessTick2::ACTION_IDENTIFIER => autowire(DoManualProcessTick2::class),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
         ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class)
     ],
