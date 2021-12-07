@@ -21,8 +21,11 @@ final class ColonyLoader implements ColonyLoaderInterface
     public function byIdAndUser(int $colonyId, int $userId): ColonyInterface
     {
         $colony = $this->colonyRepository->find($colonyId);
-        if ($colony === null || $colony->getUserId() !== $userId) {
-            throw new AccessViolation("Colony not existent or owned by another user");
+        if ($colony === null) {
+            throw new AccessViolation(sprintf("Colony not existent! Fool: %d", $userId));
+        }
+        if ($colony->getUserId() !== $userId) {
+            throw new AccessViolation(sprintf("Colony owned by another user! Fool: %d", $userId));
         }
         return $colony;
     }

@@ -42,7 +42,7 @@ final class ShipLoader implements ShipLoaderInterface
                 throw new UnallowedUplinkOperation();
             }
         } else {
-            throw new AccessViolation("Ship owned by another user");
+            throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
         }
 
         return $ship;
