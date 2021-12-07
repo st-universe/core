@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DoManualProcessTick2 implements ActionControllerInterface
@@ -19,12 +20,16 @@ final class DoManualProcessTick2 implements ActionControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private CrewCreatorInterface $crewCreator;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        CrewCreatorInterface $crewCreator
     ) {
         $this->entityManager = $entityManager;
         $this->shipRepository = $shipRepository;
+        $this->crewCreator = $crewCreator;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -57,6 +62,8 @@ final class DoManualProcessTick2 implements ActionControllerInterface
                 && $ship->getSystemState(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
             ) {
                 $count++;
+
+                $this->crewCreator->createShipCrew($ship);
             }
         }
 
