@@ -48,7 +48,7 @@ final class DoManualProcessTick2 implements ActionControllerInterface
 
         foreach ($ships as $ship) {
 
-            if ($count === 10) {
+            if ($count === 5) {
                 break;
             }
 
