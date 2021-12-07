@@ -22,7 +22,7 @@ final class ColonyLoader implements ColonyLoaderInterface
     {
         $colony = $this->colonyRepository->find($colonyId);
         if ($colony === null || $colony->getUserId() !== $userId) {
-            throw new AccessViolation();
+            throw new AccessViolation("Colony not existent or owned by another user");
         }
         return $colony;
     }
