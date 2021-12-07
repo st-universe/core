@@ -47,6 +47,11 @@ final class DoManualProcessTick2 implements ActionControllerInterface
         $ships = $this->shipRepository->findAll();
 
         foreach ($ships as $ship) {
+
+            if ($count === 10) {
+                break;
+            }
+
             $bp = $ship->getBuildplan();
 
             if ($bp === null) {
