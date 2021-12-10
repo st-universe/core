@@ -19,7 +19,5 @@ interface ShipAttackCycleInterface
 
     public function cycle(bool $isAlertRed = false);
 
-    public function releaseSemaphores(int $userId): void;
-
     public function getMessages();
 }

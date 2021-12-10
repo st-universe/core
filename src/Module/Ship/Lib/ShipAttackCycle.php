@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
@@ -26,6 +27,8 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     
     private LoggerUtilInterface $loggerUtil;
 
+    private GameControllerInterface $game;
+
     /**
      * @return ShipInterface[]
      */
@@ -44,20 +47,20 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private bool $oneWay = false;
 
-    private $semaphores = [];
-
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
         FightLibInterface $fightLib,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        GameControllerInterface $game
     ) {
         $this->shipRepository = $shipRepository;
         $this->energyWeaponPhase = $energyWeaponPhase;
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->fightLib = $fightLib;
         $this->loggerUtil = $loggerUtil;
+        $this->game = $game;
     }
 
     public function init(
@@ -86,29 +89,27 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         sem_acquire($mainSema);
         $this->loggerUtil->log(sprintf('inside main semaphore, userId: %d', $userId));
         
+        $shipSemaphores = [];
+
         foreach ($this->attacker as $ship) {
-            $this->semaphores[$ship->getId()] = sem_get($ship->getId(), 1, 0666, 0);
+            $semaphore = sem_get($ship->getId(), 1, 0666, 0);
+            $shipSemaphores[$ship->getId()] = $semaphore;
+            $this->game->addSemaphore($ship->getId(), $semaphore);
             $this->loggerUtil->log(sprintf('  A-shipId: %d', $ship->getId()));
         }
         foreach ($this->defender as $ship) {
-            $this->semaphores[$ship->getId()] = sem_get($ship->getId(), 1, 0666, 0);
+            $semaphore = sem_get($ship->getId(), 1, 0666, 0);
+            $shipSemaphores[$ship->getId()] = $semaphore;
+            $this->game->addSemaphore($ship->getId(), $semaphore);
             $this->loggerUtil->log(sprintf('  D-shipId: %d', $ship->getId()));
         }
         
-        foreach ($this->semaphores as $sema) {
+        foreach ($shipSemaphores as $sema) {
             sem_acquire($sema);
         }
         
         $this->loggerUtil->log(sprintf('leaving main semaphore, userId: %d', $userId));
         sem_release($mainSema);
-    }
-    
-    public function releaseSemaphores(int $userId): void
-    {
-        foreach ($this->semaphores as $key => $sema) {
-            $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
-            sem_release($sema);
-        }
     }
 
     /**

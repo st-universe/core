@@ -94,6 +94,8 @@ final class GameController implements GameControllerInterface
 
     private string $loginError = '';
 
+    private $semaphores = [];
+
     public function __construct(
         SessionInterface $session,
         SessionStringRepositoryInterface $sessionStringRepository,
@@ -127,7 +129,6 @@ final class GameController implements GameControllerInterface
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->loggerUtil = $loggerUtil;
 
-        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         $this->loggerUtil->init();
     }
 
@@ -543,6 +544,26 @@ final class GameController implements GameControllerInterface
         $this->render();
     }
 
+    public function addSemaphore(int $key, $semaphore): void
+    {
+        $this->semaphores[$key] = $semaphore;
+    }
+
+    private function releaseSemaphores(): void
+    {
+        if (!empty($this->semaphores))
+        {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+            
+            foreach ($this->semaphores as $key => $sema) {
+                $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $this->getUser()->getId()));
+                sem_release($sema);
+            }
+
+            $this->loggerUtil->init();
+        }
+    }
+
     private function executeCallback(array $actions): void
     {
         foreach ($actions as $request_key => $config) {
@@ -557,6 +578,8 @@ final class GameController implements GameControllerInterface
                 }
                 $config->handle($this);
                 $this->entityManager->flush();
+                $this->releaseSemaphores();
+
                 return;
             }
         }

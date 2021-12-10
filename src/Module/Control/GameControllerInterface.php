@@ -86,6 +86,8 @@ interface GameControllerInterface
 
     public function main(array $actions, array $views, bool $session_check = true, bool $admin_check = false): void;
 
+    public function addSemaphore(int $key, $semaphore): void;
+
     public function getGameStats(): array;
 
     public function getGameStateTextual(): string;
