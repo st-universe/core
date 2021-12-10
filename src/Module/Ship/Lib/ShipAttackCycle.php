@@ -64,7 +64,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->oneWay = $oneWay;
 
         //concurrency
-        //$this->acquireSemaphores();
+        $this->acquireSemaphores();
 
         $this->firstStrike = true;
         $this->messages = [];
@@ -74,7 +74,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     private function acquireSemaphores(): void
     {
         $mainSema = sem_get(self::MAIN_SEMAPHORE_KEY, 1, 0666, 0);
-        $this->semaphores[] = $mainSema;
         sem_acquire($mainSema);
 
         foreach ($this->attacker as $ship) {
@@ -93,9 +92,9 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     public function releaseSemaphores(): void
     {
-      //  foreach ($this->semaphores as $sema) {
-      //      sem_release($sema);
-      //  }
+        foreach ($this->semaphores as $sema) {
+            sem_release($sema);
+        }
     }
 
     /**
