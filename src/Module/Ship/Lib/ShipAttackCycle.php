@@ -73,15 +73,15 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private function acquireSemaphores(): void
     {
-        $mainSema = sem_get(self::MAIN_SEMAPHORE_KEY, 1, 0666, false);
+        $mainSema = sem_get(self::MAIN_SEMAPHORE_KEY, 1, 0666, 0);
         $this->semaphores[] = $mainSema;
         sem_acquire($mainSema);
 
         foreach ($this->attacker as $ship) {
-            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, false);
+            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, 0);
         }
         foreach ($this->defender as $ship) {
-            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, false);
+            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, 0);
         }
 
         foreach ($this->semaphores as $sema) {
