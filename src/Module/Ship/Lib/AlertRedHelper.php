@@ -151,7 +151,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
         try {
             $this->shipAttackCycle->cycle(true);
         } finally {
-            $this->shipAttackCycle->releaseSemaphores($alert_user_id);
         }
 
         $pm = sprintf(_('Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %d|%d') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());

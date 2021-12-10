@@ -118,7 +118,6 @@ final class ActivateTractorBeam implements ActionControllerInterface
             try {
                 $this->shipAttackCycle->cycle();
             } finally {
-                $this->shipAttackCycle->releaseSemaphores($userId);
             }
             $game->addInformationMergeDown($this->shipAttackCycle->getMessages());
 
