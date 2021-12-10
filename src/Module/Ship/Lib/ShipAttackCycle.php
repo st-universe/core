@@ -72,7 +72,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->oneWay = $oneWay;
 
         //concurrency
-        $this->acquireSemaphores($attackingShips[0]->getUser()->getId());
+        $this->acquireSemaphores(current($attackingShips)->getUser()->getId());
 
         $this->firstStrike = true;
         $this->messages = [];
