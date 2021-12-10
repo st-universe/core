@@ -101,7 +101,7 @@ final class AttackShip implements ActionControllerInterface
         try {
             $this->shipAttackCycle->cycle();
         } finally {
-            $this->shipAttackCycle->releaseSemaphores();
+            $this->shipAttackCycle->releaseSemaphores($userId);
         }
 
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
