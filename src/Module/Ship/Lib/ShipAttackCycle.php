@@ -87,11 +87,11 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->loggerUtil->log(sprintf('inside main semaphore, userId: %d', $userId));
         
         foreach ($this->attacker as $ship) {
-            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, 0);
+            $this->semaphores[$ship->getId()] = sem_get($ship->getId(), 1, 0666, 0);
             $this->loggerUtil->log(sprintf('  A-shipId: %d', $ship->getId()));
         }
         foreach ($this->defender as $ship) {
-            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, 0);
+            $this->semaphores[$ship->getId()] = sem_get($ship->getId(), 1, 0666, 0);
             $this->loggerUtil->log(sprintf('  D-shipId: %d', $ship->getId()));
         }
         
@@ -105,8 +105,8 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     
     public function releaseSemaphores(int $userId): void
     {
-        foreach ($this->semaphores as $sema) {
-            $this->loggerUtil->log(sprintf('       releasing, userId: %d', $userId));
+        foreach ($this->semaphores as $key => $sema) {
+            $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
             sem_release($sema);
         }
     }
