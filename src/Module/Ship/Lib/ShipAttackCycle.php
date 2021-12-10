@@ -12,6 +12,8 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShipAttackCycle implements ShipAttackCycleInterface
 {
+    public const MAIN_SEMAPHORE_KEY = 1;
+
     private ShipRepositoryInterface $shipRepository;
 
     private EnergyWeaponPhaseInterface $energyWeaponPhase;
@@ -38,6 +40,8 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private bool $oneWay = false;
 
+    private $semaphores = [];
+
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         EnergyWeaponPhaseInterface $energyWeaponPhase,
@@ -58,9 +62,40 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->attacker = $attackingShips;
         $this->defender = $defendingShips;
         $this->oneWay = $oneWay;
+
+        //concurrency
+        $this->acquireSemaphores();
+
         $this->firstStrike = true;
         $this->messages = [];
         $this->usedShips = ['attacker' => [], 'defender' => []];
+    }
+
+    private function acquireSemaphores(): void
+    {
+        $mainSema = sem_get(self::MAIN_SEMAPHORE_KEY, 1, 0666, false);
+        $this->semaphores[] = $mainSema;
+        sem_acquire($mainSema);
+
+        foreach ($this->attacker as $ship) {
+            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, false);
+        }
+        foreach ($this->defender as $ship) {
+            $this->semaphores[] = sem_get($ship->getId(), 1, 0666, false);
+        }
+
+        foreach ($this->semaphores as $sema) {
+            sem_acquire($sema);
+        }
+
+        sem_release($mainSema);
+    }
+
+    public function releaseSemaphores(): void
+    {
+        foreach ($this->semaphores as $sema) {
+            sem_release($sema);
+        }
     }
 
     /**

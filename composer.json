@@ -9,7 +9,9 @@
       "tests/"
     ],
     "psr-4": {
-      "Stu\\": ["src/"]
+      "Stu\\": [
+        "src/"
+      ]
     }
   },
   "require": {
@@ -24,6 +26,7 @@
     "ext-pcntl": "*",
     "ext-redis": "*",
     "ext-sockets": "*",
+    "ext-sysvsem": "*",
     "ext-xsl": "*",
     "cache/array-adapter": "^1.0",
     "cache/psr-6-doctrine-bridge": "^3.0",
