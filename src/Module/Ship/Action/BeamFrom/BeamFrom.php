@@ -68,7 +68,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }

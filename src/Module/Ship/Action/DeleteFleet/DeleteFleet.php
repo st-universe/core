@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\DeleteFleet;
 
-use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DeleteFleet implements ActionControllerInterface
 {
@@ -18,24 +17,22 @@ final class DeleteFleet implements ActionControllerInterface
 
     private FleetRepositoryInterface $fleetRepository;
 
-    private ShipRepositoryInterface $shipRepository;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         DeleteFleetRequestInterface $deleteFleetRequest,
         FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->deleteFleetRequest = $deleteFleetRequest;
         $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $ship = $this->shipRepository->find($this->deleteFleetRequest->getShipId());
-        if ($ship === null || $ship->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation();
-        }
+        $ship = $this->shipLoader->getByIdAndUser($this->deleteFleetRequest->getShipId(), $game->getUser()->getId());
+
         if (!$ship->getFleetId()) {
             return;
         }
@@ -49,7 +46,7 @@ final class DeleteFleet implements ActionControllerInterface
             $fleetShip->setFleet(null);
             $fleetShip->setIsFleetLeader(false);
 
-            $this->shipRepository->save($fleetShip);
+            $this->shipLoader->save($fleetShip);
         }
 
         $this->fleetRepository->delete($fleet);

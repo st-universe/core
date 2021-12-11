@@ -10,7 +10,6 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowTorpedoTransfer implements ViewControllerInterface
 {
@@ -18,14 +17,10 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -43,7 +38,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
         $isUnload = request::has('isUnload');
 
-        $target = $this->shipRepository->find((int) request::getIntFatal('target'));
+        $target = $this->shipLoader->find((int) request::getIntFatal('target'));
 
         if ($isUnload) {
             $max = min(

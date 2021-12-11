@@ -52,7 +52,7 @@ final class AttackShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }

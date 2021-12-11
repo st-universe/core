@@ -21,13 +21,10 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StoreShuttle implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_STORE_SHUTTLE';
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -46,7 +43,6 @@ final class StoreShuttle implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -58,7 +54,6 @@ final class StoreShuttle implements ActionControllerInterface
         PositionCheckerInterface $positionChecker,
         LoggerUtilInterface $loggerUtil
     ) {
-        $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->commodityRepository = $commodityRepository;
@@ -84,7 +79,7 @@ final class StoreShuttle implements ActionControllerInterface
             $userId
         );
 
-        $target = $this->shipRepository->find(request::getIntFatal('target'));
+        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }
@@ -154,7 +149,7 @@ final class StoreShuttle implements ActionControllerInterface
 
         $this->shipRemover->remove($target);
 
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($ship);
     }
 
     public function performSessionCheck(): bool

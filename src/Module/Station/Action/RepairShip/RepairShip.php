@@ -14,7 +14,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Station\View\ShowShipRepair\ShowShipRepair;
 use Stu\Orm\Repository\StationShipRepairRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class RepairShip implements ActionControllerInterface
 {
@@ -26,21 +25,17 @@ final class RepairShip implements ActionControllerInterface
 
     private StationShipRepairRepositoryInterface $stationShipRepairRepository;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         StationUtilityInterface $stationUtility,
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
-        ShipRepositoryInterface $shipRepository,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->stationUtility = $stationUtility;
         $this->stationShipRepairRepository = $stationShipRepairRepository;
-        $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
     }
 
@@ -70,7 +65,7 @@ final class RepairShip implements ActionControllerInterface
             $repairableShiplist[$ship->getId()] = $ship;
         }
 
-        $ship = $this->shipRepository->find((int) request::getIntFatal('ship_id'));
+        $ship = $this->shipLoader->find((int) request::getIntFatal('ship_id'));
         if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }
@@ -90,7 +85,7 @@ final class RepairShip implements ActionControllerInterface
 
         $ship->setState(ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE);
 
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($ship);
 
         $jobs = $this->stationShipRepairRepository->getByStation(
             $station->getId(),

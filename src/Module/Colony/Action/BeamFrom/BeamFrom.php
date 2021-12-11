@@ -13,8 +13,8 @@ use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BeamFrom implements ActionControllerInterface
 {
@@ -28,20 +28,20 @@ final class BeamFrom implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
-    private ShipRepositoryInterface $shipRepository;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipStorageManager = $shipStorageManager;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -59,7 +59,7 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }

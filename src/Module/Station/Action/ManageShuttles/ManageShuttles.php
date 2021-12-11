@@ -11,7 +11,6 @@ use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -30,8 +29,6 @@ final class ManageShuttles implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private PositionCheckerInterface $positionChecker;
 
     public function __construct(
@@ -39,14 +36,12 @@ final class ManageShuttles implements ActionControllerInterface
         PrivateMessageSenderInterface $privateMessageSender,
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
-        ShipRepositoryInterface $shipRepository,
         PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
-        $this->shipRepository = $shipRepository;
         $this->positionChecker = $positionChecker;
     }
 
@@ -62,7 +57,7 @@ final class ManageShuttles implements ActionControllerInterface
             $userId
         );
 
-        $ship = $this->shipRepository->find(request::indInt('sid'));
+        $ship = $this->shipLoader->find(request::indInt('sid'));
 
         if (!$this->positionChecker->checkPosition($station, $ship)) {
             return;

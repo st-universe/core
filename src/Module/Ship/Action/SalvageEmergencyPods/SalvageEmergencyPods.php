@@ -16,7 +16,6 @@ use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class SalvageEmergencyPods implements ActionControllerInterface
 {
@@ -28,21 +27,17 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private TroopTransferUtilityInterface $troopTransferUtility;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipCrewRepositoryInterface $shipCrewRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
         TroopTransferUtilityInterface  $troopTransferUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipCrewRepository = $shipCrewRepository;
         $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
         $this->troopTransferUtility = $troopTransferUtility;
     }
 
@@ -57,7 +52,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
             $userId
         );
 
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }
@@ -93,7 +88,7 @@ final class SalvageEmergencyPods implements ActionControllerInterface
 
         $ship->setEps($ship->getEps() - 1);
 
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($ship);
     }
 
     private function determineCrewmanPerUser(ShipInterface $target): array

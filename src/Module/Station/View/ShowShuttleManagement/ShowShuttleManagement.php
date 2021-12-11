@@ -10,7 +10,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowShuttleManagement implements ViewControllerInterface
 {
@@ -18,20 +17,17 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
     private ShowShuttleManagementRequestInterface $request;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipLoaderInterface $shipLoader;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShowShuttleManagementRequestInterface $request,
-        ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
         LoggerUtilInterface $loggerUtil
     ) {
         $this->request = $request;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
         $this->shipLoader = $shipLoader;
         $this->loggerUtil = $loggerUtil;
     }
@@ -40,7 +36,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
     {
         $this->loggerUtil->init();
 
-        $ship = $this->shipRepository->find($this->request->getShipId());
+        $ship = $this->shipLoader->find($this->request->getShipId());
         $station = $this->shipLoader->getByIdAndUser($this->request->getStationId(), $game->getUser()->getId());
 
         $game->setPageTitle("Shuttle Management");

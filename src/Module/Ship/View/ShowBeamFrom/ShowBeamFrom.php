@@ -8,7 +8,6 @@ use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowBeamFrom implements ViewControllerInterface
 {
@@ -16,14 +15,10 @@ final class ShowBeamFrom implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -38,7 +33,7 @@ final class ShowBeamFrom implements ViewControllerInterface
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/entity_not_available');
 
-        $target = $this->shipRepository->find(request::getIntFatal('target'));
+        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }

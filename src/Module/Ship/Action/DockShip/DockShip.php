@@ -15,7 +15,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 
@@ -29,8 +28,6 @@ final class DockShip implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipSystemManagerInterface $shipSystemManager;
 
     private PositionCheckerInterface $positionChecker;
@@ -39,14 +36,12 @@ final class DockShip implements ActionControllerInterface
         ShipLoaderInterface $shipLoader,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker
     ) {
         $this->shipLoader = $shipLoader;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
         $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
     }
@@ -61,7 +56,7 @@ final class DockShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipRepository->find(request::indInt('target'));
+        $target = $this->shipLoader->find(request::indInt('target'));
         if ($target === null) {
             return;
         }
@@ -137,7 +132,7 @@ final class DockShip implements ActionControllerInterface
         $ship->setEps($ship->getEps() - 1);
         $ship->setDockedTo($target);
 
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($ship);
 
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
 
@@ -191,7 +186,7 @@ final class DockShip implements ActionControllerInterface
 
             $ship->setEps($ship->getEps() - ShipSystemTypeEnum::SYSTEM_ECOST_DOCK);
 
-            $this->shipRepository->save($ship);
+            $this->shipLoader->save($ship);
 
             $freeSlots--;
         }

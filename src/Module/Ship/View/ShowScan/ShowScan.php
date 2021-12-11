@@ -13,7 +13,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowScan implements ViewControllerInterface
 {
@@ -21,20 +20,16 @@ final class ShowScan implements ViewControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private PositionCheckerInterface $positionChecker;
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
         PositionCheckerInterface $positionChecker,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
         $this->positionChecker = $positionChecker;
         $this->privateMessageSender = $privateMessageSender;
     }
@@ -48,7 +43,7 @@ final class ShowScan implements ViewControllerInterface
             $userId
         );
 
-        $target = $this->shipRepository->find(request::getIntFatal('target'));
+        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }

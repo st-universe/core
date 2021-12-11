@@ -30,15 +30,12 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\CrewRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class TroopTransfer implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_TROOP_TRANSFER';
 
     private ShipLoaderInterface $shipLoader;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ColonyRepositoryInterface $colonyRepository;
 
@@ -62,7 +59,6 @@ final class TroopTransfer implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
         TroopTransferUtilityInterface $transferUtility,
         ShipCrewRepositoryInterface $shipCrewRepository,
@@ -75,7 +71,6 @@ final class TroopTransfer implements ActionControllerInterface
         PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
         $this->transferUtility = $transferUtility;
         $this->shipCrewRepository = $shipCrewRepository;
@@ -137,7 +132,7 @@ final class TroopTransfer implements ActionControllerInterface
         if ($isColony) {
             $target = $this->colonyRepository->find((int)request::postIntFatal('target'));
         } else {
-            $target = $this->shipRepository->find((int)request::postIntFatal('target'));
+            $target = $this->shipLoader->find((int)request::postIntFatal('target'));
         }
 
 
@@ -207,7 +202,7 @@ final class TroopTransfer implements ActionControllerInterface
             return;
         }
 
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($ship);
 
         $game->addInformation(
             sprintf(
@@ -382,11 +377,11 @@ final class TroopTransfer implements ActionControllerInterface
 
             foreach ($target->getDockedShips() as $dockedShip) {
                 $dockedShip->setDockedTo(null);
-                $this->shipRepository->save($dockedShip);
+                $this->shipLoader->save($dockedShip);
             }
 
             $target->getDockedShips()->clear();
-            $this->shipRepository->save($target);
+            $this->shipLoader->save($target);
         }
 
         return $amount;

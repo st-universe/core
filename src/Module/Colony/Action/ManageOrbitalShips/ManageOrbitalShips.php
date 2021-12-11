@@ -30,6 +30,7 @@ use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class ManageOrbitalShips implements ActionControllerInterface
 {
@@ -51,6 +52,8 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
+    private ShipLoaderInterface $shipLoader;
+
     private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
@@ -68,6 +71,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         CommodityRepositoryInterface $commodityRepository,
         ColonyRepositoryInterface $colonyRepository,
+        ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
@@ -81,6 +85,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->commodityRepository = $commodityRepository;
         $this->colonyRepository = $colonyRepository;
+        $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
@@ -119,7 +124,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
         }
 
         foreach ($ships as $ship) {
-            $shipobj = $this->shipRepository->find((int) $ship);
+            $shipobj = $this->shipLoader->find((int) $ship);
             if ($shipobj === null) {
                 continue;
             }

@@ -15,7 +15,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 
@@ -26,8 +25,6 @@ final class InterceptShip implements ActionControllerInterface
     private ShipLoaderInterface $shipLoader;
 
     private PrivateMessageSenderInterface $privateMessageSender;
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ShipSystemManagerInterface $shipSystemManager;
 
@@ -40,7 +37,6 @@ final class InterceptShip implements ActionControllerInterface
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
         AlertRedHelperInterface $alertRedHelper,
@@ -48,7 +44,6 @@ final class InterceptShip implements ActionControllerInterface
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
         $this->alertRedHelper = $alertRedHelper;
@@ -65,7 +60,7 @@ final class InterceptShip implements ActionControllerInterface
             request::indInt('id'),
             $userId
         );
-        $target = $this->shipRepository->find(request::indInt('target'));
+        $target = $this->shipLoader->find(request::indInt('target'));
         if ($target === null) {
             return;
         }
@@ -97,7 +92,7 @@ final class InterceptShip implements ActionControllerInterface
                     $this->shipSystemManager->deactivate($fleetShip, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
                 } catch (AlreadyOffException $e) {
                 }
-                $this->shipRepository->save($fleetShip);
+                $this->shipLoader->save($fleetShip);
             }
 
             $game->addInformation("Die Flotte " . $target->getFleet()->getName() . " wurde abgefangen");
@@ -108,7 +103,7 @@ final class InterceptShip implements ActionControllerInterface
             $game->addInformation("Die " . $target->getName() . "  wurde abgefangen");
             $pm = "Die " . $target->getName() . " wurde von der " . $ship->getName() . " abgefangen";
 
-            $this->shipRepository->save($target);
+            $this->shipLoader->save($target);
         }
 
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId());
@@ -128,7 +123,7 @@ final class InterceptShip implements ActionControllerInterface
                     $interceptorLeftWarp = true;
                 } catch (AlreadyOffException $e) {
                 }
-                $this->shipRepository->save($fleetShip);
+                $this->shipLoader->save($fleetShip);
             }
         } else {
             try {
@@ -137,7 +132,7 @@ final class InterceptShip implements ActionControllerInterface
             } catch (AlreadyOffException $e) {
             }
 
-            $this->shipRepository->save($ship);
+            $this->shipLoader->save($ship);
         }
         $this->entityManager->flush();
 

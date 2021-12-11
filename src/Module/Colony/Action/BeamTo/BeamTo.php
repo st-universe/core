@@ -12,8 +12,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class BeamTo implements ActionControllerInterface
 {
@@ -27,20 +27,20 @@ final class BeamTo implements ActionControllerInterface
 
     private ShipStorageManagerInterface $shipStorageManager;
 
-    private ShipRepositoryInterface $shipRepository;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
         ColonyStorageManagerInterface $colonyStorageManager,
         ColonyRepositoryInterface $colonyRepository,
         ShipStorageManagerInterface $shipStorageManager,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyStorageManager = $colonyStorageManager;
         $this->colonyRepository = $colonyRepository;
         $this->shipStorageManager = $shipStorageManager;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -58,13 +58,12 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(_('Keine Energie vorhanden'));
             return;
         }
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }
 
-        if ($target->getUser()->isVacationRequestOldEnough())
-        {
+        if ($target->getUser()->isVacationRequestOldEnough()) {
             $game->addInformation(_('Aktion nicht möglich, der Spieler befindet sich im Urlaubsmodus!'));
             return;
         }

@@ -19,13 +19,10 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
 use Stu\Orm\Repository\ShipCrewRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class LandShuttle implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_LAND_SHUTTLE';
-
-    private ShipRepositoryInterface $shipRepository;
 
     private ShipLoaderInterface $shipLoader;
 
@@ -42,7 +39,6 @@ final class LandShuttle implements ActionControllerInterface
     private PositionCheckerInterface $positionChecker;
 
     public function __construct(
-        ShipRepositoryInterface $shipRepository,
         ShipLoaderInterface $shipLoader,
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -53,7 +49,6 @@ final class LandShuttle implements ActionControllerInterface
         ShipRemoverInterface $shipRemover,
         PositionCheckerInterface $positionChecker
     ) {
-        $this->shipRepository = $shipRepository;
         $this->shipLoader = $shipLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->commodityRepository = $commodityRepository;
@@ -76,7 +71,7 @@ final class LandShuttle implements ActionControllerInterface
             $userId
         );
 
-        $target = $this->shipRepository->find(request::getIntFatal('id'));
+        $target = $this->shipLoader->find(request::getIntFatal('id'));
         if ($target === null) {
             return;
         }
@@ -146,7 +141,7 @@ final class LandShuttle implements ActionControllerInterface
 
         $this->shipRemover->remove($ship);
 
-        $this->shipRepository->save($target);
+        $this->shipLoader->save($target);
     }
 
     public function performSessionCheck(): bool

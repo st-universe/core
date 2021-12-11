@@ -14,9 +14,9 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Colony\Lib\ColonyLoaderInterface;
 use Stu\Module\Colony\View\ShowOrbitManagement\ShowOrbitManagement;
 use Stu\Orm\Repository\CommodityRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 
@@ -34,7 +34,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private ShipRepositoryInterface $shipRepository;
+    private ShipLoaderInterface $shipLoader;
 
     private PositionCheckerInterface $positionChecker;
 
@@ -44,7 +44,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
         CommodityRepositoryInterface $commodityRepository,
-        ShipRepositoryInterface $shipRepository,
+        ShipLoaderInterface $shipLoader,
         PositionCheckerInterface $positionChecker
     ) {
         $this->colonyLoader = $colonyLoader;
@@ -52,7 +52,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->commodityRepository = $commodityRepository;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
         $this->positionChecker = $positionChecker;
     }
 
@@ -68,7 +68,7 @@ final class ManageOrbitalShuttles implements ActionControllerInterface
             $userId
         );
 
-        $ship = $this->shipRepository->find(request::indInt('sid'));
+        $ship = $this->shipLoader->find(request::indInt('sid'));
 
         if (!$this->positionChecker->checkColonyPosition($colony, $ship)) {
             return;

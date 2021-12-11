@@ -11,7 +11,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class TorpedoTransfer implements ActionControllerInterface
 {
@@ -19,14 +18,10 @@ final class TorpedoTransfer implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     public function __construct(
-        ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -70,7 +65,7 @@ final class TorpedoTransfer implements ActionControllerInterface
 
         $isUnload = request::has('isUnload');
 
-        $target = $this->shipRepository->find((int) request::postIntFatal('target'));
+        $target = $this->shipLoader->find((int) request::postIntFatal('target'));
 
         if ($target === null) {
             return;
@@ -127,8 +122,8 @@ final class TorpedoTransfer implements ActionControllerInterface
             $target->setTorpedo(null);
         }
 
-        $this->shipRepository->save($ship);
-        $this->shipRepository->save($target);
+        $this->shipLoader->save($ship);
+        $this->shipLoader->save($target);
 
         $game->addInformation(
             sprintf(

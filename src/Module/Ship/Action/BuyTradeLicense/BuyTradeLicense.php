@@ -87,7 +87,7 @@ final class BuyTradeLicense implements ActionControllerInterface
         switch ($mode) {
             case 'ship':
                 $obj = $this->shipRepository->find($targetId);
-                if ($obj === null || $obj->getUserId() !== $userId) {
+                if ($obj === null || $obj->getUser()->getId() !== $userId) {
                     return;
                 }
                 if (!$this->positionChecker->checkPosition($tradepost->getShip(), $obj)) {

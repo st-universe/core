@@ -61,7 +61,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
 
         $shipName = $ship->getName();
 
-        $target = $this->shipRepository->find(request::getIntFatal('target'));
+        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }

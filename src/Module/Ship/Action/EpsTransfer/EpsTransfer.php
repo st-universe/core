@@ -11,7 +11,6 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class EpsTransfer implements ActionControllerInterface
 {
@@ -21,16 +20,12 @@ final class EpsTransfer implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private ShipRepositoryInterface $shipRepository;
-
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -63,7 +58,7 @@ final class EpsTransfer implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }
@@ -95,12 +90,12 @@ final class EpsTransfer implements ActionControllerInterface
         $ship->setEps($ship->getEps() - $load * 3);
         $target->setEBatt($target->getEBatt() + $load);
 
-        $this->shipRepository->save($target);
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($target);
+        $this->shipLoader->save($ship);
 
         $this->privateMessageSender->send(
             $userId,
-            (int)$target->getUserId(),
+            (int)$target->getUser()->getId(),
             "Die " . $ship->getName() . " transferiert in SeKtor " . $ship->getSectorString() . " " . $load . " Energie in die Batterie der " . $target->getName(),
             PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
         );

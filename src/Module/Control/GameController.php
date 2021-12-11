@@ -72,6 +72,8 @@ final class GameController implements GameControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private SemaphoreUtilInterface $semaphoreUtil;
+
     private array $gameInformations = [];
 
     private array $siteNavigation = [];
@@ -111,7 +113,8 @@ final class GameController implements GameControllerInterface
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilInterface $loggerUtil,
+        SemaphoreUtilInterface $semaphoreUtil
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -128,6 +131,7 @@ final class GameController implements GameControllerInterface
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->loggerUtil = $loggerUtil;
+        $this->semaphoreUtil = $semaphoreUtil;
 
         $this->loggerUtil->init();
     }
@@ -541,7 +545,14 @@ final class GameController implements GameControllerInterface
             }
             $this->setTemplateFile('html/error.html');
         }
+
+        $this->releaseAndRemoveSemaphores();
         $this->render();
+    }
+
+    public function isSemaphoreAlreadyAcquired(int $key): bool
+    {
+        return array_key_exists($key, $this->semaphores);
     }
 
     public function addSemaphore(int $key, $semaphore): void
@@ -549,15 +560,14 @@ final class GameController implements GameControllerInterface
         $this->semaphores[$key] = $semaphore;
     }
 
-    private function releaseSemaphores(): void
+    private function releaseAndRemoveSemaphores(): void
     {
-        if (!empty($this->semaphores))
-        {
+        if (!empty($this->semaphores)) {
             $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-            
+
             foreach ($this->semaphores as $key => $sema) {
                 $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $this->getUser()->getId()));
-                sem_release($sema);
+                $this->semaphoreUtil->releaseSemaphore($sema);
             }
 
             $this->loggerUtil->init();
@@ -578,7 +588,6 @@ final class GameController implements GameControllerInterface
                 }
                 $config->handle($this);
                 $this->entityManager->flush();
-                $this->releaseSemaphores();
 
                 return;
             }

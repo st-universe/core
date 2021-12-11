@@ -12,7 +12,6 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class UndockStationShip implements ActionControllerInterface
 {
@@ -20,20 +19,16 @@ final class UndockStationShip implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        ShipRepositoryInterface $shipRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         EntityManagerInterface $entityManager
     ) {
         $this->shipLoader = $shipLoader;
-        $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->entityManager = $entityManager;
     }
@@ -49,7 +44,7 @@ final class UndockStationShip implements ActionControllerInterface
             $userId
         );
 
-        $target = $this->shipRepository->find(request::indInt('target'));
+        $target = $this->shipLoader->find(request::indInt('target'));
 
         if ($target->getDockedTo() !== $station) {
             return;
@@ -79,8 +74,8 @@ final class UndockStationShip implements ActionControllerInterface
         $target->setDockedToId(null);
         $station->getDockedShips()->remove($target->getId());
 
-        $this->shipRepository->save($target);
-        $this->shipRepository->save($station);
+        $this->shipLoader->save($target);
+        $this->shipLoader->save($station);
 
         $this->entityManager->flush();
 

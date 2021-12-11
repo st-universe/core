@@ -63,7 +63,7 @@ final class BeamTo implements ActionControllerInterface
             $game->addInformation(_("Der Warpantrieb ist aktiviert"));
             return;
         }
-        $target = $this->shipRepository->find(request::postIntFatal('target'));
+        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }

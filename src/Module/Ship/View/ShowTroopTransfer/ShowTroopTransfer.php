@@ -12,7 +12,6 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShowTroopTransfer implements ViewControllerInterface
 {
@@ -22,19 +21,15 @@ final class ShowTroopTransfer implements ViewControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private TroopTransferUtilityInterface $transferUtility;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ColonyRepositoryInterface $colonyRepository,
-        ShipRepositoryInterface $shipRepository,
         TroopTransferUtilityInterface $transferUtility
     ) {
         $this->shipLoader = $shipLoader;
         $this->colonyRepository = $colonyRepository;
-        $this->shipRepository = $shipRepository;
         $this->transferUtility = $transferUtility;
     }
 
@@ -70,7 +65,7 @@ final class ShowTroopTransfer implements ViewControllerInterface
                 $game->setPageTitle(_('Truppen von Kolonie beamen'));
             }
         } else {
-            $target = $this->shipRepository->find((int)request::getIntFatal('target'));
+            $target = $this->shipLoader->find((int)request::getIntFatal('target'));
 
 
             if ($target->getUser() !== $user) {

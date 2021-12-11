@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Action\CreateFleet;
 
-use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class CreateFleet implements ActionControllerInterface
 {
@@ -18,24 +17,22 @@ final class CreateFleet implements ActionControllerInterface
 
     private FleetRepositoryInterface $fleetRepository;
 
-    private ShipRepositoryInterface $shipRepository;
+    private ShipLoaderInterface $shipLoader;
 
     public function __construct(
         CreateFleetRequestInterface $createFleetRequest,
         FleetRepositoryInterface $fleetRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipLoaderInterface $shipLoader
     ) {
         $this->createFleetRequest = $createFleetRequest;
         $this->fleetRepository = $fleetRepository;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $ship = $this->shipRepository->find($this->createFleetRequest->getShipId());
-        if ($ship === null || $ship->getUser() !== $game->getUser()) {
-            throw new AccessViolation();
-        }
+        $ship = $this->shipLoader->getByIdAndUser($this->createFleetRequest->getShipId(), $game->getUser()->getId());
+
         if ($ship->getFleetId()) {
             return;
         }
@@ -57,7 +54,7 @@ final class CreateFleet implements ActionControllerInterface
         $ship->setFleet($fleet);
         $ship->setIsFleetLeader(true);
 
-        $this->shipRepository->save($ship);
+        $this->shipLoader->save($ship);
 
         $game->addInformation(_('Die Flotte wurde erstellt'));
     }
