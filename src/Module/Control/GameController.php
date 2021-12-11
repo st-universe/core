@@ -10,6 +10,7 @@ use request;
 use Stu\Component\Game\GameEnum;
 use Stu\Exception\MaintenanceGameStateException;
 use Stu\Exception\RelocationGameStateException;
+use Stu\Exception\SemaphoreException;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
 use Stu\Exception\TickGameStateException;
@@ -72,8 +73,6 @@ final class GameController implements GameControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    private SemaphoreUtilInterface $semaphoreUtil;
-
     private array $gameInformations = [];
 
     private array $siteNavigation = [];
@@ -113,8 +112,7 @@ final class GameController implements GameControllerInterface
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
-        LoggerUtilInterface $loggerUtil,
-        SemaphoreUtilInterface $semaphoreUtil
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -131,7 +129,6 @@ final class GameController implements GameControllerInterface
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->loggerUtil = $loggerUtil;
-        $this->semaphoreUtil = $semaphoreUtil;
 
         $this->loggerUtil->init();
     }
@@ -567,7 +564,13 @@ final class GameController implements GameControllerInterface
 
             foreach ($this->semaphores as $key => $sema) {
                 $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $this->getUser()->getId()));
-                $this->semaphoreUtil->releaseSemaphore($sema);
+                if (!sem_release($sema)) {
+                    throw new SemaphoreException("Error releasing Semaphore!");
+                }
+
+                if (!sem_remove($sema)) {
+                    throw new SemaphoreException("Error removing Semaphore!");
+                }
             }
 
             $this->loggerUtil->init();
