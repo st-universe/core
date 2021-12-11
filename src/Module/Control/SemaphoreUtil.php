@@ -26,8 +26,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function acquireSemaphore(int $key, $semaphore): void
     {
-        if ($this->game->isSemaphoreAlreadyAcquired($key))
-        {
+        if ($this->game->isSemaphoreAlreadyAcquired($key)) {
             return;
         }
 
@@ -37,26 +36,23 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     private function acquire($semaphore): void
     {
-        if (!sem_acquire($semaphore))
-        {
+        if (!sem_acquire($semaphore)) {
             throw new SemaphoreException("Error acquiring Semaphore!");
         }
     }
-    
-    public function releaseSemaphore($semaphore): void
+
+    public function releaseSemaphore($semaphore, bool $doRemove = false): void
     {
-        $this->release($semaphore);
+        $this->release($semaphore, $doRemove);
     }
 
-    private function release($semaphore): void
+    private function release($semaphore, bool $doRemove): void
     {
-        if (!sem_release($semaphore))
-        {
+        if (!sem_release($semaphore)) {
             throw new SemaphoreException("Error releasing Semaphore!");
         }
 
-        if (!sem_remove($semaphore))
-        {
+        if ($doRemove && !sem_remove($semaphore)) {
             throw new SemaphoreException("Error removing Semaphore!");
         }
     }
