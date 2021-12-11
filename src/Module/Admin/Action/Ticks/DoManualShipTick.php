@@ -9,9 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Tick\Ship\ShipTickInterface;
 use Stu\Module\Tick\Ship\ShipTickManagerInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class DoManualShipTick implements ActionControllerInterface
 {
@@ -21,19 +21,17 @@ final class DoManualShipTick implements ActionControllerInterface
 
     private ShipTickInterface $shipTick;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         ShipTickManagerInterface $shipTickManager,
         ShipTickInterface $shipTick,
-        ShipRepositoryInterface $shipRepository,
+        ShipLoaderInterface $shipLoader,
         EntityManagerInterface $entityManager
     ) {
         $this->shipTickManager = $shipTickManager;
         $this->shipTick = $shipTick;
-        $this->shipRepository = $shipRepository;
+        $this->shipLoader = $shipLoader;
         $this->entityManager = $entityManager;
     }
 
@@ -53,7 +51,7 @@ final class DoManualShipTick implements ActionControllerInterface
             $game->addInformation("Der Schiff-Tick für alle Schiffe wurde durchgeführt!");
         } else {
             $shipId = request::postInt('shiptickid');
-            $ship = $this->shipRepository->find($shipId);
+            $ship = $this->shipLoader->find($shipId);
 
             $this->shipTick->work($ship);
             $this->entityManager->flush();

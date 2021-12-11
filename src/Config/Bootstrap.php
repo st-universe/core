@@ -200,6 +200,9 @@ $builder->addDefinitions(
     require_once __DIR__ . '/../Module/Admin/services.php'
 );
 $builder->addDefinitions(
+    require_once __DIR__ . '/../Module/Control/services.php'
+);
+$builder->addDefinitions(
     require_once __DIR__ . '/../Module/Api/services.php'
 );
 $builder->addDefinitions(
