@@ -46,6 +46,6 @@ final class ShowBeamTo implements ViewControllerInterface
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);
-        $game->setTemplateVar('OWNS_TARGET', $ship->getUser() === $user);
+        $game->setTemplateVar('OWNS_TARGET', $target->getUser() === $user);
     }
 }
