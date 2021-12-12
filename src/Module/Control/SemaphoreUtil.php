@@ -16,11 +16,7 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
 
     public function getSemaphore(int $key, bool $autoRelease = false)
     {
-        if ($autoRelease) {
-            return sem_get($key, 1, 0666, 1);
-        } else {
-            return sem_get($key, 1, 0666, 0);
-        }
+        return sem_get($key, 1, 0666, 1);
     }
 
     public function acquireMainSemaphore($semaphore): void
