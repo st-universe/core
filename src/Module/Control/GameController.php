@@ -564,7 +564,12 @@ final class GameController implements GameControllerInterface
         if (!empty($this->semaphores)) {
             $userId = $this->getUser()->getId();
 
-            if ($userId === 999999) {
+            if (
+                $userId === 126
+                || $userId === 102
+                || $userId === 188
+                || $userId === 122
+            ) {
                 $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
             }
 
