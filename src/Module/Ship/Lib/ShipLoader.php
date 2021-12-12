@@ -29,8 +29,9 @@ final class ShipLoader implements ShipLoaderInterface
 
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface
     {
-        $this->acquireSemaphore($shipId);
-        $ship = $this->shipRepository->find($shipId);
+        $shipArray = $this->acquireSemaphore($shipId, null);
+
+        $ship = $shipArray[$shipId];
 
         if ($ship === null) {
             throw new ShipDoesNotExistException();
@@ -55,10 +56,38 @@ final class ShipLoader implements ShipLoaderInterface
         return $ship;
     }
 
+    public function getByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array
+    {
+        $shipArray = $this->acquireSemaphore($shipId, $targetId);
+
+        $ship = $shipArray[$shipId];
+
+        if ($ship === null) {
+            throw new ShipDoesNotExistException();
+        }
+
+        if ($ship->getIsDestroyed()) {
+            throw new ShipIsDestroyedException();
+        }
+
+        if ($ship->getUser()->getId() === $userId) {
+            return $ship;
+        }
+
+        if ($this->hasCrewmanOfUser($ship, $userId)) {
+            if (!$allowUplink) {
+                throw new UnallowedUplinkOperation();
+            }
+        } else {
+            throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
+        }
+
+        return $shipArray;
+    }
+
     public function find(int $shipId): ?ShipInterface
     {
-        $this->acquireSemaphore($shipId);
-        return $this->shipRepository->find($shipId);
+        return $this->acquireSemaphore($shipId, null)[$shipId];
     }
 
     public function save(ShipInterface $ship): void
@@ -66,18 +95,43 @@ final class ShipLoader implements ShipLoaderInterface
         $this->shipRepository->save($ship);
     }
 
-    private function acquireSemaphore(int $shipId): void
+    private function acquireSemaphore(int $shipId, ?int $targetId): array
     {
+        $result = [];
+
         //main ship sema on
         $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
 
-        //specific ship sema
-        $semaphore = $this->semaphoreUtil->getSemaphore($shipId);
-        $this->semaphoreUtil->acquireSemaphore($shipId, $semaphore);
+        $result[$shipId] = $this->acquireSemaphoreWithoutMain($shipId);
+
+        if ($targetId !== null) {
+            $result[$targetId] = $this->acquireSemaphoreWithoutMain($targetId);
+        }
 
         //main ship sema off
         $this->semaphoreUtil->releaseSemaphore($mainSema);
+
+        return $result;
+    }
+
+    private function acquireSemaphoreWithoutMain(int $shipId): ShipInterface
+    {
+        $ship = $this->shipRepository->find($shipId);
+
+        //fleet or ship semas
+        if ($ship->getFleet() !== null) {
+            foreach ($ship->getFleet()->getShips() as $fleetShip) {
+                $fleetShipId = $fleetShip->getId();
+                $semaphore = $this->semaphoreUtil->getSemaphore($fleetShipId);
+                $this->semaphoreUtil->acquireSemaphore($fleetShipId, $semaphore);
+            }
+        } else {
+            $semaphore = $this->semaphoreUtil->getSemaphore($shipId);
+            $this->semaphoreUtil->acquireSemaphore($shipId, $semaphore);
+        }
+
+        return $ship;
     }
 
     private function hasCrewmanOfUser(ShipInterface $ship, int $userId)
