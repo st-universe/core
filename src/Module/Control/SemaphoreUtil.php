@@ -14,9 +14,13 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
         $this->game = $game;
     }
 
-    public function getSemaphore(int $key)
+    public function getSemaphore(int $key, bool $autoRelease = false)
     {
-        return sem_get($key, 1, 0666, 0);
+        if ($autoRelease) {
+            return sem_get($key, 1, 0666, 1);
+        } else {
+            return sem_get($key, 1, 0666, 0);
+        }
     }
 
     public function acquireMainSemaphore($semaphore): void

@@ -4,7 +4,7 @@ namespace Stu\Module\Control;
 
 interface SemaphoreUtilInterface
 {
-    public function getSemaphore(int $key);
+    public function getSemaphore(int $key, bool $autoRelease = false);
 
     public function acquireMainSemaphore($semaphore): void;
 

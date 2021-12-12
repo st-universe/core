@@ -23,7 +23,7 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
     private ProjectileWeaponPhaseInterface $projectileWeaponPhase;
 
     private FightLibInterface $fightLib;
-    
+
     private LoggerUtilInterface $loggerUtil;
 
     private SemaphoreUtilInterface $semaphoreUtil;
@@ -83,11 +83,11 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
     private function acquireSemaphores(int $userId): void
     {
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY);
+        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
-        
+
         $this->loggerUtil->log(sprintf('inside main semaphore, userId: %d', $userId));
-        
+
         $shipSemaphores = [];
 
         foreach ($this->attacker as $ship) {
@@ -98,11 +98,11 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
             $shipSemaphores[$ship->getId()] = $this->semaphoreUtil->getSemaphore($ship->getId());
             $this->loggerUtil->log(sprintf('  D-shipId: %d', $ship->getId()));
         }
-        
+
         foreach ($shipSemaphores as $key => $sema) {
             $this->semaphoreUtil->acquireSemaphore($key, $sema);
         }
-        
+
         $this->loggerUtil->log(sprintf('leaving main semaphore, userId: %d', $userId));
         $this->semaphoreUtil->releaseSemaphore($mainSema);
     }

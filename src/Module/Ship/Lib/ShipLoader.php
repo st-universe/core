@@ -69,7 +69,7 @@ final class ShipLoader implements ShipLoaderInterface
     private function acquireSemaphore(int $shipId): void
     {
         //main ship sema on
-        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY);
+        $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
 
         //specific ship sema

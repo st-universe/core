@@ -534,8 +534,10 @@ final class GameController implements GameControllerInterface
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
             $this->setTemplateFile('html/ship.xhtml');
         } catch (StuException $e) {
+            $this->releaseAndRemoveSemaphores();
             throw $e;
         } catch (\Throwable $e) {
+            $this->releaseAndRemoveSemaphores();
             //if ($this->config->get('debug.debug_mode') === true) {
             if (true === true) {
                 throw $e;
