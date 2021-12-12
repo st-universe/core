@@ -71,7 +71,7 @@ final class ShipLoader implements ShipLoaderInterface
         }
 
         if ($ship->getUser()->getId() === $userId) {
-            return $ship;
+            return $shipArray;
         }
 
         if ($this->hasCrewmanOfUser($ship, $userId)) {
