@@ -564,14 +564,7 @@ final class GameController implements GameControllerInterface
         if (!empty($this->semaphores)) {
             $userId = $this->getUser()->getId();
 
-            if (
-                $userId === 126
-                || $userId === 102
-                || $userId === 188
-                || $userId === 122
-            ) {
-                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-            }
+            //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
             foreach ($this->semaphores as $key => $sema) {
                 $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
