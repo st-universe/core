@@ -39,12 +39,17 @@ final class UndockStationShip implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $stationId = request::indInt('id');
+        $targetId = request::indInt('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $stationId,
+            $userId,
+            $targetId
         );
 
-        $target = $this->shipLoader->find(request::indInt('target'));
+        $station = $shipArray[$stationId];
+        $target = $shipArray[$targetId];
 
         if ($target->getDockedTo() !== $station) {
             return;

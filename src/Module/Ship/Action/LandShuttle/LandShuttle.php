@@ -66,12 +66,17 @@ final class LandShuttle implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('shuttle'),
-            $userId
+        $shipId = request::indInt('shuttle');
+        $targetId = request::getIntFatal('id');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
 
-        $target = $this->shipLoader->find(request::getIntFatal('id'));
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
         if ($target === null) {
             return;
         }

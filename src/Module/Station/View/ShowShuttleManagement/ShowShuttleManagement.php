@@ -36,8 +36,17 @@ final class ShowShuttleManagement implements ViewControllerInterface
     {
         $this->loggerUtil->init();
 
-        $ship = $this->shipLoader->find($this->request->getShipId());
-        $station = $this->shipLoader->getByIdAndUser($this->request->getStationId(), $game->getUser()->getId());
+        $stationId = $this->request->getStationId();
+        $shipId = $this->request->getShipId();
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $stationId,
+            $game->getUser()->getId(),
+            $shipId
+        );
+
+        $station = $shipArray[$stationId];
+        $ship = $shipArray[$shipId];
 
         $game->setPageTitle("Shuttle Management");
         $game->setTemplateFile('html/ajaxwindow.xhtml');

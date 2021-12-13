@@ -25,20 +25,25 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $user = $game->getUser();
+        $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $user->getId()
+        $shipId = request::indInt('id');
+        $targetId = request::getIntFatal('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
+
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
 
         if (!$ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TORPEDO_STORAGE)) {
             return;
         }
 
         $isUnload = request::has('isUnload');
-
-        $target = $this->shipLoader->find((int) request::getIntFatal('target'));
 
         if ($isUnload) {
             $max = min(

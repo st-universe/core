@@ -52,11 +52,18 @@ final class DockShip implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $shipId = request::indInt('id');
+        $targetId = request::indInt('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
-        $target = $this->shipLoader->find(request::indInt('target'));
+
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
+
         if ($target === null) {
             return;
         }

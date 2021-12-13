@@ -45,27 +45,33 @@ final class RepairShip implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $station = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $stationId = request::indInt('id');
+        $shipId = (int) request::getIntFatal('ship_id');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $stationId,
+            $userId,
+            $shipId
         );
+
+        $station = $shipArray[$stationId];
+        $ship = $shipArray[$shipId];
 
         if (!$this->stationUtility->canRepairShips($station)) {
             return;
         }
 
         $repairableShiplist = [];
-        foreach ($station->getDockedShips() as $ship) {
+        foreach ($station->getDockedShips() as $dockedShip) {
             if (
-                !$ship->canBeRepaired() || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
-                || $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
+                !$dockedShip->canBeRepaired() || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE
+                || $dockedShip->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE
             ) {
                 continue;
             }
-            $repairableShiplist[$ship->getId()] = $ship;
+            $repairableShiplist[$dockedShip->getId()] = $dockedShip;
         }
 
-        $ship = $this->shipLoader->find((int) request::getIntFatal('ship_id'));
         if ($ship === null || !array_key_exists($ship->getId(), $repairableShiplist)) {
             return;
         }

@@ -25,16 +25,22 @@ final class ShowEpsTransfer implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $shipId = request::indInt('id');
+        $targetId = request::getIntFatal('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
+
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
 
         $game->setPageTitle("Energietransfer");
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/entity_not_available');
 
-        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }

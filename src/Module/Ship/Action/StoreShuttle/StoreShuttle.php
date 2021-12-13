@@ -74,12 +74,17 @@ final class StoreShuttle implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $shipId = request::indInt('id');
+        $targetId = request::getIntFatal('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
 
-        $target = $this->shipLoader->find(request::getIntFatal('target'));
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
         if ($target === null) {
             return;
         }

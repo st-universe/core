@@ -54,14 +54,20 @@ final class ActivateTractorBeam implements ActionControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $shipId = request::indInt('id');
+        $targetId = request::getIntFatal('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
+
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
 
         $shipName = $ship->getName();
 
-        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }

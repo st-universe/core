@@ -40,10 +40,18 @@ final class BeamFrom implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $userId
+        $shipId = request::indInt('id');
+        $targetId = request::postIntFatal('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $userId,
+            $targetId
         );
+
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
+
         if (!$ship->hasEnoughCrew()) {
             $game->addInformationf(
                 _("Es werden %d Crewmitglieder benötigt"),
@@ -68,7 +76,6 @@ final class BeamFrom implements ActionControllerInterface
             $game->addInformation(_("Die Schilde sind aktiviert"));
             return;
         }
-        $target = $this->shipLoader->find(request::postIntFatal('target'));
         if ($target === null) {
             return;
         }

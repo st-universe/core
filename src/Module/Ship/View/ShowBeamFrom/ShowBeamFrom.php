@@ -25,15 +25,22 @@ final class ShowBeamFrom implements ViewControllerInterface
     {
         $user = $game->getUser();
 
-        $ship = $this->shipLoader->getByIdAndUser(
-            request::indInt('id'),
-            $user->getId()
+        $shipId = request::indInt('id');
+        $targetId = request::getIntFatal('target');
+
+        $shipArray = $this->shipLoader->getByIdAndUserAndTarget(
+            $shipId,
+            $user->getId(),
+            $targetId
         );
+
+        $ship = $shipArray[$shipId];
+        $target = $shipArray[$targetId];
+
         $game->setPageTitle(_('Von Schiff beamen'));
         $game->setTemplateFile('html/ajaxwindow.xhtml');
         $game->setMacro('html/shipmacros.xhtml/entity_not_available');
 
-        $target = $this->shipLoader->find(request::getIntFatal('target'));
         if ($target === null) {
             return;
         }
