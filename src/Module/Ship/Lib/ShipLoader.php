@@ -30,24 +30,10 @@ final class ShipLoader implements ShipLoaderInterface
 
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface
     {
-        $shipArray = $this->acquireSemaphores($shipId, null);
+        $shipArray = $this->acquireSemaphore($shipId, null);
 
-        $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
+        $ship = $shipArray[$shipId];
 
-        return $shipArray[$shipId];
-    }
-
-    public function getByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array
-    {
-        $shipArray = $this->acquireSemaphores($shipId, $targetId);
-
-        $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
-
-        return $shipArray;
-    }
-
-    private function checkviolations(?ShipInterface $ship, int $userId, bool $allowUplink): void
-    {
         if ($ship === null) {
             throw new ShipDoesNotExistException();
         }
@@ -56,6 +42,40 @@ final class ShipLoader implements ShipLoaderInterface
             throw new ShipIsDestroyedException();
         }
 
+        if ($ship->getUser()->getId() === $userId) {
+            return $ship;
+        }
+
+        if ($this->hasCrewmanOfUser($ship, $userId)) {
+            if (!$allowUplink) {
+                throw new UnallowedUplinkOperation();
+            }
+        } else {
+            throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
+        }
+
+        return $ship;
+    }
+
+<<<<<<< HEAD
+    private function checkviolations(?ShipInterface $ship, int $userId, bool $allowUplink): void
+=======
+    public function getByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array
+>>>>>>> Revert "code optimization"
+    {
+        $shipArray = $this->acquireSemaphore($shipId, $targetId);
+
+        $ship = $shipArray[$shipId];
+
+        if ($ship === null) {
+            throw new ShipDoesNotExistException();
+        }
+
+        if ($ship->getIsDestroyed()) {
+            throw new ShipIsDestroyedException();
+        }
+
+<<<<<<< HEAD
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
@@ -66,13 +86,24 @@ final class ShipLoader implements ShipLoaderInterface
                 }
             } else {
                 throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
+=======
+        if ($ship->getUser()->getId() === $userId) {
+            return $shipArray;
+        }
+
+        if ($this->hasCrewmanOfUser($ship, $userId)) {
+            if (!$allowUplink) {
+                throw new UnallowedUplinkOperation();
+>>>>>>> Revert "code optimization"
             }
         }
+
+        return $shipArray;
     }
 
     public function find(int $shipId): ?ShipInterface
     {
-        return $this->acquireSemaphores($shipId, null)[$shipId];
+        return $this->acquireSemaphore($shipId, null)[$shipId];
     }
 
     public function save(ShipInterface $ship): void
@@ -80,7 +111,7 @@ final class ShipLoader implements ShipLoaderInterface
         $this->shipRepository->save($ship);
     }
 
-    private function acquireSemaphores(int $shipId, ?int $targetId): array
+    private function acquireSemaphore(int $shipId, ?int $targetId): array
     {
         $result = [];
 
@@ -88,10 +119,10 @@ final class ShipLoader implements ShipLoaderInterface
         $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
 
-        $result[$shipId] = $this->acquireSemaphoresWithoutMain($shipId);
+        $result[$shipId] = $this->acquireSemaphoreWithoutMain($shipId);
 
         if ($targetId !== null) {
-            $result[$targetId] = $this->acquireSemaphoresWithoutMain($targetId);
+            $result[$targetId] = $this->acquireSemaphoreWithoutMain($targetId);
         }
 
         //main ship sema off
@@ -100,7 +131,11 @@ final class ShipLoader implements ShipLoaderInterface
         return $result;
     }
 
+<<<<<<< HEAD
     private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
+=======
+    private function acquireSemaphoreWithoutMain(int $shipId): ShipInterface
+>>>>>>> Revert "code optimization"
     {
         $ship = $this->shipRepository->find($shipId);
 
