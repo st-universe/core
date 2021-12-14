@@ -55,15 +55,14 @@ final class ShipLoader implements ShipLoaderInterface
             throw new ShipIsDestroyedException();
         }
 
-        if (
-            $ship->getUser()->getId() !== $userId
-            && $this->hasCrewmanOfUser($ship, $userId)
-        ) {
-            if (!$allowUplink) {
-                throw new UnallowedUplinkOperation();
+        if ($ship->getUser()->getId() !== $userId) {
+            if ($this->hasCrewmanOfUser($ship, $userId)) {
+                if (!$allowUplink) {
+                    throw new UnallowedUplinkOperation();
+                }
+            } else {
+                throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
             }
-        } else {
-            throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
         }
     }
 
