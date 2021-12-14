@@ -124,7 +124,6 @@ final class ShipRemover implements ShipRemoverInterface
 
         $this->shipSystemRepository->truncateByShip((int) $ship->getId());
         $ship->getSystems()->clear();
-        // @todo Torpedos löschen
 
         $this->shipRepository->save($ship);
 
