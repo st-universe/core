@@ -62,6 +62,7 @@ final class ShipLoader implements ShipLoaderInterface
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
@@ -87,6 +88,15 @@ final class ShipLoader implements ShipLoaderInterface
             if (!$allowUplink) {
                 throw new UnallowedUplinkOperation();
 >>>>>>> Revert "code optimization"
+=======
+        if ($ship->getUser()->getId() !== $userId) {
+            if ($this->hasCrewmanOfUser($ship, $userId)) {
+                if (!$allowUplink) {
+                    throw new UnallowedUplinkOperation();
+                }
+            } else {
+                throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
+>>>>>>> bugfix
             }
         }
     }
