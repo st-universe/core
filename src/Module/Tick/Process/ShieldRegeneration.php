@@ -26,11 +26,6 @@ final class ShieldRegeneration implements ProcessTickInterface
                 continue;
             }
 
-            //regen only if shields not active
-            if ($obj->getShieldState()) {
-                continue;
-            }
-
             $rate = $obj->getShieldRegenerationRate();
             if ($obj->getShield() + $rate > $obj->getMaxShield()) {
                 $rate = $obj->getMaxShield() - $obj->getShield();
