@@ -99,6 +99,7 @@ final class ShipLoader implements ShipLoaderInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
@@ -142,6 +143,15 @@ final class ShipLoader implements ShipLoaderInterface
                 }
                 if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_UPLINK)) {
                     throw new UnallowedUplinkOperation(_('Uplink is not activated!'));
+                }
+            } else {
+                throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
+>>>>>>> bugfix
+=======
+        if ($ship->getUser()->getId() !== $userId) {
+            if ($this->hasCrewmanOfUser($ship, $userId)) {
+                if (!$allowUplink) {
+                    throw new UnallowedUplinkOperation();
                 }
             } else {
                 throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
