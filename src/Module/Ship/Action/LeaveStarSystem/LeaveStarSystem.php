@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\LeaveStarSystem;
 
 use request;
+use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
@@ -35,13 +38,16 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private AstroEntryLibInterface $astroEntryLib;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
         MapRepositoryInterface $mapRepository,
         ActivatorDeactivatorHelperInterface $helper,
-        AstroEntryLibInterface $astroEntryLib
+        AstroEntryLibInterface $astroEntryLib,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -49,6 +55,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->mapRepository = $mapRepository;
         $this->helper = $helper;
         $this->astroEntryLib = $astroEntryLib;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -56,6 +63,10 @@ final class LeaveStarSystem implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -167,7 +178,9 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
-        //TODO reset direction based on leaving position
+        $ship->setFlightDirection($this->getNewDirection($ship));
+
+        $this->loggerUtil->log('newDirection: %d', $ship->getFlightDirection());
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
@@ -180,6 +193,36 @@ final class LeaveStarSystem implements ActionControllerInterface
 
         $ship->setMap($map);
         $ship->setStarsystemMap(null);
+    }
+
+    private function getNewDirection(ShipInterface $ship): int
+    {
+        $starsystemMap = $ship->getStarsystemMap();
+        $system = $starsystemMap->getSystem();
+
+        $shipX = $starsystemMap->getSx();
+        $shipY = $starsystemMap->getSy();
+
+        $this->loggerUtil->log('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX());
+
+        $rad12or34 = atan($shipY / $shipX);
+        $rad14or23 = atan($system->getMaxX() - $shipX / $shipY);
+
+        $this->loggerUtil->log('rad12or34: %F, rad14or23: %F', $rad12or34, $rad14or23);
+
+        if ($rad12or34 < M_PI_4) {
+            if ($rad14or23 < M_PI_4) {
+                return ShipEnum::DIRECTION_LEFT;
+            } else {
+                return ShipEnum::DIRECTION_BOTTOM;
+            }
+        } else {
+            if ($rad14or23 < M_PI_4) {
+                return ShipEnum::DIRECTION_TOP;
+            } else {
+                return ShipEnum::DIRECTION_RIGHT;
+            }
+        }
     }
 
 
