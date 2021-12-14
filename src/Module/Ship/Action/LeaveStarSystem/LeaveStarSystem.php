@@ -64,6 +64,10 @@ final class LeaveStarSystem implements ActionControllerInterface
 
         $userId = $game->getUser()->getId();
 
+        if ($userId === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
+
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
@@ -176,7 +180,11 @@ final class LeaveStarSystem implements ActionControllerInterface
     {
         $ship->setFlightDirection($this->getNewDirection($ship));
 
+<<<<<<< HEAD
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
+=======
+        $this->loggerUtil->log('newDirection: %d', $ship->getFlightDirection());
+>>>>>>> leaving star system changes direction based on location
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
@@ -199,12 +207,21 @@ final class LeaveStarSystem implements ActionControllerInterface
         $shipX = $starsystemMap->getSx();
         $shipY = $starsystemMap->getSy();
 
+<<<<<<< HEAD
         $this->loggerUtil->log(sprintf('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX()));
 
         $rad12or34 = atan($shipY / $shipX);
         $rad14or23 = atan(($system->getMaxX() - $shipX) / $shipY);
 
         $this->loggerUtil->log(sprintf('rad12or34: %F, rad14or23: %F', $rad12or34, $rad14or23));
+=======
+        $this->loggerUtil->log('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX());
+
+        $rad12or34 = atan($shipY / $shipX);
+        $rad14or23 = atan($system->getMaxX() - $shipX / $shipY);
+
+        $this->loggerUtil->log('rad12or34: %F, rad14or23: %F', $rad12or34, $rad14or23);
+>>>>>>> leaving star system changes direction based on location
 
         if ($rad12or34 < M_PI_4) {
             if ($rad14or23 < M_PI_4) {
