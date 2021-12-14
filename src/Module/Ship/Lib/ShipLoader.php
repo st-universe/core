@@ -29,39 +29,24 @@ final class ShipLoader implements ShipLoaderInterface
 
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface
     {
-        $shipArray = $this->acquireSemaphore($shipId, null);
+        $shipArray = $this->acquireSemaphores($shipId, null);
 
-        $ship = $shipArray[$shipId];
+        $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
 
-        if ($ship === null) {
-            throw new ShipDoesNotExistException();
-        }
-
-        if ($ship->getIsDestroyed()) {
-            throw new ShipIsDestroyedException();
-        }
-
-        if ($ship->getUser()->getId() === $userId) {
-            return $ship;
-        }
-
-        if ($this->hasCrewmanOfUser($ship, $userId)) {
-            if (!$allowUplink) {
-                throw new UnallowedUplinkOperation();
-            }
-        } else {
-            throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
-        }
-
-        return $ship;
+        return $shipArray[$shipId];
     }
 
     public function getByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array
     {
-        $shipArray = $this->acquireSemaphore($shipId, $targetId);
+        $shipArray = $this->acquireSemaphores($shipId, $targetId);
 
-        $ship = $shipArray[$shipId];
+        $this->checkviolations($shipArray[$shipId], $userId, $allowUplink);
 
+        return $shipArray;
+    }
+
+    private function checkviolations(ShipInterface $ship, int $userId, bool $allowUplink): void
+    {
         if ($ship === null) {
             throw new ShipDoesNotExistException();
         }
@@ -70,24 +55,21 @@ final class ShipLoader implements ShipLoaderInterface
             throw new ShipIsDestroyedException();
         }
 
-        if ($ship->getUser()->getId() === $userId) {
-            return $shipArray;
-        }
-
-        if ($this->hasCrewmanOfUser($ship, $userId)) {
+        if (
+            $ship->getUser()->getId() !== $userId
+            && $this->hasCrewmanOfUser($ship, $userId)
+        ) {
             if (!$allowUplink) {
                 throw new UnallowedUplinkOperation();
             }
         } else {
             throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
         }
-
-        return $shipArray;
     }
 
     public function find(int $shipId): ?ShipInterface
     {
-        return $this->acquireSemaphore($shipId, null)[$shipId];
+        return $this->acquireSemaphores($shipId, null)[$shipId];
     }
 
     public function save(ShipInterface $ship): void
@@ -95,7 +77,7 @@ final class ShipLoader implements ShipLoaderInterface
         $this->shipRepository->save($ship);
     }
 
-    private function acquireSemaphore(int $shipId, ?int $targetId): array
+    private function acquireSemaphores(int $shipId, ?int $targetId): array
     {
         $result = [];
 
@@ -103,10 +85,10 @@ final class ShipLoader implements ShipLoaderInterface
         $mainSema = $this->semaphoreUtil->getSemaphore(SemaphoreEnum::MAIN_SHIP_SEMAPHORE_KEY, true);
         $this->semaphoreUtil->acquireMainSemaphore($mainSema);
 
-        $result[$shipId] = $this->acquireSemaphoreWithoutMain($shipId);
+        $result[$shipId] = $this->acquireSemaphoresWithoutMain($shipId);
 
         if ($targetId !== null) {
-            $result[$targetId] = $this->acquireSemaphoreWithoutMain($targetId);
+            $result[$targetId] = $this->acquireSemaphoresWithoutMain($targetId);
         }
 
         //main ship sema off
@@ -115,7 +97,7 @@ final class ShipLoader implements ShipLoaderInterface
         return $result;
     }
 
-    private function acquireSemaphoreWithoutMain(int $shipId): ShipInterface
+    private function acquireSemaphoresWithoutMain(int $shipId): ShipInterface
     {
         $ship = $this->shipRepository->find($shipId);
 
