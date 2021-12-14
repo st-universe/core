@@ -206,7 +206,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->loggerUtil->log(sprintf('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX()));
 
         $rad12or34 = atan($shipY / $shipX);
-        $rad14or23 = atan($system->getMaxX() - $shipX / $shipY);
+        $rad14or23 = atan(($system->getMaxX() - $shipX) / $shipY);
 
         $this->loggerUtil->log(sprintf('rad12or34: %F, rad14or23: %F', $rad12or34, $rad14or23));
 
