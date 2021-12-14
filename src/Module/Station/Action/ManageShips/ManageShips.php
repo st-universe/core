@@ -27,12 +27,15 @@ use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ManageShips implements ActionControllerInterface
 {
     public const ACTION_IDENTIFIER = 'B_MANAGE_STATION_SHIPS';
 
     private ShipLoaderInterface $shipLoader;
+
+    private ShipRepositoryInterface $shipRepository;
 
     private TorpedoTypeRepositoryInterface $torpedoTypeRepository;
 
@@ -54,6 +57,7 @@ final class ManageShips implements ActionControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
+        ShipRepositoryInterface $shipRepository,
         TorpedoTypeRepositoryInterface $torpedoTypeRepository,
         CrewCreatorInterface $crewCreator,
         ShipCrewRepositoryInterface $shipCrewRepository,
@@ -65,6 +69,7 @@ final class ManageShips implements ActionControllerInterface
         StationUtilityInterface $stationUtility
     ) {
         $this->shipLoader = $shipLoader;
+        $this->shipRepository = $shipRepository;
         $this->torpedoTypeRepository = $torpedoTypeRepository;
         $this->crewCreator = $crewCreator;
         $this->shipCrewRepository = $shipCrewRepository;
@@ -109,7 +114,7 @@ final class ManageShips implements ActionControllerInterface
         $sectorString = $station->getSectorString();
 
         foreach ($ships as $ship) {
-            $shipobj = $this->shipLoader->find((int) $ship);
+            $shipobj = $this->shipRepository->find((int) $ship);
             if ($shipobj === null) {
                 continue;
             }
@@ -201,7 +206,7 @@ final class ManageShips implements ActionControllerInterface
 
                 foreach ($shipobj->getDockedShips() as $dockedShip) {
                     $dockedShip->setDockedTo(null);
-                    $this->shipLoader->save($dockedShip);
+                    $this->shipRepository->save($dockedShip);
                 }
                 $shipobj->getDockedShips()->clear();
 
@@ -391,9 +396,9 @@ final class ManageShips implements ActionControllerInterface
                 }
             }
 
-            $this->shipLoader->save($shipobj);
+            $this->shipRepository->save($shipobj);
         }
-        $this->shipLoader->save($station);
+        $this->shipRepository->save($station);
 
         $game->addInformationMerge($msg);
     }
