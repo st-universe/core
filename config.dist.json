@@ -80,5 +80,8 @@
   },
   "wiki": {
     "base_url": "https://wiki.change.me"
+  },
+  "discord": {
+    "url": "https://chat.change.me"
   }
 }
