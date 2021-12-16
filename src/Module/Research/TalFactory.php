@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
@@ -15,12 +16,16 @@ final class TalFactory implements TalFactoryInterface
 
     private ResearchedRepositoryInterface $researchedRepository;
 
+    private ConfigInterface $config;
+
     public function __construct(
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
-        ResearchedRepositoryInterface $researchedRepository
+        ResearchedRepositoryInterface $researchedRepository,
+        ConfigInterface $config
     ) {
         $this->researchDependencyRepository = $researchDependencyRepository;
         $this->researchedRepository = $researchedRepository;
+        $this->config = $config;
     }
 
     public function createTalSelectedTech(
@@ -31,7 +36,8 @@ final class TalFactory implements TalFactoryInterface
             $this->researchedRepository,
             $this->researchDependencyRepository,
             $research,
-            $currentUser
+            $currentUser,
+            $this->config
         );
     }
 }

@@ -37,4 +37,6 @@ interface TalSelectedTechInterface
     public function isResearchFinished(): bool;
 
     public function getStatusBar(): string;
+
+    public function getWikiLink(): string;
 }
