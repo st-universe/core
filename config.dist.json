@@ -82,6 +82,7 @@
     "base_url": "https://wiki.change.me"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   },
   "discord": {
     "url": "https://chat.change.me"
@@ -92,5 +93,7 @@
   "discord": {
     "url": "https://chat.change.me"
 >>>>>>> read config values
+=======
+>>>>>>> research wiki link
   }
 }
