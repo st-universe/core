@@ -310,14 +310,15 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
             $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
-            $this->talPage->setVar('WIKI', $this->config->get('wiki.base_url'));
-            $this->talPage->setVar('BOARD', $this->config->get('board.base_url'));
-            $this->talPage->setVar('CHAT', $this->config->get('discord.url'));
         }
 
         $this->talPage->setVar('WIKI', $this->config->get('wiki.base_url'));
 <<<<<<< HEAD
+<<<<<<< HEAD
         $this->talPage->setVar('FORUM', $this->config->get('board.base_url'));
+=======
+        $this->talPage->setVar('BOARD', $this->config->get('board.base_url'));
+>>>>>>> bugfix
 =======
         $this->talPage->setVar('BOARD', $this->config->get('board.base_url'));
 >>>>>>> bugfix
