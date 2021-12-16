@@ -80,8 +80,11 @@
   },
   "wiki": {
     "base_url": "https://wiki.change.me"
+<<<<<<< HEAD
   },
   "discord": {
     "url": "https://chat.change.me"
+=======
+>>>>>>> research wiki link
   }
 }
