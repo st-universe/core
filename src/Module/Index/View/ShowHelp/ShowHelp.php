@@ -25,7 +25,11 @@ final class ShowHelp implements ViewControllerInterface
         $game->setTemplateFile('html/index_help.xhtml');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         $game->setTemplateVar('FORUM', $this->config->get('board.base_url'));
+=======
+        $game->setTemplateVar('BOARD', $this->config->get('board.base_url'));
+>>>>>>> read config values
 =======
         $game->setTemplateVar('BOARD', $this->config->get('board.base_url'));
 >>>>>>> read config values

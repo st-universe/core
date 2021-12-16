@@ -83,6 +83,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   },
   "discord": {
     "url": "https://chat.change.me"
@@ -95,5 +96,10 @@
 >>>>>>> read config values
 =======
 >>>>>>> research wiki link
+=======
+  },
+  "discord": {
+    "url": "https://chat.change.me"
+>>>>>>> read config values
   }
 }
