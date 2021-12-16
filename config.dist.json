@@ -81,10 +81,16 @@
   "wiki": {
     "base_url": "https://wiki.change.me"
 <<<<<<< HEAD
+<<<<<<< HEAD
   },
   "discord": {
     "url": "https://chat.change.me"
 =======
 >>>>>>> research wiki link
+=======
+  },
+  "discord": {
+    "url": "https://chat.change.me"
+>>>>>>> read config values
   }
 }
