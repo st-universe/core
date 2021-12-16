@@ -74,5 +74,11 @@
   "api": {
     "jwt_secret": "changeme",
     "jwt_validity_period": 259200
+  },
+  "board": {
+    "base_url": "https://board.change.me"
+  },
+  "wiki": {
+    "base_url": "https://wiki.change.me"
   }
 }

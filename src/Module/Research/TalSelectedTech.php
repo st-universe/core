@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Research;
 
+use Noodlehaus\ConfigInterface;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
 use Stu\Orm\Entity\CommodityInterface;
@@ -23,6 +24,8 @@ final class TalSelectedTech implements TalSelectedTechInterface
 
     private ResearchDependencyRepositoryInterface $researchDependencyRepository;
 
+    private ConfigInterface $config;
+
     private $state;
 
     private $excludes;
@@ -33,12 +36,14 @@ final class TalSelectedTech implements TalSelectedTechInterface
         ResearchedRepositoryInterface $researchedRepository,
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
         ResearchInterface $research,
-        UserInterface $currentUser
+        UserInterface $currentUser,
+        ConfigInterface $config
     ) {
         $this->research = $research;
         $this->currentUser = $currentUser;
         $this->researchedRepository = $researchedRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
+        $this->config = $config;
     }
 
     public function getId(): int
@@ -139,5 +144,14 @@ final class TalSelectedTech implements TalSelectedTechInterface
             ->setValue($this->research->getPoints() - $this->getResearchState()->getActive())
             ->setSizeModifier(2)
             ->render();
+    }
+
+    public function getWikiLink(): string
+    {
+        return sprintf(
+            '%s/index.php?title=Forschung:%s',
+            $this->config->get('wiki.base_url'),
+            str_replace(' ', '_', $this->research->getName())
+        );
     }
 }
