@@ -59,6 +59,7 @@ final class Overview implements ViewControllerInterface
         $invitations = $this->userInvitationRepository->getInvitationsByUser($user);
 
         $game->setTemplateVar('USER', $user);
+        $game->setTemplateVar('WIKI', $this->config->get('wiki.base_url'));
         $game->setTemplateVar(
             'INVITATION_POSSIBLE',
             count($invitations) < $this->config->get('game.invitation.tokens_per_user')
