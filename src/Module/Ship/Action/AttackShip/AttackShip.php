@@ -105,10 +105,7 @@ final class AttackShip implements ActionControllerInterface
         [$attacker, $defender, $fleet] = $this->getAttackerDefender($ship, $target);
 
         $this->shipAttackCycle->init($attacker, $defender);
-        try {
-            $this->shipAttackCycle->cycle();
-        } finally {
-        }
+        $this->shipAttackCycle->cycle();
 
         $pm = sprintf(_('Kampf in Sektor %d|%d') . "\n", $ship->getPosX(), $ship->getPosY());
         foreach ($this->shipAttackCycle->getMessages() as $value) {
