@@ -42,6 +42,8 @@ final class GiveUp implements ActionControllerInterface
     {
         $user = $game->getUser();
         $userId = $user->getId();
+
+        $colonyAmount = $this->colonyRepository->getAmountByUser($user);
         $colony = $this->colonyRepository->find($this->giveupRequest->getColonyId());
 
         $code = trim(request::postString('giveupcode'));
@@ -56,8 +58,7 @@ final class GiveUp implements ActionControllerInterface
         }
 
         $this->colonyResetter->reset($colony);
-
-        $colonyAmount = $this->colonyRepository->getAmountByUser($user);
+        $colonyAmount--;
 
         if ($colonyAmount === 0) {
             $user->setActive(PlayerEnum::USER_ACTIVE);
