@@ -51,6 +51,7 @@ use Stu\Module\Ship\Action\BeamToColony\BeamToColony;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Action\BuyTradeLicense\BuyTradeLicense;
 use Stu\Module\Ship\Action\ChangeFleetFixation\ChangeFleetFixation;
+use Stu\Module\Ship\Action\ChangeFleetFleader\ChangeFleetFleader;
 use Stu\Module\Ship\Action\ChangeName\ChangeName;
 use Stu\Module\Ship\Action\Colonize\Colonize;
 use Stu\Module\Ship\Action\ColonyBlocking\StartBlocking;
@@ -210,6 +211,7 @@ return [
         LeaveFleet::ACTION_IDENTIFIER => autowire(LeaveFleet::class),
         JoinFleet::ACTION_IDENTIFIER => autowire(JoinFleet::class),
         PriorizeFleet::ACTION_IDENTIFIER => autowire(PriorizeFleet::class),
+        ChangeFleetFleader::ACTION_IDENTIFIER => autowire(ChangeFleetFleader::class),
         ActivateAstroLaboratory::ACTION_IDENTIFIER => autowire(ActivateAstroLaboratory::class),
         DeactivateAstroLaboratory::ACTION_IDENTIFIER => autowire(DeactivateAstroLaboratory::class),
         ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),

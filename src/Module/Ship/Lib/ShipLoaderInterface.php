@@ -8,6 +8,9 @@ interface ShipLoaderInterface
 {
     public function getByIdAndUser(int $shipId, int $userId, bool $allowUplink = false): ShipInterface;
 
+    /**
+     * @return ShipInterface[]
+     */
     public function getByIdAndUserAndTarget(int $shipId, int $userId, int $targetId, bool $allowUplink = false): array;
 
     public function find(int $shipId): ?ShipInterface;

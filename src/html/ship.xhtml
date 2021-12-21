@@ -930,6 +930,14 @@
 						</div>
 					</div>
 				</td>
+				<td>
+					<a href="?B_FLEET_LEADER=1&id=${SHIP/getId}&target=${ship/getId}"
+						onmouseover="cp('fleet_${ship/getId}','buttons/fl_flag2')"
+						onmouseout="cp('fleet_${ship/getId}','buttons/fl_flag1')">
+						<img src="assets/buttons/fl_flag1.png" name="fleet_${ship/getId}"
+							title="Flottenführung wechseln" />
+					</a>
+				</td>
 			</tr>
 		</tal:block>
 	</table>
