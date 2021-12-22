@@ -154,6 +154,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 WHERE s.alvl = alertRed
                 AND s.user_id != :ignoreId 
+                AND s.%s = :mapId
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
                                 WHERE s.id = ss.ships_id
@@ -165,6 +166,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                 AND ss2.system_type = :warpSystemId
                                 AND ss2.mode > 1)',
                 Ship::class,
+                $isSystem ? 'starsystem_map_id' : 'map_id',
                 ShipSystem::class,
                 ShipSystem::class
             )
