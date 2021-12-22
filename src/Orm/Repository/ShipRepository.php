@@ -154,11 +154,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             sprintf(
                 'SELECT s FROM %s s
 <<<<<<< HEAD
+<<<<<<< HEAD
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId 
                 AND s.%s = :mapId
 =======
                 WHERE s.alvl = alertRed
+=======
+                WHERE s.alvl = :alertRed
+>>>>>>> bugfix
                 AND s.user_id != :ignoreId 
 <<<<<<< HEAD
 >>>>>>> code optimization
