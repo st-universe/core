@@ -160,7 +160,11 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 =======
                 WHERE s.alvl = alertRed
                 AND s.user_id != :ignoreId 
+<<<<<<< HEAD
 >>>>>>> code optimization
+=======
+                AND s.%s = :mapId
+>>>>>>> bugfix
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
                                 WHERE s.id = ss.ships_id
@@ -173,9 +177,13 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                 AND ss2.mode > 1)',
                 Ship::class,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 $isSystem ? 'starsystem_map_id' : 'map_id',
 =======
 >>>>>>> code optimization
+=======
+                $isSystem ? 'starsystem_map_id' : 'map_id',
+>>>>>>> bugfix
                 ShipSystem::class,
                 ShipSystem::class
             )
