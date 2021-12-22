@@ -156,6 +156,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId 
                 AND s.%s = :mapId
@@ -172,6 +173,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 >>>>>>> bugfix
 =======
                 WHERE s.alvl = alertRed
+=======
+                WHERE s.alvl = :alertRed
+>>>>>>> bugfix
                 AND s.user_id != :ignoreId 
 <<<<<<< HEAD
 >>>>>>> code optimization
