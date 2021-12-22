@@ -31,6 +31,13 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function checkForAlertRedShips(ShipInterface $leadShip, &$informations): array
     {
+        if ($this->allFleetShipsWarped($leadShip)) {
+            return [];
+        }
+        if ($this->allFleetShipsCloaked($leadShip)) {
+            return [];
+        }
+
         $shipsToShuffle = [];
 
         // get ships inside or outside systems
@@ -105,6 +112,40 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
 
         return $shipsToShuffle;
+    }
+
+    private function allFleetShipsWarped(ShipInterface $leadShip): bool
+    {
+        if ($leadShip->getFleet() !== null) {
+            foreach ($leadShip->getFleet()->getShips() as $fleetShip) {
+                if (!$fleetShip->getWarpState()) {
+                    return false;
+                }
+            }
+        } else {
+            if (!$leadShip->getWarpState()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function allFleetShipsCloaked(ShipInterface $leadShip): bool
+    {
+        if ($leadShip->getFleet() !== null) {
+            foreach ($leadShip->getFleet()->getShips() as $fleetShip) {
+                if (!$fleetShip->getCloakState()) {
+                    return false;
+                }
+            }
+        } else {
+            if (!$leadShip->getCloakState()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function performAttackCycle(ShipInterface $alertShip, ShipInterface $leadShip, &$informations, $isColonyDefense = false): void

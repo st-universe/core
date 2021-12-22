@@ -28,6 +28,9 @@ final class FightLib implements FightLibInterface
     {
         try {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
+        } catch (ShipSystemException $e) {
+        }
+        try {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_CLOAK);
         } catch (ShipSystemException $e) {
         }
