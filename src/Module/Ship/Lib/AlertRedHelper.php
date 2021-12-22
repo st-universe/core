@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
@@ -41,23 +40,13 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $shipsToShuffle = [];
 
         // get ships inside or outside systems
-        if ($leadShip->getSystem() !== null) {
-            $starSystem = $leadShip->getSystem();
-            $shipsOnLocation = $this->shipRepository->getByInnerSystemLocation($starSystem->getId(), $leadShip->getPosX(), $leadShip->getPosY());
-        } else {
-            $shipsOnLocation = $this->shipRepository->getByOuterSystemLocation($leadShip->getCx(), $leadShip->getCy());
-        }
+        $shipsOnLocation = $this->shipRepository->getShipsForAlertRed($leadShip);
 
         $fleetIds = [];
         $fleetCount = 0;
         $singleShipCount = 0;
 
         foreach ($shipsOnLocation as $shipOnLocation) {
-
-            // own ships dont count
-            if ($shipOnLocation->getUser()->getId() === $leadShip->getUser()->getId()) {
-                continue;
-            }
 
             // ships dont count if user is on vacation
             if ($shipOnLocation->getUser()->isVacationRequestOldEnough()) {
@@ -69,30 +58,16 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 continue;
             }
 
-            //cloaked ships dont attack
-            if ($shipOnLocation->getCloakState()) {
-                continue;
-            }
-
-            //warped ships dont attack
-            if ($shipOnLocation->getWarpState()) {
-                continue;
-            }
-
             $fleet = $shipOnLocation->getFleet();
 
             if ($fleet === null) {
-                if ($shipOnLocation->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                    $singleShipCount++;
-                    $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
-                }
+                $singleShipCount++;
+                $shipsToShuffle[$shipOnLocation->getId()] = $shipOnLocation;
             } else {
                 $fleetIdEintrag = $fleetIds[$fleet->getId()] ?? null;
                 if ($fleetIdEintrag === null) {
-                    if ($fleet->getLeadShip()->getAlertState() == ShipAlertStateEnum::ALERT_RED) {
-                        $fleetCount++;
-                        $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
-                    }
+                    $fleetCount++;
+                    $shipsToShuffle[$fleet->getLeadShip()->getId()] = $fleet->getLeadShip();
                     $fleetIds[$fleet->getId()] = [];
                 }
             }

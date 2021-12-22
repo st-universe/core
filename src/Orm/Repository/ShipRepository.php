@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
+use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -139,6 +140,40 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sx' => $sx,
             'sy' => $sy,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+        ])->getResult();
+    }
+
+    public function getShipsForAlertRed(
+        ShipInterface $ship
+    ): iterable {
+
+        $isSystem = $ship->getSystem() !== null;
+
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT s FROM %s s
+                WHERE s.alvl = alertRed
+                AND s.user_id != :ignoreId 
+                AND NOT EXISTS (SELECT ss.id
+                                FROM %s ss
+                                WHERE s.id = ss.ships_id
+                                AND ss.system_type = :cloakSystemId
+                                AND ss.mode > 1)
+                AND NOT EXISTS (SELECT ss2.id
+                                FROM %s ss2
+                                WHERE s.id = ss2.ships_id
+                                AND ss2.system_type = :warpSystemId
+                                AND ss2.mode > 1)',
+                Ship::class,
+                ShipSystem::class,
+                ShipSystem::class
+            )
+        )->setParameters([
+            'alertRed' => ShipAlertStateEnum::ALERT_RED,
+            'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
+            'ignoreId' => $ship->getUser()->getId(),
+            'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
+            'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE
         ])->getResult();
     }
 
