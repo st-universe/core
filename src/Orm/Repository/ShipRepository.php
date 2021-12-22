@@ -153,9 +153,14 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
+<<<<<<< HEAD
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId 
                 AND s.%s = :mapId
+=======
+                WHERE s.alvl = alertRed
+                AND s.user_id != :ignoreId 
+>>>>>>> code optimization
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
                                 WHERE s.id = ss.ships_id
@@ -167,7 +172,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                 AND ss2.system_type = :warpSystemId
                                 AND ss2.mode > 1)',
                 Ship::class,
+<<<<<<< HEAD
                 $isSystem ? 'starsystem_map_id' : 'map_id',
+=======
+>>>>>>> code optimization
                 ShipSystem::class,
                 ShipSystem::class
             )
