@@ -291,6 +291,7 @@
 <metal:macro metal:define-macro="shipimagenameastitle">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
 <<<<<<< HEAD
+<<<<<<< HEAD
     tal:attributes="title bbcode2txt:ship/getName" />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title bbcode2txt:ship/getName" />
@@ -299,6 +300,11 @@
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title ship/getName" />
 >>>>>>> ship name as title in fleet status
+=======
+    tal:attributes="title bbcode2txt:ship/getName" />
+  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+    tal:attributes="title bbcode2txt:ship/getName" />
+>>>>>>> bugfix
 </metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
