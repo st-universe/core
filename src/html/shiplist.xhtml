@@ -11,7 +11,7 @@
 			</tr>
 		</table>
 		<tal:block tal:condition="SHIPS_AVAILABLE">
-			<metal:macro metal:use-macro="html/shipmacros.xhtml/initial_js" />
+			<script type="text/javascript" src="${THIS/getJavascriptPath}/js/ship.js">< !--stuniverse --></script>
 			<tal:block tal:repeat="fleet FLEETS">
 				<form action="ship.php" method="post">
 					<input type="hidden" name="fleetid" value="runtime" tal:attributes="value fleet/getId" />
