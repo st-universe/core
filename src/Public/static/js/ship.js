@@ -122,7 +122,7 @@ function openStarMap(obj, cx, cy) {
 }
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
-	var timer = setTimeout('openStorage(' + id + ')', 2000); //wait 2 seconds
+	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
 	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
 }
 function openStorage(id) {
