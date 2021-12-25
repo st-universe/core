@@ -265,8 +265,7 @@
 		<tal:block tal:condition="SHIP/hasUplink">
 			<tr>
 				<td colspan="2">
-					<a tal:condition="not:SHIP/getTachyonState"
-						href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+					<a href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('tachyon','buttons/uplink1')" onmouseout="cp('tachyon','buttons/uplink2')">
 						<img src="/assets/buttons/uplink2.png" name="uplink" />
 						Uplink aktivieren
