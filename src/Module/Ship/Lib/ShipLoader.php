@@ -195,6 +195,7 @@ final class ShipLoader implements ShipLoaderInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
 =======
     private function acquireSemaphoreWithoutMain(int $shipId): ShipInterface
@@ -211,6 +212,9 @@ final class ShipLoader implements ShipLoaderInterface
 =======
     private function acquireSemaphoresWithoutMain(int $shipId): ShipInterface
 >>>>>>> code optimization
+=======
+    private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
+>>>>>>> bugfix
     {
         $ship = $this->shipRepository->find($shipId);
 
