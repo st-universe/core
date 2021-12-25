@@ -50,7 +50,7 @@ final class ShipLoader implements ShipLoaderInterface
         return $shipArray;
     }
 
-    private function checkviolations(ShipInterface $ship, int $userId, bool $allowUplink): void
+    private function checkviolations(?ShipInterface $ship, int $userId, bool $allowUplink): void
     {
         if ($ship === null) {
             throw new ShipDoesNotExistException();
