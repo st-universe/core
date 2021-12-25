@@ -96,9 +96,13 @@ final class ShipLoader implements ShipLoaderInterface
         return $result;
     }
 
-    private function acquireSemaphoresWithoutMain(int $shipId): ShipInterface
+    private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
     {
         $ship = $this->shipRepository->find($shipId);
+
+        if ($ship === null) {
+            return null;
+        }
 
         //fleet or ship semas
         if ($ship->getFleet() !== null) {
