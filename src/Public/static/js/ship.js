@@ -132,6 +132,7 @@ function openStorageInit(obj, id) {
 	closeAjaxWindow();
 	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
 <<<<<<< HEAD
+<<<<<<< HEAD
 	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
 }
 function openStorage(id) {
@@ -175,6 +176,8 @@ function openStorageInit(obj, id) {
 >>>>>>> 2 second interval
 	closeAjaxWindow();
 	var timer = setTimeout('openStorage(' + id + ')', 2000); //wait 2 seconds
+=======
+>>>>>>> 1 second
 	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
 }
 function openStorage(id) {
