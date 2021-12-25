@@ -287,6 +287,12 @@
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title ship/getRumpName" />
 </metal:macro>
+<metal:macro metal:define-macro="shipimagenameastitle">
+  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
+    tal:attributes="title ship/getName" />
+  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+    tal:attributes="title ship/getName" />
+</metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
 </metal:macro>
