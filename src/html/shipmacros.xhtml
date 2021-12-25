@@ -187,7 +187,7 @@
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
+      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
         onmouseout="closeStorage();">
         <metal:macro metal:use-macro="shipimage" />
       </a>
