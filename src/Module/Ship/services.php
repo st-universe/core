@@ -170,6 +170,7 @@ use Stu\Module\Ship\View\ShowSectorScan\ShowSectorScan;
 use Stu\Module\Ship\View\ShowSelfDestruct\ShowSelfDestruct;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\View\ShowShipDetails\ShowShipDetails;
+use Stu\Module\Ship\View\ShowShipStorage\ShowShipStorage;
 use Stu\Module\Ship\View\ShowTorpedoTransfer\ShowTorpedoTransfer;
 use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Ship\View\ShowTradeMenuPayment\ShowTradeMenuPayment;
@@ -318,6 +319,7 @@ return [
         ShowColonyScan::VIEW_IDENTIFIER => autowire(ShowColonyScan::class),
         ShowSectorScan::VIEW_IDENTIFIER => autowire(ShowSectorScan::class),
         ShowShipDetails::VIEW_IDENTIFIER => autowire(ShowShipDetails::class),
+        ShowShipStorage::VIEW_IDENTIFIER => autowire(ShowShipStorage::class),
         ShowTroopTransfer::VIEW_IDENTIFIER => autowire(ShowTroopTransfer::class),
         ShowTorpedoTransfer::VIEW_IDENTIFIER => autowire(ShowTorpedoTransfer::class),
         ShowTradeMenu::VIEW_IDENTIFIER => autowire(ShowTradeMenu::class),
