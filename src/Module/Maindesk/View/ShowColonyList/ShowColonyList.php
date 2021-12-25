@@ -7,6 +7,7 @@ namespace Stu\Module\Maindesk\View\ShowColonyList;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
 final class ShowColonyList implements ViewControllerInterface
@@ -24,9 +25,10 @@ final class ShowColonyList implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
+        $active = $user->getActive();
 
-        if ((int)$user->getActive() !== 1) {
-            throw new AccessViolation();
+        if ($active !== PlayerEnum::USER_ACTIVE) {
+            throw new AccessViolation(sprintf(_('User is not active, but tried to enter colony list. Fool: %d, Active: %d', $user->getId(), $active)));
         }
         $game->setTemplateFile("html/maindesk_colonylist.xhtml");
         $game->setPageTitle("Kolonie gründen");
