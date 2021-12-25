@@ -123,6 +123,7 @@ function openStarMap(obj, cx, cy) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
 	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
@@ -141,7 +142,14 @@ function openStorage(obj, id) {
 >>>>>>> show ship storage
 =======
 function openStorage(id) {
+=======
+function openStorageInit(obj, id) {
+>>>>>>> 2 second interval
 	closeAjaxWindow();
+	var timer = setTimeout('openStorage(' + id + ')', 2000); //wait 2 seconds
+	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
+}
+function openStorage(id) {
 	openPJsWin('elt', 1);
 >>>>>>> layout
 	ajax_update('elt', 'ship.php?SHOW_SHIPSTORAGE=1&id=' + id);
