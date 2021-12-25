@@ -262,6 +262,18 @@
 				</td>
 			</tr>
 		</tal:block>
+		<tal:block tal:condition="SHIP/hasUplink">
+			<tr>
+				<td colspan="2">
+					<a tal:condition="not:SHIP/getTachyonState"
+						href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
+						onmouseover="cp('tachyon','buttons/uplink1')" onmouseout="cp('tachyon','buttons/uplink2')">
+						<img src="/assets/buttons/uplink2.png" name="uplink" />
+						Uplink aktivieren
+					</a>
+				</td>
+			</tr>
+		</tal:block>
 		<tal:block tal:condition="php: SHIP.hasShuttleRamp() AND SHIP.getStoredShuttles() ">
 			<tr tal:define="defaultId php:current(SHIP.getStoredShuttles()).getId()">
 				<td>

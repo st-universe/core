@@ -39,6 +39,7 @@ use Stu\Module\Ship\Action\ActivatePhaser\ActivatePhaser;
 use Stu\Module\Ship\Action\ActivateShields\ActivateShields;
 use Stu\Module\Ship\Action\ActivateTorpedo\ActivateTorpedo;
 use Stu\Module\Ship\Action\ActivateTractorBeam\ActivateTractorBeam;
+use Stu\Module\Ship\Action\ActivateUplink\ActivateUplink;
 use Stu\Module\Ship\Action\ActivateWarp\ActivateWarp;
 use Stu\Module\Ship\Action\AstroMapping\PlanAstroMapping;
 use Stu\Module\Ship\Action\AstroMapping\StartAstroMapping;
@@ -217,6 +218,7 @@ return [
         ActivateCloak::ACTION_IDENTIFIER => autowire(ActivateCloak::class),
         ActivateSubspace::ACTION_IDENTIFIER => autowire(ActivateSubspace::class),
         ActivateTachyon::ACTION_IDENTIFIER => autowire(ActivateTachyon::class),
+        ActivateUplink::ACTION_IDENTIFIER => autowire(ActivateUplink::class),
         DeactivateCloak::ACTION_IDENTIFIER => autowire(DeactivateCloak::class),
         DeactivateSubspace::ACTION_IDENTIFIER => autowire(DeactivateSubspace::class),
         DeactivateTachyon::ACTION_IDENTIFIER => autowire(DeactivateTachyon::class),
