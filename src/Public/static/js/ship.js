@@ -125,6 +125,7 @@ function openStarMap(obj, cx, cy) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
 	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
@@ -158,6 +159,9 @@ function openStorage(id) {
 >>>>>>> layout
 =======
 function openStorage(id) {
+=======
+function openStorage(obj, id) {
+>>>>>>> bugfix
 	closeAjaxWindow();
 	var pos = findObject(obj);
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
