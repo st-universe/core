@@ -120,8 +120,12 @@ function openStarMap(obj, cx, cy) {
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
 	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy);
 }
-function openStorage(id) {
+function openStorageInit(obj, id) {
 	closeAjaxWindow();
+	var timer = setTimeout('openStorage(' + id + ')', 2000); //wait 2 seconds
+	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
+}
+function openStorage(id) {
 	openPJsWin('elt', 1);
 	ajax_update('elt', 'ship.php?SHOW_SHIPSTORAGE=1&id=' + id);
 }
