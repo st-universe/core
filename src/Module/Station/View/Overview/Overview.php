@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Station\View\Overview;
 
-use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
