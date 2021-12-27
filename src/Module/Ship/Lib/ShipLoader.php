@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\SemaphoreEnum;
+use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Exception\AccessViolation;
 use Stu\Exception\ShipDoesNotExistException;
 use Stu\Exception\ShipIsDestroyedException;
@@ -58,7 +59,10 @@ final class ShipLoader implements ShipLoaderInterface
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
-                    throw new UnallowedUplinkOperation();
+                    throw new UnallowedUplinkOperation(_('This Operation is not allowed via uplink!'));
+                }
+                if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_UPLINK)) {
+                    throw new UnallowedUplinkOperation(_('Uplink is not activated!'));
                 }
             } else {
                 throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
