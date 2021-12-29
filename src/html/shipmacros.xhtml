@@ -901,61 +901,63 @@
 </metal:block>
 <metal:block metal:define-macro="show_ship_scan">
   <metal:block tal:condition="THIS/getInformation" metal:use-macro="html/sitemacros.xhtml/systeminformation" />
-  <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
-    <tr>
-      <th colspan="2">Details</th>
-    </tr>
-    <tr>
-      <td>Lebenszeichen</td>
-      <td>${targetShip/getCrewCount}</td>
-    </tr>
-    <tr>
-      <td>Alarmstufe</td>
-      <td style="text-align: center;">
-        <img src="assets/buttons/alert${targetShip/getAlertState}_1.png" title="Alarmstufe" />
-      </td>
-    </tr>
-    <tr>
-      <td>Energie</td>
-      <td>${targetShip/getEps}</td>
-    </tr>
-    <tr tal:condition="targetShip/getBuildplan">
-      <td>verbaute Module</td>
-      <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
-          src="assets/goods/${mod/getGoodId}.png" /></td>
-    </tr>
-  </table>
-  <br />
-  <form action="ship.php" method="post">
-    <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+  <tal:block tal:condition="exists:SHIP">
+    <table class="tcal" tal:condition="php:SHIP.isMatrixScannerHealthy() AND NOT SHIP.getCloakState()">
+      <tr>
+        <th colspan="2">Details</th>
+      </tr>
+      <tr>
+        <td>Lebenszeichen</td>
+        <td>${targetShip/getCrewCount}</td>
+      </tr>
+      <tr>
+        <td>Alarmstufe</td>
+        <td style="text-align: center;">
+          <img src="assets/buttons/alert${targetShip/getAlertState}_1.png" title="Alarmstufe" />
+        </td>
+      </tr>
+      <tr>
+        <td>Energie</td>
+        <td>${targetShip/getEps}</td>
+      </tr>
+      <tr tal:condition="targetShip/getBuildplan">
+        <td>verbaute Module</td>
+        <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
+            src="assets/goods/${mod/getGoodId}.png" /></td>
+      </tr>
+    </table>
     <br />
-    <table class="tcal" tal:condition="not:targetShip/getRump/isTrumfield">
-      <tr>
-        <th>Systemzustand</th>
-      </tr>
-      <tr>
-        <td style="width: 450px;">
-          <div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
-            <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
-            ${data/getStatus}%
-          </div>
-        </td>
-      </tr>
-    </table>
-    <table class="tcal" tal:condition="targetShip/hasEscapePods">
-      <tr>
-        <th>Rettungskapseln</th>
-      </tr>
-      <tr>
-        <td style="width: 450px;">
-          <span>Es befinden sich <span tal:replace="targetShip/getCrewCount" /> Crewman in den
-            Rettungskapseln</span><br /><br />
-          <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
-          <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
-        </td>
-      </tr>
-    </table>
-  </form>
+    <form action="ship.php" method="post">
+      <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
+      <br />
+      <table class="tcal" tal:condition="not:targetShip/getRump/isTrumfield">
+        <tr>
+          <th>Systemzustand</th>
+        </tr>
+        <tr>
+          <td style="width: 450px;">
+            <div style="float: left; width: 150px;" tal:repeat="data targetShip/getSystems">
+              <img title="${data/getName}" class="${data/getCssClass}" src="assets/system/${data/getSystemType}.png" />
+              ${data/getStatus}%
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="tcal" tal:condition="targetShip/hasEscapePods">
+        <tr>
+          <th>Rettungskapseln</th>
+        </tr>
+        <tr>
+          <td style="width: 450px;">
+            <span>Es befinden sich <span tal:replace="targetShip/getCrewCount" /> Crewman in den
+              Rettungskapseln</span><br /><br />
+            <input type="hidden" name="target" tal:attributes="value targetShip/getId" />
+            <input type="submit" style="cursor: pointer;" name="B_SALVAGE_EPODS" value="Rettungskapseln bergen" />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </tal:block>
 </metal:block>
 <metal:macro metal:define-macro="crewslot">
   <div id="rn_crew_${CREW/getId}" tal:condition="not:php: CREW.getUser().getId() EQ SHIP.getUser().getId()">

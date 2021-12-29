@@ -26,7 +26,12 @@ final class DeleteNotes implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $delnotes = explode(',', request::postStringFatal('delnotes'));
+        $delnotesString = request::postStringFatal('delnotes');
+
+        if (!$delnotesString) {
+            return;
+        }
+        $delnotes = explode(',', $delnotesString);
 
         foreach ($delnotes as $noteId) {
 
