@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\ModuleQueueInterface;
 
+/**
+ * @method ModuleQueueInterface[] findAll()
+ */
 interface ModuleQueueRepositoryInterface extends ObjectRepository
 {
     /**
