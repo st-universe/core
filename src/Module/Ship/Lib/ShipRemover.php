@@ -172,7 +172,7 @@ final class ShipRemover implements ShipRemoverInterface
 
     public function remove(ShipInterface $ship): void
     {
-        if ($ship->isFleetLeader()) {
+        if ($ship->isFleetLeader() && $ship->getFleet() !== null) {
             $this->changeFleetLeader($ship);
         }
 
