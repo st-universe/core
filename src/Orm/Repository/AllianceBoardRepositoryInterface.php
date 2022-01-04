@@ -5,6 +5,9 @@ namespace Stu\Orm\Repository;
 use Doctrine\Persistence\ObjectRepository;
 use Stu\Orm\Entity\AllianceBoardInterface;
 
+/**
+ * @method null|AllianceBoardInterface find(integer $id)
+ */
 interface AllianceBoardRepositoryInterface extends ObjectRepository
 {
     public function prototype(): AllianceBoardInterface;
