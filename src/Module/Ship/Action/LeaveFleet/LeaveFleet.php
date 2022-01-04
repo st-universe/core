@@ -34,6 +34,7 @@ final class LeaveFleet implements ActionControllerInterface
         if ($ship->isFleetLeader()) {
             return;
         }
+        $ship->getFleet()->getShips()->removeElement($ship);
         $ship->setFleet(null);
 
         $this->shipLoader->save($ship);
