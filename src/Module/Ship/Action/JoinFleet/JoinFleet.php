@@ -52,6 +52,12 @@ final class JoinFleet implements ActionControllerInterface
         if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
+        if ($ship->traktorBeamToShip()) {
+            $game->addInformation(
+                _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
+            );
+            return;
+        }
         if ($fleet->getCrewSum() + $ship->getBuildplan()->getCrew() > GameEnum::CREW_PER_FLEET) {
             $game->addInformation(sprintf(
                 _('Es sind maximal %d Crew pro Flotte möglich'),
