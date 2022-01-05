@@ -466,6 +466,10 @@ final class PlanetGenerator implements PlanetGeneratorInterface
             throw new Exception('Error loading planetgenerator description file for id ' . $id);
         }
 
+        if (is_int($requireResult)) {
+            throw new Exception('Error loading planetgenerator description file for id ' . $id);
+        }
+
         return $requireResult;
     }
 
