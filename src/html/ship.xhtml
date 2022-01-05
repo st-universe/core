@@ -93,12 +93,17 @@
 >>>>>>> shields on station scan
 =======
 								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/planets/s1.png"
-										style="position: relative; top: 0; left: 0; z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+									<img src="assets/planets/s1.png" class="lssColoShield"
+										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
+<<<<<<< HEAD
 										src="assets/subspace/generated/${code}.png"
 										style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 >>>>>>> layout fix
+=======
+										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
+										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+>>>>>>> shields on station scan
 								</tal:block>
 								<tal:block tal:condition="not:entry/getShieldState">
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
@@ -165,12 +170,17 @@
 >>>>>>> shields on station scan
 =======
 								<tal:block tal:condition="entry/getShieldState">
-									<img tal:condition="entry/getShieldState" src="assets/planets/s1.png"
-										style="position: relative; top: 0; left: 0; z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+									<img src="assets/planets/s1.png" class="lssColoShield"
+										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
+<<<<<<< HEAD
 										src="assets/subspace/generated/${code}.png"
 										style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 >>>>>>> layout fix
+=======
+										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
+										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+>>>>>>> shields on station scan
 								</tal:block>
 								<tal:block tal:condition="not:entry/getShieldState">
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
