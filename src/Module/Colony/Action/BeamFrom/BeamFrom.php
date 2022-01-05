@@ -69,12 +69,18 @@ final class BeamFrom implements ActionControllerInterface
             return;
         }
 
-        if ($target->getShieldState() && $target->getUserId() != $userId) {
+        if (
+            $target->getShieldState()
+            && $target->getUser()->getId() != $userId
+        ) {
             $game->addInformationf(_('Die %s hat die Schilde aktiviert'), $target->getName());
             return;
         }
-        if ($target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)) {
-            $game->addInformation(sprintf(_('Die %s hat einen Beamblocker aktiviert. Zum Warentausch andocken.'), $target->getName()));
+        if (
+            $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_BEAM_BLOCKER)
+            && $target->getUser()->getId() != $userId
+        ) {
+            $game->addInformation(sprintf(_('Die %s hat einen Beamblocker aktiviert. Transfer nicht möglich.'), $target->getName()));
             return;
         }
         if (!$colony->storagePlaceLeft()) {
