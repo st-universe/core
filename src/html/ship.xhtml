@@ -68,6 +68,7 @@
 						<tal:block tal:condition="entry/isClickable">
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
+<<<<<<< HEAD
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
@@ -80,6 +81,13 @@
 										src="assets/subspace/generated/${code}.png"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								</tal:block>
+=======
+								<img tal:condition="entry/getShieldState" src="assets/planets/s1.png"
+									style="position: relative; top: 0; left: 0; z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+								<img tal:condition="php:SHIP.getSubspaceState() AND code"
+									src="assets/subspace/generated/${code}.png"
+									style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+>>>>>>> planet shield in LSS
 								<div style="font-size: ${viewportFont}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
 								</div>
@@ -87,6 +95,7 @@
 						</tal:block>
 						<tal:block tal:condition="not:entry/isClickable">
 							<div class="imgOverlayText">
+<<<<<<< HEAD
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
@@ -99,6 +108,13 @@
 										src="assets/subspace/generated/${code}.png"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								</tal:block>
+=======
+								<img tal:condition="entry/getShieldState" src="assets/planets/s1.png"
+									style="position: relative; top: 0; left: 0; z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+								<img tal:condition="php:SHIP.getSubspaceState() AND code"
+									src="assets/subspace/generated/${code}.png"
+									style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
+>>>>>>> planet shield in LSS
 								<div style="font-size: ${viewportFont}vw;" class="centered"
 									tal:content="entry/getDisplayCount">.
 								</div>
