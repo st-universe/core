@@ -31,6 +31,6 @@ final class DeleteAccount implements ActionControllerInterface
 
     public function performSessionCheck(): bool
     {
-        return false;
+        return true;
     }
 }

@@ -232,6 +232,7 @@
                 </form>
                 <br />
                 <form action="options.php" method="post">
+                        <input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
                         <input type="hidden" name="B_DELETE_ACCOUNT" value="1" />
                         <table class="tcal">
                                 <tr>
