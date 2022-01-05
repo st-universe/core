@@ -144,10 +144,6 @@ class VisualNavPanel
                 $entry->setCSSClass('th');
                 $rows[$y]->addEntry($entry);
             }
-            if ($this->user->getId() === 126 && $data['posx'] == 19 && $data['posy'] == 14) {
-                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-                $this->loggerUtil->log(print_r($data, true));
-            }
             $entry = new VisualNavPanelEntry(
                 $data,
                 $this->isTachyonSystemActive,
