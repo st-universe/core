@@ -1565,8 +1565,12 @@ class Ship implements ShipInterface
         $maxHull = $this->getMaxHuell();
 
         if ($hull < $maxHull) {
+<<<<<<< HEAD
             $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
             $neededSpareParts += ((int)($this->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
+=======
+            $neededSpareParts += (int)(($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
+>>>>>>> show needes spare parts on colonies
         }
 
         $damagedSystems = $this->getDamagedSystems();
