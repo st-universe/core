@@ -4,14 +4,15 @@
 		<metal:macro metal:use-macro="html/colonymacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
 		<form action="colony.php" method="post" name="colmanform">
-			<input type="hidden" name="id" tal:attributes="value COLONY/getId" />	
-			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />	
+			<input type="hidden" name="id" tal:attributes="value COLONY/getId" />
+			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<input type="hidden" name="SHOW_SHIP_REPAIR" value="1" />
 			<table class="tcal">
 				<tr>
 					<th>Klasse</th>
 					<th>Name</th>
 					<th>Dauer in Ticks</th>
+					<th>Insgesamt benötigte Teile</th>
 					<th></th>
 				</tr>
 				<tal:block tal:repeat="ship REPAIRABLE_SHIP_LIST">
@@ -23,8 +24,18 @@
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
 						<td tal:content="structure bbcode:ship/getRepairDuration">DURATION</td>
 						<td>
+							<table class="tcal">
+								<tr tal:repeat="cost ship/getRepairCosts">
+									<td tal:content="cost/getAmount"></td>
+									<td><img src="assets/goods/${cost/getCommodityId}.png"
+											tal:attributes="title cost/getCommodityName" /></td>
+								</tr>
+							</table>
+						</td>
+						<td>
 							<div tal:condition="ship/canBeRepaired">
-								<a href="?id=${COLONY/getId}&B_REPAIR_SHIP=1&ship_id=${ship/getId}&fid=${FIELD/getFieldId}">Reparieren</a>
+								<a
+									href="?id=${COLONY/getId}&B_REPAIR_SHIP=1&ship_id=${ship/getId}&fid=${FIELD/getFieldId}">Reparieren</a>
 							</div>
 						</td>
 					</tr>
@@ -34,4 +45,5 @@
 		</form>
 	</metal:macro>
 </metal:macro>
+
 </html>
