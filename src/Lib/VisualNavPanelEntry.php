@@ -63,7 +63,7 @@ class VisualNavPanelEntry
 
     function getShieldState()
     {
-        return $this->data['shieldState'];
+        return $this->data['shieldstate'];
     }
 
     function hasShips()
