@@ -439,6 +439,19 @@ div.lssobj {
     transform: translate(-50%, -50%);
 }
 
+.lssColoShield {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+}
+
+.lssSubspaceOverShield {
+    position: absolute;
+    top: 0;
+    left: 0; 
+}
+
 .activeshield {
     color: #00b3c8;
 }
