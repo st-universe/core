@@ -6,6 +6,7 @@ namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Stu\Component\Ship\RepairTaskEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
@@ -20,8 +21,10 @@ use Stu\Component\Ship\System\Type\TroopQuartersShipSystem;
 use Stu\Component\Station\StationUtility;
 use Stu\Module\Ship\Lib\PositionChecker;
 use Stu\Module\Colony\Lib\ColonyLibFactoryInterface;
+use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Ship\Lib\ShipRepairCost;
 use Stu\Module\Starmap\View\Overview\Overview;
 use Stu\Module\Tal\StatusBarColorEnum;
 use Stu\Module\Tal\TalStatusBar;
@@ -1551,6 +1554,44 @@ class Ship implements ShipInterface
         $ticks = max($ticks, (int) ceil(count($this->getDamagedSystems()) / 2));
 
         return $ticks;
+    }
+
+    public function getRepairCosts(): array
+    {
+        $neededSpareParts = 0;
+        $neededSystemComponents = 0;
+
+        $hull = $this->getHuell();
+        $maxHull = $this->getMaxHuell();
+
+        if ($hull < $maxHull) {
+            $neededSpareParts += (int)(($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
+        }
+
+        $damagedSystems = $this->getDamagedSystems();
+        foreach ($damagedSystems as $system) {
+            $systemLvl = $this->determinSystemLevel($system);
+            $healingPercentage = (100 - $system->getStatus()) / 100;
+
+            $neededSpareParts += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SPARE_PARTS_ONLY]);
+            $neededSystemComponents += (int)ceil($healingPercentage * RepairTaskEnum::SHIPYARD_PARTS_USAGE[$systemLvl][RepairTaskEnum::SYSTEM_COMPONENTS_ONLY]);
+        }
+
+        return [
+            new ShipRepairCost($neededSpareParts, CommodityTypeEnum::GOOD_SPARE_PART, CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SPARE_PART)),
+            new ShipRepairCost($neededSystemComponents, CommodityTypeEnum::GOOD_SYSTEM_COMPONENT, CommodityTypeEnum::getDescription(CommodityTypeEnum::GOOD_SYSTEM_COMPONENT))
+        ];
+    }
+
+    private function determinSystemLevel(ShipSystemInterface $system): int
+    {
+        $module = $system->getModule();
+
+        if ($module !== null) {
+            return $module->getLevel();
+        } else {
+            return $system->getShip()->getRump()->getModuleLevel();
+        }
     }
 
     public function cancelRepair(): bool

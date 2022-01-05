@@ -381,7 +381,7 @@ final class ShipTickManager implements ShipTickManagerInterface
             return false;
         }
 
-        $neededParts = $this->determineSparePartsOnEntity($ship);
+        $neededParts = $this->determineSpareParts($ship);
 
         // parts stored?
         if (!$this->enoughSparePartsOnEntity($neededParts, $entity, $isColony, $ship)) {
@@ -473,7 +473,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         return $repairFinished;
     }
 
-    private function determineSparePartsOnEntity(ShipInterface $ship): array
+    private function determineSpareParts(ShipInterface $ship): array
     {
         $neededSpareParts = 0;
         $neededSystemComponents = 0;
