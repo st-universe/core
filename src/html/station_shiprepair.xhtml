@@ -12,6 +12,7 @@
 					<th>Klasse</th>
 					<th>Name</th>
 					<th>Dauer in Ticks</th>
+					<th>Insgesamt benötigte Teile</th>
 					<th></th>
 				</tr>
 				<tal:block tal:repeat="ship REPAIRABLE_SHIP_LIST">
@@ -22,6 +23,15 @@
 						</td>
 						<td tal:content="structure bbcode:ship/getName">NAME</td>
 						<td tal:content="structure bbcode:ship/getRepairDuration">DURATION</td>
+						<td>
+							<table class="tcal">
+								<tr tal:repeat="cost ship/getRepairCosts">
+									<td tal:content="cost/getAmount"></td>
+									<td><img src="assets/goods/${cost/getCommodityId}.png"
+											tal:attributes="title cost/getCommodityName" /></td>
+								</tr>
+							</table>
+						</td>
 						<td>
 							<div tal:condition="ship/canBeRepaired">
 								<a href="?id=${STATION/getId}&B_REPAIR_SHIP=1&ship_id=${ship/getId}">Reparieren</a>
