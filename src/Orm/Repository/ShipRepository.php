@@ -6,6 +6,7 @@ namespace Stu\Orm\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -418,6 +419,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('posy', 'posy', 'integer');
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
+        $rsm->addScalarResult('shieldState', 'shieldState', 'boolean');
         $rsm->addScalarResult('type', 'type', 'integer');
 
         if ($doSubspace) {
@@ -445,7 +447,17 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                         FROM stu_ships_systems ss2
                                         WHERE c.id = ss2.ships_id
                                         AND ss2.system_type = :systemId
-                                        AND ss2.mode > 1)) as cloakcount
+                                        AND ss2.mode > 1)) as cloakcount,
+                (SELECT COUNT(cfd) > 0
+                    FROM stu_colonies col
+                    JOIN stu_colonies_fielddata cfd
+                    ON col.id = cfd.colonies_id
+                    WHERE a.id = col.starsystem_map_id
+                    AND cfd.aktiv = :active
+                    AND cfd.buildings_id IN (
+                        SELECT bf.buildings_id
+                        FROM stu_buildings_functions bf
+                        WHERE bf.function = :shieldBuilding)) as shieldState
                 %s
                 FROM stu_sys_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
@@ -460,7 +472,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'sxEnd' => $system ? $system->getMaxX() : $map->getSx() + $sensorRange,
             'syStart' => $system ? 1 : $map->getSy() - $sensorRange,
             'syEnd' => $system ? $system->getMaxY() : $map->getSy() + $sensorRange,
-            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+            'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
+            'active' => 1,
+            'shieldBuilding' => BuildingEnum::BUILDING_FUNCTION_SHIELD_GENERATOR
         ])->getResult();
     }
 

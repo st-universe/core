@@ -61,6 +61,11 @@ class VisualNavPanelEntry
         return $this->data['cloakcount'] > 0;
     }
 
+    function getShieldState()
+    {
+        return $this->data['shieldState'];
+    }
+
     function hasShips()
     {
         return $this->data['shipcount'] > 0;
