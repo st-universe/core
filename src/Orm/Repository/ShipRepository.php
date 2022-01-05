@@ -419,7 +419,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('posy', 'posy', 'integer');
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
-        $rsm->addScalarResult('shieldState', 'shieldState', 'boolean');
+        $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
         $rsm->addScalarResult('type', 'type', 'integer');
 
         if ($doSubspace) {
@@ -457,7 +457,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     AND cfd.buildings_id IN (
                         SELECT bf.buildings_id
                         FROM stu_buildings_functions bf
-                        WHERE bf.function = :shieldBuilding)) as shieldState
+                        WHERE bf.function = :shieldBuilding)) as shieldstate
                 %s
                 FROM stu_sys_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
