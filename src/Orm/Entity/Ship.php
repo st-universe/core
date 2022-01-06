@@ -1565,7 +1565,8 @@ class Ship implements ShipInterface
         $maxHull = $this->getMaxHuell();
 
         if ($hull < $maxHull) {
-            $neededSpareParts += (int)(($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
+            $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
+            $neededSpareParts += ((int)($this->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
         }
 
         $damagedSystems = $this->getDamagedSystems();
