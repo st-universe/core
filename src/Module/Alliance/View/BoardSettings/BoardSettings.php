@@ -47,5 +47,6 @@ final class BoardSettings implements ViewControllerInterface
         $game->setMacro('html/alliancemacros.xhtml/board_settings');
         $this->loggerUtil->log(sprintf('boardname: %s', $board->getName()));
         $game->setTemplateVar('BOARD', $board);
+        $game->setTemplateVar('BOARD_ID', $board->getId());
     }
 }
