@@ -31,7 +31,7 @@ class request
     {
         if (!@array_key_exists($var, $method)) {
             if ($fatal === true) {
-                new InvalidParamException($var);
+                throw new InvalidParamException($var);
             }
             return false;
         }
@@ -141,5 +141,4 @@ class request
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
             && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
-
 }
