@@ -36,12 +36,12 @@
 </metal:block>
 <metal:block metal:define-macro="board_settings">
 	<form action="alliance.php" method="post">
-		<input type="hidden" name="bid" value="runtime" tal:attributes="value BOARD_ID" />
+		<input type="hidden" name="bid" value="runtime" tal:attributes="value BOARD/getId" />
 		<table class="use" style="width: 200px">
 			<tr>
 				<td>
-					<a href="?B_DELETE_BOARD=1&bid=${BOARD_ID}&sstr=${THIS/getSessionString}" class="linkbutton">Forum
-						löschen</a>
+					<a href="?B_DELETE_BOARD=1&bid=${BOARD/getId}&sstr=${THIS/getSessionString}"
+						class="linkbutton">Forum löschen</a>
 					<br />
 					<br />
 					<br />
