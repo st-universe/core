@@ -152,10 +152,12 @@ final class ShowShip implements ViewControllerInterface
             $starsystem = $this->databaseCategoryTalFactory->createDatabaseCategoryEntryTal($ship->getSystem()->getDatabaseEntry(), $user);
         }
 
+        $isBase = $ship->isBase();
         $game->appendNavigationPart(
-            'ship.php',
-            _('Schiffe')
+            $isBase ? 'station.php' : 'ship.php',
+            $isBase ? _('Stationen') : _('Schiffe')
         );
+
         $game->appendNavigationPart(
             sprintf('?%s=1&id=%d', static::VIEW_IDENTIFIER, $shipId),
             $ship->getName()
