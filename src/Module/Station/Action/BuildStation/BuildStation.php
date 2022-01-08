@@ -6,6 +6,7 @@ namespace Stu\Module\Station\Action\BuildStation;
 
 use request;
 use Stu\Component\Ship\ShipModuleTypeEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
@@ -176,6 +177,7 @@ final class BuildStation implements ActionControllerInterface
         $ship->setMaxHuell($rump->getBaseHull());
         $ship->setRump($rump);
         $ship->setBuildplan($plan);
+        $ship->setState(ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION);
 
         $this->shipRepository->save($ship);
 

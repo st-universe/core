@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipModuleTypeEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperComputer;
@@ -89,6 +89,7 @@ final class ShipCreator implements ShipCreatorInterface
         $ship->setUser($this->userRepository->find($userId));
         $ship->setBuildplan($this->shipBuildplanRepository->find($shipBuildplanId));
         $ship->setRump($this->shipRumpRepository->find($shipRumpId));
+        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
         $moduleTypeList = [
             ShipModuleTypeEnum::MODULE_TYPE_HULL => function (ShipInterface $ship): ModuleRumpWrapperInterface {
