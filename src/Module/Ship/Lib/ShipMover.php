@@ -820,7 +820,7 @@ final class ShipMover implements ShipMoverInterface
         $signature = $this->flightSignatureRepository->prototype();
 
         $signature->setUser($ship->getUser());
-        $signature->setShip($ship);
+        $signature->setShipId($ship->getId());
         $signature->setShipName($ship->getName());
         $signature->setRump($ship->getRump());
         $signature->setIsCloaked($ship->getCloakState());
