@@ -54,9 +54,9 @@ final class AllianceDeletionHandler implements PlayerDeletionHandlerInteface
                         AllianceEnum::ALLIANCE_JOBS_FOUNDER
                     );
                 }
+            } else {
+                $this->allianceJobRepository->delete($job);
             }
-
-            $this->allianceJobRepository->delete($job);
         }
     }
 }
