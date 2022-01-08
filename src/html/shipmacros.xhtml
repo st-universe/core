@@ -1103,10 +1103,14 @@
       <tal:block tal:condition="SHIP/canMove">
         <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
       </tal:block>
-      <span>Beam-Faktor</span>: ${SHIP/getRump/getBeamFactor}<br />
+      <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
       <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
+      <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
       <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
       <span>Torpedosalven</span>: ${SHIP/getRump/getTorpedoVolleys}<br />
+      <tal:block tal:condition="SHIP/getTorpedo">
+        <span>Torpedobasisschaden</span>: ${SHIP/getTorpedo/getBaseDamage}<br />
+      </tal:block>
       <span>Torpedokapazität</span>: ${SHIP/getMaxTorpedos}<br />
       <tal:block tal:condition="SHIP/isBase">
         <span>Dockplätze</span>: ${SHIP/getRump/getDockingSlots}<br />
