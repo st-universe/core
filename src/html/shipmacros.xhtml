@@ -187,23 +187,7 @@
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
->>>>>>> show ship storage
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(this, ${ship/getId});"
->>>>>>> bugfix
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
->>>>>>> layout
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
->>>>>>> 2 second interval
         onmouseout="closeStorage();">
         <metal:macro metal:use-macro="shipimage" />
       </a>
@@ -306,21 +290,9 @@
 </metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
-<<<<<<< HEAD
-<<<<<<< HEAD
     tal:attributes="title bbcode2txt:ship/getName" />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title bbcode2txt:ship/getName" />
-=======
-    tal:attributes="title ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title ship/getName" />
->>>>>>> ship name as title in fleet status
-=======
-    tal:attributes="title bbcode2txt:ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title bbcode2txt:ship/getName" />
->>>>>>> bugfix
 </metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />
@@ -1119,7 +1091,7 @@
       </tr>
     </table>
   </div>
-  <div style="padding-left: 5px; float: left; width: 220px">
+  <div style="padding-left: 5px; float: left; width: 205px">
     <div class="divhead">Informationen</div>
     <div class="divbody">
       <span>Ersatzbatterie:</span> ${SHIP/getEBatt}<br />
@@ -1131,14 +1103,10 @@
       <tal:block tal:condition="SHIP/canMove">
         <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
       </tal:block>
-      <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
+      <span>Beam-Faktor</span>: ${SHIP/getRump/getBeamFactor}<br />
       <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
-      <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
       <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />
       <span>Torpedosalven</span>: ${SHIP/getRump/getTorpedoVolleys}<br />
-      <tal:block tal:condition="SHIP/getTorpedo">
-        <span>Torpedobasisschaden</span>: ${SHIP/getTorpedo/getBaseDamage}<br />
-      </tal:block>
       <span>Torpedokapazität</span>: ${SHIP/getMaxTorpedos}<br />
       <tal:block tal:condition="SHIP/isBase">
         <span>Dockplätze</span>: ${SHIP/getRump/getDockingSlots}<br />
@@ -1281,8 +1249,7 @@
             Um an diesem Posten Handel betreiben zu können ist eine Lizenz nötig. Die einmalige Gebühr dafür beträgt:
             <span tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span> <span
               tal:replace="TRADEPOST/getTradeLicenseCostsCommodity/getName">GOOD</span><br /><br />
-            Diese Gebühr kann entweder über ein bereits bestehendes Warenkonto an einem anderen Posten oder aus dem
-            Frachtraum des Schiffes beglichen werden.<br /><br />
+            Diese Gebühr kann aus dem Frachtraum des Schiffes beglichen werden.<br /><br />
             <input class="button" type="button" value="Bezahlmethode wählen"
               onclick="tradeMenuChoosePayment(${TRADEPOST/getId});" />
 
