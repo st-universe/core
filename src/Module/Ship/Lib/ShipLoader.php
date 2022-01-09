@@ -100,9 +100,6 @@ final class ShipLoader implements ShipLoaderInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
@@ -114,42 +111,31 @@ final class ShipLoader implements ShipLoaderInterface
             } else {
                 throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
 =======
-<<<<<<< HEAD
 =======
 >>>>>>> Revert "code optimization"
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         if ($ship->getUser()->getId() === $userId) {
             return $shipArray;
         }
 
         if ($this->hasCrewmanOfUser($ship, $userId)) {
 <<<<<<< HEAD
-<<<<<<< HEAD
 =======
 =======
 >>>>>>> code optimization
-=======
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         if (
             $ship->getUser()->getId() !== $userId
             && $this->hasCrewmanOfUser($ship, $userId)
         ) {
 <<<<<<< HEAD
-<<<<<<< HEAD
 >>>>>>> code optimization
 =======
 >>>>>>> Revert "code optimization"
 =======
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 >>>>>>> code optimization
             if (!$allowUplink) {
                 throw new UnallowedUplinkOperation();
 >>>>>>> Revert "code optimization"
 =======
-<<<<<<< HEAD
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
@@ -162,8 +148,6 @@ final class ShipLoader implements ShipLoaderInterface
                 throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
 >>>>>>> bugfix
 =======
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         if ($ship->getUser()->getId() !== $userId) {
             if ($this->hasCrewmanOfUser($ship, $userId)) {
                 if (!$allowUplink) {
@@ -215,7 +199,6 @@ final class ShipLoader implements ShipLoaderInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
     private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
 =======
     private function acquireSemaphoreWithoutMain(int $shipId): ShipInterface
@@ -226,9 +209,6 @@ final class ShipLoader implements ShipLoaderInterface
 =======
     private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
 >>>>>>> bugfix
-=======
-    private function acquireSemaphoresWithoutMain(int $shipId): ?ShipInterface
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 =======
     private function acquireSemaphoreWithoutMain(int $shipId): ShipInterface
 >>>>>>> Revert "code optimization"

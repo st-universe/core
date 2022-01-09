@@ -180,9 +180,6 @@ final class LeaveStarSystem implements ActionControllerInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
 =======
         $this->loggerUtil->log('newDirection: %d', $ship->getFlightDirection());
@@ -190,15 +187,12 @@ final class LeaveStarSystem implements ActionControllerInterface
 =======
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
 >>>>>>> bugfix
-<<<<<<< HEAD
 =======
         $this->loggerUtil->log('newDirection: %d', $ship->getFlightDirection());
 >>>>>>> leaving star system changes direction based on location
 =======
         $this->loggerUtil->log(sprintf('newDirection: %d', $ship->getFlightDirection()));
 >>>>>>> bugfix
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 
         if ($ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE)) {
             $this->shipSystemManager->deactivate($ship, ShipSystemTypeEnum::SYSTEM_IMPULSEDRIVE, true);
@@ -225,9 +219,6 @@ final class LeaveStarSystem implements ActionControllerInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $this->loggerUtil->log(sprintf('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX()));
 
         $rad12or34 = atan($shipY / $shipX);
@@ -237,7 +228,6 @@ final class LeaveStarSystem implements ActionControllerInterface
 =======
         $this->loggerUtil->log('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX());
 =======
-<<<<<<< HEAD
         $this->loggerUtil->log(sprintf('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX()));
 >>>>>>> bugfix
 
@@ -253,8 +243,6 @@ final class LeaveStarSystem implements ActionControllerInterface
 =======
         $this->loggerUtil->log('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX());
 =======
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $this->loggerUtil->log(sprintf('ship (x|y) %d|%d, systemMaxX %d', $shipX, $shipY, $system->getMaxX()));
 >>>>>>> bugfix
 

@@ -84,9 +84,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
   },
   "discord": {
     "url": "https://chat.change.me"
@@ -97,7 +94,6 @@
   "discord": {
     "url": "https://chat.change.me"
 >>>>>>> read config values
-<<<<<<< HEAD
 =======
 >>>>>>> research wiki link
 =======
@@ -105,7 +101,5 @@
   "discord": {
     "url": "https://chat.change.me"
 >>>>>>> read config values
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
   }
 }

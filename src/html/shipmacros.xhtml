@@ -195,9 +195,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
 =======
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
@@ -211,7 +208,6 @@
 =======
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
 >>>>>>> 2 second interval
-<<<<<<< HEAD
 =======
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
 >>>>>>> show ship storage
@@ -224,8 +220,6 @@
 =======
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
 >>>>>>> 2 second interval
-=======
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         onmouseout="closeStorage();">
         <metal:macro metal:use-macro="shipimage" />
       </a>
@@ -332,7 +326,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
     tal:attributes="title bbcode2txt:ship/getName" />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title bbcode2txt:ship/getName" />
@@ -346,11 +339,6 @@
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title bbcode2txt:ship/getName" />
 >>>>>>> bugfix
-=======
-    tal:attributes="title bbcode2txt:ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title bbcode2txt:ship/getName" />
->>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 =======
     tal:attributes="title ship/getName" />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
