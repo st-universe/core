@@ -89,7 +89,7 @@
             <div style="margin-top: 5px">Logout</div>
           </div>
         </div>
-        <div class="header_box header_box_help border_box action" onclick="goToUrl('${WIKI}')"
+        <div class="header_box header_box_help border_box action" onclick="openNewTab('${WIKI}')"
           onmouseover="cp('header_menu_docu','navigation/menu_doku1', 'png')"
           onmouseout="cp('header_menu_docu','navigation/menu_doku0', 'png')">
           <div>
@@ -116,7 +116,7 @@
             <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-            <span>Version: <a href="${BOARD}/viewforum.php?f=12"><span tal:replace="GAME_VERSION" /></a></span><br />
+            <span>Version: <a href="${FORUM}/viewforum.php?f=12"><span tal:replace="GAME_VERSION" /></a></span><br />
           </div>
         </div>
       </div>
@@ -287,9 +287,9 @@
               <a href="/index.php?SHOW_REGISTRATION=1">Registrieren</a>
               <a href="/index.php?SHOW_HELP=1">Hilfe</a>
               <a href="/index.php?SHOW_INFOS=1">Impressum</a>
-              <a href="${BOARD}" target="_blank">Forum</a>
+              <a href="${FORUM}" target="_blank">Forum</a>
               <a href="${CHAT}" target="_blank">Chat</a>
-              <a href="${BOARD}/viewforum.php?f=12" target="_blank">Changelog</a>
+              <a href="${FORUM}/viewforum.php?f=12" target="_blank">Changelog</a>
             </div>
             <br />
             <div class="mainbar_box_header" tal:content="THIS/getPagetitle">TITLE</div>

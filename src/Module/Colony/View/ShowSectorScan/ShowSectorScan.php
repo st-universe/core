@@ -70,7 +70,7 @@ final class ShowSectorScan implements ViewControllerInterface
         $filteredSigs = [];
 
         foreach ($allSigs as $sig) {
-            $id = $sig->getShip()->getId();
+            $id = $sig->getShipId();
 
             if (!array_key_exists($id, $filteredSigs)) {
                 $wrapper = new SignatureWrapper($sig);

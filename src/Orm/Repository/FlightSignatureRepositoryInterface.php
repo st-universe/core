@@ -16,6 +16,9 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
 
     public function getVisibleSignatureCount($colony): int;
 
+    /**
+     * @return FlightSignatureInterface[]
+     */
     public function getVisibleSignatures($field, bool $isSystem, $ignoreId): array;
 
     public function deleteOldSignatures(int $threshold): void;

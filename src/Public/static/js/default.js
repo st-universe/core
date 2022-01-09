@@ -269,6 +269,9 @@ function openNotes() {
 function goToUrl(url) {
         window.location.href = url;
 }
+function openNewTab(url) {
+        window.open(url, '_blank');
+}
 function toggleTableRowVisible(id) {
         if ($(id).style.display == 'block' || $(id).style.display == 'table-row') {
                 $(id).style.display = 'none';

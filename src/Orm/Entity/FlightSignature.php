@@ -62,12 +62,6 @@ class FlightSignature implements FlightSignatureInterface
     private $user;
 
     /**
-     * @ManyToOne(targetEntity="Ship")
-     * @JoinColumn(name="ship_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $ship;
-
-    /**
      * @ManyToOne(targetEntity="ShipRump")
      * @JoinColumn(name="rump_id", referencedColumnName="id")
      */
@@ -106,14 +100,14 @@ class FlightSignature implements FlightSignatureInterface
         return $this;
     }
 
-    public function getShip(): ShipInterface
+    public function getShipId(): int
     {
-        return $this->ship;
+        return $this->ship_id;
     }
 
-    public function setShip(ShipInterface $ship): FlightSignatureInterface
+    public function setShipId(int $shipId): FlightSignatureInterface
     {
-        $this->ship = $ship;
+        $this->ship_id = $shipId;
         return $this;
     }
 
