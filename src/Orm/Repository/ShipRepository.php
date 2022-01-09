@@ -157,6 +157,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId 
                 AND s.%s = :mapId
@@ -171,6 +174,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 =======
                 AND s.%s = :mapId
 >>>>>>> bugfix
+<<<<<<< HEAD
 =======
                 WHERE s.alvl = alertRed
 =======
@@ -182,6 +186,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 =======
                 AND s.%s = :mapId
 >>>>>>> bugfix
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
                                 WHERE s.id = ss.ships_id
@@ -197,17 +203,23 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
                 $isSystem ? 'starsystem_map_id' : 'map_id',
 =======
 >>>>>>> code optimization
 =======
                 $isSystem ? 'starsystem_map_id' : 'map_id',
 >>>>>>> bugfix
+<<<<<<< HEAD
 =======
 >>>>>>> code optimization
 =======
                 $isSystem ? 'starsystem_map_id' : 'map_id',
 >>>>>>> bugfix
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
                 ShipSystem::class,
                 ShipSystem::class
             )
@@ -463,6 +475,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
 =======
         $rsm->addScalarResult('shieldState', 'shieldState', 'boolean');
@@ -470,12 +485,15 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 =======
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
 >>>>>>> lower case
+<<<<<<< HEAD
 =======
         $rsm->addScalarResult('shieldState', 'shieldState', 'boolean');
 >>>>>>> planet shield in LSS
 =======
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
 >>>>>>> lower case
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $rsm->addScalarResult('type', 'type', 'integer');
 
         if ($doSubspace) {
@@ -517,6 +535,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         WHERE bf.function = :shieldBuilding)) as shieldstate
 =======
                         WHERE bf.function = :shieldBuilding)) as shieldState
@@ -524,6 +543,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
 =======
                         WHERE bf.function = :shieldBuilding)) as shieldstate
 >>>>>>> lower case
+=======
+                        WHERE bf.function = :shieldBuilding)) as shieldstate
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 =======
                         WHERE bf.function = :shieldBuilding)) as shieldState
 >>>>>>> planet shield in LSS

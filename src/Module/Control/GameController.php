@@ -315,13 +315,19 @@ final class GameController implements GameControllerInterface
         $this->talPage->setVar('WIKI', $this->config->get('wiki.base_url'));
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $this->talPage->setVar('FORUM', $this->config->get('board.base_url'));
 =======
         $this->talPage->setVar('BOARD', $this->config->get('board.base_url'));
 >>>>>>> bugfix
+<<<<<<< HEAD
 =======
         $this->talPage->setVar('BOARD', $this->config->get('board.base_url'));
 >>>>>>> bugfix
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         $this->talPage->setVar('CHAT', $this->config->get('discord.url'));
 
         $result = $this->talPage->parse();

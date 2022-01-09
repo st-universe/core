@@ -1569,6 +1569,9 @@ class Ship implements ShipInterface
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
             $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
             $neededSpareParts += ((int)($this->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
 =======
@@ -1578,6 +1581,7 @@ class Ship implements ShipInterface
             $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
             $neededSpareParts += ((int)($this->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
 >>>>>>> fix
+<<<<<<< HEAD
 =======
             $neededSpareParts += (int)(($maxHull - $hull) / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART);
 >>>>>>> show needes spare parts on colonies
@@ -1585,6 +1589,8 @@ class Ship implements ShipInterface
             $ticks = (int) ceil(($this->getMaxHuell() - $this->getHuell()) / $this->getRepairRate());
             $neededSpareParts += ((int)($this->getRepairRate() / RepairTaskEnum::HULL_HITPOINTS_PER_SPARE_PART)) * $ticks;
 >>>>>>> fix
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
         }
 
         $damagedSystems = $this->getDamagedSystems();

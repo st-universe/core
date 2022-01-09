@@ -128,11 +128,17 @@ function openStarMap(obj, cx, cy) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
 	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
 }
 function openStorage(id) {
@@ -160,6 +166,7 @@ function openStorageInit(obj, id) {
 function openStorage(id) {
 	openPJsWin('elt', 1);
 >>>>>>> layout
+<<<<<<< HEAD
 =======
 function openStorage(id) {
 =======
@@ -183,6 +190,8 @@ function openStorageInit(obj, id) {
 function openStorage(id) {
 	openPJsWin('elt', 1);
 >>>>>>> layout
+=======
+>>>>>>> 4668b7d592ef1bbb971520a05a307d0b2b7d70cc
 	ajax_update('elt', 'ship.php?SHOW_SHIPSTORAGE=1&id=' + id);
 }
 function closeStorage() {
