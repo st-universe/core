@@ -120,69 +120,13 @@ function openStarMap(obj, cx, cy) {
 	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
 	ajax_update('elt', 'starmap.php?SHOW_STARMAP_POSITION=1&x=' + cx + '&y=' + cy);
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 function openStorageInit(obj, id) {
 	closeAjaxWindow();
 	var timer = setTimeout('openStorage(' + id + ')', 1000); //wait 1 second
-<<<<<<< HEAD
-<<<<<<< HEAD
 	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
 }
 function openStorage(id) {
 	openPJsWin('elt', 1);
-=======
-function openStorage(id) {
-=======
-function openStorage(obj, id) {
->>>>>>> bugfix
-	closeAjaxWindow();
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
->>>>>>> show ship storage
-=======
-function openStorage(id) {
-=======
-function openStorageInit(obj, id) {
->>>>>>> 2 second interval
-	closeAjaxWindow();
-	var timer = setTimeout('openStorage(' + id + ')', 2000); //wait 2 seconds
-=======
->>>>>>> 1 second
-	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
-}
-function openStorage(id) {
-	openPJsWin('elt', 1);
->>>>>>> layout
-=======
-function openStorage(id) {
-=======
-function openStorage(obj, id) {
->>>>>>> bugfix
-	closeAjaxWindow();
-	var pos = findObject(obj);
-	openWindowPosition('elt', 1, 700, pos[0], pos[1]);
->>>>>>> show ship storage
-=======
-function openStorage(id) {
-=======
-function openStorageInit(obj, id) {
->>>>>>> 2 second interval
-	closeAjaxWindow();
-	var timer = setTimeout('openStorage(' + id + ')', 2000); //wait 2 seconds
-=======
->>>>>>> 1 second
-	obj.onmouseout = function () { clearTimeout(timer); } //remove timer
-}
-function openStorage(id) {
-	openPJsWin('elt', 1);
->>>>>>> layout
 	ajax_update('elt', 'ship.php?SHOW_SHIPSTORAGE=1&id=' + id);
 }
 function closeStorage() {

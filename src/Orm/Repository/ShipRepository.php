@@ -153,35 +153,9 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId 
                 AND s.%s = :mapId
-=======
-                WHERE s.alvl = alertRed
-=======
-                WHERE s.alvl = :alertRed
->>>>>>> bugfix
-                AND s.user_id != :ignoreId 
-<<<<<<< HEAD
->>>>>>> code optimization
-=======
-                AND s.%s = :mapId
->>>>>>> bugfix
-=======
-                WHERE s.alvl = alertRed
-=======
-                WHERE s.alvl = :alertRed
->>>>>>> bugfix
-                AND s.user_id != :ignoreId 
-<<<<<<< HEAD
->>>>>>> code optimization
-=======
-                AND s.%s = :mapId
->>>>>>> bugfix
                 AND NOT EXISTS (SELECT ss.id
                                 FROM %s ss
                                 WHERE s.id = ss.ships_id
@@ -193,21 +167,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                 AND ss2.system_type = :warpSystemId
                                 AND ss2.mode > 1)',
                 Ship::class,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                 $isSystem ? 'starsystem_map_id' : 'map_id',
-=======
->>>>>>> code optimization
-=======
-                $isSystem ? 'starsystem_map_id' : 'map_id',
->>>>>>> bugfix
-=======
->>>>>>> code optimization
-=======
-                $isSystem ? 'starsystem_map_id' : 'map_id',
->>>>>>> bugfix
                 ShipSystem::class,
                 ShipSystem::class
             )
@@ -459,23 +419,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('posy', 'posy', 'integer');
         $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
         $rsm->addScalarResult('cloakcount', 'cloakcount', 'integer');
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
-=======
-        $rsm->addScalarResult('shieldState', 'shieldState', 'boolean');
->>>>>>> planet shield in LSS
-=======
-        $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
->>>>>>> lower case
-=======
-        $rsm->addScalarResult('shieldState', 'shieldState', 'boolean');
->>>>>>> planet shield in LSS
-=======
-        $rsm->addScalarResult('shieldstate', 'shieldstate', 'boolean');
->>>>>>> lower case
         $rsm->addScalarResult('type', 'type', 'integer');
 
         if ($doSubspace) {
@@ -513,23 +457,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     AND cfd.buildings_id IN (
                         SELECT bf.buildings_id
                         FROM stu_buildings_functions bf
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                         WHERE bf.function = :shieldBuilding)) as shieldstate
-=======
-                        WHERE bf.function = :shieldBuilding)) as shieldState
->>>>>>> planet shield in LSS
-=======
-                        WHERE bf.function = :shieldBuilding)) as shieldstate
->>>>>>> lower case
-=======
-                        WHERE bf.function = :shieldBuilding)) as shieldState
->>>>>>> planet shield in LSS
-=======
-                        WHERE bf.function = :shieldBuilding)) as shieldstate
->>>>>>> lower case
                 %s
                 FROM stu_sys_map a
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id

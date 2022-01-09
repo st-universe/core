@@ -68,154 +68,38 @@
 						<tal:block tal:condition="entry/isClickable">
 							<div style="width: ${viewportScale}vw; height: ${viewportScale}vw;"
 								class="lssobj imgOverlayText" onclick="${entry/getOnClick}">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-=======
-								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/planets/s1.png" class="lssColoShield"
-										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-									<img tal:condition="php:SHIP.getSubspaceState() AND code"
-<<<<<<< HEAD
-										src="assets/subspace/generated/${code}.png"
-										style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> layout fix
-=======
-										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
-										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> shields on station scan
-=======
-								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/planets/s1.png" class="lssColoShield"
-										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-									<img tal:condition="php:SHIP.getSubspaceState() AND code"
-<<<<<<< HEAD
-										src="assets/subspace/generated/${code}.png"
-										style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> layout fix
-=======
-										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
-										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> shields on station scan
 								</tal:block>
 								<tal:block tal:condition="not:entry/getShieldState">
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								</tal:block>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> planet shield in LSS
-								<img tal:condition="entry/getShieldState" src="assets/planets/s1.png"
-									style="position: relative; top: 0; left: 0; z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-								<img tal:condition="php:SHIP.getSubspaceState() AND code"
-									src="assets/subspace/generated/${code}.png"
-									style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-<<<<<<< HEAD
->>>>>>> planet shield in LSS
-=======
->>>>>>> planet shield in LSS
 								<div style="font-size: ${viewportFont}vw;" class="centered"
-=======
-								<div style="z-index: 3; font-size: ${viewportFont}vw;" class="centered"
->>>>>>> layout fix
-=======
-								<div style="font-size: ${viewportFont}vw;" class="centered"
->>>>>>> z-index 3 to css
-=======
-								<div style="z-index: 3; font-size: ${viewportFont}vw;" class="centered"
->>>>>>> layout fix
-=======
-								<div style="font-size: ${viewportFont}vw;" class="centered"
->>>>>>> z-index 3 to css
 									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
 						</tal:block>
 						<tal:block tal:condition="not:entry/isClickable">
 							<div class="imgOverlayText">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 								<tal:block tal:condition="entry/getShieldState">
 									<img src="assets/planets/s1.png" class="lssColoShield"
 										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-=======
-								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/planets/s1.png" class="lssColoShield"
-										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-									<img tal:condition="php:SHIP.getSubspaceState() AND code"
-<<<<<<< HEAD
-										src="assets/subspace/generated/${code}.png"
-										style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> layout fix
-=======
-										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
-										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> shields on station scan
-=======
-								<tal:block tal:condition="entry/getShieldState">
-									<img src="assets/planets/s1.png" class="lssColoShield"
-										style="width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-									<img tal:condition="php:SHIP.getSubspaceState() AND code"
-<<<<<<< HEAD
-										src="assets/subspace/generated/${code}.png"
-										style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> layout fix
-=======
-										src="assets/subspace/generated/${code}.png" class="lssSubspaceOverShield"
-										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
->>>>>>> shields on station scan
 								</tal:block>
 								<tal:block tal:condition="not:entry/getShieldState">
 									<img tal:condition="php:SHIP.getSubspaceState() AND code"
 										src="assets/subspace/generated/${code}.png"
 										style="z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
 								</tal:block>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> planet shield in LSS
-								<img tal:condition="entry/getShieldState" src="assets/planets/s1.png"
-									style="position: relative; top: 0; left: 0; z-index: 1; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-								<img tal:condition="php:SHIP.getSubspaceState() AND code"
-									src="assets/subspace/generated/${code}.png"
-									style="position: absolute; top: 0; left: 0; z-index: 2; width: ${viewportScale}vw; height: ${viewportScale}vw;" />
-<<<<<<< HEAD
->>>>>>> planet shield in LSS
 								<div style="font-size: ${viewportFont}vw;" class="centered"
-=======
-								<div style="z-index: 3; font-size: ${viewportFont}vw;" class="centered"
->>>>>>> layout fix
-=======
-=======
->>>>>>> planet shield in LSS
-								<div style="font-size: ${viewportFont}vw;" class="centered"
->>>>>>> z-index 3 to css
-=======
-								<div style="z-index: 3; font-size: ${viewportFont}vw;" class="centered"
->>>>>>> layout fix
-=======
-								<div style="font-size: ${viewportFont}vw;" class="centered"
->>>>>>> z-index 3 to css
 									tal:content="entry/getDisplayCount">.
 								</div>
 							</div>
@@ -399,35 +283,8 @@
 		<tal:block tal:condition="SHIP/hasUplink">
 			<tr>
 				<td colspan="2">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 					<a href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
 						onmouseover="cp('uplink','buttons/uplink1')" onmouseout="cp('uplink','buttons/uplink2')">
-<<<<<<< HEAD
-=======
-					<a tal:condition="not:SHIP/getTachyonState"
-						href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-=======
-					<a href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-<<<<<<< HEAD
->>>>>>> bugfix
-=======
-					<a href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
->>>>>>> bugfix
-						onmouseover="cp('tachyon','buttons/uplink1')" onmouseout="cp('tachyon','buttons/uplink2')">
->>>>>>> activate uplink button
-=======
->>>>>>> bugfix
-=======
-					<a tal:condition="not:SHIP/getTachyonState"
-						href="?B_ACTIVATE_UPLINK=1&id=${SHIP/getId}&sstr=${THIS/getSessionString}"
-						onmouseover="cp('tachyon','buttons/uplink1')" onmouseout="cp('tachyon','buttons/uplink2')">
->>>>>>> activate uplink button
-=======
-						onmouseover="cp('uplink','buttons/uplink1')" onmouseout="cp('uplink','buttons/uplink2')">
->>>>>>> bugfix
 						<img src="/assets/buttons/uplink2.png" name="uplink" />
 						Uplink aktivieren
 					</a>

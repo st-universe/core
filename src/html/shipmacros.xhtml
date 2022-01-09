@@ -187,39 +187,7 @@
 <metal:macro metal:define-macro="shiplist_body">
   <tr tal:attributes="class string:row${repeat/ship/odd}">
     <td style="background-color: #000000 ! important">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
->>>>>>> show ship storage
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(this, ${ship/getId});"
->>>>>>> bugfix
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
->>>>>>> layout
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
->>>>>>> 2 second interval
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
->>>>>>> show ship storage
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(this, ${ship/getId});"
->>>>>>> bugfix
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorage(${ship/getId});"
->>>>>>> layout
-=======
-      <a href="ship.php?SHOW_SHIP=1&id=${ship/getId}" onmouseover="openStorageInit(this, ${ship/getId});"
->>>>>>> 2 second interval
         onmouseout="closeStorage();">
         <metal:macro metal:use-macro="shipimage" />
       </a>
@@ -322,33 +290,9 @@
 </metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     tal:attributes="title bbcode2txt:ship/getName" />
   <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
     tal:attributes="title bbcode2txt:ship/getName" />
-=======
-    tal:attributes="title ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title ship/getName" />
->>>>>>> ship name as title in fleet status
-=======
-    tal:attributes="title bbcode2txt:ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title bbcode2txt:ship/getName" />
->>>>>>> bugfix
-=======
-    tal:attributes="title ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title ship/getName" />
->>>>>>> ship name as title in fleet status
-=======
-    tal:attributes="title bbcode2txt:ship/getName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title bbcode2txt:ship/getName" />
->>>>>>> bugfix
 </metal:macro>
 <metal:macro metal:define-macro="hiddenshipid" phptal:cache="1m per SHIP/getId">
   <input type="hidden" name="id" tal:attributes="value SHIP/getId" />

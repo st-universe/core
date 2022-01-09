@@ -63,23 +63,7 @@ class VisualNavPanelEntry
 
     function getShieldState()
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         return $this->data['shieldstate'];
-=======
-        return $this->data['shieldState'];
->>>>>>> planet shield in LSS
-=======
-        return $this->data['shieldstate'];
->>>>>>> lower case
-=======
-        return $this->data['shieldState'];
->>>>>>> planet shield in LSS
-=======
-        return $this->data['shieldstate'];
->>>>>>> lower case
     }
 
     function hasShips()
