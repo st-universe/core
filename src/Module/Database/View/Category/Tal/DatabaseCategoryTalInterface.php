@@ -12,6 +12,8 @@ interface DatabaseCategoryTalInterface
 
     public function isCategoryPlanetTypes(): bool;
 
+    public function isCategoryShipTypes(): bool;
+
     public function displayDefaultList(): bool;
 
     public function getEntries(): array;

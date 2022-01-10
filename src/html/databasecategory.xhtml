@@ -6,6 +6,7 @@
 		<metal:macro metal:use-macro="category_starsystem_types" tal:condition="CATEGORY/isCategoryStarSystemTypes" />
 		<metal:macro metal:use-macro="category_tradeposts" tal:condition="CATEGORY/isCategoryTradePosts" />
 		<metal:macro metal:use-macro="category_planettypes" tal:condition="CATEGORY/isCategoryPlanetTypes" />
+		<metal:macro metal:use-macro="category_shiptypes" tal:condition="CATEGORY/isCategoryShipTypes" />
 		<table class="use" tal:condition="CATEGORY/displayDefaultList">
 			<tr>
 				<th>Beschreibung</th>
@@ -75,6 +76,32 @@
 			</tal:block>
 			<tal:block tal:condition="not:data/wasDiscovered">
 				<td>???</td>
+				<td>???</td>
+				<td>---</td>
+			</tal:block>
+		</tr>
+	</table>
+</metal:macro>
+<metal:macro metal:define-macro="category_shiptypes">
+	<table class="use">
+		<tr>
+			<th></th>
+			<th colspan="2">Beschreibung</th>
+			<th>Entdeckung</th>
+		</tr>
+		<tr tal:repeat="data CATEGORY/getEntries" tal:attributes="class string:row${repeat/data/odd}">
+			<tal:block tal:condition="data/wasDiscovered">
+				<td>
+					<img src="assets/ships/${data/getObject/getId}.png" />
+				</td>
+				<td>
+					<a href="?SHOW_ENTRY=1&cat=${CATEGORY/getId}&ent=${data/getId}"
+						tal:content="data/getDescription">NAME</a>
+				</td>
+				<td tal:content="datetime:data/getDiscoveryDate">DATE</td>
+			</tal:block>
+			<tal:block tal:condition="not:data/wasDiscovered">
+				<td></td>
 				<td>???</td>
 				<td>---</td>
 			</tal:block>

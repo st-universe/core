@@ -47,11 +47,17 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE;
     }
 
+    public function isCategoryShipTypes(): bool
+    {
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP;
+    }
+
     public function displayDefaultList(): bool
     {
         return !$this->isCategoryStarSystems()
             && !$this->isCategoryTradePosts()
             && !$this->isCategoryStarSystemTypes()
+            && !$this->isCategoryShipTypes()
             && !$this->isCategoryPlanetTypes();
     }
 
