@@ -11,7 +11,6 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\DatabaseUserRepositoryInterface;
 use Stu\Orm\Repository\PlanetTypeRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
-use Stu\Orm\Repository\ShipRumpRepositoryInterface;
 use Stu\Orm\Repository\StarSystemRepositoryInterface;
 
 final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterface
@@ -26,8 +25,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
 
     private PlanetTypeRepositoryInterface $planetTypeRepository;
 
-    private ShipRumpRepositoryInterface $shipRumpRepository;
-
     private UserInterface $user;
 
     public function __construct(
@@ -36,7 +33,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         StarSystemRepositoryInterface $starSystemRepository,
         ShipRepositoryInterface $shipRepository,
         PlanetTypeRepositoryInterface $planetTypeRepository,
-        ShipRumpRepositoryInterface $shipRumpRepository,
         UserInterface $user
     ) {
         $this->databaseEntry = $databaseEntry;
@@ -44,7 +40,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
         $this->starSystemRepository = $starSystemRepository;
         $this->shipRepository = $shipRepository;
         $this->planetTypeRepository = $planetTypeRepository;
-        $this->shipRumpRepository = $shipRumpRepository;
         $this->user = $user;
     }
 
@@ -70,9 +65,6 @@ final class DatabaseCategoryEntryTal implements DatabaseCategoryEntryTalInterfac
                 break;
             case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE:
                 return $this->planetTypeRepository->find($this->databaseEntry->getObjectId());
-                break;
-            case DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP:
-                return $this->shipRumpRepository->find($this->databaseEntry->getObjectId());
                 break;
         }
 
