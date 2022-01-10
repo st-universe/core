@@ -31,6 +31,7 @@ class DatabaseCategory implements DatabaseCategoryInterface
 
     /**
      * @OneToMany(targetEntity="Stu\Orm\Entity\DatabaseEntry", mappedBy="category")
+     * @OrderBy({"sort" = "ASC"})
      */
     private $entries;
 
