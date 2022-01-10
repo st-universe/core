@@ -47,9 +47,10 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
         return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_PLANET_TYPE;
     }
 
-    public function isCategoryShipTypes(): bool
+    public function isCategoryRumpTypes(): bool
     {
-        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP;
+        return $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_SHIPRUMP
+            || $this->databaseCategory->getId() == DatabaseCategoryTypeEnum::DATABASE_CATEGORY_STATIONRUMP;
     }
 
     public function displayDefaultList(): bool
@@ -57,7 +58,7 @@ final class DatabaseCategoryTal implements DatabaseCategoryTalInterface
         return !$this->isCategoryStarSystems()
             && !$this->isCategoryTradePosts()
             && !$this->isCategoryStarSystemTypes()
-            && !$this->isCategoryShipTypes()
+            && !$this->isCategoryRumpTypes()
             && !$this->isCategoryPlanetTypes();
     }
 

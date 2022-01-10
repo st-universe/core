@@ -14,4 +14,5 @@ final class DatabaseCategoryTypeEnum
     public const DATABASE_CATEGORY_PLANET_TYPE = 5;
     public const DATABASE_CATEGORY_STAR_SYSTEM_TYPE = 6;
     public const DATABASE_CATEGORY_STARSYSTEM = 7;
+    public const DATABASE_CATEGORY_STATIONRUMP = 9;
 }

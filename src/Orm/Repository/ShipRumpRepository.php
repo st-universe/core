@@ -88,7 +88,7 @@ final class ShipRumpRepository extends EntityRepository implements ShipRumpRepos
                 )
             )
             ->setParameters([
-                'categoryId' => DatabaseEntryTypeEnum::DATABASE_TYPE_SHIPRUMP
+                'categoryId' => DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP
             ])
             ->getResult();
     }

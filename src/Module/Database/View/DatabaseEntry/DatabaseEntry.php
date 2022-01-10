@@ -118,7 +118,7 @@ final class DatabaseEntry implements ViewControllerInterface
             case DatabaseEntryTypeEnum::DATABASE_TYPE_MAP:
                 $game->setTemplateVar('REGION', $this->mapRegionRepository->find($entry_object_id));
                 break;
-            case DatabaseEntryTypeEnum::DATABASE_TYPE_SHIPRUMP:
+            case DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP:
                 $game->setTemplateVar('RUMP', $this->shipRumpRepository->find($entry_object_id));
                 break;
             case DatabaseEntryTypeEnum::DATABASE_TYPE_STARSYSTEM:

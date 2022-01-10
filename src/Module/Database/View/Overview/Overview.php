@@ -16,8 +16,7 @@ final class Overview implements ViewControllerInterface
 
     public function __construct(
         DatabaseCategoryRepositoryInterface $databaseCategoryRepository
-    )
-    {
+    ) {
         $this->databaseCategoryRepository = $databaseCategoryRepository;
     }
 
@@ -32,7 +31,7 @@ final class Overview implements ViewControllerInterface
 
         $game->setTemplateVar(
             'RUMP_LIST',
-            $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_SHIPRUMP)
+            $this->databaseCategoryRepository->getByTypeId(DatabaseEntryTypeEnum::DATABASE_TYPE_RUMP)
         );
         $game->setTemplateVar(
             'RPG_SHIP_LIST',

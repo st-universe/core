@@ -7,7 +7,7 @@ namespace Stu\Component\Database;
 final class DatabaseEntryTypeEnum
 {
 
-    public const DATABASE_TYPE_SHIPRUMP = 1;
+    public const DATABASE_TYPE_RUMP = 1;
     public const DATABASE_TYPE_RPGSHIPS = 2;
     public const DATABASE_TYPE_POI = 3;
     public const DATABASE_TYPE_STARSYSTEM = 4;

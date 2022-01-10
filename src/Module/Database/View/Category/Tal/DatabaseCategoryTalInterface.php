@@ -12,7 +12,7 @@ interface DatabaseCategoryTalInterface
 
     public function isCategoryPlanetTypes(): bool;
 
-    public function isCategoryShipTypes(): bool;
+    public function isCategoryRumpTypes(): bool;
 
     public function displayDefaultList(): bool;
 
