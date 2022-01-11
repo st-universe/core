@@ -316,21 +316,16 @@ final class GameController implements GameControllerInterface
                 $colonies,
                 function (ColonyInterface $a, ColonyInterface $b): int {
                     if ($a->getColonyClass() == $b->getColonyClass()) {
-                        return 0;
+                        if ($a->getId() == $b->getId()) {
+                            return 0;
+                        }
+                        return ($a->getId() > $b->getId()) ? -1 : 1;
                     }
                     return ($a->getColonyClass() < $b->getColonyClass()) ? -1 : 1;
                 }
             );
 
             $this->talPage->setVar('COLONIES', $colonies);
-
-            if ($user->getId() === 126) {
-                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-
-                foreach ($colonies as $colony) {
-                    $this->loggerUtil->log(sprintf('coloType: %d, coloId: %d', $colony->getColonyClass(), $colony->getId()));
-                }
-            }
             $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         }
 
