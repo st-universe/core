@@ -127,6 +127,12 @@ class User implements UserInterface
      */
     private $awards;
 
+    /**
+     * @OneToMany(targetEntity="Colony", mappedBy="user", fetch="EAGER")
+     * @OrderBy({"colonies_classes_id" = "ASC", "id" = "ASC"})
+     */
+    private $colonies;
+
     private $used_crew_count;
 
     private $crew_in_training;
@@ -144,6 +150,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->awards = new ArrayCollection();
+        $this->colonies = new ArrayCollection();
     }
 
     public function getId(): int
@@ -223,6 +230,11 @@ class User implements UserInterface
     public function getAwards(): Collection
     {
         return $this->awards;
+    }
+
+    public function getColonies(): Collection
+    {
+        return $this->colonies;
     }
 
     public function getActive(): int

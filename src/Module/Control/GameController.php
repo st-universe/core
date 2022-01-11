@@ -309,6 +309,7 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
+            $this->talPage->setVar('COLONIES', $user->getColonies());
             $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         }
 

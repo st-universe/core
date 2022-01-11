@@ -34,6 +34,8 @@ interface UserInterface
 
     public function getAwards(): Collection;
 
+    public function getColonies(): Collection;
+
     public function getActive(): int;
 
     public function setActive(int $active): UserInterface;
