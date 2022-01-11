@@ -313,7 +313,7 @@ final class GameController implements GameControllerInterface
             $colonies = $user->getColonies();
 
             usort(
-                $colonies,
+                $colonies->toArray(),
                 function (ColonyInterface $a, ColonyInterface $b): int {
                     if ($a->getColonyClass() == $b->getColonyClass()) {
                         return 0;
