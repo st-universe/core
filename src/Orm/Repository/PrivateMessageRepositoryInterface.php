@@ -31,6 +31,11 @@ interface PrivateMessageRepositoryInterface extends ObjectRepository
     /**
      * @return PrivateMessageInterface[]
      */
+    public function getBySender(int $userId): iterable;
+
+    /**
+     * @return PrivateMessageInterface[]
+     */
     public function getByUserAndFolder(
         int $userId,
         int $folderId,

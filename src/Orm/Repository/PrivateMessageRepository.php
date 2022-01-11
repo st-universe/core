@@ -52,6 +52,13 @@ final class PrivateMessageRepository extends EntityRepository implements Private
             ->getResult();
     }
 
+    public function getBySender(int $userId): iterable
+    {
+        return $this->findBy(
+            ['send_user' => $userId]
+        );
+    }
+
     public function getByUserAndFolder(
         int $userId,
         int $folderId,

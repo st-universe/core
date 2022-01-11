@@ -40,6 +40,7 @@ return [
         [
             autowire(Handler\AllianceDeletionHandler::class),
             autowire(Handler\ColonyDeletionHandler::class),
+            autowire(Handler\PrivateMessageDeletionHandler::class),
             autowire(Handler\KnPostDeletionHandler::class),
             autowire(Handler\RpgPlotDeletionHandler::class),
             autowire(Handler\ShipDeletionHandler::class),
