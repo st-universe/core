@@ -37,6 +37,7 @@ use Stu\Exception\StuException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\ColonyInterface;
 use Ubench;
 
 final class GameController implements GameControllerInterface
@@ -310,6 +311,17 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
             $colonies = $user->getColonies();
+
+            usort(
+                $colonies,
+                function (ColonyInterface $a, ColonyInterface $b): int {
+                    if ($a->getColonyClass() == $b->getColonyClass()) {
+                        return 0;
+                    }
+                    return ($a->getColonyClass() < $b->getColonyClass()) ? -1 : 1;
+                }
+            );
+
             $this->talPage->setVar('COLONIES', $colonies);
 
             if ($user->getId() === 126) {
