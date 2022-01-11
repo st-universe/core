@@ -310,10 +310,10 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
-            $colonies = $user->getColonies();
+            $colonies = $user->getColonies()->toArray();
 
             usort(
-                $colonies->toArray(),
+                $colonies,
                 function (ColonyInterface $a, ColonyInterface $b): int {
                     if ($a->getColonyClass() == $b->getColonyClass()) {
                         return 0;
