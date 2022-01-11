@@ -309,7 +309,16 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
-            $this->talPage->setVar('COLONIES', $user->getColonies());
+            $colonies = $user->getColonies();
+            $this->talPage->setVar('COLONIES', $colonies);
+
+            if ($user->getId() === 126) {
+                $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+
+                foreach ($colonies as $colony) {
+                    $this->loggerUtil->log(sprintf('coloType: %d, coloId: %d', $colony->getColonyClass(), $colony->getId()));
+                }
+            }
             $this->talPage->setVar('GAME_VERSION', $this->config->get('game.version'));
         }
 
