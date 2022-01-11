@@ -923,6 +923,10 @@ div.header_box_pm {
     margin: 5px 0 0 15px;
 }
 
+div.header_box_col {
+    margin: 5px 0 0 15px;
+}
+
 div.header_box_research {
     width: 300px;
     text-align: center;
