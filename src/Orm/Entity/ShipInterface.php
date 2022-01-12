@@ -299,6 +299,10 @@ interface ShipInterface
 
     public function setStarsystemMap(?StarSystemMapInterface $starsystem_map): ShipInterface;
 
+    public function getInfluenceArea(): ?StarSystemInterface;
+
+    public function setInfluenceArea(?StarSystemInterface $influenceArea): ShipInterface;
+
     public function getBeamFactor(): int;
 
     /**

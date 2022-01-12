@@ -182,6 +182,9 @@ class Ship implements ShipInterface
     /** @Column(type="integer", nullable=true) * */
     private $starsystem_map_id;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $influence_area_id;
+
     /**
      * @ManyToOne(targetEntity="Fleet", inversedBy="ships")
      * @JoinColumn(name="fleets_id", referencedColumnName="id")
@@ -262,6 +265,12 @@ class Ship implements ShipInterface
      * @JoinColumn(name="starsystem_map_id", referencedColumnName="id")
      */
     private $starsystem_map;
+
+    /**
+     * @ManyToOne(targetEntity="StarSystem")
+     * @JoinColumn(name="influence_area_id", referencedColumnName="id")
+     */
+    private $influenceArea;
 
     private $epsUsage;
 
@@ -1228,6 +1237,17 @@ class Ship implements ShipInterface
             $this->setCy($starsystem_map->getSystem()->getCy());
         }
 
+        return $this;
+    }
+
+    public function getInfluenceArea(): ?StarSystemInterface
+    {
+        return $this->influenceArea;
+    }
+
+    public function setInfluenceArea(?StarSystemInterface $influenceArea): ShipInterface
+    {
+        $this->influenceArea = $influenceArea;
         return $this;
     }
 

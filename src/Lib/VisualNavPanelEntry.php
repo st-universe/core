@@ -137,6 +137,7 @@ class VisualNavPanelEntry
         return false;
     }
 
+    //obsolete?
     function getBorder()
     {
         return $this->data['color'];
