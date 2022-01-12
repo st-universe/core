@@ -38,9 +38,9 @@ interface AllianceInterface
 
     public function getFullAvatarPath(): string;
 
-    public function getRgbCode(): ?string;
+    public function getRgbCode(): string;
 
-    public function setRgbCode(?string $rgbCode): AllianceInterface;
+    public function setRgbCode(string $rgbCode): AllianceInterface;
 
     public function getFounder(): AllianceJobInterface;
 

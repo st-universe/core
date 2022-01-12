@@ -48,8 +48,8 @@ class Alliance implements AllianceInterface
     /** @Column(type="string", length=32) */
     private $avatar = '';
 
-    /** @Column(type="string", length=7, nullable=true) */
-    private $rgb_code;
+    /** @Column(type="string", length=7) */
+    private $rgb_code = '';
 
     /**
      * @ManyToOne(targetEntity="Faction")
@@ -175,12 +175,12 @@ class Alliance implements AllianceInterface
         );
     }
 
-    public function getRgbCode(): ?string
+    public function getRgbCode(): string
     {
         return $this->rgb_code;
     }
 
-    public function setRgbCode(?string $rgbCode): AllianceInterface
+    public function setRgbCode(string $rgbCode): AllianceInterface
     {
         $this->rgb_code = $rgbCode;
         return $this;
