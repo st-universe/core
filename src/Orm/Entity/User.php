@@ -110,9 +110,6 @@ class User implements UserInterface
     /** @Column(type="string", length=100) */
     private $password_token = '';
 
-    /** @Column(type="string", length=7) */
-    private $rgb_code = '';
-
     /**
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
      * @JoinColumn(name="allys_id", referencedColumnName="id")
@@ -205,17 +202,6 @@ class User implements UserInterface
     public function setEmail(string $email): UserInterface
     {
         $this->email = $email;
-        return $this;
-    }
-
-    public function getRgbCode(): string
-    {
-        return $this->rgb_code;
-    }
-
-    public function setRgbCode(string $rgbCode): UserInterface
-    {
-        $this->rgb_code = $rgbCode;
         return $this;
     }
 

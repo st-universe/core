@@ -24,10 +24,6 @@ interface UserInterface
 
     public function setEmail(string $email): UserInterface;
 
-    public function getRgbCode(): string;
-
-    public function setRgbCode(string $rgbCode): UserInterface;
-
     public function getAllianceId(): ?int;
 
     public function getFactionId(): ?int;

@@ -22,7 +22,6 @@ use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserName;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequest;
 use Stu\Module\PlayerSetting\Action\ChangeUserName\ChangeUserNameRequestInterface;
 use Stu\Module\PlayerSetting\Action\ActivateVacation\ActivateVacation;
-use Stu\Module\PlayerSetting\Action\ChangeRgbCode\ChangeRgbCode;
 use Stu\Module\PlayerSetting\Action\DeleteAccount\DeleteAccount;
 use Stu\Module\PlayerSetting\Action\RequestInvitationToken\RequestInvitationToken;
 use Stu\Module\PlayerSetting\View\Overview\Overview;
@@ -39,7 +38,6 @@ return [
         ChangeUserName::ACTION_IDENTIFIER => autowire(ChangeUserName::class),
         ChangePassword::ACTION_IDENTIFIER => autowire(ChangePassword::class),
         ChangeEmail::ACTION_IDENTIFIER => autowire(ChangeEmail::class),
-        ChangeRgbCode::ACTION_IDENTIFIER => autowire(ChangeRgbCode::class),
         ChangeAvatar::ACTION_IDENTIFIER => autowire(ChangeAvatar::class),
         ChangeDescription::ACTION_IDENTIFIER => autowire(ChangeDescription::class),
         ChangeSettings::ACTION_IDENTIFIER => autowire(ChangeSettings::class),
