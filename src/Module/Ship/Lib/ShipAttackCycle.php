@@ -74,7 +74,9 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         $this->oneWay = $oneWay;
 
         //concurrency
-        $this->acquireSemaphores(current($attackingShips)->getUser()->getId());
+        // this already happens in AttackShip, and shouldnt be used here
+        // could cause deadlocks in Alert Red situations
+        //$this->acquireSemaphores(current($attackingShips)->getUser()->getId());
 
         $this->firstStrike = true;
         $this->messages = [];
