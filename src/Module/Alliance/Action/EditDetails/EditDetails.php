@@ -55,8 +55,11 @@ final class EditDetails implements ActionControllerInterface
         $alliance = $user->getAlliance();
         $allianceId = (int) $alliance->getId();
 
-        $name = $this->editDetailsRequest->getName();
+        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
+            throw new AccessViolation();
+        }
 
+        $name = $this->editDetailsRequest->getName();
         if (!CleanTextUtils::checkBBCode($name)) {
             $game->addInformation(_('Der Name enthält ungültige BB-Code Formatierung'));
             return;
@@ -67,10 +70,7 @@ final class EditDetails implements ActionControllerInterface
         $description = $this->editDetailsRequest->getDescription();
         $homepage = $this->editDetailsRequest->getHomepage();
         $acceptApplications = $this->editDetailsRequest->getAcceptApplications();
-
-        if (!$this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())) {
-            throw new AccessViolation();
-        }
+        $rgbCode = $this->editDetailsRequest->getRgbCode();
 
         $game->setView(Edit::VIEW_IDENTIFIER);
 
@@ -113,6 +113,21 @@ final class EditDetails implements ActionControllerInterface
                 return;
             }
         }
+
+        if (strlen($rgbCode) > 0) {
+            if (strlen($rgbCode) != 7) {
+                $game->addInformation(_('Der RGB-Code muss sieben Zeichen lang sein, z.B. #11ff67'));
+                return;
+            }
+
+            if (!$this->validHex($rgbCode)) {
+                $game->addInformation(_('Der RGB-Code ist ungültig!'));
+                return;
+            }
+
+            $alliance->setRgbCode($rgbCode);
+        }
+
         $alliance->setName($name);
         $alliance->setHomepage($homepage);
         $alliance->setDescription($description);
@@ -120,6 +135,11 @@ final class EditDetails implements ActionControllerInterface
         $this->allianceRepository->save($alliance);
 
         $game->addInformation(_('Die Allianz wurde editiert'));
+    }
+
+    private function validHex($hex)
+    {
+        return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }
 
     public function performSessionCheck(): bool

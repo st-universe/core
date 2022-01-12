@@ -13,4 +13,6 @@ interface EditDetailsRequestInterface
     public function getFactionMode(): int;
 
     public function getAcceptApplications(): int;
+
+    public function getRgbCode(): string;
 }

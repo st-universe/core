@@ -40,4 +40,11 @@ final class EditDetailsRequest implements EditDetailsRequestInterface
     {
         return $this->queryParameter('acceptapp')->int()->defaultsTo(0);
     }
+
+    public function getRgbCode(): string
+    {
+        return $this->tidyString(
+            $this->queryParameter('rgb')->string()->required()
+        );
+    }
 }

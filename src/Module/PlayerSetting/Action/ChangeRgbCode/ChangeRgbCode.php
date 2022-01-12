@@ -43,7 +43,7 @@ final class ChangeRgbCode implements ActionControllerInterface
         $game->addInformation(_('Dein RGB-Code wurde geändert'));
     }
 
-    function validHex($hex)
+    private function validHex($hex)
     {
         return preg_match('/^#?(([a-f0-9]{3}){1,2})$/i', $hex);
     }
