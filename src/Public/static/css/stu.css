@@ -1507,6 +1507,10 @@ div.knGrid img.knUserAvatar
     display: none;
   }
 
+  div.header_box_col {
+    display: none;
+  }
+
   div.user_box_grid {
     display: grid;
     grid-template-columns: 100%;
