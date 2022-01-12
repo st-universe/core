@@ -15,6 +15,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
 use Stu\Orm\Repository\ConstructionProgressRepositoryInterface;
 use Stu\Orm\Repository\ShipBuildplanRepositoryInterface;
+use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class StationUtility implements StationUtilityInterface
 {
@@ -24,17 +25,21 @@ final class StationUtility implements StationUtilityInterface
 
     private ShipCreatorInterface $shipCreator;
 
+    private ShipRepositoryInterface $shipRepository;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ShipCreatorInterface $shipCreator,
+        ShipRepositoryInterface $shipRepository,
         LoggerUtilInterface $loggerUtil
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->shipCreator = $shipCreator;
+        $this->shipRepository = $shipRepository;
         $this->loggerUtil = $loggerUtil;
         $this->loggerUtil->init();
     }
@@ -130,7 +135,13 @@ final class StationUtility implements StationUtilityInterface
         $rump = $ship->getRump();
 
         // transform ship
-        $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
+        $station = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
+
+        // set influence area
+        if ($station->getRump->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE) {
+            $station->setInfluenceArea($station->getMap()->getSystem());
+            $this->shipRepository->save($station);
+        }
 
         // set progress finished
         $progress->setRemainingTicks(0);

@@ -61,6 +61,11 @@ class StarSystem implements StarSystemInterface
      */
     private $databaseEntry;
 
+    /**
+     * @OneToOne(targetEntity="Ship", mappedBy="influenceArea")
+     */
+    private $base;
+
     private $fields;
 
     public function getId(): int
@@ -175,6 +180,11 @@ class StarSystem implements StarSystemInterface
         global $container;
 
         return $container->get(MapRepositoryInterface::class)->getByCoordinates($this->getCx(), $this->getCy());
+    }
+
+    public function getBase(): ?ShipInterface
+    {
+        return $this->base;
     }
 
     public function getFields(): array
