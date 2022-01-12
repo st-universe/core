@@ -110,8 +110,8 @@ class User implements UserInterface
     /** @Column(type="string", length=100) */
     private $password_token = '';
 
-    /** @Column(type="string", length=7, nullable=true) */
-    private $rgb_code;
+    /** @Column(type="string", length=7) */
+    private $rgb_code = '';
 
     /**
      * @ManyToOne(targetEntity="Alliance", inversedBy="members")
@@ -208,12 +208,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRgbCode(): ?string
+    public function getRgbCode(): string
     {
         return $this->rgb_code;
     }
 
-    public function setRgbCode(?string $rgbCode): UserInterface
+    public function setRgbCode(string $rgbCode): UserInterface
     {
         $this->rgb_code = $rgbCode;
         return $this;
