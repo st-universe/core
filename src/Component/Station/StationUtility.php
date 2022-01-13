@@ -138,7 +138,7 @@ final class StationUtility implements StationUtilityInterface
         $station = $this->shipCreator->createBy($ship->getUser()->getId(), $rump->getId(), $plan->getId(), null, $progress);
 
         // set influence area
-        if ($station->getRump->getRoleId() === ShipRumpEnum::SHIP_ROLE_BASE) {
+        if ($station->getRump()->getShipRumpRole()->getId() === ShipRumpEnum::SHIP_ROLE_BASE) {
             $station->setInfluenceArea($station->getMap()->getSystem());
             $this->shipRepository->save($station);
         }
