@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Starmap\Lib;
 
 use Stu\Orm\Entity\MapBorderTypeInterface;
+use Stu\Orm\Entity\MapRegionInterface;
+use Stu\Orm\Entity\StarSystemInterface;
 
 /**
  * @Entity
@@ -33,7 +35,10 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     private ?int $mapped = 0;
 
     /** @Column(type="integer", nullable=true) * */
-    private ?int $influence_id = 0;
+    private ?int $influence_area_id = 0;
+
+    /** @Column(type="integer", nullable=true) * */
+    private ?int $region_id = 0;
 
     private bool $hide = false;
 
@@ -43,6 +48,20 @@ class ExploreableStarMap implements ExploreableStarMapInterface
      * @var null|MapBorderTypeInterface
      */
     private ?MapBorderTypeInterface $mapBorderType;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\StarSystem")
+     * @JoinColumn(name="influence_area_id", referencedColumnName="id")
+     * @var null|StarSystemInterface
+     */
+    private ?StarSystemInterface $influenceArea;
+
+    /**
+     * @ManyToOne(targetEntity="Stu\Orm\Entity\MapRegion")
+     * @JoinColumn(name="region_id", referencedColumnName="id")
+     * @var null|MapRegionInterface
+     */
+    private ?MapRegionInterface $mapRegion;
 
     public function getId(): int
     {
@@ -86,18 +105,37 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         return $this;
     }
 
-    public function getFieldStyle(): string
+    private function getBorder(): string
     {
-        if ($this->mapBorderType === null) {
-            if ($this->influence_id === 53) {
-                $borderStyle = 'border: 1px solid #800080';
-            } else {
-                $borderStyle = '';
+        $borderType = $this->mapBorderType;
+        if ($borderType === null) {
+            if ($this->mapRegion === null) {
+                if ($this->influence_area_id === 53) {
+                    return 'border: 1px solid #800080';
+                } else if ($this->influenceArea !== null) {
+                    $influenceArea = $this->influenceArea;
+                    $base = $influenceArea->getBase();
+
+                    if ($base !== null) {
+                        $user = $base->getUser();
+                        $ally = $user->getAlliance();
+
+                        if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
+                            return 'border: 1px solid ' . $ally->getRgbCode();
+                        } else if (strlen($user->getRgbCode()) > 0) {
+                            return 'border: 1px solid ' . $user->getRgbCode();
+                        }
+                    }
+                }
             }
         } else {
-            $borderStyle = 'border: 1px solid #' . $this->mapBorderType->getColor();
+            return 'border: 1px solid #' . $this->mapBorderType->getColor();
         }
 
+        return '';
+    }
+    public function getFieldStyle(): string
+    {
         if ($this->hide === true) {
             $type = 0;
         } else {
@@ -105,7 +143,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         }
 
         $style = "background-image: url('assets/map/" . $type . ".png');";
-        $style .= $borderStyle;
+        $style .= $this->getBorder();
         return $style;
     }
 }

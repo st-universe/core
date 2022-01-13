@@ -211,26 +211,8 @@ class Map implements MapInterface
     public function getBorder(): string
     {
         $borderType = $this->getMapBorderType();
-        if ($borderType === null && $this->getMapRegion() === null) {
-            if ($this->getInfluenceAreaId() === 53) {
-                return 'border: 1px solid #800080';
-            } else if ($this->getInfluenceArea() !== null) {
-                $influenceArea = $this->getInfluenceArea();
-                $base = $influenceArea->getBase();
-
-                if ($base !== null) {
-                    $user = $base->getUser();
-                    $ally = $user->getAlliance();
-
-                    if ($ally !== null && strlen($ally->getRgbCode()) > 0) {
-                        return 'border: 1px solid ' . $ally->getRgbCode();
-                    } else if (strlen($user->getRgbCode()) > 0) {
-                        return 'border: 1px solid ' . $user->getRgbCode();
-                    }
-                }
-            } else {
-                return '';
-            }
+        if ($borderType === null) {
+            return '';
         }
         return 'border: 1px solid #' . $borderType->getColor();
     }

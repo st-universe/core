@@ -118,11 +118,12 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
         $rsm->addFieldResult('m', 'bordertype_id', 'bordertype_id');
         $rsm->addFieldResult('m', 'user_id', 'user_id');
         $rsm->addFieldResult('m', 'mapped', 'mapped');
-        $rsm->addFieldResult('m', 'influence_id', 'influence_id');
+        $rsm->addFieldResult('m', 'influence_area_id', 'influence_area_id');
+        $rsm->addFieldResult('m', 'region_id', 'region_id');
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id, dbu.database_id as mapped, m.influence_area_id as influence_id
+                'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id, dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.region_id as region_id
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
                     ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId
