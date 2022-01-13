@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Action\Shutdown;
 
 use request;
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
 final class Shutdown implements ActionControllerInterface
@@ -21,19 +21,23 @@ final class Shutdown implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     public function __construct(
         ActivatorDeactivatorHelperInterface $helper,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->helper = $helper;
         $this->shipLoader = $shipLoader;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
-
         $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
+
+        $triggerAlertRed = $ship->getWarpState() || $ship->getCloakState();
 
         //deactivate all systems except life support and troop quarters
         foreach ($ship->getActiveSystems() as $system) {
@@ -49,6 +53,24 @@ final class Shutdown implements ActionControllerInterface
         $ship->setAlertStateGreen();
 
         $game->addInformation(_("Der Energieverbrauch wurde auf ein Minimum reduziert"));
+
+        if ($triggerAlertRed) {
+            $informations = [];
+
+            //Alarm-Rot check
+            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+            shuffle($shipsToShuffle);
+            foreach ($shipsToShuffle as $alertShip) {
+                $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+            }
+            $game->addInformationMergeDown($informations);
+
+            if ($ship->getIsDestroyed()) {
+                return;
+            }
+        }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
     public function performSessionCheck(): bool
