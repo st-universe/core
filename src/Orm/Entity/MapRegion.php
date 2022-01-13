@@ -27,6 +27,9 @@ class MapRegion implements MapRegionInterface
     /** @Column(type="integer", nullable=true) * */
     private $database_id = 0;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $is_administrated;
+
     /**
      * @ManyToOne(targetEntity="DatabaseEntry")
      * @JoinColumn(name="database_id", referencedColumnName="id")
@@ -50,13 +53,26 @@ class MapRegion implements MapRegionInterface
         return $this;
     }
 
-    public function getDatabaseEntry(): ?DatabaseEntryInterface {
+    public function getDatabaseEntry(): ?DatabaseEntryInterface
+    {
         return $this->databaseEntry;
     }
 
-    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): MapRegionInterface {
+    public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): MapRegionInterface
+    {
         $this->databaseEntry = $databaseEntry;
 
+        return $this;
+    }
+
+    public function isAdministrated(): ?bool
+    {
+        return $this->is_administrated;
+    }
+
+    public function setIsAdministrated(?bool $isAdministrated): MapRegionInterface
+    {
+        $this->is_administrated = $isAdministrated;
         return $this;
     }
 }
