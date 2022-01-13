@@ -27,8 +27,8 @@ class MapRegion implements MapRegionInterface
     /** @Column(type="integer", nullable=true) * */
     private $database_id = 0;
 
-    /** @Column(type="boolean", nullable=true) */
-    private $is_administrated;
+    /** @Column(type="boolean") */
+    private $is_administrated = false;
 
     /**
      * @ManyToOne(targetEntity="DatabaseEntry")
@@ -65,12 +65,12 @@ class MapRegion implements MapRegionInterface
         return $this;
     }
 
-    public function isAdministrated(): ?bool
+    public function isAdministrated(): bool
     {
         return $this->is_administrated;
     }
 
-    public function setIsAdministrated(?bool $isAdministrated): MapRegionInterface
+    public function setIsAdministrated(bool $isAdministrated): MapRegionInterface
     {
         $this->is_administrated = $isAdministrated;
         return $this;

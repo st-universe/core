@@ -14,7 +14,7 @@ interface MapRegionInterface
 
     public function setDatabaseEntry(?DatabaseEntryInterface $databaseEntry): MapRegionInterface;
 
-    public function isAdministrated(): ?bool;
+    public function isAdministrated(): bool;
 
-    public function setIsAdministrated(?bool $isAdministrated): MapRegionInterface;
+    public function setIsAdministrated(bool $isAdministrated): MapRegionInterface;
 }
