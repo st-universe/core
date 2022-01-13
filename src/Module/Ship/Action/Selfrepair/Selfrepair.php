@@ -60,7 +60,11 @@ final class Selfrepair implements ActionControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(request::postIntFatal('id'), $userId);
 
-        $repairType = request::postIntFatal('partschoice');
+        $repairType = request::postInt('partschoice');
+
+        if (!$repairType) {
+            return;
+        }
 
         if ($repairType < RepairTaskEnum::SPARE_PARTS_ONLY || $repairType > RepairTaskEnum::BOTH) {
             return;
