@@ -110,9 +110,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
         $borderType = $this->mapBorderType;
         if ($borderType === null) {
             if ($this->mapRegion === null) {
-                if ($this->influence_area_id === 53) {
-                    return 'border: 1px solid #800080';
-                } else if ($this->influenceArea !== null) {
+                if ($this->influenceArea !== null) {
                     $influenceArea = $this->influenceArea;
                     $base = $influenceArea->getBase();
 

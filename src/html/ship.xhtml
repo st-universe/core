@@ -550,14 +550,38 @@
 					</tal:block>
 				</tal:block>
 
-				<br />
-				<a tal:condition="SHIP/getCurrentMapField/getMapRegion" href="javascript:void(0);"
-					onclick="showRegionInfo(${SHIP/getCurrentMapField/getMapRegion/getId})"
-					onmouseover="cp('mapRegionButton','buttons/info2')"
-					onmouseout="cp('mapRegionButton','buttons/info1')">
-					<img src="/assets/buttons/info1.png" name="mapRegionButton" />
-					${SHIP/getCurrentMapField/getMapRegion/getDescription}
-				</a>
+				<tal:block tal:condition="SHIP/getCurrentMapField/getMapRegion">
+					<br />
+					<a href="javascript:void(0);"
+						onclick="showRegionInfo(${SHIP/getCurrentMapField/getMapRegion/getId})"
+						onmouseover="cp('mapRegionButton','buttons/info2')"
+						onmouseout="cp('mapRegionButton','buttons/info1')">
+						<img src="/assets/buttons/info1.png" name="mapRegionButton" />
+						${SHIP/getCurrentMapField/getMapRegion/getDescription}
+					</a>
+				</tal:block>
+				<tal:block
+					tal:condition="php: SHIP.getCurrentMapField().getInfluenceArea() AND SHIP.getCurrentMapField().getInfluenceArea().getBase()">
+					<br />
+					<tal:block tal:define="user SHIP/getCurrentMapField/getInfluenceArea/getBase/getUser">
+						<a tal:condition="user/getAlliance"
+							href="alliance.php?SHOW_ALLIANCE=1&id=${user/getAlliance/getId}">
+							<img style="height: 20px;" src="runtime"
+								tal:attributes="src user/getAlliance/getFullAvatarpath" />
+							<span tal:condition="not:SHIP/getCurrentMapField/getMapRegion">Territorium der Allianz
+								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
+							<span tal:condition="SHIP/getCurrentMapField/getMapRegion">Einflussbereich der Allianz
+								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
+						</a>
+						<a tal:condition="not:user/getAlliance" href="userprofile.php?uid=${user/getId}">
+							<img style="height: 20px;" src="runtime" tal:attributes="src user/getFullAvatarpath" />
+							<span tal:condition="not:SHIP/getCurrentMapField/getMapRegion">Territorium des Siedlers
+								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
+							<span tal:condition="SHIP/getCurrentMapField/getMapRegion">Einflussbereich des Siedlers
+								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
+						</a>
+					</tal:block>
+				</tal:block>
 			</td>
 			<td tal:condition="SHIP/getSystem">
 				<tal:block tal:condition="STARSYSTEM_ENTRY_TAL/wasDiscovered">

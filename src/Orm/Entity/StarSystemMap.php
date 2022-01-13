@@ -142,6 +142,11 @@ class StarSystemMap implements StarSystemMapInterface
         return null;
     }
 
+    public function getInfluenceArea(): ?StarSystemInterface
+    {
+        return null;
+    }
+
     public function getFieldStyle(): string
     {
         return "background-image: url('/assets/map/" . $this->getFieldId() . ".png');";

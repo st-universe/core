@@ -32,6 +32,8 @@ interface StarSystemMapInterface
 
     public function getMapRegion(): ?MapRegionInterface;
 
+    public function getInfluenceArea(): ?StarSystemInterface;
+
     public function getFieldStyle(): string;
 
     public function getShips(): Collection;
