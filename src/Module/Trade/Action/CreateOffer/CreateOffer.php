@@ -50,8 +50,11 @@ final class CreateOffer implements ActionControllerInterface
         $userId = $game->getUser()->getId();
 
         $storage = $this->tradeStorageRepository->find($this->createOfferRequest->getStorageId());
-        if ($storage === null || (int) $storage->getUserId() !== $userId) {
-            throw new AccessViolation();
+        if ($storage === null) {
+            throw new AccessViolation(sprintf("Storage not existent! Fool: %d", $userId));
+        }
+        if ($storage->getUserId() !== $userId) {
+            throw new AccessViolation(sprintf("Storage belongs to other user! Fool: %d", $userId));
         }
 
         $trade_post = $storage->getTradePost();
