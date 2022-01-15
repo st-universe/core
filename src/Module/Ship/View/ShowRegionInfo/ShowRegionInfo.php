@@ -42,9 +42,9 @@ final class ShowRegionInfo implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        if ($mapRegion->getId() === $regionId) {
+        if ($mapRegion !== null && $mapRegion->getId() === $regionId) {
             $region = $mapRegion;
-        } else if ($adminRegion->getId() === $regionId) {
+        } else if ($adminRegion !== null &&  $adminRegion->getId() === $regionId) {
             $region = $adminRegion;
         } else {
             throw new AccessViolation();
