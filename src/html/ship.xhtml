@@ -550,6 +550,16 @@
 					</tal:block>
 				</tal:block>
 
+				<tal:block tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">
+					<br />
+					<a href="javascript:void(0);"
+						onclick="showRegionInfo(${SHIP/getCurrentMapField/getAdministratedRegion/getId})"
+						onmouseover="cp('mapRegionButton','buttons/info2')"
+						onmouseout="cp('mapRegionButton','buttons/info1')">
+						<img src="/assets/buttons/info1.png" name="mapRegionButton" />
+						${SHIP/getCurrentMapField/getAdministratedRegion/getDescription}
+					</a>
+				</tal:block>
 				<tal:block tal:condition="SHIP/getCurrentMapField/getMapRegion">
 					<br />
 					<a href="javascript:void(0);"
@@ -568,16 +578,20 @@
 							href="alliance.php?SHOW_ALLIANCE=1&id=${user/getAlliance/getId}">
 							<img style="height: 20px;" src="runtime"
 								tal:attributes="src user/getAlliance/getFullAvatarpath" />
-							<span tal:condition="not:SHIP/getCurrentMapField/getMapRegion">Territorium der Allianz
+							<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium der
+								Allianz
 								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
-							<span tal:condition="SHIP/getCurrentMapField/getMapRegion">Einflussbereich der Allianz
+							<span tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">Einflussbereich der
+								Allianz
 								<span tal:replace="structure bbcode:user/getAlliance/getName">NAME</span></span>
 						</a>
 						<a tal:condition="not:user/getAlliance" href="userprofile.php?uid=${user/getId}">
 							<img style="height: 20px;" src="runtime" tal:attributes="src user/getFullAvatarpath" />
-							<span tal:condition="not:SHIP/getCurrentMapField/getMapRegion">Territorium des Siedlers
+							<span tal:condition="not:SHIP/getCurrentMapField/getAdministratedRegion">Territorium des
+								Siedlers
 								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
-							<span tal:condition="SHIP/getCurrentMapField/getMapRegion">Einflussbereich des Siedlers
+							<span tal:condition="SHIP/getCurrentMapField/getAdministratedRegion">Einflussbereich des
+								Siedlers
 								<span tal:replace="structure bbcode:user/getName">NAME</span></span>
 						</a>
 					</tal:block>

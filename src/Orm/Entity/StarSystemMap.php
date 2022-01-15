@@ -142,6 +142,11 @@ class StarSystemMap implements StarSystemMapInterface
         return null;
     }
 
+    public function getAdministratedRegion(): ?MapRegionInterface
+    {
+        return null;
+    }
+
     public function getInfluenceArea(): ?StarSystemInterface
     {
         return null;

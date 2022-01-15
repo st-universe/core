@@ -32,6 +32,8 @@ interface StarSystemMapInterface
 
     public function getMapRegion(): ?MapRegionInterface;
 
+    public function getAdministratedRegion(): ?MapRegionInterface;
+
     public function getInfluenceArea(): ?StarSystemInterface;
 
     public function getFieldStyle(): string;

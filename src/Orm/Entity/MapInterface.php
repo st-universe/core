@@ -48,6 +48,8 @@ interface MapInterface
 
     public function getMapRegion(): ?MapRegionInterface;
 
+    public function getAdministratedRegion(): ?MapRegionInterface;
+
     public function getShips(): Collection;
 
     public function getSignatures(): Collection;

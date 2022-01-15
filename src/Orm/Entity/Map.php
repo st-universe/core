@@ -217,6 +217,11 @@ class Map implements MapInterface
         return $this->mapRegion;
     }
 
+    public function getAdministratedRegion(): ?MapRegionInterface
+    {
+        return $this->administratedRegion;
+    }
+
     public function getBorder(): string
     {
         $borderType = $this->getMapBorderType();

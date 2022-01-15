@@ -34,12 +34,19 @@ final class ShowRegionInfo implements ViewControllerInterface
         $regionId = request::getIntFatal('region');
 
         $mapField = $ship->getCurrentMapField();
-        $region = $mapField->getMapRegion();
 
-        if ($region === null) {
+        $mapRegion = $mapField->getMapRegion();
+        $adminRegion = $mapField->getAdministratedRegion();
+
+        if ($mapRegion === null && $adminRegion === null) {
             throw new AccessViolation();
         }
-        if ($region->getId() != $regionId) {
+
+        if ($mapRegion->getId() === $regionId) {
+            $region = $mapRegion;
+        } else if ($adminRegion->getId() === $regionId) {
+            $region = $adminRegion;
+        } else {
             throw new AccessViolation();
         }
 
