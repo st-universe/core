@@ -45,6 +45,11 @@ final class Management implements ViewControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
         $userId = $game->getUser()->getId();
+
+        if ($alliance === null) {
+            return;
+        }
+
         $allianceId = $alliance->getId();
 
         if (!$this->allianceActionManager->mayEdit($allianceId, $userId)) {
