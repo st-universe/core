@@ -48,6 +48,9 @@ class Map implements MapInterface
     /** @Column(type="integer", nullable=true) * */
     private $region_id = 0;
 
+    /** @Column(type="integer", nullable=true) * */
+    private $admin_region_id;
+
     /**
      * @ManyToOne(targetEntity="StarSystem")
      * @JoinColumn(name="systems_id", referencedColumnName="id")
@@ -77,6 +80,12 @@ class Map implements MapInterface
      * @JoinColumn(name="region_id", referencedColumnName="id")
      */
     private $mapRegion;
+
+    /**
+     * @ManyToOne(targetEntity="MapRegion")
+     * @JoinColumn(name="admin_region_id", referencedColumnName="id")
+     */
+    private $administratedRegion;
 
     /**
      * @OneToMany(targetEntity="Ship", mappedBy="map", fetch="EXTRA_LAZY")
