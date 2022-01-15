@@ -61,7 +61,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
      * @JoinColumn(name="region_id", referencedColumnName="id")
      * @var null|MapRegionInterface
      */
-    private ?MapRegionInterface $mapRegion;
+    private ?MapRegionInterface $adminRegion;
 
     public function getId(): int
     {
@@ -109,7 +109,7 @@ class ExploreableStarMap implements ExploreableStarMapInterface
     {
         $borderType = $this->mapBorderType;
         if ($borderType === null) {
-            if ($this->mapRegion === null || !$this->mapRegion->isAdministrated()) {
+            if ($this->adminRegion === null) {
                 if ($this->influenceArea !== null) {
                     $influenceArea = $this->influenceArea;
                     $base = $influenceArea->getBase();

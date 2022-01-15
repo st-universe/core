@@ -123,7 +123,7 @@ final class MapRepository extends EntityRepository implements MapRepositoryInter
 
         return $this->getEntityManager()
             ->createNativeQuery(
-                'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id, dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.region_id as region_id
+                'SELECT m.id,m.cx,m.cy,m.field_id,m.systems_id,m.bordertype_id,um.user_id, dbu.database_id as mapped, m.influence_area_id as influence_area_id, m.admin_region_id as region_id
                 FROM stu_map m
                 LEFT JOIN stu_user_map um
                     ON um.cy = m.cy AND um.cx = m.cx AND um.user_id = :userId
