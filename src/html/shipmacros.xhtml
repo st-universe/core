@@ -1070,7 +1070,7 @@
         <td class="darkbg"><strong>Rang</strong></td>
       </tr>
       <tr tal:repeat="data SHIP/getCrewlist">
-        <td tal:define="crewusername data/getCrew/getUser/getName">
+        <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
           <img
             src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
           <span style="vertical-align: top; color:red;" title="von ${crewusername}">*</span>
