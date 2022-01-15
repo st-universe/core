@@ -1073,7 +1073,8 @@
         <td tal:define="crewusername bbcode2txt:data/getCrew/getUser/getName">
           <img
             src="assets/crew/${data/getCrew/getRace/getGfxPath}/${data/getCrew/getGenderShort}/1_${data/getCrew/getType}.png" />
-          <span style="vertical-align: top; color:red;" title="von ${crewusername}">*</span>
+          <span tal:condition="data/isForeigner" style="vertical-align: top; color:red;"
+            title="von ${crewusername}">*</span>
           <a tal:condition="data/isForeigner"
             href="?B_DUMP_CREWMAN=1&id=${SHIP/getId}&scid=${data/getId}&sstr=${THIS/getSessionString}"
             onmouseover="cp('dump_${data/getId}','buttons/x2')" onmouseout="cp('dump_${data/getId}','buttons/x1')">
