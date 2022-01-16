@@ -555,6 +555,28 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
+    private const ADMIN_SIGNATURE_MAP_COUNT =
+    ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
+    where fs1.map_id = a.id
+    AND fs1.user_id = %1$d
+    AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+    AND fs1.time > %2$d) as d1c,
+    (select count(distinct fs2.ship_id) from stu_flight_sig fs2
+    where fs2.map_id = a.id
+    AND fs2.user_id = %1$d
+    AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+    AND fs2.time > %2$d) as d2c,
+    (select count(distinct fs3.ship_id) from stu_flight_sig fs3
+    where fs3.map_id = a.id
+    AND fs3.user_id = %1$d
+    AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+    AND fs3.time > %2$d) as d3c,
+    (select count(distinct fs4.ship_id) from stu_flight_sig fs4
+    where fs4.map_id = a.id
+    AND fs4.user_id = %1$d
+    AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+    AND fs4.time > %2$d) as d4c ';
+
     public function getSignaturesOuterSystem(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable
     {
         $rsm = new ResultSetMapping();
@@ -580,7 +602,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
                 WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
-                sprintf(self::FLIGHT_SIGNATURE_MAP_COUNT, GameEnum::USER_NOONE, 0)
+                sprintf(self::ADMIN_SIGNATURE_MAP_COUNT, $userId, 0)
             ),
             $rsm
         )->setParameters([
