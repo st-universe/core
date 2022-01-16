@@ -13,17 +13,17 @@ class SignaturePanel
 {
     private int $userId;
 
-    private array $data;
+    private $data = array();
 
     private LoggerUtilInterface $loggerUtil;
 
     function __construct(
         int $userId,
-        array $data,
+        &$entry = array(),
         LoggerUtilInterface $loggerUtil
     ) {
         $this->userId = $userId;
-        $this->data = $data;
+        $this->data = $entry;
         $this->loggerUtil = $loggerUtil;
     }
 
