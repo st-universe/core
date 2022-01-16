@@ -100,7 +100,7 @@ class SignaturePanel
         if ($this->headRow === null) {
             $min = $this->data['minx'];
             $max = $this->data['maxx'];
-            //TODO foreach with range
+
             foreach (range($min, $max) as $x) {
                 $row[]['value'] = $x;
             }
