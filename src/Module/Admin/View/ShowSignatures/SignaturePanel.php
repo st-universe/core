@@ -24,6 +24,7 @@ class SignaturePanel
     ) {
         $this->userId = $userId;
         $this->data = $data;
+        $this->loggerUtil = $loggerUtil;
     }
 
     private $rows = null;
