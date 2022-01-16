@@ -9,7 +9,6 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
-use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class ShowSignatures implements ViewControllerInterface
@@ -21,7 +20,6 @@ final class ShowSignatures implements ViewControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
-        ShipLoaderInterface $shipLoader,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         LoggerUtilInterface $loggerUtil
     ) {
@@ -52,7 +50,7 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $userId,
-            $data,
+            current($data),
             $this->loggerUtil
         ));
 
