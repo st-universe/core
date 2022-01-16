@@ -101,16 +101,8 @@ class SignaturePanel
             $min = $this->data['minx'];
             $max = $this->data['maxx'];
             //TODO foreach with range
-            while ($min <= $max) {
-                if ($min < 1) {
-                    $min++;
-                    continue;
-                }
-                if ($min > MapEnum::MAP_MAX_X) {
-                    break;
-                }
-                $row[]['value'] = $min;
-                $min++;
+            foreach (range($min, $max) as $x) {
+                $row[]['value'] = $x;
             }
 
             $this->headRow = $row;
