@@ -12,6 +12,7 @@ use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipCrew;
@@ -243,7 +244,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND c.user_id = :userId
                 AND ss.system_type = :systemType
                 AND ss.mode >= :mode
-                AND u.vac_active = false',
+                AND (u.vac_active = false OR u.vac_request_date < :vacationThreshold)',
                 Ship::class,
                 ShipCrew::class,
                 Crew::class,
@@ -253,7 +254,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         )->setParameters([
             'userId' => $userId,
             'systemType' => ShipSystemTypeEnum::SYSTEM_UPLINK,
-            'mode' => ShipSystemModeEnum::MODE_ON
+            'mode' => ShipSystemModeEnum::MODE_ON,
+            'vacationThreshold' => time() - PlayerEnum::VACATION_DELAY_IN_SECONDS
         ])
             ->getResult();
     }

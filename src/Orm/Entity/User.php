@@ -11,6 +11,7 @@ use Stu\Component\Alliance\AllianceEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\UserAwardEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 use Stu\Orm\Repository\AllianceRelationRepositoryInterface;
 use Stu\Orm\Repository\AllianceRepositoryInterface;
@@ -352,8 +353,7 @@ class User implements UserInterface
 
     public function isVacationRequestOldEnough(): bool
     {
-        //172800 = 48 hours in seconds
-        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > 172800);
+        return $this->isVacationMode() && (time() - $this->getVacationRequestDate() > PlayerEnum::VACATION_DELAY_IN_SECONDS);
     }
 
     public function isStorageNotification(): bool
