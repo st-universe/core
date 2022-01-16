@@ -46,11 +46,11 @@ final class ShowSignatures implements ViewControllerInterface
         $game->setTemplateFile('html/ajaxempty.xhtml');
         $game->setMacro('html/admin/adminmacros.xhtml/signaturescan');
 
-        $data = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
+        $result = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
 
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $userId,
-            current($data),
+            current($result),
             $this->loggerUtil
         ));
 
