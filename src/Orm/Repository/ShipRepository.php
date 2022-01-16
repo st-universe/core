@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
+use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
@@ -551,6 +552,43 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'syStart' => $cy - $sensorRange,
             'syEnd' => $cy + $sensorRange,
             'systemId' => ShipSystemTypeEnum::SYSTEM_CLOAK
+        ])->getResult();
+    }
+
+    public function getSignaturesOuterSystem(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('posx', 'posx', 'integer');
+        $rsm->addScalarResult('posy', 'posy', 'integer');
+        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
+        $rsm->addScalarResult('type', 'type', 'integer');
+
+        $rsm->addScalarResult('d1c', 'd1c', 'integer');
+        $rsm->addScalarResult('d2c', 'd2c', 'integer');
+        $rsm->addScalarResult('d3c', 'd3c', 'integer');
+        $rsm->addScalarResult('d4c', 'd4c', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                    (SELECT count(distinct b.id)
+                        FROM stu_ships b
+                        WHERE b.cx=a.cx AND b.cy=a.cy
+                        AND b.user_id = :userId) as shipcount
+                %s 
+                FROM stu_map a
+                LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
+                sprintf(self::FLIGHT_SIGNATURE_MAP_COUNT, GameEnum::USER_NOONE, 0)
+            ),
+            $rsm
+        )->setParameters([
+            'sxStart' => $minx,
+            'sxEnd' => $maxx,
+            'syStart' => $miny,
+            'syEnd' => $maxy,
+            'userId' => $userId
         ])->getResult();
     }
 

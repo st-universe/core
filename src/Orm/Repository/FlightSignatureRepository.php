@@ -79,6 +79,26 @@ final class FlightSignatureRepository extends EntityRepository implements Flight
             ->getResult();
     }
 
+    public function getSignatureRangeForUser(int $userId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('minx', 'minx', 'integer');
+        $rsm->addScalarResult('maxx', 'maxx', 'integer');
+        $rsm->addScalarResult('miny', 'miny', 'integer');
+        $rsm->addScalarResult('maxy', 'maxy', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            'SELECT min(m.cx) as minx, max(m.cx) as maxx, min(m.cy) as miny, max(m.cy) as maxy
+            FROM stu_flight_sig fs
+            JOIN stu_map m ON m.id = fs.map_id
+            WHERE fs.user_id = :userId
+            ',
+            $rsm
+        )
+            ->setParameter('userId', $userId)
+            ->getResult();
+    }
+
     public function deleteOldSignatures(int $threshold): void
     {
         $q = $this->getEntityManager()->createQuery(

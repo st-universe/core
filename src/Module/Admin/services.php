@@ -34,6 +34,7 @@ use Stu\Module\Admin\Action\Ticks\DoManualProcessTick2;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
+use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
 
@@ -68,6 +69,7 @@ return [
         ShowSystem::VIEW_IDENTIFIER => autowire(ShowSystem::class),
         ShowSystemEditField::VIEW_IDENTIFIER => autowire(ShowSystemEditField::class),
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
-        ShowMapInfluenceAreas::VIEW_IDENTIFIER => autowire(ShowMapInfluenceAreas::class)
+        ShowMapInfluenceAreas::VIEW_IDENTIFIER => autowire(ShowMapInfluenceAreas::class),
+        ShowSignatures::VIEW_IDENTIFIER => autowire(ShowSignatures::class)
     ]
 ];
