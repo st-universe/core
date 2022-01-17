@@ -310,7 +310,7 @@ final class GameController implements GameControllerInterface
             $this->talPage->setVar('CURRENT_RESEARCH', $currentResearch);
             $this->talPage->setVar('CURRENT_RESEARCH_STATUS', $researchStatusBar);
             $this->talPage->setVar('PM_NAVLET', $folder);
-            $colonies = $user->getColonies()->toArray();
+            $colonies = $userId === GameEnum::USER_NOONE ? [] : $user->getColonies()->toArray();
 
             usort(
                 $colonies,

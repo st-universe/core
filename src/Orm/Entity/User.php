@@ -132,7 +132,7 @@ class User implements UserInterface
     private $awards;
 
     /**
-     * @OneToMany(targetEntity="Colony", mappedBy="user", fetch="EAGER")
+     * @OneToMany(targetEntity="Colony", mappedBy="user")
      */
     private $colonies;
 
