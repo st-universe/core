@@ -15,4 +15,6 @@ interface UserAwardInterface
     public function getType(): int;
 
     public function setType(int $type): UserAwardInterface;
+
+    public function getDescription(): string;
 }

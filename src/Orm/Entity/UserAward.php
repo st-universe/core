@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Orm\Entity;
 
+use Stu\Component\Player\UserAwardEnum;
+
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\UserAwardRepository")
  * @Table(
@@ -61,5 +63,10 @@ class UserAward implements UserAwardInterface
     {
         $this->type = $type;
         return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return UserAwardEnum::getDescription($this->type);
     }
 }
