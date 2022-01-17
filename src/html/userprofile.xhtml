@@ -40,7 +40,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div style="float: left;">
 				<div style="width: 350px;">
 					<div class="divhead">Name</div>
@@ -85,45 +84,46 @@
 						</td>
 					</tr>
 				</table>
-				<div>
-					<div style="margin-left: 5px; float: left">
-						<table class="tcal">
-							<tr>
-								<th style="width: 300px;">Freunde</th>
-							</tr>
-							<tr>
-								<td>
-									<div tal:condition="not:PROFILE/getFriends" class="darkbg"
-										style="text-align: center;">Keine
-									</div>
-									<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends"
-										tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime"
-											tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
-											title="runtime" style="width: 55px; height: 55px;" /></a>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div style="margin-left: 5px; margin-top: 20px; float: left">
-						<table class="tcal">
-							<tr>
-								<th style="width: 300px;">Awards</th>
-							</tr>
-							<tr>
-								<td>
-									<div tal:condition="not:PROFILE/getAwards" class="darkbg"
-										style="text-align: center;">Keine
-									</div>
-									<div tal:repeat="data PROFILE/getAwards">
-										<img src="assets/awards/${data/getType}.png"
-											tal:attributes="title data/getDescription" title="runtime"
-											style="width: 55px; height: 55px;" />
-									</div>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
+			</div>
+		</div>
+
+		<div>
+			<div style="margin-left: 5px; float: left">
+				<table class="tcal">
+					<tr>
+						<th style="width: 300px;">Freunde</th>
+					</tr>
+					<tr>
+						<td>
+							<div tal:condition="not:PROFILE/getFriends" class="darkbg" style="text-align: center;">Keine
+							</div>
+							<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends"
+								tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime"
+									tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
+									title="runtime" style="width: 55px; height: 55px;" /></a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div style="margin-left: 5px; margin-top: 20px; float: left">
+				<table class="tcal">
+					<tr>
+						<th style="width: 300px;">Awards</th>
+					</tr>
+					<tr>
+						<td>
+							<div tal:condition="not:PROFILE/getAwards" class="darkbg" style="text-align: center;">Keine
+							</div>
+							<div tal:repeat="data PROFILE/getAwards">
+								<img src="assets/awards/${data/getType}.png" tal:attributes="title data/getDescription"
+									title="runtime" style="width: 55px; height: 55px;" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
 	</tal:block>
 </tal:block>
 
