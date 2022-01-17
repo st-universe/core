@@ -85,7 +85,7 @@
 						<div tal:condition="not:PROFILE/getAwards" class="darkbg" style="text-align: center;">Keine
 						</div>
 						<div tal:repeat="data PROFILE/getAwards">
-							<img src="assets/awards/${data/getType}.png" tal:attributes="title bbcode2txt:data/getName"
+							<img src="assets/awards/${data/getType}.png" tal:attributes="title data/getDescription"
 								title="runtime" style="width: 55px; height: 55px;" />
 						</div>
 					</td>
