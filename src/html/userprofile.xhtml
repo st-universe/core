@@ -2,120 +2,128 @@
 <tal:block metal:use-macro="html/sitemacros.xhtml/sitedefaults">
 	<tal:block metal:fill-slot="body">
 		<tal:block metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<div style="width: 180px; float: left; text-align: center;">
-			<img src="runtime" style="width:150px;height:150px;" tal:attributes="src PROFILE/getFullAvatarPath" />
-			<div style="width: 100%;" tal:condition="not:IS_PROFILE_CURRENT_USER">
-				<br />
-				<br />
-				<br />
-				<div style="margin: auto; width: 530px;" class="divhead">Aktionen</div>
-				<div style="margin: auto; width: 530px; text-align: left;" class="divbody">
-					<table style="width: 100%;" cellpadding="0" cellspacing="0">
-						<tr>
-							<td style="text-align: center; width: 6%">
-								<metal:block metal:use-macro="html/macros.xhtml/pmwindow"
-									tal:define="id PROFILE/getId" />
-							</td>
-							<td style="text-align: center; width: 47%">
-								<tal:block tal:define="contact CONTACT; handle THIS/getUniqId">
-									<tal:block tal:condition="contact">
-										<span tal:attributes="id handle">
-											<metal:macro tal:define="div handle"
-												metal:use-macro="html/commmacros.xhtml/clmodeview" />
-										</span>
+
+		<div style="width: 530px; float: left;">
+			<div style="width: 180px; float: left; text-align: center;">
+				<img src="runtime" style="width:150px;height:150px;" tal:attributes="src PROFILE/getFullAvatarPath" />
+				<div style="width: 100%;" tal:condition="not:IS_PROFILE_CURRENT_USER">
+					<br />
+					<br />
+					<br />
+					<div style="margin: auto; width: 530px;" class="divhead">Aktionen</div>
+					<div style="margin: auto; width: 530px; text-align: left;" class="divbody">
+						<table style="width: 100%;" cellpadding="0" cellspacing="0">
+							<tr>
+								<td style="text-align: center; width: 6%">
+									<metal:block metal:use-macro="html/macros.xhtml/pmwindow"
+										tal:define="id PROFILE/getId" />
+								</td>
+								<td style="text-align: center; width: 47%">
+									<tal:block tal:define="contact CONTACT; handle THIS/getUniqId">
+										<tal:block tal:condition="contact">
+											<span tal:attributes="id handle">
+												<metal:macro tal:define="div handle"
+													metal:use-macro="html/commmacros.xhtml/clmodeview" />
+											</span>
+										</tal:block>
+										<tal:block tal:condition="not:contact"
+											tal:define="divname string:selector_${handle};div handle; userid PROFILE/getId"
+											metal:use-macro="html/macros.xhtml/contactbutton" />
 									</tal:block>
-									<tal:block tal:condition="not:contact"
-										tal:define="divname string:selector_${handle};div handle; userid PROFILE/getId"
-										metal:use-macro="html/macros.xhtml/contactbutton" />
-								</tal:block>
-							</td>
-							<td style="text-align: center; width: 47%">
-								<metal:macro metal:use-macro="html/macros.xhtml/ignorebutton"
-									tal:define="div string:ignore; userid PROFILE/getId" />
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div style="float: left;">
-			<div style="width: 350px;">
-				<div class="divhead">Name</div>
-				<div class="divbody">
-					<img src="assets/rassen/${PROFILE/getFactionId}s.png" />
-					<span tal:replace="structure bbcode:PROFILE/getName">NAME</span>
-				</div>
-				<br />
-				<tal:block tal:condition="PROFILE/getAllianceId">
-					<div class="divhead">Allianz</div>
-					<div class="divbody">
-						<a href="alliance.php?SHOW_ALLIANCE=1&id=${PROFILE/getAllianceId}"
-							tal:content="structure bbcode:PROFILE/getAlliance/getName">ALLIANZ</a>
+								</td>
+								<td style="text-align: center; width: 47%">
+									<metal:macro metal:use-macro="html/macros.xhtml/ignorebutton"
+										tal:define="div string:ignore; userid PROFILE/getId" />
+								</td>
+							</tr>
+						</table>
 					</div>
-				</tal:block>
-				<br />
-				<div class="divhead">Siedler seit</div>
-				<div class="divbody" tal:content="datetime:PROFILE/getCreationDate">CDATE</div>
+				</div>
 			</div>
-		</div>
-		<div style="margin-left: 5px; float: left">
-			<table class="tcal">
-				<tr>
-					<th style="width: 300px;">Freunde</th>
-				</tr>
-				<tr>
-					<td>
-						<div tal:condition="not:PROFILE/getFriends" class="darkbg" style="text-align: center;">Keine
+
+			<div style="float: left;">
+				<div style="width: 350px;">
+					<div class="divhead">Name</div>
+					<div class="divbody">
+						<img src="assets/rassen/${PROFILE/getFactionId}s.png" />
+						<span tal:replace="structure bbcode:PROFILE/getName">NAME</span>
+					</div>
+					<br />
+					<tal:block tal:condition="PROFILE/getAllianceId">
+						<div class="divhead">Allianz</div>
+						<div class="divbody">
+							<a href="alliance.php?SHOW_ALLIANCE=1&id=${PROFILE/getAllianceId}"
+								tal:content="structure bbcode:PROFILE/getAlliance/getName">ALLIANZ</a>
 						</div>
-						<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends"
-							tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime"
-								tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
-								title="runtime" style="width: 55px; height: 55px;" /></a>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div style="margin-left: 5px; margin-top: 20px; float: left">
-			<table class="tcal">
-				<tr>
-					<th style="width: 300px;">Awards</th>
-				</tr>
-				<tr>
-					<td>
-						<div tal:condition="not:PROFILE/getAwards" class="darkbg" style="text-align: center;">Keine
-						</div>
-						<div tal:repeat="data PROFILE/getAwards">
-							<img src="assets/awards/${data/getType}.png" tal:attributes="title data/getDescription"
-								title="runtime" style="width: 55px; height: 55px;" />
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<br style="clear: both;" />
-		<br />
-		<tal:block tal:condition="PROFILE/getDescription">
-			<div class="divhead" style="width: 530px;">Beschreibung</div>
-			<div class="divbody" style="width: 530px; word-wrap: break-word;"
-				tal:content="structure nl2brBbCode:PROFILE/getDescription">DESCRIPTION</div>
+					</tal:block>
+					<br />
+					<div class="divhead">Siedler seit</div>
+					<div class="divbody" tal:content="datetime:PROFILE/getCreationDate">CDATE</div>
+				</div>
+			</div>
+
+			<br style="clear: both;" />
 			<br />
-		</tal:block>
-		<div style="width: 530px;">
-			<table class="tcal">
-				<tr>
-					<th>Plots</th>
-				</tr>
-				<tr tal:condition="not:RPG_PLOTS">
-					<td>Keine</td>
-				</tr>
-				<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data RPG_PLOTS">
-					<td>
-						<a href="comm.php?SHOW_PLOT=1&plotid=${data/getPlotId}"
-							tal:content="structure data/getRpgPlot/getTitle">NAME</a>
-					</td>
-				</tr>
-			</table>
-		</div>
+			<tal:block tal:condition="PROFILE/getDescription">
+				<div class="divhead" style="width: 530px;">Beschreibung</div>
+				<div class="divbody" style="width: 530px; word-wrap: break-word;"
+					tal:content="structure nl2brBbCode:PROFILE/getDescription">DESCRIPTION</div>
+				<br />
+			</tal:block>
+			<div style="width: 530px;">
+				<table class="tcal">
+					<tr>
+						<th>Plots</th>
+					</tr>
+					<tr tal:condition="not:RPG_PLOTS">
+						<td>Keine</td>
+					</tr>
+					<tr tal:attributes="class string:row${repeat/data/odd}" tal:repeat="data RPG_PLOTS">
+						<td>
+							<a href="comm.php?SHOW_PLOT=1&plotid=${data/getPlotId}"
+								tal:content="structure data/getRpgPlot/getTitle">NAME</a>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<div style="margin-left: 5px; float: left">
+						<table class="tcal">
+							<tr>
+								<th style="width: 300px;">Freunde</th>
+							</tr>
+							<tr>
+								<td>
+									<div tal:condition="not:PROFILE/getFriends" class="darkbg"
+										style="text-align: center;">Keine
+									</div>
+									<a href="userprofile.php?uid=${data/getId}" tal:condition="PROFILE/getFriends"
+										tal:repeat="data PROFILE/getFriends" style="padding: 5px;"><img src="runtime"
+											tal:attributes="src data/getFullAvatarPath; title bbcode2txt:data/getName"
+											title="runtime" style="width: 55px; height: 55px;" /></a>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div style="margin-left: 5px; margin-top: 20px; float: left">
+						<table class="tcal">
+							<tr>
+								<th style="width: 300px;">Awards</th>
+							</tr>
+							<tr>
+								<td>
+									<div tal:condition="not:PROFILE/getAwards" class="darkbg"
+										style="text-align: center;">Keine
+									</div>
+									<div tal:repeat="data PROFILE/getAwards">
+										<img src="assets/awards/${data/getType}.png"
+											tal:attributes="title data/getDescription" title="runtime"
+											style="width: 55px; height: 55px;" />
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 	</tal:block>
 </tal:block>
 
