@@ -68,7 +68,7 @@ implements
         $em = $this->getEntityManager();
 
         $em->remove($colonyShipRepair);
-        $em->flush();
+        //$em->flush();
     }
 
     public function truncateByShipId(int $shipId): void

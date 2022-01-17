@@ -27,7 +27,7 @@ final class ShipCrewRepository extends EntityRepository implements ShipCrewRepos
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function getByShip(int $shipId): array

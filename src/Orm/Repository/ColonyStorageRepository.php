@@ -31,7 +31,7 @@ final class ColonyStorageRepository extends EntityRepository implements ColonySt
         $em = $this->getEntityManager();
 
         $em->remove($post);
-        $em->flush();
+        //$em->flush();
     }
 
     public function getByColony(int $colonyId, int $viewable = 1): array
