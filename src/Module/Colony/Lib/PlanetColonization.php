@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Colony\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingManagerInterface;
 use Stu\Component\Colony\ColonyEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
@@ -32,6 +33,8 @@ final class PlanetColonization implements PlanetColonizationInterface
 
     private BuildingManagerInterface $buildingManager;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
         CommodityRepositoryInterface $commodityRepository,
@@ -39,7 +42,8 @@ final class PlanetColonization implements PlanetColonizationInterface
         ColonyLibFactoryInterface $colonyLibFactory,
         ColonyRepositoryInterface $colonyRepository,
         UserRepositoryInterface $userRepository,
-        BuildingManagerInterface $buildingManager
+        BuildingManagerInterface $buildingManager,
+        EntityManagerInterface $entityManager
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->commodityRepository = $commodityRepository;
@@ -48,6 +52,7 @@ final class PlanetColonization implements PlanetColonizationInterface
         $this->colonyRepository = $colonyRepository;
         $this->userRepository = $userRepository;
         $this->buildingManager = $buildingManager;
+        $this->entityManager = $entityManager;
     }
 
     public function colonize(
@@ -85,6 +90,8 @@ final class PlanetColonization implements PlanetColonizationInterface
 
         $this->colonyRepository->save($colony);
         $this->planetFieldRepository->save($field);
+
+        $this->entityManager->flush();
 
         $this->colonyStorageManager->upperStorage(
             $colony,
