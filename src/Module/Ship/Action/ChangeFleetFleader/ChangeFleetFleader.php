@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
 final class ChangeFleetFleader implements ActionControllerInterface
@@ -52,6 +53,8 @@ final class ChangeFleetFleader implements ActionControllerInterface
         if ($target->getUser() !== $ship->getUser()) {
             return;
         }
+
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $fleet = $ship->getFleet();
         $fleet->setLeadShip($target);
