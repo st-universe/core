@@ -415,7 +415,8 @@ final class GameController implements GameControllerInterface
 
     public function redirectTo(string $href): void
     {
-        $this->entityManager->commit();;
+        $this->entityManager->flush();
+        $this->entityManager->commit();
         header('Location: ' . $href);
         exit;
     }
