@@ -44,7 +44,7 @@ final class ShipStorageRepository extends EntityRepository implements ShipStorag
         $em = $this->getEntityManager();
 
         $em->remove($shipStorage);
-        $em->flush();
+        //$em->flush();
     }
 
     public function getByUserAccumulated(int $userId): iterable
