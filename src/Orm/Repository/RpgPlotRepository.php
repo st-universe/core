@@ -82,7 +82,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
                     WHERE NOT EXISTS (SELECT kn.id
                                     FROM %s kn
                                     WHERE kn.plot_id = pl.id)
-                    AND start_date < :deletionThreshold',
+                    AND pl.start_date < :deletionThreshold',
                     RpgPlot::class,
                     KnPost::class
                 )
