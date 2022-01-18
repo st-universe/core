@@ -378,7 +378,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 JOIN %s u
                 WITH s.user_id = u.id
                 WHERE s.user_id > 100
-                AND (((SELECT count(*)
+                AND (((SELECT count(sc.id)
                     FROM %s sc
                     WHERE sc.ships_id = s.id) > 0)
                     OR
