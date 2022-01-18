@@ -64,8 +64,6 @@ final class ShowSensorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        $this->loggerUtil->init();
-
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId,

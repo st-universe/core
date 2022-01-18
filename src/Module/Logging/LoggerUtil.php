@@ -22,6 +22,7 @@ final class LoggerUtil implements LoggerUtilInterface
     public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
+        $this->doLog = false;
     }
 
     public function init(string $channel = 'stu', int $level = LoggerEnum::LEVEL_INFO): void

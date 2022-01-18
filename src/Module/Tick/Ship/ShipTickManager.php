@@ -120,7 +120,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->removeEmptyEscapePods();
         if ($this->loggerUtil->doLog()) {
             $endTime = microtime(true);
-            $this->loggerUtil->log(sprintf("\t\removeEmptyEscapePods, seconds: %F", $endTime - $startTime));
+            $this->loggerUtil->log(sprintf("\t\tremoveEmptyEscapePods, seconds: %F", $endTime - $startTime));
         }
         //$this->loggerUtil->init();
 

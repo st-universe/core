@@ -130,8 +130,6 @@ final class GameController implements GameControllerInterface
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
         $this->loggerUtil = $loggerUtil;
-
-        $this->loggerUtil->init();
     }
 
     public function setView(string $view, array $viewContext = []): void
@@ -598,8 +596,6 @@ final class GameController implements GameControllerInterface
                     throw new SemaphoreException("Error removing Semaphore!");
                 }
             }
-
-            $this->loggerUtil->init();
         }
     }
 

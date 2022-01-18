@@ -108,7 +108,6 @@ final class ColonyTick implements ColonyTickInterface
 
     public function work(ColonyInterface $colony, array $commodityArray): void
     {
-        $this->loggerUtil->init('tick');
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);
         }

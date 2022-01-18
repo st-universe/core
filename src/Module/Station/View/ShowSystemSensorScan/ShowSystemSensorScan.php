@@ -36,8 +36,6 @@ final class ShowSystemSensorScan implements ViewControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        $this->loggerUtil->init();
-
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(

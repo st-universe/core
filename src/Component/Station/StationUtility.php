@@ -41,7 +41,6 @@ final class StationUtility implements StationUtilityInterface
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->loggerUtil = $loggerUtil;
-        $this->loggerUtil->init();
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {

@@ -38,8 +38,6 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
-
         $ship = $this->shipRepository->find($this->request->getShipId());
         $colony = $this->colonyRepository->find($this->request->getColonyId());
 

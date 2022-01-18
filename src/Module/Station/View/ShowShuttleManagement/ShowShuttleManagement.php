@@ -34,8 +34,6 @@ final class ShowShuttleManagement implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
-
         $stationId = $this->request->getStationId();
         $shipId = $this->request->getShipId();
 

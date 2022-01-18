@@ -33,8 +33,6 @@ final class ShowStationCosts implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
-
         $game->setTemplateVar('ERROR', true);
 
         $ship = $this->shipLoader->getByIdAndUser(

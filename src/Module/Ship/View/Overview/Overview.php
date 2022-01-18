@@ -38,7 +38,6 @@ final class Overview implements ViewControllerInterface
         $userId = $game->getUser()->getId();
 
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        $this->loggerUtil->init();
 
         $this->loggerUtil->log(sprintf('Shiplist-start, timestamp: %F', microtime(true)));
 

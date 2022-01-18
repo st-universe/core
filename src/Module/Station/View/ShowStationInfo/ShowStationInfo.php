@@ -34,8 +34,6 @@ final class ShowStationInfo implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init();
-
         $game->setTemplateVar('ERROR', true);
 
         $game->setPageTitle(_('Baukosten'));

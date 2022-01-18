@@ -35,8 +35,6 @@ final class ShowSignatures implements ViewControllerInterface
             return;
         }
 
-        $this->loggerUtil->init();
-
         $shipId = request::postInt('shipid');
         $userId = request::postInt('userid');
         $allyId = request::postInt('allyid');

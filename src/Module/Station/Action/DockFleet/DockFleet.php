@@ -55,8 +55,6 @@ final class DockFleet implements ActionControllerInterface
     public function handle(GameControllerInterface $game): void
     {
         //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        $this->loggerUtil->init();
-
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();

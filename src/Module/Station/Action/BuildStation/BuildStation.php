@@ -69,8 +69,6 @@ final class BuildStation implements ActionControllerInterface
     {
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
-        $this->loggerUtil->init();
-
         $game->setTemplateVar('ERROR', true);
 
         $ship = $this->shipLoader->getByIdAndUser(

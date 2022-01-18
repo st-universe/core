@@ -67,8 +67,6 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         array $defendingShips,
         bool $oneWay = false
     ): void {
-        $this->loggerUtil->init();
-
         $this->attacker = $attackingShips;
         $this->defender = $defendingShips;
         $this->oneWay = $oneWay;
