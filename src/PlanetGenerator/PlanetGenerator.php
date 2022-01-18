@@ -141,14 +141,6 @@ final class PlanetGenerator implements PlanetGeneratorInterface
             $res = $this->shadd($res, 704, "21");
             $res = $this->shadd($res, 705, "21");
             $res = $this->shadd($res, 706, "21");
-
-            // trit
-            $res = $this->shadd($res, 701, "22");
-            $res = $this->shadd($res, 702, "22");
-            $res = $this->shadd($res, 703, "22");
-            $res = $this->shadd($res, 704, "22");
-            $res = $this->shadd($res, 705, "22");
-            $res = $this->shadd($res, 706, "22");
         }
 
         return $res;
