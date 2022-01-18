@@ -79,7 +79,7 @@ final class RpgPlotRepository extends EntityRepository implements RpgPlotReposit
                 sprintf(
                     'SELECT pl
                     FROM %s pl
-                    WHERE NOT EXISTS (SELECT *
+                    WHERE NOT EXISTS (SELECT kn.id
                                     FROM %s kn
                                     WHERE kn.plot_id = pl.id)
                     AND start_date < :deletionThreshold',
