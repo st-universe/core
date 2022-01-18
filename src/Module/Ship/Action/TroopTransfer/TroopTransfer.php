@@ -306,8 +306,8 @@ final class TroopTransfer implements ActionControllerInterface
 
         if ($amount > 0) {
             if (
-                $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
-                && $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+                $target->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)
+                && $target->getShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)->getMode() == ShipSystemModeEnum::MODE_OFF
             ) {
                 $this->shipSystemManager->activate($target, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
             }

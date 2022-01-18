@@ -42,7 +42,8 @@ final class OrbitShipItem implements OrbitShipItemInterface
     {
         return $this->ship->getCrewCount() == 0
             && $this->ship->getBuildplan() !== null
-            && $this->ship->getBuildplan()->getCrew() > 0;
+            && $this->ship->getBuildplan()->getCrew() > 0
+            && $this->ship->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT);
     }
 
     public function getCrewCount(): int

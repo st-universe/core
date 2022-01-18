@@ -195,7 +195,9 @@ final class ManageOrbitalShips implements ActionControllerInterface
                         $shipobj->getName()
                     );
 
-                    $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+                    if ($shipobj->hasShipSystem(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
+                        $this->shipSystemManager->activate($shipobj, ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT, true);
+                    }
                 }
             }
             if (
