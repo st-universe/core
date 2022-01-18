@@ -629,7 +629,7 @@ class Colony implements ColonyInterface
     {
         if ($this->positive_effect_primary === null) {
             $production = $this->getProduction();
-            // XXX we should use a faction-factory...
+            // TODO we should use a faction-factory...
             switch ($this->getUser()->getFactionId()) {
                 case FactionEnum::FACTION_FEDERATION:
                     $key = ColonyEnum::GOOD_SATISFACTION_FED_PRIMARY;

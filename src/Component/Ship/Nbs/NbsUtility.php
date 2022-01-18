@@ -46,33 +46,39 @@ final class NbsUtility implements NbsUtilityInterface
         int $sysMapId = null
     ): void {
 
-        $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
-            $ship,
-            true,
-            $tachyonActive,
-            $mapId,
-            $sysMapId
-        ), $game->getUser()->getId());
-
-        $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
-            $ship,
-            false,
-            $tachyonActive,
-            $mapId,
-            $sysMapId
-        ), $game->getUser()->getId());
-
-        $fleetNbs = new FleetNfsIterator(
-            $this->shipRepository->getFleetShipsScannerResults(
+        if ($ship->getNbs()) {
+            $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
+                true,
                 $tachyonActive,
                 $mapId,
                 $sysMapId
-            ),
-            $ship,
-            $session,
-            $game->getUser()->getId()
-        );
+            ), $game->getUser()->getId());
+
+            $singleShipsNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
+                $ship,
+                false,
+                $tachyonActive,
+                $mapId,
+                $sysMapId
+            ), $game->getUser()->getId());
+
+            $fleetNbs = new FleetNfsIterator(
+                $this->shipRepository->getFleetShipsScannerResults(
+                    $ship,
+                    $tachyonActive,
+                    $mapId,
+                    $sysMapId
+                ),
+                $ship,
+                $session,
+                $game->getUser()->getId()
+            );
+        } else {
+            $stationNbs = [];
+            $singleShipsNbs = [];
+            $fleetNbs = [];
+        }
 
         $game->setTemplateVar(
             'HAS_NBS',
