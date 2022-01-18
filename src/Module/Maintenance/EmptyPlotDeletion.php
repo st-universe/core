@@ -3,6 +3,7 @@
 namespace Stu\Module\Maintenance;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 
 final class EmptyPlotDeletion implements MaintenanceHandlerInterface
@@ -12,10 +13,14 @@ final class EmptyPlotDeletion implements MaintenanceHandlerInterface
 
     private RpgPlotRepositoryInterface $rpgPlotRepository;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
-        RpgPlotRepositoryInterface $rpgPlotRepository
+        RpgPlotRepositoryInterface $rpgPlotRepository,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->rpgPlotRepository = $rpgPlotRepository;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function handle(): void
