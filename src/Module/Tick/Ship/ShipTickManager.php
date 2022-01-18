@@ -117,10 +117,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($this->shipRepository->getPlayerShipsForTick() as $ship) {
             //echo "Processing Ship ".$ship->getId()." at ".microtime()."\n";
 
-            //handle ship only if vacation mode not active
-            if (!$ship->getUser()->isVacationRequestOldEnough()) {
-                $this->shipTick->work($ship);
-            }
+            $this->shipTick->work($ship);
         }
         $this->handleNPCShips();
         $this->lowerTrumfieldHull();

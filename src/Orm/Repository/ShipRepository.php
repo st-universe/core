@@ -375,19 +375,24 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 FROM %s s
                 JOIN %s p
                 WITH s.plans_id = p.id
+                JOIN %s u
+                WITH s.user_id = u.id
                 WHERE s.user_id > 100
                 AND (((SELECT count(*)
                     FROM %s sc
                     WHERE sc.ships_id = s.id) > 0)
                     OR
                     s.state = :underConstruction) 
-                AND p.crew > 0',
+                AND p.crew > 0
+                AND (u.vac_active = false OR u.vac_request_date < :vacationThreshold)',
                 Ship::class,
                 ShipBuildplan::class,
+                User::class,
                 ShipCrew::class
             )
         )->setParameters([
-            'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
+            'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION,
+            'vacationThreshold' => time() - PlayerEnum::VACATION_DELAY_IN_SECONDS
         ])->getResult();
     }
 
