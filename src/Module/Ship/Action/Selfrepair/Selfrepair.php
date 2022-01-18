@@ -61,8 +61,9 @@ final class Selfrepair implements ActionControllerInterface
         $ship = $this->shipLoader->getByIdAndUser(request::postIntFatal('id'), $userId);
 
         $repairType = request::postInt('partschoice');
+        $systemType = request::postInt('sid');
 
-        if (!$repairType) {
+        if (!$repairType || !$systemType) {
             return;
         }
 
@@ -71,12 +72,9 @@ final class Selfrepair implements ActionControllerInterface
         }
 
         $repairOptions = $this->selfrepairUtil->determineRepairOptions($ship);
-
-        if (!array_key_exists(request::postIntFatal('sid'), $repairOptions)) {
+        if (!array_key_exists($systemType, $repairOptions)) {
             return;
         }
-
-        $systemType = request::postIntFatal('sid');
 
         $isInstantRepair = request::postString('instantrepair');
 
