@@ -74,25 +74,27 @@ final class NbsUtility implements NbsUtilityInterface
                 $session,
                 $game->getUser()->getId()
             );
+
+            $game->setTemplateVar(
+                'HAS_NBS',
+                $fleetNbs->count() > 0 || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
+            );
+
+            $game->setTemplateVar(
+                'CLOAK_NBS',
+                !$tachyonActive
+                    && $ship->getTachyonState()
+                    && $this->shipRepository->isCloakedShipAtLocation($sysMapId, $mapId, $ship->getUser()->getId())
+            );
+            $game->setTemplateVar('FLEET_NBS', $fleetNbs);
+            $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
+            $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
         } else {
-            $stationNbs = [];
-            $singleShipsNbs = [];
-            $fleetNbs = [];
+            $game->setTemplateVar('HAS_NBS', false);
+            $game->setTemplateVar('CLOAK_NBS', false);
+            $game->setTemplateVar('FLEET_NBS', []);
+            $game->setTemplateVar('STATION_NBS', null);
+            $game->setTemplateVar('SHIP_NBS', null);
         }
-
-        $game->setTemplateVar(
-            'HAS_NBS',
-            $fleetNbs->count() > 0 || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
-        );
-
-        $game->setTemplateVar(
-            'CLOAK_NBS',
-            !$tachyonActive
-                && $ship->getTachyonState()
-                && $this->shipRepository->isCloakedShipAtLocation($sysMapId, $mapId, $ship->getUser()->getId())
-        );
-        $game->setTemplateVar('FLEET_NBS', $fleetNbs);
-        $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
-        $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
     }
 }
