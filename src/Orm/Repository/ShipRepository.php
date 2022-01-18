@@ -392,7 +392,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                     OR
                         (s.state = :underConstruction)
                     OR
-                        (p.crew == 0)) 
+                        (p.crew = 0)) 
                 AND p.crew > 0
                 AND (u.vac_active = false OR u.vac_request_date < :vacationThreshold)',
                 Ship::class,
