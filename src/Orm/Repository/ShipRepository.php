@@ -14,6 +14,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
+use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Ship;
 use Stu\Orm\Entity\ShipBuildplan;
@@ -57,11 +58,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     ): int {
         return (int) $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT COUNT(s) FROM %s s WHERE s.user_id = :userId AND s.rumps_id IN (
+                'SELECT COUNT(s)
+                FROM %s s
+                JOIN %s bp
+                WITH s.plans_id = bp.id
+                WHERE s.user_id = :userId AND s.rumps_id IN (
                     SELECT rs.rumps_id FROM %s rs WHERE rs.special = :specialAbilityId
-                )',
+                )
+                %s',
                 Ship::class,
-                ShipRumpSpecial::class
+                ShipBuildplan::class,
+                ShipRumpSpecial::class,
+                $specialAbilityId === ShipRumpSpecialAbilityEnum::COLONIZE ? 'AND bp.crew = 0' : ''
             )
         )->setParameters([
             'userId' => $userId,
