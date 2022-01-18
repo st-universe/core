@@ -20,11 +20,12 @@ $uphases = 0;
 // Surface Phases
 
 $phase[$phases][PlanetGenerator::COLGEN_MODE] = "forced rim";
+$phase[$phases][PlanetGenerator::COLGEN_MODE] = "below;
 $phase[$phases][PlanetGenerator::COLGEN_DESCRIPTION] = "Gestein";
 $phase[$phases][PlanetGenerator::COLGEN_NUM] = 1;
 $phase[$phases][PlanetGenerator::COLGEN_FROM] = array("0" => "1000");
 $phase[$phases][PlanetGenerator::COLGEN_TO] = array("0" => "6301");
-$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = 0;
+$phase[$phases][PlanetGenerator::COLGEN_ADJACENT] = array(900);
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $phase[$phases][PlanetGenerator::COLGEN_FRAGMENTATION] = 0;
