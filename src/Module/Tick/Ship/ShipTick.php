@@ -73,11 +73,6 @@ final class ShipTick implements ShipTickInterface
             return;
         }
 
-        // ship offline
-        if ($ship->getCrewCount() == 0 && $ship->getBuildplan()->getCrew() > 0) {
-            return;
-        }
-
         // leave ship
         if ($ship->getCrewCount() > 0 && !$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_LIFE_SUPPORT)) {
             $this->msg[] = _('Die Lebenserhaltung ist ausgefallen:');

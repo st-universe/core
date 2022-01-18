@@ -7,15 +7,16 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Component\Building\BuildingEnum;
-use Stu\Component\Game\GameEnum;
 use Stu\Component\Ship\FlightSignatureVisibilityEnum;
 use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipRumpEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
 use Stu\Orm\Entity\Crew;
 use Stu\Orm\Entity\Ship;
+use Stu\Orm\Entity\ShipBuildplan;
 use Stu\Orm\Entity\ShipCrew;
 use Stu\Orm\Entity\ShipRump;
 use Stu\Orm\Entity\ShipSystem;
@@ -370,10 +371,24 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT s FROM %s s WHERE s.user_id > 100 AND s.plans_id > 0',
-                Ship::class
+                'SELECT s
+                FROM %s s
+                JOIN %s p
+                WITH s.plans_id = p.id
+                WHERE s.user_id > 100
+                AND (((SELECT count(*)
+                    FROM %s sc
+                    WHERE sc.ships_id = s.id) > 0)
+                    OR
+                    s.state = :underConstruction) 
+                AND p.crew > 0',
+                Ship::class,
+                ShipBuildplan::class,
+                ShipCrew::class
             )
-        )->getResult();
+        )->setParameters([
+            'underConstruction' => ShipStateEnum::SHIP_STATE_UNDER_CONSTRUCTION
+        ])->getResult();
     }
 
     public function getNpcShipsForTick(): iterable
