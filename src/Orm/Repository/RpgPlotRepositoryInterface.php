@@ -38,5 +38,10 @@ interface RpgPlotRepositoryInterface extends ObjectRepository
     /**
      * @return RpgPlotInterface[]
      */
+    public function getEmptyOldPlots(int $maxAge): array;
+
+    /**
+     * @return RpgPlotInterface[]
+     */
     public function getOrderedList(): array;
 }

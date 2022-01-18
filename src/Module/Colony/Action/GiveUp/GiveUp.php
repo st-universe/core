@@ -7,7 +7,6 @@ namespace Stu\Module\Colony\Action\GiveUp;
 use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Colony\Lib\ColonyResetterInterface;
-//use Stu\Module\Colony\View\ShowColony\ShowColony;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\PlayerSetting\Lib\PlayerEnum;
