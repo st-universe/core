@@ -39,6 +39,11 @@ final class ChangeUserName implements ActionControllerInterface
             return;
         }
 
+        if (strrpos(strtoupper($text), 'UMODE')) {
+            $game->addInformation(_('Das Suffix UMODE wird automatisch an den Namen angehängt!'));
+            return;
+        }
+
         $value = CleanTextUtils::clearEmojis($text);
         $valueWithoutMarkup = $this->bbcodeParser->parse($value)->getAsText();
 
