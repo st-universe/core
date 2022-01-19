@@ -39,7 +39,7 @@ final class ChangeUserName implements ActionControllerInterface
             return;
         }
 
-        if (strrpos(strtoupper($text), 'UMODE')) {
+        if (strrpos(strtoupper($text), 'UMODE') || strrpos(strtoupper($text), 'U-MODE') || strrpos(strtoupper($text), 'URLAUB')) {
             $game->addInformation(_('Das Suffix UMODE wird automatisch an den Namen angehängt!'));
             return;
         }
