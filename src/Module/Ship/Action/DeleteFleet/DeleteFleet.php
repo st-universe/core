@@ -47,14 +47,14 @@ final class DeleteFleet implements ActionControllerInterface
 
         $fleet = $ship->getFleet();
 
+        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship));
+
         foreach ($fleet->getShips() as $fleetShip) {
             $fleetShip->setFleet(null);
             $fleetShip->setIsFleetLeader(false);
 
             $this->shipLoader->save($fleetShip);
         }
-
-        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship));
 
         $this->fleetRepository->delete($fleet);
 
