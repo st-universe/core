@@ -49,6 +49,8 @@ final class ShipMover implements ShipMoverInterface
 
     private AstroEntryRepositoryInterface $astroEntryRepository;
 
+    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
@@ -72,7 +74,8 @@ final class ShipMover implements ShipMoverInterface
         ApplyDamageInterface $applyDamage,
         AlertRedHelperInterface $alertRedHelper,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
-        AstroEntryRepositoryInterface $astroEntryRepository
+        AstroEntryRepositoryInterface $astroEntryRepository,
+        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -85,6 +88,7 @@ final class ShipMover implements ShipMoverInterface
         $this->alertRedHelper = $alertRedHelper;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->astroEntryRepository = $astroEntryRepository;
+        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
     }
 
     private function setDestination(
@@ -494,6 +498,7 @@ final class ShipMover implements ShipMoverInterface
             if ($ship->getSystem() !== null) {
                 $this->checkAstronomicalStuff($ship->getTraktorShip(), $nextField);
             }
+            $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship));
         }
 
         //create flight signatures

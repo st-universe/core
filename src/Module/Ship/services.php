@@ -137,6 +137,8 @@ use Stu\Module\Ship\Action\TransferFromAccount\TransferFromAccount;
 use Stu\Module\Ship\Action\TransferToAccount\TransferToAccount;
 use Stu\Module\Ship\Action\UndockShip\UndockShip;
 use Stu\Module\Ship\Action\UnloadBattery\UnloadBattery;
+use Stu\Module\Ship\Lib\CancelColonyBlockOrDefend;
+use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\DockPrivilegeUtility;
 use Stu\Module\Ship\Lib\DockPrivilegeUtilityInterface;
 use Stu\Module\Ship\Lib\ShipCreator;
@@ -196,6 +198,7 @@ return [
     ShipLeaverInterface::class => autowire(ShipLeaver::class),
     TroopTransferUtilityInterface::class => autowire(TroopTransferUtility::class),
     DockPrivilegeUtilityInterface::class => autowire(DockPrivilegeUtility::class),
+    CancelColonyBlockOrDefendInterface::class => autowire(CancelColonyBlockOrDefend::class),
     ShipRemoverInterface::class => autowire(ShipRemover::class),
     ShipCreatorInterface::class => autowire(ShipCreator::class),
     CreateFleetRequestInterface::class => autowire(CreateFleetRequest::class),

@@ -19,6 +19,7 @@ use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AstroEntryLibInterface;
+use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Orm\Entity\MapInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 
@@ -38,6 +39,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private AstroEntryLibInterface $astroEntryLib;
 
+    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -47,6 +50,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         MapRepositoryInterface $mapRepository,
         ActivatorDeactivatorHelperInterface $helper,
         AstroEntryLibInterface $astroEntryLib,
+        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         LoggerUtilInterface $loggerUtil
     ) {
         $this->shipLoader = $shipLoader;
@@ -55,6 +59,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->mapRepository = $mapRepository;
         $this->helper = $helper;
         $this->astroEntryLib = $astroEntryLib;
+        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->loggerUtil = $loggerUtil;
     }
 
@@ -163,6 +168,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
+        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship));
         $this->leaveStarSystem($ship->getTraktorShip(), $map, $game);
         $ship->setEps($ship->getEps() - 1);
 
