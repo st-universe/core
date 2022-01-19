@@ -35,6 +35,10 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
         $fleet = $target->getFleet();
 
+        if ($fleet === null) {
+            return $msg;
+        }
+
         if ($fleet->getDefendedColony() !== null) {
             $colony = $fleet->getDefendedColony();
             $this->privateMessageSender->send(
@@ -105,5 +109,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
             return $msg;
         }
+
+        return $msg;
     }
 }
