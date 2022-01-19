@@ -42,6 +42,8 @@ final class ShipLeaver implements ShipLeaverInterface
 
     private MapRepositoryInterface $mapRepository;
 
+    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -55,6 +57,7 @@ final class ShipLeaver implements ShipLeaverInterface
         AstroEntryLibInterface $astroEntryLib,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         MapRepositoryInterface $mapRepository,
+        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         EntityManagerInterface $entityManager
     ) {
         $this->shipCrewRepository = $shipCrewRepository;
@@ -67,6 +70,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $this->astroEntryLib = $astroEntryLib;
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->mapRepository = $mapRepository;
+        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->entityManager = $entityManager;
     }
 
@@ -193,6 +197,9 @@ final class ShipLeaver implements ShipLeaverInterface
             )
         );
 
+        if (!$ship) {
+            $this->cancelColonyBlockOrDefend->work($oldLeader);
+        }
         $fleet = $oldLeader->getFleet();
 
         $oldLeader->setFleet(null);

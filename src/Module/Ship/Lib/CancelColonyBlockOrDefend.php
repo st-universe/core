@@ -24,39 +24,38 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
         $this->privateMessageSender = $privateMessageSender;
     }
 
-    public function work(ShipInterface $ship): array
+    public function work(ShipInterface $ship, bool $isTraktor = false): array
     {
         $msg = [];
 
-        $target = $ship->getTraktorShip();
+        $target = $isTraktor ? $ship->getTraktorShip() : $ship;
         if (!$target->isFleetLeader()) {
             return $msg;
         }
 
         $fleet = $target->getFleet();
 
-        if ($fleet === null) {
-            return $msg;
-        }
-
         if ($fleet->getDefendedColony() !== null) {
             $colony = $fleet->getDefendedColony();
-            $this->privateMessageSender->send(
-                $ship->getUser()->getId(),
-                $target->getUser()->getId(),
-                sprintf(
-                    _('Die %s wurde mit dem Traktorstrahl gezogen, daher hat die Flotte %s die Verteidigung der Kolonie %s eingestellt'),
-                    $target->getName(),
-                    $fleet->getName(),
-                    $colony->getName()
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
+
+            if ($isTraktor) {
+                $this->privateMessageSender->send(
+                    $ship->getUser()->getId(),
+                    $target->getUser()->getId(),
+                    sprintf(
+                        _('Die %s wurde mit dem Traktorstrahl gezogen, daher hat die Flotte %s die Verteidigung der Kolonie %s eingestellt'),
+                        $target->getName(),
+                        $fleet->getName(),
+                        $colony->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+            }
             $this->privateMessageSender->send(
                 GameEnum::USER_NOONE,
                 $colony->getUser()->getId(),
                 sprintf(
-                    _('Die Flotte %s hat von Spieler %s die Verteidigung der Kolonie %s aufgehoben'),
+                    _('Die Flotte %s hat von Spieler %s hat die Verteidigung der Kolonie %s aufgehoben'),
                     $fleet->getName(),
                     $fleet->getUser()->getName(),
                     $colony->getName()
@@ -77,22 +76,26 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
         if ($fleet->getBlockedColony() !== null) {
             $colony = $fleet->getBlockedColony();
-            $this->privateMessageSender->send(
-                $ship->getUser()->getId(),
-                $target->getUser()->getId(),
-                sprintf(
-                    _('Die %s wurde mit dem Traktorstrahl gezogen, daher hat die Flotte %s die Blockade der Kolonie %s eingestellt'),
-                    $target->getName(),
-                    $fleet->getName(),
-                    $colony->getName()
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
+
+            if ($isTraktor) {
+                $this->privateMessageSender->send(
+                    $ship->getUser()->getId(),
+                    $target->getUser()->getId(),
+                    sprintf(
+                        _('Die %s wurde mit dem Traktorstrahl gezogen, daher hat die Flotte %s die Blockade der Kolonie %s eingestellt'),
+                        $target->getName(),
+                        $fleet->getName(),
+                        $colony->getName()
+                    ),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+            }
+
             $this->privateMessageSender->send(
                 GameEnum::USER_NOONE,
                 $colony->getUser()->getId(),
                 sprintf(
-                    _('Die Flotte %s hat von Spieler %s die Blockade der Kolonie %s aufgehoben'),
+                    _('Die Flotte %s hat von Spieler %s hat die Blockade der Kolonie %s aufgehoben'),
                     $fleet->getName(),
                     $fleet->getUser()->getName(),
                     $colony->getName()

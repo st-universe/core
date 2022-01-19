@@ -498,7 +498,7 @@ final class ShipMover implements ShipMoverInterface
             if ($ship->getSystem() !== null) {
                 $this->checkAstronomicalStuff($ship->getTraktorShip(), $nextField);
             }
-            $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship));
+            $this->addInformationMerge($this->cancelColonyBlockOrDefend->work($ship, true));
         }
 
         //create flight signatures

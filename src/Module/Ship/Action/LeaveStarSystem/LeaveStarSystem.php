@@ -168,7 +168,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
-        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship));
+        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
         $this->leaveStarSystem($ship->getTraktorShip(), $map, $game);
         $ship->setEps($ship->getEps() - 1);
 

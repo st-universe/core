@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\DeleteFleet;
 
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\CancelColonyBlockOrDefendInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
@@ -19,14 +20,18 @@ final class DeleteFleet implements ActionControllerInterface
 
     private ShipLoaderInterface $shipLoader;
 
+    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
+
     public function __construct(
         DeleteFleetRequestInterface $deleteFleetRequest,
         FleetRepositoryInterface $fleetRepository,
-        ShipLoaderInterface $shipLoader
+        ShipLoaderInterface $shipLoader,
+        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend
     ) {
         $this->deleteFleetRequest = $deleteFleetRequest;
         $this->fleetRepository = $fleetRepository;
         $this->shipLoader = $shipLoader;
+        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -48,6 +53,8 @@ final class DeleteFleet implements ActionControllerInterface
 
             $this->shipLoader->save($fleetShip);
         }
+
+        $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship));
 
         $this->fleetRepository->delete($fleet);
 

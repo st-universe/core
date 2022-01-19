@@ -41,6 +41,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private ShipLeaverInterface $shipLeaver;
 
+    private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
+
     private AstroEntryLibInterface $astroEntryLib;
 
     public function __construct(
@@ -54,6 +56,7 @@ final class ShipRemover implements ShipRemoverInterface
         ShipRumpRepositoryInterface $shipRumpRepository,
         ShipSystemManagerInterface $shipSystemManager,
         ShipLeaverInterface $shipLeaver,
+        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
         AstroEntryLibInterface $astroEntryLib
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
@@ -66,6 +69,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipRumpRepository = $shipRumpRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->shipLeaver = $shipLeaver;
+        $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->astroEntryLib = $astroEntryLib;
     }
 
@@ -207,6 +211,10 @@ final class ShipRemover implements ShipRemoverInterface
                 }
             )
         );
+
+        if (!$ship) {
+            $this->cancelColonyBlockOrDefend->work($oldLeader);
+        }
 
         $fleet = $oldLeader->getFleet();
 
