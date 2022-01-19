@@ -32,10 +32,6 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
     public function work(ShipInterface $ship, bool $isTraktor = false): array
     {
-        if ($ship->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
         $msg = [];
 
         $this->loggerUtil->log('A');

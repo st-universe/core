@@ -98,7 +98,7 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     public function work(): void
     {
-        $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         if ($this->loggerUtil->doLog()) {
             $startTime = microtime(true);

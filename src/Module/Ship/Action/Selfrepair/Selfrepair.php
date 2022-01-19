@@ -50,10 +50,6 @@ final class Selfrepair implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        if ($game->getUser()->getId() === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $userId = $game->getUser()->getId();
