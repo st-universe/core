@@ -109,8 +109,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         if (($target->getAlertState() == ShipAlertStateEnum::ALERT_YELLOW || $target->getAlertState() == ShipAlertStateEnum::ALERT_RED)
-            && !$target->getUser()->isFriend($userId)
             && $target->getUser()->getId() !== $userId
+            && !$target->getUser()->isFriend($userId)
         ) {
             $defender = [$ship->getId() => $ship];
 
@@ -146,6 +146,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
         //is tractor beam system still healthy?
         if (!$ship->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
             $game->addInformation("Der Traktorstrahl wurde bei dem Angriff zerstört");
+            return;
+        }
+        if ($target->getIsDestroyed()) {
+            $game->addInformation("Das Ziel wurde bei dem Angriff zerstört");
             return;
         }
 
