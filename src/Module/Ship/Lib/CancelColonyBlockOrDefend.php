@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -16,26 +18,39 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        LoggerUtilInterface $loggerUtil
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->loggerUtil = $loggerUtil;
     }
 
     public function work(ShipInterface $ship, bool $isTraktor = false): array
     {
+        if ($ship->getUser()->getId() === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
+
         $msg = [];
 
+        $this->loggerUtil->log('A');
         $target = $isTraktor ? $ship->getTraktorShip() : $ship;
+        $this->loggerUtil->log('B');
         if (!$target->isFleetLeader()) {
+            $this->loggerUtil->log('C');
             return $msg;
         }
+        $this->loggerUtil->log('D');
 
         $fleet = $target->getFleet();
 
         if ($fleet->getDefendedColony() !== null) {
+            $this->loggerUtil->log('E');
             $colony = $fleet->getDefendedColony();
 
             if ($isTraktor) {
@@ -75,6 +90,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
         }
 
         if ($fleet->getBlockedColony() !== null) {
+            $this->loggerUtil->log('F');
             $colony = $fleet->getBlockedColony();
 
             if ($isTraktor) {
