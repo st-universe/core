@@ -254,7 +254,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND c.user_id = :userId
                 AND ss.system_type = :systemType
                 AND ss.mode >= :mode
-                AND (u.vac_active = false OR u.vac_request_date < :vacationThreshold)',
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
                 Ship::class,
                 ShipCrew::class,
                 Crew::class,
@@ -393,7 +393,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                         (s.state = :underConstruction)
                     OR
                         (p.crew = 0)) 
-                AND (u.vac_active = false OR u.vac_request_date < :vacationThreshold)',
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
                 Ship::class,
                 ShipBuildplan::class,
                 User::class,
