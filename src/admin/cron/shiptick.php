@@ -12,6 +12,7 @@ $entityManager->beginTransaction();
 
 try {
     $container->get(ShipTickManagerInterface::class)->work();
+    $entityManager->flush();
     $entityManager->commit();
 } catch (Exception $e) {
     $entityManager->rollback();

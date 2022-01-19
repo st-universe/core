@@ -86,28 +86,31 @@ final class CrewCreator implements CrewCreatorInterface
 
         $crewToSetup = $ship->getBuildPlan()->getCrew();
 
-        foreach (CrewEnum::CREW_ORDER as $i) {
-            $j = 1;
-            if ($i == CrewEnum::CREW_TYPE_CREWMAN) {
+        foreach (CrewEnum::CREW_ORDER as $crewtype) {
+            $createdcount = 1;
+            if ($crewtype == CrewEnum::CREW_TYPE_CREWMAN) {
                 $slot = 'getJob6Crew';
             } else {
-                $slot = 'getJob' . $i . 'Crew';
+                $slot = 'getJob' . $crewtype . 'Crew';
             }
             $config = $this->shipRumpCategoryRoleCrewRepository->getByShipRumpCategoryAndRole(
-                (int)$ship->getRump()->getShipRumpCategory()->getId(),
-                (int)$ship->getRump()->getShipRumpRole()->getId()
+                $ship->getRump()->getShipRumpCategory()->getId(),
+                $ship->getRump()->getShipRumpRole()->getId()
             );
-            while ($crewToSetup > 0 && ($i == CrewEnum::CREW_TYPE_CREWMAN || $j <= $config->$slot())) {
-                $j++;
+
+            while ($crewToSetup > 0 && ($crewtype == CrewEnum::CREW_TYPE_CREWMAN || $createdcount <= $config->$slot())) {
+                $createdcount++;
                 $crewToSetup--;
-                if (($crew = $this->crewRepository->getFreeByUserAndType($userId, $i)) === null) {
-                    $crew = $this->crewRepository->getFreeByUser($userId);
+
+                $crew = current($this->crewRepository->getFreeByUserAndType($userId, $crewtype, 1));
+                if (!$crew) {
+                    $crew = current($this->crewRepository->getFreeByUser($userId, 1));
                 }
                 $sc = $this->shipCrewRepository->prototype();
                 $sc->setCrew($crew);
                 $sc->setShip($ship);
                 $sc->setUser($ship->getUser());
-                $sc->setSlot($i);
+                $sc->setSlot($crewtype);
 
                 $ship->getCrewlist()->add($sc);
 

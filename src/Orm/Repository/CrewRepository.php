@@ -71,7 +71,7 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
             ->getSingleScalarResult();
     }
 
-    public function getFreeByUserAndType(int $userId, int $typeId): ?CrewInterface
+    public function getFreeByUserAndType(int $userId, int $typeId, int $maxAmount): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -83,12 +83,12 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
                     ShipCrew::class
                 )
             )
-            ->setMaxResults(1)
+            ->setMaxResults($maxAmount)
             ->setParameters(['userId' => $userId, 'typeId' => $typeId])
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
-    public function getFreeByUser(int $userId): ?CrewInterface
+    public function getFreeByUser(int $userId, int $maxAmount): array
     {
         return $this->getEntityManager()
             ->createQuery(
@@ -100,9 +100,9 @@ final class CrewRepository extends EntityRepository implements CrewRepositoryInt
                     ShipCrew::class
                 )
             )
-            ->setMaxResults(1)
+            ->setMaxResults($maxAmount)
             ->setParameters(['userId' => $userId])
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     public function truncateByUser(int $userId): void

@@ -18,6 +18,7 @@ try {
         $container->get('maintenance_handler')
     );
     $maintenance->handle();
+    $entityManager->flush();
     $entityManager->commit();
 } catch (Exception $e) {
     $entityManager->rollback();

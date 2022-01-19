@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Ship;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Colony\Storage\ColonyStorageManagerInterface;
 use Stu\Component\Game\GameEnum;
@@ -61,8 +60,6 @@ final class ShipTickManager implements ShipTickManagerInterface
 
     private ModuleQueueRepositoryInterface $moduleQueueRepository;
 
-    private EntityManagerInterface $entityManager;
-
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -80,7 +77,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
-        EntityManagerInterface $entityManager,
         LoggerUtilInterface $loggerUtil
     ) {
         $this->privateMessageSender = $privateMessageSender;
@@ -97,7 +93,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtil;
     }
 
@@ -167,8 +162,6 @@ final class ShipTickManager implements ShipTickManagerInterface
             $endTime = microtime(true);
             $this->loggerUtil->log(sprintf("\t\tloweringTrumfieldConstruction, seconds: %F", $endTime - $startTime));
         }
-
-        $this->entityManager->flush();
     }
 
     private function removeEmptyEscapePods(): void
@@ -198,9 +191,7 @@ final class ShipTickManager implements ShipTickManagerInterface
                 if ($freeCrewCount > 0) {
                     $deleteAmount = min($crewOnShips + $freeCrewCount - $crewLimit, $freeCrewCount);
 
-                    for ($i = 0; $i < $deleteAmount; $i++) {
-
-                        $crew = $this->crewRepository->getFreeByUser($user->getId());
+                    foreach ($this->crewRepository->getFreeByUser($user->getId(), $deleteAmount) as $crew) {
                         $this->crewRepository->delete($crew);
                     }
 

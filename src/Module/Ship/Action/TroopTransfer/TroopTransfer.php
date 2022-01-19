@@ -6,7 +6,6 @@ namespace Stu\Module\Ship\Action\TroopTransfer;
 
 use request;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Crew\CrewEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\Exception\SystemNotActivableException;
@@ -54,8 +53,6 @@ final class TroopTransfer implements ActionControllerInterface
 
     private DockPrivilegeUtilityInterface $dockPrivilegeUtility;
 
-    private EntityManagerInterface $entityManager;
-
     private LoggerUtilInterface $loggerUtil;
 
     private PrivateMessageSenderInterface $privateMessageSender;
@@ -70,7 +67,6 @@ final class TroopTransfer implements ActionControllerInterface
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        EntityManagerInterface $entityManager,
         LoggerUtilInterface $loggerUtil,
         PrivateMessageSenderInterface $privateMessageSender
     ) {
@@ -83,7 +79,6 @@ final class TroopTransfer implements ActionControllerInterface
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
-        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtil;
         $this->privateMessageSender = $privateMessageSender;
     }
@@ -251,9 +246,7 @@ final class TroopTransfer implements ActionControllerInterface
             }
         }
 
-        for ($i = 0; $i < $amount; $i++) {
-            $crew = $this->crewRepository->getFreeByUser($game->getUser()->getId());
-
+        foreach ($this->crewRepository->getFreeByUser($game->getUser()->getId(), $amount) as $crew) {
             $sc = $this->shipCrewRepository->prototype();
             $sc->setCrew($crew);
             $sc->setShip($ship);
@@ -263,7 +256,6 @@ final class TroopTransfer implements ActionControllerInterface
             $ship->getCrewlist()->add($sc);
 
             $this->shipCrewRepository->save($sc);
-            $this->entityManager->flush();
         }
 
         return $amount;

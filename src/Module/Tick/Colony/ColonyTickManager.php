@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stu\Module\Tick\Colony;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Building\BuildingEnum;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Crew\Lib\CrewCreatorInterface;
@@ -30,16 +29,13 @@ final class ColonyTickManager implements ColonyTickManagerInterface
 
     private CommodityRepositoryInterface $commodityRepository;
 
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
         ColonyTickInterface $colonyTick,
         CrewCreatorInterface $crewCreator,
         CrewTrainingRepositoryInterface $crewTrainingRepository,
         ColonyRepositoryInterface $colonyRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        CommodityRepositoryInterface $commodityRepository,
-        EntityManagerInterface $entityManager
+        CommodityRepositoryInterface $commodityRepository
     ) {
         $this->colonyTick = $colonyTick;
         $this->crewCreator = $crewCreator;
@@ -47,7 +43,6 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->colonyRepository = $colonyRepository;
         $this->privateMessageSender = $privateMessageSender;
         $this->commodityRepository = $commodityRepository;
-        $this->entityManager = $entityManager;
     }
 
     public function work(int $tickId): void
@@ -56,8 +51,6 @@ final class ColonyTickManager implements ColonyTickManagerInterface
         $this->colonyLoop($tickId);
         $this->proceedCrewTraining($tickId);
         $this->clearLock($tickId);
-
-        $this->entityManager->flush();
     }
 
     private function colonyLoop(int $tickId): void

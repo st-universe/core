@@ -13,6 +13,7 @@ $entityManager->beginTransaction();
 try {
     $tickManager = $container->get(ColonyTickManagerInterface::class);
     $tickManager->work(1);
+    $entityManager->flush();
     $entityManager->commit();
 } catch (Exception $e) {
     $entityManager->rollback();
