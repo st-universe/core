@@ -58,8 +58,6 @@ final class ShipSystemManager implements ShipSystemManagerInterface
 
     public function deactivateAll(ShipInterface $ship): void
     {
-        $ship->deactivateTraktorBeam();
-
         foreach ($ship->getSystems() as $shipSystem) {
             try {
                 $this->deactivate($ship, $shipSystem->getSystemType(), true);

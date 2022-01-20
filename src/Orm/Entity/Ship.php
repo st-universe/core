@@ -1129,12 +1129,15 @@ class Ship implements ShipInterface
             return;
         }
 
-        $ship = $this->getTraktorShip();
+        // @todo refactor
+        global $container;
+        $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
 
         if ($this->traktorBeamFromShip()) {
-            $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
+            $shipSystemManager->deactivate($this, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
         } else {
-            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
+            $traktor = $this->getTraktorShip();
+            $shipSystemManager->deactivate($traktor, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM);
         }
     }
 
