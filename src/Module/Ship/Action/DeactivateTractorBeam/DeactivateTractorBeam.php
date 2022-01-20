@@ -61,7 +61,6 @@ final class DeactivateTractorBeam implements ActionControllerInterface
             );
         }
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);
-        $ship->deactivateTraktorBeam();
     }
 
     public function performSessionCheck(): bool
