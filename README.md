@@ -38,6 +38,15 @@ Assets:
 - php generator/field_generator/generator.php
 - rsync -rv --delete-after --exclude=dist --exclude=".git" . /path/to/stuniverse-source/assets/
 
+DB-Dump aus Backups einspielen
+------------------------------
+
+- aktuelles Schema umbenennen, z.B. in 'stuDamaged'
+- neue Datenbank mit Original-Name erstellen, z.B. 'stu'
+- auf Kommandozeile in den postgres user einloggen, mittels 'sudo su - postgres'
+- in Backup-Folder wechseln, z.B: core/dist/db/backup
+- Backup einspielen mittels 'pg_restore -d stu -U postgres -C dd-MM-yyyy.dump'
+
 API
 ---
 
