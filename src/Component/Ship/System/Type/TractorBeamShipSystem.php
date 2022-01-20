@@ -63,10 +63,9 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public function activate(ShipInterface $ship): void
     {
-        if ($ship->getUser()->getId() === 126)
-        {
+        if ($ship->getUser()->getId() === 126) {
             $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-            $this->loggerUtil->log('traktorOn')
+            $this->loggerUtil->log('traktorOn');
         }
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_ON);
     }
