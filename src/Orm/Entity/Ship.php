@@ -1136,18 +1136,6 @@ class Ship implements ShipInterface
         } else {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
         }
-
-        $this->setTraktorMode(0);
-        $this->setTraktorShipId(null);
-        $ship->setTraktorMode(0);
-        $ship->setTraktorShipId(null);
-        // @todo refactor
-        global $container;
-
-        $shipRepo = $container->get(ShipRepositoryInterface::class);
-
-        $shipRepo->save($this);
-        $shipRepo->save($ship);
     }
 
     public function isOverSystem(): ?StarSystemInterface
