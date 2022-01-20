@@ -105,7 +105,6 @@ final class EscapeTractorBeam implements ActionControllerInterface
     {
         $otherShip = $ship->getTraktorShip();
 
-        $otherShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
         $otherShip->deactivateTraktorBeam();
 
         $this->shipRepository->save($otherShip);
