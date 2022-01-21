@@ -64,9 +64,7 @@ final class ShowSensorScan implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        if ($userId === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
+        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
