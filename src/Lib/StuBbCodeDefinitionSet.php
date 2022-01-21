@@ -26,6 +26,12 @@ final class StuBbCodeDefinitionSet implements CodeDefinitionSet
                     ->setUseOption(true)
                     ->setOptionValidator(new CssColorValidator())
                     ->build(),
+                (new CodeDefinitionBuilder(
+                    'img',
+                    '<img src="{param}" />'
+                ))
+                    ->setBodyValidator(new StuBbCodeImageValidator())
+                    ->build(),
             ];
         }
         return $this->definitions;
