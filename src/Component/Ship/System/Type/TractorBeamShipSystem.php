@@ -10,6 +10,7 @@ use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -17,13 +18,17 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 {
     private ShipRepositoryInterface $shipRepository;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
+        PrivateMessageSenderInterface $privateMessageSender,
         LoggerUtilInterface $loggerUtil
     ) {
         $this->shipRepository = $shipRepository;
+        $this->privateMessageSender = $privateMessageSender;
         $this->loggerUtil = $loggerUtil;
     }
 
