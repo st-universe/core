@@ -56,6 +56,16 @@ class News implements NewsInterface
         return $this->text;
     }
 
+    public function getTextParsed(): string
+    {
+        // @todo refactor
+        global $container;
+
+        $parserWithImage = $container->get(ParserWithImageInterface::class);
+
+        return $parserWithImage->parse($this->text)->getAsHTML();
+    }
+
     public function setText(string $text): NewsInterface
     {
         $this->text = $text;
