@@ -21,6 +21,7 @@ use Noodlehaus\ConfigInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use Redis;
+use Stu\Lib\ParserWithImage;
 use Stu\Lib\ParserWithImageInterface;
 use Stu\Lib\StuBbCodeDefinitionSet;
 use Stu\Module\Control\GameController;
@@ -119,10 +120,11 @@ $builder->addDefinitions([
         $parser->addCodeDefinitionSet(new StuBbCodeDefinitionSet());
         return $parser;
     },
-    ParserWithImageInterface::class => function (): Parser {
+    ParserWithImageInterface::class => function (): ParserWithImage {
         $parser = new Parser();
         $parser->addCodeDefinitionSet(new StuBbCodeWithImageDefinitionSet());
-        return $parser;
+        $parserWithImage = new ParserWithImage($parser);
+        return $parserWithImage;
     },
     Ubench::class => function (): Ubench {
         $bench = new Ubench();
