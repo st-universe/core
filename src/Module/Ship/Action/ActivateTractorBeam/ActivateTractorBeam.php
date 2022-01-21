@@ -175,14 +175,12 @@ final class ActivateTractorBeam implements ActionControllerInterface
         $this->shipRepository->save($target);
         $this->shipRepository->save($ship);
 
-        if ($userId != $target->getUser()->getId()) {
-            $this->privateMessageSender->send(
-                $userId,
-                $target->getUser()->getId(),
-                "Die " . $targetName . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $shipName . " erfasst",
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
+        $this->privateMessageSender->send(
+            $userId,
+            $target->getUser()->getId(),
+            "Die " . $targetName . " wurde in Sektor " . $ship->getSectorString() . " vom Traktorstrahl der " . $shipName . " erfasst",
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
         $game->addInformation("Der Traktorstrahl wurde auf die " . $targetName . " gerichtet");
     }
 

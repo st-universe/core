@@ -129,21 +129,19 @@ final class RepairShip implements ActionControllerInterface
         $ticks = $ship->getRepairDuration();
         $game->addInformationf(_('Das Schiff wird repariert. Fertigstellung in %d Runden'), $ticks);
 
-        if ($ship->getUserId() != $userId) {
-            $this->privateMessageSender->send(
-                $userId,
-                $ship->getUserId(),
-                sprintf(
-                    "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden.",
-                    $ship->getName(),
-                    $ship->getSectorString(),
-                    $colony->getName(),
-                    $colony->getUser()->getName(),
-                    $ticks
-                ),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
-        }
+        $this->privateMessageSender->send(
+            $userId,
+            $ship->getUser()->getId(),
+            sprintf(
+                "Die %s wird in Sektor %s bei der Kolonie %s des Spielers %s repariert. Fertigstellung in %d Runden.",
+                $ship->getName(),
+                $ship->getSectorString(),
+                $colony->getName(),
+                $colony->getUser()->getName(),
+                $ticks
+            ),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+        );
     }
 
     public function performSessionCheck(): bool

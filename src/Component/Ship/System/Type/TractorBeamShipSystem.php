@@ -9,6 +9,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -80,6 +81,13 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             $traktor->setTraktorMode(0);
             $traktor->setTraktorShipId(null);
             $this->shipRepository->save($traktor);
+
+            $this->privateMessageSender->send(
+                $ship->getUser()->getId(),
+                $traktor->getUser()->getId(),
+                sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $traktor->getName(), $ship->getSectorString()),
+                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+            );
         }
     }
 

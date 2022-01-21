@@ -96,14 +96,12 @@ final class StartBlocking implements ActionControllerInterface
         $text = sprintf(_('Die Kolonie %s wird nun von der Flotte %s blockiert'), $currentColony->getName(), $fleet->getName());
         $game->addInformation($text);
 
-        if ($userId !== $currentColony->getUser()->getId()) {
-            $this->privateMessageSender->send(
-                $userId,
-                (int) $currentColony->getUser()->getId(),
-                $text,
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
-            );
-        }
+        $this->privateMessageSender->send(
+            $userId,
+            (int) $currentColony->getUser()->getId(),
+            $text,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_COLONY
+        );
     }
 
     public function performSessionCheck(): bool

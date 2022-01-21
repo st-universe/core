@@ -11,8 +11,6 @@ use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Lib\DamageWrapper;
-use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
-use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
 use Stu\Orm\Entity\FlightSignatureInterface;
@@ -36,8 +34,6 @@ final class ShipMover implements ShipMoverInterface
     private EntryCreatorInterface $entryCreator;
 
     private ShipRemoverInterface $shipRemover;
-
-    private PrivateMessageSenderInterface $privateMessageSender;
 
     private ShipSystemManagerInterface $shipSystemManager;
 
@@ -69,7 +65,6 @@ final class ShipMover implements ShipMoverInterface
         ShipRepositoryInterface $shipRepository,
         EntryCreatorInterface $entryCreator,
         ShipRemoverInterface $shipRemover,
-        PrivateMessageSenderInterface $privateMessageSender,
         ShipSystemManagerInterface $shipSystemManager,
         ApplyDamageInterface $applyDamage,
         AlertRedHelperInterface $alertRedHelper,
@@ -82,7 +77,6 @@ final class ShipMover implements ShipMoverInterface
         $this->shipRepository = $shipRepository;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
-        $this->privateMessageSender = $privateMessageSender;
         $this->shipSystemManager = $shipSystemManager;
         $this->applyDamage = $applyDamage;
         $this->alertRedHelper = $alertRedHelper;
@@ -580,12 +574,6 @@ final class ShipMover implements ShipMoverInterface
     private function deactivateTraktorBeam(ShipInterface $ship, string $msg)
     {
         $this->addInformation($msg);
-        $this->privateMessageSender->send(
-            (int) $ship->getUser()->getId(),
-            (int) $ship->getTraktorShip()->getUser()->getId(),
-            sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $ship->getTraktorShip()->getName(), $ship->getSectorString()),
-            PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-        );
         $ship->deactivateTraktorBeam();
     }
 
