@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Alliance\Action\DeletePost;
 
+use request;
 use Stu\Exception\AccessViolation;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
@@ -18,18 +19,14 @@ final class DeletePost implements ActionControllerInterface
 
     public const ACTION_IDENTIFIER = 'B_DEL_POSTING';
 
-    private DeletePostRequestInterface $deletePostRequest;
-
     private AllianceBoardPostRepositoryInterface $allianceBoardPostRepository;
 
     private AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository;
 
     public function __construct(
-        DeletePostRequestInterface $deletePostRequest,
         AllianceBoardPostRepositoryInterface $allianceBoardPostRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository
     ) {
-        $this->deletePostRequest = $deletePostRequest;
         $this->allianceBoardPostRepository = $allianceBoardPostRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
     }
@@ -39,7 +36,7 @@ final class DeletePost implements ActionControllerInterface
         $alliance = $game->getUser()->getAlliance();
 
         /** @var AllianceBoardPostInterface $post */
-        $post = $this->allianceBoardPostRepository->find($this->deletePostRequest->getPostId());
+        $post = $this->allianceBoardPostRepository->find(request::getIntFatal('pid'));
         if ($post === null) {
             return;
         }

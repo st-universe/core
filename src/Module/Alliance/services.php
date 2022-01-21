@@ -52,6 +52,7 @@ use Stu\Module\Alliance\Action\DeleteTopic\DeleteTopicRequestInterface;
 use Stu\Module\Alliance\Action\EditDetails\EditDetails;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequest;
 use Stu\Module\Alliance\Action\EditDetails\EditDetailsRequestInterface;
+use Stu\Module\Alliance\Action\EditPost\EditPost;
 use Stu\Module\Alliance\Action\KickPlayer\KickPlayer;
 use Stu\Module\Alliance\Action\KickPlayer\KickPlayerRequest;
 use Stu\Module\Alliance\Action\KickPlayer\KickPlayerRequestInterface;
@@ -100,6 +101,7 @@ use Stu\Module\Alliance\View\NewTopic\NewTopicRequest;
 use Stu\Module\Alliance\View\NewTopic\NewTopicRequestInterface;
 use Stu\Module\Alliance\View\Overview\Overview;
 use Stu\Module\Alliance\View\Relations\Relations;
+use Stu\Module\Alliance\View\ShowEditPost\ShowEditPost;
 use Stu\Module\Alliance\View\ShowMemberRumpInfo\ShowMemberRumpInfo;
 use Stu\Module\Alliance\View\Topic\Topic;
 use Stu\Module\Alliance\View\Topic\TopicRequest;
@@ -149,6 +151,7 @@ return [
         DeleteTopic::ACTION_IDENTIFIER => autowire(DeleteTopic::class),
         DeleteBoard::ACTION_IDENTIFIER => autowire(DeleteBoard::class),
         DeletePost::ACTION_IDENTIFIER => autowire(DeletePost::class),
+        EditPost::ACTION_IDENTIFIER => autowire(EditPost::class),
         SetTopicSticky::ACTION_IDENTIFIER => autowire(SetTopicSticky::class),
         UnsetTopicSticky::ACTION_IDENTIFIER => autowire(UnsetTopicSticky::class),
         Signup::ACTION_IDENTIFIER => autowire(Signup::class),
@@ -176,6 +179,7 @@ return [
         Board::VIEW_IDENTIFIER => autowire(Board::class),
         Topic::VIEW_IDENTIFIER => autowire(Topic::class),
         NewPost::VIEW_IDENTIFIER => autowire(NewPost::class),
+        ShowEditPost::VIEW_IDENTIFIER => autowire(ShowEditPost::class),
         TopicSettings::VIEW_IDENTIFIER => autowire(TopicSettings::class),
         BoardSettings::VIEW_IDENTIFIER => autowire(BoardSettings::class),
         AllianceDetails::VIEW_IDENTIFIER => autowire(AllianceDetails::class),
