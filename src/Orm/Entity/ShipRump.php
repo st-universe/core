@@ -587,7 +587,8 @@ class ShipRump implements ShipRumpInterface
 
     public function isShipyard(): bool
     {
-        return $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD;
+        return $this->getCategoryId() === ShipRumpEnum::SHIP_CATEGORY_STATION
+            && $this->getRoleId() === ShipRumpEnum::SHIP_ROLE_SHIPYARD;
     }
 
     public function getModuleLevels(): ?ShipRumpModuleLevelInterface
