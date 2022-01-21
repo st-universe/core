@@ -27,7 +27,7 @@ final class EditPost implements ActionControllerInterface
     {
         $alliance = $game->getUser()->getAlliance();
 
-        $post = $this->allianceBoardPostRepository->find(request::getIntFatal('pid'));
+        $post = $this->allianceBoardPostRepository->find(request::postIntFatal('pid'));
         if ($post === null) {
             return;
         }
