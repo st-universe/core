@@ -6,7 +6,6 @@ namespace Stu\Module\Alliance\View\AllianceDetails;
 
 use Lib\AllianceMemberWrapper;
 use Stu\Component\Alliance\AllianceEnum;
-use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
@@ -30,22 +29,18 @@ final class AllianceDetails implements ViewControllerInterface
 
     private AllianceRepositoryInterface $allianceRepository;
 
-    private ParserWithImageInterface $parserWithImage;
-
     public function __construct(
         AllianceDetailsRequestInterface $allianceDetailsRequest,
         AllianceRelationRepositoryInterface $allianceRelationRepository,
         AllianceActionManagerInterface $allianceActionManager,
         AllianceJobRepositoryInterface $allianceJobRepository,
-        AllianceRepositoryInterface $allianceRepository,
-        ParserWithImageInterface $parserWithImage
+        AllianceRepositoryInterface $allianceRepository
     ) {
         $this->allianceDetailsRequest = $allianceDetailsRequest;
         $this->allianceRelationRepository = $allianceRelationRepository;
         $this->allianceActionManager = $allianceActionManager;
         $this->allianceJobRepository = $allianceJobRepository;
         $this->allianceRepository = $allianceRepository;
-        $this->parserWithImage = $parserWithImage;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -61,7 +56,7 @@ final class AllianceDetails implements ViewControllerInterface
         $result = $this->allianceRelationRepository->getActiveByAlliance($allianceId);
         $userIsFounder = $this->allianceJobRepository->getSingleResultByAllianceAndType(
             $allianceId,
-            AllianceEnum::ALLIANCE_JOBS_FOUNDER
+                AllianceEnum::ALLIANCE_JOBS_FOUNDER
         )->getUserId() === $game->getUser()->getId();
 
         $relations = [];
@@ -80,8 +75,6 @@ final class AllianceDetails implements ViewControllerInterface
             $alliance->getDescription()
         );
 
-        $parsedDescription = $this->parserWithImage->parse($description)->getAsHTML();
-
         $isInAlliance = $alliance->getId() == $game->getUser()->getAllianceId();
 
         $game->setPageTitle(_('Allianz anzeigen'));
@@ -89,7 +82,7 @@ final class AllianceDetails implements ViewControllerInterface
 
         $game->setTemplateVar('ALLIANCE', $alliance);
         $game->setTemplateVar('ALLIANCE_RELATIONS', $relations);
-        $game->setTemplateVar('DESCRIPTION', $parsedDescription);
+        $game->setTemplateVar('DESCRIPTION', $description);
         $game->setTemplateVar('IS_IN_ALLIANCE', $isInAlliance);
         $game->setTemplateVar('CAN_LEAVE_ALLIANCE', $isInAlliance && !$userIsFounder);
         $game->setTemplateVar(
