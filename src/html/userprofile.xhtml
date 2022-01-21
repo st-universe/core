@@ -63,10 +63,10 @@
 
 			<br style="clear: both;" />
 			<br />
-			<tal:block tal:condition="PROFILE/getDescription">
+			<tal:block tal:condition="DESCRIPTION">
 				<div class="divhead" style="width: 530px;">Beschreibung</div>
 				<div class="divbody" style="width: 530px; word-wrap: break-word;"
-					tal:content="structure nl2brBbCode:PROFILE/getDescription">DESCRIPTION</div>
+					tal:content="structure nl2br:DESCRIPTION">DESCRIPTION</div>
 				<br />
 			</tal:block>
 			<div style="width: 530px;">

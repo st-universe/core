@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerProfile\View\Overview;
 
 use request;
+use Stu\Lib\ParserWithImageInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Maindesk\View\Overview\Overview as MaindeskOverview;
@@ -25,18 +26,22 @@ final class Overview implements ViewControllerInterface
 
     private MaindeskOverview $maindesk;
 
+    private ParserWithImageInterface $parserWithImage;
+
     public function __construct(
         UserProfileVisitorRepositoryInterface $userProfileVisitorRepository,
         RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository,
         ContactRepositoryInterface $contactRepository,
         UserRepositoryInterface $userRepository,
-        MaindeskOverview $maindesk
+        MaindeskOverview $maindesk,
+        ParserWithImageInterface $parserWithImage
     ) {
         $this->userProfileVisitorRepository = $userProfileVisitorRepository;
         $this->rpgPlotMemberRepository = $rpgPlotMemberRepository;
         $this->contactRepository = $contactRepository;
         $this->userRepository = $userRepository;
         $this->maindesk = $maindesk;
+        $this->parserWithImage = $parserWithImage;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -77,9 +82,13 @@ final class Overview implements ViewControllerInterface
             ),
             _('Spielerprofil')
         );
+
+        $parsedDescription = $this->parserWithImage->parse($profile->getDescription())->getAsHTML();
+
         $game->setPageTitle(_('/ Spielerprofile'));
         $game->setTemplateFile('html/userprofile.xhtml');
         $game->setTemplateVar('PROFILE', $profile);
+        $game->setTemplateVar('DESCRIPTION', $parsedDescription);
         $game->setTemplateVar('IS_PROFILE_CURRENT_USER', $profile->getId() === $userId);
         $game->setTemplateVar(
             'RPG_PLOTS',
