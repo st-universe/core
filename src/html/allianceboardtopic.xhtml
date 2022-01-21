@@ -16,7 +16,7 @@
 							tal:replace="post/getUser/getId">ID</span>)
 					</td>
 					<td style="width: 100px;" tal:condition="IS_MODERATOR">
-						<a href="?SHOW_EDIT_ALLY_POST=1pid=${post/getId}"
+						<a href="?SHOW_EDIT_ALLY_POST=1&pid=${post/getId}"
 							onmouseover="cp('editPost${post/getId}','buttons/knedit2')"
 							onmouseout="cp('editPost${post/getId}','buttons/knedit1')">
 							<img src="/assets/buttons/knedit1.png" name="editPost${post/getId}" title="editieren" />
