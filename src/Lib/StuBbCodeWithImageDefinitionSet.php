@@ -8,7 +8,7 @@ use JBBCode\CodeDefinitionBuilder;
 use JBBCode\CodeDefinitionSet;
 use JBBCode\validators\CssColorValidator;
 
-final class StuBbCodeDefinitionSet implements CodeDefinitionSet
+final class StuBbCodeWithImageDefinitionSet implements CodeDefinitionSet
 {
     private $definitions;
 
@@ -25,7 +25,13 @@ final class StuBbCodeDefinitionSet implements CodeDefinitionSet
                 ))
                     ->setUseOption(true)
                     ->setOptionValidator(new CssColorValidator())
-                    ->build()
+                    ->build(),
+                (new CodeDefinitionBuilder(
+                    'img',
+                    '<img src="{param}" />'
+                ))
+                    ->setBodyValidator(new StuBbCodeImageValidator())
+                    ->build(),
             ];
         }
         return $this->definitions;
