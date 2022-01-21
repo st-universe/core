@@ -94,6 +94,7 @@ final class Topic implements ViewControllerInterface
             'IS_MODERATOR',
             $this->allianceActionManager->mayEdit($allianceId, $game->getUser()->getId())
         );
+        $game->setTemplateVar('USERID', $game->getUser()->getId());
     }
 
     private function getTopicNavigation(AllianceBoardTopicInterface $topic): array

@@ -18,7 +18,8 @@
 					<td style="width: 100px;">
 						<span tal:condition="post/getEditDate" class="knedit">zuletzt bearbeitet:
 							${datetime:post/getEditDate}</span>
-						<a tal:condition="IS_MODERATOR" href="?SHOW_EDIT_ALLY_POST=1&pid=${post/getId}"
+						<a tal:condition="php: USERID EQ post.getUser().getId()"
+							href="?SHOW_EDIT_ALLY_POST=1&pid=${post/getId}"
 							onmouseover="cp('editPost${post/getId}','buttons/knedit2')"
 							onmouseout="cp('editPost${post/getId}','buttons/knedit1')">
 							<img src="/assets/buttons/knedit1.png" name="editPost${post/getId}" title="editieren" />
