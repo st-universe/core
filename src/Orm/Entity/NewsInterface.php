@@ -12,8 +12,6 @@ interface NewsInterface
 
     public function getText(): string;
 
-    public function getTextParsed(): string;
-
     public function setText(string $text): NewsInterface;
 
     public function getDate(): int;

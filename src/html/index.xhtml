@@ -21,7 +21,7 @@
 			<div style="font-weight: bold;" tal:content="structure data/getSubject">SUBJECT</div>
 			<div style="font-size: 80%; color: #686868;">vom ${datetime:data/getDate}</div>
 			<br />
-			<div tal:content="structure nl2br:data/getTextParsed">TEXT</div>
+			<div tal:content="structure nl2brBbCode:data/getText">TEXT</div>
 			<div tal:condition="data/getLinks">
 				<br />
 				<div style="font-size: 80%; color: #686868;">Links</div>
