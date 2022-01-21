@@ -38,6 +38,7 @@ final class EditPost implements ActionControllerInterface
         $game->setView(Topic::VIEW_IDENTIFIER);
 
         $post->setText(request::postStringFatal('text'));
+        $post->setEditDate(time());
 
         $this->allianceBoardPostRepository->save($post);
 
