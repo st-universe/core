@@ -27,7 +27,8 @@ final class ShowShipDetails implements ViewControllerInterface
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
-            $userId
+            $userId,
+            true
         );
 
         $game->setPageTitle(_('Schiffsinformationen'));
