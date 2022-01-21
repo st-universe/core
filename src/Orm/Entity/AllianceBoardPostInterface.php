@@ -39,4 +39,8 @@ interface AllianceBoardPostInterface
     public function getBoard(): AllianceBoardInterface;
 
     public function setBoard(AllianceBoardInterface $board): AllianceBoardPostInterface;
+
+    public function getEditDate(): ?int;
+
+    public function setEditDate(?int $editDate): AllianceBoardPostInterface;
 }

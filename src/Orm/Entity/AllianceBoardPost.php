@@ -41,6 +41,9 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     /** @Column(type="integer") */
     private $user_id = 0;
 
+    /** @Column(type="integer", nullable=true) */
+    private $lastedit;
+
     /**
      * @ManyToOne(targetEntity="AllianceBoardTopic", inversedBy="posts")
      * @JoinColumn(name="topic_id", referencedColumnName="id", onDelete="CASCADE")
@@ -160,6 +163,18 @@ class AllianceBoardPost implements AllianceBoardPostInterface
     public function setBoard(AllianceBoardInterface $board): AllianceBoardPostInterface
     {
         $this->board = $board;
+
+        return $this;
+    }
+
+    public function getEditDate(): ?int
+    {
+        return $this->lastedit;
+    }
+
+    public function setEditDate(?int $editDate): AllianceBoardPostInterface
+    {
+        $this->lastedit = $editDate;
 
         return $this;
     }
