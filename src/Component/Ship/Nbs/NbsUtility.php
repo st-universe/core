@@ -46,7 +46,7 @@ final class NbsUtility implements NbsUtilityInterface
         int $sysMapId = null
     ): void {
 
-        if ($ship->getNbs()) {
+        if ($ship->getNbs() || $mapId !== null || $sysMapId !== null) {
             $stationNbs = new ShipNfsIterator($this->shipRepository->getSingleShipScannerResults(
                 $ship,
                 true,
