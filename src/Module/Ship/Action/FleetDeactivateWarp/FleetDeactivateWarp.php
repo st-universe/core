@@ -12,6 +12,7 @@ use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ActivatorDeactivatorHelperInterface;
 use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Orm\Entity\ShipInterface;
 
 final class FleetDeactivateWarp implements ActionControllerInterface
 {
@@ -44,9 +45,11 @@ final class FleetDeactivateWarp implements ActionControllerInterface
             $userId
         );
 
+        $traktoredShips = $this->getTraktoredShips($ship);
+
         $informations = [];
 
-        //Alarm-Rot check
+        //Alarm-Rot check for fleet
         $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
         shuffle($shipsToShuffle);
         foreach ($shipsToShuffle as $alertShip) {
@@ -54,11 +57,34 @@ final class FleetDeactivateWarp implements ActionControllerInterface
         }
         $game->addInformationMergeDown($informations);
 
+        //Alarm-Rot check for traktored ships
+        foreach ($traktoredShips as $traktorShip) {
+            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($traktorShip, $informations);
+            shuffle($shipsToShuffle);
+            foreach ($shipsToShuffle as $alertShip) {
+                $this->alertRedHelper->performAttackCycle($alertShip, $traktorShip, $informations);
+            }
+            $game->addInformationMergeDown($informations);
+        }
+
         if ($ship->getIsDestroyed()) {
             return;
         }
 
         $game->setView(ShowShip::VIEW_IDENTIFIER);
+    }
+
+    private function getTraktoredShips(ShipInterface $ship): array
+    {
+        $result = [];
+
+        foreach ($ship->getFleet()->getShips as $fleetShip) {
+            if ($fleetShip->traktorBeamFromShip()) {
+                $result[] = $fleetShip->getTraktorShip();
+            }
+        }
+
+        return $result;
     }
 
     public function performSessionCheck(): bool
