@@ -57,6 +57,16 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
         return true;
     }
 
+    public function checkDeactivationConditions(ShipInterface $ship, &$reason): bool
+    {
+        if ($ship->getWarpState()) {
+            $reason = _('der Warpantrieb aktiviert ist');
+            return false;
+        }
+
+        return true;
+    }
+
     public function getEnergyUsageForActivation(): int
     {
         return 2;
