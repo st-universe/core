@@ -28,7 +28,7 @@ final class StuBbCodeWithImageDefinitionSet implements CodeDefinitionSet
                     ->build(),
                 (new CodeDefinitionBuilder(
                     'img',
-                    '<img src="{param}" />'
+                    '<img src="{param}" style="max-height: 100%;max-width:100%;" />'
                 ))
                     ->setBodyValidator(new StuBbCodeImageValidator())
                     ->build(),
