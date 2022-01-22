@@ -13,6 +13,7 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
@@ -36,13 +37,16 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
     private EntryCreatorInterface $entryCreator;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ApplyDamageInterface $applyDamage,
         ShipRepositoryInterface $shipRepository,
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRemoverInterface $shipRemover,
-        EntryCreatorInterface $entryCreator
+        EntryCreatorInterface $entryCreator,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->applyDamage = $applyDamage;
@@ -50,6 +54,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
         $this->entryCreator = $entryCreator;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -93,9 +98,23 @@ final class EscapeTractorBeam implements ActionControllerInterface
         }
 
         if ($ship->getIsDestroyed()) {
-
             return;
         }
+
+        $informations = [];
+
+        //Alarm-Rot check
+        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+        shuffle($shipsToShuffle);
+        foreach ($shipsToShuffle as $alertShip) {
+            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+        }
+        $game->addInformationMergeDown($informations);
+
+        if ($ship->getIsDestroyed()) {
+            return;
+        }
+
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $this->shipRepository->save($ship);
@@ -135,8 +154,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getTraktorShip()->getId());
 
         $this->privateMessageSender->send(
-            $ship->getUserId(),
-            $ship->getTraktorShip()->getUserId(),
+            $ship->getUser()->getId(),
+            $ship->getTraktorShip()->getUser()->getId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
             $ship->getTraktorShip()->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
