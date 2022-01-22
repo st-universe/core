@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Stu\Module\PlayerSetting\View\Overview;
 
 use Noodlehaus\ConfigInterface;
+use Stu\Component\Index\News\NewsFactoryInterface;
+use Stu\Component\Index\News\NewsItemInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\PlayerSetting\Lib\InvitationItem;
+use Stu\Orm\Entity\NewsInterface;
 use Stu\Orm\Entity\UserInvitationInterface;
 use Stu\Orm\Repository\NewsRepositoryInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
@@ -22,17 +25,21 @@ final class Overview implements ViewControllerInterface
 
     private NewsRepositoryInterface $newsRepository;
 
+    private NewsFactoryInterface $newsFactory;
+
     private UserRepositoryInterface $userRepository;
 
     public function __construct(
         UserInvitationRepositoryInterface $userInvitationRepository,
         ConfigInterface $config,
         NewsRepositoryInterface $newsRepository,
+        NewsFactoryInterface $newsFactory,
         UserRepositoryInterface $userRepository
     ) {
         $this->userInvitationRepository = $userInvitationRepository;
         $this->config = $config;
         $this->newsRepository = $newsRepository;
+        $this->newsFactory = $newsFactory;
         $this->userRepository = $userRepository;
     }
 
@@ -44,7 +51,17 @@ final class Overview implements ViewControllerInterface
             $game->setPageTitle(_('Star Trek Universe'));
             $game->setTemplateFile('html/index.xhtml');
 
-            $game->setTemplateVar('SYSTEM_NEWS', $this->newsRepository->getRecent(5));
+            $game->setTemplateVar(
+                'SYSTEM_NEWS',
+                array_map(
+                    function (NewsInterface $news): NewsItemInterface {
+                        return $this->newsFactory->createNewsItem(
+                            $news
+                        );
+                    },
+                    $this->newsRepository->getRecent(5)
+                )
+            );
 
             return;
         }
