@@ -78,7 +78,7 @@ final class FleetDeactivateWarp implements ActionControllerInterface
     {
         $result = [];
 
-        foreach ($ship->getFleet()->getShips as $fleetShip) {
+        foreach ($ship->getFleet()->getShips() as $fleetShip) {
             if ($fleetShip->traktorBeamFromShip()) {
                 $result[] = $fleetShip->getTraktorShip();
             }
