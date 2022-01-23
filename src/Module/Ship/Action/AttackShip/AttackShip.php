@@ -10,11 +10,11 @@ use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Orm\Entity\ShipInterface;
-use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class AttackShip implements ActionControllerInterface
 {
@@ -24,24 +24,24 @@ final class AttackShip implements ActionControllerInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
-    private ShipRepositoryInterface $shipRepository;
-
     private ShipAttackCycleInterface $shipAttackCycle;
 
     private PositionCheckerInterface $positionChecker;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         PrivateMessageSenderInterface $privateMessageSender,
-        ShipRepositoryInterface $shipRepository,
         ShipAttackCycleInterface $shipAttackCycle,
-        PositionCheckerInterface $positionChecker
+        PositionCheckerInterface $positionChecker,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->privateMessageSender = $privateMessageSender;
-        $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
         $this->positionChecker = $positionChecker;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
