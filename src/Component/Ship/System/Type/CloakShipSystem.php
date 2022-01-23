@@ -24,6 +24,11 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
+        if ($ship->traktorBeamFromShip()) {
+            $reason = _('das Schiff den Traktorstrahl aktiviert hat');
+            return false;
+        }
+
         if ($ship->traktorBeamToShip()) {
             $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
             return false;
