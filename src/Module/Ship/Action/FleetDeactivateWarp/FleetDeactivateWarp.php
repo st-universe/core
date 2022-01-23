@@ -47,24 +47,12 @@ final class FleetDeactivateWarp implements ActionControllerInterface
 
         $traktoredShips = $this->getTraktoredShips($ship);
 
-        $informations = [];
-
         //Alarm-Rot check for fleet
-        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
-        shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip) {
-            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-        }
-        $game->addInformationMergeDown($informations);
+        $this->alertRedHelper->doItAll($ship, $game);
 
         //Alarm-Rot check for traktored ships
         foreach ($traktoredShips as $traktorShip) {
-            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($traktorShip, $informations);
-            shuffle($shipsToShuffle);
-            foreach ($shipsToShuffle as $alertShip) {
-                $this->alertRedHelper->performAttackCycle($alertShip, $traktorShip, $informations);
-            }
-            $game->addInformationMergeDown($informations);
+            $this->alertRedHelper->doItAll($traktorShip, $game);
         }
 
         if ($ship->getIsDestroyed()) {

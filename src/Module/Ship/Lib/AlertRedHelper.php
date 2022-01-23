@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
@@ -26,6 +27,24 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
+    }
+
+    public function doItAll(ShipInterface $ship, ?GameControllerInterface $game): array
+    {
+        $informations = [];
+
+        $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations);
+        shuffle($shipsToShuffle);
+        foreach ($shipsToShuffle as $alertShip) {
+            $this->performAttackCycle($alertShip, $ship, $informations);
+        }
+
+        if ($game !== null) {
+            $game->addInformationMergeDown($informations);
+            return [];
+        } else {
+            return $informations;
+        }
     }
 
     public function checkForAlertRedShips(ShipInterface $leadShip, &$informations): array

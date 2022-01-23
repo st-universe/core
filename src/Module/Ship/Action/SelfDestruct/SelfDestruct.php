@@ -82,16 +82,9 @@ final class SelfDestruct implements ActionControllerInterface
             $game->addInformation($destroyMsg);
         }
 
+        //Alarm-Rot check for tractor ship
         if ($tractorToTriggerAlertRed !== null) {
-            $informations = [];
-
-            //Alarm-Rot check for tractor ship
-            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($tractorToTriggerAlertRed, $informations);
-            shuffle($shipsToShuffle);
-            foreach ($shipsToShuffle as $alertShip) {
-                $this->alertRedHelper->performAttackCycle($alertShip, $tractorToTriggerAlertRed, $informations);
-            }
-            $game->addInformationMergeDown($informations);
+            $this->alertRedHelper->doItAll($tractorToTriggerAlertRed, $game);
         }
     }
 

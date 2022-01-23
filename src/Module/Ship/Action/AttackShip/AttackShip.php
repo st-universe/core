@@ -133,35 +133,18 @@ final class AttackShip implements ActionControllerInterface
         $msg = $this->shipAttackCycle->getMessages();
 
         if ($isActiveTractorShipWarped) {
-            $informations = [];
-
             //Alarm-Rot check for ship
             if (!$ship->getIsDestroyed()) {
-                $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
-                shuffle($shipsToShuffle);
-                foreach ($shipsToShuffle as $alertShip) {
-                    $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-                }
+                $msg = array_merge($msg, $this->alertRedHelper->doItAll($ship, null));
             }
 
             //Alarm-Rot check for traktor ship
             if (!$target->getIsDestroyed()) {
-                $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($target, $informations);
-                shuffle($shipsToShuffle);
-                foreach ($shipsToShuffle as $alertShip) {
-                    $this->alertRedHelper->performAttackCycle($alertShip, $target, $informations);
-                }
+                $msg = array_merge($msg, $this->alertRedHelper->doItAll($target, null));
             }
-
-            if ($ship->getIsDestroyed()) {
-                return;
-            }
-
-            $msg = array_merge($msg, $informations);
         }
 
         if ($ship->getIsDestroyed()) {
-
             $game->addInformationMerge($msg);
             return;
         }

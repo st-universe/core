@@ -126,15 +126,8 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformation(_('Der Fluchtversuch ist gelungen'));
 
-        $informations = [];
-
         //Alarm-Rot check
-        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
-        shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip) {
-            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-        }
-        $game->addInformationMergeDown($informations);
+        $this->alertRedHelper->doItAll($ship, $game);
     }
 
     private function sufferDeflectorDamage(ShipInterface $ship, GameControllerInterface $game): void

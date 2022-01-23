@@ -257,22 +257,10 @@ final class ShipTickManager implements ShipTickManagerInterface
 
         //do alert red stuff
         if ($doAlertRedCheck) {
-            $this->doAlertRedCheck($randomShip);
+            $this->alertRedHelper->doItAll($randomShip, null);
         }
 
         return count($crewArray);
-    }
-
-    private function doAlertRedCheck($ship): void
-    {
-        $informations = [];
-
-        //Alarm-Rot check
-        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
-        shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip) {
-            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-        }
     }
 
     private function lowerTrumfieldHull(): void

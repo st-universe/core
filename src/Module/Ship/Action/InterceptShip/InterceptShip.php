@@ -144,22 +144,11 @@ final class InterceptShip implements ActionControllerInterface
         $this->entityManager->flush();
 
         //Alert red check for the target(s)
-        $informations = [];
-        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($target, $informations);
-        shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip) {
-            $this->alertRedHelper->performAttackCycle($alertShip, $target, $informations);
-        }
+        $this->alertRedHelper->doItAll($target, $game);
 
         //Alert red check for the interceptor(s)
-        $informations = [];
         if ($interceptorLeftWarp) {
-            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
-            shuffle($shipsToShuffle);
-            foreach ($shipsToShuffle as $alertShip) {
-                $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-            }
-            $game->addInformationMergeDown($informations);
+            $this->alertRedHelper->doItAll($ship, $game);
         }
     }
 

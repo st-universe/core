@@ -44,15 +44,8 @@ final class FleetDeactivateCloak implements ActionControllerInterface
             $userId
         );
 
-        $informations = [];
-
         //Alarm-Rot check
-        $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
-        shuffle($shipsToShuffle);
-        foreach ($shipsToShuffle as $alertShip) {
-            $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
-        }
-        $game->addInformationMergeDown($informations);
+        $this->alertRedHelper->doItAll($ship, $game);
 
         if ($ship->getIsDestroyed()) {
             return;
