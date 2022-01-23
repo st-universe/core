@@ -80,11 +80,17 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if ($ship->traktorBeamToShip() && $ship->getTraktorShipId() !== $target->getId()) {
-            return;
+
+        $isAttackingActiveTractorShip = false;
+        if ($ship->traktorBeamToShip()) {
+            if ($ship->getTraktorShipId() !== $target->getId()) {
+                return;
+            } else {
+                $isAttackingActiveTractorShip = true;
+            }
         }
 
-        if (!$target->canBeAttacked()) {
+        if (!$target->canBeAttacked(!$isAttackingActiveTractorShip)) {
             return;
         }
 

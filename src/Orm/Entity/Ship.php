@@ -1518,9 +1518,9 @@ class Ship implements ShipInterface
             ->hasAirfield();
     }
 
-    public function canBeAttacked(): bool
+    public function canBeAttacked(bool $checkWarpState = true): bool
     {
-        return !$this->getRump()->isTrumfield() && !$this->getWarpState();
+        return !$this->getRump()->isTrumfield() && (!$checkWarpState || !$this->getWarpState());
     }
 
     public function canAttack(): bool

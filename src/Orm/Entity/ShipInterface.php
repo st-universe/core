@@ -384,7 +384,7 @@ interface ShipInterface
 
     public function canLandOnCurrentColony(): bool;
 
-    public function canBeAttacked(): bool;
+    public function canBeAttacked(bool $checkWarpState = true): bool;
 
     public function canAttack(): bool;
 
