@@ -82,11 +82,13 @@ final class AttackShip implements ActionControllerInterface
 
 
         $isAttackingActiveTractorShip = false;
+        $isActiveTractorShipWarped = false;
         if ($ship->traktorBeamToShip()) {
             if ($ship->getTraktorShipId() !== $target->getId()) {
                 return;
             } else {
                 $isAttackingActiveTractorShip = true;
+                $isActiveTractorShipWarped = $target->getWarpState();
             }
         }
 
@@ -128,18 +130,48 @@ final class AttackShip implements ActionControllerInterface
             $isTargetBase ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
         );
 
+        $msg = $this->shipAttackCycle->getMessages();
+
+        if ($isActiveTractorShipWarped) {
+            $informations = [];
+
+            //Alarm-Rot check for ship
+            if (!$ship->getIsDestroyed()) {
+                $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($ship, $informations);
+                shuffle($shipsToShuffle);
+                foreach ($shipsToShuffle as $alertShip) {
+                    $this->alertRedHelper->performAttackCycle($alertShip, $ship, $informations);
+                }
+            }
+
+            //Alarm-Rot check for traktor ship
+            if (!$target->getIsDestroyed()) {
+                $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($target, $informations);
+                shuffle($shipsToShuffle);
+                foreach ($shipsToShuffle as $alertShip) {
+                    $this->alertRedHelper->performAttackCycle($alertShip, $target, $informations);
+                }
+            }
+
+            if ($ship->getIsDestroyed()) {
+                return;
+            }
+
+            $msg = array_merge($msg, $informations);
+        }
+
         if ($ship->getIsDestroyed()) {
 
-            $game->addInformationMerge($this->shipAttackCycle->getMessages());
+            $game->addInformationMerge($msg);
             return;
         }
         $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         if ($fleet) {
             $game->addInformation(_("Angriff durchgeführt"));
-            $game->setTemplateVar('FIGHT_RESULTS', $this->shipAttackCycle->getMessages());
+            $game->setTemplateVar('FIGHT_RESULTS', $msg);
         } else {
-            $game->addInformationMerge($this->shipAttackCycle->getMessages());
+            $game->addInformationMerge($msg);
             $game->setTemplateVar('FIGHT_RESULTS', null);
         }
     }

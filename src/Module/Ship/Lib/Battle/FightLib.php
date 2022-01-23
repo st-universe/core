@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Stu\Module\Ship\Lib\Battle;
 
 use Stu\Component\Ship\ShipAlertStateEnum;
-use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
-use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
-use Stu\Lib\DamageWrapper;
 use Stu\Orm\Entity\ShipInterface;
 
 final class FightLib implements FightLibInterface
