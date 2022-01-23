@@ -8,6 +8,7 @@ use request;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\History\Lib\EntryCreatorInterface;
+use Stu\Module\Ship\Lib\AlertRedHelperInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\View\Overview\Overview;
@@ -23,14 +24,18 @@ final class SelfDestruct implements ActionControllerInterface
 
     private ShipRemoverInterface $shipRemover;
 
+    private AlertRedHelperInterface $alertRedHelper;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         EntryCreatorInterface $entryCreator,
-        ShipRemoverInterface $shipRemover
+        ShipRemoverInterface $shipRemover,
+        AlertRedHelperInterface $alertRedHelper
     ) {
         $this->shipLoader = $shipLoader;
         $this->entryCreator = $entryCreator;
         $this->shipRemover = $shipRemover;
+        $this->alertRedHelper = $alertRedHelper;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -52,6 +57,8 @@ final class SelfDestruct implements ActionControllerInterface
 
         $game->setView(Overview::VIEW_IDENTIFIER);
 
+        $tractorToTriggerAlertRed = ($ship->traktorBeamFromShip() && $ship->getWarpState()) ? $ship->getTraktorShip() : null;
+
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
         $msg = sprintf(
             _('Die %s hat sich in Sektor %s selbst zerstört'),
@@ -70,10 +77,21 @@ final class SelfDestruct implements ActionControllerInterface
             );
         }
 
-
         $destroyMsg = $this->shipRemover->destroy($ship);
         if ($destroyMsg !== null) {
             $game->addInformation($destroyMsg);
+        }
+
+        if ($tractorToTriggerAlertRed !== null) {
+            $informations = [];
+
+            //Alarm-Rot check for tractor ship
+            $shipsToShuffle = $this->alertRedHelper->checkForAlertRedShips($tractorToTriggerAlertRed, $informations);
+            shuffle($shipsToShuffle);
+            foreach ($shipsToShuffle as $alertShip) {
+                $this->alertRedHelper->performAttackCycle($alertShip, $tractorToTriggerAlertRed, $informations);
+            }
+            $game->addInformationMergeDown($informations);
         }
     }
 
