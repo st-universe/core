@@ -49,6 +49,11 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             return false;
         }
 
+        if ($ship->traktorBeamFromShip()) {
+            $reason = _('das Schiff den Traktorstrahl aktiviert hat');
+            return false;
+        }
+
         if ($ship->traktorBeamToShip()) {
             $reason = sprintf(_('das Schiff selbst von dem Traktorstrahl der %s erfasst ist'), $ship->getTraktorShip()->getName());
             return false;
