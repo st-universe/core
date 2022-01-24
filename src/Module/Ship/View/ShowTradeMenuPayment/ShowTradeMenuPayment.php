@@ -7,7 +7,6 @@ namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -58,10 +57,6 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
     {
         $userId = $game->getUser()->getId();
 
-        if ($userId === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
             $userId
@@ -99,29 +94,14 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                 )
             );
 
-            $this->loggerUtil->log(sprintf(
-                'networkId: %d, licenseCostGoodId: %d, licenseCost: %d',
-                $tradepost->getTradeNetwork(),
-                $licenseCostGood->getId(),
-                $licenseCost
-            ));
-
-            $foo = $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
-                $tradepost->getTradeNetwork(),
-                $userId,
-                $licenseCostGood->getId(),
-                $licenseCost
-            );
-
-            $this->loggerUtil->log(sprintf('fooCount: %d', count($foo)));
-
-            foreach ($foo as $f) {
-                $this->loggerUtil->log(sprintf('id: %d', $f->getId()));
-            }
-
             $game->setTemplateVar(
                 'ACCOUNTS_FOR_LICENSE',
-                $foo
+                $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
+                    $tradepost->getTradeNetwork(),
+                    $userId,
+                    $licenseCostGood->getId(),
+                    $licenseCost
+                )
             );
         }
     }
