@@ -1322,7 +1322,7 @@
           <div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
             - <a href="javascript:void(0);"
               onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})"
-              tal:content="structure acc/getTradePost/getName">NAME</a>
+              tal:content="structure bbcode:acc/getTradePost/getName">NAME</a>
           </div>
         </div>
       </td>

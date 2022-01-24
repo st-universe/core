@@ -7,6 +7,9 @@ namespace Stu\Module\Ship\View\ShowTradeMenuPayment;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Orm\Entity\TradePostInterface;
@@ -31,13 +34,16 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
 
     private ShipRepositoryInterface $shipRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         TradeLicenseRepositoryInterface $tradeLicenseRepository,
         TradeLibFactoryInterface $tradeLibFactory,
         TradePostRepositoryInterface $tradePostRepository,
         TradeStorageRepositoryInterface $tradeStorageRepository,
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->tradeLicenseRepository = $tradeLicenseRepository;
@@ -45,11 +51,16 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
         $this->tradePostRepository = $tradePostRepository;
         $this->tradeStorageRepository = $tradeStorageRepository;
         $this->shipRepository = $shipRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $userId = $game->getUser()->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
 
         $ship = $this->shipLoader->getByIdAndUser(
             request::indInt('id'),
@@ -87,14 +98,18 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                     $licenseCost
                 )
             );
+            $foo = $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
+                $tradepost->getTradeNetwork(),
+                $userId,
+                $licenseCostGood->getId(),
+                $licenseCost
+            );
+
+            $this->loggerUtil->log(print_r($foo, true));
+
             $game->setTemplateVar(
                 'ACCOUNTS_FOR_LICENSE',
-                $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
-                    $tradepost->getTradeNetwork(),
-                    $userId,
-                    $licenseCostGood->getId(),
-                    $licenseCost
-                )
+                $foo
             );
         }
     }
