@@ -11,9 +11,8 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
-use Stu\Module\Ship\View\ShowShip\ShowShip;
+use Stu\Module\Ship\View\ShowTradeMenu\ShowTradeMenu;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
-use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Entity\TradePostInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 use Stu\Orm\Repository\TradeLicenseRepositoryInterface;
@@ -57,6 +56,8 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
+
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -138,10 +139,6 @@ final class BuyTradeLicense implements ActionControllerInterface
         $licence->setDate(time());
 
         $this->tradeLicenseRepository->save($licence);
-
-        $game->redirectTo('/trade.php');
-
-        $game->addInformation('Die Handelslizenz wurde erteilt');
     }
 
     public function performSessionCheck(): bool

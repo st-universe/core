@@ -1291,43 +1291,45 @@
   </div>
 </metal:macro>
 <metal:macro metal:define-macro="trademenupayment">
-  <table class="tcal">
-    <tr>
-      <td>
-        Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu
-        begleichen.<br /><br />
-        <img src="assets/goods/${TRADEPOST/getTradeLicenseCostsCommodity/getId}.png"
-          tal:attributes="title TRADEPOST/getTradeLicenseCostsCommodity/getName" /> <span
-          tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span>
-      </td>
-    </tr>
-  </table>
-  <br /><br />
-  <input type="hidden" name="sstrajax" id="sstrajax" tal:attributes="value THIS/getSessionString" />
-  <table class="tcal">
-    <tr>
-      <th>Bezahlmethode wählen</th>
-    </tr>
-    <tr>
-      <td>
-        <div style="float: left; width: 190px;">
-          <strong>Angedockte Schiffe</strong>
-          <div tal:repeat="ship DOCKED_SHIPS_FOR_LICENSE">
-            - <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})"
-              tal:content="structure bbcode:ship/getName">NAME</a>
+  <div id="trademenucontent" style="width: 400px;">
+    <table class="tcal">
+      <tr>
+        <td>
+          Es werden nur angedockte Schiffe/Konten aufgelistet auf denen genug Waren vorhanden sind um die Gebühr zu
+          begleichen.<br /><br />
+          <img src="assets/goods/${TRADEPOST/getTradeLicenseCostsCommodity/getId}.png"
+            tal:attributes="title TRADEPOST/getTradeLicenseCostsCommodity/getName" /> <span
+            tal:replace="TRADEPOST/getTradeLicenseCosts">COST</span>
+        </td>
+      </tr>
+    </table>
+    <br /><br />
+    <input type="hidden" name="sstrajax" id="sstrajax" tal:attributes="value THIS/getSessionString" />
+    <table class="tcal">
+      <tr>
+        <th>Bezahlmethode wählen</th>
+      </tr>
+      <tr>
+        <td>
+          <div style="float: left; width: 190px;">
+            <strong>Angedockte Schiffe</strong>
+            <div tal:repeat="ship DOCKED_SHIPS_FOR_LICENSE">
+              - <a href="javascript:void(0);" onclick="payTradeLicence(${TRADEPOST/getId},'ship',${ship/getId})"
+                tal:content="structure bbcode:ship/getName">NAME</a>
+            </div>
           </div>
-        </div>
-        <div style="padding-left: 6px; float: right; width: 190px;">
-          <strong>Warenkonten</strong>
-          <div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
-            - <a href="javascript:void(0);"
-              onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})"
-              tal:content="structure bbcode:acc/getTradePost/getName">NAME</a>
+          <div style="padding-left: 6px; float: right; width: 190px;">
+            <strong>Warenkonten</strong>
+            <div tal:repeat="acc ACCOUNTS_FOR_LICENSE">
+              - <a href="javascript:void(0);"
+                onclick="payTradeLicence(${TRADEPOST/getId},'account',${acc/getTradePostId})"
+                tal:content="structure bbcode:acc/getTradePost/getName">NAME</a>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-  </table>
+        </td>
+      </tr>
+    </table>
+  </div>
 </metal:macro>
 <metal:macro metal:define-macro="regioninfo">
   <tal:block tal:condition="THIS/getInformation">
