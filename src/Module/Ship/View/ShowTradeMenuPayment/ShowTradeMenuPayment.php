@@ -113,7 +113,11 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                 $licenseCost
             );
 
-            $this->loggerUtil->log(sprintf('id: %d', $foo->getId()));
+            $this->loggerUtil->log(sprintf('fooCount: %d', count($foo)));
+
+            foreach ($foo as $f) {
+                $this->loggerUtil->log(sprintf('id: %d', $f->getId()));
+            }
 
             $game->setTemplateVar(
                 'ACCOUNTS_FOR_LICENSE',

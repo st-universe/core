@@ -67,7 +67,7 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
         int $userId,
         int $commodityId,
         int $amount
-    ): ?TradeStorageInterface {
+    ): array {
         return $this->getEntityManager()
             ->createQuery(
                 sprintf(
@@ -85,7 +85,7 @@ final class TradeStorageRepository extends EntityRepository implements TradeStor
                 'commodityId' => $commodityId,
                 'amount' => $amount
             ])
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     public function getByTradepostAndUserAndCommodity(

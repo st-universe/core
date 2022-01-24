@@ -20,12 +20,15 @@ interface TradeStorageRepositoryInterface extends ObjectRepository
 
     public function getSumByTradePostAndUser(int $tradePostId, int $userId): int;
 
+    /**
+     * @return TradeStorageInterface[]
+     */
     public function getByTradeNetworkAndUserAndCommodityAmount(
         int $tradeNetwork,
         int $userId,
         int $commodityId,
         int $amount
-    ): ?TradeStorageInterface;
+    ): array;
 
     public function getByTradepostAndUserAndCommodity(
         int $tradePostId,
@@ -39,7 +42,7 @@ interface TradeStorageRepositoryInterface extends ObjectRepository
     public function getByTradePostAndUser(int $tradePostId, int $userId): array;
 
     public function getByUserAccumulated(int $userId): iterable;
-    
+
     /**
      * @return TradeStorageInterface[]
      */
