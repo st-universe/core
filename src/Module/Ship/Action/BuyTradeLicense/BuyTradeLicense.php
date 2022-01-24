@@ -139,7 +139,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
         $this->tradeLicenseRepository->save($licence);
 
-        $game->setView(ShowShip::VIEW_IDENTIFIER);
+        $game->redirectTo('/trade.php');
 
         $game->addInformation('Die Handelslizenz wurde erteilt');
     }
