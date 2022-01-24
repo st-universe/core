@@ -52,18 +52,9 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateFile('html/shiplist.xhtml');
 
         $game->setTemplateVar('MAX_CREW_PER_FLEET', GameEnum::CREW_PER_FLEET);
-        $game->setTemplateVar(
-            'SHIPS_AVAILABLE',
-            $fleets !== [] || $ships !== [] || $bases !== []
-        );
-        $game->setTemplateVar(
-            'FLEETS',
-            $fleets
-        );
-        $game->setTemplateVar(
-            'SHIPS',
-            $ships
-        );
+        $game->setTemplateVar('SHIPS_AVAILABLE', $fleets !== [] || $ships !== []);
+        $game->setTemplateVar('FLEETS', $fleets);
+        $game->setTemplateVar('SHIPS', $ships);
 
         $this->loggerUtil->log(sprintf('Shiplist-end, timestamp: %F', microtime(true)));
     }

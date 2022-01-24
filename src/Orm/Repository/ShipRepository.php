@@ -703,7 +703,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 WHERE s.%s = :fieldId
                 AND s.id != :ignoreId
                 %s
-                ORDER BY f.sort desc, f.id desc, (case when s.is_fleet_leader then 0 else 1 end)',
+                ORDER BY f.sort DESC, f.id DESC, (CASE WHEN s.is_fleet_leader THEN 0 ELSE 1 END), r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                 $isSystem ? 'starsystem_map_id' : 'map_id',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
@@ -773,7 +773,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.id != :ignoreId
                 AND s.fleets_id IS NULL
                 AND s.is_base = :isBase
-                %s',
+                %s
+                ORDER BY r.category_id ASC, r.role_id ASC, r.id ASC, s.name ASC',
                 $isSystem ? 'starsystem_map_id' : 'map_id',
                 $showCloaked ? '' : sprintf(' AND (s.user_id = %d OR COALESCE(ss2.mode,0) < %d) ', $ship->getUser()->getId(), ShipSystemModeEnum::MODE_ON)
             ),
