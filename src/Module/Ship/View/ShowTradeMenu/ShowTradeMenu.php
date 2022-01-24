@@ -66,7 +66,9 @@ final class ShowTradeMenu implements ViewControllerInterface
         }
 
         $game->setPageTitle(sprintf(_('Handelsposten: %s'), $tradepost->getName()));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
+        if (!in_array('noAjaxTemplate', $game->getViewContext())) {
+            $game->setTemplateFile('html/ajaxwindow.xhtml');
+        }
         $game->setMacro('html/shipmacros.xhtml/trademenu');
 
         $databaseEntryId = $tradepost->getShip()->getDatabaseId();

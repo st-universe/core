@@ -56,7 +56,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER);
+        $game->setView(ShowTradeMenu::VIEW_IDENTIFIER, ['noAjaxTemplate']);
 
         $userId = $game->getUser()->getId();
 
@@ -137,6 +137,8 @@ final class BuyTradeLicense implements ActionControllerInterface
         $licence->setTradePost($tradepost);
         $licence->setUser($game->getUser());
         $licence->setDate(time());
+
+        $game->addInformation('Handelslizenz wurde erteilt');
 
         $this->tradeLicenseRepository->save($licence);
     }
