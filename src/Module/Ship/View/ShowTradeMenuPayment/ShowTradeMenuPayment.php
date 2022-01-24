@@ -98,6 +98,14 @@ final class ShowTradeMenuPayment implements ViewControllerInterface
                     $licenseCost
                 )
             );
+
+            $this->loggerUtil->log(sprintf(
+                'networkId: %d, licenseCostGoodId: %d, licenseCost: %d',
+                $tradepost->getTradeNetwork(),
+                $licenseCostGood->getId(),
+                $licenseCost
+            ));
+
             $foo = $this->tradeStorageRepository->getByTradeNetworkAndUserAndCommodityAmount(
                 $tradepost->getTradeNetwork(),
                 $userId,
