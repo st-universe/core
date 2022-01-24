@@ -11,6 +11,7 @@ use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
+use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Trade\Lib\TradeLibFactoryInterface;
 use Stu\Module\Trade\View\Overview\Overview;
 use Stu\Orm\Entity\TradePostInterface;
@@ -138,7 +139,7 @@ final class BuyTradeLicense implements ActionControllerInterface
 
         $this->tradeLicenseRepository->save($licence);
 
-        $game->setView(Overview::VIEW_IDENTIFIER);
+        $game->setView(ShowShip::VIEW_IDENTIFIER);
 
         $game->addInformation('Die Handelslizenz wurde erteilt');
     }
