@@ -8,5 +8,7 @@ interface TalPageInterface
 
     public function setTemplate(string $file): void;
 
+    public function isTemplateSet(): bool;
+
     public function parse(): string;
 }

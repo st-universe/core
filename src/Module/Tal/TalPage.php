@@ -14,6 +14,8 @@ final class TalPage implements TalPageInterface
 
     private ?PhpTal\PHPTAL $template = null;
 
+    private bool $isTemplateSet = false;
+
     public function __construct(
         ConfigInterface $config
     ) {
@@ -52,6 +54,12 @@ final class TalPage implements TalPageInterface
     public function setTemplate(string $file): void
     {
         $this->getTemplate()->setTemplate($file);
+        $this->isTemplateSet = true;
+    }
+
+    public function isTemplateSet(): bool
+    {
+        return $this->isTemplateSet;
     }
 
     public function parse(): string
