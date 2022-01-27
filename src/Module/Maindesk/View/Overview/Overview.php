@@ -44,6 +44,8 @@ final class Overview implements ViewControllerInterface
 
     private LoggerUtilInterface $loggerUtil;
 
+    private int $newAmount;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
@@ -88,22 +90,22 @@ final class Overview implements ViewControllerInterface
             'DISPLAY_FIRST_COLONY_DIALOGUE',
             $user->getActive() === 1
         );
-        $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
+        $this->newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
         $game->setTemplateVar(
             'NEW_KN_POSTING_COUNT',
-            $newAmount
+            $this->newAmount
         );
         $game->setTemplateVar(
             'NEW_KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user, $newAmount): KnItemInterface {
-                    $newAmount--;
-                    $this->loggerUtil->log(sprintf('newAmount: %d', $newAmount));
+                function (KnPostInterface $knPost) use ($user): KnItemInterface {
+                    $this->newAmount--;
+                    $this->loggerUtil->log(sprintf('newAmount: %d', $this->newAmount));
                     $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user
                     );
-                    $knItem->setMark(((int)floor($newAmount / GameEnum::KN_PER_SITE)) * 6);
+                    $knItem->setMark(((int)floor($this->newAmount / GameEnum::KN_PER_SITE)) * 6);
                     return $knItem;
                 },
                 $this->knPostRepository->getNewerThenMark($user->getKNMark())
