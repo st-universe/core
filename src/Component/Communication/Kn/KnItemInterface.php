@@ -5,7 +5,8 @@ namespace Stu\Component\Communication\Kn;
 use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
 
-interface KnItemInterface {
+interface KnItemInterface
+{
 
     public function getId(): int;
 
@@ -36,6 +37,10 @@ interface KnItemInterface {
     public function userCanRate(): bool;
 
     public function userHasRated(): bool;
+
+    public function getMark(): ?int;
+
+    public function setMark(int $mark): void;
 
     public function getRating(): int;
 

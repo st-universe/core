@@ -348,7 +348,7 @@
     <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
     <br />
     <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
-      <div class="box">
+      <div id="kn_post_${post/getId}" class="box">
         <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
           <div tal:condition="post/getUser">
             <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span
@@ -383,7 +383,7 @@
               <div class="segment">
                 <div tal:condition="post/getUser/isNpc">NPC</div>
                 <img class="knUserAvatar" src="runtime" tal:attributes="src post/getUser/getFullAvatarpath" /><br />
-                <a id="kn_post_${post/getId}" title="Beitrag-ID"><span tal:replace="post/getId">POSTID</span></a>
+                <span title="Beitrag-ID" tal:replace="post/getId">POSTID</span>
                 <br />
               </div>
               <div class="segment" tal:condition="post/displayContactLinks" tal:define="id post/getUser/getId">

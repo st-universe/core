@@ -77,21 +77,25 @@ final class Overview implements ViewControllerInterface
             'DISPLAY_FIRST_COLONY_DIALOGUE',
             $user->getActive() === 1
         );
+        $newAmount = $this->knPostRepository->getAmountSince($user->getKNMark());
+        $game->setTemplateVar(
+            'NEW_KN_POSTING_COUNT',
+            $newAmount
+        );
         $game->setTemplateVar(
             'NEW_KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user): KnItemInterface {
-                    return $this->knFactory->createKnItem(
+                function (KnPostInterface $knPost) use ($user, $newAmount): KnItemInterface {
+                    $newAmount--;
+                    $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user
                     );
+                    $knItem->setMark(((int)floor($newAmount / GameEnum::KN_PER_SITE)) * 6);
+                    return $knItem;
                 },
                 $this->knPostRepository->getNewerThenMark($user->getKNMark())
             )
-        );
-        $game->setTemplateVar(
-            'NEW_KN_POSTING_COUNT',
-            $this->knPostRepository->getAmountSince($user->getKNMark())
         );
         $game->setTemplateVar(
             'RECENT_PROFILE_VISITORS',

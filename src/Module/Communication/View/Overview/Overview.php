@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\Overview;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -14,8 +15,6 @@ use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
 
 final class Overview implements ViewControllerInterface
 {
-    private const KNLIMITER = 6;
-
     private OverviewRequestInterface $overviewRequest;
 
     private KnPostRepositoryInterface $knPostRepository;
@@ -45,28 +44,28 @@ final class Overview implements ViewControllerInterface
         $knPostCount = $this->knPostRepository->getAmount();
 
         $mark = $knPostCount;
-        $lim = floor($mark / static::KNLIMITER) * static::KNLIMITER;
-        if ($mark % static::KNLIMITER == 0) {
-            $knStart = $lim - static::KNLIMITER;
+        $lim = floor($mark / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
+        if ($mark % GameEnum::KN_PER_SITE == 0) {
+            $knStart = $lim - GameEnum::KN_PER_SITE;
         } else {
             $knStart = $lim;
         }
 
         $mark = $this->overviewRequest->getKnOffset();
-        if ($mark % static::KNLIMITER != 0 || $mark < 0) {
+        if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
             $mark = 0;
         }
 
         if ($this->overviewRequest->startAtUserMark() === true) {
-            $mark = (int) floor($newKnPostCount / static::KNLIMITER) * static::KNLIMITER;
+            $mark = (int) floor($newKnPostCount / GameEnum::KN_PER_SITE) * GameEnum::KN_PER_SITE;
         }
 
-        $maxpage = ceil($knPostCount/ static::KNLIMITER);
-        $curpage = floor($mark / static::KNLIMITER);
+        $maxpage = ceil($knPostCount / GameEnum::KN_PER_SITE);
+        $curpage = floor($mark / GameEnum::KN_PER_SITE);
         $knNavigation = [];
         if ($curpage != 0) {
             $knNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $knNavigation[] = ["page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages"];
+            $knNavigation[] = ["page" => "<", "mark" => ($mark - GameEnum::KN_PER_SITE), "cssclass" => "pages"];
         }
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
             if ($i > $maxpage || $i < 1) {
@@ -74,13 +73,13 @@ final class Overview implements ViewControllerInterface
             }
             $knNavigation[] = [
                 "page" => $i,
-                "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
+                "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
                 "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
             ];
         }
         if ($curpage + 1 != $maxpage) {
-            $knNavigation[] = ["page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages"];
-            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
+            $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
+            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
         $game->setPageTitle(_('Kommunikationsnetzwerk'));
@@ -96,7 +95,7 @@ final class Overview implements ViewControllerInterface
                         $user
                     );
                 },
-                $this->knPostRepository->getBy($mark, static::KNLIMITER)
+                $this->knPostRepository->getBy($mark, GameEnum::KN_PER_SITE)
             )
         );
         $game->setTemplateVar('HAS_NEW_KN_POSTINGS', $this->knPostRepository->getAmountSince($userKnMark));

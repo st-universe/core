@@ -6,6 +6,7 @@ namespace Stu\Module\Communication\View\ShowKnPlot;
 
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Entity\KnPostInterface;
@@ -15,8 +16,6 @@ use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 final class ShowKnPlot implements ViewControllerInterface
 {
     public const VIEW_IDENTIFIER = 'SHOW_PLOT';
-
-    private const KNLIMITER = 6;
 
     private ShowKnPlotRequestInterface $showKnPlotRequest;
 
@@ -49,16 +48,16 @@ final class ShowKnPlot implements ViewControllerInterface
         }
         $mark = $this->showKnPlotRequest->getKnOffset();
 
-        if ($mark % static::KNLIMITER != 0 || $mark < 0) {
+        if ($mark % GameEnum::KN_PER_SITE != 0 || $mark < 0) {
             $mark = 0;
         }
         $maxcount = $this->knPostRepository->getAmountByPlot((int) $plot->getId());
-        $maxpage = ceil($maxcount / static::KNLIMITER);
-        $curpage = floor($mark / static::KNLIMITER);
+        $maxpage = ceil($maxcount / GameEnum::KN_PER_SITE);
+        $curpage = floor($mark / GameEnum::KN_PER_SITE);
         $knNavigation = [];
         if ($curpage != 0) {
             $knNavigation[] = ["page" => "<<", "mark" => 0, "cssclass" => "pages"];
-            $knNavigation[] = ["page" => "<", "mark" => ($mark - static::KNLIMITER), "cssclass" => "pages"];
+            $knNavigation[] = ["page" => "<", "mark" => ($mark - GameEnum::KN_PER_SITE), "cssclass" => "pages"];
         }
         for ($i = $curpage - 1; $i <= $curpage + 3; $i++) {
             if ($i > $maxpage || $i < 1) {
@@ -66,13 +65,13 @@ final class ShowKnPlot implements ViewControllerInterface
             }
             $knNavigation[] = [
                 "page" => $i,
-                "mark" => ($i * static::KNLIMITER - static::KNLIMITER),
+                "mark" => ($i * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE),
                 "cssclass" => ($curpage + 1 == $i ? "pages selected" : "pages")
             ];
         }
         if ($curpage + 1 != $maxpage) {
-            $knNavigation[] = ["page" => ">", "mark" => ($mark + static::KNLIMITER), "cssclass" => "pages"];
-            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * static::KNLIMITER - static::KNLIMITER, "cssclass" => "pages"];
+            $knNavigation[] = ["page" => ">", "mark" => ($mark + GameEnum::KN_PER_SITE), "cssclass" => "pages"];
+            $knNavigation[] = ["page" => ">>", "mark" => $maxpage * GameEnum::KN_PER_SITE - GameEnum::KN_PER_SITE, "cssclass" => "pages"];
         }
 
         $game->setTemplateFile('html/plotdetails.xhtml');
@@ -98,7 +97,7 @@ final class ShowKnPlot implements ViewControllerInterface
                         $user
                     );
                 },
-                $this->knPostRepository->getByPlot($plot, $mark, static::KNLIMITER)
+                $this->knPostRepository->getByPlot($plot, $mark, GameEnum::KN_PER_SITE)
             )
         );
         $game->setTemplateVar('KN_OFFSET', $mark);

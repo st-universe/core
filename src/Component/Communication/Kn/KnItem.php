@@ -13,7 +13,8 @@ use Stu\Orm\Entity\RpgPlotInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnCommentRepositoryInterface;
 
-final class KnItem implements KnItemInterface {
+final class KnItem implements KnItemInterface
+{
 
     private Parser $bbcodeParser;
 
@@ -22,6 +23,8 @@ final class KnItem implements KnItemInterface {
     private KnPostInterface $post;
 
     private UserInterface $currentUser;
+
+    private ?int $mark;
 
     public function __construct(
         Parser $bbcodeParser,
@@ -34,6 +37,7 @@ final class KnItem implements KnItemInterface {
         $this->post = $post;
         $this->currentUser = $currentUser;
     }
+
     public function getId(): int
     {
         return $this->post->getId();
@@ -110,6 +114,16 @@ final class KnItem implements KnItemInterface {
         return array_key_exists($this->currentUser->getId(), $this->post->getRatings());
     }
 
+    public function getMark(): ?int
+    {
+        return $this->mark;
+    }
+
+    public function setMark(int $mark): void
+    {
+        $this->mark = $mark;
+    }
+
     public function getRating(): int
     {
         return array_sum(
@@ -136,6 +150,5 @@ final class KnItem implements KnItemInterface {
             ->setMaxValue($ratingAmount)
             ->setValue($this->getRating())
             ->render();
-
     }
 }

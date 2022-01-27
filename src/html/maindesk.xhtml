@@ -44,7 +44,7 @@
 									<td>
 										<span tal:condition="data/getPlot">Plot:</span>
 										<span tal:condition="not:data/getPlot">Titel:</span>
-										<a href="comm.php?SHOW_KN=1&mark=0"
+										<a href="comm.php?mark=${post/getMark}#kn_post_${post/getId}"
 											tal:content="structure data/getTitle">TITLE</a>
 									</td>
 								</tr>
