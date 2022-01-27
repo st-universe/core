@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Communication\View\Overview;
 
+use request;
 use Stu\Component\Communication\Kn\KnFactoryInterface;
 use Stu\Component\Communication\Kn\KnItemInterface;
 use Stu\Component\Game\GameEnum;
@@ -86,14 +87,20 @@ final class Overview implements ViewControllerInterface
         $game->setTemplateFile('html/comm.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
 
+        $markedPostId = request::getInt('markedPost');
+
         $game->setTemplateVar(
             'KN_POSTINGS',
             array_map(
-                function (KnPostInterface $knPost) use ($user): KnItemInterface {
-                    return $this->knFactory->createKnItem(
+                function (KnPostInterface $knPost) use ($user, $markedPostId): KnItemInterface {
+                    $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user
                     );
+                    if ($markedPostId && $knItem->getId() == $markedPostId) {
+                        $knItem->setIsHighlighted(true);
+                    }
+                    return $knItem;
                 },
                 $this->knPostRepository->getBy($mark, GameEnum::KN_PER_SITE)
             )

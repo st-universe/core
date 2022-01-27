@@ -42,6 +42,10 @@ interface KnItemInterface
 
     public function setMark(int $mark): void;
 
+    public function getDivClass(): string;
+
+    public function setIsHighlighted(bool $isHighlighted): void;
+
     public function getRating(): int;
 
     public function getRatingBar(): string;

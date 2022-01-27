@@ -75,10 +75,6 @@ final class Overview implements ViewControllerInterface
         $user = $game->getUser();
         $userId = $user->getId();
 
-        if ($userId === 126) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
         $game->appendNavigationPart(
             'maindesk.php',
             _('Maindesk')
@@ -100,7 +96,6 @@ final class Overview implements ViewControllerInterface
             array_map(
                 function (KnPostInterface $knPost) use ($user): KnItemInterface {
                     $this->newAmount--;
-                    $this->loggerUtil->log(sprintf('newAmount: %d', $this->newAmount));
                     $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user

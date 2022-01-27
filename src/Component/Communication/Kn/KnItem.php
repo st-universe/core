@@ -26,6 +26,8 @@ final class KnItem implements KnItemInterface
 
     private ?int $mark;
 
+    private bool $isHighlighted = false;
+
     public function __construct(
         Parser $bbcodeParser,
         KnCommentRepositoryInterface $knCommentRepository,
@@ -122,6 +124,16 @@ final class KnItem implements KnItemInterface
     public function setMark(int $mark): void
     {
         $this->mark = $mark;
+    }
+
+    public function getDivClass(): string
+    {
+        return $this->isHighlighted ? 'red_box' : 'box';
+    }
+
+    public function setIsHighlighted(bool $isHighlighted): void
+    {
+        $this->isHighlighted = $isHighlighted;
     }
 
     public function getRating(): int

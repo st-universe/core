@@ -988,6 +988,11 @@ div.box {
     border-radius: 3px 3px 3px 3px;
 }
 
+div.red_box {
+    border: 1px solid #ff0000;
+    border-radius: 3px 3px 3px 3px;
+}
+
 div.planet_ring {
     text-align: center;
     width: 120px;

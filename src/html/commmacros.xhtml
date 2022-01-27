@@ -348,7 +348,7 @@
     <metal:macro metal:use-macro="html/commmacros.xhtml/${navigation_macro}" />
     <br />
     <div style="overflow: hidden; text-overflow: ellipsis" tal:repeat="post KN_POSTINGS">
-      <div id="kn_post_${post/getId}" class="box">
+      <div id="kn_post_${post/getId}" class="${post/getDivClass}">
         <div class="box_title" style="padding-top: 5px; padding-bottom: 5px; font-size: 110%;">
           <div tal:condition="post/getUser">
             <span tal:replace="structure bbcode:post/getUser/getName">USER</span> (<span
