@@ -175,7 +175,7 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
                 $ship,
                 $game->getUser(),
-                $this->loggerUtilFactory,
+                $this->loggerUtilFactory->getLoggerUtil(),
                 $ship->getTachyonState(),
                 $tachyonFresh
             ));
