@@ -93,6 +93,10 @@ interface UserInterface
 
     public function setShowOnlineState(bool $showOnlineState): UserInterface;
 
+    public function isShowPmReadReceipt(): ?bool;
+
+    public function setShowPmReadReceipt(?bool $showPmReadReceipt): UserInterface;
+
     public function isSaveLogin(): bool;
 
     public function setSaveLogin(bool $save_login): UserInterface;

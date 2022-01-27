@@ -93,6 +93,9 @@ class User implements UserInterface
     /** @Column(type="boolean") */
     private $show_online_status = true;
 
+    /** @Column(type="boolean", nullable=true) */
+    private $show_pm_read_receipt;
+
     /** @Column(type="boolean") */
     private $save_login = true;
 
@@ -386,6 +389,17 @@ class User implements UserInterface
     public function setShowOnlineState(bool $showOnlineState): UserInterface
     {
         $this->show_online_status = $showOnlineState;
+        return $this;
+    }
+
+    public function isShowPmReadReceipt(): ?bool
+    {
+        return $this->show_pm_read_receipt;
+    }
+
+    public function setShowPmReadReceipt(?bool $showPmReadReceipt): UserInterface
+    {
+        $this->show_pm_read_receipt = $showPmReadReceipt;
         return $this;
     }
 
