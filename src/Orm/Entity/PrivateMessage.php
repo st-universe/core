@@ -44,6 +44,9 @@ class PrivateMessage implements PrivateMessageInterface
     /** @Column(type="integer") */
     private $cat_id = 0;
 
+    /** @Column(type="integer", nullable = true) */
+    private $inbox_pm_id;
+
     /** @Column(type="string", nullable=true) */
     private $href;
 
@@ -132,6 +135,17 @@ class PrivateMessage implements PrivateMessageInterface
     public function setCategoryId(int $categoryId): PrivateMessageInterface
     {
         $this->cat_id = $categoryId;
+        return $this;
+    }
+
+    public function getInboxPmId(): ?int
+    {
+        return $this->inbox_pm_id;
+    }
+
+    public function setInboxPmId(?int $pmId): PrivateMessageInterface
+    {
+        $this->inbox_pm_id = $pmId;
         return $this;
     }
 
