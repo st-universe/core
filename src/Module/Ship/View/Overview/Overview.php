@@ -8,6 +8,7 @@ use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -25,11 +26,11 @@ final class Overview implements ViewControllerInterface
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
         ShipRepositoryInterface $shipRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

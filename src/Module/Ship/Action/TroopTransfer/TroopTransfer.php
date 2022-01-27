@@ -17,6 +17,7 @@ use Stu\Component\Ship\System\Type\UplinkShipSystem;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -67,8 +68,8 @@ final class TroopTransfer implements ActionControllerInterface
         ActivatorDeactivatorHelperInterface $helper,
         ShipSystemManagerInterface $shipSystemManager,
         DockPrivilegeUtilityInterface $dockPrivilegeUtility,
-        LoggerUtilInterface $loggerUtil,
-        PrivateMessageSenderInterface $privateMessageSender
+        PrivateMessageSenderInterface $privateMessageSender,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -79,7 +80,7 @@ final class TroopTransfer implements ActionControllerInterface
         $this->helper = $helper;
         $this->shipSystemManager = $shipSystemManager;
         $this->dockPrivilegeUtility = $dockPrivilegeUtility;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->privateMessageSender = $privateMessageSender;
     }
 

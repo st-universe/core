@@ -36,6 +36,7 @@ use Stu\Orm\Repository\UserRepositoryInterface;
 use Stu\Exception\StuException;
 use Stu\Exception\UnallowedUplinkOperation;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Ubench;
@@ -113,7 +114,7 @@ final class GameController implements GameControllerInterface
         UserRepositoryInterface $userRepository,
         Ubench $benchmark,
         CreateDatabaseEntryInterface $createDatabaseEntry,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
         $this->sessionStringRepository = $sessionStringRepository;
@@ -129,7 +130,7 @@ final class GameController implements GameControllerInterface
         $this->userRepository = $userRepository;
         $this->benchmark = $benchmark;
         $this->createDatabaseEntry = $createDatabaseEntry;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function setView(string $view, array $viewContext = []): void

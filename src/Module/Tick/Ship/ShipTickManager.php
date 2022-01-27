@@ -14,6 +14,7 @@ use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Commodity\CommodityTypeEnum;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
@@ -77,7 +78,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         ColonyStorageManagerInterface $colonyStorageManager,
         ShipStorageManagerInterface $shipStorageManager,
         ModuleQueueRepositoryInterface $moduleQueueRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRemover = $shipRemover;
@@ -93,7 +94,7 @@ final class ShipTickManager implements ShipTickManagerInterface
         $this->colonyStorageManager = $colonyStorageManager;
         $this->shipStorageManager = $shipStorageManager;
         $this->moduleQueueRepository = $moduleQueueRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void
@@ -268,15 +269,6 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($this->shipRepository->getDebrisFields() as $ship) {
             $lower = rand(5, 15);
             if ($ship->getHuell() <= $lower) {
-
-                $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
-                $this->privateMessageSender->send(
-                    GameEnum::USER_NOONE,
-                    $ship->getUser()->getId(),
-                    $msg,
-                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
-                );
-
                 $this->shipRemover->remove($ship);
                 continue;
             }
@@ -291,6 +283,15 @@ final class ShipTickManager implements ShipTickManagerInterface
         foreach ($this->shipRepository->getStationConstructions() as $ship) {
             $lower = rand(5, 15);
             if ($ship->getHuell() <= $lower) {
+
+                $msg = sprintf(_('Dein Konstrukt bei %s war zu lange ungenutzt und ist daher zerfallen'), $ship->getSectorString());
+                $this->privateMessageSender->send(
+                    GameEnum::USER_NOONE,
+                    $ship->getUser()->getId(),
+                    $msg,
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION
+                );
+
                 $this->shipRemover->remove($ship);
                 continue;
             }

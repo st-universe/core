@@ -15,6 +15,7 @@ use Stu\Module\Crew\Lib\CrewCreatorInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Database\Lib\CreateDatabaseEntryInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Research\ResearchState;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -84,9 +85,9 @@ final class ColonyTick implements ColonyTickInterface
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        LoggerUtilInterface $loggerUtil,
         EntityManagerInterface $entityManager,
-        UserAwardRepositoryInterface $userAwardRepository
+        UserAwardRepositoryInterface $userAwardRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->researchedRepository = $researchedRepository;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
@@ -101,7 +102,7 @@ final class ColonyTick implements ColonyTickInterface
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->entityManager = $entityManager;
         $this->userAwardRepository = $userAwardRepository;
     }

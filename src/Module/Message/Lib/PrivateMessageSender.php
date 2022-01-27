@@ -11,6 +11,7 @@ use Laminas\Mail\Transport\Sendmail;
 use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageFolderRepositoryInterface;
@@ -36,14 +37,14 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
         PrivateMessageRepositoryInterface $privateMessageRepository,
         UserRepositoryInterface $userRepository,
         ConfigInterface $config,
-        LoggerUtilInterface $loggerUtil,
-        Parser $bbcodeParser
+        Parser $bbcodeParser,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->userRepository = $userRepository;
         $this->config = $config;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->bbcodeParser = $bbcodeParser;
     }
 

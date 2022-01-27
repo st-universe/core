@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Storage;
 
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\CommodityInterface;
@@ -13,12 +14,14 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
 {
     private ColonyStorageRepositoryInterface $colonyStorageRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         ColonyStorageRepositoryInterface $colonyStorageRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->colonyStorageRepository = $colonyStorageRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function lowerStorage(ColonyInterface $colony, CommodityInterface $commodity, int $amount): void

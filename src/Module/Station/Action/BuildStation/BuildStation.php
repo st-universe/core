@@ -13,6 +13,7 @@ use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -49,16 +50,16 @@ final class BuildStation implements ActionControllerInterface
         StationUtilityInterface $stationUtility,
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
-        LoggerUtilInterface $loggerUtil,
         ModuleRepositoryInterface $moduleRepository,
         ShipStorageManagerInterface $shipStorageManager,
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
-        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository
+        ConstructionProgressModuleRepositoryInterface $constructionProgressModuleRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->stationUtility = $stationUtility;
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->moduleRepository = $moduleRepository;
         $this->shipStorageManager = $shipStorageManager;
         $this->constructionProgressRepository = $constructionProgressRepository;

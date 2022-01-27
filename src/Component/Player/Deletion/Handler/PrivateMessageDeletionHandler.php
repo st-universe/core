@@ -6,6 +6,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
@@ -22,11 +23,11 @@ final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerIntefa
     public function __construct(
         UserRepositoryInterface $userRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userRepository = $userRepository;
         $this->privateMessageRepository = $privateMessageRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function delete(UserInterface $user): void

@@ -12,6 +12,7 @@ use Stu\Lib\SignatureWrapper;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
@@ -49,7 +50,7 @@ final class ShowSensorScan implements ViewControllerInterface
         StarSystemMapRepositoryInterface $starSystemMapRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         NbsUtilityInterface $nbsUtility,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
@@ -57,7 +58,7 @@ final class ShowSensorScan implements ViewControllerInterface
         $this->starSystemMapRepository = $starSystemMapRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->nbsUtility = $nbsUtility;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

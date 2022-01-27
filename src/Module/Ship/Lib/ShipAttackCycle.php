@@ -7,6 +7,7 @@ namespace Stu\Module\Ship\Lib;
 use Stu\Component\Game\SemaphoreEnum;
 use Stu\Module\Control\SemaphoreUtilInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\Battle\EnergyWeaponPhaseInterface;
 use Stu\Module\Ship\Lib\Battle\FightLibInterface;
@@ -51,14 +52,14 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
         EnergyWeaponPhaseInterface $energyWeaponPhase,
         ProjectileWeaponPhaseInterface $projectileWeaponPhase,
         FightLibInterface $fightLib,
-        LoggerUtilInterface $loggerUtil,
-        SemaphoreUtilInterface $semaphoreUtil
+        SemaphoreUtilInterface $semaphoreUtil,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->energyWeaponPhase = $energyWeaponPhase;
         $this->projectileWeaponPhase = $projectileWeaponPhase;
         $this->fightLib = $fightLib;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->semaphoreUtil = $semaphoreUtil;
     }
 

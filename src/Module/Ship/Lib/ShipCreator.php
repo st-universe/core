@@ -20,6 +20,7 @@ use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperShield;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperSpecial;
 use Stu\Lib\ModuleRumpWrapper\ModuleRumpWrapperWarpcore;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
@@ -63,7 +64,7 @@ final class ShipCreator implements ShipCreatorInterface
         ShipBuildplanRepositoryInterface $shipBuildplanRepository,
         ModuleSpecialRepositoryInterface $moduleSpecialRepository,
         StarSystemMapRepositoryInterface $starSystemMapRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipSystemRepository = $shipSystemRepository;
@@ -73,7 +74,7 @@ final class ShipCreator implements ShipCreatorInterface
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleSpecialRepository = $moduleSpecialRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function createBy(
@@ -97,7 +98,7 @@ final class ShipCreator implements ShipCreatorInterface
                 return new ModuleRumpWrapperShield($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_SHIELDS), null);
             },
             ShipModuleTypeEnum::MODULE_TYPE_EPS => function (ShipInterface $ship): ModuleRumpWrapperInterface {
-                return new ModuleRumpWrapperEps($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_EPS), $this->loggerUtil);
+                return new ModuleRumpWrapperEps($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_EPS));
             },
             ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE => function (ShipInterface $ship): ModuleRumpWrapperInterface {
                 return new ModuleRumpWrapperImpulseDrive($ship->getRump(), $ship->getBuildplan()->getModulesByType(ShipModuleTypeEnum::MODULE_TYPE_IMPULSEDRIVE), null);

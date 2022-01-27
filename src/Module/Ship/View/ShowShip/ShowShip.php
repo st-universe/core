@@ -19,6 +19,7 @@ use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Database\View\Category\Tal\DatabaseCategoryTalFactoryInterface;
 use Stu\Lib\SessionInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Module\Ship\Lib\ShipRumpSpecialAbilityEnum;
@@ -36,6 +37,8 @@ final class ShowShip implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_SHIP';
 
     private SessionInterface $session;
+
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
 
     private LoggerUtilInterface $loggerUtil;
 
@@ -61,7 +64,6 @@ final class ShowShip implements ViewControllerInterface
 
     public function __construct(
         SessionInterface $session,
-        LoggerUtilInterface $loggerUtil,
         ShipLoaderInterface $shipLoader,
         ColonyRepositoryInterface $colonyRepository,
         ColonizationCheckerInterface $colonizationChecker,
@@ -71,10 +73,10 @@ final class ShowShip implements ViewControllerInterface
         NbsUtilityInterface $nbsUtility,
         StationShipRepairRepositoryInterface $stationShipRepairRepository,
         ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
-        StationUtilityInterface $stationUtility
+        StationUtilityInterface $stationUtility,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->session = $session;
-        $this->loggerUtil = $loggerUtil;
         $this->shipLoader = $shipLoader;
         $this->colonyRepository = $colonyRepository;
         $this->colonizationChecker = $colonizationChecker;
@@ -85,6 +87,8 @@ final class ShowShip implements ViewControllerInterface
         $this->stationShipRepairRepository = $stationShipRepairRepository;
         $this->shipyardShipQueueRepository = $shipyardShipQueueRepository;
         $this->stationUtility = $stationUtility;
+        $this->loggerUtilFactory = $loggerUtilFactory;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
@@ -171,7 +175,7 @@ final class ShowShip implements ViewControllerInterface
             $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
                 $ship,
                 $game->getUser(),
-                $this->loggerUtil,
+                $this->loggerUtilFactory,
                 $ship->getTachyonState(),
                 $tachyonFresh
             ));

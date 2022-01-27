@@ -7,8 +7,7 @@ namespace Stu\Module\Admin\View\ShowSignatures;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Repository\FlightSignatureRepositoryInterface;
 
 final class ShowSignatures implements ViewControllerInterface
@@ -17,14 +16,14 @@ final class ShowSignatures implements ViewControllerInterface
 
     private FlightSignatureRepositoryInterface $flightSignatureRepository;
 
-    private LoggerUtilInterface $loggerUtil;
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
 
     public function __construct(
         FlightSignatureRepositoryInterface $flightSignatureRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->flightSignatureRepository = $flightSignatureRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -49,7 +48,7 @@ final class ShowSignatures implements ViewControllerInterface
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $userId,
             current($result),
-            $this->loggerUtil
+            $this->loggerUtilFactory->getLoggerUtil()
         ));
 
         $game->setTemplateVar('DONOTHING', false);

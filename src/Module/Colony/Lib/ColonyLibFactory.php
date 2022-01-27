@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stu\Module\Colony\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Orm\Entity\ColonyInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\ShipRumpInterface;
@@ -41,7 +41,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
 
     private EntityManagerInterface $entityManager;
 
-    private LoggerUtilInterface $loggerUtil;
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
 
     public function __construct(
         PlanetFieldRepositoryInterface $planetFieldRepository,
@@ -54,7 +54,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         ResearchedRepositoryInterface $researchedRepository,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         EntityManagerInterface $entityManager,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->planetFieldRepository = $planetFieldRepository;
         $this->buildingRepository = $buildingRepository;
@@ -66,7 +66,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
         $this->researchedRepository = $researchedRepository;
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->entityManager = $entityManager;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function createOrbitShipItem(
@@ -109,7 +109,7 @@ final class ColonyLibFactory implements ColonyLibFactoryInterface
             $this->colonyRepository,
             $this->researchedRepository,
             $this->entityManager,
-            $this->loggerUtil,
+            $this->loggerUtilFactory->getLoggerUtil(),
             $colony,
             $buildingId,
             $showUnderground

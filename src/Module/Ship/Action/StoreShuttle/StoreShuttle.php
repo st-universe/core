@@ -11,6 +11,7 @@ use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\PositionCheckerInterface;
 use Stu\Module\Ship\View\ShowShip\ShowShip;
@@ -52,7 +53,7 @@ final class StoreShuttle implements ActionControllerInterface
         TroopTransferUtilityInterface $troopTransferUtility,
         ShipRemoverInterface $shipRemover,
         PositionCheckerInterface $positionChecker,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
@@ -63,7 +64,7 @@ final class StoreShuttle implements ActionControllerInterface
         $this->troopTransferUtility = $troopTransferUtility;
         $this->shipRemover = $shipRemover;
         $this->positionChecker = $positionChecker;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

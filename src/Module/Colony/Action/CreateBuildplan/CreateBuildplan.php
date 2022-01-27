@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stu\Module\Colony\View\ShowModuleScreen\ShowModuleScreen;
 use Stu\Module\Colony\View\ShowModuleScreenBuildplan\ShowModuleScreenBuildplan;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 final class CreateBuildplan implements ActionControllerInterface
@@ -45,14 +46,14 @@ final class CreateBuildplan implements ActionControllerInterface
         ModuleRepositoryInterface $moduleRepository,
         ShipRumpRepositoryInterface $shipRumpRepository,
         EntityManagerInterface $entityManager,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->buildplanModuleRepository = $buildplanModuleRepository;
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->moduleRepository = $moduleRepository;
         $this->shipRumpRepository = $shipRumpRepository;
         $this->entityManager = $entityManager;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     private function exitOnError(GameControllerInterface $game): void

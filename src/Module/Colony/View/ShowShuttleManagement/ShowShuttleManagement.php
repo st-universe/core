@@ -8,6 +8,7 @@ use Stu\Module\Colony\Lib\ShuttleManagementItem;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
@@ -28,12 +29,12 @@ final class ShowShuttleManagement implements ViewControllerInterface
         ShowShuttleManagementRequestInterface $request,
         ShipRepositoryInterface $shipRepository,
         ColonyRepositoryInterface $colonyRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->request = $request;
         $this->shipRepository = $shipRepository;
         $this->colonyRepository = $colonyRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

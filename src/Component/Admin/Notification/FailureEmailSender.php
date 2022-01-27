@@ -9,6 +9,7 @@ use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Transport\Sendmail;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 final class FailureEmailSender implements FailureEmailSenderInterface
@@ -18,10 +19,10 @@ final class FailureEmailSender implements FailureEmailSenderInterface
 
     private LoggerUtilInterface $loggerUtil;
 
-    public function __construct(ConfigInterface $config, LoggerUtilInterface $loggerUtil)
+    public function __construct(ConfigInterface $config, LoggerUtilFactoryInterface $loggerUtilFactory)
     {
         $this->config = $config;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function sendMail(string $subject, string $message): void

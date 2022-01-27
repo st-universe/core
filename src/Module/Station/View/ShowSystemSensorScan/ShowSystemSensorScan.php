@@ -7,8 +7,7 @@ namespace Stu\Module\Station\View\ShowSystemSensorScan;
 use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
-use Stu\Module\Logging\LoggerEnum;
-use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 use Stu\Orm\Repository\MapRepositoryInterface;
 use VisualNavPanel;
@@ -21,21 +20,20 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
     private MapRepositoryInterface $mapRepository;
 
-    private LoggerUtilInterface $loggerUtil;
+    private LoggerUtilFactoryInterface $loggerUtilFactory;
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
         MapRepositoryInterface $mapRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
         $this->mapRepository = $mapRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtilFactory = $loggerUtilFactory;
     }
 
     public function handle(GameControllerInterface $game): void
     {
-        //$this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
         $userId = $game->getUser()->getId();
 
         $ship = $this->shipLoader->getByIdAndUser(
@@ -79,7 +77,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
             $game->setTemplateVar('VISUAL_NAV_PANEL', new VisualNavPanel(
                 $ship,
                 $game->getUser(),
-                $this->loggerUtil,
+                $this->loggerUtilFactory->getLoggerUtil(),
                 $ship->getTachyonState(),
                 false,
                 $mapField->getSystem()

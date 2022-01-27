@@ -9,6 +9,7 @@ use Stu\Component\Station\StationEnum;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRumpUserRepositoryInterface;
 
@@ -25,11 +26,11 @@ final class ShowStationInfo implements ViewControllerInterface
     public function __construct(
         StationUtilityInterface $stationUtility,
         ShipRumpUserRepositoryInterface $shipRumpUserRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->stationUtility = $stationUtility;
         $this->shipRumpUserRepository = $shipRumpUserRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void

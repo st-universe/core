@@ -6,6 +6,7 @@ namespace Stu\Component\Station;
 
 use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Action\BuildConstruction\BuildConstruction;
 use Stu\Module\Ship\Lib\ShipCreatorInterface;
@@ -34,13 +35,13 @@ final class StationUtility implements StationUtilityInterface
         ConstructionProgressRepositoryInterface $constructionProgressRepository,
         ShipCreatorInterface $shipCreator,
         ShipRepositoryInterface $shipRepository,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipBuildplanRepository = $shipBuildplanRepository;
         $this->constructionProgressRepository = $constructionProgressRepository;
         $this->shipCreator = $shipCreator;
         $this->shipRepository = $shipRepository;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
     public static function canShipBuildConstruction(ShipInterface $ship): bool
     {

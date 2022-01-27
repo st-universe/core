@@ -8,6 +8,7 @@ use request;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
 
@@ -23,11 +24,11 @@ final class ShowStationCosts implements ViewControllerInterface
 
     public function __construct(
         ShipLoaderInterface $shipLoader,
-        LoggerUtilInterface $loggerUtil,
-        StationUtilityInterface $stationUtility
+        StationUtilityInterface $stationUtility,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->stationUtility = $stationUtility;
     }
 

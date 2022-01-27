@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -23,11 +24,11 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
     public function __construct(
         FleetRepositoryInterface $fleetRepository,
         PrivateMessageSenderInterface $privateMessageSender,
-        LoggerUtilInterface $loggerUtil
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->privateMessageSender = $privateMessageSender;
-        $this->loggerUtil = $loggerUtil;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(ShipInterface $ship, bool $isTraktor = false): array
