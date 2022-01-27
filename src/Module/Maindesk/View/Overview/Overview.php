@@ -10,6 +10,9 @@ use Stu\Component\Game\GameEnum;
 use Stu\Component\Player\ColonyLimitCalculatorInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\KnPostInterface;
 use Stu\Orm\Repository\AllianceBoardTopicRepositoryInterface;
 use Stu\Orm\Repository\ColonyShipQueueRepositoryInterface;
@@ -39,6 +42,8 @@ final class Overview implements ViewControllerInterface
 
     private ColonyLimitCalculatorInterface $colonyLimitCalculator;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         HistoryRepositoryInterface $historyRepository,
         AllianceBoardTopicRepositoryInterface $allianceBoardTopicRepository,
@@ -48,7 +53,8 @@ final class Overview implements ViewControllerInterface
         ShipyardShipQueueRepositoryInterface $shipyardShipQueueRepository,
         UserRepositoryInterface $userRepository,
         KnFactoryInterface $knFactory,
-        ColonyLimitCalculatorInterface $colonyLimitCalculator
+        ColonyLimitCalculatorInterface $colonyLimitCalculator,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->historyRepository = $historyRepository;
         $this->allianceBoardTopicRepository = $allianceBoardTopicRepository;
@@ -59,12 +65,17 @@ final class Overview implements ViewControllerInterface
         $this->userRepository = $userRepository;
         $this->knFactory = $knFactory;
         $this->colonyLimitCalculator = $colonyLimitCalculator;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function handle(GameControllerInterface $game): void
     {
         $user = $game->getUser();
         $userId = $user->getId();
+
+        if ($userId === 126) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
 
         $game->appendNavigationPart(
             'maindesk.php',
@@ -87,6 +98,7 @@ final class Overview implements ViewControllerInterface
             array_map(
                 function (KnPostInterface $knPost) use ($user, $newAmount): KnItemInterface {
                     $newAmount--;
+                    $this->loggerUtil->log(sprintf('newAmount: %d', $newAmount));
                     $knItem = $this->knFactory->createKnItem(
                         $knPost,
                         $user
