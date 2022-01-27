@@ -69,6 +69,25 @@ final class PrivateMessageListItem implements PrivateMessageListItemInterface
         return true;
     }
 
+    public function isMarkableAsReceipt(): bool
+    {
+        if ($this->message->getInboxPmId() === null) {
+            return false;
+        }
+
+        $inboxPm = $this->privateMessageRepository->find($this->message->getInboxPmId());
+
+        if ($inboxPm === null) {
+            return true;
+        }
+
+        if (!$this->message->getSender()->isShowPmReadReceipt() || !$this->message->getRecipient()->isShowPmReadReceipt()) {
+            return false;
+        }
+
+        return !$inboxPm->getNew();
+    }
+
     public function getText(): string
     {
         return $this->message->getText();

@@ -45,6 +45,9 @@
                     <span tal:condition="post/isMarkableAsNew" tal:content="datetime:post/getDate"
                       class="negative">DATE</span>
                   </div>
+                  <div tal:condition="post/isMarkableAsReceipt" class="segment">
+                    <span>gelesen</span>
+                  </div>
                   <div class="segment">
                     <div tal:condition="post/getSender/isNpc">NPC</div>
                     <a href="/userprofile.php?uid=${post/getSender/getId}">

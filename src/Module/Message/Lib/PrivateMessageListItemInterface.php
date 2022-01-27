@@ -13,6 +13,8 @@ interface PrivateMessageListItemInterface
 
     public function isMarkableAsNew(): bool;
 
+    public function isMarkableAsReceipt(): bool;
+
     public function getText(): string;
 
     public function getHref(): ?string;

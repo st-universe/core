@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Message\Lib;
 
+use Doctrine\ORM\EntityManagerInterface;
 use JBBCode\Parser;
 use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
@@ -32,20 +33,24 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
     private Parser $bbcodeParser;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         PrivateMessageFolderRepositoryInterface $privateMessageFolderRepository,
         PrivateMessageRepositoryInterface $privateMessageRepository,
         UserRepositoryInterface $userRepository,
         ConfigInterface $config,
         Parser $bbcodeParser,
+        EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageFolderRepository = $privateMessageFolderRepository;
         $this->privateMessageRepository = $privateMessageRepository;
         $this->userRepository = $userRepository;
         $this->config = $config;
-        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
         $this->bbcodeParser = $bbcodeParser;
+        $this->entityManager = $entityManager;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function send(
@@ -79,6 +84,8 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
 
         if ($senderId != GameEnum::USER_NOONE) {
 
+            $this->entityManager->flush();
+
             $folder = $this->privateMessageFolderRepository->getByUserAndSpecial(
                 $senderId,
                 PrivateMessageFolderSpecialEnum::PM_SPECIAL_PMOUT
@@ -89,6 +96,7 @@ final class PrivateMessageSender implements PrivateMessageSenderInterface
             $newobj->setRecipient($pm->getSender());
             $newobj->setCategory($folder);
             $newobj->setNew(false);
+            $newobj->setInboxPmId($pm->getId());
             $newobj->setHref(null);
 
             $this->privateMessageRepository->save($newobj);
