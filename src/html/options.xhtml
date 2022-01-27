@@ -201,6 +201,16 @@
                                 </tr>
                                 <tr>
                                         <td>
+                                                <input type="checkbox" name="pm_read_receipt" value="1"
+                                                        tal:attributes="checked THIS/getUser/isShowPmReadReceipt" />
+                                        </td>
+                                        <td>
+                                                Lesebestätigungen bei PMs anzeigen (nur wenn sowohl Sender als auch
+                                                Empfänger den Haken gesetzt haben)
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td>
                                                 <input type="checkbox" name="fleets_fixed" value="1"
                                                         tal:attributes="checked THIS/getUser/getFleetFixedDefault" />
                                         </td>

@@ -12,5 +12,7 @@ interface ChangeSettingsRequestInterface
 
     public function getShowOnlineState(): int;
 
+    public function getPmReadReceipt(): int;
+
     public function getFleetsFixedDefault(): int;
 }

@@ -30,6 +30,11 @@ final class ChangeSettingsRequest implements ChangeSettingsRequestInterface
         return $this->queryParameter('show_online')->int()->defaultsTo(0);
     }
 
+    public function getPmReadReceipt(): int
+    {
+        return $this->queryParameter('pm_read_receipt')->int()->defaultsTo(0);
+    }
+
     public function getFleetsFixedDefault(): int
     {
         return $this->queryParameter('fleets_fixed')->int()->defaultsTo(0);

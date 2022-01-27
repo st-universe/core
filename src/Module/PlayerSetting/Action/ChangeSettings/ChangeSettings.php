@@ -51,6 +51,11 @@ final class ChangeSettings implements ActionControllerInterface
                 );
             },
             function (UserInterface $user): void {
+                $user->setShowPmReadReceipt(
+                    $this->changeSettingsRequest->getPmReadReceipt() === 1 ? true : false
+                );
+            },
+            function (UserInterface $user): void {
                 $user->setFleetFixedDefault(
                     $this->changeSettingsRequest->getFleetsFixedDefault() === 1 ? true : false
                 );
