@@ -110,16 +110,8 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=6) */
     private $max_schilde = 0;
 
-    //TODO DELETE
-    /** @Column(type="integer", nullable=true) */
-    private $traktor;
-
     /** @Column(type="integer", nullable=true) */
     private $tractored_ship_id;
-
-    //TODO DELETE
-    /** @Column(type="smallint", length=1) */
-    private $traktormode = 0;
 
     /** @Column(type="integer", nullable=true) */
     private $dock;
