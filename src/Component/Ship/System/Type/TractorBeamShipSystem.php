@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Ship\System\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Stu\Component\Ship\System\ShipSystemModeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\ShipSystemTypeInterface;
@@ -21,15 +22,19 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private EntityManagerInterface $entityManager;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         ShipRepositoryInterface $shipRepository,
         PrivateMessageSenderInterface $privateMessageSender,
+        EntityManagerInterface $entityManager,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
         $this->privateMessageSender = $privateMessageSender;
+        $this->entityManager = $entityManager;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -93,6 +98,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             $ship->setTractoredShip(null);
             $ship->setTractoredShipId(null);
             $this->shipRepository->save($ship);
+            $this->entityManager->flush();
 
             if ($traktor !== null) {
                 $this->privateMessageSender->send(
