@@ -58,8 +58,7 @@ final class ShowSystemSensorScan implements ViewControllerInterface
 
         $mapField = $this->mapRepository->getByCoordinates($cx, $cy);
 
-        $game->setTemplateFile('html/ajaxempty.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/systemsensorscan');
+        $game->showMacro('html/stationmacros.xhtml/systemsensorscan');
 
         if ($mapField->getSystem() === null) {
             return;

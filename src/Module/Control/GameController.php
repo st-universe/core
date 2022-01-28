@@ -553,7 +553,12 @@ final class GameController implements GameControllerInterface
             $this->setTemplateFile('html/ship.xhtml');
         } catch (UnallowedUplinkOperation $e) {
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
-            $this->setTemplateFile('html/ship.xhtml');
+
+            if (request::isAjaxRequest()) {
+                $this->showMacro('html/sitemacros.xhtml/systeminformation');
+            } else {
+                $this->setTemplateFile('html/ship.xhtml');
+            }
         } catch (StuException $e) {
             $this->releaseAndRemoveSemaphores();
             throw $e;
