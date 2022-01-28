@@ -85,6 +85,11 @@ final class DockShip implements ActionControllerInterface
             return;
         }
 
+        if ($ship->isTractored()) {
+            $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
+            return;
+        }
+
         if ($target->getShieldState()) {
             $game->addInformation(_("Aktion nicht möglich. Die Station hat die Schilde aktiviert"));
             return;

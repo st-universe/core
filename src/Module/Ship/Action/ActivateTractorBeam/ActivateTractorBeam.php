@@ -168,9 +168,10 @@ final class ActivateTractorBeam implements ActionControllerInterface
             return;
         }
         $target->deactivateTractorBeam(); //forced active deactivation
-
+        $target->setDockedTo(null);
         $ship->setTractoredShip($target);
         $this->shipRepository->save($ship);
+        $this->shipRepository->save($target);
 
         $this->privateMessageSender->send(
             $userId,
