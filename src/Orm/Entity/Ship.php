@@ -1433,6 +1433,12 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    public function setTractoredShipId(?int $shipId): ShipInterface
+    {
+        $this->tractored_ship_id = $shipId;
+        return $this;
+    }
+
     public function getTractoringShip(): ?ShipInterface
     {
         return $this->tractoringShip;

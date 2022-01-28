@@ -361,6 +361,8 @@ interface ShipInterface
 
     public function setTractoredShip(?ShipInterface $ship): ShipInterface;
 
+    public function setTractoredShipId(?int $shipId): ShipInterface;
+
     public function getTractoringShip(): ?ShipInterface;
 
     public function setTractoringShip(?ShipInterface $ship): ShipInterface;

@@ -91,6 +91,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             $traktor = $ship->getTractoredShip();
 
             $ship->setTractoredShip(null);
+            $ship->setTractoredShipId(null);
             $this->shipRepository->save($ship);
 
             if ($traktor !== null) {
