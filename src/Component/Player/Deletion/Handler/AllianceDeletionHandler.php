@@ -9,7 +9,7 @@ use Stu\Module\Alliance\Lib\AllianceActionManagerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\AllianceJobRepositoryInterface;
 
-final class AllianceDeletionHandler implements PlayerDeletionHandlerInteface
+final class AllianceDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private AllianceJobRepositoryInterface $allianceJobRepository;
 

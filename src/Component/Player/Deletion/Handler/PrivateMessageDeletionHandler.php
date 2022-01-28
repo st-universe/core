@@ -12,7 +12,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\PrivateMessageRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInteface
+final class PrivateMessageDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private UserRepositoryInterface $userRepository;
 

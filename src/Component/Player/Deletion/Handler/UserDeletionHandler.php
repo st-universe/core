@@ -9,7 +9,7 @@ use Stu\Orm\Repository\SessionStringRepositoryInterface;
 use Stu\Orm\Repository\UserProfileVisitorRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class UserDeletionHandler implements PlayerDeletionHandlerInteface
+final class UserDeletionHandler implements PlayerDeletionHandlerInterface
 {
 
     private SessionStringRepositoryInterface $sessionStringRepository;

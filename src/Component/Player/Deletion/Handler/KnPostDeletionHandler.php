@@ -9,7 +9,7 @@ use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\KnPostRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class KnPostDeletionHandler implements PlayerDeletionHandlerInteface
+final class KnPostDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private KnPostRepositoryInterface $knPostRepository;
 

@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Deletion;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInteface;
+use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -20,7 +20,7 @@ class PlayerDeletionTest extends MockeryTestCase
     private $userRepository;
 
     /**
-     * @var null|MockInterface|PlayerDeletionHandlerInteface
+     * @var null|MockInterface|PlayerDeletionHandlerInterface
      */
     private $deletionHandler;
 
@@ -31,7 +31,7 @@ class PlayerDeletionTest extends MockeryTestCase
 
     public function setUp(): void
     {
-        $this->deletionHandler = Mockery::mock(PlayerDeletionHandlerInteface::class);
+        $this->deletionHandler = Mockery::mock(PlayerDeletionHandlerInterface::class);
         $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
 
         $this->playerDeletion = new PlayerDeletion(
@@ -40,7 +40,7 @@ class PlayerDeletionTest extends MockeryTestCase
         );
     }
 
-public function testHandleDeleteableRemovesIdleAndMarkedPlayers(): void
+    public function testHandleDeleteableRemovesIdleAndMarkedPlayers(): void
     {
         $player = Mockery::mock(UserInterface::class);
 

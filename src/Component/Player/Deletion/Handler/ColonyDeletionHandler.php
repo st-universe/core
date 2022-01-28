@@ -8,7 +8,7 @@ use Stu\Module\Colony\Lib\ColonyResetterInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ColonyRepositoryInterface;
 
-final class ColonyDeletionHandler implements PlayerDeletionHandlerInteface
+final class ColonyDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private ColonyResetterInterface $colonyResetter;
 

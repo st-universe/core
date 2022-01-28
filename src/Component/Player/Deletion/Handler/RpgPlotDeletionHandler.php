@@ -10,7 +10,7 @@ use Stu\Orm\Repository\RpgPlotMemberRepositoryInterface;
 use Stu\Orm\Repository\RpgPlotRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
-final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInteface
+final class RpgPlotDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private RpgPlotMemberRepositoryInterface $rpgPlotMemberRepository;
 

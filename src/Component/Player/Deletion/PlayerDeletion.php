@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Component\Player\Deletion;
 
-use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInteface;
+use Stu\Component\Player\Deletion\Handler\PlayerDeletionHandlerInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
@@ -22,7 +22,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
 
     /**
      * @param UserRepositoryInterface $userRepository
-     * @param PlayerDeletionHandlerInteface[] $deletionHandler
+     * @param PlayerDeletionHandlerInterface[] $deletionHandler
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -56,7 +56,7 @@ final class PlayerDeletion implements PlayerDeletionInterface
     {
         array_walk(
             $this->deletionHandler,
-            function (PlayerDeletionHandlerInteface $handler) use ($user): void {
+            function (PlayerDeletionHandlerInterface $handler) use ($user): void {
                 $handler->delete($user);
             }
         );

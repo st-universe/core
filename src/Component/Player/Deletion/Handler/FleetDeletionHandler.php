@@ -7,7 +7,7 @@ namespace Stu\Component\Player\Deletion\Handler;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
 
-final class FleetDeletionHandler implements PlayerDeletionHandlerInteface
+final class FleetDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private FleetRepositoryInterface $fleetRepository;
 

@@ -8,7 +8,7 @@ use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
-final class ShipDeletionHandler implements PlayerDeletionHandlerInteface
+final class ShipDeletionHandler implements PlayerDeletionHandlerInterface
 {
     private ShipRemoverInterface $shipRemover;
 
