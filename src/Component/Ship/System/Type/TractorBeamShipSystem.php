@@ -85,25 +85,27 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public function deactivate(ShipInterface $ship): void
     {
-        $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
+        if ($ship->traktorBeamFromShip()) {
+            $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
 
-        $traktor = $ship->getTraktorShip();
+            $traktor = $ship->getTraktorShip();
 
-        $ship->setTraktorMode(0);
-        $ship->setTraktorShipId(null);
-        $this->shipRepository->save($ship);
+            $ship->setTraktorMode(0);
+            $ship->setTraktorShipId(null);
+            $this->shipRepository->save($ship);
 
-        if ($traktor !== null) {
-            $traktor->setTraktorMode(0);
-            $traktor->setTraktorShipId(null);
-            $this->shipRepository->save($traktor);
+            if ($traktor !== null) {
+                $traktor->setTraktorMode(0);
+                $traktor->setTraktorShipId(null);
+                $this->shipRepository->save($traktor);
 
-            $this->privateMessageSender->send(
-                $ship->getUser()->getId(),
-                $traktor->getUser()->getId(),
-                sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $traktor->getName(), $ship->getSectorString()),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
-            );
+                $this->privateMessageSender->send(
+                    $ship->getUser()->getId(),
+                    $traktor->getUser()->getId(),
+                    sprintf(_('Der auf die %s gerichtete Traktorstrahl wurde in Sektor %s deaktiviert'), $traktor->getName(), $ship->getSectorString()),
+                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                );
+            }
         }
     }
 
