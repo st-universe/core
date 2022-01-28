@@ -1089,7 +1089,7 @@ class Ship implements ShipInterface
 
     public function isTractoring(): bool
     {
-        return $this->getTractoredShip !== null;
+        return $this->getTractoredShip() !== null;
     }
 
     public function isTractored(): bool
