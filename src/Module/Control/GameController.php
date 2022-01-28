@@ -583,7 +583,7 @@ final class GameController implements GameControllerInterface
         if (!$this->talPage->isTemplateSet()) {
             $this->loggerUtil->init('tal', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf('NO TEMPLATE FILE SPECIFIED, Method: %s', request::isPost() ? 'POST' : 'GET'));
-            $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars()));
+            $this->loggerUtil->log(print_r(request::isPost() ? request::postvars() : request::getvars(), true));
         }
 
         $this->render();
