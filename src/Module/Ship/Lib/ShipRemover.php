@@ -9,6 +9,8 @@ use Stu\Component\Ship\ShipRumpEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\Storage\ShipStorageManagerInterface;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
+use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipLeaverInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Repository\FleetRepositoryInterface;
@@ -45,6 +47,8 @@ final class ShipRemover implements ShipRemoverInterface
 
     private AstroEntryLibInterface $astroEntryLib;
 
+    private PrivateMessageSenderInterface $privateMessageSender;
+
     public function __construct(
         ShipSystemRepositoryInterface $shipSystemRepository,
         ShipStorageRepositoryInterface $shipStorageRepository,
@@ -57,7 +61,8 @@ final class ShipRemover implements ShipRemoverInterface
         ShipSystemManagerInterface $shipSystemManager,
         ShipLeaverInterface $shipLeaver,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
-        AstroEntryLibInterface $astroEntryLib
+        AstroEntryLibInterface $astroEntryLib,
+        PrivateMessageSenderInterface $privateMessageSender
     ) {
         $this->shipSystemRepository = $shipSystemRepository;
         $this->shipStorageRepository = $shipStorageRepository;
@@ -71,6 +76,7 @@ final class ShipRemover implements ShipRemoverInterface
         $this->shipLeaver = $shipLeaver;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
         $this->astroEntryLib = $astroEntryLib;
+        $this->privateMessageSender = $privateMessageSender;
     }
 
     public function destroy(ShipInterface $ship): ?string
@@ -123,6 +129,7 @@ final class ShipRemover implements ShipRemoverInterface
         $ship->setAlertStateGreen();
         $ship->setInfluenceArea(null);
         $ship->setDockedTo(null);
+        $oldName = $ship->getName();
         $ship->setName(_('Trümmer'));
         $ship->setIsDestroyed(true);
         $ship->cancelRepair();
@@ -138,9 +145,18 @@ final class ShipRemover implements ShipRemoverInterface
         }
 
         if ($ship->isTractored()) {
-            $ship->getTractoringShip()->deactivateTractorBeam();
+            $tractoringShip = $ship->getTractoringShip();
+            $tractoringShip->deactivateTractorBeam();
 
-            //TODO send pm to tractoring ship
+            $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
+
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $tractoringShip->getUser()->getId(),
+                sprintf('Die im Traktorstrahl der %s befindliche %s wurde zerstört', $tractoringShip->getName(), $oldName),
+                $tractoringShip->isBase() ? PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+                $href
+            );
         }
 
         return $msg;
