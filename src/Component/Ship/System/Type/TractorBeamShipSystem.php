@@ -50,8 +50,8 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
             return false;
         }
 
-        if ($ship->traktorBeamToShip()) {
-            $reason = sprintf(_('das Schiff selbst von dem Traktorstrahl der %s erfasst ist'), $ship->getTraktorShip()->getName());
+        if ($ship->isTractored()) {
+            $reason = sprintf(_('das Schiff selbst von dem Traktorstrahl der %s erfasst ist'), $ship->getTractoringShip()->getName());
             return false;
         }
 
@@ -85,20 +85,15 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public function deactivate(ShipInterface $ship): void
     {
-        if ($ship->traktorBeamFromShip()) {
+        if ($ship->isTractoring()) {
             $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setMode(ShipSystemModeEnum::MODE_OFF);
 
-            $traktor = $ship->getTraktorShip();
+            $traktor = $ship->getTractoredShip();
 
-            $ship->setTraktorMode(0);
-            $ship->setTraktorShipId(null);
+            $ship->setTractoredShip(null);
             $this->shipRepository->save($ship);
 
             if ($traktor !== null) {
-                $traktor->setTraktorMode(0);
-                $traktor->setTraktorShipId(null);
-                $this->shipRepository->save($traktor);
-
                 $this->privateMessageSender->send(
                     $ship->getUser()->getId(),
                     $traktor->getUser()->getId(),
@@ -111,7 +106,7 @@ final class TractorBeamShipSystem extends AbstractShipSystemType implements Ship
 
     public function handleDestruction(ShipInterface $ship): void
     {
-        if ($ship->traktorBeamFromShip()) {
+        if ($ship->isTractoring()) {
             $this->deactivate($ship);
         }
     }

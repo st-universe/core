@@ -44,7 +44,7 @@ final class DeactivateWarp implements ActionControllerInterface
             $userId
         );
 
-        $traktorShip = $ship->traktorBeamFromShip() ? $ship->getTraktorShip() : null;
+        $traktorShip = $ship->getTractoredShip();
 
         //Alarm-Rot check for ship
         $this->alertRedHelper->doItAll($ship, $game);

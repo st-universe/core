@@ -13,26 +13,22 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
 {
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->getCloakState())
-        {
+        if ($ship->getCloakState()) {
             $reason = _('die Tarnung aktiviert ist');
             return false;
         }
 
-        if ($ship->traktorBeamFromShip())
-        {
+        if ($ship->isTractoring()) {
             $reason = _('der Traktorstrahl aktiviert ist');
             return false;
         }
 
-        if ($ship->traktorBeamToShip())
-        {
+        if ($ship->isTractored()) {
             $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
             return false;
         }
 
-        if ($ship->getShield() === 0)
-        {
+        if ($ship->getShield() === 0) {
             $reason = _('die Schildemitter erschöpft sind');
             return false;
         }
@@ -46,7 +42,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
         $ship->setDockedTo(null);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_ON);
     }
-    
+
     public function deactivate(ShipInterface $ship): void
     {
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_SHIELDS)->setMode(ShipSystemModeEnum::MODE_OFF);
@@ -59,8 +55,7 @@ final class ShieldShipSystem extends AbstractShipSystemType implements ShipSyste
 
     public function handleDamage(ShipInterface $ship): void
     {
-        if ($ship->getShield() > $ship->getMaxShield())
-        {
+        if ($ship->getShield() > $ship->getMaxShield()) {
             $ship->setShield($ship->getMaxShield());
         }
     }

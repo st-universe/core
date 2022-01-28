@@ -52,11 +52,11 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn($this->mock(ShipInterface::class));
-        $ship->shouldReceive('traktorBeamFromShip')
+        $ship->shouldReceive('')
             ->withNoArgs()
             ->once()
             ->andReturn(false);
@@ -74,11 +74,11 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn($this->mock(ShipInterface::class));
-        $ship->shouldReceive('traktorBeamFromShip')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -109,7 +109,7 @@ class WarpdriveShipSystemTest extends StuTestCase
         $ship->shouldReceive('setWarpState')
             ->with(true)
             ->once();
-        $ship->shouldReceive('traktorBeamFromShip')
+        $ship->shouldReceive('traktorBisTractoringeamFromShip')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -117,7 +117,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(1);
-        $ship->shouldReceive('deactivateTraktorBeam')
+        $ship->shouldReceive('deactivateTractorBeam')
             ->withNoArgs()
             ->once();
 
@@ -138,7 +138,7 @@ class WarpdriveShipSystemTest extends StuTestCase
         $ship->shouldReceive('setWarpState')
             ->with(true)
             ->once();
-        $ship->shouldReceive('traktorBeamFromShip')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
@@ -146,7 +146,7 @@ class WarpdriveShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->twice()
             ->andReturn(2);
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn($traktorBeamShip);
@@ -173,11 +173,11 @@ class WarpdriveShipSystemTest extends StuTestCase
         $ship = $this->mock(ShipInterface::class);
         $traktorBeamShip = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('traktorBeamFromShip')
+        $ship->shouldReceive('isTractoring')
             ->withNoArgs()
             ->once()
             ->andReturn(true);
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn($traktorBeamShip);

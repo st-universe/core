@@ -36,7 +36,7 @@ final class CancelColonyBlockOrDefend implements CancelColonyBlockOrDefendInterf
         $msg = [];
 
         $this->loggerUtil->log('A');
-        $target = $isTraktor ? $ship->getTraktorShip() : $ship;
+        $target = $isTraktor ? $ship->getTractoredShip() : $ship;
         $this->loggerUtil->log('B');
         if (!$target->isFleetLeader()) {
             $this->loggerUtil->log('C');

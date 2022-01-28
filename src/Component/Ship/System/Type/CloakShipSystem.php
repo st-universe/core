@@ -24,12 +24,12 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->traktorBeamFromShip()) {
+        if ($ship->isTractoring()) {
             $reason = _('das Schiff den Traktorstrahl aktiviert hat');
             return false;
         }
 
-        if ($ship->traktorBeamToShip()) {
+        if ($ship->isTractored()) {
             $reason = _('das Schiff von einem Traktorstrahl gehalten wird');
             return false;
         }
@@ -64,7 +64,7 @@ final class CloakShipSystem extends AbstractShipSystemType implements ShipSystem
 
     public function activate(ShipInterface $ship): void
     {
-        $ship->deactivateTraktorBeam();
+        $ship->deactivateTractorBeam(); //active deactivation
         $ship->setDockedTo(null);
         $ship->cancelRepair();
 

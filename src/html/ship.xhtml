@@ -880,29 +880,30 @@
 			</td>
 		</tr>
 	</table>
-	<table class="tcal" tal:condition="SHIP/isTraktorBeamActive">
+	<table class="tcal" tal:condition="php: SHIP.isTractoring() OR SHIP.isTractored()">
 		<tr>
 			<th colspan="2"><img src="assets/buttons/trak.png" title="Traktorstrahl" />
 				Traktorstrahl</th>
 		</tr>
 		<tr>
-			<td colspan="2" tal:condition="SHIP/traktorBeamFromShip">
-				Gerichtet auf: <span tal:replace="structure bbcode:SHIP/getTraktorShip/getName">.</span>
+			<td colspan="2" tal:condition="SHIP/isTractoring">
+				Gerichtet auf: <span tal:replace="structure bbcode:SHIP/getTractoredShip/getName">.</span>
 			</td>
-			<td colspan="2" tal:condition="SHIP/traktorBeamToShip">
-				Gehalten von: <span tal:replace="structure bbcode:SHIP/getTraktorShip/getName">.</span>
+			<td colspan="2" tal:condition="SHIP/isTractored">
+				Gehalten von: <span tal:replace="structure bbcode:SHIP/getTractoringShip/getName">.</span>
 
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<img src="assets/ships/${SHIP/getTraktorShip/getRump/getId}.png" />
+				<img tal:condition="SHIP/isTractoring" src="assets/ships/${SHIP/getTractoredShip/getRump/getId}.png" />
+				<img tal:condition="SHIP/isTractored" src="assets/ships/${SHIP/getTractoringShip/getRump/getId}.png" />
 			</td>
 			<td>
-				<input tal:condition="SHIP/traktorBeamFromShip" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR"
+				<input tal:condition="SHIP/isTractoring" type="submit" class="button" name="B_DEACTIVATE_TRAKTOR"
 					value="deaktivieren" />
 				<tal:block tal:condition="SHIP/isDeflectorHealthy">
-					<input tal:condition="SHIP/traktorBeamToShip" type="submit" class="button" name="B_ESCAPE_TRAKTOR"
+					<input tal:condition="SHIP/isTractored" type="submit" class="button" name="B_ESCAPE_TRAKTOR"
 						value="Fluchtversuch" />
 				</tal:block>
 			</td>

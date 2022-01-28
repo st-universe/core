@@ -37,7 +37,7 @@ final class Shutdown implements ActionControllerInterface
     {
         $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
 
-        $traktorShip = $ship->traktorBeamFromShip() ? $ship->getTraktorShip() : null;
+        $traktorShip = $ship->getTractoredShip();
 
         $triggerAlertRed = $ship->getWarpState() || $ship->getCloakState();
 

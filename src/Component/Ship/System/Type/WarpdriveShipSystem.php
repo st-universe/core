@@ -22,7 +22,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
     public function checkActivationConditions(ShipInterface $ship, &$reason): bool
     {
-        if ($ship->traktorBeamToShip()) {
+        if ($ship->isTractored()) {
             $reason = _('es von einem Traktorstrahl gehalten wird');
             return false;
         }
@@ -41,9 +41,9 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
         $this->undock($ship);
         $ship->getShipSystem(ShipSystemTypeEnum::SYSTEM_WARPDRIVE)->setMode(ShipSystemModeEnum::MODE_ON);
 
-        if ($ship->traktorBeamFromShip()) {
+        if ($ship->isTractoring()) {
             if ($ship->getEps() > $this->getEnergyUsageForActivation()) {
-                $traktorShip = $ship->getTraktorShip();
+                $traktorShip = $ship->getTractoredShip();
 
                 $traktorShip->cancelRepair();
 
@@ -51,7 +51,7 @@ final class WarpdriveShipSystem extends AbstractShipSystemType implements ShipSy
 
                 $this->shipRepository->save($traktorShip);
             } else {
-                $ship->deactivateTraktorBeam();
+                $ship->deactivateTractorBeam(); //active deactivation
             }
         }
     }

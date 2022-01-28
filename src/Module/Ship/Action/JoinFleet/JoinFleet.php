@@ -52,7 +52,7 @@ final class JoinFleet implements ActionControllerInterface
         if (!$this->positionChecker->checkPosition($fleet->getLeadShip(), $ship)) {
             return;
         }
-        if ($ship->traktorBeamToShip()) {
+        if ($ship->isTractored()) {
             $game->addInformation(
                 _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
             );

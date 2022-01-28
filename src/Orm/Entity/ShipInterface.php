@@ -106,14 +106,6 @@ interface ShipInterface
 
     public function getShieldState(): bool;
 
-    public function getTraktorShipId(): ?int;
-
-    public function setTraktorShipId(?int $traktorShipId): ShipInterface;
-
-    public function getTraktormode(): int;
-
-    public function setTraktormode(int $traktormode): ShipInterface;
-
     public function getNbs(): bool;
 
     public function getLss(): bool;
@@ -259,15 +251,11 @@ interface ShipInterface
 
     public function isWarpAble(): bool;
 
-    public function isTraktorbeamActive(): bool;
+    public function isTractoring(): bool;
 
-    public function traktorBeamFromShip(): bool;
+    public function isTractored(): bool;
 
-    public function traktorBeamToShip(): bool;
-
-    public function getTraktorShip(): ?ShipInterface;
-
-    public function deactivateTraktorBeam(): void;
+    public function deactivateTractorBeam(): void;
 
     public function isOverSystem(): ?StarSystemInterface;
 
@@ -349,7 +337,7 @@ interface ShipInterface
 
     public function displayNbsActions(): bool;
 
-    public function traktorbeamNotPossible(): bool;
+    public function tractorbeamNotPossible(): bool;
 
     public function isInterceptAble(): bool;
 

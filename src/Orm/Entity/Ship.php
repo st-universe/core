@@ -110,12 +110,14 @@ class Ship implements ShipInterface
     /** @Column(type="integer", length=6) */
     private $max_schilde = 0;
 
+    //TODO DELETE
     /** @Column(type="integer", nullable=true) */
     private $traktor;
 
     /** @Column(type="integer", nullable=true) */
     private $tractored_ship_id;
 
+    //TODO DELETE
     /** @Column(type="smallint", length=1) */
     private $traktormode = 0;
 
@@ -610,29 +612,6 @@ class Ship implements ShipInterface
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_SHIELDS);
     }
 
-    //@deprecated?
-    public function getTraktorShipId(): ?int
-    {
-        return $this->traktor;
-    }
-
-    public function setTraktorShipId(?int $traktorShipId): ShipInterface
-    {
-        $this->traktor = $traktorShipId;
-        return $this;
-    }
-
-    public function getTraktormode(): int
-    {
-        return $this->traktormode;
-    }
-
-    public function setTraktormode(int $traktormode): ShipInterface
-    {
-        $this->traktormode = $traktormode;
-        return $this;
-    }
-
     public function getNbs(): bool
     {
         return $this->getSystemState(ShipSystemTypeEnum::SYSTEM_NBS);
@@ -1108,51 +1087,26 @@ class Ship implements ShipInterface
         return $this->isSystemHealthy(ShipSystemTypeEnum::SYSTEM_WARPDRIVE);
     }
 
-    public function isTraktorbeamActive(): bool
+    public function isTractoring(): bool
     {
-        return $this->getTraktorMode() > 0;
+        return $this->getTractoredShip !== null;
     }
 
-    public function traktorBeamFromShip(): bool
+    public function isTractored(): bool
     {
-        return $this->getTraktorMode() == 1;
+        return $this->getTractoringShip() !== null;
     }
 
-    public function traktorBeamToShip(): bool
+    public function deactivateTractorBeam(): void
     {
-        return $this->getTraktorMode() == 2;
-    }
-
-    public function getTraktorShip(): ?ShipInterface
-    {
-        if (
-            $this->getTraktorShipId() === null
-            || $this->getTraktorShipId() == 0
-        ) {
-            return null;
-        }
-        // @todo refactor
-        global $container;
-
-        return $container->get(ShipRepositoryInterface::class)->find($this->getTraktorShipId());
-    }
-
-    public function deactivateTraktorBeam(): void
-    {
-        if (!$this->getTraktorMode()) {
+        if (!$this->isTractoring()) {
             return;
         }
 
-        // @todo refactor
         global $container;
         $shipSystemManager = $container->get(ShipSystemManagerInterface::class);
 
-        if ($this->traktorBeamFromShip()) {
-            $shipSystemManager->deactivate($this, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
-        } else {
-            $traktor = $this->getTraktorShip();
-            $shipSystemManager->deactivate($traktor, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
-        }
+        $shipSystemManager->deactivate($this, ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, true);
     }
 
     public function isOverSystem(): ?StarSystemInterface
@@ -1418,7 +1372,7 @@ class Ship implements ShipInterface
         return $this->getCloakState() == 0 && $this->getWarpstate() == 0;
     }
 
-    public function traktorbeamNotPossible(): bool
+    public function tractorbeamNotPossible(): bool
     {
         return $this->isBase() || $this->getRump()->isTrumfield() || $this->getCloakState() || $this->getShieldState() || $this->getWarpState();
     }
@@ -1507,7 +1461,7 @@ class Ship implements ShipInterface
 
     public function canIntercept(): bool
     {
-        return !$this->getTraktorMode();
+        return !$this->isTractored() && !$this->isTractoring();
     }
 
     public function canMove(): bool

@@ -63,7 +63,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn($this->mock(ShipInterface::class));
@@ -85,7 +85,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn(null);
@@ -111,7 +111,7 @@ class ShieldShipSystemTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturnFalse();
-        $ship->shouldReceive('getTraktorShip')
+        $ship->shouldReceive('getTractoredShip')
             ->withNoArgs()
             ->once()
             ->andReturn(null);

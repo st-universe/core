@@ -79,6 +79,19 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
 
+        if (!$ship->hasEnoughCrew()) {
+            $game->addInformationf(
+                _("Es werden %d Crewmitglieder benötigt"),
+                $ship->getBuildplan()->getCrew()
+            );
+            return;
+        }
+
+        if ($ship->isTractored()) {
+            $game->addInformation(_('Das Schiff wird von einem Traktorstrahl gehalten'));
+            return;
+        }
+
         if ($ship->isFleetLeader() && $ship->getFleet()->getDefendedColony() !== null) {
             $game->addInformation(_('Verlassen des Systems während Kolonie-Verteidigung nicht möglich'));
             return;
@@ -103,7 +116,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $outerMap = $this->mapRepository->getByCoordinates($ship->getSystem()->getCx(), $ship->getSystem()->getCy());
 
         $this->leaveStarSystem($ship, $outerMap, $game);
-        if ($ship->isTraktorbeamActive()) {
+        if ($ship->isTractoring()) {
             $this->leaveStarSystemTraktor($ship, $outerMap, $game);
         }
         if ($ship->isFleetLeader()) {
@@ -129,7 +142,7 @@ final class LeaveStarSystem implements ActionControllerInterface
                     );
 
                     $this->leaveStarSystem($reloadedShip, $outerMap, $game);
-                    if ($reloadedShip->isTraktorbeamActive()) {
+                    if ($reloadedShip->isTractoring()) {
                         $this->leaveStarSystemTraktor($reloadedShip, $outerMap, $game);
                     }
                     $this->shipRepository->save($reloadedShip);
@@ -151,11 +164,11 @@ final class LeaveStarSystem implements ActionControllerInterface
     private function leaveStarSystemTraktor(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
         if (
-            $ship->getTraktorMode() == 1 && $ship->getTraktorShip()->getFleetId()
-            && $ship->getTraktorShip()->getFleet()->getShipCount() > 1
+            $ship->isTractoring() && $ship->getTractoredShip()->getFleetId()
+            && $ship->getTractoredShip()->getFleet()->getShipCount() > 1
         ) {
-            $name = $ship->getTraktorShip()->getName();
-            $ship->deactivateTraktorBeam();
+            $name = $ship->getTractoredShip()->getName();
+            $ship->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
                 _('Flottenschiffe können nicht mitgezogen werden - Der auf die %s gerichtete Traktorstrahl wurde beim Verlassen des Systems deaktiviert'),
@@ -164,19 +177,19 @@ final class LeaveStarSystem implements ActionControllerInterface
             return;
         }
         if ($ship->getEps() < 1) {
-            $name = $ship->getTraktorShip()->getName();
-            $ship->deactivateTraktorBeam();
+            $name = $ship->getTractoredShip()->getName();
+            $ship->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
-        $this->leaveStarSystem($ship->getTraktorShip(), $map, $game);
+        $this->leaveStarSystem($ship->getTractoredShip(), $map, $game);
         $ship->setEps($ship->getEps() - 1);
 
-        $this->shipRepository->save($ship->getTraktorShip());
+        $this->shipRepository->save($ship->getTractoredShip());
         $this->shipRepository->save($ship);
 
-        $game->addInformation("Die " . $ship->getTraktorShip()->getName() . " wurde mit aus dem System gezogen");
+        $game->addInformation("Die " . $ship->getTractoredShip()->getName() . " wurde mit aus dem System gezogen");
     }
 
     private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void

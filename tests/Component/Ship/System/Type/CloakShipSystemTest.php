@@ -82,7 +82,7 @@ class CloakShipSystemTest extends StuTestCase
     {
         $ship = $this->mock(ShipInterface::class);
 
-        $ship->shouldReceive('deactivateTraktorBeam')
+        $ship->shouldReceive('deactivateTractorBeam')
             ->withNoArgs()
             ->once()
             ->andReturnSelf();

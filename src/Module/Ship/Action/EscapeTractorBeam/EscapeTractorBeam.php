@@ -67,7 +67,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         );
 
         // is ship trapped in tractor beam?
-        if ($ship->getTraktormode() != 2) {
+        if (!$ship->isTractored()) {
             return;
         }
 
@@ -108,9 +108,9 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
     private function escape(ShipInterface $ship, $game): void
     {
-        $otherShip = $ship->getTraktorShip();
+        $otherShip = $ship->getTractoringShip();
 
-        $otherShip->deactivateTraktorBeam();
+        $otherShip->deactivateTractorBeam(); // forced active deactivation
 
         $this->shipRepository->save($otherShip);
 
@@ -140,21 +140,22 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         $game->addInformationMergeDown($msg);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $ship->getTraktorShip()->getId());
+        $tractoringShip = $ship->getTractoringShip();
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
-            $ship->getTraktorShip()->getUser()->getId(),
+            $tractoringShip->getUser()->getId(),
             sprintf(_('Der Fluchtversuch der %s ist gescheitert'), $ship->getName()),
-            $ship->getTraktorShip()->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $tractoringShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
     }
 
     private function sufferHullDamage(ShipInterface $ship, $game): void
     {
-        $otherShip = $ship->getTraktorShip();
-        $otherUserId = $otherShip->getUser()->getId();
+        $tractoringShip = $ship->getTractoringShip();
+        $otherUserId = $tractoringShip->getUser()->getId();
         $shipName = $ship->getName();
 
         $game->addInformation(_('Der Fluchtversuch ist fehlgeschlagen:'));
@@ -162,7 +163,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
         $damageMsg = $this->applyDamage->damage(new DamageWrapper((int) ceil($ship->getMaxHuell() * rand(10, 25) / 100)), $ship);
         $game->addInformationMergeDown($damageMsg);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $otherShip->getId());
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
 
         if ($ship->getIsDestroyed()) {
             $this->entryCreator->addShipEntry(
@@ -179,7 +180,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
                 $ship->getUser()->getId(),
                 $otherUserId,
                 sprintf(_('Die %s wurde beim Fluchtversuch zerstört'), $shipName),
-                $otherShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
+                $tractoringShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP
             );
         } else {
 

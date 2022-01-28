@@ -268,7 +268,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$shipSystem]));
-        $ship->shouldReceive('deactivateTraktorBeam')
+        $ship->shouldReceive('deactivateTractorBeam')
             ->withNoArgs()
             ->once();
 
@@ -294,7 +294,7 @@ class ShipSystemManagerTest extends StuTestCase
             ->withNoArgs()
             ->once()
             ->andReturn(new ArrayCollection([$shipSystem]));
-        $ship->shouldReceive('deactivateTraktorBeam')
+        $ship->shouldReceive('deactivateTractorBeam')
             ->withNoArgs()
             ->once();
 

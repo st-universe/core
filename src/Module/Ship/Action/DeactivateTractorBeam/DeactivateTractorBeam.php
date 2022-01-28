@@ -40,10 +40,7 @@ final class DeactivateTractorBeam implements ActionControllerInterface
             $userId
         );
 
-        if (!$ship->isTraktorBeamActive()) {
-            return;
-        }
-        if ($ship->getTraktorMode() == 2) {
+        if (!$ship->isTractoring()) {
             return;
         }
         $this->helper->deactivate(request::indInt('id'), ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM, $game);

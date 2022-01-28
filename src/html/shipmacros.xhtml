@@ -311,8 +311,8 @@
     tal:define="sstr string:${THIS/getSessionString}; nameWithoutMarkup bbcode2txt:ship/getName">
     <td style="width: 30px; text-align: center;">
       <tal:block tal:condition="SHIP/canAttack">
-        <tal:block tal:condition="SHIP/traktorBeamToShip">
-          <tal:block tal:condition="php:ship.getId() EQ SHIP.getTraktorShipId()">
+        <tal:block tal:condition="SHIP/isTractored">
+          <tal:block tal:condition="php:ship.getId() EQ SHIP.getTractoringShip().getId()">
             <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
               onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
               onmouseout="cp('att_${ship/getId}','buttons/phaser1')">
@@ -320,7 +320,7 @@
             </div>
           </tal:block>
         </tal:block>
-        <tal:block tal:condition="not:SHIP/traktorBeamToShip">
+        <tal:block tal:condition="not:SHIP/isTractored">
           <tal:block tal:condition="php:ship.getCloakState() OR ship.canBeAttacked()">
             <div style="cursor: pointer;" onClick="$('nbsf_${ship/getId}').submit();"
               onmouseover="cp('att_${ship/getId}','buttons/phaser2')"
@@ -387,7 +387,7 @@
             </a>
           </div>
           <div style="float:left; margin-right:4px;"
-            tal:condition="php:!ship.traktorbeamNotPossible() AND !SHIP.isTraktorBeamActive()">
+            tal:condition="php:!ship.tractorbeamNotPossible() AND !SHIP.isTractoring()">
             <a href="?B_ACTIVATE_TRAKTOR=1&id=${SHIP/getId}&target=${ship/getId}&sstr=${sstr}"
               onmouseover="cp('tra_${ship/getId}','buttons/trak2')"
               onmouseout="cp('tra_${ship/getId}','buttons/trak1')">

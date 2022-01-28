@@ -52,7 +52,7 @@ final class ShipNfsItem
     {
         return $this->values['warpstate'] > 1;
     }
-    public function traktorbeamNotPossible()
+    public function tractorbeamNotPossible()
     {
         return $this->isBase() || $this->isTrumfield() || $this->getCloakState() || $this->getShieldState() || $this->getWarpState();
     }

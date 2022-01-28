@@ -39,7 +39,7 @@ final class CreateFleet implements ActionControllerInterface
         if ($ship->isBase()) {
             return;
         }
-        if ($ship->traktorBeamToShip()) {
+        if ($ship->isTractored()) {
             $game->addInformation(
                 _('Aktion nicht möglich, da Schiff von einem Traktorstrahl gehalten wird.'),
             );

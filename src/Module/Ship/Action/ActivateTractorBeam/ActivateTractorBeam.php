@@ -98,8 +98,8 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        if ($target->traktorbeamToShip()) {
-            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTraktorShip()->getName() . " gehalten");
+        if ($target->isTractored()) {
+            $game->addInformation("Das Schiff wird bereits vom Traktorstrahl der " . $target->getTractoringShip()->getName() . " gehalten");
             $this->abort($ship, $game);
             return;
         }
@@ -150,6 +150,7 @@ final class ActivateTractorBeam implements ActionControllerInterface
         }
         if ($target->getIsDestroyed()) {
             $game->addInformation("Das Ziel wurde bei dem Angriff zerstört");
+            $this->abort($ship, $game);
             return;
         }
 
@@ -166,13 +167,9 @@ final class ActivateTractorBeam implements ActionControllerInterface
             $this->abort($ship, $game);
             return;
         }
-        $target->deactivateTraktorBeam();
-        $ship->setTraktorMode(1);
-        $ship->setTraktorShipId($target->getId());
-        $target->setTraktorMode(2);
-        $target->setTraktorShipId($ship->getId());
+        $target->deactivateTractorBeam(); //forced active deactivation
 
-        $this->shipRepository->save($target);
+        $ship->setTractoredShip($target);
         $this->shipRepository->save($ship);
 
         $this->privateMessageSender->send(

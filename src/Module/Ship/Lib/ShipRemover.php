@@ -137,6 +137,12 @@ final class ShipRemover implements ShipRemoverInterface
             $this->shipRepository->save($dockedShip);
         }
 
+        if ($ship->isTractored()) {
+            $ship->getTractoringShip()->deactivateTractorBeam();
+
+            //TODO send pm to tractoring ship
+        }
+
         return $msg;
     }
 
@@ -185,7 +191,12 @@ final class ShipRemover implements ShipRemoverInterface
             $this->astroEntryLib->cancelAstroFinalizing($ship);
         }
 
-        $ship->deactivateTraktorBeam();
+        //both sides have to be cleared, foreign key violation
+        if ($ship->isTractoring()) {
+            $ship->deactivateTractorBeam();
+        } else if ($ship->isTractored()) {
+            $ship->getTractoringShip()->deactivateTractorBeam();
+        }
 
         foreach ($ship->getStorage() as $item) {
             $this->shipStorageRepository->delete($item);

@@ -81,7 +81,7 @@ final class FightLib implements FightLibInterface
             } catch (ShipSystemException $e) {
             }
         }
-        if (!$ship->isTraktorbeamActive()) {
+        if ($ship->getTractoredShip() === null && $ship->getTractoringShip() === null) {
             try {
                 $this->shipSystemManager->activate($ship, ShipSystemTypeEnum::SYSTEM_SHIELDS);
 
