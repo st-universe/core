@@ -37,8 +37,7 @@ final class ShowRepairOptions implements ViewControllerInterface
         );
 
         $game->setPageTitle("Reparatur Optionen");
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/repairoptions');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/repairoptions');
 
         $game->setTemplateVar('ERROR', true);
 

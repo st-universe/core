@@ -51,8 +51,7 @@ final class ShowColonyScan implements ViewControllerInterface
         $game->setTemplateVar('ERROR', true);
 
         $game->setPageTitle(_('Kolonie scannen'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/colonyscan');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/colonyscan');
 
         $userId = $game->getUser()->getId();
 

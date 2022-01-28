@@ -48,8 +48,7 @@ final class ShowTradePostInfo implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/trademacros.xhtml/tradepostinfo');
+        $game->setMacroInAjaxWindow('html/trademacros.xhtml/tradepostinfo');
         $game->setPageTitle(_('Handelsposten Details'));
 
         $game->setTemplateVar(

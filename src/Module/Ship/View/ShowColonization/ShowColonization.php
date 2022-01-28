@@ -64,8 +64,7 @@ final class ShowColonization implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Kolonie gründen'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/colonization');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/colonization');
 
         $game->setTemplateVar('currentColony', $colony);
         $game->setTemplateVar('SHIP', $ship);

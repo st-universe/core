@@ -38,8 +38,7 @@ final class ShowStationInfo implements ViewControllerInterface
         $game->setTemplateVar('ERROR', true);
 
         $game->setPageTitle(_('Baukosten'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/stationinfo');
+        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/stationinfo');
 
         $userId = $game->getUser()->getId();
         $planId = (int)request::getIntFatal('pid');

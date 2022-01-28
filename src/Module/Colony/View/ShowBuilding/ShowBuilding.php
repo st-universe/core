@@ -56,7 +56,8 @@ final class ShowBuilding implements ViewControllerInterface
         }
 
         $alternativeBuildings = $this->buildingFieldAlternativeRepository->getByBuildingIdAndResearchedByUser(
-            (int) $building->getId(), (int) $userId
+            (int) $building->getId(),
+            (int) $userId
         );
 
         if ($alternativeBuildings === []) {
@@ -69,7 +70,7 @@ final class ShowBuilding implements ViewControllerInterface
         $storage        = $colony->getStorage();
         $buildingcount  = $colony->getEps() / $building->getEpsCost();
         foreach ($building->getCosts() as $cost) {
-            if($storage[$cost->getGoodId()] != null) {
+            if ($storage[$cost->getGoodId()] != null) {
                 $need = $storage[$cost->getGoodId()]->getAmount() / $cost->getAmount();
                 $buildingcount = min($need, $buildingcount);
             } else {
@@ -77,26 +78,25 @@ final class ShowBuilding implements ViewControllerInterface
             }
         }
         if ($building->hasLimitColony()) {
-            if($this->planetFieldRepository->getCountByColonyAndBuilding($colony->getId(), $building->getId()) >= $building->getLimitColony()) {
+            if ($this->planetFieldRepository->getCountByColonyAndBuilding($colony->getId(), $building->getId()) >= $building->getLimitColony()) {
                 $buildingcount = 0;
             } else {
                 $buildingcount = min($buildingcount, $building->getLimitColony());
             }
         }
         if ($building->hasLimit()) {
-            if($this->planetFieldRepository->getCountByBuildingAndUser($building->getId(), $userId) >= $building->getLimit()) {
+            if ($this->planetFieldRepository->getCountByBuildingAndUser($building->getId(), $userId) >= $building->getLimit()) {
                 $buildingcount = 0;
             } else {
                 $buildingcount = min($buildingcount, $building->getLimit());
             }
         }
-        if($buildingcount < 0) {
+        if ($buildingcount < 0) {
             $buildingcount = 0;
         }
 
         $game->setPageTitle($building->getName());
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/colonymacros.xhtml/buildinginfo');
+        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/buildinginfo');
         $game->setTemplateVar('buildingdata', $building);
         $game->setTemplateVar('buildingcount', floor($buildingcount));
         $game->setTemplateVar('COLONY', $colony);
@@ -108,7 +108,7 @@ final class ShowBuilding implements ViewControllerInterface
         );
         $game->setTemplateVar(
             'COMMODITY_PRODUCTION_PREVIEW',
-		    new ColonyProductionPreviewWrapper($colony->getProduction())
+            new ColonyProductionPreviewWrapper($colony->getProduction())
         );
     }
 }

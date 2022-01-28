@@ -55,8 +55,7 @@ final class ShowRegionInfo implements ViewControllerInterface
             $game->checkDatabaseItem($databaseEntry->getId());
         }
 
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/regioninfo');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/regioninfo');
         $game->setPageTitle(sprintf('Details: %s', $region->getDescription()));
 
         $game->setTemplateVar('REGION', $region);

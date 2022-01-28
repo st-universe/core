@@ -37,8 +37,7 @@ final class ShowByPosition implements ViewControllerInterface
             $fields[] = new UserYRow($game->getUser(), $value, $minx, $maxx);
         }
 
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/macros.xhtml/starmap');
+        $game->setMacroInAjaxWindow('html/macros.xhtml/starmap');
 
         $game->setTemplateVar('HEAD_ROW', range($minx, $maxx));
         $game->setTemplateVar('MAP_FIELDS', $fields);

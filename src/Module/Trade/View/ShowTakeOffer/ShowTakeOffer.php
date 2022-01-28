@@ -46,8 +46,7 @@ final class ShowTakeOffer implements ViewControllerInterface
             throw new AccessViolation();
         }
 
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/trademacros.xhtml/takeoffer');
+        $game->setMacroInAjaxWindow('html/trademacros.xhtml/takeoffer');
         $game->setPageTitle(_('Angebot annehmen'));
 
         $game->setTemplateVar(

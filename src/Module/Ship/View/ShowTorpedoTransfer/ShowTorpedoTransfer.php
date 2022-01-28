@@ -59,8 +59,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             $game->setPageTitle(_('Torpedos von Schiff beamen'));
         }
 
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/entity_not_available');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
         if ($target === null || !$ship->canInteractWith($target, false, true)) {
             return;
@@ -70,7 +69,7 @@ final class ShowTorpedoTransfer implements ViewControllerInterface
             return;
         }
 
-        $game->setMacro('html/shipmacros.xhtml/show_torpedo_transfer');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_torpedo_transfer');
 
         $game->setTemplateVar('SHIP', $ship);
         $game->setTemplateVar('target', $target);

@@ -43,8 +43,7 @@ final class ShowOfferGood implements ViewControllerInterface
             return;
         }
 
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/trademacros.xhtml/offerbygood');
+        $game->setMacroInAjaxWindow('html/trademacros.xhtml/offerbygood');
         $game->setPageTitle(sprintf(_('Angebote mit %d'), $commodity->getName()));
 
         $game->setTemplateVar(

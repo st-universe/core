@@ -155,8 +155,15 @@ final class GameController implements GameControllerInterface
         $this->talPage->setTemplate($tpl);
     }
 
-    public function setMacro($macro): void
+    public function setMacroAndTemplate($macro, string $tpl): void
     {
+        $this->macro = $macro;
+        $this->talPage->setTemplate($tpl);
+    }
+
+    public function setMacroInAjaxWindow($macro): void
+    {
+        $this->setTemplateFile('html/ajaxwindow.xhtml');
         $this->macro = $macro;
     }
 
@@ -555,7 +562,7 @@ final class GameController implements GameControllerInterface
             $this->addInformation('Diese Aktion ist per Uplink nicht möglich!');
 
             if (request::isAjaxRequest()) {
-                $this->showMacro('html/sitemacros.xhtml/systeminformation');
+                $this->setMacroInAjaxWindow('html/sitemacros.xhtml/systeminformation');
             } else {
                 $this->setTemplateFile('html/ship.xhtml');
             }

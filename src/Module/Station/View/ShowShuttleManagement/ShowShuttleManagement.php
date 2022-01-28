@@ -48,8 +48,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         $ship = $shipArray[$shipId];
 
         $game->setPageTitle("Shuttle Management");
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/shuttlemanagement');
+        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/shuttlemanagement');
 
         $shuttles = [];
         $currentlyStored = 0;

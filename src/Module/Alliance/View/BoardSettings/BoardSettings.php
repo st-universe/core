@@ -35,8 +35,7 @@ final class BoardSettings implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Forum bearbeiten'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/alliancemacros.xhtml/board_settings');
+        $game->setMacroInAjaxWindow('html/alliancemacros.xhtml/board_settings');
         $game->setTemplateVar('BOARD', $board);
     }
 }

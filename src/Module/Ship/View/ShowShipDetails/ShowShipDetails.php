@@ -32,8 +32,7 @@ final class ShowShipDetails implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Schiffsinformationen'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/shipdetails');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/shipdetails');
 
         $game->setTemplateVar('SHIP', $ship);
     }

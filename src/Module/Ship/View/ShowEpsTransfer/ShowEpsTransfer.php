@@ -38,8 +38,7 @@ final class ShowEpsTransfer implements ViewControllerInterface
         $target = $shipArray[$targetId];
 
         $game->setPageTitle("Energietransfer");
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/shipmacros.xhtml/entity_not_available');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/entity_not_available');
 
         if ($target === null) {
             return;
@@ -48,7 +47,7 @@ final class ShowEpsTransfer implements ViewControllerInterface
             return;
         }
 
-        $game->setMacro('html/shipmacros.xhtml/show_ship_etransfer');
+        $game->setMacroInAjaxWindow('html/shipmacros.xhtml/show_ship_etransfer');
 
         $game->setTemplateVar('targetShip', $target);
         $game->setTemplateVar('SHIP', $ship);

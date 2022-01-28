@@ -18,9 +18,9 @@ final class ShowGoodsLocations implements ViewControllerInterface
     public const VIEW_IDENTIFIER = 'SHOW_GOODS_LOCATIONS';
 
     private ColonyStorageRepositoryInterface $colonyStorageRepository;
-   
+
     private ShipStorageRepositoryInterface $shipStorageRepository;
-    
+
     private TradeOfferRepositoryInterface $tradeOfferRepository;
 
     private TradeStorageRepositoryInterface $tradeStorageRepository;
@@ -47,8 +47,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
         $commodityId = $this->showGoodsLocationsRequest->getCommodityId();
 
         $game->setPageTitle(_('Lagerorte der Ware'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/databasemacros.xhtml/commodityLocations');
+        $game->setMacroInAjaxWindow('html/databasemacros.xhtml/commodityLocations');
 
         // set up colony locations array
         $colonyLocations = [];
@@ -58,7 +57,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
             $storageWrapper->setEntityId($data['colonies_id']);
             $colonyLocations[] = $storageWrapper;
         }
-        
+
         // set up ship locations array
         $shipLocations = [];
         $shipIterator = $this->shipStorageRepository->getByUserAndCommodity($userId, $commodityId);
@@ -67,7 +66,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
             $storageWrapper->setEntityId($data['ships_id']);
             $shipLocations[] = $storageWrapper;
         }
-        
+
         // set up trade post locations array
         $tradeStorageLocations = [];
         $tradeStorageIterator = $this->tradeStorageRepository->getByUserAndCommodity($userId, $commodityId);
@@ -76,7 +75,7 @@ final class ShowGoodsLocations implements ViewControllerInterface
             $storageWrapper->setEntityId($data->getTradePostId());
             $tradeStorageLocations[] = $storageWrapper;
         }
-        
+
         // set up trade offer locations array
         $tradeOfferLocations = [];
         $tradeOfferIterator = $this->tradeOfferRepository->getByUserAndCommodity($userId, $commodityId);

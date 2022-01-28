@@ -42,8 +42,7 @@ final class ShowStationCosts implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Baukosten'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/stationcost');
+        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/stationcost');
 
         $userId = $game->getUser()->getId();
 

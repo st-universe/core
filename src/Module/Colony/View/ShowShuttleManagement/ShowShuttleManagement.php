@@ -47,8 +47,7 @@ final class ShowShuttleManagement implements ViewControllerInterface
         }
 
         $game->setPageTitle("Shuttle Management");
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/colonymacros.xhtml/shuttlemanagement');
+        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/shuttlemanagement');
 
         $shuttles = [];
         $currentlyStored = 0;

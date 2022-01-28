@@ -18,7 +18,9 @@ interface GameControllerInterface
 
     public function setTemplateFile(string $tpl): void;
 
-    public function setMacro($macro): void;
+    public function setMacroAndTemplate($macro, string $tpl): void;
+
+    public function setMacroInAjaxWindow($macro): void;
 
     public function showMacro($macro): void;
 

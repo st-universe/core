@@ -27,8 +27,7 @@ final class ShowPodsLocations implements ViewControllerInterface
         $pods = $this->shipRepository->getEscapePodsByCrewOwner($userId);
 
         $game->setPageTitle("Rettungskapsel Scan");
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/colonymacros.xhtml/podlocations');
+        $game->setMacroInAjaxWindow('html/colonymacros.xhtml/podlocations');
 
         $game->setTemplateVar('PODS', $pods);
         $game->setTemplateVar('ERROR', false);

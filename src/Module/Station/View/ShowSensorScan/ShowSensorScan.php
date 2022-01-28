@@ -109,8 +109,7 @@ final class ShowSensorScan implements ViewControllerInterface
         }
 
         $game->setPageTitle(sprintf(_('Sensor Scan %d|%d'), $cx, $cy));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/sensorscan');
+        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/sensorscan');
 
         if ($mapField === null) {
             return;

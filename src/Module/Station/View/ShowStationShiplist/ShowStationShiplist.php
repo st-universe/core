@@ -58,8 +58,7 @@ final class ShowStationShiplist implements ViewControllerInterface
         }
 
         $game->setPageTitle(_('Angedockte Schiffe'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/shiplist');
+        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/shiplist');
         $game->setTemplateVar('SHIP', $station);
         $game->setTemplateVar('SHIP_LIST', $shipList);
         $game->setTemplateVar('CAN_UNDOCK', true);

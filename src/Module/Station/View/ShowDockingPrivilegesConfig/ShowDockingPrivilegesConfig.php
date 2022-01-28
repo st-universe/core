@@ -31,8 +31,7 @@ final class ShowDockingPrivilegesConfig implements ViewControllerInterface
         );
 
         $game->setPageTitle(_('Dockrechte'));
-        $game->setTemplateFile('html/ajaxwindow.xhtml');
-        $game->setMacro('html/stationmacros.xhtml/dockprivileges');
+        $game->setMacroInAjaxWindow('html/stationmacros.xhtml/dockprivileges');
 
         $game->setTemplateVar('SHIP', $ship);
     }
