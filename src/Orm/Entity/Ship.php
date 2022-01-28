@@ -113,6 +113,9 @@ class Ship implements ShipInterface
     /** @Column(type="integer", nullable=true) */
     private $traktor;
 
+    /** @Column(type="integer", nullable=true) */
+    private $tractored_ship_id;
+
     /** @Column(type="smallint", length=1) */
     private $traktormode = 0;
 
@@ -211,6 +214,17 @@ class Ship implements ShipInterface
      * @OneToMany(targetEntity="DockingPrivilege", mappedBy="ship")
      */
     private $dockingPrivileges;
+
+    /**
+     * @OneToOne(targetEntity="Ship")
+     * @JoinColumn(name="tractored_ship_id", referencedColumnName="id")
+     */
+    private $tractoredShip;
+
+    /**
+     * @OneToOne(targetEntity="Ship", mappedBy="tractoredShip")
+     */
+    private $tractoringShip;
 
     /**
      * @ManyToOne(targetEntity="User")
@@ -1452,6 +1466,28 @@ class Ship implements ShipInterface
     public function getDockedShipCount(): int
     {
         return $this->dockedShips->count();
+    }
+
+    public function getTractoredShip(): ?ShipInterface
+    {
+        return $this->tractoredShip;
+    }
+
+    public function setTractoredShip(?ShipInterface $ship): ShipInterface
+    {
+        $this->tractoredShip = $ship;
+        return $this;
+    }
+
+    public function getTractoringShip(): ?ShipInterface
+    {
+        return $this->tractoringShip;
+    }
+
+    public function setTractoringShip(?ShipInterface $ship): ShipInterface
+    {
+        $this->tractoringShip = $ship;
+        return $this;
     }
 
     public function getCurrentMapField()

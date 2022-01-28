@@ -369,6 +369,14 @@ interface ShipInterface
 
     public function getDockedShipCount(): int;
 
+    public function getTractoredShip(): ?ShipInterface;
+
+    public function setTractoredShip(?ShipInterface $ship): ShipInterface;
+
+    public function getTractoringShip(): ?ShipInterface;
+
+    public function setTractoringShip(?ShipInterface $ship): ShipInterface;
+
     /**
      * @return StarSystemMapInterface|MapInterface
      */
