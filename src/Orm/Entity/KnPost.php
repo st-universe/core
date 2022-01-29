@@ -53,6 +53,7 @@ class KnPost implements KnPostInterface
 
     /**
      * @OneToMany(targetEntity="KnComment", mappedBy="post")
+     * @OrderBy({"id" = "ASC"})
      */
     private $comments;
 
