@@ -6,6 +6,9 @@ namespace Stu\Module\Ship\Lib;
 
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
 use Stu\Module\Ship\Lib\ShipAttackCycleInterface;
@@ -20,18 +23,28 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     private PrivateMessageSenderInterface $privateMessageSender;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
         PrivateMessageSenderInterface $privateMessageSender,
         ShipRepositoryInterface $shipRepository,
-        ShipAttackCycleInterface $shipAttackCycle
+        ShipAttackCycleInterface $shipAttackCycle,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->privateMessageSender = $privateMessageSender;
         $this->shipRepository = $shipRepository;
         $this->shipAttackCycle = $shipAttackCycle;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
     {
+        if (
+            $tractoringShip !== null
+            && $tractoringShip->getUser()->getId() === 102
+        ) {
+            $this->loggerUtil->init('arHelper', LoggerEnum::LEVEL_ERROR);
+        }
         $informations = [];
 
         $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
@@ -74,9 +87,15 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
             //ships of friends from tractoring ship dont attack
             if ($tractoringShip !== null &&  $shipOnLocation->getUser()->isFriend($tractoringShip->getUser()->getId())) {
-                $userId = $shipOnLocation->getUser()->getId();
+                $this->loggerUtil->log('A');
+                $user = $shipOnLocation->getUser();
+                $userId = $user->getId();
 
-                if (array_key_exists($userId, $usersToInformAboutTrojanHorse)) {
+                if (
+                    array_key_exists($userId, $usersToInformAboutTrojanHorse)
+                    && $user !== $leadShip->getUser()
+                    && !$user->isFriend($leadShip->getUser()->getId())
+                ) {
                     $txt = sprintf(
                         _('Die %s von Spieler %s hat den Warpantrieb deaktiviert und dabei die %s von %s in Sektor %s gezogen'),
                         $tractoringShip->getName(),
