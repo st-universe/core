@@ -51,8 +51,8 @@ final class FleetDeactivateWarp implements ActionControllerInterface
         $this->alertRedHelper->doItAll($ship, $game);
 
         //Alarm-Rot check for traktored ships
-        foreach ($traktoredShips as $traktorShip) {
-            $this->alertRedHelper->doItAll($traktorShip, $game);
+        foreach ($traktoredShips as $traktoredShip) {
+            $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
         }
 
         if ($ship->getIsDestroyed()) {

@@ -57,7 +57,7 @@ final class SelfDestruct implements ActionControllerInterface
 
         $game->setView(Overview::VIEW_IDENTIFIER);
 
-        $tractorToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpState()) ? $ship->getTractoredShip() : null;
+        $tractoredShipToTriggerAlertRed = ($ship->isTractoring() && $ship->getWarpState()) ? $ship->getTractoredShip() : null;
 
         $game->addInformation(_('Die Selbstzerstörung war erfolgreich'));
         $msg = sprintf(
@@ -83,8 +83,8 @@ final class SelfDestruct implements ActionControllerInterface
         }
 
         //Alarm-Rot check for tractor ship
-        if ($tractorToTriggerAlertRed !== null) {
-            $this->alertRedHelper->doItAll($tractorToTriggerAlertRed, $game);
+        if ($tractoredShipToTriggerAlertRed !== null) {
+            $this->alertRedHelper->doItAll($tractoredShipToTriggerAlertRed, $game);
         }
     }
 

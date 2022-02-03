@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Ship\Lib;
 
+use Stu\Component\Game\GameEnum;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Message\Lib\PrivateMessageFolderSpecialEnum;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -29,11 +30,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $this->shipAttackCycle = $shipAttackCycle;
     }
 
-    public function doItAll(ShipInterface $ship, ?GameControllerInterface $game): array
+    public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
     {
         $informations = [];
 
-        $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations);
+        $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
         shuffle($shipsToShuffle);
         foreach ($shipsToShuffle as $alertShip) {
             $this->performAttackCycle($alertShip, $ship, $informations);
@@ -47,8 +48,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
     }
 
-    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations): array
+    public function checkForAlertRedShips(ShipInterface $leadShip, &$informations, ?ShipInterface $tractoringShip = null): array
     {
+        if ($leadShip->getUser()->getId() === GameEnum::USER_NOONE) {
+            return [];
+        }
         if ($this->allFleetShipsWarped($leadShip)) {
             return [];
         }
@@ -64,11 +68,25 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $fleetIds = [];
         $fleetCount = 0;
         $singleShipCount = 0;
+        $usersToInformAboutTrojanHorse = [];
 
         foreach ($shipsOnLocation as $shipOnLocation) {
 
-            // ships dont count if user is on vacation
-            if ($shipOnLocation->getUser()->isVacationRequestOldEnough()) {
+            //ships of friends from tractoring ship dont attack
+            if ($tractoringShip !== null &&  $shipOnLocation->getUser()->isFriend($tractoringShip->getUser()->getId())) {
+                $userId = $shipOnLocation->getUser()->getId();
+
+                if (array_key_exists($userId, $usersToInformAboutTrojanHorse)) {
+                    $txt = sprintf(
+                        _('Die %s von Spieler %s hat den Warpantrieb deaktiviert und dabei die %s von %s in Sektor %s gezogen'),
+                        $tractoringShip->getName(),
+                        $tractoringShip->getUser()->getName(),
+                        $leadShip->getName(),
+                        $leadShip->getUser()->getName(),
+                        $tractoringShip->getSectorString()
+                    );
+                    $usersToInformAboutTrojanHorse[$userId] = $txt;
+                }
                 continue;
             }
 
@@ -92,6 +110,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
             }
         }
 
+        $this->informAboutTrojanHorse($usersToInformAboutTrojanHorse);
+
         if ($fleetCount == 1) {
             $informations[] = sprintf(_('In Sektor %d|%d befindet sich 1 Flotte auf [b][color=red]Alarm-Rot![/color][/b]') . "\n", $leadShip->getPosX(), $leadShip->getPosY());
         }
@@ -106,6 +126,17 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
 
         return $shipsToShuffle;
+    }
+
+    private function informAboutTrojanHorse(array $users): void
+    {
+        foreach ($users as $userId => $txt) {
+            $this->privateMessageSender->send(
+                GameEnum::USER_NOONE,
+                $userId,
+                $txt
+            );
+        }
     }
 
     private function allFleetShipsWarped(ShipInterface $leadShip): bool

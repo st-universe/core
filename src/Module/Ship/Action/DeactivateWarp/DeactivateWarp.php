@@ -44,14 +44,14 @@ final class DeactivateWarp implements ActionControllerInterface
             $userId
         );
 
-        $traktorShip = $ship->getTractoredShip();
+        $traktoredShip = $ship->getTractoredShip();
 
         //Alarm-Rot check for ship
         $this->alertRedHelper->doItAll($ship, $game);
 
         //Alarm-Rot check for traktor ship
-        if ($traktorShip !== null) {
-            $this->alertRedHelper->doItAll($traktorShip, $game);
+        if ($traktoredShip !== null) {
+            $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
         }
 
         if ($ship->getIsDestroyed()) {

@@ -164,6 +164,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         return $this->getEntityManager()->createQuery(
             sprintf(
                 'SELECT s FROM %s s
+                JOIN %s u
+                WITH s.user_id = u.id
                 WHERE s.alvl = :alertRed
                 AND s.user_id != :ignoreId 
                 AND s.%s = :mapId
@@ -176,8 +178,10 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                                 FROM %s ss2
                                 WHERE s.id = ss2.ships_id
                                 AND ss2.system_type = :warpSystemId
-                                AND ss2.mode > 1)',
+                                AND ss2.mode > 1)
+                AND (u.vac_active = false OR u.vac_request_date > :vacationThreshold)',
                 Ship::class,
+                User::class,
                 $isSystem ? 'starsystem_map_id' : 'map_id',
                 ShipSystem::class,
                 ShipSystem::class
@@ -187,7 +191,8 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'mapId' => $isSystem ? $ship->getStarsystemMap()->getId() : $ship->getMap()->getId(),
             'ignoreId' => $ship->getUser()->getId(),
             'cloakSystemId' => ShipSystemTypeEnum::SYSTEM_CLOAK,
-            'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE
+            'warpSystemId' => ShipSystemTypeEnum::SYSTEM_WARPDRIVE,
+            'vacationThreshold' => time() - PlayerEnum::VACATION_DELAY_IN_SECONDS
         ])->getResult();
     }
 

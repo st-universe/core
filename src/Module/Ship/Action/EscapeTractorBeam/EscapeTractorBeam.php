@@ -108,19 +108,19 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
     private function escape(ShipInterface $ship, $game): void
     {
-        $otherShip = $ship->getTractoringShip();
+        $tractoringShip = $ship->getTractoringShip();
 
-        $otherShip->deactivateTractorBeam(); // forced active deactivation
+        $tractoringShip->deactivateTractorBeam(); // forced active deactivation
 
-        $this->shipRepository->save($otherShip);
+        $this->shipRepository->save($tractoringShip);
 
-        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $otherShip->getId());
+        $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $tractoringShip->getId());
 
         $this->privateMessageSender->send(
             $ship->getUser()->getId(),
-            $otherShip->getUser()->getId(),
-            sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $otherShip->getName(), $ship->getSectorString()),
-            $otherShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
+            $tractoringShip->getUser()->getId(),
+            sprintf(_('Bei dem Fluchtversuch der %s wurde der Traktorstrahl der %s in Sektor %s zerstört'), $ship->getName(), $tractoringShip->getName(), $ship->getSectorString()),
+            $tractoringShip->isBase() ?  PrivateMessageFolderSpecialEnum::PM_SPECIAL_STATION : PrivateMessageFolderSpecialEnum::PM_SPECIAL_SHIP,
             $href
         );
 

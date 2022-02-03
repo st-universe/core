@@ -37,7 +37,7 @@ final class Shutdown implements ActionControllerInterface
     {
         $ship = $this->shipLoader->getByIdAndUser(request::indInt('id'), $game->getUser()->getId());
 
-        $traktorShip = $ship->getTractoredShip();
+        $traktoredShip = $ship->getTractoredShip();
 
         $triggerAlertRed = $ship->getWarpState() || $ship->getCloakState();
 
@@ -61,8 +61,8 @@ final class Shutdown implements ActionControllerInterface
             $this->alertRedHelper->doItAll($ship, $game);
 
             //Alarm-Rot check for traktor ship
-            if ($traktorShip !== null) {
-                $this->alertRedHelper->doItAll($traktorShip, $game);
+            if ($traktoredShip !== null) {
+                $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
             }
 
             if ($ship->getIsDestroyed()) {
