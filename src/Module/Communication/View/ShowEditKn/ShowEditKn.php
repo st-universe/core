@@ -37,17 +37,12 @@ final class ShowEditKn implements ViewControllerInterface
         /** @var KnPostInterface $post */
         $post = $this->knPostRepository->find($this->showEditKnRequest->getPostId());
 
-        if ($post === null) {
-            throw new AccessViolation(sprintf(_('UserId %d tried to edit non-existing kn post'), $game->getUser()->getId()));
-        }
-
-        if ($post->getUserId() !== $game->getUser()->getId()) {
-            throw new AccessViolation(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
-        }
-
-        if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
-            $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
-            return;
+        if (
+            $post === null ||
+            $post->getUserId() !== $game->getUser()->getId() ||
+            $post->getDate() < time() - EditKnPost::EDIT_TIME
+        ) {
+            throw new AccessViolation();
         }
 
         $game->setTemplateFile('html/editkn.xhtml');
