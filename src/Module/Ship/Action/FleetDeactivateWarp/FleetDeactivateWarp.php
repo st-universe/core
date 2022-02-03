@@ -45,14 +45,14 @@ final class FleetDeactivateWarp implements ActionControllerInterface
             $userId
         );
 
-        $traktoredShips = $this->getTraktoredShips($ship);
+        $tractoredShips = $this->getTractoredShips($ship);
 
         //Alarm-Rot check for fleet
         $this->alertRedHelper->doItAll($ship, $game);
 
-        //Alarm-Rot check for traktored ships
-        foreach ($traktoredShips as $traktoredShip) {
-            $this->alertRedHelper->doItAll($traktoredShip, $game, $ship);
+        //Alarm-Rot check for tractored ships
+        foreach ($tractoredShips as [$tractoringShip, $tractoredShip]) {
+            $this->alertRedHelper->doItAll($tractoredShip, $game, $tractoringShip);
         }
 
         if ($ship->getIsDestroyed()) {
@@ -62,13 +62,13 @@ final class FleetDeactivateWarp implements ActionControllerInterface
         $game->setView(ShowShip::VIEW_IDENTIFIER);
     }
 
-    private function getTraktoredShips(ShipInterface $ship): array
+    private function getTractoredShips(ShipInterface $ship): array
     {
         $result = [];
 
         foreach ($ship->getFleet()->getShips() as $fleetShip) {
             if ($fleetShip->isTractoring()) {
-                $result[] = $fleetShip->getTractoredShip();
+                $result[] = [$fleetShip, $fleetShip->getTractoredShip()];
             }
         }
 
