@@ -92,7 +92,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 $userId = $user->getId();
 
                 if (
-                    array_key_exists($userId, $usersToInformAboutTrojanHorse)
+                    !array_key_exists($userId, $usersToInformAboutTrojanHorse)
                     && $user !== $leadShip->getUser()
                     && !$user->isFriend($leadShip->getUser()->getId())
                 ) {
