@@ -3,7 +3,7 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<metal:macro metal:use-macro="systeminformation" tal:condition="THIS/getInformation" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/systeminformation" tal:condition="THIS/getInformation" />
 		<form tal:condition="exists: POST" action="comm.php" method="post">
 			<input type="hidden" name="EDIT_KN" value="1" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
