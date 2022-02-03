@@ -45,28 +45,23 @@ final class ShowEditKn implements ViewControllerInterface
             throw new AccessViolation(sprintf(_('UserId %d tried to edit foreign kn post'), $game->getUser()->getId()));
         }
 
-        if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
-            $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
-
-            $game->setPageTitle(_('Kommunikationsnetzwerk'));
-            $game->setTemplateFile('html/comm.xhtml');
-            $game->appendNavigationPart('comm.php', _('KommNet'));
-
-            return;
-        }
-
         $game->setTemplateFile('html/editkn.xhtml');
         $game->appendNavigationPart('comm.php', _('KommNet'));
-        $game->appendNavigationPart(
-            sprintf('comm.php?%s=1&knid=%d', static::VIEW_IDENTIFIER, $post->getId()),
-            _('Beitrag bearbeiten')
-        );
-        $game->setPageTitle(_('Beitrag bearbeiten'));
 
-        $game->setTemplateVar(
-            'ACTIVE_RPG_PLOTS',
-            $this->rpgPlotRepository->getActiveByUser($game->getUser()->getId())
-        );
-        $game->setTemplateVar('POST', $post);
+        if ($post->getDate() < time() - EditKnPost::EDIT_TIME) {
+            $game->addInformation(sprintf(_('Die Zeit zum Editieren ist abgelaufen (%d Sekunden)'), EditKnPost::EDIT_TIME));
+        } else {
+            $game->appendNavigationPart(
+                sprintf('comm.php?%s=1&knid=%d', static::VIEW_IDENTIFIER, $post->getId()),
+                _('Beitrag bearbeiten')
+            );
+            $game->setPageTitle(_('Beitrag bearbeiten'));
+
+            $game->setTemplateVar(
+                'ACTIVE_RPG_PLOTS',
+                $this->rpgPlotRepository->getActiveByUser($game->getUser()->getId())
+            );
+            $game->setTemplateVar('POST', $post);
+        }
     }
 }

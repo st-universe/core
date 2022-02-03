@@ -3,18 +3,23 @@
 	<metal:macro metal:fill-slot="body">
 		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
 		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
-		<form action="comm.php" method="post">
+		<metal:macro metal:use-macro="systeminformation" tal:condition="THIS/getInformation" />
+		<form tal:condition="exists: POST" action="comm.php" method="post">
 			<input type="hidden" name="EDIT_KN" value="1" />
 			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
 			<input type="hidden" name="knid" value="runtime" tal:attributes="value POST/getId" />
 			<table class="tcal">
 				<tr>
 					<td>
-						<div id="writekntitle" tal:condition="not:POST/getPlotId" class="selected" style="float: left; width: 100px; padding: 5px;">Titel</div>
-						<div id="writeknplot" tal:condition="POST/getPlotId" class="selected" style="float: left; width: 100px; padding: 5px;">Plot</div>
+						<div id="writekntitle" tal:condition="not:POST/getPlotId" class="selected"
+							style="float: left; width: 100px; padding: 5px;">Titel</div>
+						<div id="writeknplot" tal:condition="POST/getPlotId" class="selected"
+							style="float: left; width: 100px; padding: 5px;">Plot</div>
 						<br style="clear: both;" />
-						<div tal:condition="not:POST/getPlotId" id="writekntitleinput" style="clear: both; margin: 5px;">
-							<input type="text" name="title" style="width: 100%;" tal:attributes="value structure POST/getTitle" />
+						<div tal:condition="not:POST/getPlotId" id="writekntitleinput"
+							style="clear: both; margin: 5px;">
+							<input type="text" name="title" style="width: 100%;"
+								tal:attributes="value structure POST/getTitle" />
 						</div>
 						<div id="writeknplotselect" tal:condition="POST/getPlotId" style="margin: 5px;">
 							<metal:macro metal:use-macro="plotselect" />
@@ -23,7 +28,9 @@
 							<select name="plotid" style="width: 500px;">
 								<option value="0">------------------------------</option>
 								<tal:block tal:repeat="plot ACTIVE_RPG_PLOTS">
-									<option value="runtime" tal:attributes="value plot/getId;selected php:POST.getPlotId()==plot.getId()" tal:content="structure plot/getTitle"></option>
+									<option value="runtime"
+										tal:attributes="value plot/getId;selected php:POST.getPlotId()==plot.getId()"
+										tal:content="structure plot/getTitle"></option>
 								</tal:block>
 							</select>
 						</metal:macro>
@@ -33,7 +40,8 @@
 					<th>Text</th>
 				</tr>
 				<tr>
-					<td><textarea name="text" style="width: 100%; height: 300px;" tal:content="structure POST/getText"></textarea></td>
+					<td><textarea name="text" style="width: 100%; height: 300px;"
+							tal:content="structure POST/getText"></textarea></td>
 				</tr>
 				<tr>
 					<td>
@@ -44,4 +52,5 @@
 		</form>
 	</metal:macro>
 </metal:macro>
+
 </html>
