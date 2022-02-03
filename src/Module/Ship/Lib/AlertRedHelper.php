@@ -39,12 +39,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
     {
-        if (
-            $tractoringShip !== null
-            && $tractoringShip->getUser()->getId() === 102
-        ) {
-            $this->loggerUtil->init('arHelper', LoggerEnum::LEVEL_ERROR);
-        }
         $informations = [];
 
         $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
@@ -87,7 +81,6 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
             //ships of friends from tractoring ship dont attack
             if ($tractoringShip !== null &&  $shipOnLocation->getUser()->isFriend($tractoringShip->getUser()->getId())) {
-                $this->loggerUtil->log('A');
                 $user = $shipOnLocation->getUser();
                 $userId = $user->getId();
 
