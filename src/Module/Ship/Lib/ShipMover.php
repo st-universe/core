@@ -218,6 +218,7 @@ final class ShipMover implements ShipMoverInterface
         }
 
         $this->getReadyForFlight($leadShip, $ships);
+        $tractoredShips = $this->getTractoredShips($ships);
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
@@ -275,6 +276,16 @@ final class ShipMover implements ShipMoverInterface
                     }
                 }
             }
+
+            //AR Check for tractored ships
+            foreach ($tractoredShips as [$tractoringShip, $tractoredShip]) {
+                if (!$tractoredShip->getIsDestroyed()) {
+                    $this->informations = array_merge(
+                        $this->informations,
+                        $this->alertRedHelper->doItAll($tractoredShip, null, $tractoringShip)
+                    );
+                }
+            }
         }
 
         //skip save and log info if flight did not happen
@@ -306,6 +317,19 @@ final class ShipMover implements ShipMoverInterface
         }
 
         $this->saveFlightSignatures();
+    }
+
+    private function getTractoredShips(array $ships): array
+    {
+        $result = [];
+
+        foreach ($ships as $fleetShip) {
+            if ($fleetShip->isTractoring()) {
+                $result[] = [$fleetShip, $fleetShip->getTractoredShip()];
+            }
+        }
+
+        return $result;
     }
 
     private function areShipsLeft(array $ships): bool
