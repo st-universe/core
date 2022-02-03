@@ -97,12 +97,12 @@ final class AlertRedHelper implements AlertRedHelperInterface
                     && !$user->isFriend($leadShip->getUser()->getId())
                 ) {
                     $txt = sprintf(
-                        _('Die %s von Spieler %s hat den Warpantrieb deaktiviert und dabei die %s von %s in Sektor %s gezogen'),
+                        _('Die %s von Spieler %s ist in Sektor %s eingeflogen und hat dabei die %s von Spieler %s gezogen'),
                         $tractoringShip->getName(),
                         $tractoringShip->getUser()->getName(),
+                        $tractoringShip->getSectorString(),
                         $leadShip->getName(),
-                        $leadShip->getUser()->getName(),
-                        $tractoringShip->getSectorString()
+                        $leadShip->getUser()->getName()
                     );
                     $usersToInformAboutTrojanHorse[$userId] = $txt;
                 }
