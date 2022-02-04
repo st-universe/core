@@ -606,7 +606,7 @@ final class GameController implements GameControllerInterface
 
 
             foreach ($this->semaphores as $key => $sema) {
-                $this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
+                //$this->loggerUtil->log(sprintf('       releasing %d, userId: %d', $key, $userId));
                 $this->loggerUtil->init('semaphore', LoggerEnum::LEVEL_ERROR);
                 if (!sem_release($sema)) {
                     $this->loggerUtil->log("Error releasing Semaphore!");
@@ -618,6 +618,8 @@ final class GameController implements GameControllerInterface
                     //throw new SemaphoreException("Error removing Semaphore!");
                 }
             }
+
+            $this->loggerUtil->init('stu');
         }
     }
 
