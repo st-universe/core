@@ -3,15 +3,22 @@
 namespace Stu\Module\Control;
 
 use Stu\Exception\SemaphoreException;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 
 final class SemaphoreUtil implements SemaphoreUtilInterface
 {
     private GameControllerInterface $game;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
-        GameControllerInterface $game
+        GameControllerInterface $game,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->game = $game;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function getSemaphore(int $key, bool $autoRelease = false)
@@ -49,11 +56,16 @@ final class SemaphoreUtil implements SemaphoreUtilInterface
     private function release($semaphore, bool $doRemove): void
     {
         if (!sem_release($semaphore)) {
-            throw new SemaphoreException("Error releasing Semaphore!");
+            $this->loggerUtil->init('semaphores', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log("Error releasing Semaphore!");
+            return;
+            //throw new SemaphoreException("Error releasing Semaphore!");
         }
 
         if ($doRemove && !sem_remove($semaphore)) {
-            throw new SemaphoreException("Error removing Semaphore!");
+            $this->loggerUtil->init('semaphores', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log("Error removing Semaphore!");
+            //throw new SemaphoreException("Error removing Semaphore!");
         }
     }
 }
