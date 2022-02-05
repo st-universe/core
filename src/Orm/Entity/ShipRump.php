@@ -128,11 +128,11 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $shuttle_slots = 0;
 
-    /** @column(type="smallint", nullable=true) * */
-    private $tractor_mass;
+    /** @column(type="smallint") * */
+    private $tractor_mass = 1;
 
-    /** @column(type="smallint", nullable=true) * */
-    private $tractor_payload;
+    /** @column(type="smallint") * */
+    private $tractor_payload = 1;
 
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
@@ -354,6 +354,16 @@ class ShipRump implements ShipRumpInterface
     {
         $this->shuttle_slots = $shuttleSlots;
         return $this;
+    }
+
+    public function getTractorMass(): int
+    {
+        return $this->tractor_mass;
+    }
+
+    public function getTractorPayload(): int
+    {
+        return $this->tractor_payload;
     }
 
     public function getPhaserVolleys(): int

@@ -72,6 +72,10 @@ interface ShipRumpInterface
 
     public function setShuttleSlots(int $shuttleSlots): ShipRumpInterface;
 
+    public function getTractorMass(): int;
+
+    public function getTractorPayload(): int;
+
     public function getPhaserVolleys(): int;
 
     public function setPhaserVolleys(int $phaserVolleys): ShipRumpInterface;
