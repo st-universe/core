@@ -128,6 +128,12 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $shuttle_slots = 0;
 
+    /** @column(type="smallint", nullable=true) * */
+    private $tractor_mass;
+
+    /** @column(type="smallint", nullable=true) * */
+    private $tractor_payload;
+
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
      * @JoinColumn(name="role_id", referencedColumnName="id")
