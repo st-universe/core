@@ -83,8 +83,5 @@ return [
     [],
     $phase,
     $uphase,
-    $ophases,
-    $phases,
-    $uphases,
     $hasground
 ];

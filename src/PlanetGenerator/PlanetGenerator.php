@@ -55,7 +55,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     {
         $bonusdata = [];
 
-        list($odata, $data, $udata, $ophase, $phase, $uphase, $orbitPhasesCount, $phasesCount, $undergroundPhasesCount, $hasground) = $this->loadPlanetType($id);
+        list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($id);
 
         $config = [
             self::CONFIG_COLGEN_SIZEW => $data[self::CONFIG_COLGEN_SIZEW],
@@ -137,39 +137,38 @@ final class PlanetGenerator implements PlanetGeneratorInterface
             $bphase[$bonusPhaseCount] = $this->createBonusPhase($next);
             $bonusPhaseCount++;
         }
-
         // end bonus
-
-        $phaseCounts = [
-            self::PHASE_COLONY => $phasesCount, self::PHASE_ORBIT => $orbitPhasesCount, self::PHASE_UNDERGROUND => $undergroundPhasesCount, self::PHASE_BONUS => $bonusPhaseCount
-        ];
 
         $phases = [
             self::PHASE_COLONY => $phase, self::PHASE_ORBIT => $ophase, self::PHASE_UNDERGROUND => $uphase, self::PHASE_BONUS => $bphase
         ];
 
-        [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phaseCounts, $phases, $hasground);
+        [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phases, $hasground);
 
         return $this->combine($colonyFields, $orbitFields, $undergroundFields);
     }
 
-    private function doPhases(array $config, array $phaseCounts, array $phases, bool $hasground): array
+    private function doPhases(array $config, array $phases, bool $hasground): array
     {
         [$colonyFields, $orbitFields, $undergroundFields] = $this->initFields($config, $hasground);
 
-        for ($i = 0; $i < $phaseCounts[self::PHASE_COLONY]; $i++) {
+        $colonyPhaseCounts = count($phases[self::PHASE_COLONY]);
+        for ($i = 0; $i < $colonyPhaseCounts; $i++) {
             $colonyFields = $this->doPhase($phases[self::PHASE_COLONY][$i], $colonyFields);
         }
 
-        for ($i = 0; $i < $phaseCounts[self::PHASE_ORBIT]; $i++) {
+        $orbitPhaseCounts = count($phases[self::PHASE_ORBIT]);
+        for ($i = 0; $i < $orbitPhaseCounts; $i++) {
             $orbitFields = $this->doPhase($phases[self::PHASE_ORBIT][$i], $orbitFields);
         }
 
-        for ($i = 0; $i < $phaseCounts[self::PHASE_UNDERGROUND]; $i++) {
+        $undergroundPhaseCounts = count($phases[self::PHASE_UNDERGROUND]);
+        for ($i = 0; $i < $undergroundPhaseCounts; $i++) {
             $undergroundFields = $this->doPhase($phases[self::PHASE_UNDERGROUND][$i], $undergroundFields);
         }
 
-        for ($i = 0; $i < $phaseCounts[self::PHASE_BONUS]; $i++) {
+        $bonusPhaseCounts = count($phases[self::PHASE_BONUS]);
+        for ($i = 0; $i < $bonusPhaseCounts; $i++) {
             $colonyFields = $this->doPhase($phases[self::PHASE_BONUS][$i], $colonyFields);
         }
 

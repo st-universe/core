@@ -688,8 +688,5 @@ return [
     [],
     $phase,
     [],
-    $ophases,
-    $phases,
-    $uphases,
     $hasground
 ];
