@@ -6,22 +6,22 @@ use Exception;
 
 final class PlanetGenerator implements PlanetGeneratorInterface
 {
-
-    public const COLGEN_BASEWEIGHT = 'baseweight';
-    public const COLGEN_WEIGHT = 'weight';
-    public const COLGEN_DETAILS = 'details';
-    public const COLGEN_SIZEW = 'sizew';
-    public const COLGEN_BASEFIELD = 'basefield';
-    public const COLGEN_TO = 'to';
-    public const COLGEN_SIZEH = 'sizeh';
+    //phase settings
     public const COLGEN_MODE = 'mode';
     public const COLGEN_DESCRIPTION = 'description';
     public const COLGEN_NUM = 'num';
     public const COLGEN_FROM = 'from';
+    public const COLGEN_TO = 'to';
     public const COLGEN_ADJACENT = 'adjacent';
     public const COLGEN_NOADJACENT = 'noadjacent';
     public const COLGEN_NOADJACENTLIMIT = 'noadjacentlimit';
     public const COLGEN_FRAGMENTATION = 'fragmentation';
+
+    //other
+    public const COLGEN_BASEWEIGHT = 'baseweight';
+    public const COLGEN_WEIGHT = 'weight';
+    public const COLGEN_DETAILS = 'details';
+    public const COLGEN_BASEFIELD = 'basefield';
     public const COLGEN_TYPE = 'type';
     public const COLGEN_Y = 'y';
     public const COLGEN_X = 'x';
@@ -37,6 +37,202 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     public const BONUS_SENERGY = 31;
     public const BONUS_WENERGY = 32;
     public const BONUS_SUPER = 99;
+
+    //phases enum
+    private const PHASE_COLONY = 1;
+    private const PHASE_ORBIT = 2;
+    private const PHASE_UNDERGROUND = 3;
+    private const PHASE_BONUS = 4;
+
+    //config values
+    public const CONFIG_COLGEN_SIZEW = 'sizew';
+    public const CONFIG_COLGEN_SIZEH = 'sizeh';
+    private const CONFIG_BASEFIELD_COLONY = 1;
+    private const CONFIG_BASEFIELD_ORBIT = 2;
+    private const CONFIG_BASEFIELD_UNDERGROUND = 3;
+
+    public function generateColony(int $id, int $bonusfields = 2): array
+    {
+        $bonusdata = [];
+
+        list($odata, $data, $udata, $ophase, $phase, $uphase, $orbitPhasesCount, $phasesCount, $undergroundPhasesCount, $hasground) = $this->loadPlanetType($id);
+
+        $config = [
+            self::CONFIG_COLGEN_SIZEW => $data[self::CONFIG_COLGEN_SIZEW],
+            self::CONFIG_COLGEN_SIZEH => $data[self::CONFIG_COLGEN_SIZEH],
+            self::CONFIG_BASEFIELD_COLONY => $data[self::COLGEN_BASEFIELD],
+            self::CONFIG_BASEFIELD_ORBIT => $odata[self::COLGEN_BASEFIELD],
+            self::CONFIG_BASEFIELD_UNDERGROUND => $udata[self::COLGEN_BASEFIELD]
+        ];
+
+        // start bonus
+        if ($config[self::CONFIG_COLGEN_SIZEW] != 10) {
+            $bonusfields = $bonusfields - 1;
+        }
+
+        $bftaken = 0;
+        $phaseSuperCount = 0;
+        $phasesOreCount = 0;
+        $phasesDeutCount = 0;
+        $phasesResourceCount = 0;
+        $phasesOther = 0;
+
+        if (($bftaken < $bonusfields) && (rand(1, 100) <= 15)) {
+            $phaseSuperCount += 1;
+            $bftaken += 1;
+        }
+        if (($bftaken < $bonusfields) && (rand(1, 100) <= 80)) {
+            $phasesResourceCount += 1;
+            $bftaken += 1;
+        }
+        if (($phaseSuperCount == 0) && ($config[self::CONFIG_COLGEN_SIZEW] > 7)) {
+            if (($bftaken < $bonusfields) && (rand(1, 100) <= 10)) {
+                $phasesResourceCount += 1;
+                $bftaken += 1;
+            }
+        }
+
+        if ($bftaken < $bonusfields) {
+            $restcount = $bonusfields - $bftaken;
+
+            $phasesOther += $restcount;
+            $bftaken += $restcount;
+        }
+
+        $bonusPhaseCount = 0;
+
+        // Bonus Phases
+
+        unset($taken);
+
+        for ($i = 0; $i < $phaseSuperCount; $i++) {
+            $bphase[$bonusPhaseCount] = $this->createBonusPhase(self::BONUS_SUPER);
+            $bonusPhaseCount++;
+        }
+
+        for ($i = 0; $i < $phasesResourceCount; $i++) {
+            $bphase[$bonusPhaseCount] = $this->createBonusPhase(self::BONUS_ANYRESOURCE);
+            $bonusPhaseCount++;
+        }
+
+        for ($i = 0; $i < $phasesDeutCount; $i++) {
+            $bphase[$bonusPhaseCount] = $this->createBonusPhase(self::BONUS_DEUTERIUM);
+            $bonusPhaseCount++;
+        }
+
+        for ($i = 0; $i < $phasesOreCount; $i++) {
+            $bphase[$bonusPhaseCount] = $this->createBonusPhase(self::BONUS_ORE);
+            $bonusPhaseCount++;
+        }
+
+
+        for ($i = 0; $i < $phasesOther; $i++) {
+            if (count($bonusdata) == 0) {
+                break;
+            }
+
+            shuffle($bonusdata);
+            $next = array_shift($bonusdata);
+
+            $bphase[$bonusPhaseCount] = $this->createBonusPhase($next);
+            $bonusPhaseCount++;
+        }
+
+        // end bonus
+
+        $phaseCounts = [
+            self::PHASE_COLONY => $phasesCount, self::PHASE_ORBIT => $orbitPhasesCount, self::PHASE_UNDERGROUND => $undergroundPhasesCount, self::PHASE_BONUS => $bonusPhaseCount
+        ];
+
+        $phases = [
+            self::PHASE_COLONY => $phase, self::PHASE_ORBIT => $ophase, self::PHASE_UNDERGROUND => $uphase, self::PHASE_BONUS => $bphase
+        ];
+
+        [$colonyFields, $orbitFields, $undergroundFields] = $this->doPhases($config, $phaseCounts, $phases, $hasground);
+
+        return $this->combine($colonyFields, $orbitFields, $undergroundFields);
+    }
+
+    private function doPhases(array $config, array $phaseCounts, array $phases, bool $hasground): array
+    {
+        [$colonyFields, $orbitFields, $undergroundFields] = $this->initFields($config, $hasground);
+
+        for ($i = 0; $i < $phaseCounts[self::PHASE_COLONY]; $i++) {
+            $colonyFields = $this->doPhase($phases[self::PHASE_COLONY][$i], $colonyFields);
+        }
+
+        for ($i = 0; $i < $phaseCounts[self::PHASE_ORBIT]; $i++) {
+            $orbitFields = $this->doPhase($phases[self::PHASE_ORBIT][$i], $orbitFields);
+        }
+
+        for ($i = 0; $i < $phaseCounts[self::PHASE_UNDERGROUND]; $i++) {
+            $undergroundFields = $this->doPhase($phases[self::PHASE_UNDERGROUND][$i], $undergroundFields);
+        }
+
+        for ($i = 0; $i < $phaseCounts[self::PHASE_BONUS]; $i++) {
+            $colonyFields = $this->doPhase($phases[self::PHASE_BONUS][$i], $colonyFields);
+        }
+
+        return [$colonyFields, $orbitFields, $undergroundFields];
+    }
+
+    private function initFields(array $config, bool $hasground): array
+    {
+        $h = $config[self::CONFIG_COLGEN_SIZEH];
+        $w = $config[self::CONFIG_COLGEN_SIZEW];
+
+        for ($i = 0; $i < $h; $i++) {
+            for ($j = 0; $j < $w; $j++) {
+                $colfields[$j][$i] = $config[self::CONFIG_BASEFIELD_COLONY];
+            }
+        }
+        $colfields[self::COLGEN_Y] = $h;
+        $colfields[self::COLGEN_W] = $w;
+
+        for ($i = 0; $i < 2; $i++) {
+            for ($j = 0; $j < $w; $j++) {
+                $orbfields[$j][$i] = $config[self::CONFIG_BASEFIELD_ORBIT];
+            }
+        }
+        $orbfields[self::COLGEN_Y] = 2;
+        $orbfields[self::COLGEN_W] = $w;
+
+        $undergroundFields[self::COLGEN_Y] = 0;
+        if ($hasground) {
+            for ($i = 0; $i < 2; $i++) {
+                for ($j = 0; $j < $w; $j++) {
+                    $undergroundFields[$j][$i] = $config[self::CONFIG_BASEFIELD_UNDERGROUND];
+                }
+            }
+            $undergroundFields[self::COLGEN_Y] = 2;
+            $undergroundFields[self::COLGEN_W] = $w;
+        }
+
+        return [$colfields, $orbfields, $undergroundFields];
+    }
+
+    private function loadPlanetType(int $id): array
+    {
+        $fileName = sprintf(
+            '%s/coldata/%d.php',
+            __DIR__,
+            $id
+        );
+        if (!file_exists($fileName)) {
+            throw new Exception('Planetgenerator description file missing for id ' . $id);
+        }
+        $requireResult = require $fileName;
+
+        if (is_bool($requireResult)) {
+            throw new Exception('Error loading planetgenerator description file for id ' . $id);
+        }
+
+        if (is_int($requireResult)) {
+            throw new Exception('Error loading planetgenerator description file for id ' . $id);
+        }
+
+        return $requireResult;
+    }
 
     private function weightedDraw($a, $fragmentation = 0)
     {
@@ -68,8 +264,8 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     private function getBonusFieldTransformations($btype)
     {
         $res = array();
-        $res[self::COLGEN_FROM] = array();
-        $res[self::COLGEN_TO] = array();
+        $res[self::COLGEN_FROM] = [];
+        $res[self::COLGEN_TO] = [];
 
         if (($btype == self::BONUS_LANDFOOD) || ($btype == self::BONUS_ANYFOOD)) {
             $res = $this->shadd($res, 101, "01");
@@ -148,8 +344,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
     private function createBonusPhase($btype)
     {
-
-        $bphase = array();
+        $bphase = [];
 
         $bphase[self::COLGEN_MODE] = "nocluster";
         $bphase[self::COLGEN_DESCRIPTION] = "Bonusfeld";
@@ -168,75 +363,75 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         return $bphase;
     }
 
-    private function getWeightingList($colfields, $mode, $from, $to, $adjacent, $no_adjacent, $noadjacentlimit = 0): ?array
+    private function getWeightingList(array $fields, $mode, array $from, $to, $adjacent, $no_adjacent, $noadjacentlimit = 0): ?array
     {
         $res = null;
 
-        $w = $colfields[self::COLGEN_W]; //count($colfields);
-        $h = count($colfields[0] ?? []);
+        $width = count($fields);
+        $height = count($fields[0] ?? []);
         $c = 0;
-        for ($i = 0; $i < $h; $i++) {
-            for ($j = 0; $j < $w; $j++) {
-                $skip = 1;
-                for ($k = 0; $k < count($from); $k++) {
-                    if ($colfields[$j][$i] == $from[$k]) {
-                        $skip = 0;
-                    }
-                }
-                if ($skip == 1) {
+        for ($h = 0; $h < $height; $h++) {
+            for ($w = 0; $w < $width; $w++) {
+
+                //check if field is FROM
+                if (!in_array($fields[$w][$h], $from)) {
                     continue;
                 }
 
+                //and now?
                 $bw = 1;
-                if ((($mode == "polar") || ($mode == "strict polar")) && ($i == 0 || $i == $h - 1)) {
+                if ((($mode == "polar") || ($mode == "strict polar")) && ($h == 0 || $h == $height - 1)) {
                     $bw += 1;
                 }
-                if (($mode == "polar seeding north") && ($i == 0)) {
+                if (($mode == GeneratorModeEnum::TOP_LEFT) && ($h == 0) && ($w == 0)) {
                     $bw += 2;
                 }
-                if (($mode == "polar seeding south") && ($i == $h - 1)) {
+                if (($mode == "polar seeding north") && ($h == 0)) {
+                    $bw += 2;
+                }
+                if (($mode == "polar seeding south") && ($h == $height - 1)) {
                     $bw += 2;
                 }
 
-                if (($mode == "equatorial") && (($i == 2 && $h == 5) || (($i == 2 || $i == 3) && $h == 6))) {
+                if (($mode == "equatorial") && (($h == 2 && $height == 5) || (($h == 2 || $h == 3) && $height == 6))) {
                     $bw += 1;
                 }
 
                 if ($mode != "nocluster" && $mode != "forced adjacency" && $mode != "forced rim" && $mode != "polar seeding north" && $mode != "polar seeding south") {
                     for ($k = 0; $k < count($to); $k++) {
-                        if ($colfields[$j - 1][$i] == $to[$k]) {
+                        if ($fields[$w - 1][$h] == $to[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j + 1][$i] == $to[$k]) {
+                        if ($fields[$w + 1][$h] == $to[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j][$i - 1] == $to[$k]) {
+                        if ($fields[$w][$h - 1] == $to[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j][$i + 1] == $to[$k]) {
+                        if ($fields[$w][$h + 1] == $to[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j - 1][$i - 1] == $to[$k]) {
+                        if ($fields[$w - 1][$h - 1] == $to[$k]) {
                             $bw += 0.5;
                         }
-                        if ($colfields[$j + 1][$i + 1] == $to[$k]) {
+                        if ($fields[$w + 1][$h + 1] == $to[$k]) {
                             $bw += 0.5;
                         }
-                        if ($colfields[$j + 1][$i - 1] == $to[$k]) {
+                        if ($fields[$w + 1][$h - 1] == $to[$k]) {
                             $bw += 0.5;
                         }
-                        if ($colfields[$j - 1][$i + 1] == $to[$k]) {
+                        if ($fields[$w - 1][$h + 1] == $to[$k]) {
                             $bw += 0.5;
                         }
                     }
                 }
 
-                if ((($mode == "polar seeding north") && ($i == 0)) || (($mode == "polar seeding south") && ($i == $h - 1))) {
+                if ((($mode == "polar seeding north") && ($h == 0)) || (($mode == "polar seeding south") && ($h == $height - 1))) {
                     for ($k = 0; $k < count($to); $k++) {
-                        if ($colfields[$j - 1][$i] == $to[$k]) {
+                        if ($fields[$w - 1][$h] == $to[$k]) {
                             $bw += 2;
                         }
-                        if ($colfields[$j + 1][$i] == $to[$k]) {
+                        if ($fields[$w + 1][$h] == $to[$k]) {
                             $bw += 2;
                         }
                     }
@@ -244,28 +439,28 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
                 if ($adjacent[0]) {
                     for ($k = 0; $k < count($adjacent); $k++) {
-                        if ($colfields[$j - 1][$i] == $adjacent[$k]) {
+                        if ($fields[$w - 1][$h] == $adjacent[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j + 1][$i] == $adjacent[$k]) {
+                        if ($fields[$w + 1][$h] == $adjacent[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j][$i - 1] == $adjacent[$k]) {
+                        if ($fields[$w][$h - 1] == $adjacent[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j][$i + 1] == $adjacent[$k]) {
+                        if ($fields[$w][$h + 1] == $adjacent[$k]) {
                             $bw += 1;
                         }
-                        if ($colfields[$j - 1][$i - 1] == $adjacent[$k]) {
+                        if ($fields[$w - 1][$h - 1] == $adjacent[$k]) {
                             $bw += 0.5;
                         }
-                        if ($colfields[$j + 1][$i + 1] == $adjacent[$k]) {
+                        if ($fields[$w + 1][$h + 1] == $adjacent[$k]) {
                             $bw += 0.5;
                         }
-                        if ($colfields[$j + 1][$i - 1] == $adjacent[$k]) {
+                        if ($fields[$w + 1][$h - 1] == $adjacent[$k]) {
                             $bw += 0.5;
                         }
-                        if ($colfields[$j - 1][$i + 1] == $adjacent[$k]) {
+                        if ($fields[$w - 1][$h + 1] == $adjacent[$k]) {
                             $bw += 0.5;
                         }
                     }
@@ -274,28 +469,28 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                 if ($no_adjacent[0]) {
                     for ($k = 0; $k < count($no_adjacent); $k++) {
                         $ad = 0;
-                        if ($colfields[$j - 1][$i] == $no_adjacent[$k]) {
+                        if ($fields[$w - 1][$h] == $no_adjacent[$k]) {
                             $ad += 1;
                         }
-                        if ($colfields[$j + 1][$i] == $no_adjacent[$k]) {
+                        if ($fields[$w + 1][$h] == $no_adjacent[$k]) {
                             $ad += 1;
                         }
-                        if ($colfields[$j][$i - 1] == $no_adjacent[$k]) {
+                        if ($fields[$w][$h - 1] == $no_adjacent[$k]) {
                             $ad += 1;
                         }
-                        if ($colfields[$j][$i + 1] == $no_adjacent[$k]) {
+                        if ($fields[$w][$h + 1] == $no_adjacent[$k]) {
                             $ad += 1;
                         }
-                        if ($colfields[$j - 1][$i - 1] == $no_adjacent[$k]) {
+                        if ($fields[$w - 1][$h - 1] == $no_adjacent[$k]) {
                             $ad += 0.5;
                         }
-                        if ($colfields[$j + 1][$i + 1] == $no_adjacent[$k]) {
+                        if ($fields[$w + 1][$h + 1] == $no_adjacent[$k]) {
                             $ad += 0.5;
                         }
-                        if ($colfields[$j + 1][$i - 1] == $no_adjacent[$k]) {
+                        if ($fields[$w + 1][$h - 1] == $no_adjacent[$k]) {
                             $ad += 0.5;
                         }
-                        if ($colfields[$j - 1][$i + 1] == $no_adjacent[$k]) {
+                        if ($fields[$w - 1][$h + 1] == $no_adjacent[$k]) {
                             $ad += 0.5;
                         }
 
@@ -312,49 +507,52 @@ final class PlanetGenerator implements PlanetGeneratorInterface
                     $bw = 0;
                 }
 
-                if (($mode == "polar") && ($i > 1) && ($i < $h - 2)) {
+                if (($mode == "polar") && ($h > 1) && ($h < $height - 2)) {
                     $bw = 0;
                 }
-                if (($mode == "strict polar") && ($i > 0) && ($i < $h - 1)) {
+                if (($mode == "strict polar") && ($h > 0) && ($h < $height - 1)) {
                     $bw = 0;
                 }
-                if ($mode == "polar seeding north" && ($i > 1)) {
+                if ($mode == "polar seeding north" && ($h > 1)) {
                     $bw = 0;
                 }
-                if ($mode == "polar seeding south" && ($i < $h - 2)) {
+                if ($mode == "polar seeding south" && ($h < $height - 2)) {
                     $bw = 0;
                 }
-                if (($mode == "equatorial") && (($i < 2) || ($i > 3)) && ($h == 6)) {
+                if (($mode == "equatorial") && (($h < 2) || ($h > 3)) && ($height == 6)) {
                     $bw = 0;
                 }
-                if (($mode == "equatorial") && (($i < 2) || ($i > 3)) && ($h == 5)) {
-                    $bw = 0;
-                }
-
-                if (($mode == "lower orbit") && ($i != 1)) {
-                    $bw = 0;
-                }
-                if (($mode == "upper orbit") && ($i != 0)) {
+                if (($mode == "equatorial") && (($h < 2) || ($h > 3)) && ($height == 5)) {
                     $bw = 0;
                 }
 
-                if (($mode == "tidal seeding") && ($j != 0)) {
+                if (($mode == "lower orbit") && ($h != 1)) {
+                    $bw = 0;
+                }
+                if (($mode == "upper orbit") && ($h != 0)) {
                     $bw = 0;
                 }
 
-                if (($mode == "right") && ($colfields[$j - 1][$i] != $adjacent[0])) {
+                if (($mode == "tidal seeding") && ($w != 0)) {
                     $bw = 0;
                 }
-                if (($mode == "below") && ($colfields[$j][$i - 1] != $adjacent[0])) {
+
+                if (($mode == GeneratorModeEnum::TOP_LEFT) && (($h != 0) || $w != 0)) {
                     $bw = 0;
                 }
-                if (($mode == "crater seeding") && (($j == $w - 1) || ($i == $h - 1))) {
+                if (($mode == "right") && ($fields[$w - 1][$h] != $adjacent[0])) {
+                    $bw = 0;
+                }
+                if (($mode == "below") && ($fields[$w][$h - 1] != $adjacent[0])) {
+                    $bw = 0;
+                }
+                if (($mode == "crater seeding") && (($w == $width - 1) || ($h == $height - 1))) {
                     $bw = 0;
                 }
 
                 if ($bw > 0) {
-                    $res[$c][self::COLGEN_X] = $j;
-                    $res[$c][self::COLGEN_Y] = $i;
+                    $res[$c][self::COLGEN_X] = $w;
+                    $res[$c][self::COLGEN_Y] = $h;
                     $res[$c][self::COLGEN_BASEWEIGHT] = $bw;
                     $c++;
                 }
@@ -363,51 +561,51 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         return $res;
     }
 
-    private function doPhase($p, $phase, $colfields)
+    private function doPhase(array $phase, $fields)
     {
-        if ($phase[$p][self::COLGEN_MODE] == "fullsurface") {
+        if ($phase[self::COLGEN_MODE] == "fullsurface") {
             $k = 0;
-            for ($ih = 0; $ih < $colfields[self::COLGEN_Y]; $ih++) {
-                for ($iw = 0; $iw < $colfields[self::COLGEN_W]; $iw++) {
+            for ($ih = 0; $ih < $fields[self::COLGEN_Y]; $ih++) {
+                for ($iw = 0; $iw < $fields[self::COLGEN_W]; $iw++) {
 
                     $k++;
 
-                    $colfields[$iw][$ih] = $phase[$p][self::COLGEN_TYPE] * 100 + $k;
+                    $fields[$iw][$ih] = $phase[self::COLGEN_TYPE] * 100 + $k;
                 }
             }
         } else {
-            for ($i = 0; $i < $phase[$p][self::COLGEN_NUM]; $i++) {
+            for ($i = 0; $i < $phase[self::COLGEN_NUM]; $i++) {
                 $arr = $this->getWeightingList(
-                    $colfields,
-                    $phase[$p][self::COLGEN_MODE],
-                    $phase[$p][self::COLGEN_FROM],
-                    $phase[$p][self::COLGEN_TO],
-                    $phase[$p][self::COLGEN_ADJACENT],
-                    $phase[$p][self::COLGEN_NOADJACENT],
-                    $phase[$p][self::COLGEN_NOADJACENTLIMIT]
+                    $fields,
+                    $phase[self::COLGEN_MODE],
+                    $phase[self::COLGEN_FROM],
+                    $phase[self::COLGEN_TO],
+                    $phase[self::COLGEN_ADJACENT],
+                    $phase[self::COLGEN_NOADJACENT],
+                    $phase[self::COLGEN_NOADJACENTLIMIT]
                 );
                 if ($arr === null || count($arr) == 0) {
                     break;
                 }
 
-                $field = $this->weightedDraw($arr, $phase[$p][self::COLGEN_FRAGMENTATION]);
-                $ftype = $colfields[$field[self::COLGEN_X]][$field[self::COLGEN_Y]];
+                $field = $this->weightedDraw($arr, $phase[self::COLGEN_FRAGMENTATION]);
+                $ftype = $fields[$field[self::COLGEN_X]][$field[self::COLGEN_Y]];
 
                 $t = 0;
                 unset($ta);
-                for ($c = 0; $c < count($phase[$p][self::COLGEN_FROM]); $c++) {
+                for ($c = 0; $c < count($phase[self::COLGEN_FROM]); $c++) {
 
-                    if ($ftype == $phase[$p][self::COLGEN_FROM][$c]) {
-                        $ta[$t] = $phase[$p][self::COLGEN_TO][$c];
+                    if ($ftype == $phase[self::COLGEN_FROM][$c]) {
+                        $ta[$t] = $phase[self::COLGEN_TO][$c];
                         $t++;
                     }
                 }
                 if ($t > 0) {
-                    $colfields[$field[self::COLGEN_X]][$field[self::COLGEN_Y]] = $ta[rand(0, $t - 1)];
+                    $fields[$field[self::COLGEN_X]][$field[self::COLGEN_Y]] = $ta[rand(0, $t - 1)];
                 }
             }
         }
-        return $colfields;
+        return $fields;
     }
 
     private function combine($col, $orb, $gnd)
@@ -436,170 +634,5 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         }
 
         return $res;
-    }
-
-    private function loadPlanetType(int $id): array
-    {
-        $fileName = sprintf(
-            '%s/coldata/%d.php',
-            __DIR__,
-            $id
-        );
-        if (!file_exists($fileName)) {
-            throw new Exception('Planetgenerator description file missing for id ' . $id);
-        }
-        $requireResult = require $fileName;
-
-        if (is_bool($requireResult)) {
-            throw new Exception('Error loading planetgenerator description file for id ' . $id);
-        }
-
-        if (is_int($requireResult)) {
-            throw new Exception('Error loading planetgenerator description file for id ' . $id);
-        }
-
-        return $requireResult;
-    }
-
-    public function generateColony(int $id, int $bonusfields = 2): array
-    {
-
-        $bonusdata = array();
-
-        list($odata, $data, $udata, $ophase, $phase, $uphase, $ophases, $phases, $uphases, $hasground) = $this->loadPlanetType($id);
-
-        // start bonus
-
-        if ($data[self::COLGEN_SIZEW] != 10) {
-            $bonusfields = $bonusfields - 1;
-        }
-
-        $bftaken = 0;
-        $phasesSuper = 0;
-        $phasesOre = 0;
-        $phasesDeut = 0;
-        $phasesResource = 0;
-        $phasesOther = 0;
-
-        if (($bftaken < $bonusfields) && (rand(1, 100) <= 15)) {
-            $phasesSuper += 1;
-            $bftaken += 1;
-        }
-        if (($bftaken < $bonusfields) && (rand(1, 100) <= 80)) {
-            $phasesResource += 1;
-            $bftaken += 1;
-        }
-        if (($phasesSuper == 0) && ($data[self::COLGEN_SIZEW] > 7)) {
-            if (($bftaken < $bonusfields) && (rand(1, 100) <= 10)) {
-                $phasesResource += 1;
-                $bftaken += 1;
-            }
-        }
-
-        if ($bftaken < $bonusfields) {
-            $restcount = $bonusfields - $bftaken;
-
-            $phasesOther += $restcount;
-            $bftaken += $restcount;
-        }
-
-        $bphases = 0;
-
-        // Bonus Phases
-
-        unset($taken);
-
-        for ($i = 0; $i < $phasesSuper; $i++) {
-            $bphase[$bphases] = $this->createBonusPhase(self::BONUS_SUPER);
-            $bphases++;
-        }
-
-        for ($i = 0; $i < $phasesResource; $i++) {
-            $bphase[$bphases] = $this->createBonusPhase(self::BONUS_ANYRESOURCE);
-            $bphases++;
-        }
-
-        for ($i = 0; $i < $phasesDeut; $i++) {
-            $bphase[$bphases] = $this->createBonusPhase(self::BONUS_DEUTERIUM);
-            $bphases++;
-        }
-
-        for ($i = 0; $i < $phasesOre; $i++) {
-            $bphase[$bphases] = $this->createBonusPhase(self::BONUS_ORE);
-            $bphases++;
-        }
-
-
-        for ($i = 0; $i < $phasesOther; $i++) {
-            if (count($bonusdata) == 0) {
-                break;
-            }
-
-            shuffle($bonusdata);
-            $next = array_shift($bonusdata);
-
-            $bphase[$bphases] = $this->createBonusPhase($next);
-            $bphases++;
-        }
-
-        // end bonus
-
-        $log = "";
-
-        $h = $data[self::COLGEN_SIZEH];
-        $w = $data[self::COLGEN_SIZEW];
-
-        for ($i = 0; $i < $h; $i++) {
-            for ($j = 0; $j < $w; $j++) {
-                $colfields[$j][$i] = $data[self::COLGEN_BASEFIELD];
-            }
-        }
-        $colfields[self::COLGEN_Y] = $h;
-        $colfields[self::COLGEN_W] = $w;
-
-        for ($i = 0; $i < 2; $i++) {
-            for ($j = 0; $j < $w; $j++) {
-                $orbfields[$j][$i] = $odata[self::COLGEN_BASEFIELD];
-            }
-        }
-        $orbfields[self::COLGEN_Y] = 2;
-        $orbfields[self::COLGEN_W] = $w;
-
-        $gndfields[self::COLGEN_Y] = 0;
-        if ($hasground) {
-            for ($i = 0; $i < 2; $i++) {
-                for ($j = 0; $j < $w; $j++) {
-                    $gndfields[$j][$i] = $udata[self::COLGEN_BASEFIELD];
-                }
-            }
-            $gndfields[self::COLGEN_Y] = 2;
-            $gndfields[self::COLGEN_W] = $w;
-        }
-
-        for ($i = 0; $i < $phases; $i++) {
-            $log = $log . "<br>" . $phase[$i][self::COLGEN_DESCRIPTION];
-
-            $colfields = $this->doPhase($i, $phase, $colfields);
-        }
-
-        for ($i = 0; $i < $ophases; $i++) {
-            $log = $log . "<br>" . $ophase[$i][self::COLGEN_DESCRIPTION];
-
-            $orbfields = $this->doPhase($i, $ophase, $orbfields);
-        }
-
-        for ($i = 0; $i < $uphases; $i++) {
-            $log = $log . "<br>" . $uphase[$i][self::COLGEN_DESCRIPTION];
-
-            $gndfields = $this->doPhase($i, $uphase, $gndfields);
-        }
-
-        for ($i = 0; $i < $bphases; $i++) {
-            $log = $log . "<br>" . $bphase[$i][self::COLGEN_DESCRIPTION];
-
-            $colfields = $this->doPhase($i, $bphase, $colfields);
-        }
-
-        return $this->combine($colfields, $orbfields, $gndfields);
     }
 }

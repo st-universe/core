@@ -4,8 +4,8 @@ use Stu\PlanetGenerator\PlanetGenerator;
 
 $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse ??";
 
-$data[PlanetGenerator::COLGEN_SIZEW] = 7;
-$data[PlanetGenerator::COLGEN_SIZEH] = 5;
+$data[PlanetGenerator::CONFIG_COLGEN_SIZEW] = 7;
+$data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 5;
 
 $hasground = 0;
 

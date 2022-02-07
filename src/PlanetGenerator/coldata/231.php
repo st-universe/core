@@ -6,8 +6,8 @@ $data[PlanetGenerator::COLGEN_DETAILS] = "Klasse D - Basisklasse Fels";
 
 $bonusdata = array(PlanetGenerator::BONUS_ORE, PlanetGenerator::BONUS_HABITAT, PlanetGenerator::BONUS_HABITAT);
 
-$data[PlanetGenerator::COLGEN_SIZEW] = 10;
-$data[PlanetGenerator::COLGEN_SIZEH] = 6;
+$data[PlanetGenerator::CONFIG_COLGEN_SIZEW] = 10;
+$data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 6;
 
 $hasground = 1;
 
