@@ -104,6 +104,7 @@ final class PlanetGenerator implements PlanetGeneratorInterface
         // Bonus Phases
 
         unset($taken);
+        $bphase = [];
 
         for ($i = 0; $i < $phaseSuperCount; $i++) {
             $bphase[$bonusPhaseCount] = $this->createBonusPhase(self::BONUS_SUPER);
