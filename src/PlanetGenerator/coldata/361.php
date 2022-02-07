@@ -11,7 +11,7 @@ $data[PlanetGenerator::CONFIG_COLGEN_SIZEH] = 6;
 $hasground = 0;
 $bonusfields = 0;
 
-$data[PlanetGenerator::COLGEN_BASEFIELD] = 201;
+$data[PlanetGenerator::COLGEN_BASEFIELD] = 1000;
 $odata[PlanetGenerator::COLGEN_BASEFIELD] = 900;
 $udata[PlanetGenerator::COLGEN_BASEFIELD] = 802;
 
