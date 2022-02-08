@@ -166,7 +166,7 @@ final class ApplyDamage implements ApplyDamageInterface
         }
     }
 
-    public function damageShipSystem($ship, $system, $dmg, &$msg): void
+    public function damageShipSystem($ship, $system, $dmg, &$msg): bool
     {
         $status = $system->getStatus();
         $systemName = ShipSystemTypeEnum::getDescription($system->getSystemType());
@@ -175,11 +175,15 @@ final class ApplyDamage implements ApplyDamageInterface
             $system->setStatus($status - $dmg);
             $this->shipSystemManager->handleDamagedSystem($ship, $system->getSystemType());
             $msg[] = "- Folgendes System wurde beschädigt: " . $systemName;
+
+            return false;
         } else {
             $system->setStatus(0);
             $system->setMode(ShipSystemModeEnum::MODE_OFF);
             $this->shipSystemManager->handleDestroyedSystem($ship, $system->getSystemType());
             $msg[] = "- Der Schaden zerstört folgendes System: " . $systemName;
+
+            return true;
         }
     }
 }

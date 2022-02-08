@@ -16,5 +16,5 @@ interface ApplyDamageInterface
         $isOrbitField
     ): array;
 
-    public function damageShipSystem($ship, $system, $dmg, &$msg): void;
+    public function damageShipSystem($ship, $system, $dmg, &$msg): bool;
 }
