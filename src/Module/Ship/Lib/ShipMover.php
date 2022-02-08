@@ -10,6 +10,7 @@ use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\Exception\ShipSystemException;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Lib\DamageWrapper;
 use Stu\Module\History\Lib\EntryCreatorInterface;
 use Stu\Module\Ship\Lib\Battle\ApplyDamageInterface;
@@ -47,12 +48,15 @@ final class ShipMover implements ShipMoverInterface
 
     private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
 
+    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
+
     private int $new_x = 0;
     private int $new_y = 0;
     private int $fleetMode = 0;
     private $fieldData = null;
 
     private $lostShips = [];
+    private $tractoredShips = [];
 
     private $leaderMovedToNextField = false;
     private $hasTravelled = false;
@@ -70,7 +74,8 @@ final class ShipMover implements ShipMoverInterface
         AlertRedHelperInterface $alertRedHelper,
         FlightSignatureRepositoryInterface $flightSignatureRepository,
         AstroEntryRepositoryInterface $astroEntryRepository,
-        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend
+        CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
+        TractorMassPayloadUtilInterface  $tractorMassPayloadUtil
     ) {
         $this->mapRepository = $mapRepository;
         $this->starSystemMapRepository = $starSystemMapRepository;
@@ -83,6 +88,7 @@ final class ShipMover implements ShipMoverInterface
         $this->flightSignatureRepository = $flightSignatureRepository;
         $this->astroEntryRepository = $astroEntryRepository;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
+        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
     }
 
     private function setDestination(
@@ -218,7 +224,7 @@ final class ShipMover implements ShipMoverInterface
         }
 
         $this->getReadyForFlight($leadShip, $ships);
-        $tractoredShips = $this->getTractoredShips($ships);
+        $this->initTractoredShips($ships);
 
         // fly until destination arrived
         while (!$this->isDestinationArrived($leadShip)) {
@@ -278,7 +284,7 @@ final class ShipMover implements ShipMoverInterface
             }
 
             //AR Check for tractored ships
-            foreach ($tractoredShips as [$tractoringShip, $tractoredShip]) {
+            foreach ($this->tractoredShips as [$tractoringShip, $tractoredShip]) {
                 if (!$tractoredShip->getIsDestroyed()) {
                     $this->informations = array_merge(
                         $this->informations,
@@ -319,17 +325,16 @@ final class ShipMover implements ShipMoverInterface
         $this->saveFlightSignatures();
     }
 
-    private function getTractoredShips(array $ships): array
+    private function initTractoredShips(array $ships): void
     {
-        $result = [];
-
         foreach ($ships as $fleetShip) {
-            if ($fleetShip->isTractoring()) {
-                $result[] = [$fleetShip, $fleetShip->getTractoredShip()];
+            if (
+                $fleetShip->isTractoring() &&
+                !array_key_exists($fleetShip->getId(), $this->lostShips)
+            ) {
+                $this->tractoredShips[$fleetShip->getTractoredShip()->getId()] = [$fleetShip, $fleetShip->getTractoredShip()];
             }
         }
-
-        return $result;
     }
 
     private function areShipsLeft(array $ships): bool
@@ -477,14 +482,26 @@ final class ShipMover implements ShipMoverInterface
             return;
         }
 
-        //Traktorstrahl Kosten
-        if ($ship->isTractoring() && $ship->getEps() < $ship->getTractoredShip()->getRump()->getFlightEcost() + 1) {
-            $this->deactivateTractorBeam($ship, sprintf(
-                _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),
-                $ship->getTractoredShip()->getName(),
-                $ship->getPosX(),
-                $ship->getPosY()
-            ));
+
+        if ($ship->isTractoring()) {
+            $tractoredShip = $ship->getTractoredShip();
+
+            //can tow tractored ship?
+            $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+
+            if ($abortionMsg === null) {
+                //Traktorstrahl Kosten
+                if ($ship->getEps() < $tractoredShip->getRump()->getFlightEcost() + 1) {
+                    $this->deactivateTractorBeam($ship, sprintf(
+                        _('Der Traktorstrahl auf die %s wurde in Sektor %d|%d aufgrund Energiemangels deaktiviert'),
+                        $tractoredShip->getName(),
+                        $ship->getPosX(),
+                        $ship->getPosY()
+                    ));
+                }
+            } else {
+                $this->deactivateTractorBeam($ship, $abortionMsg);
+            }
         }
 
         //MOVE!
@@ -516,6 +533,15 @@ final class ShipMover implements ShipMoverInterface
                 $tractoredShip->setMap($nextField);
             } else {
                 $tractoredShip->setStarsystemMap($nextField);
+            }
+
+            //check for tractor system health
+            $msg = [];
+            $tractorSystemSurvived = $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+            if (!$tractorSystemSurvived) {
+                $this->deactivateTractorBeam($ship, current($msg));
+            } else {
+                $this->addInformationMerge($msg);
             }
 
             //check astro stuff for tractor
@@ -604,6 +630,7 @@ final class ShipMover implements ShipMoverInterface
     private function deactivateTractorBeam(ShipInterface $ship, string $msg)
     {
         $this->addInformation($msg);
+        unset($this->tractoredShips[$ship->getTractoredShip()->getId()]);
         $ship->deactivateTractorBeam(); //active deactivation
     }
 

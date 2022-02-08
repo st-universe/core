@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
@@ -42,6 +43,8 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend;
 
+    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
+
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
@@ -52,6 +55,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         ActivatorDeactivatorHelperInterface $helper,
         AstroEntryLibInterface $astroEntryLib,
         CancelColonyBlockOrDefendInterface $cancelColonyBlockOrDefend,
+        TractorMassPayloadUtilInterface $tractorMassPayloadUtil,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipLoader = $shipLoader;
@@ -61,6 +65,7 @@ final class LeaveStarSystem implements ActionControllerInterface
         $this->helper = $helper;
         $this->astroEntryLib = $astroEntryLib;
         $this->cancelColonyBlockOrDefend = $cancelColonyBlockOrDefend;
+        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
@@ -120,7 +125,7 @@ final class LeaveStarSystem implements ActionControllerInterface
             $this->leaveStarSystemTraktor($ship, $outerMap, $game);
         }
         if ($ship->isFleetLeader()) {
-            $msg = array();
+            $msg = [];
 
             /** @var ShipInterface[] $result */
             $result = array_filter(
@@ -163,11 +168,13 @@ final class LeaveStarSystem implements ActionControllerInterface
 
     private function leaveStarSystemTraktor(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void
     {
+        $tractoredShip = $ship->getTractoredShip();
+
         if (
-            $ship->isTractoring() && $ship->getTractoredShip()->getFleetId()
-            && $ship->getTractoredShip()->getFleet()->getShipCount() > 1
+            $tractoredShip->getFleetId()
+            && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
-            $name = $ship->getTractoredShip()->getName();
+            $name = $tractoredShip->getName();
             $ship->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
@@ -176,20 +183,32 @@ final class LeaveStarSystem implements ActionControllerInterface
             ));
             return;
         }
+
+        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+        if ($abortionMsg !== null) {
+            $game->addInformation($abortionMsg);
+            return;
+        }
+
         if ($ship->getEps() < 1) {
-            $name = $ship->getTractoredShip()->getName();
+            $name = $tractoredShip->getName();
             $ship->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Verlassen des Systems aufgrund Energiemangels deaktiviert");
             return;
         }
         $game->addInformationMergeDown($this->cancelColonyBlockOrDefend->work($ship, true));
-        $this->leaveStarSystem($ship->getTractoredShip(), $map, $game);
+        $this->leaveStarSystem($tractoredShip, $map, $game);
         $ship->setEps($ship->getEps() - 1);
 
-        $this->shipRepository->save($ship->getTractoredShip());
-        $this->shipRepository->save($ship);
+        $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit aus dem System gezogen");
 
-        $game->addInformation("Die " . $ship->getTractoredShip()->getName() . " wurde mit aus dem System gezogen");
+        //check for tractor system health
+        $msg = [];
+        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+        $game->addInformationMergeDown($msg);
+
+        $this->shipRepository->save($tractoredShip);
+        $this->shipRepository->save($ship);
     }
 
     private function leaveStarSystem(ShipInterface $ship, MapInterface $map, GameControllerInterface $game): void

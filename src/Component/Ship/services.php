@@ -37,6 +37,8 @@ use Stu\Component\Ship\System\Type\ShuttleRampShipSystem;
 use Stu\Component\Ship\System\Type\SubspaceSensorShipSystem;
 use Stu\Component\Ship\System\Type\TorpedoStorageShipSystem;
 use Stu\Component\Ship\System\Type\UplinkShipSystem;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtil;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 
 use function DI\autowire;
 use function DI\create;
@@ -45,6 +47,7 @@ return [
     ShipStorageManagerInterface::class => autowire(ShipStorageManager::class),
     NbsUtilityInterface::class => autowire(NbsUtility::class),
     SelfrepairUtilInterface::class => autowire(SelfrepairUtil::class),
+    TractorMassPayloadUtilInterface::class => autowire(TractorMassPayloadUtil::class),
     ShipSystemManagerInterface::class => create(ShipSystemManager::class)->constructor(
         [
             ShipSystemTypeEnum::SYSTEM_CLOAK => autowire(CloakShipSystem::class),

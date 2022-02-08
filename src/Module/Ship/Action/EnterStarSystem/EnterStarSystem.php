@@ -9,6 +9,7 @@ use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
+use Stu\Component\Ship\System\Utility\TractorMassPayloadUtilInterface;
 use Stu\Module\Control\ActionControllerInterface;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
@@ -30,16 +31,20 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private StarSystemMapRepositoryInterface $starSystemMapRepository;
 
+    private TractorMassPayloadUtilInterface $tractorMassPayloadUtil;
+
     public function __construct(
         ShipLoaderInterface $shipLoader,
         ShipRepositoryInterface $shipRepository,
         ShipSystemManagerInterface $shipSystemManager,
-        StarSystemMapRepositoryInterface $starSystemMapRepository
+        StarSystemMapRepositoryInterface $starSystemMapRepository,
+        TractorMassPayloadUtilInterface $tractorMassPayloadUtil
     ) {
         $this->shipLoader = $shipLoader;
         $this->shipRepository = $shipRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->starSystemMapRepository = $starSystemMapRepository;
+        $this->tractorMassPayloadUtil = $tractorMassPayloadUtil;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -165,11 +170,13 @@ final class EnterStarSystem implements ActionControllerInterface
 
     private function enterStarSystemTraktor(ShipInterface $ship, StarSystemMapInterface $starsystemMap, GameControllerInterface $game): void
     {
+        $tractoredShip = $ship->getTractoredShip();
+
         if (
-            $ship->isTractoring() && $ship->getTractoredShip()->getFleetId()
-            && $ship->getTractoredShip()->getFleet()->getShipCount() > 1
+            $tractoredShip->getFleetId()
+            && $tractoredShip->getFleet()->getShipCount() > 1
         ) {
-            $name = $ship->getTractoredShip()->getName();
+            $name = $tractoredShip->getName();
             $ship->deactivateTractorBeam(); //active deactivation
 
             $game->addInformation(sprintf(
@@ -178,23 +185,35 @@ final class EnterStarSystem implements ActionControllerInterface
             ));
             return;
         }
+
+        $abortionMsg = $this->tractorMassPayloadUtil->tryToTow($ship, $tractoredShip);
+        if ($abortionMsg !== null) {
+            $game->addInformation($abortionMsg);
+            return;
+        }
+
         if ($ship->getEps() < 1) {
-            $name = $ship->getTractoredShip()->getName();
+            $name = $tractoredShip->getName();
             $ship->deactivateTractorBeam(); //active deactivation
             $game->addInformation("Der Traktorstrahl auf die " . $name . " wurde beim Systemeinflug aufgrund Energiemangels deaktiviert");
             return;
         }
         $this->enterStarSystem(
-            $ship->getTractoredShip(),
+            $tractoredShip,
             $starsystemMap
         );
         // @todo Beschädigung bei Systemeinflug
         $ship->setEps($ship->getEps() - 1);
+        $game->addInformation("Die " . $tractoredShip->getName() . " wurde mit in das System gezogen");
 
-        $this->shipRepository->save($ship->getTractoredShip());
+        //check for tractor system health
+        $msg = [];
+        $this->tractorMassPayloadUtil->tractorSystemSurvivedTowing($ship, $tractoredShip, $msg);
+        $game->addInformationMergeDown($msg);
+
+
+        $this->shipRepository->save($tractoredShip);
         $this->shipRepository->save($ship);
-
-        $game->addInformation("Die " . $ship->getTractoredShip()->getName() . " wurde mit in das System gezogen");
     }
 
     private function enterStarSystem(ShipInterface $ship, StarSystemMapInterface $starsystemMap): void
