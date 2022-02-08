@@ -843,6 +843,19 @@ class Ship implements ShipInterface
         return $this;
     }
 
+    /**
+     * proportional to tractor beam system status
+     */
+    public function getTractorPayload(): int
+    {
+        if (!$this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)) {
+            return 0;
+        }
+
+        return (int) (ceil($this->getRump()->getTractorPayload()
+            * $this->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->getStatus() / 100));
+    }
+
     public function getShieldRegenerationTimer(): int
     {
         return $this->shield_regeneration_timer;

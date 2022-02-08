@@ -180,6 +180,8 @@ interface ShipInterface
 
     public function setSensorRange(int $sensorRange): ShipInterface;
 
+    public function getTractorPayload(): int;
+
     public function getShieldRegenerationTimer(): int;
 
     public function setShieldRegenerationTimer(int $shieldRegenerationTimer): ShipInterface;
