@@ -83,11 +83,7 @@ final class DockFleet implements ActionControllerInterface
             return;
         }
 
-        if (!$station->hasEnoughCrew()) {
-            $game->addInformationf(
-                _("Es werden %d Crewmitglieder benötigt"),
-                $station->getBuildplan()->getCrew()
-            );
+        if (!$station->hasEnoughCrew($game)) {
             return;
         }
 

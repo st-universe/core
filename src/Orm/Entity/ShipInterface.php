@@ -3,6 +3,7 @@
 namespace Stu\Orm\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 
 interface ShipInterface
@@ -211,7 +212,7 @@ interface ShipInterface
 
     public function getMaxCrewCount(): int;
 
-    public function hasEnoughCrew(): bool;
+    public function hasEnoughCrew(?GameControllerInterface $game = null): bool;
 
     public function leaveFleet(): void;
 

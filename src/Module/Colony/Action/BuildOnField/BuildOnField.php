@@ -244,7 +244,7 @@ final class BuildOnField implements ActionControllerInterface
         $game->addInformationf(
             _('%s wird gebaut - Fertigstellung: %s'),
             $building->getName(),
-            date('d.m.Y H:i', $field->getBuildtime())
+            date('d.m.Y H:i', $field->getActive())
         );
     }
 

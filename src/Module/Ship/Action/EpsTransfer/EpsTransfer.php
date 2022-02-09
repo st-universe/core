@@ -46,11 +46,7 @@ final class EpsTransfer implements ActionControllerInterface
         $ship = $shipArray[$shipId];
         $target = $shipArray[$targetId];
 
-        if (!$ship->hasEnoughCrew()) {
-            $game->addInformationf(
-                _("Es werden %d Crewmitglieder benötigt"),
-                $ship->getBuildplan()->getCrew()
-            );
+        if (!$ship->hasEnoughCrew($game)) {
             return;
         }
 

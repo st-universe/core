@@ -69,11 +69,7 @@ final class AttackShip implements ActionControllerInterface
             return;
         }
 
-        if (!$ship->hasEnoughCrew()) {
-            $game->addInformationf(
-                _("Es werden %d Crewmitglieder benötigt"),
-                $ship->getBuildplan()->getCrew()
-            );
+        if (!$ship->hasEnoughCrew($game)) {
             return;
         }
         if (!$this->positionChecker->checkPosition($target, $ship)) {

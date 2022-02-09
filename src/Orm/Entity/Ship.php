@@ -932,14 +932,28 @@ class Ship implements ShipInterface
             + ($this->hasShipSystem(ShipSystemTypeEnum::SYSTEM_TROOP_QUARTERS) ? TroopQuartersShipSystem::QUARTER_COUNT : 0);
     }
 
-    public function hasEnoughCrew(): bool
+    public function hasEnoughCrew(?GameControllerInterface $game = null): bool
     {
         if ($this->getBuildplan() === null) {
+            if ($game !== null) {
+                $game->addInformation(_("Keine Crew vorhanden"));
+            }
             return false;
         }
 
-        return $this->getBuildplan()->getCrew() <= 0
+        $result = $this->getBuildplan()->getCrew() <= 0
             || $this->getCrewCount() >= $this->getBuildplan()->getCrew();
+
+        if (!$result) {
+            if ($game !== null) {
+                $game->addInformationf(
+                    _("Es werden %d Crewmitglieder benötigt"),
+                    $this->getBuildplan()->getCrew()
+                );
+            }
+        }
+
+        return $result;
     }
 
     public function leaveFleet(): void

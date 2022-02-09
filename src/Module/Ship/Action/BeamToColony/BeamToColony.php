@@ -54,11 +54,7 @@ final class BeamToColony implements ActionControllerInterface
             $userId
         );
 
-        if (!$ship->hasEnoughCrew()) {
-            $game->addInformationf(
-                _("Es werden %d Crewmitglieder benötigt"),
-                $ship->getBuildplan()->getCrew()
-            );
+        if (!$ship->hasEnoughCrew($game)) {
             return;
         }
         if ($ship->getEps() == 0) {
