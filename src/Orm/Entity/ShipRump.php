@@ -132,7 +132,7 @@ class ShipRump implements ShipRumpInterface
     private $tractor_mass = 1;
 
     /** @column(type="smallint") * */
-    private $tractor_payload = 1;
+    private $tractor_payload = 100;
 
     /**
      * @ManyToOne(targetEntity="ShipRumpRole")
