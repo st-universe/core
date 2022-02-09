@@ -51,7 +51,14 @@ final class LoadWarpcore implements ActionControllerInterface
         if (request::postString('fleet')) {
             $msg = [];
             $msg[] = _('Flottenbefehl ausgeführt: Aufladung des Warpkerns');
-            foreach ($ship->getFleet()->getShips() as $key => $ship) {
+            foreach ($ship->getFleet()->getShips() as $ship) {
+                if (!$ship->hasEnoughCrew()) {
+                    $game->addInformation(sprintf(
+                        _('%s: Nicht genügend Crew vorhanden'),
+                        $ship->getName()
+                    ));
+                    continue;
+                }
                 if ($ship->getWarpcoreLoad() >= $ship->getWarpcoreCapacity()) {
                     continue;
                 }
@@ -73,6 +80,10 @@ final class LoadWarpcore implements ActionControllerInterface
                 ));
             }
             $game->addInformationMerge($msg);
+            return;
+        }
+        if (!$ship->hasEnoughCrew()) {
+            $game->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
         if ($ship->getWarpcoreLoad() >= $ship->getWarpcoreCapacity()) {

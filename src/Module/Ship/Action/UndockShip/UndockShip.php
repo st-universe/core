@@ -45,6 +45,13 @@ final class UndockShip implements ActionControllerInterface
                 if (!$ship->getDockedTo()) {
                     continue;
                 }
+                if (!$ship->hasEnoughCrew()) {
+                    $msg[] = sprintf(
+                        _('%s: Nicht genügend Crew vorhanden'),
+                        $ship->getName()
+                    );
+                    continue;
+                }
                 if ($ship->getEps() < ShipSystemTypeEnum::SYSTEM_ECOST_DOCK) {
                     $msg[] = $ship->getName() . _(": Nicht genügend Energie vorhanden");
                     continue;
@@ -62,6 +69,10 @@ final class UndockShip implements ActionControllerInterface
             return;
         }
         if (!$ship->getDockedTo()) {
+            return;
+        }
+        if (!$ship->hasEnoughCrew()) {
+            $game->addInformation(_('Nicht genügend Crew vorhanden'));
             return;
         }
         if ($ship->getEps() == 0) {

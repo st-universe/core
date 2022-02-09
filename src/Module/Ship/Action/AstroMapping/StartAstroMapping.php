@@ -56,6 +56,10 @@ final class StartAstroMapping implements ActionControllerInterface
             return;
         }
 
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+
         if (
             $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_PASSIVE ||
             $ship->getState() == ShipStateEnum::SHIP_STATE_REPAIR_ACTIVE

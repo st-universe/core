@@ -87,6 +87,10 @@ final class LandShuttle implements ActionControllerInterface
             return;
         }
 
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+
         if ($target->getWarpState()) {
             $game->addInformation(_("Das Zielschiff hat den Warpantrieb aktiviert"));
             return;

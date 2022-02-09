@@ -46,6 +46,10 @@ final class DoTachyonScan implements ActionControllerInterface
             true
         );
 
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+
         // scanner needs to be present
         if (!$ship->hasTachyonScanner()) {
             $game->addInformation(_('[b][color=FF2626]Aktion nicht möglich, kein Tachyon-Scanner installiert![/color][/b]'));

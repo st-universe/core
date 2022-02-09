@@ -47,6 +47,10 @@ final class SelfDestruct implements ActionControllerInterface
             $userId
         );
 
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+
         $code = trim(request::postString('destructioncode'));
 
         if ($code !== substr(md5($ship->getName()), 0, 6)) {

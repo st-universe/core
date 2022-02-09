@@ -76,6 +76,10 @@ final class EscapeTractorBeam implements ActionControllerInterface
             return;
         }
 
+        if (!$ship->hasEnoughCrew($game)) {
+            return;
+        }
+
         //enough energy?
         if ($ship->getEps() < 20) {
             $game->addInformation(sprintf(_('Nicht genug Energie für Fluchtversuch (%d benötigt)'), 20));
