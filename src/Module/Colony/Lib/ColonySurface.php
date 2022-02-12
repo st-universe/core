@@ -226,7 +226,7 @@ final class ColonySurface implements ColonySurfaceInterface
     public function updateSurface(): array
     {
         if ($this->colony->getMask() === null) {
-            $generator = new PlanetGenerator();
+            $generator = new PlanetGenerator($this->loggerUtil);
 
             $surface = $generator->generateColony(
                 $this->colony->getColonyClass(),

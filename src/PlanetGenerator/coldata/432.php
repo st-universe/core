@@ -100,7 +100,7 @@ $ophase[$ophases][PlanetGenerator::COLGEN_NUM] = 7;
 $ophase[$ophases][PlanetGenerator::COLGEN_FROM] = array("0" => "900");
 $ophase[$ophases][PlanetGenerator::COLGEN_TO] = array("0" => "948");
 $ophase[$ophases][PlanetGenerator::COLGEN_ADJACENT] = 0;
-$ophase[$phases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
+$ophase[$ophases][PlanetGenerator::COLGEN_NOADJACENT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $ophase[$ophases][PlanetGenerator::COLGEN_FRAGMENTATION] = 2;
 $ophases++;

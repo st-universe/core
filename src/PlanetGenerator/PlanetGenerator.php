@@ -3,6 +3,8 @@
 namespace Stu\PlanetGenerator;
 
 use Exception;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilInterface;
 
 final class PlanetGenerator implements PlanetGeneratorInterface
 {
@@ -51,11 +53,23 @@ final class PlanetGenerator implements PlanetGeneratorInterface
     private const CONFIG_BASEFIELD_ORBIT = 2;
     private const CONFIG_BASEFIELD_UNDERGROUND = 3;
 
+    private LoggerUtilInterface $loggerUtil;
+
+    public function __construct(LoggerUtilInterface $loggerUtil)
+    {
+        $this->loggerUtil = $loggerUtil;
+    }
+
     public function generateColony(int $id, int $bonusfields = 2): array
     {
         $bonusdata = [];
 
         list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($id);
+
+        if ($id === 221) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log(print_r($ophase, true));
+        }
 
         $config = [
             self::CONFIG_COLGEN_SIZEW => $data[self::CONFIG_COLGEN_SIZEW],

@@ -101,7 +101,7 @@ $ophase[$ophases][ColonyGenerator::COLGEN_NUM] = 10;
 $ophase[$ophases][ColonyGenerator::COLGEN_FROM] = array("0" => "100");
 $ophase[$ophases][ColonyGenerator::COLGEN_TO]   = array("0" => "120");
 $ophase[$ophases][ColonyGenerator::COLGEN_ADJACENT] = 0;
-$ophase[$phases][ColonyGenerator::COLGEN_NOADJACENT] = 0;
+$ophase[$ophases][ColonyGenerator::COLGEN_NOADJACENT] = 0;
 $ophase[$ophases][ColonyGenerator::COLGEN_NOADJACENTLIMIT] = 0;
 $ophase[$ophases][ColonyGenerator::COLGEN_FRAGMENTATION] = 2;
 $ophases++;
