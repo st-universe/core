@@ -72,13 +72,13 @@ final class ColonySurface implements ColonySurfaceInterface
                 try {
                     $this->updateSurface();
                 } catch (PlanetGeneratorFileMissingException $e) {
-                    return $this->colony->getPlanetFields();
+                    return $this->colony->getPlanetFields()->toArray();
                 }
 
-                $fields = $this->colony->getPlanetFields();
+                $fields = $this->colony->getPlanetFields()->toArray();
             }
         } else {
-            $fields = $this->colony->getPlanetFields();
+            $fields = $this->colony->getPlanetFields()->toArray();
         }
 
         if ($this->buildingId !== null) {
