@@ -66,7 +66,7 @@ final class ColonySurface implements ColonySurfaceInterface
         $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
 
         if ($this->colony->isFree()) {
-            $mask = $this->colony->getMask()->toArray();
+            $mask = $this->colony->getMask();
 
             if ($mask === null) {
                 try {
