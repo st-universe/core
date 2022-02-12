@@ -65,16 +65,20 @@ final class ColonySurface implements ColonySurfaceInterface
     {
         $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
 
-        $fields = $this->planetFieldRepository->getByColony($this->colony->getId(), $this->showUnderground);
+        if ($this->colony->isFree()) {
+            $mask = $this->colony->getMask();
 
-        if ($fields === []) {
-            try {
-                $this->updateSurface();
-            } catch (PlanetGeneratorFileMissingException $e) {
-                return $fields;
+            if ($mask === null) {
+                try {
+                    $this->updateSurface();
+                } catch (PlanetGeneratorFileMissingException $e) {
+                    return $this->colony->getPlanetFields();
+                }
+
+                $fields = $this->colony->getPlanetFields();
             }
-
-            $fields = $this->planetFieldRepository->getByColony($this->colony->getId(), $this->showUnderground);
+        } else {
+            $fields = $this->colony->getPlanetFields();
         }
 
         if ($this->buildingId !== null) {
@@ -237,7 +241,7 @@ final class ColonySurface implements ColonySurfaceInterface
             $this->colonyRepository->save($this->colony);
         }
 
-        $fields = $this->planetFieldRepository->getByColony($this->colony->getId());
+        $fields = $this->colony->getPlanetFields()->toArray();
 
         $surface = unserialize(base64_decode($this->colony->getMask()));
         $i = 0;
