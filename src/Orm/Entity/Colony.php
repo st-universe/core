@@ -110,7 +110,7 @@ class Colony implements ColonyInterface
     private $user;
 
     /**
-     * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
+     * @OneToMany(targetEntity="PlanetField", mappedBy="colony", fetch="EXTRA_LAZY")
      */
     private $planetFields;
 
