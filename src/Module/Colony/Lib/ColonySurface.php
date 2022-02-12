@@ -247,9 +247,11 @@ final class ColonySurface implements ColonySurfaceInterface
         $i = 0;
         foreach ($surface as $key => $value) {
             if (!array_key_exists($key, $fields)) {
-                $fields[$key] = $this->planetFieldRepository->prototype();
+                $newField = $this->planetFieldRepository->prototype();
+                $fields[$key] = $newField;
                 $fields[$key]->setColony($this->colony);
                 $fields[$key]->setFieldId($i);
+                $this->colony->getPlanetFields()->set($i,  $newField);
             }
             $fields[$key]->setBuilding(null);
             $fields[$key]->setIntegrity(0);
