@@ -66,10 +66,10 @@ final class PlanetGenerator implements PlanetGeneratorInterface
 
         list($odata, $data, $udata, $ophase, $phase, $uphase, $hasground) = $this->loadPlanetType($id);
 
-        if ($id === 221) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-            $this->loggerUtil->log(print_r($ophase, true));
-        }
+        //if ($id === 221) {
+        //    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        //    $this->loggerUtil->log(print_r($ophase, true));
+        //}
 
         $config = [
             self::CONFIG_COLGEN_SIZEW => $data[self::CONFIG_COLGEN_SIZEW],
