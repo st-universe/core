@@ -111,6 +111,7 @@ class Colony implements ColonyInterface
 
     /**
      * @OneToMany(targetEntity="PlanetField", mappedBy="colony", indexBy="field_id", fetch="EXTRA_LAZY")
+     * @OrderBy({"field_id" = "ASC"})
      */
     private $planetFields;
 
