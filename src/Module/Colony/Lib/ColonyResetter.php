@@ -63,8 +63,6 @@ final class ColonyResetter implements ColonyResetterInterface
         ColonyInterface $colony,
         bool $sendMessage = true
     ): void {
-        //$this->colonyLibFactory->createColonySurface($colony)->updateSurface();
-
         $this->resetBlockers($colony, $sendMessage);
         $this->resetDefenders($colony, $sendMessage);
 

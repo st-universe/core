@@ -63,14 +63,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurface(): array
     {
-        if ($this->colony->getId() === 1154) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-        }
-
-        $this->loggerUtil->log('getSurface');
-
         if ($this->colony->isFree()) {
-            $this->loggerUtil->log('  isFree');
 
             try {
                 $this->updateSurface();
@@ -80,8 +73,6 @@ final class ColonySurface implements ColonySurfaceInterface
         }
 
         $fields = $this->colony->getPlanetFields()->toArray();
-        $this->loggerUtil->log(sprintf('  fieldCount=%d', count($fields)));
-
 
         if (!$this->showUnderground) {
             $fields = array_filter(
@@ -91,7 +82,6 @@ final class ColonySurface implements ColonySurfaceInterface
                 }
             );
         }
-        $this->loggerUtil->log(sprintf('  fieldCount=%d', count($fields)));
 
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
@@ -243,10 +233,7 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function updateSurface(): array
     {
-        $this->loggerUtil->log('updateSurface');
-
         if ($this->colony->getMask() === null) {
-            $this->loggerUtil->log('  mask=null');
             $generator = new PlanetGenerator($this->loggerUtil);
 
             $surface = $generator->generateColony(
@@ -261,23 +248,20 @@ final class ColonySurface implements ColonySurfaceInterface
         $fields = $this->colony->getPlanetFields()->toArray();
 
         $surface = unserialize(base64_decode($this->colony->getMask()));
-        $i = 0;
-        foreach ($surface as $key => $value) {
-            if (!array_key_exists($key, $fields)) {
+        foreach ($surface as $fieldId => $type) {
+            if (!array_key_exists($fieldId, $fields)) {
                 $newField = $this->planetFieldRepository->prototype();
-                $fields[$key] = $newField;
-                $fields[$key]->setColony($this->colony);
-                $fields[$key]->setFieldId($i);
-                $this->colony->getPlanetFields()->set($i,  $newField);
-                $this->loggerUtil->log(sprintf('key:%d, i:%d', $key, $i));
+                $fields[$fieldId] = $newField;
+                $fields[$fieldId]->setColony($this->colony);
+                $fields[$fieldId]->setFieldId($fieldId);
+                $this->colony->getPlanetFields()->set($fieldId,  $newField);
             }
-            $fields[$key]->setBuilding(null);
-            $fields[$key]->setIntegrity(0);
-            $fields[$key]->setFieldType((int) $value);
-            $fields[$key]->setActive(0);
+            $fields[$fieldId]->setBuilding(null);
+            $fields[$fieldId]->setIntegrity(0);
+            $fields[$fieldId]->setFieldType((int) $type);
+            $fields[$fieldId]->setActive(0);
 
-            $this->planetFieldRepository->save($fields[$key]);
-            $i++;
+            $this->planetFieldRepository->save($fields[$fieldId]);
         }
 
         $this->entityManager->flush();

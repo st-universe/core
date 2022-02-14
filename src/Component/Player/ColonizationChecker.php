@@ -30,9 +30,6 @@ final class ColonizationChecker implements ColonizationCheckerInterface
 
     public function canColonize(UserInterface $user, ColonyInterface $colony): bool
     {
-        if ($user->getId() === 126) {
-            return true;
-        }
         if ($colony->isFree() === false) {
             return false;
         }
