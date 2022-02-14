@@ -71,15 +71,11 @@ final class ColonySurface implements ColonySurfaceInterface
 
         if ($this->colony->isFree()) {
             $this->loggerUtil->log('  isFree');
-            $mask = $this->colony->getMask();
 
-            if ($mask === null) {
-                $this->loggerUtil->log('  mask=null');
-                try {
-                    $this->updateSurface();
-                } catch (PlanetGeneratorFileMissingException $e) {
-                    return $this->colony->getPlanetFields()->toArray();
-                }
+            try {
+                $this->updateSurface();
+            } catch (PlanetGeneratorFileMissingException $e) {
+                return $this->colony->getPlanetFields()->toArray();
             }
         }
 
@@ -273,6 +269,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 $fields[$key]->setColony($this->colony);
                 $fields[$key]->setFieldId($i);
                 $this->colony->getPlanetFields()->set($i,  $newField);
+                $this->loggerUtil->log(sprintf('key:%d, i:%d', $key, $i));
             }
             $fields[$key]->setBuilding(null);
             $fields[$key]->setIntegrity(0);
