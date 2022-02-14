@@ -63,12 +63,18 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function getSurface(): array
     {
-        $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
+        if ($this->colony->getId() === 1154) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+        }
+
+        $this->loggerUtil->log('getSurface');
 
         if ($this->colony->isFree()) {
+            $this->loggerUtil->log('  isFree');
             $mask = $this->colony->getMask();
 
             if ($mask === null) {
+                $this->loggerUtil->log('  mask=null');
                 try {
                     $this->updateSurface();
                 } catch (PlanetGeneratorFileMissingException $e) {
@@ -76,7 +82,10 @@ final class ColonySurface implements ColonySurfaceInterface
                 }
             }
         }
+
         $fields = $this->colony->getPlanetFields()->toArray();
+        $this->loggerUtil->log(sprintf('  fieldCount=%d', count($fields)));
+
 
         if (!$this->showUnderground) {
             $fields = array_filter(
@@ -86,6 +95,7 @@ final class ColonySurface implements ColonySurfaceInterface
                 }
             );
         }
+        $this->loggerUtil->log(sprintf('  fieldCount=%d', count($fields)));
 
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
@@ -94,6 +104,8 @@ final class ColonySurface implements ColonySurfaceInterface
                 $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
                 $this->loggerUtil->log(sprintf('Es kommt gleich bei colonyId %d zu einem Fehler. buildingId: %d', $this->colony->getId(), $this->buildingId));
             }
+
+            $researchedArray = $this->researchedRepository->getFinishedListByUser($this->colony->getUser()->getId());
 
             array_walk(
                 $fields,
@@ -235,7 +247,10 @@ final class ColonySurface implements ColonySurfaceInterface
 
     public function updateSurface(): array
     {
+        $this->loggerUtil->log('updateSurface');
+
         if ($this->colony->getMask() === null) {
+            $this->loggerUtil->log('  mask=null');
             $generator = new PlanetGenerator($this->loggerUtil);
 
             $surface = $generator->generateColony(

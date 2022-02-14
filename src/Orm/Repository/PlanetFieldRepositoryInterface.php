@@ -95,11 +95,6 @@ interface PlanetFieldRepositoryInterface extends ObjectRepository
      */
     public function getByColonyWithBuilding(int $colonyId): iterable;
 
-    /**
-     * @return PlanetFieldInterface[]
-     */
-    public function getByColony(int $colonyId, bool $showUnderground = true): iterable;
-
     public function getEnergyProductionByColony(int $colonyId): int;
 
     public function truncateByColony(ColonyInterface $colony): void;

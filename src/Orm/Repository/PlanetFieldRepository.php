@@ -287,22 +287,6 @@ final class PlanetFieldRepository extends EntityRepository implements PlanetFiel
         ])->getResult();
     }
 
-    public function getByColony(int $colonyId, bool $showUnderground = true): iterable
-    {
-        return $this->getEntityManager()->createQuery(
-            sprintf(
-                'SELECT f FROM %s f INDEX BY f.field_id
-                WHERE f.colonies_id = :colonyId
-                %s
-                ORDER BY f.field_id',
-                PlanetField::class,
-                !$showUnderground ? ' AND f.field_id < 80 ' : ''
-            )
-        )->setParameters([
-            'colonyId' => $colonyId,
-        ])->getResult();
-    }
-
     public function getEnergyProductionByColony(int $colonyId): int
     {
         return (int) $this->getEntityManager()->createQuery(
