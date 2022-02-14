@@ -414,6 +414,11 @@ class PlanetField implements PlanetFieldInterface
         return in_array($this->getFieldType(), $this->getColony()->getPlanetType()->getColonizeableFields());
     }
 
+    public function isUnderground(): bool
+    {
+        return $this->field_id >= 80;
+    }
+
     public function hasUpgradeOrTerraformingOption(): bool
     {
         return (!$this->isInConstruction() && count($this->getPossibleUpgrades()) > 0) || (count($this->getTerraformingOptions()) > 0 && !$this->hasBuilding());

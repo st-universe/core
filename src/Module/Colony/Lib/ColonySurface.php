@@ -78,6 +78,15 @@ final class ColonySurface implements ColonySurfaceInterface
         }
         $fields = $this->colony->getPlanetFields()->toArray();
 
+        if (!$this->showUnderground) {
+            $fields = array_filter(
+                $fields,
+                function (PlanetFieldInterface $field): bool {
+                    return !$field->isUnderground();
+                }
+            );
+        }
+
         if ($this->buildingId !== null) {
             $building = $this->buildingRepository->find($this->buildingId);
 
