@@ -41,7 +41,6 @@ div.innerContent {
 }
 
 div.innerContentnew {
-  width: 100%;
   padding: 10px 5px 0 5px;
   margin-left: 120px;
 }
@@ -55,7 +54,6 @@ div.sidebar {
 }
 
 div.sidebarnew {
-  grid-row: 2 / span 2;
   width: 120px;
   background-color: #121220;
   height: 100%;
@@ -890,6 +888,11 @@ div.navigation_itemnew {
     cursor: pointer;
 }
 
+div.navitem_img {
+    width: 40px;
+    height: 40px;
+}
+
 div.navigation_item_servertime {
     font-size: 80% ! important;
     text-align: center;
@@ -1537,6 +1540,9 @@ div.knGrid img.knUserAvatar
   div.container {
     width: 1000px;
   }
+  div.containernew {
+    width: 1000px;
+  }
 
   div.header_box_user {
     width: 300px;
@@ -1551,6 +1557,10 @@ div.knGrid img.knUserAvatar
 }
 @media (max-width: 1025px) {
   div.container {
+    width: 1000px;
+  }
+
+  div.containernew {
     width: 1000px;
   }
 
@@ -1573,4 +1583,6 @@ div.knGrid img.knUserAvatar
     width: 100%;
     justify-items: center;
   }
+}
+@media (max-height: 1025px) {
 }
