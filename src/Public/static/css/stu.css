@@ -40,12 +40,28 @@ div.innerContent {
   padding: 10px 5px 0 5px;
 }
 
+div.innerContentnew {
+  width: 100%;
+  padding: 10px 5px 0 5px;
+  margin-left: 120px;
+}
+
 div.sidebar {
   grid-row: 2 / span 2;
   width: 120px;
   background-color: #121220;
   height: 100%;
   border-right: 1px solid #4b4b4b;
+}
+
+div.sidebarnew {
+  grid-row: 2 / span 2;
+  width: 120px;
+  background-color: #121220;
+  height: 100%;
+  border-right: 1px solid #4b4b4b;
+  left:0;
+  position: fixed;
 }
 
 div.footer {
@@ -855,7 +871,7 @@ div.navigation_item {
     text-align: center;
     height: 75px;
     padding: 10px 0 4px 0;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     color: #9d9d9d;
     vertical-align: middle;
     font-size: 80% ! important;
@@ -1460,6 +1476,16 @@ div.header {
   background-color: #121220;
   z-Index: 111111111;
   grid-column: 1 / span 2;
+}
+
+div.headernew {
+  height: 80px;
+  width: 100%;
+  background-color: #121220;
+  z-Index: 111111111;
+  grid-column: 1 / span 2;
+  top: 0;
+  position: fixed;
 }
 
 div.headerBottom {
