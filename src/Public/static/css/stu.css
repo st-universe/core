@@ -888,11 +888,6 @@ div.navigation_itemnew {
     cursor: pointer;
 }
 
-div.navitem_img {
-    width: 40px;
-    height: 40px;
-}
-
 div.navigation_item_servertime {
     font-size: 80% ! important;
     text-align: center;
@@ -1196,6 +1191,11 @@ img.sysStatus51to75 {
 
 img.sysStatus76to100 {
     border: 1px solid #15ff00;
+}
+
+img.navitem_img {
+    width: 40px;
+    height: 40px;
 }
 
 div.userListItemButtons {
