@@ -877,15 +877,19 @@ div.navigation_item {
 }
 
 div.navigation_itemnew {
-    width: 100px;
+    width: 5.7vw;
     text-align: center;
-    height: 72px;
-    padding: 6px 0 4px 0;
-    margin-bottom: 5px;
+    height: 3vw;
+    padding: 0.1vw 0 0.1vw 0;
+    margin-bottom: 0.3vw;
     color: #9d9d9d;
     vertical-align: middle;
     font-size: 80% ! important;
     cursor: pointer;
+}
+
+div.navitem_title {
+    margin-top: 0.1vw;
 }
 
 div.navigation_item_servertime {
@@ -1584,5 +1588,8 @@ div.knGrid img.knUserAvatar
     justify-items: center;
   }
 }
-@media (max-height: 1025px) {
+@media (max-height: 1200px) {
+    div.navitem_title {
+        display: none;
+    }
 }
