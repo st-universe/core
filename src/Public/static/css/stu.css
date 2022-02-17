@@ -877,7 +877,7 @@ div.navigation_item {
 }
 
 div.navigation_itemnew {
-    width: 5.7vw;
+    /*width: 5.7vw;*/
     text-align: center;
     height: 6.2vh;
     padding: 0.8vh 0 0.5vh 0;
@@ -1598,7 +1598,7 @@ div.knGrid img.knUserAvatar
   }
 }
 @media (max-height: 1200px) {
-    div.navitem_title {
+    div.navitem_titlefoo {
         display: none;
     }
 
