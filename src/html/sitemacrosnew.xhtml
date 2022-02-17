@@ -116,7 +116,7 @@
         <div class="sidebarnew">
           <div style="width: 100%; padding-left: 12px; padding-right: 10px">
             <tal:block metal:use-macro="navigation" />
-            <div class="border_box navigation_item_servertime">
+            <div class="border_box navigation_item_servertimenew">
               <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
               <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
               <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
@@ -230,7 +230,7 @@
       <div class="sidebar">
         <div style="width: 100%; padding-left: 10px; padding-right: 10px">
           <tal:block metal:use-macro="adminnavigation" />
-          <div class="border_box navigation_item_servertime">
+          <div class="border_box navigation_item_servertimenew">
             <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />

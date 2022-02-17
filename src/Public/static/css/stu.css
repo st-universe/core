@@ -879,8 +879,8 @@ div.navigation_item {
 div.navigation_itemnew {
     width: 5.7vw;
     text-align: center;
-    height: 6.4vh;
-    padding: 0.5vh 0 1vh 0;
+    height: 6.2vh;
+    padding: 0.8vh 0 0.5vh 0;
     margin-bottom: 0.6vh;
     color: #9d9d9d;
     vertical-align: middle;
@@ -899,6 +899,15 @@ div.navigation_item_servertime {
     color: #9d9d9d;
     vertical-align: middle;
     margin-top: 40px;
+}
+
+div.navigation_item_servertimenew {
+    font-size: 80% ! important;
+    text-align: center;
+    padding: 5px;
+    color: #9d9d9d;
+    vertical-align: middle;
+    margin-top: 5vh;
 }
 
 div.navigation_item_planets {
@@ -1198,8 +1207,8 @@ img.sysStatus76to100 {
 }
 
 img.navitem_img {
-    width: 5vh;
-    height: 5vh;
+    width: 3.5vh;
+    height: 3.5vh;
 }
 
 div.userListItemButtons {
