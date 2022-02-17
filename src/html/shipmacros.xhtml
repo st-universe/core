@@ -19,6 +19,26 @@
     <th style="width: 35px;"></th>
   </tr>
 </metal:macro>
+<metal:macro metal:define-macro="shiplist_headernew">
+  <tr>
+    <th style="width: 8%;">Klasse</th>
+    <th style="width: 41%;">Name</th>
+    <th style="width: 2%;"></th>
+    <th style="width: 4%;" title="im System (außerhalb)">x|y <img src="assets/buttons/info2.png" style="height:16px;" />
+    </th>
+    <th style="width: 6%;" title="aktuell/maximal">Hülle <img src="assets/buttons/info2.png" style="height:16px;" />
+    </th>
+    <th style="width: 9%;" title="aktuell/maximal (Regeneration [alle 15min])">Schilde <img
+        src="assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 9%;" title="aktuell/maximal, Zuwachs, (System-Verbrauch/Warpkern-Nutzung)">Energie <img
+        src="assets/buttons/info2.png" style="height:16px;" /></th>
+    <th style="width: 7%;" title="Warpkern, Ersatzbatterie">Versorgung <img src="assets/buttons/info2.png"
+        style="height:16px;" /></th>
+    <th style="width: 5%; text-align: center;">Crew</th>
+    <th style="width: 7%; text-align: center;">Systeme</th>
+    <th style="width: 2%;"></th>
+  </tr>
+</metal:macro>
 <metal:macro metal:define-macro="nbsblock">
   <tal:block tal:condition="not:HAS_NBS">
     <table tal:condition="not:CLOAK_NBS" class="tcal">
