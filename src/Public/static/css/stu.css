@@ -1592,4 +1592,8 @@ div.knGrid img.knUserAvatar
     div.navitem_title {
         display: none;
     }
+
+    div.navigation_itemnew {
+        padding: 0.3vw 0 0.1vw 0;
+    }
 }
