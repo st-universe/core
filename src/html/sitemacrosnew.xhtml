@@ -110,11 +110,11 @@
             <div style="margin-top: 5px">Einstellungen</div>
           </div>
         </div>
-        <div class="headerBottom"> </div>
+        <div class="headerBottomnew"> </div>
       </div>
       <div style="margin-top: 80px;">
         <div class="sidebarnew">
-          <div style="width: 100%; padding-left: 10px; padding-right: 10px">
+          <div style="width: 100%; padding-left: 12px; padding-right: 10px">
             <tal:block metal:use-macro="navigation" />
             <div class="border_box navigation_item_servertime">
               <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
@@ -442,7 +442,7 @@
 
 <metal:block metal:define-macro="navigation_item">
   <tal:block tal:define="linkid string:nav_item_${icon_url}">
-    <div class="navigation_item border_box" onclick="goToUrl('${url}')"
+    <div class="navigation_itemnew border_box" onclick="goToUrl('${url}')"
       onmouseover="cp('${linkid}','navigation/menu_${icon_url}1', 'png')"
       onmouseout="cp('${linkid}','navigation/menu_${icon_url}0', 'png')">
       <img src="/assets/navigation/menu_${icon_url}0.png" height="40" width="40" id="${linkid}" />
