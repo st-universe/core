@@ -23,8 +23,8 @@
 
   <body onload="startUp();">
     <div id="overDiv">...</div>
-    <div class="containernew">
-      <div class="headernew">
+    <div class="container">
+      <div class="header">
         <div class="header_box header_box_user border_box action" onclick="goToUrl('maindesk.php');">
           <div style="margin: 5px">
             <div class="user_box_grid">
@@ -110,13 +110,13 @@
             <div style="margin-top: 5px">Einstellungen</div>
           </div>
         </div>
-        <div class="headerBottomnew"> </div>
+        <div class="headerBottom"> </div>
       </div>
       <div style="margin-top: 80px;">
-        <div class="sidebarnew">
+        <div class="sidebar">
           <div style="width: 100%; padding-left: 12px; padding-right: 10px">
             <tal:block metal:use-macro="navigation" />
-            <div class="border_box navigation_item_servertimenew">
+            <div class="border_box navigation_item_servertime">
               <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
               <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
               <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
@@ -124,7 +124,7 @@
             </div>
           </div>
         </div>
-        <div class="innerContentnew">
+        <div class="innerContent">
           <tal:block metal:define-slot="body">
             ...
           </tal:block>
@@ -166,7 +166,7 @@
 
   <body onload="startUp();">
     <div id="overDiv">...</div>
-    <div class="containernew"
+    <div class="container"
       style="display: grid; grid-template-columns: 120px auto; grid-template-rows: 80px auto; height: 100%">
       <div class="header">
         <div class="header_box header_box_user border_box action" onclick="goToUrl('/admin');">
@@ -230,7 +230,7 @@
       <div class="sidebar">
         <div style="width: 100%; padding-left: 10px; padding-right: 10px">
           <tal:block metal:use-macro="adminnavigation" />
-          <div class="border_box navigation_item_servertimenew">
+          <div class="border_box navigation_item_servertime">
             <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
             <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
             <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
@@ -442,7 +442,7 @@
 
 <metal:block metal:define-macro="navigation_item">
   <tal:block tal:define="linkid string:nav_item_${icon_url}">
-    <div class="navigation_itemnew border_box" onclick="goToUrl('${url}')"
+    <div class="navigation_item border_box" onclick="goToUrl('${url}')"
       onmouseover="cp('${linkid}','navigation/menu_${icon_url}1', 'png')"
       onmouseout="cp('${linkid}','navigation/menu_${icon_url}0', 'png')">
       <img class="navitem_img" src="/assets/navigation/menu_${icon_url}0.png" id="${linkid}" title="${title}" />

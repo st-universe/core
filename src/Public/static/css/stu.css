@@ -28,32 +28,12 @@ ul {
     list-style-type: none;
 }
 
-div.container {
-  display: grid;
-  grid-template-columns: 120px auto;
-  grid-template-rows: 80px auto 30px;
-  height: 100%;
-}
-
 div.innerContent {
-  width: 100%;
-  padding: 10px 5px 0 5px;
-}
-
-div.innerContentnew {
   padding: 10px 5px 0 5px;
   margin-left: 120px;
 }
 
 div.sidebar {
-  grid-row: 2 / span 2;
-  width: 120px;
-  background-color: #121220;
-  height: 100%;
-  border-right: 1px solid #4b4b4b;
-}
-
-div.sidebarnew {
   width: 120px;
   background-color: #121220;
   height: 100%;
@@ -865,19 +845,6 @@ div.top_box {
 }
 
 div.navigation_item {
-    width: 100px;
-    text-align: center;
-    height: 75px;
-    padding: 10px 0 4px 0;
-    margin-bottom: 5px;
-    color: #9d9d9d;
-    vertical-align: middle;
-    font-size: 80% ! important;
-    cursor: pointer;
-}
-
-div.navigation_itemnew {
-    /*width: 5.7vw;*/
     text-align: center;
     height: 6.2vh;
     padding: 0.8vh 0 0.5vh 0;
@@ -893,15 +860,6 @@ div.navitem_title {
 }
 
 div.navigation_item_servertime {
-    font-size: 80% ! important;
-    text-align: center;
-    padding: 5px;
-    color: #9d9d9d;
-    vertical-align: middle;
-    margin-top: 40px;
-}
-
-div.navigation_item_servertimenew {
     font-size: 80% ! important;
     text-align: center;
     padding: 5px;
@@ -1504,32 +1462,11 @@ div.header {
   background-color: #121220;
   z-Index: 111111111;
   grid-column: 1 / span 2;
-}
-
-div.headernew {
-  height: 80px;
-  width: 100%;
-  background-color: #121220;
-  z-Index: 111111111;
-  grid-column: 1 / span 2;
   top: 0;
   position: fixed;
 }
 
 div.headerBottom {
-  margin: 80px 0px 0 119px;
-  height: 10px;
-  width: auto;
-  border-width: 1px;
-  border-bottom: 0;
-  border-right: 0;
-  border-style: solid;
-  border-color: #4b4b4b;
-  background-color: #000000;
-  border-radius: 3px 3px 0 0;
-}
-
-div.headerBottomnew {
   margin: 80px 0px 0 117px;
   height: 10px;
   width: auto;
@@ -1553,9 +1490,6 @@ div.knGrid img.knUserAvatar
   div.container {
     width: 1000px;
   }
-  div.containernew {
-    width: 1000px;
-  }
 
   div.header_box_user {
     width: 300px;
@@ -1570,10 +1504,6 @@ div.knGrid img.knUserAvatar
 }
 @media (max-width: 1025px) {
   div.container {
-    width: 1000px;
-  }
-
-  div.containernew {
     width: 1000px;
   }
 
@@ -1602,7 +1532,7 @@ div.knGrid img.knUserAvatar
         display: none;
     }
 
-    div.navigation_itemnew {
+    div.navigation_item {
         padding: 0.5vh 0 1vh 0
     }
 }
