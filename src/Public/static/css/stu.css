@@ -879,9 +879,9 @@ div.navigation_item {
 div.navigation_itemnew {
     width: 5.7vw;
     text-align: center;
-    height: 3vw;
-    padding: 0.1vw 0 0.1vw 0;
-    margin-bottom: 0.3vw;
+    height: 6.4vh;
+    padding: 0.5vh 0 1vh 0;
+    margin-bottom: 0.6vh;
     color: #9d9d9d;
     vertical-align: middle;
     font-size: 80% ! important;
@@ -889,7 +889,7 @@ div.navigation_itemnew {
 }
 
 div.navitem_title {
-    margin-top: 0.1vw;
+    margin-top: 0.5vh;
 }
 
 div.navigation_item_servertime {
@@ -1198,8 +1198,8 @@ img.sysStatus76to100 {
 }
 
 img.navitem_img {
-    width: 40px;
-    height: 40px;
+    width: 5vh;
+    height: 5vh;
 }
 
 div.userListItemButtons {
@@ -1594,6 +1594,6 @@ div.knGrid img.knUserAvatar
     }
 
     div.navigation_itemnew {
-        padding: 0.3vw 0 0.1vw 0;
+        padding: 0.5vh 0 1vh 0
     }
 }
