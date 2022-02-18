@@ -157,9 +157,12 @@ final class BeamTo implements ActionControllerInterface
             $this->shipStorageManager->upperStorage($target, $good->getGood(), $count);
             $this->colonyStorageManager->lowerStorage($colony, $good->getGood(), $count);
         }
-        if ($target->getUserId() != $userId) {
-            $game->sendInformation($target->getUserId(), $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
-        }
+        $game->sendInformation(
+            $target->getUser()->getId(),
+            $userId,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
+        );
 
         $this->colonyRepository->save($colony);
     }

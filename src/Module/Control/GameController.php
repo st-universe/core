@@ -249,8 +249,13 @@ final class GameController implements GameControllerInterface
     public function sendInformation(
         $recipient_id,
         $sender_id = GameEnum::USER_NOONE,
-        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+        ?string $href = null
     ): void {
+
+        if ($sender_id === $recipient_id) {
+            return;
+        }
 
         $textOnlyArray = array();
         foreach ($this->getInformation() as $value) {
@@ -261,7 +266,8 @@ final class GameController implements GameControllerInterface
             (int) $sender_id,
             (int) $recipient_id,
             join('<br />', $textOnlyArray),
-            $category_id
+            $category_id,
+            $href
         );
     }
 

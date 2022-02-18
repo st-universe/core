@@ -162,13 +162,13 @@ final class BeamTo implements ActionControllerInterface
                 $ship->setEps($ship->getEps() - (int)ceil($count / $transferAmount));
             }
         }
-        if ($target->getUserId() != $ship->getUserId()) {
-            $game->sendInformation(
-                $target->getUserId(),
-                $ship->getUserId(),
-                PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE
-            );
-        }
+
+        $game->sendInformation(
+            $target->getUser()->getId(),
+            $ship->getUser()->getId(),
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
+        );
         $this->shipRepository->save($ship);
     }
 

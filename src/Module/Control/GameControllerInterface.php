@@ -43,7 +43,8 @@ interface GameControllerInterface
     public function sendInformation(
         $recipient_id,
         $sender_id = GameEnum::USER_NOONE,
-        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM
+        $category_id = PrivateMessageFolderSpecialEnum::PM_SPECIAL_SYSTEM,
+        ?string $href = null
     );
 
     public function setTemplateVar(string $key, $variable);

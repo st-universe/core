@@ -172,9 +172,12 @@ final class BeamFrom implements ActionControllerInterface
 
             $colony->lowerEps((int)ceil($count / $transferAmount));
         }
-        if ($target->getUser() != $userId) {
-            $game->sendInformation($target->getUserId(), $userId, PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE);
-        }
+        $game->sendInformation(
+            $target->getUser()->getId(),
+            $userId,
+            PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
+            sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $target->getId())
+        );
 
         $this->colonyRepository->save($colony);
     }
