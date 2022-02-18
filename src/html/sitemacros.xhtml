@@ -227,24 +227,26 @@
         </div>
         <div class="headerBottom"> </div>
       </div>
-      <div class="sidebar">
-        <div style="width: 100%; padding-left: 10px; padding-right: 10px">
-          <tal:block metal:use-macro="adminnavigation" />
-          <div class="border_box navigation_item_servertime">
-            <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
-            <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
-            <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
-            <span>Version: <span tal:replace="GAME_VERSION" /></span><br />
+      <div style="margin-top: 80px;">
+        <div class="sidebar">
+          <div style="width: 100%; padding-left: 10px; padding-right: 10px">
+            <tal:block metal:use-macro="adminnavigation" />
+            <div class="border_box navigation_item_servertime">
+              <img title="Serverzeit" style="width: 15px; height: 15px;" src="/assets/buttons/time.png" />
+              <span id="servertime" style="display: none;" tal:content="php:date('M, d Y G:i:s')">TIME</span>
+              <span>Runde: <span tal:replace="THIS/getCurrentRound/getTurn" /></span><br />
+              <span>Version: <span tal:replace="GAME_VERSION" /></span><br />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="innerContent">
-        <tal:block metal:define-slot="body">
-          ...
-        </tal:block>
-        <script type="text/javascript">
-            setTimeout('updatePMNavlet()', 60000);
-        </script>
+        <div class="innerContent">
+          <tal:block metal:define-slot="body">
+            ...
+          </tal:block>
+          <script type="text/javascript">
+              setTimeout('updatePMNavlet()', 60000);
+          </script>
+        </div>
       </div>
     </div>
   </body>

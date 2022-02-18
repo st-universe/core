@@ -504,7 +504,7 @@ a.linkbutton_red:hover {
 
 td.buildmenu {
     text-align: center;
-    width: 200px;
+    font-size: 0.8vw;
 }
 
 td.buildmenu1 {
@@ -1530,6 +1530,10 @@ div.knGrid img.knUserAvatar
 @media (max-height: 1200px) {
     div.navitem_titlefoo {
         display: none;
+    }
+
+    div.navitem_title {
+        margin-top: 0vh;
     }
 
     div.navigation_item {
