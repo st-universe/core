@@ -416,7 +416,7 @@
     <div metal:fill-slot="containment">
       <input type="hidden" name="colmenu" value="cm_building_mgmt" />
       <input type="hidden" name="id" tal:attributes="value COLONY/getId" />
-      <div style="float: left; width: 14vw; font-size: 0.7vw;">
+      <div style="float: left; width: 20vw; font-size: 1vw;">
         <div class="divhead">Gebäudewahl</div>
         <div class="divbody">
           <select style="width: 100%; height: 370px;" multiple="multiple" name="selection[]">
@@ -439,7 +439,7 @@
           <br style="clear: both;" />
         </div>
       </div>
-      <div style="margin-left: 5px; float: left; width: 14vw; font-size: 0.7vw;">
+      <div style="margin-left: 5px; float: left; width: 14vw;">
         <div class="divhead">Gebäudegruppen</div>
         <div class="divbody">
           <img src="assets/buttons/e_trans2.png" title="Energie" style="width: 10px; height: 10px;" />
@@ -458,7 +458,8 @@
             deaktivieren</a><br /><br />
           <img src="assets/buttons/lager.png" title="Warenbezogen" style="width: 10px; height: 10px;" />
           <strong>Warenbezogen</strong><br />
-          Ware wählen: <select name="good" style="height: 17px;" id="commodityselector">
+          Ware wählen:<br />
+          <select name="good" style="height: 17px;" id="commodityselector">
             <option class="goodselect_option" tal:repeat="data USEABLE_GOOD_LIST" tal:attributes="value data/getId"
               tal:content="data/getName" style=" background-image: url(assets/goods/${data/getId}.png);">NAME</option>
           </select><br /><br />
