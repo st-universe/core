@@ -46,6 +46,7 @@ div.footer {
   font-size: 70%;
   color: #2d2d2d;
   text-align: center;
+  clear: both;
 }
 
 a.selected {
@@ -511,9 +512,6 @@ td.buildmenu1 {
     padding-right: 10px;
 }
 
-td.buildmenu2 {
-}
-
 td.buildmenu3 {
     padding-left: 10px;
 }
@@ -810,6 +808,7 @@ img.center {
     -webkit-box-shadow: 0px 0px 8px #000000;
     box-shadow: 0px 0px 8px #000000;
     -moz-opacity: 0.9;
+    opacity: 0.9;
     position: absolute;
     visibility: hidden;
     z-index: 111111112;
@@ -1502,41 +1501,48 @@ div.knGrid img.knUserAvatar
     width: 100%;
   }
 }
-@media (max-width: 1025px) {
-  div.container {
-    width: 1000px;
-  }
 
-  div.header_box_user {
-    width: 100px;
-    margin: 5px 0 0 10px;
-  }
-
-  div.user_box_details {
-    display: none;
-  }
-
-  div.header_box_col {
-    display: none;
-  }
-
-  div.user_box_grid {
-    display: grid;
-    grid-template-columns: 100%;
-    width: 100%;
-    justify-items: center;
-  }
+@media (max-width: 1515px) {
+    div.header_box_col {
+      display: none;
+    }
 }
-@media (max-height: 1200px) {
-    div.navitem_titlefoo {
+
+@media (max-width: 1200px) {
+    div.user_box_details {
         display: none;
     }
-
-    div.navitem_title {
-        margin-top: 0vh;
+    
+    div.header_box_user {
+        width: 100px;
+        margin: 5px 0 0 10px;
     }
-
-    div.navigation_item {
-        padding: 0.5vh 0 1vh 0
+    
+    div.user_box_grid {
+        display: grid;
+        grid-template-columns: 100%;
+        width: 100%;
+        justify-items: center;
     }
 }
+
+@media (max-width: 1025px) {
+    div.container {
+      width: 1000px;
+    }
+  
+    
+  }
+  @media (max-height: 1200px) {
+      div.navitem_titlefoo {
+          display: none;
+      }
+  
+      div.navitem_title {
+          margin-top: 0vh;
+      }
+  
+      div.navigation_item {
+          padding: 0.5vh 0 1vh 0
+      }
+  }
