@@ -807,8 +807,6 @@ img.center {
     -moz-box-shadow: 0px 0px 8px #000000;
     -webkit-box-shadow: 0px 0px 8px #000000;
     box-shadow: 0px 0px 8px #000000;
-    -moz-opacity: 0.9;
-    opacity: 0.9;
     position: absolute;
     visibility: hidden;
     z-index: 111111112;
