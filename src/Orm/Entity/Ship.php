@@ -891,7 +891,7 @@ class Ship implements ShipInterface
 
     public function getIsFleetLeader(): bool
     {
-        return $this->is_fleet_leader;
+        return $this->getFleet() !== null && $this->is_fleet_leader;
     }
 
     public function setIsFleetLeader(bool $isFleetLeader): ShipInterface
@@ -1545,9 +1545,7 @@ class Ship implements ShipInterface
 
     public function hasEscapePods(): bool
     {
-        //TODO remove trumfield when escape pods fully integrated
-        return $this->getCrewCount() > 0
-            && ($this->getRump()->isTrumfield() || $this->getRump()->isEscapePods());
+        return $this->getRump()->isEscapePods() && $this->getCrewCount() > 0;
     }
 
     public function canBeRepaired(): bool
