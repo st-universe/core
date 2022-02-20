@@ -304,13 +304,18 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 'SELECT s FROM %s s
                 JOIN %s ss
                 WITH s.id = ss.ships_id
+                JOIN %s bp
+                WITH s.plans_id = bp.id
                 WHERE ss.system_type = :shieldType
                 AND ss.mode < :modeOn
                 AND s.is_destroyed = :destroyedState
                 AND s.schilde<s.max_schilde
-                AND s.shield_regeneration_timer <= :regenerationThreshold',
+                AND s.shield_regeneration_timer <= :regenerationThreshold
+                AND (SELECT count(*) FROM %s sc WHERE s.id = sc.ships_id) >= bp.crew',
                 Ship::class,
-                ShipSystem::class
+                ShipSystem::class,
+                ShipBuildplan::class,
+                ShipCrew::class
             )
         )->setParameters([
             'shieldType' => ShipSystemTypeEnum::SYSTEM_SHIELDS,
