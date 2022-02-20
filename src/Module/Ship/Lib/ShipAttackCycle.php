@@ -143,13 +143,17 @@ final class ShipAttackCycle implements ShipAttackCycleInterface
 
             // Check if there're any useable ships at all
             if ($usedAttackerCount >= count($this->attacker) && $usedDefenderCount >= count($this->defender)) {
+                $this->loggerUtil->init('SAC', LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->log(sprintf('attackerCount: %d, defenderCount: %d', count($this->attacker), count($this->defender)));
                 break;
             }
 
             $attackerPool = $this->fightLib->filterInactiveShips($this->attacker);
             $defenderPool = $this->fightLib->filterInactiveShips($this->defender);
 
-            if ($attackerPool === [] || $defenderPool === []) {
+            if (empty($attackerPool) || empty($defenderPool)) {
+                $this->loggerUtil->init('SAC', LoggerEnum::LEVEL_ERROR);
+                $this->loggerUtil->log(sprintf('attackerPoolCount: %d, defenderPoolCount: %d', count($attackerPool), count($defenderPool)));
                 break;
             }
 

@@ -191,7 +191,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
         $lead_user_id = $leadShip->getUser()->getId();
         $isAlertShipBase = $alertShip->isBase();
 
-        if ($alertShip->getFleetId()) {
+        if ($alertShip->getFleet() !== null) {
             $attacker = [];
 
             // only uncloaked and unwarped ships enter fight
@@ -226,9 +226,15 @@ final class AlertRedHelper implements AlertRedHelperInterface
         }
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle(true);
+        $messages = $this->shipAttackCycle->getMessages();
+
+        if (empty($messages)) {
+            $this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log(sprintf('attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
+        }
 
         $pm = sprintf(_('Eigene Schiffe auf [b][color=red]%s[/color][/b], Kampf in Sektor %d|%d') . "\n", $isColonyDefense ? 'Kolonie-Verteidigung' : 'Alarm-Rot', $leadShip->getPosX(), $leadShip->getPosY());
-        foreach ($this->shipAttackCycle->getMessages() as $value) {
+        foreach ($messages as $value) {
             $pm .= $value . "\n";
         }
         $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $alertShip->getId());
