@@ -80,13 +80,19 @@ final class Session implements SessionInterface
         return $this->user;
     }
 
-    public function login(string $userName, string $password): void
+    public function login(string $login, string $password): void
     {
         $this->destroyLoginCookies();
 
-        $result = $this->userRepository->getByLogin(mb_strtolower($userName));
+        $result = $this->userRepository->getByLogin(mb_strtolower($login));
         if ($result === null) {
-            throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
+            if (is_int($login)) {
+                $result = $this->userRepository->find((int)$login);
+            }
+
+            if ($result === null) {
+                throw new \Stu\Lib\LoginException(_('Login oder Passwort inkorrekt'));
+            }
         }
 
         $password_hash = $result->getPassword();
@@ -96,14 +102,14 @@ final class Session implements SessionInterface
         if ($password_info['algo'] === 0) {
             // @todo remove old password handling. This is just temporary
             if ($password_hash !== sha1($password)) {
-                throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
+                throw new \Stu\Lib\LoginException(_('Login oder Passwort inkorrekt'));
             }
             $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($result);
         } else {
             if (!password_verify($password, $password_hash)) {
-                throw new \Stu\Lib\LoginException(_('Benutzername oder Passwort inkorrekt'));
+                throw new \Stu\Lib\LoginException(_('Login oder Passwort inkorrekt'));
             }
 
             if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {

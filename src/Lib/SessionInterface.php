@@ -24,5 +24,5 @@ interface SessionInterface
 
     public function getSessionValue($key);
 
-    public function login(string $userName, string $password): void;
+    public function login(string $login, string $password): void;
 }
