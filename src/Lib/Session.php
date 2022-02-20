@@ -86,7 +86,7 @@ final class Session implements SessionInterface
 
         $result = $this->userRepository->getByLogin(mb_strtolower($login));
         if ($result === null) {
-            if (is_int($login)) {
+            if (is_numeric($login)) {
                 $result = $this->userRepository->find((int)$login);
             }
 
