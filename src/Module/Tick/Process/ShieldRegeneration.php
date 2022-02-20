@@ -28,9 +28,11 @@ final class ShieldRegeneration implements ProcessTickInterface
     {
         $time = time();
         $result = $this->shipRepository->getSuitableForShildRegeneration($time - ShipEnum::SHIELD_REGENERATION_TIME);
+        $skippedCount = 0;
         foreach ($result as $obj) {
             //TODO into query!
             if (!$obj->hasEnoughCrew()) {
+                $skippedCount++;
                 continue;
             }
 
@@ -45,6 +47,6 @@ final class ShieldRegeneration implements ProcessTickInterface
         }
 
         $this->loggerUtil->init('shield', LoggerEnum::LEVEL_ERROR);
-        $this->loggerUtil->log(sprintf('shieldRegenDuration:%s s', time() - $time));
+        $this->loggerUtil->log(sprintf('shieldRegenDuration:%d s, skippedCount: %d', time() - $time, $skippedCount));
     }
 }
