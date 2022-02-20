@@ -311,7 +311,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 AND s.is_destroyed = :destroyedState
                 AND s.schilde<s.max_schilde
                 AND s.shield_regeneration_timer <= :regenerationThreshold
-                AND (SELECT count(id) FROM %s sc WHERE s.id = sc.ships_id) >= bp.crew',
+                AND (SELECT count(sc.id) FROM %s sc WHERE s.id = sc.ships_id) >= bp.crew',
                 Ship::class,
                 ShipSystem::class,
                 ShipBuildplan::class,
