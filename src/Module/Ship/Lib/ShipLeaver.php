@@ -94,6 +94,7 @@ final class ShipLeaver implements ShipLeaverInterface
         $ship->setAlertStateGreen();
         $ship->setDockedTo(null);
         $ship->setFleet(null);
+        $ship->setIsFleetLeader(false);
         $this->shipRepository->save($ship);
 
         if ($ship->getRump()->isEscapePods()) {

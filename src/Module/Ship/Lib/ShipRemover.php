@@ -93,6 +93,7 @@ final class ShipRemover implements ShipRemoverInterface
             $fleet->getShips()->removeElement($ship);
 
             $ship->setFleet(null);
+            $ship->setIsFleetLeader(false);
             $ship->setFleetId(null);
         }
 
