@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace Stu\Module\Tick\Process;
 
 use Stu\Component\Ship\ShipEnum;
+use Stu\Module\Logging\LoggerEnum;
+use Stu\Module\Logging\LoggerUtilFactoryInterface;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
 final class ShieldRegeneration implements ProcessTickInterface
 {
     private ShipRepositoryInterface $shipRepository;
 
+    private LoggerUtilInterface $loggerUtil;
+
     public function __construct(
-        ShipRepositoryInterface $shipRepository
+        ShipRepositoryInterface $shipRepository,
+        LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->shipRepository = $shipRepository;
+        $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
 
     public function work(): void
@@ -22,6 +29,7 @@ final class ShieldRegeneration implements ProcessTickInterface
         $time = time();
         $result = $this->shipRepository->getSuitableForShildRegeneration($time - ShipEnum::SHIELD_REGENERATION_TIME);
         foreach ($result as $obj) {
+            //TODO into query!
             if (!$obj->hasEnoughCrew()) {
                 continue;
             }
@@ -35,5 +43,8 @@ final class ShieldRegeneration implements ProcessTickInterface
 
             $this->shipRepository->save($obj);
         }
+
+        $this->loggerUtil->init('shield', LoggerEnum::LEVEL_ERROR);
+        $this->loggerUtil->log(sprintf('shieldRegenDuration:%s s', time() - $time));
     }
 }
