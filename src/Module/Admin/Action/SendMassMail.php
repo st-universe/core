@@ -45,9 +45,9 @@ final class SendMassMail implements ActionControllerInterface
     {
         $game->setView(MassMail::VIEW_IDENTIFIER);
 
-        $text = trim(request::getStringFatal('text'));
-        $subject = trim(request::getStringFatal('subject'));
-        $medium = request::getInt('medium');
+        $text = trim(request::postStringFatal('text'));
+        $subject = trim(request::postStringFatal('subject'));
+        $medium = request::postInt('medium');
 
         // only Admins can trigger ticks
         if (!$game->getUser()->isAdmin()) {
