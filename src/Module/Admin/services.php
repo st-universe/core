@@ -12,7 +12,6 @@ use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemField;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequest;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
-use Stu\Module\Admin\Action\SendMassMail\SendMassMail;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\EditSection\EditSectionRequest;
 use Stu\Module\Admin\View\Map\EditSection\EditSectionRequestInterface;
@@ -34,7 +33,6 @@ use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick2;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
-use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
@@ -59,13 +57,11 @@ return [
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class),
         DoManualProcessTick2::ACTION_IDENTIFIER => autowire(DoManualProcessTick2::class),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
-        ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
-        SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class)
+        ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
         Playerlist::VIEW_IDENTIFIER => autowire(Playerlist::class),
-        MassMail::VIEW_IDENTIFIER => autowire(MassMail::class),
         ShowMapEditor::VIEW_IDENTIFIER => autowire(ShowMapEditor::class),
         ShowMapOverall::VIEW_IDENTIFIER => autowire(ShowMapOverall::class),
         ShowScripts::VIEW_IDENTIFIER => autowire(ShowScripts::class),
