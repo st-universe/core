@@ -33,6 +33,7 @@ use Stu\Module\Admin\Action\Ticks\DoManualProcessTick;
 use Stu\Module\Admin\Action\Ticks\DoManualProcessTick2;
 use Stu\Module\Admin\Action\Ticks\DoManualShipTick;
 use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
+use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
@@ -72,6 +73,7 @@ return [
         Noop::VIEW_IDENTIFIER => autowire(Noop::class),
         ShowMapInfluenceAreas::VIEW_IDENTIFIER => autowire(ShowMapInfluenceAreas::class),
         ShowSignatures::VIEW_IDENTIFIER => autowire(ShowSignatures::class),
-        ShowResearchTree::VIEW_IDENTIFIER => autowire(ShowResearchTree::class)
+        ShowResearchTree::VIEW_IDENTIFIER => autowire(ShowResearchTree::class),
+        MassMail::VIEW_IDENTIFIER => autowire(MassMail::class)
     ]
 ];
