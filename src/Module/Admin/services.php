@@ -12,6 +12,7 @@ use Stu\Module\Admin\Action\Map\EditField\EditFieldRequestInterface;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemField;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequest;
 use Stu\Module\Admin\Action\Map\EditSystemField\EditSystemFieldRequestInterface;
+use Stu\Module\Admin\Action\SendMassMail;
 use Stu\Module\Admin\View\Map\EditSection\EditSection;
 use Stu\Module\Admin\View\Map\EditSection\EditSectionRequest;
 use Stu\Module\Admin\View\Map\EditSection\EditSectionRequestInterface;
@@ -58,7 +59,8 @@ return [
         DoManualProcessTick::ACTION_IDENTIFIER => autowire(DoManualProcessTick::class),
         DoManualProcessTick2::ACTION_IDENTIFIER => autowire(DoManualProcessTick2::class),
         CreateInfluenceAreas::ACTION_IDENTIFIER => autowire(CreateInfluenceAreas::class),
-        ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class)
+        ClearFaultyBBCodes::ACTION_IDENTIFIER => autowire(ClearFaultyBBCodes::class),
+        SendMassMail::ACTION_IDENTIFIER => autowire(SendMassMail::class)
     ],
     'ADMIN_VIEWS' => [
         GameController::DEFAULT_VIEW => autowire(Overview::class),
