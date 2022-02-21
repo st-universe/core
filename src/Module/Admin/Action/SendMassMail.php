@@ -8,6 +8,7 @@ use request;
 use Laminas\Mail\Message;
 use Laminas\Mail\Exception\RuntimeException;
 use Laminas\Mail\Transport\Sendmail;
+use Noodlehaus\ConfigInterface;
 use Stu\Component\Game\GameEnum;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
@@ -25,6 +26,8 @@ final class SendMassMail implements ActionControllerInterface
     private const MEDIUM_EMAIL = 1;
     private const MEDIUM_PM = 2;
 
+    private ConfigInterface $config;
+
     private PrivateMessageSenderInterface $privateMessageSender;
 
     private UserRepositoryInterface $userRepository;
@@ -32,10 +35,12 @@ final class SendMassMail implements ActionControllerInterface
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
+        ConfigInterface $config,
         PrivateMessageSenderInterface $privateMessageSender,
         UserRepositoryInterface $userRepository,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
+        $this->config = $config;
         $this->privateMessageSender = $privateMessageSender;
         $this->userRepository = $userRepository;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
@@ -97,7 +102,7 @@ final class SendMassMail implements ActionControllerInterface
     {
         $count = 0;
 
-        $message = sprintf('Betreff: %s\n\n%s', $subject, $text);
+        $message = sprintf("[b]Betreff: %s[/b]\n\n%s", $subject, $text);
 
         foreach ($this->userRepository->findAll() as $user) {
             $count++;
