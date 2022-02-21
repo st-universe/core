@@ -56,9 +56,9 @@ final class SendMassMail implements ActionControllerInterface
         }
 
         $count = 0;
-        if ($medium === self::MEDIUM_EMAIL) {
+        if ($medium === static::MEDIUM_EMAIL) {
             $count = $this->sendMassEmails($text, $subject);
-        } else if ($medium === self::MEDIUM_PM) {
+        } else if ($medium === static::MEDIUM_PM) {
             $count = $this->sendMassPm($text, $subject);
         }
 
