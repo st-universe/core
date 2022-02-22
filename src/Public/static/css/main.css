@@ -156,11 +156,11 @@ input.text {
 {
     background: #000000;
     text-align: center;
-    width: 90px;
+    width: 91px;
     border: 1px solid #2d3243;
     display: inline-block;
     text-decoration: none;
-    padding: 2px 2px 2px 4px;
+    padding: 2px 1px 2px 2px;
 }
 #chlog_link
 {
@@ -268,7 +268,7 @@ input.text {
 }
 .mainbar_box_header {
     padding: 2px 2px 2px 2px;
-    width: 800px;
+    width: 820px;
     border: 1px solid #2d3243;
     height: 18px;
     text-align: left;
