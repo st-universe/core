@@ -75,13 +75,18 @@ final class SendMassMail implements ActionControllerInterface
         $count = 0;
 
         foreach ($this->userRepository->findAll() as $user) {
+            if ($user->getId() < 100) {
+                continue;
+            }
+
             $mail = new Message();
-            $mail->addTo($user->getEmail());
-            $mail->setSubject($subject);
-            $mail->setFrom($this->config->get('game.email_sender_address'));
-            $mail->setBody($text);
 
             try {
+                $mail->addTo($user->getEmail());
+                $mail->setSubject($subject);
+                $mail->setFrom($this->config->get('game.email_sender_address'));
+                $mail->setBody($text);
+
                 $transport = new Sendmail();
                 $transport->send($mail);
                 $count++;
