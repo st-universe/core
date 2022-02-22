@@ -29,6 +29,7 @@ use Stu\Module\Index\View\ShowFinishRegistration\ShowFinishRegistration;
 use Stu\Module\Index\View\ShowHelp\ShowHelp;
 use Stu\Module\Index\View\ShowImprint\ShowImprint;
 use Stu\Module\Index\View\ShowLostPassword\ShowLostPassword;
+use Stu\Module\Index\View\ShowPartnerSites\ShowPartnerSites;
 use Stu\Module\Index\View\ShowRegistration\ShowRegistration;
 use Stu\Module\Index\View\ShowRegistration\ShowRegistrationRequest;
 use Stu\Module\Index\View\ShowRegistration\ShowRegistrationRequestInterface;
@@ -63,5 +64,6 @@ return [
         ShowFinishRegistration::VIEW_IDENTIFIER => autowire(ShowFinishRegistration::class),
         ShowLostPassword::VIEW_IDENTIFIER => autowire(ShowLostPassword::class),
         ShowResetPassword::VIEW_IDENTIFIER => autowire(ShowResetPassword::class),
+        ShowPartnerSites::VIEW_IDENTIFIER => autowire(ShowPartnerSites::class)
     ]
 ];

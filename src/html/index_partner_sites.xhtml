@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metal:macro metal:use-macro="html/sitemacros.xhtml/siteindex">
+  <metal:macro metal:fill-slot="body">
+    <div style="width: 100%;">
+      <h3>Unsere Partnerseiten</h3>
+      <br /><br />
+    </div>
+    <tal:block tal:repeat="site PARTNERSITES">
+      <div style="width: 100%;">
+        <h4>${site/getName}</h4>
+        ${site/getText}<br />
+        <a href="${site/getUrl}">
+          <img tal:attributes="src site/getFullBannerPath" />
+        </a>
+        <br />
+      </div>
+    </tal:block>
+  </metal:macro>
+</metal:macro>

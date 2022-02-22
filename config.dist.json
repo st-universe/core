@@ -83,5 +83,6 @@
   },
   "discord": {
     "url": "https://chat.change.me"
-  }
+  },
+  "partner_banner_path": "sites/"
 }
