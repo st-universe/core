@@ -128,10 +128,10 @@ class ShipRump implements ShipRumpInterface
     /** @column(type="smallint") * */
     private $shuttle_slots = 0;
 
-    /** @column(type="smallint") * */
+    /** @column(type="integer") * */
     private $tractor_mass = 1;
 
-    /** @column(type="smallint") * */
+    /** @column(type="integer") * */
     private $tractor_payload = 100;
 
     /**
