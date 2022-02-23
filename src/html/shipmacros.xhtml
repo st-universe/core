@@ -1119,8 +1119,10 @@
         <span>Flugkosten</span>: ${SHIP/getRump/getFlightEcost}<br />
       </tal:block>
       <span>Beamfaktor</span>: ${SHIP/getRump/getBeamFactor}<br />
-      <span>Traktormasse</span>: ${SHIP/getRump/getTractorMass}<br />
-      <span>Traktortraglast</span>: ${SHIP/getTractorPayload}<br />
+      <span>Traktormasse: </span><span
+        tal:content="numberWithThousandSeperator:SHIP/getRump/getTractorMass">TRACTORMASS</span><br />
+      <span>Traktortraglast: </span><span
+        tal:content="numberWithThousandSeperator:SHIP/getTractorPayload">TRACTORPAYLOAD</span><br />
       <span>Energiewaffensalven</span>: ${SHIP/getRump/getPhaserVolleys}<br />
       <span>Energiewaffenbasisschaden</span>: ${SHIP/getBaseDamage}<br />
       <span>Torpedolevel</span>: ${SHIP/getRump/getTorpedoLevel}<br />

@@ -13,4 +13,6 @@ interface TalHelperInterface
     public static function jsquote(string $str): string;
 
     public static function formatSeconds(string $time): string;
+
+    public static function getNumberWithThousandSeperator(int $number): string;
 }

@@ -31,7 +31,12 @@ TalesRegistry::registerPrefix(
         return '(int) ' . TalesInternal::compileToPHPExpression($src, $nothrow) . ' < 0';
     }
 );
-
+TalesRegistry::registerPrefix(
+    'numberWithThousandSeperator',
+    function ($src, $nothrow): string {
+        return '\Stu\Module\Tal\TalHelper::getNumberWithThousandSeperator(' . TalesInternal::compileToPHPExpression($src, $nothrow) . ')';
+    }
+);
 TalesRegistry::registerPrefix(
     'bbcode',
     function ($src, $nothrow): string {

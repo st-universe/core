@@ -72,4 +72,9 @@ final class TalHelper implements TalHelperInterface
         }
         return $ret;
     }
+
+    public static function getNumberWithThousandSeperator(int $number): string
+    {
+        return number_format(floatval($number), 0, '', '.');
+    }
 }
