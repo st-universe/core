@@ -162,7 +162,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
 
                         $this->privateMessageSender->send(
                             $userId,
-                            (int) $shipobj->getUserId(),
+                            (int) $shipobj->getUser()->getId(),
                             sprintf(
                                 _('Die Kolonie %s lädt in Sektor %s die Batterie der %s um %s Einheiten'),
                                 $colony->getName(),
