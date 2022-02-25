@@ -90,9 +90,14 @@ final class EscapeTractorBeam implements ActionControllerInterface
         //eps cost
         $ship->setEps($ship->getEps() - 20);
 
+        //parameters
+        $ownMass = $ship->getRump()->getTractorMass();
+        $otherPayload = $ship->getTractoringShip()->getTractorPayload();
+        $ratio = $ownMass / $otherPayload;
+
         // probabilities
         $chance = rand(1, 100);
-        if ($chance < 11) {
+        if ($chance < (int)(11 * $ratio)) {
             $this->escape($ship, $game);
         } elseif ($chance < 55) {
             $this->sufferDeflectorDamage($ship, $game);
