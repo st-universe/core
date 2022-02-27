@@ -25,10 +25,8 @@ class BuildMenu
                 return _('Soziales');
             case BuildingEnum::BUILDMENU_INDUSTRY:
                 return _('Industrie');
-            case BuildingEnum::BUILDMENU_INFRASTRUCTURE;
+            case BuildingEnum::BUILDMENU_INFRASTRUCTURE:
                 return _('Infrastruktur');
         }
     }
-
-
 }
