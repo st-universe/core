@@ -6,7 +6,6 @@ namespace Stu\Module\Station\Action\ManageShips;
 
 use Exception;
 use request;
-use Stu\Component\Ship\ShipAlertStateEnum;
 use Stu\Component\Ship\ShipEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
@@ -26,6 +25,7 @@ use Stu\Component\Ship\System\Exception\SystemNotDeactivableException;
 use Stu\Component\Ship\System\Exception\SystemNotFoundException;
 use Stu\Component\Station\StationUtilityInterface;
 use Stu\Module\Ship\Lib\ShipLoaderInterface;
+use Stu\Module\Ship\Lib\WarpcoreUtilInterface;
 use Stu\Module\Station\View\ShowShipManagement\ShowShipManagement;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -53,6 +53,8 @@ final class ManageShips implements ActionControllerInterface
 
     private PositionCheckerInterface $positionChecker;
 
+    private WarpcoreUtilInterface $warpcoreUtil;
+
     private StationUtilityInterface $stationUtility;
 
     public function __construct(
@@ -66,6 +68,7 @@ final class ManageShips implements ActionControllerInterface
         CommodityRepositoryInterface $commodityRepository,
         ShipSystemManagerInterface $shipSystemManager,
         PositionCheckerInterface $positionChecker,
+        WarpcoreUtilInterface $warpcoreUtil,
         StationUtilityInterface $stationUtility
     ) {
         $this->shipLoader = $shipLoader;
@@ -78,6 +81,7 @@ final class ManageShips implements ActionControllerInterface
         $this->commodityRepository = $commodityRepository;
         $this->shipSystemManager = $shipSystemManager;
         $this->positionChecker = $positionChecker;
+        $this->warpcoreUtil = $warpcoreUtil;
         $this->stationUtility = $stationUtility;
     }
 
@@ -215,60 +219,11 @@ final class ManageShips implements ActionControllerInterface
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
                 if ($this->storageContainsNeededCommodities($storage)) {
-                    if ($shipobj->getWarpcoreLoad() < $shipobj->getWarpcoreCapacity()) {
-                        if ($wk[$shipobj->getId()] == 'm') {
-                            $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
-                        } else {
-                            $load = ceil(((int) $wk[$shipobj->getId()]) / ShipEnum::WARPCORE_LOAD);
-                            if ($load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) {
-                                $load = ceil(($shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad()) / ShipEnum::WARPCORE_LOAD);
-                            }
-                        }
-                        $load = (int) $load;
-                        if ($load >= 1) {
-                            foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
-                                if ($storage[$commodityId]->getAmount() < ($load * $loadCost)) {
-                                    $load = (int) ($storage[$commodityId]->getAmount() / $loadCost);
-                                }
-                            }
-                            foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
-                                $this->shipStorageManager->lowerStorage(
-                                    $station,
-                                    $this->commodityRepository->find($commodityId),
-                                    $loadCost * $load
-                                );
-                            }
-                            if ($shipobj->getWarpcoreLoad() + $load * ShipEnum::WARPCORE_LOAD > $shipobj->getWarpcoreCapacity()) {
-                                $load = $shipobj->getWarpcoreCapacity() - $shipobj->getWarpcoreLoad();
-                            } else {
-                                $load = $load * ShipEnum::WARPCORE_LOAD;
-                            }
-                            $shipobj->setWarpcoreLoad($shipobj->getWarpcoreLoad() + $load);
-                            $msg[] = sprintf(
-                                _('Der Warpkern der %s wurde um %d Einheiten aufgeladen'),
-                                $shipobj->getName(),
-                                $load
-                            );
-                            if ($shipobj->getUser() !== $user) {
+                    $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : $wk[$shipobj->getId()];
+                    $loadMessage = $this->warpcoreUtil->loadWarpcore($shipobj, $load, null, $station);
 
-                                $href = sprintf(_('ship.php?SHOW_SHIP=1&id=%d'), $shipobj->getId());
-
-                                $this->privateMessageSender->send(
-                                    $userId,
-                                    (int) $shipobj->getUser()->getId(),
-                                    sprintf(
-                                        _('Die %s %s hat in Sektor %s den Warpkern der %s um %d Einheiten aufgeladen'),
-                                        $station->getRump()->getName(),
-                                        $station->getName(),
-                                        $sectorString,
-                                        $shipobj->getName(),
-                                        $load
-                                    ),
-                                    PrivateMessageFolderSpecialEnum::PM_SPECIAL_TRADE,
-                                    $href
-                                );
-                            }
-                        }
+                    if ($loadMessage !== null) {
+                        $msg[] = $loadMessage;
                     }
                 } else {
                     $msg[] = sprintf(

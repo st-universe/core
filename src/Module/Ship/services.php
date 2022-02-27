@@ -153,6 +153,8 @@ use Stu\Module\Ship\Lib\ShipRemover;
 use Stu\Module\Ship\Lib\ShipRemoverInterface;
 use Stu\Module\Ship\Lib\TroopTransferUtility;
 use Stu\Module\Ship\Lib\TroopTransferUtilityInterface;
+use Stu\Module\Ship\Lib\WarpcoreUtil;
+use Stu\Module\Ship\Lib\WarpcoreUtilInterface;
 use Stu\Module\Ship\View\Noop\Noop;
 use Stu\Module\Ship\View\Overview\Overview;
 use Stu\Module\Ship\View\ShowAlertLevel\ShowAlertLevel;
@@ -208,6 +210,7 @@ return [
     JoinFleetRequestInterface::class => autowire(JoinFleetRequest::class),
     ShipLoaderInterface::class => autowire(ShipLoader::class),
     PriorizeFleetRequestInterface::class => autowire(PriorizeFleetRequest::class),
+    WarpcoreUtilInterface::class => autowire(WarpcoreUtil::class),
     'SHIP_ACTIONS' => [
         DisplayNotOwner::ACTION_IDENTIFIER => autowire(DisplayNotOwner::class),
         CreateFleet::ACTION_IDENTIFIER => autowire(CreateFleet::class),
