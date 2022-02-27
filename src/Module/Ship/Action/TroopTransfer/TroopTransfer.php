@@ -318,7 +318,7 @@ final class TroopTransfer implements ActionControllerInterface
     ): int {
         $amount = min(
             $requestedTransferCount,
-            $target->getCrewCount(),
+            $target->getCrewCount() - $this->transferUtility->foreignerCount($target),
             $this->transferUtility->getFreeQuarters($ship),
             $isUplinkSituation ? $ownForeignerCount : PHP_INT_MAX
         );
