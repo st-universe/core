@@ -219,7 +219,7 @@ final class ManageShips implements ActionControllerInterface
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
                 if ($this->storageContainsNeededCommodities($storage)) {
-                    $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : $wk[$shipobj->getId()];
+                    $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$wk[$shipobj->getId()];
                     $loadMessage = $this->warpcoreUtil->loadWarpcore($shipobj, $load, null, $station);
 
                     if ($loadMessage !== null) {
