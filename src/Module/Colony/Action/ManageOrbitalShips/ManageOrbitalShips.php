@@ -226,7 +226,7 @@ final class ManageOrbitalShips implements ActionControllerInterface
                 $shipobj->setAlertStateGreen();
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if ($this->storageContainsNeededCommodities($storage)) {
+                if ($this->warpcoreUtil->storageContainsNeededCommodities($storage)) {
                     $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$wk[$shipobj->getId()];
                     $loadMessage = $this->warpcoreUtil->loadWarpcore($shipobj, $load, $colony);
 
@@ -376,17 +376,6 @@ final class ManageOrbitalShips implements ActionControllerInterface
         $this->colonyRepository->save($colony);
 
         $game->addInformationMerge($msg);
-    }
-
-    private function storageContainsNeededCommodities($storage): bool
-    {
-        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
-            if (!$storage->containsKey($commodityId)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public function performSessionCheck(): bool

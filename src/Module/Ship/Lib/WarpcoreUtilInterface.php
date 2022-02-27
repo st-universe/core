@@ -7,6 +7,8 @@ use Stu\Orm\Entity\ShipInterface;
 
 interface WarpcoreUtilInterface
 {
+    public function storageContainsNeededCommodities($storage): bool;
+
     public function loadWarpcore(
         ShipInterface $ship,
         int $additionalLoad,

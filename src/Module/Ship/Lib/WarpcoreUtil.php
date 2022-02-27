@@ -35,6 +35,17 @@ final class WarpcoreUtil implements WarpcoreUtilInterface
         $this->privateMessageSender = $privateMessageSender;
     }
 
+    public function storageContainsNeededCommodities($storage): bool
+    {
+        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
+            if (!$storage->containsKey($commodityId)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function loadWarpcore(
         ShipInterface $ship,
         int $additionalLoad,
@@ -56,12 +67,19 @@ final class WarpcoreUtil implements WarpcoreUtilInterface
         if ($loadUnits < 1) {
             return null;
         }
-        $shipStorage = $ship->getStorage();
+
+        if ($colony !== null) {
+            $storage = $colony->getStorage();
+        } else if ($station !== null) {
+            $storage = $station->getStorage();
+        } else {
+            $storage = $ship->getStorage();
+        }
 
         // check for ressource limitation
         foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadUnitsCost) {
-            if ($shipStorage[$commodityId]->getAmount() < ($loadUnits * $loadUnitsCost)) {
-                $loadUnits = (int) ($shipStorage[$commodityId]->getAmount() / $loadUnitsCost);
+            if ($storage[$commodityId]->getAmount() < ($loadUnits * $loadUnitsCost)) {
+                $loadUnits = (int) ($storage[$commodityId]->getAmount() / $loadUnitsCost);
             }
         }
 
@@ -70,19 +88,19 @@ final class WarpcoreUtil implements WarpcoreUtilInterface
             if ($colony !== null) {
                 $this->colonyStorageManager->lowerStorage(
                     $colony,
-                    $this->commodityRepository->find($commodityId),
+                    $storage[$commodityId]->getCommodity(),
                     $loadCost * $loadUnits
                 );
             } else if ($station !== null) {
                 $this->shipStorageManager->lowerStorage(
                     $station,
-                    $this->commodityRepository->find($commodityId),
+                    $storage[$commodityId]->getCommodity(),
                     $loadCost * $loadUnits
                 );
             } else {
                 $this->shipStorageManager->lowerStorage(
                     $ship,
-                    $shipStorage[$commodityId]->getCommodity(),
+                    $storage[$commodityId]->getCommodity(),
                     $loadCost * $loadUnits
                 );
             }

@@ -218,7 +218,7 @@ final class ManageShips implements ActionControllerInterface
                 $shipobj->setAlertStateGreen();
             }
             if (isset($wk[$shipobj->getId()]) && $wk[$shipobj->getId()] > 0) {
-                if ($this->storageContainsNeededCommodities($storage)) {
+                if ($this->warpcoreUtil->storageContainsNeededCommodities($storage)) {
                     $load = $wk[$shipobj->getId()] == 'm' ? PHP_INT_MAX : (int)$wk[$shipobj->getId()];
                     $loadMessage = $this->warpcoreUtil->loadWarpcore($shipobj, $load, null, $station);
 
@@ -356,17 +356,6 @@ final class ManageShips implements ActionControllerInterface
         $this->shipRepository->save($station);
 
         $game->addInformationMerge($msg);
-    }
-
-    private function storageContainsNeededCommodities($storage): bool
-    {
-        foreach (ShipEnum::WARPCORE_LOAD_COST as $commodityId => $loadCost) {
-            if (!$storage->containsKey($commodityId)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public function performSessionCheck(): bool
