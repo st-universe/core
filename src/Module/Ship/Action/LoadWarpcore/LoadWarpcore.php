@@ -88,8 +88,13 @@ final class LoadWarpcore implements ActionControllerInterface
             $game->addInformation(_('Der Warpkern ist bereits vollständig geladen'));
             return;
         }
-        $loadMessage = $this->warpcoreUtil->loadWarpCore($ship, $requestedLoad);
-        if ($loadMessage === null) {
+        if ($this->warpcoreUtil->storageContainsNeededCommodities($ship->getStorage())) {
+            $loadMessage = $this->warpcoreUtil->loadWarpCore($ship, $requestedLoad);
+
+            if ($loadMessage !== null) {
+                $game->addInformation($loadMessage);
+            }
+        } else {
             $game->addInformation(
                 _('Es werden mindestens folgende Waren zum Aufladen des Warpkerns benötigt:')
             );
@@ -97,8 +102,6 @@ final class LoadWarpcore implements ActionControllerInterface
                 $game->addInformation(sprintf(_('%d %s'), $loadCost, CommodityTypeEnum::getDescription($commodityId)));
             }
             return;
-        } else {
-            $game->addInformation($loadMessage);
         }
     }
 

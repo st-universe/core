@@ -41,6 +41,9 @@ final class WarpcoreUtil implements WarpcoreUtilInterface
             if (!$storage->containsKey($commodityId)) {
                 return false;
             }
+            if ($storage->get($commodityId)->getAmount() < $loadCost) {
+                return false;
+            }
         }
 
         return true;
