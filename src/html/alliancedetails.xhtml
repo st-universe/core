@@ -20,16 +20,16 @@
 						<a href="alliance.php?B_SIGNUP_ALLIANCE=1&id=${ALLIANCE/getId}&sstr=${THIS/getSessionString}"
 							class="linkbutton">Bewerben</a>
 					</div>
-					<div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
-						<a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}"
-							class="linkbutton">Allianz verlassen</a>
-					</div>
-				</div>
-				<div style="padding-top: 10px; width: 50%; text-align: right; float: left">
 					<a tal:condition="php:THIS.getUser().getAllianceId() EQ ALLIANCE.getId()"
 						href="alliance.php?SHOW_BOARDS=1" class="linkbutton">Forum</a>
 					<div style="margin-top: 10px" tal:condition="CAN_MANAGE_FOREIGN_RELATIONS">
 						<a href="alliance.php?SHOW_RELATIONS=1" class="linkbutton">Diplomatie</a>
+					</div>
+				</div>
+				<div style="padding-top: 10px; width: 50%; text-align: right; float: left">
+					<div style="margin-top: 10px" tal:condition="CAN_LEAVE_ALLIANCE">
+						<a href="alliance.php?B_LEAVE_ALLIANCE=1&sstr=${THIS/getSessionString}"
+							class="linkbutton">Allianz verlassen</a>
 					</div>
 				</div>
 				<br style="clear: both;" />
