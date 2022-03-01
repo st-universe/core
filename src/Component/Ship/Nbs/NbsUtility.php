@@ -83,8 +83,7 @@ final class NbsUtility implements NbsUtilityInterface
 
             $game->setTemplateVar(
                 'CLOAK_NBS',
-                !$tachyonActive
-                    && $ship->getTachyonState()
+                ($tachyonActive || $ship->getTachyonState())
                     && $this->shipRepository->isCloakedShipAtLocation($sysMapId, $mapId, $ship->getUser()->getId())
             );
             $game->setTemplateVar('FLEET_NBS', $fleetNbs);
