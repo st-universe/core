@@ -933,6 +933,10 @@
         <td>Energie</td>
         <td>${targetShip/getEps}</td>
       </tr>
+      <tr>
+        <td>Ersatzbatterie</td>
+        <td>${targetShip/getEBatt}</td>
+      </tr>
       <tr tal:condition="targetShip/getBuildplan">
         <td>verbaute Module</td>
         <td><img tal:repeat="mod targetShip/getModules" style="margin-right: 5px;"
