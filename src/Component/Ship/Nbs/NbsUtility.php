@@ -81,15 +81,7 @@ final class NbsUtility implements NbsUtilityInterface
                 $fleetNbs->count() > 0 || $stationNbs->count() > 0 || $singleShipsNbs->count() > 0
             );
 
-            $game->setTemplateVar(
-                'CLOAK_NBS',
-                ($tachyonActive || $ship->getTachyonState())
-                    && $this->shipRepository->isCloakedShipAtLocation(
-                        $sysMapId ?? ($ship->getStarsystemMap() !== null ? $ship->getStarsystemMap()->getId() : null),
-                        $mapId ?? ($ship->getMap() !== null ? $ship->getMap()->getId() : null),
-                        $ship->getUser()->getId()
-                    )
-            );
+            $game->setTemplateVar('CLOAK_NBS', $this->showCloakedShipInfo($ship, $tachyonActive));
             $game->setTemplateVar('FLEET_NBS', $fleetNbs);
             $game->setTemplateVar('STATION_NBS', $stationNbs->count() > 0 ? $stationNbs : null);
             $game->setTemplateVar('SHIP_NBS', $singleShipsNbs->count() > 0 ? $singleShipsNbs : null);
@@ -100,5 +92,16 @@ final class NbsUtility implements NbsUtilityInterface
             $game->setTemplateVar('STATION_NBS', null);
             $game->setTemplateVar('SHIP_NBS', null);
         }
+    }
+
+    private function showCloakedShipInfo(ShipInterface $ship, bool $tachyonActive): bool
+    {
+        return !$tachyonActive
+            && $ship->getTachyonState()
+            && $this->shipRepository->isCloakedShipAtLocation(
+                $sysMapId ?? ($ship->getStarsystemMap() !== null ? $ship->getStarsystemMap()->getId() : null),
+                $mapId ?? ($ship->getMap() !== null ? $ship->getMap()->getId() : null),
+                $ship->getUser()->getId()
+            );
     }
 }
