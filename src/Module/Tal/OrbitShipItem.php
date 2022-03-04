@@ -52,6 +52,11 @@ final class OrbitShipItem implements OrbitShipItemInterface
         return $this->ship->getRumpId();
     }
 
+    public function getFormerRumpId(): int
+    {
+        return $this->ship->getFormerRumpId();
+    }
+
     public function getRumpName(): string
     {
         return $this->ship->getRumpName();

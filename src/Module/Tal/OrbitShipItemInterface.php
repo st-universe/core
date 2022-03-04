@@ -18,6 +18,8 @@ interface OrbitShipItemInterface
 
     public function getRumpId(): int;
 
+    public function getFormerRumpId(): int;
+
     public function getRumpName(): string;
 
     public function getHull(): int;
