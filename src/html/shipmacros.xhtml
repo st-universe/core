@@ -283,10 +283,15 @@
   </tr>
 </metal:macro>
 <metal:macro metal:define-macro="shipimage">
-  <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
-    tal:attributes="title ship/getRumpName" />
-  <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
-    tal:attributes="title ship/getRumpName" />
+  <tal:block tal:conditon="ship/getRump/isTrumfield">
+    <img src="assets/ships/wrack/${ship/getFormerRumpId}.png" tal:attributes="title ship/getRumpName" />
+  </tal:block>
+  <tal:block tal:conditon="not:ship/getRump/isTrumfield">
+    <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
+      tal:attributes="title ship/getRumpName" />
+    <img tal:condition="not:ship/getCloakState" src="assets/ships/${ship/getRumpId}.png"
+      tal:attributes="title ship/getRumpName" />
+  </tal:block>
 </metal:macro>
 <metal:macro metal:define-macro="shipimagenameastitle">
   <img tal:condition="ship/getCloakState" src="assets/ships/${ship/getRumpId}_cloaked.png" style="opacity:0.55;"
