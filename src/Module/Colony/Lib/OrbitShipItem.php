@@ -130,6 +130,11 @@ final class OrbitShipItem implements OrbitShipItemInterface
         return $this->ship->getFormerRumpId();
     }
 
+    public function isTrumfield(): bool
+    {
+        return $this->ship->isTrumfield();
+    }
+
     public function getRumpName(): string
     {
         return $this->ship->getRump()->getName();
