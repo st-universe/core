@@ -84,6 +84,10 @@ final class ShipNfsItem
     {
         return $this->values['rumpid'];
     }
+    public function getFormerRumpId()
+    {
+        return $this->values['formerrumpid'];
+    }
     public function getRumpName()
     {
         return $this->values['rumpname'];
