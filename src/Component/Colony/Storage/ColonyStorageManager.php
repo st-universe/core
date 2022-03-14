@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stu\Component\Colony\Storage;
 
+use Stu\Component\Colony\Storage\Exception\CommodityMissingException;
+use Stu\Component\Colony\Storage\Exception\QuantityTooSmallException;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ColonyInterface;
@@ -30,13 +32,22 @@ final class ColonyStorageManager implements ColonyStorageManagerInterface
 
         $stor = $storage[$commodity->getId()] ?? null;
         if ($stor === null) {
-            throw new Exception\CommodityMissingException();
+            throw new CommodityMissingException();
         }
 
         $storedAmount = $stor->getAmount();
 
         if ($storedAmount < $amount) {
-            throw new Exception\QuantityTooSmallException();
+            throw new QuantityTooSmallException(
+                sprintf(
+                    _('Tried to lower commodityId %d (%s) on colonyId %d by %d, but only %d stored.'),
+                    $commodity->getId(),
+                    $commodity->getName(),
+                    $colony->getId(),
+                    $amount,
+                    $storedAmount
+                )
+            );
         }
 
         $colony->clearCache();
