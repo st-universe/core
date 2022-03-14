@@ -43,8 +43,8 @@ return [
             autowire(Handler\PrivateMessageDeletionHandler::class),
             autowire(Handler\KnPostDeletionHandler::class),
             autowire(Handler\RpgPlotDeletionHandler::class),
-            autowire(Handler\FleetDeletionHandler::class),
             autowire(Handler\ShipDeletionHandler::class),
+            autowire(Handler\FleetDeletionHandler::class),
             autowire(Handler\UserDeletionHandler::class)
         ]
     ),
