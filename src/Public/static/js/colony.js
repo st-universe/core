@@ -186,6 +186,17 @@ function triggerBeamFrom() {
 	ajax_update(elt, 'colony.php?id=' + colonyid + '&SHOW_BEAMFROM=1&target=' + shipid);
 }
 
+function toggleMaxEmpty(elem, max) {
+	var input = elem.up('tr').down('.goodAmount');
+	var value = input.value;
+
+	if (value) {
+		input.value = '';
+	} else {
+		input.value = max;
+	}
+}
+
 function initBuildmenuMouseEvent() {
 	onmousewheel($('buildmenu1'), function (delta) {
 		scrollBuildmenuByMouse(1, delta);
