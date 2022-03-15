@@ -58,13 +58,19 @@ final class ProjectileWeaponPhase implements ProjectileWeaponPhaseInterface
                 break;
             }
             $target = $targetPool[array_rand($targetPool)];
-            if (!$attacker->getTorpedos() || $attacker->getEps() < $this->getProjectileWeaponEnergyCosts()) {
+            if (
+                !$attacker->getTorpedos() ||
+                $attacker->getEps() < $this->getProjectileWeaponEnergyCosts() ||
+                $attacker->getTorpedoCount() === 0
+            ) {
                 break;
             }
             $attacker->setTorpedoCount($attacker->getTorpedoCount() - 1);
 
             if ($attacker->getTorpedoCount() === 0) {
-                $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
+                if ($attacker instanceof ShipInterface) {
+                    $this->shipSystemManager->deactivate($attacker, ShipSystemTypeEnum::SYSTEM_TORPEDO, true);
+                }
             }
 
             $attacker->setEps($attacker->getEps() - $this->getProjectileWeaponEnergyCosts());
