@@ -97,7 +97,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
 
         // probabilities
         $chance = rand(1, 100);
-        if ($chance < (int)(11 * $ratio)) {
+        if ($chance < (int)ceil(11 * $ratio)) {
             $this->escape($ship, $game);
         } elseif ($chance < 55) {
             $this->sufferDeflectorDamage($ship, $game);
@@ -119,6 +119,7 @@ final class EscapeTractorBeam implements ActionControllerInterface
     {
         $tractoringShip = $ship->getTractoringShip();
 
+        $tractoringShip->getShipSystem(ShipSystemTypeEnum::SYSTEM_TRACTOR_BEAM)->setStatus(0);
         $tractoringShip->deactivateTractorBeam(); // forced active deactivation
 
         $this->shipRepository->save($tractoringShip);
