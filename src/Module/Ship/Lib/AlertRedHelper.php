@@ -258,6 +258,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
             $attacker = [$alertShip->getId() => $alertShip];
         }
         if ($leadShip->isFleetLeader()) {
+            $this->loggerUtil->log('leadShip is FleetLeader');
             $defender = [];
 
             // only uncloaked ships enter fight
