@@ -60,7 +60,7 @@ final class AlertRedHelper implements AlertRedHelperInterface
                 break;
             }
 
-            $this->performAttackCycle($alertShip, $ship, $informations);
+            $this->performAttackCycle($alertShip, $leader, $informations);
         }
 
         if ($game !== null) {
