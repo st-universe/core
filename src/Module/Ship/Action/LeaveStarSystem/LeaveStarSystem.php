@@ -222,6 +222,9 @@ final class LeaveStarSystem implements ActionControllerInterface
             $game->addInformation(sprintf(_('Die %s hat die Kartographierungs-Finalisierung abgebrochen'), $ship->getName()));
         }
 
+        $ship->setDockedTo(null);
+        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
+
         $ship->setMap($map);
         $ship->setStarsystemMap(null);
     }

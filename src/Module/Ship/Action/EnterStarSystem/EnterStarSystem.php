@@ -6,6 +6,7 @@ namespace Stu\Module\Ship\Action\EnterStarSystem;
 
 use request;
 use Stu\Component\Ship\ShipEnum;
+use Stu\Component\Ship\ShipStateEnum;
 use Stu\Component\Ship\System\ShipSystemManagerInterface;
 use Stu\Component\Ship\System\ShipSystemTypeEnum;
 use Stu\Component\Ship\System\Exception\AlreadyOffException;
@@ -217,6 +218,7 @@ final class EnterStarSystem implements ActionControllerInterface
         $ship->setStarsystemMap($starsystemMap);
         $ship->setMap(null);
         $ship->setDockedTo(null);
+        $ship->setState(ShipStateEnum::SHIP_STATE_NONE);
 
         $this->shipRepository->save($ship);
     }
