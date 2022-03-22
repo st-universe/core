@@ -210,18 +210,7 @@ final class ShipMover implements ShipMoverInterface
         $this->determineFleetMode($leadShip);
         $flightMethod = $this->determineFlightMethod($leadShip);
 
-        $ships[] = $leadShip;
-        if ($this->isFleetMode()) {
-            $ships = array_merge(
-                $ships,
-                array_filter(
-                    $leadShip->getFleet()->getShips()->toArray(),
-                    function (ShipInterface $ship) use ($leadShip): bool {
-                        return $ship !== $leadShip;
-                    }
-                )
-            );
-        }
+        $ships = $this->alertRedHelper->getShips($leadShip);
 
         $this->getReadyForFlight($leadShip, $ships);
         $this->initTractoredShips($ships);
@@ -332,7 +321,7 @@ final class ShipMover implements ShipMoverInterface
                 $fleetShip->isTractoring() &&
                 !array_key_exists($fleetShip->getId(), $this->lostShips)
             ) {
-                $this->tractoredShips[$fleetShip->getId()] = [$fleetShip, $fleetShip->getTractoredShip()];
+                $this->tractoredShips[$fleetShip->getTractoredShip()->getId()] = [$fleetShip, $fleetShip->getTractoredShip()];
             }
         }
     }
@@ -630,7 +619,7 @@ final class ShipMover implements ShipMoverInterface
     private function deactivateTractorBeam(ShipInterface $ship, string $msg)
     {
         $this->addInformation($msg);
-        unset($this->tractoredShips[$ship->getId()]);
+        unset($this->tractoredShips[$ship->getTractoredShip()->getId()]);
         $ship->deactivateTractorBeam(); //active deactivation
     }
 

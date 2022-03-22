@@ -43,7 +43,16 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
         shuffle($shipsToShuffle);
+
+        $ships = $this->getShips($ship);
+
         foreach ($shipsToShuffle as $alertShip) {
+            $leader = $this->getLeader($ships);
+
+            if ($leader === null) {
+                break;
+            }
+
             $this->performAttackCycle($alertShip, $ship, $informations);
         }
 
@@ -53,6 +62,44 @@ final class AlertRedHelper implements AlertRedHelperInterface
         } else {
             return $informations;
         }
+    }
+
+    private function getLeader(array $ships): ?ShipInterface
+    {
+        $nonDestroyedShips = [];
+
+        foreach ($ships as $ship) {
+            if (!$ship->getIsDestroyed()) {
+                if ($ship->isFleetLeader()) {
+                    return $ship;
+                }
+                $nonDestroyedShips[] = $ship;
+            }
+        }
+
+        if (!empty($nonDestroyedShips)) {
+            return current($nonDestroyedShips);
+        }
+
+        return null;
+    }
+
+    public function getShips(ShipInterface $leadShip): array
+    {
+        $ships[] = $leadShip;
+        if ($leadShip->getFleet() !== null) {
+            $ships = array_merge(
+                $ships,
+                array_filter(
+                    $leadShip->getFleet()->getShips()->toArray(),
+                    function (ShipInterface $ship) use ($leadShip): bool {
+                        return $ship !== $leadShip;
+                    }
+                )
+            );
+        }
+
+        return $ships;
     }
 
     public function checkForAlertRedShips(ShipInterface $leadShip, &$informations, ?ShipInterface $tractoringShip = null): array
