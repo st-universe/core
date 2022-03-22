@@ -39,6 +39,8 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
     public function doItAll(ShipInterface $ship, ?GameControllerInterface $game, ?ShipInterface $tractoringShip = null): array
     {
+        $this->loggerUtil->init('ARH', LoggerEnum::LEVEL_ERROR);
+
         $informations = [];
 
         $shipsToShuffle = $this->checkForAlertRedShips($ship, $informations, $tractoringShip);
@@ -271,6 +273,9 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
             $defender = [$leadShip->getId() => $leadShip];
         }
+
+        $this->loggerUtil->log(sprintf('before_shipAttackCycle, attackerCount: %d, defenderCount: %d', count($attacker), count($defender)));
+
         $this->shipAttackCycle->init($attacker, $defender);
         $this->shipAttackCycle->cycle(true);
         $messages = $this->shipAttackCycle->getMessages();
