@@ -50,6 +50,11 @@ final class AlertRedHelper implements AlertRedHelperInterface
 
         foreach ($shipsToShuffle as $alertShip) {
             $leader = $this->getLeader($ships);
+            if ($leader !== null) {
+                $this->loggerUtil->log(sprintf('leaderId: %d', $leader->getId()));
+            } else {
+                $this->loggerUtil->log('leader is null');
+            }
 
             if ($leader === null) {
                 break;
