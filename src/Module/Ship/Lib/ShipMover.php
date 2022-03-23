@@ -321,7 +321,7 @@ final class ShipMover implements ShipMoverInterface
                 $fleetShip->isTractoring() &&
                 !array_key_exists($fleetShip->getId(), $this->lostShips)
             ) {
-                $this->tractoredShips[$fleetShip->getTractoredShip()->getId()] = [$fleetShip, $fleetShip->getTractoredShip()];
+                $this->tractoredShips[$fleetShip->getId()] = [$fleetShip, $fleetShip->getTractoredShip()];
             }
         }
     }
@@ -619,7 +619,7 @@ final class ShipMover implements ShipMoverInterface
     private function deactivateTractorBeam(ShipInterface $ship, string $msg)
     {
         $this->addInformation($msg);
-        unset($this->tractoredShips[$ship->getTractoredShip()->getId()]);
+        unset($this->tractoredShips[$ship->getId()]);
         $ship->deactivateTractorBeam(); //active deactivation
     }
 
