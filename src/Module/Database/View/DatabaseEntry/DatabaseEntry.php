@@ -61,18 +61,19 @@ final class DatabaseEntry implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $entry_id = $this->databaseEntryRequest->getEntryId();
-        $category_id = $this->databaseEntryRequest->getCategoryId();
+        $userId = $game->getUser()->getId();
+        $entryId = $this->databaseEntryRequest->getEntryId();
+        $categoryId = $this->databaseEntryRequest->getCategoryId();
+
+        if (!$this->databaseUserRepository->exists($userId, $entryId)) {
+            throw new AccessViolation(sprintf(_('userId %d tried to open databaseEntryId %d, but has not discovered it yet!'), $userId, $entryId));
+        }
 
         /**
          * @var DatabaseEntryInterface $entry
          */
-        $entry = $this->databaseEntryRepository->find($entry_id);
-        $category = $this->databaseCategoryRepository->find($category_id);
-
-        if ($this->databaseUserRepository->exists((int)$game->getUser()->getId(), $entry->getId()) === false) {
-            throw new AccessViolation();
-        }
+        $entry = $this->databaseEntryRepository->find($entryId);
+        $category = $this->databaseCategoryRepository->find($categoryId);
 
         $entry_name = $entry->getDescription();
 
@@ -84,7 +85,7 @@ final class DatabaseEntry implements ViewControllerInterface
             sprintf(
                 'database.php?%s=1&cat=%d',
                 Category::VIEW_IDENTIFIER,
-                $category_id,
+                $categoryId,
             ),
             $category->getDescription()
         );
@@ -92,8 +93,8 @@ final class DatabaseEntry implements ViewControllerInterface
             sprintf(
                 'database.php?%s=1&cat=%d&ent=%d',
                 static::VIEW_IDENTIFIER,
-                $category_id,
-                $entry_id,
+                $categoryId,
+                $entryId,
             ),
             sprintf(
                 _('Eintrag: %s'),
