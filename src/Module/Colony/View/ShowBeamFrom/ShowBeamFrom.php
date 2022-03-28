@@ -50,8 +50,12 @@ final class ShowBeamFrom implements ViewControllerInterface
             return;
         }
 
-        if (!$this->positionChecker->checkColonyPosition($colony, $target) || ($target->getCloakState() && $target->getUser() !== $user)) {
-            throw new AccessViolation();
+        if (!$this->positionChecker->checkColonyPosition($colony, $target)) {
+            throw new AccessViolation(sprintf(_('Target-shipId %d is not at same position as colonyId %d'), $target->getId(), $colony->getId()));
+        }
+
+        if (($target->getCloakState() && $target->getUser() !== $user)) {
+            throw new AccessViolation(sprintf(_('Target-shipId %d is cloaked, colonyId %d'), $target->getId(), $colony->getId()));
         }
 
         $game->setPageTitle(_('Von Schiff beamen'));
