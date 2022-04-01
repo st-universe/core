@@ -40,7 +40,7 @@ class SignaturePanel
         // @todo refactor
         global $container;
 
-        return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystem(
+        return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfUser(
             $this->data['minx'],
             $this->data['maxx'],
             $this->data['miny'],

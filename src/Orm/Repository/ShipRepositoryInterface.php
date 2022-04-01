@@ -133,7 +133,7 @@ interface ShipRepositoryInterface extends ObjectRepository
 
     public function getSensorResultOuterSystem(int $cx, int $cy, int $sensorRange, bool $doSubspace, $ignoreId): iterable;
 
-    public function getSignaturesOuterSystem(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable;
+    public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable;
 
     /**
      * @return ShipInterface[]
