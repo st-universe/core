@@ -71,6 +71,7 @@ final class CreateBuildplan implements ActionControllerInterface
         if ($rump === null) {
             $this->loggerUtil->log('A');
             $this->exitOnError($game);
+            return;
         }
         $this->loggerUtil->log('B');
 
@@ -91,6 +92,7 @@ final class CreateBuildplan implements ActionControllerInterface
                 );
                 $this->loggerUtil->log('C');
                 $this->exitOnError($game);
+                return;
             }
             if ($i === ShipModuleTypeEnum::MODULE_TYPE_SPECIAL) {
                 $specialCount = 0;
@@ -107,6 +109,7 @@ final class CreateBuildplan implements ActionControllerInterface
                     $game->addInformation(_('Mehr Spezial-Module als der Rumpf gestattet'));
                     $this->loggerUtil->log('D');
                     $this->exitOnError($game);
+                    return;
                 }
                 continue;
             }
@@ -125,6 +128,7 @@ final class CreateBuildplan implements ActionControllerInterface
             } else {
                 if (!$rump->getModuleLevels()->{'getModuleLevel' . $i}()) {
                     $this->exitOnError($game);
+                    return;
                 }
             }
             $modules[current($module)] = $mod;
@@ -135,6 +139,7 @@ final class CreateBuildplan implements ActionControllerInterface
             $game->addInformation(_('Crew-Maximum wurde überschritten'));
             $this->loggerUtil->log('F');
             $this->exitOnError($game);
+            return;
         }
         $this->loggerUtil->log('G');
         $signature = ShipBuildplan::createSignature($sigmod, $crew_usage);
