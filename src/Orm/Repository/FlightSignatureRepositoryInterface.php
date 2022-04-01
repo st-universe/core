@@ -18,6 +18,8 @@ interface FlightSignatureRepositoryInterface extends ObjectRepository
 
     public function getSignatureRangeForUser(int $userId): array;
 
+    public function getSignatureRangeForAlly(int $allyId): array;
+
     /**
      * @return FlightSignatureInterface[]
      */

@@ -42,7 +42,12 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->showMacro('html/admin/adminmacros.xhtml/signaturescan');
 
-        $result = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
+        if ($shipId) {
+        } else if ($userId) {
+            $result = $this->flightSignatureRepository->getSignatureRangeForUser($userId);
+        } else if ($allyId) {
+            $result = $this->flightSignatureRepository->getSignatureRangeForAlly($allyId);
+        }
 
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $userId,
