@@ -57,7 +57,7 @@ class SignaturePanel
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
-                $this->userId
+                $this->allyId
             );
         }
     }
