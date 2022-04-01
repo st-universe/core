@@ -41,4 +41,6 @@ interface ShipBuildplanRepositoryInterface extends ObjectRepository
      * @return ShipBuildplanInterface[]
      */
     public function getByUser(int $userId): array;
+
+    public function findByUserAndName(int $userId, string $name): ?ShipBuildplanInterface;
 }

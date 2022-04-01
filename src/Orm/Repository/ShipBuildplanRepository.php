@@ -146,4 +146,12 @@ final class ShipBuildplanRepository extends EntityRepository implements ShipBuil
             'user_id' => $userId
         ]);
     }
+
+    public function findByUserAndName(int $userId, string $name): ?ShipBuildplanInterface
+    {
+        return $this->findOneBy([
+            'user_id' => $userId,
+            'name' => $name
+        ]);
+    }
 }

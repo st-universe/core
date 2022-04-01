@@ -29,6 +29,7 @@ final class RenameBuildplan implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
         $game->setView(ShowModuleScreenBuildplan::VIEW_IDENTIFIER);
 
         $newName = CleanTextUtils::clearEmojis($this->renameBuildplanRequest->getNewName());
@@ -41,9 +42,13 @@ final class RenameBuildplan implements ActionControllerInterface
             return;
         }
 
-        $plan = $this->shipBuildplanRepository->find($this->renameBuildplanRequest->getId());
+        if ($this->shipBuildplanRepository->findByUserAndName($userId, $newName) !== null) {
+            $game->addInformation(_('Ein Bauplan mit diesem Namen existiert bereits'));
+            return;
+        }
 
-        if ($plan === null || $plan->getUserId() !== $game->getUser()->getId()) {
+        $plan = $this->shipBuildplanRepository->find($this->renameBuildplanRequest->getId());
+        if ($plan === null || $plan->getUserId() !== $userId) {
             throw new AccessViolation();
         }
 
