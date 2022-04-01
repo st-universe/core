@@ -86,7 +86,7 @@ class SignaturePanelEntry
 
     function getCacheValue()
     {
-        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount() . "_" . $this->isClickAble();
+        return $this->getPosX() . "_" . $this->getPosY() . "_" . $this->getMapfieldType() . "_" . $this->getDisplayCount();
     }
 
     public $currentShipPosX = null;
@@ -108,11 +108,6 @@ class SignaturePanelEntry
     function getCSSClass()
     {
         return $this->cssClass;
-    }
-
-    function isClickAble()
-    {
-        return false;
     }
 
     function getOnClick()
