@@ -51,6 +51,7 @@ final class ShowSignatures implements ViewControllerInterface
 
         $game->setTemplateVar('SIGNATURE_PANEL', new SignaturePanel(
             $userId,
+            $allyId,
             current($result),
             $this->loggerUtilFactory->getLoggerUtil()
         ));

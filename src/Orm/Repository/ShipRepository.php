@@ -594,7 +594,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         ])->getResult();
     }
 
-    private const ADMIN_SIGNATURE_MAP_COUNT =
+    private const ADMIN_SIGNATURE_MAP_COUNT_USER =
     ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
     where fs1.map_id = a.id
     AND fs1.user_id = %1$d
@@ -641,7 +641,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
                 LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
                 WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
                 GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
-                sprintf(self::ADMIN_SIGNATURE_MAP_COUNT, $userId, 0)
+                sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_USER, $userId, 0)
             ),
             $rsm
         )->setParameters([
@@ -650,6 +650,70 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
             'syStart' => $miny,
             'syEnd' => $maxy,
             'userId' => $userId
+        ])->getResult();
+    }
+
+    private const ADMIN_SIGNATURE_MAP_COUNT_ALLY =
+    ',(select count(distinct fs1.ship_id) from stu_flight_sig fs1
+    JOIN stu_user u1 ON fs1.user_id = u1.id
+    WHERE fs1.map_id = a.id
+    AND u1.allys_id = %1$d
+    AND (fs1.from_direction = 1 OR fs1.to_direction = 1)
+    AND fs1.time > %2$d) as d1c,
+    (select count(distinct fs2.ship_id) from stu_flight_sig fs2
+    JOIN stu_user u2 ON fs2.user_id = u2.id
+    WHERE fs2.map_id = a.id
+    AND u2.allys_id = %1$d
+    AND (fs2.from_direction = 2 OR fs2.to_direction = 2)
+    AND fs2.time > %2$d) as d2c,
+    (select count(distinct fs3.ship_id) from stu_flight_sig fs3
+    JOIN stu_user u3 ON fs3.user_id = u3.id
+    WHERE fs3.map_id = a.id
+    AND u3.allys_id = %1$d
+    AND (fs3.from_direction = 3 OR fs3.to_direction = 3)
+    AND fs3.time > %2$d) as d3c,
+    (select count(distinct fs4.ship_id) from stu_flight_sig fs4
+    JOIN stu_user u4 ON fs4.user_id = u4.id
+    WHERE fs4.map_id = a.id
+    AND u4.allys_id = %1$d
+    AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
+    AND fs4.time > %2$d) as d4c ';
+
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('posx', 'posx', 'integer');
+        $rsm->addScalarResult('posy', 'posy', 'integer');
+        $rsm->addScalarResult('shipcount', 'shipcount', 'integer');
+        $rsm->addScalarResult('type', 'type', 'integer');
+
+        $rsm->addScalarResult('d1c', 'd1c', 'integer');
+        $rsm->addScalarResult('d2c', 'd2c', 'integer');
+        $rsm->addScalarResult('d3c', 'd3c', 'integer');
+        $rsm->addScalarResult('d4c', 'd4c', 'integer');
+
+        return $this->getEntityManager()->createNativeQuery(
+            sprintf(
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                    (SELECT count(distinct b.id)
+                        FROM stu_ships b
+                        JOIN stu_user u ON b.user_id = u.id
+                        WHERE b.cx=a.cx AND b.cy=a.cy
+                        AND u.allys_id = :allyId) as shipcount
+                %s 
+                FROM stu_map a
+                LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
+                sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_ALLY, $allyId, 0)
+            ),
+            $rsm
+        )->setParameters([
+            'sxStart' => $minx,
+            'sxEnd' => $maxx,
+            'syStart' => $miny,
+            'syEnd' => $maxy,
+            'allyId' => $allyId
         ])->getResult();
     }
 

@@ -9,18 +9,21 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class SignaturePanel
 {
-    private int $userId;
+    private ?int $userId;
+    private ?int $allyId;
 
     private $data = array();
 
     private LoggerUtilInterface $loggerUtil;
 
     function __construct(
-        int $userId,
+        ?int $userId,
+        ?int $allyId,
         &$entry = array(),
         LoggerUtilInterface $loggerUtil
     ) {
         $this->userId = $userId;
+        $this->allyId = $allyId;
         $this->data = $entry;
         $this->loggerUtil = $loggerUtil;
     }
@@ -40,13 +43,23 @@ class SignaturePanel
         // @todo refactor
         global $container;
 
-        return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfUser(
-            $this->data['minx'],
-            $this->data['maxx'],
-            $this->data['miny'],
-            $this->data['maxy'],
-            $this->userId
-        );
+        if ($this->userId !== null) {
+            return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfUser(
+                $this->data['minx'],
+                $this->data['maxx'],
+                $this->data['miny'],
+                $this->data['maxy'],
+                $this->userId
+            );
+        } else if ($this->allyId !== null) {
+            return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfAlly(
+                $this->data['minx'],
+                $this->data['maxx'],
+                $this->data['miny'],
+                $this->data['maxy'],
+                $this->userId
+            );
+        }
     }
 
     function loadLSS()
