@@ -58,9 +58,13 @@ final class TransferGoods implements ActionControllerInterface
             return;
         }
 
-        $selectedStorage = $this->tradeStorageRepository->find($this->transferGoodsRequest->getStorageId());
-        if ($selectedStorage === null || $selectedStorage->getUserId() !== $userId) {
-            throw new AccessViolation();
+        $storageId = $this->transferGoodsRequest->getStorageId();
+        $selectedStorage = $this->tradeStorageRepository->find($storageId);
+        if ($selectedStorage === null) {
+            throw new AccessViolation(sprintf(_('userId %d tried to transfer non-existent storageId %d'), $userId, $storageId));
+        }
+        if ($selectedStorage->getUserId() !== $userId) {
+            throw new AccessViolation(sprintf(_('userId %d tried to transfer foreign storageId %d'), $userId, $storageId));
         }
 
         $tradepost = $selectedStorage->getTradePost();
