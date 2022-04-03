@@ -40,14 +40,18 @@ final class Topic implements ViewControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
+        $userId = $game->getUser()->getId();
         $alliance = $game->getUser()->getAlliance();
         $topicId = $this->topicRequest->getTopicId();
         $allianceId = $alliance->getId();
 
         /** @var AllianceBoardTopicInterface $topic */
         $topic = $this->allianceBoardTopicRepository->find($topicId);
-        if ($topic === null || $topic->getAllianceId() != $allianceId) {
-            throw new AccessViolation();
+        if ($topic === null) {
+            throw new AccessViolation(sprintf(_('userId %d tried to access non-existent topicId %d'), $userId, $topicId));
+        }
+        if ($topic->getAllianceId() != $allianceId) {
+            throw new AccessViolation(sprintf(_('userId %d tried to access topic of foreign ally, topicId %d'), $userId, $topicId));
         }
 
         $boardId = $topic->getBoardId();
