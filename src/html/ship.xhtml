@@ -641,7 +641,8 @@
 			</tr>
 			<tr>
 				<td style="width: 50%;">
-					<a href="colony.php?SHOW_COLONY=1&id=${CURRENT_COLONY/getId}" tal:condition="OWNS_CURRENT_COLONY">
+					<a href="colony.php?SHOW_COLONY=1&id=${CURRENT_COLONY/getId}&target=${SHIP/getId}"
+						tal:condition="OWNS_CURRENT_COLONY">
 						<img src="assets/planets/${CURRENT_COLONY/getColonyClass}.gif"
 							style="width: 15px; height: 15px;" />
 						<span tal:replace="structure bbcode:CURRENT_COLONY/getName">NAME</span>

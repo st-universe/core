@@ -60,12 +60,12 @@ final class ShowColony implements ViewControllerInterface
         $firstOrbitShip = null;
 
         $shipList = $colony->getOrbitShipList($userId);
-        if ($shipList !== []) {
+        if (!empty($shipList)) {
             // if selected, return the current target
             $target = request::postInt('target');
 
             if ($target) {
-                foreach ($shipList as $key => $fleet) {
+                foreach ($shipList as $fleet) {
                     foreach ($fleet['ships'] as $idx => $ship) {
                         if ($idx == $target) {
                             $firstOrbitShip = $ship;

@@ -744,7 +744,8 @@
             <tr>
               <td style="text-align: center;">
                 <img tal:condition="not:OWNS_TARGET" src="assets/planets/${targetColony/getColonyClass}.gif" />
-                <a tal:condition="OWNS_TARGET" href="colony.php?SHOW_COLONY=1&id=${targetColony/getId}">
+                <a tal:condition="OWNS_TARGET"
+                  href="colony.php?SHOW_COLONY=1&id=${targetColony/getId}&target=${SHIP/getId}">
                   <img src="assets/planets/${targetColony/getColonyClass}.gif" />
                 </a>
               </td>
@@ -815,7 +816,8 @@
             <tr>
               <td style="text-align: center;">
                 <img tal:condition="not:OWNS_TARGET" src="assets/planets/${targetColony/getColonyClass}.gif" />
-                <a tal:condition="OWNS_TARGET" href="colony.php?SHOW_COLONY=1&id=${targetColony/getId}">
+                <a tal:condition="OWNS_TARGET"
+                  href="colony.php?SHOW_COLONY=1&id=${targetColony/getId}&target=${SHIP/getId}">
                   <img src="assets/planets/${targetColony/getColonyClass}.gif" />
                 </a>
               </td>
