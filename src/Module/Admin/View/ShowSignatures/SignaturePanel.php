@@ -60,7 +60,8 @@ class SignaturePanel
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
-                $this->allyId
+                $this->allyId,
+                $this->loggerUtil
             );
         }
     }
