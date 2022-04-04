@@ -136,7 +136,7 @@ interface ShipRepositoryInterface extends ObjectRepository
 
     public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable;
 
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId, ?LoggerUtilInterface $logger): iterable;
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable;
 
     /**
      * @return ShipInterface[]

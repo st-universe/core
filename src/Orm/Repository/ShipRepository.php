@@ -680,7 +680,7 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
     AND (fs4.from_direction = 4 OR fs4.to_direction = 4)
     AND fs4.time > %2$d) as d4c ';
 
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId, ?LoggerUtilInterface $logger): iterable
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('posx', 'posx', 'integer');
@@ -693,27 +693,21 @@ final class ShipRepository extends EntityRepository implements ShipRepositoryInt
         $rsm->addScalarResult('d3c', 'd3c', 'integer');
         $rsm->addScalarResult('d4c', 'd4c', 'integer');
 
-        $query = sprintf(
-            'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
-                (SELECT count(distinct b.id)
-                    FROM stu_ships b
-                    JOIN stu_user u ON b.user_id = u.id
-                    WHERE b.cx=a.cx AND b.cy=a.cy
-                    AND u.allys_id = :allyId) as shipcount
-            %s 
-            FROM stu_map a
-            LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
-            WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
-            GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
-            sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_ALLY, $allyId, 0)
-        );
-
-        if ($logger !== null) {
-            $logger->log($query);
-        }
-
         return $this->getEntityManager()->createNativeQuery(
-            $query,
+            sprintf(
+                'SELECT a.id, a.cx as posx,a.cy as posy, d.type,
+                    (SELECT count(distinct b.id)
+                        FROM stu_ships b
+                        JOIN stu_user u ON b.user_id = u.id
+                        WHERE b.cx=a.cx AND b.cy=a.cy
+                        AND u.allys_id = :allyId) as shipcount
+                %s 
+                FROM stu_map a
+                LEFT JOIN stu_map_ftypes d ON d.id = a.field_id
+                WHERE a.cx BETWEEN :sxStart AND :sxEnd AND a.cy BETWEEN :syStart AND :syEnd 
+                GROUP BY a.cy, a.cx, a.id, d.type, a.field_id ORDER BY a.cy, a.cx',
+                sprintf(self::ADMIN_SIGNATURE_MAP_COUNT_ALLY, $allyId, 0)
+            ),
             $rsm
         )->setParameters([
             'sxStart' => $minx,

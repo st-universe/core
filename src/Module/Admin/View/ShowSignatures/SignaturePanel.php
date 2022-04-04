@@ -53,15 +53,12 @@ class SignaturePanel
                 $this->userId
             );
         } else if ($this->allyId) {
-            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-            $this->loggerUtil->log(sprintf(_('aid: %d'), $this->allyId));
             return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfAlly(
                 $this->data['minx'],
                 $this->data['maxx'],
                 $this->data['miny'],
                 $this->data['maxy'],
-                $this->allyId,
-                $this->loggerUtil
+                $this->allyId
             );
         }
     }
