@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stu\Module\Admin\View\ShowSignatures;
 
+use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Repository\ShipRepositoryInterface;
 
@@ -52,6 +53,8 @@ class SignaturePanel
                 $this->userId
             );
         } else if ($this->allyId !== null) {
+            $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
+            $this->loggerUtil->log(sprintf(_('aid: %d'), $this->allyId));
             return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfAlly(
                 $this->data['minx'],
                 $this->data['maxx'],

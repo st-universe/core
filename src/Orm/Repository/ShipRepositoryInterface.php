@@ -3,6 +3,7 @@
 namespace Stu\Orm\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use Stu\Module\Logging\LoggerUtilInterface;
 use Stu\Orm\Entity\ShipInterface;
 use Stu\Orm\Entity\StarSystemInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -135,7 +136,7 @@ interface ShipRepositoryInterface extends ObjectRepository
 
     public function getSignaturesOuterSystemOfUser(int $minx, int $maxx, int $miny, int $maxy, int $userId): iterable;
 
-    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId): iterable;
+    public function getSignaturesOuterSystemOfAlly(int $minx, int $maxx, int $miny, int $maxy, int $allyId, ?LoggerUtilInterface $logger): iterable;
 
     /**
      * @return ShipInterface[]
