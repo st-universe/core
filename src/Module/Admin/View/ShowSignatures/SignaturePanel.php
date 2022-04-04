@@ -10,16 +10,16 @@ use Stu\Orm\Repository\ShipRepositoryInterface;
 
 class SignaturePanel
 {
-    private ?int $userId;
-    private ?int $allyId;
+    private int $userId;
+    private int $allyId;
 
     private $data = array();
 
     private LoggerUtilInterface $loggerUtil;
 
     function __construct(
-        ?int $userId,
-        ?int $allyId,
+        int $userId,
+        int $allyId,
         &$entry = array(),
         LoggerUtilInterface $loggerUtil
     ) {
@@ -44,7 +44,7 @@ class SignaturePanel
         // @todo refactor
         global $container;
 
-        if ($this->userId !== null) {
+        if ($this->userId) {
             return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfUser(
                 $this->data['minx'],
                 $this->data['maxx'],
@@ -52,7 +52,7 @@ class SignaturePanel
                 $this->data['maxy'],
                 $this->userId
             );
-        } else if ($this->allyId !== null) {
+        } else if ($this->allyId) {
             $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
             $this->loggerUtil->log(sprintf(_('aid: %d'), $this->allyId));
             return $container->get(ShipRepositoryInterface::class)->getSignaturesOuterSystemOfAlly(
