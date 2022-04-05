@@ -64,6 +64,9 @@ final class ShipLoader implements ShipLoaderInterface
                 if (!$ship->getSystemState(ShipSystemTypeEnum::SYSTEM_UPLINK)) {
                     throw new UnallowedUplinkOperation(_('Uplink is not activated!'));
                 }
+                if ($ship->getUser()->isVacationRequestOldEnough()) {
+                    throw new UnallowedUplinkOperation(_('Owner is on vacation!'));
+                }
             } else {
                 throw new AccessViolation(sprintf("Ship owned by another user! Fool: %d", $userId));
             }
