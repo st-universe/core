@@ -20,16 +20,12 @@ final class ChangeFrequency implements ActionControllerInterface
 
     private ColonyRepositoryInterface $colonyRepository;
 
-    private ChangeFrequencyRequestInterface $changeFrequencyRequest;
-
     public function __construct(
         ColonyLoaderInterface $colonyLoader,
-        ColonyRepositoryInterface $colonyRepository,
-        ChangeFrequencyRequestInterface $changeFrequencyRequest
+        ColonyRepositoryInterface $colonyRepository
     ) {
         $this->colonyLoader = $colonyLoader;
         $this->colonyRepository = $colonyRepository;
-        $this->changeFrequencyRequest = $changeFrequencyRequest;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,9 +37,14 @@ final class ChangeFrequency implements ActionControllerInterface
 
         $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_INFO]);
 
-        $frequency = $this->changeFrequencyRequest->getFrequency();
+        $frequency = request::postStringFatal('frequency');
 
-        if (mb_strlen(strval($frequency)) > 6) {
+        if (!is_numeric($frequency)) {
+            $game->addInformation(_('Nur ganze Zahlen erlaubt'));
+            return;
+        }
+
+        if (mb_strlen($frequency) > 6) {
             $game->addInformation(_('Unerlaubte Frequenz (Maximum: 6 Zeichen)'));
             return;
         }

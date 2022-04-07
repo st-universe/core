@@ -43,8 +43,6 @@ use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepair;
 use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepairRequest;
 use Stu\Module\Colony\Action\CancelShipRepair\CancelShipRepairRequestInterface;
 use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequency;
-use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequest;
-use Stu\Module\Colony\Action\ChangeFrequency\ChangeFrequencyRequestInterface;
 use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoType;
 use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoTypeRequest;
 use Stu\Module\Colony\Action\ChangeTorpedoType\ChangeTorpedoTypeRequestInterface;
@@ -181,7 +179,6 @@ use function DI\autowire;
 return [
     BuildingMassActionConfigurationInterface::class => autowire(BuildingMassActionConfiguration::class),
     PlanetFieldTypeRetrieverInterface::class => autowire(PlanetFieldTypeRetriever::class),
-    ChangeFrequencyRequestInterface::class => autowire(ChangeFrequencyRequest::class),
     ChangeTorpedoTypeRequestInterface::class => autowire(ChangeTorpedoTypeRequest::class),
     ChangeNameRequestInterface::class => autowire(ChangeNameRequest::class),
     CancelShipRepairRequestInterface::class => autowire(CancelShipRepairRequest::class),
