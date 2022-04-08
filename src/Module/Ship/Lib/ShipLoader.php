@@ -49,11 +49,11 @@ final class ShipLoader implements ShipLoaderInterface
     private function checkviolations(?ShipInterface $ship, int $userId, bool $allowUplink): void
     {
         if ($ship === null) {
-            throw new ShipDoesNotExistException();
+            throw new ShipDoesNotExistException(_('Ship does not exist!'));
         }
 
         if ($ship->getIsDestroyed()) {
-            throw new ShipIsDestroyedException();
+            throw new ShipIsDestroyedException(_('Ship is destroyed!'));
         }
 
         if ($ship->getUser()->getId() !== $userId) {

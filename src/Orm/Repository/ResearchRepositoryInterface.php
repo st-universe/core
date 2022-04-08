@@ -26,5 +26,10 @@ interface ResearchRepositoryInterface extends ObjectRepository
 
     public function getMoonColonyLimitByUser(UserInterface $user): int;
 
+    /**
+     * @return ResearchInterface[]
+     */
+    public function getPossibleResearchByParent(int $researchId): array;
+
     public function save(ResearchInterface $research): void;
 }

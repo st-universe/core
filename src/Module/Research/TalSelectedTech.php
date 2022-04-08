@@ -12,6 +12,7 @@ use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
 use Stu\Orm\Repository\ResearchDependencyRepositoryInterface;
 use Stu\Orm\Repository\ResearchedRepositoryInterface;
+use Stu\Orm\Repository\ResearchRepositoryInterface;
 
 final class TalSelectedTech implements TalSelectedTechInterface
 {
@@ -19,6 +20,8 @@ final class TalSelectedTech implements TalSelectedTechInterface
     private ResearchInterface $research;
 
     private UserInterface $currentUser;
+
+    private ResearchRepositoryInterface $researchRepository;
 
     private ResearchedRepositoryInterface $researchedRepository;
 
@@ -33,6 +36,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
     private $dependencies;
 
     public function __construct(
+        ResearchRepositoryInterface $researchRepository,
         ResearchedRepositoryInterface $researchedRepository,
         ResearchDependencyRepositoryInterface $researchDependencyRepository,
         ResearchInterface $research,
@@ -41,6 +45,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
     ) {
         $this->research = $research;
         $this->currentUser = $currentUser;
+        $this->researchRepository = $researchRepository;
         $this->researchedRepository = $researchedRepository;
         $this->researchDependencyRepository = $researchDependencyRepository;
         $this->config = $config;
@@ -113,7 +118,7 @@ final class TalSelectedTech implements TalSelectedTechInterface
     public function getPositiveDependencies(): array
     {
         if ($this->dependencies === null) {
-            $this->dependencies = $this->researchDependencyRepository->getRequirementsByResearch(
+            $this->dependencies = $this->researchRepository->getPossibleResearchByParent(
                 $this->research->getId()
             );
         }

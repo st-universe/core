@@ -17,9 +17,4 @@ interface ResearchDependencyRepositoryInterface extends ObjectRepository
      * @return ResearchDependencyInterface[]
      */
     public function getExcludesByResearch(int $researchId): array;
-
-    /**
-     * @return ResearchDependencyInterface[]
-     */
-    public function getRequirementsByResearch(int $researchId): array;
 }

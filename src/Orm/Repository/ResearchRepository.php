@@ -7,6 +7,7 @@ namespace Stu\Orm\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Stu\Orm\Entity\Research;
+use Stu\Orm\Entity\ResearchDependency;
 use Stu\Orm\Entity\Researched;
 use Stu\Orm\Entity\ResearchInterface;
 use Stu\Orm\Entity\UserInterface;
@@ -79,6 +80,23 @@ final class ResearchRepository extends EntityRepository implements ResearchRepos
             'userId' => $user,
             'activeState' => 0
         ])->getSingleScalarResult();
+    }
+
+    public function getPossibleResearchByParent(int $researchId): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT r
+                FROM %s r
+                WHERE r.id IN (
+                    SELECT rd.research_id from %s rd WHERE rd.depends_on = :researchId
+                )',
+                Research::class,
+                ResearchDependency::class,
+            )
+        )
+            ->setParameter('researchId', $researchId)
+            ->getResult();
     }
 
     public function save(ResearchInterface $research): void
