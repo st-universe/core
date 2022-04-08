@@ -7,7 +7,7 @@ namespace Stu\Orm\Entity;
 /**
  * @Entity(repositoryClass="Stu\Orm\Repository\BasicTradeRepository")
  * @Table(
- *     name="stu_base_commodity_trading"
+ *     name="stu_basic_trade"
  * )
  **/
 class BasicTrade implements BasicTradeInterface
