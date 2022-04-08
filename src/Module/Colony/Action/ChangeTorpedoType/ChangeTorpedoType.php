@@ -44,7 +44,7 @@ final class ChangeTorpedoType implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_INFO]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_INFO]);
 
         $torpedoId = $this->changeTorpedoTypeRequest->getTorpedoId();
 

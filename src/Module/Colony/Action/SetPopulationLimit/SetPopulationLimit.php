@@ -35,7 +35,7 @@ final class SetPopulationLimit implements ActionControllerInterface
             $game->getUser()->getId()
         );
 
-        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU', ColonyEnum::MENU_OPTION]);
+        $game->setView(ShowColony::VIEW_IDENTIFIER, ['COLONY_MENU' => ColonyEnum::MENU_OPTION]);
 
         $limit = request::postIntFatal('poplimit');
         if ($limit == $colony->getPopulationLimit() || $limit < 0) {
