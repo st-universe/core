@@ -13,6 +13,7 @@ use Stu\Orm\Entity\AllianceBoardTopic;
 use Stu\Orm\Entity\AllianceJob;
 use Stu\Orm\Entity\AllianceRelation;
 use Stu\Orm\Entity\AstronomicalEntry;
+use Stu\Orm\Entity\BasicTrade;
 use Stu\Orm\Entity\Building;
 use Stu\Orm\Entity\BuildingCost;
 use Stu\Orm\Entity\BuildingFieldAlternative;
@@ -144,6 +145,11 @@ return [
         ContainerInterface $c
     ): AllianceRelationRepositoryInterface {
         return $c->get(EntityManagerInterface::class)->getRepository(AllianceRelation::class);
+    },
+    BasicTradeRepositoryInterface::class => function (
+        ContainerInterface $c
+    ): BasicTradeRepositoryInterface {
+        return $c->get(EntityManagerInterface::class)->getRepository(BasicTrade::class);
     },
     BuildingRepositoryInterface::class => function (
         ContainerInterface $c
