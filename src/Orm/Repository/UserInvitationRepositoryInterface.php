@@ -9,6 +9,7 @@ use Stu\Orm\Entity\UserInvitationInterface;
 
 /**
  * @method null|UserInvitationInterface find(integer $id)
+ * @method UserInvitationInterface[] findAll()
  */
 interface UserInvitationRepositoryInterface extends ObjectRepository
 {

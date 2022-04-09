@@ -37,6 +37,7 @@ use Stu\Module\Admin\View\Map\ShowMapInfluenceAreas;
 use Stu\Module\Admin\View\MassMail\MassMail;
 use Stu\Module\Admin\View\ResearchTree\ShowResearchTree;
 use Stu\Module\Admin\View\Scripts\ShowScripts;
+use Stu\Module\Admin\View\ShowInvitationTree\ShowInvitationTree;
 use Stu\Module\Admin\View\ShowSignatures\ShowSignatures;
 use Stu\Module\Admin\View\Ticks\ShowTicks;
 use Stu\Module\Control\GameController;
@@ -76,6 +77,7 @@ return [
         ShowMapInfluenceAreas::VIEW_IDENTIFIER => autowire(ShowMapInfluenceAreas::class),
         ShowSignatures::VIEW_IDENTIFIER => autowire(ShowSignatures::class),
         ShowResearchTree::VIEW_IDENTIFIER => autowire(ShowResearchTree::class),
+        ShowInvitationTree::VIEW_IDENTIFIER => autowire(ShowInvitationTree::class),
         MassMail::VIEW_IDENTIFIER => autowire(MassMail::class)
     ]
 ];
