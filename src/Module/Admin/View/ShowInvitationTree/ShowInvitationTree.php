@@ -7,6 +7,7 @@ namespace Stu\Module\Admin\View\ShowInvitationTree;
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
 use JBBCode\Parser;
+use request;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
@@ -40,15 +41,23 @@ final class ShowInvitationTree implements ViewControllerInterface
             return;
         }
 
+        $highlightedUser = request::postInt('inviteduserid');
+
         $graph = new Graph();
         $vertexes = [];
 
         $userList = $this->userRepository->getNonNpcList();
         foreach ($userList as $user) {
+            $userId = $user->getId();
+
             $vertex = $graph->createVertex($user->getId());
             $name = $this->bbcodeParser->parse($user->getName())->getAsText();
-            $vertex->setAttribute('graphviz.label', sprintf(_('%s (%d)'), $name, $user->getId()));
+            $vertex->setAttribute('graphviz.label', sprintf(_('%s (%d)'), $name, $userId));
             $vertexes[$user->getId()] = $vertex;
+
+            if ($highlightedUser && $userId == $highlightedUser) {
+                $vertex->setAttribute('graphviz.color', 'red');
+            }
         }
 
         $invitations = $this->userInvitationRepository->findAll();
