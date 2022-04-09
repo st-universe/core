@@ -41,7 +41,7 @@ final class ShowInvitationTree implements ViewControllerInterface
         $userList = $this->userRepository->getNonNpcList();
         foreach ($userList as $user) {
             $vertex = $graph->createVertex($user->getId());
-            $vertex->setAttribute('graphviz.label', $user->getName());
+            $vertex->setAttribute('graphviz.label', sprintf(_('%s (%d)'), $user->getName(), $user->getId()));
             $vertexes[$user->getId()] = $vertex;
         }
 
