@@ -44,6 +44,7 @@ final class ShowInvitationTree implements ViewControllerInterface
         $highlightedUser = request::postInt('inviteduserid');
 
         $graph = new Graph();
+        $graph->setAttribute('graphviz.graph.charset', 'UTF-8');
         $vertexes = [];
 
         $userList = $this->userRepository->getNonNpcList();
