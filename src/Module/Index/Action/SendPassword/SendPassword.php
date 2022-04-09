@@ -50,7 +50,7 @@ final class SendPassword implements ActionControllerInterface
             return;
         }
 
-        $token = sha1(time().$user->getLogin());
+        $token = sha1(time() . $user->getLogin());
         $user->setPasswordToken($token);
 
         $this->userRepository->save($user);
@@ -60,12 +60,13 @@ final class SendPassword implements ActionControllerInterface
         $mail->setSubject(_('Star Trek Universe - Password vergessen'));
         $mail->setFrom($this->config->get('game.email_sender_address'));
         $mail->setBody(
-            sprintf("Hallo.\n\n
+            sprintf(
+                "Hallo.\n\n
 Du bekommst diese eMail, da Du in Star Trek Universe ein neues Password angefordert hast. Solltest Du das nicht getan
 haben, so ignoriere die eMail einfach.\n\n
 Klicke auf folgenden Link um Dir ein neues Password zu setzen:\n
 %s/?SHOW_RESET_PASSWORD=1&TOKEN=%s\n\n
-Das Strek Trek Universe Team\n
+Das Star Trek Universe Team\n
 %s",
                 $this->config->get('game.base_url'),
                 $token,
