@@ -695,6 +695,11 @@ final class GameController implements GameControllerInterface
         return '';
     }
 
+    public function getActualYear(): int
+    {
+        return date("Y");
+    }
+
     public function getLoginError(): string
     {
         return $this->loginError;
