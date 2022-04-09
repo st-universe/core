@@ -53,6 +53,7 @@ final class ShowInvitationTree implements ViewControllerInterface
 
             $vertex = $graph->createVertex($user->getId());
             $name = $this->bbcodeParser->parse($user->getName())->getAsText();
+            $name = str_replace(array('&', '<', '>', '"', "'", '\\', "\n"), '', $name);
             $vertex->setAttribute('graphviz.label', sprintf(_('%s (%d)'), $name, $userId));
             $vertexes[$user->getId()] = $vertex;
 
