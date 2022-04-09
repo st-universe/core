@@ -6,6 +6,7 @@ namespace Stu\Module\Admin\View\ShowInvitationTree;
 
 use Fhaculty\Graph\Graph;
 use Graphp\GraphViz\GraphViz;
+use JBBCode\Parser;
 use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Control\ViewControllerInterface;
 use Stu\Orm\Repository\UserInvitationRepositoryInterface;
@@ -19,12 +20,16 @@ final class ShowInvitationTree implements ViewControllerInterface
 
     private UserInvitationRepositoryInterface $userInvitationRepository;
 
+    private Parser $bbcodeParser;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
-        UserInvitationRepositoryInterface $userInvitationRepository
+        UserInvitationRepositoryInterface $userInvitationRepository,
+        Parser $bbcodeParser
     ) {
         $this->userRepository = $userRepository;
         $this->userInvitationRepository = $userInvitationRepository;
+        $this->bbcodeParser = $bbcodeParser;
     }
 
     public function handle(GameControllerInterface $game): void
@@ -41,7 +46,8 @@ final class ShowInvitationTree implements ViewControllerInterface
         $userList = $this->userRepository->getNonNpcList();
         foreach ($userList as $user) {
             $vertex = $graph->createVertex($user->getId());
-            $vertex->setAttribute('graphviz.label', sprintf(_('%s (%d)'), $user->getName(), $user->getId()));
+            $name = $this->bbcodeParser->parse($user->getName())->getAsText();
+            $vertex->setAttribute('graphviz.label', sprintf(_('%s (%d)'), $name, $user->getId()));
             $vertexes[$user->getId()] = $vertex;
         }
 
