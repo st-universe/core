@@ -26,8 +26,6 @@ final class PlayerEnum
                 return _("OHNE KOLONIEN");
             case self::USER_ACTIVE:
                 return _("AKTIV");
-            case self::USER_LOCKED:
-                return _("GESPERRT");
         }
         return '';
     }
