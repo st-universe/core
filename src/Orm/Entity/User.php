@@ -259,6 +259,11 @@ class User implements UserInterface
         return $this->aktiv;
     }
 
+    public function getUserStateDescription(): string
+    {
+        return PlayerEnum::getUserStateDescription($this->getActive());
+    }
+
     public function setActive(int $active): UserInterface
     {
         $this->aktiv = $active;

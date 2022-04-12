@@ -14,7 +14,7 @@
             <div class="userListItemName">
               <a href="/userprofile.php?uid=${data/getId}" tal:content="structure bbcode:data/getName">NAME</a>
             </div>
-            <div class="uerListItemAllianceName">
+            <div class="userListItemAllianceName">
               <a tal:condition="data/getAlliance" href="/alliance.php?SHOW_ALLIANCE=1&id=${data/getAllianceId}"
                 tal:content="structure bbcode:data/getAlliance/getName">ALLIANCE</a>
               <span tal:condition="not:data/getAlliance">-</span>
@@ -30,6 +30,7 @@
                 <img title="Zuletzt online" src="/assets/buttons/time.png" /> <span
                   tal:content="datetime:data/getLastAction">DATE</span>
               </div>
+              <div>STATE: ${user/getUserStateDescription}</div>
               <div>
                 <div tal:repeat="tag user/getTags" tal:content="tag/label" class="userTag userTag${tag/typeId}">LABEL
                 </div>

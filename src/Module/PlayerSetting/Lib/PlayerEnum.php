@@ -4,7 +4,7 @@ namespace Stu\Module\PlayerSetting\Lib;
 
 final class PlayerEnum
 {
-
+    // user state
     public const USER_NEW = 0;
     public const USER_ACTIVE = 1;
     public const USER_COLONIZED = 2;
@@ -17,4 +17,19 @@ final class PlayerEnum
 
     //VACATION DELAY, 172800 = 48 hours in seconds
     public const VACATION_DELAY_IN_SECONDS = 172800;
+
+    public static function getUserStateDescription(int $userState): string
+    {
+        switch ($userState) {
+            case self::USER_NEW:
+                return _("NEU");
+            case self::USER_ACTIVE:
+                return _("OHNE KOLONIEN");
+            case self::USER_COLONIZED:
+                return _("MIT KOLONIEN");
+            case self::USER_LOCKED:
+                return _("GESPERRT");
+        }
+        return '';
+    }
 }
