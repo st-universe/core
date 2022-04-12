@@ -63,7 +63,7 @@ final class LockUser implements ActionControllerInterface
 
         $userToLock = $this->userRepository->find($userIdToLock);
 
-        $this->loggerUtil->log('C');
+        $this->loggerUtil->log(print_r($userToLock, true));
         if ($userToLock === null) {
             $this->loggerUtil->log('D');
             return;
