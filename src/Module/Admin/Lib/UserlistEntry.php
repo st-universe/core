@@ -31,7 +31,7 @@ final class UserlistEntry
 
     public function getUserStateDescription(): string
     {
-        return PlayerEnum::getUserStateDescription($this->user->getActive());
+        return $this->user->getUserStateDescription();
     }
 
     public function getUserStateColor(): string
