@@ -522,7 +522,9 @@ final class GameController implements GameControllerInterface
                 if ($this->getUser()->isLocked()) {
                     $this->loggerUtil->log('main-102-userIsLocked');
                     $this->session->logout();
-                    throw new LoginException(_('Dein Spieleraccount wurde gesperrt'));
+
+                    $userLock = $this->getUser()->getUserLock();
+                    throw new LoginException(sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason()));
                 }
                 $gameState = $this->getGameState();
                 if ($gameState === GameEnum::CONFIG_GAMESTATE_VALUE_TICK) {
@@ -549,10 +551,11 @@ final class GameController implements GameControllerInterface
             }
             return;
         } catch (LoginException $e) {
-            $this->loginError = $e->getMessage();
+            $this->loginError = $e->getMessage(); //TODO kann weg?
 
-            $this->setTemplateFile('html/index.xhtml');
+            $this->setTemplateFile('html/accountlocked.xhtml');
             $this->talPage->setVar('THIS', $this);
+            $this->talPage->setVar('REASON', $e->getMessage());
         } catch (TickGameStateException $e) {
             $this->setPageTitle(_('Rundenwechsel aktiv'));
             $this->setTemplateFile('html/tick.xhtml');
