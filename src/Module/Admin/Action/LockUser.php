@@ -42,7 +42,7 @@ final class LockUser implements ActionControllerInterface
 
     public function handle(GameControllerInterface $game): void
     {
-        $this->loggerUtil->init('admin', LoggerEnum::LEVEL_ERROR);
+        //$this->loggerUtil->init('admin', LoggerEnum::LEVEL_ERROR);
         $game->setView(Playerlist::VIEW_IDENTIFIER);
 
         $this->loggerUtil->log('A');
@@ -85,7 +85,7 @@ final class LockUser implements ActionControllerInterface
 
     private function setUserLock(UserInterface $user, int $remainingTicks): void
     {
-        $lock = $this->userLockRepository->getByUser($user->getId());
+        $lock = $this->userLockRepository->getActiveByUser($user->getId());
 
         if ($lock === null) {
             $lock = $this->userLockRepository->prototype();

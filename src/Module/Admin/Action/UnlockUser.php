@@ -33,7 +33,7 @@ final class UnlockUser implements ActionControllerInterface
         }
 
         $userIdToUnlock = request::getIntFatal('uid');
-        $lock = $this->userLockRepository->getByUser($userIdToUnlock);
+        $lock = $this->userLockRepository->getActiveByUser($userIdToUnlock);
 
         if ($lock === null) {
             return;

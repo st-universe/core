@@ -29,6 +29,6 @@ final class ShowUserLock implements ViewControllerInterface
         $game->setMacroInAjaxWindow('html/admin/adminmacros.xhtml/user_lock');
 
         $game->setTemplateVar('USERID', $userIdToLock);
-        $game->setTemplateVar('LOCK', $this->userLockRepository->getByUser($userIdToLock));
+        $game->setTemplateVar('LOCK', $this->userLockRepository->getActiveByUser($userIdToLock));
     }
 }

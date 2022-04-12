@@ -5,6 +5,7 @@ namespace Stu\Module\Tick;
 use Stu\Module\Tick\Colony\ColonyTickManager;
 use Stu\Orm\Entity\GameTurnInterface;
 use Stu\Orm\Repository\GameTurnRepositoryInterface;
+use Stu\Orm\Repository\UserLockRepositoryInterface;
 
 final class TickManager implements TickManagerInterface
 {
@@ -12,10 +13,14 @@ final class TickManager implements TickManagerInterface
 
     private GameTurnRepositoryInterface $gameTurnRepository;
 
+    private UserLockRepositoryInterface $userLockRepository;
+
     public function __construct(
-        GameTurnRepositoryInterface $gameTurnRepository
+        GameTurnRepositoryInterface $gameTurnRepository,
+        UserLockRepositoryInterface $userLockRepository
     ) {
         $this->gameTurnRepository = $gameTurnRepository;
+        $this->userLockRepository = $userLockRepository;
     }
 
     public function work(): void
@@ -23,6 +28,7 @@ final class TickManager implements TickManagerInterface
         $turn = $this->gameTurnRepository->getCurrent();
         $this->endTurn($turn);
         $this->mainLoop();
+        $this->reduceUserLocks();
         $this->startTurn($turn);
     }
 
@@ -50,6 +56,27 @@ final class TickManager implements TickManagerInterface
                 break;
             }
             sleep(1);
+        }
+    }
+
+    private function reduceUserLocks(): void
+    {
+        $locks = $this->userLockRepository->getActive();
+
+        foreach ($locks as $lock) {
+            $remainingTicks = $lock->getRemainingTicks();
+
+            if ($remainingTicks === 1) {
+                $userId = $lock->getUser()->getId();
+
+                $lock->setUser(null);
+                $lock->setUserId(null);
+                $lock->setFormerUserId($userId);
+            } else {
+                $lock->setRemainingTicks($remainingTicks - 1);
+            }
+
+            $this->userLockRepository->save($lock);
         }
     }
 

@@ -10,7 +10,12 @@ use Stu\Orm\Entity\UserLockInterface;
  */
 interface UserLockRepositoryInterface extends ObjectRepository
 {
-    public function getByUser(int $userId): ?UserLockInterface;
+    public function getActiveByUser(int $userId): ?UserLockInterface;
+
+    /**
+     * @return UserLockInterface[]
+     */
+    public function getActive(): array;
 
     public function save(UserLockInterface $researched): void;
 

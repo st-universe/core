@@ -10,7 +10,7 @@ use Stu\Orm\Entity\UserLockInterface;
 
 final class UserLockRepository extends EntityRepository implements UserLockRepositoryInterface
 {
-    public function getByUser(int $userId): ?UserLockInterface
+    public function getActiveByUser(int $userId): ?UserLockInterface
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
@@ -23,6 +23,18 @@ final class UserLockRepository extends EntityRepository implements UserLockRepos
         ])
             ->setMaxResults(1)
             ->getOneOrNullResult();
+    }
+
+    public function getActive(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            sprintf(
+                'SELECT ul FROM %s ul
+                WHERE ul.user_id IS NOT NULL
+                AND ul.remaining_ticks > 0',
+                UserLock::class
+            )
+        )->getResult();
     }
 
     public function save(UserLockInterface $award): void
