@@ -515,15 +515,10 @@ final class GameController implements GameControllerInterface
             }
 
             if ($this->getUser() !== null) {
-                if ($this->getUser()->getId() === 102) {
-                    $this->loggerUtil->init('stu', LoggerEnum::LEVEL_ERROR);
-                }
-
                 if ($this->getUser()->isLocked()) {
-                    $this->loggerUtil->log('main-102-userIsLocked');
+                    $userLock = $this->getUser()->getUserLock();
                     $this->session->logout();
 
-                    $userLock = $this->getUser()->getUserLock();
                     throw new LoginException(
                         _('Dein Spieleraccount wurde gesperrt'),
                         sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
