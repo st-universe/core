@@ -62,9 +62,9 @@
                     <th>Begründung</th>
                 </tr>
                 <tr>
-                    <td><textarea tal:condition="LOCK" name="text" value="${LOCK/getReason}"
-                            style="width: 100%; height: 300px;"></textarea><textarea tal:condition="not:LOCK"
-                            name="text" style="width: 100%; height: 300px;"></textarea></td>
+                    <td><textarea tal:condition="LOCK" name="text"
+                            style="width: 100%; height: 300px;">${LOCK/getReason}</textarea><textarea
+                            tal:condition="not:LOCK" name="text" style="width: 100%; height: 300px;"></textarea></td>
                 </tr>
                 <tr>
                     <td>
