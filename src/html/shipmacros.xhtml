@@ -149,6 +149,8 @@
                     onmouseout="cp('nbsPm${data/getId}','buttons/msg1')">
                     <img src="/assets/buttons/msg1.png" name="nbsPm${data/getId}" />
                   </a>
+                  <span tal:content="structure bbcode:data/getUserName">USERNAME</span>
+                  (${data/getUserId})
                 </div>
               </td>
             </tr>
