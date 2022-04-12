@@ -34,7 +34,11 @@
                   tal:condition="not:user/isUserLocked" href="javascript:void(0)" onclick="showUserLock(${data/getId});"
                   onmouseover="cp('lock${data/getId}','buttons/block1', 'png');"
                   onmouseout="cp('lock${data/getId}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
-                    name="lock${data/getId}" title="Spieler sperren" /></a> <a tal:condition="user/isUserLocked"
+                    name="lock${data/getId}" title="Spielersperre setzen" /></a><a tal:condition="user/isUserLocked"
+                  href="javascript:void(0)" onclick="showUserLock(${data/getId});"
+                  onmouseover="cp('lock${data/getId}','buttons/block1', 'png');"
+                  onmouseout="cp('lock${data/getId}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
+                    name="lock${data/getId}" title="Spielersperre editieren" /></a> <a tal:condition="user/isUserLocked"
                   href="/admin/?B_UNLOCK_USER=1&uid=${data/getId}&sstr=${THIS/getSessionString}"
                   onmouseover="cp('activate${data/getId}','buttons/update1', 'png');"
                   onmouseout="cp('activate${data/getId}','buttons/update0', 'png');"><img
