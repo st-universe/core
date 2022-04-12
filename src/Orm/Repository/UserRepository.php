@@ -55,7 +55,8 @@ final class UserRepository extends EntityRepository implements UserRepositoryInt
     {
         return $this->getEntityManager()->createQuery(
             sprintf(
-                'SELECT u FROM %s u WHERE u.id > 100',
+                'SELECT u FROM %s u WHERE u.id > 100
+                ORDER BY u.id ASC',
                 User::class
             )
         )->getResult();
