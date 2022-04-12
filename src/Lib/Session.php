@@ -91,7 +91,7 @@ final class Session implements SessionInterface
             }
 
             if ($result === null) {
-                throw new \Stu\Lib\LoginException(_('Login oder Passwort inkorrekt'));
+                throw new LoginException(_('Login oder Passwort inkorrekt'));
             }
         }
 
@@ -102,14 +102,14 @@ final class Session implements SessionInterface
         if ($password_info['algo'] === 0) {
             // @todo remove old password handling. This is just temporary
             if ($password_hash !== sha1($password)) {
-                throw new \Stu\Lib\LoginException(_('Login oder Passwort inkorrekt'));
+                throw new LoginException(_('Login oder Passwort inkorrekt'));
             }
             $result->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $this->userRepository->save($result);
         } else {
             if (!password_verify($password, $password_hash)) {
-                throw new \Stu\Lib\LoginException(_('Login oder Passwort inkorrekt'));
+                throw new LoginException(_('Login oder Passwort inkorrekt'));
             }
 
             if (password_needs_rehash($password_hash, PASSWORD_DEFAULT)) {
@@ -125,13 +125,17 @@ final class Session implements SessionInterface
             $this->userRepository->save($result);
         }
         if ($result->isLocked()) {
-            throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde gesperrt'));
+            $userLock = $result->getUserLock();
+            throw new LoginException(
+                _('Dein Spieleraccount wurde gesperrt'),
+                sprintf(_('Dein Spieleraccount ist noch für %d Ticks gesperrt. Begründung: %s'), $userLock->getRemainingTicks(), $userLock->getReason())
+            );
         }
         if ($result->getDeletionMark() == 2) {
-            throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
+            throw new LoginException(_('Dein Spieleraccount wurde zur Löschung vorgesehen'));
         }
         if ($this->loginValidation->validate($result) === false) {
-            throw new \Stu\Lib\LoginException(_('Login fehlgeschlagen'));
+            throw new LoginException(_('Login fehlgeschlagen'));
         }
 
         if ($result->isVacationMode()) {
