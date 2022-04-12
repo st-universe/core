@@ -170,14 +170,17 @@ final class Session implements SessionInterface
     private function destroySession(?UserInterface $user = null): void
     {
         if ($this->user !== null || $user !== null) {
-            $user = $this->user ?? $user;
-            $this->sessionStringRepository->truncate($user);
+            $userToTruncate = $user ?? $this->user;
+            $this->sessionStringRepository->truncate($userToTruncate);
         }
-        $this->destroyLoginCookies();
-        setCookie(session_name(), '', time() - 42000);
-        @session_destroy();
 
-        $this->user = null;
+        if ($user === null) {
+            $this->destroyLoginCookies();
+            setCookie(session_name(), '', time() - 42000);
+            @session_destroy();
+
+            $this->user = null;
+        }
     }
 
     private function destroyLoginCookies(): void
