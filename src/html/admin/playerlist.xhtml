@@ -30,7 +30,7 @@
                 <img title="Zuletzt online" src="/assets/buttons/time.png" /> <span
                   tal:content="datetime:data/getLastAction">DATE</span>
               </div>
-              <div>STATE: ${user/getUserStateDescription}</div>
+              <div>STATE: ${data/getUserStateDescription}</div>
               <div>
                 <div tal:repeat="tag user/getTags" tal:content="tag/label" class="userTag userTag${tag/typeId}">LABEL
                 </div>
