@@ -12,6 +12,8 @@ use Stu\Module\Control\GameControllerInterface;
 use Stu\Module\Logging\LoggerEnum;
 use Stu\Module\Logging\LoggerUtilFactoryInterface;
 use Stu\Module\Logging\LoggerUtilInterface;
+use Stu\Orm\Entity\UserInterface;
+use Stu\Orm\Repository\UserLockRepositoryInterface;
 use Stu\Orm\Repository\UserRepositoryInterface;
 
 final class LockUser implements ActionControllerInterface
@@ -20,16 +22,20 @@ final class LockUser implements ActionControllerInterface
 
     private UserRepositoryInterface $userRepository;
 
+    private UserLockRepositoryInterface $userLockRepository;
+
     private SessionInterface $session;
 
     private LoggerUtilInterface $loggerUtil;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
+        UserLockRepositoryInterface $userLockRepository,
         SessionInterface $session,
         LoggerUtilFactoryInterface $loggerUtilFactory
     ) {
         $this->userRepository = $userRepository;
+        $this->userLockRepository = $userLockRepository;
         $this->session = $session;
         $this->loggerUtil = $loggerUtilFactory->getLoggerUtil();
     }
@@ -47,7 +53,13 @@ final class LockUser implements ActionControllerInterface
         }
 
         $this->loggerUtil->log('B');
-        $userIdToLock = request::getIntFatal('uid');
+        $userIdToLock = request::postIntFatal('uid');
+        $remainingTicks = request::postInt('ticks');
+
+        if (!$remainingTicks) {
+            $game->addInformation(_('Bitte Anzahl Ticks angeben'));
+            return;
+        }
 
         $userToLock = $this->userRepository->find($userIdToLock);
 
@@ -56,12 +68,37 @@ final class LockUser implements ActionControllerInterface
             $this->loggerUtil->log('D');
             return;
         }
+
+        //setup lock
+        $this->setUserLock($userToLock, $remainingTicks);
+
         $this->loggerUtil->log('E');
         //destroy session
         $this->session->logout($userToLock);
         $this->loggerUtil->log('F');
 
+        //create user lock
+
+
         $game->addInformationf(_('Der Spieler %s (%d) ist nun gesperrt'), $userToLock->getName(), $userIdToLock);
+    }
+
+    private function setUserLock(UserInterface $user, int $remainingTicks): void
+    {
+        $lock = $this->userLockRepository->getByUser($user->getId());
+
+        if ($lock === null) {
+            $lock = $this->userLockRepository->prototype();
+            $lock->setUser($user);
+        }
+
+        $lock->setRemainingTicks($remainingTicks);
+        $reason = request::postString('reason');
+
+        if ($reason) {
+            $lock->setReason($reason);
+        }
+        $this->userLockRepository->save($lock);
     }
 
     public function performSessionCheck(): bool

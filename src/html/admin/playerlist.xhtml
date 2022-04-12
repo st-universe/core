@@ -31,8 +31,7 @@
                   tal:content="datetime:data/getLastAction">DATE</span>
               </div>
               <div>STATUS: <span style="color: ${user/getUserStateColor};">${user/getUserStateDescription}</span> <a
-                  tal:condition="not:user/isUserLocked"
-                  href="/admin/?B_LOCK_USER=1&uid=${data/getId}&sstr=${THIS/getSessionString}"
+                  tal:condition="not:user/isUserLocked" href="/admin/?SHOW_LOCK_USER=1&uid=${data/getId}"
                   onmouseover="cp('lock${data/getId}','buttons/block1', 'png');"
                   onmouseout="cp('lock${data/getId}','buttons/block2', 'png');"><img src="/assets/buttons/block2.png"
                     name="lock${data/getId}" title="Spieler sperren" /></a> <a tal:condition="user/isUserLocked"

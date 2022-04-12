@@ -36,11 +36,12 @@ final class UserlistEntry
 
     public function getUserStateColor(): string
     {
-        switch ($this->user->getActive()) {
-            case PlayerEnum::USER_ACTIVE:
-                return _("greenyellow");
-            case PlayerEnum::USER_LOCKED:
-                return _("red");
+        $user = $this->user;
+        if ($user->isLocked()) {
+            return _("red");
+        }
+        if ($user->getActive() === PlayerEnum::USER_ACTIVE) {
+            return _("greenyellow");
         }
         return '#dddddd';
     }
@@ -52,7 +53,7 @@ final class UserlistEntry
 
     public function isUserLocked(): bool
     {
-        return $this->user->getActive() === PlayerEnum::USER_LOCKED;
+        return $this->user->isLocked();
     }
 
     public function getTags(): iterable

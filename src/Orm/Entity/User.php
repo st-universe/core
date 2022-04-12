@@ -139,6 +139,11 @@ class User implements UserInterface
      */
     private $colonies;
 
+    /**
+     * @OneToOne(targetEntity="UserLock", mappedBy="user")
+     */
+    private $userLock;
+
     private $used_crew_count;
 
     private $crew_in_training;
@@ -257,6 +262,19 @@ class User implements UserInterface
     public function getActive(): int
     {
         return $this->aktiv;
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->getUserLock() !== null && $this->getUserLock()->getRemainingTicks() > 0;
+    }
+
+    public function getUserStateDescription(): string
+    {
+        if ($this->isLocked()) {
+            return _('GESPERRT');
+        }
+        return PlayerEnum::getUserStateDescription($this->getActive());
     }
 
     public function setActive(int $active): UserInterface
@@ -702,5 +720,10 @@ class User implements UserInterface
         // @todo refactor
         global $container;
         return in_array($this->getId(),  $container->get(ConfigInterface::class)->get('game.admins'));
+    }
+
+    public function getUserLock(): ?UserLock
+    {
+        return $this->userLock;
     }
 }

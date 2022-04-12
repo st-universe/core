@@ -45,6 +45,8 @@ interface UserInterface
 
     public function getActive(): int;
 
+    public function isLocked(): bool;
+
     public function setActive(int $active): UserInterface;
 
     public function getAvatar(): string;
@@ -165,4 +167,6 @@ interface UserInterface
     public function isNpc(): bool;
 
     public function isAdmin(): bool;
+
+    public function getUserLock(): ?UserLock;
 }

@@ -124,7 +124,7 @@ final class Session implements SessionInterface
 
             $this->userRepository->save($result);
         }
-        if ($result->getActive() == PlayerEnum::USER_LOCKED) {
+        if ($result->isLocked()) {
             throw new \Stu\Lib\LoginException(_('Dein Spieleraccount wurde gesperrt'));
         }
         if ($result->getDeletionMark() == 2) {
@@ -208,7 +208,7 @@ final class Session implements SessionInterface
         if ($result->getActive() == PlayerEnum::USER_NEW) {
             throw new SessionInvalidException("Aktivierung");
         }
-        if ($result->getActive() == PlayerEnum::USER_LOCKED) {
+        if ($result->isLocked()) {
             throw new SessionInvalidException("Gesperrt");
         }
         if ($result->getDeletionMark() == 2) {
